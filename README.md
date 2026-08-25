@@ -8,8 +8,9 @@ Status: **Approved current-state baseline, including the user-confirmed RER-009 
 Canonical ownership: independent sibling repository
 `https://github.com/AutoByteus/autobyteus-web-prototype.git`, checked out at
 `/home/autobyteus/workspace/autobyteus-web-prototype` on branch `personal`.
-The prior workspace-contained locations are historical provenance only; see
-[independent-repository-migration.md](independent-repository-migration.md).
+RER-017 restores that repository as the sole active owner after the historical
+RER-015 workspace interval; see
+[independent-repository-restoration.md](independent-repository-restoration.md).
 
 This project deliberately optimizes for **exact current experience** and
 **simplified implementation**. It reuses source presentation code and assets,
@@ -40,7 +41,9 @@ for production-preview and scenario commands.
 - [ui-ux-spec.md](ui-ux-spec.md)
 - [final-reference-screenshots](final-reference-screenshots/README.md)
 - [product-prototyper-baseline-review.md](product-prototyper-baseline-review.md)
+- [independent-repository-restoration.md](independent-repository-restoration.md)
 - [independent-repository-migration.md](independent-repository-migration.md)
+- [workspace-repository-return.md](workspace-repository-return.md) (historical RER-015)
 
 Bootstrap screenshots remain source-versus-prototype parity evidence. The
 distinct images in `final-reference-screenshots/` were captured after explicit

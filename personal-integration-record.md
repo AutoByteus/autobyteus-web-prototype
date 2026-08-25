@@ -18,11 +18,12 @@ validation, fast-forward promotion, and direct non-force push only. It does not
 refresh the pinned source, redesign the UI, add production behavior, or reopen
 the user-confirmed review decision.
 
-RER-013 supersedes these workspace-ownership locators. The current active
-repository is `https://github.com/AutoByteus/autobyteus-web-prototype.git`
-and its sibling checkout is
-`/home/autobyteus/workspace/autobyteus-web-prototype` on `personal`. All
-workspace and task-worktree paths below are historical capture provenance only.
+RER-013 temporarily superseded these workspace-ownership locators with the
+independent repository. RER-015 then restored the workspace root for a
+historical interval. RER-017 now restores the active canonical root to
+`/home/autobyteus/workspace/autobyteus-web-prototype` in the independent
+`personal` branch. The RER-011 details below remain historical capture and
+integration provenance.
 
 ## Rebase Preservation
 

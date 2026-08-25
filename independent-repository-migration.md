@@ -1,4 +1,4 @@
-# Independent Repository Ownership Migration — RER-013
+# Independent Repository Ownership Migration — RER-013 Foundation
 
 ## Status And Scope
 
@@ -10,6 +10,13 @@
 - Approved UI/UX: `PPA-001` / `PPA-002`; unchanged
 - Approved source pin: `8ef282ba77705180d985e7000d801f0e0068cdc1`; unchanged
 - Observable UI/UX change: **none**
+
+RER-013 established the independent repository at commit
+`0b02b0e1fbdbdefb78b91b1705bd497663694e0f`. RER-015 temporarily returned the
+package to the workspace, and RER-017 now restores the same independent
+repository as the sole active owner while preserving that ancestry. This file
+remains the foundation record; the current cutover proof is in
+`independent-repository-restoration.md`.
 
 This migration separates the long-lived product prototype from the
 `autobyteus-workspace` repository. The old workspace-contained project and its

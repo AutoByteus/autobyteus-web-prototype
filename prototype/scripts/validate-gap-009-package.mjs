@@ -24,8 +24,9 @@ const check = (name, pass, detail = '') => {
 }
 const textByDoc = Object.fromEntries(await Promise.all(docs.map(async path => [path, await readFile(resolve(root, path), 'utf8')])))
 const allText = Object.values(textByDoc).join('\n')
+const activeLocatorText = docs.filter(path => path !== 'product-prototyper-baseline-review.md').map(path => textByDoc[path]).join('\n')
 
-check('Canonical independent-repository root is current in active prototype docs', allText.includes(currentRoot) && staleRoots.every(staleRoot => !allText.includes(staleRoot)))
+check('Canonical independent-repository root is current in active prototype docs', activeLocatorText.includes(currentRoot) && staleRoots.every(staleRoot => !activeLocatorText.includes(staleRoot)))
 check('Source pin is stable across identity and evidence docs', [
   'README.md', 'prototype-bootstrap-report.md', 'pp-gap-009-correction.md',
   'parity-inventory.md', 'comparison-report.md', 'evidence-index.md', 'prototype-runbook.md',
@@ -81,7 +82,7 @@ const changedPaths = gitRaw('status', '--porcelain').trimEnd().split('\n').filte
 check('Working tree is clean or changes are isolated to independent prototype content', changedPaths.every(path => !path.startsWith('../') && path !== '.gitmodules'), changedPaths.length ? `${changedPaths.length} prototype path(s)` : 'clean')
 check('Product-owned spec and final references are finalized for RER-009', textByDoc['ui-ux-spec.md'].includes('17/17') && textByDoc['final-reference-screenshots/README.md'].includes('done. i checked. thanks'))
 
-const absolutePaths = [...new Set(allText.match(/\/home\/autobyteus\/workspace\/[A-Za-z0-9_./-]+/g) || [])]
+const absolutePaths = [...new Set(activeLocatorText.match(/\/home\/autobyteus\/workspace\/[A-Za-z0-9_./-]+/g) || [])]
 let absolutePathsExist = true
 for (const path of absolutePaths) {
   const cleanPath = path.replace(/[.),;:]$/, '')

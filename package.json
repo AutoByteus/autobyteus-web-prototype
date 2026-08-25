@@ -30,7 +30,8 @@
     "audit:interactions": "node prototype/scripts/audit-interaction-discovery.mjs",
     "validate:gap-009-package": "node prototype/scripts/validate-gap-009-package.mjs",
     "validate:gap-010-package": "node prototype/scripts/validate-gap-010-package.mjs",
-    "validate:personal-integration": "node prototype/scripts/validate-independent-repository.mjs"
+    "validate:personal-integration": "node prototype/scripts/validate-independent-repository.mjs",
+    "validate:workspace-ownership": "node prototype/scripts/validate-workspace-ownership.mjs"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",

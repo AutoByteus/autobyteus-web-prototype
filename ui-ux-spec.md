@@ -20,8 +20,9 @@ current-state evidence.
   basis; `RER-004` and `RER-007` corrected repository placement without an
   observable delta; `RER-009` restored the pinned-source Agent Team launch and
   launched-member selection journey; `RER-011` authorized the prior
-  non-observable workspace integration; and `RER-013` establishes this
-  independent sibling repository without an observable delta.
+  non-observable workspace integration; `RER-013` established independent
+  ownership; `RER-015` recorded the superseded workspace-return interval; and
+  `RER-017` restores canonical independent ownership without an observable delta.
 - Product Prototyper acceptance references: `PPA-001` for the complete original
   baseline and `PPA-002` for the focused `RER-009` correction.
 - Source application: `/home/autobyteus/workspace/.codex/worktrees/initial-prototype-baseline/autobyteus-web`
@@ -43,6 +44,8 @@ current-state evidence.
 - UI approval dates: `2026-08-22` and `2026-08-24`
 - Repository-placement validation date: `2026-08-24`
 - Independent-repository migration validation date: `2026-08-24`
+- Workspace-repository return validation date: `2026-08-24`
+- Independent-repository restoration validation date: `2026-08-25`
 - Final visual capture result: `17/17` without browser errors or external
   resources; the preserved `VIS-001`–`VIS-015` hashes remain exact and
   `VIS-016`–`VIS-017` anchor the user-confirmed `RER-009` states.
@@ -505,6 +508,10 @@ interaction affordances and responsive behavior are requirements-defining.
   `evidence/gap-010/gap-010-summary.json`
 - RER-011 integration record: `personal-integration-record.md` and
   `evidence/integration/rer-011-rebase-preservation.json`
+- RER-015 workspace-ownership return (historical): `workspace-repository-return.md` and
+  `evidence/workspace-ownership/rer-015-return-proof.json`
+- RER-017 independent restoration: `independent-repository-restoration.md` and
+  `evidence/repository-independence/rer-017-restoration-proof.json`
 - Relevant stable IDs: `ROUTE-001`–`ROUTE-041`, `CFG-001`–`CFG-011`,
   `STATE-001`–`STATE-013`, `HOST-001`–`HOST-008`, `WKS-001`–`WKS-023`,
   `MOB-001`–`MOB-014`, `JRN-001`–`JRN-050`, `DISC-001`–`DISC-017`,

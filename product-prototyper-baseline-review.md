@@ -5,8 +5,9 @@
 - Package: `initial-prototype-baseline`
 - Requirements revisions: `RER-002` baseline acceptance, `RER-009` focused
   Agent Team launch/member-selection parity acceptance, `RER-011`
-  non-observable workspace integration, and `RER-013` independent-repository
-  ownership migration
+  non-observable workspace integration, `RER-013` independent-repository
+  ownership migration, `RER-015` historical workspace return, and `RER-017`
+  independent-repository restoration
 - Review dates: `2026-08-22` and `2026-08-24`
 - Reviewed source pin: `8ef282ba77705180d985e7000d801f0e0068cdc1`
 - Canonical prototype root: `/home/autobyteus/workspace/autobyteus-web-prototype`
@@ -315,9 +316,9 @@ VIS-001–VIS-017 remain unchanged and no renewed UI review is required.
 
 The complete six-commit task history was rebased onto the freshly fetched
 `origin/personal` head while preserving every patch identity and the exact
-pre-rebase prototype and requirements trees. The canonical active project root
-is now `/home/autobyteus/workspace/autobyteus-web-prototype`
-on `personal`. Pre-promotion and post-promotion validation, artifact hashes,
+pre-rebase prototype and requirements trees. The historical RER-011 project root
+was `/home/autobyteus/workspace/autobyteus-workspace/autobyteus-web-prototype`
+on workspace `personal`. Pre-promotion and post-promotion validation, artifact hashes,
 unrelated-tree equivalence, and final Git ref equality are recorded by
 `personal-integration-record.md`, `evidence/integration/`, and the terminal
 handoff proof. This integration does not change the user-confirmed product
@@ -338,3 +339,38 @@ workspace history. Only active filesystem/repository locators and ownership
 evidence changed. PPA-001/PPA-002, the pinned source, JRN-050-A–E,
 VIS-001–VIS-017 and both explicit user confirmations are unchanged, so no
 renewed UI review is required.
+
+## RER-015 Workspace Repository Ownership Return
+
+The user later reversed only the active repository-ownership choice and asked
+to manage the complete accepted prototype inside `autobyteus-workspace` again.
+During that historical interval, the package was ordinary root-level content at
+`/home/autobyteus/workspace/autobyteus-workspace/autobyteus-web-prototype` on
+workspace branch `personal`. The independent commit
+`0b02b0e1fbdbdefb78b91b1705bd497663694e0f` remains historical provenance;
+the independent GitHub repository is not deleted or rewritten.
+
+RER-015 changes only active repository/root/provenance locators and adds
+ownership-validation evidence. PPA-001/PPA-002, source pin, JRN-050-A–E,
+VIS-001–VIS-017 and both confirmation references remain exact. No renewed UI
+review is required because observable behavior and normative hashes do not
+change.
+
+## RER-017 Independent Repository Ownership Restoration
+
+The user made the final ownership choice explicit: the approved web prototype
+belongs in its existing independent repository. Fresh fetches showed that the
+independent remote remained complete for RER-013 at
+`0b02b0e1fbdbdefb78b91b1705bd497663694e0f`, but it did not yet include the
+four later RER-015 ownership artifacts or the current active locator state.
+Therefore the workspace copy could not be deleted without first restoring the
+complete 2,010-row project tree into the independent history.
+
+RER-017 preserves the established independent ancestry, materializes the
+workspace project tree `21c400d2903a362737f3ce41d876be3fbe2abab5` as
+ordinary repository-root content, and changes only active ownership, locator,
+provenance, validator and cutover-evidence text. All 2,001 approved files, all
+848 approved binary evidence/assets, source pin, PPA-001/PPA-002, both user
+confirmations, JRN-050-A–E and exact VIS-001–VIS-017 hashes remain unchanged.
+No renewed UI review is required because this restoration has no observable or
+interactive delta.

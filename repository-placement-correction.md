@@ -10,13 +10,14 @@
 - Approved baseline: `PPA-001` and the user's confirmation from `2026-08-22`
   remain authoritative
 - Source pin: `8ef282ba77705180d985e7000d801f0e0068cdc1`
-- Current RER-013 canonical root:
+- Current RER-017 canonical root:
   `/home/autobyteus/workspace/autobyteus-web-prototype`
-- Current RER-013 repository/branch:
+- Current RER-017 repository/branch:
   `https://github.com/AutoByteus/autobyteus-web-prototype.git` / `personal`
 - Supersession: the ownership facts below describe the completed RER-007 stage;
   they are retained only as explicitly historical provenance. RER-013
-  supersedes workspace ownership with independent sibling-repository ownership.
+  established independent ownership; RER-015 recorded a superseded workspace
+  interval; RER-017 restores the independent repository as active owner.
 
 ## Historical RER-007 Canonical Ownership
 

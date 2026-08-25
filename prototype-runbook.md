@@ -3,7 +3,7 @@
 ## Identity
 
 - Package: `initial-prototype-baseline`
-- Revision: `RER-013` independent-repository ownership of the approved
+- Revision: `RER-017` independent-repository ownership of the approved
   `RER-009` correction; baseline pin established under `RER-002`
 - Status: approved current-state baseline including the user-confirmed RER-009 correction (`PPA-002`)
 - Approved source pin: `8ef282ba77705180d985e7000d801f0e0068cdc1`
@@ -15,9 +15,12 @@
 
 The selected source worktree may be newer than the approved pin. Source-versus-prototype evidence must run from an exact export or detached worktree at `8ef282b...`; do not reset the selected source worktree and do not treat its current HEAD as correction authority.
 
-The prototype is a standalone sibling Git repository. Run Git commands from
-`/home/autobyteus/workspace/autobyteus-web-prototype`; no parent pnpm
-workspace, submodule, gitlink, backend or source checkout is required.
+The prototype is an isolated independent Git repository and root-level project.
+Run both project and Git commands from
+`/home/autobyteus/workspace/autobyteus-web-prototype`. The prototype is
+ordinary tracked repository-root content, not a workspace package, nested
+repository, submodule or gitlink; no backend or source checkout is required for
+ordinary review.
 
 ## Clean Install And Run
 
@@ -133,6 +136,7 @@ corepack pnpm validate:boundaries
 corepack pnpm build
 corepack pnpm validate:gap-009-package
 corepack pnpm validate:gap-010-package
+corepack pnpm validate:independent-repository
 ```
 
 Do not run `capture:final-references` or modify `ui-ux-spec.md` during bootstrap correction. Those are Product Prototyper-owned post-acceptance artifacts.
