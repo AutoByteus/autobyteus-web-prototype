@@ -28,7 +28,7 @@
 - Product acceptance result and date: Accepted 2026-08-29; see `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/baseline-acceptance.md`.
 - Accepted Token Statistics baseline revision: `6ba98942c669329f70ba902db4a2880375ad52ad`
 - Baseline metadata revision: `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`
-- Prototype revision containing the current `RV-006` visualizer, feasibility audit, and evidence: `Pending RV-006 commit`
+- Prototype revision containing the current `RV-006` visualizer, feasibility audit, and evidence: `0e4a0778ee499e9dc9ea6cb13b33b7f3bb987e9e`
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001`
 - Integration target and result: The accepted baseline commits `6ba98942c669329f70ba902db4a2880375ad52ad` and `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6` are on `origin/personal`. The exploratory `RV-006` work remains only on `prototype/reqpkg-tsui-001` while the canonical Requirement Impact is unresolved.
 - Cleanup result: Deferred. Retain the active worktree and review runtimes while status is `Blocked` on Requirements Engineering revision.
