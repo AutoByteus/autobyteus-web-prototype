@@ -3,7 +3,7 @@
 - Package / ticket ID: `REQPKG-TSUI-001`
 - Finding ID: `RI-001`
 - Date: 2026-08-29
-- Current visualization revision: `RV-005`
+- Current visualization revision: `RV-006`
 - Classification: `Requirement Impact`
 - Status: User decision is represented in `RV-005`; Requirements Engineering must now revise the conflicting canonical requirements.
 
@@ -21,6 +21,11 @@ directions. Exact runtime/model identity evidence remains secondary under
 `Detailed usage`; it is no longer described as a driver or elevated in a
 standalone contributor card. This does not rewrite the canonical requirements
 owned by Requirements Engineering.
+
+`RV-006` is a presentation-only follow-up: it adds explicit X/Y axes to the
+daily line and removes the confusing short vertical point guides. This uses the
+same existing daily buckets and changes neither the Requirement Impact nor the
+data contract.
 
 ## Exact User Feedback And Meaning
 

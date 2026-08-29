@@ -11,7 +11,7 @@ await mkdir(visualRoot, { recursive: true })
 await mkdir(evidenceRoot, { recursive: true })
 
 const browser = await chromium.launch({ headless: true, executablePath: '/usr/bin/chromium', args: ['--no-sandbox'] })
-const result = { generatedAt: new Date().toISOString(), baseUrl, revision: 'RV-005', checks: [], screenshots: [], browserErrors: [] }
+const result = { generatedAt: new Date().toISOString(), baseUrl, revision: 'RV-006', checks: [], screenshots: [], browserErrors: [] }
 const forbiddenProductLanguage = ['Dominant driver', 'Usage drivers', 'Leading drivers', 'Prior period', 'No comparable prior period', 'Prior period unavailable', '+28.2% from prior period', '+28.2%']
 
 const check = (id, name, pass, observed = null) => {
@@ -150,9 +150,15 @@ try {
     points: document.querySelectorAll('.trend-point').length,
     lines: document.querySelectorAll('.trend-line').length,
     bars: document.querySelectorAll('.bar, .bars, .bar-column').length,
+    stems: document.querySelectorAll('.trend-stem').length,
+    yAxisTitle: document.querySelector('.chart-y-axis > strong')?.textContent?.trim() ?? '',
+    yLabels: [...document.querySelectorAll('.chart-y-labels span')].map(node => node.textContent?.trim()),
+    xLabels: [...document.querySelectorAll('.line-x-labels span')].map(node => node.textContent?.trim()),
+    plotBorderLeft: getComputedStyle(document.querySelector('.line-plot')).borderLeftStyle,
+    plotBorderBottom: getComputedStyle(document.querySelector('.line-plot')).borderBottomStyle,
     label: document.querySelector('.line-chart-shell')?.getAttribute('aria-label') ?? '',
   }))
-  check('VAL-016', 'Usage over time is a 29-point daily line with markers and no vertical bars', trendEvidence.points === 29 && trendEvidence.lines === 1 && trendEvidence.bars === 0 && trendEvidence.label.includes('29 daily UTC buckets'), trendEvidence)
+  check('VAL-016', 'Usage over time has explicit X/Y axes, 29 daily markers, and no bars or unexplained point stems', trendEvidence.points === 29 && trendEvidence.lines === 1 && trendEvidence.bars === 0 && trendEvidence.stems === 0 && trendEvidence.yAxisTitle === 'Tokens' && trendEvidence.yLabels.length === 3 && trendEvidence.xLabels.length === 5 && trendEvidence.plotBorderLeft === 'solid' && trendEvidence.plotBorderBottom === 'solid' && trendEvidence.label.includes('X-axis: date in UTC') && trendEvidence.label.includes('Y-axis: tokens'), trendEvidence)
   await trend.context.close()
 
   const languageAudit = await contextFor({ width: 1440, height: 1000 })

@@ -282,19 +282,21 @@ function TrendChart({ compact = false, filtered, metric, full }: { compact?: boo
   const formatValue = (value: number) => metric === "tokens" ? `${value}K` : `$${value.toFixed(2)}`;
   const exactSeries = points.map((point) => `Aug ${point.day}: ${metric === "tokens" ? `${point.value * 1000} tokens` : `$${point.value.toFixed(4)}`}`).join(", ");
   return <div className={`trend-chart ${compact ? "compact" : ""}`}>
-    <div className="chart-y"><span>{formatValue(max)}</span><span>{formatValue(max / 2)}</span><span>0</span></div>
-    <div className="line-chart-shell" role="img" aria-label={`${metric === "tokens" ? "Token" : "Estimated cost"} usage across 29 daily UTC buckets. ${exactSeries}`}>
+    <div aria-hidden="true" className="chart-y-axis">
+      <strong>{metric === "tokens" ? "Tokens" : "Cost (USD)"}</strong>
+      <div className="chart-y-labels"><span>{formatValue(max)}</span><span>{formatValue(max / 2)}</span><span>0</span></div>
+    </div>
+    <div className="line-chart-shell" role="img" aria-label={`${metric === "tokens" ? "Token" : "Estimated cost"} usage across 29 daily UTC buckets. X-axis: date in UTC. Y-axis: ${metric === "tokens" ? "tokens" : "estimated cost in USD"}. ${exactSeries}`}>
       <div className="line-plot">
         <svg aria-hidden="true" className="trend-line-svg" preserveAspectRatio="none" viewBox="0 0 100 100">
           <path className="trend-line" d={linePath} vectorEffect="non-scaling-stroke" />
         </svg>
         {points.map((point) => <span className={`trend-point-wrap ${emphasisDays.has(point.day) ? "emphasis" : ""}`} key={point.day} style={{ left: `${point.x}%`, top: `${point.y}%` }}>
-          {emphasisDays.has(point.day) && <span className="trend-stem" />}
           {emphasisDays.has(point.day) && point.value > 0 && <span className="trend-point-value">{formatValue(point.value)}</span>}
           <span className="trend-point" />
         </span>)}
       </div>
-      <div className="line-x-labels"><span>Aug 1</span><span>Aug 8</span><span>Aug 15</span><span>Aug 22</span><span>Aug 29</span></div>
+      <div aria-hidden="true" className="line-x-labels"><span>Aug 1</span><span>Aug 8</span><span>Aug 15</span><span>Aug 22</span><span>Aug 29</span></div>
     </div>
   </div>;
 }

@@ -133,22 +133,29 @@ h1 { font-size: clamp(28px, 3.5vw, 44px); letter-spacing: -.035em; line-height: 
 .comparison-note span { color: #718096; font-size: 9px; }
 .focus-analysis-grid { display: grid; gap: 14px; grid-template-columns: minmax(0, 1.55fr) minmax(250px, .75fr); margin-bottom: 14px; }
 .focus-analysis-grid.essentials-only { grid-template-columns: minmax(0, 1fr); }
-.trend-chart { display: grid; grid-template-columns: 34px minmax(0, 1fr); height: 190px; margin-top: 12px; }
+.trend-chart { display: grid; grid-template-columns: 48px minmax(0, 1fr); height: 190px; margin-top: 12px; }
 .trend-chart.compact { height: 142px; }
-.chart-y { color: #8a96a8; display: flex; flex-direction: column; font-size: 8px; justify-content: space-between; padding: 1px 6px 22px 0; text-align: right; }
+.chart-y-axis { color: #738096; display: flex; flex-direction: column; font-size: 8px; padding: 0 8px 22px 0; text-align: right; }
+.chart-y-axis > strong { color: #526176; font-size: 8px; font-weight: 750; letter-spacing: .02em; margin-bottom: 6px; white-space: nowrap; }
+.chart-y-labels { display: flex; flex: 1; flex-direction: column; justify-content: space-between; }
 .line-chart-shell { display: flex; flex-direction: column; min-width: 0; }
-.line-plot { background-image: linear-gradient(#e6ebf1 1px, transparent 1px); background-size: 100% 50%; border-bottom: 1px solid #bfc9d6; flex: 1; min-height: 0; position: relative; }
+.line-plot { background-image: linear-gradient(#dfe5ed 1px, transparent 1px); background-size: 100% 50%; border-bottom: 1px solid #91a0b4; border-left: 1px solid #91a0b4; flex: 1; min-height: 0; position: relative; }
 .trend-line-svg { inset: 0; overflow: visible; position: absolute; width: 100%; height: 100%; }
 .trend-line { fill: none; stroke: #2b66e8; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2.25; }
 .trend-point-wrap { bottom: 12%; position: absolute; width: 0; }
 .trend-point { background: #fff; border: 2px solid #2b66e8; border-radius: 50%; box-shadow: 0 0 0 2px rgba(43, 102, 232, .08); display: block; height: 7px; position: absolute; transform: translate(-50%, -50%); width: 7px; }
 .trend-point-wrap.emphasis .trend-point { background: #2b66e8; height: 9px; width: 9px; }
-.trend-stem { background: rgba(43, 102, 232, .16); bottom: 0; left: 0; position: absolute; top: 4px; width: 1px; }
 .trend-point-value { color: #536176; font-size: 8px; left: 0; position: absolute; top: -18px; transform: translateX(-50%); white-space: nowrap; }
-.line-x-labels { color: #8390a3; display: grid; font-size: 8px; grid-template-columns: repeat(5, 1fr); padding-top: 6px; }
-.line-x-labels span { text-align: center; white-space: nowrap; }
-.line-x-labels span:first-child { text-align: left; }
-.line-x-labels span:last-child { text-align: right; }
+.line-x-labels { color: #738096; font-size: 8px; height: 22px; position: relative; }
+.line-x-labels span { padding-top: 8px; position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.line-x-labels span::before { background: #91a0b4; content: ""; height: 4px; left: 50%; position: absolute; top: 0; width: 1px; }
+.line-x-labels span:nth-child(1) { left: 2%; transform: none; }
+.line-x-labels span:nth-child(1)::before { left: 0; }
+.line-x-labels span:nth-child(2) { left: 26%; }
+.line-x-labels span:nth-child(3) { left: 50%; }
+.line-x-labels span:nth-child(4) { left: 74%; }
+.line-x-labels span:nth-child(5) { left: 98%; transform: translateX(-100%); }
+.line-x-labels span:nth-child(5)::before { left: 100%; }
 .share-track { background: #e8edf4; border-radius: 99px; grid-column: 1 / -1; height: 7px; overflow: hidden; }
 .share-track span { background: #2563eb; border-radius: inherit; display: block; height: 100%; }
 .text-action { align-items: center; background: transparent; border: 0; color: #2563eb; cursor: pointer; display: inline-flex; font-size: 10px; font-weight: 700; gap: 6px; margin-top: 15px; padding: 0; }
