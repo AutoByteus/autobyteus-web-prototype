@@ -1,18 +1,18 @@
 # Requirements Visualization Design Plan
 
 - Package / ticket ID: `REQPKG-TSUI-001`
-- Revision: `RV-006`
-- Decision question: Can the daily Tokens/Cost trend read as a conventional chart immediately, with unmistakable X and Y axes and no unexplained vertical marks?
-- One-sentence user takeaway: The user can identify date on the X-axis and Tokens or Cost on the Y-axis immediately, while every daily point remains exact and inspectable.
-- Chosen visual form: Two clean product-only density treatments selected by URL, both sharing the same stripped information hierarchy. Usage over time uses a labeled Y-axis, a visible baseline and date ticks on the X-axis, horizontal value guides, one point per returned bucket, and no short vertical point stems.
+- Revision: `RV-007`
+- Decision question: Can the first view make cost-relevant token composition and daily usage immediately legible without a chart “ceiling” or an unhelpful Input/Output ratio?
+- One-sentence user takeaway: The user can see total, uncached input, cached input, output, cache hit rate, cost, and the daily Tokens/Cost trend without interpreting a ratio or decorative plot boundary.
+- Chosen visual form: Two clean product-only density treatments selected by URL, both sharing the same cache-aware hierarchy. Usage over time uses an open-top L-shaped coordinate plot with one midpoint guide. The summary uses six equal peer columns for Total tokens, Uncached input, Cached input, Output, Estimated API cost, and Cache hit rate; typographic scale, not excess width, keeps Total tokens primary.
 - Why this is the smallest suitable representation: User feedback establishes that persistent visualization chrome obscures the product decision. Two clean URLs preserve exact composition and let the product itself carry the comparison; state-specific evidence is reached through the proposed controls rather than an external journey navigator.
-- Alternatives considered and rejected: Persistent review chrome, bars, prior/comparison callouts, and contributor/`driver` callouts remain rejected by earlier revisions. Floating Y values without a vertical axis are rejected because they look detached from the plot. Short point-to-baseline stems are rejected because they resemble accidental dotted or bar-like marks rather than useful trend evidence.
+- Alternatives considered and rejected: Persistent review chrome, bars, prior/comparison callouts, contributor/`driver` callouts, floating Y labels, and point stems remain rejected. A top grid line is rejected because it reads as an unnecessary ceiling/bounding box. The gross Input/Output ratio is rejected because it does not explain cache-sensitive pricing; Cache hit rate and token composition do. An oversized Total-usage column containing three nested subcolumns is rejected because its geometry makes peer metrics look structurally unrelated and wastes horizontal space.
 - Implementation technology selected after the design gate: Ticket-scoped React/Vite/TypeScript visualizer copied from the required scaffold, using plain React state and CSS only. `motion`, Three.js, React Three Fiber, and Drei remain installed but intentionally unused.
 
 ## Visible Model
 
-- Initial view: A full-viewport Settings > Token Statistics product surface, Direction A by default, with monthly total, cost/status, coverage, daily trend, and compact controls only in the primary canvas.
-- Actors or objects to show: Settings navigation and manual resize handle; Analytics/Run-details tabs; compact product controls; monthly total and cost/status; a daily bucket line with point markers, labeled Y-axis, horizontal guides, and a date-ticked X-axis; secondary `Detailed usage` evidence.
+- Initial view: A full-viewport Settings > Token Statistics product surface, Direction A by default, with monthly total, cost/status, cache-aware token composition, cache hit rate, daily trend, and compact controls only in the primary canvas.
+- Actors or objects to show: Settings navigation and manual resize handle; Analytics/Run-details tabs; compact product controls; total, Uncached input, Cached input, Output, Estimated API cost, and Cache hit rate; a daily bucket line with point markers, labeled Y-axis, midpoint guide, and date-ticked X-axis; secondary `Detailed usage` evidence.
 - States to show: Partial coverage; full coverage; filters open; exact usage evidence open; Run details; constrained width.
 - Relationship or causal distinction: Separate clean Direction A/B URLs change density while the stripped priority and data truth remain fixed; product-native actions expose filter/evidence/Run-details state.
 - Trend truth rule: Each marker corresponds to one exact returned bucket. The connecting line supports trend perception but does not replace the exact bucket value or accessible text alternative. The axis scale is derived from the displayed fixture, metric switching changes the Y-axis unit, and no invented interpolation is used for accounting.
@@ -42,7 +42,7 @@
 - What text is necessary to name the model without repeating it? Product labels and truthful status copy only. Direction/tradeoff and mock-boundary text stays outside the rendered product in the review package.
 - How can the user pause, replay, reset, or understand the result without motion? States never auto-advance; refresh restores a deterministic clean product state, and separate URLs preserve each direction without hidden animation history.
 - Can a first-time observer follow the full motion sequence at the chosen teaching pace? Not applicable; no teaching motion is used.
-- What will demonstrate that the user understood the intended relationship? The reviewer can identify date on X, the selected Tokens/Cost unit on Y, and the daily trend without asking what the floating numbers or short vertical marks mean.
+- What will demonstrate that the user understood the intended relationship? The reviewer can identify the three token components, understand that Cache hit rate is cached input divided by total input, and read the open-top daily chart without asking about a ceiling line.
 
 ## Truthful Boundaries
 
@@ -61,4 +61,4 @@
 - [x] The same decision-relevant meaning is available without motion or 3D.
 - Status: `Ready to Build`
 - Remaining design concern: Canonical requirements still preserve dominant-contributor and prior-comparison behavior; RV-006 retains the user-directed Requirement Impact evidence until Requirements Engineering updates them. Final implementation must retain exact bucket/accounting truth and any secondary evidence that remains required.
-- Evidence for the decision: The user explicitly described the missing Y-axis as strange and called out the small vertical marks as confusing. Conventional axes improve chart literacy without changing the data contract or accounting truth.
+- Evidence for the decision: The user explicitly rejected the top ceiling line and the Input/Output ratio, and prioritized Uncached input, Cached input, Output, and Cache hit rate because caching affects cost. All requested fields already exist in the pinned analytics aggregate.

@@ -85,19 +85,22 @@ corepack pnpm validate:gap-010
 
 ## REQPKG-TSUI-001 Requirements Visualization
 
-Exploratory revision `RV-006` is isolated in the Product ticket worktree on
+User-confirmed exploratory revision `RV-007` is isolated in the Product ticket worktree on
 `prototype/reqpkg-tsui-001`; it is not integrated into the accepted baseline
 on `origin/personal`. Clean review URLs are:
 
 - `http://127.0.0.1:3262/?direction=focus`
 - `http://127.0.0.1:3262/?direction=dense`
 
-This revision keeps monthly usage, estimated cost, input/output composition,
+This revision keeps monthly usage, estimated cost, cache-aware token composition,
 and the point-marked daily Tokens/Cost line primary. The chart now has an
 explicit Tokens/Cost Y-axis and a date-ticked X-axis, with the confusing short
-vertical point guides removed. It also removes visible
+vertical point guides removed. Total tokens, Uncached input, Cached input,
+Output, Estimated API cost, and Cache hit rate use six equal columns. It also removes visible
 prior-period comparison, the standalone dominant-contributor callout, and all
 visible `driver` terminology. Exact runtime/model evidence remains secondary
-under `Detailed usage`. The result is classified `Requirement Impact` until
-Requirements Engineering records the user-directed removals in the canonical
-requirements.
+under `Detailed usage`. The user confirms the focused Analytics and lightly
+unified Run-details direction as final for implementation. The result remains a
+`Requirement Impact` only until Requirements Engineering records `DEC-007`,
+`DEC-008`, and the Final Prototype request; the temporary visualizer and its
+screenshots are not the normative final package.

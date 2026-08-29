@@ -1,17 +1,28 @@
 {
-  "generatedAt": "2026-08-29T16:38:03.824Z",
+  "generatedAt": "2026-08-29T16:47:52.687Z",
   "baseUrl": "http://127.0.0.1:3262",
-  "revision": "RV-006",
+  "revision": "RV-007",
   "checks": [
     {
       "id": "VAL-001",
-      "name": "Focused partial URL opens directly on the stripped product-only future-state surface",
+      "name": "Focused partial URL opens with six equal cache-aware summary columns",
       "pass": true,
-      "observed": null
+      "observed": {
+        "count": 6,
+        "widths": [
+          193.5,
+          193.5,
+          193.5,
+          193.5,
+          193.5,
+          193.5
+        ],
+        "spread": 0
+      }
     },
     {
       "id": "VAL-002",
-      "name": "Dense direction uses a separate clean URL with the same stripped truthful partial fixture",
+      "name": "Dense direction uses a separate clean URL with the same cache-aware truthful fixture",
       "pass": true,
       "observed": null
     },
@@ -23,7 +34,7 @@
     },
     {
       "id": "VAL-004",
-      "name": "Product-native filter disclosure keeps active context and one coherent result together",
+      "name": "Product-native filter disclosure keeps one coherent cache-aware result together",
       "pass": true,
       "observed": null
     },
@@ -115,29 +126,38 @@
     },
     {
       "id": "VAL-016",
-      "name": "Usage over time has explicit X/Y axes, 29 daily markers, and no bars or unexplained point stems",
+      "name": "Usage over time is an open-top coordinate plot with metric-aware Y-axis and no bars or point stems",
       "pass": true,
       "observed": {
-        "points": 29,
-        "lines": 1,
-        "bars": 0,
-        "stems": 0,
-        "yAxisTitle": "Tokens",
-        "yLabels": [
-          "10K",
-          "5K",
-          "0"
-        ],
-        "xLabels": [
-          "Aug 1",
-          "Aug 8",
-          "Aug 15",
-          "Aug 22",
-          "Aug 29"
-        ],
-        "plotBorderLeft": "solid",
-        "plotBorderBottom": "solid",
-        "label": "Token usage across 29 daily UTC buckets. X-axis: date in UTC. Y-axis: tokens. Aug 1: 3000 tokens, Aug 2: 4000 tokens, Aug 3: 0 tokens, Aug 4: 6000 tokens, Aug 5: 7000 tokens, Aug 6: 5000 tokens, Aug 7: 4000 tokens, Aug 8: 8000 tokens, Aug 9: 5000 tokens, Aug 10: 0 tokens, Aug 11: 7000 tokens, Aug 12: 4000 tokens, Aug 13: 6000 tokens, Aug 14: 9000 tokens, Aug 15: 5000 tokens, Aug 16: 3000 tokens, Aug 17: 0 tokens, Aug 18: 4000 tokens, Aug 19: 8000 tokens, Aug 20: 7000 tokens, Aug 21: 5000 tokens, Aug 22: 6000 tokens, Aug 23: 4000 tokens, Aug 24: 10000 tokens, Aug 25: 5000 tokens, Aug 26: 3000 tokens, Aug 27: 6000 tokens, Aug 28: 8000 tokens, Aug 29: 10000 tokens"
+        "tokenAxis": {
+          "points": 29,
+          "lines": 1,
+          "bars": 0,
+          "stems": 0,
+          "yAxisTitle": "Tokens",
+          "yLabels": [
+            "10K",
+            "5K",
+            "0"
+          ],
+          "xLabels": [
+            "Aug 1",
+            "Aug 8",
+            "Aug 15",
+            "Aug 22",
+            "Aug 29"
+          ],
+          "plotBorderLeft": "solid",
+          "plotBorderBottom": "solid",
+          "plotBorderTop": "none",
+          "plotBackgroundImage": "none",
+          "midpointGuide": "\"\"",
+          "label": "Token usage across 29 daily UTC buckets. X-axis: date in UTC. Y-axis: tokens. Aug 1: 3000 tokens, Aug 2: 4000 tokens, Aug 3: 0 tokens, Aug 4: 6000 tokens, Aug 5: 7000 tokens, Aug 6: 5000 tokens, Aug 7: 4000 tokens, Aug 8: 8000 tokens, Aug 9: 5000 tokens, Aug 10: 0 tokens, Aug 11: 7000 tokens, Aug 12: 4000 tokens, Aug 13: 6000 tokens, Aug 14: 9000 tokens, Aug 15: 5000 tokens, Aug 16: 3000 tokens, Aug 17: 0 tokens, Aug 18: 4000 tokens, Aug 19: 8000 tokens, Aug 20: 7000 tokens, Aug 21: 5000 tokens, Aug 22: 6000 tokens, Aug 23: 4000 tokens, Aug 24: 10000 tokens, Aug 25: 5000 tokens, Aug 26: 3000 tokens, Aug 27: 6000 tokens, Aug 28: 8000 tokens, Aug 29: 10000 tokens"
+        },
+        "costAxis": {
+          "title": "Cost (USD)",
+          "label": "Estimated cost usage across 29 daily UTC buckets. X-axis: date in UTC. Y-axis: estimated cost in USD. Aug 1: $0.0172, Aug 2: $0.0229, Aug 3: $0.0000, Aug 4: $0.0343, Aug 5: $0.0401, Aug 6: $0.0286, Aug 7: $0.0229, Aug 8: $0.0458, Aug 9: $0.0286, Aug 10: $0.0000, Aug 11: $0.0401, Aug 12: $0.0229, Aug 13: $0.0343, Aug 14: $0.0515, Aug 15: $0.0286, Aug 16: $0.0172, Aug 17: $0.0000, Aug 18: $0.0229, Aug 19: $0.0458, Aug 20: $0.0401, Aug 21: $0.0286, Aug 22: $0.0343, Aug 23: $0.0229, Aug 24: $0.0572, Aug 25: $0.0286, Aug 26: $0.0172, Aug 27: $0.0343, Aug 28: $0.0458, Aug 29: $0.0572"
+        }
       }
     },
     {

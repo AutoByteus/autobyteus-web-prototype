@@ -3,9 +3,9 @@
 - Package / ticket ID: `REQPKG-TSUI-001`
 - Finding ID: `RI-001`
 - Date: 2026-08-29
-- Current visualization revision: `RV-006`
+- Current visualization revision: `RV-007`
 - Classification: `Requirement Impact`
-- Status: User decision is represented in `RV-005`; Requirements Engineering must now revise the conflicting canonical requirements.
+- Status: RER-006/RER-007 reconciled the earlier removals and axes; the user's final `DEC-007`/`DEC-008` decisions and Final Prototype request now require canonical reconciliation.
 
 ## User Resolution Received And Represented
 
@@ -26,6 +26,18 @@ owned by Requirements Engineering.
 daily line and removes the confusing short vertical point guides. This uses the
 same existing daily buckets and changes neither the Requirement Impact nor the
 data contract.
+
+`RV-007` resolves the two remaining focused decisions in the rendered page:
+
+1. Use the user-facing label `Uncached input` for
+   `selectedAggregate.standardInputTokens`.
+2. Keep secondary `Detailed usage` and its Runtime/Provider/Model grouping
+   control visible below the trend rather than placing them behind deeper
+   disclosure.
+
+The user also confirms the focused Analytics direction and light Run-details
+unification as the final design to implement, and requests a separate Final
+Prototype package with `ui-ux-spec.md` and normative screenshots.
 
 ## Exact User Feedback And Meaning
 
@@ -112,16 +124,19 @@ invent `0%` when cache reporting is unavailable.
 6. Preserve exact CSV/accounting evidence and all current truth states even if
    identity breakdown is no longer on the first canvas.
 
-## Remaining Decisions After `RV-005`
+## Final Decisions Requiring Canonical Recording
 
-1. Which input label is canonical: `Uncached input`, `Standard input`, or a
-   separately defined derived value?
-2. Must Runtime/Provider/Model grouping remain user-facing, and if so, under
-   what intuitive secondary label?
-3. Should the remaining `Detailed usage` table stay visible below the trend or
-   move behind another explicit disclosure?
+1. `DEC-007`: `Uncached input` is the selected visible label for the existing
+   standard-input field.
+2. `DEC-008`: `Detailed usage` remains visible below the daily trend; the
+   Runtime/Provider/Model grouping control remains visible in that secondary
+   section.
+3. The focused controls/hierarchy and light Run-details unification shown at
+   `http://127.0.0.1:3262/?direction=focus` are the selected final direction.
+4. The user explicitly requests Final Prototype mode and the normal final
+   package: runnable prototype, canonical Product `ui-ux-spec.md`, normative
+   screenshots, and Requirements Engineering handoff.
 
-Requirements Engineering must record the user-directed removal of prior
-comparison and dominant-contributor presentation in the canonical requirements
-before implementation work treats `RV-005` as authoritative. Product
-Prototyper will not silently rewrite those requirements.
+Requirements Engineering must record these decisions and return an exact Final
+Prototype request before Product turns the temporary exploratory visualizer
+into the normative implementation package.

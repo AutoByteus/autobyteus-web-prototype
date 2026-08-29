@@ -2,7 +2,7 @@
 
 - Package / ticket ID: `REQPKG-TSUI-001`
 - Audit revision: `FA-001`
-- Visualization revision assessed: `RV-006`
+- Visualization revision assessed: `RV-007`
 - Audit date: 2026-08-29
 - Source authority: `origin/personal` at `9d0fd7c570d58da1af2c7a40279327c8a20a8093`
 - Classification: `Achievable with the current source-pin data and GraphQL contracts after one unsupported illustrative column was removed`
@@ -15,7 +15,7 @@ or historical backfill. Its visible facts are either already returned by the
 current analytics and Run-details queries or are deterministic client-side
 formatting/ranking calculations already present in the source frontend.
 
-This conclusion is about **data and contract feasibility**. `RV-006` remains an
+This conclusion is about **data and contract feasibility**. `RV-007` remains an
 exploratory Requirements Visualization, not a complete implementation-ready
 prototype. A final prototype/implementation must still exercise every existing
 loading, error, empty, coverage, pricing, local, mixed-currency, comparison,
@@ -28,7 +28,7 @@ visualizer's fixed fixture.
 | --- | --- | --- |
 | UTC preset/custom range and applied period | `TokenUsageAnalyticsInputGraphql`; `appliedRange`; `TokenUsageAnalyticsRangePolicy`; `stores/tokenUsageAnalytics.ts` | Reuse current input, validation, and fixed UTC conversion; layout may change. |
 | Runtime/provider/model filters and active context | `filterOptions`, `appliedFilters`, current analytics store selection | Populate and summarize the current query options; no new filter dimension. |
-| Total, input, output, and estimated cost | `selectedAggregate` and `TokenUsageCostSummaryAggregateFields` | Format existing exact fields; never recompute accounting from rounded chart values. |
+| Total, Uncached input, Cached input, Output, Cache hit rate, and estimated cost | `selectedAggregate.totalTokens`, `standardInputTokens`, `cacheReadInputTokens`, `outputTokens`, `cacheReadInputTokenRate`, `estimatedApiTotalCost`, and current quality fields | Format the existing exact fields into six equal summary columns. `Uncached input` uses the existing frontend label/semantics for `standardInputTokens`; never derive accounting from rounded display values. A null/unreported cache rate is never rendered as 0%. |
 | Coverage and tracking start | `coverage.status`, `coverage.coverageStart` | Restyle current FULL/PARTIAL/UNAVAILABLE truth; never infer pre-coverage zero. |
 | Price quality, currency, local/no-bill, and missing dimensions | `selectedCostQuality`, row/bucket `costQuality`, aggregate `apiCostStatus` | Preserve current nullable/status-aware rendering. |
 | Usage trend and axes | `trendBuckets`, bucket aggregate/cost quality | Recompose current daily bucket data as a line with explicit points. X labels come from bucket dates; the Y scale/unit comes from the selected metric and displayed values. No new field is required; exact accessible bucket evidence remains required. |

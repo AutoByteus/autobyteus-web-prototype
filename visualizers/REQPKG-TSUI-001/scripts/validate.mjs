@@ -11,8 +11,8 @@ await mkdir(visualRoot, { recursive: true })
 await mkdir(evidenceRoot, { recursive: true })
 
 const browser = await chromium.launch({ headless: true, executablePath: '/usr/bin/chromium', args: ['--no-sandbox'] })
-const result = { generatedAt: new Date().toISOString(), baseUrl, revision: 'RV-006', checks: [], screenshots: [], browserErrors: [] }
-const forbiddenProductLanguage = ['Dominant driver', 'Usage drivers', 'Leading drivers', 'Prior period', 'No comparable prior period', 'Prior period unavailable', '+28.2% from prior period', '+28.2%']
+const result = { generatedAt: new Date().toISOString(), baseUrl, revision: 'RV-007', checks: [], screenshots: [], browserErrors: [] }
+const forbiddenProductLanguage = ['Dominant driver', 'Usage drivers', 'Leading drivers', 'Prior period', 'No comparable prior period', 'Prior period unavailable', '+28.2% from prior period', '+28.2%', 'Input / output']
 
 const check = (id, name, pass, observed = null) => {
   result.checks.push({ id, name, pass, observed })
@@ -43,12 +43,16 @@ try {
   const { page } = desktop
   let body = await page.locator('body').innerText()
   const forbiddenReviewChrome = ['Requirements visualization', 'Choose how Token Statistics should prioritize evidence', 'Visual direction', 'Journey state', 'Reset review']
-  check('VAL-001', 'Focused partial URL opens directly on the stripped product-only future-state surface', body.includes('Partial coverage') && body.includes('152K') && body.includes('$0.87') && body.includes('Usage over time') && body.includes('Detailed usage') && forbiddenReviewChrome.every(text => !body.includes(text)) && forbiddenProductLanguage.every(text => !body.includes(text)))
+  const focusedSummary = await page.evaluate(() => {
+    const widths = [...document.querySelectorAll('.even-summary .summary-metric')].map(node => Math.round(node.getBoundingClientRect().width * 10) / 10)
+    return { count: widths.length, widths, spread: Math.max(...widths) - Math.min(...widths) }
+  })
+  check('VAL-001', 'Focused partial URL opens with six equal cache-aware summary columns', body.includes('Partial coverage') && body.includes('152K') && body.includes('$0.87') && body.toLowerCase().includes('uncached input') && body.includes('93.74K') && body.toLowerCase().includes('cached input') && body.includes('21.26K') && body.toLowerCase().includes('output') && body.includes('37K') && body.toLowerCase().includes('cache hit rate') && body.includes('18.5%') && body.includes('Usage over time') && body.includes('Detailed usage') && focusedSummary.count === 6 && focusedSummary.spread <= 1 && forbiddenReviewChrome.every(text => !body.includes(text)) && forbiddenProductLanguage.every(text => !body.includes(text)), focusedSummary)
   await shot(page, 'VIS-001', 'direction-a-partial-desktop')
 
   await navigate(page, '/?direction=dense')
   body = await page.locator('body').innerText()
-  check('VAL-002', 'Dense direction uses a separate clean URL with the same stripped truthful partial fixture', body.includes('Partial coverage since Aug 11') && body.includes('152K') && body.includes('$0.87') && body.includes('Usage over time') && body.includes('Detailed usage') && forbiddenReviewChrome.every(text => !body.includes(text)) && forbiddenProductLanguage.every(text => !body.includes(text)))
+  check('VAL-002', 'Dense direction uses a separate clean URL with the same cache-aware truthful fixture', body.includes('Partial coverage since Aug 11') && body.includes('152K') && body.includes('$0.87') && body.toLowerCase().includes('uncached input') && body.toLowerCase().includes('cached input') && body.toLowerCase().includes('output') && body.toLowerCase().includes('cache hit rate') && body.includes('18.5%') && body.includes('Usage over time') && body.includes('Detailed usage') && forbiddenReviewChrome.every(text => !body.includes(text)) && forbiddenProductLanguage.every(text => !body.includes(text)))
   await shot(page, 'VIS-002', 'direction-b-partial-desktop')
 
   await navigate(page, '/?direction=focus')
@@ -61,7 +65,7 @@ try {
   await page.getByRole('button', { name: /Filters/ }).click()
   await page.getByRole('button', { name: 'Apply filters' }).click()
   body = await page.locator('body').innerText()
-  check('VAL-004', 'Product-native filter disclosure keeps active context and one coherent result together', body.includes('Filter current result') && body.includes('Runtime: Codex') && body.includes('80K') && body.includes('Apply filters'))
+  check('VAL-004', 'Product-native filter disclosure keeps one coherent cache-aware result together', body.includes('Filter current result') && body.includes('Runtime: Codex') && body.includes('80K') && body.includes('49.92K') && body.includes('11.28K') && body.includes('18.4%') && body.includes('Apply filters'))
   await shot(page, 'VIS-003', 'direction-a-filters-open-desktop')
 
   await navigate(page, '/?direction=dense')
@@ -156,9 +160,17 @@ try {
     xLabels: [...document.querySelectorAll('.line-x-labels span')].map(node => node.textContent?.trim()),
     plotBorderLeft: getComputedStyle(document.querySelector('.line-plot')).borderLeftStyle,
     plotBorderBottom: getComputedStyle(document.querySelector('.line-plot')).borderBottomStyle,
+    plotBorderTop: getComputedStyle(document.querySelector('.line-plot')).borderTopStyle,
+    plotBackgroundImage: getComputedStyle(document.querySelector('.line-plot')).backgroundImage,
+    midpointGuide: getComputedStyle(document.querySelector('.line-plot'), '::before').content,
     label: document.querySelector('.line-chart-shell')?.getAttribute('aria-label') ?? '',
   }))
-  check('VAL-016', 'Usage over time has explicit X/Y axes, 29 daily markers, and no bars or unexplained point stems', trendEvidence.points === 29 && trendEvidence.lines === 1 && trendEvidence.bars === 0 && trendEvidence.stems === 0 && trendEvidence.yAxisTitle === 'Tokens' && trendEvidence.yLabels.length === 3 && trendEvidence.xLabels.length === 5 && trendEvidence.plotBorderLeft === 'solid' && trendEvidence.plotBorderBottom === 'solid' && trendEvidence.label.includes('X-axis: date in UTC') && trendEvidence.label.includes('Y-axis: tokens'), trendEvidence)
+  await trend.page.getByRole('radio', { name: 'Cost' }).click()
+  const costAxis = await trend.page.evaluate(() => ({
+    title: document.querySelector('.chart-y-axis > strong')?.textContent?.trim() ?? '',
+    label: document.querySelector('.line-chart-shell')?.getAttribute('aria-label') ?? '',
+  }))
+  check('VAL-016', 'Usage over time is an open-top coordinate plot with metric-aware Y-axis and no bars or point stems', trendEvidence.points === 29 && trendEvidence.lines === 1 && trendEvidence.bars === 0 && trendEvidence.stems === 0 && trendEvidence.yAxisTitle === 'Tokens' && trendEvidence.yLabels.length === 3 && trendEvidence.xLabels.length === 5 && trendEvidence.plotBorderLeft === 'solid' && trendEvidence.plotBorderBottom === 'solid' && trendEvidence.plotBorderTop === 'none' && trendEvidence.plotBackgroundImage === 'none' && trendEvidence.midpointGuide === '""' && trendEvidence.label.includes('X-axis: date in UTC') && trendEvidence.label.includes('Y-axis: tokens') && costAxis.title === 'Cost (USD)' && costAxis.label.includes('Y-axis: estimated cost in USD'), { tokenAxis: trendEvidence, costAxis })
   await trend.context.close()
 
   const languageAudit = await contextFor({ width: 1440, height: 1000 })

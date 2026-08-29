@@ -174,6 +174,9 @@ function Analytics(props: AnalyticsProps) {
   const total = props.filterApplied ? "80K" : "152K";
   const totalExact = props.filterApplied ? "80,000" : "152,000";
   const cost = props.filterApplied ? "$0.42" : props.full ? "$1.17" : "$0.87";
+  const composition = props.filterApplied
+    ? { uncached: "49.92K", cached: "11.28K", output: "18.8K", input: "61.2K", cacheRate: "18.4%" }
+    : { uncached: "93.74K", cached: "21.26K", output: "37K", input: "115K", cacheRate: "18.5%" };
   const usageData = props.filterApplied ? usageRows.slice(0, 1) : usageRows;
 
   if (props.direction === "dense") {
@@ -183,10 +186,13 @@ function Analytics(props: AnalyticsProps) {
         <span><span className="status-dot" /> {props.full ? "Full analytics coverage" : "Partial coverage since Aug 11"}</span>
         <span>{props.full ? "Complete pricing" : "Some usage is unpriced"}</span>
       </div>
-      <section className="metric-ledger" aria-label="Usage summary">
-        <div className="metric-primary"><span>Total tokens</span><strong>{total}</strong><small>{totalExact} exact · 115K input / 37K output</small></div>
+      <section className="metric-ledger composition-ledger" aria-label="Usage and cache summary">
+        <div className="metric-primary"><span>Total tokens</span><strong>{total}</strong><small>{totalExact} exact</small></div>
+        <div><span>Uncached input</span><strong>{composition.uncached}</strong><small>Standard-rate input</small></div>
+        <div><span>Cached input</span><strong>{composition.cached}</strong><small>Cache reads</small></div>
+        <div><span>Output</span><strong>{composition.output}</strong><small>Generated tokens</small></div>
         <div><span>Estimated API cost</span><strong>{cost}</strong><small>{props.full ? "Complete estimate" : "Partial estimate"}</small></div>
-        <div><span>Input / output</span><strong>{props.filterApplied ? "61.2K / 18.8K" : "115K / 37K"}</strong><small>Exact token composition</small></div>
+        <div><span>Cache hit rate</span><strong>{composition.cacheRate}</strong><small>{composition.cached} of {composition.input} input</small></div>
       </section>
       <div className="dense-analysis-grid essentials-only">
         <section className="plain-section trend-section"><SectionHeading title="Usage over time" meta="Aug 1–29 · UTC" /><TrendChart compact filtered={props.filterApplied} metric={props.metric} full={props.full} /></section>
@@ -199,17 +205,14 @@ function Analytics(props: AnalyticsProps) {
   return <div className="analytics focus-layout">
     <FocusControls {...props} />
     {props.filtersVisible && <FilterPanel applied={props.filterApplied} setApplied={props.setFilterApplied} />}
-    <section className="hero-summary" aria-label="Usage overview">
-      <div className="hero-total">
-        <div className="status-line"><span className={`coverage-badge ${props.full ? "full" : "partial"}`}><span className="status-dot" /> {props.full ? "Full coverage" : "Partial coverage"}</span><span>Aug 1–29 · UTC</span></div>
-        <p>Total usage</p>
-        <div className="hero-value"><strong>{total}</strong><span>tokens</span></div>
-        <p className="hero-exact">{totalExact} exact · {props.filterApplied ? "61.2K input · 18.8K output" : "115K input · 37K output"}</p>
-      </div>
-      <div className="hero-secondary">
-        <div><span>Estimated API cost</span><strong>{cost}</strong><small>{props.full ? "Complete estimate" : "Partial · some usage unpriced"}</small></div>
-        <div><span>Input / output</span><strong>{props.filterApplied ? "61.2K / 18.8K" : "115K / 37K"}</strong><small>Exact token composition</small></div>
-      </div>
+    <section className="hero-summary even-summary" aria-label="Usage and cache summary">
+      <div className="summary-context"><span className={`coverage-badge ${props.full ? "full" : "partial"}`}><span className="status-dot" /> {props.full ? "Full coverage" : "Partial coverage"}</span><span>Aug 1–29 · UTC</span></div>
+      <div className="summary-metric summary-primary"><span>Total tokens</span><strong>{total}</strong><small>{totalExact} exact</small></div>
+      <div className="summary-metric"><span>Uncached input</span><strong>{composition.uncached}</strong><small>Standard-rate input</small></div>
+      <div className="summary-metric"><span>Cached input</span><strong>{composition.cached}</strong><small>Cache reads</small></div>
+      <div className="summary-metric"><span>Output</span><strong>{composition.output}</strong><small>Generated tokens</small></div>
+      <div className="summary-metric"><span>Estimated API cost</span><strong>{cost}</strong><small>{props.full ? "Complete estimate" : "Partial · some usage unpriced"}</small></div>
+      <div className="summary-metric"><span>Cache hit rate</span><strong>{composition.cacheRate}</strong><small>{composition.cached} of {composition.input} input</small></div>
     </section>
     <div className="focus-analysis-grid essentials-only">
       <section className="surface-section trend-section"><SectionHeading title="Usage over time" meta="Daily points · exact buckets remain available" /><TrendChart filtered={props.filterApplied} metric={props.metric} full={props.full} /></section>
