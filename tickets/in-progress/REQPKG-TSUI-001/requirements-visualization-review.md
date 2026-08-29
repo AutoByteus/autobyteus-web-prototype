@@ -2,7 +2,7 @@
 
 - Package / ticket ID: `REQPKG-TSUI-001`
 - Visualization revision: `RV-003`
-- Product revision containing the current visualizer and evidence: Pending `RV-003` commit.
+- Product revision containing the current visualizer, audit, and evidence: `82505829cb62937f5acd479ce17668a66178a7a0`
 - Review URLs:
   - Direction A — Focused hierarchy: `http://127.0.0.1:3262/?direction=focus`
   - Direction B — Dense explorer: `http://127.0.0.1:3262/?direction=dense`
