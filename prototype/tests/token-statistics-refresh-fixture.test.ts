@@ -10,10 +10,35 @@ describe('Token Statistics refresh fixtures', () => {
     expect(populated.breakdownRows).toHaveLength(3)
     expect(populated.selectedAggregate.totalTokens).toBe(152_000)
     expect(populated.selectedCostQuality.kind).toBe('COMPLETE')
+    expect(populated.trendBuckets).toHaveLength(29)
 
     const filtered = createTokenUsageAnalyticsResult({ runtimeKind: 'codex_app_server' }, 'populated')
     expect(filtered.breakdownRows).toHaveLength(1)
     expect(filtered.selectedAggregate.totalTokens).toBe(80_000)
+  })
+
+  it('preserves truthful cache reporting states without inventing zero rates', () => {
+    expect(createTokenUsageAnalyticsResult({}, 'populated').selectedAggregate).toEqual(expect.objectContaining({
+      cacheState: 'positive',
+      cacheReadInputTokenRate: expect.any(Number),
+    }))
+    expect(createTokenUsageAnalyticsResult({}, 'token_cache_zero').selectedAggregate).toEqual(expect.objectContaining({
+      cacheState: 'zero_reported',
+      cacheReadInputTokenRate: 0,
+      cacheReadInputTokens: 0,
+    }))
+    expect(createTokenUsageAnalyticsResult({}, 'token_cache_not_reported').selectedAggregate).toEqual(expect.objectContaining({
+      cacheState: 'not_reported',
+      cacheReadInputTokenRate: null,
+    }))
+    expect(createTokenUsageAnalyticsResult({}, 'token_local').selectedAggregate).toEqual(expect.objectContaining({
+      cacheState: 'unsupported_or_local',
+      cacheReadInputTokenRate: null,
+    }))
+    expect(createTokenUsageAnalyticsResult({}, 'token_cache_unknown').selectedAggregate).toEqual(expect.objectContaining({
+      cacheState: 'unknown',
+      cacheReadInputTokenRate: null,
+    }))
   })
 
   it('represents empty, unavailable, partial, mixed-currency, and local-only states', () => {

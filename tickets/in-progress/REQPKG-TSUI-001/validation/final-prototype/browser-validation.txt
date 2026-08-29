@@ -1,0 +1,19 @@
+PASS FPV-001 Desktop summary has six equal peers in the approved order
+PASS FPV-002 Approved hierarchy contains no comparison, contributor, driver, ratio, or export presentation
+PASS FPV-003 Monthly trend is one open-top 29-point line with axes, five UTC ticks, and one midpoint guide
+PASS FPV-004 Trend exposes all daily buckets in its accessible name
+PASS FPV-005 Uncached-input meaning and exact cache-write evidence are available
+PASS FPV-006 Tokens/Cost switches the same daily chart to authoritative USD units
+PASS FPV-007 Focused filters apply one coherent result and active context
+PASS FPV-008 Detailed usage stays visible, changes grouping, and discloses exact accounting
+PASS FPV-009 Settings navigation remains wholly manual and keyboard-resizable
+PASS FPV-010 Run details retains creation-time selection and lifetime-total meaning in the unified shell
+PASS FPV-011 Run-details task hierarchy, expansion, sorting, and cost disclosure remain operable
+PASS FPV-012 Run-details Model grouping remains available without an unsupported Runs count
+PASS FPV-013 Positive, zero-reported, not-reported, unsupported/local, and unknown cache states remain truthful
+PASS FPV-014 Loading, error, empty, uncovered, mixed-currency, and local states remain intentional and truthful
+PASS FPV-015 Narrow layout contains page width, preserves equal peers, and keeps readable axis meaning
+PASS FPV-016 Simplified Chinese retains the final hierarchy and controls
+PASS FPV-017 Filter disclosure restores focus and all retained controls have keyboard names
+PASS FPV-018 CSV/export is absent from DOM, accessibility actions, client preparation path, files, and requests
+PASS FPV-019 No unexpected browser errors occurred across the final journey matrix

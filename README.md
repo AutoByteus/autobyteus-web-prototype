@@ -3,14 +3,16 @@
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
 commit `8ef282ba77705180d985e7000d801f0e0068cdc1`.
 
-Ticket `REQPKG-TSUI-001` contains a Product-review candidate refresh of only
-**Settings > Token Statistics** from the explicitly selected `origin/personal`
-authority at `9d0fd7c570d58da1af2c7a40279327c8a20a8093`. It preserves the accepted
-baseline outside that surface and is not an accepted Product commit yet. See
-[prototype-bootstrap-report.md](prototype-bootstrap-report.md) and
-[`evidence/token-statistics-refresh`](evidence/token-statistics-refresh/).
+Ticket `REQPKG-TSUI-001` now contains the separate **Final Prototype** review
+candidate for **Settings > Token Statistics**, built on the accepted exact
+baseline from `origin/personal` at
+`9d0fd7c570d58da1af2c7a40279327c8a20a8093`. It preserves the accepted
+baseline outside that surface. The final candidate is awaiting explicit user
+confirmation and is not integrated into the canonical prototype branch yet.
 
-Status: **Approved current-state baseline, including the user-confirmed RER-009 `PP-GAP-009`/`PP-GAP-010` parity correction (`PPA-002`).** The package contains no future-state redesign.
+Status: **Final Token Statistics review candidate on
+`prototype/reqpkg-tsui-001`; current-state baseline remains approved and
+integrated through `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`.**
 
 Canonical ownership: independent sibling repository
 `https://github.com/AutoByteus/autobyteus-web-prototype.git`, checked out at
@@ -35,8 +37,9 @@ corepack pnpm dev --port 3210
 Open <http://127.0.0.1:3210>. See [prototype-runbook.md](prototype-runbook.md)
 for production-preview and scenario commands.
 
-For the Token Statistics candidate, open
-<http://127.0.0.1:3210/settings?section=token-usage>. Select deterministic
+For the Token Statistics final candidate, open
+<http://127.0.0.1:3261/settings?section=token-usage> during the active Product
+review, or use the documented default `3210` port after starting it yourself. Select deterministic
 visible states with the `autobyteus.prototype.scenario` local-storage key; the
 focused catalog and validation procedure are documented in the runbook.
 
@@ -83,24 +86,26 @@ corepack pnpm validate:gap-010
 
 `validate:gap-010` preserves `JRN-050-A`–`D` and terminally enforces `JRN-050-E`; all five source-versus-prototype checkpoints must pass. `validate:final-package` makes that journey evidence, `PPA-002`, both user-confirmation references, and `VIS-001`–`VIS-017` part of terminal completion.
 
-## REQPKG-TSUI-001 Requirements Visualization
+## REQPKG-TSUI-001 Final Prototype
 
-User-confirmed exploratory revision `RV-007` is isolated in the Product ticket worktree on
-`prototype/reqpkg-tsui-001`; it is not integrated into the accepted baseline
-on `origin/personal`. Clean review URLs are:
+The final runnable candidate is at the repository root in the Product ticket
+worktree on `prototype/reqpkg-tsui-001`. The active review URL is:
 
-- `http://127.0.0.1:3262/?direction=focus`
-- `http://127.0.0.1:3262/?direction=dense`
+- `http://127.0.0.1:3261/settings?section=token-usage`
 
-This revision keeps monthly usage, estimated cost, cache-aware token composition,
-and the point-marked daily Tokens/Cost line primary. The chart now has an
-explicit Tokens/Cost Y-axis and a date-ticked X-axis, with the confusing short
-vertical point guides removed. Total tokens, Uncached input, Cached input,
-Output, Estimated API cost, and Cache hit rate use six equal columns. It also removes visible
-prior-period comparison, the standalone dominant-contributor callout, and all
-visible `driver` terminology. Exact runtime/model evidence remains secondary
-under `Detailed usage`. The user confirms the focused Analytics and lightly
-unified Run-details direction as final for implementation. The result remains a
-`Requirement Impact` only until Requirements Engineering records `DEC-007`,
-`DEC-008`, and the Final Prototype request; the temporary visualizer and its
-screenshots are not the normative final package.
+The candidate implements RER-009: six equal cache-aware summary columns, the
+open-top 29-point daily Tokens/Cost line, focused range/filter/metric controls,
+visible secondary `Detailed usage`, and lightly unified Run details. It renders
+no prior-period, contributor/driver, Input/Output-ratio, or CSV-export UI and
+contains no supported CSV preparation/download path. Exploratory RV-007 remains
+historical decision evidence only; review screenshots under the ticket's
+`review-evidence/` folder are non-normative until the user confirms this actual
+final runnable and Product captures the final `VIS-*` references.
+
+Review-package artifacts:
+
+- [Final Prototype ticket](tickets/in-progress/REQPKG-TSUI-001/prototype-ticket.md)
+- [Draft final UI/UX specification](tickets/in-progress/REQPKG-TSUI-001/ui-ux-spec.md)
+- [Behavior matrix](tickets/in-progress/REQPKG-TSUI-001/ui-behavior-test-matrix.md)
+- [Ticket runbook](tickets/in-progress/REQPKG-TSUI-001/prototype-runbook.md)
+- [Non-normative review screenshots](tickets/in-progress/REQPKG-TSUI-001/review-evidence/final-prototype-review)

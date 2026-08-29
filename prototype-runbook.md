@@ -1,13 +1,14 @@
 # Prototype Runbook
 
-## REQPKG-TSUI-001 Token Statistics Refresh Candidate
+## REQPKG-TSUI-001 Token Statistics Final Prototype Candidate
 
-This ticket-scoped working tree refreshes only **Settings > Token Statistics**
-from `origin/personal` at exact source pin
-`9d0fd7c570d58da1af2c7a40279327c8a20a8093`. It intentionally does not use the
-Requirements commit `1b5c401e8c2ed7af7630a840e7294541cbf7ad6f` as current-experience authority.
-The candidate is awaiting Product Prototyper acceptance and commit; the
-approved project-wide baseline information below remains historical context.
+This ticket-scoped worktree contains the RER-009 **Final Prototype** for
+**Settings > Token Statistics**, built on the accepted refresh from
+`origin/personal` at exact source pin
+`9d0fd7c570d58da1af2c7a40279327c8a20a8093`. The source repository remains
+separate and read-only. The candidate is awaiting explicit user confirmation
+of the actual final runnable; the approved project-wide baseline information
+below remains historical context.
 
 Run the candidate independently:
 
@@ -17,8 +18,9 @@ corepack pnpm install --ignore-workspace --frozen-lockfile
 corepack pnpm dev --port 3210
 ```
 
-Review <http://127.0.0.1:3210/settings?section=token-usage>. Choose a focused
-fixture in the browser console and reload:
+Review <http://127.0.0.1:3210/settings?section=token-usage>, or use the active
+ticket-owned review URL <http://127.0.0.1:3261/settings?section=token-usage>.
+Choose a focused fixture in the browser console and reload:
 
 ```js
 localStorage.setItem('autobyteus.prototype.scenario', 'token_partial')
@@ -26,8 +28,9 @@ location.assign('/settings?section=token-usage')
 ```
 
 Available focused values are `populated`, `token_empty`, `token_partial`,
-`token_unavailable`, `token_mixed_currency`, `token_local`, `loading`, and
-`error`. Reset with:
+`token_unavailable`, `token_mixed_currency`, `token_local`,
+`token_cache_zero`, `token_cache_not_reported`, `token_cache_unknown`,
+`loading`, and `error`. Reset with:
 
 ```js
 localStorage.removeItem('autobyteus.prototype.scenario')
@@ -42,7 +45,13 @@ corepack pnpm lint
 corepack pnpm test
 corepack pnpm validate:boundaries
 NUXT_IGNORE_LOCK=1 corepack pnpm build
+corepack pnpm validate:token-statistics-final
 ```
+
+The final browser validator passes 19/19 checks, including the approved six
+equal summary peers, open-top 29-point line, filters and exact evidence,
+Run-details semantics, truthful cache/state matrix, responsive/localized
+behavior, accessibility/focus, and negative CSV/export assertions.
 
 The source-versus-prototype validator requires the controlled source observer,
 an exact temporary archive of the source pin, and both Nuxt dev servers. The

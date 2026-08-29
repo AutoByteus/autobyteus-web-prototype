@@ -16,17 +16,21 @@ Electron contexts install `window.electronAPI` as a deterministic browser-side h
 
 ## Token Statistics Refresh Scenarios
 
-These focused scenarios drive the current source-pin presentation under
-`/settings?section=token-usage` with local, resettable state:
+These focused scenarios drive the accepted baseline plus the RER-009 Final
+Prototype presentation under `/settings?section=token-usage` with local,
+resettable state:
 
 | Scenario | Visible purpose |
 | --- | --- |
-| `populated` | Full coverage, comparable prior period, filters, trend/composition charts, breakdown table, and populated Run details |
+| `populated` | Populated Analytics with six cache-aware summary peers, the 29-point daily line, focused filters, visible Detailed usage, and populated Run details |
 | `token_empty` | Covered date range with no usage and explicit empty Run details |
 | `token_partial` | Partial historical coverage and partial API-pricing quality |
 | `token_unavailable` | Selected range predates usage coverage |
 | `token_mixed_currency` | Cost view with non-comparable currencies |
-| `token_local` | Local runtime with no API bill |
+| `token_local` | Local runtime with no API bill and unsupported cache-rate reporting |
+| `token_cache_zero` | Authoritative zero-reported cache hit rate |
+| `token_cache_not_reported` | Cache rate was not reported; no invented zero percentage |
+| `token_cache_unknown` | Cache-rate state is unknown; no invented zero percentage |
 | `loading` | Analytics loading skeleton |
 | `error` | Retryable analytics and Run details errors |
 
@@ -35,6 +39,10 @@ Select one with
 reload. Remove that key to reset to `populated`. The records, dates, token
 counts, prices, providers, models, tasks, Team members, and error are synthetic;
 they exist only to expose the exact source UI states and transitions.
+
+The Final Prototype intentionally contains no visible prior-period comparison,
+standalone contributor or `driver` presentation, Input/Output ratio, Export CSV
+control, CSV preparation/download path, or replacement export workflow.
 
 ## Catalog, Access, And Recovery Scenarios
 

@@ -234,6 +234,9 @@ export const createTokenUsageAnalyticsResult = (input = {}, scenario = 'populate
   const partial = scenario === 'token_partial'
   const mixed = scenario === 'token_mixed_currency'
   const local = scenario === 'token_local'
+  const cacheZero = scenario === 'token_cache_zero'
+  const cacheNotReported = scenario === 'token_cache_not_reported'
+  const cacheUnknown = scenario === 'token_cache_unknown'
 
   if (isEmpty || unavailable) rows = []
   if (local) rows = rows.filter(row => row.costQuality.kind === 'LOCAL')
@@ -244,8 +247,46 @@ export const createTokenUsageAnalyticsResult = (input = {}, scenario = 'populate
       costQuality: quality('COMPLETE', 'EUR'),
     }
   }
+  if (cacheZero) {
+    rows = rows.map(row => ({
+      ...row,
+      aggregate: {
+        ...row.aggregate,
+        standardInputTokens: row.aggregate.standardInputTokens + row.aggregate.cacheReadInputTokens,
+        cacheMissInputTokens: row.aggregate.standardInputTokens + row.aggregate.cacheReadInputTokens,
+        cacheReadInputTokens: 0,
+        cacheReadInputTokenRate: 0,
+        cacheState: 'zero_reported',
+      },
+    }))
+  } else if (cacheNotReported || cacheUnknown || local) {
+    rows = rows.map(row => ({
+      ...row,
+      aggregate: {
+        ...row.aggregate,
+        cacheReadInputTokenRate: null,
+        cacheState: local ? 'unsupported_or_local' : cacheNotReported ? 'not_reported' : 'unknown',
+      },
+    }))
+  }
 
   const selectedAggregate = sumAggregates(rows)
+  if (cacheZero) {
+    selectedAggregate.standardInputTokens += selectedAggregate.cacheReadInputTokens
+    selectedAggregate.cacheMissInputTokens = selectedAggregate.standardInputTokens
+    selectedAggregate.cacheReadInputTokens = 0
+    selectedAggregate.cacheReadInputTokenRate = 0
+    selectedAggregate.cacheState = 'zero_reported'
+  } else if (cacheNotReported) {
+    selectedAggregate.cacheReadInputTokenRate = null
+    selectedAggregate.cacheState = 'not_reported'
+  } else if (cacheUnknown) {
+    selectedAggregate.cacheReadInputTokenRate = null
+    selectedAggregate.cacheState = 'unknown'
+  } else if (local) {
+    selectedAggregate.cacheReadInputTokenRate = null
+    selectedAggregate.cacheState = 'unsupported_or_local'
+  }
   let selectedCostQuality = quality()
   if (!rows.length) selectedCostQuality = quality('NO_USAGE', null)
   else if (partial) {
@@ -267,18 +308,24 @@ export const createTokenUsageAnalyticsResult = (input = {}, scenario = 'populate
 
   const comparisonAggregate = rows.length ? scaledAggregate(selectedAggregate, 0.78) : emptyTokenUsageAggregate()
   const selectedQualityForBuckets = selectedCostQuality.kind === 'NO_USAGE' ? quality('NO_USAGE', null) : selectedCostQuality
-  const ratios = [0.17, 0.28, 0.24, 0.31]
   const durationDays = Math.max(4, Math.round((Date.parse(endTimeExclusive) - Date.parse(startTime)) / DAY_MS))
-  const step = Math.max(1, Math.floor(durationDays / 4))
-  const trendBuckets = rows.length ? ratios.map((ratio, index) => {
+  const dayShape = [3, 4, 0, 6, 7, 5, 4, 8, 5, 0, 7, 4, 6, 9, 5, 3, 0, 4, 8, 7, 5, 6, 4, 10, 5, 3, 6, 8, 10]
+  const daily = durationDays <= 45
+  const bucketCount = daily ? durationDays : 4
+  const weights = daily
+    ? Array.from({ length: bucketCount }, (_, index) => dayShape[index % dayShape.length] || 0.35)
+    : [17, 28, 24, 31]
+  const weightTotal = weights.reduce((sum, value) => sum + value, 0)
+  const step = daily ? 1 : Math.max(1, Math.floor(durationDays / bucketCount))
+  const trendBuckets = rows.length ? weights.map((weight, index) => {
     const bucketStart = addDays(startTime, index * step)
-    const bucketEnd = index === ratios.length - 1 ? endTimeExclusive : addDays(startTime, (index + 1) * step)
-    return rangeBucket(bucketStart, bucketEnd, selectedAggregate, ratio, selectedQualityForBuckets)
+    const bucketEnd = index === weights.length - 1 ? endTimeExclusive : addDays(startTime, (index + 1) * step)
+    return rangeBucket(bucketStart, bucketEnd, selectedAggregate, weight / weightTotal, selectedQualityForBuckets)
   }) : []
-  const comparisonBuckets = rows.length && !partial && !unavailable ? ratios.map((ratio, index) => {
+  const comparisonBuckets = rows.length && !partial && !unavailable ? weights.map((weight, index) => {
     const bucketStart = addDays(comparisonRange.startTime, index * step)
-    const bucketEnd = index === ratios.length - 1 ? comparisonRange.endTimeExclusive : addDays(comparisonRange.startTime, (index + 1) * step)
-    return rangeBucket(bucketStart, bucketEnd, comparisonAggregate, ratio, selectedQualityForBuckets)
+    const bucketEnd = index === weights.length - 1 ? comparisonRange.endTimeExclusive : addDays(comparisonRange.startTime, (index + 1) * step)
+    return rangeBucket(bucketStart, bucketEnd, comparisonAggregate, weight / weightTotal, selectedQualityForBuckets)
   }) : []
 
   const coverageStart = partial || unavailable ? addDays(startTime, Math.min(10, durationDays - 1)) : addDays(startTime, -180)

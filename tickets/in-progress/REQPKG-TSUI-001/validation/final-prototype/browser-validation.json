@@ -1,0 +1,241 @@
+{
+  "packageId": "REQPKG-TSUI-001",
+  "requirementsRevision": "RER-009",
+  "requirementsCommit": "6aa6ba066faf041ff1fa221cee5b956fd7e537b5",
+  "sourcePin": "9d0fd7c570d58da1af2c7a40279327c8a20a8093",
+  "baseUrl": "http://127.0.0.1:3261",
+  "passed": 19,
+  "total": 19,
+  "browserErrors": [],
+  "exportRequests": [],
+  "results": [
+    {
+      "id": "FPV-001",
+      "name": "Desktop summary has six equal peers in the approved order",
+      "pass": true,
+      "detail": {
+        "labels": [
+          "Total tokens",
+          "Uncached input",
+          "Cached input",
+          "Output",
+          "Estimated API cost",
+          "Cache hit rate"
+        ],
+        "widths": [
+          185.5,
+          185.5,
+          185.5,
+          185.5,
+          185.5,
+          185.5
+        ]
+      }
+    },
+    {
+      "id": "FPV-002",
+      "name": "Approved hierarchy contains no comparison, contributor, driver, ratio, or export presentation",
+      "pass": true,
+      "detail": {
+        "bodySample": "Back to Workspace\nAPI Keys\nToken Statistics\nMessaging\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nExtensions\nUpdates\nAnalytics\nRun details\nUTC RANGE\nThis month\nFilters\nTokens\nCost\nAll tracked usage\nToken usage analytics loaded.\nPartial coverage\nAug 1–Aug 29 · UTC\nTracking since 2026-08-11 00:00 UTC\n\nTOTAL TOKENS\n\n152K\n\n152,000 exact\n\nUNCACHED INPUT\n\n99K\n\nStandard/cache-miss-rate input; excludes cached reads and cache writes.\n\nCACHED INPUT\n\n16K\n\nInput served from cache reads.\n\nOUTPUT\n\n37K\n\nGenerated output tokens.\n\nESTIMATED API COST\n\n$0.87\n\nPartial estimate\n\nCACHE HIT RATE\n\n13.9%\n\n16K of 115K total input cached\n\nSome usage is unpriced; cost totals are partial. Estimated API cost; not a provider invoice or quota statement.\n\nUsage over time\n\nDaily points · exact buckets remain available\n\nTokens\n9.9K\n5K\n0\nAug 1\nAug 8\nAug 15\nAug 22\nAug 29\nDate (UTC)\nExact bucket data\nDetailed usage\n\nUsage by the selected grouping. Open a row for exact token and cost evidence.\n\nGroup by\nRuntime + model\nRuntime\nProvider\nModel\nRUNTIME + MODEL\tTOKENS\tESTIMATED API COST\tSHARE\tDETAILS\n\nCodex · GPT-5.6 Sol\nRuntime + model\n\t80,000\t\n$0.67\nComplete estimate\n\t52.6%\tDetails\n\n\nClaude SDK · Claude Sonnet 4.5\nRuntime + model\n\t45,000\t\n$0.50\nComplete estimate\n\t29.6%\tDetails\n\n\nAutobyteus · Prototype Local Model\nRuntime + model\n\t27,000\t\nLocal · no API bill\nLocal · no API bill\n\t17.8%\tDetails"
+      }
+    },
+    {
+      "id": "FPV-003",
+      "name": "Monthly trend is one open-top 29-point line with axes, five UTC ticks, and one midpoint guide",
+      "pass": true,
+      "detail": {
+        "markers": 29,
+        "series": 1,
+        "guides": 1,
+        "ticks": 5,
+        "axisStyle": {
+          "top": "0px",
+          "left": "1px",
+          "bottom": "1px"
+        }
+      }
+    },
+    {
+      "id": "FPV-004",
+      "name": "Trend exposes all daily buckets in its accessible name",
+      "pass": true,
+      "detail": {
+        "ariaLabelLength": 629,
+        "ariaLabelStart": "Usage over time. Tokens. Date (UTC). Aug 1, 2026: 2,979; Aug 2, 2026: 3,973; Aug 3, 2026: 348; Aug 4, 2026: 5,959; Aug 5, 2026: 6,952; Aug 6, 2026: 4,966; Aug 7, 2026: 3,973; Aug 8, 2026: 7,945; Aug 9, 2026: 4,966; Aug 10, 2026: 348; Aug 11, 2026: 6,952; Aug 12, 2026: 3,973; Aug 13, 2026: 5,959; Aug"
+      }
+    },
+    {
+      "id": "FPV-005",
+      "name": "Uncached-input meaning and exact cache-write evidence are available",
+      "pass": true,
+      "detail": {}
+    },
+    {
+      "id": "FPV-006",
+      "name": "Tokens/Cost switches the same daily chart to authoritative USD units",
+      "pass": true,
+      "detail": {}
+    },
+    {
+      "id": "FPV-007",
+      "name": "Focused filters apply one coherent result and active context",
+      "pass": true,
+      "detail": {
+        "filteredRows": 1
+      }
+    },
+    {
+      "id": "FPV-008",
+      "name": "Detailed usage stays visible, changes grouping, and discloses exact accounting",
+      "pass": true,
+      "detail": {
+        "detailBody": "Detailed usage\n\nUsage by the selected grouping. Open a row for exact token and cost evidence.\n\nGroup by\nRuntime + model\nRuntime\nProvider\nModel\nPROVIDER\tTOKENS\tESTIMATED API COST\tSHARE\tDETAILS\n\nOpenAI\nProvider\n\t80,000\t\n$0.67\nComplete estimate\n\t57.3%\tHide\n\n\nUNCACHED INPUT\n50,000\nCACHED INPUT\n12,000\nCACHE WRITE\n0\nTOTAL INPUT\n62,000\nOUTPUT\n18,000\nTHINKING INCLUDED\n6,000\n\nCost status: estimated · Currency: USD\n\n\n\nAnthropic\nProvider\n\t45,000\t\n$0.50\nComplete estimate\n\t42.7%\tDetails\n\n\nLocal\nProvider\n\t27,000\t\nLocal · no API bill\nLocal · no API bill\n\tNot available\tDetails"
+      }
+    },
+    {
+      "id": "FPV-009",
+      "name": "Settings navigation remains wholly manual and keyboard-resizable",
+      "pass": true,
+      "detail": {
+        "before": 256,
+        "after": 240
+      }
+    },
+    {
+      "id": "FPV-010",
+      "name": "Run details retains creation-time selection and lifetime-total meaning in the unified shell",
+      "pass": true,
+      "detail": {}
+    },
+    {
+      "id": "FPV-011",
+      "name": "Run-details task hierarchy, expansion, sorting, and cost disclosure remain operable",
+      "pass": true,
+      "detail": {}
+    },
+    {
+      "id": "FPV-012",
+      "name": "Run-details Model grouping remains available without an unsupported Runs count",
+      "pass": true,
+      "detail": {}
+    },
+    {
+      "id": "FPV-013",
+      "name": "Positive, zero-reported, not-reported, unsupported/local, and unknown cache states remain truthful",
+      "pass": true,
+      "detail": {
+        "observed": [
+          {
+            "scenario": "populated",
+            "text": "13.9%"
+          },
+          {
+            "scenario": "token_cache_zero",
+            "text": "0%"
+          },
+          {
+            "scenario": "token_cache_not_reported",
+            "text": "Not reported"
+          },
+          {
+            "scenario": "token_local",
+            "text": "Not supported"
+          },
+          {
+            "scenario": "token_cache_unknown",
+            "text": "Unknown"
+          }
+        ]
+      }
+    },
+    {
+      "id": "FPV-014",
+      "name": "Loading, error, empty, uncovered, mixed-currency, and local states remain intentional and truthful",
+      "pass": true,
+      "detail": {
+        "observed": [
+          {
+            "scenario": "token_empty",
+            "matched": true
+          },
+          {
+            "scenario": "token_unavailable",
+            "matched": true
+          },
+          {
+            "scenario": "error",
+            "matched": true
+          },
+          {
+            "scenario": "token_mixed_currency",
+            "matched": true
+          },
+          {
+            "scenario": "token_local",
+            "matched": true
+          }
+        ],
+        "loadingBusy": 1
+      }
+    },
+    {
+      "id": "FPV-015",
+      "name": "Narrow layout contains page width, preserves equal peers, and keeps readable axis meaning",
+      "pass": true,
+      "detail": {
+        "geometry": {
+          "viewport": 390,
+          "document": 390,
+          "body": 390
+        },
+        "summaryWidths": [
+          169.5,
+          169.5
+        ],
+        "visibleTicks": [
+          "Aug 1",
+          "Aug 15",
+          "Aug 29"
+        ]
+      }
+    },
+    {
+      "id": "FPV-016",
+      "name": "Simplified Chinese retains the final hierarchy and controls",
+      "pass": true,
+      "detail": {}
+    },
+    {
+      "id": "FPV-017",
+      "name": "Filter disclosure restores focus and all retained controls have keyboard names",
+      "pass": true,
+      "detail": {
+        "focusedName": "Filters"
+      }
+    },
+    {
+      "id": "FPV-018",
+      "name": "CSV/export is absent from DOM, accessibility actions, client preparation path, files, and requests",
+      "pass": true,
+      "detail": {
+        "exportNamed": 0,
+        "exportSignals": {
+          "objectUrls": 0,
+          "downloadClicks": 0,
+          "exportFetches": []
+        },
+        "exportRequests": [],
+        "csvUtilityExists": false
+      }
+    },
+    {
+      "id": "FPV-019",
+      "name": "No unexpected browser errors occurred across the final journey matrix",
+      "pass": true,
+      "detail": {
+        "browserErrors": []
+      }
+    }
+  ]
+}

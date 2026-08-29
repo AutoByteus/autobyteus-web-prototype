@@ -1,0 +1,17 @@
+$ corepack pnpm test
+
+> autobyteus-web-prototype@0.1.0 test /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001
+> vitest run
+
+
+ RUN  v3.2.7 /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001
+
+ ✓ prototype/tests/host-scenario.test.ts (3 tests) 6ms
+ ✓ prototype/tests/token-statistics-refresh-fixture.test.ts (4 tests) 9ms
+ ✓ prototype/tests/fixture-contract.test.ts (5 tests) 10ms
+
+ Test Files  3 passed (3)
+      Tests  12 passed (12)
+   Start at  17:24:55
+   Duration  750ms (transform 305ms, setup 0ms, collect 384ms, tests 25ms, environment 0ms, prepare 659ms)
+
