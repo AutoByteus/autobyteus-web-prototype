@@ -71,6 +71,6 @@
 - Motion/comprehension evidence: No decision-relevant motion; stable states persist. Automated checks establish the interaction/result relationship, but human preference and comprehension remain unconfirmed.
 - Remaining product decisions: Whether dominant-contributor and runtime/model grouping remain optional or are removed; whether prior comparison remains optional/secondary or is removed; canonical labels/definitions for uncached/standard input, cached input, cache hit rate, and output; existing `DEC-001`–`DEC-004` consequences.
 - Next expected action: Requirements Engineering revises or reaffirms the affected requirements from `RI-001`; Product Prototyper then produces `RV-005`. Do not treat `RV-004` as a final implementation direction.
-- Handoff outcome from `get_handoff_rules`: Pending `Requirement Impact` routing lookup.
+- Handoff outcome from `get_handoff_rules`: `Requirement Impact` matched the Requirements Engineering resolution route.
 - Matched recipient address, when a rule applies: `/requirements_engineering_team/requirements_engineer`
 - Return context when no matching rule applies: Return the review-ready package to the user or calling workflow.
