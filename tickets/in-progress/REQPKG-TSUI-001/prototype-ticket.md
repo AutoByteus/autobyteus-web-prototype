@@ -19,6 +19,7 @@
 - Product ticket branch: `prototype/reqpkg-tsui-001`
 - Integration/default branch: `personal` (`origin/personal` is the accepted integration authority selected for this ticket)
 - Accepted prototype base revision: `0e43f9d6e638c67f0f82bb1a5d7c7cd2fd930fd9`
+- Accepted baseline integration tip on `origin/personal`: `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6` (pushed as a fast-forward on 2026-08-29).
 - Source repository: `/home/autobyteus/workspace/autobyteus-workspace-token-statistics-ui-requirements`
 - Selected frontend: `/home/autobyteus/workspace/autobyteus-workspace-token-statistics-ui-requirements/autobyteus-web`
 - Required source ref and pinned revision: `origin/personal` at `9d0fd7c570d58da1af2c7a40279327c8a20a8093`
@@ -29,7 +30,7 @@
 - Baseline metadata revision: `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`
 - Prototype revision containing the `RV-002` visualizer and evidence: `0832b74ce830c5510bb9ffb5802095e4ee2a7567`
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001`
-- Integration target and result: `personal`; deferred while the exploratory clarification loop remains open.
+- Integration target and result: The accepted baseline commits `6ba98942c669329f70ba902db4a2880375ad52ad` and `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6` are now on `origin/personal`. The exploratory `RV-002` commits remain only on `prototype/reqpkg-tsui-001` while user review is open.
 - Cleanup result: Deferred. Retain the active worktree and review runtimes while status is `Awaiting User Review`.
 
 ## Runtime Isolation
@@ -63,7 +64,7 @@
 ## Outcome And Handoff
 
 - Current outcome: `Requirements Visualization Ready`
-- Completed behavior and evidence: Two clean product-only direction URLs; no external visualization header/footer/controls; product-native range, filter, metric, export, evidence, tab, grouping, expansion, and manual-navigation controls; complete `RV-002` review evidence.
+- Completed behavior and evidence: Accepted Token Statistics baseline is durably integrated through `origin/personal` revision `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`. The ticket branch contains only the additional `RV-002` visualizer/review commits beyond that baseline: two clean product-only direction URLs; no external visualization header/footer/controls; product-native range, filter, metric, export, evidence, tab, grouping, expansion, and manual-navigation controls; complete review evidence.
 - First-view simplicity evidence: Product-only DOM and screenshots contain no visualization heading, direction/journey selector, selection strip, reset control, or explanatory footer. Primary usage, coverage, trend, missing comparison, and dominant driver remain scannable in the initial view.
 - Motion/comprehension evidence: No decision-relevant motion; stable states persist. Automated checks establish the interaction/result relationship, but human preference and comprehension remain unconfirmed.
 - Remaining product decisions: User selection of Direction A or B and confirmation of control disclosure, exact-evidence treatment, and Run-details unification (`DEC-001`–`DEC-004`).
