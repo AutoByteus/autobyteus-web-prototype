@@ -1,4 +1,3 @@
-$ corepack pnpm validate:boundaries
 
 > autobyteus-web-prototype@0.1.0 validate:boundaries /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001
 > node prototype/scripts/validate-boundaries.mjs

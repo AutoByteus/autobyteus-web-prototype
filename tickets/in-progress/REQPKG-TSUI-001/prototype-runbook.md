@@ -10,7 +10,7 @@
 - Prototype ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001`
 - Prototype ticket branch: `prototype/reqpkg-tsui-001`
 - Accepted prototype base revision: implementation `6ba98942c669329f70ba902db4a2880375ad52ad`; integrated metadata tip `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`
-- Prototype revision or commit: Review-candidate commit `3de6227769c33cfdbefa42f22b44a0de83329563`; final accepted revision pending user confirmation
+- Prototype revision or commit: Approved runnable behavior commit `3de6227769c33cfdbefa42f22b44a0de83329563`; completed package/integration revision is recorded in `prototype-ticket.md`
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001`
 - Package manager: Corepack pnpm
 - Framework / stack: Nuxt 3, Vue 3, TypeScript, Tailwind CSS, Pinia, browser-local deterministic fixtures
@@ -28,7 +28,7 @@
 
 ## Reproducibility And Project State
 
-- Prototype repository status at review validation: Active ticket branch with implementation and draft Product artifacts; final integration pending user confirmation.
+- Prototype repository status at final validation: Active ticket branch with user-approved runnable and final Product artifacts; integration finalization is pending.
 - Scenario reset/isolation method: Set or remove the browser-local `autobyteus.prototype.scenario` key, then reload.
 - Required environment variables or credentials: None. All data/services are synthetic and local.
 
@@ -97,4 +97,4 @@ corepack pnpm validate:token-statistics-final
 - Synthetic fixture values and identities are illustrative; no production data or credentials are used.
 - No backend, GraphQL, persistence, Electron runtime, or production write is present.
 - There is deliberately no CSV/export/report/share/download capability.
-- No product behavior decision remains open. Explicit confirmation of the actual final runnable is required before final screenshot capture and repository completion.
+- No product behavior decision remains open. The actual final runnable is explicitly approved; normative `VIS-009`–`VIS-015` were captured after approval.

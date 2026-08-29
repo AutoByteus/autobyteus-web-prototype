@@ -1,0 +1,239 @@
+{
+  "packageId": "REQPKG-TSUI-001",
+  "status": "Normative final references captured after explicit user approval",
+  "approvalReference": "User explicitly approved the final product prototype in conversation on 2026-08-29.",
+  "requirementsRevision": "RER-009",
+  "requirementsCommit": "6aa6ba066faf041ff1fa221cee5b956fd7e537b5",
+  "sourcePin": "9d0fd7c570d58da1af2c7a40279327c8a20a8093",
+  "baseUrl": "http://127.0.0.1:3261",
+  "capturedAt": "2026-08-29T18:25:34.870Z",
+  "browserErrors": [],
+  "references": [
+    {
+      "visualId": "VIS-009",
+      "filename": "VIS-009-final-analytics-partial-desktop-1440x900.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-009-final-analytics-partial-desktop-1440x900.png",
+      "scenario": "token_partial",
+      "state": "Analytics · partial coverage · Tokens · all usage",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "journeys": [
+        "UXJ-001",
+        "SCN-001"
+      ],
+      "requirements": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-004",
+        "REQ-005",
+        "REQ-009",
+        "REQ-012",
+        "REQ-015",
+        "REQ-016"
+      ],
+      "acceptanceCriteria": [
+        "AC-001",
+        "AC-003",
+        "AC-004",
+        "AC-013",
+        "AC-015",
+        "AC-016"
+      ],
+      "sha256": "78e93b7b2058427522e5196f0c3a903b1f729800a9147300653b67f2927850ae",
+      "byteLength": 122949
+    },
+    {
+      "visualId": "VIS-010",
+      "filename": "VIS-010-final-analytics-filters-open-desktop-1440x900.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-010-final-analytics-filters-open-desktop-1440x900.png",
+      "scenario": "populated",
+      "state": "Analytics · focused Filters disclosure open",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "journeys": [
+        "UXJ-003",
+        "SCN-003"
+      ],
+      "requirements": [
+        "REQ-003",
+        "REQ-009",
+        "REQ-011",
+        "REQ-012"
+      ],
+      "acceptanceCriteria": [
+        "AC-002",
+        "AC-010",
+        "AC-011"
+      ],
+      "sha256": "68817d4625c105da512e1f05ceb9f769cc8846f3f2b4dbd7f0da1650216948b1",
+      "byteLength": 121213
+    },
+    {
+      "visualId": "VIS-011",
+      "filename": "VIS-011-final-detailed-usage-expanded-desktop-1440x900.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-011-final-detailed-usage-expanded-desktop-1440x900.png",
+      "scenario": "populated",
+      "state": "Analytics · Detailed usage · Provider grouping · exact row disclosed",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "journeys": [
+        "UXJ-003",
+        "SCN-003"
+      ],
+      "requirements": [
+        "REQ-006",
+        "REQ-008",
+        "REQ-009",
+        "REQ-011",
+        "REQ-012",
+        "REQ-016"
+      ],
+      "acceptanceCriteria": [
+        "AC-005",
+        "AC-006",
+        "AC-008",
+        "AC-010",
+        "AC-011",
+        "AC-016"
+      ],
+      "sha256": "5cd034f2d070760f71c0c751a36304cb2048f8a5a91b7262d3da69160ad04bfc",
+      "byteLength": 46338
+    },
+    {
+      "visualId": "VIS-012",
+      "filename": "VIS-012-final-analytics-cost-full-desktop-1440x900.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-012-final-analytics-cost-full-desktop-1440x900.png",
+      "scenario": "populated",
+      "state": "Analytics · full coverage · Cost (USD)",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "journeys": [
+        "UXJ-002",
+        "SCN-002"
+      ],
+      "requirements": [
+        "REQ-002",
+        "REQ-004",
+        "REQ-005",
+        "REQ-007",
+        "REQ-008",
+        "REQ-012",
+        "REQ-015",
+        "REQ-016"
+      ],
+      "acceptanceCriteria": [
+        "AC-001",
+        "AC-003",
+        "AC-004",
+        "AC-007",
+        "AC-008",
+        "AC-011",
+        "AC-015",
+        "AC-016"
+      ],
+      "sha256": "464840aa31250b01e215bb5e4368588ad410069974e844ab8e9a48cc77157f4f",
+      "byteLength": 114895
+    },
+    {
+      "visualId": "VIS-013",
+      "filename": "VIS-013-final-run-details-task-expanded-desktop-1440x900.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-013-final-run-details-task-expanded-desktop-1440x900.png",
+      "scenario": "populated",
+      "state": "Run details · Task grouping · Team hierarchy expanded",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "journeys": [
+        "UXJ-005",
+        "SCN-005"
+      ],
+      "requirements": [
+        "REQ-001",
+        "REQ-009",
+        "REQ-011",
+        "REQ-013",
+        "REQ-014"
+      ],
+      "acceptanceCriteria": [
+        "AC-010",
+        "AC-012",
+        "AC-013"
+      ],
+      "sha256": "637980773665541d0bab3fa1c3925e8d9c7e2c0693a0b80ce0e351ad9a599a15",
+      "byteLength": 131788
+    },
+    {
+      "visualId": "VIS-014",
+      "filename": "VIS-014-final-run-details-model-desktop-1440x900.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-014-final-run-details-model-desktop-1440x900.png",
+      "scenario": "populated",
+      "state": "Run details · Model grouping",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "journeys": [
+        "UXJ-005",
+        "SCN-005"
+      ],
+      "requirements": [
+        "REQ-001",
+        "REQ-009",
+        "REQ-011",
+        "REQ-013",
+        "REQ-014"
+      ],
+      "acceptanceCriteria": [
+        "AC-010",
+        "AC-012",
+        "AC-013"
+      ],
+      "sha256": "8acc0fa18ab17e3d918e71dd739744e699786aa9405d6740771d2c43a1ff21f5",
+      "byteLength": 92964
+    },
+    {
+      "visualId": "VIS-015",
+      "filename": "VIS-015-final-analytics-partial-narrow-390x844.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-015-final-analytics-partial-narrow-390x844.png",
+      "scenario": "token_partial",
+      "state": "Analytics · partial coverage · narrow/mobile-equivalent",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "journeys": [
+        "UXJ-004",
+        "SCN-004"
+      ],
+      "requirements": [
+        "REQ-002",
+        "REQ-003",
+        "REQ-009",
+        "REQ-011",
+        "REQ-014",
+        "REQ-015",
+        "REQ-016"
+      ],
+      "acceptanceCriteria": [
+        "AC-001",
+        "AC-002",
+        "AC-005",
+        "AC-010",
+        "AC-013",
+        "AC-015",
+        "AC-016"
+      ],
+      "sha256": "719b9f656b845f1b8ca6705d560aeceea318af17e2c39988d0f8b7123a59df38",
+      "byteLength": 42912
+    }
+  ]
+}

@@ -1,21 +1,21 @@
 # Token Statistics Final UI/UX Specification
 
-This is the Product-owned final-prototype supplement for `REQPKG-TSUI-001`. It
-currently describes the validated review candidate. It becomes the approved
-normative specification only after the user explicitly confirms the actual
-runnable prototype and Product captures the corresponding final screenshots.
+This is the approved Product-owned final-prototype supplement for
+`REQPKG-TSUI-001`. The user explicitly confirmed the actual runnable after
+verifying that CSV export was removed. The final screenshots listed below were
+captured afterward and are normative for their recorded surfaces and states.
 
 ## Status And User Confirmation
 
-- Status: `Ready for User Review`
+- Status: `Approved`
 - Request / ticket: `REQPKG-TSUI-001` — Settings > Token Statistics redesign
 - Related requirements revision ID: `RER-009`; commit `6aa6ba066faf041ff1fa221cee5b956fd7e537b5`
 - Related requirement, behavior, acceptance-criteria, scenario, and decision IDs: `BEH-001`–`BEH-006`; `REQ-001`–`REQ-016`; `AC-001`–`AC-016`; `SCN-001`–`SCN-007`; resolved `DEC-001`–`DEC-009`
 - Runnable prototype repository/root: `/home/autobyteus/workspace/autobyteus-web-prototype`
 - Active Product worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001`
 - Review URL: `http://127.0.0.1:3261/settings?section=token-usage`
-- Explicit user-confirmation reference: The user confirmed RV-007's focused Analytics and lightly unified Run-details direction and separately removed CSV export (`DEC-009`). Confirmation of this separate actual final runnable is pending.
-- Final validation date: Review-candidate validation completed 2026-08-29; post-confirmation final validation pending.
+- Explicit user-confirmation reference: On 2026-08-29, after Product confirmed that the Export CSV UI, preparation/download functionality, requests, files, and replacement workflow were absent, the user stated: “okay. i approve the final product prototype. now”. This approval applies to the actual runnable at the recorded review URL, not only RV-007.
+- Final validation date: 2026-08-29 UTC — post-approval typecheck, lint, 12 tests, 13/13 boundaries, Nuxt build, and 19/19 browser validation passed before final capture.
 
 ## Repository And Baseline Provenance
 
@@ -23,7 +23,7 @@ runnable prototype and Product captures the corresponding final screenshots.
 - Selected frontend application or product surface: `/home/autobyteus/workspace/autobyteus-workspace-token-statistics-ui-requirements/autobyteus-web`; Settings > Token Statistics
 - Pinned source commit or revision: required `origin/personal` pin `9d0fd7c570d58da1af2c7a40279327c8a20a8093`
 - Prototype repository/root: `/home/autobyteus/workspace/autobyteus-web-prototype`
-- Prototype revision or commit: Review-candidate commit `3de6227769c33cfdbefa42f22b44a0de83329563`; accepted baseline implementation `6ba98942c669329f70ba902db4a2880375ad52ad`, accepted integration tip `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`; final accepted revision pending user confirmation
+- Prototype revision or commit: Approved runnable behavior revision `3de6227769c33cfdbefa42f22b44a0de83329563`; accepted baseline implementation `6ba98942c669329f70ba902db4a2880375ad52ad`; accepted pre-ticket integration tip `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`. The completed ticket/package revision and integration result are recorded in `prototype-ticket.md`.
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001`
 - Bootstrap report path: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/prototype-bootstrap-report.md`
 - Exploratory direction provenance: RV-007 content `726f414a4f1acf2e32e859c7b6e8a90584d1b6d6`; review metadata `578efc4e3d4929fcce55e1c130f1c6092fda7f44`. The visualizer and its images are historical decision evidence, not this package's normative final reference.
@@ -134,12 +134,12 @@ Render loading, error/retry, covered-empty, uncovered, partial/full coverage, mi
 
 | Surface ID | Purpose | Entry Conditions | Structure And Hierarchy | Important States | Primary Actions | Exit / Next Action | Visual IDs |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `UIS-001` Analytics shell/toolbar | Orient and define the current result | Token Statistics opens | Tabs, compact query controls, applied context; no content title/export | Default, custom validation, filters open/applied | Change range, open/apply/clear filters, Tokens/Cost | Summary and trend update coherently | Final IDs pending confirmation |
-| `UIS-002` Summary | Answer current total/cost/cache composition | Populated result | Coverage context above six equal peers; Total typographically primary | Full/partial/uncovered; complete/partial/mixed/local; five cache states | Scan/read exact/support text | Trend | Final IDs pending confirmation |
-| `UIS-003` Filter disclosure | Configure Runtime/Provider/Model | `Filters` activated | Three labeled fields with Apply/Clear | Empty, active count, keyboard close | Apply, clear, close | Coherent result / trigger focus | Final IDs pending confirmation |
-| `UIS-004` Trend and Detailed usage | Show daily series and exact evidence | Populated result | One open-top line, exact bucket disclosure, visible Detailed usage and grouping | Tokens, Cost, unavailable Cost, grouping, row open | Switch metric, open buckets/details, regroup | Run details or further investigation | Final IDs pending confirmation |
-| `UIS-005` Run details | Investigate run lifetime usage | Run details tab | Date creation controls, Task/Model beside Fetch, helper, unified state/table | Loading, error/migration, empty, Task, Team expanded, Model | Fetch, group, sort, expand | Return to Analytics | Final IDs pending confirmation |
-| `UIS-006` Result states | Preserve trust/recovery | Query lifecycle/state fixture | Calm bordered status or skeleton, explicit text/action | Loading, error, empty, unavailable, pricing/local/mixed/cache variants | Retry or alter query | Valid result | Final IDs pending confirmation |
+| `UIS-001` Analytics shell/toolbar | Orient and define the current result | Token Statistics opens | Tabs, compact query controls, applied context; no content title/export | Default, custom validation, filters open/applied | Change range, open/apply/clear filters, Tokens/Cost | Summary and trend update coherently | `VIS-009`, `VIS-010`, `VIS-012`, `VIS-015` |
+| `UIS-002` Summary | Answer current total/cost/cache composition | Populated result | Coverage context above six equal peers; Total typographically primary | Full/partial/uncovered; complete/partial/mixed/local; five cache states | Scan/read exact/support text | Trend | `VIS-009`, `VIS-012`, `VIS-015`; state variants `FPV-013/014` |
+| `UIS-003` Filter disclosure | Configure Runtime/Provider/Model | `Filters` activated | Three labeled fields with Apply/Clear | Empty, active count, keyboard close | Apply, clear, close | Coherent result / trigger focus | `VIS-010` |
+| `UIS-004` Trend and Detailed usage | Show daily series and exact evidence | Populated result | One open-top line, exact bucket disclosure, visible Detailed usage and grouping | Tokens, Cost, unavailable Cost, grouping, row open | Switch metric, open buckets/details, regroup | Run details or further investigation | `VIS-009`, `VIS-011`, `VIS-012`, `VIS-015` |
+| `UIS-005` Run details | Investigate run lifetime usage | Run details tab | Date creation controls, Task/Model beside Fetch, helper, unified state/table | Loading, error/migration, empty, Task, Team expanded, Model | Fetch, group, sort, expand | Return to Analytics | `VIS-013`, `VIS-014`; state variants `FPV-010`–`FPV-012` |
+| `UIS-006` Result states | Preserve trust/recovery | Query lifecycle/state fixture | Calm bordered status or skeleton, explicit text/action | Loading, error, empty, unavailable, pricing/local/mixed/cache variants | Retry or alter query | Valid result | `VIS-009`, `VIS-012`; deterministic state evidence `FPV-013/014` |
 
 ## Interaction And State Transitions
 
@@ -162,16 +162,16 @@ Render loading, error/retry, covered-empty, uncovered, partial/full coverage, mi
 
 | Surface / State | Trigger | Required Presentation And Message | Available Actions | Recovery Or Exit | Visual ID |
 | --- | --- | --- | --- | --- | --- |
-| Analytics / full coverage | Full range within coverage | Compact green `Full coverage` badge and tracking date | Normal controls | Change range/filter | Pending final capture |
-| Analytics / partial coverage | Range begins before coverage | Compact amber `Partial coverage`, tracking date, and partial pricing text if applicable | Normal controls | Narrow range/filter | Pending final capture |
-| Analytics / uncovered | Range predates coverage | Truthful unavailable message; no fabricated totals/comparison | Change range/filter | Choose covered range | Pending final capture |
+| Analytics / full coverage | Full range within coverage | Compact green `Full coverage` badge and tracking date | Normal controls | Change range/filter | `VIS-010`, `VIS-012` |
+| Analytics / partial coverage | Range begins before coverage | Compact amber `Partial coverage`, tracking date, and partial pricing text if applicable | Normal controls | Narrow range/filter | `VIS-009`, `VIS-015` |
+| Analytics / uncovered | Range predates coverage | Truthful unavailable message; no fabricated totals/comparison | Change range/filter | Choose covered range | `FPV-014` deterministic evidence |
 | Analytics / loading | Applied query starts | Skeleton/busy state and live announcement; no stale result presented as current | Wait | Result/error | Validation evidence only unless final capture selected |
 | Analytics / error | Fixture/query failure | Calm actionable error with Retry | Retry/change query | New result | Validation evidence only unless final capture selected |
 | Analytics / covered empty | Valid covered result contains no usage | Explicit empty explanation | Change range/filter | New result | Validation evidence only unless final capture selected |
-| Cost / partial or missing | Incomplete pricing | Cost marked partial/unpriced with invoice disclaimer; never invented zero | Switch metric/change context | Comparable result | Pending final capture |
+| Cost / partial or missing | Incomplete pricing | Cost marked partial/unpriced with invoice disclaimer; never invented zero | Switch metric/change context | Comparable result | `VIS-009`; `FPV-014` |
 | Cost / mixed currency | Non-comparable currencies | `Mixed`/currency-unavailable text; unsafe line is not plotted | Switch Tokens/filter | Comparable result | Validation evidence only unless final capture selected |
 | Cost / local | Local usage | `Local · no API bill`; no `$0` invention | Switch metric/filter | Other usage | Validation evidence only unless final capture selected |
-| Cache / positive or zero-reported | Authoritative rate present | Exact percentage plus cached/total input support | Inspect detail | Change query | Pending final capture |
+| Cache / positive or zero-reported | Authoritative rate present | Exact percentage plus cached/total input support | Inspect detail | Change query | `VIS-009`, `VIS-012`; zero state `FPV-013` |
 | Cache / not reported, unsupported, unknown | Authoritative percentage absent | `Not reported`, `Not supported`, or `Unknown`; never synthetic `0%` | Inspect exact detail | Change query | Validation evidence |
 | Run details / migration error | History migration required | Localized actionable guidance without internal error token | Follow guidance/change range | Valid data | Validation evidence |
 
@@ -218,22 +218,24 @@ Render loading, error/retry, covered-empty, uncovered, partial/full coverage, mi
 
 ## Final Visual Reference Inventory
 
-Final reference screenshots have **not** been captured because explicit user
-confirmation of this actual final runnable is still pending. Existing files in
-`review-evidence/final-prototype-review/` are review aids only and are not
-normative. After confirmation and final validation, Product will capture the
-following planned views into `visual-references/` and replace this plan with
-stable `VIS-*` paths plus exact page/state/journey/REQ/AC mappings:
+`VIS-009`–`VIS-015` were captured from the approved runnable only after the
+explicit user approval above and after post-approval validation. They are the
+normative final references. Earlier `VIS-001`–`VIS-008` remain exploratory
+RV-007 history and are not final normative images. Files under
+`review-evidence/` remain non-normative review aids.
 
-| Planned Final Visual | Journey / Surface / State | Viewport | Requirements-Defining Visible Details | Status |
-| --- | --- | --- | --- | --- |
-| Analytics partial desktop | `UXJ-001`; `UIS-001/002/004` | 1440×900 | Compact toolbar, six equal peers, partial truth, open-top line, Detailed usage position | Pending confirmation |
-| Filters open desktop | `UXJ-003`; `UIS-003` | 1440×900 | Named trigger/count/context, Runtime/Provider/Model, Apply/Clear | Pending confirmation |
-| Detailed usage expanded | `UXJ-003`; `UIS-004` | 1440×900 | Visible grouping, contextual rows, exact component disclosure | Pending confirmation |
-| Analytics Cost/full desktop | `UXJ-002`; `UIS-002/004` | 1440×900 | Cost units/scale, complete pricing, same one-line hierarchy | Pending confirmation |
-| Run details Task expanded | `UXJ-005`; `UIS-005` | 1440×900 | Creation-time helper, Task beside Fetch, hierarchy and lifetime evidence | Pending confirmation |
-| Run details Model | `UXJ-005`; `UIS-005` | 1440×900 | Model grouping/table and absence of unsupported Runs count | Pending confirmation |
-| Analytics narrow | `UXJ-004`; `UIS-001/002/004` | 390×844 | Wrapped controls, two equal peers, readable axes/ticks, no page overflow | Pending confirmation |
+| Visual ID | Journey / Surface / State | Viewport | Image Path | Requirements-Defining Visible Details | Explicitly Illustrative Fixture Content Or Permitted Variation |
+| --- | --- | --- | --- | --- | --- |
+| `VIS-009` | `UXJ-001` / `SCN-001`; Analytics partial coverage, Tokens | 1440×900 | `visual-references/VIS-009-final-analytics-partial-desktop-1440x900.png` | Compact toolbar; six equal peers/order/emphasis; partial coverage/pricing; open-top 29-point line; no comparison/driver/ratio/export. Maps `REQ-001`, `REQ-002`, `REQ-004`, `REQ-005`, `REQ-009`, `REQ-012`, `REQ-015`, `REQ-016`; `AC-001`, `AC-003`, `AC-004`, `AC-013`, `AC-015`, `AC-016`. | Dates, values, provider/model identities are illustrative. |
+| `VIS-010` | `UXJ-003` / `SCN-003`; focused Filters open | 1440×900 | `visual-references/VIS-010-final-analytics-filters-open-desktop-1440x900.png` | Named Filters trigger; Runtime/Provider/Model; Apply/Clear; applied context; responsive compact control hierarchy. Maps `REQ-003`, `REQ-009`, `REQ-011`, `REQ-012`; `AC-002`, `AC-010`, `AC-011`. | Option values are illustrative; fields/actions are normative. |
+| `VIS-011` | `UXJ-003` / `SCN-003`; Detailed usage Provider grouping, row expanded | 1440×900 browser context; cropped surface | `visual-references/VIS-011-final-detailed-usage-expanded-desktop-1440x900.png` | Visible neutral section/grouping; identity/token/cost/share rows; Uncached/Cached/Cache write/Total input/Output/Thinking exact disclosure; local truth. Maps `REQ-006`, `REQ-008`, `REQ-009`, `REQ-011`, `REQ-012`, `REQ-016`; `AC-005`, `AC-006`, `AC-008`, `AC-010`, `AC-011`, `AC-016`. | Row names and amounts are illustrative; fields, disclosure hierarchy, and state semantics are normative. |
+| `VIS-012` | `UXJ-002` / `SCN-002`; Analytics full coverage, Cost (USD) | 1440×900 | `visual-references/VIS-012-final-analytics-cost-full-desktop-1440x900.png` | Same six-peer hierarchy; Cost selection; metric-aware `Cost (USD)` Y title/scale; one line; complete estimate; no prior series. Maps `REQ-002`, `REQ-004`, `REQ-005`, `REQ-007`, `REQ-008`, `REQ-012`, `REQ-015`, `REQ-016`; `AC-001`, `AC-003`, `AC-004`, `AC-007`, `AC-008`, `AC-011`, `AC-015`, `AC-016`. | USD values/dates are illustrative; currency-aware behavior is normative. |
+| `VIS-013` | `UXJ-005` / `SCN-005`; Run details Task, Team expanded | 1440×900 | `visual-references/VIS-013-final-run-details-task-expanded-desktop-1440x900.png` | Unified shell/spacing/control/table; Task beside Fetch; creation-time/lifetime helper; hierarchy/cost disclosure; contained table overflow. Maps `REQ-001`, `REQ-009`, `REQ-011`, `REQ-013`, `REQ-014`; `AC-010`, `AC-012`, `AC-013`. | Task/Team/run names, dates, and values are illustrative; semantics/hierarchy are normative. |
+| `VIS-014` | `UXJ-005` / `SCN-005`; Run details Model | 1440×900 | `visual-references/VIS-014-final-run-details-model-desktop-1440x900.png` | Model grouping beside Fetch; model table styling and cost/cache evidence; no unsupported Runs count. Maps `REQ-001`, `REQ-009`, `REQ-011`, `REQ-013`, `REQ-014`; `AC-010`, `AC-012`, `AC-013`. | Model/runtime names and values are illustrative; visible columns and absence of Runs are normative. |
+| `VIS-015` | `UXJ-004` / `SCN-004`; Analytics partial coverage, narrow | 390×844 | `visual-references/VIS-015-final-analytics-partial-narrow-390x844.png` | Manual Settings shell policy; wrapped compact controls; two equal summary peers; fixed order/readability; no page-level overflow. Maps `REQ-002`, `REQ-003`, `REQ-009`, `REQ-011`, `REQ-014`, `REQ-015`, `REQ-016`; `AC-001`, `AC-002`, `AC-005`, `AC-010`, `AC-013`, `AC-015`, `AC-016`. | Fixture values are illustrative; 6→3→2 reflow and narrow readability are normative. |
+
+The machine-readable hashes, capture conditions, and exact ID mappings are in
+`visual-references/final-reference-manifest.json`.
 
 ## Linked Prototype Evidence
 
@@ -260,18 +262,18 @@ Backend/GraphQL/persistence/accounting/pricing changes; quota/budget/forecast/al
 ## Open Decisions And Risks
 
 - Product behavior decisions: None; `DEC-001`–`DEC-009` are resolved.
-- Process gate: Explicit user confirmation of this actual final runnable is pending.
+- Process gate: None. The actual final runnable is explicitly approved.
 - Production risk for downstream implementation: Preserve one-result/query semantics and exact/cost/cache truth while refactoring presentation; ensure the local CSV path is completely removed without adding requests; implement the approved open-top chart accessibly in the production charting stack.
 
 ## Final Consistency Check
 
-- User confirmation is recorded: `No — direction and CSV delta are confirmed; separate final runnable confirmation pending`
-- Prototype repository/root, source pin, and prototype revision are recorded: `Yes — review-candidate revision recorded; final accepted revision pending confirmation`
+- User confirmation is recorded: `Yes`
+- Prototype repository/root, source pin, and prototype revision are recorded: `Yes`
 - Ticket record, ticket folder, and linked artifacts agree: `Yes`
 - Every in-scope journey is specified: `Yes`
-- Every surface and state needed to define the approved experience has an applicable final visual reference: `No — capture is intentionally deferred until confirmation`
-- Prototype, screenshots, and this specification agree: `Review evidence only; final consistency pending`
-- Final visuals are production-quality and contain no unintended placeholders, generic starter styling, clipping, overlap, or visual drift: `Review candidate passed browser checks; normative final capture pending`
-- Every visible detail is requirements-defining unless an explicit illustrative or permitted-variation entry says otherwise: `Yes for the candidate; approval pending`
+- Every surface and state needed to define the approved experience has an applicable final visual reference: `Yes — primary page, controls, exact evidence, both Run-details groupings, and narrow layout are captured; deterministic secondary state variants are linked through validation`
+- Prototype, screenshots, and this specification agree: `Yes`
+- Final visuals are production-quality and contain no unintended placeholders, generic starter styling, clipping, overlap, or visual drift: `Yes — visually inspected after capture; dense table overflow is intentionally contained as specified`
+- Every visible detail is requirements-defining unless an explicit illustrative or permitted-variation entry says otherwise: `Yes`
 - Mocked boundaries and unresolved production behavior are explicit: `Yes`
-- Prototype-repository artifact and visual-reference paths agree with this specification: `Yes; final visual files pending`
+- Prototype-repository artifact and visual-reference paths agree with this specification: `Yes`

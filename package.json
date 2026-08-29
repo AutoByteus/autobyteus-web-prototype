@@ -33,7 +33,8 @@
     "validate:gap-010-package": "node prototype/scripts/validate-gap-010-package.mjs",
     "validate:personal-integration": "node prototype/scripts/validate-independent-repository.mjs",
     "validate:workspace-ownership": "node prototype/scripts/validate-workspace-ownership.mjs",
-    "validate:token-statistics-final": "node prototype/scripts/validate-token-statistics-final.mjs"
+    "validate:token-statistics-final": "node prototype/scripts/validate-token-statistics-final.mjs",
+    "capture:token-statistics-final": "node prototype/scripts/capture-token-statistics-final.mjs"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",

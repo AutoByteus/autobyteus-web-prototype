@@ -10,9 +10,10 @@ baseline from `origin/personal` at
 baseline outside that surface. The final candidate is awaiting explicit user
 confirmation and is not integrated into the canonical prototype branch yet.
 
-Status: **Final Token Statistics review candidate on
-`prototype/reqpkg-tsui-001`; current-state baseline remains approved and
-integrated through `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`.**
+Status: **Final Token Statistics prototype approved on
+`prototype/reqpkg-tsui-001`; repository integration is being finalized. The
+current-state baseline remains approved and integrated through
+`16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`.**
 
 Canonical ownership: independent sibling repository
 `https://github.com/AutoByteus/autobyteus-web-prototype.git`, checked out at
@@ -93,18 +94,18 @@ worktree on `prototype/reqpkg-tsui-001`. The active review URL is:
 
 - `http://127.0.0.1:3261/settings?section=token-usage`
 
-The candidate implements RER-009: six equal cache-aware summary columns, the
+The user-approved final prototype implements RER-009: six equal cache-aware summary columns, the
 open-top 29-point daily Tokens/Cost line, focused range/filter/metric controls,
 visible secondary `Detailed usage`, and lightly unified Run details. It renders
 no prior-period, contributor/driver, Input/Output-ratio, or CSV-export UI and
 contains no supported CSV preparation/download path. Exploratory RV-007 remains
-historical decision evidence only; review screenshots under the ticket's
-`review-evidence/` folder are non-normative until the user confirms this actual
-final runnable and Product captures the final `VIS-*` references.
-The committed review candidate is
+historical decision evidence only. Normative final screenshots are
+`VIS-009`–`VIS-015` under the ticket's `visual-references/` directory; files in
+`review-evidence/` remain non-normative.
+The approved runnable behavior revision is
 `3de6227769c33cfdbefa42f22b44a0de83329563` on
-`prototype/reqpkg-tsui-001`; it is not yet the final accepted or integrated
-revision.
+`prototype/reqpkg-tsui-001`; the completed package/integration revision is
+recorded in the Product ticket.
 
 Review-package artifacts:
 

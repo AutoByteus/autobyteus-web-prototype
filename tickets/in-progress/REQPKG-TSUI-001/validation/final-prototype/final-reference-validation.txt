@@ -1,0 +1,8 @@
+PASS VIS-009 VIS-009-final-analytics-partial-desktop-1440x900.png 122949 bytes 78e93b7b2058427522e5196f0c3a903b1f729800a9147300653b67f2927850ae
+PASS VIS-010 VIS-010-final-analytics-filters-open-desktop-1440x900.png 121213 bytes 68817d4625c105da512e1f05ceb9f769cc8846f3f2b4dbd7f0da1650216948b1
+PASS VIS-011 VIS-011-final-detailed-usage-expanded-desktop-1440x900.png 46338 bytes 5cd034f2d070760f71c0c751a36304cb2048f8a5a91b7262d3da69160ad04bfc
+PASS VIS-012 VIS-012-final-analytics-cost-full-desktop-1440x900.png 114895 bytes 464840aa31250b01e215bb5e4368588ad410069974e844ab8e9a48cc77157f4f
+PASS VIS-013 VIS-013-final-run-details-task-expanded-desktop-1440x900.png 131788 bytes 637980773665541d0bab3fa1c3925e8d9c7e2c0693a0b80ce0e351ad9a599a15
+PASS VIS-014 VIS-014-final-run-details-model-desktop-1440x900.png 92964 bytes 8acc0fa18ab17e3d918e71dd739744e699786aa9405d6740771d2c43a1ff21f5
+PASS VIS-015 VIS-015-final-analytics-partial-narrow-390x844.png 42912 bytes 719b9f656b845f1b8ca6705d560aeceea318af17e2c39988d0f8b7123a59df38
+PASS final reference manifest 7/7
