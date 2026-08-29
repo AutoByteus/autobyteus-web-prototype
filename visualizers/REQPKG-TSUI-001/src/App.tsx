@@ -5,10 +5,10 @@ type Scene = "partial" | "comparable" | "filters" | "evidence" | "runs" | "narro
 type Metric = "tokens" | "cost";
 type RunGrouping = "task" | "model";
 
-const driverRows = [
-  { id: "codex", driver: "Codex · GPT-5.6 Sol", context: "Runtime + model", input: "61,200", output: "18,800", tokens: "80,000", cost: "$0.42", share: 52.6, status: "Partial price", currency: "USD", cache: "11,280", thinking: "5,640" },
-  { id: "claude", driver: "Claude SDK · Sonnet 4.5", context: "Runtime + model", input: "36,900", output: "12,100", tokens: "49,000", cost: "$0.36", share: 32.2, status: "Estimated", currency: "USD", cache: "7,380", thinking: "2,420" },
-  { id: "local", driver: "Autobyteus · Local model", context: "Runtime + model", input: "16,900", output: "6,100", tokens: "23,000", cost: "No API bill", share: 15.2, status: "Local", currency: "—", cache: "2,600", thinking: "1,220" },
+const usageRows = [
+  { id: "codex", label: "Codex · GPT-5.6 Sol", context: "Runtime + model", input: "61,200", output: "18,800", tokens: "80,000", cost: "$0.42", share: 52.6, status: "Partial price", currency: "USD", cache: "11,280", thinking: "5,640" },
+  { id: "claude", label: "Claude SDK · Sonnet 4.5", context: "Runtime + model", input: "36,900", output: "12,100", tokens: "49,000", cost: "$0.36", share: 32.2, status: "Estimated", currency: "USD", cache: "7,380", thinking: "2,420" },
+  { id: "local", label: "Autobyteus · Local model", context: "Runtime + model", input: "16,900", output: "6,100", tokens: "23,000", cost: "No API bill", share: 15.2, status: "Local", currency: "—", cache: "2,600", thinking: "1,220" },
 ];
 
 function Icon({ name, size = 16 }: { name: "filter" | "download" | "chevron" | "info" | "check" | "table"; size?: number }) {
@@ -174,7 +174,7 @@ function Analytics(props: AnalyticsProps) {
   const total = props.filterApplied ? "80K" : "152K";
   const totalExact = props.filterApplied ? "80,000" : "152,000";
   const cost = props.filterApplied ? "$0.42" : props.full ? "$1.17" : "$0.87";
-  const driverData = props.filterApplied ? driverRows.slice(0, 1) : driverRows;
+  const usageData = props.filterApplied ? usageRows.slice(0, 1) : usageRows;
 
   if (props.direction === "dense") {
     return <div className="analytics dense-layout">
@@ -182,19 +182,16 @@ function Analytics(props: AnalyticsProps) {
       <div className={`dense-status ${props.full ? "full" : "partial"}`}>
         <span><span className="status-dot" /> {props.full ? "Full analytics coverage" : "Partial coverage since Aug 11"}</span>
         <span>{props.full ? "Complete pricing" : "Some usage is unpriced"}</span>
-        {!props.full && <span className="muted-comparison">Prior period unavailable</span>}
       </div>
       <section className="metric-ledger" aria-label="Usage summary">
         <div className="metric-primary"><span>Total tokens</span><strong>{total}</strong><small>{totalExact} exact · 115K input / 37K output</small></div>
         <div><span>Estimated API cost</span><strong>{cost}</strong><small>{props.full ? "Complete estimate" : "Partial estimate"}</small></div>
-        <div><span>Per active day</span><strong>{props.filterApplied ? "13.33K" : "25.33K"}</strong><small>6 active days</small></div>
-        <div><span>Prior period</span><strong>{props.full ? "+28.2%" : "—"}</strong><small>{props.full ? "+33.44K · Prior 118.56K" : "Not comparable"}</small></div>
+        <div><span>Input / output</span><strong>{props.filterApplied ? "61.2K / 18.8K" : "115K / 37K"}</strong><small>Exact token composition</small></div>
       </section>
-      <div className="dense-analysis-grid">
+      <div className="dense-analysis-grid essentials-only">
         <section className="plain-section trend-section"><SectionHeading title="Usage over time" meta="Aug 1–29 · UTC" /><TrendChart compact filtered={props.filterApplied} metric={props.metric} full={props.full} /></section>
-        <section className="plain-section rank-section"><SectionHeading title="Leading drivers" meta="Runtime + model" /><DriverBars rows={driverData} metric={props.metric} /></section>
       </div>
-      <DenseEvidence exactVisible={props.exactVisible} evidenceOpen={props.evidenceOpen} rows={driverData} setEvidenceOpen={props.setEvidenceOpen} />
+      <DenseEvidence exactVisible={props.exactVisible} evidenceOpen={props.evidenceOpen} rows={usageData} setEvidenceOpen={props.setEvidenceOpen} />
       {props.exported && <div className="toast" role="status"><Icon name="check" /> Local CSV prepared for the applied result.</div>}
     </div>;
   }
@@ -211,18 +208,13 @@ function Analytics(props: AnalyticsProps) {
       </div>
       <div className="hero-secondary">
         <div><span>Estimated API cost</span><strong>{cost}</strong><small>{props.full ? "Complete estimate" : "Partial · some usage unpriced"}</small></div>
-        <div><span>Per active day</span><strong>{props.filterApplied ? "13.33K" : "25.33K"}</strong><small>6 active days</small></div>
-      </div>
-      <div className={`comparison-note ${props.full ? "available" : "unavailable"}`}>
-        <Icon name={props.full ? "check" : "info"} />
-        <div><strong>{props.full ? "+28.2% from prior period" : "No comparable prior period"}</strong><span>{props.full ? "+33.44K · Prior 118.56K" : "The prior range is uncovered; current usage remains valid."}</span></div>
+        <div><span>Input / output</span><strong>{props.filterApplied ? "61.2K / 18.8K" : "115K / 37K"}</strong><small>Exact token composition</small></div>
       </div>
     </section>
-    <div className="focus-analysis-grid">
+    <div className="focus-analysis-grid essentials-only">
       <section className="surface-section trend-section"><SectionHeading title="Usage over time" meta="Daily points · exact buckets remain available" /><TrendChart filtered={props.filterApplied} metric={props.metric} full={props.full} /></section>
-      <section className="surface-section driver-spotlight"><SectionHeading title="Dominant driver" meta="Runtime + model" /><DriverSpotlight row={driverData[0]} metric={props.metric} /><button className="text-action" onClick={() => props.setEvidenceOpen(props.evidenceOpen ? null : "codex")} type="button"><Icon name="table" /> Inspect exact evidence</button></section>
     </div>
-    <FocusEvidence exactVisible={props.exactVisible} evidenceOpen={props.evidenceOpen} rows={driverData} setEvidenceOpen={props.setEvidenceOpen} />
+    <FocusEvidence exactVisible={props.exactVisible} evidenceOpen={props.evidenceOpen} rows={usageData} setEvidenceOpen={props.setEvidenceOpen} />
     {props.exported && <div className="toast" role="status"><Icon name="check" /> Local CSV prepared for the applied result.</div>}
   </div>;
 }
@@ -307,35 +299,27 @@ function TrendChart({ compact = false, filtered, metric, full }: { compact?: boo
   </div>;
 }
 
-function DriverBars({ rows, metric }: { rows: typeof driverRows; metric: Metric }) {
-  return <div className="driver-bars">{rows.map((row) => <div className="driver-bar-row" key={row.id}><div><strong>{row.driver}</strong><span>{metric === "tokens" ? row.tokens : row.cost} · {row.share}%</span></div><div className="track"><span style={{ width: `${row.share}%` }} /></div></div>)}</div>;
-}
-
-function DriverSpotlight({ row, metric }: { row: typeof driverRows[number]; metric: Metric }) {
-  return <div className="driver-spotlight-body"><div className="driver-icon">C</div><div className="driver-name"><strong>{row.driver}</strong><span>{row.context}</span></div><div className="driver-share"><strong>{row.share}%</strong><span>of tracked use</span></div><div className="share-track"><span style={{ width: `${row.share}%` }} /></div><dl><div><dt>{metric === "tokens" ? "Tokens" : "Estimated cost"}</dt><dd>{metric === "tokens" ? row.tokens : row.cost}</dd></div><div><dt>Pricing</dt><dd>{row.status}</dd></div></dl></div>;
-}
-
-function FocusEvidence({ exactVisible, evidenceOpen, rows, setEvidenceOpen }: { exactVisible: boolean; evidenceOpen: string | null; rows: typeof driverRows; setEvidenceOpen: (value: string | null) => void }) {
+function FocusEvidence({ exactVisible, evidenceOpen, rows, setEvidenceOpen }: { exactVisible: boolean; evidenceOpen: string | null; rows: typeof usageRows; setEvidenceOpen: (value: string | null) => void }) {
   return <section className={`surface-section evidence-section ${exactVisible ? "emphasis" : ""}`}>
-    <div className="evidence-title"><div><h3>Usage drivers</h3><p>Primary facts first; secondary accounting evidence stays attached to each row.</p></div><select aria-label="Breakdown grouping"><option>Runtime + model</option><option>Runtime</option><option>Provider</option><option>Model</option></select></div>
-    <div className="priority-table" role="table" aria-label="Exact usage driver evidence">
-      <div className="priority-row header" role="row"><span role="columnheader">Driver</span><span role="columnheader">Tokens</span><span role="columnheader">Estimated cost</span><span role="columnheader">Share</span><span role="columnheader">Evidence</span></div>
+    <div className="evidence-title"><div><h3>Detailed usage</h3><p>Usage by runtime and model. Open a row for exact token and cost details.</p></div><select aria-label="Breakdown grouping"><option>Runtime + model</option><option>Runtime</option><option>Provider</option><option>Model</option></select></div>
+    <div className="priority-table" role="table" aria-label="Exact usage by runtime and model">
+      <div className="priority-row header" role="row"><span role="columnheader">Runtime / model</span><span role="columnheader">Tokens</span><span role="columnheader">Estimated cost</span><span role="columnheader">Share</span><span role="columnheader">Details</span></div>
       {rows.map((row) => <div className="priority-row-wrap" key={row.id}>
-        <div className="priority-row" role="row"><span className="row-driver" role="cell"><strong>{row.driver}</strong><small>{row.context}</small></span><span className="tabular" role="cell">{row.tokens}</span><span className="tabular" role="cell">{row.cost}<small>{row.status}</small></span><span className="tabular" role="cell">{row.share}%</span><span role="cell"><button aria-expanded={evidenceOpen === row.id} className="evidence-button" onClick={() => setEvidenceOpen(evidenceOpen === row.id ? null : row.id)} type="button">{evidenceOpen === row.id ? "Hide" : "Details"}<Icon name="chevron" /></button></span></div>
+        <div className="priority-row" role="row"><span className="row-identity" role="cell"><strong>{row.label}</strong><small>{row.context}</small></span><span className="tabular" role="cell">{row.tokens}</span><span className="tabular" role="cell">{row.cost}<small>{row.status}</small></span><span className="tabular" role="cell">{row.share}%</span><span role="cell"><button aria-expanded={evidenceOpen === row.id} className="evidence-button" onClick={() => setEvidenceOpen(evidenceOpen === row.id ? null : row.id)} type="button">{evidenceOpen === row.id ? "Hide" : "Details"}<Icon name="chevron" /></button></span></div>
         {evidenceOpen === row.id && <div className="row-evidence"><span><small>Input</small>{row.input}</span><span><small>Output</small>{row.output}</span><span><small>Cache read</small>{row.cache}</span><span><small>Thinking</small>{row.thinking}</span><span><small>Cost status</small>{row.status}</span><span><small>Currency</small>{row.currency}</span></div>}
       </div>)}
     </div>
   </section>;
 }
 
-function DenseEvidence({ exactVisible, evidenceOpen, rows, setEvidenceOpen }: { exactVisible: boolean; evidenceOpen: string | null; rows: typeof driverRows; setEvidenceOpen: (value: string | null) => void }) {
+function DenseEvidence({ exactVisible, evidenceOpen, rows, setEvidenceOpen }: { exactVisible: boolean; evidenceOpen: string | null; rows: typeof usageRows; setEvidenceOpen: (value: string | null) => void }) {
   const selected = rows.find((row) => row.id === evidenceOpen) ?? rows[0];
   const inspectorVisible = exactVisible || evidenceOpen !== null;
   return <section className={`plain-section dense-evidence ${inspectorVisible ? "with-inspector" : ""}`}>
-    <div className="evidence-title"><div><h3>Exact contribution ledger</h3><p>Dense scan with secondary evidence in a pinned inspector.</p></div><select aria-label="Breakdown grouping"><option>Runtime + model</option><option>Runtime</option><option>Provider</option><option>Model</option></select></div>
+    <div className="evidence-title"><div><h3>Detailed usage</h3><p>Usage by runtime and model with exact token and cost evidence.</p></div><select aria-label="Breakdown grouping"><option>Runtime + model</option><option>Runtime</option><option>Provider</option><option>Model</option></select></div>
     <div className="dense-evidence-body">
-      <div className="dense-table-wrap"><table><thead><tr><th>Driver</th><th>Input</th><th>Output</th><th>Total</th><th>Cost</th><th>Share</th></tr></thead><tbody>{rows.map((row) => <tr aria-selected={selected?.id === row.id} key={row.id} onClick={() => setEvidenceOpen(row.id)}><td><strong>{row.driver}</strong><small>{row.status}</small></td><td>{row.input}</td><td>{row.output}</td><td>{row.tokens}</td><td>{row.cost}</td><td>{row.share}%</td></tr>)}</tbody></table></div>
-      {inspectorVisible && selected && <aside className="evidence-inspector"><p>Selected evidence</p><h4>{selected.driver}</h4><dl><div><dt>Cache read</dt><dd>{selected.cache}</dd></div><div><dt>Thinking</dt><dd>{selected.thinking}</dd></div><div><dt>Cost status</dt><dd>{selected.status}</dd></div><div><dt>Currency</dt><dd>{selected.currency}</dd></div></dl><span>Exact CSV fields remain unchanged.</span></aside>}
+      <div className="dense-table-wrap"><table><thead><tr><th>Runtime / model</th><th>Input</th><th>Output</th><th>Total</th><th>Cost</th><th>Share</th></tr></thead><tbody>{rows.map((row) => <tr aria-selected={selected?.id === row.id} key={row.id} onClick={() => setEvidenceOpen(row.id)}><td><strong>{row.label}</strong><small>{row.status}</small></td><td>{row.input}</td><td>{row.output}</td><td>{row.tokens}</td><td>{row.cost}</td><td>{row.share}%</td></tr>)}</tbody></table></div>
+      {inspectorVisible && selected && <aside className="evidence-inspector"><p>Selected evidence</p><h4>{selected.label}</h4><dl><div><dt>Cache read</dt><dd>{selected.cache}</dd></div><div><dt>Thinking</dt><dd>{selected.thinking}</dd></div><div><dt>Cost status</dt><dd>{selected.status}</dd></div><div><dt>Currency</dt><dd>{selected.currency}</dd></div></dl><span>Exact CSV fields remain unchanged.</span></aside>}
     </div>
   </section>;
 }

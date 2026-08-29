@@ -2,7 +2,7 @@
 
 - Package / ticket ID: `REQPKG-TSUI-001`
 - Audit revision: `FA-001`
-- Visualization revision assessed: `RV-004`
+- Visualization revision assessed: `RV-005`
 - Audit date: 2026-08-29
 - Source authority: `origin/personal` at `9d0fd7c570d58da1af2c7a40279327c8a20a8093`
 - Classification: `Achievable with the current source-pin data and GraphQL contracts after one unsupported illustrative column was removed`
@@ -15,7 +15,7 @@ or historical backfill. Its visible facts are either already returned by the
 current analytics and Run-details queries or are deterministic client-side
 formatting/ranking calculations already present in the source frontend.
 
-This conclusion is about **data and contract feasibility**. `RV-003` remains an
+This conclusion is about **data and contract feasibility**. `RV-005` remains an
 exploratory Requirements Visualization, not a complete implementation-ready
 prototype. A final prototype/implementation must still exercise every existing
 loading, error, empty, coverage, pricing, local, mixed-currency, comparison,
@@ -31,10 +31,8 @@ visualizer's fixed fixture.
 | Total, input, output, and estimated cost | `selectedAggregate` and `TokenUsageCostSummaryAggregateFields` | Format existing exact fields; never recompute accounting from rounded chart values. |
 | Coverage and tracking start | `coverage.status`, `coverage.coverageStart` | Restyle current FULL/PARTIAL/UNAVAILABLE truth; never infer pre-coverage zero. |
 | Price quality, currency, local/no-bill, and missing dimensions | `selectedCostQuality`, row/bucket `costQuality`, aggregate `apiCostStatus` | Preserve current nullable/status-aware rendering. |
-| Per-active-day value | `activeDayCount` plus `selectedAggregate.totalTokens` | Current result already returns the authoritative active-day count. |
-| Prior absolute/percentage change and no-comparison state | `comparisonAggregate`, `comparisonCoverage`, `comparisonCostQuality`, `comparisonRange` | Current frontend already derives delta/percentage only when coverage/value/currency are comparable. |
-| Usage trend and current/prior pace | `trendBuckets`, `comparisonBuckets`, bucket aggregate/cost quality | Recompose current bucket data; exact accessible bucket evidence remains required. |
-| Dominant driver and ranked drivers | `breakdownRows`, row aggregate, `tokenUsageBreakdownShare` | No new query. Token view may use server token ordering; cost view must rank client-side by comparable cost rather than blindly taking row zero. |
+| Usage trend | `trendBuckets`, bucket aggregate/cost quality | Recompose current daily bucket data as a line with explicit points; exact accessible bucket evidence remains required. |
+| Detailed usage rows and share | `breakdownRows`, row aggregate, `tokenUsageBreakdownShare` | No new query. Runtime/model identity and exact evidence remain available without deriving or labeling one row as dominant. |
 | Runtime/model/provider identity | Breakdown row identity and display-name fields | Reuse current display projection; do not hard-code production names. |
 | Primary exact tokens/cost/share and secondary input/output/cache/reasoning/status/currency | Breakdown row `aggregate` plus `costQuality` | All proposed disclosure fields exist in the current aggregate fragment. |
 | Grouping choices | Current `RUNTIME_MODEL`, `RUNTIME`, `PROVIDER`, `MODEL` UI grouping | Continue current client-side grouping over one coherent result. |
@@ -82,11 +80,12 @@ result `PASS`.
    GraphQL types; do not transplant the visualizer's hard-coded fixture.
 2. Keep a single analytics query result coherent across summary, charts,
    breakdown, exact evidence, filters, grouping, and export.
-3. Derive compact values, percentages, shares, and dominant-driver ranking
-   client-side only from exact returned values, with current comparability and
-   currency rules.
-4. Preserve the current pace/comparison evidence even where the focused
-   exploratory first view reduces unavailable comparison to concise context.
+3. Derive compact values, percentages, and shares client-side only from exact
+   returned values, with current currency and availability rules.
+4. Do not reintroduce prior-period or dominant-contributor presentation from
+   prototype convenience. `RV-005` removes them by explicit user direction;
+   canonical implementation authority still depends on Requirements
+   Engineering updating the conflicting requirements.
 5. Preserve current Custom validation, retry, loading, empty, uncovered,
    partial/full, mixed-currency, local/no-bill, sorting, expansion, exact CSV,
    localization, and accessibility behavior.

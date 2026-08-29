@@ -11,7 +11,8 @@ await mkdir(visualRoot, { recursive: true })
 await mkdir(evidenceRoot, { recursive: true })
 
 const browser = await chromium.launch({ headless: true, executablePath: '/usr/bin/chromium', args: ['--no-sandbox'] })
-const result = { generatedAt: new Date().toISOString(), baseUrl, revision: 'RV-004', checks: [], screenshots: [], browserErrors: [] }
+const result = { generatedAt: new Date().toISOString(), baseUrl, revision: 'RV-005', checks: [], screenshots: [], browserErrors: [] }
+const forbiddenProductLanguage = ['Dominant driver', 'Usage drivers', 'Leading drivers', 'Prior period', 'No comparable prior period', 'Prior period unavailable', '+28.2% from prior period', '+28.2%']
 
 const check = (id, name, pass, observed = null) => {
   result.checks.push({ id, name, pass, observed })
@@ -42,19 +43,19 @@ try {
   const { page } = desktop
   let body = await page.locator('body').innerText()
   const forbiddenReviewChrome = ['Requirements visualization', 'Choose how Token Statistics should prioritize evidence', 'Visual direction', 'Journey state', 'Reset review']
-  check('VAL-001', 'Focused partial URL opens directly on the product-only future-state surface', body.includes('Partial coverage') && body.includes('152K') && body.includes('$0.87') && body.includes('No comparable prior period') && body.includes('Dominant driver') && forbiddenReviewChrome.every(text => !body.includes(text)))
+  check('VAL-001', 'Focused partial URL opens directly on the stripped product-only future-state surface', body.includes('Partial coverage') && body.includes('152K') && body.includes('$0.87') && body.includes('Usage over time') && body.includes('Detailed usage') && forbiddenReviewChrome.every(text => !body.includes(text)) && forbiddenProductLanguage.every(text => !body.includes(text)))
   await shot(page, 'VIS-001', 'direction-a-partial-desktop')
 
   await navigate(page, '/?direction=dense')
   body = await page.locator('body').innerText()
-  check('VAL-002', 'Dense direction uses a separate clean URL with the same truthful partial fixture', body.includes('Partial coverage since Aug 11') && body.includes('152K') && body.includes('$0.87') && body.includes('Prior period unavailable') && body.includes('Leading drivers') && forbiddenReviewChrome.every(text => !body.includes(text)))
+  check('VAL-002', 'Dense direction uses a separate clean URL with the same stripped truthful partial fixture', body.includes('Partial coverage since Aug 11') && body.includes('152K') && body.includes('$0.87') && body.includes('Usage over time') && body.includes('Detailed usage') && forbiddenReviewChrome.every(text => !body.includes(text)) && forbiddenProductLanguage.every(text => !body.includes(text)))
   await shot(page, 'VIS-002', 'direction-b-partial-desktop')
 
   await navigate(page, '/?direction=focus')
   await page.getByRole('button', { name: /UTC range/ }).click()
   await page.getByRole('menuitem', { name: /Last month/ }).click()
   body = await page.locator('body').innerText()
-  check('VAL-003', 'Product-native range selection reveals full coverage and comparable prior evidence', body.includes('Last month') && body.includes('Full coverage') && body.includes('$1.17') && body.includes('+28.2% from prior period') && body.includes('Prior 118.56K'))
+  check('VAL-003', 'Product-native range selection reveals full coverage without reintroducing prior-period callouts', body.includes('Last month') && body.includes('Full coverage') && body.includes('$1.17') && forbiddenProductLanguage.every(text => !body.includes(text)))
 
   await navigate(page, '/?direction=focus')
   await page.getByRole('button', { name: /Filters/ }).click()
@@ -66,18 +67,18 @@ try {
   await navigate(page, '/?direction=dense')
   await page.getByLabel('Runtime').selectOption('codex')
   body = await page.locator('body').innerText()
-  check('VAL-005', 'Dense product-native controls retain always-visible analytical context', body.includes('Runtime') && body.includes('Provider') && body.includes('Model') && body.includes('80K') && body.includes('Leading drivers'))
+  check('VAL-005', 'Dense product-native controls retain always-visible analytical context', body.includes('Runtime') && body.includes('Provider') && body.includes('Model') && body.includes('80K') && body.includes('Detailed usage') && forbiddenProductLanguage.every(text => !body.includes(text)))
 
   await navigate(page, '/?direction=focus')
-  await page.getByRole('button', { name: /Inspect exact evidence/ }).click()
+  await page.getByRole('button', { name: 'Details' }).first().click()
   body = await page.locator('body').innerText()
-  check('VAL-006', 'Focused evidence keeps primary columns visible and discloses secondary evidence in place', body.includes('Usage drivers') && body.includes('80,000') && body.includes('$0.42') && body.includes('52.6%') && body.toLowerCase().includes('cache read') && body.toLowerCase().includes('currency'))
+  check('VAL-006', 'Focused evidence keeps primary columns visible and discloses secondary evidence in place', body.includes('Detailed usage') && body.includes('80,000') && body.includes('$0.42') && body.includes('52.6%') && body.toLowerCase().includes('cache read') && body.toLowerCase().includes('currency') && forbiddenProductLanguage.every(text => !body.includes(text)))
   await shot(page, 'VIS-004', 'direction-a-exact-evidence-desktop')
 
   await navigate(page, '/?direction=dense')
   await page.getByRole('row', { name: /Codex · GPT-5.6 Sol/ }).click()
   body = await page.locator('body').innerText()
-  check('VAL-007', 'Dense row selection reveals a pinned exact-evidence inspector without changing values', body.includes('Exact contribution ledger') && body.toLowerCase().includes('selected evidence') && body.includes('11,280') && body.includes('Partial price') && body.includes('Exact CSV fields remain unchanged'))
+  check('VAL-007', 'Dense row selection reveals a pinned exact-evidence inspector without changing values', body.includes('Detailed usage') && body.toLowerCase().includes('selected evidence') && body.includes('11,280') && body.includes('Partial price') && body.includes('Exact CSV fields remain unchanged') && forbiddenProductLanguage.every(text => !body.includes(text)))
 
   await navigate(page, '/?direction=focus')
   await page.getByRole('tab', { name: 'Run details' }).click()
@@ -93,7 +94,7 @@ try {
 
   await navigate(page, '/?direction=focus&scene=narrow')
   body = await page.locator('body').innerText()
-  check('VAL-010', 'Constrained composition keeps navigation open, export visible, and missing comparison proportionate', body.includes('Export CSV') && body.includes('No comparable prior period') && body.includes('Token Statistics'))
+  check('VAL-010', 'Constrained composition keeps navigation open and the essential usage evidence visible', body.includes('Export CSV') && body.includes('Token Statistics') && body.includes('Usage over time') && forbiddenProductLanguage.every(text => !body.includes(text)))
   await shot(page, 'VIS-007', 'direction-a-constrained-frame-desktop')
 
   const separator = page.getByRole('separator', { name: 'Resize Settings navigation' })
@@ -132,7 +133,7 @@ try {
   const narrow = await contextFor({ width: 390, height: 844 })
   const geometry = await narrow.page.evaluate(() => ({ viewport: innerWidth, documentWidth: document.documentElement.scrollWidth }))
   body = await narrow.page.locator('body').innerText()
-  check('VAL-014', 'Actual narrow viewport avoids page overflow and retains the critical product controls and evidence', geometry.documentWidth === geometry.viewport && body.includes('Analytics') && body.includes('Run details') && body.includes('Export CSV') && body.includes('152K') && forbiddenReviewChrome.every(text => !body.includes(text)), geometry)
+  check('VAL-014', 'Actual narrow viewport avoids page overflow and retains the critical product controls and evidence', geometry.documentWidth === geometry.viewport && body.includes('Analytics') && body.includes('Run details') && body.includes('Export CSV') && body.includes('152K') && forbiddenReviewChrome.every(text => !body.includes(text)) && forbiddenProductLanguage.every(text => !body.includes(text)), geometry)
   await shot(narrow.page, 'VIS-008', 'direction-a-partial-narrow')
   await narrow.context.close()
 
@@ -154,7 +155,17 @@ try {
   check('VAL-016', 'Usage over time is a 29-point daily line with markers and no vertical bars', trendEvidence.points === 29 && trendEvidence.lines === 1 && trendEvidence.bars === 0 && trendEvidence.label.includes('29 daily UTC buckets'), trendEvidence)
   await trend.context.close()
 
-  check('VAL-017', 'No unexpected browser errors', result.browserErrors.length === 0, result.browserErrors)
+  const languageAudit = await contextFor({ width: 1440, height: 1000 })
+  const directionBodies = []
+  for (const path of ['/?direction=focus', '/?direction=dense']) {
+    await navigate(languageAudit.page, path)
+    directionBodies.push(await languageAudit.page.locator('body').innerText())
+  }
+  const foundForbiddenLanguage = forbiddenProductLanguage.filter(text => directionBodies.some(value => value.includes(text)))
+  check('VAL-017', 'Both clean directions omit prior-period, comparison, and driver terminology', foundForbiddenLanguage.length === 0, foundForbiddenLanguage)
+  await languageAudit.context.close()
+
+  check('VAL-018', 'No unexpected browser errors', result.browserErrors.length === 0, result.browserErrors)
   result.pass = true
 } catch (error) {
   result.pass = false

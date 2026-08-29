@@ -82,3 +82,20 @@ corepack pnpm validate:gap-010
 ```
 
 `validate:gap-010` preserves `JRN-050-A`–`D` and terminally enforces `JRN-050-E`; all five source-versus-prototype checkpoints must pass. `validate:final-package` makes that journey evidence, `PPA-002`, both user-confirmation references, and `VIS-001`–`VIS-017` part of terminal completion.
+
+## REQPKG-TSUI-001 Requirements Visualization
+
+Exploratory revision `RV-005` is isolated in the Product ticket worktree on
+`prototype/reqpkg-tsui-001`; it is not integrated into the accepted baseline
+on `origin/personal`. Clean review URLs are:
+
+- `http://127.0.0.1:3262/?direction=focus`
+- `http://127.0.0.1:3262/?direction=dense`
+
+This revision keeps monthly usage, estimated cost, input/output composition,
+and the point-marked daily Tokens/Cost line primary. It removes visible
+prior-period comparison, the standalone dominant-contributor callout, and all
+visible `driver` terminology. Exact runtime/model evidence remains secondary
+under `Detailed usage`. The result is classified `Requirement Impact` until
+Requirements Engineering records the user-directed removals in the canonical
+requirements.

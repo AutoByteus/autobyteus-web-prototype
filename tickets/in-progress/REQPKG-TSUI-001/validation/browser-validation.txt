@@ -3,25 +3,25 @@
 > node scripts/validate.mjs
 
 {
-  "generatedAt": "2026-08-29T10:26:54.832Z",
+  "generatedAt": "2026-08-29T16:29:38.991Z",
   "baseUrl": "http://127.0.0.1:3262",
-  "revision": "RV-004",
+  "revision": "RV-005",
   "checks": [
     {
       "id": "VAL-001",
-      "name": "Focused partial URL opens directly on the product-only future-state surface",
+      "name": "Focused partial URL opens directly on the stripped product-only future-state surface",
       "pass": true,
       "observed": null
     },
     {
       "id": "VAL-002",
-      "name": "Dense direction uses a separate clean URL with the same truthful partial fixture",
+      "name": "Dense direction uses a separate clean URL with the same stripped truthful partial fixture",
       "pass": true,
       "observed": null
     },
     {
       "id": "VAL-003",
-      "name": "Product-native range selection reveals full coverage and comparable prior evidence",
+      "name": "Product-native range selection reveals full coverage without reintroducing prior-period callouts",
       "pass": true,
       "observed": null
     },
@@ -63,7 +63,7 @@
     },
     {
       "id": "VAL-010",
-      "name": "Constrained composition keeps navigation open, export visible, and missing comparison proportionate",
+      "name": "Constrained composition keeps navigation open and the essential usage evidence visible",
       "pass": true,
       "observed": null
     },
@@ -130,6 +130,12 @@
     },
     {
       "id": "VAL-017",
+      "name": "Both clean directions omit prior-period, comparison, and driver terminology",
+      "pass": true,
+      "observed": []
+    },
+    {
+      "id": "VAL-018",
       "name": "No unexpected browser errors",
       "pass": true,
       "observed": []

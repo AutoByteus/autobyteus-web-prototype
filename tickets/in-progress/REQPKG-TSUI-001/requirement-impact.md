@@ -3,9 +3,24 @@
 - Package / ticket ID: `REQPKG-TSUI-001`
 - Finding ID: `RI-001`
 - Date: 2026-08-29
-- Current visualization revision: `RV-004`
+- Current visualization revision: `RV-005`
 - Classification: `Requirement Impact`
-- Status: Requirements Engineering decision/revision required before the next visual revision.
+- Status: User decision is represented in `RV-005`; Requirements Engineering must now revise the conflicting canonical requirements.
+
+## User Resolution Received And Represented
+
+The user has now made two of the product choices explicit:
+
+1. Remove the `+28% from prior period` presentation and other visible
+   prior-period comparison messaging from this hierarchy.
+2. Remove the standalone `Dominant driver` presentation and stop using
+   `driver` terminology because it is not intuitive.
+
+`RV-005` implements those choices as exploratory evidence in both clean review
+directions. Exact runtime/model identity evidence remains secondary under
+`Detailed usage`; it is no longer described as a driver or elevated in a
+standalone contributor card. This does not rewrite the canonical requirements
+owned by Requirements Engineering.
 
 ## Exact User Feedback And Meaning
 
@@ -92,17 +107,16 @@ invent `0%` when cache reporting is unavailable.
 6. Preserve exact CSV/accounting evidence and all current truth states even if
    identity breakdown is no longer on the first canvas.
 
-## Decisions Required Before `RV-005`
+## Remaining Decisions After `RV-005`
 
-1. Is the dominant-contributor requirement removed, or retained only in an
-   optional detailed breakdown?
-2. Is prior-period comparison removed, retained as optional detail, or shown
-   as a neutral secondary annotation?
-3. Which input label is canonical: `Uncached input`, `Standard input`, or a
+1. Which input label is canonical: `Uncached input`, `Standard input`, or a
    separately defined derived value?
-4. Must Runtime/Provider/Model grouping remain user-facing, and if so, under
+2. Must Runtime/Provider/Model grouping remain user-facing, and if so, under
    what intuitive secondary label?
+3. Should the remaining `Detailed usage` table stay visible below the trend or
+   move behind another explicit disclosure?
 
-Product Prototyper will not silently rewrite these canonical requirements.
-The next visualization revision should follow Requirements Engineering's
-recorded resolution of this user feedback.
+Requirements Engineering must record the user-directed removal of prior
+comparison and dominant-contributor presentation in the canonical requirements
+before implementation work treats `RV-005` as authoritative. Product
+Prototyper will not silently rewrite those requirements.
