@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `REQPKG-TSUI-001`
 - Title: Settings > Token Statistics professional hierarchy requirements visualizer
-- Status: `Awaiting User Review`
+- Status: `Blocked`
 - Mode: `Requirements Visualization`
 - Related requirements revision: `RER-001`; Requirements branch commit `1b5c401e8c2ed7af7630a840e7294541cbf7ad6f`
 - Related requirement, behavior, acceptance-criteria, and decision IDs: `BEH-001`–`BEH-006`; `REQ-001`–`REQ-014`; `AC-001`–`AC-014`; `DEC-001`–`DEC-004`
@@ -51,6 +51,7 @@
 - Requirements-visualization design plan: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/requirements-visualization-design-plan.md`; revision `RV-004`, status `Ready to Build`.
 - Requirements-visualization review: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/requirements-visualization-review.md`; revision `RV-004`, status `Ready for Review`.
 - Current-contract feasibility audit: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/implementation-feasibility-audit.md`; classification `Achievable with current source-pin data and GraphQL contracts after correction`.
+- Requirement-impact record: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/requirement-impact.md`; `RI-001` requires Requirements Engineering resolution before `RV-005`.
 - Visualizer source: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/visualizers/REQPKG-TSUI-001`
 - Future-state visual-reference directory: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references`
 - Current-state comparison evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/evidence/token-statistics-refresh`
@@ -64,12 +65,12 @@
 
 ## Outcome And Handoff
 
-- Current outcome: `Requirements Visualization Ready`
+- Current outcome: `Requirement Impact`
 - Completed behavior and evidence: Accepted Token Statistics baseline is durably integrated through `origin/personal` revision `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`. `RV-004` retains the current-contract audit and clean product-only URLs, and replaces usage bars with a data-supported 29-point daily line; `17/17` browser checks pass.
 - First-view simplicity evidence: Product-only DOM and screenshots contain no visualization heading, direction/journey selector, selection strip, reset control, or explanatory footer. Primary usage, coverage, trend, missing comparison, and dominant driver remain scannable in the initial view.
 - Motion/comprehension evidence: No decision-relevant motion; stable states persist. Automated checks establish the interaction/result relationship, but human preference and comprehension remain unconfirmed.
-- Remaining product decisions: User selection of Direction A or B and confirmation of control disclosure, exact-evidence treatment, and Run-details unification (`DEC-001`–`DEC-004`).
-- Next expected action: User reviews the two URLs and selects a direction; Requirements Engineering records the clarification. Do not treat this exploratory visualizer as final UI approval.
-- Handoff outcome from `get_handoff_rules`: `Requirements Visualization Ready` matched the Requirements Engineering review route.
+- Remaining product decisions: Whether dominant-contributor and runtime/model grouping remain optional or are removed; whether prior comparison remains optional/secondary or is removed; canonical labels/definitions for uncached/standard input, cached input, cache hit rate, and output; existing `DEC-001`–`DEC-004` consequences.
+- Next expected action: Requirements Engineering revises or reaffirms the affected requirements from `RI-001`; Product Prototyper then produces `RV-005`. Do not treat `RV-004` as a final implementation direction.
+- Handoff outcome from `get_handoff_rules`: Pending `Requirement Impact` routing lookup.
 - Matched recipient address, when a rule applies: `/requirements_engineering_team/requirements_engineer`
 - Return context when no matching rule applies: Return the review-ready package to the user or calling workflow.

@@ -11,7 +11,7 @@
 - Requirements / behavior IDs: `BEH-001`–`BEH-006`; `REQ-001`–`REQ-014`; `AC-001`–`AC-014`; `DEC-001`–`DEC-004`
 - Decision question: Which composition should govern the future Token Statistics hierarchy, control density, evidence disclosure, and Run-details cohesion?
 - Design gate status: `Ready to Build`
-- Review status: `Ready for Review`
+- Review status: `Revision Requested`
 - Reviewer / feedback source: User feedback received 2026-08-29; Requirements Engineering owns the canonical clarification loop.
 
 ## Covered Experience
@@ -52,7 +52,7 @@
 
 ## Feedback And Next Action
 
-- Feedback received: Remove the large Requirements Visualization wrapper and show only the proposed product; verify every fact against the current data structure; replace vertical usage bars with a point-marked line/curve that communicates daily change.
-- Requirement or scope impact: No canonical behavior or acceptance criterion changed. This is a focused representation revision.
-- Requested revision: Completed in `RV-004`; the clean product-only URLs and feasibility correction remain, and Usage over time now uses a point-marked daily line instead of bars.
-- Next expected action: The user selects Direction A or Direction B and clarifies the preferred control disclosure, exact-evidence treatment, and degree of Run-details unification. Requirements Engineering records the decision; this artifact does not claim approval.
+- Feedback received: In addition to the completed product-only, feasibility, and line-trend revisions, the user now rejects `Dominant driver` / `Usage drivers` as unintuitive primary concepts and prioritizes monthly/daily tokens and cost plus input/cached-input/cache-rate/output composition.
+- Requirement or scope impact: `Requirement Impact RI-001`. This conflicts with current dominant-driver, ranked breakdown, and visible comparison requirements (`REQ-002`, `REQ-004`–`REQ-006`, `REQ-012`; `AC-001`, `AC-003`–`AC-006`, `AC-011`).
+- Requested revision: Pending Requirements Engineering resolution; no `RV-005` visual change is made silently against the current canonical requirements.
+- Next expected action: Requirements Engineering records whether contributor ranking and prior comparison are removed, optional, or secondary, and defines the canonical input/cache labels. Product Prototyper then creates `RV-005` focused on monthly/daily tokens, cost, and cache-relevant composition.
