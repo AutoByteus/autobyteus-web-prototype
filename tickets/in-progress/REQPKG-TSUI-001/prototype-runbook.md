@@ -10,7 +10,7 @@
 - Prototype ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001`
 - Prototype ticket branch: `prototype/reqpkg-tsui-001`
 - Accepted prototype base revision: implementation `6ba98942c669329f70ba902db4a2880375ad52ad`; integrated metadata tip `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`
-- Prototype revision or commit: Pending review-candidate commit
+- Prototype revision or commit: Review-candidate commit `3de6227769c33cfdbefa42f22b44a0de83329563`; final accepted revision pending user confirmation
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001`
 - Package manager: Corepack pnpm
 - Framework / stack: Nuxt 3, Vue 3, TypeScript, Tailwind CSS, Pinia, browser-local deterministic fixtures

@@ -23,7 +23,7 @@ runnable prototype and Product captures the corresponding final screenshots.
 - Selected frontend application or product surface: `/home/autobyteus/workspace/autobyteus-workspace-token-statistics-ui-requirements/autobyteus-web`; Settings > Token Statistics
 - Pinned source commit or revision: required `origin/personal` pin `9d0fd7c570d58da1af2c7a40279327c8a20a8093`
 - Prototype repository/root: `/home/autobyteus/workspace/autobyteus-web-prototype`
-- Prototype revision or commit: Pending the Product review-candidate commit; accepted baseline implementation `6ba98942c669329f70ba902db4a2880375ad52ad`, accepted integration tip `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`
+- Prototype revision or commit: Review-candidate commit `3de6227769c33cfdbefa42f22b44a0de83329563`; accepted baseline implementation `6ba98942c669329f70ba902db4a2880375ad52ad`, accepted integration tip `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`; final accepted revision pending user confirmation
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001`
 - Bootstrap report path: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/prototype-bootstrap-report.md`
 - Exploratory direction provenance: RV-007 content `726f414a4f1acf2e32e859c7b6e8a90584d1b6d6`; review metadata `578efc4e3d4929fcce55e1c130f1c6092fda7f44`. The visualizer and its images are historical decision evidence, not this package's normative final reference.
@@ -266,7 +266,7 @@ Backend/GraphQL/persistence/accounting/pricing changes; quota/budget/forecast/al
 ## Final Consistency Check
 
 - User confirmation is recorded: `No — direction and CSV delta are confirmed; separate final runnable confirmation pending`
-- Prototype repository/root, source pin, and prototype revision are recorded: `Partial — repository/base/pin recorded; review-candidate commit pending`
+- Prototype repository/root, source pin, and prototype revision are recorded: `Yes — review-candidate revision recorded; final accepted revision pending confirmation`
 - Ticket record, ticket folder, and linked artifacts agree: `Yes`
 - Every in-scope journey is specified: `Yes`
 - Every surface and state needed to define the approved experience has an applicable final visual reference: `No — capture is intentionally deferred until confirmation`

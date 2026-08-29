@@ -23,7 +23,7 @@
 - Bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/prototype-bootstrap-report.md`
 - Product acceptance result and date: Accepted 2026-08-29; see `baseline-acceptance.md` in this ticket folder.
 - User-confirmed visualization provenance: content revision `726f414a4f1acf2e32e859c7b6e8a90584d1b6d6`; review metadata revision `578efc4e3d4929fcce55e1c130f1c6092fda7f44`
-- Prototype revision for this ticket: Pending the Product review-candidate commit; implementation and draft artifacts are complete in this worktree.
+- Prototype revision for this ticket: Review-candidate commit `3de6227769c33cfdbefa42f22b44a0de83329563`; this is committed on the ticket branch but is not the final user-accepted/integrated revision.
 - Integration target and result: Prototype `personal`; `Pending` until explicit user confirmation, final reference capture, and final validation.
 - Runtime isolation record: Active ticket-owned Nuxt review server at `127.0.0.1:3261`; launcher PID `30625`, Nuxt PID `30643`; temporary/runtime state root `/tmp/autobyteus-prototype-REQPKG-TSUI-001`; localStorage scenario key `autobyteus.prototype.scenario`.
 - Cleanup result or blocker: `Pending`; the review runtime and worktree remain available while user review is active.

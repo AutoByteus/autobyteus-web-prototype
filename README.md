@@ -101,6 +101,10 @@ contains no supported CSV preparation/download path. Exploratory RV-007 remains
 historical decision evidence only; review screenshots under the ticket's
 `review-evidence/` folder are non-normative until the user confirms this actual
 final runnable and Product captures the final `VIS-*` references.
+The committed review candidate is
+`3de6227769c33cfdbefa42f22b44a0de83329563` on
+`prototype/reqpkg-tsui-001`; it is not yet the final accepted or integrated
+revision.
 
 Review-package artifacts:
 
