@@ -6,7 +6,7 @@ import { chromium } from 'playwright-core'
 
 const root = resolve(new URL('../..', import.meta.url).pathname)
 const baseUrl = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:3261'
-const outputRoot = resolve(root, 'tickets/in-progress/REQPKG-TSUI-001/visual-references')
+const outputRoot = resolve(root, 'tickets/done/REQPKG-TSUI-001/visual-references')
 await mkdir(outputRoot, { recursive: true })
 
 const references = []

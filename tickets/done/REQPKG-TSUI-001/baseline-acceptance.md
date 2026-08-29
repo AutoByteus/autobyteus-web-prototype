@@ -9,7 +9,7 @@
 - Product ticket: `REQPKG-TSUI-001`
 - Product worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001`
 - Ticket branch: `prototype/reqpkg-tsui-001`
-- Bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/prototype-bootstrap-report.md`
+- Bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype/prototype-bootstrap-report.md`
 - Accepted baseline commit: `6ba98942c669329f70ba902db4a2880375ad52ad`
 
 ## Acceptance Basis
@@ -33,15 +33,15 @@ Product Prototyper reviewed the candidate rather than accepting the Bootstrapper
 
 ## Evidence
 
-- Product browser result: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/acceptance/baseline-browser-acceptance.json`
+- Product browser result: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/acceptance/baseline-browser-acceptance.json`
 - Product browser screenshots:
-  - `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/acceptance/PPA-TS-001-partial-baseline-desktop.png`
-  - `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/acceptance/PPA-TS-002-run-details-expanded-desktop.png`
-  - `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/acceptance/PPA-TS-003-populated-baseline-narrow.png`
-- Product CLI log: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/acceptance/baseline-cli-validation.txt`
-- Product typecheck log: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/acceptance/baseline-typecheck.txt`
-- Bootstrap machine summary: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/evidence/token-statistics-refresh/machine/token-statistics-refresh-summary.json`
-- Presentation audit: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/evidence/token-statistics-refresh/machine/presentation-source-hash-audit.json`
+  - `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/acceptance/PPA-TS-001-partial-baseline-desktop.png`
+  - `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/acceptance/PPA-TS-002-run-details-expanded-desktop.png`
+  - `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/acceptance/PPA-TS-003-populated-baseline-narrow.png`
+- Product CLI log: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/acceptance/baseline-cli-validation.txt`
+- Product typecheck log: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/acceptance/baseline-typecheck.txt`
+- Bootstrap machine summary: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/token-statistics-refresh/machine/token-statistics-refresh-summary.json`
+- Presentation audit: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/token-statistics-refresh/machine/presentation-source-hash-audit.json`
 
 ## Boundaries And Result
 

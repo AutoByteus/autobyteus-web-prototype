@@ -6,8 +6,8 @@ import { resolve } from 'node:path'
 
 const root = resolve(new URL('../..', import.meta.url).pathname)
 const baseUrl = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:3261'
-const evidenceRoot = resolve(root, 'tickets/in-progress/REQPKG-TSUI-001/validation/final-prototype')
-const reviewRoot = resolve(root, 'tickets/in-progress/REQPKG-TSUI-001/review-evidence/final-prototype-review')
+const evidenceRoot = resolve(root, 'tickets/done/REQPKG-TSUI-001/validation/final-prototype')
+const reviewRoot = resolve(root, 'tickets/done/REQPKG-TSUI-001/review-evidence/final-prototype-review')
 await mkdir(evidenceRoot, { recursive: true })
 await mkdir(reviewRoot, { recursive: true })
 

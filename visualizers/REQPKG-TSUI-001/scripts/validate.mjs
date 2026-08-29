@@ -3,7 +3,7 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
 const root = resolve(new URL('..', import.meta.url).pathname)
-const ticketRoot = resolve(root, '../../tickets/in-progress/REQPKG-TSUI-001')
+const ticketRoot = resolve(root, '../../tickets/done/REQPKG-TSUI-001')
 const visualRoot = resolve(ticketRoot, 'visual-references')
 const evidenceRoot = resolve(ticketRoot, 'validation')
 const baseUrl = process.env.VISUALIZER_BASE_URL || 'http://127.0.0.1:3262'

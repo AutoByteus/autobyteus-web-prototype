@@ -6,8 +6,8 @@
 - Review URLs:
   - Direction A — Focused hierarchy: `http://127.0.0.1:3262/?direction=focus`
   - Direction B — Dense explorer: `http://127.0.0.1:3262/?direction=dense`
-- Source path: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/visualizers/REQPKG-TSUI-001`
-- Design plan path: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/requirements-visualization-design-plan.md`
+- Source path: `/home/autobyteus/workspace/autobyteus-web-prototype/visualizers/REQPKG-TSUI-001`
+- Design plan path: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/requirements-visualization-design-plan.md`
 - Requirements / behavior IDs: `BEH-001`–`BEH-006`; `REQ-001`–`REQ-016`; `AC-001`–`AC-016`; `DEC-001`–`DEC-008`
 - Decision question: Is the focused cache-aware Analytics hierarchy and lightly unified Run-details treatment the final direction for implementation?
 - Design gate status: `Ready to Build`
@@ -43,20 +43,20 @@
 - First-view simplicity check: DOM and screenshot inspection confirm that the visible page contains only the Settings product surface. Total tokens, three token components, estimated cost, cache rate, and the daily line dominate before `Detailed usage`.
 - Comprehension evidence: The user explicitly stated they are satisfied with the current Analytics and Run-details page and identified it as the final direction to implement. The user also asked for final UI/UX and screenshots to be delivered to Requirements Engineering.
 - Known limitations: Exploratory evidence only, not a final normative prototype. Loading/error/empty/local/mixed-currency permutations and full localization remain protected by the accepted baseline rather than reproduced in this focused comparison. CSV preparation is simulated and no file is written.
-- Build evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/validation/build.txt`
-- Browser evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/validation/browser-validation.json`
-- Browser log: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/validation/browser-validation.txt`
-- Current-contract feasibility audit: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/implementation-feasibility-audit.md`
-- Contract validation log: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/validation/contract-feasibility-audit.txt`; result `PASS`.
+- Build evidence: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/validation/build.txt`
+- Browser evidence: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/validation/browser-validation.json`
+- Browser log: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/validation/browser-validation.txt`
+- Current-contract feasibility audit: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/implementation-feasibility-audit.md`
+- Contract validation log: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/validation/contract-feasibility-audit.txt`; result `PASS`.
 - Visual reference paths:
-  - `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-001-direction-a-partial-desktop.png`
-  - `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-002-direction-b-partial-desktop.png`
-  - `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-003-direction-a-filters-open-desktop.png`
-  - `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-004-direction-a-exact-evidence-desktop.png`
-  - `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-005-direction-a-run-details-desktop.png`
-  - `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-006-direction-b-run-details-desktop.png`
-  - `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-007-direction-a-constrained-frame-desktop.png`
-  - `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-008-direction-a-partial-narrow.png`
+  - `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-001-direction-a-partial-desktop.png`
+  - `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-002-direction-b-partial-desktop.png`
+  - `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-003-direction-a-filters-open-desktop.png`
+  - `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-004-direction-a-exact-evidence-desktop.png`
+  - `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-005-direction-a-run-details-desktop.png`
+  - `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-006-direction-b-run-details-desktop.png`
+  - `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-007-direction-a-constrained-frame-desktop.png`
+  - `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-008-direction-a-partial-narrow.png`
 
 ## Feedback And Next Action
 

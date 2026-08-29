@@ -10,10 +10,9 @@ baseline from `origin/personal` at
 baseline outside that surface. The final candidate is awaiting explicit user
 confirmation and is not integrated into the canonical prototype branch yet.
 
-Status: **Final Token Statistics prototype approved on
-`prototype/reqpkg-tsui-001`; repository integration is being finalized. The
-current-state baseline remains approved and integrated through
-`16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`.**
+Status: **Final Token Statistics prototype approved and completed. The Product
+ticket is closed under `tickets/done/REQPKG-TSUI-001`; the approved package is
+integrated into prototype `personal`.**
 
 Canonical ownership: independent sibling repository
 `https://github.com/AutoByteus/autobyteus-web-prototype.git`, checked out at
@@ -109,8 +108,8 @@ recorded in the Product ticket.
 
 Review-package artifacts:
 
-- [Final Prototype ticket](tickets/in-progress/REQPKG-TSUI-001/prototype-ticket.md)
-- [Draft final UI/UX specification](tickets/in-progress/REQPKG-TSUI-001/ui-ux-spec.md)
-- [Behavior matrix](tickets/in-progress/REQPKG-TSUI-001/ui-behavior-test-matrix.md)
-- [Ticket runbook](tickets/in-progress/REQPKG-TSUI-001/prototype-runbook.md)
-- [Non-normative review screenshots](tickets/in-progress/REQPKG-TSUI-001/review-evidence/final-prototype-review)
+- [Final Prototype ticket](tickets/done/REQPKG-TSUI-001/prototype-ticket.md)
+- [Draft final UI/UX specification](tickets/done/REQPKG-TSUI-001/ui-ux-spec.md)
+- [Behavior matrix](tickets/done/REQPKG-TSUI-001/ui-behavior-test-matrix.md)
+- [Ticket runbook](tickets/done/REQPKG-TSUI-001/prototype-runbook.md)
+- [Non-normative review screenshots](tickets/done/REQPKG-TSUI-001/review-evidence/final-prototype-review)

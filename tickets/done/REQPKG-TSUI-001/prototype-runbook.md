@@ -11,7 +11,7 @@
 - Prototype ticket branch: `prototype/reqpkg-tsui-001`
 - Accepted prototype base revision: implementation `6ba98942c669329f70ba902db4a2880375ad52ad`; integrated metadata tip `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`
 - Prototype revision or commit: Approved runnable behavior commit `3de6227769c33cfdbefa42f22b44a0de83329563`; completed package/integration revision is recorded in `prototype-ticket.md`
-- Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001`
+- Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001`
 - Package manager: Corepack pnpm
 - Framework / stack: Nuxt 3, Vue 3, TypeScript, Tailwind CSS, Pinia, browser-local deterministic fixtures
 - Entry route: `/settings?section=token-usage`
@@ -21,14 +21,14 @@
 - Install command: `corepack pnpm install --ignore-workspace --frozen-lockfile`
 - Start command: `corepack pnpm dev --port 3210`
 - Self-start review URL: `http://127.0.0.1:3210/settings?section=token-usage`
-- Active Product review URL: `http://127.0.0.1:3261/settings?section=token-usage`
+- Approval review URL (historical ticket runtime): `http://127.0.0.1:3261/settings?section=token-usage`
 - Readiness signal: Nuxt reports a local URL and the entry route returns HTTP 200.
 - Stop / cleanup: Stop only the ticket-owned launcher/process group after review and repository finalization; do not stop other worktrees' processes.
-- Runtime ownership: Ticket launcher PID `30625`, Nuxt PID `30643`, port `3261`, temp root `/tmp/autobyteus-prototype-REQPKG-TSUI-001`.
+- Runtime ownership during review: Ticket launcher PID `30625`, Nuxt PID `30643`, port `3261`, temp root `/tmp/autobyteus-prototype-REQPKG-TSUI-001`; stopped during terminal cleanup.
 
 ## Reproducibility And Project State
 
-- Prototype repository status at final validation: Active ticket branch with user-approved runnable and final Product artifacts; integration finalization is pending.
+- Prototype repository status at completion: User-approved runnable and final Product artifacts integrated into canonical prototype `personal`; ticket closed under `tickets/done/REQPKG-TSUI-001`.
 - Scenario reset/isolation method: Set or remove the browser-local `autobyteus.prototype.scenario` key, then reload.
 - Required environment variables or credentials: None. All data/services are synthetic and local.
 

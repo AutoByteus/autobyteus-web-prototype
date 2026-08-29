@@ -8,20 +8,20 @@
 │
 ●  Nitro preset: node-server
 
- WARN  Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/messagingProviderFlowStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/serverStore.ts" is used
+ WARN  Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype/stores/messagingProviderFlowStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype/stores/serverStore.ts" is used
 
 
- WARN  Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/agentTeamContextsStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/serverStore.ts" is used
+ WARN  Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype/stores/agentTeamContextsStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype/stores/serverStore.ts" is used
 
 
- WARN  Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/agentSelectionStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/serverStore.ts" is used
+ WARN  Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype/stores/agentSelectionStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype/stores/serverStore.ts" is used
 
 ℹ Building client...
 ℹ vite v7.3.6 building client environment for production...
 ℹ transforming...
-Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/messagingProviderFlowStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/serverStore.ts" is used
-Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/agentTeamContextsStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/serverStore.ts" is used
-Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/agentSelectionStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/serverStore.ts" is used
+Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype/stores/messagingProviderFlowStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype/stores/serverStore.ts" is used
+Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype/stores/agentTeamContextsStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype/stores/serverStore.ts" is used
+Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype/stores/agentSelectionStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype/stores/serverStore.ts" is used
 ℹ ✓ 3839 modules transformed.
 ℹ rendering chunks...
 ℹ computing gzip size...

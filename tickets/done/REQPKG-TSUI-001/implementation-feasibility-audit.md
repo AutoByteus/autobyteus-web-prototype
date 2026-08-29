@@ -69,7 +69,7 @@ All source-code evidence above was audited at the required pin, not from the
 Requirements commit as an alternate current-experience authority.
 
 Machine-readable-style validation log:
-`/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/validation/contract-feasibility-audit.txt`
+`/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/validation/contract-feasibility-audit.txt`
 records the resolved source pin, required analytics/aggregate/Run-details field
 checks, server token-breakdown ordering, and absence of the unsupported column;
 result `PASS`.

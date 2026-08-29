@@ -1,7 +1,3 @@
-
-> reqpkg-tsui-001-requirements-visualizer@0.1.0 validate
-> node scripts/validate.mjs
-
 {
   "generatedAt": "2026-08-29T16:47:52.687Z",
   "baseUrl": "http://127.0.0.1:3262",
@@ -180,35 +176,35 @@
   "screenshots": [
     {
       "id": "VIS-001",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-001-direction-a-partial-desktop.png"
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-001-direction-a-partial-desktop.png"
     },
     {
       "id": "VIS-002",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-002-direction-b-partial-desktop.png"
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-002-direction-b-partial-desktop.png"
     },
     {
       "id": "VIS-003",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-003-direction-a-filters-open-desktop.png"
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-003-direction-a-filters-open-desktop.png"
     },
     {
       "id": "VIS-004",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-004-direction-a-exact-evidence-desktop.png"
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-004-direction-a-exact-evidence-desktop.png"
     },
     {
       "id": "VIS-005",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-005-direction-a-run-details-desktop.png"
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-005-direction-a-run-details-desktop.png"
     },
     {
       "id": "VIS-006",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-006-direction-b-run-details-desktop.png"
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-006-direction-b-run-details-desktop.png"
     },
     {
       "id": "VIS-007",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-007-direction-a-constrained-frame-desktop.png"
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-007-direction-a-constrained-frame-desktop.png"
     },
     {
       "id": "VIS-008",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-008-direction-a-partial-narrow.png"
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-008-direction-a-partial-narrow.png"
     }
   ],
   "browserErrors": [],

@@ -12,7 +12,7 @@
     {
       "visualId": "VIS-009",
       "filename": "VIS-009-final-analytics-partial-desktop-1440x900.png",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-009-final-analytics-partial-desktop-1440x900.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-009-final-analytics-partial-desktop-1440x900.png",
       "scenario": "token_partial",
       "state": "Analytics · partial coverage · Tokens · all usage",
       "viewport": {
@@ -47,7 +47,7 @@
     {
       "visualId": "VIS-010",
       "filename": "VIS-010-final-analytics-filters-open-desktop-1440x900.png",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-010-final-analytics-filters-open-desktop-1440x900.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-010-final-analytics-filters-open-desktop-1440x900.png",
       "scenario": "populated",
       "state": "Analytics · focused Filters disclosure open",
       "viewport": {
@@ -75,7 +75,7 @@
     {
       "visualId": "VIS-011",
       "filename": "VIS-011-final-detailed-usage-expanded-desktop-1440x900.png",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-011-final-detailed-usage-expanded-desktop-1440x900.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-011-final-detailed-usage-expanded-desktop-1440x900.png",
       "scenario": "populated",
       "state": "Analytics · Detailed usage · Provider grouping · exact row disclosed",
       "viewport": {
@@ -108,7 +108,7 @@
     {
       "visualId": "VIS-012",
       "filename": "VIS-012-final-analytics-cost-full-desktop-1440x900.png",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-012-final-analytics-cost-full-desktop-1440x900.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-012-final-analytics-cost-full-desktop-1440x900.png",
       "scenario": "populated",
       "state": "Analytics · full coverage · Cost (USD)",
       "viewport": {
@@ -145,7 +145,7 @@
     {
       "visualId": "VIS-013",
       "filename": "VIS-013-final-run-details-task-expanded-desktop-1440x900.png",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-013-final-run-details-task-expanded-desktop-1440x900.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-013-final-run-details-task-expanded-desktop-1440x900.png",
       "scenario": "populated",
       "state": "Run details · Task grouping · Team hierarchy expanded",
       "viewport": {
@@ -174,7 +174,7 @@
     {
       "visualId": "VIS-014",
       "filename": "VIS-014-final-run-details-model-desktop-1440x900.png",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-014-final-run-details-model-desktop-1440x900.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-014-final-run-details-model-desktop-1440x900.png",
       "scenario": "populated",
       "state": "Run details · Model grouping",
       "viewport": {
@@ -203,7 +203,7 @@
     {
       "visualId": "VIS-015",
       "filename": "VIS-015-final-analytics-partial-narrow-390x844.png",
-      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-015-final-analytics-partial-narrow-390x844.png",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001/visual-references/VIS-015-final-analytics-partial-narrow-390x844.png",
       "scenario": "token_partial",
       "state": "Analytics · partial coverage · narrow/mobile-equivalent",
       "viewport": {

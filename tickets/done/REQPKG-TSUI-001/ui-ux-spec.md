@@ -12,8 +12,8 @@ captured afterward and are normative for their recorded surfaces and states.
 - Related requirements revision ID: `RER-009`; commit `6aa6ba066faf041ff1fa221cee5b956fd7e537b5`
 - Related requirement, behavior, acceptance-criteria, scenario, and decision IDs: `BEH-001`–`BEH-006`; `REQ-001`–`REQ-016`; `AC-001`–`AC-016`; `SCN-001`–`SCN-007`; resolved `DEC-001`–`DEC-009`
 - Runnable prototype repository/root: `/home/autobyteus/workspace/autobyteus-web-prototype`
-- Active Product worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001`
-- Review URL: `http://127.0.0.1:3261/settings?section=token-usage`
+- Product worktree used during review: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001` (removed after completion)
+- Approval review URL: `http://127.0.0.1:3261/settings?section=token-usage`; canonical self-start route: `http://127.0.0.1:3210/settings?section=token-usage`
 - Explicit user-confirmation reference: On 2026-08-29, after Product confirmed that the Export CSV UI, preparation/download functionality, requests, files, and replacement workflow were absent, the user stated: “okay. i approve the final product prototype. now”. This approval applies to the actual runnable at the recorded review URL, not only RV-007.
 - Final validation date: 2026-08-29 UTC — post-approval typecheck, lint, 12 tests, 13/13 boundaries, Nuxt build, and 19/19 browser validation passed before final capture.
 
@@ -24,8 +24,8 @@ captured afterward and are normative for their recorded surfaces and states.
 - Pinned source commit or revision: required `origin/personal` pin `9d0fd7c570d58da1af2c7a40279327c8a20a8093`
 - Prototype repository/root: `/home/autobyteus/workspace/autobyteus-web-prototype`
 - Prototype revision or commit: Approved runnable behavior revision `3de6227769c33cfdbefa42f22b44a0de83329563`; accepted baseline implementation `6ba98942c669329f70ba902db4a2880375ad52ad`; accepted pre-ticket integration tip `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`. The completed ticket/package revision and integration result are recorded in `prototype-ticket.md`.
-- Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001`
-- Bootstrap report path: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/prototype-bootstrap-report.md`
+- Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-TSUI-001`
+- Bootstrap report path: `/home/autobyteus/workspace/autobyteus-web-prototype/prototype-bootstrap-report.md`
 - Exploratory direction provenance: RV-007 content `726f414a4f1acf2e32e859c7b6e8a90584d1b6d6`; review metadata `578efc4e3d4929fcce55e1c130f1c6092fda7f44`. The visualizer and its images are historical decision evidence, not this package's normative final reference.
 
 ## Scope And Experience Goal
