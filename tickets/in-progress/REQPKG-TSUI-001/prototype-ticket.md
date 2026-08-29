@@ -4,69 +4,70 @@
 
 - Ticket / request ID: `REQPKG-TSUI-001`
 - Title: Settings > Token Statistics professional hierarchy requirements visualizer
-- Status: `In Progress`
+- Status: `Awaiting User Review`
 - Mode: `Requirements Visualization`
 - Related requirements revision: `RER-001`; Requirements branch commit `1b5c401e8c2ed7af7630a840e7294541cbf7ad6f`
 - Related requirement, behavior, acceptance-criteria, and decision IDs: `BEH-001`–`BEH-006`; `REQ-001`–`REQ-014`; `AC-001`–`AC-014`; `DEC-001`–`DEC-004`
-- Critical journey or product decision: Compare credible future-state treatments for the Token Statistics hierarchy, compact controls, primary-versus-secondary exact evidence, and the degree of Run-details visual unification across partial/no-comparison, full/comparable, filter, evidence, tab-transition, and constrained-width states.
-- In scope: Requirements Visualization after an accepted current-experience baseline exists for Settings > Token Statistics at the required source pin.
-- Non-goals: Future-state implementation before baseline acceptance; backend, GraphQL, persistence, accounting, quota, budget, forecast, alert, new Analytics dimensions, live Token Meter, other Settings redesign, automatic navigation collapse, historical backfill, or invented zero cost.
+- Critical journey or product decision: Select between two clean product-only future-state treatments for hierarchy, compact controls, primary-versus-secondary exact evidence, and Run-details unification across partial/no-comparison, full/comparable, filter, evidence, tab-transition, and constrained-width states.
+- In scope: Exploratory Requirements Visualization after acceptance of the exact current-experience Token Statistics baseline.
+- Non-goals: Final normative UI approval; backend, GraphQL, persistence, accounting, quota, budget, forecast, alerts, new Analytics dimensions, live Token Meter, unrelated Settings redesign, automatic navigation collapse, fake historical backfill, or invented zero cost.
 
 ## Prototype Context
 
-- Canonical prototype repository/root (separate from source repository): `/home/autobyteus/workspace/autobyteus-web-prototype`
+- Canonical prototype repository/root: `/home/autobyteus/workspace/autobyteus-web-prototype`
 - Active Product ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001`
 - Product ticket branch: `prototype/reqpkg-tsui-001`
 - Integration/default branch: `personal` (`origin/personal` is the accepted integration authority selected for this ticket)
 - Accepted prototype base revision: `0e43f9d6e638c67f0f82bb1a5d7c7cd2fd930fd9`
 - Source repository: `/home/autobyteus/workspace/autobyteus-workspace-token-statistics-ui-requirements`
 - Selected frontend: `/home/autobyteus/workspace/autobyteus-workspace-token-statistics-ui-requirements/autobyteus-web`
-- Required source ref: `origin/personal`
-- Pinned source revision: `9d0fd7c570d58da1af2c7a40279327c8a20a8093`
-- Source constraint: Bootstrap current experience from the exact `origin/personal` pin above. Do not use Requirements commit `1b5c401e8c2ed7af7630a840e7294541cbf7ad6f` as the current-experience source.
-- Existing accepted bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/prototype-bootstrap-report.md`
-- Existing accepted bootstrap pin: `8ef282ba77705180d985e7000d801f0e0068cdc1` (not sufficient for this selected Token Statistics surface/source authority)
-- Baseline gap: The accepted base contains the older Run-details-oriented Token Usage components but does not contain the production Analytics surface at the required pin. It lacks the source pin's `components/settings/token-usage/analytics/*`, `TokenUsageRunDetailsView.vue`, and `stores/tokenUsageAnalytics.ts` current-experience inventory.
-- Bootstrap mode required: `Refresh` limited to Settings > Token Statistics current-experience parity at the explicitly selected source authority.
-- Product acceptance result and date: `Accepted` as `PPA-TS-001` on 2026-08-29; see `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/baseline-acceptance.md`.
+- Required source ref and pinned revision: `origin/personal` at `9d0fd7c570d58da1af2c7a40279327c8a20a8093`
+- Source constraint: Requirements commit `1b5c401e8c2ed7af7630a840e7294541cbf7ad6f` was not used as the current-experience source.
+- Bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/prototype-bootstrap-report.md`
+- Product acceptance result and date: Accepted 2026-08-29; see `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/baseline-acceptance.md`.
 - Accepted Token Statistics baseline revision: `6ba98942c669329f70ba902db4a2880375ad52ad`
-- Prototype revision for this ticket: Pending future-state visualization revision.
+- Baseline metadata revision: `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`
+- Prototype revision for this ticket: Pending durable `RV-002` commit.
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001`
+- Integration target and result: `personal`; deferred while the exploratory clarification loop remains open.
+- Cleanup result: Deferred. Retain the active worktree and review runtimes while status is `Awaiting User Review`.
 
 ## Runtime Isolation
 
-- Reserved prototype review port: `3261`
-- Reserved pinned-source observation port: `4261`
-- Current process ownership: Ticket-owned Nuxt preview on `3261` (`nuxt` child PID `30642`; exec session `23017`).
+- Baseline review: `http://127.0.0.1:3261/settings?section=token-usage`; ticket-owned Nuxt PID `30642`, exec session `23017`.
+- Requirements visualizer: ticket-owned Vite process on port `3262`, exec session `75463`.
+- Direction A review URL: `http://127.0.0.1:3262/?direction=focus`
+- Direction B review URL: `http://127.0.0.1:3262/?direction=dense`
+- Deterministic optional scene values: `comparable`, `filters`, `evidence`, `runs`, `narrow` through `scene` query parameter.
 - Temporary/runtime state root: `/tmp/autobyteus-prototype-REQPKG-TSUI-001`
-- Fixture ownership: Ticket-local synthetic fixtures only; no production credentials, services, or writes.
-- Reset method: Stop only PIDs recorded for this ticket, then remove `/tmp/autobyteus-prototype-REQPKG-TSUI-001`; do not stop or reuse another ticket's process or state.
+- Fixture ownership: Ticket-local synthetic fixtures only; no production credentials, customer data, services, or writes.
+- Reset method: Reload a clean direction URL for the default partial state. Stop only PIDs recorded for this ticket during terminal cleanup.
 
 ## Delivery And Validation
 
 - UI/UX specification: Not applicable in exploratory Requirements Visualization mode.
-- Runnable baseline entry point: `http://127.0.0.1:3261/settings?section=token-usage`; scenario selection uses `localStorage.setItem('autobyteus.prototype.scenario', '<scenario>')` followed by reload.
-- Requirements-visualization brief: Pending cognition-first visualization work after baseline commit.
-- Requirements-visualization design plan: Pending; frontend future-state code remains gated until the plan is `Ready to Build`.
-- Requirements-visualization review: Pending implementation and browser validation.
-- Current-state comparison evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/evidence/token-statistics-refresh`.
-- Future-state visual-reference directory: Pending exploratory visualizer implementation.
-- Supporting canonical requirements artifacts:
-  - `/home/autobyteus/workspace/autobyteus-workspace-token-statistics-ui-requirements/tickets/token-statistics-ui-redesign/requirements-doc.md`
-  - `/home/autobyteus/workspace/autobyteus-workspace-token-statistics-ui-requirements/tickets/token-statistics-ui-redesign/investigation-notes.md`
-  - `/home/autobyteus/workspace/autobyteus-workspace-token-statistics-ui-requirements/tickets/token-statistics-ui-redesign/requirements-revision-record.md`
-- Validation performed: Bootstrapper `26/26` matched browser cases and `18/18` source presentation hash audit accepted; Product-owned browser checks `PPA-TS-001`–`PPA-TS-003` pass; test `11/11`, lint pass, boundaries `13/13`, and typecheck pass.
-- User-confirmation reference: User explicitly confirmed that Token Statistics production parity must be established first and authorized creation of the ticket worktree.
-- Mocked boundaries and known limitations: None designed yet. Bootstrap implementation must remain current-experience-only and use synthetic, locally resettable state.
+- Requirements-visualization brief: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/requirements-visualization-brief.md`
+- Requirements-visualization design plan: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/requirements-visualization-design-plan.md`; revision `RV-002`, status `Ready to Build`.
+- Requirements-visualization review: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/requirements-visualization-review.md`; status `Ready for Review`.
+- Visualizer source: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/visualizers/REQPKG-TSUI-001`
+- Future-state visual-reference directory: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references`
+- Current-state comparison evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/evidence/token-statistics-refresh`
+- Visualizer template revision: Agent repository `a6af4fd689a1c6cb1ec1f06c07d0b6011a8c8679`; template last changed in `e9a158b4cb80d4fa54d0c495d6ba862a34cf874d`.
+- Active capabilities: React, Vite, TypeScript, CSS, inline SVG, deterministic local state, Playwright browser validation.
+- Omitted optional capabilities: Motion, Three.js, React Three Fiber, and Drei; the comparison does not depend on animation or spatial reasoning.
+- Validation commands and results: `npm run build` passed; `npm run validate` passed `15/15`; Chromium desktop `1440x1000`, constrained composition, actual narrow `390x844`, UTC/English/light/reduced-motion; zero browser errors; no page-level narrow overflow; named controls; no redundant `h1`; zero active animations; local export status; keyboard navigation resize.
+- Validation evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/validation`
+- User-confirmation reference: User feedback on 2026-08-29 explicitly rejected visible Requirements Visualization metadata/chrome and requested only the proposed product experience. `RV-002` removes it.
+- Mocked boundaries and known limitations: Synthetic locally resettable fixtures; no production runtime or persistent export. Loading/error/empty/local/mixed-currency/localization permutations remain established by the accepted baseline but are not re-rendered in this focused visual comparison.
 
 ## Outcome And Handoff
 
-- Current outcome: `In Progress` — accepted baseline; cognition-first Requirements Visualization work next.
-- Completed behavior and evidence: Product-owned isolated ticket worktree established; exact current Token Statistics surface refreshed from source pin `9d0fd7c…`; Bootstrapper evidence independently acceptance-tested as `PPA-TS-001`.
-- Remaining product decisions: `DEC-001`–`DEC-004`; untouched until baseline acceptance.
-- Next expected action: Complete the visualization brief and cognition-first design plan before implementing any future-state code.
-- Integration result: `Pending`
-- Cleanup result: `Pending`; retain the active worktree through bootstrap, visualization review, and repository finalization.
-- Handoff outcome from `get_handoff_rules`: Matched `Baseline Needed` local bootstrap route.
-- Matched recipient address, when a rule applies: `/product_design_prototyping_team/prototype_bootstrapper`
-- Return context when no matching rule applies: Return `Baseline Needed` package to the calling workflow.
+- Current outcome: `Requirements Visualization Ready`
+- Completed behavior and evidence: Two clean product-only direction URLs; no external visualization header/footer/controls; product-native range, filter, metric, export, evidence, tab, grouping, expansion, and manual-navigation controls; complete `RV-002` review evidence.
+- First-view simplicity evidence: Product-only DOM and screenshots contain no visualization heading, direction/journey selector, selection strip, reset control, or explanatory footer. Primary usage, coverage, trend, missing comparison, and dominant driver remain scannable in the initial view.
+- Motion/comprehension evidence: No decision-relevant motion; stable states persist. Automated checks establish the interaction/result relationship, but human preference and comprehension remain unconfirmed.
+- Remaining product decisions: User selection of Direction A or B and confirmation of control disclosure, exact-evidence treatment, and Run-details unification (`DEC-001`–`DEC-004`).
+- Next expected action: User reviews the two URLs and selects a direction; Requirements Engineering records the clarification. Do not treat this exploratory visualizer as final UI approval.
+- Handoff outcome from `get_handoff_rules`: Pending final artifact commit and routing lookup.
+- Matched recipient address, when a rule applies: Pending `get_handoff_rules` result.
+- Return context when no matching rule applies: Return the review-ready package to the user or calling workflow.

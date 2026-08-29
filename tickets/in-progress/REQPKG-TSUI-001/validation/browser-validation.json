@@ -1,0 +1,146 @@
+{
+  "generatedAt": "2026-08-29T07:31:28.881Z",
+  "baseUrl": "http://127.0.0.1:3262",
+  "revision": "RV-002",
+  "checks": [
+    {
+      "id": "VAL-001",
+      "name": "Focused partial URL opens directly on the product-only future-state surface",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "id": "VAL-002",
+      "name": "Dense direction uses a separate clean URL with the same truthful partial fixture",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "id": "VAL-003",
+      "name": "Product-native range selection reveals full coverage and comparable prior evidence",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "id": "VAL-004",
+      "name": "Product-native filter disclosure keeps active context and one coherent result together",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "id": "VAL-005",
+      "name": "Dense product-native controls retain always-visible analytical context",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "id": "VAL-006",
+      "name": "Focused evidence keeps primary columns visible and discloses secondary evidence in place",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "id": "VAL-007",
+      "name": "Dense row selection reveals a pinned exact-evidence inspector without changing values",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "id": "VAL-008",
+      "name": "Focused Run details unifies the surface and preserves creation-time/lifetime semantics",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "id": "VAL-009",
+      "name": "Dense Run details retains its table character inside the unified product shell",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "id": "VAL-010",
+      "name": "Constrained composition keeps navigation open, export visible, and missing comparison proportionate",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "id": "VAL-011",
+      "name": "Manual Settings navigation resize is keyboard operable",
+      "pass": true,
+      "observed": {
+        "before": 300,
+        "after": 292
+      }
+    },
+    {
+      "id": "VAL-012",
+      "name": "Local export action gives immediate visible feedback",
+      "pass": true,
+      "observed": null
+    },
+    {
+      "id": "VAL-013",
+      "name": "Stable-state accessibility path has named controls, no redundant page title, product tabs, live feedback, and no active motion",
+      "pass": true,
+      "observed": {
+        "reducedMotion": true,
+        "activeAnimations": 0,
+        "unnamed": [],
+        "h1Count": 0,
+        "tablists": 1,
+        "liveRegions": 1
+      }
+    },
+    {
+      "id": "VAL-014",
+      "name": "Actual narrow viewport avoids page overflow and retains the critical product controls and evidence",
+      "pass": true,
+      "observed": {
+        "viewport": 390,
+        "documentWidth": 390
+      }
+    },
+    {
+      "id": "VAL-015",
+      "name": "No unexpected browser errors",
+      "pass": true,
+      "observed": []
+    }
+  ],
+  "screenshots": [
+    {
+      "id": "VIS-001",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-001-direction-a-partial-desktop.png"
+    },
+    {
+      "id": "VIS-002",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-002-direction-b-partial-desktop.png"
+    },
+    {
+      "id": "VIS-003",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-003-direction-a-filters-open-desktop.png"
+    },
+    {
+      "id": "VIS-004",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-004-direction-a-exact-evidence-desktop.png"
+    },
+    {
+      "id": "VIS-005",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-005-direction-a-run-details-desktop.png"
+    },
+    {
+      "id": "VIS-006",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-006-direction-b-run-details-desktop.png"
+    },
+    {
+      "id": "VIS-007",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-007-direction-a-constrained-frame-desktop.png"
+    },
+    {
+      "id": "VIS-008",
+      "path": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-008-direction-a-partial-narrow.png"
+    }
+  ],
+  "browserErrors": [],
+  "pass": true
+}
