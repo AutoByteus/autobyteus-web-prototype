@@ -1,7 +1,7 @@
 # Requirements Visualization Brief
 
 - Package / ticket ID: `REQPKG-TSUI-001`
-- Revision: `RV-002`
+- Revision: `RV-003`
 - Mode: Requirements Visualization
 - Requirements / behavior / acceptance-criteria IDs: `BEH-001`–`BEH-006`; `REQ-001`–`REQ-014`; `AC-001`–`AC-014`; decisions `DEC-001`–`DEC-004`
 - Decision question: Which of two credible Token Statistics compositions should govern the future hierarchy, control density, exact-evidence disclosure, and degree of Run-details unification?
@@ -16,7 +16,7 @@
 - Existing frontend / prototype repository context: Accepted current-experience baseline `6ba98942c669329f70ba902db4a2880375ad52ad` in Product worktree `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001`, sourced from `origin/personal` pin `9d0fd7c570d58da1af2c7a40279327c8a20a8093`.
 - Success signal: A reviewer can state which direction better supports first-scan comprehension and why, while confirming whether its controls, evidence disclosure, Run-details treatment, and narrow behavior preserve trust and usability.
 - Known unknowns: User preference between the two clean product compositions; whether secondary filters should default open; whether Run details should be fully restyled or only visually bridged.
-- Revision trigger: User feedback rejected the persistent visualization heading, explanatory copy, direction/journey controls, selection summary, and footer as distracting and unlike the intended product.
+- Revision triggers: User feedback rejected the persistent visualization heading, explanatory copy, direction/journey controls, selection summary, and footer as distracting and unlike the intended product (`RV-002`). The user then required explicit proof that the proposal is achievable with the current data structure and does not invent implementation scope (`RV-003`).
 
 ## Visualization Scope
 

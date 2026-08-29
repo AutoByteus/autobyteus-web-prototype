@@ -19,6 +19,11 @@ direction picker, journey picker, selection summary, or explanatory footer.
 That review chrome was removed in `RV-002` so each URL shows only the proposed
 product experience.
 
+`RV-003` audits the visible fields against the current pinned frontend/server
+contracts and removes an unsupported illustrative Run-details model `Runs`
+count. The audit is recorded in the Product ticket as
+`implementation-feasibility-audit.md`.
+
 For deterministic evidence capture, append one of these optional states:
 `&scene=comparable`, `&scene=filters`, `&scene=evidence`, `&scene=runs`, or
 `&scene=narrow`. The same states are also reachable with product-native range,

@@ -1,0 +1,38 @@
+REQPKG-TSUI-001 current-contract feasibility validation
+source_pin=9d0fd7c570d58da1af2c7a40279327c8a20a8093
+source_pin_resolved=9d0fd7c570d58da1af2c7a40279327c8a20a8093
+PASS analytics.appliedRange
+PASS analytics.comparisonRange
+PASS analytics.coverage
+PASS analytics.comparisonCoverage
+PASS analytics.appliedFilters
+PASS analytics.selectedAggregate
+PASS analytics.selectedCostQuality
+PASS analytics.comparisonAggregate
+PASS analytics.comparisonCostQuality
+PASS analytics.activeDayCount
+PASS analytics.trendBuckets
+PASS analytics.comparisonBuckets
+PASS analytics.breakdownRows
+PASS analytics.filterOptions
+PASS aggregate.grossInputTokens
+PASS aggregate.cacheReadInputTokens
+PASS aggregate.outputTokens
+PASS aggregate.reasoningOutputTokens
+PASS aggregate.totalTokens
+PASS aggregate.estimatedApiTotalCost
+PASS aggregate.currency
+PASS aggregate.apiCostStatus
+PASS aggregate.missingPriceDimensions
+PASS aggregate.usageReportCount
+PASS run_query.tokenUsageTaskStatisticsInPeriod
+PASS run_query.usageStatisticsInPeriod
+PASS run_query.runtimeKind
+PASS run_query.modelDisplayName
+PASS run_query.aggregate
+PASS run_model_type.runtimeKind
+PASS run_model_type.modelDisplayName
+PASS run_model_type.aggregate
+PASS server_token_breakdown_order
+PASS unsupported Run-details model Runs column absent
+RESULT=PASS

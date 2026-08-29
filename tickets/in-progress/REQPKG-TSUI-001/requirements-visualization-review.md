@@ -1,8 +1,8 @@
 # Requirements Visualization Review
 
 - Package / ticket ID: `REQPKG-TSUI-001`
-- Visualization revision: `RV-002`
-- Product revision containing the visualizer and evidence: `0832b74ce830c5510bb9ffb5802095e4ee2a7567`
+- Visualization revision: `RV-003`
+- Product revision containing the current visualizer and evidence: Pending `RV-003` commit.
 - Review URLs:
   - Direction A — Focused hierarchy: `http://127.0.0.1:3262/?direction=focus`
   - Direction B — Dense explorer: `http://127.0.0.1:3262/?direction=dense`
@@ -24,12 +24,12 @@
 - Pause / replay / reset / step / slow controls exercised: Not applicable for motion. Reloading either clean URL restores its deterministic partial/no-comparison state; deterministic `scene` parameters support evidence capture.
 - Mocked boundaries: Synthetic totals, costs, trend buckets, coverage/pricing statuses, filters, drivers, runs, CSV feedback, and navigation width. No production query, persistence, accounting recomputation, customer data, credential, or live service is used.
 - Accessibility or non-motion fallback: All controls are named; tabs and metric groups expose roles/state; the navigation separator is keyboard operable; export uses a live status; reduced-motion mode has zero active animation; meaning does not depend on motion.
-- Plan fidelity or intentional deviations: Matches `RV-002`. The prior `RV-001` visualization header, explanatory copy, direction/journey controls, selection strip, and footer were removed in direct response to user feedback.
+- Plan fidelity or intentional deviations: The product-only visual form still matches design plan `RV-002`. The prior `RV-001` visualization header, explanatory copy, direction/journey controls, selection strip, and footer remain removed. `RV-003` makes a field-level feasibility correction without changing the visual form: an unsupported Run-details model `Runs` count was removed.
 
 ## Validation Evidence
 
 - Browser entry point: `http://127.0.0.1:3262/?direction=focus` and `http://127.0.0.1:3262/?direction=dense`
-- Scenarios exercised: `15/15` checks passed in Chromium with UTC timezone, English locale, light theme, and reduced motion. Both directions were opened through clean URLs; decision states were exercised with product-native controls.
+- Scenarios exercised: `16/16` checks passed in Chromium with UTC timezone, English locale, light theme, and reduced motion. Both directions were opened through clean URLs; decision states were exercised with product-native controls; the Run-details model table is contract-limited.
 - Responsive checks: Desktop `1440x1000`; constrained product composition; actual `390x844` viewport with `documentWidth === viewport` and critical controls/evidence retained.
 - Reset / replay checks: Each direction/state URL is deterministic; clean direction URLs reload to the stable populated partial/no-comparison fixture.
 - First-view simplicity check: DOM and screenshot inspection confirm that the visible page contains only the Settings product surface. No Requirements Visualization heading, question copy, visual-direction selector, journey selector, reset control, selection summary, or explanatory footer remains.
@@ -38,6 +38,8 @@
 - Build evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/validation/build.txt`
 - Browser evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/validation/browser-validation.json`
 - Browser log: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/validation/browser-validation.txt`
+- Current-contract feasibility audit: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/implementation-feasibility-audit.md`
+- Contract validation log: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/validation/contract-feasibility-audit.txt`; result `PASS`.
 - Visual reference paths:
   - `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-001-direction-a-partial-desktop.png`
   - `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references/VIS-002-direction-b-partial-desktop.png`
@@ -50,7 +52,7 @@
 
 ## Feedback And Next Action
 
-- Feedback received: Remove the large Requirements Visualization wrapper and show only what the proposed product could become because review metadata was distracting and not part of the intended product.
+- Feedback received: Remove the large Requirements Visualization wrapper and show only the proposed product. Then verify that every proposed fact is achievable with the current data structure so downstream implementation does not discover an invented requirement.
 - Requirement or scope impact: No canonical behavior or acceptance criterion changed. This is a focused representation revision.
-- Requested revision: Completed in `RV-002`; the two directions now use separate clean URLs and all decision states are accessed through proposed product controls.
+- Requested revision: Completed in `RV-003`; the clean product-only URLs remain, the current frontend/server/query contracts are mapped in a feasibility audit, and the one unsupported illustrative Run-details model `Runs` count was removed.
 - Next expected action: The user selects Direction A or Direction B and clarifies the preferred control disclosure, exact-evidence treatment, and degree of Run-details unification. Requirements Engineering records the decision; this artifact does not claim approval.

@@ -11,7 +11,7 @@ await mkdir(visualRoot, { recursive: true })
 await mkdir(evidenceRoot, { recursive: true })
 
 const browser = await chromium.launch({ headless: true, executablePath: '/usr/bin/chromium', args: ['--no-sandbox'] })
-const result = { generatedAt: new Date().toISOString(), baseUrl, revision: 'RV-002', checks: [], screenshots: [], browserErrors: [] }
+const result = { generatedAt: new Date().toISOString(), baseUrl, revision: 'RV-003', checks: [], screenshots: [], browserErrors: [] }
 
 const check = (id, name, pass, observed = null) => {
   result.checks.push({ id, name, pass, observed })
@@ -136,7 +136,15 @@ try {
   await shot(narrow.page, 'VIS-008', 'direction-a-partial-narrow')
   await narrow.context.close()
 
-  check('VAL-015', 'No unexpected browser errors', result.browserErrors.length === 0, result.browserErrors)
+  const model = await contextFor({ width: 1440, height: 1000 })
+  await model.page.getByRole('tab', { name: 'Run details' }).click()
+  await model.page.getByRole('radio', { name: 'Model' }).click()
+  const modelHeaders = (await model.page.locator('.run-table thead th').allTextContents()).map(value => value.trim())
+  body = await model.page.locator('body').innerText()
+  check('VAL-015', 'Run-details model view uses only fields available in the current query contract', JSON.stringify(modelHeaders) === JSON.stringify(['Runtime / Model', 'Input', 'Output', 'Cache read', 'Thinking', 'Total cost']) && body.includes('11,280') && body.includes('5,640') && body.includes('No API bill'), modelHeaders)
+  await model.context.close()
+
+  check('VAL-016', 'No unexpected browser errors', result.browserErrors.length === 0, result.browserErrors)
   result.pass = true
 } catch (error) {
   result.pass = false

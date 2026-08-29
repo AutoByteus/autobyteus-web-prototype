@@ -28,9 +28,9 @@
 - Product acceptance result and date: Accepted 2026-08-29; see `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/baseline-acceptance.md`.
 - Accepted Token Statistics baseline revision: `6ba98942c669329f70ba902db4a2880375ad52ad`
 - Baseline metadata revision: `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`
-- Prototype revision containing the `RV-002` visualizer and evidence: `0832b74ce830c5510bb9ffb5802095e4ee2a7567`
+- Prototype revision containing the current `RV-003` visualizer, feasibility audit, and evidence: Pending durable `RV-003` commit.
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001`
-- Integration target and result: The accepted baseline commits `6ba98942c669329f70ba902db4a2880375ad52ad` and `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6` are now on `origin/personal`. The exploratory `RV-002` commits remain only on `prototype/reqpkg-tsui-001` while user review is open.
+- Integration target and result: The accepted baseline commits `6ba98942c669329f70ba902db4a2880375ad52ad` and `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6` are now on `origin/personal`. The exploratory `RV-003` work remains only on `prototype/reqpkg-tsui-001` while user review is open.
 - Cleanup result: Deferred. Retain the active worktree and review runtimes while status is `Awaiting User Review`.
 
 ## Runtime Isolation
@@ -49,22 +49,23 @@
 - UI/UX specification: Not applicable in exploratory Requirements Visualization mode.
 - Requirements-visualization brief: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/requirements-visualization-brief.md`
 - Requirements-visualization design plan: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/requirements-visualization-design-plan.md`; revision `RV-002`, status `Ready to Build`.
-- Requirements-visualization review: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/requirements-visualization-review.md`; status `Ready for Review`.
+- Requirements-visualization review: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/requirements-visualization-review.md`; revision `RV-003`, status `Ready for Review`.
+- Current-contract feasibility audit: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/implementation-feasibility-audit.md`; classification `Achievable with current source-pin data and GraphQL contracts after correction`.
 - Visualizer source: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/visualizers/REQPKG-TSUI-001`
 - Future-state visual-reference directory: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/visual-references`
 - Current-state comparison evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/evidence/token-statistics-refresh`
 - Visualizer template revision: Agent repository `a6af4fd689a1c6cb1ec1f06c07d0b6011a8c8679`; template last changed in `e9a158b4cb80d4fa54d0c495d6ba862a34cf874d`.
 - Active capabilities: React, Vite, TypeScript, CSS, inline SVG, deterministic local state, Playwright browser validation.
 - Omitted optional capabilities: Motion, Three.js, React Three Fiber, and Drei; the comparison does not depend on animation or spatial reasoning.
-- Validation commands and results: `npm run build` passed; `npm run validate` passed `15/15`; Chromium desktop `1440x1000`, constrained composition, actual narrow `390x844`, UTC/English/light/reduced-motion; zero browser errors; no page-level narrow overflow; named controls; no redundant `h1`; zero active animations; local export status; keyboard navigation resize.
-- Validation evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/validation`
-- User-confirmation reference: User feedback on 2026-08-29 explicitly rejected visible Requirements Visualization metadata/chrome and requested only the proposed product experience. `RV-002` removes it.
-- Mocked boundaries and known limitations: Synthetic locally resettable fixtures; no production runtime or persistent export. Loading/error/empty/local/mixed-currency/localization permutations remain established by the accepted baseline but are not re-rendered in this focused visual comparison.
+- Validation commands and results: `npm run build` passed; `npm run validate` passed `16/16`; Chromium desktop `1440x1000`, constrained composition, actual narrow `390x844`, UTC/English/light/reduced-motion; zero browser errors; no page-level narrow overflow; named controls; no redundant `h1`; zero active animations; local export status; keyboard navigation resize; Run-details model columns limited to current-query fields.
+- Validation evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/validation`; browser `16/16` pass and pinned-source contract audit `PASS`.
+- User-confirmation reference: User feedback on 2026-08-29 rejected visible Requirements Visualization metadata/chrome (`RV-002`) and then required explicit proof that downstream implementation can use the current data structure without invented facts (`RV-003`).
+- Mocked boundaries and known limitations: Synthetic locally resettable fixtures; no production runtime or persistent export. Loading/error/empty/local/mixed-currency/localization/custom-date/sorting permutations remain established by the accepted baseline but are not exhaustively re-rendered in this focused visual comparison. This Requirements Visualization must not be treated as a complete implementation-ready final prototype.
 
 ## Outcome And Handoff
 
 - Current outcome: `Requirements Visualization Ready`
-- Completed behavior and evidence: Accepted Token Statistics baseline is durably integrated through `origin/personal` revision `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`. The ticket branch contains only the additional `RV-002` visualizer/review commits beyond that baseline: two clean product-only direction URLs; no external visualization header/footer/controls; product-native range, filter, metric, export, evidence, tab, grouping, expansion, and manual-navigation controls; complete review evidence.
+- Completed behavior and evidence: Accepted Token Statistics baseline is durably integrated through `origin/personal` revision `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`. `RV-003` maps every proposed fact/action to the current pinned analytics and Run-details contracts, removes the unsupported illustrative model `Runs` count, retains the two clean product-only URLs, and passes `16/16` browser checks.
 - First-view simplicity evidence: Product-only DOM and screenshots contain no visualization heading, direction/journey selector, selection strip, reset control, or explanatory footer. Primary usage, coverage, trend, missing comparison, and dominant driver remain scannable in the initial view.
 - Motion/comprehension evidence: No decision-relevant motion; stable states persist. Automated checks establish the interaction/result relationship, but human preference and comprehension remain unconfirmed.
 - Remaining product decisions: User selection of Direction A or B and confirmation of control disclosure, exact-evidence treatment, and Run-details unification (`DEC-001`–`DEC-004`).

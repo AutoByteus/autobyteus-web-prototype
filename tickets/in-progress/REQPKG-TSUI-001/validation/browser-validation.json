@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-29T07:31:28.881Z",
+  "generatedAt": "2026-08-29T10:20:23.731Z",
   "baseUrl": "http://127.0.0.1:3262",
-  "revision": "RV-002",
+  "revision": "RV-003",
   "checks": [
     {
       "id": "VAL-001",
@@ -102,6 +102,19 @@
     },
     {
       "id": "VAL-015",
+      "name": "Run-details model view uses only fields available in the current query contract",
+      "pass": true,
+      "observed": [
+        "Runtime / Model",
+        "Input",
+        "Output",
+        "Cache read",
+        "Thinking",
+        "Total cost"
+      ]
+    },
+    {
+      "id": "VAL-016",
       "name": "No unexpected browser errors",
       "pass": true,
       "observed": []
