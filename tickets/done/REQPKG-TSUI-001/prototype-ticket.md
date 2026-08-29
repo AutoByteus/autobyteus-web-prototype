@@ -47,6 +47,6 @@
 - Completed behavior and evidence: The user-approved runnable contains the focused final Analytics and Run-details experience, complete `DEC-009` removal, responsive/localized truth states, post-approval 19/19 browser evidence, approved Product artifacts, and normative `VIS-009`–`VIS-015` screenshots.
 - Remaining product decisions: None.
 - Next expected action: Requirements Engineering reconciles this approved Product package into canonical requirements, records final overall approval/readiness, and routes the verified package downstream under its authority.
-- Handoff outcome from `get_handoff_rules`: Pending terminal rule evaluation immediately before delivery.
-- Matched recipient address, when a rule applies: Pending terminal rule evaluation.
-- Return context when no matching rule applies: Return the completed package to the user/calling workflow.
+- Handoff outcome from `get_handoff_rules`: `Prototype Completed` matched the requirements-integration route.
+- Matched recipient address, when a rule applies: `/requirements_engineering_team/requirements_engineer`
+- Return context when no matching rule applies: Not applicable; a matching rule applies.
