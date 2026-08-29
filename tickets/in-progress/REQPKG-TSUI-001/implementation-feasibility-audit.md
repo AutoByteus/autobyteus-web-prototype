@@ -2,7 +2,7 @@
 
 - Package / ticket ID: `REQPKG-TSUI-001`
 - Audit revision: `FA-001`
-- Visualization revision assessed: `RV-003`
+- Visualization revision assessed: `RV-004`
 - Audit date: 2026-08-29
 - Source authority: `origin/personal` at `9d0fd7c570d58da1af2c7a40279327c8a20a8093`
 - Classification: `Achievable with the current source-pin data and GraphQL contracts after one unsupported illustrative column was removed`

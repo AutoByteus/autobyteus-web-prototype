@@ -191,7 +191,7 @@ function Analytics(props: AnalyticsProps) {
         <div><span>Prior period</span><strong>{props.full ? "+28.2%" : "—"}</strong><small>{props.full ? "+33.44K · Prior 118.56K" : "Not comparable"}</small></div>
       </section>
       <div className="dense-analysis-grid">
-        <section className="plain-section trend-section"><SectionHeading title="Usage over time" meta="Aug 1–29 · UTC" /><TrendChart compact metric={props.metric} full={props.full} /></section>
+        <section className="plain-section trend-section"><SectionHeading title="Usage over time" meta="Aug 1–29 · UTC" /><TrendChart compact filtered={props.filterApplied} metric={props.metric} full={props.full} /></section>
         <section className="plain-section rank-section"><SectionHeading title="Leading drivers" meta="Runtime + model" /><DriverBars rows={driverData} metric={props.metric} /></section>
       </div>
       <DenseEvidence exactVisible={props.exactVisible} evidenceOpen={props.evidenceOpen} rows={driverData} setEvidenceOpen={props.setEvidenceOpen} />
@@ -219,7 +219,7 @@ function Analytics(props: AnalyticsProps) {
       </div>
     </section>
     <div className="focus-analysis-grid">
-      <section className="surface-section trend-section"><SectionHeading title="Usage over time" meta="Exact buckets remain available" /><TrendChart metric={props.metric} full={props.full} /></section>
+      <section className="surface-section trend-section"><SectionHeading title="Usage over time" meta="Daily points · exact buckets remain available" /><TrendChart filtered={props.filterApplied} metric={props.metric} full={props.full} /></section>
       <section className="surface-section driver-spotlight"><SectionHeading title="Dominant driver" meta="Runtime + model" /><DriverSpotlight row={driverData[0]} metric={props.metric} /><button className="text-action" onClick={() => props.setEvidenceOpen(props.evidenceOpen ? null : "codex")} type="button"><Icon name="table" /> Inspect exact evidence</button></section>
     </div>
     <FocusEvidence exactVisible={props.exactVisible} evidenceOpen={props.evidenceOpen} rows={driverData} setEvidenceOpen={props.setEvidenceOpen} />
@@ -271,13 +271,38 @@ function SectionHeading({ title, meta }: { title: string; meta: string }) {
   return <div className="section-heading"><div><h3>{title}</h3><p>{meta}</p></div><button aria-label={`More options for ${title}`} type="button">•••</button></div>;
 }
 
-function TrendChart({ compact = false, metric, full }: { compact?: boolean; metric: Metric; full: boolean }) {
-  const values = metric === "tokens" ? [26, 43, 36, 47] : [18, 28, 22, full ? 31 : 19];
+function TrendChart({ compact = false, filtered, metric, full }: { compact?: boolean; filtered: boolean; metric: Metric; full: boolean }) {
+  const tokenValues = filtered
+    ? [2, 2, 0, 3, 4, 3, 2, 4, 3, 0, 4, 2, 3, 5, 3, 2, 0, 2, 4, 4, 3, 3, 2, 5, 3, 2, 3, 4, 3]
+    : [3, 4, 0, 6, 7, 5, 4, 8, 5, 0, 7, 4, 6, 9, 5, 3, 0, 4, 8, 7, 5, 6, 4, 10, 5, 3, 6, 8, 10];
+  const costTotal = filtered ? 0.42 : full ? 1.17 : 0.87;
+  const tokenTotal = tokenValues.reduce((sum, value) => sum + value, 0);
+  const values = metric === "tokens" ? tokenValues : tokenValues.map((value) => value * costTotal / tokenTotal);
   const max = Math.max(...values);
+  const points = values.map((value, index) => ({
+    day: index + 1,
+    value,
+    x: 2 + (index / (values.length - 1)) * 96,
+    y: 88 - (value / max) * 76,
+  }));
+  const linePath = points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`).join(" ");
+  const emphasisDays = new Set([1, 8, 15, 22, 29]);
+  const formatValue = (value: number) => metric === "tokens" ? `${value}K` : `$${value.toFixed(2)}`;
+  const exactSeries = points.map((point) => `Aug ${point.day}: ${metric === "tokens" ? `${point.value * 1000} tokens` : `$${point.value.toFixed(4)}`}`).join(", ");
   return <div className={`trend-chart ${compact ? "compact" : ""}`}>
-    <div className="chart-y"><span>{metric === "tokens" ? "50K" : "$0.40"}</span><span>{metric === "tokens" ? "25K" : "$0.20"}</span><span>0</span></div>
-    <div className="bars" role="img" aria-label={`${metric === "tokens" ? "Token" : "Estimated cost"} usage across four chronological UTC buckets: ${values.join(", ")}`}>
-      {values.map((value, index) => <div className="bar-column" key={index}><span className="bar-value">{metric === "tokens" ? `${value}K` : `$${(value / 100).toFixed(2)}`}</span><span className="bar" style={{ height: `${Math.round((value / max) * (compact ? 86 : 132))}px` }} /><small>Aug {index * 7 + 1}</small></div>)}
+    <div className="chart-y"><span>{formatValue(max)}</span><span>{formatValue(max / 2)}</span><span>0</span></div>
+    <div className="line-chart-shell" role="img" aria-label={`${metric === "tokens" ? "Token" : "Estimated cost"} usage across 29 daily UTC buckets. ${exactSeries}`}>
+      <div className="line-plot">
+        <svg aria-hidden="true" className="trend-line-svg" preserveAspectRatio="none" viewBox="0 0 100 100">
+          <path className="trend-line" d={linePath} vectorEffect="non-scaling-stroke" />
+        </svg>
+        {points.map((point) => <span className={`trend-point-wrap ${emphasisDays.has(point.day) ? "emphasis" : ""}`} key={point.day} style={{ left: `${point.x}%`, top: `${point.y}%` }}>
+          {emphasisDays.has(point.day) && <span className="trend-stem" />}
+          {emphasisDays.has(point.day) && point.value > 0 && <span className="trend-point-value">{formatValue(point.value)}</span>}
+          <span className="trend-point" />
+        </span>)}
+      </div>
+      <div className="line-x-labels"><span>Aug 1</span><span>Aug 8</span><span>Aug 15</span><span>Aug 22</span><span>Aug 29</span></div>
     </div>
   </div>;
 }

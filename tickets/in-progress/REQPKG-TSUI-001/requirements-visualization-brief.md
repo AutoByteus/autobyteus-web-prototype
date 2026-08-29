@@ -1,7 +1,7 @@
 # Requirements Visualization Brief
 
 - Package / ticket ID: `REQPKG-TSUI-001`
-- Revision: `RV-003`
+- Revision: `RV-004`
 - Mode: Requirements Visualization
 - Requirements / behavior / acceptance-criteria IDs: `BEH-001`–`BEH-006`; `REQ-001`–`REQ-014`; `AC-001`–`AC-014`; decisions `DEC-001`–`DEC-004`
 - Decision question: Which of two credible Token Statistics compositions should govern the future hierarchy, control density, exact-evidence disclosure, and degree of Run-details unification?
@@ -16,11 +16,12 @@
 - Existing frontend / prototype repository context: Accepted current-experience baseline `6ba98942c669329f70ba902db4a2880375ad52ad` in Product worktree `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001`, sourced from `origin/personal` pin `9d0fd7c570d58da1af2c7a40279327c8a20a8093`.
 - Success signal: A reviewer can state which direction better supports first-scan comprehension and why, while confirming whether its controls, evidence disclosure, Run-details treatment, and narrow behavior preserve trust and usability.
 - Known unknowns: User preference between the two clean product compositions; whether secondary filters should default open; whether Run details should be fully restyled or only visually bridged.
-- Revision triggers: User feedback rejected the persistent visualization heading, explanatory copy, direction/journey controls, selection summary, and footer as distracting and unlike the intended product (`RV-002`). The user then required explicit proof that the proposal is achievable with the current data structure and does not invent implementation scope (`RV-003`).
+- Revision triggers: User feedback rejected the persistent visualization heading, explanatory copy, direction/journey controls, selection summary, and footer as distracting and unlike the intended product (`RV-002`). The user then required explicit proof that the proposal is achievable with the current data structure and does not invent implementation scope (`RV-003`). The user next preferred a line/spline trend with point markers over vertical bars for usage over time (`RV-004`).
 
 ## Visualization Scope
 
 - What the user should be able to see: Only the proposed Settings product surface—no visualization heading, explanation, direction selector, journey selector, summary strip, or footer—while total use, cost/status, coverage, trend, comparison availability, and dominant driver remain visible in the first frame.
+- Usage-over-time form: A line chart with visible point markers for each returned chronological bucket, plus restrained vertical guides and exact labels. Bars are intentionally removed; the line communicates change over time while the points keep each discrete bucket inspectable.
 - What the user should be able to interact with: Use product-native range/metric/filter/export/grouping/evidence/tab controls and manually resize the Settings navigation. Direction A/B and deterministic review-state entry are selected by separate clean URL parameters rather than visible prototype chrome.
 - What is mocked: Deterministic token/cost fixtures, dates, chart bars/lines, provider/model/run identities, filter result, disclosure state, CSV result feedback, and constrained-width frame.
 - What must not be implied as production behavior: No production queries, persistence, accounting recomputation, pricing lookup, CSV storage, source navigation policy change, or approved final UI contract.

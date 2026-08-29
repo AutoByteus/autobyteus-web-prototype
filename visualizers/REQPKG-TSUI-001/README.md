@@ -24,6 +24,9 @@ contracts and removes an unsupported illustrative Run-details model `Runs`
 count. The audit is recorded in the Product ticket as
 `implementation-feasibility-audit.md`.
 
+`RV-004` replaces the usage-over-time bars with a daily line chart and visible
+point markers, using the same current-contract bucket data.
+
 For deterministic evidence capture, append one of these optional states:
 `&scene=comparable`, `&scene=filters`, `&scene=evidence`, `&scene=runs`, or
 `&scene=narrow`. The same states are also reachable with product-native range,

@@ -1,8 +1,8 @@
 # Requirements Visualization Review
 
 - Package / ticket ID: `REQPKG-TSUI-001`
-- Visualization revision: `RV-003`
-- Product revision containing the current visualizer, audit, and evidence: `82505829cb62937f5acd479ce17668a66178a7a0`
+- Visualization revision: `RV-004`
+- Product revision containing the current visualizer, audit, and evidence: Pending `RV-004` commit.
 - Review URLs:
   - Direction A — Focused hierarchy: `http://127.0.0.1:3262/?direction=focus`
   - Direction B — Dense explorer: `http://127.0.0.1:3262/?direction=dense`
@@ -24,12 +24,12 @@
 - Pause / replay / reset / step / slow controls exercised: Not applicable for motion. Reloading either clean URL restores its deterministic partial/no-comparison state; deterministic `scene` parameters support evidence capture.
 - Mocked boundaries: Synthetic totals, costs, trend buckets, coverage/pricing statuses, filters, drivers, runs, CSV feedback, and navigation width. No production query, persistence, accounting recomputation, customer data, credential, or live service is used.
 - Accessibility or non-motion fallback: All controls are named; tabs and metric groups expose roles/state; the navigation separator is keyboard operable; export uses a live status; reduced-motion mode has zero active animation; meaning does not depend on motion.
-- Plan fidelity or intentional deviations: The product-only visual form still matches design plan `RV-002`. The prior `RV-001` visualization header, explanatory copy, direction/journey controls, selection strip, and footer remain removed. `RV-003` makes a field-level feasibility correction without changing the visual form: an unsupported Run-details model `Runs` count was removed.
+- Plan fidelity or intentional deviations: Matches design plan `RV-004`. The product-only treatment and `RV-003` contract correction remain. `RV-004` replaces vertical usage bars with a daily line and 29 point markers; each point remains a discrete exact UTC bucket and no area fill or accounting interpolation is introduced.
 
 ## Validation Evidence
 
 - Browser entry point: `http://127.0.0.1:3262/?direction=focus` and `http://127.0.0.1:3262/?direction=dense`
-- Scenarios exercised: `16/16` checks passed in Chromium with UTC timezone, English locale, light theme, and reduced motion. Both directions were opened through clean URLs; decision states were exercised with product-native controls; the Run-details model table is contract-limited.
+- Scenarios exercised: `17/17` checks passed in Chromium with UTC timezone, English locale, light theme, and reduced motion. Both directions were opened through clean URLs; decision states were exercised with product-native controls; the Run-details model table is contract-limited; the trend is verified as a 29-point daily line with zero bar elements.
 - Responsive checks: Desktop `1440x1000`; constrained product composition; actual `390x844` viewport with `documentWidth === viewport` and critical controls/evidence retained.
 - Reset / replay checks: Each direction/state URL is deterministic; clean direction URLs reload to the stable populated partial/no-comparison fixture.
 - First-view simplicity check: DOM and screenshot inspection confirm that the visible page contains only the Settings product surface. No Requirements Visualization heading, question copy, visual-direction selector, journey selector, reset control, selection summary, or explanatory footer remains.
@@ -52,7 +52,7 @@
 
 ## Feedback And Next Action
 
-- Feedback received: Remove the large Requirements Visualization wrapper and show only the proposed product. Then verify that every proposed fact is achievable with the current data structure so downstream implementation does not discover an invented requirement.
+- Feedback received: Remove the large Requirements Visualization wrapper and show only the proposed product; verify every fact against the current data structure; replace vertical usage bars with a point-marked line/curve that communicates daily change.
 - Requirement or scope impact: No canonical behavior or acceptance criterion changed. This is a focused representation revision.
-- Requested revision: Completed in `RV-003`; the clean product-only URLs remain, the current frontend/server/query contracts are mapped in a feasibility audit, and the one unsupported illustrative Run-details model `Runs` count was removed.
+- Requested revision: Completed in `RV-004`; the clean product-only URLs and feasibility correction remain, and Usage over time now uses a point-marked daily line instead of bars.
 - Next expected action: The user selects Direction A or Direction B and clarifies the preferred control disclosure, exact-evidence treatment, and degree of Run-details unification. Requirements Engineering records the decision; this artifact does not claim approval.

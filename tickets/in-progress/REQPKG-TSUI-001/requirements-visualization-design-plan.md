@@ -1,20 +1,21 @@
 # Requirements Visualization Design Plan
 
 - Package / ticket ID: `REQPKG-TSUI-001`
-- Revision: `RV-002`
+- Revision: `RV-004`
 - Decision question: Which composition should govern future Token Statistics hierarchy, density, evidence disclosure, and Run-details cohesion?
 - One-sentence user takeaway: The user can compare two credible treatments over the same truthful states and explain which one makes real usage dominant without weakening exact evidence.
-- Chosen visual form: Two clean product-only compositions selected by URL, each retaining real product-native interaction.
+- Chosen visual form: Two clean product-only compositions selected by URL, each retaining real product-native interaction. Usage over time is a line chart with point markers and restrained vertical guides rather than vertical bars.
 - Why this is the smallest suitable representation: User feedback establishes that persistent visualization chrome obscures the product decision. Two clean URLs preserve exact composition and let the product itself carry the comparison; state-specific evidence is reached through the proposed controls rather than an external journey navigator.
-- Alternatives considered and rejected: Persistent review headers/selectors were built in RV-001 and explicitly rejected by the user as distracting; a floating review drawer would still add non-product surface; static screenshots alone would remove interaction; side-by-side pages would shrink content; animation would add irrelevant motion.
+- Alternatives considered and rejected: Persistent review headers/selectors were built in RV-001 and explicitly rejected by the user as distracting; a floating review drawer would still add non-product surface; static screenshots alone would remove interaction; side-by-side pages would shrink content; animation would add irrelevant motion. Vertical bars were rejected in RV-004 because the user's primary reading task is the shape of usage across chronological buckets; an area fill was rejected because it would add visual mass and could imply continuous volume between discrete buckets.
 - Implementation technology selected after the design gate: Ticket-scoped React/Vite/TypeScript visualizer copied from the required scaffold, using plain React state and CSS only. `motion`, Three.js, React Three Fiber, and Drei remain installed but intentionally unused.
 
 ## Visible Model
 
 - Initial view: A full-viewport Settings > Token Statistics product surface, Direction A by default, populated partial coverage/no comparison, with no external visualization copy or controls.
-- Actors or objects to show: Settings navigation and manual resize handle; Analytics/Run-details tabs; compact product controls; primary usage evidence; secondary evidence disclosure.
+- Actors or objects to show: Settings navigation and manual resize handle; Analytics/Run-details tabs; compact product controls; primary usage evidence; a bucket-based line with visible point markers; secondary evidence disclosure.
 - States to show: Partial/no comparison; full/comparable; filters open; exact driver evidence open; Run details; constrained width.
 - Relationship or causal distinction: Separate clean Direction A/B URLs change hierarchy and disclosure strategy while data truth stays fixed; product-native actions expose the corresponding filter/evidence/Run-details state.
+- Trend truth rule: Each marker corresponds to one exact returned bucket. The connecting line supports trend perception but does not replace the exact bucket value or accessible text alternative. No invented interpolation is used for accounting.
 - Details intentionally hidden or deferred: Secondary filter fields remain behind `Filters`; accounting metadata remains behind row evidence; Run child/member rows remain behind expansion; exact chart bucket tables are acknowledged but not fully reproduced because exact-row strategy is the decision focus.
 
 ## Motion Design
@@ -59,5 +60,5 @@
 - [x] Decision-relevant motion is slow enough to follow, holds the consequence, and avoids unrelated simultaneous movement. (No decision-relevant motion is used; stable state persists.)
 - [x] The same decision-relevant meaning is available without motion or 3D.
 - Status: `Ready to Build`
-- Remaining design concern: Separate direction URLs must be clearly listed in the handoff so removal of on-page review chrome does not make the comparison undiscoverable.
-- Evidence for the decision: User feedback on RV-001 explicitly requested removal of all visualization content above and below the product so the review shows only what could become the product; the accepted baseline still supplies the truth contract.
+- Remaining design concern: Separate direction URLs must be clearly listed in the handoff so removal of on-page review chrome does not make the comparison undiscoverable. Final implementation must use exact returned day/week/month buckets and preserve the accessible exact bucket table.
+- Evidence for the decision: User feedback on RV-001 explicitly requested removal of all visualization content above and below the product so the review shows only what could become the product; RV-004 explicitly prefers a point-marked line/curve over bars for daily/monthly usage; the accepted baseline supplies the truth contract.

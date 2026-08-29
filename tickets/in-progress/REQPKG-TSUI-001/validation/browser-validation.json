@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-29T10:20:23.731Z",
+  "generatedAt": "2026-08-29T10:26:54.832Z",
   "baseUrl": "http://127.0.0.1:3262",
-  "revision": "RV-003",
+  "revision": "RV-004",
   "checks": [
     {
       "id": "VAL-001",
@@ -115,6 +115,17 @@
     },
     {
       "id": "VAL-016",
+      "name": "Usage over time is a 29-point daily line with markers and no vertical bars",
+      "pass": true,
+      "observed": {
+        "points": 29,
+        "lines": 1,
+        "bars": 0,
+        "label": "Token usage across 29 daily UTC buckets. Aug 1: 3000 tokens, Aug 2: 4000 tokens, Aug 3: 0 tokens, Aug 4: 6000 tokens, Aug 5: 7000 tokens, Aug 6: 5000 tokens, Aug 7: 4000 tokens, Aug 8: 8000 tokens, Aug 9: 5000 tokens, Aug 10: 0 tokens, Aug 11: 7000 tokens, Aug 12: 4000 tokens, Aug 13: 6000 tokens, Aug 14: 9000 tokens, Aug 15: 5000 tokens, Aug 16: 3000 tokens, Aug 17: 0 tokens, Aug 18: 4000 tokens, Aug 19: 8000 tokens, Aug 20: 7000 tokens, Aug 21: 5000 tokens, Aug 22: 6000 tokens, Aug 23: 4000 tokens, Aug 24: 10000 tokens, Aug 25: 5000 tokens, Aug 26: 3000 tokens, Aug 27: 6000 tokens, Aug 28: 8000 tokens, Aug 29: 10000 tokens"
+      }
+    },
+    {
+      "id": "VAL-017",
       "name": "No unexpected browser errors",
       "pass": true,
       "observed": []
