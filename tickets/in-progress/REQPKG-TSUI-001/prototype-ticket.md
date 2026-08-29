@@ -27,7 +27,7 @@
 - Product acceptance result and date: Accepted 2026-08-29; see `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/baseline-acceptance.md`.
 - Accepted Token Statistics baseline revision: `6ba98942c669329f70ba902db4a2880375ad52ad`
 - Baseline metadata revision: `16638137bdb8ebe627507dac6c3c8bdbc5edf9d6`
-- Prototype revision for this ticket: Pending durable `RV-002` commit.
+- Prototype revision containing the `RV-002` visualizer and evidence: `0832b74ce830c5510bb9ffb5802095e4ee2a7567`
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001`
 - Integration target and result: `personal`; deferred while the exploratory clarification loop remains open.
 - Cleanup result: Deferred. Retain the active worktree and review runtimes while status is `Awaiting User Review`.
@@ -68,6 +68,6 @@
 - Motion/comprehension evidence: No decision-relevant motion; stable states persist. Automated checks establish the interaction/result relationship, but human preference and comprehension remain unconfirmed.
 - Remaining product decisions: User selection of Direction A or B and confirmation of control disclosure, exact-evidence treatment, and Run-details unification (`DEC-001`–`DEC-004`).
 - Next expected action: User reviews the two URLs and selects a direction; Requirements Engineering records the clarification. Do not treat this exploratory visualizer as final UI approval.
-- Handoff outcome from `get_handoff_rules`: Pending final artifact commit and routing lookup.
-- Matched recipient address, when a rule applies: Pending `get_handoff_rules` result.
+- Handoff outcome from `get_handoff_rules`: `Requirements Visualization Ready` matched the Requirements Engineering review route.
+- Matched recipient address, when a rule applies: `/requirements_engineering_team/requirements_engineer`
 - Return context when no matching rule applies: Return the review-ready package to the user or calling workflow.
