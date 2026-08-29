@@ -1,5 +1,56 @@
 # Prototype Runbook
 
+## REQPKG-TSUI-001 Token Statistics Refresh Candidate
+
+This ticket-scoped working tree refreshes only **Settings > Token Statistics**
+from `origin/personal` at exact source pin
+`9d0fd7c570d58da1af2c7a40279327c8a20a8093`. It intentionally does not use the
+Requirements commit `1b5c401e8c2ed7af7630a840e7294541cbf7ad6f` as current-experience authority.
+The candidate is awaiting Product Prototyper acceptance and commit; the
+approved project-wide baseline information below remains historical context.
+
+Run the candidate independently:
+
+```bash
+cd /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 3210
+```
+
+Review <http://127.0.0.1:3210/settings?section=token-usage>. Choose a focused
+fixture in the browser console and reload:
+
+```js
+localStorage.setItem('autobyteus.prototype.scenario', 'token_partial')
+location.assign('/settings?section=token-usage')
+```
+
+Available focused values are `populated`, `token_empty`, `token_partial`,
+`token_unavailable`, `token_mixed_currency`, `token_local`, `loading`, and
+`error`. Reset with:
+
+```js
+localStorage.removeItem('autobyteus.prototype.scenario')
+location.reload()
+```
+
+Run proportional checks:
+
+```bash
+corepack pnpm typecheck
+corepack pnpm lint
+corepack pnpm test
+corepack pnpm validate:boundaries
+NUXT_IGNORE_LOCK=1 corepack pnpm build
+```
+
+The source-versus-prototype validator requires the controlled source observer,
+an exact temporary archive of the source pin, and both Nuxt dev servers. The
+durable completed comparison is under `evidence/token-statistics-refresh/`;
+the machine summary records the exact loopback URLs and matched environment.
+No source observer, backend, Electron host, credential, or live service is
+needed for ordinary prototype review.
+
 ## Identity
 
 - Package: `initial-prototype-baseline`

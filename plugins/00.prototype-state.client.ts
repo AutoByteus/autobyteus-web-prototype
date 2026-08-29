@@ -28,6 +28,8 @@ const localActions: Record<string, Set<string>> = {
   mobileWork: new Set(['selectContext', 'setActiveTab', 'requestRunSetup', 'consumeRunSetupIntent', 'requestFilePreview', 'consumeFilePreviewRequest', 'addDraftContextAttachment', 'removeDraftContextAttachment', 'clearDraftContextAttachments', 'consumeDraftContextAttachments', 'getPendingTeamRunAttachments', 'hasPendingTeamRunAttachments', 'addPendingTeamRunAttachment', 'moveDraftAttachmentsToPendingTeamRun', 'removePendingTeamRunAttachment', 'clearPendingTeamRunAttachments', 'consumePendingTeamRunAttachments', 'rememberFocusedTeamMember', 'getRememberedFocusedTeamMember', 'updateFocusedTeamMember', 'clearContext']),
   memoryExplorerStore: new Set(['setSelectedSourceByKey', 'setHomeTab', 'setSelectedAgentFromRoute', 'setSelectedTeamFromRoute', 'setAgentsSearch', 'setTeamsSearch', 'setAgentRunsSearch', 'setTeamRunsSearch', 'changeAgentRunsPage', 'changeTeamRunsPage', 'changeHomePage', 'resetPagesForSourceChange', 'clearSelections']),
   memoryInspectorStore: new Set(['setActiveTab', 'setRawTraceLimit', 'setRawTraceFileName', 'buildVariables', 'clear']),
+  tokenUsageAnalytics: new Set(['setPreset', 'clearFilters', 'fetch']),
+  tokenUsageRunStatistics: new Set(['fetchStatistics']),
   mediaLibrary: new Set(['setCategory', 'changePage']),
   messagingSetupNavigationStore: new Set(['selectedStepForProvider', 'setSelectedStep', 'clearSelectedStep']),
   messagingProviderScopeStore: new Set(['applyManagedAccountHints', 'setSelectedProvider']),

@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-08-29T06:54:05.389Z",
+  "sourcePin": "9d0fd7c570d58da1af2c7a40279327c8a20a8093",
+  "sourceBaseUrl": "http://127.0.0.1:4261",
+  "prototypeBaseUrl": "http://127.0.0.1:3261",
+  "mockBaseUrl": "http://127.0.0.1:4361",
+  "chromiumPath": "/usr/bin/chromium",
+  "cases": 26,
+  "passed": 26,
+  "failed": [],
+  "byteExactScreenshots": 13,
+  "sourceBrowserErrorCases": [],
+  "prototypeBrowserErrorCases": []
+}

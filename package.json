@@ -18,6 +18,7 @@
     "validate:correction-journeys": "node prototype/scripts/validate-correction-journeys.mjs",
     "validate:gap-009": "node prototype/scripts/validate-gap-009.mjs",
     "validate:gap-010": "node prototype/scripts/validate-gap-010.mjs",
+    "validate:token-statistics-refresh": "node prototype/scripts/validate-token-statistics-refresh.mjs",
     "capture:parity": "node prototype/scripts/capture-parity.mjs",
     "capture:correction": "node prototype/scripts/capture-correction-parity.mjs",
     "capture:correction-matrix": "CORRECTION_MATRIX=1 node prototype/scripts/capture-correction-parity.mjs",

@@ -1,0 +1,3 @@
+PASS install command: corepack pnpm install --ignore-workspace --frozen-lockfile
+PASS start command: corepack pnpm dev --port 3210
+PASS review URL HTTP status: 200

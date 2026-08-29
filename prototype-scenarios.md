@@ -14,6 +14,28 @@ All values are synthetic, browser-local and resettable. Scenarios preserve real 
 
 Electron contexts install `window.electronAPI` as a deterministic browser-side host adapter. No Electron package, process or native bridge is present.
 
+## Token Statistics Refresh Scenarios
+
+These focused scenarios drive the current source-pin presentation under
+`/settings?section=token-usage` with local, resettable state:
+
+| Scenario | Visible purpose |
+| --- | --- |
+| `populated` | Full coverage, comparable prior period, filters, trend/composition charts, breakdown table, and populated Run details |
+| `token_empty` | Covered date range with no usage and explicit empty Run details |
+| `token_partial` | Partial historical coverage and partial API-pricing quality |
+| `token_unavailable` | Selected range predates usage coverage |
+| `token_mixed_currency` | Cost view with non-comparable currencies |
+| `token_local` | Local runtime with no API bill |
+| `loading` | Analytics loading skeleton |
+| `error` | Retryable analytics and Run details errors |
+
+Select one with
+`localStorage.setItem('autobyteus.prototype.scenario', '<scenario>')` and
+reload. Remove that key to reset to `populated`. The records, dates, token
+counts, prices, providers, models, tasks, Team members, and error are synthetic;
+they exist only to expose the exact source UI states and transitions.
+
 ## Catalog, Access, And Recovery Scenarios
 
 | Scenario | Representative route/context | Visible purpose |

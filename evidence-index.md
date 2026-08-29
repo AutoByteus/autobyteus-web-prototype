@@ -1,5 +1,22 @@
 # Prototype Evidence Index
 
+## REQPKG-TSUI-001 Token Statistics Refresh Candidate
+
+Focused current-experience evidence for source authority `origin/personal` at
+`9d0fd7c570d58da1af2c7a40279327c8a20a8093` is under
+`evidence/token-statistics-refresh/`:
+
+- `machine/token-statistics-refresh-summary.json` — terminal pass/fail summary
+- `machine/token-statistics-refresh-results.json` — one record per matched visual/interaction
+- `machine/presentation-source-hash-audit.json` — 18/18 source presentation files exact
+- `machine/browser-tool-run-details.json` — direct Browser Tool journey evidence
+- `source/`, `prototype/`, `comparison/` — matched captures and normalized diffs
+- `validation/` — browser, typecheck, lint, unit, boundary, and build logs
+
+The bootstrap authority, inventory, simplifications, and completion gate are
+documented in `prototype-bootstrap-report.md`. These are current-state refresh
+artifacts awaiting Product acceptance, not approved future-state references.
+
 Package `initial-prototype-baseline`, current requirements revision `RER-017`
 (baseline pin established under `RER-002`; prior reviewed evidence preserved), pinned source
 `8ef282ba77705180d985e7000d801f0e0068cdc1`. Current status: accepted user-approved current-state baseline including the RER-009 `PP-GAP-009`/`PP-GAP-010` correction under `PPA-002`.

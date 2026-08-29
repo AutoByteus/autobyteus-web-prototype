@@ -1,0 +1,16 @@
+
+> autobyteus-web-prototype@0.1.0 test /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001
+> vitest run
+
+
+ RUN  v3.2.7 /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001
+
+ ✓ prototype/tests/token-statistics-refresh-fixture.test.ts (3 tests) 5ms
+ ✓ prototype/tests/host-scenario.test.ts (3 tests) 7ms
+ ✓ prototype/tests/fixture-contract.test.ts (5 tests) 8ms
+
+ Test Files  3 passed (3)
+      Tests  11 passed (11)
+   Start at  06:54:42
+   Duration  1.05s (transform 1.22s, setup 0ms, collect 1.29s, tests 21ms, environment 0ms, prepare 524ms)
+

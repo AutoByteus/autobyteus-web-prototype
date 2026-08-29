@@ -1,0 +1,41 @@
+{
+  "validatedAt": "2026-08-29T06:48:00.000Z",
+  "tool": "autobyteus_agent_tools persistent browser",
+  "source": {
+    "tabId": "1",
+    "url": "http://127.0.0.1:4261/settings?section=token-usage",
+    "sourcePin": "9d0fd7c570d58da1af2c7a40279327c8a20a8093"
+  },
+  "prototype": {
+    "tabId": "2",
+    "url": "http://127.0.0.1:3261/settings?section=token-usage"
+  },
+  "viewport": {
+    "width": 1510,
+    "height": 777
+  },
+  "journey": [
+    "Open Settings with section=token-usage",
+    "Observe Analytics as the selected default tab",
+    "Activate Run details",
+    "Activate Expand team members"
+  ],
+  "matchedContract": {
+    "route": "/settings?section=token-usage",
+    "selectedTab": "Run details",
+    "analyticsTabSelected": false,
+    "runDetailsTabSelected": true,
+    "expandControlFound": true,
+    "expandControlFinalLabel": "Collapse team members",
+    "visibleRows": [
+      "Product Review Team",
+      "/researcher",
+      "/writer",
+      "Research Assistant"
+    ],
+    "sourceAndPrototypeBodyTextExact": true,
+    "sourceAndPrototypeTabStateExact": true,
+    "sourceAndPrototypeExpandedRowsExact": true
+  },
+  "result": "Pass"
+}

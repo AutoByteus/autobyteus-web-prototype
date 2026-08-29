@@ -1,0 +1,40 @@
+$ corepack pnpm test
+
+> autobyteus-web-prototype@0.1.0 test /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001
+> vitest run
+
+
+ RUN  v3.2.7 /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001
+
+ ✓ prototype/tests/token-statistics-refresh-fixture.test.ts (3 tests) 5ms
+ ✓ prototype/tests/host-scenario.test.ts (3 tests) 5ms
+ ✓ prototype/tests/fixture-contract.test.ts (5 tests) 8ms
+
+ Test Files  3 passed (3)
+      Tests  11 passed (11)
+   Start at  06:59:40
+   Duration  962ms (transform 253ms, setup 0ms, collect 328ms, tests 19ms, environment 0ms, prepare 513ms)
+
+\n$ corepack pnpm lint
+
+> autobyteus-web-prototype@0.1.0 lint /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001
+> eslint prototype/scripts prototype/shared prototype/source-observation plugins/00.prototype-state.client.ts plugins/10.prototype-host-bootstrap.client.ts prototype/tests
+
+\n$ corepack pnpm validate:boundaries
+
+> autobyteus-web-prototype@0.1.0 validate:boundaries /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001
+> node prototype/scripts/validate-boundaries.mjs
+
+PASS No Electron/native runtime dependency
+PASS No copied production electron root
+PASS No copied production src-electron root
+PASS No copied production server root
+PASS No copied production backend root
+PASS No copied production docker root
+PASS No copied production packaging root
+PASS Browser external request boundary is explicit
+PASS WebSocket boundary is local and scripted
+PASS Scenario state is resettable
+PASS Source evidence contains no page-capture errors
+PASS Source evidence uses controlled loopback mock
+PASS Prototype has independently runnable Nuxt entry points

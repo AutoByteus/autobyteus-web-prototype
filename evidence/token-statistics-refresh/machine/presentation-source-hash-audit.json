@@ -1,0 +1,117 @@
+{
+  "sourcePin": "9d0fd7c570d58da1af2c7a40279327c8a20a8093",
+  "selectedFrontend": "/home/autobyteus/workspace/autobyteus-workspace-token-statistics-ui-requirements/autobyteus-web",
+  "filesCompared": 18,
+  "exactMatches": 18,
+  "mismatches": [],
+  "files": [
+    {
+      "path": "components/settings/TokenUsageStatistics.vue",
+      "sourceSha256": "f1b41a3eefb87f9bff9820b90e656ad9d90f2b0ecce45b5d3980ed39a05f428b",
+      "prototypeSha256": "f1b41a3eefb87f9bff9820b90e656ad9d90f2b0ecce45b5d3980ed39a05f428b",
+      "exact": true
+    },
+    {
+      "path": "components/settings/token-usage/TokenUsageRunDetailsView.vue",
+      "sourceSha256": "eca902d4233e197d770b18c10ad9f7d1c80fd357daf5b97061a69b7277f7bba2",
+      "prototypeSha256": "eca902d4233e197d770b18c10ad9f7d1c80fd357daf5b97061a69b7277f7bba2",
+      "exact": true
+    },
+    {
+      "path": "components/settings/token-usage/TokenUsageTaskStatisticsTable.vue",
+      "sourceSha256": "806fe005824d1ea1f8a0a443ddf74f0bdd386e25c4769d3716eedddc9f6bd1e1",
+      "prototypeSha256": "806fe005824d1ea1f8a0a443ddf74f0bdd386e25c4769d3716eedddc9f6bd1e1",
+      "exact": true
+    },
+    {
+      "path": "components/settings/token-usage/TokenUsageModelStatisticsTable.vue",
+      "sourceSha256": "d3b3300d64f76bd02a4d3808c3b60b28f6df601670edc0053a3845d6d8c1ae79",
+      "prototypeSha256": "d3b3300d64f76bd02a4d3808c3b60b28f6df601670edc0053a3845d6d8c1ae79",
+      "exact": true
+    },
+    {
+      "path": "components/settings/token-usage/TokenUsageCostBreakdown.vue",
+      "sourceSha256": "c95db1c2cfdeea0b16f1afc6a44b141988cdf1d39b212bb71008a65c7e2d9d41",
+      "prototypeSha256": "c95db1c2cfdeea0b16f1afc6a44b141988cdf1d39b212bb71008a65c7e2d9d41",
+      "exact": true
+    },
+    {
+      "path": "components/settings/token-usage/tokenUsageStatisticsUi.ts",
+      "sourceSha256": "2ac40075e07d2fddddf67cdd9e65f16284f532307aff2bc797e0ab958a7420e6",
+      "prototypeSha256": "2ac40075e07d2fddddf67cdd9e65f16284f532307aff2bc797e0ab958a7420e6",
+      "exact": true
+    },
+    {
+      "path": "components/settings/token-usage/analytics/TokenUsageAnalyticsControls.vue",
+      "sourceSha256": "089933fa26d635c17f69fa0e8719c726144244f30b9fa2b346afae7c338ecf4b",
+      "prototypeSha256": "089933fa26d635c17f69fa0e8719c726144244f30b9fa2b346afae7c338ecf4b",
+      "exact": true
+    },
+    {
+      "path": "components/settings/token-usage/analytics/TokenUsageAnalyticsCoverage.vue",
+      "sourceSha256": "c33c805a4a1e34d30723c1b9b993e9a4982f0ce002615621921f932683dbef3c",
+      "prototypeSha256": "c33c805a4a1e34d30723c1b9b993e9a4982f0ce002615621921f932683dbef3c",
+      "exact": true
+    },
+    {
+      "path": "components/settings/token-usage/analytics/TokenUsageAnalyticsSummaryCards.vue",
+      "sourceSha256": "5bf28569b3dc24576ae9c32b627829c2fab7b152486d830ddfc3eef0f389ebc5",
+      "prototypeSha256": "5bf28569b3dc24576ae9c32b627829c2fab7b152486d830ddfc3eef0f389ebc5",
+      "exact": true
+    },
+    {
+      "path": "components/settings/token-usage/analytics/TokenUsageAnalyticsView.vue",
+      "sourceSha256": "ae98e631efa172af336f14ebd5d29414477539416e9d2e373e167afd83654946",
+      "prototypeSha256": "ae98e631efa172af336f14ebd5d29414477539416e9d2e373e167afd83654946",
+      "exact": true
+    },
+    {
+      "path": "components/settings/token-usage/analytics/TokenUsageBreakdown.vue",
+      "sourceSha256": "8ebf6f54525089ec3dad891184e75a8308d60a2b23308dc1dbb7aee2f71a5e14",
+      "prototypeSha256": "8ebf6f54525089ec3dad891184e75a8308d60a2b23308dc1dbb7aee2f71a5e14",
+      "exact": true
+    },
+    {
+      "path": "components/settings/token-usage/analytics/TokenUsageExactBreakdownTable.vue",
+      "sourceSha256": "132971f5ecd7dcbe6d3d5129309da3766fcf809ca1edb57ee89c83ff9ca1d207",
+      "prototypeSha256": "132971f5ecd7dcbe6d3d5129309da3766fcf809ca1edb57ee89c83ff9ca1d207",
+      "exact": true
+    },
+    {
+      "path": "components/settings/token-usage/analytics/TokenUsagePaceChart.vue",
+      "sourceSha256": "6dcb3ce760e2d5af5f3af4ffb9e8089a2f29918c90bd9d4e6ee645d4ecd872ce",
+      "prototypeSha256": "6dcb3ce760e2d5af5f3af4ffb9e8089a2f29918c90bd9d4e6ee645d4ecd872ce",
+      "exact": true
+    },
+    {
+      "path": "components/settings/token-usage/analytics/TokenUsageTrendChart.vue",
+      "sourceSha256": "f11708b10c02071c722b8e61ab070c1cca599d90be729a960a0d7952a7cc798f",
+      "prototypeSha256": "f11708b10c02071c722b8e61ab070c1cca599d90be729a960a0d7952a7cc798f",
+      "exact": true
+    },
+    {
+      "path": "utils/tokenUsageAnalyticsCsv.ts",
+      "sourceSha256": "58f7ff4f40300aecd76c76fd853ff0d579ec2fe1b912652fdffca68b5aaf4855",
+      "prototypeSha256": "58f7ff4f40300aecd76c76fd853ff0d579ec2fe1b912652fdffca68b5aaf4855",
+      "exact": true
+    },
+    {
+      "path": "utils/tokenUsageAnalyticsPresentation.ts",
+      "sourceSha256": "7f1345b7bf82d19116f1f1a5f14d11c647f78d18356e64b17af16dac2ab6abdb",
+      "prototypeSha256": "7f1345b7bf82d19116f1f1a5f14d11c647f78d18356e64b17af16dac2ab6abdb",
+      "exact": true
+    },
+    {
+      "path": "localization/messages/en/token-usage-settings.ts",
+      "sourceSha256": "16b3451a2b1d9108870f7a46329e3f9993a47042eb030a8b9ec37ab5ab622f17",
+      "prototypeSha256": "16b3451a2b1d9108870f7a46329e3f9993a47042eb030a8b9ec37ab5ab622f17",
+      "exact": true
+    },
+    {
+      "path": "localization/messages/zh-CN/token-usage-settings.ts",
+      "sourceSha256": "65e90c253c8c937a21061a403e4d32f647e34ea1d581e4364392c0d48995da74",
+      "prototypeSha256": "65e90c253c8c937a21061a403e4d32f647e34ea1d581e4364392c0d48995da74",
+      "exact": true
+    }
+  ]
+}

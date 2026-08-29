@@ -1,0 +1,30 @@
+
+> autobyteus-web-prototype@0.1.0 validate:token-statistics-refresh /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001
+> node prototype/scripts/validate-token-statistics-refresh.mjs
+
+PASS UXV-TS-001 Analytics full comparable populated
+PASS UXV-TS-002 Analytics full comparable narrow
+PASS UXV-TS-003 Analytics covered empty
+PASS UXV-TS-004 Analytics partial coverage and pricing
+PASS UXV-TS-005 Analytics unavailable pre-coverage range
+PASS UXV-TS-006 Analytics retryable error
+PASS UXV-TS-007 Analytics loading skeleton
+PASS UXV-TS-008 Analytics mixed-currency cost evidence
+PASS UXV-TS-009 Analytics custom range inline validation
+PASS UXV-TS-010 Analytics runtime filter and clear control
+PASS UXV-TS-011 Run details task table
+PASS UXV-TS-012 Run details expanded Team hierarchy
+PASS UXV-TS-013 Run details cost breakdown disclosure
+PASS UXV-TS-014 Run details model grouping
+PASS UXV-TS-015 Run details explicit empty state
+PASS UXV-TS-016 Run details retryable error
+PASS UXV-TS-017 Analytics Simplified Chinese locale
+PASS UXV-TS-018 Run details narrow layout
+PASS UXV-TS-019 Analytics Last month preset applied
+PASS UXV-TS-020 Analytics filter cleared and result restored
+PASS UXV-TS-021 Analytics valid custom range applied
+PASS UXV-TS-022 Analytics explicit retry remains recoverable
+PASS UXV-TS-023 Run details task sort changed
+PASS UXV-TS-024 Analytics CSV export download
+PASS UXV-TS-025 Run details edited date range fetched
+PASS UXV-TS-026 Analytics local-only no-API-bill evidence

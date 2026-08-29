@@ -1,0 +1,50 @@
+{
+  "generatedAt": "2026-08-29T07:01:19.305Z",
+  "baseUrl": "http://127.0.0.1:3261",
+  "checks": [
+    {
+      "id": "PPA-TS-001",
+      "name": "partial/no-comparison first view",
+      "pass": true,
+      "observed": {
+        "partial": true,
+        "noComparison": true,
+        "tokens": true,
+        "cost": true
+      },
+      "errors": []
+    },
+    {
+      "id": "PPA-TS-002",
+      "name": "Analytics to Run details and Team expansion",
+      "pass": true,
+      "observed": {
+        "rangeMeaning": true,
+        "team": true,
+        "assistant": true,
+        "memberText": [
+          "↳ /researcher",
+          "↳ /writer"
+        ]
+      },
+      "errors": []
+    },
+    {
+      "id": "PPA-TS-003",
+      "name": "constrained-width baseline",
+      "pass": true,
+      "geometry": {
+        "viewport": 390,
+        "documentWidth": 390,
+        "tabs": [
+          "Analytics",
+          "Run details"
+        ],
+        "hasExport": true,
+        "hasTotal": true
+      },
+      "errors": []
+    }
+  ],
+  "pass": true
+}

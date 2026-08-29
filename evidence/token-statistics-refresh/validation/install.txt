@@ -1,0 +1,118 @@
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +953
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 953, reused 107, downloaded 0, added 0
+Progress: resolved 953, reused 223, downloaded 0, added 0
+Progress: resolved 953, reused 367, downloaded 0, added 0
+Progress: resolved 953, reused 543, downloaded 0, added 0
+Progress: resolved 953, reused 737, downloaded 0, added 0
+Progress: resolved 953, reused 864, downloaded 0, added 0
+
+   ╭───────────────────────────────────────────────╮
+   │                                               │
+   │     Update available! 10.15.0 → 11.24.0.      │
+   │     Changelog: https://pnpm.io/v/11.24.0      │
+   │   To update, run: corepack use pnpm@11.24.0   │
+   │                                               │
+   ╰───────────────────────────────────────────────╯
+
+Progress: resolved 953, reused 949, downloaded 0, added 18
+Progress: resolved 953, reused 949, downloaded 0, added 32
+Progress: resolved 953, reused 949, downloaded 0, added 57
+Progress: resolved 953, reused 949, downloaded 0, added 91
+Progress: resolved 953, reused 949, downloaded 0, added 154
+Progress: resolved 953, reused 950, downloaded 0, added 188
+Progress: resolved 953, reused 950, downloaded 0, added 201
+Progress: resolved 953, reused 950, downloaded 0, added 237
+Progress: resolved 953, reused 950, downloaded 0, added 263
+Progress: resolved 953, reused 950, downloaded 0, added 327
+Progress: resolved 953, reused 950, downloaded 0, added 399
+Progress: resolved 953, reused 950, downloaded 0, added 437
+Progress: resolved 953, reused 950, downloaded 0, added 488
+Progress: resolved 953, reused 950, downloaded 0, added 535
+Progress: resolved 953, reused 950, downloaded 0, added 623
+Progress: resolved 953, reused 950, downloaded 0, added 696
+Progress: resolved 953, reused 950, downloaded 0, added 783
+Progress: resolved 953, reused 950, downloaded 0, added 845
+Progress: resolved 953, reused 950, downloaded 0, added 901
+Progress: resolved 953, reused 950, downloaded 0, added 946
+Progress: resolved 953, reused 950, downloaded 0, added 948
+Progress: resolved 953, reused 950, downloaded 0, added 950
+Progress: resolved 953, reused 950, downloaded 0, added 951
+Progress: resolved 953, reused 950, downloaded 0, added 952
+Progress: resolved 953, reused 950, downloaded 0, added 953, done
+
+dependencies:
++ @apollo/client 3.14.1
++ @autobyteus/application-sdk-contracts @autobyteus/application-sdk-contracts@file:vendor/autobyteus-application-sdk-contracts
++ @autobyteus/team-stream-contracts @autobyteus/team-stream-contracts@file:vendor/autobyteus-team-stream-contracts
++ @fortawesome/fontawesome-svg-core 6.7.2
++ @fortawesome/free-solid-svg-icons 6.7.2
++ @fortawesome/vue-fontawesome 3.3.3
++ @iconify/vue 5.0.0
++ @mdit/plugin-katex 0.23.2
++ @monaco-editor/loader 1.7.0
++ @novnc/novnc 1.7.0-g7c36fab
++ @vue/apollo-composable 4.2.2
++ @xterm/addon-fit 0.10.0
++ @xterm/xterm 5.5.0
++ axios 1.19.0
++ chart.js 4.5.1
++ crypto-js 4.2.0
++ dompurify 3.4.14
++ graphql 16.14.2
++ graphql-tag 2.12.7
++ katex 0.16.47
++ markdown-it 14.3.0
++ mermaid 11.17.0
++ monaco-editor 0.52.2
++ pinia 2.3.1
++ prismjs 1.30.0
++ qrcode 1.5.4
++ uuid 11.1.1
++ vue 3.5.41
++ vue-chartjs 5.3.4
++ vue-pdf-embed 2.1.5
++ vue-router 4.6.4
++ xlsx 0.18.5
+
+devDependencies:
++ @eslint/js 10.0.1
++ @iconify-json/heroicons 1.2.3
++ @iconify-json/logos 1.2.13
++ @iconify-json/mdi 1.2.3
++ @iconify-json/ph 1.2.2
++ @iconify-json/svg-spinners 1.2.4
++ @iconify-json/vscode-icons 1.2.74
++ @pinia/nuxt 0.5.5
++ @tailwindcss/typography 0.5.20
++ @types/crypto-js 4.2.2
++ @types/markdown-it 14.2.0
++ @types/node 22.20.1
++ @types/prismjs 1.26.6
++ @types/uuid 10.0.0
++ autoprefixer 10.5.4
++ eslint 10.9.0
++ globals 17.11.0
++ happy-dom 15.11.7
++ nuxt 3.21.11
++ playwright-core 1.62.1
++ postcss 8.5.26
++ sharp 0.33.5
++ tailwindcss 3.4.19
++ typescript 5.9.3
++ typescript-eslint 8.67.0
++ vitest 3.2.7
++ vue-tsc 3.3.11
++ ws 8.21.3
+
+╭ Warning ─────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│   Ignored build scripts: esbuild, sharp, vue-demi.                           │
+│   Run "pnpm approve-builds" to pick which dependencies should be allowed     │
+│   to run scripts.                                                            │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+Done in 37.1s using pnpm v10.15.0

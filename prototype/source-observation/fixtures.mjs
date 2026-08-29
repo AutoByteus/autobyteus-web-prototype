@@ -1,4 +1,8 @@
 import { createTokenUsageSummary } from '../shared/token-usage-fixture.js'
+import {
+  createTokenUsageAnalyticsResult,
+  createTokenUsageRunStatistics,
+} from '../shared/token-statistics-refresh-fixture.js'
 
 const fixedNow = '2026-08-22T04:00:00.000Z'
 
@@ -11,6 +15,11 @@ export const scenarioCatalog = Object.freeze({
   team_launch: 'Populated catalogs with an empty history and a deterministic newly launched Team execution.',
   apps_disabled: 'Connected populated data with Applications capability disabled.',
   bootstrap_error: 'Node health returns 503 and the Electron bridge can report startup failure.',
+  token_empty: 'Token Statistics has full coverage but no tracked usage for the selected range.',
+  token_partial: 'Token Statistics has tracked usage with partial history coverage and partial pricing.',
+  token_unavailable: 'Token Statistics range predates analytics tracking and cannot be reconstructed.',
+  token_mixed_currency: 'Token Statistics contains exact rows in currencies that cannot be combined.',
+  token_local: 'Token Statistics contains only local usage with no API bill.',
 })
 
 export const baseState = () => ({
@@ -315,6 +324,7 @@ export function fixtureContext(state) {
 
 export function operationFixture(operationName, variables = {}, state) {
   const c = fixtureContext(state)
+  const tokenRunStatistics = createTokenUsageRunStatistics(state.scenario)
   const teamLaunchScenario = state.scenario === 'team_launch'
   const success = { success: true, message: 'Synthetic operation completed.' }
   const agentInput = variables.input || agent
@@ -456,8 +466,9 @@ export function operationFixture(operationName, variables = {}, state) {
     ListAgentTeamRunsWithMemory: { listAgentTeamRunsWithMemory: paged(c.empty ? [] : [{ ...teamRun, memory: memoryFlags, memberTargets: teamRun.members.map(member => ({ memberAddress: member.memberAddress, displayName: member.memberName, agentRunId: member.agentRunId, agentDefinitionId: member.agentDefinitionId, lastUpdatedAt: fixedNow, memory: memoryFlags })) }]) },
     GetAgentRunMemoryView: { getAgentRunMemoryView: runMemoryView }, GetTeamMemberRunMemoryView: { getTeamMemberRunMemoryView: runMemoryView },
     GetAgentRunTokenUsageSummary: { getAgentRunTokenUsageSummary: agentTokenSummary }, GetTeamRunTokenUsageSummary: { getTeamRunTokenUsageSummary: teamTokenSummary }, GetTeamMemberTokenUsageSummary: { getTeamMemberTokenUsageSummary: teamMemberTokenSummary },
-    GetTokenUsageTaskStatisticsInPeriod: { tokenUsageTaskStatisticsInPeriod: [{ taskType: 'agent', runCount: 1, inputTokens: 1200, outputTokens: 320, totalTokens: 1520, estimatedCostUsd: 0.0123 }] },
-    GetUsageStatisticsInPeriod: { usageStatisticsInPeriod: { inputTokens: 1200, outputTokens: 320, totalTokens: 1520, estimatedCostUsd: 0.0123, daily: [{ date: '2026-08-22', inputTokens: 1200, outputTokens: 320, totalTokens: 1520, estimatedCostUsd: 0.0123 }] } },
+    GetTokenUsageAnalytics: { tokenUsageAnalytics: createTokenUsageAnalyticsResult(variables.input || {}, state.scenario) },
+    GetTokenUsageTaskStatisticsInPeriod: { tokenUsageTaskStatisticsInPeriod: { rows: tokenRunStatistics.taskRows } },
+    GetUsageStatisticsInPeriod: { usageStatisticsInPeriod: tokenRunStatistics.modelRows },
     GetSkillImprovementCapability: { skillImprovementCapability: { supported: true, enabled: true, reason: null } }, GetAgentRunSkillImprovementEligibility: { agentRunSkillImprovementEligibility: { eligible: true, reason: null } }, GetTeamMemberSkillImprovementEligibility: { teamMemberSkillImprovementEligibility: { eligible: true, reason: null } }, GetSkillImprovementRunRecord: { skillImprovementRunRecord: null },
     SetSkillImprovementEnabled: { setSkillImprovementEnabled: { supported: true, enabled: Boolean(variables.enabled), reason: null } }, StartAgentRunSkillImprovement: { startAgentRunSkillImprovement: { improvementRunId: 'improvement-fixture', improverRunId: 'run-improver-fixture', record: { improvementRunId: 'improvement-fixture', status: 'RUNNING', createdAt: fixedNow } } }, StartTeamMemberSkillImprovement: { startTeamMemberSkillImprovement: { improvementRunId: 'improvement-fixture', improverRunId: 'run-improver-fixture', record: { improvementRunId: 'improvement-fixture', status: 'RUNNING', createdAt: fixedNow } } },
     GetAgentPackages: { agentPackages: c.empty ? [] : [agentPackage] }, ImportAgentPackage: { importAgentPackage: agentPackage }, RemoveAgentPackage: { removeAgentPackage: agentPackage }, ReloadAgentPackage: { reloadAgentPackage: agentPackage }, CheckAgentPackageUpdates: { checkAgentPackageUpdates: [agentPackage] }, UpdateAgentPackage: { updateAgentPackage: agentPackage },

@@ -1,0 +1,16 @@
+$ corepack pnpm typecheck
+
+> autobyteus-web-prototype@0.1.0 typecheck /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001
+> nuxt prepare && vue-tsc --noEmit -p tsconfig.prototype.json
+
+
+ WARN  Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/messagingProviderFlowStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/serverStore.ts" is used
+
+
+ WARN  Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/agentTeamContextsStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/serverStore.ts" is used
+
+
+ WARN  Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/agentSelectionStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/stores/serverStore.ts" is used
+
+│
+◆  Types generated in .nuxt.

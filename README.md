@@ -3,6 +3,13 @@
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
 commit `8ef282ba77705180d985e7000d801f0e0068cdc1`.
 
+Ticket `REQPKG-TSUI-001` contains a Product-review candidate refresh of only
+**Settings > Token Statistics** from the explicitly selected `origin/personal`
+authority at `9d0fd7c570d58da1af2c7a40279327c8a20a8093`. It preserves the accepted
+baseline outside that surface and is not an accepted Product commit yet. See
+[prototype-bootstrap-report.md](prototype-bootstrap-report.md) and
+[`evidence/token-statistics-refresh`](evidence/token-statistics-refresh/).
+
 Status: **Approved current-state baseline, including the user-confirmed RER-009 `PP-GAP-009`/`PP-GAP-010` parity correction (`PPA-002`).** The package contains no future-state redesign.
 
 Canonical ownership: independent sibling repository
@@ -27,6 +34,11 @@ corepack pnpm dev --port 3210
 
 Open <http://127.0.0.1:3210>. See [prototype-runbook.md](prototype-runbook.md)
 for production-preview and scenario commands.
+
+For the Token Statistics candidate, open
+<http://127.0.0.1:3210/settings?section=token-usage>. Select deterministic
+visible states with the `autobyteus.prototype.scenario` local-storage key; the
+focused catalog and validation procedure are documented in the runbook.
 
 ## Evidence
 

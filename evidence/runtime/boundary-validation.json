@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-25T14:31:09.152Z",
-  "root": "/home/autobyteus/workspace/autobyteus-web-prototype",
+  "generatedAt": "2026-08-29T06:59:43.633Z",
+  "root": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001",
   "checks": [
     {
       "name": "No Electron/native runtime dependency",
