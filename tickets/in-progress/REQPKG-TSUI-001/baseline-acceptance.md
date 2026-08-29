@@ -10,7 +10,7 @@
 - Product worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001`
 - Ticket branch: `prototype/reqpkg-tsui-001`
 - Bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/prototype-bootstrap-report.md`
-- Accepted baseline commit: Pending creation by Product Prototyper; this report will be updated with the durable revision immediately after commit.
+- Accepted baseline commit: `6ba98942c669329f70ba902db4a2880375ad52ad`
 
 ## Acceptance Basis
 

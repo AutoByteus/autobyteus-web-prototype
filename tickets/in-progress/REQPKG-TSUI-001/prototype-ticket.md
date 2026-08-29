@@ -29,7 +29,7 @@
 - Baseline gap: The accepted base contains the older Run-details-oriented Token Usage components but does not contain the production Analytics surface at the required pin. It lacks the source pin's `components/settings/token-usage/analytics/*`, `TokenUsageRunDetailsView.vue`, and `stores/tokenUsageAnalytics.ts` current-experience inventory.
 - Bootstrap mode required: `Refresh` limited to Settings > Token Statistics current-experience parity at the explicitly selected source authority.
 - Product acceptance result and date: `Accepted` as `PPA-TS-001` on 2026-08-29; see `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001/baseline-acceptance.md`.
-- Accepted Token Statistics baseline revision: Pending Product-owned commit creation; accepted candidate is documented in `baseline-acceptance.md`.
+- Accepted Token Statistics baseline revision: `6ba98942c669329f70ba902db4a2880375ad52ad`
 - Prototype revision for this ticket: Pending future-state visualization revision.
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/tickets/in-progress/REQPKG-TSUI-001`
 
@@ -64,7 +64,7 @@
 - Current outcome: `In Progress` — accepted baseline; cognition-first Requirements Visualization work next.
 - Completed behavior and evidence: Product-owned isolated ticket worktree established; exact current Token Statistics surface refreshed from source pin `9d0fd7c…`; Bootstrapper evidence independently acceptance-tested as `PPA-TS-001`.
 - Remaining product decisions: `DEC-001`–`DEC-004`; untouched until baseline acceptance.
-- Next expected action: Create the Product-owned accepted baseline commit, then complete the visualization brief and cognition-first design plan before implementing any future-state code.
+- Next expected action: Complete the visualization brief and cognition-first design plan before implementing any future-state code.
 - Integration result: `Pending`
 - Cleanup result: `Pending`; retain the active worktree through bootstrap, visualization review, and repository finalization.
 - Handoff outcome from `get_handoff_rules`: Matched `Baseline Needed` local bootstrap route.
