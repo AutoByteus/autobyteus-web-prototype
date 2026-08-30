@@ -1,0 +1,14 @@
+
+> nested-team-hierarchy-requirements-visualizer@0.1.0 build
+> tsc -b && vite build
+
+vite v8.2.2 building client environment for production...
+transforming...
+✓ 18 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.85 kB │ gzip:  0.53 kB
+dist/assets/index-DOSE0MZy.css   19.05 kB │ gzip:  4.97 kB
+dist/assets/index-CQ1LS46l.js   213.85 kB │ gzip: 67.04 kB
+
+✓ built in 175ms

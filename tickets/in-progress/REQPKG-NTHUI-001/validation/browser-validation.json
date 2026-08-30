@@ -1,0 +1,469 @@
+{
+  "package": "nested-team-hierarchy-ui",
+  "ticket": "REQPKG-NTHUI-001",
+  "visualizerRevision": "RV-001",
+  "url": "http://127.0.0.1:4193/",
+  "viewport": "1440x1100",
+  "reducedMotionViewport": "1280x900",
+  "total": 55,
+  "passed": 55,
+  "failed": 0,
+  "consoleErrors": [],
+  "pageErrors": [],
+  "checks": [
+    {
+      "id": "BROWSER-001-http-200",
+      "pass": true,
+      "detail": {
+        "actual": 200,
+        "expected": 200
+      }
+    },
+    {
+      "id": "BROWSER-002-title",
+      "pass": true,
+      "detail": {
+        "actual": "Nested team hierarchy · Requirements visualizer",
+        "expected": "Nested team hierarchy · Requirements visualizer"
+      }
+    },
+    {
+      "id": "BROWSER-003-one-primary-question",
+      "pass": true,
+      "detail": {
+        "actual": 1,
+        "expected": 1
+      }
+    },
+    {
+      "id": "BROWSER-004-one-interactive-panel",
+      "pass": true,
+      "detail": {
+        "actual": 1,
+        "expected": 1
+      }
+    },
+    {
+      "id": "BROWSER-005-three-decisions",
+      "pass": true,
+      "detail": {
+        "actual": 3,
+        "expected": 3
+      }
+    },
+    {
+      "id": "BROWSER-006-diagnostic-fixture-depth",
+      "pass": true,
+      "detail": {
+        "value": true,
+        "visibleTreeItems": 18
+      }
+    },
+    {
+      "id": "BROWSER-007-three-run-group",
+      "pass": true,
+      "detail": {
+        "actual": 3,
+        "expected": 3
+      }
+    },
+    {
+      "id": "BROWSER-008-one-run-expanded",
+      "pass": true,
+      "detail": {
+        "actual": 1,
+        "expected": 1
+      }
+    },
+    {
+      "id": "BROWSER-009-three-sibling-subteams",
+      "pass": true,
+      "detail": {
+        "actual": 3,
+        "expected": 3
+      }
+    },
+    {
+      "id": "BROWSER-010-transient-task-team",
+      "pass": true,
+      "detail": {
+        "actual": 1,
+        "expected": 1
+      }
+    },
+    {
+      "id": "BROWSER-011-selected-leaf",
+      "pass": true,
+      "detail": {
+        "actual": 1,
+        "expected": 1
+      }
+    },
+    {
+      "id": "BROWSER-012-selected-ancestor-cues",
+      "pass": true,
+      "detail": {
+        "actual": 2,
+        "expected": 2
+      }
+    },
+    {
+      "id": "BROWSER-013-rails-class",
+      "pass": true,
+      "detail": {
+        "actual": true,
+        "expected": true
+      }
+    },
+    {
+      "id": "BROWSER-014-rails-continuous-cue",
+      "pass": true,
+      "detail": {
+        "value": true,
+        "railBorder": "1px"
+      }
+    },
+    {
+      "id": "BROWSER-015-rails-identical-fixture",
+      "pass": true,
+      "detail": {
+        "actual": "[\"coordinator\",\"release_observer\",\"requirements\",\"requirements_engineer\",\"research_ops\",\"product_design\",\"product_prototyper\",\"prototype_bootstrapper\",\"software_engineering\",\"architecture_designer\",\"implementation_engineer\",\"runtime_quality\",\"api_e2e_engineer\",\"code_reviewer\",\"delivery_engineer\",\"transient_incident\",\"transient_investigator\",\"transient_reviewer\"]",
+        "expected": "[\"coordinator\",\"release_observer\",\"requirements\",\"requirements_engineer\",\"research_ops\",\"product_design\",\"product_prototyper\",\"prototype_bootstrapper\",\"software_engineering\",\"architecture_designer\",\"implementation_engineer\",\"runtime_quality\",\"api_e2e_engineer\",\"code_reviewer\",\"delivery_engineer\",\"transient_incident\",\"transient_investigator\",\"transient_reviewer\"]"
+      }
+    },
+    {
+      "id": "BROWSER-016-surface-continuous-cue",
+      "pass": true,
+      "detail": {
+        "value": true,
+        "background": "rgb(242, 241, 247)",
+        "border": "4px"
+      }
+    },
+    {
+      "id": "BROWSER-017-surfaces-identical-fixture",
+      "pass": true,
+      "detail": {
+        "actual": "[\"coordinator\",\"release_observer\",\"requirements\",\"requirements_engineer\",\"research_ops\",\"product_design\",\"product_prototyper\",\"prototype_bootstrapper\",\"software_engineering\",\"architecture_designer\",\"implementation_engineer\",\"runtime_quality\",\"api_e2e_engineer\",\"code_reviewer\",\"delivery_engineer\",\"transient_incident\",\"transient_investigator\",\"transient_reviewer\"]",
+        "expected": "[\"coordinator\",\"release_observer\",\"requirements\",\"requirements_engineer\",\"research_ops\",\"product_design\",\"product_prototyper\",\"prototype_bootstrapper\",\"software_engineering\",\"architecture_designer\",\"implementation_engineer\",\"runtime_quality\",\"api_e2e_engineer\",\"code_reviewer\",\"delivery_engineer\",\"transient_incident\",\"transient_investigator\",\"transient_reviewer\"]"
+      }
+    },
+    {
+      "id": "BROWSER-018-hybrid-identical-fixture",
+      "pass": true,
+      "detail": {
+        "actual": "[\"coordinator\",\"release_observer\",\"requirements\",\"requirements_engineer\",\"research_ops\",\"product_design\",\"product_prototyper\",\"prototype_bootstrapper\",\"software_engineering\",\"architecture_designer\",\"implementation_engineer\",\"runtime_quality\",\"api_e2e_engineer\",\"code_reviewer\",\"delivery_engineer\",\"transient_incident\",\"transient_investigator\",\"transient_reviewer\"]",
+        "expected": "[\"coordinator\",\"release_observer\",\"requirements\",\"requirements_engineer\",\"research_ops\",\"product_design\",\"product_prototyper\",\"prototype_bootstrapper\",\"software_engineering\",\"architecture_designer\",\"implementation_engineer\",\"runtime_quality\",\"api_e2e_engineer\",\"code_reviewer\",\"delivery_engineer\",\"transient_incident\",\"transient_investigator\",\"transient_reviewer\"]"
+      }
+    },
+    {
+      "id": "BROWSER-019-always-metadata-identical-fixture",
+      "pass": true,
+      "detail": {
+        "actual": "[\"coordinator\",\"release_observer\",\"requirements\",\"requirements_engineer\",\"research_ops\",\"product_design\",\"product_prototyper\",\"prototype_bootstrapper\",\"software_engineering\",\"architecture_designer\",\"implementation_engineer\",\"runtime_quality\",\"api_e2e_engineer\",\"code_reviewer\",\"delivery_engineer\",\"transient_incident\",\"transient_investigator\",\"transient_reviewer\"]",
+        "expected": "[\"coordinator\",\"release_observer\",\"requirements\",\"requirements_engineer\",\"research_ops\",\"product_design\",\"product_prototyper\",\"prototype_bootstrapper\",\"software_engineering\",\"architecture_designer\",\"implementation_engineer\",\"runtime_quality\",\"api_e2e_engineer\",\"code_reviewer\",\"delivery_engineer\",\"transient_incident\",\"transient_investigator\",\"transient_reviewer\"]"
+      }
+    },
+    {
+      "id": "BROWSER-020-always-metadata-age-column",
+      "pass": true,
+      "detail": {
+        "value": true,
+        "ageCount": 18
+      }
+    },
+    {
+      "id": "BROWSER-021-narrow-exact-width",
+      "pass": true,
+      "detail": {
+        "actual": 260,
+        "expected": 260
+      }
+    },
+    {
+      "id": "BROWSER-022-extra-large-font",
+      "pass": true,
+      "detail": {
+        "actual": "17.5px",
+        "expected": "17.5px"
+      }
+    },
+    {
+      "id": "BROWSER-023-no-narrow-horizontal-overflow",
+      "pass": true,
+      "detail": {
+        "actual": 0,
+        "expected": 0
+      }
+    },
+    {
+      "id": "BROWSER-024-responsive-child-ages-yield",
+      "pass": true,
+      "detail": {
+        "actual": 0,
+        "expected": 0
+      }
+    },
+    {
+      "id": "BROWSER-025-narrow-long-name-truncates",
+      "pass": true,
+      "detail": {
+        "value": true,
+        "clientWidth": 156,
+        "scrollWidth": 369
+      }
+    },
+    {
+      "id": "BROWSER-026-keyboard-tooltip-visible",
+      "pass": true,
+      "detail": {
+        "actual": "grid",
+        "expected": "grid"
+      }
+    },
+    {
+      "id": "BROWSER-027-tooltip-recovers-name-role-age",
+      "pass": true,
+      "detail": {
+        "value": true
+      }
+    },
+    {
+      "id": "BROWSER-028-pointer-tooltip-visible",
+      "pass": true,
+      "detail": {
+        "actual": "grid",
+        "expected": "grid"
+      }
+    },
+    {
+      "id": "BROWSER-029-narrow-run-action-inside-panel",
+      "pass": true,
+      "detail": {
+        "value": true,
+        "panelBox": {
+          "x": 409,
+          "y": 82.953125,
+          "width": 260,
+          "height": 810
+        },
+        "actionBox": {
+          "x": 633,
+          "y": 223.0625,
+          "width": 28,
+          "height": 28
+        }
+      }
+    },
+    {
+      "id": "BROWSER-030-structural-team-collapses",
+      "pass": true,
+      "detail": {
+        "actual": "false",
+        "expected": "false"
+      }
+    },
+    {
+      "id": "BROWSER-031-structural-toggle-no-fabricated-selection",
+      "pass": true,
+      "detail": {
+        "actual": "api_e2e_engineer",
+        "expected": "api_e2e_engineer"
+      }
+    },
+    {
+      "id": "BROWSER-032-independent-sibling-disclosure",
+      "pass": true,
+      "detail": {
+        "actual": "true",
+        "expected": "true"
+      }
+    },
+    {
+      "id": "BROWSER-033-structural-team-reopens",
+      "pass": true,
+      "detail": {
+        "actual": "true",
+        "expected": "true"
+      }
+    },
+    {
+      "id": "BROWSER-034-roving-arrow-navigation",
+      "pass": true,
+      "detail": {
+        "actual": true,
+        "expected": true
+      }
+    },
+    {
+      "id": "BROWSER-035-concrete-agent-selection",
+      "pass": true,
+      "detail": {
+        "actual": "release_observer",
+        "expected": "release_observer"
+      }
+    },
+    {
+      "id": "BROWSER-036-collapsed-preset",
+      "pass": true,
+      "detail": {
+        "actual": 0,
+        "expected": 0
+      }
+    },
+    {
+      "id": "BROWSER-037-reveal-selects-leaf",
+      "pass": true,
+      "detail": {
+        "actual": "api_e2e_engineer",
+        "expected": "api_e2e_engineer"
+      }
+    },
+    {
+      "id": "BROWSER-038-reveal-opens-parent",
+      "pass": true,
+      "detail": {
+        "actual": "true",
+        "expected": "true"
+      }
+    },
+    {
+      "id": "BROWSER-039-reveal-opens-deeper-parent",
+      "pass": true,
+      "detail": {
+        "actual": "true",
+        "expected": "true"
+      }
+    },
+    {
+      "id": "BROWSER-040-quiet-refresh-expansion",
+      "pass": true,
+      "detail": {
+        "actual": "[\"software_engineering\",\"runtime_quality\"]",
+        "expected": "[\"software_engineering\",\"runtime_quality\"]"
+      }
+    },
+    {
+      "id": "BROWSER-041-quiet-refresh-selection",
+      "pass": true,
+      "detail": {
+        "actual": "api_e2e_engineer",
+        "expected": "api_e2e_engineer"
+      }
+    },
+    {
+      "id": "BROWSER-042-active-run-action-menu",
+      "pass": true,
+      "detail": {
+        "actual": 1,
+        "expected": 1
+      }
+    },
+    {
+      "id": "BROWSER-043-header-role-text-visible",
+      "pass": true,
+      "detail": {
+        "actual": "block",
+        "expected": "block"
+      }
+    },
+    {
+      "id": "BROWSER-044-band-noncolor-structure",
+      "pass": true,
+      "detail": {
+        "value": true,
+        "borderLeftWidth": "4px",
+        "fontWeight": "760"
+      }
+    },
+    {
+      "id": "BROWSER-045-transient-shape-differs",
+      "pass": true,
+      "detail": {
+        "actual": "3px",
+        "expected": "3px"
+      }
+    },
+    {
+      "id": "BROWSER-046-team-identity-identical-fixture",
+      "pass": true,
+      "detail": {
+        "actual": "[\"coordinator\",\"release_observer\",\"requirements\",\"requirements_engineer\",\"research_ops\",\"product_design\",\"product_prototyper\",\"prototype_bootstrapper\",\"software_engineering\",\"architecture_designer\",\"implementation_engineer\",\"runtime_quality\",\"api_e2e_engineer\",\"code_reviewer\",\"delivery_engineer\",\"transient_incident\",\"transient_investigator\",\"transient_reviewer\"]",
+        "expected": "[\"coordinator\",\"release_observer\",\"requirements\",\"requirements_engineer\",\"research_ops\",\"product_design\",\"product_prototyper\",\"prototype_bootstrapper\",\"software_engineering\",\"architecture_designer\",\"implementation_engineer\",\"runtime_quality\",\"api_e2e_engineer\",\"code_reviewer\",\"delivery_engineer\",\"transient_incident\",\"transient_investigator\",\"transient_reviewer\"]"
+      }
+    },
+    {
+      "id": "BROWSER-047-wide-exact-width",
+      "pass": true,
+      "detail": {
+        "actual": 520,
+        "expected": 520
+      }
+    },
+    {
+      "id": "BROWSER-048-wide-no-horizontal-overflow",
+      "pass": true,
+      "detail": {
+        "actual": 0,
+        "expected": 0
+      }
+    },
+    {
+      "id": "BROWSER-049-hierarchy-programmatic",
+      "pass": true,
+      "detail": {
+        "value": true,
+        "rows": 18
+      }
+    },
+    {
+      "id": "BROWSER-050-team-expanded-programmatic",
+      "pass": true,
+      "detail": {
+        "value": true
+      }
+    },
+    {
+      "id": "BROWSER-051-reviewed-summary",
+      "pass": true,
+      "detail": {
+        "actual": "3/3 reviewed",
+        "expected": "3/3 reviewed"
+      }
+    },
+    {
+      "id": "BROWSER-052-no-console-errors",
+      "pass": true,
+      "detail": {
+        "actual": 0,
+        "expected": 0
+      }
+    },
+    {
+      "id": "BROWSER-053-no-page-errors",
+      "pass": true,
+      "detail": {
+        "actual": 0,
+        "expected": 0
+      }
+    },
+    {
+      "id": "BROWSER-054-reduced-motion-stable",
+      "pass": true,
+      "detail": {
+        "value": true,
+        "reducedTransition": "1e-06s"
+      }
+    },
+    {
+      "id": "BROWSER-055-reduced-motion-content-complete",
+      "pass": true,
+      "detail": {
+        "actual": 1,
+        "expected": 1
+      }
+    }
+  ],
+  "failures": [],
+  "completedAt": "2026-08-30T05:05:43.940Z"
+}
