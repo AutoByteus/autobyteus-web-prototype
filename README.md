@@ -37,6 +37,16 @@ corepack pnpm dev --port 3210
 Open <http://127.0.0.1:3210>. See [prototype-runbook.md](prototype-runbook.md)
 for production-preview and scenario commands.
 
+For the active baseline-native `REQPKG-NTHUI-001` nested-team hierarchy review,
+start this ticket worktree on port `4193` and open:
+
+- <http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&hierarchy=hybrid&metadata=responsive&teamIdentity=header&panelWidth=320&fontSize=default&treeState=deep>
+
+The route is the real accepted Workspace product surface. Its floating review
+controls are prototype-only and compare `DEC-001`–`DEC-003`; no initial choice
+is a recommendation or approval. See the ticket
+[review guide](tickets/in-progress/REQPKG-NTHUI-001/review-guide.md).
+
 For the Token Statistics final candidate, open
 <http://127.0.0.1:3261/settings?section=token-usage> during the active Product
 review, or use the documented default `3210` port after starting it yourself. Select deterministic

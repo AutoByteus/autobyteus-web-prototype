@@ -281,20 +281,41 @@
                 </div>
               </div>
 
-              <div v-if="state.isTeamExpanded(team.teamRunId)" class="ml-3 space-y-0.5">
+              <div
+                v-if="state.isTeamExpanded(team.teamRunId)"
+                class="team-execution-tree ml-3 space-y-0.5"
+                :class="hierarchyReviewTreeClasses"
+                :data-hierarchy-treatment="hierarchyReview.treatment.value"
+                :data-metadata-treatment="hierarchyReview.metadata.value"
+                :data-team-identity="hierarchyReview.teamIdentity.value"
+                :data-panel-width="hierarchyReview.width.value"
+                :data-font-size="hierarchyReview.fontSize.value"
+                :role="hierarchyReview.active.value ? 'tree' : undefined"
+                :aria-label="hierarchyReview.active.value ? `${formatTeamRunLabel(team)} organization tree` : undefined"
+                data-test="workspace-team-execution-tree"
+              >
                 <template
                   v-for="displayRow in visibleTeamExecutionRows(team)"
                   :key="displayRow.row.rowKey"
                 >
                   <div
                     v-if="displayRow.row.kind === 'stable_member'"
-                    class="flex w-full cursor-pointer items-center rounded-md text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-                    :class="isSelectedTeamMember(team, displayRow.row) ? 'bg-indigo-50 text-indigo-900' : 'text-gray-600 hover:bg-gray-50'"
+                    class="team-execution-row relative flex w-full cursor-pointer items-center rounded-md text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                    :class="teamExecutionRowClasses(team, displayRow.row)"
                     :style="teamExecutionRowStyle(displayRow.row)"
                     :data-test="`workspace-team-member-${team.teamRunId}-${displayRow.row.memberAddress}`"
                     data-row-kind="stable_member"
+                    :data-node-kind="displayRow.row.row.kind"
+                    :data-tree-depth="displayRow.row.depth"
+                    :data-team-run-id="team.teamRunId"
+                    :data-member-address="displayRow.row.memberAddress"
                     :aria-current="isSelectedTeamMember(team, displayRow.row) ? 'true' : undefined"
-                    role="button"
+                    :aria-selected="hierarchyReview.active.value ? isSelectedTeamMember(team, displayRow.row) : undefined"
+                    :aria-level="hierarchyReview.active.value ? displayRow.row.depth + 1 : undefined"
+                    :aria-expanded="hierarchyReview.active.value && displayRow.hasChildren ? isTeamDisplayRowExpanded(team, displayRow.row) : undefined"
+                    :aria-label="hierarchyReview.active.value ? teamExecutionAriaLabel(team, displayRow.row) : undefined"
+                    :title="hierarchyReview.active.value ? teamExecutionIdentity(displayRow.row) : undefined"
+                    :role="hierarchyReview.active.value ? 'treeitem' : 'button'"
                     tabindex="0"
                     @click="activateTeamDisplayRow(team, displayRow.row, displayRow.hasChildren)"
                     @keydown.enter="activateTeamDisplayRow(team, displayRow.row, displayRow.hasChildren)"
@@ -303,7 +324,7 @@
                     <button
                       v-if="displayRow.hasChildren"
                       type="button"
-                      class="ml-2 mr-1 inline-flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                      class="hierarchy-disclosure ml-2 mr-1 inline-flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                       data-test="workspace-team-member-disclosure"
                       :data-team-run-id="team.teamRunId"
                       :data-member-address="displayRow.row.memberAddress"
@@ -325,11 +346,30 @@
                       aria-hidden="true"
                     />
 
-                    <div class="flex min-w-0 flex-1 items-center justify-between py-1 pr-2">
-                      <div class="flex min-w-0 items-center">
-                        <StatusDot v-if="displayRow.row.row.kind === 'agent'" class="mr-1.5" :status="displayRow.row.row.currentStatus" />
+                    <div class="hierarchy-row-content flex min-w-0 flex-1 items-center justify-between py-1 pr-2">
+                      <div class="flex min-w-0 flex-1 items-center">
+                        <span class="member-status inline-flex flex-shrink-0 items-center">
+                          <StatusDot
+                            v-if="displayRow.row.row.kind === 'agent'"
+                            class="mr-1.5"
+                            :status="displayRow.row.row.currentStatus"
+                          />
+                          <NestedTeamAggregateStatusDot
+                            v-else
+                            class="mr-1.5"
+                            :status="nestedTeamStatus(team, displayRow.row)"
+                          />
+                        </span>
                         <span
-                          class="mr-1.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600"
+                          v-if="hierarchyReview.active.value && displayRow.row.row.kind === 'agent_team'"
+                          class="team-structure-icon mr-1.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-[0.2rem] border border-slate-300 bg-white text-slate-600"
+                          aria-hidden="true"
+                        >
+                          <Icon icon="heroicons:rectangle-group-20-solid" class="h-3 w-3" />
+                        </span>
+                        <span
+                          v-else
+                          class="member-avatar mr-1.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600"
                         >
                           <img
                             v-if="avatars.showTeamMemberAvatar(displayRow.row.row)"
@@ -340,17 +380,32 @@
                           >
                           <span v-else>{{ avatars.getTeamMemberInitials(displayRow.row.row) }}</span>
                         </span>
-                        <span class="truncate">{{ displayRow.row.displayName || avatars.getTeamMemberDisplayName(displayRow.row.row) }}</span>
+                        <span class="node-label min-w-0 flex-1">
+                          <span
+                            v-if="hierarchyReview.active.value && displayRow.row.row.kind === 'agent_team' && hierarchyReview.teamIdentity.value === 'header'"
+                            class="team-role-label block truncate text-[0.5625rem] font-semibold uppercase leading-3 tracking-[0.12em] text-slate-500"
+                          >Agent team</span>
+                          <span class="node-name block truncate">{{ displayRow.row.displayName || avatars.getTeamMemberDisplayName(displayRow.row.row) }}</span>
+                        </span>
                         <span
-                          v-if="displayRow.row.row.kind === 'agent_team'"
+                          v-if="hierarchyReview.active.value && displayRow.row.row.kind === 'agent_team' && hierarchyReview.teamIdentity.value === 'band'"
+                          class="team-role-label ml-1 flex-shrink-0 text-[0.5625rem] font-bold uppercase tracking-[0.1em] text-slate-500"
+                        >Team</span>
+                        <span
+                          v-if="!hierarchyReview.active.value && displayRow.row.row.kind === 'agent_team'"
                           class="ml-1 rounded bg-slate-100 px-1 text-[0.625rem] font-semibold uppercase tracking-wide text-slate-500"
                         >Team</span>
                       </div>
 
-                      <span class="ml-2 flex-shrink-0 text-xs text-gray-400">
+                      <span class="member-age ml-2 flex-shrink-0 text-xs text-gray-400">
                         {{ state.formatRelativeTime(team.lastActivityAt) }}
                       </span>
                     </div>
+                    <span
+                      v-if="hierarchyReview.active.value"
+                      class="hierarchy-identity-tooltip pointer-events-none absolute left-2 right-2 top-full z-50 hidden break-words rounded-md bg-slate-900 px-2 py-1.5 text-left text-[0.6875rem] font-medium leading-4 text-white shadow-lg"
+                      role="tooltip"
+                    >{{ teamExecutionIdentity(displayRow.row) }}</span>
                   </div>
                   <WorkspaceTransientExecutionRow
                     v-else
@@ -358,6 +413,12 @@
                     :is-selected="isSelectedTeamMember(team, displayRow.row)"
                     :has-children="displayRow.hasChildren"
                     :expanded="isTeamDisplayRowExpanded(team, displayRow.row)"
+                    :prototype-review-active="hierarchyReview.active.value"
+                    :hierarchy-treatment="hierarchyReview.treatment.value"
+                    :metadata-treatment="hierarchyReview.metadata.value"
+                    :team-identity="hierarchyReview.teamIdentity.value"
+                    :panel-width="hierarchyReview.width.value"
+                    :font-size="hierarchyReview.fontSize.value"
                     @select="(row: import('~/stores/runHistoryTypes').RunHistoryTransientExecutionRow) => selectTeamDisplayRow(team, row)"
                     @toggle="(row: import('~/stores/runHistoryTypes').RunHistoryTransientExecutionRow) => toggleTeamDisplayRow(team, row)"
                   />
@@ -377,6 +438,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import StatusDot from '~/components/workspace/common/StatusDot.vue';
 import TeamActivityDot from '~/components/workspace/common/TeamActivityDot.vue';
+import NestedTeamAggregateStatusDot from '~/components/workspace/history/NestedTeamAggregateStatusDot.vue';
 import WorkspaceTransientExecutionRow from '~/components/workspace/history/WorkspaceTransientExecutionRow.vue';
 import type {
   WorkspaceHistoryAvatarBindings,
@@ -391,6 +453,8 @@ import {
   formatRunLabel,
   formatTeamRunLabel,
 } from '~/components/workspace/history/workspaceHistoryRunLabels';
+import { aggregateNestedTeamAgentStatus } from '~/components/workspace/history/workspaceHistoryNestedTeamStatus';
+import { useNestedTeamHierarchyPrototypeReview } from '~/composables/useNestedTeamHierarchyPrototypeReview';
 import type {
   RunHistoryTeamExecutionRow,
   TeamRunHistoryDefinitionGroup,
@@ -406,6 +470,13 @@ const props = defineProps<{
   avatars: WorkspaceHistoryAvatarBindings;
   actions: WorkspaceHistorySectionActions;
 }>();
+const hierarchyReview = useNestedTeamHierarchyPrototypeReview();
+
+const hierarchyReviewTreeClasses = computed(() => hierarchyReview.active.value ? [
+  `hierarchy-${hierarchyReview.treatment.value}`,
+  `metadata-${hierarchyReview.metadata.value}`,
+  `identity-${hierarchyReview.teamIdentity.value}`,
+] : []);
 
 const groupedTeamDefinitions = computed<WorkspaceHistoryTeamDefinitionDisplayGroup[]>(() =>
   buildWorkspaceTeamDefinitionDisplayGroups(
@@ -480,7 +551,46 @@ const isSelectedTeamMember = (
   && row.agentRunId !== null
   && row.agentRunId === team.focusedAgentRunId;
 
-const teamExecutionRowStyle = (row: RunHistoryTeamExecutionRow): Record<string, string> => ({ marginLeft: `${row.depth * 12}px` });
+const teamExecutionRowStyle = (row: RunHistoryTeamExecutionRow): Record<string, string> => (
+  hierarchyReview.active.value
+    ? {
+        '--tree-depth': String(row.depth),
+        paddingLeft: `calc(${row.depth} * 0.875rem)`,
+      }
+    : { marginLeft: `${row.depth * 12}px` }
+);
+
+const nestedTeamStatus = (
+  team: TeamTreeNode,
+  row: RunHistoryTeamExecutionRow,
+) => aggregateNestedTeamAgentStatus(team.executionRows, row);
+
+const teamExecutionIdentity = (row: RunHistoryTeamExecutionRow): string => {
+  const role = row.memberKind === 'agent_team' ? 'Agent team' : 'Agent';
+  return `${role} · ${row.displayName} · ${row.memberAddress}`;
+};
+
+const teamExecutionAriaLabel = (
+  team: TeamTreeNode,
+  row: RunHistoryTeamExecutionRow,
+): string => {
+  const role = row.memberKind === 'agent_team' ? 'Agent team' : 'Agent';
+  const status = row.memberKind === 'agent_team'
+    ? nestedTeamStatus(team, row)
+    : row.kind === 'stable_member' ? row.row.currentStatus : row.currentStatus;
+  return `${role}, ${row.displayName}, level ${row.depth + 1}, ${status || 'offline'}, ${row.memberAddress}`;
+};
+
+const teamExecutionRowClasses = (
+  team: TeamTreeNode,
+  row: RunHistoryTeamExecutionRow,
+): Array<string | Record<string, boolean>> => [
+  isSelectedTeamMember(team, row) ? 'is-selected bg-indigo-50 text-indigo-900' : 'text-gray-600 hover:bg-gray-50',
+  {
+    'node-team': row.memberKind === 'agent_team',
+    'node-agent': row.memberKind === 'agent',
+  },
+];
 
 const selectTeamDisplayRow = (
   team: TeamTreeNode,
@@ -505,3 +615,143 @@ const activateTeamDisplayRow = (
 };
 
 </script>
+
+<style scoped>
+.team-execution-tree[class*="hierarchy-"] .team-execution-row {
+  isolation: isolate;
+  min-height: 1.75rem;
+}
+
+.team-execution-tree[class*="hierarchy-"] .team-execution-row > :not(.hierarchy-identity-tooltip) {
+  position: relative;
+  z-index: 2;
+}
+
+.hierarchy-rails .team-execution-row::before,
+.hierarchy-hybrid .team-execution-row::before {
+  position: absolute;
+  z-index: 0;
+  top: -0.2rem;
+  bottom: -0.2rem;
+  left: 0;
+  width: calc((var(--tree-depth) + 1) * 0.875rem);
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(0.875rem - 1px),
+    #cbd5e1 calc(0.875rem - 1px),
+    #cbd5e1 0.875rem
+  );
+  content: '';
+}
+
+.hierarchy-rails .team-execution-row::after,
+.hierarchy-hybrid .team-execution-row::after {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: calc(var(--tree-depth) * 0.875rem + 0.4rem);
+  width: 0.65rem;
+  height: 1px;
+  background: #94a3b8;
+  content: '';
+}
+
+.hierarchy-rails .node-team {
+  font-weight: 600;
+}
+
+.hierarchy-surfaces .team-execution-row {
+  background-image: linear-gradient(to right, rgb(248 250 252 / 0.95), rgb(248 250 252 / 0.95));
+  background-repeat: no-repeat;
+  background-size: calc(var(--tree-depth) * 0.875rem + 0.35rem) 100%;
+}
+
+.hierarchy-surfaces .node-team {
+  margin-top: 0.2rem;
+  border: 1px solid #e2e8f0;
+  background-color: #f8fafc;
+  box-shadow: 0 1px 1px rgb(15 23 42 / 0.03);
+  font-weight: 600;
+}
+
+.hierarchy-surfaces .node-agent {
+  border-left: 2px solid #e2e8f0;
+}
+
+.hierarchy-hybrid .node-team {
+  margin-top: 0.15rem;
+  border: 1px solid #e2e8f0;
+  background-color: rgb(248 250 252 / 0.88);
+  font-weight: 600;
+}
+
+.identity-header .node-team .hierarchy-row-content {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.identity-band .node-team {
+  border-left: 3px solid #64748b;
+  background-color: #f8fafc;
+  font-weight: 650;
+}
+
+.team-execution-tree .is-selected {
+  background-color: #eef2ff !important;
+  box-shadow: inset 3px 0 #4f46e5;
+}
+
+.metadata-on-demand .member-age,
+.metadata-on-demand .member-status {
+  max-width: 0;
+  margin-right: 0;
+  margin-left: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-width 120ms ease, opacity 120ms ease, margin 120ms ease;
+}
+
+.metadata-on-demand .team-execution-row:hover .member-age,
+.metadata-on-demand .team-execution-row:focus .member-age,
+.metadata-on-demand .team-execution-row:focus-within .member-age,
+.metadata-on-demand .team-execution-row:hover .member-status,
+.metadata-on-demand .team-execution-row:focus .member-status,
+.metadata-on-demand .team-execution-row:focus-within .member-status {
+  max-width: 5rem;
+  margin-left: 0.375rem;
+  opacity: 1;
+}
+
+.metadata-responsive[data-panel-width="260"] .member-age,
+.metadata-responsive[data-panel-width="320"][data-font-size="extra-large"] .member-age {
+  display: none;
+}
+
+.metadata-responsive[data-panel-width="260"] .team-execution-row[data-tree-depth="2"] .member-status {
+  max-width: 0;
+  margin: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.metadata-responsive[data-panel-width="260"] .team-execution-row[data-tree-depth="2"]:hover .member-status,
+.metadata-responsive[data-panel-width="260"] .team-execution-row[data-tree-depth="2"]:focus .member-status,
+.metadata-responsive[data-panel-width="260"] .team-execution-row[data-tree-depth="2"]:focus-within .member-status {
+  max-width: 2rem;
+  margin-right: 0.375rem;
+  opacity: 1;
+}
+
+.team-execution-row:hover > .hierarchy-identity-tooltip,
+.team-execution-row:focus > .hierarchy-identity-tooltip,
+.team-execution-row:focus-within > .hierarchy-identity-tooltip {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-execution-tree * {
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>

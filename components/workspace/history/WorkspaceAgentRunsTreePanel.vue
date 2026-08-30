@@ -108,7 +108,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Icon } from '@iconify/vue';
 import ConfirmationModal from '~/components/common/ConfirmationModal.vue';
@@ -136,6 +136,7 @@ import { useWorkspaceHistoryWorkspaceRemoval } from '~/composables/useWorkspaceH
 import { useWorkspaceHistoryMutations } from '~/composables/useWorkspaceHistoryMutations';
 import { useLocalization } from '~/composables/useLocalization';
 import type { RunTreeWorkspaceNode } from '~/utils/runTreeProjection';
+import { useNestedTeamHierarchyPrototypeReview } from '~/composables/useNestedTeamHierarchyPrototypeReview';
 
 const emit = defineEmits<{
   (e: 'run-selected', payload: { type: 'agent'; runId: string }): void;
@@ -165,6 +166,7 @@ const treeState = useWorkspaceHistoryTreeState({
   runHistoryStore,
   selectionStore,
 });
+const hierarchyReview = useNestedTeamHierarchyPrototypeReview();
 const { workspaceNodes, workspaceTeams, workspaceTeamHistoryGroups } = treeState;
 const {
   getAgentInitials,
@@ -275,6 +277,75 @@ const {
     addToast(t(key), 'info');
   },
 });
+
+const HIERARCHY_REVIEW_TEAM_RUN_ID = 'team-run-hierarchy-review';
+const HIERARCHY_REVIEW_GROUP_KEY = 'team-workspace-operations';
+const HIERARCHY_REVIEW_MEMBER_KEYS = [
+  'team:product-design',
+  'team:design-systems',
+  'team:software-engineering',
+  'task-team:dependency-audit',
+  'team:requirements-engineering',
+] as const;
+
+const applyHierarchyReviewTreeState = async (): Promise<void> => {
+  if (!hierarchyReview.active.value) return;
+  const workspaceNode = treeState.workspaceNodes.value.find(
+    (candidate) => candidate.workspaceId === 'workspace-prototype',
+  );
+  const team = runHistoryStore.getTeamNodes('/synthetic/prototype-workspace')
+    .find((candidate) => candidate.teamRunId === HIERARCHY_REVIEW_TEAM_RUN_ID);
+  if (!workspaceNode || !team) return;
+
+  treeState.setWorkspaceExpanded(workspaceNode.workspaceId, true);
+  treeState.setTeamDefinitionExpanded(workspaceNode.workspaceId, HIERARCHY_REVIEW_GROUP_KEY, true);
+  treeState.setTeamExpanded(HIERARCHY_REVIEW_TEAM_RUN_ID, true);
+
+  const state = hierarchyReview.reviewState.value;
+  const expanded = new Set<string>();
+  if (state !== 'collapsed') expanded.add('team:product-design');
+  if (state === 'several' || state === 'deep' || state === 'selected') {
+    expanded.add('team:software-engineering');
+    expanded.add('team:requirements-engineering');
+  }
+  if (state === 'deep' || state === 'selected') {
+    expanded.add('team:design-systems');
+    expanded.add('task-team:dependency-audit');
+  }
+  for (const rowKey of HIERARCHY_REVIEW_MEMBER_KEYS) {
+    treeState.setTeamMemberExpanded(
+      workspaceNode.workspaceId,
+      HIERARCHY_REVIEW_TEAM_RUN_ID,
+      rowKey,
+      expanded.has(rowKey),
+    );
+  }
+
+  await nextTick();
+  const agentRunId = state === 'selected'
+    ? 'run-design-accessibility'
+    : 'team-member-root-coordinator';
+  const memberAddress = state === 'selected'
+    ? '/product-design/design-systems/accessibility'
+    : '/coordinator';
+  if (team.focusedAgentRunId !== agentRunId) {
+    await runHistoryStore.selectTreeRun({
+      teamRunId: HIERARCHY_REVIEW_TEAM_RUN_ID,
+      memberAddress,
+      agentRunId,
+    });
+  }
+};
+
+watch(
+  [
+    hierarchyReview.active,
+    hierarchyReview.reviewState,
+    () => runHistoryStore.navigationTopologyRevision,
+  ],
+  () => { void applyHierarchyReviewTreeState(); },
+  { immediate: true },
+);
 
 const onToggleWorkspace = async (workspaceNode: RunTreeWorkspaceNode): Promise<void> => {
   const wasExpanded = treeState.isWorkspaceExpanded(workspaceNode.workspaceId);

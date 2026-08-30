@@ -88,6 +88,7 @@ control, CSV preparation/download path, or replacement export workflow.
 | `workspace_team_interrupted` | `/workspace`, desktop | Interrupted/stopped focused member |
 | `workspace_team_history` | `/workspace`, desktop | Reopened team history and message selection |
 | `workspace_team_launch` | `/workspace`, desktop | Newly launched synthetic Team selected and immediately projected under `Prototype Workspace`; real left-tree member activation changes the selected row and center Team workspace focus |
+| `workspace_team_hierarchy_review` | `/workspace?prototypeReview=nested-team-hierarchy`, desktop | Baseline-native nested hierarchy decision fixture: one team-definition group, two runs, three sibling teams, deeper configured team, transient task team, mixed states, long labels, and review-controlled disclosure/selection |
 | `mobile_agent_active` | `/mobile`, paired | Agent Runs/Setup/Chat/Files/Viewer/Artifacts/Activity |
 | `mobile_team_active` | `/mobile`, paired | Team Chat/focus/messages/reference/Files/Artifacts/Activity |
 

@@ -34,7 +34,8 @@
     "validate:personal-integration": "node prototype/scripts/validate-independent-repository.mjs",
     "validate:workspace-ownership": "node prototype/scripts/validate-workspace-ownership.mjs",
     "validate:token-statistics-final": "node prototype/scripts/validate-token-statistics-final.mjs",
-    "capture:token-statistics-final": "node prototype/scripts/capture-token-statistics-final.mjs"
+    "capture:token-statistics-final": "node prototype/scripts/capture-token-statistics-final.mjs",
+    "validate:nested-team-hierarchy-review": "node prototype/scripts/validate-nested-team-hierarchy-review.mjs"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",

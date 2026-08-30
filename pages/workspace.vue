@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-col h-full bg-gray-100 font-sans text-gray-800">
     <WorkspaceAdaptiveLayout :show-file-content="showFileContent" />
+    <NestedTeamHierarchyReviewPanel />
   </div>
 </template>
 
@@ -11,6 +12,7 @@ import { useServerSettingsStore } from '~/stores/serverSettings';
 import { useWorkspaceStore } from '~/stores/workspace';
 import { useWorkspaceRouteSelection } from '~/composables/workspace/useWorkspaceRouteSelection';
 import WorkspaceAdaptiveLayout from '~/components/layout/WorkspaceAdaptiveLayout.vue';
+import NestedTeamHierarchyReviewPanel from '~/components/workspace/history/NestedTeamHierarchyReviewPanel.vue';
 
 const fileExplorerStore = useFileExplorerStore();
 const serverSettingsStore = useServerSettingsStore();

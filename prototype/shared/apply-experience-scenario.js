@@ -100,17 +100,18 @@ export function applyExperienceScenario(input = {}) {
   }
 
   if (scenario.startsWith('workspace_team') || scenario.startsWith('mobile_team')) {
+    const hierarchyReview = scenario === 'workspace_team_hierarchy_review'
     const launchedFromCatalog = scenario === 'workspace_team_launch'
-    const rootTeamRunId = launchedFromCatalog ? 'team-run-created-fixture' : 'team-run-prototype'
-    const reviewerRunId = launchedFromCatalog ? 'team-member-researcher-created' : 'team-member-reviewer'
+    const rootTeamRunId = hierarchyReview ? 'team-run-hierarchy-review' : launchedFromCatalog ? 'team-run-created-fixture' : 'team-run-prototype'
+    const reviewerRunId = hierarchyReview ? 'team-member-root-coordinator' : launchedFromCatalog ? 'team-member-researcher-created' : 'team-member-reviewer'
     const writerRunId = launchedFromCatalog ? 'team-member-writer-created' : 'team-member-writer'
-    const reviewerName = launchedFromCatalog ? 'Research Assistant' : 'Review Coordinator'
-    const writerName = launchedFromCatalog ? 'Documentation Writer' : 'Evidence Writer'
+    const reviewerName = hierarchyReview ? 'Workspace Program Coordinator' : launchedFromCatalog ? 'Research Assistant' : 'Review Coordinator'
+    const writerName = hierarchyReview ? 'Root Operations Liaison' : launchedFromCatalog ? 'Documentation Writer' : 'Evidence Writer'
     const reviewerDefinitionId = launchedFromCatalog ? 'agent-researcher' : 'agent-reviewer'
     const reviewerDisplayName = launchedFromCatalog ? 'researcher' : reviewerName
     const writerDisplayName = launchedFromCatalog ? 'writer' : writerName
-    const reviewerAddress = launchedFromCatalog ? '/researcher' : '/product-review/coordinator'
-    const writerAddress = launchedFromCatalog ? '/writer' : '/product-review/evidence-writer'
+    const reviewerAddress = hierarchyReview ? '/coordinator' : launchedFromCatalog ? '/researcher' : '/product-review/coordinator'
+    const writerAddress = hierarchyReview ? '/operations-liaison' : launchedFromCatalog ? '/writer' : '/product-review/evidence-writer'
     const rootRowKey = launchedFromCatalog ? `team:${rootTeamRunId}` : 'team:root'
     const rootAddress = launchedFromCatalog ? '/' : '/product-review'
     const memberConfig = (id, name) => ({ agentDefinitionId: id, agentDefinitionName: name, agentAvatarUrl: null, llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', workspaceId, workspaceMetadata, autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', isLocked: true, llmConfig: { temperature: 0.2 } })
@@ -132,6 +133,27 @@ export function applyExperienceScenario(input = {}) {
       { agentRunId: reviewerRunId, memberAddress: reviewerAddress, agentContext: reviewer },
       { agentRunId: writerRunId, memberAddress: writerAddress, agentContext: writer },
     ]
+    const hierarchyAgentSpecs = hierarchyReview ? [
+      ['run-product-design-lead', '/product-design/lead', 'Product Design Lead', 'running'],
+      ['run-research-ops', '/product-design/research-operations', 'Research Operations Specialist With A Very Long Localized Role', 'idle'],
+      ['run-design-accessibility', '/product-design/design-systems/accessibility', 'Barrierefreiheit & Designsystem-Koordination', 'error'],
+      ['run-design-tokens', '/product-design/design-systems/tokens', 'Design Token Librarian', 'offline'],
+      ['run-software-coordinator', '/software-engineering/coordinator', 'Software Engineering Coordinator', 'running'],
+      ['run-platform-engineer', '/software-engineering/platform', 'Platform Integration Engineer', 'idle'],
+      ['run-requirements-lead', '/requirements-engineering/lead', 'Requirements Engineering Lead', 'idle'],
+      ['run-requirements-analyst', '/requirements-engineering/analysis', 'Requirements Traceability Analyst', 'offline'],
+      ['run-task-auditor', '/software-engineering/task-team/auditor', 'Temporary Dependency Auditor', 'initializing'],
+      ['run-task-remediator', '/software-engineering/task-team/remediator', 'Temporary Remediation Agent', 'idle'],
+    ] : []
+    for (const [agentRunId, memberAddress, displayName, status] of hierarchyAgentSpecs) {
+      const context = agentContexts.upsertProjectionContext({
+        runId: agentRunId,
+        config: memberConfig(`agent-${agentRunId}`, displayName),
+        conversation: memberConversation(agentRunId, displayName, 'Synthetic hierarchy review fixture.'),
+        status,
+      })
+      entries.push({ agentRunId, memberAddress, agentContext: context })
+    }
     const rows = [
       { key: rootRowKey, kind: 'configured_team', address: rootAddress, displayName: 'Product Review Team', accessibleName: 'Product Review Team', depth: 0, parentKey: null, agentRunId: null, teamRunId: rootTeamRunId, taskId: null, taskStatus: null, currentStatus: null, focusable: false, expandable: true, coordinator: false },
       { key: `agent:${reviewerRunId}`, kind: 'configured_agent', address: reviewerAddress, displayName: reviewerDisplayName, accessibleName: reviewerDisplayName, depth: 1, parentKey: rootRowKey, agentRunId: reviewerRunId, teamRunId: null, taskId: null, taskStatus: null, currentStatus: memberStatus, focusable: true, expandable: false, coordinator: true },
@@ -178,7 +200,7 @@ export function applyExperienceScenario(input = {}) {
     const teams = store('agentTeamContexts')
     if (teams) teams.teams = new Map([[rootTeamRunId, { view }]])
     selection.selectRunWithoutShellNavigation(rootTeamRunId, 'team')
-    if (launchedFromCatalog && runHistory) {
+    if ((launchedFromCatalog || hierarchyReview) && runHistory) {
       const memberRow = (agentRunId, memberAddress, displayName) => ({
         teamRunId: rootTeamRunId, kind: 'agent', memberAddress, displayName, agentRunId, teamRunIdForNode: null,
         workspaceRootPath: workspaceMetadata.workspaceRootPath, summary: 'New - Product Review Team', lastActivityAt: teamLastActivityAt,
@@ -190,29 +212,147 @@ export function applyExperienceScenario(input = {}) {
       })
       const reviewerRow = memberRow(reviewerRunId, reviewerAddress, reviewerDisplayName)
       const writerRow = memberRow(writerRunId, writerAddress, writerDisplayName)
+      if (hierarchyReview) {
+        reviewerRow.currentStatus = 'running'
+        reviewerRow.isActive = true
+        writerRow.currentStatus = 'idle'
+        writerRow.isActive = false
+      }
       const rootTeam = {
         teamRunId: rootTeamRunId, kind: 'agent_team', memberAddress: '/', displayName: 'Product Review Team', agentRunId: null,
         teamDefinitionId: 'team-product', teamRunIdForNode: rootTeamRunId, coordinatorAddress: reviewerAddress,
         workspaceRootPath: null, summary: 'New - Product Review Team', lastActivityAt: teamLastActivityAt,
         currentStatus: null, isActive: true, deleteLifecycle: 'READY', children: [reviewerRow, writerRow],
       }
-      const teamNode = {
+      let teamNode = {
         teamRunId: rootTeamRunId, teamDefinitionId: 'team-product', teamDefinitionName: 'Product Review Team',
         workspaceRootPath: workspaceMetadata.workspaceRootPath, summary: 'New - Product Review Team', lastActivityAt: teamLastActivityAt,
         isActive: true, deleteLifecycle: 'READY', focusedAgentRunId: reviewerRunId, rootTeam,
         members: [reviewerRow, writerRow], executionRows: [stableExecutionRow(reviewerRow), stableExecutionRow(writerRow)],
       }
-      runHistory.workspaceGroups = []
+
+      if (hierarchyReview) {
+        const stableAgent = (agentRunId, memberAddress, displayName, currentStatus) => ({
+          ...memberRow(agentRunId, memberAddress, displayName),
+          currentStatus,
+          isActive: currentStatus === 'running' || currentStatus === 'initializing',
+        })
+        const stableTeam = (rowKey, memberAddress, displayName, children) => ({
+          teamRunId: rootTeamRunId, kind: 'agent_team', memberAddress, displayName, agentRunId: null,
+          teamDefinitionId: rowKey.replace(/^team:/, 'definition-'), teamRunIdForNode: rowKey.replace(/^team:/, 'nested-run-'),
+          coordinatorAddress: children.find(child => child.agentRunId)?.memberAddress || null,
+          workspaceRootPath: workspaceMetadata.workspaceRootPath, summary: displayName, lastActivityAt: '2026-08-30T08:42:00.000Z',
+          currentStatus: null, isActive: children.some(child => child.isActive), deleteLifecycle: 'READY', children,
+        })
+        const toStable = (row, depth, rowKey) => ({
+          kind: 'stable_member', rowKey, teamRunId: rootTeamRunId, memberAddress: row.memberAddress,
+          agentRunId: row.agentRunId || null, teamRunIdForNode: row.teamRunIdForNode || null,
+          memberKind: row.kind, displayName: row.displayName, depth, hasChildren: row.children.length > 0, row,
+        })
+        const accessibility = stableAgent('run-design-accessibility', '/product-design/design-systems/accessibility', 'Barrierefreiheit & Designsystem-Koordination', 'error')
+        const tokens = stableAgent('run-design-tokens', '/product-design/design-systems/tokens', 'Design Token Librarian', 'offline')
+        const designSystems = stableTeam('team:design-systems', '/product-design/design-systems', 'Design Systems & Accessibility Enablement', [accessibility, tokens])
+        const productDesignLead = stableAgent('run-product-design-lead', '/product-design/lead', 'Product Design Lead', 'running')
+        const researchOps = stableAgent('run-research-ops', '/product-design/research-operations', 'Research Operations Specialist With A Very Long Localized Role', 'idle')
+        const productDesign = stableTeam('team:product-design', '/product-design', 'Product Design & Prototyping', [productDesignLead, researchOps, designSystems])
+        const softwareCoordinator = stableAgent('run-software-coordinator', '/software-engineering/coordinator', 'Software Engineering Coordinator', 'running')
+        const platformEngineer = stableAgent('run-platform-engineer', '/software-engineering/platform', 'Platform Integration Engineer', 'idle')
+        const softwareEngineering = stableTeam('team:software-engineering', '/software-engineering', 'Software Engineering', [softwareCoordinator, platformEngineer])
+        const requirementsLead = stableAgent('run-requirements-lead', '/requirements-engineering/lead', 'Requirements Engineering Lead', 'idle')
+        const requirementsAnalyst = stableAgent('run-requirements-analyst', '/requirements-engineering/analysis', 'Requirements Traceability Analyst', 'offline')
+        const requirementsEngineering = stableTeam('team:requirements-engineering', '/requirements-engineering', 'Requirements Engineering & Systems Analysis', [requirementsLead, requirementsAnalyst])
+        const executionRows = [
+          toStable(reviewerRow, 0, `agent:${reviewerRunId}`),
+          toStable(writerRow, 0, `agent:${writerRunId}`),
+          toStable(productDesign, 0, 'team:product-design'),
+          toStable(productDesignLead, 1, 'agent:run-product-design-lead'),
+          toStable(researchOps, 1, 'agent:run-research-ops'),
+          toStable(designSystems, 1, 'team:design-systems'),
+          toStable(accessibility, 2, 'agent:run-design-accessibility'),
+          toStable(tokens, 2, 'agent:run-design-tokens'),
+          toStable(softwareEngineering, 0, 'team:software-engineering'),
+          toStable(softwareCoordinator, 1, 'agent:run-software-coordinator'),
+          toStable(platformEngineer, 1, 'agent:run-platform-engineer'),
+          {
+            kind: 'transient_execution', transientKind: 'task_team', rowKey: 'task-team:dependency-audit',
+            teamRunId: rootTeamRunId, memberAddress: '/software-engineering/task-team', agentRunId: null,
+            teamRunIdForNode: 'transient-team-dependency-audit', memberKind: 'agent_team',
+            displayName: 'Temporary dependency audit & remediation task team', depth: 1, hasChildren: true, currentStatus: 'initializing',
+          },
+          {
+            kind: 'transient_execution', transientKind: 'task_team_child', rowKey: 'task-agent:auditor',
+            teamRunId: rootTeamRunId, memberAddress: '/software-engineering/task-team/auditor', agentRunId: 'run-task-auditor',
+            teamRunIdForNode: null, memberKind: 'agent', displayName: 'Temporary Dependency Auditor', depth: 2, hasChildren: false, currentStatus: 'initializing',
+          },
+          {
+            kind: 'transient_execution', transientKind: 'task_team_child', rowKey: 'task-agent:remediator',
+            teamRunId: rootTeamRunId, memberAddress: '/software-engineering/task-team/remediator', agentRunId: 'run-task-remediator',
+            teamRunIdForNode: null, memberKind: 'agent', displayName: 'Temporary Remediation Agent', depth: 2, hasChildren: false, currentStatus: 'idle',
+          },
+          toStable(requirementsEngineering, 0, 'team:requirements-engineering'),
+          toStable(requirementsLead, 1, 'agent:run-requirements-lead'),
+          toStable(requirementsAnalyst, 1, 'agent:run-requirements-analyst'),
+        ]
+        rootTeam.children = [reviewerRow, writerRow, productDesign, softwareEngineering, requirementsEngineering]
+        teamNode = {
+          ...teamNode,
+          teamDefinitionId: 'team-workspace-operations',
+          teamDefinitionName: 'Workspace Operations & Delivery Team',
+          summary: 'Hierarchy review · active coordination run with a very long task title',
+          lastActivityAt: '2026-08-30T08:42:00.000Z',
+          rootTeam,
+          members: rootTeam.children,
+          executionRows,
+        }
+      }
+
+      const priorTeamNode = hierarchyReview ? {
+        ...teamNode,
+        teamRunId: 'team-run-hierarchy-prior',
+        summary: 'Previous organization review · archived comparison pass',
+        lastActivityAt: '2026-08-29T16:10:00.000Z',
+        isActive: false,
+        focusedAgentRunId: reviewerRunId,
+        rootTeam: { ...teamNode.rootTeam, teamRunId: 'team-run-hierarchy-prior' },
+        executionRows: [],
+      } : null
+      const teamNodes = priorTeamNode ? [teamNode, priorTeamNode] : [teamNode]
+      runHistory.workspaceGroups = hierarchyReview ? [{
+        workspaceRootPath: workspaceMetadata.workspaceRootPath,
+        workspaceName: workspaceMetadata.displayName,
+        agentDefinitions: [],
+        teamDefinitions: [{
+          teamDefinitionId: 'team-workspace-operations',
+          teamDefinitionName: 'Workspace Operations & Delivery Team',
+          runs: teamNodes.map(item => ({
+            teamRunId: item.teamRunId,
+            teamDefinitionId: item.teamDefinitionId,
+            teamDefinitionName: item.teamDefinitionName,
+            summary: item.summary,
+            lastActivityAt: item.lastActivityAt,
+            isActive: item.isActive,
+            deleteLifecycle: item.deleteLifecycle,
+          })),
+        }],
+      }] : []
       runHistory.navigationProjection = {
         workspaceNodes: [{ workspaceId, workspaceRootPath: workspaceMetadata.workspaceRootPath, workspaceName: workspaceMetadata.displayName, workspaceKind: 'filesystem', canRemoveFromWorkspaces: true, agents: [] }],
-        teamNodes: [teamNode], teamNodesByWorkspaceRoot: { [workspaceMetadata.workspaceRootPath]: [teamNode] }, runIndexById: {},
-        teamIndexById: { [rootTeamRunId]: { index: 0, workspaceRootPath: workspaceMetadata.workspaceRootPath, workspaceIndex: 0 } },
-        memberIndexByIdentity: {
-          [`${rootTeamRunId}\u0000agent:${reviewerRunId}`]: 0,
-          [`${rootTeamRunId}\u0000agent:${writerRunId}`]: 1,
-        },
-        runAncestryById: {}, teamAncestryById: { [rootTeamRunId]: { workspaceId, teamDefinitionGroupKey: 'team-product' } },
-        memberAncestorExecutionKeysByIdentity: {
+        teamNodes, teamNodesByWorkspaceRoot: { [workspaceMetadata.workspaceRootPath]: teamNodes }, runIndexById: {},
+        teamIndexById: Object.fromEntries(teamNodes.map((item, index) => [item.teamRunId, { index, workspaceRootPath: workspaceMetadata.workspaceRootPath, workspaceIndex: 0 }])),
+        memberIndexByIdentity: Object.fromEntries(teamNode.executionRows.map((row, index) => [[rootTeamRunId, row.rowKey].join('\u0000'), index])),
+        runAncestryById: {}, teamAncestryById: Object.fromEntries(teamNodes.map(item => [item.teamRunId, { workspaceId, teamDefinitionGroupKey: hierarchyReview ? 'team-workspace-operations' : 'team-product' }])),
+        memberAncestorExecutionKeysByIdentity: hierarchyReview ? {
+          [`${rootTeamRunId}\u0000agent:${reviewerRunId}`]: [],
+          [`${rootTeamRunId}\u0000agent:${writerRunId}`]: [],
+          [`${rootTeamRunId}\u0000agent:run-product-design-lead`]: ['team:product-design'],
+          [`${rootTeamRunId}\u0000agent:run-research-ops`]: ['team:product-design'],
+          [`${rootTeamRunId}\u0000agent:run-design-accessibility`]: ['team:product-design', 'team:design-systems'],
+          [`${rootTeamRunId}\u0000agent:run-design-tokens`]: ['team:product-design', 'team:design-systems'],
+          [`${rootTeamRunId}\u0000agent:run-software-coordinator`]: ['team:software-engineering'],
+          [`${rootTeamRunId}\u0000agent:run-platform-engineer`]: ['team:software-engineering'],
+          [`${rootTeamRunId}\u0000agent:run-requirements-lead`]: ['team:requirements-engineering'],
+          [`${rootTeamRunId}\u0000agent:run-requirements-analyst`]: ['team:requirements-engineering'],
+        } : {
           [`${rootTeamRunId}\u0000agent:${reviewerRunId}`]: [],
           [`${rootTeamRunId}\u0000agent:${writerRunId}`]: [],
         },
