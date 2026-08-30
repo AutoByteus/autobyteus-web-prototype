@@ -21,6 +21,23 @@
     @keydown.enter="activateRow"
     @keydown.space.prevent="activateRow"
   >
+    <span
+      v-if="prototypeReviewActive && hierarchyTreatment !== 'surfaces'"
+      class="hierarchy-branches pointer-events-none absolute inset-0"
+      aria-hidden="true"
+    >
+      <span
+        v-for="branchDepth in continuingAncestorDepths"
+        :key="branchDepth"
+        class="absolute bottom-[-0.2rem] top-[-0.2rem] w-px bg-slate-300"
+        :style="{ left: `calc((${branchDepth} + 1) * 0.875rem - 1px)` }"
+      />
+      <span
+        class="hierarchy-current-branch absolute bottom-[-0.2rem] top-[-0.2rem]"
+        :class="{ 'continues-to-sibling': hasFollowingSibling }"
+        :style="{ left: `calc((${row.depth} + 1) * 0.875rem - 1px)` }"
+      />
+    </span>
     <button
       v-if="hasChildren"
       type="button"
@@ -100,6 +117,8 @@ const props = withDefaults(defineProps<{
   teamIdentity?: 'icon' | 'header' | 'band';
   panelWidth?: 260 | 320 | 520;
   fontSize?: 'default' | 'extra-large';
+  continuingAncestorDepths?: number[];
+  hasFollowingSibling?: boolean;
 }>(), {
   isSelected: false,
   hasChildren: false,
@@ -110,6 +129,8 @@ const props = withDefaults(defineProps<{
   teamIdentity: 'header',
   panelWidth: 320,
   fontSize: 'default',
+  continuingAncestorDepths: () => [],
+  hasFollowingSibling: false,
 });
 
 const emit = defineEmits<{
@@ -119,10 +140,10 @@ const emit = defineEmits<{
 
 const rowStyle = computed(() => ({
   ...(props.prototypeReviewActive
-    ? {
-        '--tree-depth': String(props.row.depth),
-        paddingLeft: `calc(${props.row.depth} * 0.875rem)`,
-      }
+      ? {
+          '--tree-depth': String(props.row.depth),
+          paddingLeft: `calc((${props.row.depth} + 1) * 0.875rem)`,
+        }
     : { marginLeft: `${props.row.depth * 12}px` }),
 }));
 
@@ -136,7 +157,7 @@ const ariaLabel = computed(() => props.prototypeReviewActive
   : `${props.row.displayName}. ${props.row.memberAddress}`);
 
 const rowClasses = computed(() => [
-  props.isSelected ? 'is-selected text-indigo-900 ring-1 ring-indigo-200' : 'text-gray-600',
+  props.isSelected ? 'is-selected text-indigo-900' : 'text-gray-600',
   props.prototypeReviewActive ? [
     `hierarchy-${props.hierarchyTreatment}`,
     `metadata-${props.metadataTreatment}`,
@@ -160,33 +181,42 @@ const activateRow = (): void => {
   border: 1px dashed #c7d2fe;
 }
 
-.transient-execution-row[class*="hierarchy-"] > :not(.hierarchy-identity-tooltip) {
+.transient-execution-row[class*="hierarchy-"] > :not(.hierarchy-identity-tooltip):not(.hierarchy-branches) {
   position: relative;
   z-index: 2;
 }
 
-.hierarchy-rails::before,
-.hierarchy-hybrid::before {
+.hierarchy-branches {
+  z-index: 1;
+}
+
+.hierarchy-current-branch {
+  width: 0.5rem;
+}
+
+.hierarchy-current-branch::before,
+.hierarchy-current-branch::after {
   position: absolute;
-  z-index: 0;
-  top: -0.2rem;
-  bottom: -0.2rem;
-  left: 0;
-  width: calc((var(--tree-depth) + 1) * 0.875rem);
-  background-image: repeating-linear-gradient(to right, transparent 0, transparent calc(0.875rem - 1px), #cbd5e1 calc(0.875rem - 1px), #cbd5e1 0.875rem);
+  background: #94a3b8;
   content: '';
 }
 
-.hierarchy-rails::after,
-.hierarchy-hybrid::after {
-  position: absolute;
-  z-index: 1;
+.hierarchy-current-branch::before {
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: calc(50% + 0.5px);
+}
+
+.hierarchy-current-branch.continues-to-sibling::before {
+  height: 100%;
+}
+
+.hierarchy-current-branch::after {
   top: 50%;
-  left: calc(var(--tree-depth) * 0.875rem + 0.4rem);
-  width: 0.65rem;
+  left: 0;
+  width: 0.5rem;
   height: 1px;
-  background: #94a3b8;
-  content: '';
 }
 
 .hierarchy-surfaces {
@@ -200,8 +230,9 @@ const activateRow = (): void => {
 }
 
 .is-selected {
+  border-radius: 0;
   background-color: #eef2ff !important;
-  box-shadow: inset 3px 0 #4f46e5;
+  box-shadow: inset 2px 0 #6366f1;
 }
 
 .metadata-on-demand .member-status {

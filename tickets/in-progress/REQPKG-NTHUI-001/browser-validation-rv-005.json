@@ -1,0 +1,271 @@
+{
+  "package": "nested-team-hierarchy-ui",
+  "revision": "RV-005",
+  "mode": "Requirements Visualization — clean baseline-native file-tree candidate",
+  "baseUrl": "http://127.0.0.1:4193",
+  "generatedAt": "2026-08-30T10:18:33.337Z",
+  "result": "PASS",
+  "passed": 22,
+  "total": 22,
+  "checks": [
+    {
+      "id": "NTH-RV5-001-real-workspace-entry",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&reviewView=compare&hierarchy=hybrid&metadata=responsive&teamIdentity=header&panelWidth=320&fontSize=default&treeState=deep"
+      }
+    },
+    {
+      "id": "NTH-RV5-002-baseline-shell-preserved",
+      "pass": true,
+      "evidence": {
+        "shellNavigation": [
+          "Agents",
+          "Agent Teams",
+          "Applications",
+          "Skills"
+        ]
+      }
+    },
+    {
+      "id": "NTH-RV5-003-review-controls-outside-left-panel",
+      "pass": true,
+      "evidence": {
+        "shellBox": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 1000
+        },
+        "reviewBox": {
+          "x": 524,
+          "y": 698.5,
+          "width": 900,
+          "height": 285.5
+        }
+      }
+    },
+    {
+      "id": "NTH-RV5-004-group-and-run-fixture",
+      "pass": true,
+      "evidence": {
+        "definitionGroups": 1,
+        "teamRuns": 2
+      }
+    },
+    {
+      "id": "NTH-RV5-005-deep-fixture",
+      "pass": true,
+      "evidence": {
+        "visibleRows": 17,
+        "transientRows": 3
+      }
+    },
+    {
+      "id": "NTH-RV5-006-rails",
+      "pass": true,
+      "evidence": {
+        "treatment": "rails",
+        "rows": 17
+      }
+    },
+    {
+      "id": "NTH-RV5-006-surfaces",
+      "pass": true,
+      "evidence": {
+        "treatment": "surfaces",
+        "rows": 17
+      }
+    },
+    {
+      "id": "NTH-RV5-006-hybrid",
+      "pass": true,
+      "evidence": {
+        "treatment": "hybrid",
+        "rows": 17
+      }
+    },
+    {
+      "id": "NTH-RV5-007-identical-content-across-ancestry-alternatives",
+      "pass": true,
+      "evidence": {
+        "signatureRows": 17
+      }
+    },
+    {
+      "id": "NTH-RV5-008-selected-leaf-and-ancestor-reveal",
+      "pass": true,
+      "evidence": {
+        "selectedLabel": "Agent, Barrierefreiheit & Designsystem-Koordination, level 3, error, /product-design/design-systems/accessibility"
+      }
+    },
+    {
+      "id": "NTH-RV5-009-state-progression",
+      "pass": true,
+      "evidence": {
+        "stateCounts": {
+          "collapsed": 5,
+          "one": 8,
+          "several": 13,
+          "deep": 17,
+          "selected": 17
+        }
+      }
+    },
+    {
+      "id": "NTH-RV5-010-structural-row-pointer-toggle",
+      "pass": true,
+      "evidence": {
+        "selectedBefore": "Agent, Workspace Program Coordinator, level 1, running, /coordinator",
+        "selectedAfterClick": "Agent, Workspace Program Coordinator, level 1, running, /coordinator",
+        "softwareBefore": "true",
+        "softwareAfter": "true"
+      }
+    },
+    {
+      "id": "NTH-RV5-011-structural-row-keyboard-toggle",
+      "pass": true,
+      "evidence": {
+        "expanded": "true"
+      }
+    },
+    {
+      "id": "NTH-RV5-012-full-identity-pointer-keyboard-recovery",
+      "pass": true,
+      "evidence": {
+        "title": "Agent · Research Operations Specialist With A Very Long Localized Role · /product-design/research-operations",
+        "ariaLabel": "Agent, Research Operations Specialist With A Very Long Localized Role, level 2, idle, /product-design/research-operations"
+      }
+    },
+    {
+      "id": "NTH-RV5-013-accessible-tree-semantics",
+      "pass": true,
+      "evidence": {
+        "role": "treeitem",
+        "level": "1"
+      }
+    },
+    {
+      "id": "NTH-RV5-014-quiet-refresh-preserves-expansion",
+      "pass": true,
+      "evidence": {
+        "waitedMs": 5250
+      }
+    },
+    {
+      "id": "NTH-RV5-015-width-font-matrix",
+      "pass": true,
+      "evidence": {
+        "responsiveEvidence": [
+          {
+            "panelWidth": "260",
+            "fontSize": "default",
+            "actualWidth": 260,
+            "overflow": {
+              "clientWidth": 260,
+              "scrollWidth": 260
+            },
+            "disclosures": 5
+          },
+          {
+            "panelWidth": "260",
+            "fontSize": "extra-large",
+            "actualWidth": 260,
+            "overflow": {
+              "clientWidth": 260,
+              "scrollWidth": 260
+            },
+            "disclosures": 5
+          },
+          {
+            "panelWidth": "320",
+            "fontSize": "default",
+            "actualWidth": 320,
+            "overflow": {
+              "clientWidth": 320,
+              "scrollWidth": 320
+            },
+            "disclosures": 5
+          },
+          {
+            "panelWidth": "320",
+            "fontSize": "extra-large",
+            "actualWidth": 320,
+            "overflow": {
+              "clientWidth": 320,
+              "scrollWidth": 320
+            },
+            "disclosures": 5
+          },
+          {
+            "panelWidth": "520",
+            "fontSize": "default",
+            "actualWidth": 520,
+            "overflow": {
+              "clientWidth": 520,
+              "scrollWidth": 520
+            },
+            "disclosures": 5
+          },
+          {
+            "panelWidth": "520",
+            "fontSize": "extra-large",
+            "actualWidth": 520,
+            "overflow": {
+              "clientWidth": 520,
+              "scrollWidth": 520
+            },
+            "disclosures": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "NTH-RV5-016-on-demand-metadata-discoverable",
+      "pass": true,
+      "evidence": {
+        "beforeOpacity": "0",
+        "afterOpacity": "1"
+      }
+    },
+    {
+      "id": "NTH-RV5-017-clean-file-tree-candidate-visible",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&reviewView=proposal&hierarchy=rails&metadata=responsive&teamIdentity=icon&panelWidth=320&fontSize=default&treeState=collapsed",
+        "visibleRows": 5
+      }
+    },
+    {
+      "id": "NTH-RV5-018-file-tree-junction-geometry",
+      "pass": true,
+      "evidence": {
+        "firstBranchGeometry": {
+          "horizontalLeft": 0,
+          "verticalLeft": 0,
+          "branchRight": 57,
+          "disclosureLeft": 58
+        },
+        "finalBranchContinues": false
+      }
+    },
+    {
+      "id": "NTH-RV5-019-orthogonal-selection-with-2px-accent",
+      "pass": true,
+      "evidence": {
+        "selectedVisual": {
+          "boxShadow": "rgb(99, 102, 241) 2px 0px 0px 0px inset",
+          "backgroundColor": "rgb(238, 242, 255)"
+        }
+      }
+    },
+    {
+      "id": "NTH-RV5-020-no-runtime-errors",
+      "pass": true,
+      "evidence": {
+        "runtimeErrors": []
+      }
+    }
+  ],
+  "failures": []
+}

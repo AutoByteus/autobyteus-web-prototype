@@ -69,7 +69,7 @@ export const useNestedTeamHierarchyPrototypeReview = () => {
   const showProposal = async (): Promise<void> => {
     await update({
       reviewView: 'proposal',
-      hierarchy: 'hybrid',
+      hierarchy: 'rails',
       metadata: 'responsive',
       teamIdentity: 'icon',
       panelWidth: 320,

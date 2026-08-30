@@ -27,7 +27,7 @@
 
 | Step | Screen / State | User Action Or System Event | Visible Feedback | Resulting State / Destination | Decision Evidence |
 | --- | --- | --- | --- | --- | --- |
-| 1 | UI-001 / hybrid, responsive metadata, header identity | Open the review URL | The accepted Workspace shell appears; only the history subtree is changed | Active team run is expanded | Baseline-native connection is directly reviewable |
+| 1 | UI-001 / file-tree rails, responsive metadata, structural icon identity | Open the review URL | The accepted Workspace shell appears; only the history subtree is changed | Active team run is expanded; subteams are collapsed by default | Baseline-native connection is directly reviewable without review chrome |
 | 2 | UI-003 / DEC-001 | Switch Rails, Surfaces, Hybrid | The same 17 deep-tree rows use a different ancestry grammar | Fixture and product shell remain identical | Compare connection continuity versus containment weight |
 | 3 | UI-003 / DEC-002 | Switch Full, Responsive, On focus | Age/status density changes without changing node identity | Metadata stays accessible in labels/titles and on focus when hidden | Compare scan noise and continuous availability |
 | 4 | UI-003 / DEC-003 | Switch Icon, Header, Band | Team nodes change shape/typography/role placement; agents retain circular avatars | Node role remains programmatically explicit | Compare compactness versus explicit team emphasis |

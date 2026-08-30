@@ -1,23 +1,24 @@
-# RV-004 Clean Final-Candidate Review Guide
+# RV-005 Clean File-Tree Candidate Review Guide
 
 ## What To Review First
 
-RV-004 shows only the directly updated accepted AutoByteus `/workspace` experience. There is no floating review card, recommendation copy, comparison control, or helper overlay. Nested teams are collapsed by default and users expand only the branch they need.
+RV-005 shows only the directly updated accepted AutoByteus `/workspace` experience. The hierarchy now follows the printed file-tree grammar requested in user feedback: thin continuous ancestor rails and one-direction `├─`/`└─` elbows. There is no floating review card, recommendation copy, comparison control, or helper overlay.
 
 ## Review URL
 
-`http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&reviewView=proposal&hierarchy=hybrid&metadata=responsive&teamIdentity=icon&panelWidth=320&fontSize=default&treeState=collapsed`
+`http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&reviewView=proposal&hierarchy=rails&metadata=responsive&teamIdentity=icon&panelWidth=320&fontSize=default&treeState=collapsed`
 
 Everything visible on this route belongs to the product experience being evaluated. The synthetic data is a prototype fixture, but no review-only UI is displayed.
 
 ## Product Recommendation
 
-- **DEC-001 · Hybrid ancestry:** continuous connector rails carry ancestry across related rows; restrained team surfaces add a second structural cue without turning the sidebar into stacked cards.
-- **DEC-002 · Responsive metadata:** status remains available while age yields first at constrained widths; complete identity and status remain accessible by pointer and keyboard.
+- **DEC-001 · File-tree rails:** continuous ancestor rails and terminating elbows express the hierarchy without row cards. Horizontal branches begin at the vertical rail and extend only toward the node; they never cross it.
+- **DEC-002 · Responsive metadata:** status remains available while member age is revealed on hover/keyboard focus at 260/320px and remains continuous at 520px.
 - **DEC-003 · Structural team icon:** square organization icons and stronger team-row weight distinguish teams from circular agent avatars without repeated uppercase role headers.
 - **Default state:** nested teams collapsed. A selected deep leaf reveals only its ancestor path.
+- **Selection:** orthogonal pale-blue row with a straight 2px indigo left accent; no rounded card border or heavy stripe.
 
-## Internal Alternative Evidence
+## Superseded Alternative Evidence
 
 1. **DEC-001 · Ancestry**
    - **Rails:** most compact; continuous connector lines carry ancestry; team nodes get structure icons and weight but minimal containment.

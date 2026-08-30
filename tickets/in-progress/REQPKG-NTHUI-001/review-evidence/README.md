@@ -51,3 +51,19 @@ the user explicitly approves the bundled recommendation.
 The remaining `rv-004/review-*` captures are internal regression evidence for
 alternative parity and stress states; they are not exposed on the clean
 candidate route. Automated results are in `../browser-validation-rv-004.json`.
+
+## RV-005 File-Tree Candidate
+
+- `rv-005/file-tree-candidate-preview.png`: direct collapsed-state preview.
+- `rv-005/file-tree-one-expanded-preview.png`: direct one-branch-expanded
+  preview showing ancestor continuation and terminating `├─`/`└─` elbows.
+- `rv-005/file-tree-one-expanded-final.png`: direct user-visible expanded
+  capture of the refined selected state; the final evidence refresh uses a
+  stronger pale-blue background and straight, square 2px inset accent.
+- `rv-005/file-tree-final-candidate-320-default.png`: automated clean-route
+  evidence.
+
+RV-005 removes team cards, renders only the ancestor rails that must continue,
+starts every horizontal branch at the vertical junction without crossing it,
+and terminates the last sibling as an elbow. Automated geometry and behavior
+results are in `../browser-validation-rv-005.json`.

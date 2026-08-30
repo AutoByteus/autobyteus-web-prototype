@@ -321,6 +321,23 @@
                     @keydown.enter="activateTeamDisplayRow(team, displayRow.row, displayRow.hasChildren)"
                     @keydown.space.prevent="activateTeamDisplayRow(team, displayRow.row, displayRow.hasChildren)"
                   >
+                    <span
+                      v-if="hierarchyReview.active.value && hierarchyReview.treatment.value !== 'surfaces'"
+                      class="hierarchy-branches pointer-events-none absolute inset-0"
+                      aria-hidden="true"
+                    >
+                      <span
+                        v-for="branchDepth in displayRow.continuingAncestorDepths"
+                        :key="branchDepth"
+                        class="hierarchy-ancestor-rail absolute bottom-[-0.2rem] top-[-0.2rem] w-px bg-slate-300"
+                        :style="{ left: `calc((${branchDepth} + 1) * 0.875rem - 1px)` }"
+                      />
+                      <span
+                        class="hierarchy-current-branch absolute bottom-[-0.2rem] top-[-0.2rem]"
+                        :class="{ 'continues-to-sibling': displayRow.hasFollowingSibling }"
+                        :style="{ left: `calc((${displayRow.row.depth} + 1) * 0.875rem - 1px)` }"
+                      />
+                    </span>
                     <button
                       v-if="displayRow.hasChildren"
                       type="button"
@@ -419,6 +436,8 @@
                     :team-identity="hierarchyReview.teamIdentity.value"
                     :panel-width="hierarchyReview.width.value"
                     :font-size="hierarchyReview.fontSize.value"
+                    :continuing-ancestor-depths="displayRow.continuingAncestorDepths"
+                    :has-following-sibling="displayRow.hasFollowingSibling"
                     @select="(row: import('~/stores/runHistoryTypes').RunHistoryTransientExecutionRow) => selectTeamDisplayRow(team, row)"
                     @toggle="(row: import('~/stores/runHistoryTypes').RunHistoryTransientExecutionRow) => toggleTeamDisplayRow(team, row)"
                   />
@@ -501,6 +520,8 @@ onBeforeUnmount(() => {
 interface VisibleTeamExecutionRow {
   row: RunHistoryTeamExecutionRow;
   hasChildren: boolean;
+  continuingAncestorDepths: number[];
+  hasFollowingSibling: boolean;
 }
 const isTeamDisplayRowExpanded = (
   team: TeamTreeNode,
@@ -521,7 +542,7 @@ const toggleTeamDisplayRow = (
 );
 
 const visibleTeamExecutionRows = (team: TeamTreeNode): VisibleTeamExecutionRow[] => {
-  const visibleRows: VisibleTeamExecutionRow[] = [];
+  const visibleRows: Array<Pick<VisibleTeamExecutionRow, 'row' | 'hasChildren'>> = [];
   const rows = team.executionRows;
   let collapsedDepth: number | null = null;
 
@@ -541,7 +562,23 @@ const visibleTeamExecutionRows = (team: TeamTreeNode): VisibleTeamExecutionRow[]
     }
   }
 
-  return visibleRows;
+  const hasFollowingSiblingAtDepth = (index: number, depth: number): boolean => {
+    for (let nextIndex = index + 1; nextIndex < visibleRows.length; nextIndex += 1) {
+      const nextDepth = visibleRows[nextIndex].row.depth;
+      if (nextDepth < depth) return false;
+      if (nextDepth === depth) return true;
+    }
+    return false;
+  };
+
+  return visibleRows.map((entry, index) => ({
+    ...entry,
+    continuingAncestorDepths: Array.from(
+      { length: entry.row.depth },
+      (_, depth) => depth,
+    ).filter((depth) => hasFollowingSiblingAtDepth(index, depth)),
+    hasFollowingSibling: hasFollowingSiblingAtDepth(index, entry.row.depth),
+  }));
 };
 
 const isSelectedTeamMember = (
@@ -555,7 +592,7 @@ const teamExecutionRowStyle = (row: RunHistoryTeamExecutionRow): Record<string, 
   hierarchyReview.active.value
     ? {
         '--tree-depth': String(row.depth),
-        paddingLeft: `calc(${row.depth} * 0.875rem)`,
+        paddingLeft: `calc((${row.depth} + 1) * 0.875rem)`,
       }
     : { marginLeft: `${row.depth * 12}px` }
 );
@@ -622,39 +659,42 @@ const activateTeamDisplayRow = (
   min-height: 1.75rem;
 }
 
-.team-execution-tree[class*="hierarchy-"] .team-execution-row > :not(.hierarchy-identity-tooltip) {
+.team-execution-tree[class*="hierarchy-"] .team-execution-row > :not(.hierarchy-identity-tooltip):not(.hierarchy-branches) {
   position: relative;
   z-index: 2;
 }
 
-.hierarchy-rails .team-execution-row::before,
-.hierarchy-hybrid .team-execution-row::before {
+.hierarchy-branches {
+  z-index: 1;
+}
+
+.hierarchy-current-branch {
+  width: 0.5rem;
+}
+
+.hierarchy-current-branch::before,
+.hierarchy-current-branch::after {
   position: absolute;
-  z-index: 0;
-  top: -0.2rem;
-  bottom: -0.2rem;
-  left: 0;
-  width: calc((var(--tree-depth) + 1) * 0.875rem);
-  background-image: repeating-linear-gradient(
-    to right,
-    transparent 0,
-    transparent calc(0.875rem - 1px),
-    #cbd5e1 calc(0.875rem - 1px),
-    #cbd5e1 0.875rem
-  );
+  background: #94a3b8;
   content: '';
 }
 
-.hierarchy-rails .team-execution-row::after,
-.hierarchy-hybrid .team-execution-row::after {
-  position: absolute;
-  z-index: 1;
+.hierarchy-current-branch::before {
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: calc(50% + 0.5px);
+}
+
+.hierarchy-current-branch.continues-to-sibling::before {
+  height: 100%;
+}
+
+.hierarchy-current-branch::after {
   top: 50%;
-  left: calc(var(--tree-depth) * 0.875rem + 0.4rem);
-  width: 0.65rem;
+  left: 0;
+  width: 0.5rem;
   height: 1px;
-  background: #94a3b8;
-  content: '';
 }
 
 .hierarchy-rails .node-team {
@@ -698,8 +738,9 @@ const activateTeamDisplayRow = (
 }
 
 .team-execution-tree .is-selected {
+  border-radius: 0;
   background-color: #eef2ff !important;
-  box-shadow: inset 3px 0 #4f46e5;
+  box-shadow: inset 2px 0 #6366f1;
 }
 
 .metadata-on-demand .member-age,
@@ -724,8 +765,21 @@ const activateTeamDisplayRow = (
 }
 
 .metadata-responsive[data-panel-width="260"] .member-age,
-.metadata-responsive[data-panel-width="320"][data-font-size="extra-large"] .member-age {
-  display: none;
+.metadata-responsive[data-panel-width="320"] .member-age {
+  max-width: 0;
+  margin-left: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-width 120ms ease, opacity 120ms ease, margin 120ms ease;
+}
+
+.metadata-responsive[data-panel-width="260"] .team-execution-row:hover .member-age,
+.metadata-responsive[data-panel-width="260"] .team-execution-row:focus-visible .member-age,
+.metadata-responsive[data-panel-width="320"] .team-execution-row:hover .member-age,
+.metadata-responsive[data-panel-width="320"] .team-execution-row:focus-visible .member-age {
+  max-width: 4rem;
+  margin-left: 0.5rem;
+  opacity: 1;
 }
 
 .metadata-responsive[data-panel-width="260"] .team-execution-row[data-tree-depth="2"] .member-status {

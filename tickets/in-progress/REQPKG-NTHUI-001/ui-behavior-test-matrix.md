@@ -26,6 +26,6 @@
 
 | Requirement / Decision ID | Missing Or Ambiguous Behavior | Prototype Limitation | Required Product Decision |
 | --- | --- | --- | --- |
-| DEC-001 | No ancestry grammar is approved | Three alternatives intentionally remain selectable | Choose Rails, Surfaces, or Hybrid |
+| DEC-001 | User rejected the visually heavy Hybrid candidate and specified printed file-tree grammar with non-crossing branch junctions; final approval is still open | RV-005 clean route shows Rails only; historical comparison evidence remains internal | Approve RV-005 file-tree rails or request one focused refinement |
 | DEC-002 | Continuous narrow-width metadata amount is not approved | All three density options are simulated client-side | Choose Full, Responsive, or On focus and specify any exceptions |
 | DEC-003 | Team emphasis level is not approved | Three identity options share one synthetic fixture | Choose Icon, Header, or Band and note desired refinements |

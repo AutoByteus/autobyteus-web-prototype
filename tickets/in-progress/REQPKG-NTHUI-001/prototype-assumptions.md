@@ -5,7 +5,7 @@
 | Assumption ID | Assumption | Why Needed | Product Decision Still Required |
 | --- | --- | --- | --- |
 | PA-NTH-001 | The accepted Workspace shell and current history interactions remain the product authority outside the focused hierarchy treatment. | Direct user correction requires incremental baseline evolution. | None unless the user expands scope. |
-| PA-NTH-002 | The starting Hybrid/Responsive/Header selections are a neutral review starting point, not a recommendation. | A deterministic review URL needs initial values. | `DEC-001`–`DEC-003`. |
+| PA-NTH-002 | RV-002's Hybrid/Responsive/Header selections were a neutral comparison starting point. RV-005 instead uses File-tree rails/Responsive/Structural icon because direct user feedback specified printed-tree grammar and rejected crossing connectors; this remains a candidate until explicit approval. | A deterministic clean review URL needs one visible treatment without review controls. | `DEC-001`–`DEC-003`. |
 | PA-NTH-003 | One representative deep fixture is sufficient to compare visual grammar when its content is identical across alternatives. | Prevents fixture differences from biasing the review. | User may request a second edge case within scope. |
 
 ## Mocked Boundaries
