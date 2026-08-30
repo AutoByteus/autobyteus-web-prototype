@@ -253,4 +253,8 @@ const activateRow = (): void => {
 .transient-execution-row:focus-visible > .hierarchy-identity-tooltip {
   display: block;
 }
+
+.transient-execution-row:focus-visible {
+  z-index: 60;
+}
 </style>

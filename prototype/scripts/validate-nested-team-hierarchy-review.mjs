@@ -145,6 +145,9 @@ record('NTH-RV6-012-full-identity-pointer-keyboard-recovery',
     && await longNameRow.locator('[role="tooltip"]').isVisible()
     && (await longNameRow.getAttribute('aria-label'))?.includes('level 2'),
 { title: await longNameRow.getAttribute('title'), ariaLabel: await longNameRow.getAttribute('aria-label') });
+const focusedRowZIndex = await longNameRow.evaluate((row) => getComputedStyle(row).zIndex);
+record('NTH-RV6-022-focused-tooltip-stacks-above-following-rows', focusedRowZIndex === '60',
+  { focusedRowZIndex });
 record('NTH-RV6-013-accessible-tree-semantics', await interactionPage.locator('[data-test="workspace-team-execution-tree"][role="tree"]').count() === 1
   && await productTeam.getAttribute('role') === 'treeitem'
   && await productTeam.getAttribute('aria-level') === '1'

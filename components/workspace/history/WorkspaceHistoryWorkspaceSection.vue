@@ -802,6 +802,10 @@ const activateTeamDisplayRow = (
   display: block;
 }
 
+.team-execution-row:focus-visible {
+  z-index: 60;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .team-execution-tree * {
     transition-duration: 0.01ms !important;

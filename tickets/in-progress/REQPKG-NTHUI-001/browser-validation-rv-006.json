@@ -3,10 +3,10 @@
   "revision": "RV-006",
   "mode": "Requirements Visualization — clean file-tree candidate with user-group identity",
   "baseUrl": "http://127.0.0.1:4193",
-  "generatedAt": "2026-08-30T10:38:27.153Z",
+  "generatedAt": "2026-08-30T10:50:16.772Z",
   "result": "PASS",
-  "passed": 23,
-  "total": 23,
+  "passed": 24,
+  "total": 24,
   "checks": [
     {
       "id": "NTH-RV6-001-real-workspace-entry",
@@ -135,6 +135,13 @@
       "evidence": {
         "title": "Agent · Research Operations Specialist With A Very Long Localized Role · /product-design/research-operations",
         "ariaLabel": "Agent, Research Operations Specialist With A Very Long Localized Role, level 2, idle, /product-design/research-operations"
+      }
+    },
+    {
+      "id": "NTH-RV6-022-focused-tooltip-stacks-above-following-rows",
+      "pass": true,
+      "evidence": {
+        "focusedRowZIndex": "60"
       }
     },
     {
