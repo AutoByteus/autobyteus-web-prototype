@@ -1,6 +1,6 @@
 <template>
   <aside
-    v-if="review.active.value"
+    v-if="review.active.value && review.view.value === 'compare'"
     class="fixed bottom-4 right-4 z-[70] rounded-xl border border-slate-200 bg-white/95 shadow-2xl backdrop-blur"
     :style="reviewPanelStyle"
     aria-label="Prototype review controls"

@@ -219,9 +219,7 @@ const activateRow = (): void => {
   opacity: 1;
 }
 
-.transient-execution-row:hover > .hierarchy-identity-tooltip,
-.transient-execution-row:focus > .hierarchy-identity-tooltip,
-.transient-execution-row:focus-within > .hierarchy-identity-tooltip {
+.transient-execution-row:focus-visible > .hierarchy-identity-tooltip {
   display: block;
 }
 </style>

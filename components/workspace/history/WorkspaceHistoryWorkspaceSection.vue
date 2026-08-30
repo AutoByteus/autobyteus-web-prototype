@@ -743,9 +743,7 @@ const activateTeamDisplayRow = (
   opacity: 1;
 }
 
-.team-execution-row:hover > .hierarchy-identity-tooltip,
-.team-execution-row:focus > .hierarchy-identity-tooltip,
-.team-execution-row:focus-within > .hierarchy-identity-tooltip {
+.team-execution-row:focus-visible > .hierarchy-identity-tooltip {
   display: block;
 }
 

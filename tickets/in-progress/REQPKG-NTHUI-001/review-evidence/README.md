@@ -41,3 +41,13 @@ RV-003 keeps the alternatives as stress evidence but opens the user-visible
 review URL on the proposed-final state. Automated results are recorded in
 `../browser-validation-rv-003.json`. These remain proposal-review aids until
 the user explicitly approves the bundled recommendation.
+
+## RV-004 Clean Final Candidate
+
+- `rv-004/clean-final-candidate-320-default.png`: automated clean-route capture.
+- `rv-004/user-visible-clean-final-candidate.png`: direct user-visible tab
+  capture after removing every review/help overlay.
+
+The remaining `rv-004/review-*` captures are internal regression evidence for
+alternative parity and stress states; they are not exposed on the clean
+candidate route. Automated results are in `../browser-validation-rv-004.json`.

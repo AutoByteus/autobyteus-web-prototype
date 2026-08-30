@@ -10,7 +10,7 @@
 - Prototype ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001`
 - Prototype ticket branch: `prototype/reqpkg-nthui-001`
 - Accepted prototype base revision: `550e8bd8737ddb645cc12f674d693bed76a09e9f`
-- Prototype revision or commit: RV-003 proposed-final review implementation `ff8bdb5c74831e28afbd26bab0a40882cc401e40`
+- Prototype revision or commit: RV-004 clean final-candidate working revision; exact commit recorded after persistence
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/in-progress/REQPKG-NTHUI-001`
 - Package manager: `pnpm@10.15.0`
 - Framework / stack: Nuxt 3, Vue 3, TypeScript, Pinia, Tailwind, Iconify, synthetic browser-only fixture
@@ -28,7 +28,7 @@
 ## Reproducibility And Project State
 
 - Prototype repository status at validation: Dedicated Product worktree and branch; no production/source writes; review candidate committed before handoff.
-- Scenario reset/isolation method: Reload the review URL. It applies `workspace_team_hierarchy_review` and resets the proposed UI to Hybrid / Responsive / Structural icon / 320 / Default / Subteams collapsed. Use `Compare options` for alternatives or `Stress-test the proposal` for dense states.
+- Scenario reset/isolation method: Reload the review URL. It applies `workspace_team_hierarchy_review` and resets the candidate UI to Hybrid / Responsive / Structural icon / 320 / Default / Subteams collapsed. The final-candidate route contains no review controls or helper overlay.
 - Required environment variables or credentials: None. Synthetic/local only.
 
 ## Critical Journeys To Review
@@ -55,11 +55,11 @@
 
 - Desktop: Browser viewport 1440×1000; actual left panel 260, 320, 520px; Default and Extra Large.
 - Narrow mobile: Out of scope; the affected product boundary is the desktop/web docked history sidebar.
-- Build / typecheck / lint / tests: RV-003 `pnpm typecheck` pass; `pnpm test` 12/12 pass; `pnpm validate:boundaries` 13/13 pass; focused browser validation 20/20 pass. RV-003 `pnpm lint` and `pnpm build` pass.
+- Build / typecheck / lint / tests: RV-004 `pnpm typecheck` pass; `pnpm test` 12/12 pass; focused browser validation 20/20 pass. RV-003 immediately prior passed boundary checks 13/13, lint, and build; RV-004 changes only review-overlay visibility and tooltip activation CSS.
 
 ## Known Limitations And Product Questions
 
-- `DEC-001`–`DEC-003` remain open until explicit user approval. RV-003 now presents the bundled Product recommendation first: Hybrid / Responsive / Structural team icon.
-- Review controls and synthetic fixture are not proposed production UI.
-- Captures under `review-evidence/rv-003/` are proposal-review aids, not approved/normative visual references.
+- `DEC-001`–`DEC-003` remain open until explicit user approval. RV-004 shows only the bundled Hybrid / Responsive / Structural team icon candidate, without explanatory UI.
+- The synthetic fixture remains a prototype boundary; the visible route itself contains no review controls.
+- Captures under `review-evidence/rv-004/` are clean candidate-review aids, not approved/normative visual references.
 - No `ui-ux-spec.md` is created until explicit user confirmation.

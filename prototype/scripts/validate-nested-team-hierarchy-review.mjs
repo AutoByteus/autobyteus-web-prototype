@@ -4,7 +4,7 @@ import { chromium } from 'playwright-core';
 
 const baseUrl = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4193';
 const ticketRoot = path.resolve('tickets/in-progress/REQPKG-NTHUI-001');
-const evidenceRoot = path.join(ticketRoot, 'review-evidence', 'rv-003');
+const evidenceRoot = path.join(ticketRoot, 'review-evidence', 'rv-004');
 await fs.mkdir(evidenceRoot, { recursive: true });
 
 const browser = await chromium.launch({
@@ -62,20 +62,20 @@ const fixtureSignature = async (page) => page.locator('[data-test="workspace-tea
 const page = await newPage();
 const shellBox = await page.locator('[data-test="app-left-panel-shell"]').boundingBox();
 const reviewBox = await page.locator('[data-test="nested-hierarchy-review-panel"]').boundingBox();
-record('NTH-RV3-001-real-workspace-entry', new URL(page.url()).pathname === '/workspace'
+record('NTH-RV4-001-real-workspace-entry', new URL(page.url()).pathname === '/workspace'
   && await page.locator('[data-test="workspace-adaptive-layout"]').count() === 1,
 { url: page.url() });
-record('NTH-RV3-002-baseline-shell-preserved', await page.getByRole('button', { name: 'Agents', exact: true }).count() === 1
+record('NTH-RV4-002-baseline-shell-preserved', await page.getByRole('button', { name: 'Agents', exact: true }).count() === 1
   && await page.getByRole('button', { name: 'Agent Teams', exact: true }).count() === 1
   && await page.getByRole('button', { name: 'Applications', exact: true }).count() === 1
   && await page.getByRole('button', { name: 'Skills', exact: true }).count() === 1,
 { shellNavigation: ['Agents', 'Agent Teams', 'Applications', 'Skills'] });
-record('NTH-RV3-003-review-controls-outside-left-panel', shellBox && reviewBox && reviewBox.x >= shellBox.x + shellBox.width,
+record('NTH-RV4-003-review-controls-outside-left-panel', shellBox && reviewBox && reviewBox.x >= shellBox.x + shellBox.width,
 { shellBox, reviewBox });
-record('NTH-RV3-004-group-and-run-fixture', await page.locator('[data-test^="workspace-team-definition-row-"]').count() === 1
+record('NTH-RV4-004-group-and-run-fixture', await page.locator('[data-test^="workspace-team-definition-row-"]').count() === 1
   && await page.locator('[data-test^="workspace-team-row-"]').count() === 2,
 { definitionGroups: 1, teamRuns: 2 });
-record('NTH-RV3-005-deep-fixture', await page.locator('[data-test="workspace-team-execution-tree"] [role="treeitem"]').count() === 17
+record('NTH-RV4-005-deep-fixture', await page.locator('[data-test="workspace-team-execution-tree"] [role="treeitem"]').count() === 17
   && await page.locator('[data-test="workspace-team-transient-execution-row"]').count() === 3,
 { visibleRows: await page.locator('[data-test="workspace-team-execution-tree"] [role="treeitem"]').count(), transientRows: await page.locator('[data-test="workspace-team-transient-execution-row"]').count() });
 
@@ -84,7 +84,7 @@ for (const treatment of ['rails', 'surfaces', 'hybrid']) {
   const treatmentPage = await newPage({ hierarchy: treatment });
   signatures[treatment] = await fixtureSignature(treatmentPage);
   const tree = treatmentPage.locator('[data-test="workspace-team-execution-tree"]');
-  record(`NTH-RV3-006-${treatment}`, await tree.getAttribute('data-hierarchy-treatment') === treatment,
+  record(`NTH-RV4-006-${treatment}`, await tree.getAttribute('data-hierarchy-treatment') === treatment,
     { treatment, rows: signatures[treatment].length });
   await treatmentPage.screenshot({
     path: path.join(evidenceRoot, `review-${treatment}-320-default.png`),
@@ -92,7 +92,7 @@ for (const treatment of ['rails', 'surfaces', 'hybrid']) {
   });
   await treatmentPage.close();
 }
-record('NTH-RV3-007-identical-content-across-ancestry-alternatives',
+record('NTH-RV4-007-identical-content-across-ancestry-alternatives',
   JSON.stringify(signatures.rails) === JSON.stringify(signatures.surfaces)
     && JSON.stringify(signatures.rails) === JSON.stringify(signatures.hybrid),
   { signatureRows: signatures.rails.length });
@@ -104,7 +104,7 @@ for (const treeState of ['collapsed', 'one', 'several', 'deep', 'selected']) {
   if (treeState === 'selected') {
     const selected = statePage.locator('[data-test="workspace-team-execution-tree"] [aria-selected="true"]');
     const selectedLabel = await selected.getAttribute('aria-label');
-    record('NTH-RV3-008-selected-leaf-and-ancestor-reveal', await selected.count() === 1
+    record('NTH-RV4-008-selected-leaf-and-ancestor-reveal', await selected.count() === 1
       && selectedLabel?.includes('Barrierefreiheit')
       && await statePage.locator('[role="treeitem"][data-member-address="/product-design"]').getAttribute('aria-expanded') === 'true'
       && await statePage.locator('[role="treeitem"][data-member-address="/product-design/design-systems"]').getAttribute('aria-expanded') === 'true',
@@ -112,7 +112,7 @@ for (const treeState of ['collapsed', 'one', 'several', 'deep', 'selected']) {
   }
   await statePage.close();
 }
-record('NTH-RV3-009-state-progression', stateCounts.collapsed === 5
+record('NTH-RV4-009-state-progression', stateCounts.collapsed === 5
   && stateCounts.one > stateCounts.collapsed
   && stateCounts.several > stateCounts.one
   && stateCounts.deep > stateCounts.several
@@ -127,31 +127,31 @@ const softwareBefore = await softwareTeam.getAttribute('aria-expanded');
 await productTeam.click();
 await interactionPage.waitForTimeout(80);
 const selectedAfterClick = await interactionPage.locator('[data-test="workspace-team-execution-tree"] [aria-selected="true"]').getAttribute('aria-label');
-record('NTH-RV3-010-structural-row-pointer-toggle', await productTeam.getAttribute('aria-expanded') === 'false'
+record('NTH-RV4-010-structural-row-pointer-toggle', await productTeam.getAttribute('aria-expanded') === 'false'
   && await softwareTeam.getAttribute('aria-expanded') === softwareBefore
   && selectedBefore === selectedAfterClick,
 { selectedBefore, selectedAfterClick, softwareBefore, softwareAfter: await softwareTeam.getAttribute('aria-expanded') });
 await productTeam.focus();
 await interactionPage.keyboard.press('Enter');
 await interactionPage.waitForTimeout(80);
-record('NTH-RV3-011-structural-row-keyboard-toggle', await productTeam.getAttribute('aria-expanded') === 'true',
+record('NTH-RV4-011-structural-row-keyboard-toggle', await productTeam.getAttribute('aria-expanded') === 'true',
 { expanded: await productTeam.getAttribute('aria-expanded') });
 
 const longNameRow = interactionPage.locator('[role="treeitem"][data-member-address="/product-design/research-operations"]');
 await longNameRow.focus();
 await interactionPage.waitForTimeout(50);
-record('NTH-RV3-012-full-identity-pointer-keyboard-recovery',
+record('NTH-RV4-012-full-identity-pointer-keyboard-recovery',
   (await longNameRow.getAttribute('title'))?.includes('Research Operations Specialist With A Very Long Localized Role')
     && await longNameRow.locator('[role="tooltip"]').isVisible()
     && (await longNameRow.getAttribute('aria-label'))?.includes('level 2'),
 { title: await longNameRow.getAttribute('title'), ariaLabel: await longNameRow.getAttribute('aria-label') });
-record('NTH-RV3-013-accessible-tree-semantics', await interactionPage.locator('[data-test="workspace-team-execution-tree"][role="tree"]').count() === 1
+record('NTH-RV4-013-accessible-tree-semantics', await interactionPage.locator('[data-test="workspace-team-execution-tree"][role="tree"]').count() === 1
   && await productTeam.getAttribute('role') === 'treeitem'
   && await productTeam.getAttribute('aria-level') === '1'
   && await productTeam.getAttribute('aria-expanded') === 'true',
 { role: await productTeam.getAttribute('role'), level: await productTeam.getAttribute('aria-level') });
 await interactionPage.waitForTimeout(5250);
-record('NTH-RV3-014-quiet-refresh-preserves-expansion', await productTeam.getAttribute('aria-expanded') === 'true'
+record('NTH-RV4-014-quiet-refresh-preserves-expansion', await productTeam.getAttribute('aria-expanded') === 'true'
   && await softwareTeam.getAttribute('aria-expanded') === 'true',
 { waitedMs: 5250 });
 await interactionPage.close();
@@ -170,7 +170,7 @@ for (const panelWidth of ['260', '320', '520']) {
     await responsivePage.close();
   }
 }
-record('NTH-RV3-015-width-font-matrix', responsiveEvidence.every((item) => item.actualWidth === Number(item.panelWidth)
+record('NTH-RV4-015-width-font-matrix', responsiveEvidence.every((item) => item.actualWidth === Number(item.panelWidth)
   && item.overflow.scrollWidth === item.overflow.clientWidth
   && item.disclosures >= 5),
 { responsiveEvidence });
@@ -181,7 +181,7 @@ const beforeOpacity = await selectedRow.locator('.member-status').evaluate((elem
 await selectedRow.focus();
 await metadataPage.waitForTimeout(180);
 const afterOpacity = await selectedRow.locator('.member-status').evaluate((element) => getComputedStyle(element).opacity);
-record('NTH-RV3-016-on-demand-metadata-discoverable', beforeOpacity === '0' && afterOpacity === '1',
+record('NTH-RV4-016-on-demand-metadata-discoverable', beforeOpacity === '0' && afterOpacity === '1',
 { beforeOpacity, afterOpacity });
 await metadataPage.screenshot({ path: path.join(evidenceRoot, 'review-rails-on-focus-260-extra-large.png'), fullPage: true });
 await metadataPage.close();
@@ -196,10 +196,10 @@ const proposalPage = await newPage({
   treeState: 'collapsed',
 });
 const proposalTree = proposalPage.locator('[data-test="workspace-team-execution-tree"]');
-record('NTH-RV3-017-proposed-final-ui-visible',
-  await proposalPage.getByText('Proposed final UI', { exact: true }).count() === 1
-    && await proposalPage.getByText('Awaiting your approval', { exact: true }).count() === 1
-    && await proposalPage.locator('[data-test="proposal-selections"] .proposal-chip').count() === 4
+record('NTH-RV4-017-clean-final-candidate-visible',
+  await proposalPage.locator('[data-test="nested-hierarchy-review-panel"]').count() === 0
+    && await proposalPage.getByText('Recommended Workspace hierarchy', { exact: true }).count() === 0
+    && await proposalPage.getByText('Compare options', { exact: true }).count() === 0
     && await proposalTree.getAttribute('data-hierarchy-treatment') === 'hybrid'
     && await proposalTree.getAttribute('data-metadata-treatment') === 'responsive'
     && await proposalTree.getAttribute('data-team-identity') === 'icon'
@@ -208,15 +208,15 @@ record('NTH-RV3-017-proposed-final-ui-visible',
     url: proposalPage.url(),
     visibleRows: await proposalPage.locator('[data-test="workspace-team-execution-tree"] [role="treeitem"]').count(),
   });
-await proposalPage.screenshot({ path: path.join(evidenceRoot, 'proposed-final-ui-320-default.png'), fullPage: true });
+await proposalPage.screenshot({ path: path.join(evidenceRoot, 'clean-final-candidate-320-default.png'), fullPage: true });
 await proposalPage.close();
 
-record('NTH-RV3-018-no-runtime-errors', runtimeErrors.length === 0, { runtimeErrors });
+record('NTH-RV4-018-no-runtime-errors', runtimeErrors.length === 0, { runtimeErrors });
 
 const output = {
   package: 'nested-team-hierarchy-ui',
-  revision: 'RV-003',
-  mode: 'Requirements Visualization — baseline-native proposed-final review',
+  revision: 'RV-004',
+  mode: 'Requirements Visualization — clean baseline-native final candidate',
   baseUrl,
   generatedAt: new Date().toISOString(),
   result: failures.length === 0 ? 'PASS' : 'FAIL',
@@ -225,7 +225,7 @@ const output = {
   checks,
   failures,
 };
-await fs.writeFile(path.join(ticketRoot, 'browser-validation-rv-003.json'), `${JSON.stringify(output, null, 2)}\n`);
+await fs.writeFile(path.join(ticketRoot, 'browser-validation-rv-004.json'), `${JSON.stringify(output, null, 2)}\n`);
 await browser.close();
 console.log(JSON.stringify({ result: output.result, passed: output.passed, total: output.total, failures }, null, 2));
 if (failures.length > 0) process.exitCode = 1;

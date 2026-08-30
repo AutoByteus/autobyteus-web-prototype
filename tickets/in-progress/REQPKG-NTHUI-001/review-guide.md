@@ -1,14 +1,14 @@
-# RV-003 Proposed-Final Review Guide
+# RV-004 Clean Final-Candidate Review Guide
 
 ## What To Review First
 
-RV-003 opens with one Product recommendation in the accepted AutoByteus `/workspace` experience rather than the dense all-expanded comparison state. The left sidebar is the proposed product UI; the floating card is review-only. Nested teams are collapsed by default and users expand only the branch they need.
+RV-004 shows only the directly updated accepted AutoByteus `/workspace` experience. There is no floating review card, recommendation copy, comparison control, or helper overlay. Nested teams are collapsed by default and users expand only the branch they need.
 
 ## Review URL
 
 `http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&reviewView=proposal&hierarchy=hybrid&metadata=responsive&teamIdentity=icon&panelWidth=320&fontSize=default&treeState=collapsed`
 
-The floating card labels this view `Proposed final UI · Awaiting your approval` and stays outside the left history panel. Select `Compare options` only if you want to revisit alternatives.
+Everything visible on this route belongs to the product experience being evaluated. The synthetic data is a prototype fixture, but no review-only UI is displayed.
 
 ## Product Recommendation
 
@@ -17,7 +17,7 @@ The floating card labels this view `Proposed final UI · Awaiting your approval`
 - **DEC-003 · Structural team icon:** square organization icons and stronger team-row weight distinguish teams from circular agent avatars without repeated uppercase role headers.
 - **Default state:** nested teams collapsed. A selected deep leaf reveals only its ancestor path.
 
-## Alternatives, If Needed
+## Internal Alternative Evidence
 
 1. **DEC-001 · Ancestry**
    - **Rails:** most compact; continuous connector lines carry ancestry; team nodes get structure icons and weight but minimal containment.
@@ -32,7 +32,7 @@ The floating card labels this view `Proposed final UI · Awaiting your approval`
    - **Header:** icon plus an explicit two-line `Agent team` role/name hierarchy.
    - **Band:** icon plus inline role and stronger band edge; most visually emphatic.
 
-## Optional Stress Checks
+## Optional Product Checks
 
 - Use all five `Tree state` values.
 - Use `260` + `Extra Large` + `Selected deep leaf`; Tab/focus the truncated row.
@@ -41,9 +41,9 @@ The floating card labels this view `Proposed final UI · Awaiting your approval`
 
 ## Requested Response
 
-- Approve the bundled proposed-final UI; or
+- Approve the clean final-candidate UI; or
 - Reject it with one focused refinement; or
-- Open `Compare options` and return explicit alternatives for DEC-001 through DEC-003.
+- Ask Product Design to reopen a specific alternative outside this clean route.
 - Optional: one focused refinement within the existing Workspace-history scope
 
 No direction is treated as approved until the user states it explicitly.
