@@ -10,7 +10,7 @@
 - Prototype ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001`
 - Prototype ticket branch: `prototype/reqpkg-nthui-001`
 - Accepted prototype base revision: `550e8bd8737ddb645cc12f674d693bed76a09e9f`
-- Prototype revision or commit: RV-005 clean file-tree candidate working revision; exact commit recorded after persistence
+- Prototype revision or commit: RV-005 clean file-tree candidate implementation `107db51d0503ecc59d040d7b9660e4a42f8cc9a5`
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/in-progress/REQPKG-NTHUI-001`
 - Package manager: `pnpm@10.15.0`
 - Framework / stack: Nuxt 3, Vue 3, TypeScript, Pinia, Tailwind, Iconify, synthetic browser-only fixture
