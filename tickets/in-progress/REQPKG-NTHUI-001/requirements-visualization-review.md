@@ -1,7 +1,7 @@
 # Requirements Visualization Review
 
 - Package / ticket ID: `nested-team-hierarchy-ui` / `REQPKG-NTHUI-001`
-- Visualization revision: `RV-001 — initial review candidate`
+- Visualization revision: `RV-001 — initial review candidate` at implementation/evidence commit `449d3af03209bcec25ef5ac62619750fe14096f1`
 - Review URL: `http://127.0.0.1:4193/`
 - Source path: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/visualizers/REQPKG-NTHUI-001`
 - Design plan path: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/in-progress/REQPKG-NTHUI-001/requirements-visualization-design-plan.md`

@@ -22,7 +22,7 @@
 - Accepted baseline revision: `550e8bd8737ddb645cc12f674d693bed76a09e9f` on canonical `personal`; the Product-accepted current-experience baseline remains applicable to the Workspace/sidebar interaction language.
 - Bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype/prototype-bootstrap-report.md`
 - Product acceptance result and date: Existing accepted current-experience prototype reused; no new bootstrap is required for this ticket.
-- Prototype revision for this ticket: `RV-001`; exact implementation commit will be recorded after the durable review package commit.
+- Prototype revision for this ticket: `RV-001` implementation and durable review evidence at `449d3af03209bcec25ef5ac62619750fe14096f1`.
 - Integration target and result: Canonical `personal`; `Pending` because the clarification loop is open.
 - Runtime isolation record (port / process / temporary state): Loopback `127.0.0.1:4193`; npm PID `55202`; Vite preview PID `55219`; deterministic in-memory fixture only; durable browser output under `tickets/in-progress/REQPKG-NTHUI-001/validation`; reset by page reload or `Reset tree`.
 - Cleanup result or blocker: `Preserved for review`; cleanup remains pending while user clarification is open.
@@ -43,6 +43,6 @@
 - Completed behavior and evidence: `RV-001` review-ready visualizer compares connector rails, nested surfaces, and hybrid ancestry; full/responsive/on-demand metadata; and three non-color team-node treatments on the same product-grounded fixture. It preserves the required disclosure, structural selection, concrete member selection, selected ancestor reveal, exact/aggregate status, transient identity, quiet refresh, and run-action availability in deterministic form.
 - Remaining product decisions: `DEC-001`–`DEC-003` remain open and must be decided by the user; the starting selections are explicitly not recommendations.
 - Next expected action: Requirements Engineering conducts user review at the loopback URL, records the three decisions, and requests a focused revision or confirms clarification complete.
-- Handoff outcome from `get_handoff_rules`: Pending review-ready result.
-- Matched recipient address, when a rule applies: Must be obtained dynamically after persistence and validation.
+- Handoff outcome from `get_handoff_rules`: `Requirements Visualization Ready` matched the rule for a review URL, visualizer revision, evidence, and open clarification questions ready for Requirements Engineering and user review.
+- Matched recipient address, when a rule applies: `/requirements_engineering_team/requirements_engineer` (exact dynamically returned address on 2026-08-30; delivery result recorded in the external handoff).
 - Return context when no matching rule applies: Return the review package to the caller/user.
