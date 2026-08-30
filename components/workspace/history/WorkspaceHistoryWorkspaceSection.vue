@@ -379,10 +379,11 @@
                         </span>
                         <span
                           v-if="hierarchyReview.active.value && displayRow.row.row.kind === 'agent_team'"
-                          class="team-structure-icon mr-1.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-[0.2rem] border border-slate-300 bg-white text-slate-600"
+                          class="team-structure-icon mr-1.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center text-slate-500"
+                          data-team-icon="user-group-solid"
                           aria-hidden="true"
                         >
-                          <Icon icon="heroicons:rectangle-group-20-solid" class="h-3 w-3" />
+                          <Icon icon="heroicons:user-group-20-solid" class="h-4 w-4" />
                         </span>
                         <span
                           v-else
