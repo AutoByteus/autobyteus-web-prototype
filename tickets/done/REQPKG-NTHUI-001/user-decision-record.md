@@ -27,10 +27,10 @@
 
 ## Evidence
 
-- Canonical UI/UX supplement: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/ui-ux-spec.md`
-- Final visual references: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/visual-references`
-- Final capture manifest: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/visual-references/visual-reference-manifest.json`
-- Browser validation: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/browser-validation-rv-006.json`
+- Canonical UI/UX supplement: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/ui-ux-spec.md`
+- Final visual references: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/visual-references`
+- Final capture manifest: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/visual-references/visual-reference-manifest.json`
+- Browser validation: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/browser-validation-rv-006.json`
 
 ## Authority Boundary
 

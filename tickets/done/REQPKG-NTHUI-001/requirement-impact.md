@@ -29,7 +29,7 @@ Requirements Engineering should:
 
 1. record the user-confirmation reference and mark `DEC-001`–`DEC-003` resolved;
 2. replace “visualizer pending” and “user approval: No” statements with links to this approved Product package;
-3. link `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/ui-ux-spec.md` as the approved UI/UX supplement;
+3. link `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/ui-ux-spec.md` as the approved UI/UX supplement;
 4. link the `VIS-*` references as the visual verification basis for the affected acceptance criteria;
 5. preserve all existing non-goals and the no-backend/topology/status/persistence-change boundary;
 6. continue downstream routing only after the canonical requirements revision reflects the approval.
@@ -40,8 +40,8 @@ The approved prototype does not authorize a new backend contract, topology model
 
 ## Evidence Paths
 
-- UI/UX specification: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/ui-ux-spec.md`
-- User decision record: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/user-decision-record.md`
-- Final visuals: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/visual-references`
-- Browser validation: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/browser-validation-rv-006.json`
+- UI/UX specification: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/ui-ux-spec.md`
+- User decision record: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/user-decision-record.md`
+- Final visuals: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/visual-references`
+- Browser validation: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/browser-validation-rv-006.json`
 - Approved implementation revision: `801b571093a3388eb21efea17515529ff9b89f51`

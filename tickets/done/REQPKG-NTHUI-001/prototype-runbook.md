@@ -9,8 +9,8 @@
 - Ticket worktree / branch: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001` / `prototype/reqpkg-nthui-001`
 - Accepted prototype base: `550e8bd8737ddb645cc12f674d693bed76a09e9f`
 - Approved UI implementation revision: `801b571093a3388eb21efea17515529ff9b89f51`
-- Final package revision: Pending final artifact commit
-- Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001`
+- Final package revision: `9606aa4e0c6180264dc68d83ebde7f433f7af702`
+- Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001`
 - Stack: Nuxt 3, Vue 3, TypeScript, Pinia, Tailwind, Iconify, Playwright Core, synthetic browser-only fixture
 
 ## Install And Start
@@ -50,10 +50,11 @@ The browser suite covers the real Workspace entry, preserved shell, deterministi
 
 ## Runtime Isolation And Cleanup
 
-- Review runtime: Product-owned port `4193`; current Nuxt PID `94401` in managed session `80423`.
+- Review runtime: Product-owned port `4193`; Nuxt PID `94401` / managed session `80423` stopped after final capture and validation.
 - Do not stop or reuse unrelated port `4180`.
 - Mutable state: localStorage scenario only; reset by reloading approved URL.
-- Final cleanup: Pending completion handoff; stop only the Product-owned 4193 session, then remove the ticket worktree after integration and durable handoff.
+- Integration: `Completed` — canonical `personal` fast-forwarded to final package revision `9606aa4e0c6180264dc68d83ebde7f433f7af702`.
+- Final cleanup: `Completed` — port `4193` released; ticket worktree removal follows the final repository-state commit; canonical source and artifacts remain runnable from `/home/autobyteus/workspace/autobyteus-web-prototype`.
 
 ## Final Artifacts
 

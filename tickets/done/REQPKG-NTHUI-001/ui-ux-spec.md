@@ -19,8 +19,9 @@
 - Prototype repository/root: `/home/autobyteus/workspace/autobyteus-web-prototype`
 - Accepted prototype baseline: `550e8bd8737ddb645cc12f674d693bed76a09e9f`
 - Approved UI implementation revision: `801b571093a3388eb21efea17515529ff9b89f51`
+- Final approved package revision: `9606aa4e0c6180264dc68d83ebde7f433f7af702`
 - Ticket branch/worktree: `prototype/reqpkg-nthui-001`; `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001`
-- Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001`
+- Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001`
 - Bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype/prototype-bootstrap-report.md`
 
 The source pin is recorded context rather than a user-imposed refresh constraint. The accepted current-experience prototype is the preservation baseline. This specification defines only the approved Workspace history hierarchy delta.
@@ -222,11 +223,11 @@ All references were captured after explicit user approval from implementation re
 
 ## Linked Prototype Evidence
 
-- Runnable prototype source: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001`
-- Ticket record: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/prototype-ticket.md`
-- Run instructions: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/prototype-runbook.md`
-- Browser validation: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/browser-validation-rv-006.json` — 24/24 pass, zero runtime errors
-- Visual manifest: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/visual-references/visual-reference-manifest.json` — five post-approval captures, zero runtime errors
+- Runnable prototype source: `/home/autobyteus/workspace/autobyteus-web-prototype`
+- Ticket record: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/prototype-ticket.md`
+- Run instructions: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/prototype-runbook.md`
+- Browser validation: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/browser-validation-rv-006.json` — 24/24 pass, zero runtime errors
+- Visual manifest: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/visual-references/visual-reference-manifest.json` — five post-approval captures, zero runtime errors
 - Supporting artifacts: `experience-story.md`, `ui-behavior-test-matrix.md`, `prototype-assumptions.md`, `prototype-change-log.md`, `review-guide.md`, `requirement-impact.md`, `user-decision-record.md`
 
 ## Implementation Fidelity Boundary
