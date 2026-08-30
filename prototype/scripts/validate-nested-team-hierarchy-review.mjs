@@ -3,7 +3,7 @@ import path from 'node:path';
 import { chromium } from 'playwright-core';
 
 const baseUrl = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4193';
-const ticketRoot = path.resolve('tickets/in-progress/REQPKG-NTHUI-001');
+const ticketRoot = path.resolve('tickets/done/REQPKG-NTHUI-001');
 const evidenceRoot = path.join(ticketRoot, 'review-evidence', 'rv-006');
 await fs.mkdir(evidenceRoot, { recursive: true });
 

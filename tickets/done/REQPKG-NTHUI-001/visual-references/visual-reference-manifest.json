@@ -1,0 +1,86 @@
+{
+  "package": "nested-team-hierarchy-ui",
+  "ticket": "REQPKG-NTHUI-001",
+  "prototypeRevision": "801b571093a3388eb21efea17515529ff9b89f51",
+  "capturedAfterUserApproval": true,
+  "capturedAt": "2026-08-30T10:56:59.133Z",
+  "result": "PASS",
+  "runtimeErrors": [],
+  "captures": [
+    {
+      "id": "VIS-001",
+      "filename": "VIS-001-workspace-hierarchy-default-320.png",
+      "state": "Approved default: active run expanded and nested teams collapsed",
+      "url": "http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&reviewView=proposal&hierarchy=rails&metadata=responsive&teamIdentity=icon&panelWidth=320&fontSize=default&treeState=collapsed",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "panelWidth": 320,
+      "visibleRows": 5,
+      "hierarchy": "rails",
+      "metadata": "responsive",
+      "teamIdentity": "icon"
+    },
+    {
+      "id": "VIS-002",
+      "filename": "VIS-002-workspace-hierarchy-one-team-expanded-320.png",
+      "state": "Product Design team expanded at the default panel width",
+      "url": "http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&reviewView=proposal&hierarchy=rails&metadata=responsive&teamIdentity=icon&panelWidth=320&fontSize=default&treeState=one",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "panelWidth": 320,
+      "visibleRows": 8,
+      "hierarchy": "rails",
+      "metadata": "responsive",
+      "teamIdentity": "icon"
+    },
+    {
+      "id": "VIS-003",
+      "filename": "VIS-003-workspace-hierarchy-selected-deep-leaf-320.png",
+      "state": "Deep leaf selected with required ancestor path revealed",
+      "url": "http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&reviewView=proposal&hierarchy=rails&metadata=responsive&teamIdentity=icon&panelWidth=320&fontSize=default&treeState=selected",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "panelWidth": 320,
+      "visibleRows": 17,
+      "hierarchy": "rails",
+      "metadata": "responsive",
+      "teamIdentity": "icon"
+    },
+    {
+      "id": "VIS-004",
+      "filename": "VIS-004-workspace-hierarchy-focus-recovery-260-xl.png",
+      "state": "Narrowest panel and Extra Large font with full identity revealed on keyboard focus",
+      "url": "http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&reviewView=proposal&hierarchy=rails&metadata=responsive&teamIdentity=icon&panelWidth=260&fontSize=extra-large&treeState=selected",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "panelWidth": 260,
+      "visibleRows": 17,
+      "hierarchy": "rails",
+      "metadata": "responsive",
+      "teamIdentity": "icon"
+    },
+    {
+      "id": "VIS-005",
+      "filename": "VIS-005-workspace-hierarchy-deep-tree-520.png",
+      "state": "Widest panel with several sibling teams, deeper team, and transient task team expanded",
+      "url": "http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&reviewView=proposal&hierarchy=rails&metadata=responsive&teamIdentity=icon&panelWidth=520&fontSize=default&treeState=deep",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "panelWidth": 520,
+      "visibleRows": 17,
+      "hierarchy": "rails",
+      "metadata": "responsive",
+      "teamIdentity": "icon"
+    }
+  ]
+}

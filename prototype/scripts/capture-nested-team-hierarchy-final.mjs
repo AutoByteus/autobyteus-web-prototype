@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { chromium } from 'playwright-core';
 
 const baseUrl = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4193';
-const ticketRoot = path.resolve('tickets/in-progress/REQPKG-NTHUI-001');
+const ticketRoot = path.resolve('tickets/done/REQPKG-NTHUI-001');
 const outputRoot = path.join(ticketRoot, 'visual-references');
 await fs.mkdir(outputRoot, { recursive: true });
 

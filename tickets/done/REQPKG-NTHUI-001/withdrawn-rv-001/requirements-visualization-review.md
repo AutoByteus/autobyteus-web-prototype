@@ -4,7 +4,7 @@
 - Visualization revision: `RV-001 — initial review candidate` at implementation/evidence commit `449d3af03209bcec25ef5ac62619750fe14096f1`
 - Review URL: `http://127.0.0.1:4193/`
 - Source path: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/visualizers/REQPKG-NTHUI-001`
-- Design plan path: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/in-progress/REQPKG-NTHUI-001/requirements-visualization-design-plan.md`
+- Design plan path: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/requirements-visualization-design-plan.md`
 - Requirements / behavior IDs: `BEH-001`–`BEH-005`; `REQ-001`–`REQ-012`; `AC-001`–`AC-008`; `DEC-001`–`DEC-003`
 - Decision question: Which compact hierarchy, metadata, and team-node treatments make the same deep Workspace-history tree clearest at 260px, 320px, and 520px?
 - Design gate status: `Ready to Build` and delivered without deviation.
@@ -32,8 +32,8 @@
 - First-view simplicity check: One visible question, one active decision lens, three treatment choices, one interactive panel, and one short inspection card. Width/font/state controls remain behind `Stress test`; keyboard help and the mock boundary remain behind details.
 - Comprehension evidence: The controlled reviewer proxy could identify the active decision, change exactly one visual variable, observe an unchanged tree-item signature, trace the selected leaf through two visible selected-ancestor cues, and record one choice for each decision (`3/3 reviewed`). This passes the internal comprehension gate; actual user comprehension and preference remain pending.
 - Known limitations: The loopback URL is available only in the current environment while the preserved preview process runs. Browser fixtures do not prove production performance, backend semantics, localization completeness, or final UI approval. Large preset font `112.5%` was not a critical requested matrix point; Default and Extra Large were validated.
-- Visual reference paths: Exploratory/non-normative evidence and hashes are recorded in `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/in-progress/REQPKG-NTHUI-001/visual-references/visual-reference-manifest.json`; primary captures are `VIS-RV001-320-default-rails.png`, `VIS-RV001-320-default-surfaces.png`, `VIS-RV001-320-default-hybrid.png`, `VIS-RV001-260-extra-large-on-demand-band.png`, and `VIS-RV001-520-default-on-demand-band.png`.
-- Durable validation: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/in-progress/REQPKG-NTHUI-001/validation/browser-validation.json`, `build.txt`, and `runtime-http.txt`.
+- Visual reference paths: Exploratory/non-normative evidence and hashes are recorded in `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/visual-references/visual-reference-manifest.json`; primary captures are `VIS-RV001-320-default-rails.png`, `VIS-RV001-320-default-surfaces.png`, `VIS-RV001-320-default-hybrid.png`, `VIS-RV001-260-extra-large-on-demand-band.png`, and `VIS-RV001-520-default-on-demand-band.png`.
+- Durable validation: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001/validation/browser-validation.json`, `build.txt`, and `runtime-http.txt`.
 
 ## Feedback And Next Action
 

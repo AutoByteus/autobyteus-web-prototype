@@ -1,8 +1,8 @@
 # Nested Team Hierarchy Review Evidence
 
-These captures are non-normative review aids. They were generated before user
-confirmation and must not be treated as final `VIS-*` implementation
-references.
+These captures are historical comparison and revision evidence. The normative,
+post-approval `VIS-*` references are stored separately under
+`../visual-references/` and governed by `../ui-ux-spec.md`.
 
 ## Accepted Baseline Preservation
 
@@ -67,3 +67,18 @@ RV-005 removes team cards, renders only the ancestor rails that must continue,
 starts every horizontal branch at the vertical junction without crossing it,
 and terminates the last sibling as an elbow. Automated geometry and behavior
 results are in `../browser-validation-rv-005.json`.
+
+## RV-006 Approved Review Revision
+
+- `rv-006/file-tree-final-candidate-320-default.png`: automated clean-route
+  capture with the approved filled User group symbol.
+- `rv-006/user-group-filled-final.png`: direct user-visible symbol review.
+- `rv-006/review-rails-on-focus-260-extra-large.png`: narrow focus-recovery
+  regression evidence.
+- `rv-006/superseded-exploration/`: rejected icon trials, including the outline
+  User group variant.
+
+RV-006 is the user-approved review basis. Post-approval validation also raised
+the focused row above following siblings so its identity tooltip cannot be
+painted over. The final implementation result is captured in `../visual-references/`;
+automated results are in `../browser-validation-rv-006.json` (24/24).

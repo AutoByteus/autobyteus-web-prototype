@@ -6,7 +6,7 @@ const require = createRequire('/home/autobyteus/workspace/autobyteus-web-prototy
 const { chromium } = require('playwright-core');
 
 const baseUrl = process.env.VISUALIZER_URL || 'http://127.0.0.1:4193/';
-const ticketRoot = '/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/in-progress/REQPKG-NTHUI-001';
+const ticketRoot = '/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/done/REQPKG-NTHUI-001';
 const screenshotRoot = path.join(ticketRoot, 'visual-references');
 const evidencePath = path.join(ticketRoot, 'validation', 'browser-validation.json');
 await mkdir(screenshotRoot, { recursive: true });
