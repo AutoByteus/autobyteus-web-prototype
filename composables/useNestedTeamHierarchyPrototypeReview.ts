@@ -7,6 +7,7 @@ export type NestedHierarchyTeamIdentity = 'icon' | 'header' | 'band';
 export type NestedHierarchyReviewState = 'collapsed' | 'one' | 'several' | 'deep' | 'selected';
 export type NestedHierarchyPanelWidth = 260 | 320 | 520;
 export type NestedHierarchyFontSize = 'default' | 'extra-large';
+export type NestedHierarchyReviewView = 'proposal' | 'compare';
 
 const REVIEW_KEY = 'nested-team-hierarchy';
 
@@ -23,6 +24,11 @@ export const useNestedTeamHierarchyPrototypeReview = () => {
   const router = useRouter();
 
   const active = computed(() => route.query.prototypeReview === REVIEW_KEY);
+  const view = computed(() => oneOf(
+    route.query.reviewView,
+    ['proposal', 'compare'] as const,
+    'compare',
+  ));
   const treatment = computed(() => oneOf(
     route.query.hierarchy,
     ['rails', 'surfaces', 'hybrid'] as const,
@@ -60,8 +66,25 @@ export const useNestedTeamHierarchyPrototypeReview = () => {
     });
   };
 
+  const showProposal = async (): Promise<void> => {
+    await update({
+      reviewView: 'proposal',
+      hierarchy: 'hybrid',
+      metadata: 'responsive',
+      teamIdentity: 'icon',
+      panelWidth: 320,
+      fontSize: 'default',
+      treeState: 'collapsed',
+    });
+  };
+
+  const showComparison = async (): Promise<void> => {
+    await update({ reviewView: 'compare' });
+  };
+
   return {
     active,
+    view,
     treatment,
     metadata,
     teamIdentity,
@@ -69,5 +92,7 @@ export const useNestedTeamHierarchyPrototypeReview = () => {
     width,
     fontSize,
     update,
+    showProposal,
+    showComparison,
   };
 };

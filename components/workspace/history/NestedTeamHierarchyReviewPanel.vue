@@ -6,17 +6,57 @@
     aria-label="Prototype review controls"
     data-test="nested-hierarchy-review-panel"
   >
-    <details open>
+    <div class="border-b border-slate-100 px-4 py-3">
+      <div class="flex flex-wrap items-start justify-between gap-3">
+        <div class="min-w-0">
+          <div class="mb-1 flex flex-wrap items-center gap-2">
+            <span
+              class="rounded-full px-2 py-0.5 text-[0.6875rem] font-bold uppercase tracking-wide"
+              :class="review.view.value === 'proposal' ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'"
+            >{{ review.view.value === 'proposal' ? 'Proposed final UI' : 'Exploration' }}</span>
+            <span v-if="review.view.value === 'proposal'" class="text-xs font-medium text-slate-500">Awaiting your approval</span>
+          </div>
+          <h2 class="text-sm font-semibold text-slate-900">
+            {{ review.view.value === 'proposal' ? 'Recommended Workspace hierarchy' : 'Compare hierarchy treatments' }}
+          </h2>
+          <p class="mt-0.5 max-w-2xl text-xs leading-5 text-slate-600">
+            <template v-if="review.view.value === 'proposal'">
+              The left Workspace sidebar is the proposed product UI. It opens in the normal state with nested teams collapsed; expand only the branch you need.
+            </template>
+            <template v-else>
+              Explore alternatives using the same fixture. These controls are not part of the proposed product.
+            </template>
+          </p>
+        </div>
+
+        <div class="flex flex-shrink-0 rounded-lg bg-slate-100 p-0.5" aria-label="Review view">
+          <ReviewChoice label="Final proposal" :active="review.view.value === 'proposal'" @click="review.showProposal" />
+          <ReviewChoice label="Compare options" :active="review.view.value === 'compare'" @click="review.showComparison" />
+        </div>
+      </div>
+
+      <div v-if="review.view.value === 'proposal'" class="mt-3 flex flex-wrap gap-1.5" data-test="proposal-selections">
+        <span class="proposal-chip">Hybrid ancestry</span>
+        <span class="proposal-chip">Responsive metadata</span>
+        <span class="proposal-chip">Structural team icon</span>
+        <span class="proposal-chip">Collapsed by default</span>
+      </div>
+    </div>
+
+    <details :open="review.view.value === 'compare'">
       <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-4 py-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500">
         <span class="min-w-0">
-          <span class="block text-sm font-semibold text-slate-800">Prototype review · Workspace history</span>
-          <span class="block truncate text-xs text-slate-500">Review controls only — not proposed product UI</span>
+          <span class="block text-sm font-semibold text-slate-800">{{ review.view.value === 'proposal' ? 'Stress-test the proposal' : 'Prototype review · Workspace history' }}</span>
+          <span class="block truncate text-xs text-slate-500">Review controls only — not part of the product UI</span>
         </span>
-        <span class="rounded-full bg-indigo-50 px-2 py-1 text-[0.6875rem] font-semibold text-indigo-700">DEC-001–003</span>
+        <span class="rounded-full bg-indigo-50 px-2 py-1 text-[0.6875rem] font-semibold text-indigo-700">{{ review.view.value === 'proposal' ? 'Widths & states' : 'DEC-001–003' }}</span>
       </summary>
 
-      <div class="grid gap-x-4 gap-y-3 border-t border-slate-100 px-4 py-3 lg:grid-cols-[1.15fr_1fr_1fr]">
-        <fieldset>
+      <div
+        class="grid gap-x-4 gap-y-3 border-t border-slate-100 px-4 py-3"
+        :class="review.view.value === 'proposal' ? 'lg:grid-cols-3' : 'lg:grid-cols-[1.15fr_1fr_1fr]'"
+      >
+        <fieldset v-if="review.view.value === 'compare'">
           <legend class="mb-1 text-[0.6875rem] font-semibold uppercase tracking-wide text-slate-500">DEC-001 · Ancestry</legend>
           <div class="flex rounded-md bg-slate-100 p-0.5" data-test="review-treatment-options">
             <ReviewChoice label="Rails" :active="review.treatment.value === 'rails'" @click="review.update({ hierarchy: 'rails' })" />
@@ -25,7 +65,7 @@
           </div>
         </fieldset>
 
-        <fieldset>
+        <fieldset v-if="review.view.value === 'compare'">
           <legend class="mb-1 text-[0.6875rem] font-semibold uppercase tracking-wide text-slate-500">DEC-002 · Metadata</legend>
           <div class="flex rounded-md bg-slate-100 p-0.5" data-test="review-metadata-options">
             <ReviewChoice label="Full" :active="review.metadata.value === 'full'" @click="review.update({ metadata: 'full' })" />
@@ -34,7 +74,7 @@
           </div>
         </fieldset>
 
-        <fieldset>
+        <fieldset v-if="review.view.value === 'compare'">
           <legend class="mb-1 text-[0.6875rem] font-semibold uppercase tracking-wide text-slate-500">DEC-003 · Team identity</legend>
           <div class="flex rounded-md bg-slate-100 p-0.5" data-test="review-identity-options">
             <ReviewChoice label="Icon" :active="review.teamIdentity.value === 'icon'" @click="review.update({ teamIdentity: 'icon' })" />
@@ -142,3 +182,15 @@ onMounted(() => {
   window.setTimeout(applyFixture, 0);
 });
 </script>
+
+<style scoped>
+.proposal-chip {
+  border: 1px solid rgb(209 250 229);
+  border-radius: 9999px;
+  background: rgb(236 253 245);
+  padding: 0.2rem 0.55rem;
+  color: rgb(6 95 70);
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+</style>

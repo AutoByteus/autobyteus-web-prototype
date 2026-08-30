@@ -10,7 +10,7 @@
 - Prototype ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001`
 - Prototype ticket branch: `prototype/reqpkg-nthui-001`
 - Accepted prototype base revision: `550e8bd8737ddb645cc12f674d693bed76a09e9f`
-- Prototype revision or commit: RV-002 review implementation `f4bb01d5968be1c5e37aa8e879b37692ac7f3099`
+- Prototype revision or commit: RV-003 proposed-final review is the active working revision; exact commit is recorded in `prototype-ticket.md` after persistence
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001/tickets/in-progress/REQPKG-NTHUI-001`
 - Package manager: `pnpm@10.15.0`
 - Framework / stack: Nuxt 3, Vue 3, TypeScript, Pinia, Tailwind, Iconify, synthetic browser-only fixture
@@ -20,21 +20,22 @@
 
 - Install command: `corepack pnpm install --ignore-workspace --frozen-lockfile`
 - Start command: `corepack pnpm dev --port 4193`
-- Review URL: `http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&hierarchy=hybrid&metadata=responsive&teamIdentity=header&panelWidth=320&fontSize=default&treeState=deep`
+- Review URL: `http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&reviewView=proposal&hierarchy=hybrid&metadata=responsive&teamIdentity=icon&panelWidth=320&fontSize=default&treeState=collapsed`
 - Readiness signal: Nuxt prints `Local: http://127.0.0.1:4193/`; the review URL returns HTTP 200 and renders `[data-test="workspace-team-execution-tree"]`.
 - Stop / cleanup: Stop only the Product-owned Nuxt process recorded in `prototype-ticket.md`; do not stop port 4180 or other ticket runtimes.
-- Runtime port / process / temporary-state ownership: Port `4193`; Nuxt PID `77045`; Product ticket `REQPKG-NTHUI-001`; localStorage scenario `workspace_team_hierarchy_review`; query controls reset every review dimension. Loopback HTTP check returned `200` with a 2,893-byte Nuxt shell response after restart.
+- Runtime port / process / temporary-state ownership: Port `4193`; Nuxt PID `80344`; Product ticket `REQPKG-NTHUI-001`; localStorage scenario `workspace_team_hierarchy_review`; query controls reset every review dimension. Loopback HTTP check returned `200` with a 2,893-byte Nuxt shell response after restart.
 
 ## Reproducibility And Project State
 
 - Prototype repository status at validation: Dedicated Product worktree and branch; no production/source writes; review candidate committed before handoff.
-- Scenario reset/isolation method: Reload the review URL. It applies `workspace_team_hierarchy_review`; use the control panel to reset Hybrid / Responsive / Header / 320 / Default / Deeper team expanded.
+- Scenario reset/isolation method: Reload the review URL. It applies `workspace_team_hierarchy_review` and resets the proposed UI to Hybrid / Responsive / Structural icon / 320 / Default / Subteams collapsed. Use `Compare options` for alternatives or `Stress-test the proposal` for dense states.
 - Required environment variables or credentials: None. Synthetic/local only.
 
 ## Critical Journeys To Review
 
 | Journey / Scenario ID | Entry Condition | Steps | Expected Outcome |
 | --- | --- | --- | --- |
+| JRN-NTH-000 | Proposed-final review URL | Review the normal sidebar, then expand only a team needed for context | The approval candidate is immediately visible in the accepted product shell without the dense all-expanded stress fixture |
 | JRN-NTH-001 | Default review URL | Change only DEC-001 across Rails/Surfaces/Hybrid | Same 17 rows and shell; ancestry treatment alone changes |
 | JRN-NTH-002 | Same URL | Change DEC-002 across Full/Responsive/On focus | Status/age density changes; identity and hierarchy remain |
 | JRN-NTH-003 | Same URL | Change DEC-003 across Icon/Header/Band | Team emphasis changes; agent rows and tree content remain |
@@ -45,6 +46,7 @@
 
 | Scenario ID | Purpose | How To Select | Expected Visible Result |
 | --- | --- | --- | --- |
+| PS-NTH-000 | Proposed normal state | Open the review URL | Root coordinator/direct agent plus three sibling team nodes; nested teams remain collapsed until requested |
 | PS-NTH-001 | Full deep comparison | Open review URL | Three sibling teams, deeper team, transient task team, mixed statuses |
 | PS-NTH-002–006 | Disclosure/selection presets | Use `Tree state` selector | 5→8→13→17 visible rows, then selected deep leaf |
 | Width/font matrix | Density stress | Use Actual panel width and Actual app font | Product's real 260/320/520px and 100%/125% settings apply |
@@ -53,11 +55,11 @@
 
 - Desktop: Browser viewport 1440×1000; actual left panel 260, 320, 520px; Default and Extra Large.
 - Narrow mobile: Out of scope; the affected product boundary is the desktop/web docked history sidebar.
-- Build / typecheck / lint / tests: `pnpm typecheck` pass; `pnpm lint` pass; `pnpm test` 12/12 pass; `pnpm validate:boundaries` 13/13 pass; `pnpm build` pass; focused browser validation 19/19 pass.
+- Build / typecheck / lint / tests: RV-003 `pnpm typecheck` pass; `pnpm test` 12/12 pass; `pnpm validate:boundaries` 13/13 pass; focused browser validation 20/20 pass. RV-003 `pnpm lint` and `pnpm build` pass.
 
 ## Known Limitations And Product Questions
 
-- `DEC-001`–`DEC-003` remain open. No default is a recommendation.
+- `DEC-001`–`DEC-003` remain open until explicit user approval. RV-003 now presents the bundled Product recommendation first: Hybrid / Responsive / Structural team icon.
 - Review controls and synthetic fixture are not proposed production UI.
-- Captures under `review-evidence/rv-002/` are review aids, not final/normative visual references.
+- Captures under `review-evidence/rv-003/` are proposal-review aids, not approved/normative visual references.
 - No `ui-ux-spec.md` is created until explicit user confirmation.

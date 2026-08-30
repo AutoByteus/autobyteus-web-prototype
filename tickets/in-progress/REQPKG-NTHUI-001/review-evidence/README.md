@@ -1,4 +1,4 @@
-# RV-002 Review Evidence
+# Nested Team Hierarchy Review Evidence
 
 These captures are non-normative review aids. They were generated before user
 confirmation and must not be treated as final `VIS-*` implementation
@@ -26,3 +26,18 @@ The first three use the same 17 visible execution rows at the same actual
 actual 260px product width and Extra Large (125%) setting and demonstrates full
 identity recovery. Automated fixture-signature equality and browser results are
 recorded in `../browser-validation-rv-002.json`.
+
+## RV-003 Proposed-Final Review
+
+- `rv-003/proposed-final-ui-320-default.png`: the approval candidate in the
+  normal five-row, default-collapsed state using Hybrid ancestry, Responsive
+  metadata, and Structural team icons.
+- `rv-003/review-rails-320-default.png`
+- `rv-003/review-surfaces-320-default.png`
+- `rv-003/review-hybrid-320-default.png`
+- `rv-003/review-rails-on-focus-260-extra-large.png`
+
+RV-003 keeps the alternatives as stress evidence but opens the user-visible
+review URL on the proposed-final state. Automated results are recorded in
+`../browser-validation-rv-003.json`. These remain proposal-review aids until
+the user explicitly approves the bundled recommendation.
