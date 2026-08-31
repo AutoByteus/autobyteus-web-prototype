@@ -4,9 +4,9 @@
 
 - Status: `Awaiting User Review — draft and non-normative`
 - Ticket: `AORG-FLAT-TEAM-001`
-- Prototype revision: `RV-010`
+- Prototype revision: `RV-011`
 - Requirements authority: approved `RER-013`, commit `86df311c4`
-- Runnable candidate commit: `e0a45e4cfcb14bb489438e89f4bc5856b2ea3714`
+- Runnable candidate commit: `b8f978bf7e41c2589117caa16b5526947e4465f8`
 - Explicit final approval: `Pending`
 - Normative `VIS-*` references: `Pending approval`
 
@@ -19,6 +19,7 @@ evidence.
 
 - Source frontend: `/home/autobyteus/workspace/autobyteus-workspace/autobyteus-web`
 - Source pin: `8ef282ba77705180d985e7000d801f0e0068cdc1`
+- Workspace hierarchy correction evidence: user-supplied production comparison screenshots and current source hierarchy component pattern at `80e2bd195c42ea3ced778dbc051d4d00edaef16f`; limited to the named tree-layout preservation gap.
 - Prototype repository: `/home/autobyteus/workspace/autobyteus-web-prototype`
 - Ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
 - Ticket branch: `prototype/aorg-flat-team-001`
@@ -40,7 +41,7 @@ separate concept application.
 
 ## Requirements Coverage
 
-| IDs | RV-010 obligation |
+| IDs | RV-011 obligation |
 | --- | --- |
 | `REQ-001`, `AC-001` | Team authoring exposes direct Agents only and exactly one direct Agent coordinator |
 | `REQ-002`, `REQ-003` | Org authoring exposes direct Agents and direct reusable Team references with no coordinator control |
@@ -71,7 +72,7 @@ separate concept application.
 | Org detail | Header, Description, Members, Handoffs; Team member names its coordinator and opens Team detail; no duplicated description or aggregate/fabricated facts |
 | Org configuration | Run opens directly here. Show Agent Org definition, Runtime, Default LLM Model, Workspace Directory, Auto approve tools, collapsed Member overrides, and Run Agent Org. Do not show a communication-recipient selector. |
 | Active Org workspace | Show the complete mounted scope in the left sidebar. Start with no selected member. Center only prompts **Choose an Agent or Team**. Selecting a member reuses the accepted Agent or Team workspace. |
-| Shared runtime/history | Distinguish the AgentOrg definition/run from standalone Team definitions; direct Agents and referenced Teams are siblings in the Org execution; Team Agents are children of their Team placement; Task Agent/Task Team rows are runtime lineage under the owning Team execution. |
+| Shared runtime/history | Distinguish the AgentOrg definition/run from standalone Team definitions; direct Agents and referenced Teams are siblings in the Org execution; Team Agents are children of their Team placement; Task Agent/Task Team rows are runtime lineage under the owning Team execution. Preserve the production tree layout with ancestor rails, L-shaped sibling branches, depth-aligned disclosures, and the square selected-row marker. |
 
 ## AgentOrg Configuration And Launch
 
@@ -161,19 +162,19 @@ explicit user confirmation.
 
 ## Non-Normative Review Evidence
 
-All captures are under `review-evidence/rv-010/`; the manifest is
-`review-evidence/rv-010/capture-manifest.json`.
+All captures are under `review-evidence/rv-011/`; the manifest is
+`review-evidence/rv-011/capture-manifest.json`.
 
 | Review ID | Surface/state |
 | --- | --- |
-| `REV-AORG-RV10-001`–`002`, `018`–`019`, `011`–`013`, `016` | Preserved flat AgentTeam catalog, builder, detail/members, Agent detail, Team-local Handoffs, and narrow builder |
-| `REV-AORG-RV10-003`–`005`, `014`–`015`, `020` | AgentOrg catalog, authoring, detail, clean Handoffs, Handoff editor, and narrow in-flow member picker |
-| `REV-AORG-RV10-006` | AgentOrg Run opens configuration directly |
-| `REV-AORG-RV10-007` | Mounted Team/Agent placement override hierarchy |
-| `REV-AORG-RV10-008` | Full AgentOrg scope active with no initial focus |
-| `REV-AORG-RV10-009` | Exact direct Agent focus from the sidebar |
-| `REV-AORG-RV10-010` | Direct Team focus through its coordinator |
-| `REV-AORG-RV10-017` | Narrow AgentOrg configuration without overlay |
+| `REV-AORG-RV11-001`–`002`, `018`–`019`, `011`–`013`, `016` | Preserved flat AgentTeam catalog, builder, detail/members, Agent detail, Team-local Handoffs, and narrow builder |
+| `REV-AORG-RV11-003`–`005`, `014`–`015`, `020` | AgentOrg catalog, authoring, detail, clean Handoffs, Handoff editor, and narrow in-flow member picker |
+| `REV-AORG-RV11-006` | AgentOrg Run opens configuration directly |
+| `REV-AORG-RV11-007` | Mounted Team/Agent placement override hierarchy |
+| `REV-AORG-RV11-008` | Full AgentOrg scope active with no initial focus and production-style hierarchy branches |
+| `REV-AORG-RV11-009` | Exact direct Agent focus from the sidebar |
+| `REV-AORG-RV11-010` | Direct Team focus through its coordinator |
+| `REV-AORG-RV11-017` | Narrow AgentOrg configuration without overlay |
 
 Final `VIS-*` references are captured only after explicit approval and final
 validation.
@@ -190,7 +191,7 @@ validation.
 
 - Corrected baseline accepted: `Yes`
 - Requirements authority: `RER-013`
-- RV-010 browser validation: `56/56 pass`, `20` captures, zero runtime errors
+- RV-011 browser validation: `57/57 pass`, `20` captures, zero runtime errors
 - Typecheck/lint/tests/boundaries/build: `Pass`
 - Desktop and narrow validation: `Yes`
 - Explicit final approval: `No — pending`

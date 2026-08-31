@@ -1,13 +1,13 @@
-# AORG-FLAT-TEAM-001 — RV-010 Review Guide
+# AORG-FLAT-TEAM-001 — RV-011 Review Guide
 
 ## Status
 
 - Review state: `Awaiting User Review`
-- Prototype revision: `RV-010`
+- Prototype revision: `RV-011`
 - Requirements authority: `RER-013`, commit `86df311c4`
-- Runnable candidate: `e0a45e4cfcb14bb489438e89f4bc5856b2ea3714`
+- Runnable candidate: `b8f978bf7e41c2589117caa16b5526947e4465f8`
 - Review server: `http://127.0.0.1:4194`
-- Browser validation: `56/56` pass, `20` captures, zero runtime errors
+- Browser validation: `57/57` pass, `20` captures, zero runtime errors
 - Static validation: diff check, typecheck, lint, `12/12` tests, `13/13` boundaries, and build pass
 
 ## Primary Review — AgentOrg Run
@@ -24,6 +24,7 @@
 5. Confirm the complete AgentOrg scope is active and no member is initially selected.
    - The center says only **Choose an Agent or Team**.
    - The left sidebar shows the direct Agent, both Teams, their Agents, and task-scoped lineage.
+   - Continuous rails and L-shaped branch connectors show the exact Org → Team → Agent/task hierarchy; this is preserved production tree treatment, not a new layout proposal.
 6. Select `requirements_engineer`.
    - The exact Agent conversation opens.
 7. Select **Product Design & Prototyping**.
@@ -66,13 +67,13 @@ None uses a modal overlay or document-level horizontal overflow.
 
 ## Evidence
 
-- Manifest: `review-evidence/rv-010/capture-manifest.json`
-- Configuration: `review-evidence/rv-010/REV-AORG-RV10-006-agent-org-configuration.png`
-- Overrides: `review-evidence/rv-010/REV-AORG-RV10-007-agent-org-placement-overrides.png`
-- Active, unfocused: `review-evidence/rv-010/REV-AORG-RV10-008-agent-org-active-unfocused.png`
-- Direct Agent focus: `review-evidence/rv-010/REV-AORG-RV10-009-agent-org-direct-agent-focus.png`
-- Team coordinator focus: `review-evidence/rv-010/REV-AORG-RV10-010-agent-org-team-coordinator-focus.png`
-- Narrow configuration: `review-evidence/rv-010/REV-AORG-RV10-017-agent-org-configuration-narrow.png`
+- Manifest: `review-evidence/rv-011/capture-manifest.json`
+- Configuration: `review-evidence/rv-011/REV-AORG-RV11-006-agent-org-configuration.png`
+- Overrides: `review-evidence/rv-011/REV-AORG-RV11-007-agent-org-placement-overrides.png`
+- Active, unfocused: `review-evidence/rv-011/REV-AORG-RV11-008-agent-org-active-unfocused.png`
+- Direct Agent focus: `review-evidence/rv-011/REV-AORG-RV11-009-agent-org-direct-agent-focus.png`
+- Team coordinator focus: `review-evidence/rv-011/REV-AORG-RV11-010-agent-org-team-coordinator-focus.png`
+- Narrow configuration: `review-evidence/rv-011/REV-AORG-RV11-017-agent-org-configuration-narrow.png`
 
 These are non-normative review captures. Final `VIS-*` images are created only
 after explicit approval and final validation.
