@@ -8,6 +8,7 @@
 - Ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
 - Branch: `prototype/aorg-flat-team-001`
 - Accepted base: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`
+- Review candidate revision: `c619087229c08a5a90e0459132d57a2b3b1c5a92`
 - Stack: Nuxt 3, Vue 3, TypeScript, Tailwind, deterministic prototype fixtures
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001`
 

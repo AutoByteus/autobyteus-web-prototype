@@ -23,6 +23,7 @@ final references are captured from the validated approved revision.
 - Ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
 - Ticket branch: `prototype/aorg-flat-team-001`
 - Accepted prototype base: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`
+- Review candidate revision: `c619087229c08a5a90e0459132d57a2b3b1c5a92`
 - Bootstrap correction report: `/home/autobyteus/workspace/autobyteus-web-prototype/prototype-bootstrap-report.md`
 - Baseline acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction/product-acceptance/product-acceptance.md`
 

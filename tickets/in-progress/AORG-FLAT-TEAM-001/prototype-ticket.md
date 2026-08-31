@@ -33,7 +33,7 @@
 - Current-state evidence: `/home/autobyteus/data/memory/agent_teams/software_development_department_d2b93633ad6b4d969e6e0d776dda7721/requirements_engineer_6568eac682114f2cb3ddb8f1d91d3c34/context_files/ctx_4cc02361f417__image.png` (evidence only, not an approved future-state reference).
 - Requirements package: `/home/autobyteus/workspace/.codex/worktrees/flat-agent-organization-model/tickets/in-progress/flat-agent-organization-model`
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001`
-- Prototype revision: `RV-002` review candidate; Git revision recorded after the review-ready commit below.
+- Prototype revision: `RV-002` review candidate at `c619087229c08a5a90e0459132d57a2b3b1c5a92`; unapproved and unintegrated.
 
 ## Runtime Isolation
 
