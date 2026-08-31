@@ -35,6 +35,8 @@ source/prototype comparison for these items.
 - Paused branch revision before WIP preservation: `50686bc323acbb0d72af2fb7ee5bf879a28a0d2e`
 - Product-assigned correction worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2`
 - Product-assigned correction branch: `prototype/aorg-flat-team-001-baseline-correction-2`
+- Delegated Bootstrapper task: `task_06c5ed4cdc58403192c82c7b0c28da5b`
+- Active Bootstrapper task ingress: `prototype_bootstrapper_d109c470f86a40e486047cf9c2c4d50a`
 - Future-state review status: paused; no RV-009 evidence is accepted or normative.
 
 ## Required Recovery

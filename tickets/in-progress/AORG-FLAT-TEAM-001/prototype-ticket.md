@@ -27,6 +27,7 @@
 - Baseline acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction/product-acceptance/product-acceptance.md`
 - Baseline gap record: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/baseline-gap-record.md`
 - Current baseline correction record: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/baseline-gap-record-2.md`
+- Active Bootstrapper correction task: `task_06c5ed4cdc58403192c82c7b0c28da5b`, ingress `prototype_bootstrapper_d109c470f86a40e486047cf9c2c4d50a`.
 - Requirements package: `/home/autobyteus/workspace/.codex/worktrees/flat-agent-organization-model/tickets/in-progress/flat-agent-organization-model`
 - Current review revision: `Paused after RV-008`. Unvalidated RV-009 work preserves the user's category-removal, explicit inline member-selection, and baseline-native runtime direction, but it is not a review candidate and must not continue until the corrected baseline is accepted and reconciled.
 
