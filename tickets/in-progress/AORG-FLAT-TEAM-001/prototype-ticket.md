@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `AORG-FLAT-TEAM-001`
 - Title: AgentOrg and flat AgentTeam product experience
-- Status: `In Progress`
+- Status: `Awaiting User Review`
 - Mode: `Product Experience Prototyping`
 - Requirements authority: approved `RER-012`, commit `658d602a1`
 - Architecture context: held `AD-REV-001` at `36bc02deca363798b6eda878e5eb4850e624da6f`; architecture impact check remains downstream of Product approval.
@@ -30,17 +30,17 @@
 - Completed Bootstrapper correction task: `task_06c5ed4cdc58403192c82c7b0c28da5b`, ingress `prototype_bootstrapper_d109c470f86a40e486047cf9c2c4d50a`.
 - Current correction acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/product-acceptance/product-acceptance.md`
 - Requirements package: `/home/autobyteus/workspace/.codex/worktrees/flat-agent-organization-model/tickets/in-progress/flat-agent-organization-model`
-- Current review revision: `RV-009 construction resumed after baseline reconciliation`. The user's category removal, explicit inline member selection, and baseline-native runtime direction are preserved, but RV-009 is not yet a validated review candidate.
+- Current review revision: `RV-009`, runnable candidate commit `c3221cf3faa6b7c6abab0b4c555b6b88f547cfd1`. It is validated and awaiting explicit user review; it is not approved or normative.
 
 ## Runtime Isolation
 
-- Review server: `corepack pnpm dev --port 4194`; Product-owned parent PID `69409`, shell PID `69425`, Nuxt PID `69426`.
+- Review server: `corepack pnpm dev --port 4194`; Product-owned parent PID `871`, shell PID `888`, Nuxt PID `889` (process IDs are runtime-local and may change after restart).
 - Accepted-baseline comparison server: `http://127.0.0.1:4195/agent-teams?view=team-list`; read-only canonical `personal` comparison only.
 - Temporary state root: `/tmp/autobyteus-prototype-AORG-FLAT-TEAM-001`
 - Fixture boundary: ticket-local, deterministic, in-memory definitions, handoffs, launch, runs, and history; no production credentials, services, data, or writes.
 - Reset: stop only the recorded `4194` process and remove the ticket-owned temporary state; do not affect unrelated previews.
 
-## Last Recorded Future-State Candidate — Paused
+## Current Review Candidate — RV-009
 
 - The pinned source and accepted `personal` baseline were re-audited after user feedback. Team create/edit now preserves real library-to-canvas HTML drag/drop, click fallback, the initially empty Canvas, selected canvas cards, editable Member Details, automatic unique member names, first-Agent coordinator assignment, coordinator switches, member removal, and responsive stacking. The only builder delta is requirements-driven: Agent-only library/membership, with no Team library.
 - Team catalog/create/detail remain baseline-native and self-contained. Team members are direct Agents only, exactly one direct Agent is coordinator, Instructions and Agent-detail navigation are preserved, and no Team-to-Org promotion is added.
@@ -51,22 +51,29 @@
 - Removing or renaming an endpoint never silently deletes or retargets a handoff; the affected card becomes unavailable and save is blocked until resolved.
 - Team-local handoff authoring uses only direct Team Agents for From and To. Org surfaces edit only Org-owned handoffs.
 
+- AgentOrg create/edit uses one explicit **Add member** action. The chooser expands in the document flow, uses Agent/Team tabs and search, and remains usable at `390×844` without a modal or document overflow. Category is absent; create starts with blank Name and Description.
+- Exact AgentOrg launch now enters the accepted configuration-first product journey. A Team entry opens the accepted Team configuration and launches the accepted Team workspace; an Agent entry opens the accepted Agent configuration and launches the accepted Agent workspace.
+- AgentOrg runtime no longer uses a custom dashboard. The accepted conversation, Team, Files, Terminal, Activity, Token, Artifacts, and VNC surfaces remain intact. The accepted Workspace Files tree is preserved.
+- Shared history distinguishes the AgentOrg definition/run from standalone Team definitions without type badges or explanatory runtime chrome. Task Agent and Task Team rows appear only under the entered Team execution and focus their accepted conversations.
+
 ## Delivery And Validation
 
 - UI/UX specification: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/ui-ux-spec.md` — draft and non-normative.
 - Review guide: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/review-guide.md`
 - Review URL: `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department`
 - Handoff authoring URL: `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-edit&id=software-development-department`
-- Historical browser result: `browser-validation-rv-008.json` — `48/48` checks, `16` review captures, zero runtime errors against the then-accepted baseline. This is not evidence for the two newly identified current-experience gaps.
+- Current browser result: `browser-validation-rv-009.json` — `55/55` checks, `17` non-normative review captures, zero page/console errors. It covers preserved Team surfaces, Org authoring/Handoffs, desktop/narrow layouts, exact-entry configuration, Team/Agent runtime, task lineage, and the Workspace Files tree.
+- Static validation: `validation-rv-009/static-validation.txt` — typecheck, lint, `12/12` tests, `13/13` boundary checks, and build pass.
+- Historical RV-008 result remains preserved as prior review evidence.
 - Team-builder preservation audit: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/review-evidence/rv-008/source-comparison/agent-team-builder-audit.md`
-- Review evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/review-evidence/rv-008`
+- Review evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/review-evidence/rv-009`
 - Final visual references: pending explicit approval; no `REV-*` image is normative.
 - User confirmation: explicit feedback has been applied through the removal of redundant count, rule, same-definition, coordinator-delivery, and invented run-summary chrome. Final approval is still pending.
 
 ## Outcome And Handoff
 
-- Current outcome: `In Progress` after accepted baseline reconciliation.
-- Next expected action: finish and validate RV-009 as a precise baseline-native AgentOrg evolution before returning it to user review.
+- Current outcome: `Awaiting User Review` for validated RV-009.
+- Next expected action: the user reviews the live Team, Org, launch/configuration, and runtime journeys and either gives focused feedback or explicit final approval.
 - Integration: baseline correction 2 is committed at `5561e3ac593a210ab7b3b8621c5daea31f95f08e`, integrated and pushed to `personal`, and merged into the future-state branch at `3e81f334f131992a06936886c02b4493d1d43349`; future-state integration remains `Pending`.
-- Cleanup: retain the ticket worktree and port `4194` during active construction and later review.
-- Handoff: none while RV-009 construction continues; the Bootstrapper correction task is complete.
+- Cleanup: retain the ticket worktree and port `4194` during active user review.
+- Handoff: none while user approval is pending; the Bootstrapper correction task is complete. Final Product handoff occurs only after explicit approval, final references, repository finalization, and matching handoff rules.

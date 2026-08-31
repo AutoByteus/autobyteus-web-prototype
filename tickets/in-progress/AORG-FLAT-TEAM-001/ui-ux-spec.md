@@ -4,7 +4,7 @@
 
 - Status: `Ready for User Review — Draft, non-normative`
 - Ticket: `AORG-FLAT-TEAM-001`
-- Prototype revision: `RV-008`
+- Prototype revision: `RV-009`
 - Requirements authority: approved `RER-012`, commit `658d602a1`
 - Explicit final approval: `Pending`
 - Normative `VIS-*` references: `Pending approval`
@@ -20,8 +20,8 @@ validation of the approved state.
 - Prototype repository: `/home/autobyteus/workspace/autobyteus-web-prototype`
 - Ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
 - Ticket branch: `prototype/aorg-flat-team-001`
-- Accepted prototype base: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`
-- Runnable candidate commit: `ca518008fd126702555fe14a2887514654238ed7`
+- Accepted prototype base: `5561e3ac593a210ab7b3b8621c5daea31f95f08e`
+- Runnable candidate commit: `c3221cf3faa6b7c6abab0b4c555b6b88f547cfd1`
 - Review URL: `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department`
 
 ## Experience Goal
@@ -65,10 +65,10 @@ product, not a separate concept demo.
 | Team create/edit | Accepted Basics/library/canvas/member-details hierarchy; real drag/drop and click-to-add; selected canvas member with editable Member Name, Type, Source, Scope, and Coordinator; Agent rows only; exactly one coordinator in a valid definition; functional Team-owned handoff authoring |
 | Team detail | Header, Description, Instructions, Handoffs, members, Run/Edit; member `View ↗` opens accepted Agent detail and Back returns to the same Team; no AgentOrg promotion |
 | Org catalog | Same toolbar/card/action language as Teams; direct Agent and Team chips; no visible title/type/composition/coordinator/run-summary chrome |
-| Org create/edit | Basics, separate Agent/Team member groups, Handoffs, Save/Cancel; no coordinator field |
+| Org create/edit | Blank Name and Description; no Category; one **Add member** action opens an in-flow searchable Agent/Team tabbed chooser; member groups, Handoffs, Save/Cancel; no coordinator field and no member-picker overlay |
 | Org detail | Compact header, Description, Members, Handoffs; Team member card names its coordinator and opens Team detail; no duplicate description or aggregate summary facts |
 | Org launch | Starts empty and disabled; exact Agent or Team selection enables Start; Team choice states the coordinator used for entry |
-| Shared runtime/history | Typed Org/Team roots, exact entry, configured snapshot, accepted Task rows, disclosure, and selectable task child |
+| Shared runtime/history | Exact entry first opens the accepted Team or Agent run configuration. Run then opens the accepted Team or Agent Workspace. The left history separates AgentOrg roots from standalone Team roots; accepted Task Agent/Task Team rows remain nested under the entered Team execution and are selectable |
 
 ## Handoff Detail
 
@@ -121,7 +121,9 @@ therefore remains a concise From → To → When record.
 | Select Team coordinator | Selected Agent's switch becomes enabled and any previous coordinator switch clears | Exactly one direct Team Agent is coordinator |
 | Open Org launch | Start disabled | No implicit destination |
 | Select exact Team entry | Selection highlight and coordinator summary | Start enabled |
-| Expand/select task child | Disclosure and selection update | Runtime-only lineage is inspectable |
+| Start exact Team/Agent entry | Accepted run-configuration form opens with no active run | Workspace selection is required before Run Team/Run Agent |
+| Run configured entry | URL phase and history update | Accepted Team/Agent Workspace opens; no custom Org dashboard |
+| Expand/select task child | Disclosure and selection update | Runtime-only lineage focuses the accepted conversation |
 
 ## Accessibility And Content
 
@@ -137,8 +139,8 @@ therefore remains a concise From → To → When record.
 | Boundary | Real in prototype | Mocked production capability |
 | --- | --- | --- |
 | Definition authoring | Form interactions, eligibility, validation, CRUD, reorder, cancel, save feedback | API, durable persistence, permissions, concurrency |
-| Launch | Exact selection and navigated result | Run service and orchestration |
-| Runtime/history | Root selection, disclosure, child focus | Streams, storage, restore, stop lifecycle |
+| Launch | Exact selection, configuration-first transition, workspace-required feedback, and configured runtime transition | Run service and orchestration |
+| Runtime/history | Accepted Agent/Team Workspace, root selection, Files tree, disclosure, and child focus | Streams, storage, restore, stop lifecycle |
 | Referential integrity | Stale endpoint visibility and blocked save | Server-side transactions and migration |
 
 Fixture names, handoff text, run IDs, statuses, and timestamps are illustrative.
@@ -146,41 +148,37 @@ The visible structure and behavior remain unapproved until confirmation.
 
 ## Non-Normative Review Evidence
 
-All captures are under `review-evidence/rv-008/`:
+All captures are under `review-evidence/rv-009/` and remain non-normative:
 
 | Review ID | Surface/state |
 | --- | --- |
-| `REV-AORG-001` | Baseline-native Team catalog |
-| `REV-AORG-002` | Team authoring |
-| `REV-AORG-003` | Clean AgentOrg catalog |
-| `REV-AORG-004` | AgentOrg create |
-| `REV-AORG-005` | Clean AgentOrg detail |
-| `REV-AORG-006` | Exact Team launch entry |
-| `REV-AORG-007` | AgentOrg runtime/history |
-| `REV-AORG-008` | Standalone Team runtime/history |
-| `REV-AORG-009`–`011` | Team detail, member actions, Agent detail |
-| `REV-AORG-012` | Team-local From/To/When detail |
-| `REV-AORG-013` | Team-local handoff editor |
-| `REV-AORG-014` | AgentOrg From/To/When detail without redundant counts or coordinator-delivery copy |
-| `REV-AORG-015` | Functional AgentOrg handoff authoring and save feedback |
-| `REV-AORG-016` | Narrow Agent-only Team builder with click fallback and selected Member Details |
+| `REV-AORG-RV9-001`–`002` | Baseline-native Team catalog and precise Agent-only builder |
+| `REV-AORG-RV9-003`–`005` | Clean AgentOrg catalog, in-flow authoring, and detail |
+| `REV-AORG-RV9-006` | Exact Team launch entry with coordinator identity |
+| `REV-AORG-RV9-007` | Exact Team entry on the accepted Team run-configuration surface |
+| `REV-AORG-RV9-008` | Accepted Team Workspace with AgentOrg history, Files tree, Task Agent, and Task Team lineage |
+| `REV-AORG-RV9-009`–`011` | Team detail, members, and preserved Agent detail |
+| `REV-AORG-RV9-012`–`015` | Team-local and Org-owned Handoff detail/authoring |
+| `REV-AORG-RV9-016` | Narrow Team builder |
+| `REV-AORG-RV9-017` | Narrow in-flow AgentOrg member picker |
 
-Source/baseline comparison evidence is in
-`review-evidence/rv-008/source-comparison/agent-team-builder-audit.md`.
+The accepted Bootstrapper parity evidence remains under the canonical
+`evidence/AORG-FLAT-TEAM-001/baseline-correction*` roots. Final `VIS-*`
+references are captured only after explicit approval.
 
 ## Review Questions
 
-1. Does the Team builder now precisely preserve the product's drag/drop, click fallback, Canvas selection, and editable Member Details while removing only Team-in-Team membership?
-2. Is the AgentOrg detail now clean enough: Description only, simple Members, and Handoffs reduced to From, To, and When?
-3. Does the functional Add/Edit/Delete/Reorder/Cancel/Save flow feel production-ready without unnecessary explanation?
-4. Do Team and Org surfaces remain visually consistent while staying conceptually separate?
-5. Is exact-entry launch and runtime/history clear enough for final approval?
+1. Does the Team builder preserve the product precisely while removing only Team-in-Team membership?
+2. Is AgentOrg authoring clear with blank Name/Description and one in-flow **Add member** chooser for Agents and Teams?
+3. Are AgentOrg detail and Handoffs clean enough: Description, Members, and From/To/When without redundant or fabricated facts?
+4. Does exact-entry launch correctly lead through the accepted Team/Agent configuration before the accepted runtime?
+5. Does shared history distinguish Org versus standalone-Team roots while keeping Task Agent/Task Team lineage truthful?
 
 ## Consistency Check
 
 - Corrected baseline accepted: `Yes`
 - Requirements authority: `RER-012`
-- RV-008 browser validation: `48/48 pass`, zero runtime errors
+- RV-009 browser validation: `55/55 pass`, zero runtime errors
 - Desktop and narrow validation: `Yes`
 - Explicit final approval: `No — pending`
 - Normative final references: `No — correctly pending approval`

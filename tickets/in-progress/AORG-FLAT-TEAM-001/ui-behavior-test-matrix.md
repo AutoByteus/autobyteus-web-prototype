@@ -1,6 +1,6 @@
 # UI Behavior Test Matrix
 
-| ID | Related IDs | Flow | Expected visible outcome | RV-008 |
+| ID | Related IDs | Flow | Expected visible outcome | RV-009 |
 | --- | --- | --- | --- | --- |
 | `TR-AORG-001` | `REQ-001`, `AC-001` | Team create/edit | Agent-only controls; one checked coordinator; no Team selector | Pass |
 | `TR-AORG-002` | `REQ-002`, `REQ-003` | Org create/edit | Separate Agent and Team controls; no coordinator input or explanatory badge | Pass |
@@ -25,10 +25,11 @@
 
 ## Evidence
 
-- Machine result: `browser-validation-rv-008.json`
-- Capture manifest: `review-evidence/rv-008/capture-manifest.json`
-- Result: `48/48` checks pass; `16` captures; `0` runtime errors.
+- Machine result: `browser-validation-rv-009.json`
+- Capture manifest: `review-evidence/rv-009/capture-manifest.json`
+- Static validation: `validation-rv-009/static-validation.txt`
+- Result: `55/55` checks pass; `17` captures; `0` runtime errors; typecheck, lint, `12/12` tests, `13/13` boundaries, and build pass.
 
 ## Pending
 
-Explicit user approval of RV-008. Review images remain non-normative until then.
+Explicit user approval of RV-009. Review images remain non-normative until then.
