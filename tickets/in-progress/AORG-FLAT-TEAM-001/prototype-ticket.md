@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `AORG-FLAT-TEAM-001`
 - Title: AgentOrg and flat AgentTeam product experience
-- Status: `Baseline Needed`
+- Status: `In Progress`
 - Mode: `Product Experience Prototyping`
 - Requirements authority: approved `RER-012`, commit `658d602a1`
 - Architecture context: held `AD-REV-001` at `36bc02deca363798b6eda878e5eb4850e624da6f`; architecture impact check remains downstream of Product approval.
@@ -18,26 +18,27 @@
 - Active Product ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
 - Product ticket branch: `prototype/aorg-flat-team-001`
 - Integration/default branch: `personal`
-- Accepted prototype base: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`; local `personal` and `origin/personal` are synchronized at this revision and it is an ancestor of the ticket branch.
+- Accepted prototype base: `5561e3ac593a210ab7b3b8621c5daea31f95f08e`; local `personal`, `origin/personal`, and `origin/HEAD` are synchronized at this revision. It is merged into the ticket branch by reconciliation commit `3e81f334f131992a06936886c02b4493d1d43349`.
 - Source repository: `/home/autobyteus/workspace/autobyteus-workspace`
 - Selected frontend: `/home/autobyteus/workspace/autobyteus-workspace/autobyteus-web`
 - Pinned source revision: `8ef282ba77705180d985e7000d801f0e0068cdc1`
-- Baseline status: `Correction required`. The earlier Task Agent and Task AgentTeam correction remains accepted, but the newly identified AgentTeam Run configuration-first journey and Workspace left file-tree structure are not substantiated as exact pinned-source parity.
+- Baseline status: `Accepted after correction 2`. The earlier Task Agent / Task AgentTeam correction remains `5/5` pass; AgentTeam Run configuration-first and Workspace file-tree correction is accepted at `9/9` exact matched cases with zero browser errors.
 - Bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/prototype-bootstrap-report.md`
 - Baseline acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction/product-acceptance/product-acceptance.md`
 - Baseline gap record: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/baseline-gap-record.md`
 - Current baseline correction record: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/baseline-gap-record-2.md`
-- Active Bootstrapper correction task: `task_06c5ed4cdc58403192c82c7b0c28da5b`, ingress `prototype_bootstrapper_d109c470f86a40e486047cf9c2c4d50a`.
+- Completed Bootstrapper correction task: `task_06c5ed4cdc58403192c82c7b0c28da5b`, ingress `prototype_bootstrapper_d109c470f86a40e486047cf9c2c4d50a`.
+- Current correction acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/product-acceptance/product-acceptance.md`
 - Requirements package: `/home/autobyteus/workspace/.codex/worktrees/flat-agent-organization-model/tickets/in-progress/flat-agent-organization-model`
-- Current review revision: `Paused after RV-008`. Unvalidated RV-009 work preserves the user's category-removal, explicit inline member-selection, and baseline-native runtime direction, but it is not a review candidate and must not continue until the corrected baseline is accepted and reconciled.
+- Current review revision: `RV-009 construction resumed after baseline reconciliation`. The user's category removal, explicit inline member selection, and baseline-native runtime direction are preserved, but RV-009 is not yet a validated review candidate.
 
 ## Runtime Isolation
 
-- Review server: stopped on `2026-08-31` when the ticket returned to `Baseline Needed`; former Product-owned parent PID `25138` and child PID `25155` are no longer running.
+- Review server: `corepack pnpm dev --port 4194`; Product-owned parent PID `69409`, shell PID `69425`, Nuxt PID `69426`.
 - Accepted-baseline comparison server: `http://127.0.0.1:4195/agent-teams?view=team-list`; read-only canonical `personal` comparison only.
 - Temporary state root: `/tmp/autobyteus-prototype-AORG-FLAT-TEAM-001`
 - Fixture boundary: ticket-local, deterministic, in-memory definitions, handoffs, launch, runs, and history; no production credentials, services, data, or writes.
-- Reset: port `4194` is unowned while the correction is active; retain the ticket-owned temporary state and do not affect unrelated previews.
+- Reset: stop only the recorded `4194` process and remove the ticket-owned temporary state; do not affect unrelated previews.
 
 ## Last Recorded Future-State Candidate — Paused
 
@@ -64,8 +65,8 @@
 
 ## Outcome And Handoff
 
-- Current outcome: `Baseline Needed`.
-- Next expected action: independently correct and substantiate `UXB-CORR-TEAM-RUN-CONFIG-001` and `UXB-CORR-WORKSPACE-FILE-TREE-001` against the pinned source, then Product Prototyper reviews, accepts, integrates, and reconciles the future-state branch before any further product review.
-- Integration: prior accepted baseline is canonical at `893cde9dbcc5ccc8904cf08ba6b031668dff0041`; the new correction and future-state integration are `Pending`.
-- Cleanup: retain the future-state worktree; stop its invalid review preview while baseline correction is active.
-- Handoff: route only the fixed current-experience correction payload to Prototype Bootstrapper. Do not attach or expose the future-state requirements package as bootstrap instructions.
+- Current outcome: `In Progress` after accepted baseline reconciliation.
+- Next expected action: finish and validate RV-009 as a precise baseline-native AgentOrg evolution before returning it to user review.
+- Integration: baseline correction 2 is committed at `5561e3ac593a210ab7b3b8621c5daea31f95f08e`, integrated and pushed to `personal`, and merged into the future-state branch at `3e81f334f131992a06936886c02b4493d1d43349`; future-state integration remains `Pending`.
+- Cleanup: retain the ticket worktree and port `4194` during active construction and later review.
+- Handoff: none while RV-009 construction continues; the Bootstrapper correction task is complete.

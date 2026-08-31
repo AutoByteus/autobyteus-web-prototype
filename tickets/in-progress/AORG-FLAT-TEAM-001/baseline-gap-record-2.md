@@ -2,20 +2,21 @@
 
 ## Classification
 
-- Outcome: `Baseline Needed`
+- Outcome: `Resolved — Accepted`
 - Mode: `Correction`
 - Stable package / Product ticket: `AORG-FLAT-TEAM-001`
 - Date identified: `2026-08-31`
 - Selected frontend: `/home/autobyteus/workspace/autobyteus-workspace/autobyteus-web`
 - Pinned source revision: `8ef282ba77705180d985e7000d801f0e0068cdc1`
-- Accepted prototype base: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`
+- Accepted prototype base before correction: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`
+- Accepted correction and canonical integration revision: `5561e3ac593a210ab7b3b8621c5daea31f95f08e`
 
 ## Named Failed Or Unsubstantiated Inventory
 
 | Gap ID | Current-experience boundary | Current result |
 | --- | --- | --- |
-| `UXB-CORR-TEAM-RUN-CONFIG-001` | AgentTeam **Run** entry and transition, including the production configuration-first step before an actual run begins | `Unsubstantiated / perceptible behavior gap reported` |
-| `UXB-CORR-WORKSPACE-FILE-TREE-001` | Workspace left file-tree structure, hierarchy, geometry, and visible interaction treatment | `Unsubstantiated / perceptible UI gap reported` |
+| `UXB-CORR-TEAM-RUN-CONFIG-001` | AgentTeam **Run** entry and transition, including the production configuration-first step before an actual run begins | `Pass — accepted` |
+| `UXB-CORR-WORKSPACE-FILE-TREE-001` | Workspace left file-tree structure, hierarchy, geometry, and visible interaction treatment | `Pass — accepted` |
 
 The IDs name current-experience parity gaps only. They do not prescribe the
 source routes, fixtures, implementation, product architecture, or any future
@@ -37,7 +38,17 @@ source/prototype comparison for these items.
 - Product-assigned correction branch: `prototype/aorg-flat-team-001-baseline-correction-2`
 - Delegated Bootstrapper task: `task_06c5ed4cdc58403192c82c7b0c28da5b`
 - Active Bootstrapper task ingress: `prototype_bootstrapper_d109c470f86a40e486047cf9c2c4d50a`
-- Future-state review status: paused; no RV-009 evidence is accepted or normative.
+- Future-state reconciliation commit: `3e81f334f131992a06936886c02b4493d1d43349`
+- Future-state review status: RV-009 construction resumed; no RV-009 evidence is accepted or normative yet.
+
+## Resolution
+
+- Bootstrap candidate accepted and committed: `5561e3ac593a210ab7b3b8621c5daea31f95f08e`
+- Canonical `personal`, `origin/personal`, and `origin/HEAD`: synchronized at `5561e3ac593a210ab7b3b8621c5daea31f95f08e`
+- Matched current-experience comparison: `9/9` exact, byte-identical screenshots, zero source/prototype browser errors.
+- Earlier Task Agent / Task AgentTeam regression: `5/5` pass.
+- Product acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/product-acceptance/product-acceptance.md`
+- Product typecheck, lint, `12` tests, `13/13` boundary checks, build, direct live scenarios, integrated-base checks, and post-merge future-branch checks: pass.
 
 ## Required Recovery
 
