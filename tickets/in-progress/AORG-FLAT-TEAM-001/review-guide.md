@@ -2,14 +2,21 @@
 
 ## Status
 
-- Review state: `Awaiting User Review`
-- Prototype revision: `RV-009`; not approved and not normative
+- Review state: `Paused — Requirement Impact RIF-AORG-002`
+- Prototype revision: `RV-009`; its separate exact-entry launch selector was rejected and remains non-normative
 - Runnable candidate: `c3221cf3faa6b7c6abab0b4c555b6b88f547cfd1`
 - Review server: `http://127.0.0.1:4194`
 - Browser validation: `55/55` pass, `17` captures, zero runtime errors
 - Static validation: typecheck, lint, `12/12` tests, `13/13` boundaries, and build pass
 
 ## Recommended Review
+
+> **Launch review paused:** The user rejected the separate exact-entry selector.
+> AgentOrg should enter configuration directly, then allow member focus from the
+> left sidebar after launch. Product will revise this journey only after the
+> approved launch contract is reconciled. Other RV-009 surfaces remain review
+> evidence, not approval.
+
 
 1. Open [AgentOrg create](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-create).
    - Name and Description start blank; Category is absent.

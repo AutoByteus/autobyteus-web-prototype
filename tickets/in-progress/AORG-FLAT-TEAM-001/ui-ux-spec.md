@@ -2,16 +2,22 @@
 
 ## Status And Approval
 
-- Status: `Ready for User Review — Draft, non-normative`
+- Status: `Revision required — RIF-AORG-002, draft and non-normative`
 - Ticket: `AORG-FLAT-TEAM-001`
 - Prototype revision: `RV-009`
 - Requirements authority: approved `RER-012`, commit `658d602a1`
-- Explicit final approval: `Pending`
+- Explicit final approval: `Pending`; RV-009 launch selector explicitly rejected
 - Normative `VIS-*` references: `Pending approval`
 
 This specification describes the runnable review candidate. It becomes a
 requirements-defining supplement only after explicit user approval and final
 validation of the approved state.
+
+`RIF-AORG-002` supersedes the RV-009 launch treatment for the next revision.
+The user requests direct navigation to AgentOrg configuration and post-launch
+member focus in the left sidebar, rather than a separate pre-configuration
+entry selector. The exact revised behavior remains pending canonical
+requirements reconciliation.
 
 ## Provenance
 

@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `AORG-FLAT-TEAM-001`
 - Title: AgentOrg and flat AgentTeam product experience
-- Status: `Awaiting User Review`
+- Status: `In Progress`
 - Mode: `Product Experience Prototyping`
 - Requirements authority: approved `RER-012`, commit `658d602a1`
 - Architecture context: held `AD-REV-001` at `36bc02deca363798b6eda878e5eb4850e624da6f`; architecture impact check remains downstream of Product approval.
@@ -30,7 +30,7 @@
 - Completed Bootstrapper correction task: `task_06c5ed4cdc58403192c82c7b0c28da5b`, ingress `prototype_bootstrapper_d109c470f86a40e486047cf9c2c4d50a`.
 - Current correction acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/product-acceptance/product-acceptance.md`
 - Requirements package: `/home/autobyteus/workspace/.codex/worktrees/flat-agent-organization-model/tickets/in-progress/flat-agent-organization-model`
-- Current review revision: `RV-009`, runnable candidate commit `c3221cf3faa6b7c6abab0b4c555b6b88f547cfd1`. It is validated and awaiting explicit user review; it is not approved or normative.
+- Current review revision: validated `RV-009` at `c3221cf3faa6b7c6abab0b4c555b6b88f547cfd1`, now rejected specifically for its separate pre-launch exact-entry selector. `RIF-AORG-002` is open; RV-009 remains non-normative historical review evidence.
 
 ## Runtime Isolation
 
@@ -72,8 +72,8 @@
 
 ## Outcome And Handoff
 
-- Current outcome: `Awaiting User Review` for validated RV-009.
-- Next expected action: the user reviews the live Team, Org, launch/configuration, and runtime journeys and either gives focused feedback or explicit final approval.
+- Current outcome: `Requirement Impact` (`RIF-AORG-002`).
+- Next expected action: Requirements Engineering reconciles the user-requested configuration-first, focus-after-launch AgentOrg journey with `REQ-004`, `REQ-019`, `AC-002`, `SCN-002`, `SCN-007`, and `DEC-002`, then returns an approved revision before Product changes the prototype.
 - Integration: baseline correction 2 is committed at `5561e3ac593a210ab7b3b8621c5daea31f95f08e`, integrated and pushed to `personal`, and merged into the future-state branch at `3e81f334f131992a06936886c02b4493d1d43349`; future-state integration remains `Pending`.
 - Cleanup: retain the ticket worktree and port `4194` during active user review.
-- Handoff: none while user approval is pending; the Bootstrapper correction task is complete. Final Product handoff occurs only after explicit approval, final references, repository finalization, and matching handoff rules.
+- Handoff: route `Requirement Impact` with the exact user feedback and `RIF-AORG-002` through dynamic handoff rules. The Bootstrapper correction task remains complete; no new baseline work is required.
