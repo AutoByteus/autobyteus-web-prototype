@@ -81,7 +81,7 @@
       >
         <div class="h-full overflow-y-auto">
           <AgentOrgRunHistoryPanel
-            v-if="agentOrgReviewActive"
+            v-if="showAgentOrgRunHistory"
             @run-selected="onRunningRunSelected"
             @run-created="onRunningRunCreated"
           />
@@ -138,6 +138,7 @@ const {
 const route = useRoute();
 const router = useRouter();
 const { active: agentOrgReviewActive } = useAgentOrgPrototypeReview();
+const showAgentOrgRunHistory = computed(() => agentOrgReviewActive.value && route.path === '/workspace');
 const { toggleLeftPanel } = useLeftPanel();
 const {
   panelSectionsContainerRef,

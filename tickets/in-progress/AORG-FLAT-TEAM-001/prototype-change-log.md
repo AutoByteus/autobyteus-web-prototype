@@ -1,0 +1,10 @@
+# Prototype Change Log
+
+| Change ID | Type | Trigger / Date | Affected experience | Preserved behavior | Change and validation |
+| --- | --- | --- | --- | --- | --- |
+| `PC-AORG-001` | Add | RER-010 / 2026-08-31 | Team catalog/create/detail | Accepted shell and Team visual language | Flat Agent-only Team and one coordinator; RV-001 interim |
+| `PC-AORG-002` | Add | RER-010 / 2026-08-31 | Org catalog/create/detail | Accepted shell and card/form language | Direct Agents + reusable Teams; no coordinator |
+| `PC-AORG-003` | Add | RER-010 / 2026-08-31 | Org launch | Modal and control conventions | Exact entry required; Team coordinator named |
+| `PC-AORG-004` | Add | RER-010 / 2026-08-31 | Runtime/history | Shared Workspace shell | Typed Org/Team roots and initial task-lineage proposal |
+| `PC-AORG-005` | Change | User baseline finding / 2026-08-31 | Current-experience base | Future-state files preserved but paused | Accepted correction `893cde9`; exact Task Agent/Task Team parity |
+| `PC-AORG-006` | Change | User clarification / 2026-08-31 | Runtime/history and catalog shell | Root distinction and accepted Task rows | Removed generic separate `Task work`; task rows now sit inside owning Team execution; RV-002 20/20 pass |

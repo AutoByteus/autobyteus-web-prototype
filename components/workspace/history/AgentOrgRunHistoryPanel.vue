@@ -2,7 +2,9 @@
   <div class="flex h-full flex-col bg-white" data-test="agent-org-run-history">
     <div class="flex items-center justify-between border-t border-gray-200 px-3 py-2">
       <h3 class="text-sm font-semibold text-gray-700">Workspaces</h3>
-      <button type="button" class="inline-flex h-6 w-6 items-center justify-center rounded-md text-gray-500 hover:bg-indigo-50 hover:text-indigo-600" aria-label="Add workspace"><Icon icon="heroicons:plus-20-solid" class="h-4 w-4" /></button>
+      <button type="button" class="inline-flex h-6 w-6 items-center justify-center rounded-md text-gray-500 hover:bg-indigo-50 hover:text-indigo-600" aria-label="Add workspace">
+        <Icon icon="heroicons:plus-20-solid" class="h-4 w-4" />
+      </button>
     </div>
 
     <div class="min-h-0 flex-1 overflow-y-auto px-1 pb-4">
@@ -37,21 +39,71 @@
             </span>
           </button>
 
-          <div class="relative ml-[1.3rem] border-l border-slate-300 pl-3">
+          <div v-if="isOrgSelected" class="relative ml-[1.3rem] border-l border-slate-300 pl-3" data-test="history-org-execution-tree">
             <div class="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-gray-700">
               <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
               <span class="inline-flex h-4 w-4 items-center justify-center rounded bg-slate-100 text-slate-500"><Icon icon="heroicons:user-20-solid" class="h-3 w-3" /></span>
               <span class="truncate">requirements_engineer</span>
               <span class="ml-auto text-[0.625rem] font-semibold text-slate-400">AGENT</span>
             </div>
-            <div class="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-gray-700">
-              <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-              <Icon icon="heroicons:user-group-20-solid" class="h-4 w-4 text-blue-600" />
-              <span class="truncate font-semibold">Product Design & Prototyping</span>
-              <span class="ml-auto text-[0.625rem] font-semibold text-blue-600">TEAM</span>
+
+            <div class="rounded-md" data-test="history-configured-team-placement">
+              <div class="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-gray-700">
+                <Icon icon="heroicons:chevron-down-20-solid" class="h-3.5 w-3.5 text-gray-400" />
+                <Icon icon="heroicons:user-group-20-solid" class="h-4 w-4 text-blue-600" />
+                <span class="truncate font-semibold">Product Design & Prototyping</span>
+                <span class="ml-auto text-[0.625rem] font-semibold text-blue-600">TEAM</span>
+              </div>
+
+              <div class="ml-4 border-l border-slate-200 pl-2">
+                <div class="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-gray-600">
+                  <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+                  <span class="inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-100 text-[0.5625rem] font-bold text-slate-500">PP</span>
+                  <span class="truncate">product_prototyper</span>
+                  <span class="ml-auto text-[0.5625rem] font-semibold uppercase text-slate-400">Agent</span>
+                </div>
+
+                <button
+                  type="button"
+                  data-test="history-task-agent-row"
+                  class="ml-3 flex w-[calc(100%_-_0.75rem)] items-center gap-2 rounded-md bg-indigo-50/70 px-2 py-1.5 text-left text-xs text-indigo-900 ring-1 ring-indigo-100 transition hover:bg-indigo-50"
+                  :class="taskAgentSelected ? 'ring-indigo-300' : ''"
+                  title="Temporary Task Agent execution · not configured membership"
+                  @click="selectTaskFocus('task-agent-launch-audit')"
+                >
+                  <Icon icon="svg-spinners:ring-resize" class="h-3.5 w-3.5 flex-none text-indigo-600" />
+                  <span class="truncate">Task: Audit launch evidence</span>
+                </button>
+
+                <button
+                  type="button"
+                  data-test="history-task-team-row"
+                  class="mt-1 flex w-full items-center gap-2 rounded-md bg-indigo-50/70 px-2 py-1.5 text-left text-xs text-indigo-900 ring-1 ring-indigo-100 transition hover:bg-indigo-50"
+                  title="Temporary Task Team execution · not configured membership"
+                  :aria-expanded="taskTeamExpanded"
+                  @click="toggleTaskTeam"
+                >
+                  <Icon :icon="taskTeamExpanded ? 'heroicons:chevron-down-20-solid' : 'heroicons:chevron-right-20-solid'" class="h-3.5 w-3.5 flex-none text-indigo-400" />
+                  <Icon icon="svg-spinners:ring-resize" class="h-3.5 w-3.5 flex-none text-indigo-600" />
+                  <span class="truncate">Task: Accessibility evidence review</span>
+                </button>
+
+                <button
+                  v-if="taskTeamExpanded"
+                  type="button"
+                  data-test="history-task-team-child-row"
+                  class="ml-5 mt-1 flex w-[calc(100%_-_1.25rem)] items-center gap-2 rounded-md px-2 py-1.5 text-left text-xs transition"
+                  :class="taskChildSelected ? 'bg-indigo-50 text-indigo-900 ring-1 ring-indigo-200' : 'text-gray-600 hover:bg-gray-50'"
+                  @click="selectTaskFocus('task-team-accessibility:reviewer')"
+                >
+                  <Icon icon="svg-spinners:ring-resize" class="h-3.5 w-3.5 flex-none text-indigo-600" />
+                  <span class="truncate">reviewer</span>
+                </button>
+              </div>
             </div>
-            <div class="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-gray-700">
-              <span class="h-2 w-2 rounded-full bg-amber-400"></span>
+
+            <div class="mt-0.5 flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-gray-700">
+              <Icon icon="heroicons:chevron-right-20-solid" class="h-3.5 w-3.5 text-gray-400" />
               <Icon icon="heroicons:user-group-20-solid" class="h-4 w-4 text-blue-600" />
               <span class="truncate font-semibold">Software Engineering</span>
               <span class="ml-auto text-[0.625rem] font-semibold text-blue-600">TEAM</span>
@@ -74,14 +126,6 @@
           </button>
 
           <div class="mt-3 border-t border-gray-100 pt-2">
-            <div class="mb-1 flex items-center justify-between px-2 py-1"><span class="text-[0.6875rem] font-semibold uppercase tracking-wide text-gray-400">Task work</span><span class="rounded bg-amber-50 px-1.5 py-0.5 text-[0.625rem] font-semibold text-amber-700">Execution lineage</span></div>
-            <div class="mx-1 rounded-md border border-dashed border-amber-200 bg-amber-50/60 px-2 py-2">
-              <div class="flex items-center gap-2"><span class="inline-flex h-5 w-5 items-center justify-center rounded border border-dashed border-amber-300 bg-white text-amber-700"><Icon icon="heroicons:bolt-20-solid" class="h-3.5 w-3.5" /></span><span class="min-w-0 flex-1 truncate text-xs font-semibold text-slate-700">Accessibility evidence review</span><span class="text-[0.5625rem] font-bold uppercase text-amber-700">Task Team</span></div>
-              <p class="mt-1 pl-7 text-[0.625rem] text-slate-500">Created by Product Design · belongs to Org run</p>
-            </div>
-          </div>
-
-          <div class="mt-3 border-t border-gray-100 pt-2">
             <div class="mb-1 px-2 py-1 text-[0.6875rem] font-semibold uppercase tracking-wide text-gray-400">History</div>
             <div class="space-y-0.5">
               <div class="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs text-gray-600 hover:bg-gray-50"><Icon icon="heroicons:building-office-2-20-solid" class="h-4 w-4 text-violet-500" /><span class="min-w-0 flex-1 truncate">Northstar Operating Company</span><span class="rounded bg-violet-50 px-1.5 py-0.5 text-[0.5625rem] font-bold uppercase text-violet-600">Org</span><span class="text-[0.625rem] text-gray-400">3d</span></div>
@@ -95,7 +139,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRoute, useRouter } from 'vue-router';
 import { AGENT_ORG_PROTOTYPE_REVIEW_KEY } from '~/composables/useAgentOrgPrototypeReview';
@@ -103,13 +147,27 @@ import { AGENT_ORG_PROTOTYPE_REVIEW_KEY } from '~/composables/useAgentOrgPrototy
 defineEmits(['run-selected', 'run-created']);
 const route = useRoute();
 const router = useRouter();
+const taskTeamExpanded = ref(false);
 const isOrgSelected = computed(() => route.query.root !== 'team');
+const taskAgentSelected = computed(() => route.query.focus === 'task-agent-launch-audit');
+const taskChildSelected = computed(() => route.query.focus === 'task-team-accessibility:reviewer');
+
 const selectRoot = async (root: 'org' | 'team'): Promise<void> => {
+  taskTeamExpanded.value = false;
   await router.push({
     path: '/workspace',
     query: root === 'org'
       ? { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, root: 'org', org: 'software-development-department', entry: 'team:product-design-prototyping-team' }
       : { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, root: 'team', team: 'release-readiness-team' },
   });
+};
+
+const toggleTaskTeam = (): void => {
+  taskTeamExpanded.value = !taskTeamExpanded.value;
+};
+
+const selectTaskFocus = async (focus: string): Promise<void> => {
+  if (focus.startsWith('task-team-')) taskTeamExpanded.value = true;
+  await router.replace({ query: { ...route.query, focus } });
 };
 </script>
