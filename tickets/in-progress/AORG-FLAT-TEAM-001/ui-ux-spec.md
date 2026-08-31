@@ -21,7 +21,7 @@ validation of the approved state.
 - Ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
 - Ticket branch: `prototype/aorg-flat-team-001`
 - Accepted prototype base: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`
-- Runnable candidate commit: pending the RV-008 review commit
+- Runnable candidate commit: `ca518008fd126702555fe14a2887514654238ed7`
 - Review URL: `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department`
 
 ## Experience Goal

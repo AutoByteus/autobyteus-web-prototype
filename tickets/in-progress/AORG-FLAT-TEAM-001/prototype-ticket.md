@@ -27,7 +27,7 @@
 - Baseline acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction/product-acceptance/product-acceptance.md`
 - Baseline gap record: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/baseline-gap-record.md`
 - Requirements package: `/home/autobyteus/workspace/.codex/worktrees/flat-agent-organization-model/tickets/in-progress/flat-agent-organization-model`
-- Current review revision: `RV-008`; runnable candidate and non-normative review evidence are pending the RV-008 ticket-branch review commit.
+- Current review revision: `RV-008`; runnable candidate commit `ca518008fd126702555fe14a2887514654238ed7` and its review evidence remain non-normative pending user approval.
 
 ## Runtime Isolation
 
