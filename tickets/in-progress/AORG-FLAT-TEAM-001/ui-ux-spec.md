@@ -2,18 +2,19 @@
 
 ## Status And Approval
 
-- Status: `Awaiting User Review — draft and non-normative`
+- Status: `Approved — normative UI/UX supplement`
 - Ticket: `AORG-FLAT-TEAM-001`
 - Prototype revision: `RV-012`
 - Requirements authority: approved `RER-013`, commit `86df311c4`
-- Runnable candidate commit: `891b4e667d51fffb92ebd85dd2dc90a8e0afcf2e`
-- Explicit final approval: `Pending`
-- Normative `VIS-*` references: `Pending approval`
+- Approved runnable behavior commit: `891b4e667d51fffb92ebd85dd2dc90a8e0afcf2e`
+- Post-approval visual-reference capture commit: `3de2c08b6f3d8cfdb75714edaa88b00d04d67aaf`
+- Explicit final approval: `Approved on 2026-08-31`; see `user-decision-record.md`
+- Normative `VIS-*` references: `VIS-001`–`VIS-020`; see `visual-references/visual-reference-manifest.json`
 
-This specification describes the runnable review candidate. It becomes a
-requirements-defining UI/UX supplement only after explicit user approval and
-final validation. All current `REV-*` screenshots are non-normative review
-evidence.
+This specification and `VIS-001`–`VIS-020` are the approved, normative
+Product UI/UX implementation references. The user approved RV-012 on
+2026-08-31 after reviewing the AgentTeam and AgentOrg experience. Historical
+`REV-*` screenshots remain non-normative review evidence.
 
 ## Provenance
 
@@ -159,42 +160,49 @@ the adjacent Team member and Team detail.
 | Referential integrity | Stale endpoint visibility and blocked save | Server-side transactions and migrations |
 
 Fixture names, messages, run IDs, status, file content, and timestamps are
-illustrative. The visible interaction model and layout remain unapproved until
-explicit user confirmation.
+illustrative. The visible interaction model and layout were explicitly approved
+on 2026-08-31 and are normative through this specification and `VIS-*` set.
 
-## Non-Normative Review Evidence
+## Normative Final Visual References
 
-All captures are under `review-evidence/rv-012/`; the manifest is
-`review-evidence/rv-012/capture-manifest.json`.
+The post-approval references are under `visual-references/`; hashes, routes,
+viewports, state descriptions, and fixture boundaries are recorded in
+`visual-references/visual-reference-manifest.json`.
 
-| Review ID | Surface/state |
+| Final IDs | Approved surface/state |
 | --- | --- |
-| `REV-AORG-RV12-001`–`002`, `018`–`019`, `011`–`013`, `016` | Preserved flat AgentTeam catalog, builder, detail/members, Agent detail, Team-local Handoffs, and narrow builder |
-| `REV-AORG-RV12-003`–`005`, `014`–`015`, `020` | AgentOrg catalog, authoring, detail, clean Handoffs, Handoff editor, and narrow in-flow member picker |
-| `REV-AORG-RV12-006` | AgentOrg Run opens configuration directly |
-| `REV-AORG-RV12-007` | Mounted Team/Agent placement override hierarchy |
-| `REV-AORG-RV12-008` | Full AgentOrg scope active with no initial focus and production-style hierarchy branches |
-| `REV-AORG-RV12-009` | Exact direct Agent focus from the sidebar |
-| `REV-AORG-RV12-010` | Direct Team focus through its coordinator |
-| `REV-AORG-RV12-017` | Narrow AgentOrg configuration without overlay |
+| `VIS-001`–`VIS-003` | Flat AgentTeam catalog, Agent-only authoring, and preserved Team detail |
+| `VIS-004`–`VIS-006` | Team-local From/To/When detail, preserved member cards, and Agent detail navigation |
+| `VIS-007`–`VIS-008` | Narrow Team builder and Team-local Handoff authoring |
+| `VIS-009`–`VIS-012` | AgentOrg catalog, desktop/narrow authoring, and clean detail |
+| `VIS-013` | AgentOrg From/To/When detail with no visible Handoff or condition ordinals |
+| `VIS-014`–`VIS-015` | One AgentOrg configuration and mounted Team/exact-Agent overrides |
+| `VIS-016`–`VIS-018` | Full-scope unfocused activation, exact direct-Agent focus, and direct-Team coordinator focus |
+| `VIS-019` | AgentOrg Handoff authoring with CRUD/reorder/atomic-save treatment |
+| `VIS-020` | Narrow AgentOrg configuration without overlay or horizontal overflow |
 
-Final `VIS-*` references are captured only after explicit approval and final
-validation.
+Every visible detail is requirements-defining by default. Deterministic fixture
+names, messages, run IDs, timestamps, paths, and record values are illustrative;
+the layout, hierarchy, styling, labels, controls, feedback, responsive behavior,
+and state meanings are normative.
 
-## Review Questions
+## Historical Review Evidence
 
-1. Does AgentOrg Run now enter the correct single configuration surface without a pre-launch member selector?
-2. Is the Member overrides hierarchy clear and restrained enough while showing the Org → Team → exact Agent configuration precedence?
-3. After launch, is the unfocused full scope understandable, and do direct Agent/Team sidebar selections behave as expected?
-4. Does Team selection correctly enter through the Team coordinator without implying an Org coordinator or fallback?
-5. Do the Team, Org authoring, Handoff, task-lineage, Files, and narrow responsive surfaces preserve the accepted product precisely?
+The RV-012 `REV-*` captures remain under `review-evidence/rv-012/` as
+non-normative review-history evidence. They are not substitutes for the final
+`VIS-*` references.
+
+## Approved Review Results
+
+The user approved the complete RV-012 AgentTeam and AgentOrg experience after reviewing the configuration-first launch, mounted override hierarchy, full-scope unfocused activation, exact Agent/Team sidebar focus, coordinator ingress, clean From/To/When Handoffs, preserved baseline surfaces, Workspace tree treatment, and narrow responsive states. No Product UI decision remains open in this ticket.
 
 ## Consistency Check
 
 - Corrected baseline accepted: `Yes`
 - Requirements authority: `RER-013`
 - RV-012 browser validation: `59/59 pass`, `20` captures, zero runtime errors
+- Final package integrity: `6/6 pass`
 - Typecheck/lint/tests/boundaries/build: `Pass`
 - Desktop and narrow validation: `Yes`
-- Explicit final approval: `No — pending`
-- Normative final references: `No — correctly pending approval`
+- Explicit final approval: `Yes — 2026-08-31`
+- Normative final references: `Yes — VIS-001–VIS-020`

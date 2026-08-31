@@ -43,6 +43,7 @@ the named gaps.
 - Source/prototype comparison: `5/5` exact; all selected screenshot pairs byte-identical; zero browser errors.
 - Product live journeys, typecheck, lint, tests, boundaries, accepted hierarchy regression, and build: `Pass`.
 
-The existing future-state files and interim review captures remain unapproved.
-They are now being revised and revalidated against the accepted correction
-rather than being used to fill the current-experience evidence gap.
+Historical note: the future-state files and interim captures were unapproved at
+the time of this correction. They were subsequently reconciled, revised,
+validated, and approved as RV-012 on 2026-08-31; this record remains baseline
+correction evidence only.

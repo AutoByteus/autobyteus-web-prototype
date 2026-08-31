@@ -39,7 +39,7 @@ source/prototype comparison for these items.
 - Delegated Bootstrapper task: `task_06c5ed4cdc58403192c82c7b0c28da5b`
 - Active Bootstrapper task ingress: `prototype_bootstrapper_d109c470f86a40e486047cf9c2c4d50a`
 - Future-state reconciliation commit: `3e81f334f131992a06936886c02b4493d1d43349`
-- Future-state review status: RV-009 construction resumed; no RV-009 evidence is accepted or normative yet.
+- Historical future-state review status: RV-009 construction resumed at this point; RV-009 was later rejected/superseded, and final RV-012 was approved on 2026-08-31.
 
 ## Resolution
 

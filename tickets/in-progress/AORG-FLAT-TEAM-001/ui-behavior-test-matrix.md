@@ -34,8 +34,9 @@
 - Machine result: `browser-validation-rv-012.json`
 - Capture manifest: `review-evidence/rv-012/capture-manifest.json`
 - Static validation: `validation-rv-012/static-validation.txt`
+- Final package validation: `validation/final-package/final-package-validation.json` and `validation/final-package/static-validation.txt`
 - Result: `59/59` checks pass; `20` captures; `0` runtime errors; typecheck, lint, `12/12` tests, `13/13` boundaries, and build pass.
 
-## Pending
+## Approval
 
-Explicit user approval of RV-012. Review images remain non-normative until then.
+RV-012 was explicitly approved on `2026-08-31`. Post-approval normative references are `visual-references/VIS-001`–`VIS-020`; historical `REV-*` images remain non-normative.

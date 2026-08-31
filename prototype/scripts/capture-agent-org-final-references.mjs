@@ -2,7 +2,9 @@ import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-const ticketRoot = path.resolve('tickets/in-progress/AORG-FLAT-TEAM-001');
+const inProgressRoot = path.resolve('tickets/in-progress/AORG-FLAT-TEAM-001');
+const doneRoot = path.resolve('tickets/done/AORG-FLAT-TEAM-001');
+const ticketRoot = await fs.access(doneRoot).then(() => doneRoot).catch(() => inProgressRoot);
 const reviewRoot = path.join(ticketRoot, 'review-evidence', 'rv-012');
 const visualRoot = path.join(ticketRoot, 'visual-references');
 const validationPath = path.join(ticketRoot, 'browser-validation-rv-012.json');
@@ -68,7 +70,7 @@ const manifest = {
   outcome: 'Prototype Completed',
   approvedPrototypeRevision: 'RV-012',
   approvedRunnableCommit: '891b4e667d51fffb92ebd85dd2dc90a8e0afcf2e',
-  userApproval: 'user-decision-record.md',
+  userApproval: '../user-decision-record.md',
   requirementsAuthority: { revision: 'RER-013', commit: '86df311c46ac407e52612a2150422756462a891c' },
   capturedAfterApproval: true,
   capturedAt: validation.generatedAt,

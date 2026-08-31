@@ -3,7 +3,7 @@
   "outcome": "Prototype Completed",
   "approvedPrototypeRevision": "RV-012",
   "approvedRunnableCommit": "891b4e667d51fffb92ebd85dd2dc90a8e0afcf2e",
-  "userApproval": "user-decision-record.md",
+  "userApproval": "../user-decision-record.md",
   "requirementsAuthority": {
     "revision": "RER-013",
     "commit": "86df311c46ac407e52612a2150422756462a891c"

@@ -26,7 +26,7 @@ action names, and validation.
 - Trigger: user rejection of the RV-009 pre-launch exact-entry selector
 - Historical rejected evidence: `review-evidence/rv-009/REV-AORG-RV9-006-agent-org-exact-entry-launch.png`
 - Resolution: approved `RER-013`, commit `86df311c4`
-- Status: `Resolved; Product response implemented in RV-012 and awaiting user review`
+- Status: `Resolved; Product response implemented and user-approved in RV-012`
 
 ### Approved Canonical Resolution
 
@@ -48,5 +48,6 @@ action names, and validation.
 - Preserved the accepted Agent/Team conversation workspaces, Workspace Files tree, Team coordinator ingress, standalone Team grouping, and task-scoped lineage.
 - Added desktop and `390×844` review evidence and deterministic checks for no overlay, no implicit focus, exact Agent focus, Team coordinator focus, and task lineage.
 
-No open requirement-impact finding remains. The concrete UI/UX proposal remains
-non-normative until the user explicitly approves RV-012.
+No open requirement-impact finding remains. The RV-012 Product response was
+explicitly approved on 2026-08-31 and is normative through `ui-ux-spec.md` and
+`visual-references/VIS-001`–`VIS-020`.

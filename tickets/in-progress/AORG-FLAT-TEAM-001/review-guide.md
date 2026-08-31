@@ -1,14 +1,16 @@
-# AORG-FLAT-TEAM-001 — RV-012 Review Guide
+# AORG-FLAT-TEAM-001 — RV-012 Approved Review Record
 
 ## Status
 
-- Review state: `Awaiting User Review`
+- Review state: `Approved on 2026-08-31`
 - Prototype revision: `RV-012`
 - Requirements authority: `RER-013`, commit `86df311c4`
-- Runnable candidate: `891b4e667d51fffb92ebd85dd2dc90a8e0afcf2e`
+- Approved runnable behavior: `891b4e667d51fffb92ebd85dd2dc90a8e0afcf2e`
+- Post-approval visual-reference capture: `3de2c08b6f3d8cfdb75714edaa88b00d04d67aaf`
 - Review server: `http://127.0.0.1:4194`
 - Browser validation: `59/59` pass, `20` captures, zero runtime errors
 - Static validation: diff check, typecheck, lint, `12/12` tests, `13/13` boundaries, and build pass
+- Final package integrity: `6/6` approval/specification/browser/visual/provenance checks pass
 
 ## Primary Review — AgentOrg Run
 
@@ -65,7 +67,7 @@ At `390×844`, review:
 
 None uses a modal overlay or document-level horizontal overflow.
 
-## Evidence
+## Approved Evidence
 
 - Manifest: `review-evidence/rv-012/capture-manifest.json`
 - Configuration: `review-evidence/rv-012/REV-AORG-RV12-006-agent-org-configuration.png`
@@ -76,5 +78,4 @@ None uses a modal overlay or document-level horizontal overflow.
 - Team coordinator focus: `review-evidence/rv-012/REV-AORG-RV12-010-agent-org-team-coordinator-focus.png`
 - Narrow configuration: `review-evidence/rv-012/REV-AORG-RV12-017-agent-org-configuration-narrow.png`
 
-These are non-normative review captures. Final `VIS-*` images are created only
-after explicit approval and final validation.
+The listed `REV-*` files are historical, non-normative review captures. The approved normative references are `visual-references/VIS-001`–`VIS-020`; see `visual-references/README.md` and `visual-references/visual-reference-manifest.json`. The approval statement is recorded in `user-decision-record.md`.
