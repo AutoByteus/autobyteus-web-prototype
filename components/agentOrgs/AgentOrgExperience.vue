@@ -55,12 +55,6 @@
                   </span>
                 </div>
 
-                <dl class="mt-4 grid grid-cols-2 gap-3 border-t border-slate-200 pt-3 text-xs text-slate-600 sm:grid-cols-4">
-                  <div><dt class="font-medium text-slate-500">Agents</dt><dd class="mt-0.5 text-sm font-semibold text-slate-800">{{ memberCounts(org).agents }}</dd></div>
-                  <div><dt class="font-medium text-slate-500">Teams</dt><dd class="mt-0.5 text-sm font-semibold text-slate-800">{{ memberCounts(org).teams }}</dd></div>
-                  <div><dt class="font-medium text-slate-500">Handoffs</dt><dd class="mt-0.5 text-sm font-semibold text-slate-800">{{ org.handoffs }}</dd></div>
-                  <div><dt class="font-medium text-slate-500">Runs</dt><dd class="mt-0.5 text-sm font-semibold text-slate-800">{{ org.runs }}</dd></div>
-                </dl>
               </article>
             </div>
           </section>
@@ -80,12 +74,6 @@
               <div class="min-w-0">
                 <h1 class="text-3xl font-bold tracking-tight text-slate-950">{{ selectedOrg.name }}</h1>
                 <span class="mt-1 inline-flex items-center rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">{{ selectedOrg.category }}</span>
-                <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">{{ selectedOrg.description }}</p>
-                <div class="mt-3 flex flex-wrap gap-2 text-xs text-slate-600">
-                  <span class="rounded-full bg-slate-100 px-2.5 py-1">Agents: {{ directAgents.length }}</span>
-                  <span class="rounded-full bg-slate-100 px-2.5 py-1">Teams: {{ referencedTeams.length }}</span>
-                  <span class="rounded-full bg-slate-100 px-2.5 py-1">Runs: {{ selectedOrg.runs }}</span>
-                </div>
               </div>
             </div>
             <div class="flex shrink-0 gap-2">
@@ -99,12 +87,6 @@
           <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <h2 class="text-xl font-semibold text-slate-900">Description</h2>
             <p class="mt-2 text-sm leading-6 text-slate-600">{{ selectedOrg.description }}</p>
-            <dl class="mt-4 grid gap-4 border-t border-slate-200 pt-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Agents</dt><dd class="mt-1 text-sm text-slate-800">{{ directAgents.length }}</dd></div>
-              <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Teams</dt><dd class="mt-1 text-sm text-slate-800">{{ referencedTeams.length }}</dd></div>
-              <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Handoffs</dt><dd class="mt-1 text-sm text-slate-800">{{ selectedOrg.handoffs }}</dd></div>
-              <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Last run</dt><dd class="mt-1 text-sm text-slate-800">{{ selectedOrg.lastRun }}</dd></div>
-            </dl>
           </section>
 
           <section class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
@@ -112,22 +94,16 @@
             <div class="grid divide-y divide-slate-100 lg:grid-cols-2 lg:divide-x lg:divide-y-0">
               <div class="p-5">
                 <div class="mb-4 flex items-center gap-2"><Icon icon="heroicons:user-20-solid" class="h-5 w-5 text-slate-500" /><h3 class="font-semibold text-slate-900">Agents ({{ directAgents.length }})</h3></div>
-                <ul class="space-y-3"><li v-for="agent in directAgents" :key="agent.id" class="flex items-center gap-3 rounded-lg border border-slate-200 p-3"><span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600">{{ agent.initials }}</span><div class="min-w-0"><p class="truncate text-sm font-semibold text-slate-900">{{ agent.name }}</p><p class="text-xs text-slate-500">/{{ agent.name }}</p></div></li></ul>
+                <ul class="space-y-3"><li v-for="agent in directAgents" :key="agent.id" class="flex items-center gap-3 rounded-lg border border-slate-200 p-3"><span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600">{{ agent.initials }}</span><p class="min-w-0 truncate text-sm font-semibold text-slate-900">{{ agent.name }}</p></li></ul>
               </div>
               <div class="p-5">
                 <div class="mb-4 flex items-center gap-2"><Icon icon="heroicons:user-group-20-solid" class="h-5 w-5 text-blue-600" /><h3 class="font-semibold text-slate-900">Teams ({{ referencedTeams.length }})</h3></div>
-                <ul class="space-y-3"><li v-for="team in referencedTeams" :key="team.id" class="rounded-lg border border-blue-200 bg-blue-50/50 p-3"><div class="flex items-center gap-3"><span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white text-blue-700"><Icon icon="heroicons:user-group-20-solid" class="h-5 w-5" /></span><div class="min-w-0 flex-1"><p class="truncate text-sm font-semibold text-slate-900">{{ team.name }}</p><p class="truncate text-xs text-slate-500">Coordinator: {{ agentById(team.coordinatorId).name }}</p></div><button type="button" class="text-xs font-semibold text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="openTeam(team.id)">View ↗</button></div><p class="mt-2 text-xs text-blue-800">Same Team definition · standalone history preserved</p></li></ul>
+                <ul class="space-y-3"><li v-for="team in referencedTeams" :key="team.id" class="rounded-lg border border-blue-200 bg-blue-50/50 p-3"><div class="flex items-center gap-3"><span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-white text-blue-700"><Icon icon="heroicons:user-group-20-solid" class="h-5 w-5" /></span><div class="min-w-0 flex-1"><p class="truncate text-sm font-semibold text-slate-900">{{ team.name }}</p><p class="truncate text-xs text-slate-500">Coordinator: {{ agentById(team.coordinatorId).name }}</p></div><button type="button" class="text-xs font-semibold text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="openTeam(team.id)">View ↗</button></div></li></ul>
               </div>
             </div>
           </section>
 
-          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div class="flex items-start justify-between gap-4"><div><h2 class="text-xl font-semibold text-slate-900">Handoffs</h2><p class="mt-1 text-sm text-slate-500">Routing rules between this organization's members.</p></div><span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">{{ selectedOrg.handoffs }} rules</span></div>
-            <div class="mt-4 grid gap-3 md:grid-cols-2">
-              <div class="rounded-lg border border-slate-200 p-4"><p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Requirements ready</p><p class="mt-2 text-sm font-semibold text-slate-900">requirements_engineer → Product Design Team</p><p class="mt-1 font-mono text-xs text-slate-500">/product_design_prototyping_team</p></div>
-              <div class="rounded-lg border border-slate-200 p-4"><p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Prototype approved</p><p class="mt-2 text-sm font-semibold text-slate-900">product_prototyper → Software Engineering Team</p><p class="mt-1 font-mono text-xs text-slate-500">/software_engineering_team</p></div>
-            </div>
-          </section>
+          <HandoffManager :model-value="detailOrgHandoffs" :from-options="detailOrgHandoffOptions.from" :to-options="detailOrgHandoffOptions.to" mode="view" scope="org" />
         </div>
       </template>
 
@@ -140,12 +116,13 @@
           <section class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
             <div class="border-b border-slate-200 px-5 py-4"><h2 class="text-xl font-semibold text-slate-900">Members</h2></div>
             <div class="grid lg:grid-cols-2 lg:divide-x lg:divide-slate-100">
-              <div class="p-5"><div class="flex items-center justify-between gap-4"><h3 class="font-semibold text-slate-900">Agents</h3><button type="button" class="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Icon icon="heroicons:plus-20-solid" class="h-4 w-4" /> Add Agent</button></div><ul class="mt-4 space-y-2"><li v-for="agentId in formAgentIds" :key="agentId" class="flex items-center gap-3 rounded-lg border border-slate-200 p-3"><span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600">{{ agentById(agentId).initials }}</span><div class="min-w-0 flex-1"><p class="truncate text-sm font-semibold text-slate-900">{{ agentById(agentId).name }}</p><p class="text-xs text-slate-500">/{{ agentById(agentId).name }}</p></div><button type="button" class="rounded text-slate-400 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-label="`Remove ${agentById(agentId).name}`"><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" /></button></li></ul></div>
-              <div class="p-5"><div class="flex items-center justify-between gap-4"><h3 class="font-semibold text-slate-900">Teams</h3><button type="button" class="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"><Icon icon="heroicons:plus-20-solid" class="h-4 w-4" /> Add Team</button></div><ul class="mt-4 space-y-2"><li v-for="teamId in formTeamIds" :key="teamId" class="rounded-lg border border-blue-200 bg-blue-50/50 p-3"><div class="flex items-center gap-3"><span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white text-blue-700"><Icon icon="heroicons:user-group-20-solid" class="h-4 w-4" /></span><div class="min-w-0 flex-1"><p class="truncate text-sm font-semibold text-slate-900">{{ teamById(teamId).name }}</p><p class="truncate text-xs text-slate-500">Coordinator: {{ agentById(teamById(teamId).coordinatorId).name }}</p></div><button type="button" class="rounded text-slate-400 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-label="`Remove ${teamById(teamId).name}`"><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" /></button></div><p class="mt-2 text-[0.6875rem] font-semibold text-blue-700">Same definition · prior history retained</p></li></ul></div>
+              <div class="p-5"><div class="flex items-center justify-between gap-4"><h3 class="font-semibold text-slate-900">Agents</h3><button type="button" class="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:text-slate-400" :disabled="!nextOrgAgent" @click="addOrgAgent"><Icon icon="heroicons:plus-20-solid" class="h-4 w-4" /> Add Agent</button></div><ul class="mt-4 space-y-2"><li v-for="agentId in formAgentIds" :key="agentId" class="flex items-center gap-3 rounded-lg border border-slate-200 p-3"><span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600">{{ agentById(agentId).initials }}</span><p class="min-w-0 flex-1 truncate text-sm font-semibold text-slate-900">{{ agentById(agentId).name }}</p><button type="button" class="rounded text-slate-400 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-label="`Remove ${agentById(agentId).name}`" @click="removeOrgAgent(agentId)"><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" /></button></li></ul></div>
+              <div class="p-5"><div class="flex items-center justify-between gap-4"><h3 class="font-semibold text-slate-900">Teams</h3><button type="button" class="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:text-slate-400" :disabled="!nextOrgTeam" @click="addOrgTeam"><Icon icon="heroicons:plus-20-solid" class="h-4 w-4" /> Add Team</button></div><ul class="mt-4 space-y-2"><li v-for="teamId in formTeamIds" :key="teamId" class="rounded-lg border border-blue-200 bg-blue-50/50 p-3"><div class="flex items-center gap-3"><span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white text-blue-700"><Icon icon="heroicons:user-group-20-solid" class="h-4 w-4" /></span><div class="min-w-0 flex-1"><p class="truncate text-sm font-semibold text-slate-900">{{ teamById(teamId).name }}</p><p class="truncate text-xs text-slate-500">Coordinator: {{ agentById(teamById(teamId).coordinatorId).name }}</p></div><button type="button" class="rounded text-slate-400 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-label="`Remove ${teamById(teamId).name}`" @click="removeOrgTeam(teamId)"><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" /></button></div></li></ul></div>
             </div>
           </section>
 
-          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm"><div class="flex items-center justify-between gap-4"><div><h2 class="text-xl font-semibold text-slate-900">Handoffs</h2><p class="mt-1 text-sm text-slate-500">Routing rules between this organization's members.</p></div><button type="button" class="text-sm font-semibold text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">Add rule</button></div><div class="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">8 rules</div></section>
+          <HandoffManager ref="orgHandoffManager" v-model="formOrgHandoffs" :from-options="formOrgHandoffOptions.from" :to-options="formOrgHandoffOptions.to" mode="edit" scope="org" />
+          <section v-if="saveError" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700" role="alert">{{ saveError }}</section>
           <section v-if="saved" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800" role="status">Saved locally for this prototype.</section>
           <div class="flex justify-end gap-3"><button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="go('org-list')">Cancel</button><button type="submit" class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">{{ view === 'org-create' ? 'Create Org' : 'Save changes' }}</button></div>
         </form>
@@ -170,16 +147,22 @@
 import { computed, ref, watch } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRoute, useRouter } from 'vue-router';
-import { agentOrgs, agentById, teamById, orgById, type AgentOrgFixture } from '~/prototype/aorg-flat-team-fixtures';
+import HandoffManager from '~/components/handoffs/HandoffManager.vue';
+import { agents, flatTeams, agentOrgs, agentById, teamById, orgById } from '~/prototype/aorg-flat-team-fixtures';
+import { buildOrgHandoffOptions, cloneHandoffs, orgHandoffsFor, type PrototypeHandoff } from '~/prototype/aorg-handoff-model';
 import { AGENT_ORG_PROTOTYPE_REVIEW_KEY } from '~/composables/useAgentOrgPrototypeReview';
 
 type OrgView = 'org-list' | 'org-detail' | 'org-create' | 'org-edit';
+type HandoffManagerExpose = { validateAll: () => boolean; clearStatus: () => void };
 const route = useRoute();
 const router = useRouter();
 const search = ref('');
 const reloading = ref(false);
 const entry = ref('');
 const saved = ref(false);
+const saveError = ref('');
+const orgHandoffManager = ref<HandoffManagerExpose | null>(null);
+const savedOrgHandoffs = ref<Record<string, PrototypeHandoff[]>>({});
 const view = computed<OrgView>(() => {
   const candidate = String(route.query.view || 'org-list') as OrgView;
   return ['org-list', 'org-detail', 'org-create', 'org-edit'].includes(candidate) ? candidate : 'org-list';
@@ -204,6 +187,11 @@ const reloadOrgs = (): void => {
 };
 const directAgents = computed(() => selectedOrg.value.members.filter((member) => member.kind === 'agent').map((member) => agentById(member.ref)));
 const referencedTeams = computed(() => selectedOrg.value.members.filter((member) => member.kind === 'team').map((member) => teamById(member.ref)));
+const detailOrgHandoffOptions = computed(() => buildOrgHandoffOptions(
+  selectedOrg.value.members.filter((member) => member.kind === 'agent').map((member) => member.ref),
+  selectedOrg.value.members.filter((member) => member.kind === 'team').map((member) => member.ref),
+));
+const detailOrgHandoffs = computed(() => savedOrgHandoffs.value[selectedOrg.value.id] ?? orgHandoffsFor(selectedOrg.value.id));
 const launchOpen = computed(() => route.query.launch === '1');
 const launchOrg = computed(() => orgById(String(route.query.id || selectedOrg.value.id)));
 const launchAgents = computed(() => launchOrg.value.members.filter((member) => member.kind === 'agent').map((member) => agentById(member.ref)));
@@ -220,6 +208,10 @@ const formCategory = ref(selectedOrg.value.category);
 const formDescription = ref(selectedOrg.value.description);
 const formAgentIds = ref(['requirements-engineer']);
 const formTeamIds = ref(['product-design-prototyping-team', 'software-engineering-team']);
+const formOrgHandoffs = ref<PrototypeHandoff[]>([]);
+const formOrgHandoffOptions = computed(() => buildOrgHandoffOptions(formAgentIds.value, formTeamIds.value));
+const nextOrgAgent = computed(() => agents.find((agent) => !formAgentIds.value.includes(agent.id)));
+const nextOrgTeam = computed(() => flatTeams.find((team) => !formTeamIds.value.includes(team.id)));
 watch([view, selectedOrg], () => {
   const org = selectedOrg.value;
   formName.value = view.value === 'org-create' ? 'Customer Experience Organization' : org.name;
@@ -227,10 +219,11 @@ watch([view, selectedOrg], () => {
   formDescription.value = view.value === 'org-create' ? 'A focused collaboration scope combining reusable Teams with an independent requirements Agent.' : org.description;
   formAgentIds.value = org.members.filter((member) => member.kind === 'agent').map((member) => member.ref);
   formTeamIds.value = org.members.filter((member) => member.kind === 'team').map((member) => member.ref);
+  formOrgHandoffs.value = view.value === 'org-create' ? [] : cloneHandoffs(savedOrgHandoffs.value[org.id] ?? orgHandoffsFor(org.id));
   saved.value = false;
+  saveError.value = '';
 }, { immediate: true });
 
-const memberCounts = (org: AgentOrgFixture) => ({ agents: org.members.filter((member) => member.kind === 'agent').length, teams: org.members.filter((member) => member.kind === 'team').length });
 const go = async (nextView: OrgView, id?: string): Promise<void> => router.push({ path: '/agent-orgs', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: nextView, ...(id ? { id } : {}) } });
 const openTeam = async (id: string): Promise<void> => router.push({ path: '/agent-teams', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: 'team-detail', id } });
 const openLaunch = async (id: string): Promise<void> => {
@@ -242,8 +235,32 @@ const startRun = async (): Promise<void> => {
   if (!entry.value) return;
   await router.push({ path: '/workspace', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, root: 'org', org: launchOrg.value.id, entry: entry.value } });
 };
+const addOrgAgent = (): void => {
+  if (nextOrgAgent.value) formAgentIds.value.push(nextOrgAgent.value.id);
+  saved.value = false;
+};
+const removeOrgAgent = (id: string): void => {
+  formAgentIds.value = formAgentIds.value.filter((candidate) => candidate !== id);
+  saved.value = false;
+};
+const addOrgTeam = (): void => {
+  if (nextOrgTeam.value) formTeamIds.value.push(nextOrgTeam.value.id);
+  saved.value = false;
+};
+const removeOrgTeam = (id: string): void => {
+  formTeamIds.value = formTeamIds.value.filter((candidate) => candidate !== id);
+  saved.value = false;
+};
 const saveOrg = (): void => {
+  if (!orgHandoffManager.value?.validateAll()) {
+    saved.value = false;
+    saveError.value = 'Resolve the highlighted handoffs before saving this organization.';
+    return;
+  }
+  const saveId = view.value === 'org-create' ? 'customer-experience-organization' : selectedOrg.value.id;
+  savedOrgHandoffs.value[saveId] = cloneHandoffs(formOrgHandoffs.value);
+  orgHandoffManager.value.clearStatus();
+  saveError.value = '';
   saved.value = true;
-  window.setTimeout(() => void go('org-detail', selectedOrg.value.id), 450);
 };
 </script>

@@ -144,27 +144,7 @@
             <p class="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">{{ selectedTeam.instructions }}</p>
           </section>
 
-          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <h2 class="text-xl font-semibold text-slate-900">Handoffs</h2>
-                <p class="mt-1 text-sm text-slate-500">Routing rules that remain with this Team wherever it runs.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">{{ selectedTeam.handoffs }} rules</span>
-            </div>
-            <div class="mt-4 grid gap-3 md:grid-cols-2">
-              <div class="rounded-lg border border-slate-200 p-4">
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">When review is ready</p>
-                <p class="mt-2 text-sm font-semibold text-slate-900">Agent → coordinator</p>
-                <p class="mt-1 font-mono text-xs text-slate-500">/product_prototyper</p>
-              </div>
-              <div class="rounded-lg border border-slate-200 p-4">
-                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">When baseline is needed</p>
-                <p class="mt-2 text-sm font-semibold text-slate-900">Coordinator → Agent</p>
-                <p class="mt-1 font-mono text-xs text-slate-500">/prototype_bootstrapper</p>
-              </div>
-            </div>
-          </section>
+          <HandoffManager :model-value="detailTeamHandoffs" :from-options="detailTeamHandoffOptions.from" :to-options="detailTeamHandoffOptions.to" mode="view" scope="team" />
 
           <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <h2 class="text-xl font-semibold text-slate-900">Members ({{ selectedTeam.agents.length }})</h2>
@@ -321,10 +301,8 @@
             </div>
           </section>
 
-          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div><h2 class="font-semibold text-slate-900">Handoffs</h2><p class="mt-1 text-sm text-slate-500">Routing rules remain unchanged when an Organization references this Team.</p></div>
-            <div class="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">{{ selectedTeam.handoffs }} existing Agent-to-Agent rules will be preserved.</div>
-          </section>
+          <HandoffManager ref="teamHandoffManager" v-model="formTeamHandoffs" :from-options="formTeamHandoffOptions.from" :to-options="formTeamHandoffOptions.to" mode="edit" scope="team" />
+          <p v-if="saveError" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700" role="alert">{{ saveError }}</p>
 
           <footer class="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
             <div class="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">
@@ -348,22 +326,30 @@
 import { computed, ref, watch } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRoute, useRouter } from 'vue-router';
+import HandoffManager from '~/components/handoffs/HandoffManager.vue';
 import { agents, flatTeams, agentById, teamById } from '~/prototype/aorg-flat-team-fixtures';
+import { buildTeamHandoffOptions, cloneHandoffs, teamHandoffsFor, type PrototypeHandoff } from '~/prototype/aorg-handoff-model';
 import { AGENT_ORG_PROTOTYPE_REVIEW_KEY } from '~/composables/useAgentOrgPrototypeReview';
 
 type TeamView = 'team-list' | 'team-detail' | 'team-create' | 'team-edit';
+type HandoffManagerExpose = { validateAll: () => boolean; clearStatus: () => void };
 const route = useRoute();
 const router = useRouter();
 const search = ref('');
 const reloading = ref(false);
 const saved = ref(false);
+const saveError = ref('');
 const agentSearch = ref('');
+const teamHandoffManager = ref<HandoffManagerExpose | null>(null);
+const savedTeamHandoffs = ref<Record<string, PrototypeHandoff[]>>({});
 
 const view = computed<TeamView>(() => {
   const candidate = String(route.query.view || 'team-list') as TeamView;
   return ['team-list', 'team-detail', 'team-create', 'team-edit'].includes(candidate) ? candidate : 'team-list';
 });
 const selectedTeam = computed(() => teamById(String(route.query.id || flatTeams[0].id)));
+const detailTeamHandoffOptions = computed(() => buildTeamHandoffOptions(selectedTeam.value.agents));
+const detailTeamHandoffs = computed(() => savedTeamHandoffs.value[selectedTeam.value.id] ?? teamHandoffsFor(selectedTeam.value.id));
 const filteredTeams = computed(() => {
   const query = search.value.trim().toLowerCase();
   return query ? flatTeams.filter((team) => `${team.name} ${team.description}`.toLowerCase().includes(query)) : flatTeams;
@@ -389,6 +375,8 @@ const formDescription = ref(selectedTeam.value.description);
 const formInstructions = ref('Coordinate work through the selected Agent coordinator.');
 const formAgents = ref([...selectedTeam.value.agents]);
 const formCoordinator = ref(selectedTeam.value.coordinatorId);
+const formTeamHandoffs = ref<PrototypeHandoff[]>([]);
+const formTeamHandoffOptions = computed(() => buildTeamHandoffOptions(formAgents.value));
 const libraryAgents = computed(() => {
   const query = agentSearch.value.trim().toLowerCase();
   return query ? agents.filter((agent) => `${agent.name} ${agent.description}`.toLowerCase().includes(query)) : agents;
@@ -402,6 +390,7 @@ watch([view, selectedTeam], () => {
     formInstructions.value = 'Coordinate research and prototype work through the selected Agent coordinator.';
     formAgents.value = ['product-prototyper', 'requirements-engineer'];
     formCoordinator.value = 'product-prototyper';
+    formTeamHandoffs.value = [];
   } else {
     formName.value = selectedTeam.value.name;
     formCategory.value = selectedTeam.value.category;
@@ -409,8 +398,10 @@ watch([view, selectedTeam], () => {
     formInstructions.value = 'Coordinate work through the selected Agent coordinator while preserving its handoff rules.';
     formAgents.value = [...selectedTeam.value.agents];
     formCoordinator.value = selectedTeam.value.coordinatorId;
+    formTeamHandoffs.value = cloneHandoffs(savedTeamHandoffs.value[selectedTeam.value.id] ?? teamHandoffsFor(selectedTeam.value.id));
   }
   saved.value = false;
+  saveError.value = '';
   agentSearch.value = '';
 }, { immediate: true });
 
@@ -421,6 +412,7 @@ const applyTeamTemplate = (): void => {
   formInstructions.value = 'Coordinate research and synthesis through the selected Agent coordinator.';
   formAgents.value = ['product-prototyper', 'requirements-engineer'];
   formCoordinator.value = 'product-prototyper';
+  formTeamHandoffs.value = [];
 };
 
 const go = async (nextView: TeamView, id?: string): Promise<void> => {
@@ -448,7 +440,15 @@ const removeAgent = (id: string): void => {
   if (formCoordinator.value === id) formCoordinator.value = formAgents.value[0] || '';
 };
 const saveTeam = (): void => {
+  if (!teamHandoffManager.value?.validateAll()) {
+    saved.value = false;
+    saveError.value = 'Resolve the highlighted handoffs before saving this Team.';
+    return;
+  }
+  const saveId = view.value === 'team-create' ? 'customer-insight-team' : selectedTeam.value.id;
+  savedTeamHandoffs.value[saveId] = cloneHandoffs(formTeamHandoffs.value);
+  teamHandoffManager.value.clearStatus();
+  saveError.value = '';
   saved.value = true;
-  window.setTimeout(() => void go('team-detail', view.value === 'team-create' ? flatTeams[0].id : selectedTeam.value.id), 450);
 };
 </script>

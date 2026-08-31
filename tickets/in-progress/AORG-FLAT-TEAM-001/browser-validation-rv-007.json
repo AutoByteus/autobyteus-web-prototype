@@ -1,0 +1,607 @@
+{
+  "package": "AORG-FLAT-TEAM-001",
+  "revision": "RV-007",
+  "mode": "Product Experience Prototyping",
+  "baseUrl": "http://127.0.0.1:4194",
+  "generatedAt": "2026-08-31T13:19:55.640Z",
+  "result": "PASS",
+  "checks": [
+    {
+      "id": "AORG-RV7-001-team-catalog",
+      "pass": true,
+      "evidence": {
+        "visiblePageTitle": false,
+        "accessiblePageHeading": true,
+        "cards": 3
+      }
+    },
+    {
+      "id": "AORG-RV7-002-separated-primary-navigation",
+      "pass": true,
+      "evidence": {
+        "navigation": [
+          "Agent Teams",
+          "Agent Orgs"
+        ]
+      }
+    },
+    {
+      "id": "AORG-RV7-003-team-catalog-preserves-baseline-visual-language",
+      "pass": true,
+      "evidence": {
+        "preservedBaselineElements": [
+          "search",
+          "reload",
+          "create",
+          "featured",
+          "all",
+          "initials",
+          "category",
+          "member chips",
+          "right actions"
+        ],
+        "redundantTypeLabels": 0,
+        "nestedTeamMetric": 0
+      }
+    },
+    {
+      "id": "AORG-RV7-021-baseline-reload-feedback",
+      "pass": true,
+      "evidence": {
+        "immediateFeedback": "Reloading…",
+        "disabledDuringReload": true
+      }
+    },
+    {
+      "id": "AORG-RV7-022-baseline-search-behavior",
+      "pass": true,
+      "evidence": {
+        "query": "Release",
+        "matchingCards": 1
+      }
+    },
+    {
+      "id": "AORG-RV7-004-team-authoring-agent-only",
+      "pass": true,
+      "evidence": {
+        "baselineStructure": [
+          "Basics",
+          "Agent Library",
+          "Team Canvas",
+          "Member Details",
+          "LLM config"
+        ],
+        "teamLibrary": 0,
+        "addTeam": 0
+      }
+    },
+    {
+      "id": "AORG-RV7-005-exactly-one-team-coordinator",
+      "pass": true,
+      "evidence": {
+        "radios": 2,
+        "checked": 1
+      }
+    },
+    {
+      "id": "AORG-RV7-023-team-detail-preserves-baseline-card-hierarchy",
+      "pass": true,
+      "evidence": {
+        "baselineCards": [
+          "header",
+          "description",
+          "instructions",
+          "handoffs",
+          "members"
+        ],
+        "actions": [
+          "Run",
+          "Edit",
+          "member View"
+        ]
+      }
+    },
+    {
+      "id": "AORG-RV7-024-team-detail-keeps-flat-semantics-without-cross-surface-chrome",
+      "pass": true,
+      "evidence": {
+        "nestedTeamUI": 0,
+        "redundantTypeBadges": 0,
+        "crossSurfacePromotion": 0
+      }
+    },
+    {
+      "id": "AORG-RV7-031-team-handoff-detail-is-explicit-and-clean",
+      "pass": true,
+      "evidence": {
+        "endpointFields": [
+          "From",
+          "To",
+          "When"
+        ],
+        "countsInHeader": 0,
+        "genericSummaries": 0,
+        "scope": "Team-local direct Agents only"
+      }
+    },
+    {
+      "id": "AORG-RV7-025-team-member-opens-preserved-agent-detail",
+      "pass": true,
+      "evidence": {
+        "member": "product_prototyper",
+        "detailSurface": "accepted Agent detail",
+        "returnToTeam": "product-design-prototyping-team"
+      }
+    },
+    {
+      "id": "AORG-RV7-026-agent-detail-returns-to-future-team-context",
+      "pass": true,
+      "evidence": {
+        "returnedTo": "future-state Team detail",
+        "prototypeReviewPreserved": true
+      }
+    },
+    {
+      "id": "AORG-RV7-027-team-detail-narrow-preservation",
+      "pass": true,
+      "evidence": {
+        "overflow": {
+          "viewport": 390,
+          "scrollWidth": 390
+        },
+        "preserved": [
+          "Instructions",
+          "member detail actions"
+        ]
+      }
+    },
+    {
+      "id": "AORG-RV7-032-team-local-editor-limits-endpoints-to-direct-agents",
+      "pass": true,
+      "evidence": {
+        "fromChoices": [
+          "product_prototyper",
+          "prototype_bootstrapper"
+        ],
+        "toChoices": [
+          "product_prototyper",
+          "prototype_bootstrapper"
+        ],
+        "teamDestinations": 0
+      }
+    },
+    {
+      "id": "AORG-RV7-033-team-member-impact-blocks-atomic-save",
+      "pass": true,
+      "evidence": {
+        "removedMember": "prototype_bootstrapper",
+        "silentRetarget": false,
+        "saveBlocked": true
+      }
+    },
+    {
+      "id": "AORG-RV7-006-org-catalog",
+      "pass": true,
+      "evidence": {
+        "visiblePageTitle": false,
+        "accessiblePageHeading": true,
+        "cards": 2,
+        "primaryAction": "blue"
+      }
+    },
+    {
+      "id": "AORG-RV7-007-org-direct-composition",
+      "pass": true,
+      "evidence": {
+        "directKinds": [
+          "agent",
+          "team"
+        ],
+        "explicitTypeSuffixes": 0,
+        "explanatoryCompositionChrome": 0
+      }
+    },
+    {
+      "id": "AORG-RV7-028-org-reload-feedback",
+      "pass": true,
+      "evidence": {
+        "immediateFeedback": "Reloading…",
+        "disabledDuringReload": true
+      }
+    },
+    {
+      "id": "AORG-RV7-029-org-search-behavior",
+      "pass": true,
+      "evidence": {
+        "query": "Release",
+        "matchingCards": 1
+      }
+    },
+    {
+      "id": "AORG-RV7-030-org-catalog-narrow-layout",
+      "pass": true,
+      "evidence": {
+        "overflow": {
+          "viewport": 390,
+          "scrollWidth": 390
+        },
+        "cards": 2
+      }
+    },
+    {
+      "id": "AORG-RV7-008-org-authoring-membership",
+      "pass": true,
+      "evidence": {
+        "memberPickers": [
+          "Agent",
+          "Team"
+        ],
+        "handoffEmptyState": true,
+        "genericRuleUI": 0
+      }
+    },
+    {
+      "id": "AORG-RV7-009-org-has-no-coordinator-control",
+      "pass": true,
+      "evidence": {
+        "coordinatorControls": 0,
+        "explanatoryCoordinatorChrome": 0
+      }
+    },
+    {
+      "id": "AORG-RV7-010-team-reference-preservation",
+      "pass": true,
+      "evidence": {
+        "referencedTeams": 2,
+        "redundantSameDefinitionCopy": 0,
+        "explanatoryCoordinatorChrome": 0
+      }
+    },
+    {
+      "id": "AORG-RV7-034-org-description-contains-no-invented-summary-data",
+      "pass": true,
+      "evidence": {
+        "removedSummaryFields": [
+          "Agents",
+          "Teams",
+          "Handoffs",
+          "Last run",
+          "Runs"
+        ]
+      }
+    },
+    {
+      "id": "AORG-RV7-035-org-handoff-detail-is-explicit-and-clean",
+      "pass": true,
+      "evidence": {
+        "endpointFields": [
+          "From",
+          "To",
+          "When"
+        ],
+        "visibleCoordinatorDeliveryBlock": 0,
+        "countChrome": 0
+      }
+    },
+    {
+      "id": "AORG-RV7-011-org-launch-requires-entry",
+      "pass": true,
+      "evidence": {
+        "initialStartDisabled": true,
+        "selectionInstruction": "direct"
+      }
+    },
+    {
+      "id": "AORG-RV7-012-team-entry-resolves-through-coordinator",
+      "pass": true,
+      "evidence": {
+        "entry": "team:product-design-prototyping-team",
+        "coordinator": "product_prototyper"
+      }
+    },
+    {
+      "id": "AORG-RV7-013-launch-carries-exact-entry",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&entry=team:product-design-prototyping-team"
+      }
+    },
+    {
+      "id": "AORG-RV7-014-runtime-root-kinds",
+      "pass": true,
+      "evidence": {
+        "roots": [
+          "Org",
+          "Team"
+        ]
+      }
+    },
+    {
+      "id": "AORG-RV7-015-task-team-is-runtime-lineage",
+      "pass": true,
+      "evidence": {
+        "taskPresentation": "source-current temporary rows within owning Team execution",
+        "genericTaskWorkSections": 0
+      }
+    },
+    {
+      "id": "AORG-RV7-016-task-team-disclosure-and-child-focus",
+      "pass": true,
+      "evidence": {
+        "initialTaskTeamDisclosure": "collapsed"
+      }
+    },
+    {
+      "id": "AORG-RV7-017-task-team-child-is-selectable-runtime-identity",
+      "pass": true,
+      "evidence": {
+        "focusedExecution": "task-team-accessibility:reviewer"
+      }
+    },
+    {
+      "id": "AORG-RV7-018-standalone-team-history-remains-distinct",
+      "pass": true,
+      "evidence": {
+        "root": "standalone Agent Team"
+      }
+    },
+    {
+      "id": "AORG-RV7-036-org-handoff-editor-validates-complete-draft",
+      "pass": true,
+      "evidence": {
+        "requiredFields": [
+          "From",
+          "To",
+          "When"
+        ]
+      }
+    },
+    {
+      "id": "AORG-RV7-037-org-handoff-endpoint-eligibility",
+      "pass": true,
+      "evidence": {
+        "from": "direct and Team-mounted Agents",
+        "to": "direct Agents, Team-mounted Agents, and direct Teams",
+        "teamSources": 0
+      }
+    },
+    {
+      "id": "AORG-RV7-038-when-conditions-are-orderable",
+      "pass": true,
+      "evidence": {
+        "resultingOrder": [
+          "Implementation feedback requires a focused product revision.",
+          "A reviewed experience specification is ready for implementation."
+        ]
+      }
+    },
+    {
+      "id": "AORG-RV7-039-handoff-draft-can-be-canceled",
+      "pass": true,
+      "evidence": {
+        "cancellationPreservedCommittedDraft": true
+      }
+    },
+    {
+      "id": "AORG-RV7-040-handoff-authoring-supports-crud-reorder-and-atomic-save",
+      "pass": true,
+      "evidence": {
+        "actions": [
+          "add",
+          "edit",
+          "delete",
+          "reorder handoff",
+          "reorder When",
+          "cancel",
+          "save"
+        ],
+        "savedHandoffs": 2
+      }
+    },
+    {
+      "id": "AORG-RV7-041-saved-handoff-definition-is-inspectable",
+      "pass": true,
+      "evidence": {
+        "savedStateVisibleOnDetail": true
+      }
+    },
+    {
+      "id": "AORG-RV7-042-self-resolving-delivery-is-rejected",
+      "pass": true,
+      "evidence": {
+        "from": "/requirements_engineer",
+        "to": "/requirements_engineer"
+      }
+    },
+    {
+      "id": "AORG-RV7-043-duplicate-effective-pair-is-rejected",
+      "pass": true,
+      "evidence": {
+        "duplicatePair": [
+          "/requirements_engineer",
+          "/product_design_prototyping_team"
+        ]
+      }
+    },
+    {
+      "id": "AORG-RV7-044-org-member-impact-blocks-atomic-save",
+      "pass": true,
+      "evidence": {
+        "removedMember": "Product Design & Prototyping",
+        "silentDeleteOrRetarget": false,
+        "saveBlocked": true
+      }
+    },
+    {
+      "id": "AORG-RV7-019-narrow-layout",
+      "pass": true,
+      "evidence": {
+        "overflow": {
+          "viewport": 390,
+          "scrollWidth": 390
+        }
+      }
+    },
+    {
+      "id": "AORG-RV7-020-no-runtime-errors",
+      "pass": true,
+      "evidence": {
+        "runtimeErrors": []
+      }
+    }
+  ],
+  "failures": [],
+  "runtimeErrors": [],
+  "captures": [
+    {
+      "id": "REV-AORG-001",
+      "filename": "REV-AORG-001-agent-team-catalog.png",
+      "state": "Baseline-native flat Agent Team catalog; only obsolete nesting semantics are removed",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-list",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-002",
+      "filename": "REV-AORG-002-agent-team-authoring.png",
+      "state": "Agent-only Team authoring with one direct coordinator",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-create",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-009",
+      "filename": "REV-AORG-009-agent-team-detail.png",
+      "state": "Baseline-native flat Team detail with members, coordinator, and handoffs",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-012",
+      "filename": "REV-AORG-012-team-local-handoff-detail.png",
+      "state": "Clean Team-local From, To, and When handoff detail",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-010",
+      "filename": "REV-AORG-010-agent-team-members.png",
+      "state": "Preserved Team member cards with direct Agent detail actions",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-011",
+      "filename": "REV-AORG-011-agent-member-detail.png",
+      "state": "Preserved Agent detail reached from a Team member",
+      "url": "http://127.0.0.1:4194/agents?prototypeReview=agent-org-flat&view=detail&id=product-prototyper&returnToTeam=product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-013",
+      "filename": "REV-AORG-013-team-local-handoff-authoring.png",
+      "state": "Team-local handoff editor with direct Agent endpoints only",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-edit&id=product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-003",
+      "filename": "REV-AORG-003-agent-org-catalog.png",
+      "state": "Baseline-native Agent Org catalog with direct Agent and Team members",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-list",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-004",
+      "filename": "REV-AORG-004-agent-org-authoring.png",
+      "state": "Agent Org authoring with independent Agents and referenced Teams",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-create",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-005",
+      "filename": "REV-AORG-005-agent-org-detail.png",
+      "state": "Baseline-native Org detail with Agent and same-identity Team members",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-014",
+      "filename": "REV-AORG-014-agent-org-handoff-detail.png",
+      "state": "Clean Agent Org handoff detail with only From, To, and When",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-006",
+      "filename": "REV-AORG-006-agent-org-exact-entry-launch.png",
+      "state": "Exact Team entry selected; Team coordinator is explicit",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department&launch=1",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-007",
+      "filename": "REV-AORG-007-agent-org-runtime-history.png",
+      "state": "Shared runtime/history with explicit Agent Org root and task lineage",
+      "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&entry=team:product-design-prototyping-team&focus=task-team-accessibility:reviewer",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-008",
+      "filename": "REV-AORG-008-standalone-team-runtime-history.png",
+      "state": "Shared runtime/history with standalone Team root",
+      "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=team&team=release-readiness-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-015",
+      "filename": "REV-AORG-015-agent-org-handoff-authoring.png",
+      "state": "Clean Agent Org handoff authoring with From, To, and ordered When guidance",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-edit&id=software-development-department",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    }
+  ]
+}

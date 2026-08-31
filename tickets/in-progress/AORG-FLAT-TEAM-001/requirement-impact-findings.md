@@ -1,74 +1,37 @@
 # Requirement Impact Findings — AgentOrg Handoff UI
 
-## Status
+## Resolution
 
 - Package: `AORG-FLAT-TEAM-001`
-- Prototype revision under review: committed `RV-006` at `e1282e15e274f7a3654364f131aa91d5af4d3602`
 - Finding: `RIF-AORG-001`
-- Outcome: `Requirement Impact`
-- Date: `2026-08-31`
+- Original outcome: `Requirement Impact`
+- Resolved by: approved `RER-012`, commit `658d602a1`
+- Product response: implemented in unapproved `RV-007`; browser validation passes `44/44`
 
-## User Feedback
+## Clarification Received
 
-The user identified that the AgentOrg handoff presentation is not complete:
+Requirements Engineering confirmed one Handoff as one ordered From Agent, one
+eligible To endpoint, and one or more ordered natural-language When conditions.
+It also confirmed endpoint eligibility, Team versus Org ownership, Team
+destination coordinator resolution, CRUD/reorder/cancel, validation, atomic
+save, duplicate/self-resolution rejection, and explicit stale-member
+resolution.
 
-1. A handoff has explicit **From**, **To**, and **When** meaning, but the current
-   detail cards do not expose those fields clearly.
-2. The AgentOrg edit page shows an **Add rule** action, but no usable rule
-   authoring interaction is implemented.
-3. Product Design should ask Requirements Engineering for the correct handoff
-   presentation and authoring model before continuing.
+Relevant IDs are `BEH-003`; `REQ-006`, `REQ-019`–`REQ-023`; `AC-003`,
+`AC-014`–`AC-018`; `SCN-003`, `SCN-008`; `DEC-007`–`DEC-010`; and
+`ORG-CASE-032`–`ORG-CASE-042`.
 
-The user also asked to remove redundant Team-reference copy such as
-`Same Team definition · standalone history preserved`. That density cleanup is
-clear and is being preserved as an in-progress, uncommitted `RV-007` change; it
-does not resolve the handoff gap.
+## RV-007 Product Treatment
 
-## Current Requirements Evidence
+- Detail cards expose only From, To, exact addresses, and ordered When.
+- Aggregate Handoff/condition counts, type badges, same-definition copy, and the
+  repeated `Via coordinator` endpoint block are removed under explicit user
+  feedback.
+- A referenced Team's coordinator remains visible and inspectable through its
+  adjacent member card and Team detail rather than being repeated in every
+  Handoff.
+- Org and Team-local editors implement the required interactions and
+  validation; unavailable endpoints remain visible and block full save.
 
-- `BEH-003` preserves Agent-only handoff sources, Agent-or-Team destinations,
-  ordered rules, canonical rooted addresses, and failure-closed resolution.
-- `REQ-006` requires Org-scoped handoffs from a mounted Agent source to a mounted
-  Agent or Team destination, including cross-Team destinations; Team-local
-  handoffs remain Team-scoped and may be rebased once when mounted.
-- `REQ-007` constrains recipient resolution to the active Org/Team scope.
-- `AC-013` requires Org handoffs to reach a referenced Team/coordinator or its
-  Agents without mutating the Team definition.
-
-These requirements establish domain behavior but do not yet give Product Design
-an explicit, reviewable authoring interaction for the user's requested
-**From / To / When** model.
-
-## Clarification Requested From Requirements Engineering
-
-Please confirm or revise the canonical requirements for the following UI-visible
-behavior:
-
-1. **Rule fields:** Must every Org handoff row/editor expose labeled `When`,
-   `From`, and `To` fields? What is the canonical meaning and user-facing form of
-   `When`—a display label, a natural-language condition, an outcome selector, or
-   another established value?
-2. **From choices:** Does `From` include every mounted Agent in the Org,
-   including Agents inside referenced Teams, while excluding Team and Org
-   subjects as sources?
-3. **To choices:** Does `To` include direct Agents, referenced Teams, and Agents
-   inside referenced Teams? When a Team is selected, should the editor/detail
-   show that delivery enters through the Team coordinator, and at what level of
-   prominence?
-4. **Address display:** Should canonical rooted recipient/source addresses be
-   always visible, secondary metadata, or shown only in the chooser/detail?
-5. **Authoring actions:** What are the required Add/Edit/Delete/Reorder behaviors,
-   validation, disabled states, empty state, cancellation, and save feedback?
-6. **Scope separation:** Should the Org editor show only Org-owned rules, while
-   Team-local handoffs remain editable only on the referenced Team surface?
-
-## Prototype Impact
-
-- Affected surfaces: AgentOrg detail and AgentOrg create/edit.
-- Affected IDs: `BEH-003`; `REQ-006`, `REQ-007`, `REQ-016`, `REQ-019`;
-  `AC-003`, `AC-013`, `AC-014`; `SCN-003`, `SCN-006`.
-- Current handoff cards and the inert Add rule action are not approval-ready.
-- Product Design will not invent the missing rule editor while clarification is
-  pending.
-- AgentTeam/AgentOrg catalog, membership, launch, and runtime/history work remain
-  preserved and runnable.
+No unresolved requirements gap remains for construction. The visual and
+interaction treatment remains pending explicit user approval.

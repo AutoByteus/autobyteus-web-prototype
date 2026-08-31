@@ -2,23 +2,24 @@
 
 ## Product Assumptions
 
-| ID | Assumption | Why needed | Decision still required |
-| --- | --- | --- | --- |
-| `PA-AORG-001` | Team and Org fixture names illustrate the approved semantics | Review needs credible content | Names and counts are not production requirements |
-| `PA-AORG-002` | Blue Team and violet Org identifiers extend the accepted neutral shell without redesigning it | Root subjects need rapid recognition | User approval of this visual treatment |
-| `PA-AORG-003` | Source-current pale-indigo `Task:` rows are retained for Task Agent/Task Team execution identity | Baseline correction established this hierarchy | User approval of their placement inside the future Org runtime |
+| ID | Assumption | Review boundary |
+| --- | --- | --- |
+| `PA-AORG-001` | Fixture names and natural-language When text illustrate the approved endpoint/condition semantics | Exact fixture content is not a production requirement |
+| `PA-AORG-002` | AgentOrg uses the same neutral/blue product language as Agent Teams | No new purple Org sub-brand is proposed |
+| `PA-AORG-003` | Source-current pale-indigo Task rows remain the accepted runtime identity pattern | User approval of their placement inside the future Org runtime is pending |
+| `PA-AORG-004` | Team coordinator inspection through the adjacent Team member card and Team detail is sufficient; the Handoff card need not repeat `Via coordinator` | This implements the user's explicit clean-UI correction while preserving inspectability |
 
 ## Mocked Boundaries
 
 | Boundary | Real in prototype | Mocked/simplified | Production gap |
 | --- | --- | --- | --- |
-| Catalog and authoring | Navigation, forms, controls, selection, save feedback | In-memory fixtures | Persistence, validation service, permissions |
-| Launch | Required radio selection, disabled/enabled action, exact result URL | Synthetic start | Run service and orchestration |
-| Runtime/history | Root selection, task disclosure, child focus, visible hierarchy | Deterministic runs and timestamps | Streams, restore, storage, stop lifecycle |
-| Handoffs | Scope and labels | Illustrative rows | Address resolver and delivery |
+| Catalog and authoring | Navigation, fields, endpoint eligibility, CRUD, reorder, validation, cancel/save feedback | In-memory fixtures | API, persistence, permissions, concurrency |
+| Referential integrity | Unavailable endpoints and blocked save | Client-local definition state | Server transaction and migration |
+| Launch | Exact selection and result navigation | Synthetic start | Run service and orchestration |
+| Runtime/history | Root selection, task disclosure, child focus | Deterministic runs/timestamps | Streams, restore, storage, stop lifecycle |
 
 ## Deliberate Non-Goals
 
 Recursive configured Teams/Orgs, Org coordinator, implicit launch fallback,
-Org-specific Team copies, cross-run semantics, migration mechanics, backend
-contracts, security, persistence, scalability, and operations are excluded.
+Org-specific Team copies, cross-run semantics, backend contracts, security,
+persistence, scalability, and operations are excluded.
