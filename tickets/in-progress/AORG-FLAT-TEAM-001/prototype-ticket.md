@@ -33,7 +33,7 @@
 - Current-state evidence: `/home/autobyteus/data/memory/agent_teams/software_development_department_d2b93633ad6b4d969e6e0d776dda7721/requirements_engineer_6568eac682114f2cb3ddb8f1d91d3c34/context_files/ctx_4cc02361f417__image.png` (evidence only, not an approved future-state reference).
 - Requirements package: `/home/autobyteus/workspace/.codex/worktrees/flat-agent-organization-model/tickets/in-progress/flat-agent-organization-model`
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001`
-- Prototype revision: `RV-005` baseline-preserving Team-detail and simplified handoff-language candidate; commit pending this revision's validation package. Unapproved and unintegrated.
+- Prototype revision: `RV-005` baseline-preserving Team-detail and simplified handoff-language candidate at `8d0a08b72c625f9d2ad7c1534384f7c6c6d28794`. Committed on the ticket branch; unapproved and unintegrated.
 
 ## Runtime Isolation
 
