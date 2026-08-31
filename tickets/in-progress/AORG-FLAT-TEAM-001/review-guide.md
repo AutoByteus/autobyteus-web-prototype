@@ -1,13 +1,13 @@
-# AORG-FLAT-TEAM-001 — RV-011 Review Guide
+# AORG-FLAT-TEAM-001 — RV-012 Review Guide
 
 ## Status
 
 - Review state: `Awaiting User Review`
-- Prototype revision: `RV-011`
+- Prototype revision: `RV-012`
 - Requirements authority: `RER-013`, commit `86df311c4`
-- Runnable candidate: `b8f978bf7e41c2589117caa16b5526947e4465f8`
+- Runnable candidate: `891b4e667d51fffb92ebd85dd2dc90a8e0afcf2e`
 - Review server: `http://127.0.0.1:4194`
-- Browser validation: `57/57` pass, `20` captures, zero runtime errors
+- Browser validation: `59/59` pass, `20` captures, zero runtime errors
 - Static validation: diff check, typecheck, lint, `12/12` tests, `13/13` boundaries, and build pass
 
 ## Primary Review — AgentOrg Run
@@ -47,7 +47,7 @@ Direct links:
    - **Add member** expands in the document flow, with Agent/Team tabs and search; no overlay.
 2. [AgentOrg detail](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department)
    - Description, Members, and Handoffs only; no fabricated run facts or redundant architecture copy.
-   - Handoff cards show From, To, exact addresses, and ordered When.
+   - Handoff cards show From, To, exact addresses, and When only. No Handoff or condition number badges are visible; vertical placement carries the order.
 3. [AgentOrg edit](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-edit&id=software-development-department)
    - Add/edit/delete/reorder Handoffs and When conditions.
    - Cancel an open draft; remove a used endpoint and verify save is blocked until resolution.
@@ -67,13 +67,14 @@ None uses a modal overlay or document-level horizontal overflow.
 
 ## Evidence
 
-- Manifest: `review-evidence/rv-011/capture-manifest.json`
-- Configuration: `review-evidence/rv-011/REV-AORG-RV11-006-agent-org-configuration.png`
-- Overrides: `review-evidence/rv-011/REV-AORG-RV11-007-agent-org-placement-overrides.png`
-- Active, unfocused: `review-evidence/rv-011/REV-AORG-RV11-008-agent-org-active-unfocused.png`
-- Direct Agent focus: `review-evidence/rv-011/REV-AORG-RV11-009-agent-org-direct-agent-focus.png`
-- Team coordinator focus: `review-evidence/rv-011/REV-AORG-RV11-010-agent-org-team-coordinator-focus.png`
-- Narrow configuration: `review-evidence/rv-011/REV-AORG-RV11-017-agent-org-configuration-narrow.png`
+- Manifest: `review-evidence/rv-012/capture-manifest.json`
+- Configuration: `review-evidence/rv-012/REV-AORG-RV12-006-agent-org-configuration.png`
+- Overrides: `review-evidence/rv-012/REV-AORG-RV12-007-agent-org-placement-overrides.png`
+- Clean Handoff detail: `review-evidence/rv-012/REV-AORG-RV12-014-agent-org-handoff-detail.png`
+- Active, unfocused: `review-evidence/rv-012/REV-AORG-RV12-008-agent-org-active-unfocused.png`
+- Direct Agent focus: `review-evidence/rv-012/REV-AORG-RV12-009-agent-org-direct-agent-focus.png`
+- Team coordinator focus: `review-evidence/rv-012/REV-AORG-RV12-010-agent-org-team-coordinator-focus.png`
+- Narrow configuration: `review-evidence/rv-012/REV-AORG-RV12-017-agent-org-configuration-narrow.png`
 
 These are non-normative review captures. Final `VIS-*` images are created only
 after explicit approval and final validation.

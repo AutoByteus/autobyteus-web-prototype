@@ -4,7 +4,7 @@
 
 - Original outcome: `Requirement Impact`
 - Resolution: approved `RER-012`, commit `658d602a1`
-- Product response: implemented and retained through RV-011
+- Product response: implemented and retained through RV-012
 
 Requirements Engineering confirmed one Handoff as one ordered From Agent, one
 eligible To endpoint, and one or more ordered natural-language When conditions.
@@ -13,11 +13,12 @@ destination coordinator resolution, CRUD/reorder/cancel, validation, atomic
 save, duplicate/self-resolution rejection, and explicit stale-member
 resolution.
 
-RV-011 keeps the user-approved clean treatment: each Handoff shows From, To,
-exact addresses, and ordered When. It omits aggregate counts, per-card condition
-counts, type badges, repeated coordinator-delivery copy, and architecture
-explanations. Org and Team-local editors retain the required interactions and
-validation.
+RV-012 keeps the clean treatment: each Handoff shows From, To, exact
+addresses, and When guidance in top-to-bottom order. It omits visible Handoff
+and condition ordinals as well as aggregate counts, per-card condition counts,
+type badges, repeated coordinator-delivery copy, and architecture explanations.
+Org and Team-local editors retain the required reorder interactions, accessible
+action names, and validation.
 
 ## RIF-AORG-002 — AgentOrg Launch And Post-Launch Focus
 
@@ -25,7 +26,7 @@ validation.
 - Trigger: user rejection of the RV-009 pre-launch exact-entry selector
 - Historical rejected evidence: `review-evidence/rv-009/REV-AORG-RV9-006-agent-org-exact-entry-launch.png`
 - Resolution: approved `RER-013`, commit `86df311c4`
-- Status: `Resolved; Product response implemented in RV-011 and awaiting user review`
+- Status: `Resolved; Product response implemented in RV-012 and awaiting user review`
 
 ### Approved Canonical Resolution
 
@@ -37,7 +38,7 @@ validation.
 6. Configuration precedence is Org root choice, then containing Team placement override, then exact Agent placement override.
 7. Referenced definitions retain their identity, standalone defaults, launchability, handoffs, coordinator, and history. Org-run configuration does not mutate them.
 
-### RV-011 Product Response
+### RV-012 Product Response
 
 - Deleted the RV-009 launch modal and `entry` query-state behavior.
 - Run navigates directly to the baseline-native Org configuration.
@@ -48,4 +49,4 @@ validation.
 - Added desktop and `390×844` review evidence and deterministic checks for no overlay, no implicit focus, exact Agent focus, Team coordinator focus, and task lineage.
 
 No open requirement-impact finding remains. The concrete UI/UX proposal remains
-non-normative until the user explicitly approves RV-011.
+non-normative until the user explicitly approves RV-012.

@@ -1,6 +1,6 @@
 # UI Behavior Test Matrix
 
-| ID | Related IDs | Flow | Expected visible outcome | RV-011 |
+| ID | Related IDs | Flow | Expected visible outcome | RV-012 |
 | --- | --- | --- | --- | --- |
 | `TR-AORG-001` | `REQ-001`, `AC-001` | Team create/edit | Agent-only controls; one checked direct Agent coordinator; no Team selector | Pass |
 | `TR-AORG-002` | `REQ-002`, `REQ-003` | Org create/edit | Direct Agent and referenced Team members; no coordinator input or badge | Pass |
@@ -27,14 +27,15 @@
 | `SC-AORG-023` | `REQ-001`, `REQ-023` | Selected Member Details | Member Name, Type, Source, Scope, and Coordinator are real fields; rename updates placement/handoff eligibility | Pass |
 | `SC-AORG-024` | `REQ-001`, accepted baseline | Narrow Team builder | Three panels stack; click fallback/member editing remain usable; no document overflow | Pass |
 | `SC-AORG-025` | User production-source fidelity feedback | Active Workspace hierarchy | Org, Team, Agent, Task Agent, and Task Team rows use continuous ancestor rails, L-shaped sibling branches, depth-aligned disclosures, and the accepted selected-row marker | Pass |
+| `SC-AORG-026` | User Handoff-density feedback | Handoff detail/editor | From, To, and When remain; no visible Handoff or When-condition ordinal badges; top-to-bottom ordering and reorder controls remain | Pass |
 
 ## Evidence
 
-- Machine result: `browser-validation-rv-011.json`
-- Capture manifest: `review-evidence/rv-011/capture-manifest.json`
-- Static validation: `validation-rv-011/static-validation.txt`
-- Result: `57/57` checks pass; `20` captures; `0` runtime errors; typecheck, lint, `12/12` tests, `13/13` boundaries, and build pass.
+- Machine result: `browser-validation-rv-012.json`
+- Capture manifest: `review-evidence/rv-012/capture-manifest.json`
+- Static validation: `validation-rv-012/static-validation.txt`
+- Result: `59/59` checks pass; `20` captures; `0` runtime errors; typecheck, lint, `12/12` tests, `13/13` boundaries, and build pass.
 
 ## Pending
 
-Explicit user approval of RV-011. Review images remain non-normative until then.
+Explicit user approval of RV-012. Review images remain non-normative until then.

@@ -4,9 +4,9 @@
 
 - Status: `Awaiting User Review — draft and non-normative`
 - Ticket: `AORG-FLAT-TEAM-001`
-- Prototype revision: `RV-011`
+- Prototype revision: `RV-012`
 - Requirements authority: approved `RER-013`, commit `86df311c4`
-- Runnable candidate commit: `b8f978bf7e41c2589117caa16b5526947e4465f8`
+- Runnable candidate commit: `891b4e667d51fffb92ebd85dd2dc90a8e0afcf2e`
 - Explicit final approval: `Pending`
 - Normative `VIS-*` references: `Pending approval`
 
@@ -41,7 +41,7 @@ separate concept application.
 
 ## Requirements Coverage
 
-| IDs | RV-011 obligation |
+| IDs | RV-012 obligation |
 | --- | --- |
 | `REQ-001`, `AC-001` | Team authoring exposes direct Agents only and exactly one direct Agent coordinator |
 | `REQ-002`, `REQ-003` | Org authoring exposes direct Agents and direct reusable Team references with no coordinator control |
@@ -113,8 +113,10 @@ One visible card represents one ordered Handoff:
 - **When**: one or more ordered, trimmed natural-language guidance statements.
 
 The card omits aggregate counts, type labels, endpoint badges, per-card condition
-counts, and repeated `Via coordinator` copy. A Team destination's coordinator is
-inspectable through the adjacent Team member and Team detail.
+counts, visible Handoff ordinals, visible When-condition ordinals, and repeated
+`Via coordinator` copy. Card order and condition order are communicated by their
+top-to-bottom position. A Team destination's coordinator is inspectable through
+the adjacent Team member and Team detail.
 
 - Add/Edit opens one inline editor; Cancel discards the unapplied draft.
 - From/To options respect Org or Team-local ownership and eligibility.
@@ -142,7 +144,7 @@ inspectable through the adjacent Team member and Team detail.
 
 - No AgentOrg member picker or configuration control uses a modal overlay.
 - At `390×844`, labels, fields, switch, overrides disclosure, and Run action remain readable and reachable without horizontal overflow.
-- Buttons, switches, selects, disclosure controls, inputs, textareas, and reorder controls are keyboard reachable with visible focus.
+- Buttons, switches, selects, disclosure controls, inputs, textareas, and reorder controls are keyboard reachable with visible focus. Reorder actions keep descriptive position-aware accessible names even though ordinal badges are not visible.
 - Exact addresses wrap or truncate safely and remain inspectable; color is not the sole state signal.
 - Validation appears adjacent to the blocked action/field and uses concise actionable wording.
 
@@ -162,19 +164,19 @@ explicit user confirmation.
 
 ## Non-Normative Review Evidence
 
-All captures are under `review-evidence/rv-011/`; the manifest is
-`review-evidence/rv-011/capture-manifest.json`.
+All captures are under `review-evidence/rv-012/`; the manifest is
+`review-evidence/rv-012/capture-manifest.json`.
 
 | Review ID | Surface/state |
 | --- | --- |
-| `REV-AORG-RV11-001`–`002`, `018`–`019`, `011`–`013`, `016` | Preserved flat AgentTeam catalog, builder, detail/members, Agent detail, Team-local Handoffs, and narrow builder |
-| `REV-AORG-RV11-003`–`005`, `014`–`015`, `020` | AgentOrg catalog, authoring, detail, clean Handoffs, Handoff editor, and narrow in-flow member picker |
-| `REV-AORG-RV11-006` | AgentOrg Run opens configuration directly |
-| `REV-AORG-RV11-007` | Mounted Team/Agent placement override hierarchy |
-| `REV-AORG-RV11-008` | Full AgentOrg scope active with no initial focus and production-style hierarchy branches |
-| `REV-AORG-RV11-009` | Exact direct Agent focus from the sidebar |
-| `REV-AORG-RV11-010` | Direct Team focus through its coordinator |
-| `REV-AORG-RV11-017` | Narrow AgentOrg configuration without overlay |
+| `REV-AORG-RV12-001`–`002`, `018`–`019`, `011`–`013`, `016` | Preserved flat AgentTeam catalog, builder, detail/members, Agent detail, Team-local Handoffs, and narrow builder |
+| `REV-AORG-RV12-003`–`005`, `014`–`015`, `020` | AgentOrg catalog, authoring, detail, clean Handoffs, Handoff editor, and narrow in-flow member picker |
+| `REV-AORG-RV12-006` | AgentOrg Run opens configuration directly |
+| `REV-AORG-RV12-007` | Mounted Team/Agent placement override hierarchy |
+| `REV-AORG-RV12-008` | Full AgentOrg scope active with no initial focus and production-style hierarchy branches |
+| `REV-AORG-RV12-009` | Exact direct Agent focus from the sidebar |
+| `REV-AORG-RV12-010` | Direct Team focus through its coordinator |
+| `REV-AORG-RV12-017` | Narrow AgentOrg configuration without overlay |
 
 Final `VIS-*` references are captured only after explicit approval and final
 validation.
@@ -191,7 +193,7 @@ validation.
 
 - Corrected baseline accepted: `Yes`
 - Requirements authority: `RER-013`
-- RV-011 browser validation: `57/57 pass`, `20` captures, zero runtime errors
+- RV-012 browser validation: `59/59 pass`, `20` captures, zero runtime errors
 - Typecheck/lint/tests/boundaries/build: `Pass`
 - Desktop and narrow validation: `Yes`
 - Explicit final approval: `No — pending`
