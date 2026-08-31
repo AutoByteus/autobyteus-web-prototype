@@ -38,6 +38,7 @@
     "validate:nested-team-hierarchy-review": "node prototype/scripts/validate-nested-team-hierarchy-review.mjs",
     "capture:nested-team-hierarchy-final": "node prototype/scripts/capture-nested-team-hierarchy-final.mjs",
     "validate:aorg-flat-team-correction": "node prototype/scripts/validate-aorg-flat-team-baseline-correction.mjs",
+    "validate:aorg-team-config-file-tree-correction": "node prototype/scripts/validate-aorg-team-config-file-tree-correction.mjs",
     "validate:aorg-flat-team-review": "node prototype/scripts/validate-agent-org-flat-review.mjs"
   },
   "dependencies": {

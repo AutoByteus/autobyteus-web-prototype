@@ -14,6 +14,8 @@ export function applyExperienceScenario(input = {}) {
 
   const runId = 'run-prototype-active'
   const workspaceId = 'workspace-prototype'
+  const isWorkspaceFileTreeCorrection = scenario === 'workspace_file_tree_correction'
+  const isTeamRunConfigCorrection = scenario === 'workspace_team_run_config_correction'
   const now = '2026-08-22T04:00:00.000Z'
   const workspaceMetadata = {
     workspaceId, name: 'prototype-workspace', displayName: 'Prototype Workspace',
@@ -81,7 +83,12 @@ export function applyExperienceScenario(input = {}) {
     fileState.tree = root
     fileState.nodeIdToNode = { root, 'node-docs': docs, 'node-evidence': evidenceFile, 'node-requirements': requirementsFile }
     fileState.openFolders = { docs: true }
-    fileState.openFiles = [{ path: 'requirements.md', type: 'markdown', mode: 'edit', accessIntent: null, content: '# Prototype requirements\n\nAll UI evidence is synthetic and deterministic.', url: null, relativeResourceContext: { kind: 'workspace', workspaceId }, isLoading: false, error: scenario.includes('file_error') ? 'Synthetic file read failed.' : null }]
+    fileState.openFiles = isWorkspaceFileTreeCorrection
+      ? [
+          { path: 'requirements.md', type: 'Text', mode: 'preview', accessIntent: null, content: '# Prototype requirements\n\nAll UI evidence is synthetic and deterministic.', url: null, relativeResourceContext: { kind: 'workspace', workspaceId }, isLoading: false, error: null },
+          { path: 'docs/evidence.md', type: 'Text', mode: 'preview', accessIntent: null, content: '# Evidence report\n\nMatched source and prototype observations.', url: null, relativeResourceContext: { kind: 'workspace', workspaceId }, isLoading: false, error: null },
+        ]
+      : [{ path: 'requirements.md', type: 'markdown', mode: 'edit', accessIntent: null, content: '# Prototype requirements\n\nAll UI evidence is synthetic and deterministic.', url: null, relativeResourceContext: { kind: 'workspace', workspaceId }, isLoading: false, error: scenario.includes('file_error') ? 'Synthetic file read failed.' : null }]
     fileState.activeFile = 'requirements.md'
   }
   const runFiles = store('runFileChanges')
@@ -97,6 +104,37 @@ export function applyExperienceScenario(input = {}) {
       teamAncestryById: {}, memberAncestorExecutionKeysByIdentity: {},
     }
     runHistory.resumeConfigByRunId = { ...runHistory.resumeConfigByRunId, [runId]: { runId, isActive: runStatus === 'running', metadataConfig: { agentDefinitionId: 'agent-researcher', workspaceRootPath: workspaceMetadata.workspaceRootPath, llmModelIdentifier: 'mock/gpt-prototype', llmConfig: {}, autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: runStatus !== 'running', llmConfig: runStatus !== 'running', autoExecuteTools: runStatus !== 'running', skillAccessMode: runStatus !== 'running', workspaceRootPath: false, runtimeKind: false } } }
+  }
+
+  if (isTeamRunConfigCorrection) {
+    const teamRunConfig = store('teamRunConfig')
+    const agentRunConfig = store('agentRunConfig')
+    if (!teamRunConfig || !agentRunConfig) return { applied: false, reason: 'run-config-stores-unavailable' }
+    agentRunConfig.clearConfig()
+    teamRunConfig.setConfig({
+      teamDefinitionId: 'team-product',
+      teamDefinitionName: 'Product Review Team',
+      runtimeKind: 'autobyteus',
+      llmModelIdentifier: 'mock/gpt-prototype',
+      llmConfig: { temperature: 0.2 },
+      autoExecuteTools: false,
+      skillAccessMode: 'PRELOADED_ONLY',
+      isLocked: false,
+      workspaceId: null,
+      workspaceMetadata: null,
+      memberOverrides: {},
+    })
+    const selectedDraft = teamRunConfig.selectedDraft
+    const deterministicDraftId = 'team-draft-config-correction'
+    if (selectedDraft) {
+      const deterministicDraft = Object.freeze({ ...selectedDraft, draftId: deterministicDraftId })
+      teamRunConfig.drafts = new Map([[deterministicDraftId, deterministicDraft]])
+      teamRunConfig.selectedDraftId = deterministicDraftId
+    }
+    teamRunConfig.setRuntimeModelCatalog('autobyteus', ['mock/gpt-prototype'])
+    selection.clearSelectionWithoutShellNavigation()
+    store('workspaceCenterView')?.showChat()
+    return { applied: true, kind: 'team-run-config', draftId: teamRunConfig.selectedDraftId }
   }
 
   if (scenario.startsWith('workspace_team') || scenario.startsWith('mobile_team')) {
@@ -265,9 +303,11 @@ export function applyExperienceScenario(input = {}) {
       _focusedAgentRunId: reviewerRunId,
       getRootTeamRunId: () => rootTeamRunId, getTeamDefinitionName: () => 'Product Review Team', getFocusedAgentContext() { return entries.find(item => item.agentRunId === this._focusedAgentRunId)?.agentContext || null },
       getFocusedMemberAddress() { return entries.find(item => item.agentRunId === this._focusedAgentRunId)?.memberAddress || '' }, getFocusedAgentRunId() { return this._focusedAgentRunId },
-      getConfigurationView: () => launchedFromCatalog
-        ? { teamDefinitionId: 'team-product', teamDefinitionName: 'Product Review Team', runtimeKind: 'autobyteus', workspaceId, workspaceMetadata, llmModelIdentifier: 'mock/gpt-prototype', llmConfig: { temperature: 0.2 }, autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', memberOverrides: {}, isLocked: true }
-        : { teamDefinitionId: 'team-product', teamDefinitionName: 'Product Review Team', workspaceId, workspaceMetadata, isLocked: true },
+      getConfigurationView: () => ({
+        teamDefinitionId: 'team-product', teamDefinitionName: 'Product Review Team', runtimeKind: 'autobyteus',
+        workspaceId, workspaceMetadata, llmModelIdentifier: 'mock/gpt-prototype', llmConfig: { temperature: 0.2 },
+        autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', memberOverrides: {}, isLocked: true,
+      }),
       isRootTeamActive: () => launchedFromCatalog || teamStatus === 'running', listNavigationRows: () => rows, listAgentContextEntries: () => entries,
       listCommunicationMessages: () => messages, listTaskHistoryRows: () => taskRows, hasAgentRun: id => entries.some(item => item.agentRunId === id),
       getAgentContext: id => entries.find(item => item.agentRunId === id)?.agentContext || null,

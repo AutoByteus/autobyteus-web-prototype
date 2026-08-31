@@ -1,0 +1,66 @@
+{
+  "stablePackageId": "AORG-FLAT-TEAM-001",
+  "requestType": "Correction",
+  "selectedFrontend": "/home/autobyteus/workspace/autobyteus-workspace/autobyteus-web",
+  "sourceRoot": "/home/autobyteus/workspace/autobyteus-workspace",
+  "pinnedSourceCommit": "8ef282ba77705180d985e7000d801f0e0068cdc1",
+  "sourceObjectType": "commit",
+  "selectedPresentationFiles": {
+    "components/workspace/config/RunConfigPanel.vue": {
+      "sourceSha256": "555e3d35e3259f3433f9a7049563854fb53ec8a91a50a1f4e02a83fd5cd331cb",
+      "prototypeSha256": "555e3d35e3259f3433f9a7049563854fb53ec8a91a50a1f4e02a83fd5cd331cb",
+      "presentationExact": true
+    },
+    "components/workspace/config/TeamRunConfigForm.vue": {
+      "sourceSha256": "f92ca01f392ba00d411233da0e91ceb15a522fc1089a2c56e9e7952f9065097f",
+      "prototypeSha256": "f92ca01f392ba00d411233da0e91ceb15a522fc1089a2c56e9e7952f9065097f",
+      "presentationExact": true
+    },
+    "components/workspace/config/WorkspaceSelector.vue": {
+      "sourceSha256": "fdd7b1ad0c50b5d1ad889d5ff14c559b11993e77fb84f1e89027d5e2d3d3826e",
+      "prototypeSha256": "fdd7b1ad0c50b5d1ad889d5ff14c559b11993e77fb84f1e89027d5e2d3d3826e",
+      "presentationExact": true
+    },
+    "components/workspace/config/MemberOverrideTree.vue": {
+      "sourceSha256": "ee570ff357d0c919bf44f862e15e810a85b0acd51cfc9e47cf107703459585ae",
+      "prototypeSha256": "ee570ff357d0c919bf44f862e15e810a85b0acd51cfc9e47cf107703459585ae",
+      "presentationExact": true
+    },
+    "components/workspace/config/MemberOverrideItem.vue": {
+      "sourceSha256": "b72d3f893c5208547097361592646e523cd47bf37c0296a590374768894573b7",
+      "prototypeSha256": "b72d3f893c5208547097361592646e523cd47bf37c0296a590374768894573b7",
+      "presentationExact": true
+    },
+    "components/fileExplorer/FileExplorer.vue": {
+      "sourceSha256": "65320c567c3b25bcc1690c82c143a135cc724953e0a537120d904942abd2d9a6",
+      "prototypeSha256": "65320c567c3b25bcc1690c82c143a135cc724953e0a537120d904942abd2d9a6",
+      "presentationExact": true
+    },
+    "components/fileExplorer/FileItem.vue": {
+      "sourceSha256": "a5408290f62a3df5679a0bb36e01ff4710deac23c5e489fdfe1a7f8b1aed3e79",
+      "prototypeSha256": "a5408290f62a3df5679a0bb36e01ff4710deac23c5e489fdfe1a7f8b1aed3e79",
+      "presentationExact": true
+    },
+    "components/fileExplorer/FileExplorerTabs.vue": {
+      "sourceSha256": "4cb5108ba8f34fd7097b2d81c10a234392cb9dfad35c9a1a3b722259aa349fa9",
+      "prototypeSha256": "4cb5108ba8f34fd7097b2d81c10a234392cb9dfad35c9a1a3b722259aa349fa9",
+      "presentationExact": true
+    },
+    "components/fileExplorer/FileExplorerLayout.vue": {
+      "sourceSha256": "2c1b142e682da9f7c2183f8052ea295339a820c38741654fa8b815029854edf7",
+      "prototypeSha256": "2c1b142e682da9f7c2183f8052ea295339a820c38741654fa8b815029854edf7",
+      "presentationExact": true
+    }
+  },
+  "observation": {
+    "sourceUrl": "http://127.0.0.1:4283/workspace",
+    "mockUrl": "http://127.0.0.1:4383",
+    "archiveMethod": "git archive of the exact pinned autobyteus-web tree",
+    "disposableRuntimeNormalization": [
+      "disabled automatic Electron module discovery in the temporary archive",
+      "omitted the temporary dev-handler compatibility module registration",
+      "reused the canonical prototype dependency installation without editing pinned presentation files"
+    ],
+    "presentationFilesEdited": false
+  }
+}

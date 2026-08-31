@@ -1,5 +1,50 @@
 # Prototype Runbook
 
+## AORG-FLAT-TEAM-001 Focused Current-Experience Correction
+
+This Product-owned worktree exposes two deterministic current-source scenarios
+for the `Baseline Needed` correction at source pin
+`8ef282ba77705180d985e7000d801f0e0068cdc1`:
+
+```js
+localStorage.setItem('autobyteus.prototype.context', 'desktop')
+localStorage.setItem('autobyteus.prototype.scenario', 'workspace_team_run_config_correction')
+location.assign('/workspace')
+```
+
+The Team configuration scenario supports the exact source interactions for the
+missing-workspace/disabled-run state, member disclosure, existing-workspace
+selection, and auto-approve toggle. To inspect the selected-run read-only form,
+switch to `workspace_team_active`, reload `/workspace`, and activate **Edit
+Config** in the center header.
+
+For the workspace file tree:
+
+```js
+localStorage.setItem('autobyteus.prototype.scenario', 'workspace_file_tree_correction')
+location.assign('/workspace')
+```
+
+The Files surface has an expanded `docs` folder, two synthetic Markdown tabs,
+a real active preview, folder collapse/expand, file selection, and the source
+folder context menu. All state is browser-local and resettable; neither
+scenario accesses a filesystem, runtime, model, backend, or production data.
+
+Run the focused matched-browser validator while the exact pinned source,
+prototype, and controlled observer are available:
+
+```bash
+SOURCE_BASE_URL=http://127.0.0.1:4283 \
+PROTOTYPE_BASE_URL=http://127.0.0.1:4183 \
+MOCK_BASE_URL=http://127.0.0.1:4383 \
+corepack pnpm validate:aorg-team-config-file-tree-correction
+```
+
+The durable result is under
+`evidence/AORG-FLAT-TEAM-001/baseline-correction-2/`. Ordinary prototype review
+requires only `corepack pnpm dev --port 3210`; the source observer is evidence
+infrastructure, not a runtime dependency.
+
 ## REQPKG-TSUI-001 Token Statistics Final Prototype Candidate
 
 This ticket-scoped worktree contains the RER-009 **Final Prototype** for

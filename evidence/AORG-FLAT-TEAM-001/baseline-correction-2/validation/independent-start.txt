@@ -1,0 +1,4 @@
+{"scenario":"workspace_team_run_config_correction","httpStatus":200,"state":{"teamDefinition":true,"blocking":true,"draftId":"team-draft-config-correction"},"browserErrors":[],"externalRequests":[]}
+{"scenario":"workspace_file_tree_correction","httpStatus":200,"state":{"docs":2,"markdown":1,"activeFile":"requirements.md"},"browserErrors":[],"externalRequests":[]}
+source_4283_http=000
+mock_4383_http=000

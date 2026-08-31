@@ -1,0 +1,2 @@
+Command: SOURCE_BASE_URL=http://127.0.0.1:4283 PROTOTYPE_BASE_URL=http://127.0.0.1:4183 MOCK_BASE_URL=http://127.0.0.1:4383 corepack pnpm validate:aorg-flat-team-correction
+Result: 5/5 accepted Task Agent / Task Team source-current baseline comparisons passed; zero source/prototype browser errors. Historical accepted evidence files were restored after the regression run.
