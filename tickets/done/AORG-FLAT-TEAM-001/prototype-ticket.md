@@ -4,7 +4,7 @@
 
 - Ticket / stable package: `AORG-FLAT-TEAM-001`
 - Title: AgentOrg and flat AgentTeam product experience
-- Status: `Approved — Repository Finalization Pending`
+- Status: `Completed`
 - Mode: `Product Experience Prototyping`
 - Requirements authority: approved `RER-013`, commit `86df311c4`
 - Architecture context: held `AD-REV-001` at `36bc02deca363798b6eda878e5eb4850e624da6f`; Product UI approval is now complete, so Requirements Engineering may reconcile this package and return it for the planned architecture impact check.
@@ -14,29 +14,30 @@
 ## Repository And Baseline
 
 - Canonical prototype repository/root: `/home/autobyteus/workspace/autobyteus-web-prototype`
-- Active Product ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
-- Product ticket branch: `prototype/aorg-flat-team-001`
+- Former Product ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001` — safely removed after integration
+- Product ticket branch: `prototype/aorg-flat-team-001` — integrated and deleted locally
 - Integration/default branch: `personal`
 - Accepted prototype base: `5561e3ac593a210ab7b3b8621c5daea31f95f08e`
 - Base reconciliation commit on this ticket: `3e81f334f131992a06936886c02b4493d1d43349`
 - Approved runnable behavior commit: `891b4e667d51fffb92ebd85dd2dc90a8e0afcf2e`
 - Post-approval visual-reference capture commit: `3de2c08b6f3d8cfdb75714edaa88b00d04d67aaf`
+- Approved package/integration revision: `e53b8acbbc714a2571142a297fcba59f1b0818e5`
 - Source repository: `/home/autobyteus/workspace/autobyteus-workspace`
 - Selected frontend: `/home/autobyteus/workspace/autobyteus-workspace/autobyteus-web`
 - Pinned source revision: `8ef282ba77705180d985e7000d801f0e0068cdc1`
 - Targeted hierarchy correction authority: user-supplied production comparison screenshots plus current source hierarchy component pattern at checkout `80e2bd195c42ea3ced778dbc051d4d00edaef16f`. This is a named visual preservation correction, not a claim that every surface was refreshed to that checkout.
 - Baseline: accepted after two corrections. Task Agent / Task Team parity passed `5/5`; AgentTeam configuration-first launch and Workspace Files parity passed `9/9`, with byte-identical matched captures and zero browser errors.
-- Bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/prototype-bootstrap-report.md`
+- Bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype/prototype-bootstrap-report.md`
 - Requirements package: `/home/autobyteus/workspace/.codex/worktrees/flat-agent-organization-model/tickets/in-progress/flat-agent-organization-model`
 
 ## Runtime Isolation
 
-- Review server: `corepack pnpm dev --port 4194`
-- Review URL: `http://127.0.0.1:4194`
-- Product-owned Nuxt process at review publication: PID `889` (runtime-local; may change after restart)
+- Historical review server: `corepack pnpm dev --port 4194`; stopped after final capture
+- Canonical self-start command: `corepack pnpm dev --port 3210`
+- Product-owned review process group `871` / listener PID `889`: stopped; port `4194` released
 - Temporary state root: `/tmp/autobyteus-prototype-AORG-FLAT-TEAM-001`
 - Fixture boundary: deterministic prototype-local definitions, configuration, handoffs, runs, history, files, and conversations; no production services, credentials, data, or writes.
-- Runtime and cleanup: pending the repository finalization sequence; the ticket-owned port `4194` remains available only until final artifacts are committed and integrated.
+- Runtime and cleanup: `Completed` — ticket-owned preview stopped, port `4194` released, ticket worktree removed, and local ticket branch deleted after becoming reachable from `personal`.
 
 ## Approved RV-012 Experience
 
@@ -53,20 +54,20 @@
 
 ## Delivery And Validation
 
-- UI/UX specification: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/ui-ux-spec.md`
-- Review guide: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/review-guide.md`
-- Requirement-impact resolution: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/requirement-impact-findings.md`
-- Browser validation: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/browser-validation-rv-012.json` — `59/59` pass, `20` non-normative review captures, zero runtime errors.
-- Static validation: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/validation-rv-012/static-validation.txt` — diff check, typecheck, lint, `12/12` tests, `13/13` boundary checks, and production build pass. Build used `NUXT_IGNORE_LOCK=1` only because the Product-owned review server was intentionally running.
-- Final package validation: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/validation/final-package` — `6/6` approval/specification/browser/visual-integrity/provenance checks pass; post-approval typecheck, lint, `12/12` tests, `13/13` boundaries, and production build pass.
-- Review evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/review-evidence/rv-012`
-- Final normative visual references: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/visual-references` — `VIS-001`–`VIS-020`, captured after approval and hash-recorded.
-- User approval: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/user-decision-record.md` — approved on `2026-08-31`.
+- UI/UX specification: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-001/ui-ux-spec.md`
+- Review guide: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-001/review-guide.md`
+- Requirement-impact resolution: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-001/requirement-impact-findings.md`
+- Browser validation: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-001/browser-validation-rv-012.json` — `59/59` pass, `20` non-normative review captures, zero runtime errors.
+- Static validation: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-001/validation-rv-012/static-validation.txt` — diff check, typecheck, lint, `12/12` tests, `13/13` boundary checks, and production build pass. Build used `NUXT_IGNORE_LOCK=1` only because the Product-owned review server was intentionally running.
+- Final package validation: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-001/validation/final-package` — `6/6` approval/specification/browser/visual-integrity/provenance checks pass; post-approval typecheck, lint, `12/12` tests, `13/13` boundaries, and production build pass.
+- Review evidence: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-001/review-evidence/rv-012`
+- Final normative visual references: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-001/visual-references` — `VIS-001`–`VIS-020`, captured after approval and hash-recorded.
+- User approval: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-001/user-decision-record.md` — approved on `2026-08-31`.
 
 ## Outcome And Next Action
 
-- Current outcome/status: `Approved — Repository Finalization Pending`.
+- Current outcome/status: `Prototype Completed`.
 - User-confirmation reference: on `2026-08-31`, after reviewing RV-012, the user stated the AgentTeam and AgentOrg UI was done/reviewed, approved final screenshot creation, and directed Product Prototyper to finalize and return the package to Requirements Engineering.
 - Remaining Product UI decisions: `None`.
-- Integration target/result: `personal` / `Pending` until the repository finalization sequence completes.
-- Next action: commit the approved package, integrate it into canonical `personal`, move the ticket to `tickets/done/`, stop the ticket-owned runtime, clean the worktree, and route `Prototype Completed` through the dynamic handoff rules.
+- Integration target/result: `Completed` — canonical `personal` fast-forwarded from `5561e3ac593a210ab7b3b8621c5daea31f95f08e` to approved package revision `e53b8acbbc714a2571142a297fcba59f1b0818e5`; terminal closure metadata is committed on `personal`.
+- Next action: Requirements Engineering reconciles the approved Product UI/UX supplement and normative `VIS-*` references into the canonical requirements package, then resumes the planned Architecture Designer impact check.

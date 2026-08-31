@@ -7,15 +7,15 @@
 - Requirements authority: `RER-013`, commit `86df311c4`
 - Approved runnable behavior: `891b4e667d51fffb92ebd85dd2dc90a8e0afcf2e`
 - Post-approval visual-reference capture: `3de2c08b6f3d8cfdb75714edaa88b00d04d67aaf`
-- Review server: `http://127.0.0.1:4194`
+- Canonical self-start base URL: `http://127.0.0.1:3210` (historical ticket review port `4194` is stopped)
 - Browser validation: `59/59` pass, `20` captures, zero runtime errors
 - Static validation: diff check, typecheck, lint, `12/12` tests, `13/13` boundaries, and build pass
 - Final package integrity: `6/6` approval/specification/browser/visual/provenance checks pass
 
 ## Primary Review — AgentOrg Run
 
-1. Open [Software Development Department](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department) and select **Run**.
-2. Confirm Run opens [one AgentOrg configuration](http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config) directly.
+1. Open [Software Development Department](http://127.0.0.1:3210/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department) and select **Run**.
+2. Confirm Run opens [one AgentOrg configuration](http://127.0.0.1:3210/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config) directly.
    - There is no Agent/Team entry selector or modal.
    - The controls follow the accepted Team configuration: Runtime, Default LLM Model, Workspace Directory, Auto approve tools, Member overrides, and Run Agent Org.
 3. Expand **Member overrides**.
@@ -39,21 +39,21 @@
 
 Direct links:
 
-- [AgentOrg configuration](http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config)
-- [Active AgentOrg, initially unfocused](http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=active)
+- [AgentOrg configuration](http://127.0.0.1:3210/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config)
+- [Active AgentOrg, initially unfocused](http://127.0.0.1:3210/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=active)
 
 ## Preserved Surface Review
 
-1. [AgentOrg create](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-create)
+1. [AgentOrg create](http://127.0.0.1:3210/agent-orgs?prototypeReview=agent-org-flat&view=org-create)
    - Name and Description only; Category is absent.
    - **Add member** expands in the document flow, with Agent/Team tabs and search; no overlay.
-2. [AgentOrg detail](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department)
+2. [AgentOrg detail](http://127.0.0.1:3210/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department)
    - Description, Members, and Handoffs only; no fabricated run facts or redundant architecture copy.
    - Handoff cards show From, To, exact addresses, and When only. No Handoff or condition number badges are visible; vertical placement carries the order.
-3. [AgentOrg edit](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-edit&id=software-development-department)
+3. [AgentOrg edit](http://127.0.0.1:3210/agent-orgs?prototypeReview=agent-org-flat&view=org-edit&id=software-development-department)
    - Add/edit/delete/reorder Handoffs and When conditions.
    - Cancel an open draft; remove a used endpoint and verify save is blocked until resolution.
-4. [AgentTeam create](http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-create), [detail](http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team), and [edit](http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-edit&id=product-design-prototyping-team)
+4. [AgentTeam create](http://127.0.0.1:3210/agent-teams?prototypeReview=agent-org-flat&view=team-create), [detail](http://127.0.0.1:3210/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team), and [edit](http://127.0.0.1:3210/agent-teams?prototypeReview=agent-org-flat&view=team-edit&id=product-design-prototyping-team)
    - The accepted product layout, drag/drop, click fallback, Instructions, Member Details, Agent-detail navigation, configuration-first Run, and Team-local Handoffs remain preserved.
    - The intentional structural delta is Agent-only Team membership.
 

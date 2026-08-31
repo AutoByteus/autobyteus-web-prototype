@@ -22,10 +22,10 @@ Product UI/UX implementation references. The user approved RV-012 on
 - Source pin: `8ef282ba77705180d985e7000d801f0e0068cdc1`
 - Workspace hierarchy correction evidence: user-supplied production comparison screenshots and current source hierarchy component pattern at `80e2bd195c42ea3ced778dbc051d4d00edaef16f`; limited to the named tree-layout preservation gap.
 - Prototype repository: `/home/autobyteus/workspace/autobyteus-web-prototype`
-- Ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
-- Ticket branch: `prototype/aorg-flat-team-001`
+- Former ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001` — removed after integration
+- Ticket branch: `prototype/aorg-flat-team-001` — integrated into `personal`
 - Accepted prototype base: `5561e3ac593a210ab7b3b8621c5daea31f95f08e`
-- Configuration URL: `http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config`
+- Canonical self-start configuration URL: `http://127.0.0.1:3210/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config`
 
 ## Experience Goal
 
