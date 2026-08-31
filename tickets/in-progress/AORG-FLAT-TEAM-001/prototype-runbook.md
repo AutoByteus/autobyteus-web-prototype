@@ -8,7 +8,7 @@
 - Ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
 - Branch: `prototype/aorg-flat-team-001`
 - Accepted base: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`
-- Review candidate revision: `RV-005`; candidate commit `8d0a08b72c625f9d2ad7c1534384f7c6c6d28794`
+- Review candidate revision: `RV-006`; candidate commit pending
 - Stack: Nuxt 3, Vue 3, TypeScript, Tailwind, deterministic prototype fixtures
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001`
 
@@ -19,7 +19,7 @@ corepack pnpm install --ignore-workspace --frozen-lockfile
 corepack pnpm dev --port 4194
 ```
 
-Review entry: `http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-list`
+Review entries: `http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-list` and `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-list`
 
 Team-detail preservation review: `http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team`. Use either member's `View ↗` action and **Back to team** to validate the preserved Agent-detail journey.
 

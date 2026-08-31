@@ -195,13 +195,6 @@
             </div>
           </section>
 
-          <section class="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 class="font-semibold text-slate-900">Used by Agent Orgs</h2>
-              <p class="mt-1 text-sm text-slate-500">Organizations reference this same Team definition; its coordinator, members, handoffs, and standalone history stay unchanged.</p>
-            </div>
-            <button type="button" class="shrink-0 text-sm font-semibold text-blue-700 hover:text-blue-800" @click="openOrgCatalog">View Agent Orgs →</button>
-          </section>
         </div>
       </template>
 
@@ -432,9 +425,6 @@ const applyTeamTemplate = (): void => {
 
 const go = async (nextView: TeamView, id?: string): Promise<void> => {
   await router.push({ path: '/agent-teams', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: nextView, ...(id ? { id } : {}) } });
-};
-const openOrgCatalog = async (): Promise<void> => {
-  await router.push({ path: '/agent-orgs', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: 'org-list' } });
 };
 const openTeamRun = async (id: string): Promise<void> => {
   await router.push({ path: '/workspace', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, root: 'team', team: id } });

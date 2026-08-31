@@ -4,7 +4,7 @@ import { chromium } from 'playwright-core';
 
 const baseUrl = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4194';
 const ticketRoot = path.resolve('tickets/in-progress/AORG-FLAT-TEAM-001');
-const evidenceRoot = path.join(ticketRoot, 'review-evidence', 'rv-005');
+const evidenceRoot = path.join(ticketRoot, 'review-evidence', 'rv-006');
 await fs.mkdir(evidenceRoot, { recursive: true });
 
 const browser = await chromium.launch({
@@ -47,17 +47,17 @@ const capture = async (page, id, filename, state) => {
 };
 
 const teamList = await openPage(`/agent-teams?${query({ view: 'team-list' })}`);
-record('AORG-RV5-001-team-catalog',
+record('AORG-RV6-001-team-catalog',
   await teamList.getByRole('heading', { name: 'Agent Teams', exact: true }).count() === 1
     && await teamList.locator('h1.sr-only').filter({ hasText: 'Agent Teams' }).count() === 1
     && await teamList.locator('[data-test^="team-card-"]').count() === 3
     && await teamList.getByRole('button', { name: 'Create Team', exact: true }).count() === 1,
   { visiblePageTitle: false, accessiblePageHeading: true, cards: await teamList.locator('[data-test^="team-card-"]').count() });
-record('AORG-RV5-002-separated-primary-navigation',
+record('AORG-RV6-002-separated-primary-navigation',
   await teamList.getByRole('button', { name: 'Agent Teams', exact: true }).count() === 1
     && await teamList.getByRole('button', { name: 'Agent Orgs', exact: true }).count() === 1,
   { navigation: ['Agent Teams', 'Agent Orgs'] });
-record('AORG-RV5-003-team-catalog-preserves-baseline-visual-language',
+record('AORG-RV6-003-team-catalog-preserves-baseline-visual-language',
   await teamList.getByPlaceholder('Search teams by name').count() === 1
     && await teamList.getByRole('button', { name: 'Reload', exact: true }).count() === 1
     && await teamList.getByRole('heading', { name: 'Featured teams', exact: true }).count() === 1
@@ -72,13 +72,13 @@ record('AORG-RV5-003-team-catalog-preserves-baseline-visual-language',
   { preservedBaselineElements: ['search', 'reload', 'create', 'featured', 'all', 'initials', 'category', 'member chips', 'right actions'], redundantTypeLabels: 0, nestedTeamMetric: 0 });
 const reloadButton = teamList.getByRole('button', { name: 'Reload', exact: true });
 await reloadButton.click();
-record('AORG-RV5-021-baseline-reload-feedback',
+record('AORG-RV6-021-baseline-reload-feedback',
   await teamList.getByRole('button', { name: 'Reloading…', exact: true }).isDisabled(),
   { immediateFeedback: 'Reloading…', disabledDuringReload: true });
 await teamList.waitForTimeout(500);
 const teamSearch = teamList.getByPlaceholder('Search teams by name');
 await teamSearch.fill('Release');
-record('AORG-RV5-022-baseline-search-behavior',
+record('AORG-RV6-022-baseline-search-behavior',
   await teamList.locator('[data-test^="team-card-"]').count() === 1
     && await teamList.getByRole('heading', { name: 'Featured teams', exact: true }).count() === 0
     && await teamList.getByRole('heading', { name: 'All teams', exact: true }).count() === 0,
@@ -89,7 +89,7 @@ await teamList.close();
 
 const teamCreate = await openPage(`/agent-teams?${query({ view: 'team-create' })}`);
 const coordinatorRadios = teamCreate.locator('input[type="radio"]');
-record('AORG-RV5-004-team-authoring-agent-only',
+record('AORG-RV6-004-team-authoring-agent-only',
   await teamCreate.getByRole('heading', { name: 'Create Agent Team' }).count() === 1
     && await teamCreate.getByRole('heading', { name: 'Agent Library', exact: true }).count() === 1
     && await teamCreate.getByRole('heading', { name: 'Team Canvas', exact: true }).count() === 1
@@ -100,7 +100,7 @@ record('AORG-RV5-004-team-authoring-agent-only',
     && await teamCreate.getByText('MY TEAMS', { exact: true }).count() === 0
     && await teamCreate.getByRole('button', { name: 'Add Team', exact: true }).count() === 0,
   { baselineStructure: ['Basics', 'Agent Library', 'Team Canvas', 'Member Details', 'LLM config'], teamLibrary: 0, addTeam: 0 });
-record('AORG-RV5-005-exactly-one-team-coordinator',
+record('AORG-RV6-005-exactly-one-team-coordinator',
   await coordinatorRadios.count() === 2
     && await coordinatorRadios.evaluateAll((radios) => radios.filter((radio) => radio.checked).length === 1),
   { radios: await coordinatorRadios.count(), checked: await coordinatorRadios.evaluateAll((radios) => radios.filter((radio) => radio.checked).length) });
@@ -108,7 +108,7 @@ await capture(teamCreate, 'REV-AORG-002', 'REV-AORG-002-agent-team-authoring.png
 await teamCreate.close();
 
 const teamDetail = await openPage(`/agent-teams?${query({ view: 'team-detail', id: 'product-design-prototyping-team' })}`);
-record('AORG-RV5-023-team-detail-preserves-baseline-card-hierarchy',
+record('AORG-RV6-023-team-detail-preserves-baseline-card-hierarchy',
   await teamDetail.getByRole('heading', { name: 'Product Design & Prototyping', exact: true }).count() === 1
     && await teamDetail.getByRole('heading', { name: 'Description', exact: true }).count() === 1
     && await teamDetail.getByRole('heading', { name: 'Instructions', exact: true }).count() === 1
@@ -120,20 +120,21 @@ record('AORG-RV5-023-team-detail-preserves-baseline-card-hierarchy',
     && await teamDetail.getByRole('button', { name: 'Run', exact: true }).count() === 1
     && await teamDetail.getByRole('button', { name: 'Edit', exact: true }).count() === 1,
   { baselineCards: ['header', 'description', 'instructions', 'handoffs', 'members'], actions: ['Run', 'Edit', 'member View'] });
-record('AORG-RV5-024-team-detail-keeps-flat-semantics-without-type-chrome',
+record('AORG-RV6-024-team-detail-keeps-flat-semantics-without-cross-surface-chrome',
   await teamDetail.getByText('2 Agents', { exact: true }).count() === 1
     && await teamDetail.getByText('Nested Teams', { exact: true }).count() === 0
     && await teamDetail.getByText('Standalone & reusable', { exact: true }).count() === 0
     && await teamDetail.getByText('Agent Team', { exact: true }).count() === 0
-    && await teamDetail.getByRole('heading', { name: 'Used by Agent Orgs', exact: true }).count() === 1,
-  { nestedTeamUI: 0, redundantTypeBadges: 0, sameDefinitionReuseStatement: true });
-await capture(teamDetail, 'REV-AORG-009', 'REV-AORG-009-agent-team-detail.png', 'Baseline-native flat Team detail with members, coordinator, handoffs, and reuse statement');
+    && await teamDetail.getByRole('heading', { name: 'Used by Agent Orgs', exact: true }).count() === 0
+    && await teamDetail.getByRole('button', { name: 'View Agent Orgs', exact: false }).count() === 0,
+  { nestedTeamUI: 0, redundantTypeBadges: 0, crossSurfacePromotion: 0 });
+await capture(teamDetail, 'REV-AORG-009', 'REV-AORG-009-agent-team-detail.png', 'Baseline-native flat Team detail with members, coordinator, and handoffs');
 await teamDetail.getByRole('heading', { name: 'Members (2)', exact: true }).evaluate(element => element.scrollIntoView({ block: 'start' }));
 await teamDetail.waitForTimeout(200);
 await capture(teamDetail, 'REV-AORG-010', 'REV-AORG-010-agent-team-members.png', 'Preserved Team member cards with direct Agent detail actions');
 await teamDetail.getByRole('button', { name: 'Open agent details for product_prototyper', exact: true }).click();
 await teamDetail.waitForURL(/\/agents\?/);
-record('AORG-RV5-025-team-member-opens-preserved-agent-detail',
+record('AORG-RV6-025-team-member-opens-preserved-agent-detail',
   new URL(teamDetail.url()).searchParams.get('id') === 'product-prototyper'
     && new URL(teamDetail.url()).searchParams.get('returnToTeam') === 'product-design-prototyping-team'
     && new URL(teamDetail.url()).searchParams.get('prototypeReview') === 'agent-org-flat'
@@ -145,7 +146,7 @@ record('AORG-RV5-025-team-member-opens-preserved-agent-detail',
 await capture(teamDetail, 'REV-AORG-011', 'REV-AORG-011-agent-member-detail.png', 'Preserved Agent detail reached from a Team member');
 await teamDetail.getByRole('button', { name: 'Back to team', exact: true }).click();
 await teamDetail.waitForURL(/\/agent-teams\?/);
-record('AORG-RV5-026-agent-detail-returns-to-future-team-context',
+record('AORG-RV6-026-agent-detail-returns-to-future-team-context',
   new URL(teamDetail.url()).searchParams.get('id') === 'product-design-prototyping-team'
     && new URL(teamDetail.url()).searchParams.get('view') === 'team-detail'
     && new URL(teamDetail.url()).searchParams.get('prototypeReview') === 'agent-org-flat'
@@ -156,7 +157,7 @@ await teamDetail.close();
 
 const narrowTeamDetail = await openPage(`/agent-teams?${query({ view: 'team-detail', id: 'product-design-prototyping-team' })}`, { width: 390, height: 844 });
 const narrowTeamOverflow = await narrowTeamDetail.evaluate(() => ({ viewport: window.innerWidth, scrollWidth: document.documentElement.scrollWidth }));
-record('AORG-RV5-027-team-detail-narrow-preservation',
+record('AORG-RV6-027-team-detail-narrow-preservation',
   narrowTeamOverflow.scrollWidth === narrowTeamOverflow.viewport
     && await narrowTeamDetail.getByRole('heading', { name: 'Instructions', exact: true }).count() === 1
     && await narrowTeamDetail.locator('[data-test^="team-member-view-"]').count() === 2,
@@ -164,46 +165,80 @@ record('AORG-RV5-027-team-detail-narrow-preservation',
 await narrowTeamDetail.close();
 
 const orgList = await openPage(`/agent-orgs?${query({ view: 'org-list' })}`);
-record('AORG-RV5-006-org-catalog',
+record('AORG-RV6-006-org-catalog',
   await orgList.getByRole('heading', { name: 'Agent Orgs', exact: true }).count() === 1
+    && await orgList.locator('h1.sr-only').filter({ hasText: 'Agent Orgs' }).count() === 1
     && await orgList.locator('[data-test^="org-card-"]').count() === 2
-    && await orgList.getByText('No coordinator', { exact: true }).count() >= 2,
-  { cards: await orgList.locator('[data-test^="org-card-"]').count() });
-record('AORG-RV5-007-org-direct-composition',
+    && await orgList.getByRole('button', { name: 'Create Agent Org', exact: true }).count() === 1
+    && (await orgList.locator('[data-test="create-org"]').getAttribute('class'))?.includes('bg-blue-600')
+    && await orgList.getByText('Fixed-depth collaboration roots', { exact: true }).count() === 0
+    && await orgList.getByText('Agent Org', { exact: true }).count() === 0
+    && await orgList.getByText('No coordinator', { exact: true }).count() === 0,
+  { visiblePageTitle: false, accessiblePageHeading: true, cards: await orgList.locator('[data-test^="org-card-"]').count(), primaryAction: 'blue' });
+record('AORG-RV6-007-org-direct-composition',
   await orgList.getByText('requirements_engineer', { exact: true }).count() >= 1
     && await orgList.getByText('Product Design & Prototyping', { exact: true }).count() >= 1
-    && await orgList.getByText('1 level', { exact: true }).count() === 2,
-  { directKinds: ['agent', 'team'], configuredLevels: 1 });
-await capture(orgList, 'REV-AORG-003', 'REV-AORG-003-agent-org-catalog.png', 'Agent Org catalog with direct Agent and Team composition');
+    && await orgList.locator('[data-test^="org-member-"]').count() === 6
+    && await orgList.getByText('Direct composition', { exact: true }).count() === 0
+    && await orgList.getByText('1 level', { exact: true }).count() === 0
+    && await orgList.getByRole('heading', { name: 'Featured organizations', exact: true }).count() === 1,
+  { directKinds: ['agent', 'team'], explicitTypeSuffixes: 0, explanatoryCompositionChrome: 0 });
+const orgReloadButton = orgList.getByRole('button', { name: 'Reload', exact: true });
+await orgReloadButton.click();
+record('AORG-RV6-028-org-reload-feedback',
+  await orgList.getByRole('button', { name: 'Reloading…', exact: true }).isDisabled(),
+  { immediateFeedback: 'Reloading…', disabledDuringReload: true });
+await orgList.waitForTimeout(500);
+const orgSearch = orgList.getByPlaceholder('Search organizations by name');
+await orgSearch.fill('Release');
+record('AORG-RV6-029-org-search-behavior',
+  await orgList.locator('[data-test^="org-card-"]').count() === 1
+    && await orgList.getByRole('heading', { name: 'Featured organizations', exact: true }).count() === 0,
+  { query: 'Release', matchingCards: 1 });
+await orgSearch.fill('');
+await capture(orgList, 'REV-AORG-003', 'REV-AORG-003-agent-org-catalog.png', 'Baseline-native Agent Org catalog with direct Agent and Team members');
 await orgList.close();
 
+const narrowOrgList = await openPage(`/agent-orgs?${query({ view: 'org-list' })}`, { width: 390, height: 844 });
+const narrowOrgListOverflow = await narrowOrgList.evaluate(() => ({ viewport: window.innerWidth, scrollWidth: document.documentElement.scrollWidth }));
+record('AORG-RV6-030-org-catalog-narrow-layout',
+  narrowOrgListOverflow.scrollWidth === narrowOrgListOverflow.viewport
+    && await narrowOrgList.locator('[data-test^="org-card-"]').count() === 2
+    && await narrowOrgList.getByRole('button', { name: 'Create Agent Org', exact: true }).count() === 1,
+  { overflow: narrowOrgListOverflow, cards: 2 });
+await narrowOrgList.close();
+
 const orgCreate = await openPage(`/agent-orgs?${query({ view: 'org-create' })}`);
-record('AORG-RV5-008-org-authoring-membership',
+record('AORG-RV6-008-org-authoring-membership',
   await orgCreate.getByRole('heading', { name: 'Create Agent Org' }).count() === 1
     && await orgCreate.getByRole('button', { name: 'Add Agent' }).count() === 1
     && await orgCreate.getByRole('button', { name: 'Add Team' }).count() === 1,
   { memberPickers: ['Agent', 'Team'] });
-record('AORG-RV5-009-org-has-no-coordinator-control',
+record('AORG-RV6-009-org-has-no-coordinator-control',
   await orgCreate.locator('input[type="radio"]').count() === 0
-    && await orgCreate.getByText('No Organization coordinator', { exact: false }).count() === 1,
-  { coordinatorControls: 0 });
+    && await orgCreate.getByText(/No (Org|Organization) coordinator/i).count() === 0
+    && await orgCreate.getByRole('heading', { name: 'What makes this an Org?', exact: true }).count() === 0,
+  { coordinatorControls: 0, explanatoryCoordinatorChrome: 0 });
 await capture(orgCreate, 'REV-AORG-004', 'REV-AORG-004-agent-org-authoring.png', 'Agent Org authoring with independent Agents and referenced Teams');
 await orgCreate.close();
 
 const orgDetail = await openPage(`/agent-orgs?${query({ view: 'org-detail', id: 'software-development-department' })}`);
-record('AORG-RV5-010-team-reference-preservation',
+record('AORG-RV6-010-team-reference-preservation',
   await orgDetail.getByText('Same Team definition · standalone history preserved', { exact: true }).count() === 2
-    && await orgDetail.getByText('No coordinator', { exact: true }).count() >= 1,
-  { referencedTeams: 2 });
-await capture(orgDetail, 'REV-AORG-005', 'REV-AORG-005-agent-org-detail.png', 'Org detail showing referenced reusable Teams and no Org coordinator');
-await orgDetail.getByRole('button', { name: 'Run Organization' }).click();
+    && await orgDetail.getByText(/No (Org|Organization) coordinator/i).count() === 0
+    && await orgDetail.getByRole('heading', { name: 'Members', exact: true }).count() === 1
+    && await orgDetail.getByRole('heading', { name: 'Handoffs', exact: true }).count() === 1,
+  { referencedTeams: 2, explanatoryCoordinatorChrome: 0 });
+await capture(orgDetail, 'REV-AORG-005', 'REV-AORG-005-agent-org-detail.png', 'Baseline-native Org detail with Agent and same-identity Team members');
+await orgDetail.getByRole('button', { name: 'Run', exact: true }).click();
 await orgDetail.locator('[data-test="org-launch-modal"]').waitFor();
-record('AORG-RV5-011-org-launch-requires-entry',
+record('AORG-RV6-011-org-launch-requires-entry',
   await orgDetail.locator('[data-test="start-org-run"]').isDisabled()
-    && await orgDetail.getByText('has no coordinator or default recipient', { exact: false }).count() === 1,
-  { initialStartDisabled: true });
+    && await orgDetail.getByText('Select the Agent or Team that should receive the first message.', { exact: true }).count() === 1
+    && await orgDetail.getByText(/no coordinator|default recipient/i).count() === 0,
+  { initialStartDisabled: true, selectionInstruction: 'direct' });
 await orgDetail.locator('input[value="team:product-design-prototyping-team"]').check();
-record('AORG-RV5-012-team-entry-resolves-through-coordinator',
+record('AORG-RV6-012-team-entry-resolves-through-coordinator',
   await orgDetail.locator('[data-test="start-org-run"]').isEnabled()
     && await orgDetail.getByText('Product Design & Prototyping through product_prototyper', { exact: false }).count() === 1,
   { entry: 'team:product-design-prototyping-team', coordinator: 'product_prototyper' });
@@ -211,22 +246,22 @@ await capture(orgDetail, 'REV-AORG-006', 'REV-AORG-006-agent-org-exact-entry-lau
 await orgDetail.locator('[data-test="start-org-run"]').click();
 await orgDetail.waitForURL(/\/workspace/);
 await orgDetail.locator('[data-test="agent-org-runtime-experience"]').waitFor();
-record('AORG-RV5-013-launch-carries-exact-entry',
+record('AORG-RV6-013-launch-carries-exact-entry',
   new URL(orgDetail.url()).searchParams.get('entry') === 'team:product-design-prototyping-team'
     && await orgDetail.getByText('Through coordinator product_prototyper', { exact: true }).count() === 1,
   { url: orgDetail.url() });
-record('AORG-RV5-014-runtime-root-kinds',
+record('AORG-RV6-014-runtime-root-kinds',
   await orgDetail.locator('[data-test="history-org-root"]').count() === 1
     && await orgDetail.locator('[data-test="history-team-root"]').count() === 1,
   { roots: ['Org', 'Team'] });
-record('AORG-RV5-015-task-team-is-runtime-lineage',
+record('AORG-RV6-015-task-team-is-runtime-lineage',
   await orgDetail.getByText('Task work', { exact: true }).count() === 0
     && await orgDetail.getByText('Runtime execution lineage', { exact: true }).count() === 1
     && await orgDetail.locator('[data-test="history-task-agent-row"]').count() === 1
     && await orgDetail.locator('[data-test="history-task-team-row"]').count() === 1
     && await orgDetail.getByText('not authored nesting', { exact: false }).count() === 1,
   { taskPresentation: 'source-current temporary rows within owning Team execution', genericTaskWorkSections: 0 });
-record('AORG-RV5-016-task-team-disclosure-and-child-focus',
+record('AORG-RV6-016-task-team-disclosure-and-child-focus',
   await orgDetail.locator('[data-test="history-task-team-row"]').getAttribute('aria-expanded') === 'false',
   { initialTaskTeamDisclosure: 'collapsed' });
 await orgDetail.locator('[data-test="history-task-team-row"]').click();
@@ -234,7 +269,7 @@ await orgDetail.locator('[data-test="history-task-team-child-row"]').waitFor();
 await orgDetail.locator('[data-test="history-task-team-child-row"]').click();
 await orgDetail.waitForURL(/focus=task-team-accessibility/);
 await orgDetail.locator('[data-test="selected-runtime-execution"]').waitFor();
-record('AORG-RV5-017-task-team-child-is-selectable-runtime-identity',
+record('AORG-RV6-017-task-team-child-is-selectable-runtime-identity',
   new URL(orgDetail.url()).searchParams.get('focus') === 'task-team-accessibility:reviewer'
     && await orgDetail.locator('[data-test="selected-runtime-execution"]').count() === 1
     && await orgDetail.locator('[data-test="selected-runtime-execution"]').filter({ hasText: 'Temporary child AgentRun inside the Task Team execution.' }).count() === 1,
@@ -242,7 +277,7 @@ record('AORG-RV5-017-task-team-child-is-selectable-runtime-identity',
 await capture(orgDetail, 'REV-AORG-007', 'REV-AORG-007-agent-org-runtime-history.png', 'Shared runtime/history with explicit Agent Org root and task lineage');
 await orgDetail.locator('[data-test="history-team-root"]').click();
 await orgDetail.waitForURL(/root=team/);
-record('AORG-RV5-018-standalone-team-history-remains-distinct',
+record('AORG-RV6-018-standalone-team-history-remains-distinct',
   await orgDetail.getByText('Standalone Agent Team run', { exact: true }).count() === 1
     && await orgDetail.getByText('Coordinator-led lifecycle', { exact: true }).count() === 1,
   { root: 'standalone Agent Team' });
@@ -251,16 +286,16 @@ await orgDetail.close();
 
 const narrow = await openPage(`/agent-orgs?${query({ view: 'org-detail', id: 'software-development-department' })}`, { width: 390, height: 844 });
 const overflow = await narrow.evaluate(() => ({ viewport: window.innerWidth, scrollWidth: document.documentElement.scrollWidth }));
-record('AORG-RV5-019-narrow-layout', overflow.scrollWidth === overflow.viewport
+record('AORG-RV6-019-narrow-layout', overflow.scrollWidth === overflow.viewport
   && await narrow.getByRole('heading', { name: 'Software Development Department' }).count() === 1,
 { overflow });
 await narrow.close();
 
-record('AORG-RV5-020-no-runtime-errors', runtimeErrors.length === 0, { runtimeErrors });
+record('AORG-RV6-020-no-runtime-errors', runtimeErrors.length === 0, { runtimeErrors });
 
 const result = {
   package: 'AORG-FLAT-TEAM-001',
-  revision: 'RV-005',
+  revision: 'RV-006',
   mode: 'Product Experience Prototyping',
   baseUrl,
   generatedAt: new Date().toISOString(),
@@ -270,7 +305,7 @@ const result = {
   runtimeErrors,
   captures,
 };
-await fs.writeFile(path.join(ticketRoot, 'browser-validation-rv-005.json'), `${JSON.stringify(result, null, 2)}\n`);
+await fs.writeFile(path.join(ticketRoot, 'browser-validation-rv-006.json'), `${JSON.stringify(result, null, 2)}\n`);
 await fs.writeFile(path.join(evidenceRoot, 'capture-manifest.json'), `${JSON.stringify({ package: result.package, revision: result.revision, captures, reviewStatus: 'Non-normative pending user approval' }, null, 2)}\n`);
 await browser.close();
 
