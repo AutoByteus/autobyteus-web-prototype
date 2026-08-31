@@ -3,7 +3,7 @@
 ## Status
 
 - Review state: `Awaiting User Review`
-- Prototype revision: `RV-006` candidate; not approved and not normative
+- Prototype revision: `RV-006` candidate at `e1282e15e274f7a3654364f131aa91d5af4d3602`; not approved and not normative
 - Review server: `http://127.0.0.1:4194`
 - Accepted baseline comparison: `http://127.0.0.1:4195/agent-teams?view=team-list`
 - Accepted current-experience correction: `PPA-AORG-BASE-001`
