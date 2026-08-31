@@ -99,20 +99,16 @@ const defaultRouteAliases: Record<string, string> = {
 type AgentOrgRuntimeRoute = {
   scenario: string
   phase: 'config' | 'active'
-  entryKind: 'agent' | 'team'
 }
 
 const agentOrgRuntimeRoute = (): AgentOrgRuntimeRoute | null => {
   if (window.location.pathname !== '/workspace') return null
   const query = new URLSearchParams(window.location.search)
   if (query.get('prototypeReview') !== 'agent-org-flat' || query.get('root') !== 'org') return null
-  const [entryKind] = String(query.get('entry') || '').split(':')
-  if (entryKind !== 'agent' && entryKind !== 'team') return null
   const phase = query.get('phase') === 'active' ? 'active' : 'config'
   return {
     phase,
-    entryKind,
-    scenario: `workspace_agent_org_${entryKind}_entry_${phase}`,
+    scenario: `workspace_agent_org_${phase}`,
   }
 }
 
@@ -130,7 +126,7 @@ const setAgentOrgRuntimePhase = (phase: 'config' | 'active', router?: Router): A
   } else {
     window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`)
   }
-  return { ...current, phase, scenario: `workspace_agent_org_${current.entryKind}_entry_${phase}` }
+  return { ...current, phase, scenario: `workspace_agent_org_${phase}` }
 }
 
 const scenario = (): string => agentOrgRuntimeRoute()?.scenario || localStorage.getItem(SCENARIO_KEY) || DEFAULT_SCENARIO
@@ -424,7 +420,7 @@ export default defineNuxtPlugin({
           if (name !== 'createRunFromTemplate') return
           after(() => {
             const runtime = agentOrgRuntimeRoute()
-            if (!runtime || runtime.entryKind !== 'agent' || runtime.phase !== 'config') return
+            if (!runtime || runtime.phase !== 'config') return
             const activeRuntime = setAgentOrgRuntimePhase('active', router)
             if (activeRuntime) applyExperienceScenario({ scenario: activeRuntime.scenario, context: context() })
           })
@@ -462,7 +458,13 @@ export default defineNuxtPlugin({
       for (const store of pinia._s.values()) patchStore(store)
       document.documentElement.dataset.prototypeSnapshot = key
       if (localStorage.getItem('autobyteus.prototype.deferExperienceScenario') !== '1') {
-        queueMicrotask(() => applyExperienceScenario({ scenario: scenario(), context: context() }))
+        queueMicrotask(() => {
+          const runtime = agentOrgRuntimeRoute()
+          const applied = applyExperienceScenario({ scenario: scenario(), context: context() }) as { applied?: boolean }
+          if (runtime && applied?.applied) {
+            lastAppliedAgentOrgRuntimeKey = `${window.location.pathname}${window.location.search}`
+          }
+        })
       }
     }
 

@@ -15,10 +15,26 @@
         :style="centerPaneStyle"
       >
         <div data-test="workspace-center-content-shell" class="relative flex-1 min-h-0 overflow-hidden">
-          <RunConfigPanel v-if="showSelectedRunConfig" />
+          <AgentOrgRunConfigPanel v-if="showAgentOrgRunConfig" />
+          <RunConfigPanel v-else-if="showSelectedRunConfig" />
           <AgentWorkspaceView v-else-if="isAgentSelected" />
           <TeamWorkspaceView v-else-if="isTeamSelected" />
           <RunConfigPanel v-else-if="hasPendingRunConfig" />
+          <div
+            v-else-if="showAgentOrgUnfocused"
+            data-test="agent-org-active-unfocused"
+            class="flex h-full items-center justify-center px-4 text-center text-gray-500"
+          >
+            <div class="max-w-md space-y-3">
+              <span class="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+                <Icon icon="heroicons:building-office-2-20-solid" class="h-6 w-6" />
+              </span>
+              <div class="space-y-1">
+                <h2 class="text-lg font-semibold text-gray-700">Choose an Agent or Team</h2>
+                <p>Select a member from the active Agent Org in the sidebar.</p>
+              </div>
+            </div>
+          </div>
           <div
             v-else
             data-test="workspace-empty-state"
@@ -95,7 +111,8 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { Icon } from '@iconify/vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useAppLayoutStore } from '~/stores/appLayoutStore';
 import { useLeftPanel } from '~/composables/useLeftPanel';
 import { useRightPanel } from '~/composables/useRightPanel';
@@ -104,6 +121,7 @@ import { useResponsiveWorkspaceShellState } from '~/composables/layout/useRespon
 import AgentWorkspaceView from '~/components/workspace/agent/AgentWorkspaceView.vue';
 import TeamWorkspaceView from '~/components/workspace/team/TeamWorkspaceView.vue';
 import RunConfigPanel from '~/components/workspace/config/RunConfigPanel.vue';
+import AgentOrgRunConfigPanel from '~/components/workspace/config/AgentOrgRunConfigPanel.vue';
 import WorkspaceCenterLoadingOverlay from '~/components/layout/WorkspaceCenterLoadingOverlay.vue';
 import RightSideTabs from './RightSideTabs.vue';
 import RightSidebarStrip from './RightSidebarStrip.vue';
@@ -115,6 +133,7 @@ import { useRunHistoryStore } from '~/stores/runHistoryStore';
 import { useWorkspaceCenterViewStore } from '~/stores/workspaceCenterViewStore';
 import { useShellPrimaryNavigation } from '~/composables/useShellPrimaryNavigation';
 import { LEFT_PANEL_RESIZE_HANDLE_WIDTH_PX } from '~/utils/layout/responsiveLayoutPolicy';
+import { useAgentOrgPrototypeReview } from '~/composables/useAgentOrgPrototypeReview';
 
 defineProps<{
   showFileContent: boolean
@@ -122,7 +141,9 @@ defineProps<{
 
 const { t } = useLocalization();
 const appLayoutStore = useAppLayoutStore();
+const route = useRoute();
 const router = useRouter();
+const { active: agentOrgReviewActive } = useAgentOrgPrototypeReview();
 const { resolvePrimaryRoute } = useShellPrimaryNavigation();
 const selectionStore = useAgentSelectionStore();
 const runConfigStore = useAgentRunConfigStore();
@@ -177,6 +198,13 @@ onBeforeUnmount(() => {
 
 const isAgentSelected = computed(() => selectionStore.selectedType === 'agent');
 const isTeamSelected = computed(() => selectionStore.selectedType === 'team');
+const isAgentOrgWorkspace = computed(() => agentOrgReviewActive.value && route.query.root === 'org');
+const showAgentOrgRunConfig = computed(() => isAgentOrgWorkspace.value && route.query.phase !== 'active');
+const showAgentOrgUnfocused = computed(() => (
+  isAgentOrgWorkspace.value
+  && route.query.phase === 'active'
+  && !selectionStore.selectedRunId
+));
 const showSelectedRunConfig = computed(() =>
   Boolean(selectionStore.selectedRunId) && workspaceCenterViewStore.isConfigMode,
 );

@@ -153,17 +153,6 @@
       </template>
     </div>
 
-    <div v-if="launchOpen" class="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/45 p-4" data-test="org-launch-modal" @click.self="closeLaunch">
-      <section role="dialog" aria-modal="true" aria-labelledby="launch-title" class="max-h-[92vh] w-full max-w-3xl overflow-auto rounded-2xl border border-slate-200 bg-white shadow-2xl">
-        <header class="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-5"><div><h2 id="launch-title" class="text-2xl font-bold text-slate-950">Choose an entry</h2><p class="mt-2 text-sm leading-6 text-slate-600">Select the Agent or Team that should receive the first message.</p></div><button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" aria-label="Close" @click="closeLaunch"><Icon icon="heroicons:x-mark-20-solid" class="h-5 w-5" /></button></header>
-        <div class="space-y-5 px-6 py-5">
-          <fieldset><legend class="mb-3 text-sm font-bold text-slate-900">Agents</legend><div class="grid gap-3 sm:grid-cols-2"><label v-for="agent in launchAgents" :key="agent.id" class="flex cursor-pointer items-center gap-3 rounded-xl border p-4 transition" :class="entry === `agent:${agent.id}` ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-500/15' : 'border-slate-200 hover:border-slate-300'"><input v-model="entry" type="radio" :value="`agent:${agent.id}`" class="h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500"><span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600">{{ agent.initials }}</span><span class="min-w-0"><span class="block truncate text-sm font-semibold text-slate-900">{{ agent.name }}</span><span class="block text-xs text-slate-500">Agent</span></span></label></div></fieldset>
-          <fieldset><legend class="mb-3 text-sm font-bold text-slate-900">Teams</legend><div class="grid gap-3 sm:grid-cols-2"><label v-for="team in launchTeams" :key="team.id" class="flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition" :class="entry === `team:${team.id}` ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-500/15' : 'border-slate-200 hover:border-slate-300'"><input v-model="entry" type="radio" :value="`team:${team.id}`" class="mt-1 h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500"><span class="inline-flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-blue-50 text-blue-700"><Icon icon="heroicons:user-group-20-solid" class="h-5 w-5" /></span><span class="min-w-0"><span class="block truncate text-sm font-semibold text-slate-900">{{ team.name }}</span><span class="mt-1 block text-xs leading-5 text-slate-500">Starts through <strong class="text-slate-700">{{ agentById(team.coordinatorId).name }}</strong></span></span></label></div></fieldset>
-          <div v-if="entry" class="flex items-start gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900" role="status"><Icon icon="heroicons:check-circle-20-solid" class="mt-0.5 h-5 w-5 flex-none text-emerald-600" /><p><strong>Selected:</strong> {{ selectedEntrySummary }}</p></div>
-        </div>
-        <footer class="flex items-center justify-end gap-2 border-t border-slate-100 bg-slate-50 px-6 py-4"><button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="closeLaunch">Cancel</button><button type="button" class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:bg-slate-300" :disabled="!entry" data-test="start-org-run" @click="startRun">Start run</button></footer>
-      </section>
-    </div>
   </div>
 </template>
 
@@ -182,7 +171,6 @@ const route = useRoute();
 const router = useRouter();
 const search = ref('');
 const reloading = ref(false);
-const entry = ref('');
 const saved = ref(false);
 const saveError = ref('');
 const orgHandoffManager = ref<HandoffManagerExpose | null>(null);
@@ -216,17 +204,6 @@ const detailOrgHandoffOptions = computed(() => buildOrgHandoffOptions(
   selectedOrg.value.members.filter((member) => member.kind === 'team').map((member) => member.ref),
 ));
 const detailOrgHandoffs = computed(() => savedOrgHandoffs.value[selectedOrg.value.id] ?? orgHandoffsFor(selectedOrg.value.id));
-const launchOpen = computed(() => route.query.launch === '1');
-const launchOrg = computed(() => orgById(String(route.query.id || selectedOrg.value.id)));
-const launchAgents = computed(() => launchOrg.value.members.filter((member) => member.kind === 'agent').map((member) => agentById(member.ref)));
-const launchTeams = computed(() => launchOrg.value.members.filter((member) => member.kind === 'team').map((member) => teamById(member.ref)));
-const selectedEntrySummary = computed(() => {
-  const [kind, id] = entry.value.split(':');
-  if (kind === 'agent') return `${agentById(id).name} as a direct Agent`;
-  if (kind === 'team') return `${teamById(id).name} through ${agentById(teamById(id).coordinatorId).name}`;
-  return '';
-});
-
 const formName = ref(selectedOrg.value.name);
 const formDescription = ref(selectedOrg.value.description);
 const formAgentIds = ref(['requirements-engineer']);
@@ -264,13 +241,7 @@ watch([view, selectedOrg], () => {
 const go = async (nextView: OrgView, id?: string): Promise<void> => router.push({ path: '/agent-orgs', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: nextView, ...(id ? { id } : {}) } });
 const openTeam = async (id: string): Promise<void> => router.push({ path: '/agent-teams', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: 'team-detail', id } });
 const openLaunch = async (id: string): Promise<void> => {
-  entry.value = '';
-  await router.push({ path: '/agent-orgs', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: 'org-detail', id, launch: '1' } });
-};
-const closeLaunch = async (): Promise<void> => router.push({ path: '/agent-orgs', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: 'org-detail', id: launchOrg.value.id } });
-const startRun = async (): Promise<void> => {
-  if (!entry.value) return;
-  await router.push({ path: '/workspace', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, root: 'org', org: launchOrg.value.id, entry: entry.value, phase: 'config' } });
+  await router.push({ path: '/workspace', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, root: 'org', org: id, phase: 'config' } });
 };
 const openMemberPicker = (): void => {
   memberPickerTab.value = 'agents';

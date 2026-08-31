@@ -12,15 +12,17 @@ export function applyExperienceScenario(input = {}) {
   const rich = scenario.startsWith('workspace_') || scenario.startsWith('mobile_')
   if (!rich) return { applied: false, reason: 'not-rich-scenario' }
 
+  const isAgentOrgConfig = scenario === 'workspace_agent_org_config'
+  const isAgentOrgActive = scenario === 'workspace_agent_org_active'
   const isAgentOrgTeamConfig = scenario === 'workspace_agent_org_team_entry_config'
   const isAgentOrgAgentConfig = scenario === 'workspace_agent_org_agent_entry_config'
   const isAgentOrgTeamActive = scenario === 'workspace_agent_org_team_entry_active'
   const isAgentOrgAgentActive = scenario === 'workspace_agent_org_agent_entry_active'
-  const isAgentOrgRuntime = isAgentOrgTeamConfig || isAgentOrgAgentConfig || isAgentOrgTeamActive || isAgentOrgAgentActive
+  const isAgentOrgRuntime = isAgentOrgConfig || isAgentOrgActive || isAgentOrgTeamConfig || isAgentOrgAgentConfig || isAgentOrgTeamActive || isAgentOrgAgentActive
   const routeQuery = isAgentOrgRuntime ? new URLSearchParams(window.location.search) : null
   const orgId = routeQuery?.get('org') || 'software-development-department'
   const [, routeEntryId = ''] = String(routeQuery?.get('entry') || '').split(':')
-  const runId = isAgentOrgAgentActive ? `org-agent-run-${routeEntryId || 'requirements-engineer'}` : 'run-prototype-active'
+  const runId = isAgentOrgActive || isAgentOrgAgentActive ? `org-agent-run-${routeEntryId || 'requirements-engineer'}` : 'run-prototype-active'
   const workspaceId = 'workspace-prototype'
   const isWorkspaceFileTreeCorrection = scenario === 'workspace_file_tree_correction'
   const isTeamRunConfigCorrection = scenario === 'workspace_team_run_config_correction'
@@ -29,7 +31,7 @@ export function applyExperienceScenario(input = {}) {
     workspaceId, name: 'prototype-workspace', displayName: 'Prototype Workspace',
     workspaceRootPath: '/synthetic/prototype-workspace', absolutePath: '/synthetic/prototype-workspace', kind: 'local', isTemp: false,
   }
-  const activeAgentDefinitionId = isAgentOrgAgentConfig || isAgentOrgAgentActive
+  const activeAgentDefinitionId = isAgentOrgConfig || isAgentOrgActive || isAgentOrgAgentConfig || isAgentOrgAgentActive
     ? routeEntryId || 'requirements-engineer'
     : 'agent-researcher'
   const activeAgentDefinitionName = activeAgentDefinitionId === 'requirements-engineer'
@@ -87,26 +89,46 @@ export function applyExperienceScenario(input = {}) {
         definition('requirements-engineer', 'requirements_engineer', 'Independent Agent', activeAgentDescription, 'Investigate the product context, preserve requirement traceability, and make acceptance decisions explicit.'),
         definition('product-prototyper', 'product_prototyper', 'Team coordinator', 'Coordinates product experience prototyping and review packages.', 'Evolve accepted product experiences and return precise review evidence.'),
         definition('prototype-bootstrapper', 'prototype_bootstrapper', 'Agent', 'Establishes current-experience parity in Product-owned worktrees.', 'Reproduce the selected current experience exactly and return parity evidence.'),
+        definition('architecture-designer', 'architecture_designer', 'Team coordinator', 'Creates actionable architecture designs from approved requirements.', 'Coordinate architecture work and preserve approved constraints.'),
+        definition('implementation-engineer', 'implementation_engineer', 'Agent', 'Implements approved packages and validates scoped behavior.', 'Implement the approved design and return validation evidence.'),
+        definition('code-reviewer', 'code_reviewer', 'Agent', 'Reviews implementation source and failure origin.', 'Review implementation and report actionable findings.'),
+        definition('delivery-engineer', 'delivery_engineer', 'Agent', 'Finalizes validated product changes.', 'Prepare delivery evidence and complete finalization.'),
       ]
     }
     const teamDefinition = store('agentTeamDefinition')
     if (teamDefinition) {
-      teamDefinition.agentTeamDefinitions = [{
-        __typename: 'AgentTeamDefinition',
-        id: routeEntryId || 'product-design-prototyping-team',
-        name: 'Product Design & Prototyping',
-        description: 'Creates product-facing prototypes and preserves current-experience fidelity.',
-        instructions: 'Coordinate product experience work through product_prototyper and use the Team handoffs for specialist baseline work.',
-        category: 'Product', avatarUrl: null, coordinatorMemberName: 'product_prototyper',
+      const definition = (id, name, description, instructions, coordinatorMemberName, members) => ({
+        __typename: 'AgentTeamDefinition', id, name, description, instructions,
+        category: 'General', avatarUrl: null, coordinatorMemberName,
         ownershipScope: 'SHARED', ownerTeamId: null, ownerTeamName: null,
         ownerApplicationId: null, ownerApplicationName: null, ownerPackageId: 'package-prototype',
         ownerLocalApplicationId: null,
         defaultLaunchConfig: { llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', llmConfig: { temperature: 0.2 } },
-        nodes: [
-          { __typename: 'AgentTeamNode', memberName: 'product_prototyper', ref: 'product-prototyper', refType: 'AGENT', refScope: 'SHARED' },
-          { __typename: 'AgentTeamNode', memberName: 'prototype_bootstrapper', ref: 'prototype-bootstrapper', refType: 'AGENT', refScope: 'SHARED' },
-        ],
-      }]
+        nodes: members.map(([memberName, ref]) => ({ __typename: 'AgentTeamNode', memberName, ref, refType: 'AGENT', refScope: 'SHARED' })),
+      })
+      teamDefinition.agentTeamDefinitions = [
+        definition(
+          'product-design-prototyping-team',
+          'Product Design & Prototyping',
+          'Creates product-facing prototypes and preserves current-experience fidelity.',
+          'Coordinate product experience work through product_prototyper and use Team handoffs for specialist baseline work.',
+          'product_prototyper',
+          [['product_prototyper', 'product-prototyper'], ['prototype_bootstrapper', 'prototype-bootstrapper']],
+        ),
+        definition(
+          'software-engineering-team',
+          'Software Engineering',
+          'Designs, implements, reviews, validates, and delivers product changes.',
+          'Coordinate engineering work through architecture_designer and route implementation, review, and delivery explicitly.',
+          'architecture_designer',
+          [
+            ['architecture_designer', 'architecture-designer'],
+            ['implementation_engineer', 'implementation-engineer'],
+            ['code_reviewer', 'code-reviewer'],
+            ['delivery_engineer', 'delivery-engineer'],
+          ],
+        ),
+      ]
     }
   }
   const todo = store('agentTodo')
@@ -160,6 +182,14 @@ export function applyExperienceScenario(input = {}) {
       teamAncestryById: {}, memberAncestorExecutionKeysByIdentity: {},
     }
     runHistory.resumeConfigByRunId = { ...runHistory.resumeConfigByRunId, [runId]: { runId, isActive: runStatus === 'running', metadataConfig: { agentDefinitionId: activeAgentDefinitionId, workspaceRootPath: workspaceMetadata.workspaceRootPath, llmModelIdentifier: 'mock/gpt-prototype', llmConfig: {}, autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: runStatus !== 'running', llmConfig: runStatus !== 'running', autoExecuteTools: runStatus !== 'running', skillAccessMode: runStatus !== 'running', workspaceRootPath: false, runtimeKind: false } } }
+  }
+
+  if (isAgentOrgConfig) {
+    store('teamRunConfig')?.clearConfig()
+    store('agentRunConfig')?.clearConfig()
+    selection.clearSelectionWithoutShellNavigation()
+    store('workspaceCenterView')?.showChat()
+    return { applied: true, kind: 'agent-org-config', orgId }
   }
 
   if (isAgentOrgTeamConfig || isAgentOrgAgentConfig) {
@@ -228,6 +258,231 @@ export function applyExperienceScenario(input = {}) {
     selection.clearSelectionWithoutShellNavigation()
     store('workspaceCenterView')?.showChat()
     return { applied: true, kind: 'team-run-config', draftId: teamRunConfig.selectedDraftId }
+  }
+
+  if (isAgentOrgActive) {
+    store('teamRunConfig')?.clearConfig()
+    store('agentRunConfig')?.clearConfig()
+    const teamsStore = store('agentTeamContexts')
+    if (!teamsStore) return { applied: false, reason: 'team-context-store-unavailable' }
+
+    const memberDefinitions = {
+      'product-prototyper': { name: 'product_prototyper', initials: 'PP' },
+      'prototype-bootstrapper': { name: 'prototype_bootstrapper', initials: 'PB' },
+      'architecture-designer': { name: 'architecture_designer', initials: 'AD' },
+      'implementation-engineer': { name: 'implementation_engineer', initials: 'IE' },
+      'code-reviewer': { name: 'code_reviewer', initials: 'CR' },
+      'delivery-engineer': { name: 'delivery_engineer', initials: 'DE' },
+    }
+    const teamSpecs = [
+      {
+        id: 'product-design-prototyping-team',
+        name: 'Product Design & Prototyping',
+        address: '/product_design_prototyping_team',
+        coordinatorId: 'product-prototyper',
+        members: ['product-prototyper', 'prototype-bootstrapper'],
+        includeTasks: true,
+      },
+      {
+        id: 'software-engineering-team',
+        name: 'Software Engineering',
+        address: '/software_engineering_team',
+        coordinatorId: 'architecture-designer',
+        members: ['architecture-designer', 'implementation-engineer', 'code-reviewer', 'delivery-engineer'],
+        includeTasks: false,
+      },
+    ]
+    const allTeamContexts = new Map()
+    const teamNodes = []
+    const makeMemberContext = (team, agentId) => {
+      const definition = memberDefinitions[agentId]
+      const agentRunId = `org-team-${team.id}-member-${agentId}`
+      const config = {
+        agentDefinitionId: agentId,
+        agentDefinitionName: definition.name,
+        agentAvatarUrl: null,
+        llmModelIdentifier: 'mock/gpt-prototype',
+        runtimeKind: 'autobyteus',
+        workspaceId,
+        workspaceMetadata,
+        autoExecuteTools: false,
+        skillAccessMode: 'PRELOADED_ONLY',
+        isLocked: true,
+        llmConfig: { temperature: 0.2 },
+      }
+      const text = agentId === team.coordinatorId
+        ? `The ${team.name} workspace is active.`
+        : 'This member is ready in the active organization run.'
+      const context = agentContexts.upsertProjectionContext({
+        runId: agentRunId,
+        config,
+        conversation: {
+          id: agentRunId,
+          agentDefinitionId: agentId,
+          agentName: definition.name,
+          createdAt: now,
+          updatedAt: now,
+          messages: [{ type: 'ai', text, segments: [{ type: 'text', content: text }], timestamp: new Date(now), isComplete: true, completionTokens: 18, completionCost: 0.0002 }],
+        },
+        status: 'running',
+      })
+      return {
+        agentId,
+        agentRunId,
+        memberAddress: `${team.address}/${definition.name}`,
+        displayName: definition.name,
+        initials: definition.initials,
+        agentContext: context,
+      }
+    }
+
+    teamSpecs.forEach(team => {
+      const rootTeamRunId = `org-team-run-${team.id}`
+      const entries = team.members.map(agentId => makeMemberContext(team, agentId))
+      const coordinator = entries.find(entry => entry.agentId === team.coordinatorId)
+      const rows = entries.map(entry => ({
+        key: `agent:${entry.agentRunId}`,
+        kind: 'configured_agent',
+        address: entry.memberAddress,
+        displayName: entry.displayName,
+        accessibleName: entry.displayName,
+        depth: 0,
+        parentKey: null,
+        agentRunId: entry.agentRunId,
+        teamRunId: null,
+        taskId: null,
+        taskStatus: null,
+        currentStatus: 'running',
+        focusable: true,
+        expandable: false,
+        coordinator: entry.agentId === team.coordinatorId,
+      }))
+      if (team.includeTasks) {
+        rows.push(
+          {
+            key: 'task-agent:license-audit', kind: 'task_agent', address: `${team.address}/prototype_bootstrapper`,
+            displayName: 'Task: Audit prototype dependency licenses', accessibleName: 'Task: Audit prototype dependency licenses',
+            depth: 1, parentKey: `agent:${entries.find(entry => entry.agentId === 'prototype-bootstrapper')?.agentRunId}`,
+            agentRunId: null, teamRunId: null, taskId: 'task-license-audit', taskStatus: 'in_progress', currentStatus: 'running',
+            focusable: false, expandable: false, coordinator: false,
+          },
+          {
+            key: 'task-team:implementation-review', kind: 'task_team', address: team.address,
+            displayName: 'Task: Review the implementation as a Team', accessibleName: 'Task: Review the implementation as a Team',
+            depth: 0, parentKey: null, agentRunId: null, teamRunId: 'task-team-review', taskId: 'task-team-review',
+            taskStatus: 'in_progress', currentStatus: null, focusable: false, expandable: true, coordinator: false,
+          },
+          {
+            key: 'task-team-agent:reviewer', kind: 'task_team_agent', address: '/reviewer',
+            displayName: 'reviewer', accessibleName: 'reviewer', depth: 1, parentKey: 'task-team:implementation-review',
+            agentRunId: null, teamRunId: null, taskId: null, taskStatus: null, currentStatus: 'running',
+            focusable: false, expandable: false, coordinator: true,
+          },
+        )
+      }
+      const configuredEntries = entries.map(entry => ({
+        agentRunId: entry.agentRunId,
+        memberAddress: entry.memberAddress,
+        agentContext: entry.agentContext,
+      }))
+      const view = {
+        _focusedAgentRunId: coordinator?.agentRunId || entries[0]?.agentRunId || null,
+        getRootTeamRunId: () => rootTeamRunId,
+        getTeamDefinitionName: () => team.name,
+        getFocusedAgentContext() { return configuredEntries.find(entry => entry.agentRunId === this._focusedAgentRunId)?.agentContext || null },
+        getFocusedMemberAddress() { return configuredEntries.find(entry => entry.agentRunId === this._focusedAgentRunId)?.memberAddress || '' },
+        getFocusedAgentRunId() { return this._focusedAgentRunId },
+        getConfigurationView: () => ({
+          teamDefinitionId: team.id,
+          teamDefinitionName: team.name,
+          runtimeKind: 'autobyteus',
+          workspaceId,
+          workspaceMetadata,
+          llmModelIdentifier: 'mock/gpt-prototype',
+          llmConfig: { temperature: 0.2 },
+          autoExecuteTools: false,
+          skillAccessMode: 'PRELOADED_ONLY',
+          memberOverrides: {},
+          isLocked: true,
+        }),
+        isRootTeamActive: () => true,
+        listNavigationRows: () => rows,
+        listAgentContextEntries: () => configuredEntries,
+        listCommunicationMessages: () => [],
+        listTaskHistoryRows: () => [],
+        hasAgentRun: id => configuredEntries.some(entry => entry.agentRunId === id),
+        getAgentContext: id => configuredEntries.find(entry => entry.agentRunId === id)?.agentContext || null,
+        getMemberAddress: id => configuredEntries.find(entry => entry.agentRunId === id)?.memberAddress || null,
+        getExecutionTree: () => ({ root_team: { team_run_id: rootTeamRunId, members: [], task_executions: [] } }),
+        focusAgent(id) {
+          if (!configuredEntries.some(entry => entry.agentRunId === id)) return { disposition: 'rejected' }
+          this._focusedAgentRunId = id
+          return { disposition: 'applied' }
+        },
+        needsStreamRecovery: () => false,
+      }
+      allTeamContexts.set(rootTeamRunId, { view })
+      const memberRows = entries.map(entry => ({
+        teamRunId: rootTeamRunId,
+        kind: 'agent',
+        memberAddress: entry.memberAddress,
+        displayName: entry.displayName,
+        agentRunId: entry.agentRunId,
+        teamRunIdForNode: null,
+        workspaceRootPath: workspaceMetadata.workspaceRootPath,
+        summary: `New - ${team.name}`,
+        lastActivityAt: now,
+        currentStatus: 'running',
+        isActive: true,
+        deleteLifecycle: 'READY',
+        children: [],
+      }))
+      teamNodes.push({
+        teamRunId: rootTeamRunId,
+        teamDefinitionId: team.id,
+        teamDefinitionName: team.name,
+        workspaceRootPath: workspaceMetadata.workspaceRootPath,
+        summary: `New - ${team.name}`,
+        lastActivityAt: now,
+        isActive: true,
+        deleteLifecycle: 'READY',
+        focusedAgentRunId: coordinator?.agentRunId || null,
+        rootTeam: {
+          teamRunId: rootTeamRunId,
+          kind: 'agent_team',
+          memberAddress: team.address,
+          displayName: team.name,
+          agentRunId: null,
+          teamDefinitionId: team.id,
+          teamRunIdForNode: rootTeamRunId,
+          coordinatorAddress: coordinator?.memberAddress || null,
+          workspaceRootPath: null,
+          summary: `New - ${team.name}`,
+          lastActivityAt: now,
+          currentStatus: null,
+          isActive: true,
+          deleteLifecycle: 'READY',
+          children: memberRows,
+        },
+        members: memberRows,
+        executionRows: [],
+      })
+    })
+
+    teamsStore.teams = allTeamContexts
+    if (runHistory) {
+      runHistory.navigationProjection = {
+        ...runHistory.navigationProjection,
+        teamNodes,
+        teamNodesByWorkspaceRoot: { [workspaceMetadata.workspaceRootPath]: teamNodes },
+        teamIndexById: Object.fromEntries(teamNodes.map((team, index) => [team.teamRunId, { index, workspaceRootPath: workspaceMetadata.workspaceRootPath, workspaceIndex: 0 }])),
+        teamAncestryById: Object.fromEntries(teamNodes.map(team => [team.teamRunId, { workspaceId, teamDefinitionGroupKey: team.teamDefinitionId }])),
+      }
+      runHistory.navigationTopologyRevision = (runHistory.navigationTopologyRevision || 0) + 1
+    }
+    selection.clearSelectionWithoutShellNavigation()
+    store('workspaceCenterView')?.showChat()
+    return { applied: true, kind: 'agent-org-active', orgId, teamRunIds: teamNodes.map(team => team.teamRunId) }
   }
 
   if (scenario.startsWith('workspace_team') || scenario.startsWith('mobile_team') || isAgentOrgTeamActive) {
