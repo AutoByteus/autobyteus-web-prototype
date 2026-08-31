@@ -34,68 +34,109 @@
                 <span class="ml-2 text-xs text-gray-400">now</span>
               </div>
 
-              <div v-if="orgRunExpanded" class="ml-3 space-y-0.5" data-test="history-org-execution-tree">
-                <button
-                  v-for="agent in directAgents"
-                  :key="agent.runId"
-                  type="button"
-                  class="flex w-full items-center rounded-md px-2 py-1.5 text-left text-sm transition-colors"
-                  :class="isRunSelected(agent.runId, 'agent') ? 'bg-indigo-50 text-indigo-900' : 'text-gray-700 hover:bg-gray-50'"
-                  :data-test="`history-org-agent-${agent.id}`"
-                  @click="selectDirectAgent(agent.runId)"
-                >
-                  <span class="mr-1.5 h-2 w-2 flex-none rounded-full bg-emerald-500" />
-                  <span class="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600">{{ agent.initials }}</span>
-                  <span class="truncate">{{ agent.name }}</span>
-                </button>
-
-                <div v-for="team in teams" :key="team.id" class="rounded-md" :data-test="`history-org-team-${team.id}`">
+              <div v-if="orgRunExpanded" class="team-execution-tree ml-3 space-y-0.5" role="tree" :aria-label="`${org.name} execution hierarchy`" data-test="history-org-execution-tree">
+                <template v-for="displayRow in visibleRows" :key="displayRow.row.key">
                   <button
+                    v-if="displayRow.row.kind === 'direct_agent'"
                     type="button"
-                    class="flex w-full items-center rounded-md px-2 py-1.5 text-left text-sm transition-colors"
-                    :class="isRunSelected(team.runId, 'team') ? 'bg-indigo-50 text-indigo-900' : 'text-gray-700 hover:bg-gray-50'"
-                    :aria-expanded="isTeamExpanded(team.id)"
-                    @click="selectTeam(team)"
+                    class="org-execution-row relative flex min-h-7 w-full items-center rounded-md text-left text-sm transition-colors"
+                    :class="isRunSelected(displayRow.row.agent.runId, 'agent') ? 'is-selected text-indigo-900' : 'text-gray-600 hover:bg-gray-50'"
+                    :style="rowStyle(displayRow.row.depth)"
+                    :data-test="`history-org-agent-${displayRow.row.agent.id}`"
+                    :aria-level="displayRow.row.depth + 1"
+                    role="treeitem"
+                    @click="selectDirectAgent(displayRow.row.agent.runId)"
                   >
-                    <Icon icon="heroicons:chevron-down-20-solid" class="mr-1 h-3.5 w-3.5 text-gray-400 transition-transform" :class="isTeamExpanded(team.id) ? 'rotate-0' : '-rotate-90'" />
-                    <Icon icon="heroicons:user-group-20-solid" class="mr-1.5 h-4 w-4 text-gray-500" />
-                    <span class="truncate font-medium">{{ team.name }}</span>
+                    <WorkspaceHierarchyBranches :depth="displayRow.row.depth" :continuing-ancestor-depths="displayRow.continuingAncestorDepths" :has-following-sibling="displayRow.hasFollowingSibling" />
+                    <span class="ml-2 mr-1 h-3.5 w-3.5 flex-none" aria-hidden="true" />
+                    <span class="mr-1.5 h-2 w-2 flex-none rounded-full bg-emerald-500" />
+                    <span class="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600">{{ displayRow.row.agent.initials }}</span>
+                    <span class="truncate">{{ displayRow.row.agent.name }}</span>
                   </button>
 
-                  <div v-if="isTeamExpanded(team.id)" class="ml-3 space-y-0.5">
+                  <div v-else-if="displayRow.row.kind === 'team'" class="rounded-md" :data-test="`history-org-team-${displayRow.row.team.id}`">
                     <button
-                      v-for="agent in team.agents"
-                      :key="agent.runId"
                       type="button"
-                      class="flex w-full items-center rounded-md px-2 py-1.5 text-left text-sm transition-colors"
-                      :class="isTeamMemberFocused(team.runId, agent.runId) ? 'bg-indigo-50 text-indigo-900' : 'text-gray-700 hover:bg-gray-50'"
-                      :data-test="`history-org-team-agent-${agent.id}`"
-                      @click="focusTeamAgent(team.runId, agent.runId)"
+                      class="org-execution-row relative flex min-h-7 w-full items-center rounded-md text-left text-sm transition-colors"
+                      :class="isRunSelected(displayRow.row.team.runId, 'team') ? 'is-selected text-indigo-900' : 'text-gray-600 hover:bg-gray-50'"
+                      :style="rowStyle(displayRow.row.depth)"
+                      :aria-expanded="isTeamExpanded(displayRow.row.team.id)"
+                      :aria-level="displayRow.row.depth + 1"
+                      role="treeitem"
+                      @click="selectTeam(displayRow.row.team)"
                     >
-                      <span class="mr-1.5 h-2 w-2 flex-none rounded-full bg-emerald-500" />
-                      <span class="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600">{{ agent.initials }}</span>
-                      <span class="min-w-0 flex-1 truncate">{{ agent.name }}</span>
-                      <span v-if="agent.id === team.coordinatorId" class="ml-1 text-[0.625rem] text-gray-400" aria-label="Coordinator">◆</span>
+                      <WorkspaceHierarchyBranches :depth="displayRow.row.depth" :continuing-ancestor-depths="displayRow.continuingAncestorDepths" :has-following-sibling="displayRow.hasFollowingSibling" />
+                      <Icon icon="heroicons:chevron-down-20-solid" class="ml-2 mr-1 h-3.5 w-3.5 flex-none text-gray-400 transition-transform" :class="isTeamExpanded(displayRow.row.team.id) ? 'rotate-0' : '-rotate-90'" />
+                      <Icon icon="heroicons:user-group-20-solid" class="mr-1.5 h-4 w-4 flex-none text-gray-500" />
+                      <span class="truncate font-semibold">{{ displayRow.row.team.name }}</span>
                     </button>
-
-                    <template v-if="team.id === 'product-design-prototyping-team'">
-                      <div class="ml-3 flex items-center rounded-md bg-indigo-50/70 px-2 py-1.5 text-sm text-indigo-900" data-test="history-task-agent-row">
-                        <Icon icon="svg-spinners:ring-resize" class="mr-1.5 h-3.5 w-3.5 flex-none text-indigo-600" />
-                        <span class="truncate">Task: Audit prototype dependency licenses</span>
-                      </div>
-                      <button type="button" class="flex w-full items-center rounded-md bg-indigo-50/70 px-2 py-1.5 text-left text-sm text-indigo-900 transition-colors hover:bg-indigo-50" :aria-expanded="taskTeamExpanded" data-test="history-task-team-row" @click="taskTeamExpanded = !taskTeamExpanded">
-                        <Icon icon="heroicons:chevron-down-20-solid" class="mr-1 h-3.5 w-3.5 text-indigo-400 transition-transform" :class="taskTeamExpanded ? 'rotate-0' : '-rotate-90'" />
-                        <Icon icon="heroicons:user-group-20-solid" class="mr-1.5 h-4 w-4 text-indigo-600" />
-                        <span class="truncate">Task: Review the implementation as a Team</span>
-                      </button>
-                      <div v-if="taskTeamExpanded" class="ml-3 flex items-center rounded-md px-2 py-1.5 text-sm text-gray-600" data-test="history-task-team-child-row">
-                        <span class="mr-1.5 h-2 w-2 flex-none rounded-full bg-emerald-500" />
-                        <span class="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600">RV</span>
-                        <span class="truncate">reviewer</span>
-                      </div>
-                    </template>
                   </div>
-                </div>
+
+                  <button
+                    v-else-if="displayRow.row.kind === 'team_agent'"
+                    type="button"
+                    class="org-execution-row relative flex min-h-7 w-full items-center rounded-md text-left text-sm transition-colors"
+                    :class="isTeamMemberFocused(displayRow.row.team.runId, displayRow.row.agent.runId) ? 'is-selected text-indigo-900' : 'text-gray-600 hover:bg-gray-50'"
+                    :style="rowStyle(displayRow.row.depth)"
+                    :data-test="`history-org-team-agent-${displayRow.row.agent.id}`"
+                    :aria-level="displayRow.row.depth + 1"
+                    role="treeitem"
+                    @click="focusTeamAgent(displayRow.row.team.runId, displayRow.row.agent.runId)"
+                  >
+                    <WorkspaceHierarchyBranches :depth="displayRow.row.depth" :continuing-ancestor-depths="displayRow.continuingAncestorDepths" :has-following-sibling="displayRow.hasFollowingSibling" />
+                    <span class="ml-2 mr-1 h-3.5 w-3.5 flex-none" aria-hidden="true" />
+                    <span class="mr-1.5 h-2 w-2 flex-none rounded-full bg-emerald-500" />
+                    <span class="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600">{{ displayRow.row.agent.initials }}</span>
+                    <span class="min-w-0 flex-1 truncate">{{ displayRow.row.agent.name }}</span>
+                    <span v-if="displayRow.row.agent.id === displayRow.row.team.coordinatorId" class="mr-2 ml-1 text-[0.625rem] text-gray-400" aria-label="Coordinator">◆</span>
+                  </button>
+
+                  <div
+                    v-else-if="displayRow.row.kind === 'task_agent'"
+                    class="org-execution-row relative flex min-h-7 w-full items-center rounded-md bg-indigo-50/70 text-sm text-indigo-900"
+                    :style="rowStyle(displayRow.row.depth)"
+                    data-test="history-task-agent-row"
+                    :aria-level="displayRow.row.depth + 1"
+                    role="treeitem"
+                  >
+                    <WorkspaceHierarchyBranches :depth="displayRow.row.depth" :continuing-ancestor-depths="displayRow.continuingAncestorDepths" :has-following-sibling="displayRow.hasFollowingSibling" />
+                    <span class="ml-2 mr-1 h-3.5 w-3.5 flex-none" aria-hidden="true" />
+                    <Icon icon="svg-spinners:ring-resize" class="mr-1.5 h-3.5 w-3.5 flex-none text-indigo-600" />
+                    <span class="truncate">Task: Audit prototype dependency licenses</span>
+                  </div>
+
+                  <button
+                    v-else-if="displayRow.row.kind === 'task_team'"
+                    type="button"
+                    class="org-execution-row relative flex min-h-7 w-full items-center rounded-md bg-indigo-50/70 text-left text-sm text-indigo-900 transition-colors hover:bg-indigo-50"
+                    :style="rowStyle(displayRow.row.depth)"
+                    :aria-expanded="taskTeamExpanded"
+                    :aria-level="displayRow.row.depth + 1"
+                    data-test="history-task-team-row"
+                    role="treeitem"
+                    @click="taskTeamExpanded = !taskTeamExpanded"
+                  >
+                    <WorkspaceHierarchyBranches :depth="displayRow.row.depth" :continuing-ancestor-depths="displayRow.continuingAncestorDepths" :has-following-sibling="displayRow.hasFollowingSibling" />
+                    <Icon icon="heroicons:chevron-down-20-solid" class="ml-2 mr-1 h-3.5 w-3.5 text-indigo-400 transition-transform" :class="taskTeamExpanded ? 'rotate-0' : '-rotate-90'" />
+                    <Icon icon="heroicons:user-group-20-solid" class="mr-1.5 h-4 w-4 text-indigo-600" />
+                    <span class="truncate">Task: Review the implementation as a Team</span>
+                  </button>
+
+                  <div
+                    v-else
+                    class="org-execution-row relative flex min-h-7 w-full items-center rounded-md text-sm text-gray-600"
+                    :style="rowStyle(displayRow.row.depth)"
+                    data-test="history-task-team-child-row"
+                    :aria-level="displayRow.row.depth + 1"
+                    role="treeitem"
+                  >
+                    <WorkspaceHierarchyBranches :depth="displayRow.row.depth" :continuing-ancestor-depths="displayRow.continuingAncestorDepths" :has-following-sibling="displayRow.hasFollowingSibling" />
+                    <span class="ml-2 mr-1 h-3.5 w-3.5 flex-none" aria-hidden="true" />
+                    <span class="mr-1.5 h-2 w-2 flex-none rounded-full bg-emerald-500" />
+                    <span class="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600">RV</span>
+                    <span class="truncate">reviewer</span>
+                  </div>
+                </template>
               </div>
             </div>
           </div>
@@ -120,9 +161,21 @@
 import { computed, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRoute } from 'vue-router';
+import WorkspaceHierarchyBranches from '~/components/workspace/history/WorkspaceHierarchyBranches.vue';
 import { useAgentSelectionStore } from '~/stores/agentSelectionStore';
 import { useAgentTeamContextsStore } from '~/stores/agentTeamContextsStore';
 import { agentById, orgById, teamById } from '~/prototype/aorg-flat-team-fixtures';
+
+type RuntimeAgent = ReturnType<typeof agentById> & { runId: string };
+type RuntimeTeam = ReturnType<typeof teamById> & { runId: string; agents: RuntimeAgent[] };
+type OrgTreeRow =
+  | { key: string; kind: 'direct_agent'; depth: 0; agent: RuntimeAgent }
+  | { key: string; kind: 'team'; depth: 0; team: RuntimeTeam }
+  | { key: string; kind: 'team_agent'; depth: 1; team: RuntimeTeam; agent: RuntimeAgent }
+  | { key: string; kind: 'task_agent'; depth: 1 }
+  | { key: string; kind: 'task_team'; depth: 1 }
+  | { key: string; kind: 'task_team_agent'; depth: 2 };
+type VisibleOrgTreeRow = { row: OrgTreeRow; continuingAncestorDepths: number[]; hasFollowingSibling: boolean };
 
 const emit = defineEmits(['run-selected', 'run-created']);
 const route = useRoute();
@@ -137,13 +190,13 @@ const expandedTeamIds = ref(new Set<string>(['product-design-prototyping-team', 
 
 const org = computed(() => orgById(String(route.query.org || 'software-development-department')));
 const isActive = computed(() => route.query.phase === 'active');
-const directAgents = computed(() => org.value.members
+const directAgents = computed<RuntimeAgent[]>(() => org.value.members
   .filter((member) => member.kind === 'agent')
   .map((member) => {
     const agent = agentById(member.ref);
     return { ...agent, runId: `org-agent-run-${agent.id}` };
   }));
-const teams = computed(() => org.value.members
+const teams = computed<RuntimeTeam[]>(() => org.value.members
   .filter((member) => member.kind === 'team')
   .map((member) => {
     const team = teamById(member.ref);
@@ -157,6 +210,38 @@ const teams = computed(() => org.value.members
     };
   }));
 
+const treeRows = computed<OrgTreeRow[]>(() => {
+  const rows: OrgTreeRow[] = directAgents.value.map((agent) => ({ key: `direct-agent-${agent.id}`, kind: 'direct_agent', depth: 0, agent }));
+  for (const team of teams.value) {
+    rows.push({ key: `team-${team.id}`, kind: 'team', depth: 0, team });
+    if (!isTeamExpanded(team.id)) continue;
+    rows.push(...team.agents.map((agent) => ({ key: `team-${team.id}-agent-${agent.id}`, kind: 'team_agent' as const, depth: 1 as const, team, agent })));
+    if (team.id !== 'product-design-prototyping-team') continue;
+    rows.push({ key: 'task-agent-audit', kind: 'task_agent', depth: 1 });
+    rows.push({ key: 'task-team-review', kind: 'task_team', depth: 1 });
+    if (taskTeamExpanded.value) rows.push({ key: 'task-team-reviewer', kind: 'task_team_agent', depth: 2 });
+  }
+  return rows;
+});
+
+const visibleRows = computed<VisibleOrgTreeRow[]>(() => {
+  const hasFollowingSiblingAtDepth = (index: number, depth: number): boolean => {
+    for (let nextIndex = index + 1; nextIndex < treeRows.value.length; nextIndex += 1) {
+      const nextDepth = treeRows.value[nextIndex].depth;
+      if (nextDepth < depth) return false;
+      if (nextDepth === depth) return true;
+    }
+    return false;
+  };
+  return treeRows.value.map((row, index) => ({
+    row,
+    continuingAncestorDepths: Array.from({ length: row.depth }, (_, depth) => depth)
+      .filter((depth) => hasFollowingSiblingAtDepth(index, depth)),
+    hasFollowingSibling: hasFollowingSiblingAtDepth(index, row.depth),
+  }));
+});
+
+const rowStyle = (depth: number): Record<string, string> => ({ paddingLeft: `calc((${depth} + 1) * 0.875rem)` });
 const isRunSelected = (runId: string, type: 'agent' | 'team'): boolean => selection.selectedType === type && selection.selectedRunId === runId;
 const isTeamExpanded = (teamId: string): boolean => expandedTeamIds.value.has(teamId);
 const toggleTeam = (teamId: string): void => {
@@ -169,7 +254,7 @@ const selectDirectAgent = (runId: string): void => {
   selection.selectRun(runId, 'agent');
   emit('run-selected');
 };
-const selectTeam = (team: { id: string; runId: string; coordinatorId: string; agents: Array<{ id: string; runId: string }> }): void => {
+const selectTeam = (team: RuntimeTeam): void => {
   if (!isActive.value) return;
   if (!isTeamExpanded(team.id)) toggleTeam(team.id);
   const coordinator = team.agents.find((agent) => agent.id === team.coordinatorId);
@@ -189,3 +274,20 @@ const isTeamMemberFocused = (teamRunId: string, agentRunId: string): boolean => 
   && teamContexts.getTeamContextById(teamRunId)?.view.getFocusedAgentRunId() === agentRunId
 );
 </script>
+
+<style scoped>
+.org-execution-row {
+  isolation: isolate;
+}
+
+.org-execution-row > :not(.hierarchy-branches) {
+  position: relative;
+  z-index: 2;
+}
+
+.org-execution-row.is-selected {
+  border-radius: 0;
+  background-color: #eef2ff;
+  box-shadow: inset 2px 0 #6366f1;
+}
+</style>
