@@ -38,9 +38,6 @@
                   <div class="min-w-0">
                     <h3 class="truncate text-xl font-semibold text-slate-900">{{ org.name }}</h3>
                     <p class="mt-1 line-clamp-2 text-sm text-slate-600">{{ org.description }}</p>
-                    <div class="mt-2 flex flex-wrap items-center gap-2">
-                      <span class="inline-flex items-center rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">{{ org.category }}</span>
-                    </div>
                   </div>
                   <div class="flex w-full flex-col gap-2 sm:w-auto sm:items-end">
                     <button type="button" class="inline-flex min-w-[104px] justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" @click="openLaunch(org.id)">Run</button>
@@ -71,10 +68,7 @@
           <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
             <div class="flex min-w-0 items-start gap-4">
               <span class="inline-flex h-16 w-16 flex-none items-center justify-center rounded-xl bg-slate-100 text-2xl font-semibold tracking-wide text-slate-700">{{ orgInitials(selectedOrg.name) }}</span>
-              <div class="min-w-0">
-                <h1 class="text-3xl font-bold tracking-tight text-slate-950">{{ selectedOrg.name }}</h1>
-                <span class="mt-1 inline-flex items-center rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">{{ selectedOrg.category }}</span>
-              </div>
+              <div class="min-w-0"><h1 class="text-3xl font-bold tracking-tight text-slate-950">{{ selectedOrg.name }}</h1></div>
             </div>
             <div class="flex shrink-0 gap-2">
               <button type="button" class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-test="run-organization" @click="openLaunch(selectedOrg.id)">Run</button>
@@ -255,8 +249,8 @@ const filteredMemberTeams = computed(() => (
 ));
 watch([view, selectedOrg], () => {
   const org = selectedOrg.value;
-  formName.value = view.value === 'org-create' ? 'Customer Experience Organization' : org.name;
-  formDescription.value = view.value === 'org-create' ? 'A focused collaboration scope combining reusable Teams with an independent requirements Agent.' : org.description;
+  formName.value = view.value === 'org-create' ? '' : org.name;
+  formDescription.value = view.value === 'org-create' ? '' : org.description;
   formAgentIds.value = view.value === 'org-create' ? [] : org.members.filter((member) => member.kind === 'agent').map((member) => member.ref);
   formTeamIds.value = view.value === 'org-create' ? [] : org.members.filter((member) => member.kind === 'team').map((member) => member.ref);
   formOrgHandoffs.value = view.value === 'org-create' ? [] : cloneHandoffs(savedOrgHandoffs.value[org.id] ?? orgHandoffsFor(org.id));
@@ -276,7 +270,7 @@ const openLaunch = async (id: string): Promise<void> => {
 const closeLaunch = async (): Promise<void> => router.push({ path: '/agent-orgs', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: 'org-detail', id: launchOrg.value.id } });
 const startRun = async (): Promise<void> => {
   if (!entry.value) return;
-  await router.push({ path: '/workspace', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, root: 'org', org: launchOrg.value.id, entry: entry.value } });
+  await router.push({ path: '/workspace', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, root: 'org', org: launchOrg.value.id, entry: entry.value, phase: 'config' } });
 };
 const openMemberPicker = (): void => {
   memberPickerTab.value = 'agents';

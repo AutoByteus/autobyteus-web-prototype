@@ -12,7 +12,15 @@ export function applyExperienceScenario(input = {}) {
   const rich = scenario.startsWith('workspace_') || scenario.startsWith('mobile_')
   if (!rich) return { applied: false, reason: 'not-rich-scenario' }
 
-  const runId = 'run-prototype-active'
+  const isAgentOrgTeamConfig = scenario === 'workspace_agent_org_team_entry_config'
+  const isAgentOrgAgentConfig = scenario === 'workspace_agent_org_agent_entry_config'
+  const isAgentOrgTeamActive = scenario === 'workspace_agent_org_team_entry_active'
+  const isAgentOrgAgentActive = scenario === 'workspace_agent_org_agent_entry_active'
+  const isAgentOrgRuntime = isAgentOrgTeamConfig || isAgentOrgAgentConfig || isAgentOrgTeamActive || isAgentOrgAgentActive
+  const routeQuery = isAgentOrgRuntime ? new URLSearchParams(window.location.search) : null
+  const orgId = routeQuery?.get('org') || 'software-development-department'
+  const [, routeEntryId = ''] = String(routeQuery?.get('entry') || '').split(':')
+  const runId = isAgentOrgAgentActive ? `org-agent-run-${routeEntryId || 'requirements-engineer'}` : 'run-prototype-active'
   const workspaceId = 'workspace-prototype'
   const isWorkspaceFileTreeCorrection = scenario === 'workspace_file_tree_correction'
   const isTeamRunConfigCorrection = scenario === 'workspace_team_run_config_correction'
@@ -21,11 +29,20 @@ export function applyExperienceScenario(input = {}) {
     workspaceId, name: 'prototype-workspace', displayName: 'Prototype Workspace',
     workspaceRootPath: '/synthetic/prototype-workspace', absolutePath: '/synthetic/prototype-workspace', kind: 'local', isTemp: false,
   }
+  const activeAgentDefinitionId = isAgentOrgAgentConfig || isAgentOrgAgentActive
+    ? routeEntryId || 'requirements-engineer'
+    : 'agent-researcher'
+  const activeAgentDefinitionName = activeAgentDefinitionId === 'requirements-engineer'
+    ? 'requirements_engineer'
+    : 'Research Assistant'
+  const activeAgentDescription = activeAgentDefinitionId === 'requirements-engineer'
+    ? 'Owns requirements, acceptance criteria, and product-intent traceability.'
+    : 'Synthetic local agent used only by the parity prototype.'
   const runStatus = scenario.includes('error') ? 'error' : scenario.includes('completed') || scenario.includes('history') || scenario.includes('interrupted') ? 'idle' : 'running'
   const aiComplete = !scenario.includes('streaming')
   const contextAttachment = { kind: 'workspace_path', id: 'ctx-1', locator: '/synthetic/prototype-workspace/requirements.md', displayName: 'requirements.md', type: 'Markdown' }
   const conversation = {
-    id: runId, agentDefinitionId: 'agent-researcher', agentName: 'Research Assistant', llmModelIdentifier: 'mock/gpt-prototype',
+    id: runId, agentDefinitionId: activeAgentDefinitionId, agentName: activeAgentDefinitionName, llmModelIdentifier: 'mock/gpt-prototype',
     createdAt: now, updatedAt: '2026-08-22T04:02:00.000Z',
     messages: [
       { type: 'user', text: 'Summarize the controlled prototype evidence.', timestamp: new Date(now), contextFilePaths: [contextAttachment], promptTokens: 120, promptCost: 0.0012 },
@@ -38,7 +55,7 @@ export function applyExperienceScenario(input = {}) {
   if (!(agentContexts.runs instanceof Map)) agentContexts.runs = new Map()
   const agentContext = agentContexts.upsertProjectionContext({
     runId,
-    config: { agentDefinitionId: 'agent-researcher', agentDefinitionName: 'Research Assistant', agentAvatarUrl: null, llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', workspaceId, workspaceMetadata, autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', isLocked: true, llmConfig: { temperature: 0.2 } },
+    config: { agentDefinitionId: activeAgentDefinitionId, agentDefinitionName: activeAgentDefinitionName, agentAvatarUrl: null, llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', workspaceId, workspaceMetadata, autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', isLocked: true, llmConfig: { temperature: 0.2 } },
     conversation, status: runStatus,
   })
   if (scenario.includes('error')) agentContext.state.currentStatus = 'error'
@@ -52,6 +69,45 @@ export function applyExperienceScenario(input = {}) {
     workspace.workspaceMetadataById = { ...workspace.workspaceMetadataById, [workspaceId]: { workspaceId, workspaceRootPath: workspaceMetadata.workspaceRootPath, displayName: workspaceMetadata.displayName, kind: 'filesystem' } }
     workspace.workspaceMetadataIdsByRootPath = { ...workspace.workspaceMetadataIdsByRootPath, [workspaceMetadata.workspaceRootPath]: workspaceId }
     workspace.workspaceMetadataLoadStateById = { ...workspace.workspaceMetadataLoadStateById, [workspaceId]: { status: 'registered', error: null } }
+  }
+  if (isAgentOrgRuntime) {
+    const agentDefinition = store('agentDefinition')
+    if (agentDefinition) {
+      const definition = (id, name, role, description, instructions) => ({
+        __typename: 'AgentDefinition', id, name, role, description, instructions,
+        category: 'General', avatarUrl: null, toolNames: [], inputProcessorNames: [],
+        llmResponseProcessorNames: [], toolExecutionResultProcessorNames: [],
+        toolInvocationPreprocessorNames: [], lifecycleProcessorNames: [], skillNames: [],
+        ownershipScope: 'SHARED', ownerTeamId: null, ownerTeamName: null,
+        ownerApplicationId: null, ownerApplicationName: null, ownerPackageId: 'package-prototype',
+        ownerLocalApplicationId: null,
+        defaultLaunchConfig: { llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', llmConfig: { temperature: 0.2 } },
+      })
+      agentDefinition.agentDefinitions = [
+        definition('requirements-engineer', 'requirements_engineer', 'Independent Agent', activeAgentDescription, 'Investigate the product context, preserve requirement traceability, and make acceptance decisions explicit.'),
+        definition('product-prototyper', 'product_prototyper', 'Team coordinator', 'Coordinates product experience prototyping and review packages.', 'Evolve accepted product experiences and return precise review evidence.'),
+        definition('prototype-bootstrapper', 'prototype_bootstrapper', 'Agent', 'Establishes current-experience parity in Product-owned worktrees.', 'Reproduce the selected current experience exactly and return parity evidence.'),
+      ]
+    }
+    const teamDefinition = store('agentTeamDefinition')
+    if (teamDefinition) {
+      teamDefinition.agentTeamDefinitions = [{
+        __typename: 'AgentTeamDefinition',
+        id: routeEntryId || 'product-design-prototyping-team',
+        name: 'Product Design & Prototyping',
+        description: 'Creates product-facing prototypes and preserves current-experience fidelity.',
+        instructions: 'Coordinate product experience work through product_prototyper and use the Team handoffs for specialist baseline work.',
+        category: 'Product', avatarUrl: null, coordinatorMemberName: 'product_prototyper',
+        ownershipScope: 'SHARED', ownerTeamId: null, ownerTeamName: null,
+        ownerApplicationId: null, ownerApplicationName: null, ownerPackageId: 'package-prototype',
+        ownerLocalApplicationId: null,
+        defaultLaunchConfig: { llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', llmConfig: { temperature: 0.2 } },
+        nodes: [
+          { __typename: 'AgentTeamNode', memberName: 'product_prototyper', ref: 'product-prototyper', refType: 'AGENT', refScope: 'SHARED' },
+          { __typename: 'AgentTeamNode', memberName: 'prototype_bootstrapper', ref: 'prototype-bootstrapper', refType: 'AGENT', refScope: 'SHARED' },
+        ],
+      }]
+    }
   }
   const todo = store('agentTodo')
   if (todo && !(todo.todosByRunId instanceof Map)) todo.todosByRunId = new Map()
@@ -96,14 +152,51 @@ export function applyExperienceScenario(input = {}) {
   const runHistory = store('runHistory')
   if (runHistory) {
     runHistory.navigationProjection = {
-      workspaceNodes: [{ workspaceId, workspaceRootPath: workspaceMetadata.workspaceRootPath, workspaceName: workspaceMetadata.displayName, workspaceKind: 'filesystem', canRemoveFromWorkspaces: true, agents: [{ agentDefinitionId: 'agent-researcher', agentName: 'Research Assistant', agentAvatarUrl: null, runs: [{ runId, summary: 'Controlled prototype evidence review', lastActivityAt: '2026-08-22T04:02:00.000Z', currentStatus: runStatus, lastKnownStatus: runStatus === 'running' ? 'ACTIVE' : runStatus === 'error' ? 'ERROR' : 'IDLE', isActive: runStatus === 'running', source: 'history', isDraft: false }] }] }],
+      workspaceNodes: [{ workspaceId, workspaceRootPath: workspaceMetadata.workspaceRootPath, workspaceName: workspaceMetadata.displayName, workspaceKind: 'filesystem', canRemoveFromWorkspaces: true, agents: [{ agentDefinitionId: activeAgentDefinitionId, agentName: activeAgentDefinitionName, agentAvatarUrl: null, runs: [{ runId, summary: isAgentOrgAgentActive ? 'New - Software Development Department' : 'Controlled prototype evidence review', lastActivityAt: '2026-08-22T04:02:00.000Z', currentStatus: runStatus, lastKnownStatus: runStatus === 'running' ? 'ACTIVE' : runStatus === 'error' ? 'ERROR' : 'IDLE', isActive: runStatus === 'running', source: 'history', isDraft: false }] }] }],
       teamNodes: [], teamNodesByWorkspaceRoot: {},
       runIndexById: { [runId]: { workspaceIndex: 0, agentIndex: 0, runIndex: 0 } },
       teamIndexById: {}, memberIndexByIdentity: {},
-      runAncestryById: { [runId]: { workspaceId, agentDefinitionId: 'agent-researcher' } },
+      runAncestryById: { [runId]: { workspaceId, agentDefinitionId: activeAgentDefinitionId } },
       teamAncestryById: {}, memberAncestorExecutionKeysByIdentity: {},
     }
-    runHistory.resumeConfigByRunId = { ...runHistory.resumeConfigByRunId, [runId]: { runId, isActive: runStatus === 'running', metadataConfig: { agentDefinitionId: 'agent-researcher', workspaceRootPath: workspaceMetadata.workspaceRootPath, llmModelIdentifier: 'mock/gpt-prototype', llmConfig: {}, autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: runStatus !== 'running', llmConfig: runStatus !== 'running', autoExecuteTools: runStatus !== 'running', skillAccessMode: runStatus !== 'running', workspaceRootPath: false, runtimeKind: false } } }
+    runHistory.resumeConfigByRunId = { ...runHistory.resumeConfigByRunId, [runId]: { runId, isActive: runStatus === 'running', metadataConfig: { agentDefinitionId: activeAgentDefinitionId, workspaceRootPath: workspaceMetadata.workspaceRootPath, llmModelIdentifier: 'mock/gpt-prototype', llmConfig: {}, autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: runStatus !== 'running', llmConfig: runStatus !== 'running', autoExecuteTools: runStatus !== 'running', skillAccessMode: runStatus !== 'running', workspaceRootPath: false, runtimeKind: false } } }
+  }
+
+  if (isAgentOrgTeamConfig || isAgentOrgAgentConfig) {
+    const teamRunConfig = store('teamRunConfig')
+    const agentRunConfig = store('agentRunConfig')
+    if (!teamRunConfig || !agentRunConfig) return { applied: false, reason: 'run-config-stores-unavailable' }
+    selection.clearSelectionWithoutShellNavigation()
+    store('workspaceCenterView')?.showChat()
+    if (isAgentOrgTeamConfig) {
+      agentRunConfig.clearConfig()
+      teamRunConfig.setConfig({
+        teamDefinitionId: routeEntryId || 'product-design-prototyping-team',
+        teamDefinitionName: 'Product Design & Prototyping', runtimeKind: 'autobyteus',
+        llmModelIdentifier: 'mock/gpt-prototype', llmConfig: { temperature: 0.2 },
+        autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', isLocked: false,
+        workspaceId: null, workspaceMetadata: null, memberOverrides: {},
+      })
+      const selectedDraft = teamRunConfig.selectedDraft
+      const deterministicDraftId = `org-${orgId}-team-entry-draft`
+      if (selectedDraft) {
+        const deterministicDraft = Object.freeze({ ...selectedDraft, draftId: deterministicDraftId })
+        teamRunConfig.drafts = new Map([[deterministicDraftId, deterministicDraft]])
+        teamRunConfig.selectedDraftId = deterministicDraftId
+      }
+      teamRunConfig.setRuntimeModelCatalog('autobyteus', ['mock/gpt-prototype'])
+      return { applied: true, kind: 'agent-org-team-entry-config', draftId: teamRunConfig.selectedDraftId }
+    }
+    teamRunConfig.clearConfig()
+    agentRunConfig.setAgentConfig({
+      agentDefinitionId: activeAgentDefinitionId,
+      agentDefinitionName: activeAgentDefinitionName,
+      agentAvatarUrl: null, llmModelIdentifier: 'mock/gpt-prototype',
+      runtimeKind: 'autobyteus', llmConfig: { temperature: 0.2 },
+      workspaceId: null, workspaceMetadata: null, autoExecuteTools: false,
+      skillAccessMode: 'PRELOADED_ONLY', isLocked: false,
+    })
+    return { applied: true, kind: 'agent-org-agent-entry-config', agentDefinitionId: activeAgentDefinitionId }
   }
 
   if (isTeamRunConfigCorrection) {
@@ -137,13 +230,17 @@ export function applyExperienceScenario(input = {}) {
     return { applied: true, kind: 'team-run-config', draftId: teamRunConfig.selectedDraftId }
   }
 
-  if (scenario.startsWith('workspace_team') || scenario.startsWith('mobile_team')) {
+  if (scenario.startsWith('workspace_team') || scenario.startsWith('mobile_team') || isAgentOrgTeamActive) {
     const hierarchyReview = scenario === 'workspace_team_hierarchy_review'
     const launchedFromCatalog = scenario === 'workspace_team_launch'
-    const taskAgentCorrection = scenario === 'workspace_team_task_agent'
-    const taskTeamCorrection = scenario === 'workspace_team_task_team'
+    const taskAgentCorrection = scenario === 'workspace_team_task_agent' || isAgentOrgTeamActive
+    const taskTeamCorrection = scenario === 'workspace_team_task_team' || isAgentOrgTeamActive
     const currentStateCorrection = taskAgentCorrection || taskTeamCorrection
-    const rootTeamRunId = hierarchyReview
+    const teamDefinitionId = isAgentOrgTeamActive ? routeEntryId || 'product-design-prototyping-team' : 'team-product'
+    const teamDefinitionName = isAgentOrgTeamActive ? 'Product Design & Prototyping' : 'Product Review Team'
+    const rootTeamRunId = isAgentOrgTeamActive
+      ? `org-team-run-${teamDefinitionId}`
+      : hierarchyReview
       ? 'team-run-hierarchy-review'
       : launchedFromCatalog
         ? 'team-run-created-fixture'
@@ -152,21 +249,22 @@ export function applyExperienceScenario(input = {}) {
           : taskTeamCorrection
             ? 'team-run-task-team-correction'
             : 'team-run-prototype'
-    const reviewerRunId = hierarchyReview ? 'team-member-root-coordinator' : launchedFromCatalog ? 'team-member-researcher-created' : 'team-member-reviewer'
-    const writerRunId = launchedFromCatalog ? 'team-member-writer-created' : 'team-member-writer'
-    const reviewerName = hierarchyReview ? 'Workspace Program Coordinator' : launchedFromCatalog ? 'Research Assistant' : 'Review Coordinator'
-    const writerName = hierarchyReview ? 'Root Operations Liaison' : launchedFromCatalog ? 'Documentation Writer' : 'Evidence Writer'
-    const reviewerDefinitionId = launchedFromCatalog ? 'agent-researcher' : 'agent-reviewer'
-    const reviewerDisplayName = launchedFromCatalog ? 'researcher' : reviewerName
-    const writerDisplayName = launchedFromCatalog ? 'writer' : writerName
-    const reviewerAddress = hierarchyReview ? '/coordinator' : launchedFromCatalog ? '/researcher' : '/product-review/coordinator'
-    const writerAddress = hierarchyReview ? '/operations-liaison' : launchedFromCatalog ? '/writer' : '/product-review/evidence-writer'
-    const rootRowKey = launchedFromCatalog ? `team:${rootTeamRunId}` : 'team:root'
-    const rootAddress = launchedFromCatalog ? '/' : '/product-review'
+    const reviewerRunId = isAgentOrgTeamActive ? 'org-team-member-product-prototyper' : hierarchyReview ? 'team-member-root-coordinator' : launchedFromCatalog ? 'team-member-researcher-created' : 'team-member-reviewer'
+    const writerRunId = isAgentOrgTeamActive ? 'org-team-member-prototype-bootstrapper' : launchedFromCatalog ? 'team-member-writer-created' : 'team-member-writer'
+    const reviewerName = isAgentOrgTeamActive ? 'product_prototyper' : hierarchyReview ? 'Workspace Program Coordinator' : launchedFromCatalog ? 'Research Assistant' : 'Review Coordinator'
+    const writerName = isAgentOrgTeamActive ? 'prototype_bootstrapper' : hierarchyReview ? 'Root Operations Liaison' : launchedFromCatalog ? 'Documentation Writer' : 'Evidence Writer'
+    const reviewerDefinitionId = isAgentOrgTeamActive ? 'product-prototyper' : launchedFromCatalog ? 'agent-researcher' : 'agent-reviewer'
+    const writerDefinitionId = isAgentOrgTeamActive ? 'prototype-bootstrapper' : 'agent-writer'
+    const reviewerDisplayName = isAgentOrgTeamActive ? 'product_prototyper' : launchedFromCatalog ? 'researcher' : reviewerName
+    const writerDisplayName = isAgentOrgTeamActive ? 'prototype_bootstrapper' : launchedFromCatalog ? 'writer' : writerName
+    const reviewerAddress = isAgentOrgTeamActive ? '/product_prototyper' : hierarchyReview ? '/coordinator' : launchedFromCatalog ? '/researcher' : '/product-review/coordinator'
+    const writerAddress = isAgentOrgTeamActive ? '/prototype_bootstrapper' : hierarchyReview ? '/operations-liaison' : launchedFromCatalog ? '/writer' : '/product-review/evidence-writer'
+    const rootRowKey = launchedFromCatalog || isAgentOrgTeamActive ? `team:${rootTeamRunId}` : 'team:root'
+    const rootAddress = launchedFromCatalog || isAgentOrgTeamActive ? '/' : '/product-review'
     const memberConfig = (id, name) => ({ agentDefinitionId: id, agentDefinitionName: name, agentAvatarUrl: null, llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', workspaceId, workspaceMetadata, autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', isLocked: true, llmConfig: { temperature: 0.2 } })
     const teamStatus = scenario.includes('error') ? 'error' : scenario.includes('completed') || scenario.includes('history') || scenario.includes('interrupted') ? 'idle' : 'running'
     const memberStatus = launchedFromCatalog ? 'offline' : teamStatus
-    const teamLastActivityAt = launchedFromCatalog ? new Date().toISOString() : now
+    const teamLastActivityAt = launchedFromCatalog || isAgentOrgTeamActive ? new Date().toISOString() : now
     const teamStreaming = scenario.includes('streaming')
     const reviewerText = scenario.includes('error') ? 'The review run encountered a deterministic error.'
       : scenario.includes('interrupted') ? 'The review run was interrupted before the next task.'
@@ -177,7 +275,7 @@ export function applyExperienceScenario(input = {}) {
         : 'The matched source and prototype frames are ready for review.'
     const memberConversation = (id, name, text) => ({ id, agentDefinitionId: id, agentName: name, createdAt: now, updatedAt: '2026-08-22T04:03:00.000Z', messages: launchedFromCatalog ? [] : [{ type: 'ai', text, segments: [{ type: 'text', content: text }], timestamp: new Date('2026-08-22T04:02:00.000Z'), isComplete: !teamStreaming, completionTokens: teamStreaming ? 24 : 48, completionCost: teamStreaming ? 0.00025 : 0.0005 }] })
     const reviewer = agentContexts.upsertProjectionContext({ runId: reviewerRunId, config: memberConfig(reviewerDefinitionId, reviewerName), conversation: memberConversation(reviewerRunId, reviewerName, reviewerText), status: memberStatus })
-    const writer = agentContexts.upsertProjectionContext({ runId: writerRunId, config: memberConfig('agent-writer', writerName), conversation: memberConversation(writerRunId, writerName, writerText), status: memberStatus })
+    const writer = agentContexts.upsertProjectionContext({ runId: writerRunId, config: memberConfig(writerDefinitionId, writerName), conversation: memberConversation(writerRunId, writerName, writerText), status: memberStatus })
     const entries = [
       { agentRunId: reviewerRunId, memberAddress: reviewerAddress, agentContext: reviewer },
       { agentRunId: writerRunId, memberAddress: writerAddress, agentContext: writer },
@@ -187,10 +285,10 @@ export function applyExperienceScenario(input = {}) {
     if (taskAgentCorrection) {
       const taskAgent = agentContexts.upsertProjectionContext({
         runId: taskAgentRunId,
-        config: memberConfig('agent-writer', writerName),
+        config: memberConfig(writerDefinitionId, writerName),
         conversation: {
           id: taskAgentRunId,
-          agentDefinitionId: 'agent-writer',
+          agentDefinitionId: writerDefinitionId,
           agentName: writerName,
           createdAt: now,
           updatedAt: '2026-08-22T04:04:00.000Z',
@@ -206,11 +304,11 @@ export function applyExperienceScenario(input = {}) {
     if (taskTeamCorrection) {
       const taskTeamChild = agentContexts.upsertProjectionContext({
         runId: taskTeamChildRunId,
-        config: memberConfig('agent-reviewer', 'Review Specialist'),
+        config: memberConfig(reviewerDefinitionId, reviewerName),
         conversation: {
           id: taskTeamChildRunId,
-          agentDefinitionId: 'agent-reviewer',
-          agentName: 'Review Specialist',
+          agentDefinitionId: reviewerDefinitionId,
+          agentName: reviewerName,
           createdAt: now,
           updatedAt: '2026-08-22T04:05:00.000Z',
           messages: [
@@ -244,7 +342,7 @@ export function applyExperienceScenario(input = {}) {
       entries.push({ agentRunId, memberAddress, agentContext: context })
     }
     const rows = [
-      { key: rootRowKey, kind: 'configured_team', address: rootAddress, displayName: 'Product Review Team', accessibleName: 'Product Review Team', depth: 0, parentKey: null, agentRunId: null, teamRunId: rootTeamRunId, taskId: null, taskStatus: null, currentStatus: null, focusable: false, expandable: true, coordinator: false },
+      { key: rootRowKey, kind: 'configured_team', address: rootAddress, displayName: teamDefinitionName, accessibleName: teamDefinitionName, depth: 0, parentKey: null, agentRunId: null, teamRunId: rootTeamRunId, taskId: null, taskStatus: null, currentStatus: null, focusable: false, expandable: true, coordinator: false },
       { key: `agent:${reviewerRunId}`, kind: 'configured_agent', address: reviewerAddress, displayName: reviewerDisplayName, accessibleName: reviewerDisplayName, depth: 1, parentKey: rootRowKey, agentRunId: reviewerRunId, teamRunId: null, taskId: null, taskStatus: null, currentStatus: memberStatus, focusable: true, expandable: false, coordinator: true },
       { key: `agent:${writerRunId}`, kind: 'configured_agent', address: writerAddress, displayName: writerDisplayName, accessibleName: writerDisplayName, depth: 1, parentKey: rootRowKey, agentRunId: writerRunId, teamRunId: null, taskId: null, taskStatus: null, currentStatus: memberStatus, focusable: true, expandable: taskAgentCorrection, coordinator: false },
     ]
@@ -287,11 +385,11 @@ export function applyExperienceScenario(input = {}) {
     const launchExecutionTree = {
       schema_version: 1, created_at: now, archived_at: null, application_binding: null, handoffs: [],
       root_team: {
-        team_definition_id: 'team-product', team_definition_name: 'Product Review Team', team_run_id: rootTeamRunId,
+        team_definition_id: teamDefinitionId, team_definition_name: teamDefinitionName, team_run_id: rootTeamRunId,
         coordinator_address: reviewerAddress,
         members: [
           { kind: 'configured_agent', address: reviewerAddress, agent_definition_id: reviewerDefinitionId, role: null, description: null, agent_run_id: reviewerRunId, platform_agent_run_id: null, launch_configuration: launchConfiguration },
-          { kind: 'configured_agent', address: writerAddress, agent_definition_id: 'agent-writer', role: null, description: null, agent_run_id: writerRunId, platform_agent_run_id: null, launch_configuration: launchConfiguration },
+          { kind: 'configured_agent', address: writerAddress, agent_definition_id: writerDefinitionId, role: null, description: null, agent_run_id: writerRunId, platform_agent_run_id: null, launch_configuration: launchConfiguration },
         ],
         task_executions: [],
       },
@@ -301,10 +399,10 @@ export function applyExperienceScenario(input = {}) {
       : { root_team: { team_run_id: rootTeamRunId, members: [], task_executions: [] } }
     const view = {
       _focusedAgentRunId: reviewerRunId,
-      getRootTeamRunId: () => rootTeamRunId, getTeamDefinitionName: () => 'Product Review Team', getFocusedAgentContext() { return entries.find(item => item.agentRunId === this._focusedAgentRunId)?.agentContext || null },
+      getRootTeamRunId: () => rootTeamRunId, getTeamDefinitionName: () => teamDefinitionName, getFocusedAgentContext() { return entries.find(item => item.agentRunId === this._focusedAgentRunId)?.agentContext || null },
       getFocusedMemberAddress() { return entries.find(item => item.agentRunId === this._focusedAgentRunId)?.memberAddress || '' }, getFocusedAgentRunId() { return this._focusedAgentRunId },
       getConfigurationView: () => ({
-        teamDefinitionId: 'team-product', teamDefinitionName: 'Product Review Team', runtimeKind: 'autobyteus',
+        teamDefinitionId, teamDefinitionName, runtimeKind: 'autobyteus',
         workspaceId, workspaceMetadata, llmModelIdentifier: 'mock/gpt-prototype', llmConfig: { temperature: 0.2 },
         autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', memberOverrides: {}, isLocked: true,
       }),
@@ -320,7 +418,7 @@ export function applyExperienceScenario(input = {}) {
     if ((launchedFromCatalog || hierarchyReview || currentStateCorrection) && runHistory) {
       const memberRow = (agentRunId, memberAddress, displayName) => ({
         teamRunId: rootTeamRunId, kind: 'agent', memberAddress, displayName, agentRunId, teamRunIdForNode: null,
-        workspaceRootPath: workspaceMetadata.workspaceRootPath, summary: 'New - Product Review Team', lastActivityAt: teamLastActivityAt,
+        workspaceRootPath: workspaceMetadata.workspaceRootPath, summary: `New - ${teamDefinitionName}`, lastActivityAt: teamLastActivityAt,
         currentStatus: memberStatus, isActive: memberStatus !== 'offline' && memberStatus !== 'error', deleteLifecycle: 'READY', children: [],
       })
       const stableExecutionRow = (row, depth = 0) => ({
@@ -336,14 +434,14 @@ export function applyExperienceScenario(input = {}) {
         writerRow.isActive = false
       }
       const rootTeam = {
-        teamRunId: rootTeamRunId, kind: 'agent_team', memberAddress: '/', displayName: 'Product Review Team', agentRunId: null,
-        teamDefinitionId: 'team-product', teamRunIdForNode: rootTeamRunId, coordinatorAddress: reviewerAddress,
-        workspaceRootPath: null, summary: 'New - Product Review Team', lastActivityAt: teamLastActivityAt,
+        teamRunId: rootTeamRunId, kind: 'agent_team', memberAddress: '/', displayName: teamDefinitionName, agentRunId: null,
+        teamDefinitionId, teamRunIdForNode: rootTeamRunId, coordinatorAddress: reviewerAddress,
+        workspaceRootPath: null, summary: `New - ${teamDefinitionName}`, lastActivityAt: teamLastActivityAt,
         currentStatus: null, isActive: true, deleteLifecycle: 'READY', children: [reviewerRow, writerRow],
       }
       let teamNode = {
-        teamRunId: rootTeamRunId, teamDefinitionId: 'team-product', teamDefinitionName: 'Product Review Team',
-        workspaceRootPath: workspaceMetadata.workspaceRootPath, summary: 'New - Product Review Team', lastActivityAt: teamLastActivityAt,
+        teamRunId: rootTeamRunId, teamDefinitionId, teamDefinitionName,
+        workspaceRootPath: workspaceMetadata.workspaceRootPath, summary: `New - ${teamDefinitionName}`, lastActivityAt: teamLastActivityAt,
         isActive: true, deleteLifecycle: 'READY', focusedAgentRunId: reviewerRunId, rootTeam,
         members: [reviewerRow, writerRow], executionRows: [stableExecutionRow(reviewerRow), stableExecutionRow(writerRow)],
       }

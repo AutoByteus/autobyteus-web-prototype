@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-30T10:47:36.134Z",
-  "root": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-NTHUI-001",
+  "generatedAt": "2026-08-31T15:58:38.373Z",
+  "root": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001",
   "checks": [
     {
       "name": "No Electron/native runtime dependency",

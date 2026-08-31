@@ -96,7 +96,44 @@ const defaultRouteAliases: Record<string, string> = {
   '/memory': '/memory?view=home&tab=agents',
   '/nodes': '/nodes?tab=manage',
 }
-const scenario = (): string => localStorage.getItem(SCENARIO_KEY) || DEFAULT_SCENARIO
+type AgentOrgRuntimeRoute = {
+  scenario: string
+  phase: 'config' | 'active'
+  entryKind: 'agent' | 'team'
+}
+
+const agentOrgRuntimeRoute = (): AgentOrgRuntimeRoute | null => {
+  if (window.location.pathname !== '/workspace') return null
+  const query = new URLSearchParams(window.location.search)
+  if (query.get('prototypeReview') !== 'agent-org-flat' || query.get('root') !== 'org') return null
+  const [entryKind] = String(query.get('entry') || '').split(':')
+  if (entryKind !== 'agent' && entryKind !== 'team') return null
+  const phase = query.get('phase') === 'active' ? 'active' : 'config'
+  return {
+    phase,
+    entryKind,
+    scenario: `workspace_agent_org_${entryKind}_entry_${phase}`,
+  }
+}
+
+const setAgentOrgRuntimePhase = (phase: 'config' | 'active', router?: Router): AgentOrgRuntimeRoute | null => {
+  const current = agentOrgRuntimeRoute()
+  if (!current) return null
+  const url = new URL(window.location.href)
+  url.searchParams.set('phase', phase)
+  if (router) {
+    void router.replace({
+      path: url.pathname,
+      query: Object.fromEntries(url.searchParams.entries()),
+      hash: url.hash,
+    })
+  } else {
+    window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`)
+  }
+  return { ...current, phase, scenario: `workspace_agent_org_${current.entryKind}_entry_${phase}` }
+}
+
+const scenario = (): string => agentOrgRuntimeRoute()?.scenario || localStorage.getItem(SCENARIO_KEY) || DEFAULT_SCENARIO
 const context = (): string => localStorage.getItem(CONTEXT_KEY) || (window.location.pathname === '/mobile' ? 'unpaired' : DEFAULT_CONTEXT)
 
 const findSnapshot = (): [string, RuntimeSnapshot] => {
@@ -127,7 +164,7 @@ const findSnapshot = (): [string, RuntimeSnapshot] => {
   return ['populated|desktop|/', snapshots['populated|desktop|/']]
 }
 
-const actionResult = (store: any, action: string, args: any[] = [], pinia?: PrototypePinia): any => {
+const actionResult = (store: any, action: string, args: any[] = [], pinia?: PrototypePinia, router?: Router): any => {
   if (action.startsWith('is')) return false
   if (action.startsWith('get')) return undefined
   if (action.startsWith('fetchAllAgentDefinitions')) return store.allAgentDefinitions || store.agentDefinitions || []
@@ -175,7 +212,11 @@ const actionResult = (store: any, action: string, args: any[] = [], pinia?: Prot
   }
   if (store.$id === 'agentTeamRun' && action === 'launchDraft') {
     const draft = args[0]
-    const applied = applyExperienceScenario({ scenario: 'workspace_team_launch', context: context() })
+    const agentOrgRuntime = agentOrgRuntimeRoute()
+    const appliedScenario = agentOrgRuntime
+      ? setAgentOrgRuntimePhase('active', router)?.scenario || agentOrgRuntime.scenario
+      : 'workspace_team_launch'
+    const applied = applyExperienceScenario({ scenario: appliedScenario, context: context() })
     if (!applied.applied || applied.kind !== 'team') {
       throw new Error(`Synthetic Team launch projection failed: ${applied.reason || 'unknown reason'}`)
     }
@@ -306,13 +347,32 @@ export default defineNuxtPlugin({
     const stateOverlays = new Map<string, Record<string, any>>()
     const hostOwnedStores = new Set(['server', 'nodeStore', 'windowNodeContext', 'appUpdate', 'extensions', 'voiceInput', 'browserShell'])
     const richExperienceOwnedStores = new Set(['agentContexts', 'agentTeamContexts', 'agentTodo', 'agentActivity', 'fileExplorer', 'runFileChanges'])
+    const agentOrgRuntimeOwnedStores = new Set(['agentDefinition', 'agentTeamDefinition', 'agentRunConfig', 'teamRunConfig', 'agentSelection', 'runHistory'])
+    const agentOrgRuntimeRequiredStores = ['agentContexts', 'agentSelection', 'workspace', 'runHistory', 'agentDefinition', 'agentTeamDefinition', 'agentRunConfig', 'teamRunConfig']
+    let lastAppliedAgentOrgRuntimeKey = ''
+    let agentOrgRuntimeApplyScheduled = false
+    const scheduleAgentOrgRuntimeScenario = (): void => {
+      if (!agentOrgRuntimeRoute() || agentOrgRuntimeApplyScheduled) return
+      agentOrgRuntimeApplyScheduled = true
+      queueMicrotask(() => {
+        agentOrgRuntimeApplyScheduled = false
+        const runtime = agentOrgRuntimeRoute()
+        if (!runtime) return
+        const key = `${window.location.pathname}${window.location.search}`
+        if (key === lastAppliedAgentOrgRuntimeKey) return
+        if (!agentOrgRuntimeRequiredStores.every(storeId => pinia._s.has(storeId))) return
+        const applied = applyExperienceScenario({ scenario: runtime.scenario, context: context() }) as { applied?: boolean }
+        if (applied?.applied) lastAppliedAgentOrgRuntimeKey = key
+      })
+    }
     const patchStore = (store: any): void => {
       const [, selected] = findSnapshot()
       const state = selected?.state?.[store.$id]
       const isRichExperience = scenario().startsWith('workspace_') || scenario().startsWith('mobile_')
       if (state
         && !(context().startsWith('electron_') && hostOwnedStores.has(store.$id))
-        && !(isRichExperience && richExperienceOwnedStores.has(store.$id))) {
+        && !(isRichExperience && richExperienceOwnedStores.has(store.$id))
+        && !(agentOrgRuntimeRoute() && agentOrgRuntimeOwnedStores.has(store.$id))) {
         store.$patch(clone(state))
         if (state.error && typeof state.error === 'object' && typeof state.error.message === 'string' && 'error' in store) {
           const restoreError = (): void => { store.error = new Error(state.error.message) }
@@ -350,12 +410,26 @@ export default defineNuxtPlugin({
         }
       }
       const overlay = stateOverlays.get(store.$id)
-      if (overlay) store.$patch(clone(overlay))
+      if (overlay && !(agentOrgRuntimeRoute() && agentOrgRuntimeOwnedStores.has(store.$id))) {
+        store.$patch(clone(overlay))
+      }
     }
 
     pinia.use(({ store, options }: PiniaPluginContext) => {
       patchStore(store)
+      scheduleAgentOrgRuntimeScenario()
       const safe = localActions[store.$id] || new Set<string>()
+      if (store.$id === 'agentContexts') {
+        store.$onAction(({ name, after }) => {
+          if (name !== 'createRunFromTemplate') return
+          after(() => {
+            const runtime = agentOrgRuntimeRoute()
+            if (!runtime || runtime.entryKind !== 'agent' || runtime.phase !== 'config') return
+            const activeRuntime = setAgentOrgRuntimePhase('active', router)
+            if (activeRuntime) applyExperienceScenario({ scenario: activeRuntime.scenario, context: context() })
+          })
+        })
+      }
       if (navigationOverlayStores.has(store.$id)) {
         store.$onAction(({ name, after }) => {
           if (safe.has(name)) after(() => stateOverlays.set(store.$id, clone(store.$state)))
@@ -374,7 +448,7 @@ export default defineNuxtPlugin({
           if (context() === 'paired' && store.$id === 'runHistory' && actionName === 'fetchTree') {
             throw new Error('Synthetic mobile recent-history refresh failed')
           }
-          const result = actionResult(store, actionName, args, pinia)
+          const result = actionResult(store, actionName, args, pinia, router)
           if ((store.$id === 'agentDefinition' || store.$id === 'agentTeamDefinition' || store.$id === 'toolManagement') && result) {
             stateOverlays.set(store.$id, clone(store.$state))
           }
