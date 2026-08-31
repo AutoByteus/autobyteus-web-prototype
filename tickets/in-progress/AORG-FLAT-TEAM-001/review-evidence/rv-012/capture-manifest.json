@@ -1,0 +1,207 @@
+{
+  "package": "AORG-FLAT-TEAM-001",
+  "revision": "RV-012",
+  "captures": [
+    {
+      "id": "REV-AORG-RV12-001",
+      "filename": "REV-AORG-RV12-001-agent-team-catalog.png",
+      "state": "Baseline-native flat Agent Team catalog; only obsolete nesting semantics are removed",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-list",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-002",
+      "filename": "REV-AORG-RV12-002-agent-team-authoring.png",
+      "state": "Source-native drag-and-drop Agent-only Team builder with editable selected-member details",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-create",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-018",
+      "filename": "REV-AORG-RV12-018-agent-team-detail.png",
+      "state": "Baseline-native flat Team detail with members, coordinator, and handoffs",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-012",
+      "filename": "REV-AORG-RV12-012-team-local-handoff-detail.png",
+      "state": "Clean Team-local From, To, and When handoff detail",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-019",
+      "filename": "REV-AORG-RV12-019-agent-team-members.png",
+      "state": "Preserved Team member cards with direct Agent detail actions",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-011",
+      "filename": "REV-AORG-RV12-011-agent-member-detail.png",
+      "state": "Preserved Agent detail reached from a Team member",
+      "url": "http://127.0.0.1:4194/agents?prototypeReview=agent-org-flat&view=detail&id=product-prototyper&returnToTeam=product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-016",
+      "filename": "REV-AORG-RV12-016-agent-team-builder-narrow.png",
+      "state": "Narrow Team builder with click fallback and selected-member details",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-create",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-013",
+      "filename": "REV-AORG-RV12-013-team-local-handoff-authoring.png",
+      "state": "Team-local handoff editor with direct Agent endpoints only",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-edit&id=product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-003",
+      "filename": "REV-AORG-RV12-003-agent-org-catalog.png",
+      "state": "Baseline-native Agent Org catalog with direct Agent and Team members",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-list",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-004",
+      "filename": "REV-AORG-RV12-004-agent-org-authoring.png",
+      "state": "Agent Org authoring with independent Agents and referenced Teams",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-create",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-020",
+      "filename": "REV-AORG-RV12-020-agent-org-inline-member-picker-narrow.png",
+      "state": "Narrow in-flow member picker without an overlay",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-create",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-005",
+      "filename": "REV-AORG-RV12-005-agent-org-detail.png",
+      "state": "Baseline-native Org detail with Agent and same-identity Team members",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-014",
+      "filename": "REV-AORG-RV12-014-agent-org-handoff-detail.png",
+      "state": "Clean Agent Org handoff detail with only From, To, and When",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-006",
+      "filename": "REV-AORG-RV12-006-agent-org-configuration.png",
+      "state": "Agent Org Run opens the baseline-native organization configuration directly",
+      "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-007",
+      "filename": "REV-AORG-RV12-007-agent-org-placement-overrides.png",
+      "state": "One clean configuration tree supports Team and Agent placement overrides",
+      "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-008",
+      "filename": "REV-AORG-RV12-008-agent-org-active-unfocused.png",
+      "state": "Complete Agent Org scope active with no initial communication focus",
+      "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=active",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-009",
+      "filename": "REV-AORG-RV12-009-agent-org-direct-agent-focus.png",
+      "state": "Exact direct Agent selected from the active Agent Org sidebar",
+      "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=active",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-010",
+      "filename": "REV-AORG-RV12-010-agent-org-team-coordinator-focus.png",
+      "state": "Direct Team selected from the Agent Org sidebar and communication enters through its coordinator",
+      "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=active",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-015",
+      "filename": "REV-AORG-RV12-015-agent-org-handoff-authoring.png",
+      "state": "Clean Agent Org handoff authoring with From, To, and ordered When guidance",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-edit&id=software-development-department",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-RV12-017",
+      "filename": "REV-AORG-RV12-017-agent-org-configuration-narrow.png",
+      "state": "Responsive Agent Org configuration without an overlay",
+      "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    }
+  ],
+  "reviewStatus": "Non-normative pending user approval"
+}

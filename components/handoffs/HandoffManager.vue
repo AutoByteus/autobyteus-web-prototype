@@ -49,8 +49,7 @@
           <button type="button" class="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-test="add-when-condition" @click="addWhenCondition"><Icon icon="heroicons:plus-20-solid" class="h-4 w-4" /> Add condition</button>
         </div>
         <div class="mt-3 space-y-3">
-          <div v-for="(condition, index) in draft.when" :key="index" class="grid gap-2 rounded-lg border border-slate-200 bg-white p-3 sm:grid-cols-[2.5rem_minmax(0,1fr)_auto] sm:items-start">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600">{{ index + 1 }}</span>
+          <div v-for="(condition, index) in draft.when" :key="index" class="grid gap-2 rounded-lg border border-slate-200 bg-white p-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
             <label class="block">
               <span class="sr-only">When condition {{ index + 1 }}</span>
               <textarea v-model="draft.when[index]" rows="2" class="w-full rounded-md border px-3 py-2 text-sm leading-5 text-slate-900 outline-none placeholder:text-slate-400 focus:ring-2" :class="draftErrors[`when-${index}`] ? 'border-red-400 focus:border-red-500 focus:ring-red-500/20' : 'border-slate-300 focus:border-blue-500 focus:ring-blue-500/20'" :data-test="`when-condition-${index}`" placeholder="Describe when this handoff applies" />
@@ -82,14 +81,11 @@
 
     <ol v-else class="mt-4 space-y-3">
       <li v-for="(handoff, index) in modelValue" :key="handoff.id" class="rounded-xl border p-4" :class="errorsByHandoff[handoff.id] ? 'border-red-300 bg-red-50/40' : 'border-slate-200 bg-white'" :data-test="`handoff-card-${handoff.id}`">
-        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <span class="inline-flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600">{{ index + 1 }}</span>
-          <div v-if="mode === 'edit'" class="flex flex-wrap items-center justify-end gap-1">
-            <button type="button" class="rounded-md p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30" :disabled="index === 0" :aria-label="`Move handoff ${index + 1} up`" @click="moveHandoff(index, -1)"><Icon icon="heroicons:arrow-up-20-solid" class="h-4 w-4" /></button>
-            <button type="button" class="rounded-md p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30" :disabled="index === modelValue.length - 1" :aria-label="`Move handoff ${index + 1} down`" @click="moveHandoff(index, 1)"><Icon icon="heroicons:arrow-down-20-solid" class="h-4 w-4" /></button>
-            <button type="button" class="rounded-md px-2.5 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-test="`edit-handoff-${handoff.id}`" @click="startEdit(index)">Edit</button>
-            <button type="button" class="rounded-md px-2.5 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500" :data-test="`delete-handoff-${handoff.id}`" @click="deleteHandoff(index)">Delete</button>
-          </div>
+        <div v-if="mode === 'edit'" class="flex flex-wrap items-center justify-end gap-1">
+          <button type="button" class="rounded-md p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30" :disabled="index === 0" :aria-label="`Move handoff ${index + 1} up`" @click="moveHandoff(index, -1)"><Icon icon="heroicons:arrow-up-20-solid" class="h-4 w-4" /></button>
+          <button type="button" class="rounded-md p-1.5 text-slate-500 hover:bg-slate-100 disabled:opacity-30" :disabled="index === modelValue.length - 1" :aria-label="`Move handoff ${index + 1} down`" @click="moveHandoff(index, 1)"><Icon icon="heroicons:arrow-down-20-solid" class="h-4 w-4" /></button>
+          <button type="button" class="rounded-md px-2.5 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-test="`edit-handoff-${handoff.id}`" @click="startEdit(index)">Edit</button>
+          <button type="button" class="rounded-md px-2.5 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500" :data-test="`delete-handoff-${handoff.id}`" @click="deleteHandoff(index)">Delete</button>
         </div>
 
         <div class="mt-3 grid gap-3 lg:grid-cols-[minmax(0,1fr)_2rem_minmax(0,1fr)] lg:items-start">
@@ -108,10 +104,9 @@
 
         <div class="mt-4 border-t border-slate-200 pt-3">
           <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">When</p>
-          <ol class="mt-2 space-y-2">
-            <li v-for="(condition, whenIndex) in handoff.when" :key="whenIndex" class="flex items-start gap-2 text-sm leading-5 text-slate-700">
-              <span class="mt-0.5 inline-flex h-5 w-5 flex-none items-center justify-center rounded-full bg-slate-100 text-[0.6875rem] font-bold text-slate-500">{{ whenIndex + 1 }}</span>
-              <span>{{ condition }}</span>
+          <ol class="mt-2 space-y-2 list-none">
+            <li v-for="(condition, whenIndex) in handoff.when" :key="whenIndex" class="text-sm leading-5 text-slate-700">
+              {{ condition }}
             </li>
           </ol>
         </div>
