@@ -49,6 +49,9 @@ source/prototype comparison for these items.
 - Earlier Task Agent / Task AgentTeam regression: `5/5` pass.
 - Product acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/product-acceptance/product-acceptance.md`
 - Product typecheck, lint, `12` tests, `13/13` boundary checks, build, direct live scenarios, integrated-base checks, and post-merge future-branch checks: pass.
+- Correction preview: stopped after Product acceptance.
+- Correction worktree: safely removed after integration and reconciliation.
+- Correction branch: deleted after its accepted commit became reachable from `personal` and the future-state ticket branch.
 
 ## Required Recovery
 
