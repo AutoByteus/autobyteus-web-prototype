@@ -40,7 +40,7 @@
 ## Visual And Interaction Direction
 
 - Preserve the accepted shell, left navigation, Workspace density, typography, and neutral product surfaces.
-- Preserve the accepted AgentTeam toolbar, Featured/All sections, cards, initials, category, Agent chips, actions, spacing, and typography; change only semantics made obsolete by flat Teams.
+- Preserve the accepted AgentTeam toolbar, Featured/All sections, cards, initials, category, Agent chips, actions, spacing, and typography; preserve the Basics/library/canvas/member-details authoring hierarchy and the neutral detail-card hierarchy; change only semantics made obsolete by flat Teams.
 - Use the accepted Team blue interaction accents, violet for new Orgs, and source-current pale indigo `Task:` rows for temporary executions.
 - Keep definition snapshots and runtime lineage visibly separate.
 - Maintain real controls, disabled states, disclosure, selection, focus feedback, and narrow layout without horizontal overflow.

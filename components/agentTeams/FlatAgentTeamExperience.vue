@@ -101,194 +101,232 @@
       </template>
 
       <template v-else-if="view === 'team-detail'">
-        <button type="button" class="mb-5 inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-slate-950" @click="go('team-list')">
-          <Icon icon="heroicons:arrow-left-20-solid" class="h-4 w-4" /> Back to Agent Teams
+        <button type="button" class="mb-5 inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="go('team-list')">
+          <Icon icon="heroicons:arrow-left-20-solid" class="mr-2 h-4 w-4" /> Back to Agent Teams
         </button>
 
-        <header class="flex flex-col gap-5 border-b border-slate-200 pb-6 lg:flex-row lg:items-start lg:justify-between">
-          <div class="flex min-w-0 items-start gap-4">
-            <span class="inline-flex h-14 w-14 flex-none items-center justify-center rounded-2xl bg-blue-50 text-blue-700">
-              <Icon icon="heroicons:user-group-20-solid" class="h-7 w-7" />
-            </span>
-            <div class="min-w-0">
-              <div class="mb-2 flex flex-wrap items-center gap-2">
-                <span class="rounded-full bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700">Agent Team</span>
-                <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700">Standalone & reusable</span>
+        <header class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+            <div class="flex min-w-0 items-start gap-4">
+              <span class="inline-flex h-16 w-16 flex-none items-center justify-center rounded-xl bg-slate-100 text-2xl font-semibold tracking-wide text-slate-700">{{ teamInitials(selectedTeam.name) }}</span>
+              <div class="min-w-0">
+                <h1 class="text-3xl font-bold tracking-tight text-slate-950">{{ selectedTeam.name }}</h1>
+                <span class="mt-1 inline-flex items-center rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">{{ selectedTeam.category }}</span>
+                <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">{{ selectedTeam.description }}</p>
+                <div class="mt-3 flex flex-wrap gap-2 text-xs text-slate-600">
+                  <span class="rounded-full bg-slate-100 px-2.5 py-1">Members ({{ selectedTeam.agents.length }})</span>
+                  <span class="rounded-full bg-slate-100 px-2.5 py-1">Coordinator: {{ agentById(selectedTeam.coordinatorId).name }}</span>
+                  <span class="rounded-full bg-slate-100 px-2.5 py-1">Runs: {{ selectedTeam.runs }}</span>
+                </div>
               </div>
-              <h1 class="text-3xl font-bold tracking-tight text-slate-950">{{ selectedTeam.name }}</h1>
-              <p class="mt-2 max-w-3xl text-base leading-6 text-slate-600">{{ selectedTeam.description }}</p>
             </div>
-          </div>
-          <div class="flex gap-2">
-            <button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="go('team-edit', selectedTeam.id)">Edit Team</button>
-            <button type="button" class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700" @click="openTeamRun(selectedTeam.id)">Run Team</button>
+            <div class="flex shrink-0 gap-2">
+              <button type="button" class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="openTeamRun(selectedTeam.id)">Run</button>
+              <button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="go('team-edit', selectedTeam.id)">Edit</button>
+            </div>
           </div>
         </header>
 
-        <div class="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
-          <div class="space-y-6">
-            <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
-                <div>
-                  <h2 class="font-bold text-slate-950">Agents</h2>
-                  <p class="mt-0.5 text-sm text-slate-500">Direct members of this Team</p>
-                </div>
-                <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">{{ selectedTeam.agents.length }} Agents</span>
+        <div class="mt-4 space-y-4">
+          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 class="text-xl font-semibold text-slate-900">Description</h2>
+            <p class="mt-2 text-sm leading-6 text-slate-600">{{ selectedTeam.description }}</p>
+            <dl class="mt-4 grid gap-4 border-t border-slate-200 pt-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Coordinator</dt><dd class="mt-1 text-sm text-slate-800">{{ agentById(selectedTeam.coordinatorId).name }}</dd></div>
+              <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Composition summary</dt><dd class="mt-1 text-sm text-slate-800">{{ selectedTeam.agents.length }} Agents</dd></div>
+              <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Prior runs</dt><dd class="mt-1 text-sm text-slate-800">{{ selectedTeam.runs }}</dd></div>
+              <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Last run</dt><dd class="mt-1 text-sm text-slate-800">{{ selectedTeam.lastRun }}</dd></div>
+            </dl>
+          </section>
+
+          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h2 class="text-xl font-semibold text-slate-900">Team-local handoffs</h2>
+                <p class="mt-1 text-sm text-slate-500">These rules remain part of this Team wherever it runs.</p>
               </div>
-              <ul class="divide-y divide-slate-100">
-                <li v-for="agentId in selectedTeam.agents" :key="agentId" class="flex items-center gap-3 px-5 py-4">
-                  <span class="inline-flex h-10 w-10 flex-none items-center justify-center rounded-full bg-slate-100 text-sm font-bold text-slate-600">{{ agentById(agentId).initials }}</span>
-                  <div class="min-w-0 flex-1">
-                    <p class="truncate font-semibold text-slate-900">{{ agentById(agentId).name }}</p>
-                    <p class="truncate text-sm text-slate-500">{{ agentById(agentId).description }}</p>
+              <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">{{ selectedTeam.handoffs }} rules</span>
+            </div>
+            <div class="mt-4 grid gap-3 md:grid-cols-2">
+              <div class="rounded-lg border border-slate-200 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">When review is ready</p>
+                <p class="mt-2 text-sm font-semibold text-slate-900">Agent → coordinator</p>
+                <p class="mt-1 font-mono text-xs text-slate-500">/product_prototyper</p>
+              </div>
+              <div class="rounded-lg border border-slate-200 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">When baseline is needed</p>
+                <p class="mt-2 text-sm font-semibold text-slate-900">Coordinator → Agent</p>
+                <p class="mt-1 font-mono text-xs text-slate-500">/prototype_bootstrapper</p>
+              </div>
+            </div>
+          </section>
+
+          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 class="text-xl font-semibold text-slate-900">Members ({{ selectedTeam.agents.length }})</h2>
+            <div class="mt-4 grid gap-3 md:grid-cols-2">
+              <article v-for="agentId in selectedTeam.agents" :key="agentId" class="flex items-center gap-3 rounded-lg border border-slate-200 px-3 py-3">
+                <span class="inline-flex h-10 w-10 flex-none items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700">{{ agentById(agentId).initials }}</span>
+                <div class="min-w-0 flex-1">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h3 class="truncate text-sm font-semibold text-slate-900">{{ agentById(agentId).name }}</h3>
+                    <span v-if="agentId === selectedTeam.coordinatorId" class="rounded-full bg-emerald-50 px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wide text-emerald-700">Coordinator</span>
                   </div>
-                  <span v-if="agentId === selectedTeam.coordinatorId" class="inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-800">
-                    <Icon icon="heroicons:key-20-solid" class="h-3.5 w-3.5" /> Coordinator
-                  </span>
-                  <span v-else class="text-xs font-medium text-slate-500">Agent</span>
-                </li>
-              </ul>
-            </section>
+                  <p class="mt-0.5 truncate text-sm text-slate-500">{{ agentById(agentId).description }}</p>
+                </div>
+              </article>
+            </div>
+          </section>
 
-            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div class="flex items-start justify-between gap-4">
-                <div>
-                  <h2 class="font-bold text-slate-950">Team-local handoffs</h2>
-                  <p class="mt-1 text-sm text-slate-500">These rules stay with this reusable Team wherever it runs.</p>
-                </div>
-                <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">{{ selectedTeam.handoffs }} rules</span>
-              </div>
-              <div class="mt-4 grid gap-3 md:grid-cols-2">
-                <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                  <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">When review is ready</p>
-                  <p class="mt-2 text-sm font-semibold text-slate-900">Agent → coordinator</p>
-                  <p class="mt-1 font-mono text-xs text-slate-500">/product_prototyper</p>
-                </div>
-                <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                  <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">When baseline is needed</p>
-                  <p class="mt-2 text-sm font-semibold text-slate-900">Coordinator → Agent</p>
-                  <p class="mt-1 font-mono text-xs text-slate-500">/prototype_bootstrapper</p>
-                </div>
-              </div>
-            </section>
-          </div>
-
-          <aside class="space-y-4">
-            <section class="rounded-2xl border border-blue-200 bg-blue-50 p-5">
-              <div class="flex items-center gap-2 text-blue-800">
-                <Icon icon="heroicons:arrow-path-rounded-square-20-solid" class="h-5 w-5" />
-                <h2 class="font-bold">Reusable by reference</h2>
-              </div>
-              <p class="mt-2 text-sm leading-6 text-blue-800/80">Agent Orgs reference this exact Team. Its Agents, coordinator, handoffs, standalone launch, and prior history stay unchanged.</p>
-              <button type="button" class="mt-4 text-sm font-semibold text-blue-800 hover:underline" @click="openOrgCatalog">View Agent Orgs using this Team</button>
-            </section>
-            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h2 class="font-bold text-slate-950">Team facts</h2>
-              <dl class="mt-4 space-y-3 text-sm">
-                <div class="flex justify-between gap-4"><dt class="text-slate-500">Category</dt><dd class="font-semibold text-slate-900">{{ selectedTeam.category }}</dd></div>
-                <div class="flex justify-between gap-4"><dt class="text-slate-500">Prior runs</dt><dd class="font-semibold text-slate-900">{{ selectedTeam.runs }}</dd></div>
-                <div class="flex justify-between gap-4"><dt class="text-slate-500">Last run</dt><dd class="font-semibold text-slate-900">{{ selectedTeam.lastRun }}</dd></div>
-                <div class="flex justify-between gap-4"><dt class="text-slate-500">Nested Teams</dt><dd class="font-semibold text-emerald-700">Not supported</dd></div>
-              </dl>
-            </section>
-          </aside>
+          <section class="flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 class="font-semibold text-slate-900">Used by Agent Orgs</h2>
+              <p class="mt-1 text-sm text-slate-500">Organizations reference this same Team definition; its coordinator, members, handoffs, and standalone history stay unchanged.</p>
+            </div>
+            <button type="button" class="shrink-0 text-sm font-semibold text-blue-700 hover:text-blue-800" @click="openOrgCatalog">View Agent Orgs →</button>
+          </section>
         </div>
       </template>
 
       <template v-else>
-        <button type="button" class="mb-5 inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-slate-950" @click="go('team-list')">
-          <Icon icon="heroicons:arrow-left-20-solid" class="h-4 w-4" /> Back to Agent Teams
-        </button>
-        <header class="mb-6">
-          <p class="text-sm font-semibold text-blue-700">{{ view === 'team-create' ? 'New reusable Team' : 'Edit Agent Team' }}</p>
-          <h1 class="mt-1 text-3xl font-bold tracking-tight text-slate-950">{{ view === 'team-create' ? 'Create Agent Team' : selectedTeam.name }}</h1>
-          <p class="mt-2 max-w-3xl text-base text-slate-600">Choose direct Agents and exactly one coordinator. Teams and Orgs cannot be added as Team members.</p>
+        <header class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h1 class="text-3xl font-bold tracking-tight text-slate-950">{{ view === 'team-create' ? 'Create Agent Team' : 'Edit ' + selectedTeam.name }}</h1>
+            <p class="mt-2 text-base text-slate-600">Add Agents from the library to the canvas, then assign one coordinator.</p>
+          </div>
+          <button type="button" class="shrink-0 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50" @click="applyTeamTemplate">Use Template</button>
         </header>
 
-        <form class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_21rem]" @submit.prevent="saveTeam">
-          <div class="space-y-6">
-            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <h2 class="font-bold text-slate-950">Team details</h2>
-              <div class="mt-4 grid gap-4 md:grid-cols-2">
-                <label class="block md:col-span-1">
-                  <span class="text-sm font-semibold text-slate-700">Name</span>
-                  <input v-model="formName" required class="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
+        <form class="space-y-4" @submit.prevent="saveTeam">
+          <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
+              <h2 class="font-semibold text-slate-900">Basics</h2>
+              <div class="mt-4 grid gap-4 lg:grid-cols-[16rem_minmax(0,1fr)_minmax(0,1fr)]">
+                <div class="flex items-start gap-3">
+                  <span class="inline-flex h-24 w-24 flex-none items-center justify-center rounded-xl border border-slate-200 bg-slate-100 text-xl font-semibold text-slate-600">{{ teamInitials(formName || 'Agent Team') }}</span>
+                  <div class="pt-1">
+                    <button type="button" class="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700">Upload Avatar</button>
+                    <p class="mt-2 text-xs text-slate-500">PNG/JPG, square recommended</p>
+                  </div>
+                </div>
+                <label class="block">
+                  <span class="text-sm font-medium text-slate-700">Team Name</span>
+                  <input v-model="formName" required class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
+                  <span class="mt-1 block text-xs text-slate-500">Member names use their Agent definition names.</span>
                 </label>
-                <label class="block md:col-span-1">
-                  <span class="text-sm font-semibold text-slate-700">Category</span>
-                  <select v-model="formCategory" class="mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
+                <label class="block">
+                  <span class="text-sm font-medium text-slate-700">Team Description</span>
+                  <textarea v-model="formDescription" rows="3" class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"></textarea>
+                </label>
+                <label class="block lg:col-span-3">
+                  <span class="text-sm font-medium text-slate-700">Category</span>
+                  <select v-model="formCategory" class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
                     <option>Product</option><option>Engineering</option><option>Operations</option>
                   </select>
                 </label>
-                <label class="block md:col-span-2">
-                  <span class="text-sm font-semibold text-slate-700">Description</span>
-                  <textarea v-model="formDescription" rows="3" class="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"></textarea>
+                <label class="block lg:col-span-3">
+                  <span class="text-sm font-medium text-slate-700">Instructions</span>
+                  <textarea v-model="formInstructions" rows="4" class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 font-mono text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"></textarea>
                 </label>
               </div>
-            </section>
-
-            <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-              <div class="flex flex-col gap-3 border-b border-slate-100 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h2 class="font-bold text-slate-950">Agents and coordinator</h2>
-                  <p class="mt-1 text-sm text-slate-500">Select one direct Agent as the Team's single entry coordinator.</p>
-                </div>
-                <button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="showAgentPicker = !showAgentPicker">
-                  <Icon icon="heroicons:plus-20-solid" class="h-4 w-4" /> Add Agent
-                </button>
-              </div>
-
-              <div v-if="showAgentPicker" class="border-b border-blue-100 bg-blue-50 px-5 py-4">
-                <p class="text-xs font-semibold uppercase tracking-wide text-blue-700">Available Agents</p>
-                <div class="mt-3 flex flex-wrap gap-2">
-                  <button v-for="agent in availableAgents" :key="agent.id" type="button" class="rounded-full border border-blue-200 bg-white px-3 py-1.5 text-xs font-semibold text-blue-800 hover:bg-blue-100" @click="addAgent(agent.id)">+ {{ agent.name }}</button>
-                  <span v-if="availableAgents.length === 0" class="text-sm text-blue-800">All available Agents are already members.</span>
-                </div>
-              </div>
-
-              <div class="grid grid-cols-[minmax(0,1fr)_8rem_2.5rem] gap-3 border-b border-slate-100 bg-slate-50 px-5 py-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                <span>Agent</span><span class="text-center">Coordinator</span><span></span>
-              </div>
-              <ul class="divide-y divide-slate-100">
-                <li v-for="agentId in formAgents" :key="agentId" class="grid grid-cols-[minmax(0,1fr)_8rem_2.5rem] items-center gap-3 px-5 py-3.5">
-                  <div class="flex min-w-0 items-center gap-3">
-                    <span class="inline-flex h-9 w-9 flex-none items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600">{{ agentById(agentId).initials }}</span>
-                    <div class="min-w-0"><p class="truncate text-sm font-semibold text-slate-900">{{ agentById(agentId).name }}</p><p class="truncate text-xs text-slate-500">Agent definition</p></div>
-                  </div>
-                  <label class="flex justify-center"><input v-model="formCoordinator" type="radio" :value="agentId" class="h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500" :aria-label="`Make ${agentById(agentId).name} coordinator`"></label>
-                  <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:bg-red-50 hover:text-red-600" :disabled="formAgents.length <= 1" @click="removeAgent(agentId)"><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" /></button>
-                </li>
-              </ul>
-              <div class="flex items-start gap-2 border-t border-emerald-100 bg-emerald-50 px-5 py-3 text-sm text-emerald-800">
-                <Icon icon="heroicons:check-circle-20-solid" class="mt-0.5 h-4 w-4 flex-none" />
-                <p><strong>Flat by design.</strong> Only Agent definitions appear in this picker; Team-in-Team and Org-in-Team membership are not available.</p>
-              </div>
-            </section>
-
-            <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div class="flex items-center justify-between gap-4"><div><h2 class="font-bold text-slate-950">Team-local handoffs</h2><p class="mt-1 text-sm text-slate-500">Rules remain part of this Team when an Org references it.</p></div><button type="button" class="text-sm font-semibold text-blue-700">Add rule</button></div>
-              <div class="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">2 existing Agent-to-Agent rules will be preserved.</div>
-            </section>
-
-            <div class="flex justify-end gap-3">
-              <button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700" @click="go('team-list')">Cancel</button>
-              <button type="submit" class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700">{{ view === 'team-create' ? 'Create Team' : 'Save changes' }}</button>
             </div>
-          </div>
 
-          <aside class="space-y-4">
-            <section class="rounded-2xl border border-blue-200 bg-blue-50 p-5">
-              <Icon icon="heroicons:user-group-20-solid" class="h-6 w-6 text-blue-700" />
-              <h2 class="mt-3 font-bold text-blue-950">What makes this a Team?</h2>
-              <ul class="mt-3 space-y-2 text-sm leading-5 text-blue-900/80">
-                <li>• Direct Agent members only</li>
-                <li>• Exactly one direct Agent coordinator</li>
-                <li>• Independently launchable</li>
-                <li>• Reusable by reference in Agent Orgs</li>
-              </ul>
-            </section>
-            <section v-if="saved" class="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-sm font-semibold text-emerald-800" role="status">Saved locally for this prototype.</section>
-          </aside>
+            <div class="mt-6 grid gap-4 xl:grid-cols-[18rem_minmax(0,1fr)_18rem]">
+              <section class="rounded-xl border border-slate-200 bg-white p-3">
+                <h2 class="font-semibold text-slate-900">Agent Library</h2>
+                <label class="relative mt-3 block">
+                  <span class="sr-only">Search Agents</span>
+                  <Icon icon="heroicons:magnifying-glass-20-solid" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                  <input v-model="agentSearch" class="w-full rounded-md border border-slate-300 py-2 pl-9 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" placeholder="Search agents">
+                </label>
+                <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-500">My Agents</p>
+                <div class="mt-2 space-y-2">
+                  <button
+                    v-for="agent in libraryAgents"
+                    :key="agent.id"
+                    type="button"
+                    class="flex w-full items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-left hover:bg-slate-50 disabled:cursor-default disabled:bg-slate-50"
+                    :disabled="formAgents.includes(agent.id)"
+                    :aria-label="formAgents.includes(agent.id) ? agent.name + ' added' : 'Add ' + agent.name"
+                    @click="addAgent(agent.id)"
+                  >
+                    <span class="inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-blue-700">{{ agent.initials }}</span>
+                    <span class="min-w-0 flex-1 truncate text-sm text-slate-700">{{ agent.name }}</span>
+                    <span class="text-[0.625rem] font-bold uppercase text-blue-700">{{ formAgents.includes(agent.id) ? 'Added' : 'Add' }}</span>
+                  </button>
+                </div>
+                <p class="mt-4 text-xs leading-5 text-slate-500">Only Agent definitions are available. Teams and Orgs cannot be added as members.</p>
+              </section>
+
+              <section class="rounded-xl border border-slate-200 bg-white p-3">
+                <div class="flex items-center justify-between gap-3">
+                  <div>
+                    <h2 class="font-semibold text-slate-900">Team Canvas</h2>
+                    <p class="mt-1 text-xs text-slate-500">Added from Agent Library → Canvas</p>
+                  </div>
+                  <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
+                    <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white font-semibold">{{ teamInitials(formName || 'Agent Team') }}</span>
+                    {{ formName || 'Untitled Team' }}
+                  </span>
+                </div>
+                <div class="mt-4 grid grid-cols-[minmax(0,1fr)_7rem_2.5rem] gap-3 border-b border-slate-200 pb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <span>Agent</span><span class="text-center">Coordinator</span><span></span>
+                </div>
+                <ul v-if="formAgents.length" class="divide-y divide-slate-100">
+                  <li v-for="agentId in formAgents" :key="agentId" class="grid grid-cols-[minmax(0,1fr)_7rem_2.5rem] items-center gap-3 py-3">
+                    <div class="flex min-w-0 items-center gap-3">
+                      <span class="inline-flex h-9 w-9 flex-none items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-blue-700">{{ agentById(agentId).initials }}</span>
+                      <div class="min-w-0"><p class="truncate text-sm font-semibold text-slate-900">{{ agentById(agentId).name }}</p><p class="truncate text-xs text-slate-500">Agent definition</p></div>
+                    </div>
+                    <label class="flex justify-center"><input v-model="formCoordinator" type="radio" :value="agentId" class="h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500" :aria-label="'Make ' + agentById(agentId).name + ' coordinator'"></label>
+                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:bg-red-50 hover:text-red-600 disabled:opacity-40" :disabled="formAgents.length <= 1" :aria-label="'Remove ' + agentById(agentId).name" @click="removeAgent(agentId)"><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" /></button>
+                  </li>
+                </ul>
+                <div v-else class="mt-4 rounded-lg border border-dashed border-slate-300 px-4 py-10 text-center text-sm text-slate-500">Add Agents from the library to build your Team.</div>
+              </section>
+
+              <section class="rounded-xl border border-slate-200 bg-white p-3">
+                <h2 class="font-semibold text-slate-900">Member Details</h2>
+                <div class="mt-4 rounded-lg border border-slate-200 p-4">
+                  <div class="flex items-center gap-3">
+                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-blue-700">{{ agentById(formCoordinator).initials }}</span>
+                    <div class="min-w-0"><p class="truncate text-sm font-semibold text-slate-900">{{ agentById(formCoordinator).name }}</p><p class="text-xs text-slate-500">Selected coordinator</p></div>
+                  </div>
+                  <dl class="mt-4 space-y-3 text-sm">
+                    <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Type</dt><dd class="mt-1 text-slate-800">Agent</dd></div>
+                    <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Role</dt><dd class="mt-1 text-slate-800">Coordinator</dd></div>
+                    <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Status</dt><dd class="mt-1 font-medium text-emerald-700">Enabled</dd></div>
+                  </dl>
+                </div>
+              </section>
+            </div>
+          </section>
+
+          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 class="font-semibold text-slate-900">LLM config</h2>
+            <p class="mt-1 text-sm text-slate-500">Optional runtime, model, and LLM settings.</p>
+            <div class="mt-4 grid gap-4 sm:grid-cols-2">
+              <label><span class="text-sm font-medium text-slate-700">Runtime</span><select class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"><option>Choose when launching</option><option>AutoByteus</option></select></label>
+              <label><span class="text-sm font-medium text-slate-700">Model</span><select class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"><option>Select a model</option></select></label>
+            </div>
+          </section>
+
+          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div><h2 class="font-semibold text-slate-900">Team-local handoffs</h2><p class="mt-1 text-sm text-slate-500">Rules remain attached to this Team when an Agent Org references it.</p></div>
+            <div class="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">{{ selectedTeam.handoffs }} existing Agent-to-Agent rules will be preserved.</div>
+          </section>
+
+          <footer class="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">
+              <span :class="formName.trim() ? 'text-emerald-700' : 'text-slate-500'">{{ formName.trim() ? '●' : '○' }} Team Name</span>
+              <span :class="formAgents.length ? 'text-emerald-700' : 'text-slate-500'">{{ formAgents.length ? '●' : '○' }} At least 1 member</span>
+              <span :class="formCoordinator ? 'text-emerald-700' : 'text-slate-500'">{{ formCoordinator ? '●' : '○' }} Coordinator</span>
+            </div>
+            <div class="flex justify-end gap-3">
+              <button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="go('team-list')">Cancel</button>
+              <button type="submit" class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700">{{ view === 'team-create' ? 'Create Team' : 'Save Changes' }}</button>
+            </div>
+          </footer>
+          <p v-if="saved" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800" role="status">Saved locally for this prototype.</p>
         </form>
       </template>
     </div>
@@ -308,7 +346,7 @@ const router = useRouter();
 const search = ref('');
 const reloading = ref(false);
 const saved = ref(false);
-const showAgentPicker = ref(false);
+const agentSearch = ref('');
 
 const view = computed<TeamView>(() => {
   const candidate = String(route.query.view || 'team-list') as TeamView;
@@ -337,27 +375,42 @@ const reloadTeams = (): void => {
 const formName = ref(selectedTeam.value.name);
 const formCategory = ref(selectedTeam.value.category);
 const formDescription = ref(selectedTeam.value.description);
+const formInstructions = ref('Coordinate work through the selected Agent coordinator.');
 const formAgents = ref([...selectedTeam.value.agents]);
 const formCoordinator = ref(selectedTeam.value.coordinatorId);
-const availableAgents = computed(() => agents.filter((agent) => !formAgents.value.includes(agent.id)));
+const libraryAgents = computed(() => {
+  const query = agentSearch.value.trim().toLowerCase();
+  return query ? agents.filter((agent) => `${agent.name} ${agent.description}`.toLowerCase().includes(query)) : agents;
+});
 
 watch([view, selectedTeam], () => {
   if (view.value === 'team-create') {
     formName.value = 'Customer Insight Team';
     formCategory.value = 'Product';
-    formDescription.value = 'A reusable Team for synthesizing customer evidence into actionable product findings.';
+    formDescription.value = 'Synthesizes customer evidence into actionable product findings.';
+    formInstructions.value = 'Coordinate research and prototype work through the selected Agent coordinator.';
     formAgents.value = ['product-prototyper', 'requirements-engineer'];
     formCoordinator.value = 'product-prototyper';
   } else {
     formName.value = selectedTeam.value.name;
     formCategory.value = selectedTeam.value.category;
     formDescription.value = selectedTeam.value.description;
+    formInstructions.value = 'Coordinate work through the selected Agent coordinator while preserving Team-local handoffs.';
     formAgents.value = [...selectedTeam.value.agents];
     formCoordinator.value = selectedTeam.value.coordinatorId;
   }
   saved.value = false;
-  showAgentPicker.value = false;
+  agentSearch.value = '';
 }, { immediate: true });
+
+const applyTeamTemplate = (): void => {
+  formName.value = 'Customer Insight Team';
+  formCategory.value = 'Product';
+  formDescription.value = 'Synthesizes customer evidence into actionable product findings.';
+  formInstructions.value = 'Coordinate research and synthesis through the selected Agent coordinator.';
+  formAgents.value = ['product-prototyper', 'requirements-engineer'];
+  formCoordinator.value = 'product-prototyper';
+};
 
 const go = async (nextView: TeamView, id?: string): Promise<void> => {
   await router.push({ path: '/agent-teams', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: nextView, ...(id ? { id } : {}) } });
