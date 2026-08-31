@@ -1,0 +1,260 @@
+{
+  "package": "AORG-FLAT-TEAM-001",
+  "outcome": "Prototype Completed",
+  "approvedPrototypeRevision": "RV-012",
+  "approvedRunnableCommit": "891b4e667d51fffb92ebd85dd2dc90a8e0afcf2e",
+  "userApproval": "user-decision-record.md",
+  "requirementsAuthority": {
+    "revision": "RER-013",
+    "commit": "86df311c46ac407e52612a2150422756462a891c"
+  },
+  "capturedAfterApproval": true,
+  "capturedAt": "2026-08-31T19:56:45.825Z",
+  "validatedJourneyResult": {
+    "checks": 59,
+    "failures": 0,
+    "runtimeErrors": 0
+  },
+  "items": [
+    {
+      "id": "VIS-001",
+      "filename": "VIS-001-agent-team-catalog-desktop-1440x900.png",
+      "sha256": "351bf2dba6dbe44bbe868d8542b0a67a422e0531fc87ca8c5312a31ff7de247a",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Baseline-native flat Agent Team catalog; only obsolete nesting semantics are removed",
+      "route": "/agent-teams?prototypeReview=agent-org-flat&view=team-list",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-002",
+      "filename": "VIS-002-agent-team-authoring-desktop-1440x900.png",
+      "sha256": "6907ab4e560ab99a772220f603ad7fc49f77c86e4254528e03eee3bb636f341b",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Source-native drag-and-drop Agent-only Team builder with editable selected-member details",
+      "route": "/agent-teams?prototypeReview=agent-org-flat&view=team-create",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-003",
+      "filename": "VIS-003-agent-team-detail-desktop-1440x900.png",
+      "sha256": "14f3be1e65f245fd0d6ff680146180d928b54409d207c8886dd7029baa5005e9",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Baseline-native flat Team detail with members, coordinator, and handoffs",
+      "route": "/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-004",
+      "filename": "VIS-004-team-handoff-detail-desktop-1440x900.png",
+      "sha256": "e5a6e930c4d181cb41873068b54038b7a19eb068c7d3f1c61a5fa19af66beb84",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Clean Team-local From, To, and When handoff detail",
+      "route": "/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-005",
+      "filename": "VIS-005-agent-team-members-desktop-1440x900.png",
+      "sha256": "e5a6e930c4d181cb41873068b54038b7a19eb068c7d3f1c61a5fa19af66beb84",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Preserved Team member cards with direct Agent detail actions",
+      "route": "/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-006",
+      "filename": "VIS-006-agent-member-detail-desktop-1440x900.png",
+      "sha256": "97933c3c81226b1184fd2cc4372a770125a6760f1a0b18e1ed26bf31001225a5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Preserved Agent detail reached from a Team member",
+      "route": "/agents?prototypeReview=agent-org-flat&view=detail&id=product-prototyper&returnToTeam=product-design-prototyping-team",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-007",
+      "filename": "VIS-007-agent-team-builder-narrow-390x844.png",
+      "sha256": "fe7836167c7ce75f186fa11d32fe3082d513ee956a0127bac21cc38ebc1425bc",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "state": "Narrow Team builder with click fallback and selected-member details",
+      "route": "/agent-teams?prototypeReview=agent-org-flat&view=team-create",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-008",
+      "filename": "VIS-008-team-handoff-authoring-desktop-1440x900.png",
+      "sha256": "1c9d4d2697e9d0b2329631296ceb91cc7ef6617c77059af4f5048081d1f8d49a",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Team-local handoff editor with direct Agent endpoints only",
+      "route": "/agent-teams?prototypeReview=agent-org-flat&view=team-edit&id=product-design-prototyping-team",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-009",
+      "filename": "VIS-009-agent-org-catalog-desktop-1440x900.png",
+      "sha256": "55d802840418569801a7cb68e3e36707b01c02d08078feb412ca19daf1f682d3",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Baseline-native Agent Org catalog with direct Agent and Team members",
+      "route": "/agent-orgs?prototypeReview=agent-org-flat&view=org-list",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-010",
+      "filename": "VIS-010-agent-org-authoring-desktop-1440x900.png",
+      "sha256": "0c0fa5d8b49f08cd63dacf951a2ea3340a34fddb0955a8f863bbdd91c6357252",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Agent Org authoring with independent Agents and referenced Teams",
+      "route": "/agent-orgs?prototypeReview=agent-org-flat&view=org-create",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-011",
+      "filename": "VIS-011-agent-org-authoring-narrow-390x844.png",
+      "sha256": "d859f5823cd25ee9bc7fdf1a2dad0c5390af95f1ff2abcf05358a06f8f9bac3b",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "state": "Narrow in-flow member picker without an overlay",
+      "route": "/agent-orgs?prototypeReview=agent-org-flat&view=org-create",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-012",
+      "filename": "VIS-012-agent-org-detail-desktop-1440x900.png",
+      "sha256": "9080e86f6176ea672b43b2968d78d57368e9a5817106ec2023fa8097df914f70",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Baseline-native Org detail with Agent and same-identity Team members",
+      "route": "/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-013",
+      "filename": "VIS-013-agent-org-handoff-detail-desktop-1440x900.png",
+      "sha256": "88e291261ca935386be9c71538db74373011a243d69ae2e999f7c89ed2379cd8",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Clean Agent Org handoff detail with only From, To, and When",
+      "route": "/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-014",
+      "filename": "VIS-014-agent-org-configuration-desktop-1440x900.png",
+      "sha256": "1bec22c6dc587987a61005131d2f8e0c35049b9c72444e91e930e1660651d4ff",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Agent Org Run opens the baseline-native organization configuration directly",
+      "route": "/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-015",
+      "filename": "VIS-015-agent-org-placement-overrides-desktop-1440x900.png",
+      "sha256": "c02152581ddc52fbc27f3122bd33903a1107205c499adf991a9e31ee061149c5",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "One clean configuration tree supports Team and Agent placement overrides",
+      "route": "/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-016",
+      "filename": "VIS-016-agent-org-active-unfocused-desktop-1440x900.png",
+      "sha256": "097e6aacd17fd85b0c1e587c0a8b131844bbcdda3caba05ae44c8dea2d99238e",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Complete Agent Org scope active with no initial communication focus",
+      "route": "/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=active",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-017",
+      "filename": "VIS-017-agent-org-direct-agent-focus-desktop-1440x900.png",
+      "sha256": "998aada64e28998a9efda71e6b453172be773f9e963066f4c6ee49ef3a82c8e6",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Exact direct Agent selected from the active Agent Org sidebar",
+      "route": "/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=active",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-018",
+      "filename": "VIS-018-agent-org-team-focus-desktop-1440x900.png",
+      "sha256": "a436fcc532fc8c1a60fa91daa0153b2b41fe1ac7bb0b4a89d54f4fefff320c6c",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Direct Team selected from the Agent Org sidebar and communication enters through its coordinator",
+      "route": "/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=active",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-019",
+      "filename": "VIS-019-agent-org-handoff-authoring-desktop-1440x900.png",
+      "sha256": "49f924cd57a6be6384b000377f428103313117ecf3145295c1aeb206cf029199",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "state": "Clean Agent Org handoff authoring with From, To, and ordered When guidance",
+      "route": "/agent-orgs?prototypeReview=agent-org-flat&view=org-edit&id=software-development-department",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    },
+    {
+      "id": "VIS-020",
+      "filename": "VIS-020-agent-org-configuration-narrow-390x844.png",
+      "sha256": "572915250c276c6dafd785111fd8681b753b52affc5fbefcbc88797911627db2",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "state": "Responsive Agent Org configuration without an overlay",
+      "route": "/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config",
+      "fixtureContent": "Illustrative deterministic prototype data; layout, labels, controls, state meaning, and interaction treatment are normative."
+    }
+  ]
+}
