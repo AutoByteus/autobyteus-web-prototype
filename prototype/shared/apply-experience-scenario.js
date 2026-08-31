@@ -102,7 +102,18 @@ export function applyExperienceScenario(input = {}) {
   if (scenario.startsWith('workspace_team') || scenario.startsWith('mobile_team')) {
     const hierarchyReview = scenario === 'workspace_team_hierarchy_review'
     const launchedFromCatalog = scenario === 'workspace_team_launch'
-    const rootTeamRunId = hierarchyReview ? 'team-run-hierarchy-review' : launchedFromCatalog ? 'team-run-created-fixture' : 'team-run-prototype'
+    const taskAgentCorrection = scenario === 'workspace_team_task_agent'
+    const taskTeamCorrection = scenario === 'workspace_team_task_team'
+    const currentStateCorrection = taskAgentCorrection || taskTeamCorrection
+    const rootTeamRunId = hierarchyReview
+      ? 'team-run-hierarchy-review'
+      : launchedFromCatalog
+        ? 'team-run-created-fixture'
+        : taskAgentCorrection
+          ? 'team-run-task-agent-correction'
+          : taskTeamCorrection
+            ? 'team-run-task-team-correction'
+            : 'team-run-prototype'
     const reviewerRunId = hierarchyReview ? 'team-member-root-coordinator' : launchedFromCatalog ? 'team-member-researcher-created' : 'team-member-reviewer'
     const writerRunId = launchedFromCatalog ? 'team-member-writer-created' : 'team-member-writer'
     const reviewerName = hierarchyReview ? 'Workspace Program Coordinator' : launchedFromCatalog ? 'Research Assistant' : 'Review Coordinator'
@@ -133,6 +144,46 @@ export function applyExperienceScenario(input = {}) {
       { agentRunId: reviewerRunId, memberAddress: reviewerAddress, agentContext: reviewer },
       { agentRunId: writerRunId, memberAddress: writerAddress, agentContext: writer },
     ]
+    const taskAgentRunId = 'task-agent-license-audit'
+    const taskTeamChildRunId = 'task-team-review:reviewer'
+    if (taskAgentCorrection) {
+      const taskAgent = agentContexts.upsertProjectionContext({
+        runId: taskAgentRunId,
+        config: memberConfig('agent-writer', writerName),
+        conversation: {
+          id: taskAgentRunId,
+          agentDefinitionId: 'agent-writer',
+          agentName: writerName,
+          createdAt: now,
+          updatedAt: '2026-08-22T04:04:00.000Z',
+          messages: [
+            { type: 'user', text: 'Audit the prototype dependency licenses.', segments: [{ type: 'text', content: 'Audit the prototype dependency licenses.' }], timestamp: new Date('2026-08-22T04:03:00.000Z'), isComplete: true },
+            { type: 'ai', text: 'The dedicated license audit is in progress.', segments: [{ type: 'text', content: 'The dedicated license audit is in progress.' }], timestamp: new Date('2026-08-22T04:04:00.000Z'), isComplete: true, completionTokens: 18, completionCost: 0.0002 },
+          ],
+        },
+        status: 'running',
+      })
+      entries.push({ agentRunId: taskAgentRunId, memberAddress: writerAddress, agentContext: taskAgent })
+    }
+    if (taskTeamCorrection) {
+      const taskTeamChild = agentContexts.upsertProjectionContext({
+        runId: taskTeamChildRunId,
+        config: memberConfig('agent-reviewer', 'Review Specialist'),
+        conversation: {
+          id: taskTeamChildRunId,
+          agentDefinitionId: 'agent-reviewer',
+          agentName: 'Review Specialist',
+          createdAt: now,
+          updatedAt: '2026-08-22T04:05:00.000Z',
+          messages: [
+            { type: 'user', text: 'Review the implementation as a Team.', segments: [{ type: 'text', content: 'Review the implementation as a Team.' }], timestamp: new Date('2026-08-22T04:04:00.000Z'), isComplete: true },
+            { type: 'ai', text: 'The temporary review Team is checking the implementation.', segments: [{ type: 'text', content: 'The temporary review Team is checking the implementation.' }], timestamp: new Date('2026-08-22T04:05:00.000Z'), isComplete: true, completionTokens: 21, completionCost: 0.00025 },
+          ],
+        },
+        status: 'running',
+      })
+      entries.push({ agentRunId: taskTeamChildRunId, memberAddress: '/reviewer', agentContext: taskTeamChild })
+    }
     const hierarchyAgentSpecs = hierarchyReview ? [
       ['run-product-design-lead', '/product-design/lead', 'Product Design Lead', 'running'],
       ['run-research-ops', '/product-design/research-operations', 'Research Operations Specialist With A Very Long Localized Role', 'idle'],
@@ -157,8 +208,34 @@ export function applyExperienceScenario(input = {}) {
     const rows = [
       { key: rootRowKey, kind: 'configured_team', address: rootAddress, displayName: 'Product Review Team', accessibleName: 'Product Review Team', depth: 0, parentKey: null, agentRunId: null, teamRunId: rootTeamRunId, taskId: null, taskStatus: null, currentStatus: null, focusable: false, expandable: true, coordinator: false },
       { key: `agent:${reviewerRunId}`, kind: 'configured_agent', address: reviewerAddress, displayName: reviewerDisplayName, accessibleName: reviewerDisplayName, depth: 1, parentKey: rootRowKey, agentRunId: reviewerRunId, teamRunId: null, taskId: null, taskStatus: null, currentStatus: memberStatus, focusable: true, expandable: false, coordinator: true },
-      { key: `agent:${writerRunId}`, kind: 'configured_agent', address: writerAddress, displayName: writerDisplayName, accessibleName: writerDisplayName, depth: 1, parentKey: rootRowKey, agentRunId: writerRunId, teamRunId: null, taskId: null, taskStatus: null, currentStatus: memberStatus, focusable: true, expandable: false, coordinator: false },
+      { key: `agent:${writerRunId}`, kind: 'configured_agent', address: writerAddress, displayName: writerDisplayName, accessibleName: writerDisplayName, depth: 1, parentKey: rootRowKey, agentRunId: writerRunId, teamRunId: null, taskId: null, taskStatus: null, currentStatus: memberStatus, focusable: true, expandable: taskAgentCorrection, coordinator: false },
     ]
+    if (taskAgentCorrection) {
+      rows.push({
+        key: `agent:${taskAgentRunId}`, kind: 'task_agent', address: writerAddress,
+        displayName: 'Task: Audit prototype dependency licenses', accessibleName: 'Task: Audit prototype dependency licenses',
+        depth: 2, parentKey: `agent:${writerRunId}`, agentRunId: taskAgentRunId, teamRunId: null,
+        taskId: 'task-license-audit', taskStatus: 'in_progress', currentStatus: 'running',
+        focusable: true, expandable: false, coordinator: false,
+      })
+    }
+    if (taskTeamCorrection) {
+      rows.push(
+        {
+          key: 'team:task-team-review', kind: 'task_team', address: '/',
+          displayName: 'Task: Review the implementation as a Team', accessibleName: 'Task: Review the implementation as a Team',
+          depth: 1, parentKey: rootRowKey, agentRunId: null, teamRunId: 'task-team-review',
+          taskId: 'task-team-review', taskStatus: 'in_progress', currentStatus: null,
+          focusable: false, expandable: true, coordinator: false,
+        },
+        {
+          key: `agent:${taskTeamChildRunId}`, kind: 'task_team_agent', address: '/reviewer',
+          displayName: 'reviewer', accessibleName: 'reviewer', depth: 2, parentKey: 'team:task-team-review',
+          agentRunId: taskTeamChildRunId, teamRunId: null, taskId: null, taskStatus: null,
+          currentStatus: 'running', focusable: true, expandable: false, coordinator: true,
+        },
+      )
+    }
     const ref = { reference_id: 'team-ref-1', path: '/synthetic/prototype-workspace/docs/evidence.md', type: 'file', created_at: '2026-08-22T04:02:30.000Z', updated_at: '2026-08-22T04:02:30.000Z' }
     const messages = launchedFromCatalog ? [] : [
       { message_id: 'team-message-1', sender_agent_run_id: reviewerRunId, receiver_agent_run_id: writerRunId, content: 'Please compare the source and prototype workspace states.', message_type: 'agent_message', created_at: '2026-08-22T04:01:00.000Z', reference_files: [] },
@@ -200,7 +277,7 @@ export function applyExperienceScenario(input = {}) {
     const teams = store('agentTeamContexts')
     if (teams) teams.teams = new Map([[rootTeamRunId, { view }]])
     selection.selectRunWithoutShellNavigation(rootTeamRunId, 'team')
-    if ((launchedFromCatalog || hierarchyReview) && runHistory) {
+    if ((launchedFromCatalog || hierarchyReview || currentStateCorrection) && runHistory) {
       const memberRow = (agentRunId, memberAddress, displayName) => ({
         teamRunId: rootTeamRunId, kind: 'agent', memberAddress, displayName, agentRunId, teamRunIdForNode: null,
         workspaceRootPath: workspaceMetadata.workspaceRootPath, summary: 'New - Product Review Team', lastActivityAt: teamLastActivityAt,
@@ -229,6 +306,44 @@ export function applyExperienceScenario(input = {}) {
         workspaceRootPath: workspaceMetadata.workspaceRootPath, summary: 'New - Product Review Team', lastActivityAt: teamLastActivityAt,
         isActive: true, deleteLifecycle: 'READY', focusedAgentRunId: reviewerRunId, rootTeam,
         members: [reviewerRow, writerRow], executionRows: [stableExecutionRow(reviewerRow), stableExecutionRow(writerRow)],
+      }
+
+      if (taskAgentCorrection) {
+        const taskAgentRow = {
+          kind: 'transient_execution', transientKind: 'task_agent', rowKey: `agent:${taskAgentRunId}`,
+          teamRunId: rootTeamRunId, memberAddress: writerAddress, agentRunId: taskAgentRunId,
+          teamRunIdForNode: null, memberKind: 'agent', displayName: 'Task: Audit prototype dependency licenses',
+          depth: 1, hasChildren: false, currentStatus: 'running',
+        }
+        teamNode = {
+          ...teamNode,
+          focusedAgentRunId: reviewerRunId,
+          executionRows: [
+            stableExecutionRow(reviewerRow),
+            { ...stableExecutionRow(writerRow), hasChildren: true },
+            taskAgentRow,
+          ],
+        }
+      }
+
+      if (taskTeamCorrection) {
+        const taskTeamRow = {
+          kind: 'transient_execution', transientKind: 'task_team', rowKey: 'team:task-team-review',
+          teamRunId: rootTeamRunId, memberAddress: '/', agentRunId: null,
+          teamRunIdForNode: 'task-team-review', memberKind: 'agent_team',
+          displayName: 'Task: Review the implementation as a Team', depth: 0, hasChildren: true, currentStatus: null,
+        }
+        const taskTeamChildRow = {
+          kind: 'transient_execution', transientKind: 'task_team_child', rowKey: `agent:${taskTeamChildRunId}`,
+          teamRunId: rootTeamRunId, memberAddress: '/reviewer', agentRunId: taskTeamChildRunId,
+          teamRunIdForNode: null, memberKind: 'agent', displayName: 'reviewer',
+          depth: 1, hasChildren: false, currentStatus: 'running',
+        }
+        teamNode = {
+          ...teamNode,
+          focusedAgentRunId: reviewerRunId,
+          executionRows: [stableExecutionRow(reviewerRow), stableExecutionRow(writerRow), taskTeamRow, taskTeamChildRow],
+        }
       }
 
       if (hierarchyReview) {

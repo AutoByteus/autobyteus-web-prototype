@@ -36,7 +36,8 @@
     "validate:token-statistics-final": "node prototype/scripts/validate-token-statistics-final.mjs",
     "capture:token-statistics-final": "node prototype/scripts/capture-token-statistics-final.mjs",
     "validate:nested-team-hierarchy-review": "node prototype/scripts/validate-nested-team-hierarchy-review.mjs",
-    "capture:nested-team-hierarchy-final": "node prototype/scripts/capture-nested-team-hierarchy-final.mjs"
+    "capture:nested-team-hierarchy-final": "node prototype/scripts/capture-nested-team-hierarchy-final.mjs",
+    "validate:aorg-flat-team-correction": "node prototype/scripts/validate-aorg-flat-team-baseline-correction.mjs"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",

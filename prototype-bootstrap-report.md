@@ -1,268 +1,256 @@
 # Prototype Bootstrap Report
 
-This report records a focused current-experience refresh. It substantiates the
-observable **Settings > Token Statistics** experience only; it does not prove a
-production integration and it does not replace canonical requirements or a
-Product-owned `ui-ux-spec.md`.
+This report records the focused current-experience correction requested for the
+two previously unsubstantiated Workspace execution identities: a transient
+**Task Agent** and a transient **Task Team**. It does not redesign the accepted
+prototype, validate production execution, or replace canonical requirements or
+a Product-owned `ui-ux-spec.md`.
 
 ## Status
 
 - Status: `Completed`
-- Request type: `Refresh`
-- Stable package / Product ticket: `REQPKG-TSUI-001`
-- Result: the selected Token Statistics surface is independently runnable and
-  every recorded distinct item has matched source-versus-prototype evidence.
-- Next expected action: Product Prototyper should inspect the working-tree
-  candidate and evidence, run acceptance checks, and create the accepted
-  prototype commit before any future-state visualization work.
+- Request type: `Correction`
+- Stable package / Product ticket: `AORG-FLAT-TEAM-001`
+- Corrected inventory IDs: `UXB-CORR-TASK-AGENT-001`,
+  `UXB-CORR-TASK-TEAM-001`
+- Result: both named inventory items now have deterministic runnable scenarios
+  and controlled pinned-source-versus-prototype evidence. All five distinct
+  visual/interaction states pass with byte-identical screenshots, exact DOM,
+  geometry, computed-style, action, and focus results, and zero browser errors.
+- Next expected action: Product Prototyper should inspect and acceptance-test
+  the uncommitted correction candidate, then create the accepted ticket-branch
+  commit. Bootstrapper did not commit or integrate the result.
 
 ## Source Identity
 
 - Source project: AutoByteus workspace repository
-  `/home/autobyteus/workspace/autobyteus-workspace-token-statistics-ui-requirements`
+  `/home/autobyteus/workspace/autobyteus-workspace`
 - Selected frontend application or product surface:
-  `/home/autobyteus/workspace/autobyteus-workspace-token-statistics-ui-requirements/autobyteus-web`,
-  limited to **Settings > Token Statistics**
-- Source root:
-  `/home/autobyteus/workspace/autobyteus-workspace-token-statistics-ui-requirements`
-- Governing branch or revision authority: `origin/personal`, explicitly selected
-  by Product Prototyper
-- Pinned source commit: `9d0fd7c570d58da1af2c7a40279327c8a20a8093`
-- Explicit exclusion: Requirements commit
-  `1b5c401e8c2ed7af7630a840e7294541cbf7ad6f` was **not** used as
-  current-experience authority.
-- Applicable repository instructions: selected frontend `AGENTS.md`; source was
-  read-only and no release or repository-management operation was performed.
-- Source observation: exact `git archive` of the pinned commit at
-  `/tmp/autobyteus-web-source-9d0fd7c.WBhmLX`, served at
-  `http://127.0.0.1:4261` against the loopback synthetic observer at
-  `http://127.0.0.1:4361`. The archive's automatic Electron module load was
-  disabled and a temporary Nuxt dev-handler compatibility line was removed in
-  the disposable export so the unchanged browser presentation could run. No
-  source presentation file used for parity was edited.
-- Representative source start command:
+  `/home/autobyteus/workspace/autobyteus-workspace/autobyteus-web`, limited to
+  the desktop `/workspace` Workspaces execution tree and the center Team member
+  Event Monitor reached from its transient Task Agent / Task Team rows.
+- Source root: `/home/autobyteus/workspace/autobyteus-workspace`
+- Governing revision authority: the explicit source constraint supplied by
+  Product Prototyper.
+- Pinned source commit:
+  `8ef282ba77705180d985e7000d801f0e0068cdc1`
+- Applicable repository instructions: selected frontend `AGENTS.md`; the source
+  repository remained read-only and no repository, release, or production
+  operation was performed.
+- Source observation: an exact `git archive` of the pinned `autobyteus-web`
+  tree was served at `http://127.0.0.1:4282` against the loopback synthetic
+  observer at `http://127.0.0.1:4382`.
+- Disposable observation normalization: automatic Electron module discovery
+  was disabled, the temporary dev-handler compatibility module registration was
+  omitted, and the prototype dependency installation was reused in the `/tmp`
+  archive. No source presentation file was edited. Exact source identities and
+  selected-file SHA-256 values are durable in
+  `evidence/AORG-FLAT-TEAM-001/baseline-correction/source-provenance.json`.
+- Representative source command:
 
   ```bash
-  BACKEND_NODE_BASE_URL=http://127.0.0.1:4361 \
+  NODE_ENV=development \
+  BACKEND_NODE_BASE_URL=http://127.0.0.1:4382 \
   ENABLE_APPLICATIONS=true \
-  corepack pnpm exec nuxt dev --host 127.0.0.1 --port 4261
+  NUXT_IGNORE_LOCK=1 \
+  corepack pnpm exec nuxt dev --host 127.0.0.1 --port 4282
   ```
 
 ## Prototype Identity
 
 - Prototype repository/root (separate Git repository):
   `/home/autobyteus/workspace/autobyteus-web-prototype`
-- Product ticket: `REQPKG-TSUI-001`
-- Product ticket branch: `prototype/reqpkg-tsui-001`
+- Product ticket: `AORG-FLAT-TEAM-001`
+- Product ticket branch: `prototype/aorg-flat-team-001-baseline-correction`
 - Product-owned target worktree:
-  `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001`
+  `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction`
 - Accepted prototype base revision:
-  `0e43f9d6e638c67f0f82bb1a5d7c7cd2fd930fd9`
-- Bootstrap candidate revision or commit: uncommitted working-tree candidate at
-  the accepted base; no commit was created because Product Prototyper owns the
-  accepted prototype commit.
+  `32f879c01a04f23f8c4807f02006f6b0ebafea7b`
+- Bootstrap candidate revision: uncommitted working-tree candidate at the
+  accepted base. Product Prototyper owns the accepted commit.
 - Install command: `corepack pnpm install --ignore-workspace --frozen-lockfile`
 - Start command: `corepack pnpm dev --port 3210`
-- Review URL: `http://127.0.0.1:3210/settings?section=token-usage`
-- Framework, language, and styling: Nuxt 3, Vue 3, TypeScript, Pinia, Tailwind,
-  Chart.js, and the pinned source presentation conventions.
-- Scenario selection:
-  `localStorage.setItem('autobyteus.prototype.scenario', '<scenario>'); location.reload()`
+- Review URL: `http://127.0.0.1:3210/workspace`
+- Framework, language, and styling: Nuxt 3, Vue 3, TypeScript, Pinia,
+  Tailwind, and retained source presentation conventions.
+- Task Agent scenario:
+
+  ```js
+  localStorage.setItem('autobyteus.prototype.scenario', 'workspace_team_task_agent')
+  localStorage.setItem('autobyteus.prototype.context', 'desktop')
+  location.assign('/workspace')
+  ```
+
+- Task Team scenario: replace the scenario above with
+  `workspace_team_task_team` and reload `/workspace`.
 - Reset:
   `localStorage.removeItem('autobyteus.prototype.scenario'); location.reload()`
 
-## Refresh Reconciliation
-
-The accepted base's other routes, historical scenarios, correction evidence,
-and approved experience files were preserved. The refresh added only the
-newer Token Statistics presentation and its minimum browser-local support:
-Analytics and Run details tabs, analytics subcomponents, current localization,
-presentation utilities, prototype-native stores, deterministic fixtures,
-source-observer query fixtures, proportional tests, and matched evidence. No
-future requirement or redesign from the Requirements commit was introduced.
-
 ## Experience Boundary
 
-- Included UI boundary: the `Token Statistics` section selected from Settings.
-- Destinations/surfaces: the default `Analytics` tab and `Run details` tab.
-- Interaction/feedback patterns: range presets, custom date validation/apply,
-  filters/clear, token-versus-cost metric, composition grouping, CSV export,
-  retry, run-range fetch, task/model grouping, sorting, Team expansion, and cost
-  detail disclosure.
-- Visible-state patterns: loading, full populated, covered empty, partial
-  coverage/pricing, unavailable coverage, mixed currency, local/no-API-bill,
-  and retryable error.
-- Material contexts: English desktop (`1440x900`), English narrow (`390x844`),
-  and Simplified Chinese desktop; UTC, light theme, reduced motion, local assets.
-- Equivalent contexts: fixture values are shared across source and prototype;
-  operations with the same rendered terminal state share the same scenario.
-- Excluded: every Settings section other than Token Statistics, unrelated
-  product routes, production persistence/protocols/Electron/runtime behavior,
-  and future-state requirements or design. Those surfaces were not affected by
-  the selected refresh.
+- Included UI boundary: the Workspaces Team-run execution tree in the desktop
+  application left panel and the center Event Monitor selected from its rows.
+- Distinct destinations/surfaces: transient Task Agent row and exact AgentRun
+  conversation; collapsed transient Task Team row; expanded Task Team child;
+  exact child AgentRun conversation.
+- Distinct interaction/feedback patterns: reveal the Task Agent beneath its
+  logical configured member, select it, toggle the Task Team from its row body,
+  reveal the concrete child, and select the child.
+- Meaningful visible states: Task Agent unselected/selected; Task Team
+  collapsed/expanded; Task Team child selected.
+- Material context: English, light theme, reduced motion, UTC, desktop
+  `1440x900`, deterministic synthetic Team data.
+- Visibly equivalent contexts: the same fixture and browser conditions were
+  applied independently to source and prototype for every row.
+- Excluded product surfaces and rationale: every route and Workspace surface
+  outside the named transient identities; the narrow workspace shell where the
+  desktop Workspaces tree is not exposed; production streams, orchestration,
+  persistence, and delegated-task protocols; and the accepted
+  `prototypeReview=nested-team-hierarchy` future-state presentation. The
+  accepted hierarchy treatment was preserved and separately regression-checked,
+  not used as source authority for this correction.
 
 ## UI Experience Inventory
 
-All evidence references are relative to the durable evidence root
-`/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/REQPKG-TSUI-001/evidence/token-statistics-refresh`.
-The machine result record resolves every cited visual ID to its exact source and
-prototype screenshots, DOM/geometry/style capture, action result, and diff.
+All evidence paths are below the durable root
+`/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction`.
 
-| ID | Route / Surface | Exact Visual And UI-Controlled Content Obligations | States / Operations / Outcomes | Contexts | Scenario | Evidence | Result |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| UXB-TS-001 | Analytics | Tabs, heading, description, presets, range, filters, metric/grouping controls, summary metrics, charts, table, status announcement | Default full-coverage comparable result | Desktop + narrow | `populated` | UXV-TS-001/002 | **Pass** |
-| UXB-TS-002 | Analytics | Covered-range empty copy and retained controls | No tracked usage | Desktop | `token_empty` | UXV-TS-003 | **Pass** |
-| UXB-TS-003 | Analytics | Partial-coverage notice, missing-price disclosure, non-comparable prior period | Partial usage/pricing | Desktop | `token_partial` | UXV-TS-004 | **Pass** |
-| UXB-TS-004 | Analytics | Unavailable coverage notice and no-data result | Range predates coverage | Desktop | `token_unavailable` | UXV-TS-005 | **Pass** |
-| UXB-TS-005 | Analytics | Alert copy and Retry control | Error; retry remains recoverable | Desktop | `error` | UXV-TS-006/022 | **Pass** |
-| UXB-TS-006 | Analytics | Source skeleton geometry and busy semantics | Loading | Desktop | `loading` | UXV-TS-007 | **Pass** |
-| UXB-TS-007 | Analytics cost | Currency-quality notices and cost rendering | Mixed currency; local/no API bill | Desktop | `token_mixed_currency`, `token_local` | UXV-TS-008/026 | **Pass** |
-| UXB-TS-008 | Analytics custom range | Date inputs, inline alert, disabled/applicable action | Invalid validation; valid apply | Desktop | `populated` | UXV-TS-009/021 | **Pass** |
-| UXB-TS-009 | Analytics filters | Active-filter summary, reduced metrics/rows, clear control | Filter and restore | Desktop | `populated` | UXV-TS-010/020 | **Pass** |
-| UXB-TS-010 | Run details | Date range, grouping, Fetch Statistics, task table | Default and narrow | Desktop + narrow | `populated` | UXV-TS-011/018 | **Pass** |
-| UXB-TS-011 | Run details task table | Task/run headings, values, sortable header, stable row ordering | Sort; Team row | Desktop | `populated` | UXV-TS-012/023 | **Pass** |
-| UXB-TS-012 | Run details task table | Cost disclosure labels and breakdown values | Show Team cost details | Desktop | `populated` | UXV-TS-013 | **Pass** |
-| UXB-TS-013 | Run details model table | Model grouping selector and runtime/model rows | Switch grouping | Desktop | `populated` | UXV-TS-014 | **Pass** |
-| UXB-TS-014 | Run details | Explicit no-statistics message | Covered empty result | Desktop | `token_empty` | UXV-TS-015 | **Pass** |
-| UXB-TS-015 | Run details | Alert and retry feedback | Retryable fetch error | Desktop | `error` | UXV-TS-016 | **Pass** |
-| UXB-TS-016 | Analytics | All source-owned labels, dates, messages, controls, table headings in zh-CN | Localized full result | Desktop zh-CN | `populated` | UXV-TS-017 | **Pass** |
-| UXB-TS-017 | Analytics range presets | Selected control and recalculated visible range | Last month; custom apply | Desktop | `populated` | UXV-TS-019/021 | **Pass** |
-| UXB-TS-018 | Analytics export | Export control and exact suggested CSV filename | Browser download | Desktop | `populated` | UXV-TS-024 | **Pass** |
-| UXB-TS-019 | Run details range | Edited dates and Fetch Statistics transition | Manual date fetch | Desktop | `populated` | UXV-TS-025 | **Pass** |
+| ID | Route / Surface | Exact Visual And UI-Controlled Content Obligations | States / Operations / Outcomes | Material Context | Prototype Scenario / Synthetic Fixture | Source Evidence | Prototype Evidence | Fidelity Result |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `UXB-CORR-TASK-AGENT-001` | `/workspace` Workspaces tree + Event Monitor | Pale-indigo transient row nested under `Evidence Writer`; transient running status dot; source `Task: Audit prototype dependency licenses` label, title/ARIA/current state, indentation, radius/ring, typography, and exact dedicated conversation | Reveal member child; select Task Agent; focus exact `task-agent-license-audit`; show its own work packet/result instead of the configured member conversation | English desktop `1440x900` | `workspace_team_task_agent`; fixed local Team and dedicated AgentRun | `source/UXV-CORR-TASK-AGENT-001-source.png`, `source/UXV-CORR-TASK-AGENT-002-source.png`, machine rows | `prototype/UXV-CORR-TASK-AGENT-001-prototype.png`, `prototype/UXV-CORR-TASK-AGENT-002-prototype.png`, machine rows | **Pass** |
+| `UXB-CORR-TASK-TEAM-001` | `/workspace` Workspaces tree + Event Monitor | Pale-indigo transient Task Team row with source disclosure and no invented team card/status/avatar; exact label/title/ARIA/indentation; concrete `reviewer` child with transient status; exact child conversation | Default collapsed; row-body expansion; child reveal; child selection focuses `task-team-review:reviewer`; parent activation does not replace the center conversation | English desktop `1440x900` | `workspace_team_task_team`; fixed local transient Team/child | `source/UXV-CORR-TASK-TEAM-001-source.png` through `003`, machine rows | `prototype/UXV-CORR-TASK-TEAM-001-prototype.png` through `003`, machine rows | **Pass** |
 
 ## Journey Inventory
 
-| Journey ID | Starting Scenario | Source And Prototype Steps / Visible Outcome | Recovery / Alternate Path | Evidence | Result |
-| --- | --- | --- | --- | --- | --- |
-| UXJ-TS-001 | `populated` | Open Settings query; Token Statistics appears with Analytics selected and full populated result | Narrow layout retains the same controls/content | UXV-TS-001/002 | **Pass** |
-| UXJ-TS-002 | `populated` | Select Last month or Custom, edit dates, apply, and see the selected range/result refresh | Invalid end-before-start displays exact inline alert | UXV-TS-009/019/021 | **Pass** |
-| UXJ-TS-003 | `populated` | Select runtime filter; metrics/table reduce to matching usage; Clear filters restores all tracked usage | N/A | UXV-TS-010/020 | **Pass** |
-| UXJ-TS-004 | cost-quality scenarios | Select Estimated cost; mixed-currency and local-only fixtures render their distinct quality guidance | Token metric remains available | UXV-TS-008/026 | **Pass** |
-| UXJ-TS-005 | `populated` | Activate Export CSV; browser receives `token-usage-analytics_2026-08-01_2026-08-29.csv` | N/A | UXV-TS-024 action result | **Pass** |
-| UXJ-TS-006 | `populated` | Select Run details; fetch dates; switch task/model grouping and see corresponding rows | Empty and error terminal states | UXV-TS-011/014/015/016/025 | **Pass** |
-| UXJ-TS-007 | `populated` | Sort Task / Run, expand Team members, disclose Team cost details | Collapse/disclosure controls remain reversible | UXV-TS-012/013/023 | **Pass** |
-| UXJ-TS-008 | `error` | See retryable alert; activate Retry; recoverable error remains correctly rendered under deterministic fixture | Normal scenario reset restores populated state | UXV-TS-006/022 | **Pass** |
-| UXJ-TS-009 | `populated` | Repeat primary surfaces at 390x844 and analytics in zh-CN | N/A | UXV-TS-002/017/018 | **Pass** |
+| Journey ID | Starting Scenario | Source Steps And Visible Outcomes | Prototype Steps And Visible Outcomes | Alternate / Recovery Path | Evidence | Result |
+| --- | --- | --- | --- | --- | --- | --- |
+| `UXJ-CORR-TASK-AGENT-001` | `workspace_team_task_agent` | Expand `Evidence Writer`; Task Agent appears at the exact nested placement; select it; left row becomes current and center changes to that temporary AgentRun's dedicated license-audit conversation | Exact same steps, row state, focused run ID, and center conversation | New context/reload restores deterministic initial coordinator focus and collapsed member | `UXV-CORR-TASK-AGENT-001/002` | **Pass** |
+| `UXJ-CORR-TASK-TEAM-001` | `workspace_team_task_team` | Observe the collapsed Task Team; activate row body; exact `reviewer` child appears; activate child; center changes to the child's conversation while the parent remains a disclosure-only identity | Exact same steps, disclosure state, child identity, focused run ID, and conversation | Fresh context/reload restores the collapsed Task Team and coordinator focus | `UXV-CORR-TASK-TEAM-001–003` | **Pass** |
 
 ## Exact Visual Fidelity Comparison
 
-Every row used Chromium at the stated viewport, UTC, light theme, reduced
-motion, identical locale/scenario/fixture values, local Iconify assets, and
-blocked non-loopback requests. Source and prototype body text, semantic state,
-geometry, and source-owned behavior are exact. Thirteen screenshots are byte
-exact; other pixels differ only by normalized canvas/subpixel raster noise
-(`changedPixelRatio <= 0.000104`, maximum channel delta `<= 4`), with no known
-human-perceptible difference.
+Every row used Chromium 149, UTC, English, light theme, reduced motion, local
+assets, identical deterministic fixtures, and blocked non-loopback requests.
+The machine result records source/prototype DOM semantics, computed row styles,
+geometry, action/focus results, screenshots, hashes, diffs, and browser errors.
 
-| Visual IDs | Surface / State / Context | Source Screenshot | Prototype Screenshot | Method | Remaining Difference | Result |
-| --- | --- | --- | --- | --- | --- | --- |
-| UXV-TS-001–008 | Analytics populated desktop/narrow, empty, partial, unavailable, error, loading, mixed cost | `source/UXV-TS-*.png` | `prototype/UXV-TS-*.png` | DOM text, semantics, geometry/style, screenshot hash/perceptual diff, browser errors | None | **Pass** |
-| UXV-TS-009–010 | Custom validation; filtered result | same ID prefix | same ID prefix | Interaction terminal state + matched capture | None | **Pass** |
-| UXV-TS-011–016 | Run task, expanded Team, cost disclosure, model grouping, empty, error | same ID prefix | same ID prefix | Interaction terminal state + matched capture | None | **Pass** |
-| UXV-TS-017–018 | zh-CN Analytics; narrow Run details | same ID prefix | same ID prefix | Locale/responsive DOM and screenshot comparison | None | **Pass** |
-| UXV-TS-019–025 | Last month, clear, valid custom, retry, sort, CSV, run date fetch | same ID prefix | same ID prefix | Interaction/result/DOM and screenshot comparison | None | **Pass** |
-| UXV-TS-026 | Local-only cost evidence | same ID prefix | same ID prefix | Cost-metric terminal state + matched capture | None | **Pass** |
+| Visual ID | Surface / State / Context | Matched Conditions | Source Screenshot | Prototype Screenshot | DOM / Geometry / Style / Perceptual Method | Remaining Difference | Result |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `UXV-CORR-TASK-AGENT-001` | Task Agent revealed, not selected | Chromium 149, `1440x900`, system font/assets, light, en, UTC, reduced motion, same fixture | `source/UXV-CORR-TASK-AGENT-001-source.png` | `prototype/UXV-CORR-TASK-AGENT-001-prototype.png` | Exact row text/kind/address/title/ARIA, geometry, computed styles, Event Monitor, action result, screenshot bytes | None | **Pass** |
+| `UXV-CORR-TASK-AGENT-002` | Task Agent selected + exact conversation | Same | `source/UXV-CORR-TASK-AGENT-002-source.png` | `prototype/UXV-CORR-TASK-AGENT-002-prototype.png` | Same plus current-row state, exact focused run ID and dedicated conversation | None | **Pass** |
+| `UXV-CORR-TASK-TEAM-001` | Task Team collapsed | Same | `source/UXV-CORR-TASK-TEAM-001-source.png` | `prototype/UXV-CORR-TASK-TEAM-001-prototype.png` | Exact parent row/disclosure/child absence, geometry/styles, screenshot bytes | None | **Pass** |
+| `UXV-CORR-TASK-TEAM-002` | Task Team expanded | Same | `source/UXV-CORR-TASK-TEAM-002-source.png` | `prototype/UXV-CORR-TASK-TEAM-002-prototype.png` | Exact disclosure transition, child row/indent/status, unchanged center focus | None | **Pass** |
+| `UXV-CORR-TASK-TEAM-003` | Task Team child selected + exact conversation | Same | `source/UXV-CORR-TASK-TEAM-003-source.png` | `prototype/UXV-CORR-TASK-TEAM-003-prototype.png` | Same plus exact child current state, focused run ID, and child conversation | None | **Pass** |
 
-The complete one-row-per-visual record is
-`machine/token-statistics-refresh-results.json`; summary is
-`machine/token-statistics-refresh-summary.json`. Direct Browser Tool evidence
-for Analytics to Run details to expanded-Team interaction is
-`machine/browser-tool-run-details.json`.
+All five source/prototype screenshots are byte-identical (`changedPixels: 0`).
+Machine results are
+`aorg-flat-team-baseline-correction-results.json`; summary is
+`aorg-flat-team-baseline-correction-summary.json`; readable command/result log
+is `validation/browser-comparison.txt`.
 
 ## Implementation Simplifications
 
-| Production Capability Visible In The UI | Visible Experience Preserved | Prototype Simulation | Production Mechanism Absent |
+| Production Capability Visible In The UI | Visible Experience Preserved | Prototype Simulation | Production Mechanism Intentionally Absent |
 | --- | --- | --- | --- |
-| Analytics fetch/range/filter/retry | Loading, success, coverage, quality, error, filtering, ranges | Prototype-native Pinia store + deterministic result builder | GraphQL client, backend, persistence |
-| Run statistics fetch/group/sort | Task/model tables, hierarchy, date fetch, retry | Prototype-native Pinia store + synthetic task/model rows | Production query client and run history |
-| Cost/pricing state | Exact values, disclosures, mixed/local/partial semantics | Fixed synthetic aggregates and cost-quality fixtures | Billing/pricing service and customer usage |
-| CSV export | Exact control, filename, and generated download | Source presentation utility over synthetic rows | Server export/storage |
-| Charts | Exact source chart components and terminal rendering | Chart.js over deterministic buckets | Analytics warehouse |
-| Localization/responsive UI | Exact source English/zh-CN strings and layouts | Reused source localization/presentation | Production runtime contexts |
+| Task Agent execution identity | Exact nested transient row, status, selection, focused AgentRun, and dedicated conversation | Prototype-native Pinia projection, fixed temporary run ID, synthetic work packet/result | Delegation service, Agent process, team stream, persistence |
+| Task Team execution identity | Exact collapsed parent, disclosure, child identity/status, child focus and conversation | Prototype-native execution rows and deterministic disclosure/focus state | Team spawning, nested runtime, backend execution tree, stream protocol |
+| Team/Workspace history navigation | Exact configured parents, transient placement, current-row semantics, and reset behavior | Small in-memory navigation projection | History query, hydration, database |
 
-- Presentation reused: 18/18 selected source-pin Vue, presentation utility,
-  CSV, and localization files are SHA-256 exact; see
-  `machine/presentation-source-hash-audit.json`.
-- UI code recreated: none for the selected source presentation; only minimal
-  prototype store/type/fixture adapters were added.
-- Prototype state: two small Pinia stores with browser-local, resettable state.
-- Synthetic data: fixed analytics aggregates/buckets/options plus task/model/Team
-  rows; no customer or production data.
-- Scripted async behavior: deterministic loading delay and recoverable error.
-- Host simulation: ordinary browser only; Electron and backend contexts are not
-  needed for this surface.
-- Retained production store/client/protocol/runtime: none.
+- Presentation code/styles/tokens/assets reused: accepted Workspace history and
+  Event Monitor presentation. The source-current default branch now retains the
+  source ring/radius treatment while accepted hierarchy-only selection styling
+  remains scoped to its explicit review context.
+- UI code recreated: none for the user-visible Task Agent / Task Team surfaces;
+  only scenario fixtures, conditional source-current style scoping, and a
+  focused browser comparator were added.
+- Prototype-specific state model: existing browser-local Pinia stores plus two
+  deterministic scenario projections.
+- Synthetic data: Team/member names, task labels, run IDs, conversations,
+  amounts, and timestamps are fixed and non-production.
+- Scripted asynchronous behavior: fixture installation and browser settling
+  only; disclosure and selection interactions are real Vue actions.
+- Browser simulation of host/runtime context: ordinary desktop browser only;
+  Electron and production backend contexts are absent.
+- Retained production store/client/protocol/runtime: `None` for capability.
+  Retained presentation stores consume only locally installed fixture state.
 
 ## Validation
 
-- Browser: Playwright-controlled system Chromium
-  `/usr/bin/chromium`; direct Browser Tool validation also completed.
-- Viewports: `1440x900` and `390x844`.
-- Source method: read-only exact pin archive, controlled loopback mock, and
-  matched source dev server.
-- Prototype dev evidence URL: `http://127.0.0.1:3261` during comparison; the
-  ordinary documented review port is `3210`.
-- Clean documented install completed and the documented `3210` review URL
-  returned HTTP 200 (`validation/install.txt`,
-  `validation/install-and-start.txt`).
-- Browser command:
+- Browser: Chromium `149.0.7827.196` at `/usr/bin/chromium` through
+  `playwright-core`.
+- Validated viewport: `1440x900`.
+- Source-observation method: exact pinned archive, controlled loopback observer,
+  unchanged source presentation, external requests blocked.
+- Prototype browser command:
 
   ```bash
-  SOURCE_BASE_URL=http://127.0.0.1:4261 \
-  PROTOTYPE_BASE_URL=http://127.0.0.1:3261 \
-  MOCK_BASE_URL=http://127.0.0.1:4361 \
-  corepack pnpm validate:token-statistics-refresh
+  SOURCE_BASE_URL=http://127.0.0.1:4282 \
+  PROTOTYPE_BASE_URL=http://127.0.0.1:4180 \
+  MOCK_BASE_URL=http://127.0.0.1:4382 \
+  corepack pnpm validate:aorg-flat-team-correction
   ```
 
-- Browser result: 26/26 passed; zero unexpected source browser errors; zero
-  unexpected prototype browser errors.
-- `corepack pnpm typecheck`: pass; only the accepted base's pre-existing Nuxt
-  duplicate-getter warnings (`validation/typecheck.txt`).
+- Matched browser result: `5/5` pass; exact semantic, geometry, computed-style,
+  action/focus, and screenshot results; zero source or prototype browser errors.
+- Independent documented start: `corepack pnpm dev --port 3210`; `/workspace`
+  returned HTTP 200 and a fresh browser context rendered
+  `workspace_team_task_team` (`validation/independent-start.txt`).
+- `corepack pnpm typecheck`: pass; accepted-base duplicate-getter warnings only
+  (`validation/typecheck.txt`).
 - `corepack pnpm lint`: pass (`validation/lint.txt`).
-- `corepack pnpm test`: 3 files / 11 tests pass, including focused fixture coverage
+- `corepack pnpm test`: 3 files / 12 tests pass
   (`validation/test.txt`).
 - `corepack pnpm validate:boundaries`: 13/13 pass
   (`validation/boundaries.txt`).
 - `NUXT_IGNORE_LOCK=1 corepack pnpm build`: pass, node-server output
   (`validation/build.txt`).
-- Browser comparison log: `validation/browser-comparison.txt`.
-- Screenshots: `source/`, `prototype/`, and normalized `comparison/` directories.
-- Scenario reset/isolation: each browser context clears local storage, selects
-  one fixture, blocks non-loopback access, and closes after capture; pass.
-- Limitation: disposable source runtime normalization was necessary to observe
-  the browser presentation outside Electron. This does not change the UI files,
-  and direct source/prototype interaction plus hash audit substantiates the
-  selected boundary.
+- Accepted future hierarchy regression: selected-row 2px indigo inset accent,
+  background, and transient Task Team markers remain present under the explicit
+  hierarchy review context (`validation/accepted-hierarchy-regression.txt`).
+- Scenario reset/isolation: every comparison uses a fresh browser context,
+  cleared local storage, a selected local scenario, blocked external requests,
+  and deterministic focus/disclosure state; pass.
+- Known validation limitations: the disposable source archive required the
+  browser-only runtime normalization described above. It changed no selected
+  source presentation. Narrow/mobile views are outside the named desktop
+  Workspaces-tree correction boundary.
 
 ## Completion Check
 
-- Selected source boundary and pinned revision explicit: `Yes`
-- Prototype starts independently at documented URL: `Yes`
-- Every selected navigation destination and surface has exact evidence: `Yes`
-- Every distinct interaction, feedback, and meaningful state demonstrated: `Yes`
-- Every materially different context represented: `Yes`
-- Every selected journey and recovery path runnable with matching outcome: `Yes`
-- Desktop and narrow behavior validated: `Yes`
+- Selected source boundary and pinned revision are explicit: `Yes`
+- Prototype starts independently at the documented URL: `Yes`
+- Every named navigation destination and surface has exact source and prototype
+  evidence: `Yes`
+- Every named interaction, feedback, and meaningful state pattern is
+  demonstrated: `Yes`
+- Every context that materially changes the named UI is represented: `Yes`
+- Every named journey and recovery path is runnable with matching outcomes:
+  `Yes`
+- Desktop and narrow-mobile behavior validated when applicable: `N/A` for
+  narrow; the named Workspaces execution tree is a desktop surface
 - Interface structure/interactions are real: `Yes`
-- Production capabilities locally and deterministically simulated: `Yes`
-- Production credentials, customer data, live dependencies, writes absent: `Yes`
+- Production capabilities are simulated locally and deterministically: `Yes`
+- Production credentials, customer data, live dependencies, and writes are
+  absent: `Yes`
 - Remaining perceptible appearance or client-behavior discrepancies: `None`
-- Remaining unsubstantiated inventory items: `None`
-- 100% observable parity for the recorded distinct inventory: `Yes`
+- Remaining unsubstantiated distinct UI inventory items: `None`
+- 100% observable parity for the two named inventory items: `Yes`
 
 ## Known Gaps And Next Action
 
-- Blocked or incomplete IDs: `None`
-- User-facing differences or omissions inside selected boundary: `None`
-- Intentional simplifications: all records, token/cost amounts, dates, models,
-  providers, tasks, runs, Team members, loading timing, and errors are
-  illustrative deterministic fixtures; production data and mechanisms are
-  absent without changing presentation.
-- Source reachability limitation: exact pin required a disposable browser-only
-  runtime normalization documented above; all selected source presentation
-  files remained exact.
+- Blocked or incomplete UI inventory IDs: `None`
+- Unsubstantiated inventory IDs: `None`
+- User-facing differences or omissions inside the named correction boundary:
+  `None`
+- Illustrative fixture content: all Team/member identities, task descriptions,
+  run IDs, conversations, token/cost amounts, and timestamps are synthetic and
+  resettable. Production data and mechanisms are intentionally absent without
+  changing presentation or interaction.
+- Source reachability limitation: exact pin observation required the disposable
+  browser-only normalization already documented; selected source presentation
+  remained exact and hash-recorded.
 - Required correction: `None`
-- Recommended next action: Product Prototyper acceptance review, accepted
-  ticket-branch commit, then mode-appropriate future-state work. Bootstrapper
-  intentionally did not edit Product-owned approval records, `ui-ux-spec.md`,
-  final reference screenshots, ticket status, repository state, or commits.
+- Recommended next action: Product Prototyper acceptance review and accepted
+  ticket-branch commit. Bootstrapper intentionally did not alter Product ticket
+  status, approval records, `ui-ux-spec.md`, final normative references,
+  canonical prototype integration, or repository history.

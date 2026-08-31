@@ -157,13 +157,15 @@ const ariaLabel = computed(() => props.prototypeReviewActive
   : `${props.row.displayName}. ${props.row.memberAddress}`);
 
 const rowClasses = computed(() => [
-  props.isSelected ? 'is-selected text-indigo-900' : 'text-gray-600',
+  props.prototypeReviewActive
+    ? (props.isSelected ? 'is-selected text-indigo-900' : 'text-gray-600')
+    : (props.isSelected ? 'text-indigo-900 ring-1 ring-indigo-200' : 'text-gray-600'),
   props.prototypeReviewActive ? [
-    `hierarchy-${props.hierarchyTreatment}`,
-    `metadata-${props.metadataTreatment}`,
-    `identity-${props.teamIdentity}`,
-    props.row.memberKind === 'agent_team' ? 'node-team' : 'node-agent',
-  ] : [],
+      `hierarchy-${props.hierarchyTreatment}`,
+      `metadata-${props.metadataTreatment}`,
+      `identity-${props.teamIdentity}`,
+      props.row.memberKind === 'agent_team' ? 'node-team' : 'node-agent',
+    ] : [],
 ]);
 
 const activateRow = (): void => {
@@ -229,7 +231,7 @@ const activateRow = (): void => {
   font-weight: 650;
 }
 
-.is-selected {
+.transient-execution-row[class*="hierarchy-"].is-selected {
   border-radius: 0;
   background-color: #eef2ff !important;
   box-shadow: inset 2px 0 #6366f1;

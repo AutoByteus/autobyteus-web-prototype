@@ -1,0 +1,15 @@
+
+> autobyteus-web-prototype@0.1.0 typecheck /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction
+> nuxt prepare && vue-tsc --noEmit -p tsconfig.prototype.json
+
+
+ WARN  Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/stores/messagingProviderFlowStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/stores/serverStore.ts" is used
+
+
+ WARN  Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/stores/agentTeamContextsStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/stores/serverStore.ts" is used
+
+
+ WARN  Duplicated imports "getters", the one from "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/stores/agentSelectionStore.ts" has been ignored and "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/stores/serverStore.ts" is used
+
+│
+◆  Types generated in .nuxt.

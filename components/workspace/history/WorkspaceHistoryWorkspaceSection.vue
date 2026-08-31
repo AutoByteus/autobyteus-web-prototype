@@ -623,7 +623,9 @@ const teamExecutionRowClasses = (
   team: TeamTreeNode,
   row: RunHistoryTeamExecutionRow,
 ): Array<string | Record<string, boolean>> => [
-  isSelectedTeamMember(team, row) ? 'is-selected bg-indigo-50 text-indigo-900' : 'text-gray-600 hover:bg-gray-50',
+  isSelectedTeamMember(team, row)
+    ? (hierarchyReview.active.value ? 'is-selected bg-indigo-50 text-indigo-900' : 'bg-indigo-50 text-indigo-900')
+    : 'text-gray-600 hover:bg-gray-50',
   {
     'node-team': row.memberKind === 'agent_team',
     'node-agent': row.memberKind === 'agent',
@@ -738,7 +740,7 @@ const activateTeamDisplayRow = (
   font-weight: 650;
 }
 
-.team-execution-tree .is-selected {
+.team-execution-tree[class*="hierarchy-"] .is-selected {
   border-radius: 0;
   background-color: #eef2ff !important;
   box-shadow: inset 2px 0 #6366f1;
