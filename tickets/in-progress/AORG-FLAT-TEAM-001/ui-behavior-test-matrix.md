@@ -1,6 +1,6 @@
 # UI Behavior Test Matrix
 
-| Transition / Scenario ID | Related IDs | Flow | Trigger | Expected visible outcome | RV-002 result |
+| Transition / Scenario ID | Related IDs | Flow | Trigger | Expected visible outcome | RV-003 result |
 | --- | --- | --- | --- | --- | --- |
 | `TR-AORG-001` | REQ-001, AC-001 | Team authoring | Open create | Agent-only controls; one checked coordinator; no Add Team | Pass |
 | `TR-AORG-002` | REQ-018, AC-013 | Team reuse | Open Team/Org detail | Referenced Team states same definition and preserved history | Pass |
@@ -14,12 +14,13 @@
 | `TR-AORG-010` | REQ-016, AC-011 | Task child focus | Select child | URL focus and selected-execution panel identify temporary AgentRun | Pass |
 | `SC-AORG-011` | REQ-019, AC-014 | Narrow Org detail | 390×844 | No document-level horizontal overflow | Pass |
 | `SC-AORG-012` | REQ-019, AC-014 | Runtime safety | Complete scripted journey | Zero page or console errors | Pass |
+| `SC-AORG-013` | REQ-001, REQ-019 | Baseline-native Team catalog | Compare accepted baseline; use search and Reload | Baseline toolbar/group/card language preserved; redundant type/reuse/title copy absent; Reload gives immediate feedback; search filters | Pass |
 
 ## Evidence
 
-- Machine result: `browser-validation-rv-002.json`
-- Capture manifest: `review-evidence/rv-002/capture-manifest.json`
-- Result: `20/20` checks pass; `8` captures; `0` runtime errors.
+- Machine result: `browser-validation-rv-003.json`
+- Capture manifest: `review-evidence/rv-003/capture-manifest.json`
+- Result: `22/22` checks pass; `8` captures; `0` runtime errors.
 
 ## Unresolved Behavior
 

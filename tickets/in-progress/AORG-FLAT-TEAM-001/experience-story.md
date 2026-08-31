@@ -19,7 +19,7 @@
 
 | Surface ID | Purpose | Important states and actions |
 | --- | --- | --- |
-| `UIS-AORG-001` | AgentTeam catalog/detail | Reusable Team identity, Agent membership, coordinator, standalone run/history |
+| `UIS-AORG-001` | AgentTeam catalog/detail | Accepted baseline catalog language, Agent membership, coordinator, standalone run/history |
 | `UIS-AORG-002` | AgentTeam create/edit | Agent-only members; one checked coordinator radio; no Team selector |
 | `UIS-AORG-003` | AgentOrg catalog/detail | Direct Agent and Team placements; referenced Team preservation; no coordinator |
 | `UIS-AORG-004` | AgentOrg create/edit | Separate Agent and reusable-Team controls; Org-scoped handoffs |
@@ -40,6 +40,7 @@
 ## Visual And Interaction Direction
 
 - Preserve the accepted shell, left navigation, Workspace density, typography, and neutral product surfaces.
-- Use blue for reusable Teams, violet for Orgs, and source-current pale indigo `Task:` rows for temporary executions.
+- Preserve the accepted AgentTeam toolbar, Featured/All sections, cards, initials, category, Agent chips, actions, spacing, and typography; change only semantics made obsolete by flat Teams.
+- Use the accepted Team blue interaction accents, violet for new Orgs, and source-current pale indigo `Task:` rows for temporary executions.
 - Keep definition snapshots and runtime lineage visibly separate.
 - Maintain real controls, disabled states, disclosure, selection, focus feedback, and narrow layout without horizontal overflow.

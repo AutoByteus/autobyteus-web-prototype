@@ -111,7 +111,7 @@ export const flatTeams: FlatTeamFixture[] = [
   {
     id: 'release-readiness-team',
     name: 'Release Readiness',
-    description: 'A reusable standalone Team for final product verification and delivery readiness.',
+    description: 'Handles final product verification and delivery readiness.',
     category: 'Operations',
     coordinatorId: 'delivery-engineer',
     agents: ['delivery-engineer', 'code-reviewer'],

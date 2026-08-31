@@ -23,7 +23,7 @@ final references are captured from the validated approved revision.
 - Ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
 - Ticket branch: `prototype/aorg-flat-team-001`
 - Accepted prototype base: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`
-- Review candidate revision: `c619087229c08a5a90e0459132d57a2b3b1c5a92`
+- Review candidate revision: `RV-003`; commit recorded after the revision validation package is committed
 - Bootstrap correction report: `/home/autobyteus/workspace/autobyteus-web-prototype/prototype-bootstrap-report.md`
 - Baseline acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction/product-acceptance/product-acceptance.md`
 
@@ -55,6 +55,8 @@ product redesign are out of scope.
 ## Production-Quality Visual Specification
 
 - Preserve the accepted AutoByteus shell: 320px desktop left panel, primary navigation, resizable history section, white/neutral surfaces, system sans typography, compact tree rows, and existing icon language.
+- Preserve the accepted AgentTeam catalog rather than replacing it: search/Reload/Create Team toolbar; Featured teams and All teams grouping; two-column cards; initials tile; title, description, and category; blue Agent chips; right-aligned Run and View Details actions; and three compact metrics. The only catalog semantic substitution is `Runs` in place of the now-obsolete `Nested Teams` metric.
+- The selected `Agent Teams` navigation item is the visible page context. Keep one screen-reader-only `h1`, but do not repeat a visible page title, Team-type badge, reusable badge, or reusable explanatory eyebrow on every catalog card.
 - AgentTeams use blue identity accents; AgentOrgs use violet identity accents; neutral slate remains the default content and form language.
 - Temporary Task Agent and Task Team execution rows use the accepted source-current pale-indigo `Task:` presentation with animated/reduced-motion-compatible spinner identity. They appear within the owning Team execution, not as a separate configured section.
 - Catalog/detail content uses a responsive card grid with 16–24px internal spacing, 12–16px radii, 1px slate borders, and restrained shadows.
@@ -76,7 +78,7 @@ product redesign are out of scope.
 
 | Surface | Required structure and behavior |
 | --- | --- |
-| Team catalog | `Agent Teams` navigation and title; reusable badge; Agent chips; coordinator label; Run Team and detail actions |
+| Team catalog | Selected `Agent Teams` navigation plus screen-reader heading; baseline search/Reload/Create toolbar, Featured/All grouping, initials/category cards, blue Agent chips, Coordinator/Members/Runs metrics, and baseline Run/View Details actions; no redundant visible Team/reusable labels |
 | Team create/edit | Agent rows only; coordinator radio group with one selected value; no Add Team action; validation note |
 | Team detail | Agent membership, coordinator, Team-local handoffs, standalone run/history, reuse statement |
 | Org catalog | `Agent Orgs` navigation and title; direct Agent/Team chips; one configured level; no coordinator |
@@ -123,14 +125,14 @@ states, spacing, and interaction behavior become normative only after approval.
 
 | Review ID | Surface/state | Viewport | Path |
 | --- | --- | --- | --- |
-| `REV-AORG-001` | Team catalog | 1440×900 | `review-evidence/rv-002/REV-AORG-001-agent-team-catalog.png` |
-| `REV-AORG-002` | Team authoring | 1440×900 | `review-evidence/rv-002/REV-AORG-002-agent-team-authoring.png` |
-| `REV-AORG-003` | Org catalog | 1440×900 | `review-evidence/rv-002/REV-AORG-003-agent-org-catalog.png` |
-| `REV-AORG-004` | Org authoring | 1440×900 | `review-evidence/rv-002/REV-AORG-004-agent-org-authoring.png` |
-| `REV-AORG-005` | Org detail | 1440×900 | `review-evidence/rv-002/REV-AORG-005-agent-org-detail.png` |
-| `REV-AORG-006` | Exact Team entry selected | 1440×900 | `review-evidence/rv-002/REV-AORG-006-agent-org-exact-entry-launch.png` |
-| `REV-AORG-007` | Org runtime and task child focus | 1440×900 | `review-evidence/rv-002/REV-AORG-007-agent-org-runtime-history.png` |
-| `REV-AORG-008` | Standalone Team runtime | 1440×900 | `review-evidence/rv-002/REV-AORG-008-standalone-team-runtime-history.png` |
+| `REV-AORG-001` | Baseline-native Team catalog | 1440×900 | `review-evidence/rv-003/REV-AORG-001-agent-team-catalog.png` |
+| `REV-AORG-002` | Team authoring | 1440×900 | `review-evidence/rv-003/REV-AORG-002-agent-team-authoring.png` |
+| `REV-AORG-003` | Org catalog | 1440×900 | `review-evidence/rv-003/REV-AORG-003-agent-org-catalog.png` |
+| `REV-AORG-004` | Org authoring | 1440×900 | `review-evidence/rv-003/REV-AORG-004-agent-org-authoring.png` |
+| `REV-AORG-005` | Org detail | 1440×900 | `review-evidence/rv-003/REV-AORG-005-agent-org-detail.png` |
+| `REV-AORG-006` | Exact Team entry selected | 1440×900 | `review-evidence/rv-003/REV-AORG-006-agent-org-exact-entry-launch.png` |
+| `REV-AORG-007` | Org runtime and task child focus | 1440×900 | `review-evidence/rv-003/REV-AORG-007-agent-org-runtime-history.png` |
+| `REV-AORG-008` | Standalone Team runtime | 1440×900 | `review-evidence/rv-003/REV-AORG-008-standalone-team-runtime-history.png` |
 
 ## Final Visual Reference Inventory
 
@@ -138,7 +140,7 @@ Pending explicit user approval. No review capture is a final `VIS-*` reference.
 
 ## Open Decisions
 
-- User approval or requested revision of the Team/Org color and badge treatment.
+- User approval or requested revision of the restored baseline-native AgentTeam catalog and the new AgentOrg visual identity.
 - User approval or requested revision of the exact-entry modal wording and density.
 - User approval or requested revision of the source-current Task row placement inside the future AgentOrg runtime.
 
@@ -146,7 +148,7 @@ Pending explicit user approval. No review capture is a final `VIS-*` reference.
 
 - Applicable corrected baseline accepted: `Yes`
 - Four requested journeys runnable: `Yes`
-- RV-002 browser validation: `20/20 pass`, zero runtime errors
+- RV-003 browser validation: `22/22 pass`, zero runtime errors
 - Desktop and narrow validation: `Yes`
 - User confirmation recorded: `No — pending`
 - Final normative references captured: `No — correctly pending approval`

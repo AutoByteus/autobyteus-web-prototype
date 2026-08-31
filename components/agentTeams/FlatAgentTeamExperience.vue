@@ -1,99 +1,102 @@
 <template>
   <div class="h-full overflow-auto bg-slate-50" data-test="flat-agent-team-experience">
-    <div class="mx-auto w-full max-w-[1400px] px-5 py-7 sm:px-7 lg:px-10">
+    <div class="mx-auto w-full max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8">
       <template v-if="view === 'team-list'">
-        <header class="mb-7 flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
-          <div class="max-w-3xl">
-            <div class="mb-2 flex items-center gap-2 text-sm font-semibold text-blue-700">
-              <Icon icon="heroicons:user-group-20-solid" class="h-5 w-5" />
-              Reusable collaboration units
-            </div>
-            <h1 class="text-3xl font-bold tracking-tight text-slate-950">Agent Teams</h1>
-            <p class="mt-2 text-base leading-6 text-slate-600">
-              Build and test an independent Team of Agents. Every Team has one direct Agent coordinator and can be reused in an Agent Org without copying it.
-            </p>
-          </div>
-          <button
-            type="button"
-            class="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-            data-test="create-team"
-            @click="go('team-create')"
-          >
-            <Icon icon="heroicons:plus-20-solid" class="h-4 w-4" />
-            Create Agent Team
-          </button>
-        </header>
-
-        <section class="mb-5 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white p-3 shadow-sm sm:flex-row sm:items-center">
-          <label class="relative min-w-0 flex-1">
+        <header class="mb-6 flex flex-col gap-3 lg:flex-row lg:items-center">
+          <h1 class="sr-only">Agent Teams</h1>
+          <label class="relative min-w-0 flex-1 rounded-lg border border-slate-200 bg-white shadow-sm">
             <span class="sr-only">Search Agent Teams</span>
             <Icon icon="heroicons:magnifying-glass-20-solid" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <input
               v-model="search"
-              class="w-full rounded-lg border border-slate-200 py-2.5 pl-9 pr-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-              placeholder="Search teams by name or purpose"
+              class="block w-full rounded-lg border-transparent bg-white py-2.5 pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              placeholder="Search teams by name"
             >
           </label>
-          <div class="flex items-center gap-2 text-xs font-medium text-slate-500">
-            <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-emerald-700">{{ filteredTeams.length }} reusable</span>
-            <span>Agent members only</span>
+          <div class="flex items-center justify-end gap-2">
+            <button
+              type="button"
+              class="inline-flex items-center rounded-lg border px-4 py-2 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              :class="reloading ? 'cursor-not-allowed border-slate-200 bg-slate-100 text-slate-500' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-100'"
+              :disabled="reloading"
+              @click="reloadTeams"
+            >
+              <Icon icon="heroicons:arrow-path-20-solid" class="mr-2 h-4 w-4" :class="{ 'animate-spin': reloading }" />
+              {{ reloading ? 'Reloading…' : 'Reload' }}
+            </button>
+            <button
+              type="button"
+              class="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              data-test="create-team"
+              @click="go('team-create')"
+            >
+              Create Team
+            </button>
           </div>
-        </section>
+        </header>
 
-        <div class="grid gap-5 lg:grid-cols-2 2xl:grid-cols-3">
-          <article
-            v-for="team in filteredTeams"
-            :key="team.id"
-            class="group flex min-h-[290px] flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
-            :data-test="`team-card-${team.id}`"
-          >
-            <div class="flex items-start justify-between gap-4">
-              <div class="flex min-w-0 items-center gap-3">
-                <span class="inline-flex h-12 w-12 flex-none items-center justify-center rounded-xl bg-blue-50 text-blue-700">
-                  <Icon icon="heroicons:user-group-20-solid" class="h-6 w-6" />
-                </span>
-                <div class="min-w-0">
-                  <p class="text-xs font-semibold uppercase tracking-wide text-blue-700">Agent Team</p>
-                  <h2 class="truncate text-lg font-bold text-slate-950">{{ team.name }}</h2>
-                </div>
-              </div>
-              <span class="shrink-0 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[0.6875rem] font-semibold text-emerald-700">Reusable</span>
+        <div v-if="catalogSections.length > 0" class="space-y-8">
+          <section v-for="section in catalogSections" :key="section.id">
+            <div v-if="section.title" class="mb-3">
+              <h2 class="text-xl font-semibold text-slate-900">{{ section.title }}</h2>
+              <p v-if="section.description" class="mt-1 text-sm text-slate-500">{{ section.description }}</p>
             </div>
-
-            <p class="mt-4 line-clamp-3 text-sm leading-6 text-slate-600">{{ team.description }}</p>
-
-            <div class="mt-5 flex flex-wrap gap-2">
-              <span
-                v-for="agentId in team.agents"
-                :key="agentId"
-                class="inline-flex min-w-0 items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 py-1 pl-1 pr-2 text-xs font-medium text-slate-700"
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <article
+                v-for="team in section.teams"
+                :key="team.id"
+                class="group rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all duration-200 hover:border-slate-300 hover:shadow-md"
+                :data-test="`team-card-${team.id}`"
               >
-                <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white text-[0.625rem] font-bold text-slate-600 shadow-sm">{{ agentById(agentId).initials }}</span>
-                <span class="max-w-40 truncate">{{ agentById(agentId).name }}</span>
-                <Icon v-if="agentId === team.coordinatorId" icon="heroicons:key-20-solid" class="h-3.5 w-3.5 text-amber-600" aria-label="Coordinator" />
-              </span>
-            </div>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-[4rem_minmax(0,1fr)_auto] sm:items-start">
+                  <div class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-slate-100 text-slate-700">
+                    <span class="text-2xl font-semibold tracking-wide">{{ teamInitials(team.name) }}</span>
+                  </div>
+                  <div class="min-w-0">
+                    <h3 class="truncate text-xl font-semibold text-slate-900">{{ team.name }}</h3>
+                    <p class="mt-1 line-clamp-2 text-sm text-slate-600">{{ team.description }}</p>
+                    <div class="mt-2 flex flex-wrap items-center gap-2">
+                      <span class="inline-flex items-center rounded-md bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700">{{ team.category }}</span>
+                    </div>
+                  </div>
+                  <div class="flex w-full flex-col gap-2 sm:w-auto sm:items-end">
+                    <button type="button" class="inline-flex min-w-[104px] justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" @click="openTeamRun(team.id)">Run</button>
+                    <button type="button" class="inline-flex items-center text-sm font-medium text-slate-500 transition-colors hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" @click="go('team-detail', team.id)">View Details <span class="ml-1" aria-hidden="true">→</span></button>
+                  </div>
+                </div>
 
-            <dl class="mt-auto grid grid-cols-3 gap-3 border-t border-slate-100 pt-4 text-sm">
-              <div>
-                <dt class="text-xs font-medium text-slate-500">Agents</dt>
-                <dd class="mt-1 font-bold text-slate-900">{{ team.agents.length }}</dd>
-              </div>
-              <div>
-                <dt class="text-xs font-medium text-slate-500">Coordinator</dt>
-                <dd class="mt-1 truncate font-semibold text-slate-900">{{ agentById(team.coordinatorId).name }}</dd>
-              </div>
-              <div>
-                <dt class="text-xs font-medium text-slate-500">Runs</dt>
-                <dd class="mt-1 font-bold text-slate-900">{{ team.runs }}</dd>
-              </div>
-            </dl>
+                <div class="mt-4 flex flex-wrap items-center gap-2">
+                  <span
+                    v-for="agentId in team.agents"
+                    :key="agentId"
+                    class="inline-flex max-w-[14rem] items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700"
+                  >
+                    <span class="inline-flex h-4 w-4 items-center justify-center rounded-full bg-white/80 text-[0.625rem] font-semibold">{{ agentById(agentId).initials.slice(0, 1) }}</span>
+                    <span class="truncate">{{ agentById(agentId).name }}</span>
+                  </span>
+                </div>
 
-            <div class="mt-4 flex items-center justify-between gap-3">
-              <button type="button" class="text-sm font-semibold text-slate-600 hover:text-slate-950" @click="go('team-detail', team.id)">View details</button>
-              <button type="button" class="rounded-lg bg-slate-900 px-3.5 py-2 text-sm font-semibold text-white hover:bg-slate-800" @click="openTeamRun(team.id)">Run Team</button>
+                <dl class="mt-4 grid grid-cols-2 gap-3 border-t border-slate-200 pt-3 text-xs text-slate-600 sm:grid-cols-3">
+                  <div>
+                    <dt class="font-medium text-slate-500">Coordinator</dt>
+                    <dd class="mt-0.5 truncate text-sm text-slate-800">{{ agentById(team.coordinatorId).name }}</dd>
+                  </div>
+                  <div>
+                    <dt class="font-medium text-slate-500">Members</dt>
+                    <dd class="mt-0.5 text-sm font-semibold text-slate-800">{{ team.agents.length }}</dd>
+                  </div>
+                  <div>
+                    <dt class="font-medium text-slate-500">Runs</dt>
+                    <dd class="mt-0.5 text-sm font-semibold text-slate-800">{{ team.runs }}</dd>
+                  </div>
+                </dl>
+              </article>
             </div>
-          </article>
+          </section>
+        </div>
+        <div v-else class="rounded-lg border border-slate-200 bg-white py-16 text-center shadow-sm">
+          <p class="text-lg font-medium text-slate-500">No teams found</p>
+          <p class="mt-2 text-sm text-slate-400">No teams matched “{{ search.trim() }}”</p>
         </div>
       </template>
 
@@ -303,6 +306,7 @@ type TeamView = 'team-list' | 'team-detail' | 'team-create' | 'team-edit';
 const route = useRoute();
 const router = useRouter();
 const search = ref('');
+const reloading = ref(false);
 const saved = ref(false);
 const showAgentPicker = ref(false);
 
@@ -315,6 +319,20 @@ const filteredTeams = computed(() => {
   const query = search.value.trim().toLowerCase();
   return query ? flatTeams.filter((team) => `${team.name} ${team.description}`.toLowerCase().includes(query)) : flatTeams;
 });
+const catalogSections = computed(() => {
+  if (search.value.trim()) {
+    return filteredTeams.value.length > 0 ? [{ id: 'search', title: '', description: '', teams: filteredTeams.value }] : [];
+  }
+  return [
+    { id: 'featured', title: 'Featured teams', description: 'Recommended team workflows.', teams: flatTeams.slice(0, 2) },
+    { id: 'all', title: 'All teams', description: '', teams: flatTeams.slice(2) },
+  ].filter((section) => section.teams.length > 0);
+});
+const teamInitials = (name: string): string => name.trim().split(/\s+/).slice(0, 2).map((part) => part[0]?.toUpperCase() || '').join('') || 'AT';
+const reloadTeams = (): void => {
+  reloading.value = true;
+  window.setTimeout(() => { reloading.value = false; }, 450);
+};
 
 const formName = ref(selectedTeam.value.name);
 const formCategory = ref(selectedTeam.value.category);
