@@ -81,6 +81,8 @@ control, CSV preparation/download path, or replacement export workflow.
 | `workspace_agent_error` | `/workspace`, desktop | Error plus follow-up/recovery |
 | `workspace_agent_interrupted` | `/workspace`, desktop | Interrupted/stopped composer |
 | `workspace_agent_history` | `/workspace`, desktop | Reopened historical agent run |
+| `workspace_file_tree_correction` | `/workspace`, desktop | Correct source-shaped workspace tree with expanded/collapsed folder states, two open Markdown files, active-row/tab/preview selection, and folder context actions |
+| `workspace_team_run_config_correction` | `/workspace`, desktop | Deterministic editable Team launch draft with missing-workspace feedback, member overrides, workspace readiness, and auto-approve state |
 | `workspace_team_active` | `/workspace`, desktop | Active team conversation, member focus, team messages/delegations |
 | `workspace_team_streaming` | `/workspace`, desktop | Progressive team/member state |
 | `workspace_team_completed` | `/workspace`, desktop | Completed team run |

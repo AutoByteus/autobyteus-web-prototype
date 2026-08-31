@@ -1,0 +1,3464 @@
+[
+  {
+    "id": "UXV-CORR-TEAM-RUN-CONFIG-001",
+    "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+    "scenario": "workspace_team_run_config_correction",
+    "name": "Editable Team run configuration with missing-workspace feedback",
+    "action": "team-config-required",
+    "source": {
+      "id": "UXV-CORR-TEAM-RUN-CONFIG-001",
+      "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+      "name": "Editable Team run configuration with missing-workspace feedback",
+      "scenario": "workspace_team_run_config_correction",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/source/UXV-CORR-TEAM-RUN-CONFIG-001-source.png",
+      "screenshotSha256": "191e96c3e1ebc8d7921ae04670485c0480a849533c87a8f54b3da2f92162293f",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 1,
+          "definition": 1,
+          "runtimeValue": "autobyteus",
+          "runtimeDisabled": false,
+          "autoApprove": {
+            "text": "Auto approve tools",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-200",
+            "box": {
+              "x": 928,
+              "y": 489.5,
+              "width": 44,
+              "height": 24
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgb(204, 204, 204)",
+              "borderColor": "rgba(0, 0, 0, 0)",
+              "borderRadius": "9999px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "memberToggle": {
+            "text": "Team Members Override (2)",
+            "role": null,
+            "ariaExpanded": "false",
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "flex w-full items-center justify-between rounded-md px-1 py-2 text-left text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+            "box": {
+              "x": 339,
+              "y": 559,
+              "width": 633,
+              "height": 36
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(77, 77, 77)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "6px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "14px",
+              "lineHeight": "20px"
+            }
+          },
+          "memberRows": [
+            "researcherCoordinatorRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default",
+            "writerRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default"
+          ],
+          "blockingIssue": true,
+          "readyWorkspace": false,
+          "readOnlyNotice": false,
+          "runDisabled": true
+        },
+        "fileTree": {
+          "rows": [],
+          "docs": null,
+          "evidence": null,
+          "activeTabs": "",
+          "markdownRequirements": 0,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "82ca5101818d8db1dc056f1e23c633e5b86b8e2ee6bba48c1946da334a57054c",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": null,
+        "teamForm": {
+          "x": 339,
+          "y": 559,
+          "width": 633,
+          "height": 36
+        }
+      },
+      "geometrySha256": "9dba16477c70045904333954beb06db31a841a8ec88458e744db7f4389daf592",
+      "actionResult": {
+        "teamDraft": {
+          "draftId": "team-draft-config-correction",
+          "workspaceId": null,
+          "autoExecuteTools": false,
+          "memberOverrides": {},
+          "canLaunch": false
+        },
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "markdown",
+              "mode": "edit"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "b94409f0396f0ad6990d58ebb7eef4256b094d98b05064d944b8b64beff50cbe",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-TEAM-RUN-CONFIG-001",
+      "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+      "name": "Editable Team run configuration with missing-workspace feedback",
+      "scenario": "workspace_team_run_config_correction",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/prototype/UXV-CORR-TEAM-RUN-CONFIG-001-prototype.png",
+      "screenshotSha256": "191e96c3e1ebc8d7921ae04670485c0480a849533c87a8f54b3da2f92162293f",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 1,
+          "definition": 1,
+          "runtimeValue": "autobyteus",
+          "runtimeDisabled": false,
+          "autoApprove": {
+            "text": "Auto approve tools",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-200",
+            "box": {
+              "x": 928,
+              "y": 489.5,
+              "width": 44,
+              "height": 24
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgb(204, 204, 204)",
+              "borderColor": "rgba(0, 0, 0, 0)",
+              "borderRadius": "9999px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "memberToggle": {
+            "text": "Team Members Override (2)",
+            "role": null,
+            "ariaExpanded": "false",
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "flex w-full items-center justify-between rounded-md px-1 py-2 text-left text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+            "box": {
+              "x": 339,
+              "y": 559,
+              "width": 633,
+              "height": 36
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(77, 77, 77)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "6px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "14px",
+              "lineHeight": "20px"
+            }
+          },
+          "memberRows": [
+            "researcherCoordinatorRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default",
+            "writerRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default"
+          ],
+          "blockingIssue": true,
+          "readyWorkspace": false,
+          "readOnlyNotice": false,
+          "runDisabled": true
+        },
+        "fileTree": {
+          "rows": [],
+          "docs": null,
+          "evidence": null,
+          "activeTabs": "",
+          "markdownRequirements": 0,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "82ca5101818d8db1dc056f1e23c633e5b86b8e2ee6bba48c1946da334a57054c",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": null,
+        "teamForm": {
+          "x": 339,
+          "y": 559,
+          "width": 633,
+          "height": 36
+        }
+      },
+      "geometrySha256": "9dba16477c70045904333954beb06db31a841a8ec88458e744db7f4389daf592",
+      "actionResult": {
+        "teamDraft": {
+          "draftId": "team-draft-config-correction",
+          "workspaceId": null,
+          "autoExecuteTools": false,
+          "memberOverrides": {},
+          "canLaunch": false
+        },
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "markdown",
+              "mode": "edit"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "b94409f0396f0ad6990d58ebb7eef4256b094d98b05064d944b8b64beff50cbe",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/comparison/UXV-CORR-TEAM-RUN-CONFIG-001-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  },
+  {
+    "id": "UXV-CORR-TEAM-RUN-CONFIG-002",
+    "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+    "scenario": "workspace_team_run_config_correction",
+    "name": "Inspectable Team member override disclosure",
+    "action": "team-config-members",
+    "source": {
+      "id": "UXV-CORR-TEAM-RUN-CONFIG-002",
+      "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+      "name": "Inspectable Team member override disclosure",
+      "scenario": "workspace_team_run_config_correction",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/source/UXV-CORR-TEAM-RUN-CONFIG-002-source.png",
+      "screenshotSha256": "0beb4d40947da35faabb2ed201bd63494660bde7cac5e2da18059d57fb28c14f",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BUTTON",
+          "id": null,
+          "dataTest": "team-member-overrides-toggle",
+          "text": "Team Members Override (2)"
+        },
+        "teamConfig": {
+          "title": 1,
+          "definition": 1,
+          "runtimeValue": "autobyteus",
+          "runtimeDisabled": false,
+          "autoApprove": {
+            "text": "Auto approve tools",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-200",
+            "box": {
+              "x": 928,
+              "y": 489.5,
+              "width": 44,
+              "height": 24
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgb(204, 204, 204)",
+              "borderColor": "rgba(0, 0, 0, 0)",
+              "borderRadius": "9999px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "memberToggle": {
+            "text": "Team Members Override (2)",
+            "role": null,
+            "ariaExpanded": "true",
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "flex w-full items-center justify-between rounded-md px-1 py-2 text-left text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+            "box": {
+              "x": 339,
+              "y": 559,
+              "width": 633,
+              "height": 36
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(26, 26, 26)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "6px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "14px",
+              "lineHeight": "20px"
+            }
+          },
+          "memberRows": [
+            "researcher\nCoordinator\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nGlobal default",
+            "writer\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nGlobal default"
+          ],
+          "blockingIssue": true,
+          "readyWorkspace": false,
+          "readOnlyNotice": false,
+          "runDisabled": true
+        },
+        "fileTree": {
+          "rows": [],
+          "docs": null,
+          "evidence": null,
+          "activeTabs": "",
+          "markdownRequirements": 0,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "82bf71b6885f596e7872f2ac04ae61b4dd8ddcbf15a5292d261bf0a0649a5625",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": null,
+        "teamForm": {
+          "x": 339,
+          "y": 559,
+          "width": 633,
+          "height": 36
+        }
+      },
+      "geometrySha256": "9dba16477c70045904333954beb06db31a841a8ec88458e744db7f4389daf592",
+      "actionResult": {
+        "teamDraft": {
+          "draftId": "team-draft-config-correction",
+          "workspaceId": null,
+          "autoExecuteTools": false,
+          "memberOverrides": {},
+          "canLaunch": false
+        },
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "markdown",
+              "mode": "edit"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "b94409f0396f0ad6990d58ebb7eef4256b094d98b05064d944b8b64beff50cbe",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-TEAM-RUN-CONFIG-002",
+      "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+      "name": "Inspectable Team member override disclosure",
+      "scenario": "workspace_team_run_config_correction",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/prototype/UXV-CORR-TEAM-RUN-CONFIG-002-prototype.png",
+      "screenshotSha256": "0beb4d40947da35faabb2ed201bd63494660bde7cac5e2da18059d57fb28c14f",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BUTTON",
+          "id": null,
+          "dataTest": "team-member-overrides-toggle",
+          "text": "Team Members Override (2)"
+        },
+        "teamConfig": {
+          "title": 1,
+          "definition": 1,
+          "runtimeValue": "autobyteus",
+          "runtimeDisabled": false,
+          "autoApprove": {
+            "text": "Auto approve tools",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-200",
+            "box": {
+              "x": 928,
+              "y": 489.5,
+              "width": 44,
+              "height": 24
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgb(204, 204, 204)",
+              "borderColor": "rgba(0, 0, 0, 0)",
+              "borderRadius": "9999px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "memberToggle": {
+            "text": "Team Members Override (2)",
+            "role": null,
+            "ariaExpanded": "true",
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "flex w-full items-center justify-between rounded-md px-1 py-2 text-left text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+            "box": {
+              "x": 339,
+              "y": 559,
+              "width": 633,
+              "height": 36
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(26, 26, 26)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "6px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "14px",
+              "lineHeight": "20px"
+            }
+          },
+          "memberRows": [
+            "researcher\nCoordinator\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nGlobal default",
+            "writer\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nGlobal default"
+          ],
+          "blockingIssue": true,
+          "readyWorkspace": false,
+          "readOnlyNotice": false,
+          "runDisabled": true
+        },
+        "fileTree": {
+          "rows": [],
+          "docs": null,
+          "evidence": null,
+          "activeTabs": "",
+          "markdownRequirements": 0,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "82bf71b6885f596e7872f2ac04ae61b4dd8ddcbf15a5292d261bf0a0649a5625",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": null,
+        "teamForm": {
+          "x": 339,
+          "y": 559,
+          "width": 633,
+          "height": 36
+        }
+      },
+      "geometrySha256": "9dba16477c70045904333954beb06db31a841a8ec88458e744db7f4389daf592",
+      "actionResult": {
+        "teamDraft": {
+          "draftId": "team-draft-config-correction",
+          "workspaceId": null,
+          "autoExecuteTools": false,
+          "memberOverrides": {},
+          "canLaunch": false
+        },
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "markdown",
+              "mode": "edit"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "b94409f0396f0ad6990d58ebb7eef4256b094d98b05064d944b8b64beff50cbe",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/comparison/UXV-CORR-TEAM-RUN-CONFIG-002-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  },
+  {
+    "id": "UXV-CORR-TEAM-RUN-CONFIG-003",
+    "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+    "scenario": "workspace_team_run_config_correction",
+    "name": "Chosen workspace makes the Team configuration launch-ready",
+    "action": "team-config-ready",
+    "source": {
+      "id": "UXV-CORR-TEAM-RUN-CONFIG-003",
+      "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+      "name": "Chosen workspace makes the Team configuration launch-ready",
+      "scenario": "workspace_team_run_config_correction",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/source/UXV-CORR-TEAM-RUN-CONFIG-003-source.png",
+      "screenshotSha256": "8cc739c65462b0f7f5b83b2eb04129e8e50ebafa3f461893abe2d65b9eded48d",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 1,
+          "definition": 1,
+          "runtimeValue": "autobyteus",
+          "runtimeDisabled": false,
+          "autoApprove": {
+            "text": "Auto approve tools",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-200",
+            "box": {
+              "x": 928,
+              "y": 505.5,
+              "width": 44,
+              "height": 24
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgb(204, 204, 204)",
+              "borderColor": "rgba(0, 0, 0, 0)",
+              "borderRadius": "9999px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "memberToggle": {
+            "text": "Team Members Override (2)",
+            "role": null,
+            "ariaExpanded": "false",
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "flex w-full items-center justify-between rounded-md px-1 py-2 text-left text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+            "box": {
+              "x": 339,
+              "y": 575,
+              "width": 633,
+              "height": 36
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(77, 77, 77)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "6px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "14px",
+              "lineHeight": "20px"
+            }
+          },
+          "memberRows": [
+            "researcherCoordinatorRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default",
+            "writerRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default"
+          ],
+          "blockingIssue": false,
+          "readyWorkspace": true,
+          "readOnlyNotice": false,
+          "runDisabled": false
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder open relative"
+            },
+            {
+              "text": "evidence.md",
+              "className": "file-item cursor-pointer relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs\nevidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder open relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 61
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": {
+            "text": "evidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer relative",
+            "box": {
+              "x": 1006,
+              "y": 162.5,
+              "width": 233,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "activeTabs": "requirements.md\n\nPreview not available for this file type.",
+          "markdownRequirements": 0,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "c0ff193081e640ba7c9e3885789971d94a8b02662d67d2ecb58cf16b265a7816",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": {
+          "x": 339,
+          "y": 575,
+          "width": 633,
+          "height": 36
+        }
+      },
+      "geometrySha256": "ccc0b8179cf3d7e37d08ec5544a45408f07115886ecb87a5db2b15573ce797fd",
+      "actionResult": {
+        "teamDraft": {
+          "draftId": "team-draft-config-correction",
+          "workspaceId": "workspace-prototype",
+          "autoExecuteTools": false,
+          "memberOverrides": {},
+          "canLaunch": true
+        },
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "markdown",
+              "mode": "edit"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "dd74c7e163511c8153c56946ff5b8aa897d037140d0a5f27f55984a5a0bbdc9d",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-TEAM-RUN-CONFIG-003",
+      "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+      "name": "Chosen workspace makes the Team configuration launch-ready",
+      "scenario": "workspace_team_run_config_correction",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/prototype/UXV-CORR-TEAM-RUN-CONFIG-003-prototype.png",
+      "screenshotSha256": "8cc739c65462b0f7f5b83b2eb04129e8e50ebafa3f461893abe2d65b9eded48d",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 1,
+          "definition": 1,
+          "runtimeValue": "autobyteus",
+          "runtimeDisabled": false,
+          "autoApprove": {
+            "text": "Auto approve tools",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-200",
+            "box": {
+              "x": 928,
+              "y": 505.5,
+              "width": 44,
+              "height": 24
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgb(204, 204, 204)",
+              "borderColor": "rgba(0, 0, 0, 0)",
+              "borderRadius": "9999px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "memberToggle": {
+            "text": "Team Members Override (2)",
+            "role": null,
+            "ariaExpanded": "false",
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "flex w-full items-center justify-between rounded-md px-1 py-2 text-left text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+            "box": {
+              "x": 339,
+              "y": 575,
+              "width": 633,
+              "height": 36
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(77, 77, 77)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "6px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "14px",
+              "lineHeight": "20px"
+            }
+          },
+          "memberRows": [
+            "researcherCoordinatorRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default",
+            "writerRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default"
+          ],
+          "blockingIssue": false,
+          "readyWorkspace": true,
+          "readOnlyNotice": false,
+          "runDisabled": false
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder open relative"
+            },
+            {
+              "text": "evidence.md",
+              "className": "file-item cursor-pointer relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs\nevidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder open relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 61
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": {
+            "text": "evidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer relative",
+            "box": {
+              "x": 1006,
+              "y": 162.5,
+              "width": 233,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "activeTabs": "requirements.md\n\nPreview not available for this file type.",
+          "markdownRequirements": 0,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "c0ff193081e640ba7c9e3885789971d94a8b02662d67d2ecb58cf16b265a7816",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": {
+          "x": 339,
+          "y": 575,
+          "width": 633,
+          "height": 36
+        }
+      },
+      "geometrySha256": "ccc0b8179cf3d7e37d08ec5544a45408f07115886ecb87a5db2b15573ce797fd",
+      "actionResult": {
+        "teamDraft": {
+          "draftId": "team-draft-config-correction",
+          "workspaceId": "workspace-prototype",
+          "autoExecuteTools": false,
+          "memberOverrides": {},
+          "canLaunch": true
+        },
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "markdown",
+              "mode": "edit"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "dd74c7e163511c8153c56946ff5b8aa897d037140d0a5f27f55984a5a0bbdc9d",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/comparison/UXV-CORR-TEAM-RUN-CONFIG-003-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  },
+  {
+    "id": "UXV-CORR-TEAM-RUN-CONFIG-004",
+    "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+    "scenario": "workspace_team_run_config_correction",
+    "name": "Team auto-approve control updates the draft visibly",
+    "action": "team-config-auto-approve",
+    "source": {
+      "id": "UXV-CORR-TEAM-RUN-CONFIG-004",
+      "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+      "name": "Team auto-approve control updates the draft visibly",
+      "scenario": "workspace_team_run_config_correction",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/source/UXV-CORR-TEAM-RUN-CONFIG-004-source.png",
+      "screenshotSha256": "70bdd775d0c29257120e040cbfa3991643b8a13ee3dc7c1c6e98189dba622885",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BUTTON",
+          "id": "team-auto-execute",
+          "dataTest": null,
+          "text": "Auto approve tools"
+        },
+        "teamConfig": {
+          "title": 1,
+          "definition": 1,
+          "runtimeValue": "autobyteus",
+          "runtimeDisabled": false,
+          "autoApprove": {
+            "text": "Auto approve tools",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-blue-600",
+            "box": {
+              "x": 928,
+              "y": 505.5,
+              "width": 44,
+              "height": 24
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgb(37, 99, 235)",
+              "borderColor": "rgba(0, 0, 0, 0)",
+              "borderRadius": "9999px",
+              "boxShadow": "rgb(255, 255, 255) 0px 0px 0px 2px, rgb(59, 130, 246) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "memberToggle": {
+            "text": "Team Members Override (2)",
+            "role": null,
+            "ariaExpanded": "false",
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "flex w-full items-center justify-between rounded-md px-1 py-2 text-left text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+            "box": {
+              "x": 339,
+              "y": 575,
+              "width": 633,
+              "height": 36
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(77, 77, 77)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "6px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "14px",
+              "lineHeight": "20px"
+            }
+          },
+          "memberRows": [
+            "researcherCoordinatorRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default",
+            "writerRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default"
+          ],
+          "blockingIssue": false,
+          "readyWorkspace": true,
+          "readOnlyNotice": false,
+          "runDisabled": false
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder open relative"
+            },
+            {
+              "text": "evidence.md",
+              "className": "file-item cursor-pointer relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs\nevidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder open relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 61
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": {
+            "text": "evidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer relative",
+            "box": {
+              "x": 1006,
+              "y": 162.5,
+              "width": 233,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "activeTabs": "requirements.md\n\nPreview not available for this file type.",
+          "markdownRequirements": 0,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "c872e9ed5aa59285bea75313dae8aa65dadcd318aa4abd84a83de2e05d86af75",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": {
+          "x": 339,
+          "y": 575,
+          "width": 633,
+          "height": 36
+        }
+      },
+      "geometrySha256": "ccc0b8179cf3d7e37d08ec5544a45408f07115886ecb87a5db2b15573ce797fd",
+      "actionResult": {
+        "teamDraft": {
+          "draftId": "team-draft-config-correction",
+          "workspaceId": "workspace-prototype",
+          "autoExecuteTools": true,
+          "memberOverrides": {},
+          "canLaunch": true
+        },
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "markdown",
+              "mode": "edit"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "c32ca7b64b61a6d094302a78e5a216eabccce13165a89233ed25fbcbc701e0a2",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-TEAM-RUN-CONFIG-004",
+      "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+      "name": "Team auto-approve control updates the draft visibly",
+      "scenario": "workspace_team_run_config_correction",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/prototype/UXV-CORR-TEAM-RUN-CONFIG-004-prototype.png",
+      "screenshotSha256": "70bdd775d0c29257120e040cbfa3991643b8a13ee3dc7c1c6e98189dba622885",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BUTTON",
+          "id": "team-auto-execute",
+          "dataTest": null,
+          "text": "Auto approve tools"
+        },
+        "teamConfig": {
+          "title": 1,
+          "definition": 1,
+          "runtimeValue": "autobyteus",
+          "runtimeDisabled": false,
+          "autoApprove": {
+            "text": "Auto approve tools",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-blue-600",
+            "box": {
+              "x": 928,
+              "y": 505.5,
+              "width": 44,
+              "height": 24
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgb(37, 99, 235)",
+              "borderColor": "rgba(0, 0, 0, 0)",
+              "borderRadius": "9999px",
+              "boxShadow": "rgb(255, 255, 255) 0px 0px 0px 2px, rgb(59, 130, 246) 0px 0px 0px 4px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "memberToggle": {
+            "text": "Team Members Override (2)",
+            "role": null,
+            "ariaExpanded": "false",
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "flex w-full items-center justify-between rounded-md px-1 py-2 text-left text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+            "box": {
+              "x": 339,
+              "y": 575,
+              "width": 633,
+              "height": 36
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(77, 77, 77)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "6px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "14px",
+              "lineHeight": "20px"
+            }
+          },
+          "memberRows": [
+            "researcherCoordinatorRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default",
+            "writerRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default"
+          ],
+          "blockingIssue": false,
+          "readyWorkspace": true,
+          "readOnlyNotice": false,
+          "runDisabled": false
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder open relative"
+            },
+            {
+              "text": "evidence.md",
+              "className": "file-item cursor-pointer relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs\nevidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder open relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 61
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": {
+            "text": "evidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer relative",
+            "box": {
+              "x": 1006,
+              "y": 162.5,
+              "width": 233,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "activeTabs": "requirements.md\n\nPreview not available for this file type.",
+          "markdownRequirements": 0,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "c872e9ed5aa59285bea75313dae8aa65dadcd318aa4abd84a83de2e05d86af75",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": {
+          "x": 339,
+          "y": 575,
+          "width": 633,
+          "height": 36
+        }
+      },
+      "geometrySha256": "ccc0b8179cf3d7e37d08ec5544a45408f07115886ecb87a5db2b15573ce797fd",
+      "actionResult": {
+        "teamDraft": {
+          "draftId": "team-draft-config-correction",
+          "workspaceId": "workspace-prototype",
+          "autoExecuteTools": true,
+          "memberOverrides": {},
+          "canLaunch": true
+        },
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "markdown",
+              "mode": "edit"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "c32ca7b64b61a6d094302a78e5a216eabccce13165a89233ed25fbcbc701e0a2",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/comparison/UXV-CORR-TEAM-RUN-CONFIG-004-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  },
+  {
+    "id": "UXV-CORR-TEAM-RUN-CONFIG-005",
+    "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+    "scenario": "workspace_team_active",
+    "name": "Selected existing Team run configuration is read-only",
+    "action": "team-config-read-only",
+    "source": {
+      "id": "UXV-CORR-TEAM-RUN-CONFIG-005",
+      "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+      "name": "Selected existing Team run configuration is read-only",
+      "scenario": "workspace_team_active",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/source/UXV-CORR-TEAM-RUN-CONFIG-005-source.png",
+      "screenshotSha256": "8d5c08fc57330129eb0d7a09c73b92ef06b5e7a85908d72ed6d29b10ac576471",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 1,
+          "definition": 1,
+          "runtimeValue": "autobyteus",
+          "runtimeDisabled": true,
+          "autoApprove": {
+            "text": "Auto approve tools",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": true,
+            "className": "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-200",
+            "box": {
+              "x": 928,
+              "y": 554.5,
+              "width": 44,
+              "height": 24
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgb(204, 204, 204)",
+              "borderColor": "rgba(0, 0, 0, 0)",
+              "borderRadius": "9999px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "memberToggle": {
+            "text": "Team Members Override (2)",
+            "role": null,
+            "ariaExpanded": "false",
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "flex w-full items-center justify-between rounded-md px-1 py-2 text-left text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+            "box": {
+              "x": 339,
+              "y": 624,
+              "width": 633,
+              "height": 36
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(77, 77, 77)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "6px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "14px",
+              "lineHeight": "20px"
+            }
+          },
+          "memberRows": [
+            "researcherCoordinatorRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default",
+            "writerRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default"
+          ],
+          "blockingIssue": false,
+          "readyWorkspace": true,
+          "readOnlyNotice": true,
+          "runDisabled": null
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder open relative"
+            },
+            {
+              "text": "evidence.md",
+              "className": "file-item cursor-pointer relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs\nevidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder open relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 61
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": {
+            "text": "evidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer relative",
+            "box": {
+              "x": 1006,
+              "y": 162.5,
+              "width": 233,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "activeTabs": "requirements.md\n\nPreview not available for this file type.",
+          "markdownRequirements": 0,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "30d8c759ca061dbf11259388e2704e4599ef528f036b399829f0f87327b51523",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": {
+          "x": 339,
+          "y": 624,
+          "width": 633,
+          "height": 36
+        }
+      },
+      "geometrySha256": "71a8977773f0c46ef9c0c8369c0f78852493e23b84567f90881d467ae7d9d909",
+      "actionResult": {
+        "teamDraft": null,
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "markdown",
+              "mode": "edit"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "6c06e3ef7b3fa877bf66b6940b9951b5c64fedd9614cadee5eb3ea6b476c8d8f",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-TEAM-RUN-CONFIG-005",
+      "inventoryId": "UXB-CORR-TEAM-RUN-CONFIG-001",
+      "name": "Selected existing Team run configuration is read-only",
+      "scenario": "workspace_team_active",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/prototype/UXV-CORR-TEAM-RUN-CONFIG-005-prototype.png",
+      "screenshotSha256": "8d5c08fc57330129eb0d7a09c73b92ef06b5e7a85908d72ed6d29b10ac576471",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 1,
+          "definition": 1,
+          "runtimeValue": "autobyteus",
+          "runtimeDisabled": true,
+          "autoApprove": {
+            "text": "Auto approve tools",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": true,
+            "className": "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-200",
+            "box": {
+              "x": 928,
+              "y": 554.5,
+              "width": 44,
+              "height": 24
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgb(204, 204, 204)",
+              "borderColor": "rgba(0, 0, 0, 0)",
+              "borderRadius": "9999px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "memberToggle": {
+            "text": "Team Members Override (2)",
+            "role": null,
+            "ariaExpanded": "false",
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": false,
+            "className": "flex w-full items-center justify-between rounded-md px-1 py-2 text-left text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2",
+            "box": {
+              "x": 339,
+              "y": 624,
+              "width": 633,
+              "height": 36
+            },
+            "style": {
+              "display": "flex",
+              "color": "rgb(77, 77, 77)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "6px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "14px",
+              "lineHeight": "20px"
+            }
+          },
+          "memberRows": [
+            "researcherCoordinatorRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default",
+            "writerRuntimeGlobal defaultAutoByteusLLM ModelGlobal defaultAuto approveGlobal default"
+          ],
+          "blockingIssue": false,
+          "readyWorkspace": true,
+          "readOnlyNotice": true,
+          "runDisabled": null
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder open relative"
+            },
+            {
+              "text": "evidence.md",
+              "className": "file-item cursor-pointer relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs\nevidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder open relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 61
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": {
+            "text": "evidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer relative",
+            "box": {
+              "x": 1006,
+              "y": 162.5,
+              "width": 233,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "activeTabs": "requirements.md\n\nPreview not available for this file type.",
+          "markdownRequirements": 0,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "30d8c759ca061dbf11259388e2704e4599ef528f036b399829f0f87327b51523",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": {
+          "x": 339,
+          "y": 624,
+          "width": 633,
+          "height": 36
+        }
+      },
+      "geometrySha256": "71a8977773f0c46ef9c0c8369c0f78852493e23b84567f90881d467ae7d9d909",
+      "actionResult": {
+        "teamDraft": null,
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "markdown",
+              "mode": "edit"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "6c06e3ef7b3fa877bf66b6940b9951b5c64fedd9614cadee5eb3ea6b476c8d8f",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/comparison/UXV-CORR-TEAM-RUN-CONFIG-005-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  },
+  {
+    "id": "UXV-CORR-WORKSPACE-FILE-TREE-001",
+    "inventoryId": "UXB-CORR-WORKSPACE-FILE-TREE-001",
+    "scenario": "workspace_file_tree_correction",
+    "name": "Populated workspace tree and active Markdown preview",
+    "action": "file-tree-populated",
+    "source": {
+      "id": "UXV-CORR-WORKSPACE-FILE-TREE-001",
+      "inventoryId": "UXB-CORR-WORKSPACE-FILE-TREE-001",
+      "name": "Populated workspace tree and active Markdown preview",
+      "scenario": "workspace_file_tree_correction",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/source/UXV-CORR-WORKSPACE-FILE-TREE-001-source.png",
+      "screenshotSha256": "b673b87e029fcbbde5fc51db38ed30684fc2c0d4e2483726740bcdba8bb1bd33",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 0,
+          "definition": 0,
+          "runtimeValue": null,
+          "runtimeDisabled": null,
+          "autoApprove": null,
+          "memberToggle": null,
+          "memberRows": [],
+          "blockingIssue": false,
+          "readyWorkspace": false,
+          "readOnlyNotice": false,
+          "runDisabled": null
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder open relative"
+            },
+            {
+              "text": "evidence.md",
+              "className": "file-item cursor-pointer relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs\nevidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder open relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 61
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": {
+            "text": "evidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer relative",
+            "box": {
+              "x": 1006,
+              "y": 162.5,
+              "width": 233,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "activeTabs": "requirements.md\nevidence.md\nPrototype requirements\n\nAll UI evidence is synthetic and deterministic.",
+          "markdownRequirements": 1,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "1c014050dff1668c6aba0d09fcfd7ed6a8bf6a31d799ee5d0cc3afc631f69329",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": null
+      },
+      "geometrySha256": "b65232b59d4c96b1210c6033fabe7c8d3cba45f7d4135c8f850a93d00128472e",
+      "actionResult": {
+        "teamDraft": null,
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "Text",
+              "mode": "preview"
+            },
+            {
+              "path": "docs/evidence.md",
+              "type": "Text",
+              "mode": "preview"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "821e65d37a4be45577da3af4c0857ce43c0c6146d6e1d3516248ee1ce6c85ce5",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-WORKSPACE-FILE-TREE-001",
+      "inventoryId": "UXB-CORR-WORKSPACE-FILE-TREE-001",
+      "name": "Populated workspace tree and active Markdown preview",
+      "scenario": "workspace_file_tree_correction",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/prototype/UXV-CORR-WORKSPACE-FILE-TREE-001-prototype.png",
+      "screenshotSha256": "b673b87e029fcbbde5fc51db38ed30684fc2c0d4e2483726740bcdba8bb1bd33",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 0,
+          "definition": 0,
+          "runtimeValue": null,
+          "runtimeDisabled": null,
+          "autoApprove": null,
+          "memberToggle": null,
+          "memberRows": [],
+          "blockingIssue": false,
+          "readyWorkspace": false,
+          "readOnlyNotice": false,
+          "runDisabled": null
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder open relative"
+            },
+            {
+              "text": "evidence.md",
+              "className": "file-item cursor-pointer relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs\nevidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder open relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 61
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": {
+            "text": "evidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer relative",
+            "box": {
+              "x": 1006,
+              "y": 162.5,
+              "width": 233,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "activeTabs": "requirements.md\nevidence.md\nPrototype requirements\n\nAll UI evidence is synthetic and deterministic.",
+          "markdownRequirements": 1,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "1c014050dff1668c6aba0d09fcfd7ed6a8bf6a31d799ee5d0cc3afc631f69329",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": null
+      },
+      "geometrySha256": "b65232b59d4c96b1210c6033fabe7c8d3cba45f7d4135c8f850a93d00128472e",
+      "actionResult": {
+        "teamDraft": null,
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "Text",
+              "mode": "preview"
+            },
+            {
+              "path": "docs/evidence.md",
+              "type": "Text",
+              "mode": "preview"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "821e65d37a4be45577da3af4c0857ce43c0c6146d6e1d3516248ee1ce6c85ce5",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/comparison/UXV-CORR-WORKSPACE-FILE-TREE-001-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  },
+  {
+    "id": "UXV-CORR-WORKSPACE-FILE-TREE-002",
+    "inventoryId": "UXB-CORR-WORKSPACE-FILE-TREE-001",
+    "scenario": "workspace_file_tree_correction",
+    "name": "Workspace folder collapse hides descendants",
+    "action": "file-tree-collapsed",
+    "source": {
+      "id": "UXV-CORR-WORKSPACE-FILE-TREE-002",
+      "inventoryId": "UXB-CORR-WORKSPACE-FILE-TREE-001",
+      "name": "Workspace folder collapse hides descendants",
+      "scenario": "workspace_file_tree_correction",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/source/UXV-CORR-WORKSPACE-FILE-TREE-002-source.png",
+      "screenshotSha256": "63795c34a1e7d5ef87d69e7747d24c5838ff87ecc52ae622b901cd2f997b18cd",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 0,
+          "definition": 0,
+          "runtimeValue": null,
+          "runtimeDisabled": null,
+          "autoApprove": null,
+          "memberToggle": null,
+          "memberRows": [],
+          "blockingIssue": false,
+          "readyWorkspace": false,
+          "readOnlyNotice": false,
+          "runDisabled": null
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": null,
+          "activeTabs": "requirements.md\nevidence.md\nPrototype requirements\n\nAll UI evidence is synthetic and deterministic.",
+          "markdownRequirements": 1,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "f079bc6b89c477304e7fe1a0866ff70317b6c425e568b3785b6bee30e45c0aea",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": null
+      },
+      "geometrySha256": "b65232b59d4c96b1210c6033fabe7c8d3cba45f7d4135c8f850a93d00128472e",
+      "actionResult": {
+        "teamDraft": null,
+        "fileTree": {
+          "openFolders": {
+            "docs": false
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "Text",
+              "mode": "preview"
+            },
+            {
+              "path": "docs/evidence.md",
+              "type": "Text",
+              "mode": "preview"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "081efb61dd9952224d74ea88eae2154540bfbab1c3fb25126acceb38fee4c927",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-WORKSPACE-FILE-TREE-002",
+      "inventoryId": "UXB-CORR-WORKSPACE-FILE-TREE-001",
+      "name": "Workspace folder collapse hides descendants",
+      "scenario": "workspace_file_tree_correction",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/prototype/UXV-CORR-WORKSPACE-FILE-TREE-002-prototype.png",
+      "screenshotSha256": "63795c34a1e7d5ef87d69e7747d24c5838ff87ecc52ae622b901cd2f997b18cd",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 0,
+          "definition": 0,
+          "runtimeValue": null,
+          "runtimeDisabled": null,
+          "autoApprove": null,
+          "memberToggle": null,
+          "memberRows": [],
+          "blockingIssue": false,
+          "readyWorkspace": false,
+          "readOnlyNotice": false,
+          "runDisabled": null
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": null,
+          "activeTabs": "requirements.md\nevidence.md\nPrototype requirements\n\nAll UI evidence is synthetic and deterministic.",
+          "markdownRequirements": 1,
+          "markdownEvidence": 0,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "f079bc6b89c477304e7fe1a0866ff70317b6c425e568b3785b6bee30e45c0aea",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": null
+      },
+      "geometrySha256": "b65232b59d4c96b1210c6033fabe7c8d3cba45f7d4135c8f850a93d00128472e",
+      "actionResult": {
+        "teamDraft": null,
+        "fileTree": {
+          "openFolders": {
+            "docs": false
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "Text",
+              "mode": "preview"
+            },
+            {
+              "path": "docs/evidence.md",
+              "type": "Text",
+              "mode": "preview"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "081efb61dd9952224d74ea88eae2154540bfbab1c3fb25126acceb38fee4c927",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/comparison/UXV-CORR-WORKSPACE-FILE-TREE-002-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  },
+  {
+    "id": "UXV-CORR-WORKSPACE-FILE-TREE-003",
+    "inventoryId": "UXB-CORR-WORKSPACE-FILE-TREE-001",
+    "scenario": "workspace_file_tree_correction",
+    "name": "Workspace file selection updates the active row, tab, and preview",
+    "action": "file-tree-file-selected",
+    "source": {
+      "id": "UXV-CORR-WORKSPACE-FILE-TREE-003",
+      "inventoryId": "UXB-CORR-WORKSPACE-FILE-TREE-001",
+      "name": "Workspace file selection updates the active row, tab, and preview",
+      "scenario": "workspace_file_tree_correction",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/source/UXV-CORR-WORKSPACE-FILE-TREE-003-source.png",
+      "screenshotSha256": "b3137106d91b36a4ede3ebc14aa5ebdacd752598ecae41812bb2a450d90214bb",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 0,
+          "definition": 0,
+          "runtimeValue": null,
+          "runtimeDisabled": null,
+          "autoApprove": null,
+          "memberToggle": null,
+          "memberRows": [],
+          "blockingIssue": false,
+          "readyWorkspace": false,
+          "readOnlyNotice": false,
+          "runDisabled": null
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder open relative"
+            },
+            {
+              "text": "evidence.md",
+              "className": "file-item cursor-pointer relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs\nevidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder open relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 61
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": {
+            "text": "evidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer relative",
+            "box": {
+              "x": 1006,
+              "y": 162.5,
+              "width": 233,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "activeTabs": "requirements.md\nevidence.md\nEvidence report\n\nMatched source and prototype observations.",
+          "markdownRequirements": 0,
+          "markdownEvidence": 1,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "c62536098fc30002d56ca46cf76196add4a912a2ab9b749b0e51fce728f49db6",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": null
+      },
+      "geometrySha256": "b65232b59d4c96b1210c6033fabe7c8d3cba45f7d4135c8f850a93d00128472e",
+      "actionResult": {
+        "teamDraft": null,
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "Text",
+              "mode": "preview"
+            },
+            {
+              "path": "docs/evidence.md",
+              "type": "Text",
+              "mode": "preview"
+            }
+          ],
+          "activeFile": "docs/evidence.md"
+        }
+      },
+      "actionResultSha256": "9dfb52afaa060b828b17907b6ad36867104f706334bbb1fa22db8dc1f4727e04",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-WORKSPACE-FILE-TREE-003",
+      "inventoryId": "UXB-CORR-WORKSPACE-FILE-TREE-001",
+      "name": "Workspace file selection updates the active row, tab, and preview",
+      "scenario": "workspace_file_tree_correction",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/prototype/UXV-CORR-WORKSPACE-FILE-TREE-003-prototype.png",
+      "screenshotSha256": "b3137106d91b36a4ede3ebc14aa5ebdacd752598ecae41812bb2a450d90214bb",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 0,
+          "definition": 0,
+          "runtimeValue": null,
+          "runtimeDisabled": null,
+          "autoApprove": null,
+          "memberToggle": null,
+          "memberRows": [],
+          "blockingIssue": false,
+          "readyWorkspace": false,
+          "readOnlyNotice": false,
+          "runDisabled": null
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder open relative"
+            },
+            {
+              "text": "evidence.md",
+              "className": "file-item cursor-pointer relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs\nevidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder open relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 61
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": {
+            "text": "evidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer relative",
+            "box": {
+              "x": 1006,
+              "y": 162.5,
+              "width": 233,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "activeTabs": "requirements.md\nevidence.md\nEvidence report\n\nMatched source and prototype observations.",
+          "markdownRequirements": 0,
+          "markdownEvidence": 1,
+          "contextMenu": []
+        }
+      },
+      "semanticSha256": "c62536098fc30002d56ca46cf76196add4a912a2ab9b749b0e51fce728f49db6",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": null
+      },
+      "geometrySha256": "b65232b59d4c96b1210c6033fabe7c8d3cba45f7d4135c8f850a93d00128472e",
+      "actionResult": {
+        "teamDraft": null,
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "Text",
+              "mode": "preview"
+            },
+            {
+              "path": "docs/evidence.md",
+              "type": "Text",
+              "mode": "preview"
+            }
+          ],
+          "activeFile": "docs/evidence.md"
+        }
+      },
+      "actionResultSha256": "9dfb52afaa060b828b17907b6ad36867104f706334bbb1fa22db8dc1f4727e04",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/comparison/UXV-CORR-WORKSPACE-FILE-TREE-003-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  },
+  {
+    "id": "UXV-CORR-WORKSPACE-FILE-TREE-004",
+    "inventoryId": "UXB-CORR-WORKSPACE-FILE-TREE-001",
+    "scenario": "workspace_file_tree_correction",
+    "name": "Workspace folder context menu exposes the exact source actions",
+    "action": "file-tree-context-menu",
+    "source": {
+      "id": "UXV-CORR-WORKSPACE-FILE-TREE-004",
+      "inventoryId": "UXB-CORR-WORKSPACE-FILE-TREE-001",
+      "name": "Workspace folder context menu exposes the exact source actions",
+      "scenario": "workspace_file_tree_correction",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/source/UXV-CORR-WORKSPACE-FILE-TREE-004-source.png",
+      "screenshotSha256": "3f110c2297e320f6d39eeb961a450e08284c8a29a40a065f108aa81fb41b93c6",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 0,
+          "definition": 0,
+          "runtimeValue": null,
+          "runtimeDisabled": null,
+          "autoApprove": null,
+          "memberToggle": null,
+          "memberRows": [],
+          "blockingIssue": false,
+          "readyWorkspace": false,
+          "readOnlyNotice": false,
+          "runDisabled": null
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder open relative"
+            },
+            {
+              "text": "evidence.md",
+              "className": "file-item cursor-pointer relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs\nevidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder open relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 61
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": {
+            "text": "evidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer relative",
+            "box": {
+              "x": 1006,
+              "y": 162.5,
+              "width": 233,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "activeTabs": "requirements.md\nevidence.md\nPrototype requirements\n\nAll UI evidence is synthetic and deterministic.",
+          "markdownRequirements": 1,
+          "markdownEvidence": 0,
+          "contextMenu": [
+            "Add File",
+            "Add Folder",
+            "Rename",
+            "Delete"
+          ]
+        }
+      },
+      "semanticSha256": "3cb54bfa01f601de11d858b820a7ce83d35635e8ead693c41f555f658952ffc4",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": null
+      },
+      "geometrySha256": "b65232b59d4c96b1210c6033fabe7c8d3cba45f7d4135c8f850a93d00128472e",
+      "actionResult": {
+        "teamDraft": null,
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "Text",
+              "mode": "preview"
+            },
+            {
+              "path": "docs/evidence.md",
+              "type": "Text",
+              "mode": "preview"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "821e65d37a4be45577da3af4c0857ce43c0c6146d6e1d3516248ee1ce6c85ce5",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-WORKSPACE-FILE-TREE-004",
+      "inventoryId": "UXB-CORR-WORKSPACE-FILE-TREE-001",
+      "name": "Workspace folder context menu exposes the exact source actions",
+      "scenario": "workspace_file_tree_correction",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/prototype/UXV-CORR-WORKSPACE-FILE-TREE-004-prototype.png",
+      "screenshotSha256": "3f110c2297e320f6d39eeb961a450e08284c8a29a40a065f108aa81fb41b93c6",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "activeElement": {
+          "tag": "BODY",
+          "id": null,
+          "dataTest": null,
+          "text": null
+        },
+        "teamConfig": {
+          "title": 0,
+          "definition": 0,
+          "runtimeValue": null,
+          "runtimeDisabled": null,
+          "autoApprove": null,
+          "memberToggle": null,
+          "memberRows": [],
+          "blockingIssue": false,
+          "readyWorkspace": false,
+          "readOnlyNotice": false,
+          "runDisabled": null
+        },
+        "fileTree": {
+          "rows": [
+            {
+              "text": "docs",
+              "className": "file-item cursor-pointer folder open relative"
+            },
+            {
+              "text": "evidence.md",
+              "className": "file-item cursor-pointer relative"
+            },
+            {
+              "text": "requirements.md",
+              "className": "file-item cursor-pointer relative"
+            }
+          ],
+          "docs": {
+            "text": "docs\nevidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer folder open relative",
+            "box": {
+              "x": 990,
+              "y": 128,
+              "width": 249,
+              "height": 61
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "evidence": {
+            "text": "evidence.md",
+            "role": null,
+            "ariaExpanded": null,
+            "ariaCurrent": null,
+            "ariaSelected": null,
+            "disabled": null,
+            "className": "file-item cursor-pointer relative",
+            "box": {
+              "x": 1006,
+              "y": 162.5,
+              "width": 233,
+              "height": 26.5
+            },
+            "style": {
+              "display": "block",
+              "color": "rgb(51, 51, 51)",
+              "backgroundColor": "rgba(0, 0, 0, 0)",
+              "borderColor": "rgb(204, 204, 204)",
+              "borderRadius": "0px",
+              "boxShadow": "none",
+              "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+              "fontSize": "16px",
+              "lineHeight": "24px"
+            }
+          },
+          "activeTabs": "requirements.md\nevidence.md\nPrototype requirements\n\nAll UI evidence is synthetic and deterministic.",
+          "markdownRequirements": 1,
+          "markdownEvidence": 0,
+          "contextMenu": [
+            "Add File",
+            "Add Folder",
+            "Rename",
+            "Delete"
+          ]
+        }
+      },
+      "semanticSha256": "3cb54bfa01f601de11d858b820a7ce83d35635e8ead693c41f555f658952ffc4",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "left": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "right": {
+          "x": 990,
+          "y": 0,
+          "width": 450,
+          "height": 900
+        },
+        "fileExplorer": {
+          "x": 990,
+          "y": 58,
+          "width": 249,
+          "height": 842
+        },
+        "teamForm": null
+      },
+      "geometrySha256": "b65232b59d4c96b1210c6033fabe7c8d3cba45f7d4135c8f850a93d00128472e",
+      "actionResult": {
+        "teamDraft": null,
+        "fileTree": {
+          "openFolders": {
+            "docs": true
+          },
+          "openFiles": [
+            {
+              "path": "requirements.md",
+              "type": "Text",
+              "mode": "preview"
+            },
+            {
+              "path": "docs/evidence.md",
+              "type": "Text",
+              "mode": "preview"
+            }
+          ],
+          "activeFile": "requirements.md"
+        }
+      },
+      "actionResultSha256": "821e65d37a4be45577da3af4c0857ce43c0c6146d6e1d3516248ee1ce6c85ce5",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 1440,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 1296000,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2/evidence/AORG-FLAT-TEAM-001/baseline-correction-2/comparison/UXV-CORR-WORKSPACE-FILE-TREE-004-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  }
+]

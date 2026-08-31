@@ -1,0 +1,34 @@
+
+> autobyteus-web-prototype@0.1.0 validate:aorg-team-config-file-tree-correction /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction-2
+> node prototype/scripts/validate-aorg-team-config-file-tree-correction.mjs
+
+UXV-CORR-TEAM-RUN-CONFIG-001: PASS
+UXV-CORR-TEAM-RUN-CONFIG-002: PASS
+UXV-CORR-TEAM-RUN-CONFIG-003: PASS
+UXV-CORR-TEAM-RUN-CONFIG-004: PASS
+UXV-CORR-TEAM-RUN-CONFIG-005: PASS
+UXV-CORR-WORKSPACE-FILE-TREE-001: PASS
+UXV-CORR-WORKSPACE-FILE-TREE-002: PASS
+UXV-CORR-WORKSPACE-FILE-TREE-003: PASS
+UXV-CORR-WORKSPACE-FILE-TREE-004: PASS
+{
+  "packageId": "AORG-FLAT-TEAM-001",
+  "requestType": "Correction",
+  "sourcePin": "8ef282ba77705180d985e7000d801f0e0068cdc1",
+  "sourceBaseUrl": "http://127.0.0.1:4283",
+  "prototypeBaseUrl": "http://127.0.0.1:4183",
+  "mockBaseUrl": "http://127.0.0.1:4383",
+  "browser": "/usr/bin/chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "generatedAt": "2026-08-31T14:48:47.053Z",
+  "passed": 9,
+  "total": 9,
+  "result": "Pass",
+  "inventory": {
+    "UXB-CORR-TEAM-RUN-CONFIG-001": "Pass",
+    "UXB-CORR-WORKSPACE-FILE-TREE-001": "Pass"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "packageId": "AORG-FLAT-TEAM-001",
+  "requestType": "Correction",
+  "sourcePin": "8ef282ba77705180d985e7000d801f0e0068cdc1",
+  "sourceBaseUrl": "http://127.0.0.1:4283",
+  "prototypeBaseUrl": "http://127.0.0.1:4183",
+  "mockBaseUrl": "http://127.0.0.1:4383",
+  "browser": "/usr/bin/chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "generatedAt": "2026-08-31T14:48:47.053Z",
+  "passed": 9,
+  "total": 9,
+  "result": "Pass",
+  "inventory": {
+    "UXB-CORR-TEAM-RUN-CONFIG-001": "Pass",
+    "UXB-CORR-WORKSPACE-FILE-TREE-001": "Pass"
+  }
+}
