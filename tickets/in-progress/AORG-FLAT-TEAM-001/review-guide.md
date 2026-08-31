@@ -1,59 +1,78 @@
-# AORG-FLAT-TEAM-001 Review Guide
+# AORG-FLAT-TEAM-001 — RV-010 Review Guide
 
 ## Status
 
-- Review state: `Paused — Requirement Impact RIF-AORG-002`
-- Prototype revision: `RV-009`; its separate exact-entry launch selector was rejected and remains non-normative
-- Runnable candidate: `c3221cf3faa6b7c6abab0b4c555b6b88f547cfd1`
+- Review state: `Awaiting User Review`
+- Prototype revision: `RV-010`
+- Requirements authority: `RER-013`, commit `86df311c4`
+- Runnable candidate: `e0a45e4cfcb14bb489438e89f4bc5856b2ea3714`
 - Review server: `http://127.0.0.1:4194`
-- Browser validation: `55/55` pass, `17` captures, zero runtime errors
-- Static validation: typecheck, lint, `12/12` tests, `13/13` boundaries, and build pass
+- Browser validation: `56/56` pass, `20` captures, zero runtime errors
+- Static validation: diff check, typecheck, lint, `12/12` tests, `13/13` boundaries, and build pass
 
-## Recommended Review
+## Primary Review — AgentOrg Run
 
-> **Launch review paused:** The user rejected the separate exact-entry selector.
-> AgentOrg should enter configuration directly, then allow member focus from the
-> left sidebar after launch. Product will revise this journey only after the
-> approved launch contract is reconciled. Other RV-009 surfaces remain review
-> evidence, not approval.
+1. Open [Software Development Department](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department) and select **Run**.
+2. Confirm Run opens [one AgentOrg configuration](http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config) directly.
+   - There is no Agent/Team entry selector or modal.
+   - The controls follow the accepted Team configuration: Runtime, Default LLM Model, Workspace Directory, Auto approve tools, Member overrides, and Run Agent Org.
+3. Expand **Member overrides**.
+   - Direct Agents and Teams are top-level placements.
+   - Exact Agents inside Teams are indented under their mounted Team.
+   - Select a Team or Agent row to edit its override; only customized rows gain the restrained `Custom` state.
+4. Choose `/synthetic/prototype-workspace`, then select **Run Agent Org**.
+5. Confirm the complete AgentOrg scope is active and no member is initially selected.
+   - The center says only **Choose an Agent or Team**.
+   - The left sidebar shows the direct Agent, both Teams, their Agents, and task-scoped lineage.
+6. Select `requirements_engineer`.
+   - The exact Agent conversation opens.
+7. Select **Product Design & Prototyping**.
+   - The Team workspace opens through `product_prototyper`, its coordinator.
+8. Select another Agent nested under a Team.
+   - That exact mounted Agent becomes the Team focus.
+9. Inspect the separate **Teams** section and Task Agent / Task Team rows.
+   - Standalone Team definitions remain distinct from the AgentOrg run.
+   - Task rows remain runtime lineage, not configured nested Teams.
 
+Direct links:
 
-1. Open [AgentOrg create](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-create).
-   - Name and Description start blank; Category is absent.
-   - Select **Add member**. The chooser opens in the page rather than in an overlay.
-   - Search and switch between **Agents** and **Teams**, then add either kind.
-   - The same in-flow chooser remains usable on a narrow screen.
-2. Open [AgentOrg detail](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department).
-   - Description has no fabricated Agents/Teams/Handoffs/Last run summary strip.
-   - Team cards identify the Team coordinator and provide `View ↗`.
-   - Handoff cards show only From, To, exact addresses, and ordered When.
-3. On AgentOrg detail select **Run**.
-   - Start is disabled until an exact Agent or Team entry is selected.
-   - A Team entry names its coordinator, then opens the accepted Team run configuration.
-   - Choose `/synthetic/prototype-workspace`; only then does **Run Team** become available.
-   - Run opens the accepted Team Workspace rather than an Org-specific dashboard.
-   - The left history shows the AgentOrg run, the entered Team, Task Agent/Task Team lineage, and a separate standalone-Team section.
-   - Select the Task Agent and Task Team child; each focuses its accepted conversation. Open **Files** to inspect the preserved tree.
-4. Repeat launch with the direct `requirements_engineer` Agent.
-   - The accepted Agent configuration and Agent Workspace are reused.
-   - The non-entered Product Design Team remains collapsed, with no Task lineage shown.
-5. Review [AgentOrg edit](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-edit&id=software-development-department).
-   - Add, edit, delete, and reorder Handoffs and ordered When guidance.
-   - Cancel an open edit without changing the draft.
-   - Remove a member and try Save to see explicit stale-Handoff resolution.
-6. Review [AgentTeam create](http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-create), [detail](http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team), and [edit](http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-edit&id=product-design-prototyping-team).
-   - The accepted product layout, drag/drop, click fallback, Instructions, Member Details, Agent-detail navigation, and Team-local Handoffs remain preserved.
-   - The only structural Team-builder delta is Agent-only membership.
+- [AgentOrg configuration](http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config)
+- [Active AgentOrg, initially unfocused](http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=active)
 
-## Review Evidence
+## Preserved Surface Review
 
-- AgentOrg authoring: `review-evidence/rv-009/REV-AORG-RV9-004-agent-org-authoring.png`
-- Exact-entry launch: `review-evidence/rv-009/REV-AORG-RV9-006-agent-org-exact-entry-launch.png`
-- Team configuration: `review-evidence/rv-009/REV-AORG-RV9-007-agent-org-team-entry-config.png`
-- Team runtime/history/Files: `review-evidence/rv-009/REV-AORG-RV9-008-agent-org-team-runtime.png`
-- Clean Org Handoffs: `review-evidence/rv-009/REV-AORG-RV9-014-agent-org-handoff-detail.png`
-- Functional Org Handoff authoring: `review-evidence/rv-009/REV-AORG-RV9-015-agent-org-handoff-authoring.png`
-- Narrow in-flow member picker: `review-evidence/rv-009/REV-AORG-RV9-017-agent-org-inline-member-picker-narrow.png`
+1. [AgentOrg create](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-create)
+   - Name and Description only; Category is absent.
+   - **Add member** expands in the document flow, with Agent/Team tabs and search; no overlay.
+2. [AgentOrg detail](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department)
+   - Description, Members, and Handoffs only; no fabricated run facts or redundant architecture copy.
+   - Handoff cards show From, To, exact addresses, and ordered When.
+3. [AgentOrg edit](http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-edit&id=software-development-department)
+   - Add/edit/delete/reorder Handoffs and When conditions.
+   - Cancel an open draft; remove a used endpoint and verify save is blocked until resolution.
+4. [AgentTeam create](http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-create), [detail](http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team), and [edit](http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-edit&id=product-design-prototyping-team)
+   - The accepted product layout, drag/drop, click fallback, Instructions, Member Details, Agent-detail navigation, configuration-first Run, and Team-local Handoffs remain preserved.
+   - The intentional structural delta is Agent-only Team membership.
 
-These are non-normative review captures. Final `VIS-*` images are captured only
+## Responsive Review
+
+At `390×844`, review:
+
+- AgentOrg create with the in-flow Add member chooser.
+- AgentOrg configuration with all controls and Run action.
+- AgentTeam builder with click fallback and selected-member details.
+
+None uses a modal overlay or document-level horizontal overflow.
+
+## Evidence
+
+- Manifest: `review-evidence/rv-010/capture-manifest.json`
+- Configuration: `review-evidence/rv-010/REV-AORG-RV10-006-agent-org-configuration.png`
+- Overrides: `review-evidence/rv-010/REV-AORG-RV10-007-agent-org-placement-overrides.png`
+- Active, unfocused: `review-evidence/rv-010/REV-AORG-RV10-008-agent-org-active-unfocused.png`
+- Direct Agent focus: `review-evidence/rv-010/REV-AORG-RV10-009-agent-org-direct-agent-focus.png`
+- Team coordinator focus: `review-evidence/rv-010/REV-AORG-RV10-010-agent-org-team-coordinator-focus.png`
+- Narrow configuration: `review-evidence/rv-010/REV-AORG-RV10-017-agent-org-configuration-narrow.png`
+
+These are non-normative review captures. Final `VIS-*` images are created only
 after explicit approval and final validation.

@@ -48,7 +48,7 @@
       "id": "AORG-RV10-021-baseline-reload-feedback",
       "pass": true,
       "evidence": {
-        "immediateFeedback": "Reloading…",
+        "immediateFeedback": "Reloading\u2026",
         "disabledDuringReload": true
       }
     },
@@ -249,7 +249,7 @@
       "id": "AORG-RV10-028-org-reload-feedback",
       "pass": true,
       "evidence": {
-        "immediateFeedback": "Reloading…",
+        "immediateFeedback": "Reloading\u2026",
         "disabledDuringReload": true
       }
     },
@@ -602,8 +602,8 @@
       }
     },
     {
-      "id": "REV-AORG-RV10-009",
-      "filename": "REV-AORG-RV10-009-agent-team-detail.png",
+      "id": "REV-AORG-RV10-018",
+      "filename": "REV-AORG-RV10-018-agent-team-detail.png",
       "state": "Baseline-native flat Team detail with members, coordinator, and handoffs",
       "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team",
       "viewport": {
@@ -622,8 +622,8 @@
       }
     },
     {
-      "id": "REV-AORG-RV10-010",
-      "filename": "REV-AORG-RV10-010-agent-team-members.png",
+      "id": "REV-AORG-RV10-019",
+      "filename": "REV-AORG-RV10-019-agent-team-members.png",
       "state": "Preserved Team member cards with direct Agent detail actions",
       "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team",
       "viewport": {
@@ -682,8 +682,8 @@
       }
     },
     {
-      "id": "REV-AORG-RV10-017",
-      "filename": "REV-AORG-RV10-017-agent-org-inline-member-picker-narrow.png",
+      "id": "REV-AORG-RV10-020",
+      "filename": "REV-AORG-RV10-020-agent-org-inline-member-picker-narrow.png",
       "state": "Narrow in-flow member picker without an overlay",
       "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-create",
       "viewport": {

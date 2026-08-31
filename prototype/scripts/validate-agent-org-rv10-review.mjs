@@ -158,7 +158,7 @@ record('AORG-RV10-024-team-detail-keeps-flat-semantics-without-cross-surface-chr
     && await teamDetail.getByRole('heading', { name: 'Used by Agent Orgs', exact: true }).count() === 0
     && await teamDetail.getByRole('button', { name: 'View Agent Orgs', exact: false }).count() === 0,
   { nestedTeamUI: 0, redundantTypeBadges: 0, crossSurfacePromotion: 0 });
-await capture(teamDetail, 'REV-AORG-RV10-009', 'REV-AORG-RV10-009-agent-team-detail.png', 'Baseline-native flat Team detail with members, coordinator, and handoffs');
+await capture(teamDetail, 'REV-AORG-RV10-018', 'REV-AORG-RV10-018-agent-team-detail.png', 'Baseline-native flat Team detail with members, coordinator, and handoffs');
 const teamHandoffManager = teamDetail.locator('[data-test="handoff-manager-team"]');
 await teamHandoffManager.evaluate((element) => element.scrollIntoView({ block: 'start' }));
 record('AORG-RV10-031-team-handoff-detail-is-explicit-and-clean',
@@ -175,7 +175,7 @@ record('AORG-RV10-031-team-handoff-detail-is-explicit-and-clean',
 await capture(teamDetail, 'REV-AORG-RV10-012', 'REV-AORG-RV10-012-team-local-handoff-detail.png', 'Clean Team-local From, To, and When handoff detail');
 await teamDetail.getByRole('heading', { name: 'Members (2)', exact: true }).evaluate(element => element.scrollIntoView({ block: 'start' }));
 await teamDetail.waitForTimeout(200);
-await capture(teamDetail, 'REV-AORG-RV10-010', 'REV-AORG-RV10-010-agent-team-members.png', 'Preserved Team member cards with direct Agent detail actions');
+await capture(teamDetail, 'REV-AORG-RV10-019', 'REV-AORG-RV10-019-agent-team-members.png', 'Preserved Team member cards with direct Agent detail actions');
 await teamDetail.getByRole('button', { name: 'Open agent details for product_prototyper', exact: true }).click();
 await teamDetail.waitForURL(/\/agents\?/);
 record('AORG-RV10-025-team-member-opens-preserved-agent-detail',
@@ -334,7 +334,7 @@ record('AORG-RV10-053-org-inline-member-picker-narrow-layout',
     && await narrowOrgCreate.getByRole('tab', { name: 'Agents', exact: true }).count() === 1
     && await narrowOrgCreate.getByRole('tab', { name: 'Teams', exact: true }).count() === 1,
   { overflow: narrowOrgCreateOverflow, overlay: false });
-await capture(narrowOrgCreate, 'REV-AORG-RV10-017', 'REV-AORG-RV10-017-agent-org-inline-member-picker-narrow.png', 'Narrow in-flow member picker without an overlay');
+await capture(narrowOrgCreate, 'REV-AORG-RV10-020', 'REV-AORG-RV10-020-agent-org-inline-member-picker-narrow.png', 'Narrow in-flow member picker without an overlay');
 await narrowOrgCreate.close();
 
 const orgDetail = await openPage(`/agent-orgs?${query({ view: 'org-detail', id: 'software-development-department' })}`);

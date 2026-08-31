@@ -8,38 +8,50 @@
 - Ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
 - Branch: `prototype/aorg-flat-team-001`
 - Accepted base: `5561e3ac593a210ab7b3b8621c5daea31f95f08e`
-- Review candidate revision: `RV-009`; runnable candidate commit `c3221cf3faa6b7c6abab0b4c555b6b88f547cfd1`
+- Review candidate: `RV-010`; runnable commit `e0a45e4cfcb14bb489438e89f4bc5856b2ea3714`
 - Stack: Nuxt 3, Vue 3, TypeScript, Tailwind, deterministic prototype fixtures
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001`
 
 ## Install And Start
 
 ```bash
+cd /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001
 corepack pnpm install --ignore-workspace --frozen-lockfile
 corepack pnpm dev --port 4194
 ```
 
-Review entries: `http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-list` and `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-list`
+Primary entries:
 
-Handoff review entries: `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department` and `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-edit&id=software-development-department`.
+- Agent Teams: `http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-list`
+- Agent Orgs: `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-list`
+- AgentOrg detail: `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department`
+- AgentOrg edit/Handoffs: `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-edit&id=software-development-department`
+- AgentOrg configuration: `http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=config`
+- Active AgentOrg, unfocused: `http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&phase=active`
 
-Exact-entry configuration examples:
+The configuration starts with no active execution. Select
+`/synthetic/prototype-workspace`, then use **Run Agent Org**. The active Org
+starts with no communication focus; select an exact Agent or Team from the left
+sidebar.
 
-- Team: `http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&entry=team%3Aproduct-design-prototyping-team&phase=config`
-- Agent: `http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&entry=agent%3Arequirements-engineer&phase=config`
+Team-detail preservation entry:
+`http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team`.
+Use either member's `View ↗` action and **Back to team** to validate the
+preserved Agent-detail journey.
 
-These routes deliberately begin at the accepted configuration surface. Select
-`/synthetic/prototype-workspace`, then use **Run Team** or **Run Agent**.
+The Product-owned preview uses only port `4194`; no production credentials or
+services are required. Stop only the recorded process for this ticket.
 
-Team-detail preservation review: `http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team`. Use either member's `View ↗` action and **Back to team** to validate the preserved Agent-detail journey.
+## Scenario Selection
 
-Temporary accepted-baseline comparison: `http://127.0.0.1:4195/agent-teams?view=team-list`. This comparison server runs the read-only canonical `personal` checkout; it is not the ticket editing worktree.
+All review routes carry `prototypeReview=agent-org-flat`. The AgentOrg runtime
+uses:
 
-The Product-owned preview process uses only port `4194`; no production credentials or services are required. Stop only the recorded `4194` process for this ticket.
+- `root=org&org=software-development-department&phase=config`
+- `root=org&org=software-development-department&phase=active`
 
-## Critical Journeys
-
-See `review-guide.md`. Every prototype route carries `prototypeReview=agent-org-flat`. Query parameters select deterministic views, IDs, root subject, exact entry, and focused temporary execution.
+There is intentionally no `entry` query. Prototype state is deterministic and
+locally resettable through the existing scenario bootstrap.
 
 ## Validation
 
@@ -48,9 +60,11 @@ corepack pnpm typecheck
 corepack pnpm lint
 corepack pnpm test
 corepack pnpm validate:boundaries
-PROTOTYPE_BASE_URL=http://127.0.0.1:4194 corepack pnpm validate:aorg-flat-team-review
-PROTOTYPE_BASE_URL=http://127.0.0.1:4194 corepack pnpm validate:nested-team-hierarchy-review
+PROTOTYPE_BASE_URL=http://127.0.0.1:4194 node prototype/scripts/validate-agent-org-rv10-review.mjs
 NUXT_IGNORE_LOCK=1 corepack pnpm build
 ```
 
-Validated desktop: `1440×900`. Validated narrow: `390×844`. RV-009 browser result: `55/55` checks, `17` captures, zero runtime errors. Typecheck, lint, `12/12` tests, `13/13` boundary checks, and build pass. The prototype uses synthetic, locally resettable fixtures and performs no production writes.
+Validated desktop: `1440×900`. Validated narrow: `390×844`. RV-010 browser
+result: `56/56` checks, `20` captures, zero runtime errors. Typecheck, lint,
+`12/12` tests, `13/13` boundary checks, and production build pass. The prototype
+uses synthetic local fixtures and performs no production writes.
