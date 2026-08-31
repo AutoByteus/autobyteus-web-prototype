@@ -109,8 +109,9 @@ import { formatApplicationOwnershipLabel } from '~/utils/definitionOwnership';
 const props = defineProps<{
   agentDefinitionId: string;
   returnToTeamId?: string;
+  agentDefinitionOverride?: AgentDefinition | null;
 }>();
-const { agentDefinitionId, returnToTeamId } = toRefs(props);
+const { agentDefinitionId, returnToTeamId, agentDefinitionOverride } = toRefs(props);
 
 const emit = defineEmits(['navigate']);
 
@@ -118,7 +119,11 @@ const agentDefinitionStore = useAgentDefinitionStore();
 const runConfigStore = useAgentRunConfigStore();
 const selectionStore = useAgentSelectionStore();
 const { t: $t } = useLocalization();
-const agentDef = computed<AgentDefinition | null>(() => agentDefinitionStore.getAgentDefinitionById(agentDefinitionId.value) ?? null);
+const agentDef = computed<AgentDefinition | null>(() => (
+  agentDefinitionOverride.value?.id === agentDefinitionId.value
+    ? agentDefinitionOverride.value
+    : agentDefinitionStore.getAgentDefinitionById(agentDefinitionId.value) ?? null
+));
 const loading = ref(false);
 const avatarLoadError = ref(false);
 
@@ -178,7 +183,7 @@ watch(avatarUrl, () => {
 });
 
 onMounted(async () => {
-  if (agentDefinitionStore.agentDefinitions.length === 0) {
+  if (!agentDefinitionOverride.value && agentDefinitionStore.agentDefinitions.length === 0) {
     loading.value = true;
     await agentDefinitionStore.fetchAllAgentDefinitions();
     loading.value = false;

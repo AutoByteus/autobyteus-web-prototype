@@ -1,0 +1,117 @@
+{
+  "package": "AORG-FLAT-TEAM-001",
+  "revision": "RV-005",
+  "captures": [
+    {
+      "id": "REV-AORG-001",
+      "filename": "REV-AORG-001-agent-team-catalog.png",
+      "state": "Baseline-native flat Agent Team catalog; only obsolete nesting semantics are removed",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-list",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-002",
+      "filename": "REV-AORG-002-agent-team-authoring.png",
+      "state": "Agent-only Team authoring with one direct coordinator",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-create",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-009",
+      "filename": "REV-AORG-009-agent-team-detail.png",
+      "state": "Baseline-native flat Team detail with members, coordinator, handoffs, and reuse statement",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-010",
+      "filename": "REV-AORG-010-agent-team-members.png",
+      "state": "Preserved Team member cards with direct Agent detail actions",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-011",
+      "filename": "REV-AORG-011-agent-member-detail.png",
+      "state": "Preserved Agent detail reached from a Team member",
+      "url": "http://127.0.0.1:4194/agents?prototypeReview=agent-org-flat&view=detail&id=product-prototyper&returnToTeam=product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-003",
+      "filename": "REV-AORG-003-agent-org-catalog.png",
+      "state": "Agent Org catalog with direct Agent and Team composition",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-list",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-004",
+      "filename": "REV-AORG-004-agent-org-authoring.png",
+      "state": "Agent Org authoring with independent Agents and referenced Teams",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-create",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-005",
+      "filename": "REV-AORG-005-agent-org-detail.png",
+      "state": "Org detail showing referenced reusable Teams and no Org coordinator",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-006",
+      "filename": "REV-AORG-006-agent-org-exact-entry-launch.png",
+      "state": "Exact Team entry selected; Team coordinator is explicit",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department&launch=1",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-007",
+      "filename": "REV-AORG-007-agent-org-runtime-history.png",
+      "state": "Shared runtime/history with explicit Agent Org root and task lineage",
+      "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&entry=team:product-design-prototyping-team&focus=task-team-accessibility:reviewer",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-008",
+      "filename": "REV-AORG-008-standalone-team-runtime-history.png",
+      "state": "Shared runtime/history with standalone Team root",
+      "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=team&team=release-readiness-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    }
+  ],
+  "reviewStatus": "Non-normative pending user approval"
+}

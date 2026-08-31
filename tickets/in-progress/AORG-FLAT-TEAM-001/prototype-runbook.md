@@ -8,7 +8,7 @@
 - Ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
 - Branch: `prototype/aorg-flat-team-001`
 - Accepted base: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`
-- Review candidate revision: `RV-004` at `8022a0d6c9adeb3fcb913b910a8f001e1c8bb50f`
+- Review candidate revision: `RV-005`; commit recorded after the revision validation package is committed
 - Stack: Nuxt 3, Vue 3, TypeScript, Tailwind, deterministic prototype fixtures
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001`
 
@@ -20,6 +20,8 @@ corepack pnpm dev --port 4194
 ```
 
 Review entry: `http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-list`
+
+Team-detail preservation review: `http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-detail&id=product-design-prototyping-team`. Use either member's `View ↗` action and **Back to team** to validate the preserved Agent-detail journey.
 
 Temporary accepted-baseline comparison: `http://127.0.0.1:4195/agent-teams?view=team-list`. This comparison server runs the read-only canonical `personal` checkout; it is not the ticket editing worktree.
 

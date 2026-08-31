@@ -140,10 +140,15 @@
           </section>
 
           <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 class="text-xl font-semibold text-slate-900">Instructions</h2>
+            <p class="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">{{ selectedTeam.instructions }}</p>
+          </section>
+
+          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <div class="flex items-start justify-between gap-4">
               <div>
-                <h2 class="text-xl font-semibold text-slate-900">Team-local handoffs</h2>
-                <p class="mt-1 text-sm text-slate-500">These rules remain part of this Team wherever it runs.</p>
+                <h2 class="text-xl font-semibold text-slate-900">Handoffs</h2>
+                <p class="mt-1 text-sm text-slate-500">Routing rules that remain with this Team wherever it runs.</p>
               </div>
               <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">{{ selectedTeam.handoffs }} rules</span>
             </div>
@@ -164,14 +169,27 @@
           <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <h2 class="text-xl font-semibold text-slate-900">Members ({{ selectedTeam.agents.length }})</h2>
             <div class="mt-4 grid gap-3 md:grid-cols-2">
-              <article v-for="agentId in selectedTeam.agents" :key="agentId" class="flex items-center gap-3 rounded-lg border border-slate-200 px-3 py-3">
-                <span class="inline-flex h-10 w-10 flex-none items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700">{{ agentById(agentId).initials }}</span>
-                <div class="min-w-0 flex-1">
-                  <div class="flex flex-wrap items-center gap-2">
-                    <h3 class="truncate text-sm font-semibold text-slate-900">{{ agentById(agentId).name }}</h3>
-                    <span v-if="agentId === selectedTeam.coordinatorId" class="rounded-full bg-emerald-50 px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wide text-emerald-700">Coordinator</span>
+              <article v-for="agentId in selectedTeam.agents" :key="agentId" class="rounded-lg border border-slate-200 bg-white p-3">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex min-w-0 items-start gap-3">
+                    <span class="inline-flex h-10 w-10 flex-none items-center justify-center rounded-full bg-blue-100 text-sm font-semibold text-blue-700">{{ agentById(agentId).initials }}</span>
+                    <div class="min-w-0 flex-1">
+                      <div class="flex flex-wrap items-center gap-2">
+                        <h3 class="truncate text-base font-semibold text-slate-900">{{ agentById(agentId).name }}</h3>
+                        <span v-if="agentId === selectedTeam.coordinatorId" class="rounded-full bg-emerald-50 px-2 py-0.5 text-[0.625rem] font-bold uppercase tracking-wide text-emerald-700">Coordinator</span>
+                      </div>
+                      <p class="mt-0.5 truncate text-sm text-slate-500">{{ agentById(agentId).description }}</p>
+                    </div>
                   </div>
-                  <p class="mt-0.5 truncate text-sm text-slate-500">{{ agentById(agentId).description }}</p>
+                  <button
+                    type="button"
+                    class="inline-flex h-8 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 focus-visible:ring-offset-1"
+                    :aria-label="`Open agent details for ${agentById(agentId).name}`"
+                    :data-test="`team-member-view-${agentId}`"
+                    @click="openAgentDetails(agentId)"
+                  >
+                    View ↗
+                  </button>
                 </div>
               </article>
             </div>
@@ -311,7 +329,7 @@
           </section>
 
           <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <div><h2 class="font-semibold text-slate-900">Team-local handoffs</h2><p class="mt-1 text-sm text-slate-500">Rules remain attached to this Team when an Agent Org references it.</p></div>
+            <div><h2 class="font-semibold text-slate-900">Handoffs</h2><p class="mt-1 text-sm text-slate-500">Routing rules remain unchanged when an Organization references this Team.</p></div>
             <div class="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">{{ selectedTeam.handoffs }} existing Agent-to-Agent rules will be preserved.</div>
           </section>
 
@@ -395,7 +413,7 @@ watch([view, selectedTeam], () => {
     formName.value = selectedTeam.value.name;
     formCategory.value = selectedTeam.value.category;
     formDescription.value = selectedTeam.value.description;
-    formInstructions.value = 'Coordinate work through the selected Agent coordinator while preserving Team-local handoffs.';
+    formInstructions.value = 'Coordinate work through the selected Agent coordinator while preserving its handoff rules.';
     formAgents.value = [...selectedTeam.value.agents];
     formCoordinator.value = selectedTeam.value.coordinatorId;
   }
@@ -420,6 +438,17 @@ const openOrgCatalog = async (): Promise<void> => {
 };
 const openTeamRun = async (id: string): Promise<void> => {
   await router.push({ path: '/workspace', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, root: 'team', team: id } });
+};
+const openAgentDetails = async (id: string): Promise<void> => {
+  await router.push({
+    path: '/agents',
+    query: {
+      prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY,
+      view: 'detail',
+      id,
+      returnToTeam: selectedTeam.value.id,
+    },
+  });
 };
 const addAgent = (id: string): void => {
   if (!formAgents.value.includes(id)) formAgents.value.push(id);

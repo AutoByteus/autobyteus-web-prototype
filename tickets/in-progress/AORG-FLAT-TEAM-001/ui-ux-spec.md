@@ -23,7 +23,7 @@ final references are captured from the validated approved revision.
 - Ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
 - Ticket branch: `prototype/aorg-flat-team-001`
 - Accepted prototype base: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`
-- Review candidate revision: `RV-004` at `8022a0d6c9adeb3fcb913b910a8f001e1c8bb50f`
+- Review candidate revision: `RV-005`; commit recorded after the revision validation package is committed
 - Bootstrap correction report: `/home/autobyteus/workspace/autobyteus-web-prototype/prototype-bootstrap-report.md`
 - Baseline acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction/product-acceptance/product-acceptance.md`
 
@@ -57,7 +57,7 @@ product redesign are out of scope.
 - Preserve the accepted AutoByteus shell: 320px desktop left panel, primary navigation, resizable history section, white/neutral surfaces, system sans typography, compact tree rows, and existing icon language.
 - Preserve the accepted AgentTeam catalog rather than replacing it: search/Reload/Create Team toolbar; Featured teams and All teams grouping; two-column cards; initials tile; title, description, and category; blue Agent chips; right-aligned Run and View Details actions; and three compact metrics. The only catalog semantic substitution is `Runs` in place of the now-obsolete `Nested Teams` metric.
 - Preserve the accepted AgentTeam authoring hierarchy: title and template action; inset Basics panel; Agent Library, Team Canvas, and Member Details columns; LLM configuration; checklist; and footer actions. The requirements-driven delta removes the Team library and all Team/Org member choices while keeping one Agent coordinator radio.
-- Preserve the accepted AgentTeam detail hierarchy: bordered Back action; neutral header card with initials/category/summary pills; Description facts; Team-local handoffs; and member cards. Replace nested-Team facts with Runs and a same-definition AgentOrg reuse statement rather than adding new type/reuse chrome.
+- Preserve the accepted AgentTeam detail hierarchy and interaction: bordered Back action; neutral header card with initials/category/summary pills; Description facts; Instructions; Handoffs; and member cards with a baseline-style `View ↗` action. Opening a member reuses the accepted Agent detail surface, including its Description and Instructions, and **Back to team** restores the same future-state Team detail context. Use the concise visible heading `Handoffs`; supporting copy explains that the routing rules remain with the Team. Replace nested-Team facts with Runs and a same-definition AgentOrg reuse statement rather than adding new type/reuse chrome.
 - The selected `Agent Teams` navigation item is the visible page context. Keep one screen-reader-only `h1`, but do not repeat a visible page title, Team-type badge, reusable badge, or reusable explanatory eyebrow on every catalog card.
 - AgentTeams use blue identity accents; AgentOrgs use violet identity accents; neutral slate remains the default content and form language.
 - Temporary Task Agent and Task Team execution rows use the accepted source-current pale-indigo `Task:` presentation with animated/reduced-motion-compatible spinner identity. They appear within the owning Team execution, not as a separate configured section.
@@ -82,7 +82,7 @@ product redesign are out of scope.
 | --- | --- |
 | Team catalog | Selected `Agent Teams` navigation plus screen-reader heading; baseline search/Reload/Create toolbar, Featured/All grouping, initials/category cards, blue Agent chips, Coordinator/Members/Runs metrics, and baseline Run/View Details actions; no redundant visible Team/reusable labels |
 | Team create/edit | Agent rows only; coordinator radio group with one selected value; no Add Team action; validation note |
-| Team detail | Agent membership, coordinator, Team-local handoffs, standalone run/history, reuse statement |
+| Team detail | Description and Instructions; Agent membership and coordinator; per-member `View ↗` to the accepted Agent detail with return-to-Team context; Handoffs; standalone run/history; same-definition reuse statement |
 | Org catalog | `Agent Orgs` navigation and title; direct Agent/Team chips; one configured level; no coordinator |
 | Org create/edit | Organization details; Independent Agents; Reusable Agent Teams; Org-scoped handoffs; no coordinator control |
 | Org detail | Direct Agent and referenced Team groups; same-definition/history statements; Run Organization |
@@ -101,6 +101,8 @@ product redesign are out of scope.
 | Expand Task Team | Chevron opens; child AgentRun appears | Runtime lineage is inspectable without changing definition |
 | Select task child | Row selection and focused-execution panel | Temporary AgentRun identity is explicit |
 | Select standalone Team root | Root selection moves to Team | Standalone Team runtime and coordinator lifecycle appear |
+| Open Team member | Baseline-style `View ↗` opens accepted Agent detail | Selected member Description and Instructions remain inspectable |
+| Return from Agent detail | **Back to team** | Same future-state Team detail and prototype-review context are restored |
 
 ## Accessibility And Content
 
@@ -127,15 +129,17 @@ states, spacing, and interaction behavior become normative only after approval.
 
 | Review ID | Surface/state | Viewport | Path |
 | --- | --- | --- | --- |
-| `REV-AORG-001` | Baseline-native Team catalog | 1440×900 | `review-evidence/rv-004/REV-AORG-001-agent-team-catalog.png` |
-| `REV-AORG-002` | Baseline-native Team authoring | 1440×900 | `review-evidence/rv-004/REV-AORG-002-agent-team-authoring.png` |
-| `REV-AORG-003` | Org catalog | 1440×900 | `review-evidence/rv-004/REV-AORG-003-agent-org-catalog.png` |
-| `REV-AORG-004` | Org authoring | 1440×900 | `review-evidence/rv-004/REV-AORG-004-agent-org-authoring.png` |
-| `REV-AORG-005` | Org detail | 1440×900 | `review-evidence/rv-004/REV-AORG-005-agent-org-detail.png` |
-| `REV-AORG-006` | Exact Team entry selected | 1440×900 | `review-evidence/rv-004/REV-AORG-006-agent-org-exact-entry-launch.png` |
-| `REV-AORG-007` | Org runtime and task child focus | 1440×900 | `review-evidence/rv-004/REV-AORG-007-agent-org-runtime-history.png` |
-| `REV-AORG-008` | Standalone Team runtime | 1440×900 | `review-evidence/rv-004/REV-AORG-008-standalone-team-runtime-history.png` |
-| `REV-AORG-009` | Baseline-native Team detail | 1440×900 | `review-evidence/rv-004/REV-AORG-009-agent-team-detail.png` |
+| `REV-AORG-001` | Baseline-native Team catalog | 1440×900 | `review-evidence/rv-005/REV-AORG-001-agent-team-catalog.png` |
+| `REV-AORG-002` | Baseline-native Team authoring | 1440×900 | `review-evidence/rv-005/REV-AORG-002-agent-team-authoring.png` |
+| `REV-AORG-003` | Org catalog | 1440×900 | `review-evidence/rv-005/REV-AORG-003-agent-org-catalog.png` |
+| `REV-AORG-004` | Org authoring | 1440×900 | `review-evidence/rv-005/REV-AORG-004-agent-org-authoring.png` |
+| `REV-AORG-005` | Org detail | 1440×900 | `review-evidence/rv-005/REV-AORG-005-agent-org-detail.png` |
+| `REV-AORG-006` | Exact Team entry selected | 1440×900 | `review-evidence/rv-005/REV-AORG-006-agent-org-exact-entry-launch.png` |
+| `REV-AORG-007` | Org runtime and task child focus | 1440×900 | `review-evidence/rv-005/REV-AORG-007-agent-org-runtime-history.png` |
+| `REV-AORG-008` | Standalone Team runtime | 1440×900 | `review-evidence/rv-005/REV-AORG-008-standalone-team-runtime-history.png` |
+| `REV-AORG-009` | Baseline-native Team detail with concise Handoffs label | 1440×900 | `review-evidence/rv-005/REV-AORG-009-agent-team-detail.png` |
+| `REV-AORG-010` | Preserved Team member cards and Agent-detail actions | 1440×900 | `review-evidence/rv-005/REV-AORG-010-agent-team-members.png` |
+| `REV-AORG-011` | Accepted Agent detail reached from a Team member | 1440×900 | `review-evidence/rv-005/REV-AORG-011-agent-member-detail.png` |
 
 ## Final Visual Reference Inventory
 
@@ -151,7 +155,7 @@ Pending explicit user approval. No review capture is a final `VIS-*` reference.
 
 - Applicable corrected baseline accepted: `Yes`
 - Four requested journeys runnable: `Yes`
-- RV-004 browser validation: `24/24 pass`, zero runtime errors
+- RV-005 browser validation: `27/27 pass`, zero runtime errors
 - Desktop and narrow validation: `Yes`
 - User confirmation recorded: `No — pending`
 - Final normative references captured: `No — correctly pending approval`
