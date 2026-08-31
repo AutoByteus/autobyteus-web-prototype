@@ -1,0 +1,247 @@
+{
+  "package": "AORG-FLAT-TEAM-001",
+  "revision": "RV-001",
+  "mode": "Product Experience Prototyping",
+  "baseUrl": "http://127.0.0.1:4194",
+  "generatedAt": "2026-08-31T07:52:26.671Z",
+  "result": "FAIL",
+  "checks": [
+    {
+      "id": "AORG-RV1-001-team-catalog",
+      "pass": true,
+      "evidence": {
+        "cards": 3
+      }
+    },
+    {
+      "id": "AORG-RV1-002-separated-primary-navigation",
+      "pass": true,
+      "evidence": {
+        "navigation": [
+          "Agent Teams",
+          "Agent Orgs"
+        ]
+      }
+    },
+    {
+      "id": "AORG-RV1-003-team-card-flat-contract",
+      "pass": true,
+      "evidence": {
+        "nestedTeamMetric": 0
+      }
+    },
+    {
+      "id": "AORG-RV1-004-team-authoring-agent-only",
+      "pass": true,
+      "evidence": {
+        "addAgent": 1,
+        "addTeam": 0
+      }
+    },
+    {
+      "id": "AORG-RV1-005-exactly-one-team-coordinator",
+      "pass": true,
+      "evidence": {
+        "radios": 2,
+        "checked": 1
+      }
+    },
+    {
+      "id": "AORG-RV1-006-org-catalog",
+      "pass": true,
+      "evidence": {
+        "cards": 2
+      }
+    },
+    {
+      "id": "AORG-RV1-007-org-direct-composition",
+      "pass": true,
+      "evidence": {
+        "directKinds": [
+          "agent",
+          "team"
+        ],
+        "configuredLevels": 1
+      }
+    },
+    {
+      "id": "AORG-RV1-008-org-authoring-membership",
+      "pass": true,
+      "evidence": {
+        "memberPickers": [
+          "Agent",
+          "Team"
+        ]
+      }
+    },
+    {
+      "id": "AORG-RV1-009-org-has-no-coordinator-control",
+      "pass": false,
+      "evidence": {
+        "coordinatorControls": 0
+      }
+    },
+    {
+      "id": "AORG-RV1-010-team-reference-preservation",
+      "pass": true,
+      "evidence": {
+        "referencedTeams": 2
+      }
+    },
+    {
+      "id": "AORG-RV1-011-org-launch-requires-entry",
+      "pass": true,
+      "evidence": {
+        "initialStartDisabled": true
+      }
+    },
+    {
+      "id": "AORG-RV1-012-team-entry-resolves-through-coordinator",
+      "pass": true,
+      "evidence": {
+        "entry": "team:product-design-prototyping-team",
+        "coordinator": "product_prototyper"
+      }
+    },
+    {
+      "id": "AORG-RV1-013-launch-carries-exact-entry",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&entry=team:product-design-prototyping-team"
+      }
+    },
+    {
+      "id": "AORG-RV1-014-runtime-root-kinds",
+      "pass": true,
+      "evidence": {
+        "roots": [
+          "Org",
+          "Team"
+        ]
+      }
+    },
+    {
+      "id": "AORG-RV1-015-task-team-is-runtime-lineage",
+      "pass": true,
+      "evidence": {
+        "taskPresentation": "separate runtime lineage"
+      }
+    },
+    {
+      "id": "AORG-RV1-016-standalone-team-history-remains-distinct",
+      "pass": true,
+      "evidence": {
+        "root": "standalone Agent Team"
+      }
+    },
+    {
+      "id": "AORG-RV1-017-narrow-layout",
+      "pass": true,
+      "evidence": {
+        "overflow": {
+          "viewport": 390,
+          "scrollWidth": 390
+        }
+      }
+    },
+    {
+      "id": "AORG-RV1-018-no-runtime-errors",
+      "pass": true,
+      "evidence": {
+        "runtimeErrors": []
+      }
+    }
+  ],
+  "failures": [
+    {
+      "id": "AORG-RV1-009-org-has-no-coordinator-control",
+      "pass": false,
+      "evidence": {
+        "coordinatorControls": 0
+      }
+    }
+  ],
+  "runtimeErrors": [],
+  "captures": [
+    {
+      "id": "REV-AORG-001",
+      "filename": "REV-AORG-001-agent-team-catalog.png",
+      "state": "Agent Team catalog with reusable flat Teams",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-list",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-002",
+      "filename": "REV-AORG-002-agent-team-authoring.png",
+      "state": "Agent-only Team authoring with one direct coordinator",
+      "url": "http://127.0.0.1:4194/agent-teams?prototypeReview=agent-org-flat&view=team-create",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-003",
+      "filename": "REV-AORG-003-agent-org-catalog.png",
+      "state": "Agent Org catalog with direct Agent and Team composition",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-list",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-004",
+      "filename": "REV-AORG-004-agent-org-authoring.png",
+      "state": "Agent Org authoring with independent Agents and referenced Teams",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-create",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-005",
+      "filename": "REV-AORG-005-agent-org-detail.png",
+      "state": "Org detail showing referenced reusable Teams and no Org coordinator",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-006",
+      "filename": "REV-AORG-006-agent-org-exact-entry-launch.png",
+      "state": "Exact Team entry selected; Team coordinator is explicit",
+      "url": "http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department&launch=1",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-007",
+      "filename": "REV-AORG-007-agent-org-runtime-history.png",
+      "state": "Shared runtime/history with explicit Agent Org root and task lineage",
+      "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=org&org=software-development-department&entry=team:product-design-prototyping-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "id": "REV-AORG-008",
+      "filename": "REV-AORG-008-standalone-team-runtime-history.png",
+      "state": "Shared runtime/history with standalone Team root",
+      "url": "http://127.0.0.1:4194/workspace?prototypeReview=agent-org-flat&root=team&team=release-readiness-team",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    }
+  ]
+}

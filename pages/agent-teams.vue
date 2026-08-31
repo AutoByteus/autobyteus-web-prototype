@@ -1,6 +1,7 @@
 <template>
   <div class="h-full overflow-auto bg-gray-50">
-    <AgentTeamList v-if="currentView === 'team-list'" @navigate="handleNavigation" />
+    <FlatAgentTeamExperience v-if="agentOrgReviewActive" />
+    <AgentTeamList v-else-if="currentView === 'team-list'" @navigate="handleNavigation" />
     <AgentTeamCreate v-else-if="currentView === 'team-create'" @navigate="handleNavigation" />
     <AgentTeamDetail
       v-else-if="currentView === 'team-detail' && currentId"
@@ -36,12 +37,15 @@ import AgentTeamList from '~/components/agentTeams/AgentTeamList.vue';
 import AgentTeamDetail from '~/components/agentTeams/AgentTeamDetail.vue';
 import AgentTeamCreate from '~/components/agentTeams/AgentTeamCreate.vue';
 import AgentTeamEdit from '~/components/agentTeams/AgentTeamEdit.vue';
+import FlatAgentTeamExperience from '~/components/agentTeams/FlatAgentTeamExperience.vue';
+import { useAgentOrgPrototypeReview } from '~/composables/useAgentOrgPrototypeReview';
 
 const route = useRoute();
 const router = useRouter();
 const workspaceStore = useWorkspaceStore();
 const agentDefStore = useAgentDefinitionStore();
 const agentTeamDefStore = useAgentTeamDefinitionStore();
+const { active: agentOrgReviewActive } = useAgentOrgPrototypeReview();
 
 onMounted(async () => {
   try {
