@@ -111,13 +111,43 @@
         <button type="button" class="mb-5 inline-flex items-center rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="go('org-list')"><Icon icon="heroicons:arrow-left-20-solid" class="mr-2 h-4 w-4" /> Back to Agent Orgs</button>
         <header class="mb-6"><h1 class="text-3xl font-bold tracking-tight text-slate-950">{{ view === 'org-create' ? 'Create Agent Org' : 'Edit ' + selectedOrg.name }}</h1><p class="mt-2 max-w-3xl text-base text-slate-600">Add Agents and Teams, then configure handoffs.</p></header>
         <form class="space-y-4" @submit.prevent="saveOrg">
-          <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"><h2 class="font-semibold text-slate-900">Basics</h2><div class="mt-4 grid gap-4 md:grid-cols-2"><label><span class="text-sm font-medium text-slate-700">Name</span><input v-model="formName" required class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"></label><label><span class="text-sm font-medium text-slate-700">Category</span><select v-model="formCategory" class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"><option>Department</option><option>Program</option><option>Organization</option></select></label><label class="md:col-span-2"><span class="text-sm font-medium text-slate-700">Description</span><textarea v-model="formDescription" rows="3" class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"></textarea></label></div></section>
+          <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"><h2 class="font-semibold text-slate-900">Basics</h2><div class="mt-4 space-y-4"><label class="block"><span class="text-sm font-medium text-slate-700">Name</span><input v-model="formName" required class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"></label><label class="block"><span class="text-sm font-medium text-slate-700">Description</span><textarea v-model="formDescription" rows="3" class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"></textarea></label></div></section>
 
           <section class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-            <div class="border-b border-slate-200 px-5 py-4"><h2 class="text-xl font-semibold text-slate-900">Members</h2></div>
+            <div class="flex items-center justify-between gap-4 border-b border-slate-200 px-5 py-4">
+              <h2 class="text-xl font-semibold text-slate-900">Members</h2>
+              <button type="button" class="inline-flex items-center gap-1.5 rounded-lg bg-blue-600 px-3.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-test="open-member-picker" @click="memberPickerOpen ? closeMemberPicker() : openMemberPicker()">
+                <Icon :icon="memberPickerOpen ? 'heroicons:x-mark-20-solid' : 'heroicons:plus-20-solid'" class="h-4 w-4" /> {{ memberPickerOpen ? 'Close' : 'Add member' }}
+              </button>
+            </div>
+            <section v-if="memberPickerOpen" class="border-b border-slate-200 bg-slate-50 px-5 py-5" data-test="org-member-picker" aria-labelledby="member-picker-title">
+              <div class="flex items-start justify-between gap-4"><div><h3 id="member-picker-title" class="font-semibold text-slate-900">Choose members</h3><p class="mt-1 text-sm text-slate-600">Add a direct Agent or an existing Team.</p></div></div>
+              <label class="relative mt-4 block"><span class="sr-only">Search members</span><Icon icon="heroicons:magnifying-glass-20-solid" class="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" /><input v-model="memberSearch" type="search" class="block w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" placeholder="Search members"></label>
+              <div class="mt-4 flex gap-1 border-b border-slate-200" role="tablist" aria-label="Member type">
+                <button type="button" role="tab" class="border-b-2 px-4 py-2.5 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :class="memberPickerTab === 'agents' ? 'border-blue-600 text-blue-700' : 'border-transparent text-slate-500 hover:text-slate-800'" :aria-selected="memberPickerTab === 'agents'" @click="memberPickerTab = 'agents'">Agents</button>
+                <button type="button" role="tab" class="border-b-2 px-4 py-2.5 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :class="memberPickerTab === 'teams' ? 'border-blue-600 text-blue-700' : 'border-transparent text-slate-500 hover:text-slate-800'" :aria-selected="memberPickerTab === 'teams'" @click="memberPickerTab = 'teams'">Teams</button>
+              </div>
+              <ul v-if="memberPickerTab === 'agents'" class="mt-4 grid gap-2 lg:grid-cols-2" data-test="member-picker-agents">
+                <li v-for="agent in filteredMemberAgents" :key="agent.id" class="flex min-w-0 items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5">
+                  <span class="inline-flex h-9 w-9 flex-none items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600">{{ agent.initials }}</span>
+                  <div class="min-w-0 flex-1"><p class="truncate text-sm font-semibold text-slate-900">{{ agent.name }}</p><p class="truncate text-xs text-slate-500">{{ agent.description }}</p></div>
+                  <button type="button" class="rounded-lg px-3 py-2 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :class="formAgentIds.includes(agent.id) ? 'cursor-default bg-slate-100 text-slate-500' : 'border border-blue-200 bg-white text-blue-700 hover:bg-blue-50'" :disabled="formAgentIds.includes(agent.id)" :aria-label="formAgentIds.includes(agent.id) ? `${agent.name} added` : `Add ${agent.name}`" @click="addOrgAgent(agent.id)">{{ formAgentIds.includes(agent.id) ? 'Added' : 'Add' }}</button>
+                </li>
+                <li v-if="filteredMemberAgents.length === 0" class="rounded-xl border border-dashed border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-500 lg:col-span-2">No Agents match your search.</li>
+              </ul>
+              <ul v-else class="mt-4 grid gap-2 lg:grid-cols-2" data-test="member-picker-teams">
+                <li v-for="team in filteredMemberTeams" :key="team.id" class="flex min-w-0 items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5">
+                  <span class="inline-flex h-9 w-9 flex-none items-center justify-center rounded-lg bg-blue-50 text-blue-700"><Icon icon="heroicons:user-group-20-solid" class="h-5 w-5" /></span>
+                  <div class="min-w-0 flex-1"><p class="truncate text-sm font-semibold text-slate-900">{{ team.name }}</p><p class="truncate text-xs text-slate-500">Coordinator: {{ agentById(team.coordinatorId).name }}</p></div>
+                  <button type="button" class="rounded-lg px-3 py-2 text-sm font-semibold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :class="formTeamIds.includes(team.id) ? 'cursor-default bg-slate-100 text-slate-500' : 'border border-blue-200 bg-white text-blue-700 hover:bg-blue-50'" :disabled="formTeamIds.includes(team.id)" :aria-label="formTeamIds.includes(team.id) ? `${team.name} added` : `Add ${team.name}`" @click="addOrgTeam(team.id)">{{ formTeamIds.includes(team.id) ? 'Added' : 'Add' }}</button>
+                </li>
+                <li v-if="filteredMemberTeams.length === 0" class="rounded-xl border border-dashed border-slate-200 bg-white px-4 py-8 text-center text-sm text-slate-500 lg:col-span-2">No Teams match your search.</li>
+              </ul>
+              <div class="mt-4 flex justify-end"><button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="closeMemberPicker">Done</button></div>
+            </section>
             <div class="grid lg:grid-cols-2 lg:divide-x lg:divide-slate-100">
-              <div class="p-5"><div class="flex items-center justify-between gap-4"><h3 class="font-semibold text-slate-900">Agents</h3><button type="button" class="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:text-slate-400" :disabled="!nextOrgAgent" @click="addOrgAgent"><Icon icon="heroicons:plus-20-solid" class="h-4 w-4" /> Add Agent</button></div><ul class="mt-4 space-y-2"><li v-for="agentId in formAgentIds" :key="agentId" class="flex items-center gap-3 rounded-lg border border-slate-200 p-3"><span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600">{{ agentById(agentId).initials }}</span><p class="min-w-0 flex-1 truncate text-sm font-semibold text-slate-900">{{ agentById(agentId).name }}</p><button type="button" class="rounded text-slate-400 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-label="`Remove ${agentById(agentId).name}`" @click="removeOrgAgent(agentId)"><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" /></button></li></ul></div>
-              <div class="p-5"><div class="flex items-center justify-between gap-4"><h3 class="font-semibold text-slate-900">Teams</h3><button type="button" class="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:text-slate-400" :disabled="!nextOrgTeam" @click="addOrgTeam"><Icon icon="heroicons:plus-20-solid" class="h-4 w-4" /> Add Team</button></div><ul class="mt-4 space-y-2"><li v-for="teamId in formTeamIds" :key="teamId" class="rounded-lg border border-blue-200 bg-blue-50/50 p-3"><div class="flex items-center gap-3"><span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white text-blue-700"><Icon icon="heroicons:user-group-20-solid" class="h-4 w-4" /></span><div class="min-w-0 flex-1"><p class="truncate text-sm font-semibold text-slate-900">{{ teamById(teamId).name }}</p><p class="truncate text-xs text-slate-500">Coordinator: {{ agentById(teamById(teamId).coordinatorId).name }}</p></div><button type="button" class="rounded text-slate-400 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-label="`Remove ${teamById(teamId).name}`" @click="removeOrgTeam(teamId)"><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" /></button></div></li></ul></div>
+              <div class="p-5"><h3 class="font-semibold text-slate-900">Agents</h3><ul v-if="formAgentIds.length" class="mt-4 space-y-2"><li v-for="agentId in formAgentIds" :key="agentId" class="flex items-center gap-3 rounded-lg border border-slate-200 p-3"><span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600">{{ agentById(agentId).initials }}</span><p class="min-w-0 flex-1 truncate text-sm font-semibold text-slate-900">{{ agentById(agentId).name }}</p><button type="button" class="rounded text-slate-400 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-label="`Remove ${agentById(agentId).name}`" @click="removeOrgAgent(agentId)"><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" /></button></li></ul><p v-else class="mt-4 text-sm text-slate-500">No Agents added.</p></div>
+              <div class="p-5"><h3 class="font-semibold text-slate-900">Teams</h3><ul v-if="formTeamIds.length" class="mt-4 space-y-2"><li v-for="teamId in formTeamIds" :key="teamId" class="rounded-lg border border-blue-200 bg-blue-50/50 p-3"><div class="flex items-center gap-3"><span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-white text-blue-700"><Icon icon="heroicons:user-group-20-solid" class="h-4 w-4" /></span><div class="min-w-0 flex-1"><p class="truncate text-sm font-semibold text-slate-900">{{ teamById(teamId).name }}</p><p class="truncate text-xs text-slate-500">Coordinator: {{ agentById(teamById(teamId).coordinatorId).name }}</p></div><button type="button" class="rounded text-slate-400 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-label="`Remove ${teamById(teamId).name}`" @click="removeOrgTeam(teamId)"><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" /></button></div></li></ul><p v-else class="mt-4 text-sm text-slate-500">No Teams added.</p></div>
             </div>
           </section>
 
@@ -204,24 +234,37 @@ const selectedEntrySummary = computed(() => {
 });
 
 const formName = ref(selectedOrg.value.name);
-const formCategory = ref(selectedOrg.value.category);
 const formDescription = ref(selectedOrg.value.description);
 const formAgentIds = ref(['requirements-engineer']);
 const formTeamIds = ref(['product-design-prototyping-team', 'software-engineering-team']);
 const formOrgHandoffs = ref<PrototypeHandoff[]>([]);
 const formOrgHandoffOptions = computed(() => buildOrgHandoffOptions(formAgentIds.value, formTeamIds.value));
-const nextOrgAgent = computed(() => agents.find((agent) => !formAgentIds.value.includes(agent.id)));
-const nextOrgTeam = computed(() => flatTeams.find((team) => !formTeamIds.value.includes(team.id)));
+const memberPickerOpen = ref(false);
+const memberPickerTab = ref<'agents' | 'teams'>('agents');
+const memberSearch = ref('');
+const normalizedMemberSearch = computed(() => memberSearch.value.trim().toLowerCase());
+const filteredMemberAgents = computed(() => (
+  normalizedMemberSearch.value
+    ? agents.filter((agent) => `${agent.name} ${agent.description}`.toLowerCase().includes(normalizedMemberSearch.value))
+    : agents
+));
+const filteredMemberTeams = computed(() => (
+  normalizedMemberSearch.value
+    ? flatTeams.filter((team) => `${team.name} ${team.description} ${agentById(team.coordinatorId).name}`.toLowerCase().includes(normalizedMemberSearch.value))
+    : flatTeams
+));
 watch([view, selectedOrg], () => {
   const org = selectedOrg.value;
   formName.value = view.value === 'org-create' ? 'Customer Experience Organization' : org.name;
-  formCategory.value = view.value === 'org-create' ? 'Program' : org.category;
   formDescription.value = view.value === 'org-create' ? 'A focused collaboration scope combining reusable Teams with an independent requirements Agent.' : org.description;
-  formAgentIds.value = org.members.filter((member) => member.kind === 'agent').map((member) => member.ref);
-  formTeamIds.value = org.members.filter((member) => member.kind === 'team').map((member) => member.ref);
+  formAgentIds.value = view.value === 'org-create' ? [] : org.members.filter((member) => member.kind === 'agent').map((member) => member.ref);
+  formTeamIds.value = view.value === 'org-create' ? [] : org.members.filter((member) => member.kind === 'team').map((member) => member.ref);
   formOrgHandoffs.value = view.value === 'org-create' ? [] : cloneHandoffs(savedOrgHandoffs.value[org.id] ?? orgHandoffsFor(org.id));
   saved.value = false;
   saveError.value = '';
+  memberPickerOpen.value = false;
+  memberPickerTab.value = 'agents';
+  memberSearch.value = '';
 }, { immediate: true });
 
 const go = async (nextView: OrgView, id?: string): Promise<void> => router.push({ path: '/agent-orgs', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: nextView, ...(id ? { id } : {}) } });
@@ -235,16 +278,25 @@ const startRun = async (): Promise<void> => {
   if (!entry.value) return;
   await router.push({ path: '/workspace', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, root: 'org', org: launchOrg.value.id, entry: entry.value } });
 };
-const addOrgAgent = (): void => {
-  if (nextOrgAgent.value) formAgentIds.value.push(nextOrgAgent.value.id);
+const openMemberPicker = (): void => {
+  memberPickerTab.value = 'agents';
+  memberSearch.value = '';
+  memberPickerOpen.value = true;
+};
+const closeMemberPicker = (): void => {
+  memberPickerOpen.value = false;
+  memberSearch.value = '';
+};
+const addOrgAgent = (id: string): void => {
+  if (agents.some((agent) => agent.id === id) && !formAgentIds.value.includes(id)) formAgentIds.value.push(id);
   saved.value = false;
 };
 const removeOrgAgent = (id: string): void => {
   formAgentIds.value = formAgentIds.value.filter((candidate) => candidate !== id);
   saved.value = false;
 };
-const addOrgTeam = (): void => {
-  if (nextOrgTeam.value) formTeamIds.value.push(nextOrgTeam.value.id);
+const addOrgTeam = (id: string): void => {
+  if (flatTeams.some((team) => team.id === id) && !formTeamIds.value.includes(id)) formTeamIds.value.push(id);
   saved.value = false;
 };
 const removeOrgTeam = (id: string): void => {

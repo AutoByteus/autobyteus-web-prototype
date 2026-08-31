@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `AORG-FLAT-TEAM-001`
 - Title: AgentOrg and flat AgentTeam product experience
-- Status: `Awaiting User Review`
+- Status: `Baseline Needed`
 - Mode: `Product Experience Prototyping`
 - Requirements authority: approved `RER-012`, commit `658d602a1`
 - Architecture context: held `AD-REV-001` at `36bc02deca363798b6eda878e5eb4850e624da6f`; architecture impact check remains downstream of Product approval.
@@ -22,22 +22,23 @@
 - Source repository: `/home/autobyteus/workspace/autobyteus-workspace`
 - Selected frontend: `/home/autobyteus/workspace/autobyteus-workspace/autobyteus-web`
 - Pinned source revision: `8ef282ba77705180d985e7000d801f0e0068cdc1`
-- Baseline status: `Accepted after correction` under `PPA-AORG-BASE-001`; Task Agent and Task AgentTeam inventory corrections both pass exact pinned-source parity.
+- Baseline status: `Correction required`. The earlier Task Agent and Task AgentTeam correction remains accepted, but the newly identified AgentTeam Run configuration-first journey and Workspace left file-tree structure are not substantiated as exact pinned-source parity.
 - Bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/prototype-bootstrap-report.md`
 - Baseline acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction/product-acceptance/product-acceptance.md`
 - Baseline gap record: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/baseline-gap-record.md`
+- Current baseline correction record: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/baseline-gap-record-2.md`
 - Requirements package: `/home/autobyteus/workspace/.codex/worktrees/flat-agent-organization-model/tickets/in-progress/flat-agent-organization-model`
-- Current review revision: `RV-008`; runnable candidate commit `ca518008fd126702555fe14a2887514654238ed7` and its review evidence remain non-normative pending user approval.
+- Current review revision: `Paused after RV-008`. Unvalidated RV-009 work preserves the user's category-removal, explicit inline member-selection, and baseline-native runtime direction, but it is not a review candidate and must not continue until the corrected baseline is accepted and reconciled.
 
 ## Runtime Isolation
 
-- Review server: `corepack pnpm dev --port 4194`; Product-owned parent PID `25138`, Nuxt child PID `25155`.
+- Review server: stopped on `2026-08-31` when the ticket returned to `Baseline Needed`; former Product-owned parent PID `25138` and child PID `25155` are no longer running.
 - Accepted-baseline comparison server: `http://127.0.0.1:4195/agent-teams?view=team-list`; read-only canonical `personal` comparison only.
 - Temporary state root: `/tmp/autobyteus-prototype-AORG-FLAT-TEAM-001`
 - Fixture boundary: ticket-local, deterministic, in-memory definitions, handoffs, launch, runs, and history; no production credentials, services, data, or writes.
-- Reset: stop only the recorded `4194` process and remove the ticket-owned temporary state; do not affect unrelated previews.
+- Reset: port `4194` is unowned while the correction is active; retain the ticket-owned temporary state and do not affect unrelated previews.
 
-## RV-008 Review Candidate
+## Last Recorded Future-State Candidate — Paused
 
 - The pinned source and accepted `personal` baseline were re-audited after user feedback. Team create/edit now preserves real library-to-canvas HTML drag/drop, click fallback, the initially empty Canvas, selected canvas cards, editable Member Details, automatic unique member names, first-Agent coordinator assignment, coordinator switches, member removal, and responsive stacking. The only builder delta is requirements-driven: Agent-only library/membership, with no Team library.
 - Team catalog/create/detail remain baseline-native and self-contained. Team members are direct Agents only, exactly one direct Agent is coordinator, Instructions and Agent-detail navigation are preserved, and no Team-to-Org promotion is added.
@@ -54,7 +55,7 @@
 - Review guide: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/review-guide.md`
 - Review URL: `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department`
 - Handoff authoring URL: `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-edit&id=software-development-department`
-- Browser result: `browser-validation-rv-008.json` — `48/48` checks, `16` review captures, zero runtime errors.
+- Historical browser result: `browser-validation-rv-008.json` — `48/48` checks, `16` review captures, zero runtime errors against the then-accepted baseline. This is not evidence for the two newly identified current-experience gaps.
 - Team-builder preservation audit: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/review-evidence/rv-008/source-comparison/agent-team-builder-audit.md`
 - Review evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/review-evidence/rv-008`
 - Final visual references: pending explicit approval; no `REV-*` image is normative.
@@ -62,8 +63,8 @@
 
 ## Outcome And Handoff
 
-- Current outcome: `Awaiting User Review`.
-- Next expected action: user reviews the clean Org detail and Handoff authoring states and either explicitly approves or requests another focused revision.
-- Integration: baseline correction completed; future-state integration remains `Pending` until explicit approval and finalization.
-- Cleanup: retain the ticket worktree and port `4194` during review.
-- Handoff: none while awaiting user review; completed-package handoff occurs only after explicit approval, final references, repository finalization, and matching handoff rules.
+- Current outcome: `Baseline Needed`.
+- Next expected action: independently correct and substantiate `UXB-CORR-TEAM-RUN-CONFIG-001` and `UXB-CORR-WORKSPACE-FILE-TREE-001` against the pinned source, then Product Prototyper reviews, accepts, integrates, and reconciles the future-state branch before any further product review.
+- Integration: prior accepted baseline is canonical at `893cde9dbcc5ccc8904cf08ba6b031668dff0041`; the new correction and future-state integration are `Pending`.
+- Cleanup: retain the future-state worktree; stop its invalid review preview while baseline correction is active.
+- Handoff: route only the fixed current-experience correction payload to Prototype Bootstrapper. Do not attach or expose the future-state requirements package as bootstrap instructions.
