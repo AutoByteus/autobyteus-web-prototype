@@ -27,7 +27,7 @@
 - Baseline acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction/product-acceptance/product-acceptance.md`
 - Baseline gap record: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/baseline-gap-record.md`
 - Requirements package: `/home/autobyteus/workspace/.codex/worktrees/flat-agent-organization-model/tickets/in-progress/flat-agent-organization-model`
-- Current review revision: `RV-007`; runnable candidate and non-normative review evidence committed at `6105534629604d1b4c2f3984d4ffe5d2c227f020`.
+- Current review revision: `RV-008`; runnable candidate and non-normative review evidence are pending the RV-008 ticket-branch review commit.
 
 ## Runtime Isolation
 
@@ -37,8 +37,9 @@
 - Fixture boundary: ticket-local, deterministic, in-memory definitions, handoffs, launch, runs, and history; no production credentials, services, data, or writes.
 - Reset: stop only the recorded `4194` process and remove the ticket-owned temporary state; do not affect unrelated previews.
 
-## RV-007 Review Candidate
+## RV-008 Review Candidate
 
+- The pinned source and accepted `personal` baseline were re-audited after user feedback. Team create/edit now preserves real library-to-canvas HTML drag/drop, click fallback, the initially empty Canvas, selected canvas cards, editable Member Details, automatic unique member names, first-Agent coordinator assignment, coordinator switches, member removal, and responsive stacking. The only builder delta is requirements-driven: Agent-only library/membership, with no Team library.
 - Team catalog/create/detail remain baseline-native and self-contained. Team members are direct Agents only, exactly one direct Agent is coordinator, Instructions and Agent-detail navigation are preserved, and no Team-to-Org promotion is added.
 - AgentOrg catalog/detail/form use the same neutral/blue product language as Agent Teams. Redundant type, reuse, no-coordinator, same-definition, composition, and invented summary/run copy are absent.
 - Handoff detail shows only `From`, `To`, and ordered `When`, with exact addresses as secondary identity. It does not repeat aggregate counts, per-card condition counts, endpoint type badges, or a coordinator-delivery block.
@@ -53,8 +54,9 @@
 - Review guide: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/review-guide.md`
 - Review URL: `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department`
 - Handoff authoring URL: `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-edit&id=software-development-department`
-- Browser result: `browser-validation-rv-007.json` — `44/44` checks, `15` review captures, zero runtime errors.
-- Review evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/review-evidence/rv-007`
+- Browser result: `browser-validation-rv-008.json` — `48/48` checks, `16` review captures, zero runtime errors.
+- Team-builder preservation audit: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/review-evidence/rv-008/source-comparison/agent-team-builder-audit.md`
+- Review evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001/review-evidence/rv-008`
 - Final visual references: pending explicit approval; no `REV-*` image is normative.
 - User confirmation: explicit feedback has been applied through the removal of redundant count, rule, same-definition, coordinator-delivery, and invented run-summary chrome. Final approval is still pending.
 

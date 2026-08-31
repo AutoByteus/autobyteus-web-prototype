@@ -8,6 +8,7 @@
 | `PA-AORG-002` | AgentOrg uses the same neutral/blue product language as Agent Teams | No new purple Org sub-brand is proposed |
 | `PA-AORG-003` | Source-current pale-indigo Task rows remain the accepted runtime identity pattern | User approval of their placement inside the future Org runtime is pending |
 | `PA-AORG-004` | Team coordinator inspection through the adjacent Team member card and Team detail is sufficient; the Handoff card need not repeat `Via coordinator` | This implements the user's explicit clean-UI correction while preserving inspectability |
+| `PA-AORG-005` | The accepted Team builder is preserved as interaction authority; the future flat-Team change removes only Team library items and Team member placements | User approval of the resulting precise Agent-only evolution remains pending |
 
 ## Mocked Boundaries
 

@@ -6,7 +6,7 @@
 - Finding: `RIF-AORG-001`
 - Original outcome: `Requirement Impact`
 - Resolved by: approved `RER-012`, commit `658d602a1`
-- Product response: implemented in unapproved `RV-007`; browser validation passes `44/44`
+- Product response: implemented in unapproved `RV-008`; browser validation passes `48/48`
 
 ## Clarification Received
 
@@ -21,7 +21,7 @@ Relevant IDs are `BEH-003`; `REQ-006`, `REQ-019`–`REQ-023`; `AC-003`,
 `AC-014`–`AC-018`; `SCN-003`, `SCN-008`; `DEC-007`–`DEC-010`; and
 `ORG-CASE-032`–`ORG-CASE-042`.
 
-## RV-007 Product Treatment
+## RV-008 Product Treatment
 
 - Detail cards expose only From, To, exact addresses, and ordered When.
 - Aggregate Handoff/condition counts, type badges, same-definition copy, and the

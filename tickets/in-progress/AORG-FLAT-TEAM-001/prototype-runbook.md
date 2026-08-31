@@ -8,7 +8,7 @@
 - Ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
 - Branch: `prototype/aorg-flat-team-001`
 - Accepted base: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`
-- Review candidate revision: `RV-007`; runnable candidate commit `6105534629604d1b4c2f3984d4ffe5d2c227f020`
+- Review candidate revision: `RV-008`; runnable candidate commit pending this review update
 - Stack: Nuxt 3, Vue 3, TypeScript, Tailwind, deterministic prototype fixtures
 - Ticket folder: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001/tickets/in-progress/AORG-FLAT-TEAM-001`
 
@@ -45,4 +45,4 @@ PROTOTYPE_BASE_URL=http://127.0.0.1:4194 corepack pnpm validate:nested-team-hier
 NUXT_IGNORE_LOCK=1 corepack pnpm build
 ```
 
-Validated desktop: `1440×900`. Validated narrow: `390×844`. RV-007 browser result: `44/44` checks, `15` captures, zero runtime errors. The prototype uses synthetic, locally resettable fixtures and performs no production writes.
+Validated desktop: `1440×900`. Validated narrow: `390×844`. RV-008 browser result: `48/48` checks, `16` captures, zero runtime errors. The prototype uses synthetic, locally resettable fixtures and performs no production writes.

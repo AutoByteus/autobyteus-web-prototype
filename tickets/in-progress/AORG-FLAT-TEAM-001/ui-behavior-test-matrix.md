@@ -1,6 +1,6 @@
 # UI Behavior Test Matrix
 
-| ID | Related IDs | Flow | Expected visible outcome | RV-007 |
+| ID | Related IDs | Flow | Expected visible outcome | RV-008 |
 | --- | --- | --- | --- | --- |
 | `TR-AORG-001` | `REQ-001`, `AC-001` | Team create/edit | Agent-only controls; one checked coordinator; no Team selector | Pass |
 | `TR-AORG-002` | `REQ-002`, `REQ-003` | Org create/edit | Separate Agent and Team controls; no coordinator input or explanatory badge | Pass |
@@ -18,13 +18,17 @@
 | `SC-AORG-014` | Product feedback | AgentOrg data truthfulness | No AgentOrg Runs/Last run/aggregate summary display | Pass |
 | `SC-AORG-015` | `REQ-019`, `AC-014` | Desktop/narrow | 1440×900 and 390×844 remain usable without document overflow | Pass |
 | `SC-AORG-016` | All in-scope | Runtime safety | Full scripted journey has zero page or console errors | Pass |
+| `SC-AORG-017` | `REQ-001`, accepted baseline | Team builder drag/drop | Every Agent library row is a real drag source; Canvas is a real drop target; drag adds and selects a member | Pass |
+| `SC-AORG-018` | `REQ-001`, accepted baseline | Team builder click fallback | Click-to-add works for pointer/touch/keyboard-equivalent use without a Team library | Pass |
+| `SC-AORG-019` | `REQ-001`, `REQ-023` | Selected Member Details | Member Name, Type, Source, Scope, and Coordinator are real fields; rename updates Canvas and handoff eligibility | Pass |
+| `SC-AORG-020` | `REQ-019`, `AC-014` | Narrow Team builder | Three panels stack, click fallback and selected-member editing remain usable, no document overflow | Pass |
 
 ## Evidence
 
-- Machine result: `browser-validation-rv-007.json`
-- Capture manifest: `review-evidence/rv-007/capture-manifest.json`
-- Result: `44/44` checks pass; `15` captures; `0` runtime errors.
+- Machine result: `browser-validation-rv-008.json`
+- Capture manifest: `review-evidence/rv-008/capture-manifest.json`
+- Result: `48/48` checks pass; `16` captures; `0` runtime errors.
 
 ## Pending
 
-Explicit user approval of RV-007. Review images remain non-normative until then.
+Explicit user approval of RV-008. Review images remain non-normative until then.

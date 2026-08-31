@@ -4,7 +4,7 @@
 
 - Status: `Ready for User Review — Draft, non-normative`
 - Ticket: `AORG-FLAT-TEAM-001`
-- Prototype revision: `RV-007`
+- Prototype revision: `RV-008`
 - Requirements authority: approved `RER-012`, commit `658d602a1`
 - Explicit final approval: `Pending`
 - Normative `VIS-*` references: `Pending approval`
@@ -21,7 +21,7 @@ validation of the approved state.
 - Ticket worktree: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001`
 - Ticket branch: `prototype/aorg-flat-team-001`
 - Accepted prototype base: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`
-- Runnable candidate commit: `6105534629604d1b4c2f3984d4ffe5d2c227f020`
+- Runnable candidate commit: pending the RV-008 review commit
 - Review URL: `http://127.0.0.1:4194/agent-orgs?prototypeReview=agent-org-flat&view=org-detail&id=software-development-department`
 
 ## Experience Goal
@@ -62,7 +62,7 @@ product, not a separate concept demo.
 | Surface | Required structure and behavior |
 | --- | --- |
 | Team catalog | Accepted search/Reload/Create toolbar, Featured/All grouping, initials/category, Agent chips, baseline actions; no repeated Team/reusable labels |
-| Team create/edit | Accepted Basics/library/canvas/member-details hierarchy; Agent rows only; one coordinator radio; functional Team-owned handoff authoring |
+| Team create/edit | Accepted Basics/library/canvas/member-details hierarchy; real drag/drop and click-to-add; selected canvas member with editable Member Name, Type, Source, Scope, and Coordinator; Agent rows only; exactly one coordinator in a valid definition; functional Team-owned handoff authoring |
 | Team detail | Header, Description, Instructions, Handoffs, members, Run/Edit; member `View ↗` opens accepted Agent detail and Back returns to the same Team; no AgentOrg promotion |
 | Org catalog | Same toolbar/card/action language as Teams; direct Agent and Team chips; no visible title/type/composition/coordinator/run-summary chrome |
 | Org create/edit | Basics, separate Agent/Team member groups, Handoffs, Save/Cancel; no coordinator field |
@@ -83,6 +83,17 @@ endpoint type badges, per-card condition counts, and a repeated `Via
 coordinator` block. A referenced Team's coordinator remains visible on the
 adjacent Team member card and inspectable through Team detail. The handoff card
 therefore remains a concise From → To → When record.
+
+## Team Builder Preservation
+
+- Create opens with an empty Team Canvas and empty Member Details, matching the accepted product.
+- Each Agent Library row is a real HTML drag source and also has a click-to-add fallback.
+- Team Canvas is a real drop target with visible drag-over feedback. Dropping or clicking creates a selected Agent placement and automatically assigns the first Agent as coordinator.
+- Adding the same Agent again creates a unique placement name rather than silently ignoring the action.
+- Selecting a canvas card drives Member Details. Member Name is editable; Type is Agent; Source identifies the Agent definition; Scope is visible; Coordinator is a real switch.
+- Renaming a placement updates the canvas and endpoint options. Any Handoff still using the old address remains visible as unavailable and blocks atomic save.
+- Removing the coordinator leaves the definition invalid until another direct Agent is explicitly assigned; it does not silently choose a replacement.
+- The one intentional delta from the accepted builder is structural absence of the Team library/group and Team member badge. No Team can be dragged or added into a Team.
 
 ## Handoff Authoring
 
@@ -107,7 +118,7 @@ therefore remains a concise From → To → When record.
 | Reorder Handoff/When | Item moves immediately | Ordered draft is visible |
 | Remove referenced member | Endpoint becomes unavailable on affected cards | Full save is blocked until explicit resolution |
 | Save definition | Full validation | One atomic local save success or understandable failure |
-| Select Team coordinator | Radio becomes checked | Exactly one direct Team Agent is coordinator |
+| Select Team coordinator | Selected Agent's switch becomes enabled and any previous coordinator switch clears | Exactly one direct Team Agent is coordinator |
 | Open Org launch | Start disabled | No implicit destination |
 | Select exact Team entry | Selection highlight and coordinator summary | Start enabled |
 | Expand/select task child | Disclosure and selection update | Runtime-only lineage is inspectable |
@@ -135,7 +146,7 @@ The visible structure and behavior remain unapproved until confirmation.
 
 ## Non-Normative Review Evidence
 
-All captures are under `review-evidence/rv-007/`:
+All captures are under `review-evidence/rv-008/`:
 
 | Review ID | Surface/state |
 | --- | --- |
@@ -152,19 +163,24 @@ All captures are under `review-evidence/rv-007/`:
 | `REV-AORG-013` | Team-local handoff editor |
 | `REV-AORG-014` | AgentOrg From/To/When detail without redundant counts or coordinator-delivery copy |
 | `REV-AORG-015` | Functional AgentOrg handoff authoring and save feedback |
+| `REV-AORG-016` | Narrow Agent-only Team builder with click fallback and selected Member Details |
+
+Source/baseline comparison evidence is in
+`review-evidence/rv-008/source-comparison/agent-team-builder-audit.md`.
 
 ## Review Questions
 
-1. Is the AgentOrg detail now clean enough: Description only, simple Members, and Handoffs reduced to From, To, and When?
-2. Does the functional Add/Edit/Delete/Reorder/Cancel/Save flow feel production-ready without unnecessary explanation?
-3. Do Team and Org surfaces remain visually consistent while staying conceptually separate?
-4. Is exact-entry launch and runtime/history clear enough for final approval?
+1. Does the Team builder now precisely preserve the product's drag/drop, click fallback, Canvas selection, and editable Member Details while removing only Team-in-Team membership?
+2. Is the AgentOrg detail now clean enough: Description only, simple Members, and Handoffs reduced to From, To, and When?
+3. Does the functional Add/Edit/Delete/Reorder/Cancel/Save flow feel production-ready without unnecessary explanation?
+4. Do Team and Org surfaces remain visually consistent while staying conceptually separate?
+5. Is exact-entry launch and runtime/history clear enough for final approval?
 
 ## Consistency Check
 
 - Corrected baseline accepted: `Yes`
 - Requirements authority: `RER-012`
-- RV-007 browser validation: `44/44 pass`, zero runtime errors
+- RV-008 browser validation: `48/48 pass`, zero runtime errors
 - Desktop and narrow validation: `Yes`
 - Explicit final approval: `No — pending`
 - Normative final references: `No — correctly pending approval`

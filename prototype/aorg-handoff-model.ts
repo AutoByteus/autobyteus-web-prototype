@@ -19,6 +19,12 @@ export type PrototypeHandoff = {
   when: string[];
 };
 
+export type TeamAgentPlacement = {
+  placementId: string;
+  agentId: string;
+  memberName: string;
+};
+
 const orgHandoffs: Record<string, PrototypeHandoff[]> = {
   'software-development-department': [
     {
@@ -167,6 +173,20 @@ export const buildTeamHandoffOptions = (agentIds: string[]): {
       group: 'Team Agents',
     };
   });
+  return { from: options, to: options };
+};
+
+export const buildTeamHandoffOptionsFromPlacements = (placements: TeamAgentPlacement[]): {
+  from: HandoffEndpointOption[];
+  to: HandoffEndpointOption[];
+} => {
+  const options = placements.map((placement) => ({
+    id: `team-local-agent:${placement.placementId}`,
+    kind: 'agent' as const,
+    label: placement.memberName,
+    address: `/${placement.memberName}`,
+    group: 'Team Agents',
+  }));
   return { from: options, to: options };
 };
 

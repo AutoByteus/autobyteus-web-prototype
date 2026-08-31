@@ -179,144 +179,205 @@
       </template>
 
       <template v-else>
-        <header class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <header class="mb-6 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
           <div>
-            <h1 class="text-3xl font-bold tracking-tight text-slate-950">{{ view === 'team-create' ? 'Create Agent Team' : 'Edit ' + selectedTeam.name }}</h1>
-            <p class="mt-2 text-base text-slate-600">Add Agents from the library to the canvas, then assign one coordinator.</p>
+            <h1 class="text-4xl font-semibold text-slate-900">{{ view === 'team-create' ? 'Create Agent Team' : 'Edit Agent Team' }}</h1>
+            <p class="mt-1 text-lg text-slate-600">{{ view === 'team-create' ? 'Drag from library to canvas, then assign a coordinator.' : `Update details for ${selectedTeam.name}.` }}</p>
           </div>
-          <button type="button" class="shrink-0 rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50" @click="applyTeamTemplate">Use Template</button>
+          <button v-if="view === 'team-create'" type="button" class="inline-flex items-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100" @click="applyTeamTemplate">Use Template</button>
         </header>
 
-        <form class="space-y-4" @submit.prevent="saveTeam">
-          <section class="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-            <div class="rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <h2 class="font-semibold text-slate-900">Basics</h2>
-              <div class="mt-4 grid gap-4 lg:grid-cols-[16rem_minmax(0,1fr)_minmax(0,1fr)]">
-                <div class="flex items-start gap-3">
-                  <span class="inline-flex h-24 w-24 flex-none items-center justify-center rounded-xl border border-slate-200 bg-slate-100 text-xl font-semibold text-slate-600">{{ teamInitials(formName || 'Agent Team') }}</span>
-                  <div class="pt-1">
-                    <button type="button" class="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700">Upload Avatar</button>
-                    <p class="mt-2 text-xs text-slate-500">PNG/JPG, square recommended</p>
+        <form class="rounded-xl border border-slate-200 bg-white shadow-sm" data-test="flat-team-definition-form" @submit.prevent="saveTeam">
+          <div class="space-y-6 p-6">
+            <section class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+              <h2 class="text-base font-semibold text-slate-900">Basics</h2>
+              <div class="mt-3 grid grid-cols-1 gap-4 lg:grid-cols-[16rem_minmax(0,1fr)_minmax(0,1fr)] lg:items-start">
+                <div>
+                  <div class="flex items-start gap-3">
+                    <span class="inline-flex h-24 w-24 flex-none items-center justify-center rounded-xl border border-slate-200 bg-slate-100 text-xl font-semibold text-slate-600">{{ teamInitials(formName || 'Agent Team') }}</span>
+                    <div class="space-y-2">
+                      <button type="button" class="inline-flex items-center rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 hover:bg-blue-100">Upload Avatar</button>
+                      <p class="text-xs text-slate-500">PNG/JPG, square recommended</p>
+                    </div>
                   </div>
                 </div>
                 <label class="block">
                   <span class="text-sm font-medium text-slate-700">Team Name</span>
-                  <input v-model="formName" required class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
-                  <span class="mt-1 block text-xs text-slate-500">Member names use their Agent definition names.</span>
+                  <input v-model="formName" required class="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="e.g., Content Production Unit">
+                  <span class="mt-1 block text-xs text-slate-500">Member names auto-fill from dragged Agent names.</span>
                 </label>
                 <label class="block">
                   <span class="text-sm font-medium text-slate-700">Team Description</span>
-                  <textarea v-model="formDescription" rows="3" class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"></textarea>
-                </label>
-                <label class="block lg:col-span-3">
-                  <span class="text-sm font-medium text-slate-700">Category</span>
-                  <select v-model="formCategory" class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20">
-                    <option>Product</option><option>Engineering</option><option>Operations</option>
-                  </select>
-                </label>
-                <label class="block lg:col-span-3">
-                  <span class="text-sm font-medium text-slate-700">Instructions</span>
-                  <textarea v-model="formInstructions" rows="4" class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 font-mono text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"></textarea>
+                  <textarea v-model="formDescription" required rows="2" class="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="Describe the Team's purpose and goals…" />
                 </label>
               </div>
-            </div>
+              <label class="mt-3 block">
+                <span class="text-sm font-medium text-slate-700">Category</span>
+                <input v-model="formCategory" class="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="e.g., software-engineering">
+              </label>
+              <label class="mt-3 block">
+                <span class="text-sm font-medium text-slate-700">Instructions</span>
+                <textarea v-model="formInstructions" required rows="8" class="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 font-mono text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="Enter the Team coordinator's instructions…" />
+              </label>
+            </section>
 
-            <div class="mt-6 grid gap-4 xl:grid-cols-[18rem_minmax(0,1fr)_18rem]">
-              <section class="rounded-xl border border-slate-200 bg-white p-3">
-                <h2 class="font-semibold text-slate-900">Agent Library</h2>
-                <label class="relative mt-3 block">
+            <section class="grid grid-cols-1 gap-4 xl:grid-cols-[18rem_minmax(0,1fr)_16rem]" data-test="flat-team-builder">
+              <aside class="rounded-lg border border-slate-200 bg-white p-3" data-test="agent-library">
+                <h2 class="text-sm font-semibold text-slate-900">Agent Library</h2>
+                <label class="relative mt-2 block">
                   <span class="sr-only">Search Agents</span>
-                  <Icon icon="heroicons:magnifying-glass-20-solid" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-                  <input v-model="agentSearch" class="w-full rounded-md border border-slate-300 py-2 pl-9 pr-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20" placeholder="Search agents">
+                  <Icon icon="heroicons:magnifying-glass-20-solid" class="pointer-events-none absolute left-2 top-2.5 h-4 w-4 text-slate-400" />
+                  <input v-model="agentSearch" type="text" class="block w-full rounded-md border border-slate-300 bg-white py-2 pl-8 pr-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="Search agents…">
                 </label>
-                <p class="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-500">My Agents</p>
-                <div class="mt-2 space-y-2">
-                  <button
-                    v-for="agent in libraryAgents"
-                    :key="agent.id"
-                    type="button"
-                    class="flex w-full items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-left hover:bg-slate-50 disabled:cursor-default disabled:bg-slate-50"
-                    :disabled="formAgents.includes(agent.id)"
-                    :aria-label="formAgents.includes(agent.id) ? agent.name + ' added' : 'Add ' + agent.name"
-                    @click="addAgent(agent.id)"
-                  >
-                    <span class="inline-flex h-7 w-7 flex-none items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-blue-700">{{ agent.initials }}</span>
-                    <span class="min-w-0 flex-1 truncate text-sm text-slate-700">{{ agent.name }}</span>
-                    <span class="text-[0.625rem] font-bold uppercase text-blue-700">{{ formAgents.includes(agent.id) ? 'Added' : 'Add' }}</span>
-                  </button>
-                </div>
-                <p class="mt-4 text-xs leading-5 text-slate-500">Only Agent definitions are available. Teams and Orgs cannot be added as members.</p>
-              </section>
-
-              <section class="rounded-xl border border-slate-200 bg-white p-3">
-                <div class="flex items-center justify-between gap-3">
-                  <div>
-                    <h2 class="font-semibold text-slate-900">Team Canvas</h2>
-                    <p class="mt-1 text-xs text-slate-500">Added from Agent Library → Canvas</p>
-                  </div>
-                  <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
-                    <span class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white font-semibold">{{ teamInitials(formName || 'Agent Team') }}</span>
-                    {{ formName || 'Untitled Team' }}
-                  </span>
-                </div>
-                <div class="mt-4 grid grid-cols-[minmax(0,1fr)_7rem_2.5rem] gap-3 border-b border-slate-200 pb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  <span>Agent</span><span class="text-center">Coordinator</span><span></span>
-                </div>
-                <ul v-if="formAgents.length" class="divide-y divide-slate-100">
-                  <li v-for="agentId in formAgents" :key="agentId" class="grid grid-cols-[minmax(0,1fr)_7rem_2.5rem] items-center gap-3 py-3">
-                    <div class="flex min-w-0 items-center gap-3">
-                      <span class="inline-flex h-9 w-9 flex-none items-center justify-center rounded-full bg-blue-50 text-xs font-semibold text-blue-700">{{ agentById(agentId).initials }}</span>
-                      <div class="min-w-0"><p class="truncate text-sm font-semibold text-slate-900">{{ agentById(agentId).name }}</p><p class="truncate text-xs text-slate-500">Agent definition</p></div>
+                <div class="mt-3 max-h-[26rem] overflow-y-auto pr-1">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">My Agents</p>
+                  <div class="mt-2 space-y-2">
+                    <div
+                      v-for="agent in libraryAgents"
+                      :key="agent.id"
+                      draggable="true"
+                      class="flex items-center justify-between gap-2 rounded-md border border-slate-200 bg-white px-2 py-2 text-sm text-slate-800"
+                      :data-test="`team-library-agent-${agent.id}`"
+                      @dragstart="handleLibraryDragStart($event, agent.id)"
+                      @dragend="draggedAgentId = ''"
+                    >
+                      <button type="button" class="flex min-w-0 items-center gap-2 text-left" :aria-label="`Add ${agent.name}`" @click="addAgent(agent.id)">
+                        <span class="text-slate-400" aria-hidden="true">⋮⋮</span>
+                        <span class="truncate font-medium">{{ agent.name }}</span>
+                      </button>
+                      <span class="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-700">AGENT</span>
                     </div>
-                    <label class="flex justify-center"><input v-model="formCoordinator" type="radio" :value="agentId" class="h-4 w-4 border-slate-300 text-blue-600 focus:ring-blue-500" :aria-label="'Make ' + agentById(agentId).name + ' coordinator'"></label>
-                    <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:bg-red-50 hover:text-red-600 disabled:opacity-40" :disabled="formAgents.length <= 1" :aria-label="'Remove ' + agentById(agentId).name" @click="removeAgent(agentId)"><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" /></button>
-                  </li>
-                </ul>
-                <div v-else class="mt-4 rounded-lg border border-dashed border-slate-300 px-4 py-10 text-center text-sm text-slate-500">Add Agents from the library to build your Team.</div>
-              </section>
-
-              <section class="rounded-xl border border-slate-200 bg-white p-3">
-                <h2 class="font-semibold text-slate-900">Member Details</h2>
-                <div class="mt-4 rounded-lg border border-slate-200 p-4">
-                  <div class="flex items-center gap-3">
-                    <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-blue-700">{{ agentById(formCoordinator).initials }}</span>
-                    <div class="min-w-0"><p class="truncate text-sm font-semibold text-slate-900">{{ agentById(formCoordinator).name }}</p><p class="text-xs text-slate-500">Selected coordinator</p></div>
+                    <p v-if="libraryAgents.length === 0" class="text-xs text-slate-400">No Agents found.</p>
                   </div>
-                  <dl class="mt-4 space-y-3 text-sm">
-                    <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Type</dt><dd class="mt-1 text-slate-800">Agent</dd></div>
-                    <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Role</dt><dd class="mt-1 text-slate-800">Coordinator</dd></div>
-                    <div><dt class="text-xs font-semibold uppercase tracking-wide text-slate-500">Status</dt><dd class="mt-1 font-medium text-emerald-700">Enabled</dd></div>
-                  </dl>
                 </div>
+                <p class="mt-3 text-xs text-slate-500">Drag Agents from this library into Team Canvas.</p>
+              </aside>
+
+              <section
+                class="rounded-lg border border-slate-200 bg-white p-3"
+                data-test="team-canvas"
+                @drop.prevent="handleCanvasDrop"
+                @dragover.prevent="isCanvasDragOver = true"
+                @dragleave="isCanvasDragOver = false"
+              >
+                <div class="flex items-center justify-between gap-2">
+                  <h2 class="text-sm font-semibold text-slate-900">Team Canvas</h2>
+                  <div class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-xs text-slate-700">
+                    <span class="inline-flex h-6 w-6 items-center justify-center rounded-md bg-slate-200 text-[10px] font-semibold text-slate-700">{{ teamInitials(formName || 'Agent Team') }}</span>
+                    <span class="max-w-[10rem] truncate">{{ formName || 'Untitled Team' }}</span>
+                  </div>
+                </div>
+                <p class="mt-2 text-xs text-slate-500">Dragged from Library → Canvas</p>
+
+                <div class="mt-3 space-y-2">
+                  <article
+                    v-for="member in formMembers"
+                    :key="member.placementId"
+                    class="cursor-pointer rounded-md border p-3 shadow-sm"
+                    :class="selectedPlacementId === member.placementId ? 'border-blue-300 bg-blue-50/40' : 'border-slate-200 bg-white'"
+                    :data-test="`team-canvas-member-${member.placementId}`"
+                    :aria-selected="selectedPlacementId === member.placementId"
+                    @click="selectMember(member.placementId)"
+                  >
+                    <div class="flex items-start justify-between gap-3">
+                      <div class="min-w-0">
+                        <p class="truncate text-sm font-semibold text-slate-900">{{ member.memberName }}</p>
+                        <p class="truncate text-xs text-slate-500">Source: {{ agentById(member.agentId).name }}</p>
+                      </div>
+                      <div class="flex shrink-0 items-center gap-2">
+                        <span class="rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-700">AGENT</span>
+                        <div class="inline-flex items-center gap-2 text-xs text-slate-600" @click.stop>
+                          <span>Coordinator</span>
+                          <button
+                            type="button"
+                            role="switch"
+                            :aria-checked="formCoordinatorPlacementId === member.placementId"
+                            :aria-label="`Toggle coordinator for ${member.memberName}`"
+                            class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+                            :class="formCoordinatorPlacementId === member.placementId ? 'bg-blue-600' : 'bg-slate-300'"
+                            @click.stop="toggleCoordinator(member.placementId)"
+                          >
+                            <span aria-hidden="true" class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform" :class="formCoordinatorPlacementId === member.placementId ? 'translate-x-4' : 'translate-x-0.5'" />
+                          </button>
+                        </div>
+                        <button type="button" class="rounded-md p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700" :aria-label="`Remove ${member.memberName}`" @click.stop="removeAgent(member.placementId)">✕</button>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+
+                <div
+                  class="mt-3 rounded-md border border-dashed p-6 text-center text-sm"
+                  :class="isCanvasDragOver ? 'border-blue-400 bg-blue-50 text-blue-700' : 'border-slate-300 bg-slate-50 text-slate-500'"
+                  data-test="team-canvas-drop-target"
+                >Drop Agents here to build your Team</div>
+                <p v-if="memberError" class="mt-2 text-xs font-medium text-red-600" role="alert">{{ memberError }}</p>
               </section>
-            </div>
-          </section>
 
-          <section class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-            <h2 class="font-semibold text-slate-900">LLM config</h2>
-            <p class="mt-1 text-sm text-slate-500">Optional runtime, model, and LLM settings.</p>
-            <div class="mt-4 grid gap-4 sm:grid-cols-2">
-              <label><span class="text-sm font-medium text-slate-700">Runtime</span><select class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"><option>Choose when launching</option><option>AutoByteus</option></select></label>
-              <label><span class="text-sm font-medium text-slate-700">Model</span><select class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"><option>Select a model</option></select></label>
-            </div>
-          </section>
+              <aside class="rounded-lg border border-slate-200 bg-white p-3" data-test="member-details">
+                <h2 class="text-sm font-semibold text-slate-900">Member Details</h2>
+                <template v-if="selectedMember">
+                  <div class="mt-3 space-y-3">
+                    <p class="text-xs text-slate-500">Member names auto-fill from the dragged Agent name.</p>
+                    <label class="block">
+                      <span class="text-xs font-medium text-slate-600">Member Name</span>
+                      <input :value="selectedMember.memberName" type="text" class="mt-1 block w-full rounded-md border border-slate-300 px-2 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" data-test="member-name-input" @input="updateSelectedMemberName(($event.target as HTMLInputElement).value)">
+                    </label>
+                    <div><p class="text-xs font-medium text-slate-600">Type</p><p class="mt-1 text-sm text-slate-900">Agent</p></div>
+                    <div><p class="text-xs font-medium text-slate-600">Source</p><p class="mt-1 break-words text-sm text-slate-900">{{ agentById(selectedMember.agentId).name }}</p></div>
+                    <div><p class="text-xs font-medium text-slate-600">Scope</p><p class="mt-1 text-sm text-slate-900">Shared</p></div>
+                    <div>
+                      <p class="text-xs font-medium text-slate-600">Coordinator</p>
+                      <div class="mt-1 inline-flex items-center gap-2 text-sm text-slate-800">
+                        <span>{{ formCoordinatorPlacementId === selectedMember.placementId ? 'Enabled' : 'Disabled' }}</span>
+                        <button
+                          type="button"
+                          role="switch"
+                          :aria-checked="formCoordinatorPlacementId === selectedMember.placementId"
+                          :aria-label="`Toggle coordinator for selected member ${selectedMember.memberName}`"
+                          class="relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+                          :class="formCoordinatorPlacementId === selectedMember.placementId ? 'bg-blue-600' : 'bg-slate-300'"
+                          @click="toggleCoordinator(selectedMember.placementId)"
+                        >
+                          <span aria-hidden="true" class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform" :class="formCoordinatorPlacementId === selectedMember.placementId ? 'translate-x-4' : 'translate-x-0.5'" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <p v-else class="mt-3 text-sm text-slate-500">Select a member in Team Canvas to edit details.</p>
+              </aside>
+            </section>
 
-          <HandoffManager ref="teamHandoffManager" v-model="formTeamHandoffs" :from-options="formTeamHandoffOptions.from" :to-options="formTeamHandoffOptions.to" mode="edit" scope="team" />
-          <p v-if="saveError" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700" role="alert">{{ saveError }}</p>
+            <section class="rounded-xl border border-slate-200 bg-white p-5">
+              <h2 class="text-lg font-semibold text-slate-900">LLM config</h2>
+              <p class="mt-1 text-sm text-slate-500">Optional runtime, model, and LLM settings.</p>
+              <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                <label><span class="text-sm font-medium text-slate-700">Runtime</span><select class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"><option>Choose when launching</option><option>AutoByteus</option></select></label>
+                <label><span class="text-sm font-medium text-slate-700">Model</span><select class="mt-1.5 w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm"><option>Select a model</option></select></label>
+              </div>
+            </section>
 
-          <footer class="flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-            <div class="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">
-              <span :class="formName.trim() ? 'text-emerald-700' : 'text-slate-500'">{{ formName.trim() ? '●' : '○' }} Team Name</span>
-              <span :class="formAgents.length ? 'text-emerald-700' : 'text-slate-500'">{{ formAgents.length ? '●' : '○' }} At least 1 member</span>
-              <span :class="formCoordinator ? 'text-emerald-700' : 'text-slate-500'">{{ formCoordinator ? '●' : '○' }} Coordinator</span>
-            </div>
-            <div class="flex justify-end gap-3">
-              <button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50" @click="go('team-list')">Cancel</button>
-              <button type="submit" class="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700">{{ view === 'team-create' ? 'Create Team' : 'Save Changes' }}</button>
+            <HandoffManager ref="teamHandoffManager" v-model="formTeamHandoffs" :from-options="formTeamHandoffOptions.from" :to-options="formTeamHandoffOptions.to" mode="edit" scope="team" />
+            <p v-if="saveError" class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700" role="alert">{{ saveError }}</p>
+          </div>
+
+          <footer class="border-t border-slate-200 bg-slate-50 px-6 py-4">
+            <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <div class="flex flex-wrap items-center gap-3 text-xs font-medium">
+                <span :class="formName.trim() ? 'text-emerald-700' : 'text-slate-500'">{{ formName.trim() ? '✓' : '○' }} Team Name {{ formName.trim() ? 'set' : 'required' }}</span>
+                <span :class="formMembers.length ? 'text-emerald-700' : 'text-slate-500'">{{ formMembers.length ? '✓' : '○' }} At least 1 member {{ formMembers.length ? 'added' : 'required' }}</span>
+                <span :class="formCoordinatorPlacementId ? 'text-emerald-700' : 'text-slate-500'">{{ formCoordinatorPlacementId ? '✓' : '○' }} Coordinator {{ formCoordinatorPlacementId ? 'assigned' : 'required' }}</span>
+              </div>
+              <div class="flex items-center justify-end gap-2">
+                <button type="button" class="inline-flex items-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100" @click="go(view === 'team-create' ? 'team-list' : 'team-detail', view === 'team-edit' ? selectedTeam.id : undefined)">Cancel</button>
+                <button type="submit" class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60">{{ view === 'team-create' ? 'Create Team' : 'Save Changes' }}</button>
+              </div>
             </div>
           </footer>
-          <p v-if="saved" class="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800" role="status">Saved locally for this prototype.</p>
         </form>
+
+        <div v-if="saved" class="fixed bottom-5 right-5 z-50 rounded-lg bg-green-500 p-4 text-white shadow-lg" role="status">Saved locally for this prototype.</div>
       </template>
     </div>
   </div>
@@ -328,7 +389,14 @@ import { Icon } from '@iconify/vue';
 import { useRoute, useRouter } from 'vue-router';
 import HandoffManager from '~/components/handoffs/HandoffManager.vue';
 import { agents, flatTeams, agentById, teamById } from '~/prototype/aorg-flat-team-fixtures';
-import { buildTeamHandoffOptions, cloneHandoffs, teamHandoffsFor, type PrototypeHandoff } from '~/prototype/aorg-handoff-model';
+import {
+  buildTeamHandoffOptions,
+  buildTeamHandoffOptionsFromPlacements,
+  cloneHandoffs,
+  teamHandoffsFor,
+  type PrototypeHandoff,
+  type TeamAgentPlacement,
+} from '~/prototype/aorg-handoff-model';
 import { AGENT_ORG_PROTOTYPE_REVIEW_KEY } from '~/composables/useAgentOrgPrototypeReview';
 
 type TeamView = 'team-list' | 'team-detail' | 'team-create' | 'team-edit';
@@ -339,7 +407,11 @@ const search = ref('');
 const reloading = ref(false);
 const saved = ref(false);
 const saveError = ref('');
+const memberError = ref('');
 const agentSearch = ref('');
+const isCanvasDragOver = ref(false);
+const draggedAgentId = ref('');
+let placementSequence = 0;
 const teamHandoffManager = ref<HandoffManagerExpose | null>(null);
 const savedTeamHandoffs = ref<Record<string, PrototypeHandoff[]>>({});
 
@@ -373,36 +445,62 @@ const formName = ref(selectedTeam.value.name);
 const formCategory = ref(selectedTeam.value.category);
 const formDescription = ref(selectedTeam.value.description);
 const formInstructions = ref('Coordinate work through the selected Agent coordinator.');
-const formAgents = ref([...selectedTeam.value.agents]);
-const formCoordinator = ref(selectedTeam.value.coordinatorId);
+const formMembers = ref<TeamAgentPlacement[]>([]);
+const formCoordinatorPlacementId = ref('');
+const selectedPlacementId = ref<string | null>(null);
 const formTeamHandoffs = ref<PrototypeHandoff[]>([]);
-const formTeamHandoffOptions = computed(() => buildTeamHandoffOptions(formAgents.value));
+const formTeamHandoffOptions = computed(() => buildTeamHandoffOptionsFromPlacements(formMembers.value));
+const selectedMember = computed(() => formMembers.value.find((member) => member.placementId === selectedPlacementId.value) ?? null);
 const libraryAgents = computed(() => {
   const query = agentSearch.value.trim().toLowerCase();
   return query ? agents.filter((agent) => `${agent.name} ${agent.description}`.toLowerCase().includes(query)) : agents;
 });
 
+const buildUniqueMemberName = (agentId: string): string => {
+  const base = agentById(agentId).name.trim().replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '_').replace(/_+/g, '_').replace(/^_+|_+$/g, '').toLowerCase() || 'member';
+  const used = new Set(formMembers.value.map((member) => member.memberName));
+  if (!used.has(base)) return base;
+  let suffix = 2;
+  while (used.has(`${base}_${suffix}`)) suffix += 1;
+  return `${base}_${suffix}`;
+};
+
+const newPlacement = (agentId: string, memberName?: string): TeamAgentPlacement => ({
+  placementId: `placement-${++placementSequence}`,
+  agentId,
+  memberName: memberName ?? buildUniqueMemberName(agentId),
+});
+
+const loadFixtureMembers = (): void => {
+  formMembers.value = selectedTeam.value.agents.map((agentId) => newPlacement(agentId, agentById(agentId).name));
+  formCoordinatorPlacementId.value = formMembers.value.find((member) => member.agentId === selectedTeam.value.coordinatorId)?.placementId ?? '';
+  selectedPlacementId.value = formMembers.value[0]?.placementId ?? null;
+};
+
 watch([view, selectedTeam], () => {
   if (view.value === 'team-create') {
-    formName.value = 'Customer Insight Team';
-    formCategory.value = 'Product';
-    formDescription.value = 'Synthesizes customer evidence into actionable product findings.';
-    formInstructions.value = 'Coordinate research and prototype work through the selected Agent coordinator.';
-    formAgents.value = ['product-prototyper', 'requirements-engineer'];
-    formCoordinator.value = 'product-prototyper';
+    formName.value = '';
+    formCategory.value = '';
+    formDescription.value = '';
+    formInstructions.value = '';
+    formMembers.value = [];
+    formCoordinatorPlacementId.value = '';
+    selectedPlacementId.value = null;
     formTeamHandoffs.value = [];
   } else {
     formName.value = selectedTeam.value.name;
     formCategory.value = selectedTeam.value.category;
     formDescription.value = selectedTeam.value.description;
     formInstructions.value = 'Coordinate work through the selected Agent coordinator while preserving its handoff rules.';
-    formAgents.value = [...selectedTeam.value.agents];
-    formCoordinator.value = selectedTeam.value.coordinatorId;
+    loadFixtureMembers();
     formTeamHandoffs.value = cloneHandoffs(savedTeamHandoffs.value[selectedTeam.value.id] ?? teamHandoffsFor(selectedTeam.value.id));
   }
   saved.value = false;
   saveError.value = '';
+  memberError.value = '';
   agentSearch.value = '';
+  isCanvasDragOver.value = false;
+  draggedAgentId.value = '';
 }, { immediate: true });
 
 const applyTeamTemplate = (): void => {
@@ -410,9 +508,13 @@ const applyTeamTemplate = (): void => {
   formCategory.value = 'Product';
   formDescription.value = 'Synthesizes customer evidence into actionable product findings.';
   formInstructions.value = 'Coordinate research and synthesis through the selected Agent coordinator.';
-  formAgents.value = ['product-prototyper', 'requirements-engineer'];
-  formCoordinator.value = 'product-prototyper';
+  formMembers.value = [];
+  const coordinator = newPlacement('product-prototyper');
+  formMembers.value.push(coordinator, newPlacement('requirements-engineer'));
+  formCoordinatorPlacementId.value = coordinator.placementId;
+  selectedPlacementId.value = coordinator.placementId;
   formTeamHandoffs.value = [];
+  memberError.value = '';
 };
 
 const go = async (nextView: TeamView, id?: string): Promise<void> => {
@@ -433,13 +535,69 @@ const openAgentDetails = async (id: string): Promise<void> => {
   });
 };
 const addAgent = (id: string): void => {
-  if (!formAgents.value.includes(id)) formAgents.value.push(id);
+  if (!agents.some((agent) => agent.id === id)) return;
+  const placement = newPlacement(id);
+  formMembers.value.push(placement);
+  selectedPlacementId.value = placement.placementId;
+  if (!formCoordinatorPlacementId.value) formCoordinatorPlacementId.value = placement.placementId;
+  memberError.value = '';
+  saved.value = false;
 };
-const removeAgent = (id: string): void => {
-  formAgents.value = formAgents.value.filter((candidate) => candidate !== id);
-  if (formCoordinator.value === id) formCoordinator.value = formAgents.value[0] || '';
+const handleLibraryDragStart = (event: DragEvent, agentId: string): void => {
+  draggedAgentId.value = agentId;
+  if (!event.dataTransfer) return;
+  event.dataTransfer.effectAllowed = 'copy';
+  event.dataTransfer.setData('application/x-autobyteus-agent-id', agentId);
+};
+const handleCanvasDrop = (event: DragEvent): void => {
+  isCanvasDragOver.value = false;
+  const agentId = event.dataTransfer?.getData('application/x-autobyteus-agent-id') || draggedAgentId.value;
+  draggedAgentId.value = '';
+  if (agentId) addAgent(agentId);
+};
+const selectMember = (placementId: string): void => {
+  selectedPlacementId.value = placementId;
+};
+const removeAgent = (placementId: string): void => {
+  const index = formMembers.value.findIndex((member) => member.placementId === placementId);
+  if (index < 0) return;
+  formMembers.value.splice(index, 1);
+  if (formCoordinatorPlacementId.value === placementId) formCoordinatorPlacementId.value = '';
+  if (selectedPlacementId.value === placementId) selectedPlacementId.value = formMembers.value[Math.max(0, index - 1)]?.placementId ?? null;
+  saved.value = false;
+};
+const toggleCoordinator = (placementId: string): void => {
+  formCoordinatorPlacementId.value = formCoordinatorPlacementId.value === placementId ? '' : placementId;
+  memberError.value = '';
+  saved.value = false;
+};
+const updateSelectedMemberName = (value: string): void => {
+  if (!selectedMember.value) return;
+  selectedMember.value.memberName = value;
+  memberError.value = '';
+  saved.value = false;
 };
 const saveTeam = (): void => {
+  const normalizedNames = formMembers.value.map((member) => member.memberName.trim());
+  if (formMembers.value.length === 0) {
+    memberError.value = 'Add at least one Agent to the Team Canvas.';
+  } else if (normalizedNames.some((name) => !name)) {
+    memberError.value = 'Every member needs a name.';
+  } else if (new Set(normalizedNames).size !== normalizedNames.length) {
+    memberError.value = 'Member names must be unique.';
+  } else if (!formMembers.value.some((member) => member.placementId === formCoordinatorPlacementId.value)) {
+    memberError.value = 'Assign one Agent coordinator.';
+  } else {
+    memberError.value = '';
+  }
+  if (memberError.value) {
+    saved.value = false;
+    saveError.value = memberError.value;
+    return;
+  }
+  formMembers.value.forEach((member, index) => {
+    member.memberName = normalizedNames[index] ?? member.memberName;
+  });
   if (!teamHandoffManager.value?.validateAll()) {
     saved.value = false;
     saveError.value = 'Resolve the highlighted handoffs before saving this Team.';
