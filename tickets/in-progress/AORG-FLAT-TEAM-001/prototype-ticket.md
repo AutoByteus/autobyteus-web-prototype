@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `AORG-FLAT-TEAM-001`
 - Title: AgentOrg and flat AgentTeam product experience
-- Status: `Awaiting User Review`
+- Status: `In Progress — Requirement Impact`
 - Mode: `Product Experience Prototyping`
 - Related requirements revision: `RER-010`; Requirements handoff commit `376ba649a`; Architecture context `AD-REV-001` at `36bc02deca363798b6eda878e5eb4850e624da6f`
 - Related IDs: `BEH-001`, `BEH-004`, `BEH-006`; `REQ-001`–`REQ-004`, `REQ-011`, `REQ-016`, `REQ-018`, `REQ-019`; `AC-001`, `AC-002`, `AC-007`, `AC-011`, `AC-013`, `AC-014`; `SCN-001`, `SCN-002`, `SCN-006`, `SCN-007`
@@ -57,8 +57,8 @@
 
 ## Outcome And Handoff
 
-- Current outcome: `Awaiting User Review` — baseline prerequisite is accepted and published to `origin/personal`; `RV-006` keeps Team and Org surfaces self-contained, removes Team-to-Org promotion, aligns the Org catalog/detail/authoring/launch screens with the baseline neutral-and-blue product language, and removes repeated coordinator/structure explanation while preserving required behavior. It is not approved or normative.
-- Next expected action: User reviews the refreshed Team detail and AgentOrg catalog/detail/create/launch surfaces on port `4194`, then explicitly approves the candidate or requests focused revisions. Final `VIS-*` references, approved `ui-ux-spec.md`, completion integration, and Requirements Engineering handoff remain pending.
+- Current outcome: `Requirement Impact` — the user confirmed that AgentOrg handoffs must present explicit From, To, and When meaning and that edit requires a real Add rule interaction. The current condensed cards and inert action are not approval-ready. `RV-006` remains the last committed review revision; an uncommitted `RV-007` density cleanup is preserved while handoff behavior is paused for Requirements Engineering clarification.
+- Next expected action: Requirements Engineering answers `RIF-AORG-001` with the canonical From/To/When display and Add/Edit/Delete/Reorder rule-authoring behavior. Product Design then implements and validates `RV-007` before returning to user review. Final `VIS-*` references and completion remain pending.
 - Integration result: Baseline correction `Completed`; future-state ticket integration remains `Pending` until user approval and finalization.
 - Cleanup result: Baseline-correction worktree/process/branch cleaned safely. Retain the active AORG worktree and port `4194` preview through user review and finalization.
-- Handoff result: `Baseline Needed` route completed through `/product_design_prototyping_team/prototype_bootstrapper`; delegated task `task_dd50e47ec3c64e659cc9fac44ffb98a7` returned and Product acceptance succeeded. Next handoff is pending a review-ready or terminal Product Experience classification.
+- Handoff result: Baseline route completed previously. `Requirement Impact` handoff for `RIF-AORG-001` is pending delivery to the exact rule-configured Requirements Engineering recipient.
