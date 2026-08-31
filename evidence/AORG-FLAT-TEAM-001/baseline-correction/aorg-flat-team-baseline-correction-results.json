@@ -1,0 +1,1326 @@
+[
+  {
+    "id": "UXV-CORR-TASK-AGENT-001",
+    "inventoryId": "UXB-CORR-TASK-AGENT-001",
+    "scenario": "workspace_team_task_agent",
+    "name": "Transient Task Agent row nested beneath its logical member",
+    "action": "task-agent-visible",
+    "source": {
+      "id": "UXV-CORR-TASK-AGENT-001",
+      "inventoryId": "UXB-CORR-TASK-AGENT-001",
+      "name": "Transient Task Agent row nested beneath its logical member",
+      "scenario": "workspace_team_task_agent",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/source/UXV-CORR-TASK-AGENT-001-source.png",
+      "screenshotSha256": "4627bd0298a00ebcf39261db521b697dfc4446a3ee1847b816ace5518760ef3e",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "transientKinds": [
+          "task_agent"
+        ],
+        "transientTexts": [
+          "Task: Audit prototype dependency licenses"
+        ],
+        "taskAgent": {
+          "text": "Task: Audit prototype dependency licenses",
+          "kind": "task_agent",
+          "memberAddress": "/product-review/evidence-writer",
+          "title": "Temporary task execution",
+          "ariaLabel": "Task: Audit prototype dependency licenses. /product-review/evidence-writer",
+          "ariaCurrent": null,
+          "role": "button",
+          "box": {
+            "x": 48,
+            "y": 461.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "12px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgba(238, 242, 255, 0.4)",
+            "color": "rgb(102, 102, 102)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "none",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "taskTeam": null,
+        "taskTeamChild": null,
+        "focusedAgentRunId": "team-member-reviewer",
+        "eventMonitorText": "C\ncoordinator\n\nI delegated the visual comparison and am reviewing the result.\n\n48 tokens / $0.0005\nTotal: 48 tokens / $0.0005\nContext Files (0)\n(drag, paste, or upload)",
+        "exactConversation": {
+          "taskAgent": 0,
+          "taskTeamChild": 0
+        }
+      },
+      "semanticSha256": "ffc144af94fa557d87fcabfde7015e3f08d65b2f14d6b10f06f525388fd82187",
+      "geometry": {
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "width": 988,
+          "height": 900
+        },
+        "leftPanel": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "eventMonitor": {
+          "x": 323,
+          "y": 57,
+          "width": 665,
+          "height": 843
+        }
+      },
+      "geometrySha256": "dbbf058de1fd411b8988feb3c474902ae21905382f5a50fd6e546dfa2c8ffa9f",
+      "actionResult": {
+        "writerExpanded": "true",
+        "transientKinds": [
+          "task_agent"
+        ],
+        "taskAgentSelected": null,
+        "focusedAgentRunId": "team-member-reviewer",
+        "dedicatedConversationVisible": false
+      },
+      "actionResultSha256": "07f174510416d0dd24ab62d16c2fde589f0a61eb60e4fa8bd46f927a72e6535e",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-TASK-AGENT-001",
+      "inventoryId": "UXB-CORR-TASK-AGENT-001",
+      "name": "Transient Task Agent row nested beneath its logical member",
+      "scenario": "workspace_team_task_agent",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/prototype/UXV-CORR-TASK-AGENT-001-prototype.png",
+      "screenshotSha256": "4627bd0298a00ebcf39261db521b697dfc4446a3ee1847b816ace5518760ef3e",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "transientKinds": [
+          "task_agent"
+        ],
+        "transientTexts": [
+          "Task: Audit prototype dependency licenses"
+        ],
+        "taskAgent": {
+          "text": "Task: Audit prototype dependency licenses",
+          "kind": "task_agent",
+          "memberAddress": "/product-review/evidence-writer",
+          "title": "Temporary task execution",
+          "ariaLabel": "Task: Audit prototype dependency licenses. /product-review/evidence-writer",
+          "ariaCurrent": null,
+          "role": "button",
+          "box": {
+            "x": 48,
+            "y": 461.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "12px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgba(238, 242, 255, 0.4)",
+            "color": "rgb(102, 102, 102)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "none",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "taskTeam": null,
+        "taskTeamChild": null,
+        "focusedAgentRunId": "team-member-reviewer",
+        "eventMonitorText": "C\ncoordinator\n\nI delegated the visual comparison and am reviewing the result.\n\n48 tokens / $0.0005\nTotal: 48 tokens / $0.0005\nContext Files (0)\n(drag, paste, or upload)",
+        "exactConversation": {
+          "taskAgent": 0,
+          "taskTeamChild": 0
+        }
+      },
+      "semanticSha256": "ffc144af94fa557d87fcabfde7015e3f08d65b2f14d6b10f06f525388fd82187",
+      "geometry": {
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "width": 988,
+          "height": 900
+        },
+        "leftPanel": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "eventMonitor": {
+          "x": 323,
+          "y": 57,
+          "width": 665,
+          "height": 843
+        }
+      },
+      "geometrySha256": "dbbf058de1fd411b8988feb3c474902ae21905382f5a50fd6e546dfa2c8ffa9f",
+      "actionResult": {
+        "writerExpanded": "true",
+        "transientKinds": [
+          "task_agent"
+        ],
+        "taskAgentSelected": null,
+        "focusedAgentRunId": "team-member-reviewer",
+        "dedicatedConversationVisible": false
+      },
+      "actionResultSha256": "07f174510416d0dd24ab62d16c2fde589f0a61eb60e4fa8bd46f927a72e6535e",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 988,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 889200,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/comparison/UXV-CORR-TASK-AGENT-001-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  },
+  {
+    "id": "UXV-CORR-TASK-AGENT-002",
+    "inventoryId": "UXB-CORR-TASK-AGENT-001",
+    "scenario": "workspace_team_task_agent",
+    "name": "Task Agent selection focuses the exact temporary AgentRun conversation",
+    "action": "task-agent-selected",
+    "source": {
+      "id": "UXV-CORR-TASK-AGENT-002",
+      "inventoryId": "UXB-CORR-TASK-AGENT-001",
+      "name": "Task Agent selection focuses the exact temporary AgentRun conversation",
+      "scenario": "workspace_team_task_agent",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/source/UXV-CORR-TASK-AGENT-002-source.png",
+      "screenshotSha256": "752450f7ef4a903188507b53be43374182f70bb25d677a620fc3fa340e3525f6",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "transientKinds": [
+          "task_agent"
+        ],
+        "transientTexts": [
+          "Task: Audit prototype dependency licenses"
+        ],
+        "taskAgent": {
+          "text": "Task: Audit prototype dependency licenses",
+          "kind": "task_agent",
+          "memberAddress": "/product-review/evidence-writer",
+          "title": "Temporary task execution",
+          "ariaLabel": "Task: Audit prototype dependency licenses. /product-review/evidence-writer",
+          "ariaCurrent": "true",
+          "role": "button",
+          "box": {
+            "x": 40,
+            "y": 461.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "12px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgb(238, 242, 255)",
+            "color": "rgb(49, 46, 129)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "rgb(255, 255, 255) 0px 0px 0px 0px, rgb(199, 210, 254) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "taskTeam": null,
+        "taskTeamChild": null,
+        "focusedAgentRunId": "task-agent-license-audit",
+        "eventMonitorText": "You\nAudit the prototype dependency licenses.\nE\nevidence-writer\n\nThe dedicated license audit is in progress.\n\n18 tokens / $0.0002\nTotal: 18 tokens / $0.0002\nContext Files (0)\n(drag, paste, or upload)",
+        "exactConversation": {
+          "taskAgent": 1,
+          "taskTeamChild": 0
+        }
+      },
+      "semanticSha256": "e7dc215cfa81f090f5359afad89b647ed00fdce4aaa41042279c665a4bd31bbf",
+      "geometry": {
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "width": 988,
+          "height": 900
+        },
+        "leftPanel": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "eventMonitor": {
+          "x": 323,
+          "y": 57,
+          "width": 665,
+          "height": 843
+        }
+      },
+      "geometrySha256": "dbbf058de1fd411b8988feb3c474902ae21905382f5a50fd6e546dfa2c8ffa9f",
+      "actionResult": {
+        "writerExpanded": "true",
+        "transientKinds": [
+          "task_agent"
+        ],
+        "taskAgentSelected": "true",
+        "focusedAgentRunId": "task-agent-license-audit",
+        "dedicatedConversationVisible": true
+      },
+      "actionResultSha256": "f19a2fcf521c67d514cc6b5b1072788b53fa8665e7f078bb202a083fbb19dd36",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-TASK-AGENT-002",
+      "inventoryId": "UXB-CORR-TASK-AGENT-001",
+      "name": "Task Agent selection focuses the exact temporary AgentRun conversation",
+      "scenario": "workspace_team_task_agent",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/prototype/UXV-CORR-TASK-AGENT-002-prototype.png",
+      "screenshotSha256": "752450f7ef4a903188507b53be43374182f70bb25d677a620fc3fa340e3525f6",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "transientKinds": [
+          "task_agent"
+        ],
+        "transientTexts": [
+          "Task: Audit prototype dependency licenses"
+        ],
+        "taskAgent": {
+          "text": "Task: Audit prototype dependency licenses",
+          "kind": "task_agent",
+          "memberAddress": "/product-review/evidence-writer",
+          "title": "Temporary task execution",
+          "ariaLabel": "Task: Audit prototype dependency licenses. /product-review/evidence-writer",
+          "ariaCurrent": "true",
+          "role": "button",
+          "box": {
+            "x": 40,
+            "y": 461.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "12px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgb(238, 242, 255)",
+            "color": "rgb(49, 46, 129)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "rgb(255, 255, 255) 0px 0px 0px 0px, rgb(199, 210, 254) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "taskTeam": null,
+        "taskTeamChild": null,
+        "focusedAgentRunId": "task-agent-license-audit",
+        "eventMonitorText": "You\nAudit the prototype dependency licenses.\nE\nevidence-writer\n\nThe dedicated license audit is in progress.\n\n18 tokens / $0.0002\nTotal: 18 tokens / $0.0002\nContext Files (0)\n(drag, paste, or upload)",
+        "exactConversation": {
+          "taskAgent": 1,
+          "taskTeamChild": 0
+        }
+      },
+      "semanticSha256": "e7dc215cfa81f090f5359afad89b647ed00fdce4aaa41042279c665a4bd31bbf",
+      "geometry": {
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "width": 988,
+          "height": 900
+        },
+        "leftPanel": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "eventMonitor": {
+          "x": 323,
+          "y": 57,
+          "width": 665,
+          "height": 843
+        }
+      },
+      "geometrySha256": "dbbf058de1fd411b8988feb3c474902ae21905382f5a50fd6e546dfa2c8ffa9f",
+      "actionResult": {
+        "writerExpanded": "true",
+        "transientKinds": [
+          "task_agent"
+        ],
+        "taskAgentSelected": "true",
+        "focusedAgentRunId": "task-agent-license-audit",
+        "dedicatedConversationVisible": true
+      },
+      "actionResultSha256": "f19a2fcf521c67d514cc6b5b1072788b53fa8665e7f078bb202a083fbb19dd36",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 988,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 889200,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/comparison/UXV-CORR-TASK-AGENT-002-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  },
+  {
+    "id": "UXV-CORR-TASK-TEAM-001",
+    "inventoryId": "UXB-CORR-TASK-TEAM-001",
+    "scenario": "workspace_team_task_team",
+    "name": "Transient Task Team is a collapsed disclosure row by default",
+    "action": "task-team-collapsed",
+    "source": {
+      "id": "UXV-CORR-TASK-TEAM-001",
+      "inventoryId": "UXB-CORR-TASK-TEAM-001",
+      "name": "Transient Task Team is a collapsed disclosure row by default",
+      "scenario": "workspace_team_task_team",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/source/UXV-CORR-TASK-TEAM-001-source.png",
+      "screenshotSha256": "e589e5649b917e7d046ed304f491cf0e1d1a37bb6073a69ee048f76fc55626a8",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "transientKinds": [
+          "task_team"
+        ],
+        "transientTexts": [
+          "Task: Review the implementation as a Team"
+        ],
+        "taskAgent": null,
+        "taskTeam": {
+          "text": "Task: Review the implementation as a Team",
+          "kind": "task_team",
+          "memberAddress": "/",
+          "title": "Temporary task execution",
+          "ariaLabel": "Task: Review the implementation as a Team. /",
+          "ariaCurrent": null,
+          "role": "button",
+          "box": {
+            "x": 36,
+            "y": 461.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "0px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgba(238, 242, 255, 0.4)",
+            "color": "rgb(102, 102, 102)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "none",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "taskTeamChild": null,
+        "focusedAgentRunId": "team-member-reviewer",
+        "eventMonitorText": "C\ncoordinator\n\nI delegated the visual comparison and am reviewing the result.\n\n48 tokens / $0.0005\nTotal: 48 tokens / $0.0005\nContext Files (0)\n(drag, paste, or upload)",
+        "exactConversation": {
+          "taskAgent": 0,
+          "taskTeamChild": 0
+        }
+      },
+      "semanticSha256": "c2f7407a9d7e17fd1c8afaf5edcec5645d50775bfc7a79e9fdc6d33ba8fc5eec",
+      "geometry": {
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "width": 988,
+          "height": 900
+        },
+        "leftPanel": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "eventMonitor": {
+          "x": 323,
+          "y": 57,
+          "width": 665,
+          "height": 843
+        }
+      },
+      "geometrySha256": "dbbf058de1fd411b8988feb3c474902ae21905382f5a50fd6e546dfa2c8ffa9f",
+      "actionResult": {
+        "taskTeamExpanded": "false",
+        "transientKinds": [
+          "task_team"
+        ],
+        "taskTeamChildSelected": null,
+        "focusedAgentRunId": "team-member-reviewer",
+        "childConversationVisible": false
+      },
+      "actionResultSha256": "b09926d94637b4d12598c033c4e2a095bde0023528467b840d617d8cba4a532f",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-TASK-TEAM-001",
+      "inventoryId": "UXB-CORR-TASK-TEAM-001",
+      "name": "Transient Task Team is a collapsed disclosure row by default",
+      "scenario": "workspace_team_task_team",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/prototype/UXV-CORR-TASK-TEAM-001-prototype.png",
+      "screenshotSha256": "e589e5649b917e7d046ed304f491cf0e1d1a37bb6073a69ee048f76fc55626a8",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "transientKinds": [
+          "task_team"
+        ],
+        "transientTexts": [
+          "Task: Review the implementation as a Team"
+        ],
+        "taskAgent": null,
+        "taskTeam": {
+          "text": "Task: Review the implementation as a Team",
+          "kind": "task_team",
+          "memberAddress": "/",
+          "title": "Temporary task execution",
+          "ariaLabel": "Task: Review the implementation as a Team. /",
+          "ariaCurrent": null,
+          "role": "button",
+          "box": {
+            "x": 36,
+            "y": 461.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "0px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgba(238, 242, 255, 0.4)",
+            "color": "rgb(102, 102, 102)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "none",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "taskTeamChild": null,
+        "focusedAgentRunId": "team-member-reviewer",
+        "eventMonitorText": "C\ncoordinator\n\nI delegated the visual comparison and am reviewing the result.\n\n48 tokens / $0.0005\nTotal: 48 tokens / $0.0005\nContext Files (0)\n(drag, paste, or upload)",
+        "exactConversation": {
+          "taskAgent": 0,
+          "taskTeamChild": 0
+        }
+      },
+      "semanticSha256": "c2f7407a9d7e17fd1c8afaf5edcec5645d50775bfc7a79e9fdc6d33ba8fc5eec",
+      "geometry": {
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "width": 988,
+          "height": 900
+        },
+        "leftPanel": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "eventMonitor": {
+          "x": 323,
+          "y": 57,
+          "width": 665,
+          "height": 843
+        }
+      },
+      "geometrySha256": "dbbf058de1fd411b8988feb3c474902ae21905382f5a50fd6e546dfa2c8ffa9f",
+      "actionResult": {
+        "taskTeamExpanded": "false",
+        "transientKinds": [
+          "task_team"
+        ],
+        "taskTeamChildSelected": null,
+        "focusedAgentRunId": "team-member-reviewer",
+        "childConversationVisible": false
+      },
+      "actionResultSha256": "b09926d94637b4d12598c033c4e2a095bde0023528467b840d617d8cba4a532f",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 988,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 889200,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/comparison/UXV-CORR-TASK-TEAM-001-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  },
+  {
+    "id": "UXV-CORR-TASK-TEAM-002",
+    "inventoryId": "UXB-CORR-TASK-TEAM-001",
+    "scenario": "workspace_team_task_team",
+    "name": "Task Team disclosure reveals the concrete child AgentRun",
+    "action": "task-team-expanded",
+    "source": {
+      "id": "UXV-CORR-TASK-TEAM-002",
+      "inventoryId": "UXB-CORR-TASK-TEAM-001",
+      "name": "Task Team disclosure reveals the concrete child AgentRun",
+      "scenario": "workspace_team_task_team",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/source/UXV-CORR-TASK-TEAM-002-source.png",
+      "screenshotSha256": "3f1c651faa7220e3ade3215b2ce1f3aa87102101dbddd2e12c5f6dc6fd3e52ee",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "transientKinds": [
+          "task_team",
+          "task_team_child"
+        ],
+        "transientTexts": [
+          "Task: Review the implementation as a Team",
+          "reviewer"
+        ],
+        "taskAgent": null,
+        "taskTeam": {
+          "text": "Task: Review the implementation as a Team",
+          "kind": "task_team",
+          "memberAddress": "/",
+          "title": "Temporary task execution",
+          "ariaLabel": "Task: Review the implementation as a Team. /",
+          "ariaCurrent": null,
+          "role": "button",
+          "box": {
+            "x": 36,
+            "y": 461.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "0px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgb(238, 242, 255)",
+            "color": "rgb(102, 102, 102)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "none",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "taskTeamChild": {
+          "text": "reviewer",
+          "kind": "task_team_child",
+          "memberAddress": "/reviewer",
+          "title": "Temporary task execution",
+          "ariaLabel": "reviewer. /reviewer",
+          "ariaCurrent": null,
+          "role": "button",
+          "box": {
+            "x": 48,
+            "y": 491.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "12px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgba(238, 242, 255, 0.4)",
+            "color": "rgb(102, 102, 102)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "none",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "focusedAgentRunId": "team-member-reviewer",
+        "eventMonitorText": "C\ncoordinator\n\nI delegated the visual comparison and am reviewing the result.\n\n48 tokens / $0.0005\nTotal: 48 tokens / $0.0005\nContext Files (0)\n(drag, paste, or upload)",
+        "exactConversation": {
+          "taskAgent": 0,
+          "taskTeamChild": 0
+        }
+      },
+      "semanticSha256": "c139caeb7f4b644cb78f1ec43be361dabe60315ad7d48fabf74d93be86094a9e",
+      "geometry": {
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "width": 988,
+          "height": 900
+        },
+        "leftPanel": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "eventMonitor": {
+          "x": 323,
+          "y": 57,
+          "width": 665,
+          "height": 843
+        }
+      },
+      "geometrySha256": "dbbf058de1fd411b8988feb3c474902ae21905382f5a50fd6e546dfa2c8ffa9f",
+      "actionResult": {
+        "taskTeamExpanded": "true",
+        "transientKinds": [
+          "task_team",
+          "task_team_child"
+        ],
+        "taskTeamChildSelected": null,
+        "focusedAgentRunId": "team-member-reviewer",
+        "childConversationVisible": false
+      },
+      "actionResultSha256": "7edee84ea3bc2ff2624893a374f99a57420cb54f7eedda939feb505de0e3ec38",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-TASK-TEAM-002",
+      "inventoryId": "UXB-CORR-TASK-TEAM-001",
+      "name": "Task Team disclosure reveals the concrete child AgentRun",
+      "scenario": "workspace_team_task_team",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/prototype/UXV-CORR-TASK-TEAM-002-prototype.png",
+      "screenshotSha256": "3f1c651faa7220e3ade3215b2ce1f3aa87102101dbddd2e12c5f6dc6fd3e52ee",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "transientKinds": [
+          "task_team",
+          "task_team_child"
+        ],
+        "transientTexts": [
+          "Task: Review the implementation as a Team",
+          "reviewer"
+        ],
+        "taskAgent": null,
+        "taskTeam": {
+          "text": "Task: Review the implementation as a Team",
+          "kind": "task_team",
+          "memberAddress": "/",
+          "title": "Temporary task execution",
+          "ariaLabel": "Task: Review the implementation as a Team. /",
+          "ariaCurrent": null,
+          "role": "button",
+          "box": {
+            "x": 36,
+            "y": 461.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "0px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgb(238, 242, 255)",
+            "color": "rgb(102, 102, 102)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "none",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "taskTeamChild": {
+          "text": "reviewer",
+          "kind": "task_team_child",
+          "memberAddress": "/reviewer",
+          "title": "Temporary task execution",
+          "ariaLabel": "reviewer. /reviewer",
+          "ariaCurrent": null,
+          "role": "button",
+          "box": {
+            "x": 48,
+            "y": 491.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "12px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgba(238, 242, 255, 0.4)",
+            "color": "rgb(102, 102, 102)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "none",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "focusedAgentRunId": "team-member-reviewer",
+        "eventMonitorText": "C\ncoordinator\n\nI delegated the visual comparison and am reviewing the result.\n\n48 tokens / $0.0005\nTotal: 48 tokens / $0.0005\nContext Files (0)\n(drag, paste, or upload)",
+        "exactConversation": {
+          "taskAgent": 0,
+          "taskTeamChild": 0
+        }
+      },
+      "semanticSha256": "c139caeb7f4b644cb78f1ec43be361dabe60315ad7d48fabf74d93be86094a9e",
+      "geometry": {
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "width": 988,
+          "height": 900
+        },
+        "leftPanel": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "eventMonitor": {
+          "x": 323,
+          "y": 57,
+          "width": 665,
+          "height": 843
+        }
+      },
+      "geometrySha256": "dbbf058de1fd411b8988feb3c474902ae21905382f5a50fd6e546dfa2c8ffa9f",
+      "actionResult": {
+        "taskTeamExpanded": "true",
+        "transientKinds": [
+          "task_team",
+          "task_team_child"
+        ],
+        "taskTeamChildSelected": null,
+        "focusedAgentRunId": "team-member-reviewer",
+        "childConversationVisible": false
+      },
+      "actionResultSha256": "7edee84ea3bc2ff2624893a374f99a57420cb54f7eedda939feb505de0e3ec38",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 988,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 889200,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/comparison/UXV-CORR-TASK-TEAM-002-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  },
+  {
+    "id": "UXV-CORR-TASK-TEAM-003",
+    "inventoryId": "UXB-CORR-TASK-TEAM-001",
+    "scenario": "workspace_team_task_team",
+    "name": "Task Team child selection focuses its exact conversation",
+    "action": "task-team-child-selected",
+    "source": {
+      "id": "UXV-CORR-TASK-TEAM-003",
+      "inventoryId": "UXB-CORR-TASK-TEAM-001",
+      "name": "Task Team child selection focuses its exact conversation",
+      "scenario": "workspace_team_task_team",
+      "target": "source",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/source/UXV-CORR-TASK-TEAM-003-source.png",
+      "screenshotSha256": "4da3fb4413863b1133080381806b0c19f231705ec619f3d472dcef53fe104050",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "transientKinds": [
+          "task_team",
+          "task_team_child"
+        ],
+        "transientTexts": [
+          "Task: Review the implementation as a Team",
+          "reviewer"
+        ],
+        "taskAgent": null,
+        "taskTeam": {
+          "text": "Task: Review the implementation as a Team",
+          "kind": "task_team",
+          "memberAddress": "/",
+          "title": "Temporary task execution",
+          "ariaLabel": "Task: Review the implementation as a Team. /",
+          "ariaCurrent": null,
+          "role": "button",
+          "box": {
+            "x": 28,
+            "y": 461.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "0px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgba(238, 242, 255, 0.4)",
+            "color": "rgb(102, 102, 102)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "none",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "taskTeamChild": {
+          "text": "reviewer",
+          "kind": "task_team_child",
+          "memberAddress": "/reviewer",
+          "title": "Temporary task execution",
+          "ariaLabel": "reviewer. /reviewer",
+          "ariaCurrent": "true",
+          "role": "button",
+          "box": {
+            "x": 40,
+            "y": 491.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "12px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgb(238, 242, 255)",
+            "color": "rgb(49, 46, 129)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "rgb(255, 255, 255) 0px 0px 0px 0px, rgb(199, 210, 254) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "focusedAgentRunId": "task-team-review:reviewer",
+        "eventMonitorText": "You\nReview the implementation as a Team.\nR\nreviewer\n\nThe temporary review Team is checking the implementation.\n\n21 tokens / $0.0003\nTotal: 21 tokens / $0.0003\nContext Files (0)\n(drag, paste, or upload)",
+        "exactConversation": {
+          "taskAgent": 0,
+          "taskTeamChild": 1
+        }
+      },
+      "semanticSha256": "9d75ff9720297448780ab756e5e91e72cbf26f7f8f5a7718948f3d72c349ee91",
+      "geometry": {
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "width": 988,
+          "height": 900
+        },
+        "leftPanel": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "eventMonitor": {
+          "x": 323,
+          "y": 57,
+          "width": 665,
+          "height": 843
+        }
+      },
+      "geometrySha256": "dbbf058de1fd411b8988feb3c474902ae21905382f5a50fd6e546dfa2c8ffa9f",
+      "actionResult": {
+        "taskTeamExpanded": "true",
+        "transientKinds": [
+          "task_team",
+          "task_team_child"
+        ],
+        "taskTeamChildSelected": "true",
+        "focusedAgentRunId": "task-team-review:reviewer",
+        "childConversationVisible": true
+      },
+      "actionResultSha256": "427c5bf83290e4deeeb8757170ff016cec58f1914fbc0252d8c5d2aa5126a432",
+      "browserErrors": []
+    },
+    "prototype": {
+      "id": "UXV-CORR-TASK-TEAM-003",
+      "inventoryId": "UXB-CORR-TASK-TEAM-001",
+      "name": "Task Team child selection focuses its exact conversation",
+      "scenario": "workspace_team_task_team",
+      "target": "prototype",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "screenshotPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/prototype/UXV-CORR-TASK-TEAM-003-prototype.png",
+      "screenshotSha256": "4da3fb4413863b1133080381806b0c19f231705ec619f3d472dcef53fe104050",
+      "semantic": {
+        "route": "/workspace",
+        "lang": null,
+        "transientKinds": [
+          "task_team",
+          "task_team_child"
+        ],
+        "transientTexts": [
+          "Task: Review the implementation as a Team",
+          "reviewer"
+        ],
+        "taskAgent": null,
+        "taskTeam": {
+          "text": "Task: Review the implementation as a Team",
+          "kind": "task_team",
+          "memberAddress": "/",
+          "title": "Temporary task execution",
+          "ariaLabel": "Task: Review the implementation as a Team. /",
+          "ariaCurrent": null,
+          "role": "button",
+          "box": {
+            "x": 28,
+            "y": 461.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "0px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgba(238, 242, 255, 0.4)",
+            "color": "rgb(102, 102, 102)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "none",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "taskTeamChild": {
+          "text": "reviewer",
+          "kind": "task_team_child",
+          "memberAddress": "/reviewer",
+          "title": "Temporary task execution",
+          "ariaLabel": "reviewer. /reviewer",
+          "ariaCurrent": "true",
+          "role": "button",
+          "box": {
+            "x": 40,
+            "y": 491.5,
+            "width": 280,
+            "height": 28
+          },
+          "style": {
+            "display": "flex",
+            "marginLeft": "12px",
+            "paddingLeft": "0px",
+            "backgroundColor": "rgb(238, 242, 255)",
+            "color": "rgb(49, 46, 129)",
+            "borderColor": "rgb(204, 204, 204)",
+            "borderRadius": "6px",
+            "boxShadow": "rgb(255, 255, 255) 0px 0px 0px 0px, rgb(199, 210, 254) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+            "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+            "fontSize": "14px",
+            "lineHeight": "20px"
+          },
+          "labelStyle": {
+            "display": "block",
+            "overflow": "hidden",
+            "whiteSpace": "nowrap",
+            "textOverflow": "ellipsis"
+          }
+        },
+        "focusedAgentRunId": "task-team-review:reviewer",
+        "eventMonitorText": "You\nReview the implementation as a Team.\nR\nreviewer\n\nThe temporary review Team is checking the implementation.\n\n21 tokens / $0.0003\nTotal: 21 tokens / $0.0003\nContext Files (0)\n(drag, paste, or upload)",
+        "exactConversation": {
+          "taskAgent": 0,
+          "taskTeamChild": 1
+        }
+      },
+      "semanticSha256": "9d75ff9720297448780ab756e5e91e72cbf26f7f8f5a7718948f3d72c349ee91",
+      "geometry": {
+        "clip": {
+          "x": 0,
+          "y": 0,
+          "width": 988,
+          "height": 900
+        },
+        "leftPanel": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 900
+        },
+        "center": {
+          "x": 323,
+          "y": 0,
+          "width": 665,
+          "height": 900
+        },
+        "eventMonitor": {
+          "x": 323,
+          "y": 57,
+          "width": 665,
+          "height": 843
+        }
+      },
+      "geometrySha256": "dbbf058de1fd411b8988feb3c474902ae21905382f5a50fd6e546dfa2c8ffa9f",
+      "actionResult": {
+        "taskTeamExpanded": "true",
+        "transientKinds": [
+          "task_team",
+          "task_team_child"
+        ],
+        "taskTeamChildSelected": "true",
+        "focusedAgentRunId": "task-team-review:reviewer",
+        "childConversationVisible": true
+      },
+      "actionResultSha256": "427c5bf83290e4deeeb8757170ff016cec58f1914fbc0252d8c5d2aa5126a432",
+      "browserErrors": []
+    },
+    "comparison": {
+      "semanticExact": true,
+      "geometryExact": true,
+      "actionExact": true,
+      "screenshot": {
+        "sameDimensions": true,
+        "dimensions": {
+          "width": 988,
+          "height": 900
+        },
+        "changedPixels": 0,
+        "totalPixels": 889200,
+        "changedPixelRatio": 0,
+        "maximumChannelDelta": 0,
+        "normalizedRenderingNoiseOnly": true,
+        "diffPath": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction/evidence/AORG-FLAT-TEAM-001/baseline-correction/comparison/UXV-CORR-TASK-TEAM-003-diff.png"
+      },
+      "sourceBrowserErrors": [],
+      "prototypeBrowserErrors": []
+    },
+    "result": "Pass"
+  }
+]

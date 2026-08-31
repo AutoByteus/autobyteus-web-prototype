@@ -1,0 +1,19 @@
+Product-owned acceptance validation — 2026-08-31
+
+PASS  corepack pnpm typecheck
+      Existing accepted duplicate-getter warnings only.
+PASS  corepack pnpm lint
+PASS  corepack pnpm test
+      3 files / 12 tests.
+PASS  corepack pnpm validate:boundaries
+      13/13 checks.
+PASS  PROTOTYPE_BASE_URL=http://127.0.0.1:4195 corepack pnpm validate:nested-team-hierarchy-review
+      24/24 checks. The first invocation omitted the runtime URL override and reached no server at its default port; the correctly configured acceptance invocation passed.
+PASS  NUXT_IGNORE_LOCK=1 corepack pnpm build
+      Nuxt/Nitro node-server build completed; existing accepted chunk-size and duplicate-getter warnings only.
+PASS  Matched-evidence SHA-256 audit
+      5/5 source/prototype screenshot pairs have identical SHA-256 hashes.
+PASS  Direct Product browser journey: workspace_team_task_agent
+      Exact task-agent row revealed, selected, focused run task-agent-license-audit, dedicated conversation visible.
+PASS  Direct Product browser journey: workspace_team_task_team
+      Task-Team parent initially collapsed, expanded to reviewer child, child selected, focused run task-team-review:reviewer, dedicated conversation visible.

@@ -1,0 +1,25 @@
+{
+  "stablePackageId": "AORG-FLAT-TEAM-001",
+  "requestType": "Correction",
+  "selectedFrontend": "/home/autobyteus/workspace/autobyteus-workspace/autobyteus-web",
+  "sourceRoot": "/home/autobyteus/workspace/autobyteus-workspace",
+  "pinnedSourceCommit": "8ef282ba77705180d985e7000d801f0e0068cdc1",
+  "sourceObjectType": "commit",
+  "selectedSourceFileSha256": {
+    "components/workspace/history/WorkspaceTransientExecutionRow.vue": "0d538c72ef86aec185c4ce1ac3dc309c04a36294549901fa13e0c5b68708c067",
+    "components/workspace/history/WorkspaceHistoryWorkspaceSection.vue": "874752cc36327199b72e810463fee5ed187b7142a02dbd8a98c56cb53e412d8d",
+    "services/teamExecution/teamExecutionTreeSelectors.ts": "3cfb9c38b6f3f36605857a5277ae19355b42d9faff5a910a0510e12c58b365b6",
+    "stores/runHistoryTeamExecutionRows.ts": "12de0215ba13a8f0007edacea4cd890f479d0f6f18a45d92e802764603ab6a3d"
+  },
+  "observation": {
+    "sourceUrl": "http://127.0.0.1:4282/workspace",
+    "mockUrl": "http://127.0.0.1:4382",
+    "archiveMethod": "git archive of the exact pinned autobyteus-web tree",
+    "disposableRuntimeNormalization": [
+      "disabled automatic Electron module discovery in the temporary archive",
+      "removed the temporary devhandler compatibility module registration",
+      "reused the prototype dependency installation without editing source presentation files"
+    ],
+    "presentationFilesEdited": false
+  }
+}

@@ -1,0 +1,15 @@
+
+> autobyteus-web-prototype@0.1.0 test /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction
+> vitest run
+
+
+ RUN  v3.2.7 /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-001-baseline-correction
+
+ ✓ prototype/tests/host-scenario.test.ts (3 tests) 6ms
+ ✓ prototype/tests/token-statistics-refresh-fixture.test.ts (4 tests) 10ms
+ ✓ prototype/tests/fixture-contract.test.ts (5 tests) 23ms
+
+ Test Files  3 passed (3)
+      Tests  12 passed (12)
+   Start at  08:13:07
+   Duration  657ms (transform 274ms, setup 0ms, collect 373ms, tests 39ms, environment 0ms, prepare 424ms)

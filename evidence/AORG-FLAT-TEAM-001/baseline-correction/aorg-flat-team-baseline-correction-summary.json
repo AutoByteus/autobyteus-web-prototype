@@ -1,0 +1,21 @@
+{
+  "packageId": "AORG-FLAT-TEAM-001",
+  "requestType": "Correction",
+  "sourcePin": "8ef282ba77705180d985e7000d801f0e0068cdc1",
+  "sourceBaseUrl": "http://127.0.0.1:4282",
+  "prototypeBaseUrl": "http://127.0.0.1:4180",
+  "mockBaseUrl": "http://127.0.0.1:4382",
+  "browser": "/usr/bin/chromium",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "generatedAt": "2026-08-31T08:12:25.211Z",
+  "passed": 5,
+  "total": 5,
+  "result": "Pass",
+  "inventory": {
+    "UXB-CORR-TASK-AGENT-001": "Pass",
+    "UXB-CORR-TASK-TEAM-001": "Pass"
+  }
+}

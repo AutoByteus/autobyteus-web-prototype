@@ -1,0 +1,36 @@
+{
+  "acceptanceId": "PPA-AORG-BASE-001",
+  "date": "2026-08-31",
+  "result": "Pass",
+  "reviewUrl": "http://127.0.0.1:4195/workspace",
+  "sourcePin": "8ef282ba77705180d985e7000d801f0e0068cdc1",
+  "acceptedPrototypeBase": "32f879c01a04f23f8c4807f02006f6b0ebafea7b",
+  "journeys": [
+    {
+      "scenario": "workspace_team_task_agent",
+      "result": "Pass",
+      "observed": {
+        "writerDisclosureExpanded": true,
+        "transientKind": "task_agent",
+        "rowSelected": true,
+        "focusedAgentRunId": "task-agent-license-audit",
+        "dedicatedConversationVisible": true
+      },
+      "screenshot": "PPA-AORG-BASE-001-task-agent.png"
+    },
+    {
+      "scenario": "workspace_team_task_team",
+      "result": "Pass",
+      "observed": {
+        "taskTeamInitiallyCollapsed": true,
+        "taskTeamExpanded": true,
+        "transientChildKind": "task_team_child",
+        "childSelected": true,
+        "focusedAgentRunId": "task-team-review:reviewer",
+        "dedicatedConversationVisible": true
+      },
+      "screenshot": "PPA-AORG-BASE-002-task-team.png"
+    }
+  ],
+  "browserErrorsObserved": 0
+}

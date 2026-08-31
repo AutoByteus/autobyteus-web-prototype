@@ -2,7 +2,7 @@
 
 ## Classification
 
-- Outcome: `Baseline Needed`
+- Outcome: `Resolved — Accepted`
 - Mode: `Correction`
 - Product package / ticket: `AORG-FLAT-TEAM-001`
 - Date identified: `2026-08-31`
@@ -12,8 +12,8 @@
 
 | Gap ID | Current-experience surface requiring independent source evidence | Current result |
 | --- | --- | --- |
-| `UXB-CORR-TASK-AGENT-001` | Existing UI organization and visible behavior for task agents | `Unsubstantiated` |
-| `UXB-CORR-TASK-TEAM-001` | Existing UI organization and visible behavior for task AgentTeams | `Unsubstantiated` |
+| `UXB-CORR-TASK-AGENT-001` | Existing UI organization and visible behavior for task agents | `Pass` |
+| `UXB-CORR-TASK-TEAM-001` | Existing UI organization and visible behavior for task AgentTeams | `Pass` |
 
 These IDs name the coverage gaps only. They do not prescribe routes, hierarchy,
 labels, fixtures, interactions, or future behavior. The Bootstrapper owns
@@ -35,7 +35,14 @@ the named gaps.
 - Accepted prototype base: `32f879c01a04f23f8c4807f02006f6b0ebafea7b`
 - Review server on port `4194`: stopped.
 
-The existing future-state files and interim review captures are preserved but
-are not approved and must not be used to fill the current-experience evidence
-gap. Product Prototyper will review the returned correction before accepting a
-new baseline or resuming the feature branch.
+## Resolution
+
+- Bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype/prototype-bootstrap-report.md`
+- Product acceptance: `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/baseline-correction/product-acceptance/product-acceptance.md`
+- Accepted and canonical integration revision: `893cde9dbcc5ccc8904cf08ba6b031668dff0041`
+- Source/prototype comparison: `5/5` exact; all selected screenshot pairs byte-identical; zero browser errors.
+- Product live journeys, typecheck, lint, tests, boundaries, accepted hierarchy regression, and build: `Pass`.
+
+The existing future-state files and interim review captures remain unapproved.
+They are now being revised and revalidated against the accepted correction
+rather than being used to fill the current-experience evidence gap.
