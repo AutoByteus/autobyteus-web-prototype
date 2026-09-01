@@ -1,5 +1,36 @@
 # Prototype Runbook
 
+## Promoted Default Product Baseline
+
+Start the cumulative accepted prototype:
+
+```bash
+cd /home/autobyteus/workspace/autobyteus-web-prototype
+corepack pnpm dev --port 3210
+```
+
+Use normal product routes without preview-only query state:
+
+- Agent Teams: `http://127.0.0.1:3210/agent-teams?view=team-list`
+- Agent Orgs: `http://127.0.0.1:3210/agent-orgs?view=org-list`
+- Workspace: `http://127.0.0.1:3210/workspace`
+- Token Statistics: `http://127.0.0.1:3210/settings?section=token-usage`
+
+Agent Team Run navigates to
+`/workspace?root=team&team=<id>&phase=config`. Agent Org Run navigates to
+`/workspace?root=org&org=<id>&phase=config`. Successful synthetic launches
+replace only `phase=config` with `phase=active`.
+
+Validate default-entry promotion while the prototype is running:
+
+```bash
+PROTOTYPE_BASE_URL=http://127.0.0.1:3210 \
+corepack pnpm validate:default-baseline-promotion
+```
+
+Historical `prototypeReview` URLs are retained only for review evidence and
+comparison fixtures. The accepted baseline does not depend on them.
+
 ## AORG-FLAT-TEAM-001 Focused Current-Experience Correction
 
 This Product-owned worktree exposes two deterministic current-source scenarios

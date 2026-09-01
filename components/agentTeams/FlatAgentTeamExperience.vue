@@ -386,7 +386,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { Icon } from '@iconify/vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import HandoffManager from '~/components/handoffs/HandoffManager.vue';
 import { agents, flatTeams, agentById, teamById } from '~/prototype/aorg-flat-team-fixtures';
 import {
@@ -397,12 +397,12 @@ import {
   type PrototypeHandoff,
   type TeamAgentPlacement,
 } from '~/prototype/aorg-handoff-model';
-import { AGENT_ORG_PROTOTYPE_REVIEW_KEY } from '~/composables/useAgentOrgPrototypeReview';
+import { useAgentOrgPrototypeReview } from '~/composables/useAgentOrgPrototypeReview';
 
 type TeamView = 'team-list' | 'team-detail' | 'team-create' | 'team-edit';
 type HandoffManagerExpose = { validateAll: () => boolean; clearStatus: () => void };
 const route = useRoute();
-const router = useRouter();
+const { push: pushExperienceRoute } = useAgentOrgPrototypeReview();
 const search = ref('');
 const reloading = ref(false);
 const saved = ref(false);
@@ -518,20 +518,16 @@ const applyTeamTemplate = (): void => {
 };
 
 const go = async (nextView: TeamView, id?: string): Promise<void> => {
-  await router.push({ path: '/agent-teams', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: nextView, ...(id ? { id } : {}) } });
+  await pushExperienceRoute('/agent-teams', { view: nextView, id });
 };
 const openTeamRun = async (id: string): Promise<void> => {
-  await router.push({ path: '/workspace', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, root: 'team', team: id } });
+  await pushExperienceRoute('/workspace', { root: 'team', team: id, phase: 'config' });
 };
 const openAgentDetails = async (id: string): Promise<void> => {
-  await router.push({
-    path: '/agents',
-    query: {
-      prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY,
-      view: 'detail',
-      id,
-      returnToTeam: selectedTeam.value.id,
-    },
+  await pushExperienceRoute('/agents', {
+    view: 'detail',
+    id,
+    returnToTeam: selectedTeam.value.id,
   });
 };
 const addAgent = (id: string): void => {

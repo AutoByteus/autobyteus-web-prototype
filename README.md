@@ -1,18 +1,11 @@
-# AutoByteus Web Current-Experience Prototype
+# AutoByteus Web Product Prototype
 
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
 commit `8ef282ba77705180d985e7000d801f0e0068cdc1`.
 
-Ticket `REQPKG-TSUI-001` now contains the separate **Final Prototype** review
-candidate for **Settings > Token Statistics**, built on the accepted exact
-baseline from `origin/personal` at
-`9d0fd7c570d58da1af2c7a40279327c8a20a8093`. It preserves the accepted
-baseline outside that surface. The final candidate is awaiting explicit user
-confirmation and is not integrated into the canonical prototype branch yet.
-
-Status: **Final Token Statistics prototype approved and completed. The Product
-ticket is closed under `tickets/done/REQPKG-TSUI-001`; the approved package is
-integrated into prototype `personal`.**
+The repository is the cumulative accepted Product prototype baseline. Approved
+Product tickets are integrated here and promoted to normal/default product
+entry points before they are treated as the next baseline.
 
 Canonical ownership: independent sibling repository
 `https://github.com/AutoByteus/autobyteus-web-prototype.git`, checked out at
@@ -37,15 +30,16 @@ corepack pnpm dev --port 3210
 Open <http://127.0.0.1:3210>. See [prototype-runbook.md](prototype-runbook.md)
 for production-preview and scenario commands.
 
-For the active baseline-native `REQPKG-NTHUI-001` nested-team hierarchy review,
-start this ticket worktree on port `4193` and open:
+The promoted default product entries are:
 
-- <http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&hierarchy=hybrid&metadata=responsive&teamIdentity=header&panelWidth=320&fontSize=default&treeState=deep>
+- Agent Teams: <http://127.0.0.1:3210/agent-teams?view=team-list>
+- Agent Orgs: <http://127.0.0.1:3210/agent-orgs?view=org-list>
+- Workspace: <http://127.0.0.1:3210/workspace>
+- Token Statistics: <http://127.0.0.1:3210/settings?section=token-usage>
 
-The route is the real accepted Workspace product surface. Its floating review
-controls are prototype-only and compare `DEC-001`–`DEC-003`; no initial choice
-is a recommendation or approval. See the ticket
-[review guide](tickets/in-progress/REQPKG-NTHUI-001/review-guide.md).
+Normal navigation and launch/configuration journeys do not depend on
+`prototypeReview` or another preview-only route switch. Historical review URLs
+remain evidence only and may still expose deterministic comparison controls.
 
 For the Token Statistics final candidate, open
 <http://127.0.0.1:3261/settings?section=token-usage> during the active Product
@@ -88,6 +82,7 @@ corepack pnpm validate:gap-010-package
 corepack pnpm validate:independent-repository
 corepack pnpm capture:final-references
 corepack pnpm validate:final-package
+corepack pnpm validate:default-baseline-promotion
 SOURCE_BASE_URL=http://127.0.0.1:3110 \
 PROTOTYPE_BASE_URL=http://127.0.0.1:3210 \
 MOCK_BASE_URL=http://127.0.0.1:4311 \

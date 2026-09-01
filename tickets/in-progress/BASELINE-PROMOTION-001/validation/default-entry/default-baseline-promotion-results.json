@@ -1,0 +1,97 @@
+{
+  "baseUrl": "http://127.0.0.1:4195",
+  "generatedAt": "2026-09-01T06:20:57.486Z",
+  "passed": 11,
+  "total": 11,
+  "runtimeErrors": [],
+  "results": [
+    {
+      "id": "PROMOTE-001-clean-agent-team-default",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4195/agent-teams?view=team-list",
+        "cards": 3
+      }
+    },
+    {
+      "id": "PROMOTE-002-clean-agent-team-configuration",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4195/workspace?root=team&team=product-design-prototyping-team&phase=config",
+        "teamDefinition": "Product Design & Prototyping"
+      }
+    },
+    {
+      "id": "PROMOTE-002A-clean-agent-team-active",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4195/workspace?root=team&team=product-design-prototyping-team&phase=active",
+        "historyRoot": "standalone Agent Team"
+      }
+    },
+    {
+      "id": "PROMOTE-002B-exact-selected-team-membership",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4195/workspace?root=team&team=software-engineering-team&phase=active",
+        "teamDefinition": "Software Engineering",
+        "memberCount": 4
+      }
+    },
+    {
+      "id": "PROMOTE-003-clean-agent-org-default",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4195/agent-orgs?view=org-list",
+        "cards": 2
+      }
+    },
+    {
+      "id": "PROMOTE-004-clean-agent-org-configuration",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4195/workspace?root=org&org=software-development-department&phase=config",
+        "initialRunDisabled": true
+      }
+    },
+    {
+      "id": "PROMOTE-005-clean-agent-org-active",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4195/workspace?root=org&org=software-development-department&phase=active",
+        "initialFocus": null
+      }
+    },
+    {
+      "id": "PROMOTE-006-clean-workspace-hierarchy",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4195/workspace",
+        "railsTrees": 1,
+        "teamIcons": 3,
+        "reviewControls": 0
+      }
+    },
+    {
+      "id": "PROMOTE-007-primary-navigation-stays-clean",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4195/agent-teams?view=team-list"
+      }
+    },
+    {
+      "id": "PROMOTE-008-token-statistics-clean-route-regression",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4195/settings?section=token-usage"
+      }
+    },
+    {
+      "id": "PROMOTE-009-zero-browser-errors",
+      "pass": true,
+      "evidence": {
+        "runtimeErrors": []
+      }
+    }
+  ]
+}

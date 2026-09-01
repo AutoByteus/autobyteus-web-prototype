@@ -101,14 +101,30 @@ type AgentOrgRuntimeRoute = {
   phase: 'config' | 'active'
 }
 
+type AgentTeamRuntimeRoute = {
+  scenario: string
+  phase: 'config' | 'active'
+}
+
 const agentOrgRuntimeRoute = (): AgentOrgRuntimeRoute | null => {
   if (window.location.pathname !== '/workspace') return null
   const query = new URLSearchParams(window.location.search)
-  if (query.get('prototypeReview') !== 'agent-org-flat' || query.get('root') !== 'org') return null
+  if (query.get('root') !== 'org') return null
   const phase = query.get('phase') === 'active' ? 'active' : 'config'
   return {
     phase,
     scenario: `workspace_agent_org_${phase}`,
+  }
+}
+
+const agentTeamRuntimeRoute = (): AgentTeamRuntimeRoute | null => {
+  if (window.location.pathname !== '/workspace') return null
+  const query = new URLSearchParams(window.location.search)
+  if (query.get('root') !== 'team') return null
+  const phase = query.get('phase') === 'active' ? 'active' : 'config'
+  return {
+    phase,
+    scenario: phase === 'active' ? 'workspace_team_active' : 'workspace_team_run_config_correction',
   }
 }
 
@@ -129,7 +145,24 @@ const setAgentOrgRuntimePhase = (phase: 'config' | 'active', router?: Router): A
   return { ...current, phase, scenario: `workspace_agent_org_${phase}` }
 }
 
-const scenario = (): string => agentOrgRuntimeRoute()?.scenario || localStorage.getItem(SCENARIO_KEY) || DEFAULT_SCENARIO
+const setAgentTeamRuntimePhase = (phase: 'config' | 'active', router?: Router): AgentTeamRuntimeRoute | null => {
+  const current = agentTeamRuntimeRoute()
+  if (!current) return null
+  const url = new URL(window.location.href)
+  url.searchParams.set('phase', phase)
+  if (router) {
+    void router.replace({
+      path: url.pathname,
+      query: Object.fromEntries(url.searchParams.entries()),
+      hash: url.hash,
+    })
+  } else {
+    window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`)
+  }
+  return { ...current, phase, scenario: phase === 'active' ? 'workspace_team_active' : 'workspace_team_run_config_correction' }
+}
+
+const scenario = (): string => agentOrgRuntimeRoute()?.scenario || agentTeamRuntimeRoute()?.scenario || localStorage.getItem(SCENARIO_KEY) || DEFAULT_SCENARIO
 const context = (): string => localStorage.getItem(CONTEXT_KEY) || (window.location.pathname === '/mobile' ? 'unpaired' : DEFAULT_CONTEXT)
 
 const findSnapshot = (): [string, RuntimeSnapshot] => {
@@ -209,9 +242,12 @@ const actionResult = (store: any, action: string, args: any[] = [], pinia?: Prot
   if (store.$id === 'agentTeamRun' && action === 'launchDraft') {
     const draft = args[0]
     const agentOrgRuntime = agentOrgRuntimeRoute()
+    const agentTeamRuntime = agentTeamRuntimeRoute()
     const appliedScenario = agentOrgRuntime
       ? setAgentOrgRuntimePhase('active', router)?.scenario || agentOrgRuntime.scenario
-      : 'workspace_team_launch'
+      : agentTeamRuntime
+        ? setAgentTeamRuntimePhase('active', router)?.scenario || agentTeamRuntime.scenario
+        : 'workspace_team_launch'
     const applied = applyExperienceScenario({ scenario: appliedScenario, context: context() })
     if (!applied.applied || applied.kind !== 'team') {
       throw new Error(`Synthetic Team launch projection failed: ${applied.reason || 'unknown reason'}`)

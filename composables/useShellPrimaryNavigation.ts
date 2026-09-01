@@ -37,7 +37,7 @@ export function resolveShellPrimaryRoute(key: ShellPrimaryNavKey): RouteLocation
     case 'agentTeams':
       return { path: '/agent-teams', query: { view: 'team-list' } };
     case 'agentOrgs':
-      return { path: '/agent-orgs', query: { view: 'org-list', prototypeReview: 'agent-org-flat' } };
+      return { path: '/agent-orgs', query: { view: 'org-list' } };
     case 'applications':
       return '/applications';
     case 'skills':
@@ -79,9 +79,6 @@ export function useShellPrimaryNavigation(): {
 
   const primaryNavItems = computed(() => {
     return allShellPrimaryNavItems.filter((item) => {
-      if (item.key === 'agentOrgs') {
-        return route.query.prototypeReview === 'agent-org-flat' || route.path.startsWith('/agent-orgs');
-      }
       if (item.key === 'applications') {
         return applicationsCapabilityStore.isEnabled && isFeatureAvailableInRuntime('applicationIframe');
       }
@@ -94,17 +91,7 @@ export function useShellPrimaryNavigation(): {
 
   return {
     primaryNavItems,
-    resolvePrimaryRoute: (key: ShellPrimaryNavKey) => {
-      const target = resolveShellPrimaryRoute(key);
-      const isOrgReview = route.query.prototypeReview === 'agent-org-flat' || route.path.startsWith('/agent-orgs');
-      if (!isOrgReview || (key !== 'agentTeams' && key !== 'agentOrgs')) {
-        return target;
-      }
-      if (key === 'agentTeams') {
-        return { path: '/agent-teams', query: { view: 'team-list', prototypeReview: 'agent-org-flat' } };
-      }
-      return { path: '/agent-orgs', query: { view: 'org-list', prototypeReview: 'agent-org-flat' } };
-    },
+    resolvePrimaryRoute: (key: ShellPrimaryNavKey) => resolveShellPrimaryRoute(key),
     isPrimaryNavActive: (key: ShellPrimaryNavKey) => isShellPrimaryRouteActive(key, route.path),
     ensurePrimaryNavigationReady: () => applicationsCapabilityStore.ensureResolved(),
   };

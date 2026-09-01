@@ -1,6 +1,6 @@
 <template>
   <aside
-    v-if="review.active.value && review.view.value === 'compare'"
+    v-if="review.reviewActive.value && review.view.value === 'compare'"
     class="fixed bottom-4 right-4 z-[70] rounded-xl border border-slate-200 bg-white/95 shadow-2xl backdrop-blur"
     :style="reviewPanelStyle"
     aria-label="Prototype review controls"
@@ -153,14 +153,14 @@ const reviewPanelStyle = computed(() => ({
 }));
 
 const applyActualProductSettings = (): void => {
-  if (!review.active.value) return;
+  if (!review.reviewActive.value) return;
   setLeftPanelVisible(true);
   setLeftPanelWidth(review.width.value);
   appFontSizeStore.setPreset(review.fontSize.value);
 };
 
 const applyFixture = (): void => {
-  if (!review.active.value || !window.__AUTOBYTEUS_PROTOTYPE__) return;
+  if (!review.reviewActive.value || !window.__AUTOBYTEUS_PROTOTYPE__) return;
   if (window.__AUTOBYTEUS_PROTOTYPE__.scenario !== 'workspace_team_hierarchy_review') {
     window.__AUTOBYTEUS_PROTOTYPE__.setScenario('workspace_team_hierarchy_review', 'desktop');
     return;
@@ -176,7 +176,7 @@ const onStateChange = (event: Event): void => {
   void review.update({ treeState: value });
 };
 
-watch([review.active, review.width, review.fontSize], applyActualProductSettings, { immediate: true });
+watch([review.reviewActive, review.width, review.fontSize], applyActualProductSettings, { immediate: true });
 onMounted(() => {
   applyActualProductSettings();
   window.setTimeout(applyFixture, 0);

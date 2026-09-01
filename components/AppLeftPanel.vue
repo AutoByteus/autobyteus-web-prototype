@@ -138,7 +138,11 @@ const {
 const route = useRoute();
 const router = useRouter();
 const { active: agentOrgReviewActive } = useAgentOrgPrototypeReview();
-const showAgentOrgRunHistory = computed(() => agentOrgReviewActive.value && route.path === '/workspace');
+const showAgentOrgRunHistory = computed(() => (
+  agentOrgReviewActive.value
+  && route.path === '/workspace'
+  && route.query.root === 'org'
+));
 const { toggleLeftPanel } = useLeftPanel();
 const {
   panelSectionsContainerRef,

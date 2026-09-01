@@ -20,6 +20,43 @@ export function applyExperienceScenario(input = {}) {
   const isAgentOrgAgentActive = scenario === 'workspace_agent_org_agent_entry_active'
   const isAgentOrgRuntime = isAgentOrgConfig || isAgentOrgActive || isAgentOrgTeamConfig || isAgentOrgAgentConfig || isAgentOrgTeamActive || isAgentOrgAgentActive
   const routeQuery = isAgentOrgRuntime ? new URLSearchParams(window.location.search) : null
+  const standaloneTeamRouteQuery = window.location.pathname === '/workspace'
+    && new URLSearchParams(window.location.search).get('root') === 'team'
+    ? new URLSearchParams(window.location.search)
+    : null
+  const standaloneTeamSpecs = {
+    'product-design-prototyping-team': {
+      id: 'product-design-prototyping-team', name: 'Product Design & Prototyping',
+      coordinatorId: 'product-prototyper', coordinatorName: 'product_prototyper',
+      secondId: 'prototype-bootstrapper', secondName: 'prototype_bootstrapper',
+      members: [
+        { id: 'product-prototyper', name: 'product_prototyper' },
+        { id: 'prototype-bootstrapper', name: 'prototype_bootstrapper' },
+      ],
+    },
+    'software-engineering-team': {
+      id: 'software-engineering-team', name: 'Software Engineering',
+      coordinatorId: 'architecture-designer', coordinatorName: 'architecture_designer',
+      secondId: 'implementation-engineer', secondName: 'implementation_engineer',
+      members: [
+        { id: 'architecture-designer', name: 'architecture_designer' },
+        { id: 'implementation-engineer', name: 'implementation_engineer' },
+        { id: 'code-reviewer', name: 'code_reviewer' },
+        { id: 'delivery-engineer', name: 'delivery_engineer' },
+      ],
+    },
+    'release-readiness-team': {
+      id: 'release-readiness-team', name: 'Release Readiness',
+      coordinatorId: 'delivery-engineer', coordinatorName: 'delivery_engineer',
+      secondId: 'code-reviewer', secondName: 'code_reviewer',
+      members: [
+        { id: 'delivery-engineer', name: 'delivery_engineer' },
+        { id: 'code-reviewer', name: 'code_reviewer' },
+      ],
+    },
+  }
+  const standaloneTeam = standaloneTeamSpecs[standaloneTeamRouteQuery?.get('team')] || null
+  const isStandaloneTeamRuntime = Boolean(standaloneTeam)
   const orgId = routeQuery?.get('org') || 'software-development-department'
   const [, routeEntryId = ''] = String(routeQuery?.get('entry') || '').split(':')
   const runId = isAgentOrgActive || isAgentOrgAgentActive ? `org-agent-run-${routeEntryId || 'requirements-engineer'}` : 'run-prototype-active'
@@ -72,7 +109,7 @@ export function applyExperienceScenario(input = {}) {
     workspace.workspaceMetadataIdsByRootPath = { ...workspace.workspaceMetadataIdsByRootPath, [workspaceMetadata.workspaceRootPath]: workspaceId }
     workspace.workspaceMetadataLoadStateById = { ...workspace.workspaceMetadataLoadStateById, [workspaceId]: { status: 'registered', error: null } }
   }
-  if (isAgentOrgRuntime) {
+  if (isAgentOrgRuntime || isStandaloneTeamRuntime) {
     const agentDefinition = store('agentDefinition')
     if (agentDefinition) {
       const definition = (id, name, role, description, instructions) => ({
@@ -127,6 +164,14 @@ export function applyExperienceScenario(input = {}) {
             ['code_reviewer', 'code-reviewer'],
             ['delivery_engineer', 'delivery-engineer'],
           ],
+        ),
+        definition(
+          'release-readiness-team',
+          'Release Readiness',
+          'Handles final product verification and delivery readiness.',
+          'Coordinate final verification and delivery preparation through delivery_engineer.',
+          'delivery_engineer',
+          [['delivery_engineer', 'delivery-engineer'], ['code_reviewer', 'code-reviewer']],
         ),
       ]
     }
@@ -235,8 +280,8 @@ export function applyExperienceScenario(input = {}) {
     if (!teamRunConfig || !agentRunConfig) return { applied: false, reason: 'run-config-stores-unavailable' }
     agentRunConfig.clearConfig()
     teamRunConfig.setConfig({
-      teamDefinitionId: 'team-product',
-      teamDefinitionName: 'Product Review Team',
+      teamDefinitionId: standaloneTeam?.id || 'team-product',
+      teamDefinitionName: standaloneTeam?.name || 'Product Review Team',
       runtimeKind: 'autobyteus',
       llmModelIdentifier: 'mock/gpt-prototype',
       llmConfig: { temperature: 0.2 },
@@ -248,7 +293,7 @@ export function applyExperienceScenario(input = {}) {
       memberOverrides: {},
     })
     const selectedDraft = teamRunConfig.selectedDraft
-    const deterministicDraftId = 'team-draft-config-correction'
+    const deterministicDraftId = standaloneTeam ? `team-draft-${standaloneTeam.id}` : 'team-draft-config-correction'
     if (selectedDraft) {
       const deterministicDraft = Object.freeze({ ...selectedDraft, draftId: deterministicDraftId })
       teamRunConfig.drafts = new Map([[deterministicDraftId, deterministicDraft]])
@@ -491,35 +536,37 @@ export function applyExperienceScenario(input = {}) {
     const taskAgentCorrection = scenario === 'workspace_team_task_agent' || isAgentOrgTeamActive
     const taskTeamCorrection = scenario === 'workspace_team_task_team' || isAgentOrgTeamActive
     const currentStateCorrection = taskAgentCorrection || taskTeamCorrection
-    const teamDefinitionId = isAgentOrgTeamActive ? routeEntryId || 'product-design-prototyping-team' : 'team-product'
-    const teamDefinitionName = isAgentOrgTeamActive ? 'Product Design & Prototyping' : 'Product Review Team'
+    const teamDefinitionId = isAgentOrgTeamActive ? routeEntryId || 'product-design-prototyping-team' : standaloneTeam?.id || 'team-product'
+    const teamDefinitionName = isAgentOrgTeamActive ? 'Product Design & Prototyping' : standaloneTeam?.name || 'Product Review Team'
     const rootTeamRunId = isAgentOrgTeamActive
       ? `org-team-run-${teamDefinitionId}`
-      : hierarchyReview
-      ? 'team-run-hierarchy-review'
-      : launchedFromCatalog
-        ? 'team-run-created-fixture'
-        : taskAgentCorrection
-          ? 'team-run-task-agent-correction'
-          : taskTeamCorrection
-            ? 'team-run-task-team-correction'
-            : 'team-run-prototype'
-    const reviewerRunId = isAgentOrgTeamActive ? 'org-team-member-product-prototyper' : hierarchyReview ? 'team-member-root-coordinator' : launchedFromCatalog ? 'team-member-researcher-created' : 'team-member-reviewer'
-    const writerRunId = isAgentOrgTeamActive ? 'org-team-member-prototype-bootstrapper' : launchedFromCatalog ? 'team-member-writer-created' : 'team-member-writer'
-    const reviewerName = isAgentOrgTeamActive ? 'product_prototyper' : hierarchyReview ? 'Workspace Program Coordinator' : launchedFromCatalog ? 'Research Assistant' : 'Review Coordinator'
-    const writerName = isAgentOrgTeamActive ? 'prototype_bootstrapper' : hierarchyReview ? 'Root Operations Liaison' : launchedFromCatalog ? 'Documentation Writer' : 'Evidence Writer'
-    const reviewerDefinitionId = isAgentOrgTeamActive ? 'product-prototyper' : launchedFromCatalog ? 'agent-researcher' : 'agent-reviewer'
-    const writerDefinitionId = isAgentOrgTeamActive ? 'prototype-bootstrapper' : 'agent-writer'
-    const reviewerDisplayName = isAgentOrgTeamActive ? 'product_prototyper' : launchedFromCatalog ? 'researcher' : reviewerName
-    const writerDisplayName = isAgentOrgTeamActive ? 'prototype_bootstrapper' : launchedFromCatalog ? 'writer' : writerName
-    const reviewerAddress = isAgentOrgTeamActive ? '/product_prototyper' : hierarchyReview ? '/coordinator' : launchedFromCatalog ? '/researcher' : '/product-review/coordinator'
-    const writerAddress = isAgentOrgTeamActive ? '/prototype_bootstrapper' : hierarchyReview ? '/operations-liaison' : launchedFromCatalog ? '/writer' : '/product-review/evidence-writer'
-    const rootRowKey = launchedFromCatalog || isAgentOrgTeamActive ? `team:${rootTeamRunId}` : 'team:root'
-    const rootAddress = launchedFromCatalog || isAgentOrgTeamActive ? '/' : '/product-review'
+      : standaloneTeam
+        ? `team-run-${standaloneTeam.id}`
+        : hierarchyReview
+          ? 'team-run-hierarchy-review'
+          : launchedFromCatalog
+            ? 'team-run-created-fixture'
+            : taskAgentCorrection
+              ? 'team-run-task-agent-correction'
+              : taskTeamCorrection
+                ? 'team-run-task-team-correction'
+                : 'team-run-prototype'
+    const reviewerRunId = isAgentOrgTeamActive ? 'org-team-member-product-prototyper' : standaloneTeam ? `team-member-${standaloneTeam.coordinatorId}` : hierarchyReview ? 'team-member-root-coordinator' : launchedFromCatalog ? 'team-member-researcher-created' : 'team-member-reviewer'
+    const writerRunId = isAgentOrgTeamActive ? 'org-team-member-prototype-bootstrapper' : standaloneTeam ? `team-member-${standaloneTeam.secondId}` : launchedFromCatalog ? 'team-member-writer-created' : 'team-member-writer'
+    const reviewerName = isAgentOrgTeamActive ? 'product_prototyper' : standaloneTeam?.coordinatorName || (hierarchyReview ? 'Workspace Program Coordinator' : launchedFromCatalog ? 'Research Assistant' : 'Review Coordinator')
+    const writerName = isAgentOrgTeamActive ? 'prototype_bootstrapper' : standaloneTeam?.secondName || (hierarchyReview ? 'Root Operations Liaison' : launchedFromCatalog ? 'Documentation Writer' : 'Evidence Writer')
+    const reviewerDefinitionId = isAgentOrgTeamActive ? 'product-prototyper' : standaloneTeam?.coordinatorId || (launchedFromCatalog ? 'agent-researcher' : 'agent-reviewer')
+    const writerDefinitionId = isAgentOrgTeamActive ? 'prototype-bootstrapper' : standaloneTeam?.secondId || 'agent-writer'
+    const reviewerDisplayName = isAgentOrgTeamActive ? 'product_prototyper' : standaloneTeam?.coordinatorName || (launchedFromCatalog ? 'researcher' : reviewerName)
+    const writerDisplayName = isAgentOrgTeamActive ? 'prototype_bootstrapper' : standaloneTeam?.secondName || (launchedFromCatalog ? 'writer' : writerName)
+    const reviewerAddress = isAgentOrgTeamActive ? '/product_prototyper' : standaloneTeam ? `/${standaloneTeam.coordinatorName}` : hierarchyReview ? '/coordinator' : launchedFromCatalog ? '/researcher' : '/product-review/coordinator'
+    const writerAddress = isAgentOrgTeamActive ? '/prototype_bootstrapper' : standaloneTeam ? `/${standaloneTeam.secondName}` : hierarchyReview ? '/operations-liaison' : launchedFromCatalog ? '/writer' : '/product-review/evidence-writer'
+    const rootRowKey = launchedFromCatalog || isAgentOrgTeamActive || standaloneTeam ? `team:${rootTeamRunId}` : 'team:root'
+    const rootAddress = launchedFromCatalog || isAgentOrgTeamActive || standaloneTeam ? '/' : '/product-review'
     const memberConfig = (id, name) => ({ agentDefinitionId: id, agentDefinitionName: name, agentAvatarUrl: null, llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', workspaceId, workspaceMetadata, autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', isLocked: true, llmConfig: { temperature: 0.2 } })
     const teamStatus = scenario.includes('error') ? 'error' : scenario.includes('completed') || scenario.includes('history') || scenario.includes('interrupted') ? 'idle' : 'running'
     const memberStatus = launchedFromCatalog ? 'offline' : teamStatus
-    const teamLastActivityAt = launchedFromCatalog || isAgentOrgTeamActive ? new Date().toISOString() : now
+    const teamLastActivityAt = launchedFromCatalog || isAgentOrgTeamActive || standaloneTeam ? new Date().toISOString() : now
     const teamStreaming = scenario.includes('streaming')
     const reviewerText = scenario.includes('error') ? 'The review run encountered a deterministic error.'
       : scenario.includes('interrupted') ? 'The review run was interrupted before the next task.'
@@ -535,6 +582,18 @@ export function applyExperienceScenario(input = {}) {
       { agentRunId: reviewerRunId, memberAddress: reviewerAddress, agentContext: reviewer },
       { agentRunId: writerRunId, memberAddress: writerAddress, agentContext: writer },
     ]
+    const standaloneAdditionalMembers = standaloneTeam?.members.slice(2) || []
+    for (const member of standaloneAdditionalMembers) {
+      const agentRunId = `team-member-${member.id}`
+      const memberAddress = `/${member.name}`
+      const agentContext = agentContexts.upsertProjectionContext({
+        runId: agentRunId,
+        config: memberConfig(member.id, member.name),
+        conversation: memberConversation(agentRunId, member.name, `${member.name} is active in this Team run.`),
+        status: memberStatus,
+      })
+      entries.push({ agentRunId, memberAddress, agentContext })
+    }
     const taskAgentRunId = 'task-agent-license-audit'
     const taskTeamChildRunId = 'task-team-review:reviewer'
     if (taskAgentCorrection) {
@@ -600,6 +659,12 @@ export function applyExperienceScenario(input = {}) {
       { key: rootRowKey, kind: 'configured_team', address: rootAddress, displayName: teamDefinitionName, accessibleName: teamDefinitionName, depth: 0, parentKey: null, agentRunId: null, teamRunId: rootTeamRunId, taskId: null, taskStatus: null, currentStatus: null, focusable: false, expandable: true, coordinator: false },
       { key: `agent:${reviewerRunId}`, kind: 'configured_agent', address: reviewerAddress, displayName: reviewerDisplayName, accessibleName: reviewerDisplayName, depth: 1, parentKey: rootRowKey, agentRunId: reviewerRunId, teamRunId: null, taskId: null, taskStatus: null, currentStatus: memberStatus, focusable: true, expandable: false, coordinator: true },
       { key: `agent:${writerRunId}`, kind: 'configured_agent', address: writerAddress, displayName: writerDisplayName, accessibleName: writerDisplayName, depth: 1, parentKey: rootRowKey, agentRunId: writerRunId, teamRunId: null, taskId: null, taskStatus: null, currentStatus: memberStatus, focusable: true, expandable: taskAgentCorrection, coordinator: false },
+      ...standaloneAdditionalMembers.map(member => ({
+        key: `agent:team-member-${member.id}`, kind: 'configured_agent', address: `/${member.name}`,
+        displayName: member.name, accessibleName: member.name, depth: 1, parentKey: rootRowKey,
+        agentRunId: `team-member-${member.id}`, teamRunId: null, taskId: null, taskStatus: null,
+        currentStatus: memberStatus, focusable: true, expandable: false, coordinator: false,
+      })),
     ]
     if (taskAgentCorrection) {
       rows.push({
@@ -642,10 +707,16 @@ export function applyExperienceScenario(input = {}) {
       root_team: {
         team_definition_id: teamDefinitionId, team_definition_name: teamDefinitionName, team_run_id: rootTeamRunId,
         coordinator_address: reviewerAddress,
-        members: [
-          { kind: 'configured_agent', address: reviewerAddress, agent_definition_id: reviewerDefinitionId, role: null, description: null, agent_run_id: reviewerRunId, platform_agent_run_id: null, launch_configuration: launchConfiguration },
-          { kind: 'configured_agent', address: writerAddress, agent_definition_id: writerDefinitionId, role: null, description: null, agent_run_id: writerRunId, platform_agent_run_id: null, launch_configuration: launchConfiguration },
-        ],
+        members: standaloneTeam
+          ? standaloneTeam.members.map(member => ({
+            kind: 'configured_agent', address: `/${member.name}`, agent_definition_id: member.id,
+            role: null, description: null, agent_run_id: `team-member-${member.id}`,
+            platform_agent_run_id: null, launch_configuration: launchConfiguration,
+          }))
+          : [
+            { kind: 'configured_agent', address: reviewerAddress, agent_definition_id: reviewerDefinitionId, role: null, description: null, agent_run_id: reviewerRunId, platform_agent_run_id: null, launch_configuration: launchConfiguration },
+            { kind: 'configured_agent', address: writerAddress, agent_definition_id: writerDefinitionId, role: null, description: null, agent_run_id: writerRunId, platform_agent_run_id: null, launch_configuration: launchConfiguration },
+          ],
         task_executions: [],
       },
     }
@@ -670,7 +741,7 @@ export function applyExperienceScenario(input = {}) {
     const teams = store('agentTeamContexts')
     if (teams) teams.teams = new Map([[rootTeamRunId, { view }]])
     selection.selectRunWithoutShellNavigation(rootTeamRunId, 'team')
-    if ((launchedFromCatalog || hierarchyReview || currentStateCorrection) && runHistory) {
+    if ((launchedFromCatalog || hierarchyReview || currentStateCorrection || standaloneTeam) && runHistory) {
       const memberRow = (agentRunId, memberAddress, displayName) => ({
         teamRunId: rootTeamRunId, kind: 'agent', memberAddress, displayName, agentRunId, teamRunIdForNode: null,
         workspaceRootPath: workspaceMetadata.workspaceRootPath, summary: `New - ${teamDefinitionName}`, lastActivityAt: teamLastActivityAt,
@@ -682,6 +753,11 @@ export function applyExperienceScenario(input = {}) {
       })
       const reviewerRow = memberRow(reviewerRunId, reviewerAddress, reviewerDisplayName)
       const writerRow = memberRow(writerRunId, writerAddress, writerDisplayName)
+      const additionalRows = standaloneAdditionalMembers.map(member => memberRow(
+        `team-member-${member.id}`,
+        `/${member.name}`,
+        member.name,
+      ))
       if (hierarchyReview) {
         reviewerRow.currentStatus = 'running'
         reviewerRow.isActive = true
@@ -692,13 +768,14 @@ export function applyExperienceScenario(input = {}) {
         teamRunId: rootTeamRunId, kind: 'agent_team', memberAddress: '/', displayName: teamDefinitionName, agentRunId: null,
         teamDefinitionId, teamRunIdForNode: rootTeamRunId, coordinatorAddress: reviewerAddress,
         workspaceRootPath: null, summary: `New - ${teamDefinitionName}`, lastActivityAt: teamLastActivityAt,
-        currentStatus: null, isActive: true, deleteLifecycle: 'READY', children: [reviewerRow, writerRow],
+        currentStatus: null, isActive: true, deleteLifecycle: 'READY', children: [reviewerRow, writerRow, ...additionalRows],
       }
       let teamNode = {
         teamRunId: rootTeamRunId, teamDefinitionId, teamDefinitionName,
         workspaceRootPath: workspaceMetadata.workspaceRootPath, summary: `New - ${teamDefinitionName}`, lastActivityAt: teamLastActivityAt,
         isActive: true, deleteLifecycle: 'READY', focusedAgentRunId: reviewerRunId, rootTeam,
-        members: [reviewerRow, writerRow], executionRows: [stableExecutionRow(reviewerRow), stableExecutionRow(writerRow)],
+        members: [reviewerRow, writerRow, ...additionalRows],
+        executionRows: [reviewerRow, writerRow, ...additionalRows].map(row => stableExecutionRow(row)),
       }
 
       if (taskAgentCorrection) {

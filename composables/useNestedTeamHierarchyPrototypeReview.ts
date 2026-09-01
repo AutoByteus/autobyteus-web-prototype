@@ -1,5 +1,6 @@
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useLeftPanel } from '~/composables/useLeftPanel';
 
 export type NestedHierarchyTreatment = 'rails' | 'surfaces' | 'hybrid';
 export type NestedHierarchyMetadata = 'full' | 'responsive' | 'on-demand';
@@ -22,17 +23,19 @@ const panelWidth = (value: unknown): NestedHierarchyPanelWidth => {
 export const useNestedTeamHierarchyPrototypeReview = () => {
   const route = useRoute();
   const router = useRouter();
+  const { leftPanelWidth } = useLeftPanel();
 
-  const active = computed(() => route.query.prototypeReview === REVIEW_KEY);
+  const reviewActive = computed(() => route.query.prototypeReview === REVIEW_KEY);
+  const active = computed(() => route.path === '/workspace');
   const view = computed(() => oneOf(
     route.query.reviewView,
     ['proposal', 'compare'] as const,
-    'compare',
+    'proposal',
   ));
   const treatment = computed(() => oneOf(
     route.query.hierarchy,
     ['rails', 'surfaces', 'hybrid'] as const,
-    'hybrid',
+    'rails',
   ));
   const metadata = computed(() => oneOf(
     route.query.metadata,
@@ -42,14 +45,19 @@ export const useNestedTeamHierarchyPrototypeReview = () => {
   const teamIdentity = computed(() => oneOf(
     route.query.teamIdentity,
     ['icon', 'header', 'band'] as const,
-    'header',
+    'icon',
   ));
   const reviewState = computed(() => oneOf(
     route.query.treeState,
     ['collapsed', 'one', 'several', 'deep', 'selected'] as const,
-    'deep',
+    'collapsed',
   ));
-  const width = computed(() => panelWidth(route.query.panelWidth));
+  const width = computed(() => {
+    if (reviewActive.value) return panelWidth(route.query.panelWidth);
+    if (leftPanelWidth.value < 290) return 260;
+    if (leftPanelWidth.value >= 420) return 520;
+    return 320;
+  });
   const fontSize = computed(() => oneOf(
     route.query.fontSize,
     ['default', 'extra-large'] as const,
@@ -60,7 +68,7 @@ export const useNestedTeamHierarchyPrototypeReview = () => {
     await router.replace({
       query: {
         ...route.query,
-        prototypeReview: REVIEW_KEY,
+        ...(reviewActive.value ? { prototypeReview: REVIEW_KEY } : {}),
         ...changes,
       },
     });
@@ -84,6 +92,7 @@ export const useNestedTeamHierarchyPrototypeReview = () => {
 
   return {
     active,
+    reviewActive,
     view,
     treatment,
     metadata,

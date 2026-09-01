@@ -289,7 +289,7 @@ const HIERARCHY_REVIEW_MEMBER_KEYS = [
 ] as const;
 
 const applyHierarchyReviewTreeState = async (): Promise<void> => {
-  if (!hierarchyReview.active.value) return;
+  if (!hierarchyReview.reviewActive.value) return;
   const workspaceNode = treeState.workspaceNodes.value.find(
     (candidate) => candidate.workspaceId === 'workspace-prototype',
   );
@@ -339,7 +339,7 @@ const applyHierarchyReviewTreeState = async (): Promise<void> => {
 
 watch(
   [
-    hierarchyReview.active,
+    hierarchyReview.reviewActive,
     hierarchyReview.reviewState,
     () => runHistoryStore.navigationTopologyRevision,
   ],

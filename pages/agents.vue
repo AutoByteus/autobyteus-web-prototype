@@ -46,7 +46,7 @@ const route = useRoute();
 const router = useRouter();
 const workspaceStore = useWorkspaceStore();
 const agentDefStore = useAgentDefinitionStore();
-const { active: agentOrgReviewActive } = useAgentOrgPrototypeReview();
+const { active: agentOrgReviewActive, reviewActive: agentOrgReviewRouteActive } = useAgentOrgPrototypeReview();
 
 const loading = ref(true);
 
@@ -124,7 +124,7 @@ const handleNavigation = (payload: AgentNavigationPayload) => {
     router.push({
       path: '/agent-teams',
       query: {
-        ...(agentOrgReviewActive.value ? { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY } : {}),
+        ...(agentOrgReviewRouteActive.value ? { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY } : {}),
         view: payload.view,
         id: payload.id,
       },
@@ -134,7 +134,7 @@ const handleNavigation = (payload: AgentNavigationPayload) => {
 
   const { view, id } = payload;
   const query: Record<string, string> = { view };
-  if (agentOrgReviewActive.value) {
+  if (agentOrgReviewRouteActive.value) {
     query.prototypeReview = AGENT_ORG_PROTOTYPE_REVIEW_KEY;
   }
   if (id) {

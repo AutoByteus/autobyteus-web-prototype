@@ -159,16 +159,16 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { Icon } from '@iconify/vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import HandoffManager from '~/components/handoffs/HandoffManager.vue';
 import { agents, flatTeams, agentOrgs, agentById, teamById, orgById } from '~/prototype/aorg-flat-team-fixtures';
 import { buildOrgHandoffOptions, cloneHandoffs, orgHandoffsFor, type PrototypeHandoff } from '~/prototype/aorg-handoff-model';
-import { AGENT_ORG_PROTOTYPE_REVIEW_KEY } from '~/composables/useAgentOrgPrototypeReview';
+import { useAgentOrgPrototypeReview } from '~/composables/useAgentOrgPrototypeReview';
 
 type OrgView = 'org-list' | 'org-detail' | 'org-create' | 'org-edit';
 type HandoffManagerExpose = { validateAll: () => boolean; clearStatus: () => void };
 const route = useRoute();
-const router = useRouter();
+const { push: pushExperienceRoute } = useAgentOrgPrototypeReview();
 const search = ref('');
 const reloading = ref(false);
 const saved = ref(false);
@@ -238,10 +238,10 @@ watch([view, selectedOrg], () => {
   memberSearch.value = '';
 }, { immediate: true });
 
-const go = async (nextView: OrgView, id?: string): Promise<void> => router.push({ path: '/agent-orgs', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: nextView, ...(id ? { id } : {}) } });
-const openTeam = async (id: string): Promise<void> => router.push({ path: '/agent-teams', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, view: 'team-detail', id } });
+const go = async (nextView: OrgView, id?: string): Promise<void> => pushExperienceRoute('/agent-orgs', { view: nextView, id });
+const openTeam = async (id: string): Promise<void> => pushExperienceRoute('/agent-teams', { view: 'team-detail', id });
 const openLaunch = async (id: string): Promise<void> => {
-  await router.push({ path: '/workspace', query: { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY, root: 'org', org: id, phase: 'config' } });
+  await pushExperienceRoute('/workspace', { root: 'org', org: id, phase: 'config' });
 };
 const openMemberPicker = (): void => {
   memberPickerTab.value = 'agents';

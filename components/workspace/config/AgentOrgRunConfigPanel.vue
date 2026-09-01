@@ -139,14 +139,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Icon } from '@iconify/vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import RuntimeModelConfigFields from '~/components/launch-config/RuntimeModelConfigFields.vue';
 import WorkspaceSelector from '~/components/workspace/config/WorkspaceSelector.vue';
 import AgentOrgPlacementOverrideRow from '~/components/workspace/config/AgentOrgPlacementOverrideRow.vue';
 import { agentById, orgById, teamById } from '~/prototype/aorg-flat-team-fixtures';
 import type { AgentRuntimeKind } from '~/types/agent/AgentRunConfig';
 import type { MemberConfigOverride } from '~/types/agent/TeamRunConfig';
-import { AGENT_ORG_PROTOTYPE_REVIEW_KEY } from '~/composables/useAgentOrgPrototypeReview';
+import { useAgentOrgPrototypeReview } from '~/composables/useAgentOrgPrototypeReview';
 import { useWorkspaceStore } from '~/stores/workspace';
 import { useRightSideTabs } from '~/composables/useRightSideTabs';
 
@@ -154,7 +154,7 @@ type AgentPlacement = { key: string; name: string; address: string };
 type TeamPlacement = AgentPlacement & { coordinatorName: string; agents: AgentPlacement[] };
 
 const route = useRoute();
-const router = useRouter();
+const { push: pushExperienceRoute } = useAgentOrgPrototypeReview();
 const workspaceStore = useWorkspaceStore();
 const { setActiveTab } = useRightSideTabs();
 const org = computed(() => orgById(String(route.query.org || 'software-development-department')));
@@ -231,14 +231,10 @@ const runOrg = async (): Promise<void> => {
     workspaceError.value = 'Choose or create a workspace before running this Agent Org.';
     return;
   }
-  await router.push({
-    path: '/workspace',
-    query: {
-      prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY,
-      root: 'org',
-      org: org.value.id,
-      phase: 'active',
-    },
+  await pushExperienceRoute('/workspace', {
+    root: 'org',
+    org: org.value.id,
+    phase: 'active',
   });
 };
 </script>

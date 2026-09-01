@@ -7,9 +7,15 @@ export const useAgentOrgPrototypeReview = () => {
   const route = useRoute();
   const router = useRouter();
 
-  const active = computed(() => (
+  const reviewActive = computed(() => (
     route.query.prototypeReview === AGENT_ORG_PROTOTYPE_REVIEW_KEY
+  ));
+  const active = computed(() => (
+    reviewActive.value
     || route.path.startsWith('/agent-orgs')
+    || route.path.startsWith('/agent-teams')
+    || (route.path.startsWith('/agents') && typeof route.query.returnToTeam === 'string')
+    || (route.path.startsWith('/workspace') && (route.query.root === 'org' || route.query.root === 'team'))
   ));
 
   const push = async (
@@ -22,11 +28,11 @@ export const useAgentOrgPrototypeReview = () => {
     await router.push({
       path,
       query: {
-        prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY,
+        ...(reviewActive.value ? { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY } : {}),
         ...normalized,
       },
     });
   };
 
-  return { active, push };
+  return { active, reviewActive, push };
 };
