@@ -1,0 +1,93 @@
+
+> autobyteus-web-prototype@0.1.0 validate:aorg-team-status-review /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-STATUS-001
+> node prototype/scripts/validate-aorg-team-status-review.mjs
+
+{
+  "baseUrl": "http://127.0.0.1:4197",
+  "generatedAt": "2026-09-01T17:45:01.888Z",
+  "passed": 9,
+  "total": 9,
+  "runtimeErrors": [],
+  "results": [
+    {
+      "id": "AORG-STATUS-001-active-expanded-aggregate",
+      "pass": true,
+      "evidence": {
+        "productTeam": "running",
+        "engineeringTeam": "initializing",
+        "exactConfiguredAgentRows": 6
+      }
+    },
+    {
+      "id": "AORG-STATUS-002-task-descendants-contribute",
+      "pass": true,
+      "evidence": {
+        "taskAgent": "running",
+        "taskTeamAgent": "idle"
+      }
+    },
+    {
+      "id": "AORG-STATUS-003-accessible-without-color",
+      "pass": true,
+      "evidence": {
+        "labels": [
+          "Team status: Running",
+          "Team status: Initializing"
+        ]
+      }
+    },
+    {
+      "id": "AORG-STATUS-004-no-mounted-team-lifecycle-controls",
+      "pass": true,
+      "evidence": {
+        "matchingControls": 0
+      }
+    },
+    {
+      "id": "AORG-STATUS-005-collapsed-visible",
+      "pass": true,
+      "evidence": {
+        "teamSignals": 2,
+        "visibleAgentRows": 0
+      }
+    },
+    {
+      "id": "AORG-STATUS-006-historical-terminal-truth",
+      "pass": true,
+      "evidence": {
+        "statuses": [
+          "error",
+          "idle"
+        ],
+        "lastActivity": "12m"
+      }
+    },
+    {
+      "id": "AORG-STATUS-007-history-remains-org-owned",
+      "pass": true,
+      "evidence": {
+        "mountedTeamLifecycleControls": 0,
+        "preservedStandaloneTeamHistory": 1
+      }
+    },
+    {
+      "id": "AORG-STATUS-009-default-route-promoted",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4197/workspace?root=org&org=software-development-department&phase=active",
+        "teamStatuses": [
+          "running",
+          "initializing"
+        ],
+        "exactConfiguredAgentRows": 6
+      }
+    },
+    {
+      "id": "AORG-STATUS-008-zero-browser-errors",
+      "pass": true,
+      "evidence": {
+        "runtimeErrors": []
+      }
+    }
+  ]
+}

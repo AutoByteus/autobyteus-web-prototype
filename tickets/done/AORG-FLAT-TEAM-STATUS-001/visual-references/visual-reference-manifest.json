@@ -1,0 +1,47 @@
+{
+  "productTicket": "AORG-FLAT-TEAM-STATUS-001",
+  "stableRequirementsPackage": "AORG-FLAT-TEAM-001",
+  "outcome": "Prototype Completed",
+  "requirementsAuthority": "RER-020@bf5951867f87d1e5bb6eaa8bfc7b82b2c6f6cba5",
+  "capturedAfterApproval": true,
+  "capturedAt": "2026-09-01T17:45:08.009Z",
+  "runtimeErrors": [],
+  "items": [
+    {
+      "id": "VIS-STATUS-001",
+      "filename": "VIS-STATUS-001-agent-org-mounted-team-status-active-expanded-desktop-1440x900.png",
+      "state": "Active AgentOrg with configured Team branches expanded; Team aggregate status coexists with exact configured and task-scoped Agent statuses.",
+      "route": "/workspace?root=org&org=software-development-department&phase=active",
+      "sha256": "e0983692ab52559e323a67277e9648ffd285efadbc25f05d016299cd29d6c986",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fixtureContent": "Illustrative deterministic prototype data; placement, hierarchy preservation, aggregate semantics, collapsed visibility, accessibility, historical truth, and lifecycle non-effects are normative."
+    },
+    {
+      "id": "VIS-STATUS-002",
+      "filename": "VIS-STATUS-002-agent-org-mounted-team-status-active-collapsed-desktop-1440x900.png",
+      "state": "Active AgentOrg with configured Team branches collapsed; each Team aggregate remains visible while descendants are hidden.",
+      "route": "/workspace?root=org&org=software-development-department&phase=active&prototypeReview=aorg-team-status&statusState=collapsed",
+      "sha256": "b4530d57ae7c99080ac412d929f20a8b3df6ee9611e3ed545863213de46819dd",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fixtureContent": "Illustrative deterministic prototype data; placement, hierarchy preservation, aggregate semantics, collapsed visibility, accessibility, historical truth, and lifecycle non-effects are normative."
+    },
+    {
+      "id": "VIS-STATUS-003",
+      "filename": "VIS-STATUS-003-agent-org-mounted-team-status-stopped-historical-desktop-1440x900.png",
+      "state": "Stopped historical AgentOrg projection; Team aggregates use terminal descendant truth without retaining live running or initializing state.",
+      "route": "/workspace?root=org&org=software-development-department&phase=active&prototypeReview=aorg-team-status&statusState=historical",
+      "sha256": "199e952b4362a5ed1453d758f1bfb03fad0a290694bd8e8624f2dca908a44177",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fixtureContent": "Illustrative deterministic prototype data; placement, hierarchy preservation, aggregate semantics, collapsed visibility, accessibility, historical truth, and lifecycle non-effects are normative."
+    }
+  ]
+}

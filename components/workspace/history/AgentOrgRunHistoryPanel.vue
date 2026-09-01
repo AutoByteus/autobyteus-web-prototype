@@ -24,14 +24,14 @@
               <span class="truncate font-medium">{{ org.name }}</span>
             </button>
 
-            <div v-if="orgExpanded && isActive" class="ml-3 mt-0.5 space-y-0.5">
+            <div v-if="orgExpanded && showOrgRun" class="ml-3 mt-0.5 space-y-0.5">
               <div class="group flex items-center justify-between rounded-md px-2 py-1 text-sm text-gray-700">
                 <button type="button" class="flex min-w-0 flex-1 items-center text-left" :aria-expanded="orgRunExpanded" data-test="history-org-root" @click="orgRunExpanded = !orgRunExpanded">
                   <Icon icon="heroicons:chevron-down-20-solid" class="mr-1 h-3.5 w-3.5 text-gray-400 transition-transform" :class="orgRunExpanded ? 'rotate-0' : '-rotate-90'" />
-                  <span class="mr-1.5 h-2 w-2 flex-none rounded-full bg-emerald-500" aria-label="Running" />
+                  <span class="mr-1.5 h-2 w-2 flex-none rounded-full" :class="statusReview.historical.value ? 'bg-gray-400' : 'bg-emerald-500'" :aria-label="statusReview.historical.value ? 'Stopped' : 'Running'" />
                   <span class="truncate font-medium">New - {{ org.name }}</span>
                 </button>
-                <span class="ml-2 text-xs text-gray-400">now</span>
+                <span class="ml-2 text-xs text-gray-400">{{ statusReview.historical.value ? '12m' : 'now' }}</span>
               </div>
 
               <div v-if="orgRunExpanded" class="team-execution-tree ml-3 space-y-0.5" role="tree" :aria-label="`${org.name} execution hierarchy`" data-test="history-org-execution-tree">
@@ -43,13 +43,14 @@
                     :class="isRunSelected(displayRow.row.agent.runId, 'agent') ? 'is-selected text-indigo-900' : 'text-gray-600 hover:bg-gray-50'"
                     :style="rowStyle(displayRow.row.depth)"
                     :data-test="`history-org-agent-${displayRow.row.agent.id}`"
+                    :data-status="displayRow.row.agent.status"
                     :aria-level="displayRow.row.depth + 1"
                     role="treeitem"
                     @click="selectDirectAgent(displayRow.row.agent.runId)"
                   >
                     <WorkspaceHierarchyBranches :depth="displayRow.row.depth" :continuing-ancestor-depths="displayRow.continuingAncestorDepths" :has-following-sibling="displayRow.hasFollowingSibling" />
                     <span class="ml-2 mr-1 h-3.5 w-3.5 flex-none" aria-hidden="true" />
-                    <span class="mr-1.5 h-2 w-2 flex-none rounded-full bg-emerald-500" />
+                    <StatusDot class="mr-1.5" :status="displayRow.row.agent.status" />
                     <span class="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600">{{ displayRow.row.agent.initials }}</span>
                     <span class="truncate">{{ displayRow.row.agent.name }}</span>
                   </button>
@@ -67,6 +68,13 @@
                     >
                       <WorkspaceHierarchyBranches :depth="displayRow.row.depth" :continuing-ancestor-depths="displayRow.continuingAncestorDepths" :has-following-sibling="displayRow.hasFollowingSibling" />
                       <Icon icon="heroicons:chevron-down-20-solid" class="ml-2 mr-1 h-3.5 w-3.5 flex-none text-gray-400 transition-transform" :class="isTeamExpanded(displayRow.row.team.id) ? 'rotate-0' : '-rotate-90'" />
+                      <span
+                        class="mr-1.5"
+                        :data-test="`history-org-team-status-${displayRow.row.team.id}`"
+                        :data-status="teamAggregateStatus(displayRow.row.team)"
+                      >
+                        <NestedTeamAggregateStatusDot :status="teamAggregateStatus(displayRow.row.team)" />
+                      </span>
                       <Icon icon="heroicons:user-group-20-solid" class="mr-1.5 h-4 w-4 flex-none text-gray-500" />
                       <span class="truncate font-semibold">{{ displayRow.row.team.name }}</span>
                     </button>
@@ -79,13 +87,14 @@
                     :class="isTeamMemberFocused(displayRow.row.team.runId, displayRow.row.agent.runId) ? 'is-selected text-indigo-900' : 'text-gray-600 hover:bg-gray-50'"
                     :style="rowStyle(displayRow.row.depth)"
                     :data-test="`history-org-team-agent-${displayRow.row.agent.id}`"
+                    :data-status="displayRow.row.agent.status"
                     :aria-level="displayRow.row.depth + 1"
                     role="treeitem"
                     @click="focusTeamAgent(displayRow.row.team.runId, displayRow.row.agent.runId)"
                   >
                     <WorkspaceHierarchyBranches :depth="displayRow.row.depth" :continuing-ancestor-depths="displayRow.continuingAncestorDepths" :has-following-sibling="displayRow.hasFollowingSibling" />
                     <span class="ml-2 mr-1 h-3.5 w-3.5 flex-none" aria-hidden="true" />
-                    <span class="mr-1.5 h-2 w-2 flex-none rounded-full bg-emerald-500" />
+                    <StatusDot class="mr-1.5" :status="displayRow.row.agent.status" />
                     <span class="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600">{{ displayRow.row.agent.initials }}</span>
                     <span class="min-w-0 flex-1 truncate">{{ displayRow.row.agent.name }}</span>
                     <span v-if="displayRow.row.agent.id === displayRow.row.team.coordinatorId" class="mr-2 ml-1 text-[0.625rem] text-gray-400" aria-label="Coordinator">◆</span>
@@ -96,12 +105,13 @@
                     class="org-execution-row relative flex min-h-7 w-full items-center rounded-md bg-indigo-50/70 text-sm text-indigo-900"
                     :style="rowStyle(displayRow.row.depth)"
                     data-test="history-task-agent-row"
+                    :data-status="displayRow.row.status"
                     :aria-level="displayRow.row.depth + 1"
                     role="treeitem"
                   >
                     <WorkspaceHierarchyBranches :depth="displayRow.row.depth" :continuing-ancestor-depths="displayRow.continuingAncestorDepths" :has-following-sibling="displayRow.hasFollowingSibling" />
                     <span class="ml-2 mr-1 h-3.5 w-3.5 flex-none" aria-hidden="true" />
-                    <Icon icon="svg-spinners:ring-resize" class="mr-1.5 h-3.5 w-3.5 flex-none text-indigo-600" />
+                    <StatusDot class="mr-1.5" :status="displayRow.row.status" variant="transient" />
                     <span class="truncate">Task: Audit prototype dependency licenses</span>
                   </div>
 
@@ -127,12 +137,13 @@
                     class="org-execution-row relative flex min-h-7 w-full items-center rounded-md text-sm text-gray-600"
                     :style="rowStyle(displayRow.row.depth)"
                     data-test="history-task-team-child-row"
+                    :data-status="displayRow.row.status"
                     :aria-level="displayRow.row.depth + 1"
                     role="treeitem"
                   >
                     <WorkspaceHierarchyBranches :depth="displayRow.row.depth" :continuing-ancestor-depths="displayRow.continuingAncestorDepths" :has-following-sibling="displayRow.hasFollowingSibling" />
                     <span class="ml-2 mr-1 h-3.5 w-3.5 flex-none" aria-hidden="true" />
-                    <span class="mr-1.5 h-2 w-2 flex-none rounded-full bg-emerald-500" />
+                    <StatusDot class="mr-1.5" :status="displayRow.row.status" />
                     <span class="mr-1.5 inline-flex h-4 w-4 items-center justify-center rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600">RV</span>
                     <span class="truncate">reviewer</span>
                   </div>
@@ -158,27 +169,33 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRoute } from 'vue-router';
 import WorkspaceHierarchyBranches from '~/components/workspace/history/WorkspaceHierarchyBranches.vue';
+import NestedTeamAggregateStatusDot from '~/components/workspace/history/NestedTeamAggregateStatusDot.vue';
+import StatusDot from '~/components/workspace/common/StatusDot.vue';
 import { useAgentSelectionStore } from '~/stores/agentSelectionStore';
 import { useAgentTeamContextsStore } from '~/stores/agentTeamContextsStore';
 import { agentById, orgById, teamById } from '~/prototype/aorg-flat-team-fixtures';
+import { AgentStatus } from '~/types/agent/AgentStatus';
+import { aggregateAgentStatuses } from '~/utils/aggregateAgentStatuses';
+import { useMountedTeamStatusPrototypeReview } from '~/composables/useMountedTeamStatusPrototypeReview';
 
-type RuntimeAgent = ReturnType<typeof agentById> & { runId: string };
+type RuntimeAgent = ReturnType<typeof agentById> & { runId: string; status: AgentStatus };
 type RuntimeTeam = ReturnType<typeof teamById> & { runId: string; agents: RuntimeAgent[] };
 type OrgTreeRow =
   | { key: string; kind: 'direct_agent'; depth: 0; agent: RuntimeAgent }
   | { key: string; kind: 'team'; depth: 0; team: RuntimeTeam }
   | { key: string; kind: 'team_agent'; depth: 1; team: RuntimeTeam; agent: RuntimeAgent }
-  | { key: string; kind: 'task_agent'; depth: 1 }
+  | { key: string; kind: 'task_agent'; depth: 1; status: AgentStatus }
   | { key: string; kind: 'task_team'; depth: 1 }
-  | { key: string; kind: 'task_team_agent'; depth: 2 };
+  | { key: string; kind: 'task_team_agent'; depth: 2; status: AgentStatus };
 type VisibleOrgTreeRow = { row: OrgTreeRow; continuingAncestorDepths: number[]; hasFollowingSibling: boolean };
 
 const emit = defineEmits(['run-selected', 'run-created']);
 const route = useRoute();
+const statusReview = useMountedTeamStatusPrototypeReview();
 const selection = useAgentSelectionStore();
 const teamContexts = useAgentTeamContextsStore();
 const workspaceExpanded = ref(true);
@@ -189,12 +206,38 @@ const standaloneTeamExpanded = ref(false);
 const expandedTeamIds = ref(new Set<string>(['product-design-prototyping-team', 'software-engineering-team']));
 
 const org = computed(() => orgById(String(route.query.org || 'software-development-department')));
-const isActive = computed(() => route.query.phase === 'active');
+const isActive = computed(() => route.query.phase === 'active' && !statusReview.historical.value);
+const showOrgRun = computed(() => route.query.phase === 'active');
+const activeStatusByAgentId: Record<string, AgentStatus> = {
+  'requirements-engineer': AgentStatus.Idle,
+  'product-prototyper': AgentStatus.Idle,
+  'prototype-bootstrapper': AgentStatus.Offline,
+  'architecture-designer': AgentStatus.Idle,
+  'implementation-engineer': AgentStatus.Error,
+  'code-reviewer': AgentStatus.Initializing,
+  'delivery-engineer': AgentStatus.Offline,
+};
+const historicalStatusByAgentId: Record<string, AgentStatus> = {
+  'requirements-engineer': AgentStatus.Idle,
+  'product-prototyper': AgentStatus.Idle,
+  'prototype-bootstrapper': AgentStatus.Error,
+  'architecture-designer': AgentStatus.Idle,
+  'implementation-engineer': AgentStatus.Idle,
+  'code-reviewer': AgentStatus.Offline,
+  'delivery-engineer': AgentStatus.Offline,
+};
+const agentStatus = (agentId: string): AgentStatus => (
+  statusReview.historical.value
+    ? historicalStatusByAgentId[agentId] ?? AgentStatus.Offline
+    : activeStatusByAgentId[agentId] ?? AgentStatus.Offline
+);
+const taskAgentStatus = computed(() => statusReview.historical.value ? AgentStatus.Offline : AgentStatus.Running);
+const taskTeamAgentStatus = computed(() => statusReview.historical.value ? AgentStatus.Offline : AgentStatus.Idle);
 const directAgents = computed<RuntimeAgent[]>(() => org.value.members
   .filter((member) => member.kind === 'agent')
   .map((member) => {
     const agent = agentById(member.ref);
-    return { ...agent, runId: `org-agent-run-${agent.id}` };
+    return { ...agent, runId: `org-agent-run-${agent.id}`, status: agentStatus(agent.id) };
   }));
 const teams = computed<RuntimeTeam[]>(() => org.value.members
   .filter((member) => member.kind === 'team')
@@ -205,7 +248,7 @@ const teams = computed<RuntimeTeam[]>(() => org.value.members
       runId: `org-team-run-${team.id}`,
       agents: team.agents.map((agentId) => {
         const agent = agentById(agentId);
-        return { ...agent, runId: `org-team-${team.id}-member-${agent.id}` };
+        return { ...agent, runId: `org-team-${team.id}-member-${agent.id}`, status: agentStatus(agent.id) };
       }),
     };
   }));
@@ -217,9 +260,9 @@ const treeRows = computed<OrgTreeRow[]>(() => {
     if (!isTeamExpanded(team.id)) continue;
     rows.push(...team.agents.map((agent) => ({ key: `team-${team.id}-agent-${agent.id}`, kind: 'team_agent' as const, depth: 1 as const, team, agent })));
     if (team.id !== 'product-design-prototyping-team') continue;
-    rows.push({ key: 'task-agent-audit', kind: 'task_agent', depth: 1 });
+    rows.push({ key: 'task-agent-audit', kind: 'task_agent', depth: 1, status: taskAgentStatus.value });
     rows.push({ key: 'task-team-review', kind: 'task_team', depth: 1 });
-    if (taskTeamExpanded.value) rows.push({ key: 'task-team-reviewer', kind: 'task_team_agent', depth: 2 });
+    if (taskTeamExpanded.value) rows.push({ key: 'task-team-reviewer', kind: 'task_team_agent', depth: 2, status: taskTeamAgentStatus.value });
   }
   return rows;
 });
@@ -242,6 +285,12 @@ const visibleRows = computed<VisibleOrgTreeRow[]>(() => {
 });
 
 const rowStyle = (depth: number): Record<string, string> => ({ paddingLeft: `calc((${depth} + 1) * 0.875rem)` });
+const teamAggregateStatus = (team: RuntimeTeam): AgentStatus => aggregateAgentStatuses([
+  ...team.agents.map((agent) => agent.status),
+  ...(team.id === 'product-design-prototyping-team'
+    ? [taskAgentStatus.value, taskTeamAgentStatus.value]
+    : []),
+]);
 const isRunSelected = (runId: string, type: 'agent' | 'team'): boolean => selection.selectedType === type && selection.selectedRunId === runId;
 const isTeamExpanded = (teamId: string): boolean => expandedTeamIds.value.has(teamId);
 const toggleTeam = (teamId: string): void => {
@@ -273,6 +322,12 @@ const isTeamMemberFocused = (teamRunId: string, agentRunId: string): boolean => 
   && selection.selectedRunId === teamRunId
   && teamContexts.getTeamContextById(teamRunId)?.view.getFocusedAgentRunId() === agentRunId
 );
+
+watch(statusReview.state, (state) => {
+  expandedTeamIds.value = state === 'collapsed'
+    ? new Set<string>()
+    : new Set<string>(['product-design-prototyping-team', 'software-engineering-team']);
+}, { immediate: true });
 </script>
 
 <style scoped>

@@ -21,6 +21,21 @@
           <TeamWorkspaceView v-else-if="isTeamSelected" />
           <RunConfigPanel v-else-if="hasPendingRunConfig" />
           <div
+            v-else-if="showAgentOrgHistorical"
+            data-test="agent-org-historical-unfocused"
+            class="flex h-full items-center justify-center px-4 text-center text-gray-500"
+          >
+            <div class="max-w-md space-y-3">
+              <span class="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+                <Icon icon="heroicons:building-office-2-20-solid" class="h-6 w-6" />
+              </span>
+              <div class="space-y-1">
+                <h2 class="text-lg font-semibold text-gray-700">Stopped Agent Org</h2>
+                <p>Select a member from the historical run in the sidebar to inspect its terminal state.</p>
+              </div>
+            </div>
+          </div>
+          <div
             v-else-if="showAgentOrgUnfocused"
             data-test="agent-org-active-unfocused"
             class="flex h-full items-center justify-center px-4 text-center text-gray-500"
@@ -134,6 +149,7 @@ import { useWorkspaceCenterViewStore } from '~/stores/workspaceCenterViewStore';
 import { useShellPrimaryNavigation } from '~/composables/useShellPrimaryNavigation';
 import { LEFT_PANEL_RESIZE_HANDLE_WIDTH_PX } from '~/utils/layout/responsiveLayoutPolicy';
 import { useAgentOrgPrototypeReview } from '~/composables/useAgentOrgPrototypeReview';
+import { useMountedTeamStatusPrototypeReview } from '~/composables/useMountedTeamStatusPrototypeReview';
 
 defineProps<{
   showFileContent: boolean
@@ -144,6 +160,7 @@ const appLayoutStore = useAppLayoutStore();
 const route = useRoute();
 const router = useRouter();
 const { active: agentOrgReviewActive } = useAgentOrgPrototypeReview();
+const mountedTeamStatusReview = useMountedTeamStatusPrototypeReview();
 const { resolvePrimaryRoute } = useShellPrimaryNavigation();
 const selectionStore = useAgentSelectionStore();
 const runConfigStore = useAgentRunConfigStore();
@@ -199,10 +216,20 @@ onBeforeUnmount(() => {
 const isAgentSelected = computed(() => selectionStore.selectedType === 'agent');
 const isTeamSelected = computed(() => selectionStore.selectedType === 'team');
 const isAgentOrgWorkspace = computed(() => agentOrgReviewActive.value && route.query.root === 'org');
-const showAgentOrgRunConfig = computed(() => isAgentOrgWorkspace.value && route.query.phase !== 'active');
+const showAgentOrgRunConfig = computed(() => (
+  isAgentOrgWorkspace.value
+  && route.query.phase !== 'active'
+  && !mountedTeamStatusReview.historical.value
+));
+const showAgentOrgHistorical = computed(() => (
+  isAgentOrgWorkspace.value
+  && mountedTeamStatusReview.historical.value
+  && !selectionStore.selectedRunId
+));
 const showAgentOrgUnfocused = computed(() => (
   isAgentOrgWorkspace.value
   && route.query.phase === 'active'
+  && !mountedTeamStatusReview.historical.value
   && !selectionStore.selectedRunId
 ));
 const showSelectedRunConfig = computed(() =>
