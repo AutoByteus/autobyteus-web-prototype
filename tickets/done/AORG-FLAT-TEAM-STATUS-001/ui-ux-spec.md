@@ -2,7 +2,7 @@
 
 ## Status And Authority
 
-- Status: `Approved; repository integration and baseline promotion in progress`.
+- Status: `Completed and promoted to the default prototype baseline`.
 - Product ticket: `AORG-FLAT-TEAM-STATUS-001`.
 - Stable requirements package: `AORG-FLAT-TEAM-001`.
 - Requirements revision: `RER-020@bf5951867f87d1e5bb6eaa8bfc7b82b2c6f6cba5`.
@@ -65,3 +65,4 @@ The exact fixtures and status mixture are illustrative. Placement, branch-local 
 - Focused browser validation: `9/9` checks passed with zero browser errors, including clean-route promotion; `review-evidence/rv-001/browser-validation.json`.
 - Static validation: diff check, typecheck, lint, `15/15` tests, `13/13` prototype-boundary checks, and production build; `validation/static-validation.txt`.
 - Final reference capture: three normative references with zero browser errors; `validation/final-reference-capture.txt` and `visual-references/visual-reference-manifest.json`.
+- Canonical post-integration validation: the same `9/9` checks passed with zero browser errors on `personal` behavior revision `dddf1eb1b5facd4827248ffe52bbb211ac170285`; `validation/post-integration/browser-validation.json`.

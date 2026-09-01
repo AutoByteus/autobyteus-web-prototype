@@ -5,7 +5,7 @@
 - Product ticket: `AORG-FLAT-TEAM-STATUS-001`
 - Stable requirements package: `AORG-FLAT-TEAM-001`
 - Title: Mounted AgentOrg Team aggregate status supplement
-- Status: `Approved — Finalization In Progress`
+- Status: `Completed`
 - Mode: `Product Experience Prototyping`
 - Requirements authority: `RER-020@bf5951867f87d1e5bb6eaa8bfc7b82b2c6f6cba5`
 - In-scope IDs: `BEH-011`, `REQ-028`, `AC-023`, `SCN-012`, `AORG-CONTRACT-001` `ORG-CASE-056`–`ORG-CASE-058`.
@@ -33,7 +33,7 @@
 - Start command: `corepack pnpm dev --port 4197`
 - Temporary state root: `/tmp/autobyteus-prototype-AORG-FLAT-TEAM-STATUS-001`
 - Reset method: fresh browser context and direct deterministic review URL.
-- Runtime process: `Running` — port `4197`, PID `14144`, execution session `80222`.
+- Runtime process: `Completed` — ticket-owned port `4197` was stopped after final capture and validation. The separate canonical baseline server on `4194` remains available and was not stopped or repurposed.
 - Existing canonical baseline server on `4194` is user-owned review context and must not be stopped or reused by this ticket.
 
 ## Decision Contract
@@ -48,17 +48,20 @@
 
 ## Delivery And Validation
 
-- UI/UX supplement: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-STATUS-001/tickets/done/AORG-FLAT-TEAM-STATUS-001/ui-ux-spec.md`
-- Review guide: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-FLAT-TEAM-STATUS-001/tickets/done/AORG-FLAT-TEAM-STATUS-001/review-guide.md`
+- UI/UX supplement: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-STATUS-001/ui-ux-spec.md`
+- Review guide: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-STATUS-001/review-guide.md`
 - Review evidence: `9/9` focused browser checks passed with zero browser errors, including the clean/default active route; active-expanded, active-collapsed, and stopped/historical captures are under `review-evidence/rv-001/`.
 - Static validation: `Passed` — diff check, typecheck, lint, `15/15` tests, `13/13` boundary checks, and production build. Durable log: `validation/static-validation.txt`.
-- Ticket revision: pre-approval review candidate in the ticket working tree at accepted base `12c014eff49cf53c58725683b5aa2efa75d921c3`; commit intentionally pending explicit user approval.
-- Promoted default baseline revision: `Pending`
+- User approval: explicit `approve` on `2026-09-01`; durable record: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-STATUS-001/user-decision-record.md`.
+- Final visual references: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-STATUS-001/visual-references/visual-reference-manifest.json` (`VIS-STATUS-001`–`VIS-STATUS-003`).
+- Ticket behavior/integration revision: `dddf1eb1b5facd4827248ffe52bbb211ac170285`.
+- Promoted default baseline revision: `dddf1eb1b5facd4827248ffe52bbb211ac170285`.
+- Canonical post-integration validation: `9/9` focused and clean-route checks passed with zero browser errors at `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-STATUS-001/validation/post-integration/browser-validation.json`.
 
 ## Outcome And Next Action
 
-- Current outcome/status: `Approved — Finalization In Progress`.
-- Integration result: `Pending`.
-- Promotion result: `Pending`.
-- Cleanup result: `Pending`.
-- Next action: complete final static validation, commit the accepted ticket result, integrate and validate the clean default baseline, close the ticket, and complete the required Requirements Engineering handoff.
+- Current outcome/status: `Prototype Completed`.
+- Integration result: `Completed` — canonical `personal` fast-forwarded from `12c014eff49cf53c58725683b5aa2efa75d921c3` to `dddf1eb1b5facd4827248ffe52bbb211ac170285`.
+- Promotion result: `Completed` — mounted Team aggregate status is present on the clean/default active AgentOrg route without `prototypeReview`, while deterministic collapsed and stopped/historical review states remain available as explicit evidence controls.
+- Cleanup result: `Pending safe worktree removal after terminal repository metadata is durable`.
+- Next action: commit terminal metadata and post-integration evidence, remove the stopped ticket worktree safely, update cleanup state, push `personal`, and complete the required Requirements Engineering handoff.

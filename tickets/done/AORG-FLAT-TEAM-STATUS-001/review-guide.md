@@ -22,7 +22,7 @@ Review only the aggregate status dot added to each direct configured Team row in
 - Active / collapsed: `http://127.0.0.1:4197/workspace?root=org&org=software-development-department&phase=active&prototypeReview=aorg-team-status&statusState=collapsed`
 - Stopped / historical: `http://127.0.0.1:4197/workspace?root=org&org=software-development-department&phase=active&prototypeReview=aorg-team-status&statusState=historical`
 
-The ticket-owned review server is running on port `4197`. The canonical baseline server on `4194` is separate and unchanged during this review.
+The ticket-owned review server on port `4197` was stopped after approval and final validation. The promoted clean/default experience was post-integration validated on the separate canonical baseline server at `http://127.0.0.1:4194/workspace?root=org&org=software-development-department&phase=active`.
 
 ## Review Evidence
 
