@@ -23,6 +23,7 @@
 - Bootstrap report: `/home/autobyteus/workspace/autobyteus-web-prototype/prototype-bootstrap-report.md`
 - Approved review implementation: `801b571093a3388eb21efea17515529ff9b89f51`
 - Final package revision: `9606aa4e0c6180264dc68d83ebde7f433f7af702`
+- Promoted default baseline revision: `bdf071b8cc6819206f0c8768198edd50929b9011` via `BASELINE-PROMOTION-001`; the approved hierarchy treatment is active on the normal `/workspace` route without `prototypeReview` state.
 - Integration target / result: `Completed` — canonical `personal` fast-forwarded from `550e8bd8737ddb645cc12f674d693bed76a09e9f` to `9606aa4e0c6180264dc68d83ebde7f433f7af702`.
 - Runtime: `Completed` — Product-owned Nuxt PID `94401` / managed session `80423` stopped; port `4193` released. Unrelated port `4180` was not touched.
 - Cleanup: `Completed` — ticket worktree removal is performed immediately after this final repository-state commit is integrated; durable artifacts remain under the canonical repository ticket folder.
@@ -42,6 +43,7 @@
 - UI/UX specification: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/ui-ux-spec.md`
 - Approved URL: `http://127.0.0.1:4193/workspace?prototypeReview=nested-team-hierarchy&reviewView=proposal&hierarchy=rails&metadata=responsive&teamIdentity=icon&panelWidth=320&fontSize=default&treeState=collapsed`
 - Final visual references: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/visual-references`
+- Default-entry promotion evidence: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/BASELINE-PROMOTION-001` — canonical post-integration validation passed `11/11` clean-route checks with zero browser errors.
 - User decision: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/user-decision-record.md`
 - Requirement impact: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/REQPKG-NTHUI-001/requirement-impact.md`
 - Browser validation: 24/24, zero page/console errors.

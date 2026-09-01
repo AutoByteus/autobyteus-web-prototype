@@ -22,6 +22,7 @@
 - Approved runnable behavior commit: `891b4e667d51fffb92ebd85dd2dc90a8e0afcf2e`
 - Post-approval visual-reference capture commit: `3de2c08b6f3d8cfdb75714edaa88b00d04d67aaf`
 - Approved package/integration revision: `e53b8acbbc714a2571142a297fcba59f1b0818e5`
+- Promoted default baseline revision: `bdf071b8cc6819206f0c8768198edd50929b9011` via `BASELINE-PROMOTION-001`; normal Agent Team, Agent Org, and configuration/runtime navigation no longer requires or introduces `prototypeReview` state.
 - Source repository: `/home/autobyteus/workspace/autobyteus-workspace`
 - Selected frontend: `/home/autobyteus/workspace/autobyteus-workspace/autobyteus-web`
 - Pinned source revision: `8ef282ba77705180d985e7000d801f0e0068cdc1`
@@ -62,6 +63,7 @@
 - Final package validation: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-001/validation/final-package` — `6/6` approval/specification/browser/visual-integrity/provenance checks pass; post-approval typecheck, lint, `12/12` tests, `13/13` boundaries, and production build pass.
 - Review evidence: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-001/review-evidence/rv-012`
 - Final normative visual references: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-001/visual-references` — `VIS-001`–`VIS-020`, captured after approval and hash-recorded.
+- Default-entry promotion evidence: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/BASELINE-PROMOTION-001` — canonical post-integration validation passed `11/11` clean-route checks with zero browser errors.
 - User approval: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-FLAT-TEAM-001/user-decision-record.md` — approved on `2026-08-31`.
 
 ## Outcome And Next Action

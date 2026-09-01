@@ -3,9 +3,13 @@ import path from 'node:path';
 import { chromium } from 'playwright-core';
 
 const baseUrl = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4195';
+const completedTicketRoot = path.resolve('tickets/done/BASELINE-PROMOTION-001');
+const defaultTicketRoot = await fs.access(completedTicketRoot)
+  .then(() => completedTicketRoot)
+  .catch(() => path.resolve('tickets/in-progress/BASELINE-PROMOTION-001'));
 const ticketRoot = process.env.PROMOTION_EVIDENCE_ROOT
   ? path.resolve(process.env.PROMOTION_EVIDENCE_ROOT)
-  : path.resolve('tickets/in-progress/BASELINE-PROMOTION-001');
+  : defaultTicketRoot;
 const evidenceRoot = path.join(ticketRoot, 'validation', 'default-entry');
 const visualRoot = path.join(ticketRoot, 'visual-references');
 await fs.mkdir(evidenceRoot, { recursive: true });

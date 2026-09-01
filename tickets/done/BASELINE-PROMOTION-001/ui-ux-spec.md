@@ -2,7 +2,7 @@
 
 ## Status And Authority
 
-- Status: `User-authorized promotion; clean-entry implementation validated; repository finalization pending`.
+- Status: `Completed and promoted to the default prototype baseline`.
 - Stable package: `BASELINE-PROMOTION-001`.
 - User direction: promote the already approved completed-ticket candidates into the default prototype baseline.
 - This supplement does not replace or revise the approved visual specifications in `AORG-FLAT-TEAM-001` or `REQPKG-NTHUI-001`; it specifies their default-entry activation.
@@ -48,6 +48,7 @@ The visible content in these screenshots remains governed by the approved `AORG-
 ## Final Validation Evidence
 
 - Default-entry browser validation: `11/11` checks passed with zero browser errors, including exact selected-Team identity and membership; `validation/default-entry/default-baseline-promotion-results.json`.
+- Canonical post-integration browser validation: `11/11` checks passed with zero browser errors on `personal` revision `bdf071b8cc6819206f0c8768198edd50929b9011`; `validation/post-integration/default-baseline-promotion-results.json`.
 - Static validation: `git diff --check`, typecheck, lint, `12/12` tests, `13/13` prototype-boundary checks, and build passed; `validation/static-validation.txt`.
 - User confirmation: on `2026-09-01`, the user explicitly directed Product Prototyper to promote the affected completed tickets after the preview-only baseline defect was identified.
 

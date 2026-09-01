@@ -4,7 +4,7 @@
 
 - Ticket / stable package: `BASELINE-PROMOTION-001`
 - Title: Promote approved preview candidates into the default prototype baseline
-- Status: `In Progress — validated; integration and promotion finalization pending`
+- Status: `Completed`
 - Mode: `Product Experience Prototyping`
 - User authorization: On `2026-09-01`, after the preview-gating defect was identified and the Product Prototyper skills were updated, the user directed Product Prototyper to perform baseline promotion for the affected completed tickets.
 - Affected approved packages: `AORG-FLAT-TEAM-001` and `REQPKG-NTHUI-001`.
@@ -33,7 +33,7 @@
 - Start command: `corepack pnpm dev --port 4195`
 - Temporary state root: `/tmp/autobyteus-prototype-BASELINE-PROMOTION-001`
 - Reset method: use a fresh browser context; clear `autobyteus.prototype.*` localStorage keys when exercising a different deterministic fixture.
-- Runtime process: ticket-owned Nuxt preview on `4195` during validation; stop before cleanup.
+- Runtime process: `Completed` — ticket-owned preview on `4195` and canonical post-integration preview on `4196` were stopped after validation.
 
 ## Promotion Contract
 
@@ -46,18 +46,20 @@
 
 ## Delivery And Validation
 
-- UI/UX promotion supplement: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/BASELINE-PROMOTION-001/tickets/in-progress/BASELINE-PROMOTION-001/ui-ux-spec.md`
-- Promotion audit: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/BASELINE-PROMOTION-001/tickets/in-progress/BASELINE-PROMOTION-001/promotion-audit.md`
-- Default-entry browser evidence: `11/11` passed with zero browser errors at `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/BASELINE-PROMOTION-001/tickets/in-progress/BASELINE-PROMOTION-001/validation/default-entry/default-baseline-promotion-results.json`.
-- Static validation: passed `git diff --check`, typecheck, lint, `12/12` unit tests, `13/13` prototype-boundary checks, and production build; see `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/BASELINE-PROMOTION-001/tickets/in-progress/BASELINE-PROMOTION-001/validation/static-validation.txt`.
-- Final visual references: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/BASELINE-PROMOTION-001/tickets/in-progress/BASELINE-PROMOTION-001/visual-references/README.md`.
-- Ticket commit/revision: `Pending`
-- Promoted default baseline revision: `Pending`
+- UI/UX promotion supplement: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/BASELINE-PROMOTION-001/ui-ux-spec.md`
+- Promotion audit: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/BASELINE-PROMOTION-001/promotion-audit.md`
+- Default-entry browser evidence: `11/11` passed with zero browser errors at `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/BASELINE-PROMOTION-001/validation/default-entry/default-baseline-promotion-results.json`.
+- Static validation: passed `git diff --check`, typecheck, lint, `12/12` unit tests, `13/13` prototype-boundary checks, and production build; see `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/BASELINE-PROMOTION-001/validation/static-validation.txt`.
+- Post-integration browser validation: canonical `personal` at `bdf071b8cc6819206f0c8768198edd50929b9011` passed the same `11/11` clean-entry checks with zero browser errors; see `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/BASELINE-PROMOTION-001/validation/post-integration/default-baseline-promotion-results.json`.
+- Post-integration warm-up note: the first canonical dev-server attempt was interrupted by Nuxt dependency-optimization reloads before an interaction completed; after the server stabilized, the complete retry passed. Both logs are preserved under `validation/post-integration/`.
+- Final visual references: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/BASELINE-PROMOTION-001/visual-references/README.md`.
+- Ticket behavior/integration revision: `bdf071b8cc6819206f0c8768198edd50929b9011`
+- Promoted default baseline revision: `bdf071b8cc6819206f0c8768198edd50929b9011`
 
 ## Outcome And Next Action
 
-- Current outcome/status: `In Progress`.
-- Integration result: `Pending`.
-- Promotion result: `Pending`.
-- Cleanup result: `Pending`.
-- Next action: commit the validated promotion, integrate to `personal`, revalidate the canonical default entry points, record the promoted baseline revision, and close the ticket.
+- Current outcome/status: `Prototype Completed`.
+- Integration result: `Completed` — canonical `personal` fast-forwarded from `79093e9a781024844fe3d3678e93ab44386c1040` to `bdf071b8cc6819206f0c8768198edd50929b9011` before the terminal metadata commit.
+- Promotion result: `Completed` — the approved `AORG-FLAT-TEAM-001` and `REQPKG-NTHUI-001` experiences are reachable through normal product navigation and clean routes without `prototypeReview` state. `REQPKG-TSUI-001` remained unchanged because its clean route was already the default.
+- Cleanup result: `Completed` — preview processes stopped; the integrated ticket worktree and local ticket branch are safe to remove after this terminal metadata commit reaches `personal`.
+- Next action: return the durable promotion package through the dynamic Product Design handoff route.

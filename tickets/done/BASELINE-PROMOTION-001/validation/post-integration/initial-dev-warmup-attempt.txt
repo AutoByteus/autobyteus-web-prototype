@@ -1,0 +1,22 @@
+
+> autobyteus-web-prototype@0.1.0 validate:default-baseline-promotion /home/autobyteus/workspace/autobyteus-web-prototype
+> node prototype/scripts/validate-default-baseline-promotion.mjs
+
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.waitForURL: Timeout 30000ms exceeded.
+=========================== logs ===========================
+waiting for navigation until "load"
+  navigated to "http://127.0.0.1:4196/agent-teams?view=team-list"
+  navigated to "http://127.0.0.1:4196/agent-teams?view=team-list"
+  navigated to "http://127.0.0.1:4196/agent-teams?view=team-list"
+============================================================
+    at /home/autobyteus/workspace/autobyteus-web-prototype/prototype/scripts/validate-default-baseline-promotion.mjs:47:16 {
+  log: [],
+  name: 'TimeoutError'
+}
+
+Node.js v22.23.1
+ ELIFECYCLE  Command failed with exit code 1.
