@@ -65,8 +65,16 @@
             aria-controls="org-member-overrides-panel"
             @click="overridesExpanded = !overridesExpanded"
           >
-            <span>Member overrides</span>
-            <Icon icon="heroicons:chevron-down-20-solid" class="h-4 w-4 text-gray-600 transition-transform" :class="overridesExpanded ? '' : '-rotate-90'" />
+            <span class="flex min-w-0 items-center gap-1.5">
+              <span class="truncate" data-test="org-member-overrides-label">Member overrides</span>
+              <Icon
+                icon="heroicons:chevron-down-20-solid"
+                class="h-4 w-4 flex-shrink-0 text-gray-600 transition-transform"
+                :class="overridesExpanded ? '' : '-rotate-90'"
+                data-test="org-member-overrides-chevron"
+                aria-hidden="true"
+              />
+            </span>
           </button>
 
           <div

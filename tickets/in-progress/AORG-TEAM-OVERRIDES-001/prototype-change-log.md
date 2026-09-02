@@ -6,5 +6,6 @@
 - `PC-AORG-OVR-004` — Added exact Team-scope `Inherited`/`Customized` state and preserved exact-Agent override state independently.
 - `PC-AORG-OVR-005` — Preserved valid Team/Agent draft edits across collapse and reopen without changing precedence or launch validation.
 - `PC-AORG-OVR-006` — Added deterministic desktop/narrow review validation and preserved-AgentTeam regression coverage.
+- `PC-AORG-OVR-007` — Applied user RV-002 precision feedback: moved the AgentOrg outer Member-overrides chevron immediately beside its label, matching the established AgentTeam disclosure grouping instead of leaving the chevron at the far edge.
 
 No unrelated AgentOrg or AgentTeam visual/behavioral contract was intentionally changed.

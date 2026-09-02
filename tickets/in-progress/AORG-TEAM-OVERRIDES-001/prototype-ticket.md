@@ -5,7 +5,7 @@
 - Product ticket: `AORG-TEAM-OVERRIDES-001`
 - Stable requirements package: `AORG-FLAT-TEAM-001`
 - Title: AgentOrg mounted-Team Member-overrides hierarchy
-- Status: `Awaiting User Review`
+- Status: `Awaiting User Review — RV-002`
 - Mode: `Product Experience Prototyping`
 - Requirements authority: `RER-022@b985df2ed66b4b2874dd9dae66cd256b6348a795`
 - In-scope IDs: `BEH-012`, `UC-014`, `REQ-029`, `AC-024`, `SCN-013`, `QR-009`, `DEC-016`, `ORG-CASE-059`–`ORG-CASE-061`, `ORG-VERIFY-012`.
@@ -53,17 +53,17 @@
 - UI/UX supplement: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-OVERRIDES-001/tickets/in-progress/AORG-TEAM-OVERRIDES-001/ui-ux-spec.md`
 - Review guide: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-OVERRIDES-001/tickets/in-progress/AORG-TEAM-OVERRIDES-001/review-guide.md`
 - Change log: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-OVERRIDES-001/tickets/in-progress/AORG-TEAM-OVERRIDES-001/prototype-change-log.md`
-- Review evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-OVERRIDES-001/tickets/in-progress/AORG-TEAM-OVERRIDES-001/review-evidence/rv-001`
-- Browser validation: `11/11` pass at desktop and `390x844`, including draft preservation, Agent-only scope isolation, preserved AgentTeam launch behavior, and zero browser errors.
-- Static validation: `git diff --check`, typecheck, lint, `15/15` tests, `13/13` boundaries, and production build pass; only the accepted duplicate-auto-import and large-chunk warnings remain.
+- Review evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-OVERRIDES-001/tickets/in-progress/AORG-TEAM-OVERRIDES-001/review-evidence/rv-002`
+- Browser validation: `12/12` pass at desktop and `390x844`, including the measured 6px label-to-chevron gap, draft preservation, Agent-only scope isolation, preserved AgentTeam launch behavior, and zero browser errors.
+- Static validation: `git diff --check`, typecheck, lint, `15/15` tests, `13/13` boundaries, and production build pass with `NUXT_IGNORE_LOCK=1` while the ticket-owned review server remains active; only the accepted duplicate-auto-import and large-chunk warnings remain.
 - Review candidate implementation revision: `906426b1bc4f130d731a1ac37afe8d3abac9d1d1`.
 - Normative final `VIS-*` references: pending explicit user approval.
 - Promoted default baseline revision: pending explicit user approval and repository finalization.
 
 ## Outcome And Next Action
 
-- Current outcome/status: `Awaiting User Review`.
+- Current outcome/status: `Awaiting User Review — RV-002`.
 - Integration result: `Pending`.
 - Promotion result: `Pending`; this review URL is non-normative evidence, not proof of default-route promotion.
 - Cleanup result: `Pending` while the user review server remains available.
-- Next action: user reviews the focused mounted-Team Member-overrides journey and explicitly approves or requests focused changes.
+- Next action: user confirms the corrected adjacent-chevron treatment and the focused mounted-Team Member-overrides journey, then explicitly approves or requests another focused revision.
