@@ -6,6 +6,7 @@
         :scope="node.scope"
         :disabled="disabled"
         :model-config-field-errors="modelConfigFieldErrorsByAddress[node.address]"
+        :model-help-text="teamModelHelpText"
         @update-override="emit('update-team', node.address, $event)"
         @reset="emit('reset-team', node.address)"
         @update:workspace-selection="forwardWorkspaceSelection"
@@ -19,6 +20,7 @@
             :disabled="disabled"
             :nested="true"
             :model-config-field-errors-by-address="modelConfigFieldErrorsByAddress"
+            :team-model-help-text="teamModelHelpText"
             @update-team="forwardTeamUpdate"
             @reset-team="forwardTeamReset"
             @update-agent="forwardAgentUpdate"
@@ -59,7 +61,8 @@ const props = withDefaults(defineProps<{
   disabled: boolean
   nested?: boolean
   modelConfigFieldErrorsByAddress?: Readonly<Record<string, Readonly<Record<string, string>>>>
-}>(), { nested: false })
+  teamModelHelpText?: string
+}>(), { nested: false, teamModelHelpText: undefined })
 const emit = defineEmits<{
   (e: 'update-team', address: AgentTeamAddress, override: TeamScopeConfigOverride | null): void
   (e: 'reset-team', address: AgentTeamAddress): void

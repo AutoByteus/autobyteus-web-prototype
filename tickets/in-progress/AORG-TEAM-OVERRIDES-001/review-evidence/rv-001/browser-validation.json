@@ -1,0 +1,118 @@
+{
+  "baseUrl": "http://127.0.0.1:4198",
+  "reviewUrl": "http://127.0.0.1:4198/workspace?root=org&org=software-development-department&phase=config&prototypeReview=aorg-team-overrides",
+  "generatedAt": "2026-09-02T11:01:48.039Z",
+  "passed": 11,
+  "total": 11,
+  "runtimeErrors": [],
+  "results": [
+    {
+      "id": "AORG-OVERRIDES-001-outer-collapsed-initially",
+      "pass": true,
+      "evidence": {
+        "outerExpanded": "false"
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-002-all-mounted-teams-collapsed",
+      "pass": true,
+      "evidence": {
+        "collapsedStates": [
+          "false",
+          "false"
+        ],
+        "collapsedText": [
+          "Product Design & Prototyping\nTEAM\n/product_design_prototyping_team\nInherited",
+          "Software Engineering\nTEAM\n/software_engineering_team\nInherited"
+        ]
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-003-direct-agent-preserved",
+      "pass": true,
+      "evidence": {
+        "directAgentRows": 1
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-004-one-team-expanded-inherited",
+      "pass": true,
+      "evidence": {
+        "expandedStates": [
+          "true",
+          "false"
+        ],
+        "teamHeader": "Product Design & Prototyping\nTEAM\n/product_design_prototyping_team\nInherited",
+        "memberText": [
+          "product_prototyper\nCoordinator\n\nproduct_design_prototyping_team / product_prototyper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nGlobal default",
+          "prototype_bootstrapper\n\nproduct_design_prototyping_team / prototype_bootstrapper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nGlobal default"
+        ]
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-005-coordinator-secondary-identity",
+      "pass": true,
+      "evidence": {
+        "coordinatorMarkers": 1
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-006-team-and-agent-scope-local-customization",
+      "pass": true,
+      "evidence": {
+        "teamHeader": "Product Design & Prototyping\nTEAM\n/product_design_prototyping_team\nCustomized",
+        "teamAutoApprove": "true",
+        "firstAgent": "product_prototyper\nCoordinator\nOverridden\n\nproduct_design_prototyping_team / product_prototyper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nOn",
+        "secondAgent": "prototype_bootstrapper\n\nproduct_design_prototyping_team / prototype_bootstrapper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nGlobal default"
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-007-collapse-reopen-preserves-valid-draft",
+      "pass": true,
+      "evidence": {
+        "collapsedAfterDraft": "false",
+        "customizedAfterReopen": {
+          "expanded": "true",
+          "teamHeader": "Product Design & Prototyping\nTEAM\n/product_design_prototyping_team\nCustomized",
+          "teamAutoApprove": "true",
+          "firstAgent": "product_prototyper\nCoordinator\nOverridden\n\nproduct_design_prototyping_team / product_prototyper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nOn",
+          "secondAgent": "prototype_bootstrapper\n\nproduct_design_prototyping_team / prototype_bootstrapper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nGlobal default"
+        }
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-008-agent-only-does-not-customize-team",
+      "pass": true,
+      "evidence": {
+        "teamHeader": "Product Design & Prototyping\nTEAM\n/product_design_prototyping_team\nInherited",
+        "agentRow": "product_prototyper\nCoordinator\nOverridden\n\nproduct_design_prototyping_team / product_prototyper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nOn"
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-009-responsive-no-overlay-or-horizontal-overflow",
+      "pass": true,
+      "evidence": {
+        "teamHeaders": 2,
+        "narrowGeometry": {
+          "innerWidth": 390,
+          "scrollWidth": 390
+        }
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-010-agentteam-launch-baseline-preserved",
+      "pass": true,
+      "evidence": {
+        "mode": "editable",
+        "memberOverridesExpanded": "false"
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-011-zero-browser-errors",
+      "pass": true,
+      "evidence": {
+        "runtimeErrors": []
+      }
+    }
+  ]
+}

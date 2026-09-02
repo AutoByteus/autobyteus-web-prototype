@@ -25,13 +25,15 @@
 
         <div class="mt-8">
           <WorkspaceSelector
-            :workspace-id="workspaceId"
-            :is-loading="false"
-            :error="workspaceError"
-            :initial-path="workspacePath"
+            :model="{
+              mode: 'editable',
+              selection: workspaceSelection,
+              isLoading: false,
+              error: workspaceError,
+            }"
+            :auto-select-default="false"
             control-variant="quiet"
-            @select-existing="selectWorkspace"
-            @workspace-input-change="handleWorkspaceInput"
+            @update:model-value="selectWorkspace"
           />
         </div>
 
@@ -60,62 +62,47 @@
             data-test="org-member-overrides-toggle"
             class="flex w-full items-center justify-between rounded-md px-1 py-2 text-left text-sm font-medium text-gray-700 transition-colors hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
             :aria-expanded="overridesExpanded"
+            aria-controls="org-member-overrides-panel"
             @click="overridesExpanded = !overridesExpanded"
           >
             <span>Member overrides</span>
             <Icon icon="heroicons:chevron-down-20-solid" class="h-4 w-4 text-gray-600 transition-transform" :class="overridesExpanded ? '' : '-rotate-90'" />
           </button>
 
-          <div v-show="overridesExpanded" class="mt-3 overflow-hidden rounded-lg border border-slate-300 bg-white shadow-sm" data-test="org-member-overrides-panel">
-            <AgentOrgPlacementOverrideRow
-              v-for="agent in directAgents"
-              :key="agent.address"
-              :placement-key="agent.key"
-              kind="agent"
-              :name="agent.name"
-              :address="agent.address"
-              :expanded="editingPlacement === agent.address"
-              :override="memberOverrides[agent.address]"
-              :global-runtime-kind="runtimeKind"
-              :global-llm-model="llmModelIdentifier"
-              :global-llm-config="llmConfig"
-              @toggle="togglePlacement(agent.address)"
-              @update:override="setPlacementOverride(agent.address, $event)"
-            />
-
-            <section v-for="team in teams" :key="team.address" class="border-t border-slate-200 bg-slate-50/60">
+          <div
+            v-show="overridesExpanded"
+            id="org-member-overrides-panel"
+            class="mt-3 space-y-3"
+            data-test="org-member-overrides-panel"
+          >
+            <div v-if="directAgents.length" class="overflow-hidden rounded-lg border border-slate-300 bg-white shadow-sm" data-test="org-direct-agent-overrides">
               <AgentOrgPlacementOverrideRow
-                :placement-key="team.key"
-                kind="team"
-                :name="team.name"
-                :address="team.address"
-                :detail="`Coordinator: ${team.coordinatorName}`"
-                :expanded="editingPlacement === team.address"
-                :override="memberOverrides[team.address]"
+                v-for="agent in directAgents"
+                :key="agent.address"
+                :placement-key="agent.key"
+                kind="agent"
+                :name="agent.name"
+                :address="agent.address"
+                :expanded="editingPlacement === agent.address"
+                :override="agentOverrides[agent.address]"
                 :global-runtime-kind="runtimeKind"
                 :global-llm-model="llmModelIdentifier"
                 :global-llm-config="llmConfig"
-                @toggle="togglePlacement(team.address)"
-                @update:override="setPlacementOverride(team.address, $event)"
+                :global-auto-execute-tools="autoExecuteTools"
+                @toggle="togglePlacement(agent.address)"
+                @update:override="setAgentOverride(agent.address, $event)"
               />
-              <div class="ml-6 border-l border-slate-200 bg-white">
-                <AgentOrgPlacementOverrideRow
-                  v-for="agent in team.agents"
-                  :key="agent.address"
-                  :placement-key="agent.key"
-                  kind="agent"
-                  :name="agent.name"
-                  :address="agent.address"
-                  :expanded="editingPlacement === agent.address"
-                  :override="memberOverrides[agent.address]"
-                  :global-runtime-kind="runtimeKind"
-                  :global-llm-model="llmModelIdentifier"
-                  :global-llm-config="llmConfig"
-                  @toggle="togglePlacement(agent.address)"
-                  @update:override="setPlacementOverride(agent.address, $event)"
-                />
-              </div>
-            </section>
+            </div>
+
+            <TeamMemberConfigTree
+              :member-nodes="teamNodes"
+              :disabled="false"
+              team-model-help-text="Agents in this Team inherit this value unless customized."
+              @update-team="setTeamOverride"
+              @reset-team="resetTeamOverride"
+              @update-agent="setAgentOverride"
+              @update:workspace-selection="setTeamWorkspaceSelection"
+            />
           </div>
         </div>
       </div>
@@ -143,9 +130,28 @@ import { useRoute } from 'vue-router';
 import RuntimeModelConfigFields from '~/components/launch-config/RuntimeModelConfigFields.vue';
 import WorkspaceSelector from '~/components/workspace/config/WorkspaceSelector.vue';
 import AgentOrgPlacementOverrideRow from '~/components/workspace/config/AgentOrgPlacementOverrideRow.vue';
+import TeamMemberConfigTree from '~/components/workspace/config/TeamMemberConfigTree.vue';
 import { agentById, orgById, teamById } from '~/prototype/aorg-flat-team-fixtures';
 import type { AgentRuntimeKind } from '~/types/agent/AgentRunConfig';
-import type { MemberConfigOverride } from '~/types/agent/TeamRunConfig';
+import type {
+  AgentConfigOverride,
+  ResolvedTeamRunLaunchConfig,
+  TeamScopeConfigOverride,
+} from '~/types/agent/TeamRunConfig';
+import type {
+  EditableTeamFormAgentNode,
+  EditableTeamFormTeamNode,
+  EditableTeamScopeFormModel,
+} from '~/types/agent/EditableTeamRunFormModel';
+import type { WorkspaceSelectionState } from '~/types/workspace/WorkspaceSelectionState';
+import type { WorkspaceMetadata } from '~/types/workspace/WorkspaceMetadata';
+import {
+  hasMeaningfulLaunchOverride,
+  hasMeaningfulMemberOverride,
+  resolveEffectiveMemberLlmConfig,
+  resolveEffectiveMemberLlmModelIdentifier,
+  resolveEffectiveMemberRuntimeKind,
+} from '~/utils/teamRunConfigUtils';
 import { useAgentOrgPrototypeReview } from '~/composables/useAgentOrgPrototypeReview';
 import { useWorkspaceStore } from '~/stores/workspace';
 import { useRightSideTabs } from '~/composables/useRightSideTabs';
@@ -162,12 +168,16 @@ const runtimeKind = ref<AgentRuntimeKind>('autobyteus');
 const llmModelIdentifier = ref('mock/gpt-prototype');
 const llmConfig = ref<Record<string, unknown> | null>({ temperature: 0.2 });
 const autoExecuteTools = ref(false);
-const workspaceId = ref<string | null>(null);
-const workspacePath = ref('');
+const workspaceSelection = ref<WorkspaceSelectionState>({
+  mode: 'existing',
+  existingWorkspaceId: null,
+  newWorkspacePath: '',
+});
 const workspaceError = ref<string | null>(null);
 const overridesExpanded = ref(false);
 const editingPlacement = ref<string | null>(null);
-const memberOverrides = ref<Record<string, MemberConfigOverride>>({});
+const teamOverrides = ref<Record<string, TeamScopeConfigOverride>>({});
+const agentOverrides = ref<Record<string, AgentConfigOverride>>({});
 
 const canonicalSegment = (value: string): string => value.trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
 const directAgents = computed<AgentPlacement[]>(() => org.value.members
@@ -198,33 +208,141 @@ const teams = computed<TeamPlacement[]>(() => org.value.members
     };
   }));
 
-const workspaceReady = computed(() => Boolean(workspaceId.value || workspacePath.value.trim()));
+const workspaceMetadataFor = (selection: WorkspaceSelectionState, address = '/'): WorkspaceMetadata | null => {
+  if (selection.mode === 'existing' && selection.existingWorkspaceId) {
+    const workspace = workspaceStore.workspaces[selection.existingWorkspaceId];
+    const rootPath = workspace?.absolutePath || workspace?.workspaceRootPath || workspace?.workspaceConfig?.root_path || workspace?.workspaceConfig?.rootPath || '';
+    if (!rootPath) return null;
+    return {
+      workspaceId: selection.existingWorkspaceId,
+      workspaceRootPath: rootPath,
+      displayName: workspace?.displayName || workspace?.name || selection.existingWorkspaceId,
+      kind: 'filesystem',
+    };
+  }
+  const rootPath = selection.newWorkspacePath.trim();
+  if (!rootPath) return null;
+  return {
+    workspaceId: `draft-${canonicalSegment(address) || 'org'}`,
+    workspaceRootPath: rootPath,
+    displayName: rootPath.split('/').filter(Boolean).at(-1) || 'New Workspace',
+    kind: 'filesystem',
+  };
+};
+const rootWorkspaceMetadata = computed(() => workspaceMetadataFor(workspaceSelection.value));
+const rootLaunchConfig = computed<ResolvedTeamRunLaunchConfig>(() => ({
+  runtimeKind: runtimeKind.value,
+  workspaceId: rootWorkspaceMetadata.value?.workspaceId ?? null,
+  workspaceMetadata: rootWorkspaceMetadata.value,
+  workspaceRootPath: rootWorkspaceMetadata.value?.workspaceRootPath ?? null,
+  llmModelIdentifier: llmModelIdentifier.value,
+  llmConfig: llmConfig.value,
+  autoExecuteTools: autoExecuteTools.value,
+  skillAccessMode: 'PRELOADED_ONLY',
+}));
+const resolveLaunchConfig = (
+  baseline: Readonly<ResolvedTeamRunLaunchConfig>,
+  override?: AgentConfigOverride | TeamScopeConfigOverride | null,
+): ResolvedTeamRunLaunchConfig => ({
+  ...baseline,
+  runtimeKind: resolveEffectiveMemberRuntimeKind(override, baseline.runtimeKind),
+  llmModelIdentifier: resolveEffectiveMemberLlmModelIdentifier(override, baseline.llmModelIdentifier),
+  llmConfig: resolveEffectiveMemberLlmConfig(override, baseline.llmConfig),
+  autoExecuteTools: override?.autoExecuteTools ?? baseline.autoExecuteTools,
+  ...('workspace' in (override ?? {}) && override?.workspace
+    ? {
+        workspaceId: override.workspace.workspaceId,
+        workspaceMetadata: override.workspace.workspaceMetadata,
+        workspaceRootPath: override.workspace.workspaceMetadata?.workspaceRootPath ?? null,
+      }
+    : {}),
+});
+const workspaceSelectionForTeam = (address: string, effective: Readonly<ResolvedTeamRunLaunchConfig>): WorkspaceSelectionState => {
+  const override = teamOverrides.value[address];
+  if (override?.workspace?.workspaceId) {
+    return { mode: 'existing', existingWorkspaceId: override.workspace.workspaceId, newWorkspacePath: override.workspace.workspaceMetadata?.workspaceRootPath ?? '' };
+  }
+  if (override?.workspace?.workspaceMetadata?.workspaceRootPath) {
+    return { mode: 'new', existingWorkspaceId: null, newWorkspacePath: override.workspace.workspaceMetadata.workspaceRootPath };
+  }
+  if (!override?.workspace) return { ...workspaceSelection.value };
+  if (effective.workspaceId) return { mode: 'existing', existingWorkspaceId: effective.workspaceId, newWorkspacePath: effective.workspaceRootPath ?? '' };
+  return { mode: 'new', existingWorkspaceId: null, newWorkspacePath: effective.workspaceRootPath ?? '' };
+};
+const teamNodes = computed<EditableTeamFormTeamNode[]>(() => teams.value.map((team) => {
+  const teamOverride = teamOverrides.value[team.address];
+  const effectiveTeamConfig = resolveLaunchConfig(rootLaunchConfig.value, teamOverride);
+  const scope: EditableTeamScopeFormModel = {
+    mode: 'editable',
+    address: team.address,
+    displayName: team.name,
+    effectiveConfig: effectiveTeamConfig,
+    isCustomized: hasMeaningfulLaunchOverride(teamOverride),
+    inheritedConfig: rootLaunchConfig.value,
+    override: teamOverride ?? null,
+    workspaceSelection: workspaceSelectionForTeam(team.address, effectiveTeamConfig),
+    workspaceOperation: { status: 'idle', error: null },
+    runtimeCatalogState: { status: 'ready', error: null },
+  };
+  const children: EditableTeamFormAgentNode[] = team.agents.map((agent) => {
+    const agentOverride = agentOverrides.value[agent.address];
+    return {
+      mode: 'editable',
+      kind: 'agent',
+      address: agent.address,
+      displayName: agent.name,
+      isCoordinator: agent.name === team.coordinatorName,
+      isCustomized: hasMeaningfulMemberOverride(agentOverride),
+      override: agentOverride,
+      baselineConfig: effectiveTeamConfig,
+      effectiveConfig: resolveLaunchConfig(effectiveTeamConfig, agentOverride),
+      runtimeCatalogState: { status: 'ready', error: null },
+    };
+  });
+  return {
+    mode: 'editable',
+    kind: 'agent_team',
+    address: team.address,
+    scope,
+    children,
+  };
+}));
+
+const workspaceReady = computed(() => Boolean(rootLaunchConfig.value.workspaceRootPath));
 const canRun = computed(() => workspaceReady.value && Boolean(runtimeKind.value && llmModelIdentifier.value));
 
 const togglePlacement = (address: string): void => {
   editingPlacement.value = editingPlacement.value === address ? null : address;
 };
-const setPlacementOverride = (address: string, override: MemberConfigOverride | null): void => {
-  const next = { ...memberOverrides.value };
+const setTeamOverride = (address: string, override: TeamScopeConfigOverride | null): void => {
+  const next = { ...teamOverrides.value };
+  if (hasMeaningfulLaunchOverride(override)) next[address] = override!;
+  else delete next[address];
+  teamOverrides.value = next;
+};
+const resetTeamOverride = (address: string): void => setTeamOverride(address, null);
+const setAgentOverride = (address: string, override: AgentConfigOverride | null): void => {
+  const next = { ...agentOverrides.value };
   if (override) next[address] = override;
   else delete next[address];
-  memberOverrides.value = next;
+  agentOverrides.value = next;
 };
-const selectWorkspace = (id: string): void => {
-  workspaceId.value = id;
-  const workspace = workspaceStore.workspaces[id];
-  workspacePath.value = workspace?.absolutePath || workspace?.workspaceRootPath || workspace?.workspaceConfig?.root_path || workspace?.workspaceConfig?.rootPath || '';
-  workspaceError.value = null;
-  setActiveTab('files');
+const setTeamWorkspaceSelection = (address: string, selection: WorkspaceSelectionState): void => {
+  const metadata = workspaceMetadataFor(selection, address);
+  const current = teamOverrides.value[address] ?? {};
+  const inherited = rootLaunchConfig.value;
+  const selectedWorkspaceId = selection.mode === 'existing' ? selection.existingWorkspaceId : null;
+  const isInherited = selectedWorkspaceId === inherited.workspaceId
+    && (metadata?.workspaceRootPath ?? null) === inherited.workspaceRootPath;
+  const next: TeamScopeConfigOverride = { ...current };
+  if (!metadata || isInherited) delete next.workspace;
+  else next.workspace = { workspaceId: selectedWorkspaceId, workspaceMetadata: metadata };
+  setTeamOverride(address, next);
 };
-const handleWorkspaceInput = (input: { mode: 'existing' | 'new'; pendingPath: string }): void => {
-  if (input.mode === 'new') {
-    workspaceId.value = null;
-    workspacePath.value = input.pendingPath.trim();
-  } else if (!workspaceId.value) {
-    workspacePath.value = '';
-  }
+const selectWorkspace = (selection: WorkspaceSelectionState): void => {
+  workspaceSelection.value = selection;
   workspaceError.value = null;
+  if (selection.mode === 'existing' && selection.existingWorkspaceId) setActiveTab('files');
 };
 const runOrg = async (): Promise<void> => {
   if (!canRun.value) {

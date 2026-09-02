@@ -27,13 +27,8 @@
     <div v-if="expanded" class="border-t border-slate-100 bg-slate-50 p-3">
       <div class="overflow-hidden rounded-lg border border-slate-200 bg-white">
         <MemberOverrideItem
-          :member-name="name"
-          :member-address="address"
+          :node="node"
           :member-breadcrumb="address.split('/').filter(Boolean).join(' / ')"
-          :override="override"
-          :global-runtime-kind="globalRuntimeKind"
-          :global-llm-model="globalLlmModel"
-          :global-llm-config="globalLlmConfig"
           :disabled="false"
           @update:override="(_, value) => emit('update:override', value)"
         />
@@ -46,8 +41,14 @@
 import { computed } from 'vue';
 import { Icon } from '@iconify/vue';
 import MemberOverrideItem from '~/components/workspace/config/MemberOverrideItem.vue';
-import type { MemberConfigOverride } from '~/types/agent/TeamRunConfig';
-import { hasMeaningfulMemberOverride } from '~/utils/teamRunConfigUtils';
+import type { EditableTeamFormAgentNode } from '~/types/agent/EditableTeamRunFormModel';
+import type { AgentConfigOverride, ResolvedTeamRunLaunchConfig } from '~/types/agent/TeamRunConfig';
+import {
+  hasMeaningfulMemberOverride,
+  resolveEffectiveMemberLlmConfig,
+  resolveEffectiveMemberLlmModelIdentifier,
+  resolveEffectiveMemberRuntimeKind,
+} from '~/utils/teamRunConfigUtils';
 
 const props = defineProps<{
   placementKey: string
@@ -56,16 +57,45 @@ const props = defineProps<{
   address: string
   detail?: string
   expanded: boolean
-  override?: MemberConfigOverride
+  override?: AgentConfigOverride
   globalRuntimeKind: string
   globalLlmModel: string
   globalLlmConfig?: Record<string, unknown> | null
+  globalAutoExecuteTools: boolean
 }>();
 
 const emit = defineEmits<{
   (event: 'toggle'): void
-  (event: 'update:override', value: MemberConfigOverride | null): void
+  (event: 'update:override', value: AgentConfigOverride | null): void
 }>();
 
 const hasOverride = computed(() => hasMeaningfulMemberOverride(props.override));
+const baselineConfig = computed<ResolvedTeamRunLaunchConfig>(() => ({
+  runtimeKind: props.globalRuntimeKind,
+  workspaceId: null,
+  workspaceMetadata: null,
+  workspaceRootPath: null,
+  llmModelIdentifier: props.globalLlmModel,
+  llmConfig: props.globalLlmConfig ?? null,
+  autoExecuteTools: props.globalAutoExecuteTools,
+  skillAccessMode: 'PRELOADED_ONLY',
+}));
+const node = computed<EditableTeamFormAgentNode>(() => ({
+  mode: 'editable',
+  kind: 'agent',
+  address: props.address,
+  displayName: props.name,
+  isCoordinator: false,
+  isCustomized: hasOverride.value,
+  override: props.override,
+  baselineConfig: baselineConfig.value,
+  effectiveConfig: {
+    ...baselineConfig.value,
+    runtimeKind: resolveEffectiveMemberRuntimeKind(props.override, baselineConfig.value.runtimeKind),
+    llmModelIdentifier: resolveEffectiveMemberLlmModelIdentifier(props.override, baselineConfig.value.llmModelIdentifier),
+    llmConfig: resolveEffectiveMemberLlmConfig(props.override, baselineConfig.value.llmConfig),
+    autoExecuteTools: props.override?.autoExecuteTools ?? baselineConfig.value.autoExecuteTools,
+  },
+  runtimeCatalogState: { status: 'idle', error: null },
+}));
 </script>
