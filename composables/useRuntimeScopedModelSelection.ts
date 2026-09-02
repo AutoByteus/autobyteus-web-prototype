@@ -6,6 +6,7 @@ import {
 } from '~/types/agent/AgentRunConfig'
 import {
   useLLMProviderConfigStore,
+  type ModelSourceStatus,
   type ProviderWithModels,
 } from '~/stores/llmProviderConfig'
 import { useRuntimeAvailabilityStore } from '~/stores/runtimeAvailabilityStore'
@@ -27,6 +28,35 @@ const cloneProviderRows = (rows: ProviderWithModels[]): ProviderWithModels[] =>
           : model.configSchema ?? null,
     })),
   }))
+
+export type RuntimeProviderSourceStatus = Readonly<{
+  providerId: string
+  providerName: string
+  sources: ModelSourceStatus[]
+}>
+
+const cloneProviderSourceStatuses = (
+  runtimeKind: string,
+  llmStore: ReturnType<typeof useLLMProviderConfigStore>,
+): RuntimeProviderSourceStatus[] => (typeof (llmStore as any).providerSnapshots === 'function'
+  ? (llmStore as any).providerSnapshots(runtimeKind)
+  : []).map((snapshot: any) => ({
+  providerId: snapshot.ownerProvider.id,
+  providerName: snapshot.ownerProvider.name,
+  sources: snapshot.sources.map((source) => ({ ...source })),
+}))
+
+// The accepted prototype deliberately keeps its small fixture-backed provider
+// store. Adapt that store at this one prototype boundary instead of importing
+// the source catalog protocol and persistence machinery.
+const providerRowsForSelection = (
+  runtimeKind: string,
+  llmStore: ReturnType<typeof useLLMProviderConfigStore>,
+): ProviderWithModels[] => {
+  const value = (llmStore as any).providersWithModelsForSelection
+  if (typeof value === 'function') return value(runtimeKind)
+  return Array.isArray(value) ? value : (llmStore as any).providersWithModels ?? []
+}
 
 export const normalizeScopedRuntimeKind = (
   runtimeKind: string | null | undefined,
@@ -50,21 +80,25 @@ export const loadRuntimeProviderGroupsForSelection = async (
   runtimeKind: AgentRuntimeKind,
   llmStore = useLLMProviderConfigStore(),
 ): Promise<ProviderWithModels[]> => {
-  const rows = await llmStore.fetchProvidersWithModels(runtimeKind)
-  const candidateRows = Array.isArray(rows) && rows.length > 0
-    ? rows
-    : (llmStore.providersWithModelsForSelection ?? [])
-  return cloneProviderRows(candidateRows)
+  await llmStore.fetchProvidersWithModels(runtimeKind)
+  if (typeof (llmStore as any).ensureMissingDynamicProviders === 'function') {
+    await (llmStore as any).ensureMissingDynamicProviders(runtimeKind)
+  }
+  return cloneProviderRows(providerRowsForSelection(runtimeKind, llmStore))
 }
 
 export const useRuntimeScopedModelSelection = (params: {
   runtimeKind: Ref<string | null | undefined>
+  inheritedRuntimeKind?: Ref<string | null | undefined>
   allowBlankRuntime?: boolean
+  useDefaultRuntimeFallback?: boolean
 }) => {
   const llmStore = useLLMProviderConfigStore()
   const runtimeAvailabilityStore = useRuntimeAvailabilityStore()
   const providerGroupsByRuntime = ref<Record<string, ProviderWithModels[]>>({})
+  const providerSourceStatusesByRuntime = ref<Record<string, RuntimeProviderSourceStatus[]>>({})
   const isLoadingModels = ref(false)
+  const modelLoadError = ref<string | null>(null)
 
   void runtimeAvailabilityStore.fetchRuntimeAvailabilities().catch((error) => {
     console.error('Failed to fetch runtime availabilities:', error)
@@ -74,9 +108,11 @@ export const useRuntimeScopedModelSelection = (params: {
   const normalizedStoredRuntimeKind = computed(() =>
     normalizeScopedRuntimeKind(params.runtimeKind.value, allowBlankRuntime.value),
   )
-  const effectiveRuntimeKind = computed(() =>
-    resolveEffectiveScopedRuntimeKind(params.runtimeKind.value),
-  )
+  const effectiveRuntimeKind = computed<AgentRuntimeKind | null>(() => {
+    const resolved = (params.runtimeKind.value || params.inheritedRuntimeKind?.value || '').trim()
+    if (resolved) return resolved as AgentRuntimeKind
+    return params.useDefaultRuntimeFallback === false ? null : DEFAULT_AGENT_RUNTIME_KIND
+  })
 
   const ensureModelsForRuntime = async (runtimeKind: AgentRuntimeKind): Promise<void> => {
     const normalizedRuntimeKind = resolveEffectiveScopedRuntimeKind(runtimeKind)
@@ -85,12 +121,54 @@ export const useRuntimeScopedModelSelection = (params: {
     }
 
     isLoadingModels.value = true
+    modelLoadError.value = null
     try {
-      const rows = await loadRuntimeProviderGroupsForSelection(normalizedRuntimeKind, llmStore)
-      providerGroupsByRuntime.value = {
-        ...providerGroupsByRuntime.value,
-        [normalizedRuntimeKind]: rows,
+      await llmStore.fetchProvidersWithModels(normalizedRuntimeKind)
+      const publishRuntimeCatalogState = (): void => {
+        providerGroupsByRuntime.value = {
+          ...providerGroupsByRuntime.value,
+          [normalizedRuntimeKind]: cloneProviderRows(
+            providerRowsForSelection(normalizedRuntimeKind, llmStore),
+          ),
+        }
+        providerSourceStatusesByRuntime.value = {
+          ...providerSourceStatusesByRuntime.value,
+          [normalizedRuntimeKind]: cloneProviderSourceStatuses(normalizedRuntimeKind, llmStore),
+        }
       }
+      publishRuntimeCatalogState()
+      if (typeof (llmStore as any).ensureMissingDynamicProviders === 'function') {
+        void (llmStore as any).ensureMissingDynamicProviders(normalizedRuntimeKind)
+          .then(() => publishRuntimeCatalogState(), (error: unknown) => {
+            console.error(`Failed to discover dynamic models for '${normalizedRuntimeKind}'.`, error)
+            publishRuntimeCatalogState()
+          })
+      }
+    } catch (error) {
+      modelLoadError.value = error instanceof Error ? error.message : String(error)
+      throw error
+    } finally {
+      isLoadingModels.value = false
+    }
+  }
+
+  const reloadModelsForRuntime = async (runtimeKind: AgentRuntimeKind): Promise<void> => {
+    const normalizedRuntimeKind = resolveEffectiveScopedRuntimeKind(runtimeKind)
+    providerGroupsByRuntime.value = Object.fromEntries(
+      Object.entries(providerGroupsByRuntime.value).filter(([key]) => key !== normalizedRuntimeKind),
+    )
+    isLoadingModels.value = true
+    modelLoadError.value = null
+    try {
+      if (typeof (llmStore as any).refreshLocalCatalog === 'function') {
+        await (llmStore as any).refreshLocalCatalog(normalizedRuntimeKind)
+      } else {
+        ;(llmStore as any).hasFetchedProviders = false
+        await llmStore.fetchProvidersWithModels(normalizedRuntimeKind)
+      }
+      await ensureModelsForRuntime(normalizedRuntimeKind)
+    } catch (error) {
+      modelLoadError.value = error instanceof Error ? error.message : String(error)
     } finally {
       isLoadingModels.value = false
     }
@@ -99,7 +177,7 @@ export const useRuntimeScopedModelSelection = (params: {
   watch(
     () => effectiveRuntimeKind.value,
     (runtimeKind) => {
-      void ensureModelsForRuntime(runtimeKind)
+      if (runtimeKind) void ensureModelsForRuntime(runtimeKind).catch(() => undefined)
     },
     { immediate: true },
   )
@@ -128,7 +206,7 @@ export const useRuntimeScopedModelSelection = (params: {
       })
     }
 
-    if (!optionByKind.has(selectedRuntimeKind)) {
+    if (selectedRuntimeKind && !optionByKind.has(selectedRuntimeKind)) {
       optionByKind.set(selectedRuntimeKind, {
         value: selectedRuntimeKind,
         label: runtimeKindToLabel(selectedRuntimeKind),
@@ -142,6 +220,7 @@ export const useRuntimeScopedModelSelection = (params: {
   })
 
   const selectedRuntimeUnavailableReason = computed(() => {
+    if (!effectiveRuntimeKind.value) return null
     const availability = runtimeAvailabilityStore.availabilityByKind(effectiveRuntimeKind.value)
     if (!availability) {
       return effectiveRuntimeKind.value === DEFAULT_AGENT_RUNTIME_KIND
@@ -155,7 +234,15 @@ export const useRuntimeScopedModelSelection = (params: {
   })
 
   const availableProviderGroups = computed<ProviderWithModels[]>(() =>
-    providerGroupsByRuntime.value[effectiveRuntimeKind.value] ?? [],
+    effectiveRuntimeKind.value
+      ? providerGroupsByRuntime.value[effectiveRuntimeKind.value] ?? []
+      : [],
+  )
+
+  const providerSourceStatuses = computed<RuntimeProviderSourceStatus[]>(() =>
+    effectiveRuntimeKind.value
+      ? providerSourceStatusesByRuntime.value[effectiveRuntimeKind.value] ?? []
+      : [],
   )
 
   const groupedModelOptions = computed<GroupedOption[]>(() => {
@@ -163,16 +250,18 @@ export const useRuntimeScopedModelSelection = (params: {
       return []
     }
 
+    const runtimeKind = effectiveRuntimeKind.value
+    if (!runtimeKind) return []
     return availableProviderGroups.value.map((providerGroup) => ({
       label: providerGroup.provider.name,
       items: providerGroup.models.map((model) => ({
         id: model.modelIdentifier,
-        name: getModelSelectionOptionLabel(model, effectiveRuntimeKind.value),
+        name: getModelSelectionOptionLabel(model, runtimeKind),
         description: model.description,
         selectedLabel: getModelSelectionSelectedLabel(
           providerGroup.provider.name,
           model,
-          effectiveRuntimeKind.value,
+          runtimeKind,
         ),
       })),
     }))
@@ -225,9 +314,12 @@ export const useRuntimeScopedModelSelection = (params: {
     groupedModelOptions,
     hasModelIdentifier,
     isLoadingModels,
+    modelLoadError,
     modelConfigSchemaByIdentifier,
     modelIdentifiers,
     normalizedStoredRuntimeKind,
+    reloadModelsForRuntime,
+    providerSourceStatuses,
     runtimeOptions,
     selectedRuntimeUnavailableReason,
   }

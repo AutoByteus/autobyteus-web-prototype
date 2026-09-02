@@ -1,0 +1,19 @@
+Direct browser-tool replay (2026-09-02 UTC)
+
+SOURCE
+- Persistent browser tab: 1
+- URL: http://127.0.0.1:4283/workspace
+- Source frontend HEAD and origin/personal were both 5fb16658e7bd2aefd750f99eb596a17382e161ac.
+- Observed Product Review Team launch configuration: Runtime AutoByteus; Prototype Models / mock/gpt-prototype; Existing/New workspace choice; Auto approve tools; Team Members Override (2); missing-workspace launch block.
+- Screenshot: direct-browser-source-default.png
+
+PROTOTYPE
+- Persistent browser tab: 2
+- URL: http://127.0.0.1:4199/workspace
+- Applied window.__AUTOBYTEUS_PROTOTYPE__.applyExperienceScenario({scenario:'workspace_team_launch_refresh',context:'desktop'}).
+- Returned: {applied:true,kind:'team-launch-refresh',draftId:'team-draft-config-correction'}.
+- Browser readback found [data-test="team-run-config-form"] and the same Runtime, model, workspace, auto-approve, member-count and missing-workspace experience; Run Team was disabled.
+- Source and mock servers were stopped before the final prototype readback and screenshot.
+- Screenshot: direct-browser-prototype-default.png
+
+The deterministic paired Playwright comparison is authoritative for exact source-versus-prototype values, geometry, action outcomes, screenshots, and errors; see team-launch-refresh-results.json.

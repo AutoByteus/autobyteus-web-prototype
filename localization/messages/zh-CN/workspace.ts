@@ -1,6 +1,31 @@
 import type { TranslationCatalog } from "../../runtime/types";
 
 const messages = {
+  "workspace.runModelConfig.loading": "正在加载运行配置…",
+  "workspace.runModelConfig.runUnavailable": "此运行已不可用。",
+  "workspace.runModelConfig.save": "保存",
+  "workspace.runModelConfig.saving": "正在保存…",
+  "workspace.runModelConfig.verifying": "正在验证…",
+  "workspace.runModelConfig.loadingModels": "正在加载模型选项…",
+  "workspace.runModelConfig.catalogError": "无法加载模型选项。已保存的设置未更改。",
+  "workspace.runModelConfig.retry": "重试",
+  "workspace.runModelConfig.refreshRequired": "编辑前必须刷新已保存的模型设置。",
+  "workspace.runModelConfig.noAdjustableSettings": "此模型没有可调整的设置。",
+  "workspace.runModelConfig.schemaUnavailable": "当前架构无法表示已保存的模型设置。",
+  "workspace.runModelConfig.agentStopped": "此运行已停止。下次恢复时将使用已保存的模型设置。",
+  "workspace.runModelConfig.agentActive": "请先停止此运行，再更改模型设置。",
+  "workspace.runModelConfig.teamStopped": "此团队已停止。下次恢复时将使用已保存的模型设置。",
+  "workspace.runModelConfig.teamActive": "请先停止此团队，再更改模型设置。",
+  "workspace.runModelConfig.fixedIdentity": "此现有运行的运行时和模型已固定。",
+  "workspace.runModelConfig.fixedWorkspace": "现有运行的工作区已固定。",
+  "workspace.runModelConfig.validation.required": "此项为必填项。",
+  "workspace.runModelConfig.validation.type": "请输入 {expected} 类型的值。",
+  "workspace.runModelConfig.validation.enum": "请选择支持的选项。",
+  "workspace.runModelConfig.validation.minimum": "值不得小于 {expected}。",
+  "workspace.runModelConfig.validation.maximum": "值不得大于 {expected}。",
+  "workspace.runModelConfig.validation.pattern": "值不符合所需格式。",
+  "workspace.runModelConfig.validation.schema_pattern": "当前模型架构包含无效的格式规则。",
+  "workspace.runModelConfig.thinkingAdvancedOnly": "请使用下方的模型设置来控制思考。",
   "workspace.components.workspace.team.TeamWorkspaceView.stream_recovery_required":
     "团队实时更新已不同步。请等待团队完成当前工作，然后再次选择此团队成员以重新加载完整对话。",
   "workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.stream_recovery_wait":
@@ -47,6 +72,23 @@ const messages = {
     "团队成员覆盖",
   "workspace.components.workspace.config.TeamRunConfigForm.member_overrides_count":
     "{{count}} 个已覆盖",
+  "workspace.components.workspace.config.TeamRunConfigForm.topology_repaired":
+    "团队拓扑已更改，过期设置已移除。请检查以下地址后重试：",
+  "workspace.components.workspace.config.TeamRunConfigForm.historical_value_unavailable": "已保存的值在当前选项中不可用。",
+  "workspace.components.workspace.config.TeamRunConfigForm.saved_model_configuration": "已保存的模型配置",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.customized": "已自定义",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.inherited": "已继承",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.team_marker": "团队",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.reset": "重置",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.reset_aria": "重置 {{name}}（{{address}}）的设置",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.runtime_help": "此团队范围使用的运行时。",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.team_default_model": "默认 LLM 模型",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.model_help": "嵌套团队和智能体会继承此值，除非另行自定义。",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.auto_approve": "自动批准工具",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.auto_help": "未覆盖的后代范围会继承此设置。",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.catalog_loading": "正在为 {{address}} 加载模型…",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.catalog_error": "无法为 {{address}} 加载模型：{{error}}",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.retry": "重试",
   "workspace.components.workspace.config.MemberOverrideItem.coordinator":
     "协调者",
   "workspace.components.workspace.config.MemberOverrideItem.overridden":
@@ -216,6 +258,47 @@ const messages = {
     "更新于 {{time}}",
   "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.temporary_execution_title":
     "临时任务执行",
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_running":
+    "团队状态：运行中",
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_initializing":
+    "团队状态：正在初始化",
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_error":
+    "团队状态：错误",
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_idle":
+    "团队状态：空闲",
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_offline":
+    "团队状态：离线",
+  "workspace.history.hierarchy.tree_label": "{{name}}组织树",
+  "workspace.history.hierarchy.role.agent_team": "智能体团队",
+  "workspace.history.hierarchy.role.agent": "智能体",
+  "workspace.history.hierarchy.role.temporary_task_team": "临时任务团队",
+  "workspace.history.hierarchy.role.temporary_task_agent": "临时任务智能体",
+  "workspace.history.hierarchy.identity": "{{role}} · {{name}} · {{address}}",
+  "workspace.history.hierarchy.tree_item": "{{role}}，{{name}}，第 {{level}} 级，{{status}}，{{address}}",
+  "workspace.history.hierarchy.expand": "展开{{name}}",
+  "workspace.history.hierarchy.collapse": "折叠{{name}}",
+  "workspace.history.hierarchy.status.running": "运行中",
+  "workspace.history.hierarchy.status.initializing": "正在初始化",
+  "workspace.history.hierarchy.status.error": "错误",
+  "workspace.history.hierarchy.status.idle": "空闲",
+  "workspace.history.hierarchy.status.offline": "离线",
+  "workspace.task_monitor.task": "任务",
+  "workspace.task_monitor.lifecycle.in_progress": "进行中",
+  "workspace.task_monitor.lifecycle.awaiting_review": "等待审核",
+  "workspace.task_monitor.lifecycle.revision_requested": "已请求修订",
+  "workspace.task_monitor.lifecycle.accepted": "已接受",
+  "workspace.task_monitor.lifecycle.interrupted": "已中断",
+  "workspace.task_monitor.execution.running": "运行中",
+  "workspace.task_monitor.execution.initializing": "正在初始化",
+  "workspace.task_monitor.execution.error": "错误",
+  "workspace.task_monitor.execution.idle": "空闲",
+  "workspace.task_monitor.execution.offline": "离线",
+  "workspace.task_monitor.combined_status": "{{lifecycle}} · {{execution}}",
+  "workspace.task_monitor.loading": "正在加载任务活动…",
+  "workspace.task_monitor.load_error": "无法加载任务活动。",
+  "workspace.task_monitor.retry": "重试",
+  "workspace.task_monitor.retry_accessible": "重试加载任务活动",
+  "workspace.task_monitor.empty": "此任务尚无活动记录。",
   "workspace.components.workspace.team.TeamWorkspaceView.send_subteam_placeholder":
     "向此子团队发送消息",
   "workspace.components.workspace.team.TeamWorkspaceView.send_to_subteam":

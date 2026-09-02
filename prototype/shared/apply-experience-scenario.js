@@ -63,6 +63,7 @@ export function applyExperienceScenario(input = {}) {
   const workspaceId = 'workspace-prototype'
   const isWorkspaceFileTreeCorrection = scenario === 'workspace_file_tree_correction'
   const isTeamRunConfigCorrection = scenario === 'workspace_team_run_config_correction'
+  const isTeamLaunchRefresh = scenario === 'workspace_team_launch_refresh'
   const now = '2026-08-22T04:00:00.000Z'
   const workspaceMetadata = {
     workspaceId, name: 'prototype-workspace', displayName: 'Prototype Workspace',
@@ -109,7 +110,7 @@ export function applyExperienceScenario(input = {}) {
     workspace.workspaceMetadataIdsByRootPath = { ...workspace.workspaceMetadataIdsByRootPath, [workspaceMetadata.workspaceRootPath]: workspaceId }
     workspace.workspaceMetadataLoadStateById = { ...workspace.workspaceMetadataLoadStateById, [workspaceId]: { status: 'registered', error: null } }
   }
-  if (isAgentOrgRuntime || isStandaloneTeamRuntime) {
+  if (isAgentOrgRuntime || isStandaloneTeamRuntime || isTeamLaunchRefresh) {
     const agentDefinition = store('agentDefinition')
     if (agentDefinition) {
       const definition = (id, name, role, description, instructions) => ({
@@ -123,6 +124,10 @@ export function applyExperienceScenario(input = {}) {
         defaultLaunchConfig: { llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', llmConfig: { temperature: 0.2 } },
       })
       agentDefinition.agentDefinitions = [
+        ...(isTeamLaunchRefresh ? [
+          definition('agent-researcher', 'researcher', 'Coordinator', 'Coordinates deterministic product review work.', 'Coordinate the review and synthesize the evidence.'),
+          definition('agent-writer', 'writer', 'Member', 'Writes deterministic evidence summaries.', 'Prepare the evidence report for coordinator review.'),
+        ] : []),
         definition('requirements-engineer', 'requirements_engineer', 'Independent Agent', activeAgentDescription, 'Investigate the product context, preserve requirement traceability, and make acceptance decisions explicit.'),
         definition('product-prototyper', 'product_prototyper', 'Team coordinator', 'Coordinates product experience prototyping and review packages.', 'Evolve accepted product experiences and return precise review evidence.'),
         definition('prototype-bootstrapper', 'prototype_bootstrapper', 'Agent', 'Establishes current-experience parity in Product-owned worktrees.', 'Reproduce the selected current experience exactly and return parity evidence.'),
@@ -144,6 +149,14 @@ export function applyExperienceScenario(input = {}) {
         nodes: members.map(([memberName, ref]) => ({ __typename: 'AgentTeamNode', memberName, ref, refType: 'AGENT', refScope: 'SHARED' })),
       })
       teamDefinition.agentTeamDefinitions = [
+        ...(isTeamLaunchRefresh ? [definition(
+          'team-product',
+          'Product Review Team',
+          'A deterministic synthetic team with researcher and writer members.',
+          'Coordinate the synthetic product review through researcher.',
+          'researcher',
+          [['researcher', 'agent-researcher'], ['writer', 'agent-writer']],
+        )] : []),
         definition(
           'product-design-prototyping-team',
           'Product Design & Prototyping',
@@ -247,10 +260,18 @@ export function applyExperienceScenario(input = {}) {
       agentRunConfig.clearConfig()
       teamRunConfig.setConfig({
         teamDefinitionId: routeEntryId || 'product-design-prototyping-team',
-        teamDefinitionName: 'Product Design & Prototyping', runtimeKind: 'autobyteus',
-        llmModelIdentifier: 'mock/gpt-prototype', llmConfig: { temperature: 0.2 },
-        autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', isLocked: false,
-        workspaceId: null, workspaceMetadata: null, memberOverrides: {},
+        teamDefinitionName: 'Product Design & Prototyping',
+        rootConfig: {
+          runtimeKind: 'autobyteus',
+          workspace: { workspaceId: null, workspaceMetadata: null },
+          llmModelIdentifier: 'mock/gpt-prototype',
+          llmConfig: null,
+          autoExecuteTools: false,
+          skillAccessMode: 'PRELOADED_ONLY',
+        },
+        teamOverrides: {},
+        agentOverrides: {},
+        isLocked: false,
       })
       const selectedDraft = teamRunConfig.selectedDraft
       const deterministicDraftId = `org-${orgId}-team-entry-draft`
@@ -274,7 +295,7 @@ export function applyExperienceScenario(input = {}) {
     return { applied: true, kind: 'agent-org-agent-entry-config', agentDefinitionId: activeAgentDefinitionId }
   }
 
-  if (isTeamRunConfigCorrection) {
+  if (isTeamRunConfigCorrection || isTeamLaunchRefresh) {
     const teamRunConfig = store('teamRunConfig')
     const agentRunConfig = store('agentRunConfig')
     if (!teamRunConfig || !agentRunConfig) return { applied: false, reason: 'run-config-stores-unavailable' }
@@ -282,15 +303,17 @@ export function applyExperienceScenario(input = {}) {
     teamRunConfig.setConfig({
       teamDefinitionId: standaloneTeam?.id || 'team-product',
       teamDefinitionName: standaloneTeam?.name || 'Product Review Team',
-      runtimeKind: 'autobyteus',
-      llmModelIdentifier: 'mock/gpt-prototype',
-      llmConfig: { temperature: 0.2 },
-      autoExecuteTools: false,
-      skillAccessMode: 'PRELOADED_ONLY',
+      rootConfig: {
+        runtimeKind: 'autobyteus',
+        workspace: { workspaceId: null, workspaceMetadata: null },
+        llmModelIdentifier: 'mock/gpt-prototype',
+        llmConfig: null,
+        autoExecuteTools: false,
+        skillAccessMode: 'PRELOADED_ONLY',
+      },
+      teamOverrides: {},
+      agentOverrides: {},
       isLocked: false,
-      workspaceId: null,
-      workspaceMetadata: null,
-      memberOverrides: {},
     })
     const selectedDraft = teamRunConfig.selectedDraft
     const deterministicDraftId = standaloneTeam ? `team-draft-${standaloneTeam.id}` : 'team-draft-config-correction'
@@ -302,7 +325,11 @@ export function applyExperienceScenario(input = {}) {
     teamRunConfig.setRuntimeModelCatalog('autobyteus', ['mock/gpt-prototype'])
     selection.clearSelectionWithoutShellNavigation()
     store('workspaceCenterView')?.showChat()
-    return { applied: true, kind: 'team-run-config', draftId: teamRunConfig.selectedDraftId }
+    return {
+      applied: true,
+      kind: isTeamLaunchRefresh ? 'team-launch-refresh' : 'team-run-config',
+      draftId: teamRunConfig.selectedDraftId,
+    }
   }
 
   if (isAgentOrgActive) {

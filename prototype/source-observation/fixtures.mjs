@@ -225,6 +225,19 @@ const model = {
   metadataProvenance: 'fixture',
 }
 
+const providerCatalogSnapshot = {
+  __typename: 'ProviderModelCatalogSnapshotObject',
+  runtimeKind: 'autobyteus',
+  ownerProvider: { __typename: 'CatalogProviderObject', ...provider, catalogMode: 'STATIC' },
+  sources: [{
+    __typename: 'ModelSourceStatusObject',
+    modelKind: 'LLM', state: 'READY', modelCount: 1,
+    successfulUnitCount: 1, failedUnitCount: 0, safeMessage: null,
+  }],
+  llmModels: [{ __typename: 'ModelDetail', ...model }],
+  audioModels: [], imageModels: [], videoModels: [],
+}
+
 const tool = {
   __typename: 'ToolDefinitionDetail',
   name: 'read_file',
@@ -402,6 +415,10 @@ export function operationFixture(operationName, variables = {}, state) {
     ImportMcpServerConfigs: { importMcpServerConfigs: { __typename: 'McpImportResult', ...success, importedCount: 1, failedCount: 0 } },
     GetProviderSettings: { providerSettings: c.empty ? [] : [{ provider, llmModels: [model], audioModels: [], imageModels: [], videoModels: [] }] },
     GetAvailableLLMProvidersWithModels: { availableLlmProvidersWithModels: c.empty ? [] : [{ provider, models: [model] }], availableAudioProvidersWithModels: [], availableImageProvidersWithModels: [], availableVideoProvidersWithModels: [] },
+    GetProviderCredentialSettings: { providerCredentialSettings: c.empty ? [] : [{ provider: providerCatalogSnapshot.ownerProvider, apiKeyConfigured: true }] },
+    GetProviderModelCatalogSnapshots: { providerModelCatalogSnapshots: c.empty ? [] : [providerCatalogSnapshot] },
+    EnsureProviderModelCatalog: { ensureProviderModelCatalog: providerCatalogSnapshot },
+    ReloadProviderModelCatalog: { reloadProviderModelCatalog: providerCatalogSnapshot },
     GetGeminiSetupConfig: { getGeminiSetupConfig: { activeMode: null, aiStudioConfigured: false, vertexExpressConfigured: false, vertexProject: { project: '', location: '' } } },
     GetQwenSetupStatus: { qwenSetupStatus: { effectiveBaseUrl: 'mock://local', endpointSource: 'fixture', apiKeyConfigured: true } },
     SaveProviderApiKey: { saveProviderApiKey: true }, SaveQwenConfiguration: { saveQwenConfiguration: { effectiveBaseUrl: 'mock://local', endpointSource: 'fixture', apiKeyConfigured: true } },

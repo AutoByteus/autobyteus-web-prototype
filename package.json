@@ -42,7 +42,8 @@
     "validate:aorg-flat-team-review": "node prototype/scripts/validate-agent-org-flat-review.mjs",
     "validate:default-baseline-promotion": "node prototype/scripts/validate-default-baseline-promotion.mjs",
     "validate:aorg-team-status-review": "node prototype/scripts/validate-aorg-team-status-review.mjs",
-    "capture:aorg-team-status-final": "node prototype/scripts/capture-aorg-team-status-final.mjs"
+    "capture:aorg-team-status-final": "node prototype/scripts/capture-aorg-team-status-final.mjs",
+    "validate:team-launch-baseline-refresh": "node prototype/scripts/validate-team-launch-baseline-refresh.mjs"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",

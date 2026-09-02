@@ -35,6 +35,12 @@ export type UiModelConfigParameterSchema = {
 
 export type UiModelConfigSchema = Record<string, UiModelConfigParameterSchema>;
 
+export type UiModelConfigValidationIssue = Readonly<{
+  key: string;
+  code: 'required' | 'type' | 'enum' | 'minimum' | 'maximum' | 'pattern' | 'schema_pattern';
+  expected?: string | number;
+}>;
+
 const isObject = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null;
 
@@ -50,7 +56,17 @@ const firstString = (...values: unknown[]): string | undefined => {
   return undefined;
 };
 
-const isValidValueForParam = (
+const normalizeParameterType = (
+  type: string | undefined,
+  enumValues: unknown[] | undefined,
+): string | undefined => type === 'enum'
+  && Array.isArray(enumValues)
+  && enumValues.length > 0
+  && enumValues.every((value) => typeof value === 'string')
+    ? 'string'
+    : type;
+
+export const isModelConfigValueRepresentable = (
   value: unknown,
   param: UiModelConfigParameterSchema,
 ): boolean => {
@@ -104,20 +120,64 @@ const isValidValueForParam = (
   return true;
 };
 
+export const validateUiModelConfig = (
+  schema: UiModelConfigSchema | null | undefined,
+  config: Record<string, unknown> | null | undefined,
+): readonly UiModelConfigValidationIssue[] => {
+  if (!schema) return [];
+  const value = config ?? {};
+  const issues: UiModelConfigValidationIssue[] = [];
+  for (const [key, parameter] of Object.entries(schema)) {
+    if (!Object.hasOwn(value, key)) {
+      if (parameter.required === true) issues.push({ key, code: 'required' });
+      continue;
+    }
+    const candidate = value[key];
+    const validType = parameter.type === undefined ||
+      (parameter.type === 'string' && typeof candidate === 'string') ||
+      (parameter.type === 'boolean' && typeof candidate === 'boolean') ||
+      (parameter.type === 'number' && isFiniteNumber(candidate)) ||
+      (parameter.type === 'integer' && isFiniteNumber(candidate) && Number.isInteger(candidate));
+    if (!validType) {
+      issues.push({ key, code: 'type', expected: parameter.type ?? 'supported value' });
+      continue;
+    }
+    if (Array.isArray(parameter.enum) && !parameter.enum.some((entry) => Object.is(entry, candidate))) {
+      issues.push({ key, code: 'enum' });
+    }
+    if (isFiniteNumber(candidate)) {
+      if (typeof parameter.minimum === 'number' && candidate < parameter.minimum) {
+        issues.push({ key, code: 'minimum', expected: parameter.minimum });
+      }
+      if (typeof parameter.maximum === 'number' && candidate > parameter.maximum) {
+        issues.push({ key, code: 'maximum', expected: parameter.maximum });
+      }
+    }
+    if (typeof candidate === 'string' && typeof parameter.pattern === 'string' && parameter.pattern.length > 0) {
+      try {
+        if (!new RegExp(parameter.pattern).test(candidate)) issues.push({ key, code: 'pattern' });
+      } catch {
+        issues.push({ key, code: 'schema_pattern' });
+      }
+    }
+  }
+  return issues;
+};
+
 export const getValidSchemaDefault = (
   param: UiModelConfigParameterSchema | null | undefined,
 ): unknown | undefined => {
   if (!param || param.default === undefined) {
     return undefined;
   }
-  return isValidValueForParam(param.default, param) ? param.default : undefined;
+  return isModelConfigValueRepresentable(param.default, param) ? param.default : undefined;
 };
 
 export const resolveEffectiveConfigValue = (
   param: UiModelConfigParameterSchema,
   explicitValue: unknown,
 ): unknown | undefined => {
-  if (explicitValue !== undefined && isValidValueForParam(explicitValue, param)) {
+  if (explicitValue !== undefined && isModelConfigValueRepresentable(explicitValue, param)) {
     return explicitValue;
   }
   return getValidSchemaDefault(param);
@@ -134,7 +194,7 @@ export const normalizeModelConfigSchema = (schema: unknown): UiModelConfigSchema
       if (!param || typeof param.name !== 'string' || param.name.length === 0) continue;
 
       normalized[param.name] = {
-        type: param.type,
+        type: normalizeParameterType(param.type, param.enum_values),
         title: firstString(param.title, param.label, param.display_name),
         description: param.description,
         enum: param.enum_values,
@@ -205,7 +265,7 @@ export const sanitizeModelConfigAgainstSchema = (
     if (!param) {
       continue;
     }
-    if (!isValidValueForParam(value, param)) {
+    if (!isModelConfigValueRepresentable(value, param)) {
       continue;
     }
     sanitized[key] = value;

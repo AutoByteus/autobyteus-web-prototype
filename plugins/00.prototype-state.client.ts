@@ -22,7 +22,21 @@ const localActions: Record<string, Set<string>> = {
   agentSelection: new Set(['setRunSelection', 'setTeamDraftSelection', 'clearRunSelection', 'promoteTeamDraftLaunch', 'selectRunWithoutShellNavigation', 'selectTeamDraftWithoutShellNavigation', 'clearSelectionWithoutShellNavigation', 'selectRun', 'selectTeamDraft', 'clearSelection']),
   agentTodo: new Set(['_ensureEntry', 'setTodos', 'clearTodos']),
   agentTeamContexts: new Set(['addTeamContext', 'replaceTeamContext', 'removeTeamContext', 'focusMember']),
-  teamRunConfig: new Set(['createDraft', 'setTemplate', 'setConfig', 'applyConfigEdit', 'focusMember', 'setPendingInput', 'removeDraft', 'selectDraft', 'replaceSelectedDraft', 'admitDraftLaunch', 'completeDraftLaunch', 'releaseDraftLaunch', 'setRuntimeModelCatalog', 'setWorkspaceLoading', 'setWorkspaceLoaded', 'setWorkspaceError', 'clearWorkspaceState', 'collapsePanel', 'expandPanel', 'togglePanel', 'markFirstMessageSent', 'clearConfig']),
+  teamRunConfig: new Set([
+    'createDraft', 'setTemplate', 'setConfig', 'applyConfigEdit',
+    'applyTeamWorkspaceAuthoringCommand', 'reconcileSelectedDraftTopology',
+    'clearRepairNotice', 'focusMember', 'setPendingInput', 'removeDraft',
+    'selectDraft', 'replaceSelectedDraft', 'replacePreparedDraft',
+    'markWorkspacePreparationFailed', 'prepareSelectedDraftWorkspaces',
+    'admitDraftLaunch', 'completeDraftLaunch', 'releaseDraftLaunch',
+    'setRuntimeModelCatalogLoading', 'setRuntimeModelCatalog',
+    'setRuntimeModelCatalogError', 'clearConfig',
+    // Accepted prototype compatibility actions retained outside the refreshed
+    // current-source launch boundary.
+    'setWorkspaceLoading', 'setWorkspaceLoaded', 'setWorkspaceError',
+    'clearWorkspaceState', 'collapsePanel', 'expandPanel', 'togglePanel',
+    'markFirstMessageSent',
+  ]),
   workspaceCenterView: new Set(['showChat', 'showConfig']),
   uiError: new Set(['push', 'remove', 'clear', 'toggle', 'open', 'close']),
   mobileWork: new Set(['selectContext', 'setActiveTab', 'requestRunSetup', 'consumeRunSetupIntent', 'requestFilePreview', 'consumeFilePreviewRequest', 'addDraftContextAttachment', 'removeDraftContextAttachment', 'clearDraftContextAttachments', 'consumeDraftContextAttachments', 'getPendingTeamRunAttachments', 'hasPendingTeamRunAttachments', 'addPendingTeamRunAttachment', 'moveDraftAttachmentsToPendingTeamRun', 'removePendingTeamRunAttachment', 'clearPendingTeamRunAttachments', 'consumePendingTeamRunAttachments', 'rememberFocusedTeamMember', 'getRememberedFocusedTeamMember', 'updateFocusedTeamMember', 'clearContext']),

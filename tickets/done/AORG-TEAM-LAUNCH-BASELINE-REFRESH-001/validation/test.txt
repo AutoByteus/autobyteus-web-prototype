@@ -1,0 +1,17 @@
+
+> autobyteus-web-prototype@0.1.0 test /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-LAUNCH-BASELINE-REFRESH-001
+> vitest run
+
+
+ RUN  v3.2.7 /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-LAUNCH-BASELINE-REFRESH-001
+
+ ✓ prototype/tests/host-scenario.test.ts (3 tests) 5ms
+ ✓ prototype/tests/token-statistics-refresh-fixture.test.ts (4 tests) 8ms
+ ✓ prototype/tests/mounted-team-status.test.ts (3 tests) 3ms
+ ✓ prototype/tests/fixture-contract.test.ts (5 tests) 9ms
+
+ Test Files  4 passed (4)
+      Tests  15 passed (15)
+   Start at  10:35:15
+   Duration  794ms (transform 372ms, setup 0ms, collect 548ms, tests 25ms, environment 0ms, prepare 978ms)
+

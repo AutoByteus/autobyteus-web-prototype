@@ -1,0 +1,246 @@
+{
+  "packageId": "AORG-FLAT-TEAM-001",
+  "requestType": "Refresh",
+  "generatedAt": "2026-09-02",
+  "source": {
+    "frontend": "/home/autobyteus/workspace/autobyteus-workspace/autobyteus-web",
+    "authority": "origin/personal",
+    "pinnedRevision": "5fb16658e7bd2aefd750f99eb596a17382e161ac",
+    "head": "5fb16658e7bd2aefd750f99eb596a17382e161ac",
+    "originPersonal": "5fb16658e7bd2aefd750f99eb596a17382e161ac",
+    "workingTreeStatus": "clean"
+  },
+  "prototype": {
+    "canonicalRoot": "/home/autobyteus/workspace/autobyteus-web-prototype",
+    "assignedWorktree": "/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-LAUNCH-BASELINE-REFRESH-001",
+    "ticketBranch": "prototype/aorg-team-launch-baseline-refresh-001",
+    "acceptedBase": "1edc1008a55b04d04dd2f07bd9004d53079e09a2",
+    "head": "1edc1008a55b04d04dd2f07bd9004d53079e09a2",
+    "candidate": "uncommitted working tree"
+  },
+  "exactSourceFiles": [
+    {
+      "path": "components/launch-config/RuntimeModelConfigFields.vue",
+      "sourceSha256": "a774a86ebbdfa723e6b6999da202034c5cdbe22df827a26d28bda1f7ff38709b",
+      "prototypeSha256": "a774a86ebbdfa723e6b6999da202034c5cdbe22df827a26d28bda1f7ff38709b",
+      "exact": true
+    },
+    {
+      "path": "components/workspace/config/AgentRunConfigForm.vue",
+      "sourceSha256": "c8b621e6cadaf86c2494a37754ae4b32d424b08ae6b132032d9fe5aaedf0c136",
+      "prototypeSha256": "c8b621e6cadaf86c2494a37754ae4b32d424b08ae6b132032d9fe5aaedf0c136",
+      "exact": true
+    },
+    {
+      "path": "components/workspace/config/MemberOverrideItem.vue",
+      "sourceSha256": "527b4144e14608d89ae540904cb5d3d64e4f53a078d2f1a9a48383afdf72ffed",
+      "prototypeSha256": "527b4144e14608d89ae540904cb5d3d64e4f53a078d2f1a9a48383afdf72ffed",
+      "exact": true
+    },
+    {
+      "path": "components/workspace/config/ModelConfigAdvanced.vue",
+      "sourceSha256": "496feca301fbe39838400b014f59310d34b27a9b307f56eb9951356fa99d884f",
+      "prototypeSha256": "496feca301fbe39838400b014f59310d34b27a9b307f56eb9951356fa99d884f",
+      "exact": true
+    },
+    {
+      "path": "components/workspace/config/ModelConfigSection.vue",
+      "sourceSha256": "a4c91f022a9485436af97afa48aaae3b85424e8e8b13d55eda4f58146e6043ce",
+      "prototypeSha256": "a4c91f022a9485436af97afa48aaae3b85424e8e8b13d55eda4f58146e6043ce",
+      "exact": true
+    },
+    {
+      "path": "components/workspace/config/RunConfigPanel.vue",
+      "sourceSha256": "99401ab79e277ebba01a7c4f55e932a107e679310e4e91cc8d3f88caa4b450e9",
+      "prototypeSha256": "99401ab79e277ebba01a7c4f55e932a107e679310e4e91cc8d3f88caa4b450e9",
+      "exact": true
+    },
+    {
+      "path": "components/workspace/config/TeamRunConfigForm.vue",
+      "sourceSha256": "594106d31ee48560907c94bd1883b50c1afbd51c5f46f1e63f7c26bafc4dc862",
+      "prototypeSha256": "594106d31ee48560907c94bd1883b50c1afbd51c5f46f1e63f7c26bafc4dc862",
+      "exact": true
+    },
+    {
+      "path": "components/workspace/config/WorkspaceSelector.vue",
+      "sourceSha256": "36667b85c533868aa5d0c9626739f53f1072ecc234ef76cd8b216e9addd7b997",
+      "prototypeSha256": "36667b85c533868aa5d0c9626739f53f1072ecc234ef76cd8b216e9addd7b997",
+      "exact": true
+    },
+    {
+      "path": "composables/useTeamRunRuntimeCatalogSync.ts",
+      "sourceSha256": "291c3492fd30b2cf5228e69438d875bbe288170598057ed1e4060d70e057ad5b",
+      "prototypeSha256": "291c3492fd30b2cf5228e69438d875bbe288170598057ed1e4060d70e057ad5b",
+      "exact": true
+    },
+    {
+      "path": "graphql/mutations/agentTeamRunMutations.ts",
+      "sourceSha256": "0f7b738bc875d3dc649c3c2fb2a6ed579fff539c40eba3139352d64d0f62511b",
+      "prototypeSha256": "0f7b738bc875d3dc649c3c2fb2a6ed579fff539c40eba3139352d64d0f62511b",
+      "exact": true
+    },
+    {
+      "path": "graphql/mutations/runHistoryMutations.ts",
+      "sourceSha256": "847d806f5bee2ff3124f89127ae36dc075ea94b2957162d5038b76dddbc2800c",
+      "prototypeSha256": "847d806f5bee2ff3124f89127ae36dc075ea94b2957162d5038b76dddbc2800c",
+      "exact": true
+    },
+    {
+      "path": "localization/messages/en/workspace.ts",
+      "sourceSha256": "72981e5fc4ac7008cf27c660e447d750a5c35449bb804e439186bf4bd67500ac",
+      "prototypeSha256": "72981e5fc4ac7008cf27c660e447d750a5c35449bb804e439186bf4bd67500ac",
+      "exact": true
+    },
+    {
+      "path": "localization/messages/zh-CN/workspace.ts",
+      "sourceSha256": "661b9d4184c2bcf4b1411bdf602bc45fa9eb686a061cc8bd56596c14e1abb458",
+      "prototypeSha256": "661b9d4184c2bcf4b1411bdf602bc45fa9eb686a061cc8bd56596c14e1abb458",
+      "exact": true
+    },
+    {
+      "path": "stores/teamRunConfigStore.ts",
+      "sourceSha256": "ae195439c5e614196da879496133e072d72106a45704bbdb9604508bc7b76572",
+      "prototypeSha256": "ae195439c5e614196da879496133e072d72106a45704bbdb9604508bc7b76572",
+      "exact": true
+    },
+    {
+      "path": "types/agent/TeamLaunchDraft.ts",
+      "sourceSha256": "dfa8fc2f42e13b1714eeaf83ee2c50724b67d7fd1863afc6674069eda85f86d4",
+      "prototypeSha256": "dfa8fc2f42e13b1714eeaf83ee2c50724b67d7fd1863afc6674069eda85f86d4",
+      "exact": true
+    },
+    {
+      "path": "types/agent/TeamRunConfig.ts",
+      "sourceSha256": "c7962de802fce01c60ac18ae5bbcd29ecbd70c54e44b83a758391053ca6b7efd",
+      "prototypeSha256": "c7962de802fce01c60ac18ae5bbcd29ecbd70c54e44b83a758391053ca6b7efd",
+      "exact": true
+    },
+    {
+      "path": "utils/llmConfigSchema.ts",
+      "sourceSha256": "397efe8fb48857903276ba44a3b2c007a966d592285bf0596d55fb0c137bc428",
+      "prototypeSha256": "397efe8fb48857903276ba44a3b2c007a966d592285bf0596d55fb0c137bc428",
+      "exact": true
+    },
+    {
+      "path": "utils/teamRunConfigUtils.ts",
+      "sourceSha256": "2f7bddc5abcc34ad0a906460a370d11e06d4738eb610a135f7e999c051681419",
+      "prototypeSha256": "2f7bddc5abcc34ad0a906460a370d11e06d4738eb610a135f7e999c051681419",
+      "exact": true
+    },
+    {
+      "path": "utils/teamRunLaunchReadiness.ts",
+      "sourceSha256": "66b93d32ee158aab22cd8820f05fb6b04346600a4bef525cf615e7b3be5586f5",
+      "prototypeSha256": "66b93d32ee158aab22cd8820f05fb6b04346600a4bef525cf615e7b3be5586f5",
+      "exact": true
+    },
+    {
+      "path": "components/workspace/config/AutoApproveSwitch.vue",
+      "sourceSha256": "5d8b618773730f31eddbecf691c5dce1d401b4c337b47b37ee13ead4557f8ebf",
+      "prototypeSha256": "5d8b618773730f31eddbecf691c5dce1d401b4c337b47b37ee13ead4557f8ebf",
+      "exact": true
+    },
+    {
+      "path": "components/workspace/config/ExistingRunConfigEditor.vue",
+      "sourceSha256": "e21505360ce9c2f9666945f3d7c3b2272f2fb19cdad6f700efd6d3e6ecaa21d4",
+      "prototypeSha256": "e21505360ce9c2f9666945f3d7c3b2272f2fb19cdad6f700efd6d3e6ecaa21d4",
+      "exact": true
+    },
+    {
+      "path": "components/workspace/config/HistoricalModelConfigFallback.vue",
+      "sourceSha256": "48f7ee075720db1ec749de50602b9855ebec7d3c42dc31075a50da74feae26c2",
+      "prototypeSha256": "48f7ee075720db1ec749de50602b9855ebec7d3c42dc31075a50da74feae26c2",
+      "exact": true
+    },
+    {
+      "path": "components/workspace/config/TeamMemberConfigTree.vue",
+      "sourceSha256": "95ce72c5e9678e0d09c7756099cb3dff9827d9cc57a6e908da200655115f62f6",
+      "prototypeSha256": "95ce72c5e9678e0d09c7756099cb3dff9827d9cc57a6e908da200655115f62f6",
+      "exact": true
+    },
+    {
+      "path": "components/workspace/config/TeamScopeConfigEditor.vue",
+      "sourceSha256": "5fb3a68f311913974f0d7a8c29f4d00fbc6e959eb80d37ba23b058c24244a700",
+      "prototypeSha256": "5fb3a68f311913974f0d7a8c29f4d00fbc6e959eb80d37ba23b058c24244a700",
+      "exact": true
+    },
+    {
+      "path": "stores/existingRunModelConfigStore.ts",
+      "sourceSha256": "f04ec4f211e1844cbc93be41cb74918b4aa6f7ca94bb73728aceba1f3745f858",
+      "prototypeSha256": "f04ec4f211e1844cbc93be41cb74918b4aa6f7ca94bb73728aceba1f3745f858",
+      "exact": true
+    },
+    {
+      "path": "types/agent/EditableTeamRunFormModel.ts",
+      "sourceSha256": "dcd01828efa2079ecae017e3631dec26ff8074b9a658ccebda5be49673524c59",
+      "prototypeSha256": "dcd01828efa2079ecae017e3631dec26ff8074b9a658ccebda5be49673524c59",
+      "exact": true
+    },
+    {
+      "path": "types/agent/ExistingRunModelConfigDraft.ts",
+      "sourceSha256": "edc377b5bcfb7de2af14035b50cb7e2f614b9e10da55681532c55bfe27c0d461",
+      "prototypeSha256": "edc377b5bcfb7de2af14035b50cb7e2f614b9e10da55681532c55bfe27c0d461",
+      "exact": true
+    },
+    {
+      "path": "types/agent/ExistingTeamRunFormModel.ts",
+      "sourceSha256": "88af37c611a52cb89d05b042b173dc42d7176e275402ad2b014e77b5d831adb0",
+      "prototypeSha256": "88af37c611a52cb89d05b042b173dc42d7176e275402ad2b014e77b5d831adb0",
+      "exact": true
+    },
+    {
+      "path": "types/agent/TeamRunFormDisplay.ts",
+      "sourceSha256": "963b47088960f7ca129082290a81c101760fa9f545ba3842519a05788ac0a324",
+      "prototypeSha256": "963b47088960f7ca129082290a81c101760fa9f545ba3842519a05788ac0a324",
+      "exact": true
+    },
+    {
+      "path": "types/agent/TeamRunFormModel.ts",
+      "sourceSha256": "59a0a0d1deffdc5020ef58bb31a6940c2693ce820948a92a9438e1bcc084beb3",
+      "prototypeSha256": "59a0a0d1deffdc5020ef58bb31a6940c2693ce820948a92a9438e1bcc084beb3",
+      "exact": true
+    },
+    {
+      "path": "types/workspace/WorkspaceSelectionState.ts",
+      "sourceSha256": "0e10507cd2867ada4f239321d8d0bbe301f1f2f978ac6503d0d36ee9766f12b8",
+      "prototypeSha256": "0e10507cd2867ada4f239321d8d0bbe301f1f2f978ac6503d0d36ee9766f12b8",
+      "exact": true
+    },
+    {
+      "path": "utils/editableTeamRunFormModel.ts",
+      "sourceSha256": "340a28fd91c1fe7edfb205e00bf725533b4902eb214923131966e318319ecd7a",
+      "prototypeSha256": "340a28fd91c1fe7edfb205e00bf725533b4902eb214923131966e318319ecd7a",
+      "exact": true
+    },
+    {
+      "path": "utils/historicalModelConfigFields.ts",
+      "sourceSha256": "9eb48a3a5af41cdb8d494b30dbad7bef4386ed1a7fb84fdf912bce772c631e30",
+      "prototypeSha256": "9eb48a3a5af41cdb8d494b30dbad7bef4386ed1a7fb84fdf912bce772c631e30",
+      "exact": true
+    },
+    {
+      "path": "utils/teamRunLaunchHierarchy.ts",
+      "sourceSha256": "f4d687a9974f716cefb2c79d7f6fe4fe5f66be620a822a77751c63d54f35aeff",
+      "prototypeSha256": "f4d687a9974f716cefb2c79d7f6fe4fe5f66be620a822a77751c63d54f35aeff",
+      "exact": true
+    },
+    {
+      "path": "utils/teamWorkspaceLaunchPreparation.ts",
+      "sourceSha256": "53978dc72b865c87aac9b7b451a83830c3b804f2f6a379236a418395e5cbe264",
+      "prototypeSha256": "53978dc72b865c87aac9b7b451a83830c3b804f2f6a379236a418395e5cbe264",
+      "exact": true
+    }
+  ],
+  "prototypeAdaptationFiles": [
+    "composables/useDefinitionLaunchDefaults.ts",
+    "composables/useRuntimeScopedModelSelection.ts",
+    "plugins/00.prototype-state.client.ts",
+    "prototype/fixtures/icon-collections.json",
+    "prototype/shared/apply-experience-scenario.js",
+    "prototype/source-observation/fixtures.mjs",
+    "prototype/scripts/validate-team-launch-baseline-refresh.mjs"
+  ],
+  "notes": [
+    "The source working tree was observed read-only and remained clean at the pinned authority.",
+    "Exact-source files are byte-for-byte SHA-256 matches. Prototype adaptation files provide deterministic local state, browser-only compatibility, local icons, and comparison tooling without production services."
+  ]
+}

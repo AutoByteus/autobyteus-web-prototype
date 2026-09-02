@@ -1,0 +1,49 @@
+Product Prototyper baseline acceptance — AORG-TEAM-LAUNCH-BASELINE-REFRESH-001
+Date: 2026-09-02
+Candidate base: 1edc1008a55b04d04dd2f07bd9004d53079e09a2
+Source authority: origin/personal@5fb16658e7bd2aefd750f99eb596a17382e161ac
+
+git diff --check:
+PASS
+
+Paired browser summary:
+{
+  "packageId": "AORG-FLAT-TEAM-001",
+  "requestType": "Refresh",
+  "sourcePin": "5fb16658e7bd2aefd750f99eb596a17382e161ac",
+  "sourceBaseUrl": "http://127.0.0.1:4283",
+  "prototypeBaseUrl": "http://127.0.0.1:4199",
+  "mockBaseUrl": "http://127.0.0.1:4383",
+  "browser": "/usr/bin/chromium",
+  "generatedAt": "2026-09-02T10:45:00.106Z",
+  "passed": 8,
+  "total": 8,
+  "result": "Pass",
+  "inventory": {
+    "UXB-TEAM-LAUNCH-ROOT-001": "Pass",
+    "UXB-TEAM-LAUNCH-WORKSPACE-001": "Pass",
+    "UXB-TEAM-LAUNCH-MEMBERS-001": "Pass",
+    "UXB-TEAM-LAUNCH-RESPONSIVE-001": "Pass"
+  }
+}
+
+Independent preview result:
+{
+  "httpStatus": 200,
+  "summary": {
+    "href": "http://127.0.0.1:4201/workspace",
+    "formText": "Team Definition\nProduct Review Team\nRuntime\nAutoByteus\n\nSelects the runtime backend used by this team run.\n\nDefault LLM Model (Global)\nPrototype Models / mock/gpt-prototype\n\nThis model will be used by all members unless overridden.\n\nThis model has no adjustable settings.\n\nWorkspace Directory\nExisting\nNew\nSelect a workspace...\n\nSelect a previously loaded workspace.\n\nAuto approve tools\n\nHigh-trust mode for Codex team members: automatically allows tool calls and access/permission requests for this run.\n\nAuto approve tools\nTeam Members Override (2)",
+    "runDisabled": true,
+    "scenario": "workspace_team_launch_refresh"
+  },
+  "externalRequests": [],
+  "browserErrors": [],
+  "result": "Pass"
+}
+
+Product visual inspection:
+- Inspected source/prototype paired default launch configuration.
+- Inspected keyboard-opened inherited member hierarchy.
+- Inspected exact-Agent customized override state.
+- Inspected narrow 390x844 layout.
+- Accepted: no perceptible or behavioral gap in the named current-experience boundary.

@@ -1,6 +1,31 @@
 import type { TranslationCatalog } from "../../runtime/types";
 
 const messages = {
+  "workspace.runModelConfig.loading": "Loading run configuration…",
+  "workspace.runModelConfig.runUnavailable": "This run is no longer available.",
+  "workspace.runModelConfig.save": "Save",
+  "workspace.runModelConfig.saving": "Saving…",
+  "workspace.runModelConfig.verifying": "Verifying…",
+  "workspace.runModelConfig.loadingModels": "Loading model options…",
+  "workspace.runModelConfig.catalogError": "Model options could not be loaded. Saved settings were not changed.",
+  "workspace.runModelConfig.retry": "Retry",
+  "workspace.runModelConfig.refreshRequired": "Saved model settings must be refreshed before editing.",
+  "workspace.runModelConfig.noAdjustableSettings": "This model has no adjustable settings.",
+  "workspace.runModelConfig.schemaUnavailable": "Saved model settings cannot be represented by the current schema.",
+  "workspace.runModelConfig.agentStopped": "This run is stopped. Saved model settings will be used when it resumes.",
+  "workspace.runModelConfig.agentActive": "Stop this run before changing model settings.",
+  "workspace.runModelConfig.teamStopped": "This team is stopped. Saved model settings will be used when it resumes.",
+  "workspace.runModelConfig.teamActive": "Stop this team before changing model settings.",
+  "workspace.runModelConfig.fixedIdentity": "Runtime and model are fixed for this existing run.",
+  "workspace.runModelConfig.fixedWorkspace": "Workspace is fixed for existing runs.",
+  "workspace.runModelConfig.validation.required": "A value is required.",
+  "workspace.runModelConfig.validation.type": "Enter a value of type {expected}.",
+  "workspace.runModelConfig.validation.enum": "Choose one of the supported options.",
+  "workspace.runModelConfig.validation.minimum": "Value must be at least {expected}.",
+  "workspace.runModelConfig.validation.maximum": "Value must be at most {expected}.",
+  "workspace.runModelConfig.validation.pattern": "Value does not match the required format.",
+  "workspace.runModelConfig.validation.schema_pattern": "The current model schema contains an invalid format rule.",
+  "workspace.runModelConfig.thinkingAdvancedOnly": "Use the model settings below to control thinking.",
   "workspace.components.workspace.team.TeamWorkspaceView.stream_recovery_required":
     "Live Team updates are out of sync. Wait for the Team to finish its current work, then select this Team member again to reload the complete conversation.",
   "workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.stream_recovery_wait":
@@ -47,6 +72,23 @@ const messages = {
     "Team Members Override",
   "workspace.components.workspace.config.TeamRunConfigForm.member_overrides_count":
     "{{count}} overridden",
+  "workspace.components.workspace.config.TeamRunConfigForm.topology_repaired":
+    "Team topology changed. Stale settings were removed. Review these addresses and retry:",
+  "workspace.components.workspace.config.TeamRunConfigForm.historical_value_unavailable": "Saved value is unavailable in current options.",
+  "workspace.components.workspace.config.TeamRunConfigForm.saved_model_configuration": "Saved model configuration",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.customized": "Customized",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.inherited": "Inherited",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.team_marker": "Team",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.reset": "Reset",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.reset_aria": "Reset settings for {{name}} ({{address}})",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.runtime_help": "Runtime used by this Team scope.",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.team_default_model": "Default LLM Model",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.model_help": "Nested Teams and Agents inherit this value unless customized.",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.auto_approve": "Auto approve tools",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.auto_help": "Inherited by descendant scopes without an override.",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.catalog_loading": "Loading models for {{address}}…",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.catalog_error": "Could not load models for {{address}}: {{error}}",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.retry": "Retry",
   "workspace.components.workspace.config.MemberOverrideItem.coordinator":
     "Coordinator",
   "workspace.components.workspace.config.MemberOverrideItem.overridden":
@@ -217,6 +259,47 @@ const messages = {
     "Updated {{time}}",
   "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.temporary_execution_title":
     "Temporary task execution",
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_running":
+    "Team status: Running",
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_initializing":
+    "Team status: Initializing",
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_error":
+    "Team status: Error",
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_idle":
+    "Team status: Idle",
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_offline":
+    "Team status: Offline",
+  "workspace.history.hierarchy.tree_label": "{{name}} organization tree",
+  "workspace.history.hierarchy.role.agent_team": "Agent team",
+  "workspace.history.hierarchy.role.agent": "Agent",
+  "workspace.history.hierarchy.role.temporary_task_team": "Temporary task team",
+  "workspace.history.hierarchy.role.temporary_task_agent": "Temporary task agent",
+  "workspace.history.hierarchy.identity": "{{role}} · {{name}} · {{address}}",
+  "workspace.history.hierarchy.tree_item": "{{role}}, {{name}}, level {{level}}, {{status}}, {{address}}",
+  "workspace.history.hierarchy.expand": "Expand {{name}}",
+  "workspace.history.hierarchy.collapse": "Collapse {{name}}",
+  "workspace.history.hierarchy.status.running": "running",
+  "workspace.history.hierarchy.status.initializing": "initializing",
+  "workspace.history.hierarchy.status.error": "error",
+  "workspace.history.hierarchy.status.idle": "idle",
+  "workspace.history.hierarchy.status.offline": "offline",
+  "workspace.task_monitor.task": "Task",
+  "workspace.task_monitor.lifecycle.in_progress": "In progress",
+  "workspace.task_monitor.lifecycle.awaiting_review": "Awaiting review",
+  "workspace.task_monitor.lifecycle.revision_requested": "Revision requested",
+  "workspace.task_monitor.lifecycle.accepted": "Accepted",
+  "workspace.task_monitor.lifecycle.interrupted": "Interrupted",
+  "workspace.task_monitor.execution.running": "Running",
+  "workspace.task_monitor.execution.initializing": "Initializing",
+  "workspace.task_monitor.execution.error": "Error",
+  "workspace.task_monitor.execution.idle": "Idle",
+  "workspace.task_monitor.execution.offline": "Offline",
+  "workspace.task_monitor.combined_status": "{{lifecycle}} · {{execution}}",
+  "workspace.task_monitor.loading": "Loading task activity…",
+  "workspace.task_monitor.load_error": "Couldn't load task activity.",
+  "workspace.task_monitor.retry": "Retry",
+  "workspace.task_monitor.retry_accessible": "Retry loading task activity",
+  "workspace.task_monitor.empty": "No activity recorded for this task yet.",
   "workspace.components.workspace.team.TeamWorkspaceView.send_subteam_placeholder":
     "Send a message to this subteam",
   "workspace.components.workspace.team.TeamWorkspaceView.send_to_subteam":

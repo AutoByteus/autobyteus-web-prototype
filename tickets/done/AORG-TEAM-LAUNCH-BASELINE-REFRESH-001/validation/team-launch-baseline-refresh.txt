@@ -1,0 +1,31 @@
+
+> autobyteus-web-prototype@0.1.0 validate:team-launch-baseline-refresh /home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-LAUNCH-BASELINE-REFRESH-001
+> node prototype/scripts/validate-team-launch-baseline-refresh.mjs
+
+UXV-TEAM-LAUNCH-REFRESH-001: PASS
+UXV-TEAM-LAUNCH-REFRESH-002: PASS
+UXV-TEAM-LAUNCH-REFRESH-003: PASS
+UXV-TEAM-LAUNCH-REFRESH-004: PASS
+UXV-TEAM-LAUNCH-REFRESH-005: PASS
+UXV-TEAM-LAUNCH-REFRESH-006: PASS
+UXV-TEAM-LAUNCH-REFRESH-007: PASS
+UXV-TEAM-LAUNCH-REFRESH-008: PASS
+{
+  "packageId": "AORG-FLAT-TEAM-001",
+  "requestType": "Refresh",
+  "sourcePin": "5fb16658e7bd2aefd750f99eb596a17382e161ac",
+  "sourceBaseUrl": "http://127.0.0.1:4283",
+  "prototypeBaseUrl": "http://127.0.0.1:4199",
+  "mockBaseUrl": "http://127.0.0.1:4383",
+  "browser": "/usr/bin/chromium",
+  "generatedAt": "2026-09-02T10:45:00.106Z",
+  "passed": 8,
+  "total": 8,
+  "result": "Pass",
+  "inventory": {
+    "UXB-TEAM-LAUNCH-ROOT-001": "Pass",
+    "UXB-TEAM-LAUNCH-WORKSPACE-001": "Pass",
+    "UXB-TEAM-LAUNCH-MEMBERS-001": "Pass",
+    "UXB-TEAM-LAUNCH-RESPONSIVE-001": "Pass"
+  }
+}
