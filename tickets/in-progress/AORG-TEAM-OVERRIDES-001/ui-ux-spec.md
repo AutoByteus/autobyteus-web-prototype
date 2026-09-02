@@ -9,7 +9,7 @@
 - Related IDs: `BEH-012`, `UC-014`, `REQ-029`, `AC-024`, `SCN-013`, `QR-009`, `DEC-016`, `ORG-CASE-059`–`ORG-CASE-061`, `ORG-VERIFY-012`.
 - Supersession boundary: replace only RV-012 Placement Overrides lines 89–95 and `VIS-015`. Preserve unrelated RV-012 and mounted-Team status authority.
 - Current-experience authority: AgentTeam launch baseline refreshed from `origin/personal@5fb16658e7bd2aefd750f99eb596a17382e161ac`, accepted in prototype revision `0d9f1bdc2a103abce050812b15160de250a4aa00`.
-- Review candidate implementation revision: `3e513533956f00f79fb27f22fd9c00bcad0f7d00`.
+- Review candidate implementation revision: `432e117243f777239f79ffb05d4eb95bdfa1402e`.
 
 ## Intended Product Experience
 
