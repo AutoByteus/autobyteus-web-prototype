@@ -66,7 +66,7 @@
             @click="overridesExpanded = !overridesExpanded"
           >
             <span class="flex min-w-0 items-center gap-1.5">
-              <span class="truncate" data-test="org-member-overrides-label">Member overrides</span>
+              <span class="truncate" data-test="org-member-overrides-label">Member overrides ({{ memberOverrideCount }})</span>
               <Icon
                 icon="heroicons:chevron-down-20-solid"
                 class="h-4 w-4 flex-shrink-0 text-gray-600 transition-transform"
@@ -215,6 +215,10 @@ const teams = computed<TeamPlacement[]>(() => org.value.members
       }),
     };
   }));
+const memberOverrideCount = computed(() => directAgents.value.length + teams.value.reduce(
+  (count, team) => count + team.agents.length,
+  0,
+));
 
 const workspaceMetadataFor = (selection: WorkspaceSelectionState, address = '/'): WorkspaceMetadata | null => {
   if (selection.mode === 'existing' && selection.existingWorkspaceId) {

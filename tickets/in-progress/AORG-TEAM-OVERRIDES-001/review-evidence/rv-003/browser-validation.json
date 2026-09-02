@@ -1,0 +1,168 @@
+{
+  "baseUrl": "http://127.0.0.1:4198",
+  "reviewUrl": "http://127.0.0.1:4198/workspace?root=org&org=software-development-department&phase=config&prototypeReview=aorg-team-overrides",
+  "generatedAt": "2026-09-02T11:56:40.394Z",
+  "passed": 14,
+  "total": 14,
+  "runtimeErrors": [],
+  "results": [
+    {
+      "id": "AORG-OVERRIDES-001-outer-collapsed-initially",
+      "pass": true,
+      "evidence": {
+        "outerExpanded": "false"
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-002-chevron-adjacent-to-label",
+      "pass": true,
+      "evidence": {
+        "outerDisclosureGeometry": {
+          "labelRight": 494.734375,
+          "chevronLeft": 500.734375,
+          "gap": 6
+        }
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-003-exact-agent-member-count",
+      "pass": true,
+      "evidence": {
+        "label": "Member overrides (7)"
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-004-all-mounted-teams-collapsed",
+      "pass": true,
+      "evidence": {
+        "collapsedStates": [
+          "false",
+          "false"
+        ],
+        "collapsedText": [
+          "Product Design & Prototyping\nTEAM\n/product_design_prototyping_team\nInherited",
+          "Software Engineering\nTEAM\n/software_engineering_team\nInherited"
+        ]
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-005-direct-agent-preserved",
+      "pass": true,
+      "evidence": {
+        "directAgentRows": 1
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-006-one-team-expanded-inherited",
+      "pass": true,
+      "evidence": {
+        "expandedStates": [
+          "true",
+          "false"
+        ],
+        "teamHeader": "Product Design & Prototyping\nTEAM\n/product_design_prototyping_team\nInherited",
+        "memberText": [
+          "product_prototyper\nCoordinator\n\nproduct_design_prototyping_team / product_prototyper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nGlobal default",
+          "prototype_bootstrapper\n\nproduct_design_prototyping_team / prototype_bootstrapper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nGlobal default"
+        ]
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-007-coordinator-secondary-identity",
+      "pass": true,
+      "evidence": {
+        "coordinatorMarkers": 1
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-008-team-and-agent-scope-local-customization",
+      "pass": true,
+      "evidence": {
+        "teamHeader": "Product Design & Prototyping\nTEAM\n/product_design_prototyping_team\nCustomized",
+        "teamAutoApprove": "true",
+        "firstAgent": "product_prototyper\nCoordinator\nOverridden\n\nproduct_design_prototyping_team / product_prototyper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nOn",
+        "secondAgent": "prototype_bootstrapper\n\nproduct_design_prototyping_team / prototype_bootstrapper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nGlobal default"
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-009-collapse-reopen-preserves-valid-draft",
+      "pass": true,
+      "evidence": {
+        "collapsedAfterDraft": "false",
+        "customizedAfterReopen": {
+          "expanded": "true",
+          "teamHeader": "Product Design & Prototyping\nTEAM\n/product_design_prototyping_team\nCustomized",
+          "teamAutoApprove": "true",
+          "firstAgent": "product_prototyper\nCoordinator\nOverridden\n\nproduct_design_prototyping_team / product_prototyper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nOn",
+          "secondAgent": "prototype_bootstrapper\n\nproduct_design_prototyping_team / prototype_bootstrapper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nGlobal default"
+        }
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-010-agent-only-does-not-customize-team",
+      "pass": true,
+      "evidence": {
+        "teamHeader": "Product Design & Prototyping\nTEAM\n/product_design_prototyping_team\nInherited",
+        "agentRow": "product_prototyper\nCoordinator\nOverridden\n\nproduct_design_prototyping_team / product_prototyper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nOn"
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-011-responsive-no-overlay-or-horizontal-overflow",
+      "pass": true,
+      "evidence": {
+        "teamHeaders": 2,
+        "narrowGeometry": {
+          "innerWidth": 390,
+          "scrollWidth": 390
+        }
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-012-agentteam-launch-baseline-preserved",
+      "pass": true,
+      "evidence": {
+        "mode": "editable",
+        "memberOverridesExpanded": "false"
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-013-disclosure-style-matches-agentteam",
+      "pass": true,
+      "evidence": {
+        "orgDisclosureStyle": {
+          "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "lineHeight": "20px",
+          "letterSpacing": "normal",
+          "color": "rgb(77, 77, 77)",
+          "paddingTop": "8px",
+          "paddingRight": "4px",
+          "paddingBottom": "8px",
+          "paddingLeft": "4px",
+          "borderRadius": "6px"
+        },
+        "teamDisclosureStyle": {
+          "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "lineHeight": "20px",
+          "letterSpacing": "normal",
+          "color": "rgb(77, 77, 77)",
+          "paddingTop": "8px",
+          "paddingRight": "4px",
+          "paddingBottom": "8px",
+          "paddingLeft": "4px",
+          "borderRadius": "6px"
+        }
+      }
+    },
+    {
+      "id": "AORG-OVERRIDES-014-zero-browser-errors",
+      "pass": true,
+      "evidence": {
+        "runtimeErrors": []
+      }
+    }
+  ]
+}

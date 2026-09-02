@@ -1,0 +1,18 @@
+AgentOrg mounted-Team Member overrides review validation
+URL: http://127.0.0.1:4198/workspace?root=org&org=software-development-department&phase=config&prototypeReview=aorg-team-overrides
+Result: 14/14 passed
+PASS AORG-OVERRIDES-001-outer-collapsed-initially
+PASS AORG-OVERRIDES-002-chevron-adjacent-to-label
+PASS AORG-OVERRIDES-003-exact-agent-member-count
+PASS AORG-OVERRIDES-004-all-mounted-teams-collapsed
+PASS AORG-OVERRIDES-005-direct-agent-preserved
+PASS AORG-OVERRIDES-006-one-team-expanded-inherited
+PASS AORG-OVERRIDES-007-coordinator-secondary-identity
+PASS AORG-OVERRIDES-008-team-and-agent-scope-local-customization
+PASS AORG-OVERRIDES-009-collapse-reopen-preserves-valid-draft
+PASS AORG-OVERRIDES-010-agent-only-does-not-customize-team
+PASS AORG-OVERRIDES-011-responsive-no-overlay-or-horizontal-overflow
+PASS AORG-OVERRIDES-012-agentteam-launch-baseline-preserved
+PASS AORG-OVERRIDES-013-disclosure-style-matches-agentteam
+PASS AORG-OVERRIDES-014-zero-browser-errors
+Browser errors: 0

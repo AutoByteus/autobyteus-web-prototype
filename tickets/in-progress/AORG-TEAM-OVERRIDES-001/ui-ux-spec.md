@@ -2,7 +2,7 @@
 
 ## Status And Authority
 
-- Status: `RV-002 — awaiting explicit user approval`.
+- Status: `RV-003 — awaiting explicit user approval`.
 - Product ticket: `AORG-TEAM-OVERRIDES-001`.
 - Stable requirements package: `AORG-FLAT-TEAM-001`.
 - Requirements revision: `RER-022@b985df2ed66b4b2874dd9dae66cd256b6348a795`.
@@ -17,7 +17,7 @@
 
 `Member overrides` is a single compact disclosure after the AgentOrg root configuration and is collapsed whenever a new configuration draft opens. The page therefore retains the existing AgentOrg configuration hierarchy and does not introduce a second setup step.
 
-The disclosure chevron sits immediately beside the `Member overrides` label, using the established AgentTeam disclosure grouping rather than occupying the far edge of the configuration panel.
+The disclosure reads `Member overrides (N)`, where `N` is the count of exact Agent placements configurable below it: direct Org Agents plus Agents inside each mounted Team. The disclosure chevron sits immediately beside that label, using the established AgentTeam disclosure grouping rather than occupying the far edge of the configuration panel.
 
 ### Mounted Team rows
 
@@ -76,15 +76,15 @@ The prototype uses deterministic local AgentOrg, Team, Agent, model, Workspace, 
 ## Validation And Review Evidence
 
 - Review URL: `http://127.0.0.1:4198/workspace?root=org&org=software-development-department&phase=config&prototypeReview=aorg-team-overrides`.
-- Browser result: `12/12` pass with zero browser errors; the outer label-to-chevron gap measures `6px`.
+- Browser result: `14/14` pass with zero browser errors. The fixture label is `Member overrides (7)`, the outer label-to-chevron gap measures `6px`, and computed font family, size, weight, line height, letter spacing, color, padding, and radius exactly match the accepted AgentTeam disclosure.
 - Required states:
-  - `RV2-001-initial-outer-collapsed-1440x900.png`
-  - `RV2-002-outer-open-teams-collapsed-1440x900.png`
-  - `RV2-003-team-expanded-inherited-1440x900.png`
-  - `RV2-004-team-agent-customized-reopened-1440x900.png`
-- Responsive evidence: `RV2-005-outer-open-teams-collapsed-narrow-390x844.png`.
-- Machine evidence: `review-evidence/rv-002/browser-validation.json`.
-- Static evidence: `validation/static-validation-rv-002.txt`.
+  - `RV3-001-initial-outer-collapsed-1440x900.png`
+  - `RV3-002-outer-open-teams-collapsed-1440x900.png`
+  - `RV3-003-team-expanded-inherited-1440x900.png`
+  - `RV3-004-team-agent-customized-reopened-1440x900.png`
+- Responsive evidence: `RV3-005-outer-open-teams-collapsed-narrow-390x844.png`.
+- Machine evidence: `review-evidence/rv-003/browser-validation.json`.
+- Static evidence: `validation/static-validation-rv-003.txt`.
 
 These `RV-*` captures are review evidence only. They are not normative final references and will not be promoted or handed off as approved visuals until the user explicitly approves the live candidate.
 
