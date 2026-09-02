@@ -40,6 +40,6 @@
 - Temporary state root: `/tmp/autobyteus-prototype-AORG-TEAM-LAUNCH-BASELINE-REFRESH-001`.
 - Integration result: `Completed` — canonical `personal` fast-forwarded from `1edc1008a55b04d04dd2f07bd9004d53079e09a2` to accepted refresh revision `c32058042d28023a7da884c391b2350115597910`.
 - Promoted baseline revision: `c32058042d28023a7da884c391b2350115597910`; the refreshed AgentTeam launch form is reached through the normal standalone Team Run journey without review-only query state.
-- Cleanup result: `Pending` until the candidate/source/mock/post-integration servers are stopped and the integrated worktree/branch are removed safely.
+- Cleanup result: `Completed` — candidate, source-observation, mock, and canonical post-integration servers were stopped; ports `4199`, `4201`, `4202`, `4283`, and `4383` were released; the integrated ticket worktree and local ticket branch were removed safely.
 - Post-integration validation: canonical `personal` on port `4202` passed the same `8/8` paired checks with zero browser errors after a single warm-up retry; the first attempt recorded transient Nuxt `Outdated Optimize Dep` errors before the dev server stabilized. Evidence is under `validation/post-integration/`.
-- Next action: complete safe cleanup, then resume Product ticket `AORG-TEAM-OVERRIDES-001` from this refreshed baseline.
+- Next action: resume Product ticket `AORG-TEAM-OVERRIDES-001` from this refreshed baseline.

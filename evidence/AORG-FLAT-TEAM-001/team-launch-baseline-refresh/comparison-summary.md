@@ -32,3 +32,6 @@ The three nonzero pixels across the matrix are browser rasterization noise only.
 - `direct-browser-source-default.png`: direct browser-tool source observation.
 - `direct-browser-prototype-default.png`: direct browser-tool prototype replay.
 - `independent-preview.png`: built candidate running with source and mock servers stopped.
+- `independent-preview-browser-rerun.txt` and `independent-preview-rerun.png`:
+  post-correction built-preview replay with the three required Heroicons served
+  locally, zero non-loopback requests, zero browser errors, and `Pass`.

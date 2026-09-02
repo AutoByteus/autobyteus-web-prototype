@@ -18,10 +18,13 @@ Product Prototyper's accepted future-state Agent Org work.
   identical; the other two contain only three normalized raster pixels in
   total (one pixel in the New-workspace row and two max-delta-1 pixels in the
   narrow row), with no perceptible or geometric difference.
-- Candidate state: uncommitted working-tree candidate. The Bootstrapper did
-  not commit, integrate, move the ticket, or alter either repository's history.
-- Next expected action: Product Prototyper acceptance review and the
-  Product-owned ticket-branch commit.
+- Repository-management note: the Bootstrapper produced the requested
+  uncommitted candidate and did not commit, integrate, move the ticket, or
+  alter either repository's history. During this final report clarification,
+  Product Prototyper accepted, committed and integrated that candidate as
+  `c320580`; the only current worktree difference is this report clarification.
+- Next expected action: Product Prototyper should disposition this report-only
+  clarification under its repository workflow and finish its cleanup.
 
 ## Source Identity
 
@@ -39,7 +42,7 @@ Product Prototyper's accepted future-state Agent Org work.
   `http://127.0.0.1:4383`. The observer supplied deterministic Team, workspace,
   model-catalog and GraphQL results; it did not modify source presentation.
 - Durable identity, selected-file hashes and adaptation classification:
-  `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-LAUNCH-BASELINE-REFRESH-001/evidence/AORG-FLAT-TEAM-001/team-launch-baseline-refresh/source-provenance.json`
+  `/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/team-launch-baseline-refresh/source-provenance.json`
 - Exact source-file parity: 35 refreshed component, localization, store, type,
   utility and GraphQL files are byte-for-byte SHA-256 matches to the pin.
 
@@ -59,8 +62,11 @@ corepack pnpm dev --port 4283
   `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-LAUNCH-BASELINE-REFRESH-001`
 - Ticket branch: `prototype/aorg-team-launch-baseline-refresh-001`
 - Accepted prototype base: `1edc1008a55b04d04dd2f07bd9004d53079e09a2`
-- Worktree `HEAD`: `1edc1008a55b04d04dd2f07bd9004d53079e09a2`
-- Bootstrap candidate: uncommitted changes based on that accepted revision.
+- Bootstrap candidate as produced: uncommitted changes based on
+  `1edc1008a55b04d04dd2f07bd9004d53079e09a2`.
+- Current worktree/canonical `personal` revision: Product
+  Prototyper-created accepted commit `c320580` (`prototype: refresh AgentTeam
+  launch baseline`). The Bootstrapper created no commit.
 - Install command: `corepack pnpm install --ignore-workspace --frozen-lockfile`
 - Start command: `corepack pnpm dev --port 4199`
 - Review URL: `http://127.0.0.1:4199/workspace`
@@ -108,7 +114,7 @@ Those future-state prototype surfaces were preserved rather than source-matched.
 
 Durable evidence root:
 
-`/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-LAUNCH-BASELINE-REFRESH-001/evidence/AORG-FLAT-TEAM-001/team-launch-baseline-refresh`
+`/home/autobyteus/workspace/autobyteus-web-prototype/evidence/AORG-FLAT-TEAM-001/team-launch-baseline-refresh`
 
 | Inventory ID | Observable obligation | Paired visual rows | Result |
 | --- | --- | --- | --- |
@@ -177,7 +183,12 @@ records contain screenshot, semantic, geometry and action SHA-256 hashes.
   source UI against equivalent deterministic data.
 - Local assets: three current Heroicons were added to the existing checked-in
   Iconify fixture so independent review does not require an icon CDN.
-- Retained production store/client/protocol/runtime for capability: `None`.
+- Retained source state logic: the current `teamRunConfigStore` shape and its
+  pure authoring/readiness utilities were retained because the current source
+  components consume them directly and this was the simplest path to exact
+  validation/state parity. The prototype plugin intercepts backend-producing
+  actions and uses local fixtures; no production client, protocol, persistence
+  or runtime is active.
 
 ## Validation
 
@@ -202,6 +213,14 @@ Results:
   deterministic launch form rendered from local state. Evidence:
   `tickets/done/AORG-TEAM-LAUNCH-BASELINE-REFRESH-001/validation/independent-preview-browser.txt` and
   `evidence/AORG-FLAT-TEAM-001/team-launch-baseline-refresh/independent-preview.png`.
+- Independent-preview correction audit: an initial pre-correction run exposed
+  three Iconify CDN fallbacks (`arrow-path-20-solid`, `building-office-2`, and
+  `magnifying-glass-20-solid`). Those icons are now checked into the local
+  Heroicons fixture. The superseding built-preview run and a final follow-up
+  rerun both report `externalRequests: []`, `browserErrors: []`, and
+  `result: Pass`; the latter is recorded at
+  `evidence/AORG-FLAT-TEAM-001/team-launch-baseline-refresh/independent-preview-browser-rerun.txt`
+  with `independent-preview-rerun.png`.
 - `corepack pnpm typecheck`: pass; pre-existing duplicate auto-import warnings
   only.
 - `corepack pnpm lint`: pass.
@@ -231,8 +250,9 @@ Results:
   two of eight rows; exact state and geometry confirm no experience divergence.
 - Illustrative values are synthetic by design; no production capability claim
   is made.
-- Next action: Product Prototyper should review the uncommitted candidate and
-  evidence, run any Product-owned acceptance session, and create the accepted
-  ticket-branch commit. Bootstrapper intentionally did not modify ticket state,
+- Product Prototyper already performed its acceptance pass and created and
+  integrated commit `c320580` while this final documentation check was in
+  progress. It should disposition the uncommitted report-only clarification
+  and finish its cleanup. Bootstrapper did not modify ticket state,
   `ui-ux-spec.md`, normative future-state screenshots, integration, cleanup or
   repository history.
