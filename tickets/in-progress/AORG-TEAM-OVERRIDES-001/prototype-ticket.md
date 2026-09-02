@@ -56,7 +56,7 @@
 - Review evidence: `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-OVERRIDES-001/tickets/in-progress/AORG-TEAM-OVERRIDES-001/review-evidence/rv-002`
 - Browser validation: `12/12` pass at desktop and `390x844`, including the measured 6px label-to-chevron gap, draft preservation, Agent-only scope isolation, preserved AgentTeam launch behavior, and zero browser errors.
 - Static validation: `git diff --check`, typecheck, lint, `15/15` tests, `13/13` boundaries, and production build pass with `NUXT_IGNORE_LOCK=1` while the ticket-owned review server remains active; only the accepted duplicate-auto-import and large-chunk warnings remain.
-- Review candidate implementation revision: `906426b1bc4f130d731a1ac37afe8d3abac9d1d1`.
+- Review candidate implementation revision: `3e513533956f00f79fb27f22fd9c00bcad0f7d00`.
 - Normative final `VIS-*` references: pending explicit user approval.
 - Promoted default baseline revision: pending explicit user approval and repository finalization.
 
