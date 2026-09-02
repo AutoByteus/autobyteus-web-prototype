@@ -2,7 +2,7 @@
 
 ## Status And Authority
 
-- Status: `RV-003 — awaiting explicit user approval`.
+- Status: `Approved — final UI/UX supplement`.
 - Product ticket: `AORG-TEAM-OVERRIDES-001`.
 - Stable requirements package: `AORG-FLAT-TEAM-001`.
 - Requirements revision: `RER-022@b985df2ed66b4b2874dd9dae66cd256b6348a795`.
@@ -86,11 +86,20 @@ The prototype uses deterministic local AgentOrg, Team, Agent, model, Workspace, 
 - Machine evidence: `review-evidence/rv-003/browser-validation.json`.
 - Static evidence: `validation/static-validation-rv-003.txt`.
 
-These `RV-*` captures are review evidence only. They are not normative final references and will not be promoted or handed off as approved visuals until the user explicitly approves the live candidate.
+The prior `RV-*` captures remain non-normative iteration evidence.
 
 ## Approval And Final References
 
-- User approval: `Pending`.
-- User-confirmation reference: `Pending`.
-- Normative `VIS-*` references: capture after approval and final validation.
-- Default-route promotion validation: pending approval and integration.
+- User approval: `Approved`.
+- User-confirmation reference: `2026-09-02 — “Okay, now I approve. Thanks, I confirm it's done.”`
+- User decision record: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-TEAM-OVERRIDES-001/user-decision-record.md`.
+- Normative final references:
+  - `VIS-OVR-001-member-overrides-collapsed-desktop-1440x900.png` — clean default AgentOrg configuration route, outer disclosure collapsed.
+  - `VIS-OVR-002-member-overrides-open-teams-collapsed-desktop-1440x900.png` — outer disclosure open, direct Agent preserved, mounted Teams collapsed.
+  - `VIS-OVR-003-team-expanded-inherited-desktop-1440x900.png` — one mounted Team expanded with inherited Team and exact-Agent settings; sibling Team collapsed.
+  - `VIS-OVR-004-team-customized-reopened-desktop-1440x900.png` — Team-level customization retained after collapse and reopen.
+  - `VIS-OVR-005-exact-agent-customized-desktop-1440x900.png` — exact Agent customization inside the mounted Team, independently marked `Overridden`.
+  - `VIS-OVR-006-member-overrides-narrow-390x844.png` — narrow layout with no overlay or horizontal overflow.
+- Visual-reference manifest: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-TEAM-OVERRIDES-001/visual-references/visual-reference-manifest.json`.
+- Final clean-route validation: `7/7` pass with zero browser errors at `/workspace?root=org&org=software-development-department&phase=config`; no `prototypeReview` parameter is present.
+- Default-route promotion validation: pending repository integration and post-integration replay.

@@ -1,0 +1,110 @@
+{
+  "ticket": "AORG-TEAM-OVERRIDES-001",
+  "stablePackage": "AORG-FLAT-TEAM-001",
+  "requirementsRevision": "RER-022@b985df2ed66b4b2874dd9dae66cd256b6348a795",
+  "approvalReference": "User message on 2026-09-02: “Okay, now I approve. Thanks, I confirm it's done.”",
+  "route": "/workspace?root=org&org=software-development-department&phase=config",
+  "references": [
+    {
+      "id": "VIS-OVR-001",
+      "fileName": "VIS-OVR-001-member-overrides-collapsed-desktop-1440x900.png",
+      "route": "/workspace?root=org&org=software-development-department&phase=config",
+      "state": "Initial AgentOrg configuration; outer Member overrides collapsed",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "requirements": [
+        "BEH-012",
+        "REQ-029",
+        "AC-024",
+        "ORG-CASE-059"
+      ],
+      "illustrativeFixtureContent": true
+    },
+    {
+      "id": "VIS-OVR-002",
+      "fileName": "VIS-OVR-002-member-overrides-open-teams-collapsed-desktop-1440x900.png",
+      "route": "/workspace?root=org&org=software-development-department&phase=config",
+      "state": "Outer Member overrides open; every mounted Team independently collapsed",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "requirements": [
+        "BEH-012",
+        "REQ-029",
+        "AC-024",
+        "ORG-CASE-059"
+      ],
+      "illustrativeFixtureContent": true
+    },
+    {
+      "id": "VIS-OVR-003",
+      "fileName": "VIS-OVR-003-team-expanded-inherited-desktop-1440x900.png",
+      "route": "/workspace?root=org&org=software-development-department&phase=config",
+      "state": "Product Design & Prototyping expanded; Team and exact Agents inherited; sibling Team collapsed",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "requirements": [
+        "BEH-012",
+        "REQ-029",
+        "AC-024",
+        "ORG-CASE-060"
+      ],
+      "illustrativeFixtureContent": true
+    },
+    {
+      "id": "VIS-OVR-004",
+      "fileName": "VIS-OVR-004-team-customized-reopened-desktop-1440x900.png",
+      "route": "/workspace?root=org&org=software-development-department&phase=config",
+      "state": "Team-level customization retained after collapse and reopen",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "requirements": [
+        "BEH-012",
+        "REQ-029",
+        "AC-024",
+        "ORG-CASE-061"
+      ],
+      "illustrativeFixtureContent": true
+    },
+    {
+      "id": "VIS-OVR-005",
+      "fileName": "VIS-OVR-005-exact-agent-customized-desktop-1440x900.png",
+      "route": "/workspace?root=org&org=software-development-department&phase=config",
+      "state": "Exact Agent override shown independently inside customized Team placement",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "requirements": [
+        "BEH-012",
+        "REQ-029",
+        "AC-024",
+        "ORG-CASE-061"
+      ],
+      "illustrativeFixtureContent": true
+    },
+    {
+      "id": "VIS-OVR-006",
+      "fileName": "VIS-OVR-006-member-overrides-narrow-390x844.png",
+      "route": "/workspace?root=org&org=software-development-department&phase=config",
+      "state": "Narrow AgentOrg Member overrides; no overlay or horizontal overflow",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "requirements": [
+        "QR-009",
+        "REQ-029",
+        "AC-024"
+      ],
+      "illustrativeFixtureContent": true
+    }
+  ]
+}

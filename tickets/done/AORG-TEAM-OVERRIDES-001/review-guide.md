@@ -22,4 +22,4 @@ Also confirm that setting only an Agent override on a fresh reload leaves the Te
 - Narrow capture: `RV3-005-outer-open-teams-collapsed-narrow-390x844.png`.
 - Static validation: `validation/static-validation-rv-003.txt`.
 
-The captures are non-normative review evidence. Final `VIS-*` references and default-route promotion occur only after explicit approval.
+The user approved RV-003 on `2026-09-02`. The `RV-*` captures remain non-normative review evidence; the canonical approved references are `VIS-OVR-001`–`VIS-OVR-006` under `visual-references/`.

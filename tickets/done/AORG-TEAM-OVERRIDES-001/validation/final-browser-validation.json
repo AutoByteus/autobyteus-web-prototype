@@ -1,0 +1,81 @@
+{
+  "generatedAt": "2026-09-02T12:16:45.660Z",
+  "baseUrl": "http://127.0.0.1:4198",
+  "cleanUrl": "http://127.0.0.1:4198/workspace?root=org&org=software-development-department&phase=config",
+  "passed": 7,
+  "total": 7,
+  "errors": [],
+  "results": [
+    {
+      "id": "FINAL-AORG-OVERRIDES-001-clean-default-route",
+      "pass": true,
+      "evidence": {
+        "url": "http://127.0.0.1:4198/workspace?root=org&org=software-development-department&phase=config",
+        "expanded": "false",
+        "label": "Member overrides (7)"
+      }
+    },
+    {
+      "id": "FINAL-AORG-OVERRIDES-002-mounted-teams-collapsed",
+      "pass": true,
+      "evidence": {
+        "collapsedStates": [
+          "false",
+          "false"
+        ]
+      }
+    },
+    {
+      "id": "FINAL-AORG-OVERRIDES-003-one-team-expanded-inherited",
+      "pass": true,
+      "evidence": {
+        "expandedStates": [
+          "true",
+          "false"
+        ],
+        "header": "Product Design & Prototyping\nTEAM\n/product_design_prototyping_team\nInherited",
+        "memberCount": 2
+      }
+    },
+    {
+      "id": "FINAL-AORG-OVERRIDES-004-selective-customization-persists",
+      "pass": true,
+      "evidence": {
+        "collapsedAfterEdit": "false",
+        "reopenedState": {
+          "expanded": "true",
+          "header": "Product Design & Prototyping\nTEAM\n/product_design_prototyping_team\nCustomized",
+          "teamAutoApprove": "true",
+          "firstAgent": "product_prototyper\nCoordinator\nOverridden\n\nproduct_design_prototyping_team / product_prototyper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nOn",
+          "secondAgent": "prototype_bootstrapper\n\nproduct_design_prototyping_team / prototype_bootstrapper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nGlobal default"
+        }
+      }
+    },
+    {
+      "id": "FINAL-AORG-OVERRIDES-005-agent-only-scope-isolation",
+      "pass": true,
+      "evidence": {
+        "teamHeader": "Product Design & Prototyping\nTEAM\n/product_design_prototyping_team\nInherited",
+        "agent": "product_prototyper\nCoordinator\nOverridden\n\nproduct_design_prototyping_team / product_prototyper\n\nRuntime\nGlobal default\nAutoByteus\nLLM Model\nGlobal default\nAuto approve\nOn"
+      }
+    },
+    {
+      "id": "FINAL-AORG-OVERRIDES-006-narrow-no-overflow",
+      "pass": true,
+      "evidence": {
+        "narrowGeometry": {
+          "innerWidth": 390,
+          "scrollWidth": 390
+        },
+        "teamCount": 2
+      }
+    },
+    {
+      "id": "FINAL-AORG-OVERRIDES-007-zero-browser-errors",
+      "pass": true,
+      "evidence": {
+        "errors": []
+      }
+    }
+  ]
+}

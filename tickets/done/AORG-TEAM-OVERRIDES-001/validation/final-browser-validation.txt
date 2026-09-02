@@ -1,0 +1,11 @@
+AgentOrg mounted-Team Member overrides final clean-route validation
+URL: http://127.0.0.1:4198/workspace?root=org&org=software-development-department&phase=config
+Result: 7/7 passed
+PASS FINAL-AORG-OVERRIDES-001-clean-default-route
+PASS FINAL-AORG-OVERRIDES-002-mounted-teams-collapsed
+PASS FINAL-AORG-OVERRIDES-003-one-team-expanded-inherited
+PASS FINAL-AORG-OVERRIDES-004-selective-customization-persists
+PASS FINAL-AORG-OVERRIDES-005-agent-only-scope-isolation
+PASS FINAL-AORG-OVERRIDES-006-narrow-no-overflow
+PASS FINAL-AORG-OVERRIDES-007-zero-browser-errors
+Browser errors: 0
