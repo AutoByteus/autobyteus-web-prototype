@@ -36,7 +36,7 @@
 - Review URL: `http://127.0.0.1:4198/workspace?root=org&org=software-development-department&phase=config&prototypeReview=aorg-team-overrides`
 - Temporary state root: `/tmp/autobyteus-prototype-AORG-TEAM-OVERRIDES-001`
 - Reset method: reload the review URL; it restores outer Member overrides collapsed and clears the in-memory draft.
-- Runtime process: active for user review; Product-owned process group recorded in `/tmp/autobyteus-prototype-AORG-TEAM-OVERRIDES-001/server.pid`.
+- Runtime process: stopped after approval and final validation; ports `4198` and `4197` released, persistent review tab closed, and Product-owned temporary state removed.
 
 ## Focused Experience Contract
 
@@ -62,6 +62,7 @@
 - Normative final `VIS-*` references: `VIS-OVR-001`–`VIS-OVR-006` under `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-TEAM-OVERRIDES-001/visual-references/`.
 - User confirmation: `2026-09-02 — “Okay, now I approve. Thanks, I confirm it's done.”`
 - Promoted default baseline revision: `b21b192959f80c55ca08e0fe302c434817c4f1cb`.
+- Integration/promotion evidence revision: `87e174624807cd3957f430b2c927efb761057db8`.
 
 ## Outcome And Next Action
 
@@ -70,5 +71,5 @@
 - Promotion result: `Completed`; the approved experience is reachable at `/workspace?root=org&org=software-development-department&phase=config` without `prototypeReview` state.
 - Post-integration browser validation: `7/7` pass with zero browser errors after a clean forced dev-server start; `validation/post-integration-browser-validation.txt`. The initial stale Vite optimize-dependency attempt is retained as superseded evidence in `validation/post-integration-browser-validation-attempt-1.txt`.
 - Post-integration static validation: typecheck, lint, `15/15` tests, `13/13` boundaries, and build pass; `validation/post-integration-static-validation.txt`.
-- Cleanup result: `Pending`; Product-owned review and post-integration runtimes will be stopped and the merged ticket worktree/branch removed before handoff.
-- Next action: complete runtime/worktree cleanup, record the cleanup revision, push `personal`, and hand the canonical package to Requirements Engineering.
+- Cleanup result: `Completed`; ports `4198` and `4197` are released, the persistent review tab is closed, temporary roots are removed, `/home/autobyteus/workspace/autobyteus-web-prototype-worktrees/AORG-TEAM-OVERRIDES-001` is removed, and merged branch `prototype/aorg-team-overrides-001` is deleted. Unrelated `REQ-ATPTN-001` remains untouched.
+- Next action: push canonical `personal` and hand the completed Product Design package to Requirements Engineering.
