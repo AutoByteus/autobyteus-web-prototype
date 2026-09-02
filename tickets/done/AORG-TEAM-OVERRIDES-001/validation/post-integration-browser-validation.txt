@@ -1,3 +1,7 @@
+
+> autobyteus-web-prototype@0.1.0 capture:aorg-team-overrides-final /home/autobyteus/workspace/autobyteus-web-prototype
+> node prototype/scripts/capture-aorg-team-overrides-final.mjs
+
 {
   "generatedAt": "2026-09-02T12:21:47.984Z",
   "baseUrl": "http://127.0.0.1:4197",

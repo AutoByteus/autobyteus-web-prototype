@@ -5,7 +5,7 @@
 - Product ticket: `AORG-TEAM-OVERRIDES-001`
 - Stable requirements package: `AORG-FLAT-TEAM-001`
 - Title: AgentOrg mounted-Team Member-overrides hierarchy
-- Status: `Completed — user approved; repository finalization in progress`
+- Status: `Completed`
 - Mode: `Product Experience Prototyping`
 - Requirements authority: `RER-022@b985df2ed66b4b2874dd9dae66cd256b6348a795`
 - In-scope IDs: `BEH-012`, `UC-014`, `REQ-029`, `AC-024`, `SCN-013`, `QR-009`, `DEC-016`, `ORG-CASE-059`–`ORG-CASE-061`, `ORG-VERIFY-012`.
@@ -58,14 +58,17 @@
 - Browser validation: `14/14` pass at desktop and `390x844`, including exact-Agent count `7`, measured 6px label-to-chevron gap, exact computed typography/control-style parity with AgentTeam, draft preservation, Agent-only scope isolation, preserved AgentTeam launch behavior, and zero browser errors.
 - Static validation: `git diff --check`, typecheck, lint, `15/15` tests, `13/13` boundaries, and production build pass with `NUXT_IGNORE_LOCK=1` while the ticket-owned review server remains active; only the accepted duplicate-auto-import and large-chunk warnings remain. Latest log: `validation/static-validation-rv-003.txt`.
 - Review candidate implementation revision: `432e117243f777239f79ffb05d4eb95bdfa1402e`.
+- Accepted Product ticket revision: `b21b192959f80c55ca08e0fe302c434817c4f1cb`.
 - Normative final `VIS-*` references: `VIS-OVR-001`–`VIS-OVR-006` under `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-TEAM-OVERRIDES-001/visual-references/`.
 - User confirmation: `2026-09-02 — “Okay, now I approve. Thanks, I confirm it's done.”`
-- Promoted default baseline revision: pending repository integration.
+- Promoted default baseline revision: `b21b192959f80c55ca08e0fe302c434817c4f1cb`.
 
 ## Outcome And Next Action
 
-- Current outcome/status: `Prototype Completed` subject to repository integration, post-integration validation, and cleanup.
-- Integration result: `Pending`.
-- Promotion result: `Pending`; this review URL is non-normative evidence, not proof of default-route promotion.
-- Cleanup result: `Pending` while the user review server remains available.
-- Next action: commit the approved package, fast-forward `personal`, validate the clean default route from the integrated baseline, clean up ticket runtime/worktree resources, and hand the canonical package to Requirements Engineering.
+- Current outcome/status: `Prototype Completed`.
+- Integration result: `Completed`; ticket branch fast-forwarded into `personal` at `b21b192959f80c55ca08e0fe302c434817c4f1cb`.
+- Promotion result: `Completed`; the approved experience is reachable at `/workspace?root=org&org=software-development-department&phase=config` without `prototypeReview` state.
+- Post-integration browser validation: `7/7` pass with zero browser errors after a clean forced dev-server start; `validation/post-integration-browser-validation.txt`. The initial stale Vite optimize-dependency attempt is retained as superseded evidence in `validation/post-integration-browser-validation-attempt-1.txt`.
+- Post-integration static validation: typecheck, lint, `15/15` tests, `13/13` boundaries, and build pass; `validation/post-integration-static-validation.txt`.
+- Cleanup result: `Pending`; Product-owned review and post-integration runtimes will be stopped and the merged ticket worktree/branch removed before handoff.
+- Next action: complete runtime/worktree cleanup, record the cleanup revision, push `personal`, and hand the canonical package to Requirements Engineering.

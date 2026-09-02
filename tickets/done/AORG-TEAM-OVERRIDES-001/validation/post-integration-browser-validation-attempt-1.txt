@@ -1,10 +1,19 @@
+
+> autobyteus-web-prototype@0.1.0 capture:aorg-team-overrides-final /home/autobyteus/workspace/autobyteus-web-prototype
+> node prototype/scripts/capture-aorg-team-overrides-final.mjs
+
 {
-  "generatedAt": "2026-09-02T12:21:47.984Z",
+  "generatedAt": "2026-09-02T12:20:51.388Z",
   "baseUrl": "http://127.0.0.1:4197",
   "cleanUrl": "http://127.0.0.1:4197/workspace?root=org&org=software-development-department&phase=config",
-  "passed": 7,
+  "passed": 6,
   "total": 7,
-  "errors": [],
+  "errors": [
+    "console: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)",
+    "console: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:4197/_nuxt/pages/workspace.vue",
+    "console: [nuxt] error caught during app initialization H3Error: Failed to fetch dynamically imported module: http://127.0.0.1:4197/_nuxt/pages/workspace.vue",
+    "console: [nuxt] error caught during app initialization H3Error: Failed to fetch dynamically imported module: http://127.0.0.1:4197/_nuxt/pages/workspace.vue"
+  ],
   "results": [
     {
       "id": "FINAL-AORG-OVERRIDES-001-clean-default-route",
@@ -72,10 +81,16 @@
     },
     {
       "id": "FINAL-AORG-OVERRIDES-007-zero-browser-errors",
-      "pass": true,
+      "pass": false,
       "evidence": {
-        "errors": []
+        "errors": [
+          "console: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)",
+          "console: TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:4197/_nuxt/pages/workspace.vue",
+          "console: [nuxt] error caught during app initialization H3Error: Failed to fetch dynamically imported module: http://127.0.0.1:4197/_nuxt/pages/workspace.vue",
+          "console: [nuxt] error caught during app initialization H3Error: Failed to fetch dynamically imported module: http://127.0.0.1:4197/_nuxt/pages/workspace.vue"
+        ]
       }
     }
   ]
 }
+ ELIFECYCLE  Command failed with exit code 1.

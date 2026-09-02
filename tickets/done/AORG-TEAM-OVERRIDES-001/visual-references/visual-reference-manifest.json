@@ -2,6 +2,7 @@
   "ticket": "AORG-TEAM-OVERRIDES-001",
   "stablePackage": "AORG-FLAT-TEAM-001",
   "requirementsRevision": "RER-022@b985df2ed66b4b2874dd9dae66cd256b6348a795",
+  "acceptedProductRevision": "b21b192959f80c55ca08e0fe302c434817c4f1cb",
   "approvalReference": "User message on 2026-09-02: “Okay, now I approve. Thanks, I confirm it's done.”",
   "route": "/workspace?root=org&org=software-development-department&phase=config",
   "references": [

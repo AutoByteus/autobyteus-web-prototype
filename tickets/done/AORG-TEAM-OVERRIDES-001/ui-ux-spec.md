@@ -10,6 +10,7 @@
 - Supersession boundary: replace only RV-012 Placement Overrides lines 89–95 and `VIS-015`. Preserve unrelated RV-012 and mounted-Team status authority.
 - Current-experience authority: AgentTeam launch baseline refreshed from `origin/personal@5fb16658e7bd2aefd750f99eb596a17382e161ac`, accepted in prototype revision `0d9f1bdc2a103abce050812b15160de250a4aa00`.
 - Review candidate implementation revision: `432e117243f777239f79ffb05d4eb95bdfa1402e`.
+- Accepted Product ticket and promoted baseline revision: `b21b192959f80c55ca08e0fe302c434817c4f1cb`.
 
 ## Intended Product Experience
 
@@ -102,4 +103,4 @@ The prior `RV-*` captures remain non-normative iteration evidence.
   - `VIS-OVR-006-member-overrides-narrow-390x844.png` — narrow layout with no overlay or horizontal overflow.
 - Visual-reference manifest: `/home/autobyteus/workspace/autobyteus-web-prototype/tickets/done/AORG-TEAM-OVERRIDES-001/visual-references/visual-reference-manifest.json`.
 - Final clean-route validation: `7/7` pass with zero browser errors at `/workspace?root=org&org=software-development-department&phase=config`; no `prototypeReview` parameter is present.
-- Default-route promotion validation: pending repository integration and post-integration replay.
+- Default-route promotion validation: `Completed`; post-integration replay on canonical `personal` passed `7/7` with zero browser errors at the clean route. The first dev-server attempt encountered a stale Vite optimize-dependency cache, made no product change, and is superseded by the clean forced-start pass.

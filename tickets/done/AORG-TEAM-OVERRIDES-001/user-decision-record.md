@@ -8,6 +8,7 @@
 - Approved review revision: `RV-003`
 - Approved implementation revision: `432e117243f777239f79ffb05d4eb95bdfa1402e`
 - Review metadata revision: `3def7c6`
+- Accepted Product ticket and promoted baseline revision: `b21b192959f80c55ca08e0fe302c434817c4f1cb`
 
 ## Approved Experience
 
