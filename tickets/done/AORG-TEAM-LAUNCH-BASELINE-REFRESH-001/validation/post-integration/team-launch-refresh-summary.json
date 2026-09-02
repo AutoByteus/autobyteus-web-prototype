@@ -1,0 +1,19 @@
+{
+  "packageId": "AORG-FLAT-TEAM-001",
+  "requestType": "Refresh",
+  "sourcePin": "5fb16658e7bd2aefd750f99eb596a17382e161ac",
+  "sourceBaseUrl": "http://127.0.0.1:4283",
+  "prototypeBaseUrl": "http://127.0.0.1:4202",
+  "mockBaseUrl": "http://127.0.0.1:4383",
+  "browser": "/usr/bin/chromium",
+  "generatedAt": "2026-09-02T10:49:00.745Z",
+  "passed": 8,
+  "total": 8,
+  "result": "Pass",
+  "inventory": {
+    "UXB-TEAM-LAUNCH-ROOT-001": "Pass",
+    "UXB-TEAM-LAUNCH-WORKSPACE-001": "Pass",
+    "UXB-TEAM-LAUNCH-MEMBERS-001": "Pass",
+    "UXB-TEAM-LAUNCH-RESPONSIVE-001": "Pass"
+  }
+}
