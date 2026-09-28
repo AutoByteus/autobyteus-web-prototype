@@ -116,17 +116,6 @@
               </span>
             </p>
           </div>
-          <button
-            v-if="!state.workspacePanelOpen"
-            type="button"
-            class="rounded-md p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
-            aria-label="Show workspace tools"
-            title="Workspace tools"
-            data-test="chat-toggle-workspace-panel"
-            @click="state.workspacePanelOpen = !state.workspacePanelOpen"
-          >
-            <ChatGlyph name="panel-right" class="h-5 w-5" />
-          </button>
         </header>
 
         <div ref="scrollRef" class="min-h-0 flex-1 overflow-y-auto" data-test="chat-messages">
@@ -214,6 +203,14 @@
       >
         <RightSideTabs mode="desktop" />
       </div>
+      <!-- Collapsed: the product's own right tool strip; an icon reopens the panel on that tab. -->
+      <RightSidebarStrip
+        v-else
+        class="hidden lg:flex"
+        data-test="chat-right-tool-strip"
+        strip-activation="redock-panel"
+        @request-redock="state.workspacePanelOpen = true"
+      />
     </template>
 
 
@@ -236,6 +233,7 @@ import ChatGlyph from '~/components/chat/ChatGlyph.vue'
 import ChatModelPicker from '~/components/chat/ChatModelPicker.vue'
 import ChatEffortPicker from '~/components/chat/ChatEffortPicker.vue'
 import RightSideTabs from '~/components/layout/RightSideTabs.vue'
+import RightSidebarStrip from '~/components/layout/RightSidebarStrip.vue'
 import { useRightPanel } from '~/composables/useRightPanel'
 import ChatWorkspacePicker from '~/components/chat/ChatWorkspacePicker.vue'
 import ChatAutoApproveToggle from '~/components/chat/ChatAutoApproveToggle.vue'
@@ -243,8 +241,8 @@ import { findAgent, findModel, findRuntime, findTeam, usePrototypeChat } from '~
 
 const chat = usePrototypeChat()
 const { rightPanelWidth } = useRightPanel()
-// The panel's own collapse control closes the chat's panel (chat keeps its own
-// open/closed state; it is hidden by default).
+// The panel's own collapse control collapses it to the product's right tool strip
+// (chat keeps its own open/collapsed state; collapsed by default).
 const onRightPanelClickCapture = (event: MouseEvent) => {
   const target = event.target as HTMLElement | null
   if (target?.closest('[data-test="right-side-panel-toggle"]')) {

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T14:57:29.790Z",
+  "generatedAt": "2026-09-28T15:37:04.063Z",
   "baseUrl": "http://127.0.0.1:3271",
   "total": 28,
   "passed": 28,
@@ -76,7 +76,7 @@
     },
     {
       "id": "CHK-015",
-      "description": "The product right panel (all workspace tool tabs) is hidden by default and opens on demand",
+      "description": "Right side matches the product: collapsed to the tool strip by default; an icon opens the panel on that tab",
       "pass": true
     },
     {

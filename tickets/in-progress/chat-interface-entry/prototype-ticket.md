@@ -59,3 +59,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-28: user: Daily Assistant is a normal agent; keep chats organized exactly like the current Workspaces tree (agents, teams, orgs). Implemented PC-025 (removed Temp pin and default expansion; product ordering). Validation 27/27, 0 browser errors.
 - 2026-09-28: user decision: auto-approve tools on by default in chat, same in every workspace, user can turn it off. Implemented PC-026. Validation 28/28, 0 browser errors.
 - 2026-09-28: user: Skills button redundant with `/`. Removed (PC-027). Validation 28/28, 0 browser errors.
+- 2026-09-28: user: collapsed right side should be the product's icon strip. Implemented PC-028 (RightSidebarStrip; header toggle removed). Validation 28/28, 0 browser errors. Pending user answer: schema-driven Thinking control proposal.
