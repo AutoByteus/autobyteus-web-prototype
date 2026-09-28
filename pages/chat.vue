@@ -18,6 +18,7 @@
             ref="newComposerRef"
             v-model="state.draft.text"
             v-model:skills="state.draft.skills"
+            v-model:attachments="state.draft.attachments"
             size="large"
             autofocus
             mentions
@@ -26,7 +27,6 @@
             :send-blocked-reason="draftBlockedReason"
             @send="startChat"
             @select-target="onSelectTarget"
-            @attach="chat.showToast('Context files: same attach flow as agent runs (not simulated).')"
           >
             <template v-if="draftTeam" #chips>
               <span class="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 py-0.5 pl-1 pr-1 text-xs font-medium text-gray-700" data-test="chat-team-chip">
@@ -147,6 +147,15 @@
                     </div>
                   </div>
                   <div v-if="message.text" class="whitespace-pre-wrap break-words leading-6 text-gray-900">{{ message.text }}</div>
+                  <div v-if="message.attachments?.length" class="mt-2" data-test="chat-message-attachments">
+                    <p class="text-xs font-medium text-gray-500">Context files</p>
+                    <ul class="mt-1 flex flex-wrap gap-2">
+                      <li v-for="item in message.attachments" :key="item.id">
+                        <span v-if="item.previewUrl" class="block h-12 w-12 overflow-hidden rounded-md border border-sky-200 bg-sky-50"><img :src="item.previewUrl" :alt="item.name" class="h-full w-full object-cover"></span>
+                        <span v-else class="inline-block max-w-full truncate rounded-md border border-sky-200 bg-sky-50 px-2 py-1 text-xs text-sky-700">{{ item.name }}</span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
               <div v-else-if="message.role === 'assistant'" class="flex items-start gap-3">
@@ -170,11 +179,11 @@
           <ChatComposer
             v-model="followUp"
             v-model:skills="followUpSkills"
+            v-model:attachments="followUpAttachments"
             :placeholder="activeAgent.id === CHAT_ASSISTANT_ID ? 'Reply, or type / to use a skill' : `Message ${activeAgent.name}…`"
             :running="activeChat.status === 'running'"
             @send="sendFollowUp"
             @stop="chat.stopChat(activeChat.id)"
-            @attach="chat.showToast('Context files: same attach flow as agent runs (not simulated).')"
           >
             <template #right>
               <ChatModelPicker
@@ -227,7 +236,7 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
-import { CHAT_ASSISTANT_ID } from '~/prototype/chat/chat-fixtures'
+import { CHAT_ASSISTANT_ID, type ChatAttachment } from '~/prototype/chat/chat-fixtures'
 import ChatComposer from '~/components/chat/ChatComposer.vue'
 import ChatGlyph from '~/components/chat/ChatGlyph.vue'
 import ChatModelPicker from '~/components/chat/ChatModelPicker.vue'
@@ -289,11 +298,13 @@ const startChat = async () => {
 
 const followUp = ref('')
 const followUpSkills = ref<string[]>([])
+const followUpAttachments = ref<ChatAttachment[]>([])
 const sendFollowUp = () => {
   if (!activeChat.value) return
-  chat.sendInChat(activeChat.value.id, followUp.value, followUpSkills.value)
+  chat.sendInChat(activeChat.value.id, followUp.value, followUpSkills.value, followUpAttachments.value)
   followUp.value = ''
   followUpSkills.value = []
+  followUpAttachments.value = []
 }
 
 const scrollRef = ref<HTMLElement | null>(null)

@@ -204,8 +204,15 @@ export const INITIAL_RECENTS: ChatCombo[] = [
 
 export const INITIAL_FAVORITES: string[] = ['codex_app_server|gpt-5.5-codex', 'autobyteus|qwen3-coder-30b']
 
+export interface ChatAttachment {
+  id: string
+  name: string
+  kind: 'image' | 'file'
+  previewUrl?: string | null
+}
+
 export type ChatMessage =
-  | { id: string; role: 'user'; text: string; skills?: string[]; sentText?: string }
+  | { id: string; role: 'user'; text: string; skills?: string[]; sentText?: string; attachments?: ChatAttachment[] }
   | { id: string; role: 'assistant'; text: string; streaming?: boolean }
   | { id: string; role: 'event'; text: string }
 

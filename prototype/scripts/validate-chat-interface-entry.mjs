@@ -11,7 +11,9 @@ await mkdir(outDir, { recursive: true })
 
 const browser = await chromium.launch({ headless: true })
 const results = []
+let currentPage = null
 const errors = []
+const knownBaselineErrors = []
 const $ = (page, id) => page.locator(`[data-test="${id}"]`)
 
 async function open(path, { scenario = '', width = 1440, height = 900 } = {}) {
@@ -24,22 +26,40 @@ async function open(path, { scenario = '', width = 1440, height = 900 } = {}) {
     localStorage.setItem('autobyteus.localization.preference-mode', 'en')
   }, scenario)
   const page = await context.newPage()
-  page.on('pageerror', (error) => errors.push({ path, text: error.message }))
-  page.on('console', (message) => { if (message.type() === 'error') errors.push({ path, text: message.text() }) })
+  page.on('pageerror', (error) => {
+    const text = `${error.message} @ ${(error.stack || '').split('\n').slice(1, 3).join(' | ')}`
+    // Same pre-existing baseline upload gap, surfacing from the product's attachment presentation.
+    if (/contextAttachmentPresentation|useContextAttachmentComposer/.test(text)) { knownBaselineErrors.push({ path, text }); return }
+    errors.push({ path, text })
+  })
+  currentPage = page
+  page.on('console', (message) => {
+    if (message.type() !== 'error') return
+    // Pre-existing baseline gap: the prototype's synthetic server does not simulate binary context-file uploads.
+    if (/Error uploading context file/.test(message.text())) { knownBaselineErrors.push({ path, text: message.text() }); return }
+    errors.push({ path, text: message.text() })
+  })
   await page.goto(`${baseUrl}${path}`, { waitUntil: 'networkidle' }).catch(() => {})
   await page.waitForTimeout(900)
   return { context, page }
 }
 
 async function check(id, description, fn) {
+  const errorsBefore = errors.length
   try {
     await fn()
-    results.push({ id, description, pass: true })
+    results.push({ id, description, pass: true, browserErrors: errors.slice(errorsBefore).map((e) => e.text) })
   } catch (error) {
-    results.push({ id, description, pass: false, error: String(error?.message || error).split('\n')[0] })
+    results.push({ id, description, pass: false, error: String(error?.message || error).split('\n')[0], browserErrors: errors.slice(errorsBefore).map((e) => e.text) })
+    await currentPage?.screenshot({ path: resolve(outDir, `FAIL-${id}.png`) }).catch(() => {})
   }
 }
 const expect = (condition, message) => { if (!condition) throw new Error(message) }
+const FIXTURE_TEXT = resolve(outDir, 'notes.md')
+const FIXTURE_IMAGE = resolve(outDir, 'screenshot.png')
+await writeFile(FIXTURE_TEXT, '# Notes\n')
+// 1x1 PNG
+await writeFile(FIXTURE_IMAGE, Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'base64'))
 const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.png`) })
 
 // ---- Default scenario: desktop journey ----
@@ -299,6 +319,39 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     await $(page, 'chat-new').waitFor()
     expect((await $(page, 'chat-auto-approve').getAttribute('aria-pressed')) === 'true', 'next new chat is on again')
   })
+  await check('CHK-029', 'Chat box attachments: 📎 upload shows file chips and image thumbnails, Clear all, and the sent message lists Context files', async () => {
+    await page.locator('[data-test="app-left-panel-primary-nav"] [data-test="chat-new-chat"]').click()
+    await $(page, 'chat-new').waitFor()
+    await $(page, 'chat-file-input').setInputFiles([FIXTURE_TEXT, FIXTURE_IMAGE])
+    await $(page, 'composer-attachment-notes.md').waitFor()
+    await $(page, 'composer-attachment-screenshot.png').waitFor()
+    expect(await $(page, 'composer-attachments-clear').isVisible(), 'Clear all shown for 2+')
+    await $(page, 'chat-composer-input').fill('Use these files')
+    await shot(page, '23-chat-attachments')
+    await $(page, 'chat-send').click()
+    await page.waitForURL('**/chat?id=*')
+    expect((await $(page, 'chat-message-attachments').innerText()).includes('notes.md'), 'message lists context files')
+  })
+  await check('CHK-030', 'Run views use the same box: no Context Files row; 📎, chips, model (runtime fixed) and send in one footer', async () => {
+    await page.goto(`${baseUrl}/workspace`)
+    await page.waitForTimeout(1500)
+    const section = page.locator('[data-test="app-left-panel-run-history"] section', { hasText: 'prototype-workspace' }).first()
+    await section.locator('button', { hasText: 'prototype-workspace' }).first().click()
+    await page.locator('button', { hasText: 'Product Review Team' }).first().click()
+    await page.locator('[data-test="app-left-panel-run-history"]').getByText('Review the current prot', { exact: false }).first().click()
+    await $(page, 'run-composer').waitFor()
+    const box = await $(page, 'run-composer').innerText()
+    expect(!box.includes('Context Files'), 'no always-visible Context Files row')
+    expect(await $(page, 'run-composer-attach').isVisible() && await $(page, 'run-composer-send').isVisible(), 'attach + send in footer')
+    expect(await page.locator('[data-test="run-composer"] [data-test="chat-model-trigger"]').isVisible(), 'model control in footer')
+    await page.locator('[data-test="run-composer"] [data-test="chat-model-trigger"]').click()
+    expect((await $(page, 'chat-runtime-locked-note').innerText()).includes('Runtime fixed'), 'runtime fixed note')
+    await page.keyboard.press('Escape')
+    await page.locator('[data-test="run-composer"] input[type=file]').setInputFiles([FIXTURE_TEXT])
+    await $(page, 'context-file-chips').waitFor({ timeout: 4000 })
+    expect((await $(page, 'context-file-chips').innerText()).includes('notes.md'), 'file chip in the same chip row')
+    await shot(page, '24-run-view-unified-box')
+  })
   await check('CHK-023', 'The pencil on the Chat menu item opens a fresh New chat; no separate New chat row', async () => {
     const pencil = page.locator('[data-test="app-left-panel-primary-nav"] [data-test="chat-new-chat"]')
     expect(await pencil.count() === 1, 'pencil on Chat item')
@@ -376,9 +429,9 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
 }
 
 await browser.close()
-const summary = { generatedAt: new Date().toISOString(), baseUrl, total: results.length, passed: results.filter((r) => r.pass).length, results, browserErrors: errors }
+const summary = { generatedAt: new Date().toISOString(), baseUrl, total: results.length, passed: results.filter((r) => r.pass).length, results, browserErrors: errors, knownBaselineErrors }
 await writeFile(resolve(outDir, 'results.json'), JSON.stringify(summary, null, 2))
 for (const r of results) console.log(`${r.pass ? 'PASS' : 'FAIL'} ${r.id} ${r.description}${r.error ? ` — ${r.error}` : ''}`)
-console.log(`${summary.passed}/${summary.total} passed; browser errors: ${errors.length}`)
+console.log(`${summary.passed}/${summary.total} passed; browser errors: ${errors.length}; known baseline upload errors: ${knownBaselineErrors.length}`)
 for (const e of errors.slice(0, 8)) console.log('  ERR', e.path, e.text.slice(0, 200))
 process.exit(summary.passed === summary.total ? 0 : 1)

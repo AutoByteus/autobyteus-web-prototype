@@ -1,148 +1,26 @@
 <template>
+  <!-- chat-interface-entry: unified message box. Attachments render as the shared
+       chip row only when present; upload, drop and paste are driven by the box. -->
+  <input
+    ref="fileInputRef"
+    type="file"
+    multiple
+    class="hidden"
+    :disabled="!activeContextStore.activeAgentContext"
+    @change="onFileSelect"
+  />
   <div
-    class="bg-white px-3 py-2"
-    data-file-drop-target="true"
-    @dragover.prevent
-    @drop.prevent="onFileDrop"
-    @paste="onPaste"
+    v-if="displayedItems.length > 0"
+    id="context-file-list"
+    class="flex flex-wrap items-center gap-1.5 px-3 pt-3"
+    data-test="context-file-chips"
   >
-    <input
-      ref="fileInputRef"
-      type="file"
-      multiple
-      class="hidden"
-      :disabled="!activeContextStore.activeAgentContext"
-      @change="onFileSelect"
+    <ComposerAttachmentChips
+      :items="chipItems"
+      @open="(key) => openByKey(key)"
+      @remove="(key) => removeByKey(key)"
+      @clear="clearAllContextFilePaths"
     />
-
-    <div class="flex items-center justify-between" :class="{ 'mb-2': isContextListExpanded && displayedItems.length > 0 }">
-      <div
-        class="flex items-center flex-grow cursor-pointer px-1 py-1 rounded hover:bg-gray-50 transition-colors"
-        role="button"
-        aria-controls="context-file-list"
-        :aria-expanded="isContextListExpanded"
-        @click="toggleContextList"
-      >
-        <div class="flex items-center">
-          <svg
-            v-if="displayedItems.length > 0"
-            class="w-5 h-5 transform transition-transform text-gray-600 mr-2 flex-shrink-0"
-            :class="{ 'rotate-90': isContextListExpanded }"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-          <span class="font-medium text-xs text-gray-700">Context Files ({{ displayedItems.length }})</span>
-          <span v-if="displayedItems.length === 0" class="text-xs text-gray-400 ml-1.5">
-            {{ $t('agentInput.components.agentInput.ContextFilePathInputArea.drag_paste_or_upload') }}
-          </span>
-        </div>
-      </div>
-
-      <button
-        class="text-blue-500 hover:text-white hover:bg-blue-500 transition-colors duration-200 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 ml-2 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
-        :title="$t('agentInput.components.agentInput.ContextFilePathInputArea.upload_files')"
-        :aria-label="$t('agentInput.components.agentInput.ContextFilePathInputArea.upload_files')"
-        :disabled="!activeContextStore.activeAgentContext"
-        @click.stop="triggerFileInput"
-      >
-        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 6V18M18 12H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-    </div>
-
-    <div v-if="isContextListExpanded && displayedItems.length > 0" id="context-file-list" class="space-y-2">
-      <div v-if="thumbnailItems.length > 0" class="thumbnail-row-container">
-        <div class="thumbnail-row">
-          <div v-for="item in thumbnailItems" :key="item.key" class="thumbnail-card group">
-            <button
-              type="button"
-              class="thumbnail-button"
-              :title="item.label"
-              :aria-label="$t('agentInput.components.agentInput.ContextFilePathInputArea.open_image_preview')"
-              :disabled="item.isUploading"
-              @click="openItem(item)"
-            >
-              <img
-                v-if="item.previewUrl"
-                :src="item.previewUrl"
-                :alt="$t('agentInput.components.agentInput.ContextFilePathInputArea.context_image_thumbnail')"
-                class="context-image-thumbnail"
-                @error="markImagePreviewAsFailed(item.key)"
-              />
-              <div v-else class="thumbnail-fallback">
-                <i :class="['fas', getContextAttachmentIcon(item.type)]"></i>
-              </div>
-            </button>
-            <button
-              class="thumbnail-remove-button"
-              :title="$t('agentInput.components.agentInput.ContextFilePathInputArea.remove_this_file')"
-              :aria-label="$t('agentInput.components.agentInput.ContextFilePathInputArea.remove_file')"
-              :disabled="item.isUploading"
-              @click.stop="handleRemoveItem(item)"
-            >
-              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </button>
-            <div v-if="item.isUploading" class="thumbnail-uploading">
-              <i class="fas fa-spinner fa-spin mr-1"></i>Uploading
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <ul v-if="regularItems.length > 0" class="space-y-2">
-        <li
-          v-for="item in regularItems"
-          :key="item.key"
-          class="bg-gray-100 p-2 rounded transition-colors duration-300 flex items-start justify-between hover:bg-gray-200 group"
-        >
-          <div class="flex items-start space-x-2 flex-grow min-w-0">
-            <i :class="['fas', getContextAttachmentIcon(item.type), 'text-gray-500 w-4 flex-shrink-0']"></i>
-            <div class="min-w-0 flex-grow">
-              <button
-                type="button"
-                class="text-sm text-left text-gray-600 truncate group-hover:underline cursor-pointer block w-full"
-                :title="item.label"
-                :disabled="item.isUploading"
-                @click="openItem(item)"
-              >
-                {{ item.label }}
-              </button>
-            </div>
-            <span v-if="item.isUploading" class="text-xs text-blue-500 ml-auto flex-shrink-0">
-              <i class="fas fa-spinner fa-spin mr-1"></i>Uploading...
-            </span>
-          </div>
-          <button
-            class="text-red-500 hover:text-white hover:bg-red-500 transition-colors duration-300 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 ml-2 flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
-            :title="$t('agentInput.components.agentInput.ContextFilePathInputArea.remove_this_file')"
-            :aria-label="$t('agentInput.components.agentInput.ContextFilePathInputArea.remove_file')"
-            :disabled="item.isUploading"
-            @click.stop="handleRemoveItem(item)"
-          >
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </button>
-        </li>
-      </ul>
-    </div>
-
-    <div v-if="displayedItems.length > 0" class="flex justify-end pt-2 mt-2">
-      <button
-        class="px-2.5 py-1 border border-blue-100 text-blue-600 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500/30 transition-colors duration-200 flex items-center text-xs disabled:opacity-50 disabled:cursor-not-allowed"
-        :disabled="contextFileUploadStore.isUploading"
-        @click.stop="clearAllContextFilePaths"
-      >
-        <i class="fas fa-trash-alt mr-2"></i>{{ $t('agentInput.components.agentInput.ContextFilePathInputArea.clear_all') }}
-      </button>
-    </div>
   </div>
 
   <FullScreenImageModal
@@ -172,6 +50,7 @@ import {
   buildTeamMemberDraftContextFileOwner,
 } from '~/utils/contextFiles/contextFileOwner';
 import FullScreenImageModal from '~/components/common/FullScreenImageModal.vue';
+import ComposerAttachmentChips, { type ComposerAttachmentItem } from '~/components/composer/ComposerAttachmentChips.vue';
 
 const activeContextStore = useActiveContextStore();
 const contextFileUploadStore = useContextFileUploadStore();
@@ -397,6 +276,24 @@ watch(
     }
   },
 );
+
+const chipItems = computed<ComposerAttachmentItem[]>(() => displayedItems.value.map((item) => ({
+  key: item.key,
+  label: item.label,
+  kind: item.type === 'Image' && item.previewUrl ? 'image' : 'file',
+  previewUrl: item.previewUrl ?? null,
+  uploading: Boolean(item.isUploading),
+})));
+const openByKey = (key: string): void => {
+  const item = displayedItems.value.find((candidate) => candidate.key === key);
+  if (item) openItem(item);
+};
+const removeByKey = (key: string): void => {
+  const item = displayedItems.value.find((candidate) => candidate.key === key);
+  if (item) handleRemoveItem(item);
+};
+
+defineExpose({ triggerFileInput, onFileDrop, onPaste, hasItems: computed(() => displayedItems.value.length > 0) });
 </script>
 
 <style scoped>

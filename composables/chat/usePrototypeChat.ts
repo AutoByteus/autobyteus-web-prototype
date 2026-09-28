@@ -16,6 +16,7 @@ import {
   type ChatRecord,
   type ChatRuntimeId,
   type ChatTeam,
+  type ChatAttachment,
   type ChatWorkspace,
 } from '~/prototype/chat/chat-fixtures'
 
@@ -47,6 +48,7 @@ interface DraftState {
   teamId: string | null
   /** Auto-approve tools: on by default for every new chat, in any workspace. */
   autoApprove: boolean
+  attachments: ChatAttachment[]
 }
 
 interface ChatState {
@@ -86,7 +88,7 @@ const state = reactive<ChatState>({
     grok_build: 'idle',
   },
   catalogFailuresRemaining: {},
-  draft: { agentId: CHAT_ASSISTANT_ID, runtime: 'autobyteus', modelId: 'gpt-5.5', workspaceId: TEMP_WORKSPACE_ID, text: '', skills: [], teamId: null, autoApprove: true },
+  draft: { agentId: CHAT_ASSISTANT_ID, runtime: 'autobyteus', modelId: 'gpt-5.5', workspaceId: TEMP_WORKSPACE_ID, text: '', skills: [], teamId: null, autoApprove: true, attachments: [] },
   starting: false,
   workspacePanelOpen: false,
   toast: null,
@@ -127,6 +129,7 @@ const resetDraft = () => {
     skills: [],
     teamId: null,
     autoApprove: true,
+    attachments: [],
   }
 }
 
@@ -324,14 +327,14 @@ const startTeamChat = async (): Promise<ChatTeam | null> => {
 
 const startChat = async (): Promise<ChatRecord | null> => {
   const text = state.draft.text.trim()
-  if ((!text && !state.draft.skills.length) || state.starting) return null
+  if ((!text && !state.draft.skills.length && !state.draft.attachments.length) || state.starting) return null
   const runtime = findRuntime(state.draft.runtime)
   if (!runtime.enabled || !findModel(state.draft.modelId)) return null
   state.starting = true
   await new Promise((resolve) => setTimeout(resolve, 500))
   const chat: ChatRecord = {
     id: nextId('chat'),
-    title: titleFrom(text || state.draft.skills.map((name) => `/${name}`).join(' ')),
+    title: titleFrom(text || state.draft.skills.map((name) => `/${name}`).join(' ') || state.draft.attachments.map((item) => item.name).join(', ')),
     agentId: state.draft.agentId,
     runtime: state.draft.runtime,
     modelId: state.draft.modelId,
@@ -342,7 +345,7 @@ const startChat = async (): Promise<ChatRecord | null> => {
     ageMinutes: 0,
     status: 'running',
     autoApprove: state.draft.autoApprove,
-    messages: [{ id: nextId('m'), role: 'user', text, skills: [...state.draft.skills], sentText: buildSentText(text, state.draft.skills) }],
+    messages: [{ id: nextId('m'), role: 'user', text, skills: [...state.draft.skills], attachments: [...state.draft.attachments], sentText: buildSentText(text, state.draft.skills) }],
   }
   state.chats.unshift(chat)
   state.lastActivity[chat.id] = Date.now()
@@ -354,10 +357,10 @@ const startChat = async (): Promise<ChatRecord | null> => {
   return liveChat(chat.id) ?? chat
 }
 
-const sendInChat = (chatId: string, text: string, skills: string[] = []) => {
+const sendInChat = (chatId: string, text: string, skills: string[] = [], attachments: ChatAttachment[] = []) => {
   const chat = state.chats.find((item) => item.id === chatId)
-  if (!chat || (!text.trim() && !skills.length) || chat.status === 'running') return
-  chat.messages.push({ id: nextId('m'), role: 'user', text: text.trim(), skills: [...skills], sentText: buildSentText(text, skills) })
+  if (!chat || (!text.trim() && !skills.length && !attachments.length) || chat.status === 'running') return
+  chat.messages.push({ id: nextId('m'), role: 'user', text: text.trim(), skills: [...skills], attachments: [...attachments], sentText: buildSentText(text, skills) })
   state.lastActivity[chat.id] = Date.now()
   streamReply(chat.id, text, skills)
 }

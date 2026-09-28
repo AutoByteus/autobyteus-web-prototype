@@ -158,7 +158,7 @@
       </div>
 
       <p v-if="lockedRuntime && !query.trim()" class="rounded-b-lg border-t border-gray-100 px-3 py-2 text-xs text-gray-400" data-test="chat-runtime-locked-note">
-        Runtime fixed for this chat · {{ runtimeDef.label }}
+        Runtime fixed · {{ runtimeDef.label }}
       </p>
     </div>
   </div>

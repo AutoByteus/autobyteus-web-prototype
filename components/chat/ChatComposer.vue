@@ -4,9 +4,22 @@
     class="relative rounded-xl border bg-white shadow-sm transition-shadow focus-within:border-gray-300 focus-within:shadow-md"
     :class="size === 'large' ? 'border-gray-300' : 'border-gray-200'"
     data-test="chat-composer"
+    @dragover.prevent="dragging = true"
+    @dragleave="onDragLeave"
+    @drop.prevent="onDrop"
+    @paste="onPaste"
   >
+    <input ref="fileInputRef" type="file" multiple class="hidden" data-test="chat-file-input" @change="onFileSelect">
+    <!-- Drop overlay -->
+    <div
+      v-if="dragging"
+      class="pointer-events-none absolute inset-0 z-20 flex items-center justify-center rounded-xl border-2 border-dashed border-blue-400 bg-blue-50/80 text-sm font-medium text-blue-700"
+      data-test="composer-drop-overlay"
+    >
+      Drop files to attach
+    </div>
     <!-- Tagged skills (and an optional non-default agent) -->
-    <div v-if="skills.length || $slots.chips" class="flex flex-wrap items-center gap-1.5 px-3 pt-3" data-test="chat-skill-chips">
+    <div v-if="hasChips()" class="flex flex-wrap items-center gap-1.5 px-3 pt-3" data-test="chat-skill-chips">
       <slot name="chips" />
       <span
         v-for="name in skills"
@@ -25,6 +38,7 @@
           <ChatGlyph name="x" class="h-3 w-3" />
         </button>
       </span>
+      <ComposerAttachmentChips :items="attachmentItems" @open="openAttachment" @remove="removeAttachment" @clear="emit('update:attachments', [])" />
     </div>
 
     <textarea
@@ -32,7 +46,7 @@
       :value="modelValue"
       data-test="chat-composer-input"
       class="block w-full resize-none border-0 bg-transparent px-4 text-[0.9375rem] leading-6 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0"
-      :class="skills.length || $slots.chips ? 'pt-2 pb-1' : size === 'large' ? 'pt-4 pb-2' : 'pt-3 pb-1'"
+      :class="hasChips() ? 'pt-2 pb-1' : size === 'large' ? 'pt-4 pb-2' : 'pt-3 pb-1'"
       :style="{ height: `${height}px` }"
       :placeholder="placeholder"
       :aria-label="placeholder"
@@ -46,10 +60,10 @@
       <button
         type="button"
         class="inline-flex h-7 w-7 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
-        title="Add context files"
-        aria-label="Add context files"
+        title="Attach files (or drag, drop, paste)"
+        aria-label="Attach files"
         data-test="chat-attach"
-        @click="emit('attach')"
+        @click="fileInputRef?.click()"
       >
         <ChatGlyph name="paperclip" class="h-4 w-4" />
       </button>
@@ -57,6 +71,19 @@
       <div class="ml-auto flex items-center gap-0.5">
         <slot name="right" />
         <span class="w-1"></span>
+        <button
+          v-if="voiceAvailable || voice !== 'idle'"
+          type="button"
+          data-test="composer-voice"
+          class="flex h-8 w-8 items-center justify-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+          :class="voice === 'recording' ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700'"
+          :title="voice === 'recording' ? 'Stop recording' : 'Start voice input'"
+          :aria-label="voice === 'recording' ? 'Stop recording' : 'Start voice input'"
+          :disabled="voice === 'transcribing' || starting"
+          @click="toggleVoice"
+        >
+          <Icon :icon="voice === 'recording' ? 'heroicons:stop-solid' : 'heroicons:microphone-solid'" class="h-4 w-4" />
+        </button>
         <button
           v-if="running"
           type="button"
@@ -83,6 +110,27 @@
         </button>
       </div>
     </div>
+
+    <div
+      v-if="voice !== 'idle'"
+      class="mx-3 mb-2 flex items-center justify-between rounded-lg border px-3 py-2 text-xs font-medium"
+      :class="voice === 'recording' ? 'border-red-200 bg-red-50 text-red-700' : 'border-blue-200 bg-blue-50 text-blue-700'"
+      data-test="composer-voice-status"
+    >
+      <span class="flex items-center gap-2">
+        <span class="h-2.5 w-2.5 rounded-full" :class="voice === 'recording' ? 'animate-pulse bg-red-500' : 'bg-blue-500'"></span>
+        {{ voice === 'recording' ? 'Listening… click stop when done' : 'Transcribing voice input…' }}
+      </span>
+      <span v-if="voice === 'recording'" class="tabular-nums text-[0.6875rem]">0:0{{ voiceSeconds }}</span>
+    </div>
+
+    <FullScreenImageModal
+      v-if="previewUrl"
+      :visible="Boolean(previewUrl)"
+      :image-url="previewUrl"
+      alt-text="Attachment preview"
+      @close="previewUrl = null"
+    />
 
     <!-- Skill menu: opened by the Skills button or by typing "/" -->
     <div
@@ -156,9 +204,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, useSlots, watch } from 'vue'
 import { Icon } from '@iconify/vue'
 import ChatGlyph from '~/components/chat/ChatGlyph.vue'
+import ComposerAttachmentChips, { type ComposerAttachmentItem } from '~/components/composer/ComposerAttachmentChips.vue'
+import FullScreenImageModal from '~/components/common/FullScreenImageModal.vue'
+import { useVoiceInputStore } from '~/stores/voiceInputStore'
+import type { ChatAttachment } from '~/prototype/chat/chat-fixtures'
 import { CHAT_AGENTS, CHAT_ASSISTANT_ID, CHAT_SKILLS, CHAT_TEAMS } from '~/prototype/chat/chat-fixtures'
 import { useChatPopover } from '~/composables/chat/useChatPopover'
 
@@ -166,6 +218,7 @@ const props = withDefaults(defineProps<{
   modelValue: string
   placeholder: string
   skills?: string[]
+  attachments?: ChatAttachment[]
   size?: 'large' | 'normal'
   running?: boolean
   starting?: boolean
@@ -173,22 +226,94 @@ const props = withDefaults(defineProps<{
   autofocus?: boolean
   /** Enable "@" to address an agent or team (new chats only). */
   mentions?: boolean
-}>(), { skills: () => [], size: 'normal', running: false, starting: false, sendBlockedReason: null, autofocus: false, mentions: false })
+}>(), { skills: () => [], attachments: () => [], size: 'normal', running: false, starting: false, sendBlockedReason: null, autofocus: false, mentions: false })
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
   (e: 'update:skills', value: string[]): void
+  (e: 'update:attachments', value: ChatAttachment[]): void
   (e: 'send'): void
   (e: 'stop'): void
   (e: 'attach'): void
   (e: 'select-target', value: { kind: 'agent' | 'team'; id: string }): void
 }>()
 
+const slots = useSlots()
 const rootRef = ref<HTMLElement | null>(null)
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
 const minHeight = computed(() => (props.size === 'large' ? 88 : 52))
 const height = ref(minHeight.value)
-const canSend = computed(() => !props.starting && !props.sendBlockedReason && (props.modelValue.trim().length > 0 || props.skills.length > 0))
+const canSend = computed(() => !props.starting && !props.sendBlockedReason && (props.modelValue.trim().length > 0 || props.skills.length > 0 || props.attachments.length > 0))
+// Evaluated at render time: slots are not reactive, so this must not be a computed.
+const hasChips = () => props.skills.length > 0 || props.attachments.length > 0 || Boolean(slots.chips)
+
+// Attachments (prototype-native: local files, previews via object URLs)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+const dragging = ref(false)
+const previewUrl = ref<string | null>(null)
+const attachmentItems = computed<ComposerAttachmentItem[]>(() => props.attachments.map((item) => ({ key: item.id, label: item.name, kind: item.kind, previewUrl: item.previewUrl })))
+let attachmentCounter = 0
+const addFiles = (files: File[]) => {
+  if (!files.length) return
+  const next = files.map((file) => ({
+    id: `att-${Date.now().toString(36)}-${attachmentCounter++}`,
+    name: file.name || 'pasted-image.png',
+    kind: (file.type.startsWith('image/') ? 'image' : 'file') as ChatAttachment['kind'],
+    previewUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
+  }))
+  emit('update:attachments', [...props.attachments, ...next])
+  nextTick(() => textareaRef.value?.focus())
+}
+const onFileSelect = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  addFiles(Array.from(input.files ?? []))
+  input.value = ''
+}
+const onDragLeave = (event: DragEvent) => {
+  if (!rootRef.value?.contains(event.relatedTarget as Node | null)) dragging.value = false
+}
+const onDrop = (event: DragEvent) => {
+  dragging.value = false
+  addFiles(Array.from(event.dataTransfer?.files ?? []))
+}
+const onPaste = (event: ClipboardEvent) => {
+  const files = Array.from(event.clipboardData?.files ?? [])
+  if (files.length) {
+    event.preventDefault()
+    addFiles(files)
+  }
+}
+const removeAttachment = (key: string) => emit('update:attachments', props.attachments.filter((item) => item.id !== key))
+const openAttachment = (key: string) => {
+  const item = props.attachments.find((candidate) => candidate.id === key)
+  if (item?.previewUrl) previewUrl.value = item.previewUrl
+}
+
+// Voice input: shown only when the Voice Input extension is installed and enabled
+// (same rule as the run views). Recording is simulated in the prototype.
+const voiceInputStore = useVoiceInputStore()
+const voiceAvailable = computed(() => voiceInputStore.isAvailable)
+const voice = ref<'idle' | 'recording' | 'transcribing'>('idle')
+const voiceSeconds = ref(0)
+let voiceTimer: ReturnType<typeof setInterval> | null = null
+const toggleVoice = () => {
+  if (voice.value === 'idle') {
+    voice.value = 'recording'
+    voiceSeconds.value = 0
+    voiceTimer = setInterval(() => { voiceSeconds.value = Math.min(9, voiceSeconds.value + 1) }, 1000)
+    return
+  }
+  if (voice.value === 'recording') {
+    if (voiceTimer) clearInterval(voiceTimer)
+    voice.value = 'transcribing'
+    setTimeout(() => {
+      const spoken = 'Summarize what we have so far and suggest next steps.'
+      emit('update:modelValue', props.modelValue ? `${props.modelValue} ${spoken}` : spoken)
+      voice.value = 'idle'
+      nextTick(() => { resize(); textareaRef.value?.focus() })
+    }, 900)
+  }
+}
 
 // Skill menu state
 // The menu opens only from typing "/" (skills) or "@" (agents/teams).
@@ -337,6 +462,7 @@ const submit = () => {
 watch(() => props.modelValue, (value) => { if (!value) nextTick(resize) })
 onMounted(() => {
   if (props.autofocus) textareaRef.value?.focus()
+  void voiceInputStore.initialize().catch(() => undefined)
 })
 defineExpose({ focus: () => textareaRef.value?.focus() })
 </script>
