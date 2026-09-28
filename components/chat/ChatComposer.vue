@@ -170,7 +170,7 @@
         </template>
       </ul>
       <ul v-else role="listbox" aria-label="Skills" class="max-h-64 overflow-y-auto p-1">
-        <li v-if="!filteredSkills.length" class="px-2 py-3 text-center text-[0.8125rem] text-gray-500">No skills match</li>
+        <li v-if="!filteredSkills.length" class="px-2 py-3 text-center text-[0.8125rem] text-gray-500">{{ availableSkills && !availableSkills.length ? 'This agent has no skills' : 'No skills match' }}</li>
         <li v-for="(skill, index) in filteredSkills" :key="skill.name" role="option" :aria-selected="index === highlight ? 'true' : 'false'">
           <button
             type="button"
@@ -194,7 +194,7 @@
         Teams: your message goes to the coordinator
       </footer>
       <footer v-else class="flex items-center justify-between border-t border-gray-100 px-3 py-1.5 text-xs text-gray-400">
-        <span>All skills are available to the assistant</span>
+        <span>{{ availableSkills && availableSkills.length < CHAT_SKILLS.length ? "This agent's skills" : 'All skills are available' }}</span>
         <NuxtLink to="/skills" class="inline-flex items-center gap-1 whitespace-nowrap font-medium text-blue-700 hover:underline">
           Manage skills <ChatGlyph name="arrow-right" class="h-3 w-3" />
         </NuxtLink>
@@ -218,6 +218,8 @@ const props = withDefaults(defineProps<{
   modelValue: string
   placeholder: string
   skills?: string[]
+  /** Skills the addressed agent has (Daily Assistant: all installed skills). Undefined = all. */
+  availableSkills?: string[]
   attachments?: ChatAttachment[]
   size?: 'large' | 'normal'
   running?: boolean
@@ -327,9 +329,10 @@ const activeQuery = computed(() => slashQuery.value.trim().toLowerCase())
 // Rank: name prefix, then name contains, then description contains.
 const filteredSkills = computed(() => {
   const q = activeQuery.value
-  if (!q) return CHAT_SKILLS
+  const pool = props.availableSkills ? CHAT_SKILLS.filter((skill) => props.availableSkills!.includes(skill.name)) : CHAT_SKILLS
+  if (!q) return pool
   const rank = (name: string, description: string) => name.startsWith(q) ? 0 : name.includes(q) ? 1 : description.toLowerCase().includes(q) ? 2 : 3
-  return CHAT_SKILLS
+  return pool
     .map((skill, index) => ({ skill, index, score: rank(skill.name, skill.description) }))
     .filter((item) => item.score < 3)
     .sort((a, b) => a.score - b.score || a.index - b.index)

@@ -18,6 +18,7 @@
             ref="newComposerRef"
             v-model="state.draft.text"
             v-model:skills="state.draft.skills"
+            :available-skills="draftTeam ? [] : draftAgent.skills"
             v-model:attachments="state.draft.attachments"
             size="large"
             autofocus
@@ -97,7 +98,7 @@
               <h1 class="truncate text-[0.9375rem] font-semibold text-gray-900" data-test="chat-title">{{ activeChat.title }}</h1>
               <span class="inline-flex flex-shrink-0 items-center gap-1.5 text-xs text-gray-600" data-test="chat-run-status">
                 <span class="h-2 w-2 rounded-full" :class="activeChat.status === 'running' ? 'bg-blue-500' : activeChat.active ? 'bg-green-500' : 'bg-gray-400'"></span>
-                {{ activeChat.status === 'running' ? 'Running' : activeChat.active ? 'Idle' : 'Stopped' }}
+                {{ activeChat.status === 'running' ? 'Running' : activeChat.active ? 'Idle' : 'Offline' }}
               </span>
             </div>
             <p class="flex items-center gap-1.5 truncate text-xs text-gray-500">
@@ -175,6 +176,7 @@
           <ChatComposer
             v-model="followUp"
             v-model:skills="followUpSkills"
+            :available-skills="activeAgent.skills"
             v-model:attachments="followUpAttachments"
             :placeholder="activeAgent.id === CHAT_ASSISTANT_ID ? 'Reply, or type / to use a skill' : `Message ${activeAgent.name}…`"
             :running="activeChat.status === 'running'"
@@ -278,7 +280,7 @@ const draftBlockedReason = computed(() => {
 })
 
 const draftTeam = computed(() => findTeam(state.draft.teamId))
-const LIVE_RUN_LOCK = 'Locked while the run is live. Stop it in the Workspaces tree to change the model or thinking.'
+const LIVE_RUN_LOCK = 'Locked while the run is live. Terminate the run from the Workspaces tree to change the model or thinking.'
 const isAssistantDraft = computed(() => state.draft.agentId === CHAT_ASSISTANT_ID && !state.draft.teamId)
 const onSelectTarget = (target: { kind: 'agent' | 'team'; id: string }) => {
   if (target.kind === 'team') chat.setDraftTeam(target.id)
