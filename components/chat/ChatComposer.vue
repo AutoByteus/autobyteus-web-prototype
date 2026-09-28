@@ -1,22 +1,47 @@
 <template>
   <div
-    class="rounded-xl border bg-white shadow-sm transition-shadow focus-within:border-gray-300 focus-within:shadow-md"
+    ref="rootRef"
+    class="relative rounded-xl border bg-white shadow-sm transition-shadow focus-within:border-gray-300 focus-within:shadow-md"
     :class="size === 'large' ? 'border-gray-300' : 'border-gray-200'"
     data-test="chat-composer"
   >
+    <!-- Tagged skills (and an optional non-default agent) -->
+    <div v-if="skills.length || $slots.chips" class="flex flex-wrap items-center gap-1.5 px-3 pt-3" data-test="chat-skill-chips">
+      <slot name="chips" />
+      <span
+        v-for="name in skills"
+        :key="name"
+        class="inline-flex max-w-full items-center gap-1 rounded-md border border-indigo-200 bg-indigo-50 py-0.5 pl-1.5 pr-1 text-xs font-medium text-indigo-700"
+        :data-test="`chat-skill-chip-${name}`"
+      >
+        <Icon icon="heroicons:sparkles" class="h-3.5 w-3.5 flex-shrink-0" />
+        <span class="truncate">/{{ name }}</span>
+        <button
+          type="button"
+          class="rounded p-0.5 text-indigo-400 hover:bg-indigo-100 hover:text-indigo-700"
+          :aria-label="`Remove skill ${name}`"
+          @click="removeSkill(name)"
+        >
+          <ChatGlyph name="x" class="h-3 w-3" />
+        </button>
+      </span>
+    </div>
+
     <textarea
       ref="textareaRef"
       :value="modelValue"
       data-test="chat-composer-input"
       class="block w-full resize-none border-0 bg-transparent px-4 text-[0.9375rem] leading-6 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0"
-      :class="size === 'large' ? 'pt-4 pb-2' : 'pt-3 pb-1'"
+      :class="skills.length || $slots.chips ? 'pt-2 pb-1' : size === 'large' ? 'pt-4 pb-2' : 'pt-3 pb-1'"
       :style="{ height: `${height}px` }"
       :placeholder="placeholder"
       :aria-label="placeholder"
       :disabled="starting"
       @input="onInput"
-      @keydown.enter.exact.prevent="submit"
+      @click="detectSlash"
+      @keydown="onTextareaKeydown"
     ></textarea>
+
     <div class="flex flex-wrap items-center gap-0.5 px-2 pb-2 pt-1">
       <button
         type="button"
@@ -27,6 +52,20 @@
         @click="emit('attach')"
       >
         <ChatGlyph name="paperclip" class="h-4 w-4" />
+      </button>
+      <button
+        ref="skillsButtonRef"
+        type="button"
+        data-test="chat-skills-trigger"
+        class="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[0.8125rem] leading-5 text-gray-600 transition-colors hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+        :class="picker.open.value && pickerMode === 'button' ? 'bg-gray-100' : ''"
+        :aria-expanded="picker.open.value ? 'true' : 'false'"
+        aria-haspopup="listbox"
+        title="Use a skill (or type /)"
+        @click="openFromButton"
+      >
+        <Icon icon="heroicons:sparkles" class="h-4 w-4" />
+        <span>Skills</span>
       </button>
       <slot name="left" />
       <div class="ml-auto flex items-center gap-0.5">
@@ -58,34 +97,115 @@
         </button>
       </div>
     </div>
+
+    <!-- Skill menu: opened by the Skills button or by typing "/" -->
+    <div
+      v-if="picker.open.value"
+      data-test="chat-skill-menu"
+      class="absolute left-2 z-50 flex w-[23rem] max-w-[calc(100%-1rem)] flex-col rounded-lg border border-gray-200 bg-white text-left shadow-lg"
+      :class="picker.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5'"
+    >
+      <div v-if="pickerMode === 'button'" class="flex items-center gap-2 border-b border-gray-100 px-3 py-2">
+        <ChatGlyph name="search" class="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
+        <input
+          ref="skillSearchRef"
+          v-model="buttonQuery"
+          data-test="chat-skill-search"
+          type="text"
+          class="w-full border-0 bg-transparent p-0 text-[0.8125rem] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0"
+          placeholder="Search skills"
+          aria-label="Search skills"
+          @keydown="onSearchKeydown"
+        >
+      </div>
+      <p v-else class="border-b border-gray-100 px-3 py-1.5 text-[0.6875rem] text-gray-400">
+        Skills matching <span class="font-medium text-gray-600">/{{ slashQuery }}</span> · ↑↓ to move, Enter to add
+      </p>
+      <ul role="listbox" aria-label="Skills" class="max-h-64 overflow-y-auto p-1">
+        <li v-if="!filteredSkills.length" class="px-2 py-3 text-center text-[0.8125rem] text-gray-500">No skills match</li>
+        <li v-for="(skill, index) in filteredSkills" :key="skill.name" role="option" :aria-selected="index === highlight ? 'true' : 'false'">
+          <button
+            type="button"
+            :data-test="`chat-skill-option-${skill.name}`"
+            class="flex w-full items-start gap-2 rounded-md px-2 py-1.5 text-left focus:outline-none"
+            :class="index === highlight ? 'bg-gray-100' : 'hover:bg-gray-50'"
+            @mouseenter="highlight = index"
+            @mousedown.prevent
+            @click="chooseSkill(skill.name)"
+          >
+            <Icon icon="heroicons:sparkles" class="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
+            <span class="min-w-0 flex-1">
+              <span class="block truncate text-[0.8125rem] font-medium text-gray-900">{{ skill.name }}</span>
+              <span class="block truncate text-xs text-gray-500">{{ skill.description }}</span>
+            </span>
+            <ChatGlyph v-if="skills.includes(skill.name)" name="check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600" />
+          </button>
+        </li>
+      </ul>
+      <footer class="flex items-center justify-between border-t border-gray-100 px-3 py-1.5 text-xs text-gray-400">
+        <span>All skills are available to the assistant</span>
+        <NuxtLink to="/skills" class="inline-flex items-center gap-1 whitespace-nowrap font-medium text-blue-700 hover:underline">
+          Manage skills <ChatGlyph name="arrow-right" class="h-3 w-3" />
+        </NuxtLink>
+      </footer>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { Icon } from '@iconify/vue'
 import ChatGlyph from '~/components/chat/ChatGlyph.vue'
+import { CHAT_SKILLS } from '~/prototype/chat/chat-fixtures'
+import { useChatPopover } from '~/composables/chat/useChatPopover'
 
 const props = withDefaults(defineProps<{
   modelValue: string
   placeholder: string
+  skills?: string[]
   size?: 'large' | 'normal'
   running?: boolean
   starting?: boolean
   sendBlockedReason?: string | null
   autofocus?: boolean
-}>(), { size: 'normal', running: false, starting: false, sendBlockedReason: null, autofocus: false })
+}>(), { skills: () => [], size: 'normal', running: false, starting: false, sendBlockedReason: null, autofocus: false })
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
+  (e: 'update:skills', value: string[]): void
   (e: 'send'): void
   (e: 'stop'): void
   (e: 'attach'): void
 }>()
 
+const rootRef = ref<HTMLElement | null>(null)
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
+const skillsButtonRef = ref<HTMLElement | null>(null)
+const skillSearchRef = ref<HTMLInputElement | null>(null)
 const minHeight = computed(() => (props.size === 'large' ? 88 : 52))
 const height = ref(minHeight.value)
 const canSend = computed(() => !props.starting && !props.sendBlockedReason && props.modelValue.trim().length > 0)
+
+// Skill menu state
+const picker = useChatPopover(rootRef, skillsButtonRef, 340)
+const pickerMode = ref<'button' | 'slash'>('button')
+const buttonQuery = ref('')
+const slashQuery = ref('')
+const slashStart = ref(-1)
+const highlight = ref(0)
+const activeQuery = computed(() => (pickerMode.value === 'slash' ? slashQuery.value : buttonQuery.value).trim().toLowerCase())
+// Rank: name prefix, then name contains, then description contains.
+const filteredSkills = computed(() => {
+  const q = activeQuery.value
+  if (!q) return CHAT_SKILLS
+  const rank = (name: string, description: string) => name.startsWith(q) ? 0 : name.includes(q) ? 1 : description.toLowerCase().includes(q) ? 2 : 3
+  return CHAT_SKILLS
+    .map((skill, index) => ({ skill, index, score: rank(skill.name, skill.description) }))
+    .filter((item) => item.score < 3)
+    .sort((a, b) => a.score - b.score || a.index - b.index)
+    .map((item) => item.skill)
+})
+watch(activeQuery, () => { highlight.value = 0 })
 
 const resize = () => {
   const el = textareaRef.value
@@ -94,10 +214,95 @@ const resize = () => {
   height.value = Math.min(240, Math.max(minHeight.value, el.scrollHeight))
   el.style.height = `${height.value}px`
 }
+
+const detectSlash = () => {
+  const el = textareaRef.value
+  if (!el) return
+  const before = el.value.slice(0, el.selectionStart ?? el.value.length)
+  const match = /(^|\s)\/([\w.-]*)$/.exec(before)
+  if (match) {
+    pickerMode.value = 'slash'
+    slashQuery.value = match[2]
+    slashStart.value = before.length - match[2].length - 1
+    if (!picker.open.value) void picker.show()
+  } else if (picker.open.value && pickerMode.value === 'slash') {
+    picker.close(false)
+  }
+}
+
 const onInput = (event: Event) => {
   emit('update:modelValue', (event.target as HTMLTextAreaElement).value)
-  nextTick(resize)
+  nextTick(() => { resize(); detectSlash() })
 }
+
+const addSkill = (name: string) => {
+  if (!props.skills.includes(name)) emit('update:skills', [...props.skills, name])
+}
+const removeSkill = (name: string) => {
+  emit('update:skills', props.skills.filter((item) => item !== name))
+  nextTick(() => textareaRef.value?.focus())
+}
+
+const chooseSkill = (name: string) => {
+  if (pickerMode.value === 'slash' && slashStart.value >= 0) {
+    const el = textareaRef.value
+    const caret = el?.selectionStart ?? props.modelValue.length
+    const next = (props.modelValue.slice(0, slashStart.value) + props.modelValue.slice(caret)).replace(/^\s+/, '')
+    emit('update:modelValue', next)
+    addSkill(name)
+    picker.close(false)
+    nextTick(() => {
+      resize()
+      const pos = Math.min(slashStart.value, next.length)
+      textareaRef.value?.focus()
+      textareaRef.value?.setSelectionRange(pos, pos)
+    })
+  } else {
+    addSkill(name)
+    picker.close(false)
+    nextTick(() => textareaRef.value?.focus())
+  }
+}
+
+const moveHighlight = (delta: number) => {
+  const count = filteredSkills.value.length
+  if (!count) return
+  highlight.value = (highlight.value + delta + count) % count
+}
+
+const onTextareaKeydown = (event: KeyboardEvent) => {
+  if (picker.open.value && pickerMode.value === 'slash') {
+    if (event.key === 'ArrowDown') { event.preventDefault(); moveHighlight(1); return }
+    if (event.key === 'ArrowUp') { event.preventDefault(); moveHighlight(-1); return }
+    if ((event.key === 'Enter' || event.key === 'Tab') && filteredSkills.value.length) {
+      event.preventDefault()
+      chooseSkill(filteredSkills.value[highlight.value].name)
+      return
+    }
+    if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); picker.close(false); return }
+  }
+  if (event.key === 'Enter' && !event.shiftKey && !event.altKey && !event.metaKey && !event.ctrlKey) {
+    event.preventDefault()
+    submit()
+  }
+}
+
+const onSearchKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'ArrowDown') { event.preventDefault(); moveHighlight(1) }
+  else if (event.key === 'ArrowUp') { event.preventDefault(); moveHighlight(-1) }
+  else if (event.key === 'Enter' && filteredSkills.value.length) { event.preventDefault(); chooseSkill(filteredSkills.value[highlight.value].name) }
+}
+
+const openFromButton = async () => {
+  if (picker.open.value && pickerMode.value === 'button') { picker.close(true); return }
+  pickerMode.value = 'button'
+  buttonQuery.value = ''
+  highlight.value = 0
+  if (!picker.open.value) await picker.show()
+  await nextTick()
+  skillSearchRef.value?.focus()
+}
+
 const submit = () => {
   if (props.running || !canSend.value) return
   emit('send')

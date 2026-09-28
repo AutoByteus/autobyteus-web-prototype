@@ -101,7 +101,38 @@ export const CHAT_MODELS: ChatModel[] = [
   { id: 'grok:grok-code-fast-2', name: 'grok-code-fast-2', provider: 'xAI', runtime: 'grok_build', description: 'Fast agentic coding' },
 ]
 
+export interface ChatSkill {
+  name: string
+  description: string
+}
+
+// Names mirror the user's skills package; descriptions are shortened and illustrative.
+export const CHAT_SKILLS: ChatSkill[] = [
+  { name: 'shell-first-operating-practice', description: 'Shell-first execution practice for agents' },
+  { name: 'software-engineering-workflow-skill', description: 'Staged software delivery from requirements to handoff' },
+  { name: 'deep-research-article', description: 'Deep research synthesized into one structured article' },
+  { name: 'bilingual-author-style-writer', description: 'Publish-ready Chinese and English articles' },
+  { name: 'infographic-powerpoint-deck', description: 'Image-based PowerPoint decks from notes' },
+  { name: 'infographics', description: 'Single-image infographics from content' },
+  { name: 'emotion-metaphor-image-prompting', description: 'Image prompts that turn feelings into metaphors' },
+  { name: 'product-ui-prototyping', description: 'Validate UI behavior as visual state prototypes' },
+  { name: 'ux-journey-definition', description: 'Story-first product experience before UI work' },
+  { name: 'skill-optimizer', description: 'Review and improve existing skills' },
+  { name: 'llm-fine-tuning-skill', description: 'Staged LLM fine-tuning workflow' },
+]
+
+/** The built-in general agent that backs Chat: general tools, every skill enabled (lazy-loaded). */
+export const CHAT_ASSISTANT_ID = 'autobyteus-assistant'
+
 export const CHAT_AGENTS: ChatAgent[] = [
+  {
+    id: CHAT_ASSISTANT_ID,
+    name: 'AutoByteus Assistant',
+    initials: 'AA',
+    description: 'Built-in general agent for chat. All skills enabled.',
+    skills: CHAT_SKILLS.map((skill) => skill.name),
+    tools: ['bash', 'read_file', 'write_file', 'web_search', 'browser', 'media'],
+  },
   {
     id: 'daily-assistant',
     name: 'Daily Assistant',
@@ -155,7 +186,7 @@ export const INITIAL_RECENTS: ChatCombo[] = [
 export const INITIAL_FAVORITES: string[] = ['codex_app_server|gpt-5.5-codex', 'autobyteus|qwen3-coder-30b']
 
 export type ChatMessage =
-  | { id: string; role: 'user'; text: string }
+  | { id: string; role: 'user'; text: string; skills?: string[] }
   | { id: string; role: 'assistant'; text: string; streaming?: boolean }
   | { id: string; role: 'event'; text: string }
 
@@ -179,7 +210,7 @@ export const INITIAL_CHATS: ChatRecord[] = [
   {
     id: 'chat-skill-review',
     title: 'Improve the shell-first skill',
-    agentId: 'daily-assistant',
+    agentId: CHAT_ASSISTANT_ID,
     runtime: 'codex_app_server',
     modelId: 'gpt-5.5-codex',
     thinking: 'High',
@@ -189,7 +220,7 @@ export const INITIAL_CHATS: ChatRecord[] = [
     ageMinutes: 120,
     status: 'idle',
     messages: [
-      { id: 'm1', role: 'user', text: 'Review the shell-first-operating-practice skill and suggest what to tighten.' },
+      { id: 'm1', role: 'user', text: 'Review this skill and suggest what to tighten.', skills: ['skill-optimizer', 'shell-first-operating-practice'] },
       {
         id: 'm2',
         role: 'assistant',
@@ -200,7 +231,7 @@ export const INITIAL_CHATS: ChatRecord[] = [
   {
     id: 'chat-trip',
     title: 'Plan a weekend in Munich',
-    agentId: 'daily-assistant',
+    agentId: CHAT_ASSISTANT_ID,
     runtime: 'claude_agent_sdk',
     modelId: 'sdk:claude-opus-5-5',
     thinking: 'High',
@@ -234,7 +265,7 @@ export const INITIAL_CHATS: ChatRecord[] = [
   {
     id: 'chat-local-model',
     title: 'Try the local Qwen model',
-    agentId: 'daily-assistant',
+    agentId: CHAT_ASSISTANT_ID,
     runtime: 'autobyteus',
     modelId: 'qwen3-coder-30b',
     workspaceId: TEMP_WORKSPACE_ID,

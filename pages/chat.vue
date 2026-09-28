@@ -4,23 +4,35 @@
     <div v-if="!activeId" class="flex min-w-0 flex-1 flex-col overflow-y-auto" data-test="chat-new">
       <div class="flex flex-1 flex-col items-center justify-center px-4 pb-[14vh] pt-10 sm:px-6">
         <h1 class="text-center text-[1.75rem] font-semibold tracking-tight text-gray-900">What should we work on?</h1>
-        <p class="mt-2 max-w-xl text-center text-sm text-gray-500">
-          Chat with one agent. It runs like any other agent run, with its tools and skills.
+        <p v-if="!isAssistantDraft" class="mt-2 max-w-xl text-center text-sm text-gray-500">
+          Chat with {{ draftAgent.name }}, using its own tools and skills.
+        </p>
+        <p v-else class="mt-2 max-w-xl text-center text-sm text-gray-500">
+          All your skills are available. Type <kbd class="rounded border border-gray-200 bg-gray-50 px-1 font-sans text-xs text-gray-600">/</kbd> to point the assistant at one.
         </p>
         <div class="mt-8 w-full max-w-3xl">
           <ChatComposer
             ref="newComposerRef"
             v-model="state.draft.text"
+            v-model:skills="state.draft.skills"
             size="large"
             autofocus
-            :placeholder="`Ask ${draftAgent.name} anything…`"
+            :placeholder="isAssistantDraft ? 'Ask anything, or type / to use a skill' : `Ask ${draftAgent.name} anything…`"
             :starting="state.starting"
             :send-blocked-reason="draftBlockedReason"
             @send="startChat"
             @attach="chat.showToast('Context files: same attach flow as agent runs (not simulated).')"
           >
+            <template v-if="!isAssistantDraft" #chips>
+              <span class="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 py-0.5 pl-1 pr-1 text-xs font-medium text-gray-700" data-test="chat-agent-chip">
+                <span class="inline-flex h-4 w-4 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-[0.5rem] font-semibold text-slate-600">{{ draftAgent.initials }}</span>
+                {{ draftAgent.name }}
+                <button type="button" class="rounded p-0.5 text-gray-400 hover:bg-gray-200 hover:text-gray-700" :aria-label="`Chat with the assistant instead of ${draftAgent.name}`" title="Use the assistant instead" @click="chat.setDraftAgent(CHAT_ASSISTANT_ID)">
+                  <ChatGlyph name="x" class="h-3 w-3" />
+                </button>
+              </span>
+            </template>
             <template #left>
-              <ChatAgentPicker :agent-id="state.draft.agentId" @select="selectAgent" />
               <ChatWorkspacePicker :workspace-id="state.draft.workspaceId" @select="(id) => (state.draft.workspaceId = id)" />
             </template>
             <template #right>
@@ -40,9 +52,6 @@
           <p class="mt-2.5 flex items-center justify-center gap-1.5 text-center text-xs text-gray-400" data-test="chat-new-hint">
             <template v-if="state.starting">
               Starting {{ draftAgent.name }} on {{ draftRuntime.label }}…
-            </template>
-            <template v-else-if="draftAgent.defaultLaunch">
-              Using {{ draftAgent.name }}’s default model. Change it anytime before you send.
             </template>
             <template v-else>
               <ChatGlyph name="folder" class="h-3.5 w-3.5" />
@@ -98,7 +107,14 @@
                 <div class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-sky-200 bg-white">
                   <ChatGlyph name="person" class="h-8 w-8 text-sky-600" />
                 </div>
-                <div class="min-w-0 flex-1 whitespace-pre-wrap break-words pt-1.5 leading-6 text-gray-900">{{ message.text }}</div>
+                <div class="min-w-0 flex-1 pt-1.5">
+                  <div v-if="message.skills?.length" class="mb-1.5 flex flex-wrap gap-1.5" data-test="chat-message-skills">
+                    <span v-for="name in message.skills" :key="name" class="inline-flex items-center gap-1 rounded-md border border-indigo-200 bg-indigo-50 px-1.5 py-0.5 text-xs font-medium text-indigo-700">
+                      <Icon icon="heroicons:sparkles" class="h-3.5 w-3.5" />/{{ name }}
+                    </span>
+                  </div>
+                  <div class="whitespace-pre-wrap break-words leading-6 text-gray-900">{{ message.text }}</div>
+                </div>
               </div>
               <div v-else-if="message.role === 'assistant'" class="flex items-start gap-3">
                 <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50">
@@ -120,7 +136,8 @@
         <div class="mx-auto w-full max-w-3xl flex-shrink-0 px-4 pb-4 sm:px-6">
           <ChatComposer
             v-model="followUp"
-            :placeholder="`Message ${activeAgent.name}…`"
+            v-model:skills="followUpSkills"
+            :placeholder="activeAgent.id === CHAT_ASSISTANT_ID ? 'Reply, or type / to use a skill' : `Message ${activeAgent.name}…`"
             :running="activeChat.status === 'running'"
             @send="sendFollowUp"
             @stop="chat.stopChat(activeChat.id)"
@@ -168,7 +185,8 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import ChatAgentPicker from '~/components/chat/ChatAgentPicker.vue'
+import { Icon } from '@iconify/vue'
+import { CHAT_ASSISTANT_ID } from '~/prototype/chat/chat-fixtures'
 import ChatComposer from '~/components/chat/ChatComposer.vue'
 import ChatGlyph from '~/components/chat/ChatGlyph.vue'
 import ChatModelPicker from '~/components/chat/ChatModelPicker.vue'
@@ -208,9 +226,7 @@ const draftBlockedReason = computed(() => {
   return null
 })
 
-const selectAgent = (id: string) => {
-  chat.setDraftAgent(id)
-}
+const isAssistantDraft = computed(() => state.draft.agentId === CHAT_ASSISTANT_ID)
 
 const startChat = async () => {
   const created = await chat.startChat()
@@ -218,10 +234,12 @@ const startChat = async () => {
 }
 
 const followUp = ref('')
+const followUpSkills = ref<string[]>([])
 const sendFollowUp = () => {
   if (!activeChat.value) return
-  chat.sendInChat(activeChat.value.id, followUp.value)
+  chat.sendInChat(activeChat.value.id, followUp.value, followUpSkills.value)
   followUp.value = ''
+  followUpSkills.value = []
 }
 
 const scrollRef = ref<HTMLElement | null>(null)

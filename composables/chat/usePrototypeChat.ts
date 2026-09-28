@@ -1,5 +1,6 @@
 import { computed, reactive } from 'vue'
 import {
+  CHAT_ASSISTANT_ID,
   CHAT_AGENTS,
   CHAT_MODELS,
   CHAT_RUNTIMES,
@@ -39,6 +40,7 @@ interface DraftState {
   thinking?: string
   workspaceId: string
   text: string
+  skills: string[]
 }
 
 interface ChatState {
@@ -66,7 +68,7 @@ const state = reactive<ChatState>({
   recents: [],
   favorites: [],
   extraWorkspaces: [],
-  lastAgentId: 'daily-assistant',
+  lastAgentId: CHAT_ASSISTANT_ID,
   catalog: {
     autobyteus: 'idle',
     codex_app_server: 'idle',
@@ -75,7 +77,7 @@ const state = reactive<ChatState>({
     grok_build: 'idle',
   },
   catalogFailuresRemaining: {},
-  draft: { agentId: 'daily-assistant', runtime: 'autobyteus', modelId: 'gpt-5.5', workspaceId: TEMP_WORKSPACE_ID, text: '' },
+  draft: { agentId: CHAT_ASSISTANT_ID, runtime: 'autobyteus', modelId: 'gpt-5.5', workspaceId: TEMP_WORKSPACE_ID, text: '', skills: [] },
   starting: false,
   workspacePanelOpen: false,
   toast: null,
@@ -100,15 +102,18 @@ const defaultComboFor = (agentId: string): ChatCombo => {
   return { runtime: 'autobyteus', modelId: model.id, thinking: model.defaultThinking }
 }
 
+// Chat is always backed by the built-in assistant unless started from a specific
+// agent in the Workspaces tree.
 const resetDraft = () => {
-  const combo = defaultComboFor(state.lastAgentId)
+  const combo = defaultComboFor(CHAT_ASSISTANT_ID)
   state.draft = {
-    agentId: state.lastAgentId,
+    agentId: CHAT_ASSISTANT_ID,
     runtime: combo.runtime,
     modelId: combo.modelId,
     thinking: combo.thinking,
     workspaceId: TEMP_WORKSPACE_ID,
     text: '',
+    skills: [],
   }
 }
 
@@ -123,7 +128,7 @@ const initialize = () => {
   state.recents = firstRun ? [] : clone(INITIAL_RECENTS)
   state.favorites = firstRun ? [] : [...INITIAL_FAVORITES]
   state.extraWorkspaces = []
-  state.lastAgentId = 'daily-assistant'
+  state.lastAgentId = CHAT_ASSISTANT_ID
   state.catalog = {
     autobyteus: 'ready',
     codex_app_server: firstRun ? 'idle' : 'ready',
@@ -219,10 +224,13 @@ const titleFrom = (text: string) => {
   return clean.length > 42 ? `${clean.slice(0, 40).trimEnd()}…` : clean
 }
 
-const scriptedReply = (chat: ChatRecord, text: string): string => {
+const scriptedReply = (chat: ChatRecord, text: string, skills: string[] = []): string => {
   const agent = findAgent(chat.agentId)
   const model = findModel(chat.modelId)
   const workspace = findWorkspace(chat.workspaceId)
+  if (skills.length) {
+    return `Loaded ${skills.map((name) => `/${name}`).join(' and ')}. Following ${skills.length === 1 ? 'that skill' : 'those skills'} for this request in ${workspace.name}. (Synthetic reply on ${model?.name ?? chat.modelId} · ${findRuntime(chat.runtime).label}.)`
+  }
   if (/skill/i.test(text)) {
     return `Sure. I can see ${agent.skills.length} skill${agent.skills.length === 1 ? '' : 's'} attached to ${agent.name} (${agent.skills.join(', ')}). Tell me which workflow you want to capture and I will draft a SKILL.md in ${workspace.name}.`
   }
@@ -232,10 +240,10 @@ const scriptedReply = (chat: ChatRecord, text: string): string => {
 // Always mutate through the reactive store so the UI observes streaming.
 const liveChat = (chatId: string) => state.chats.find((item) => item.id === chatId)
 
-const streamReply = (chatId: string, text: string) => {
+const streamReply = (chatId: string, text: string, skills: string[] = []) => {
   const chat = liveChat(chatId)
   if (!chat) return
-  const full = scriptedReply(chat, text)
+  const full = scriptedReply(chat, text, skills)
   const messageId = nextId('m')
   chat.messages.push({ id: messageId, role: 'assistant', text: '', streaming: true })
   chat.status = 'running'
@@ -276,24 +284,24 @@ const startChat = async (): Promise<ChatRecord | null> => {
     age: 'now',
     ageMinutes: 0,
     status: 'running',
-    messages: [{ id: nextId('m'), role: 'user', text }],
+    messages: [{ id: nextId('m'), role: 'user', text, skills: [...state.draft.skills] }],
   }
   state.chats.unshift(chat)
   state.lastActivity[chat.id] = Date.now()
   rememberCombo({ runtime: chat.runtime, modelId: chat.modelId, thinking: chat.thinking })
   state.lastAgentId = chat.agentId
   state.starting = false
-  streamReply(chat.id, text)
+  streamReply(chat.id, text, [...state.draft.skills])
   resetDraft()
   return liveChat(chat.id) ?? chat
 }
 
-const sendInChat = (chatId: string, text: string) => {
+const sendInChat = (chatId: string, text: string, skills: string[] = []) => {
   const chat = state.chats.find((item) => item.id === chatId)
   if (!chat || !text.trim() || chat.status === 'running') return
-  chat.messages.push({ id: nextId('m'), role: 'user', text: text.trim() })
+  chat.messages.push({ id: nextId('m'), role: 'user', text: text.trim(), skills: [...skills] })
   state.lastActivity[chat.id] = Date.now()
-  streamReply(chat.id, text)
+  streamReply(chat.id, text, skills)
 }
 
 const stopChat = (chatId: string) => {
