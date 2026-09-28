@@ -88,26 +88,6 @@
 
         <!-- Browse -->
         <template v-else>
-          <template v-if="recents.length">
-            <p class="px-2 pb-0.5 pt-1.5 text-[0.6875rem] font-medium text-gray-400">Recent</p>
-            <button
-              v-for="combo in recents"
-              :key="`recent-${combo.runtime}|${combo.modelId}`"
-              type="button"
-              role="menuitemradio"
-              :aria-checked="combo.runtime === runtime && combo.modelId === modelId ? 'true' : 'false'"
-              data-row
-              :data-test="`chat-quick-pick-${combo.runtime}|${combo.modelId}`"
-              class="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[0.8125rem] hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
-              @mouseenter="!narrow && closeSubmenu(false)"
-              @click="chooseCombo(combo)"
-            >
-              <span class="min-w-0 flex-1 truncate text-gray-900">{{ modelLabel(combo.modelId) }}</span>
-              <span class="flex-shrink-0 text-xs text-gray-400">{{ findRuntime(combo.runtime).shortLabel }}</span>
-              <CheckSlot :on="combo.runtime === runtime && combo.modelId === modelId" />
-            </button>
-            <div class="mx-2 my-1 h-px bg-gray-100"></div>
-          </template>
           <p class="px-2 pb-0.5 pt-1.5 text-[0.6875rem] font-medium text-gray-400">Runtimes</p>
           <div
             v-for="item in CHAT_RUNTIMES"
@@ -206,7 +186,6 @@ const modelName = computed(() => findModel(props.modelId)?.name ?? props.modelId
 const modelLabel = (id: string) => findModel(id)?.name ?? id
 const isCurrent = (model: ChatModel) => model.runtime === props.runtime && model.id === props.modelId
 
-const recents = computed(() => chat.state.recents.filter((combo) => findRuntime(combo.runtime).enabled && findModel(combo.modelId)).slice(0, 3))
 
 const onToggle = async () => {
   if (props.lockedReason) return
@@ -257,10 +236,6 @@ const closeSubmenu = (refocus: boolean) => {
 const choose = (model: ChatModel) => {
   const keepThinking = model.runtime === props.runtime && model.id === props.modelId ? props.thinking : undefined
   emit('select', { runtime: model.runtime, modelId: model.id, thinking: keepThinking ?? model.defaultThinking })
-  popover.close(true)
-}
-const chooseCombo = (combo: ChatCombo) => {
-  emit('select', { ...combo })
   popover.close(true)
 }
 

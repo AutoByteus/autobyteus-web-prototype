@@ -5,7 +5,7 @@
 - Product ticket: `chat-interface-entry`
 - Stable requirements package: `chat-interface-entry` (SR-001, requirements Draft)
 - Title: Chat entry above Agents, New chat, and easy runtime/model selection
-- Status: `In Progress` (revision R2: Chat box correction requested by Solution Designer, SR-003)
+- Status: `Awaiting User Review` (revision R2: Chat box correction requested by Solution Designer, SR-003)
 - Mode: `Product Experience Prototyping`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-28
 - Decision questions: DEC-001 (primary: runtime + model picker), DEC-002 to DEC-007 (supporting); REQ-001 to REQ-007 draft
@@ -93,3 +93,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-28: user: divider notes not needed. Removed (PC-034). Validation 30/30, 0 browser errors.
 - 2026-09-28: final consistency pass (PC-035); user confirmation recorded; final references VIS-001–VIS-025 captured; ui-ux-spec.md, behavior matrix and runbook written. `Completed`.
 - 2026-09-28: reopened for revision R2 (Solution Designer SR-003 correction request). `In Progress`.
+- 2026-09-28: R2 implemented (PC-036–PC-040). Validation 31/31, 0 browser errors; typecheck pass. `Awaiting User Review` for the revised Chat box.

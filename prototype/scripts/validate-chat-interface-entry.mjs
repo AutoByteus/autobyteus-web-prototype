@@ -79,16 +79,18 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
   await check('CHK-003', 'New chat defaults: built-in assistant (no agent picker), remembered model, temp workspace', async () => {
     expect(!(await $(page, 'chat-agent-trigger').count()) && !(await $(page, 'chat-agent-chip').count()), 'no agent picker or chip')
     expect(!(await $(page, 'chat-skills-trigger').count()), 'no Skills button; / and @ are typed')
+    expect((await $(page, 'chat-context-files').innerText()).includes('Context Files (0)'), 'existing Context Files area (DEC-014)')
+    expect(!(await $(page, 'composer-drop-overlay').count()), 'no custom drop overlay')
     expect((await $(page, 'chat-workspace-trigger').innerText()).includes('Temp workspace'), 'workspace')
     const model = await $(page, 'chat-model-trigger').innerText()
     expect(model.includes('Codex') && model.includes('gpt-5.5-codex'), `model ${model}`)
     expect((await $(page, 'chat-effort-trigger').innerText()).includes('High'), 'effort High')
     expect(await $(page, 'chat-send').isDisabled(), 'send should be disabled when empty')
   })
-  await check('CHK-004', 'Model menu: search, Recent pairs, runtime rows; runtime opens its models to the side', async () => {
+  await check('CHK-004', 'Model menu: search and runtime rows (no Recent list, DEC-011); runtime opens its models to the side', async () => {
     await $(page, 'chat-model-trigger').click()
     await $(page, 'chat-model-picker').waitFor()
-    expect(await page.locator('[data-test^="chat-quick-pick-"]').count() === 3, 'three recent pairs')
+    expect(!(await page.locator('[data-test^="chat-quick-pick-"]').count()) && !(await $(page, 'chat-model-picker').innerText()).includes('Recent'), 'no Recent section')
     for (const id of ['autobyteus', 'codex_app_server', 'claude_agent_sdk', 'antigravity_cli', 'grok_build']) {
       expect(await $(page, `chat-runtime-${id}`).isVisible(), `runtime ${id}`)
     }
@@ -164,10 +166,11 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     expect((await $(page, 'chat-workspace-trigger').innerText()).includes('autobyteus-agents'), 'workspace changed')
     expect((await $(page, 'chat-new-hint').innerText()).includes('autobyteus-agents'), 'hint path')
   })
-  await check('CHK-012', 'Quick pick restores a recent runtime+model in one click', async () => {
+  await check('CHK-012', 'A runtime row opens its models; choosing one sets the model (Codex App Server → gpt-5.5-codex)', async () => {
     await $(page, 'chat-model-trigger').click()
-    await $(page, 'chat-quick-pick-codex_app_server|gpt-5.5-codex').click()
-    expect((await $(page, 'chat-model-trigger').innerText()).includes('gpt-5.5-codex'), 'quick pick')
+    await $(page, 'chat-runtime-codex_app_server').click()
+    await $(page, 'chat-model-option-gpt-5.5-codex').click()
+    expect((await $(page, 'chat-model-trigger').innerText()).includes('gpt-5.5-codex'), 'model set')
   })
   await check('CHK-013', 'Sending the first message starts a chat run and opens it', async () => {
     await $(page, 'chat-composer-input').fill('Help me write a skill for weekly planning')
@@ -339,38 +342,31 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     await $(page, 'chat-new').waitFor()
     expect((await $(page, 'chat-auto-approve').getAttribute('aria-pressed')) === 'true', 'next new chat is on again')
   })
-  await check('CHK-029', 'Chat box attachments: 📎 upload shows file chips and image thumbnails, Clear all, and the sent message lists Context files', async () => {
+  await check('CHK-029', 'Chat box attachments use the existing Context Files area (upload, list, thumbnails, Clear All); the sent message lists Context files', async () => {
     await page.locator('[data-test="app-left-panel-primary-nav"] [data-test="chat-new-chat"]').click()
     await $(page, 'chat-new').waitFor()
     await $(page, 'chat-file-input').setInputFiles([FIXTURE_TEXT, FIXTURE_IMAGE])
-    await $(page, 'composer-attachment-notes.md').waitFor()
-    await $(page, 'composer-attachment-screenshot.png').waitFor()
-    expect(await $(page, 'composer-attachments-clear').isVisible(), 'Clear all shown for 2+')
+    await $(page, 'chat-context-file-notes.md').waitFor()
+    await $(page, 'chat-context-image-screenshot.png').waitFor()
+    expect((await $(page, 'chat-context-files-count').innerText()).includes('Context Files (2)'), 'count updates')
+    expect(await $(page, 'chat-context-files-clear').isVisible(), 'Clear All shown')
     await $(page, 'chat-composer-input').fill('Use these files')
     await shot(page, '23-chat-attachments')
     await $(page, 'chat-send').click()
     await page.waitForURL('**/chat?id=*')
     expect((await $(page, 'chat-message-attachments').innerText()).includes('notes.md'), 'message lists context files')
   })
-  await check('CHK-030', 'Run views use the same box: no Context Files row; 📎, chips, model (runtime fixed) and send in one footer', async () => {
+  await check('CHK-030', 'Team/org member views are unchanged (DEC-013): product box with Context Files row, no Chat footer or model controls', async () => {
     await page.goto(`${baseUrl}/workspace`)
     await page.waitForTimeout(1500)
     const section = page.locator('[data-test="app-left-panel-run-history"] section', { hasText: 'prototype-workspace' }).first()
     await section.locator('button', { hasText: 'prototype-workspace' }).first().click()
     await page.locator('button', { hasText: 'Product Review Team' }).first().click()
     await page.locator('[data-test="app-left-panel-run-history"]').getByText('Review the current prot', { exact: false }).first().click()
-    await $(page, 'run-composer').waitFor()
-    const box = await $(page, 'run-composer').innerText()
-    expect(!box.includes('Context Files'), 'no always-visible Context Files row')
-    expect(await $(page, 'run-composer-attach').isVisible() && await $(page, 'run-composer-send').isVisible(), 'attach + send in footer')
-    expect(await page.locator('[data-test="run-composer"] [data-test="chat-model-trigger"]').isVisible(), 'model control in footer')
-    await page.locator('[data-test="run-composer"] [data-test="chat-model-trigger"]').click()
-    expect((await $(page, 'chat-runtime-locked-note').innerText()).includes('Runtime fixed'), 'runtime fixed note')
-    await page.keyboard.press('Escape')
-    await page.locator('[data-test="run-composer"] input[type=file]').setInputFiles([FIXTURE_TEXT])
-    await $(page, 'context-file-chips').waitFor({ timeout: 4000 })
-    expect((await $(page, 'context-file-chips').innerText()).includes('notes.md'), 'file chip in the same chip row')
-    await shot(page, '24-run-view-unified-box')
+    await page.getByText('Context Files (0)').first().waitFor()
+    expect(!(await $(page, 'chat-model-trigger').count()) && !(await $(page, 'chat-composer-footer').count()), 'no Chat controls in the team view')
+    expect(!(await $(page, 'run-composer').count()), 'no unified-box changes in run views')
+    await shot(page, '24-team-member-view-unchanged')
   })
   await check('CHK-023', 'The pencil on the Chat menu item opens a fresh New chat; no separate New chat row', async () => {
     const pencil = page.locator('[data-test="app-left-panel-primary-nav"] [data-test="chat-new-chat"]')
@@ -379,6 +375,8 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     await pencil.click()
     await page.waitForURL(/\/chat$/)
     await $(page, 'chat-new').waitFor()
+    const model = await $(page, 'chat-model-trigger').innerText()
+    expect(model.includes('gpt-5.5') && model.includes('Codex'), `new chat preselects the last-used runtime + model (DEC-011): ${model}`)
   })
   await check('CHK-018', 'Agents catalog is unchanged and still reachable', async () => {
     await page.locator('[data-test="app-left-panel-primary-nav"] li').nth(1).locator('button').first().click()
@@ -412,6 +410,16 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     expect(await row.getAttribute('aria-disabled') === 'true', 'disabled')
     expect((await row.getAttribute('title') || '').includes('not found'), 'reason tooltip')
     await shot(page, '18-runtime-unavailable-scenario')
+  })
+  await context.close()
+}
+
+// ---- Landing (DEC-005) ----
+{
+  const { context, page } = await open('/')
+  await check('CHK-031', 'The app lands on Chat (New chat) at startup (DEC-005)', async () => {
+    await page.waitForURL(/\/chat$/, { timeout: 10000 })
+    await $(page, 'chat-new').waitFor()
   })
   await context.close()
 }

@@ -1,0 +1,196 @@
+{
+  "generatedAt": "2026-09-28T18:03:05.913Z",
+  "baseUrl": "http://127.0.0.1:3271",
+  "total": 31,
+  "passed": 31,
+  "results": [
+    {
+      "id": "CHK-001",
+      "description": "Chat is the first primary navigation entry above Agents",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-002",
+      "description": "Clicking Chat opens the New chat composer",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-003",
+      "description": "New chat defaults: built-in assistant (no agent picker), remembered model, temp workspace",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-004",
+      "description": "Model menu: search and runtime rows (no Recent list, DEC-011); runtime opens its models to the side",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-005",
+      "description": "A not-yet-loaded runtime shows loading, then its models",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-006",
+      "description": "Grok Build is an available runtime with its own models by default",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-007",
+      "description": "Search is cross-runtime and labels each result with its runtime",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-008",
+      "description": "Choosing a result updates the button and closes the menu",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-009",
+      "description": "Reasoning effort is a separate control",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-010",
+      "description": "Skills: \"/\" opens a ranked skill menu (bare \"/\" lists all), Enter or click tags it; chips removable",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-011",
+      "description": "Workspace picker: temp default, existing folders, open another folder",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-012",
+      "description": "A runtime row opens its models; choosing one sets the model (Codex App Server → gpt-5.5-codex)",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-013",
+      "description": "Sending the first message starts a chat run and opens it",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-014",
+      "description": "Live run: model and thinking are simply locked (no extra Stop button); stopping the run in the tree unlocks them",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-015",
+      "description": "Right side matches the product: collapsed to the tool strip by default; an icon opens the panel on that tab",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-016",
+      "description": "No chat ⋯ menu; archive/delete stay on the tree row (with confirmation)",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-017",
+      "description": "Clicking a single-agent run in the tree opens it in the chat view (Option B)",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-022",
+      "description": "+ on an agent in the tree starts a new chat: assistant by default, or that agent shown as a removable chip",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-025",
+      "description": "A skill tag alone can be sent; it is sent as the instruction only",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-026",
+      "description": "\"@\" addresses an agent or team; a team chat uses one shared model/workspace and opens in the real Team view",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-027",
+      "description": "Chats follow the normal Workspaces tree rules: workspaces by name, collapsed unless holding the open chat, agents under each workspace",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-028",
+      "description": "Auto-approve is on by default in every workspace, can be turned off, and the chat header shows the mode",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-029",
+      "description": "Chat box attachments use the existing Context Files area (upload, list, thumbnails, Clear All); the sent message lists Context files",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-030",
+      "description": "Team/org member views are unchanged (DEC-013): product box with Context Files row, no Chat footer or model controls",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-023",
+      "description": "The pencil on the Chat menu item opens a fresh New chat; no separate New chat row",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-018",
+      "description": "Agents catalog is unchanged and still reachable",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-019",
+      "description": "Catalog error shows retry and recovers",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-024",
+      "description": "Scenario: a runtime missing on this machine reads Not installed with its reason and cannot open",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-031",
+      "description": "The app lands on Chat (New chat) at startup (DEC-005)",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-020",
+      "description": "First run: no chats, no quick picks, AutoByteus default model",
+      "pass": true,
+      "browserErrors": []
+    },
+    {
+      "id": "CHK-021",
+      "description": "Narrow: composer controls wrap without overflow; picker fits the viewport",
+      "pass": true,
+      "browserErrors": []
+    }
+  ],
+  "browserErrors": [],
+  "knownBaselineErrors": []
+}

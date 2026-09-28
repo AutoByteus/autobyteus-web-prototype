@@ -151,7 +151,6 @@ export const CHAT_AGENTS: ChatAgent[] = [
     description: 'Synthetic local agent used only by the parity prototype.',
     skills: ['prototype-research'],
     tools: ['web_search', 'read_file'],
-    defaultLaunch: { runtime: 'claude_agent_sdk', modelId: 'sdk:claude-sonnet-5', thinking: 'Medium' },
   },
   {
     id: 'agent-writer',
@@ -196,11 +195,8 @@ export const CHAT_WORKSPACES: ChatWorkspace[] = [
   { id: 'ws-prototype', name: 'prototype-workspace', path: '/synthetic/prototype-workspace' },
 ]
 
-export const INITIAL_RECENTS: ChatCombo[] = [
-  { runtime: 'codex_app_server', modelId: 'gpt-5.5-codex', thinking: 'High' },
-  { runtime: 'claude_agent_sdk', modelId: 'sdk:claude-opus-5-5', thinking: 'High' },
-  { runtime: 'autobyteus', modelId: 'qwen3-coder-30b' },
-]
+/** DEC-011: one last-used runtime + model remembered on this device (no Recent list). */
+export const INITIAL_LAST_USED: ChatCombo = { runtime: 'codex_app_server', modelId: 'gpt-5.5-codex', thinking: 'High' }
 
 export const INITIAL_FAVORITES: string[] = ['codex_app_server|gpt-5.5-codex', 'autobyteus|qwen3-coder-30b']
 

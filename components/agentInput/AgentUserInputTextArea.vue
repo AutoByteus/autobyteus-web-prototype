@@ -1,62 +1,53 @@
 <template>
-  <!-- chat-interface-entry: unified message box layout (textarea, then a footer row). -->
-  <div class="flex flex-col rounded-b-xl">
-    <textarea
-      :value="internalRequirement"
-      @input="handleInput"
-      ref="textarea"
-      class="block w-full px-4 pt-3 pb-1 border-0 focus:ring-0 focus:outline-none resize-none bg-transparent text-[0.9375rem] leading-6 text-gray-900 placeholder:text-gray-400"
-      :style="{
-        height: `${textareaHeight}px`,
-        minHeight: `${MIN_TEXTAREA_HEIGHT}px`,
-        maxHeight: `${MAX_TEXTAREA_HEIGHT}px`
-      }"
-      :placeholder="placeholder || $t('agentInput.components.agentInput.AgentUserInputTextArea.type_a_message')"
-      @keydown="handleKeyDown"
-      @blur="handleBlur"
-      :disabled="!activeContextStore.activeAgentContext"
-      @dragover.prevent
-      @drop.prevent="handleDrop"
-      data-file-drop-target="true"
-      data-test="run-composer-input"
-    ></textarea>
+  <div class="flex flex-col bg-white">
+    <div class="relative flex-grow">
+      <textarea
+        :value="internalRequirement"
+        @input="handleInput"
+        ref="textarea"
+        class="w-full px-3 py-2.5 pr-14 border-0 focus:ring-0 focus:outline-none resize-none bg-transparent text-[0.9375rem] leading-6"
+        :style="{
+          height: `${textareaHeight}px`,
+          minHeight: `${MIN_TEXTAREA_HEIGHT}px`,
+          maxHeight: `${MAX_TEXTAREA_HEIGHT}px`
+        }"
+        :placeholder="$t('agentInput.components.agentInput.AgentUserInputTextArea.type_a_message')"
+        @keydown="handleKeyDown"
+        :disabled="!activeContextStore.activeAgentContext"
+        @dragover.prevent
+        @drop.prevent="handleDrop"
+        data-file-drop-target="true"
+      ></textarea>
 
-    <div class="flex flex-wrap items-center gap-0.5 px-2 pb-2 pt-1" data-test="run-composer-footer">
-      <slot name="footer-left" />
-      <div class="ml-auto flex items-center gap-0.5">
-        <slot name="footer-right" />
-        <span class="w-1"></span>
-        <button
-          v-if="voiceInputStore.isAvailable || voiceInputStore.isStarting || voiceInputStore.isRecording || voiceInputStore.isTranscribing"
-          type="button"
-          @click="handleVoiceAction"
-          :disabled="voiceInputStore.isStarting || voiceInputStore.isTranscribing || !activeContextStore.activeAgentContext"
-          :title="voiceButtonTitle"
-          :aria-busy="voiceInputStore.isStarting ? 'true' : undefined"
-          class="flex h-8 w-8 items-center justify-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
-          :class="voiceInputStore.isRecording ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700'"
-          data-test="run-composer-voice"
-        >
-          <Icon
-            :icon="voiceInputStore.isRecording ? 'heroicons:stop-solid' : voiceInputStore.isStarting ? 'heroicons:arrow-path-solid' : 'heroicons:microphone-solid'"
-            class="h-4 w-4"
-            :class="voiceInputStore.isStarting ? 'animate-spin' : ''"
-          />
-        </button>
-        <button
-          @click="handlePrimaryAction"
-          :disabled="isActionDisabled"
-          :title="primaryAction.kind === 'interrupt' ? 'Stop generation' : 'Send message'"
-          class="flex h-8 w-8 items-center justify-center rounded-full text-white shadow-sm transition-colors focus:outline-none focus:ring-2 disabled:opacity-40 disabled:cursor-not-allowed"
-          :class="primaryAction.kind === 'interrupt'
-            ? 'bg-red-600 hover:bg-red-700 focus:ring-red-500/50'
-            : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500/50'"
-          data-test="run-composer-send"
-        >
-          <Icon v-if="primaryAction.kind === 'interrupt'" icon="heroicons:stop-solid" class="h-4 w-4" />
-          <Icon v-else icon="heroicons:paper-airplane-solid" class="h-4 w-4" />
-        </button>
-      </div>
+      <button
+        v-if="voiceInputStore.isAvailable || voiceInputStore.isStarting || voiceInputStore.isRecording || voiceInputStore.isTranscribing"
+        type="button"
+        @click="handleVoiceAction"
+        :disabled="voiceInputStore.isStarting || voiceInputStore.isTranscribing || !activeContextStore.activeAgentContext"
+        :title="voiceButtonTitle"
+        :aria-busy="voiceInputStore.isStarting ? 'true' : undefined"
+        class="absolute bottom-2 right-14 flex items-center justify-center p-2 rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        :class="voiceButtonClass"
+      >
+        <Icon
+          :icon="voiceInputStore.isRecording ? 'heroicons:stop-solid' : voiceInputStore.isStarting ? 'heroicons:arrow-path-solid' : 'heroicons:microphone-solid'"
+          class="h-5 w-5"
+          :class="voiceInputStore.isStarting ? 'animate-spin' : ''"
+        />
+      </button>
+
+      <button
+        @click="handlePrimaryAction"
+        :disabled="isActionDisabled"
+        :title="primaryAction.kind === 'interrupt' ? 'Stop generation' : 'Send message'"
+        class="absolute bottom-2 right-2 flex items-center justify-center p-2 text-white rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        :class="primaryAction.kind === 'interrupt'
+          ? 'bg-red-600 hover:bg-red-700 focus:ring-red-500/50'
+          : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500/50'"
+      >
+        <Icon v-if="primaryAction.kind === 'interrupt'" icon="heroicons:stop-solid" class="h-5 w-5" />
+        <Icon v-else icon="heroicons:paper-airplane-solid" class="h-5 w-5" />
+      </button>
     </div>
 
     <div
@@ -98,7 +89,6 @@ import type { AgentContext } from '~/types/agent/AgentContext';
 import { resolveAgentPrimaryAction } from '~/services/runSubmission/agentPrimaryAction';
 
 const props = defineProps<{
-  placeholder?: string;
   beforeSend?: () => void | Promise<void>;
 }>();
 
@@ -158,7 +148,7 @@ const voiceStatusClass = computed(() => {
 
 // Local component state
 const textarea = ref<HTMLTextAreaElement | null>(null);
-const MIN_TEXTAREA_HEIGHT = 52;
+const MIN_TEXTAREA_HEIGHT = 56;
 const MAX_TEXTAREA_HEIGHT = 220;
 const textareaHeight = ref(MIN_TEXTAREA_HEIGHT);
 const recordingElapsedSeconds = ref(0);

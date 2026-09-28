@@ -8,7 +8,7 @@ import {
   CHAT_WORKSPACES,
   INITIAL_CHATS,
   INITIAL_FAVORITES,
-  INITIAL_RECENTS,
+  INITIAL_LAST_USED,
   TEMP_WORKSPACE_ID,
   type ChatCombo,
   type ChatMessage,
@@ -55,7 +55,8 @@ interface ChatState {
   initialized: boolean
   scenario: string
   chats: ChatRecord[]
-  recents: ChatCombo[]
+  /** DEC-011: the last-used runtime + model (one value on this device). */
+  lastUsed: ChatCombo | null
   favorites: string[]
   extraWorkspaces: ChatWorkspace[]
   lastAgentId: string
@@ -76,7 +77,7 @@ const state = reactive<ChatState>({
   initialized: false,
   scenario: '',
   chats: [],
-  recents: [],
+  lastUsed: null,
   favorites: [],
   extraWorkspaces: [],
   lastAgentId: CHAT_ASSISTANT_ID,
@@ -107,10 +108,12 @@ export const findModel = (modelId: string) => CHAT_MODELS.find((model) => model.
 export const findAgent = (agentId: string) => CHAT_AGENTS.find((agent) => agent.id === agentId) ?? CHAT_AGENTS[0]
 export const modelsForRuntime = (runtime: ChatRuntimeId) => CHAT_MODELS.filter((model) => model.runtime === runtime)
 
-const defaultComboFor = (agentId: string): ChatCombo => {
-  const agent = findAgent(agentId)
-  if (agent.defaultLaunch) return { ...agent.defaultLaunch }
-  if (state.recents.length) return { ...state.recents[0] }
+// DEC-011 / REQ-019: last-used runtime + model; else Daily Assistant's default
+// launch config; else the runtime default.
+const defaultCombo = (): ChatCombo => {
+  if (state.lastUsed && findRuntime(state.lastUsed.runtime).enabled && findModel(state.lastUsed.modelId)) return { ...state.lastUsed }
+  const assistant = findAgent(CHAT_ASSISTANT_ID)
+  if (assistant.defaultLaunch) return { ...assistant.defaultLaunch }
   const model = modelsForRuntime('autobyteus')[0]
   return { runtime: 'autobyteus', modelId: model.id, thinking: model.defaultThinking }
 }
@@ -118,7 +121,7 @@ const defaultComboFor = (agentId: string): ChatCombo => {
 // Chat is always backed by the built-in assistant unless started from a specific
 // agent in the Workspaces tree.
 const resetDraft = () => {
-  const combo = defaultComboFor(CHAT_ASSISTANT_ID)
+  const combo = defaultCombo()
   state.draft = {
     agentId: CHAT_ASSISTANT_ID,
     runtime: combo.runtime,
@@ -146,7 +149,7 @@ const initialize = () => {
       if (message.role === 'user' && message.skills?.length) message.sentText = buildSentText(message.text, message.skills)
     }
   }
-  state.recents = firstRun ? [] : clone(INITIAL_RECENTS)
+  state.lastUsed = firstRun ? null : clone(INITIAL_LAST_USED)
   state.favorites = firstRun ? [] : [...INITIAL_FAVORITES]
   state.extraWorkspaces = []
   state.lastAgentId = CHAT_ASSISTANT_ID
@@ -193,8 +196,7 @@ const retryCatalog = (runtime: ChatRuntimeId) => {
 }
 
 const rememberCombo = (combo: ChatCombo) => {
-  const key = comboKey(combo)
-  state.recents = [combo, ...state.recents.filter((item) => comboKey(item) !== key)].slice(0, 4)
+  state.lastUsed = { ...combo }
 }
 
 const toggleFavorite = (combo: { runtime: ChatRuntimeId; modelId: string }) => {
@@ -216,12 +218,7 @@ const setDraftTeam = (teamId: string) => {
 const setDraftAgent = (agentId: string) => {
   state.draft.teamId = null
   state.draft.agentId = agentId
-  const agent = findAgent(agentId)
-  if (agent.defaultLaunch) {
-    state.draft.runtime = agent.defaultLaunch.runtime
-    state.draft.modelId = agent.defaultLaunch.modelId
-    state.draft.thinking = agent.defaultLaunch.thinking
-  }
+  // The preselected runtime + model stays as it is (DEC-011); addressing an agent does not change it.
 }
 
 const setDraftContext = (agentId: string, workspaceId: string) => {

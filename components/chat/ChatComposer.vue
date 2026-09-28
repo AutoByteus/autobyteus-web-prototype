@@ -1,136 +1,118 @@
 <template>
+  <!-- chat-interface-entry R2 (DEC-014): the Chat box is the product's existing
+       message box (same frame, Context Files area, textarea, mic and send), plus
+       Chat-only features: skill/agent chips, the "/" and "@" menus, and a footer
+       row with workspace, auto-approve, runtime + model and thinking. -->
   <div
     ref="rootRef"
-    class="relative rounded-xl border bg-white shadow-sm transition-shadow focus-within:border-gray-300 focus-within:shadow-md"
-    :class="size === 'large' ? 'border-gray-300' : 'border-gray-200'"
+    class="relative rounded-xl border border-gray-200 bg-white shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-300"
     data-test="chat-composer"
-    @dragover.prevent="dragging = true"
-    @dragleave="onDragLeave"
-    @drop.prevent="onDrop"
-    @paste="onPaste"
   >
-    <input ref="fileInputRef" type="file" multiple class="hidden" data-test="chat-file-input" @change="onFileSelect">
-    <!-- Drop overlay -->
-    <div
-      v-if="dragging"
-      class="pointer-events-none absolute inset-0 z-20 flex items-center justify-center rounded-xl border-2 border-dashed border-blue-400 bg-blue-50/80 text-sm font-medium text-blue-700"
-      data-test="composer-drop-overlay"
-    >
-      Drop files to attach
-    </div>
-    <!-- Tagged skills (and an optional non-default agent) -->
-    <div v-if="hasChips()" class="flex flex-wrap items-center gap-1.5 px-3 pt-3" data-test="chat-skill-chips">
-      <slot name="chips" />
-      <span
-        v-for="name in skills"
-        :key="name"
-        class="inline-flex max-w-full items-center gap-1 rounded-md border border-indigo-200 bg-indigo-50 py-0.5 pl-1.5 pr-1 text-xs font-medium text-indigo-700"
-        :data-test="`chat-skill-chip-${name}`"
-      >
-        <Icon icon="heroicons:sparkles" class="h-3.5 w-3.5 flex-shrink-0" />
-        <span class="truncate">/{{ name }}</span>
-        <button
-          type="button"
-          class="rounded p-0.5 text-indigo-400 hover:bg-indigo-100 hover:text-indigo-700"
-          :aria-label="`Remove skill ${name}`"
-          @click="removeSkill(name)"
-        >
-          <ChatGlyph name="x" class="h-3 w-3" />
-        </button>
-      </span>
-      <ComposerAttachmentChips :items="attachmentItems" @open="openAttachment" @remove="removeAttachment" @clear="emit('update:attachments', [])" />
+    <div class="overflow-hidden rounded-t-xl">
+      <ChatContextFilesArea :model-value="attachments" @update:model-value="(value) => emit('update:attachments', value)" />
     </div>
 
-    <textarea
-      ref="textareaRef"
-      :value="modelValue"
-      data-test="chat-composer-input"
-      class="block w-full resize-none border-0 bg-transparent px-4 text-[0.9375rem] leading-6 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0"
-      :class="hasChips() ? 'pt-2 pb-1' : size === 'large' ? 'pt-4 pb-2' : 'pt-3 pb-1'"
-      :style="{ height: `${height}px` }"
-      :placeholder="placeholder"
-      :aria-label="placeholder"
-      :disabled="starting"
-      @input="onInput"
-      @click="detectSlash"
-      @keydown="onTextareaKeydown"
-    ></textarea>
+    <div class="border-t border-gray-100">
+      <div class="flex flex-col bg-white">
+        <!-- Chat-only: tagged skills and an optional non-default agent/team -->
+        <div v-if="hasChips()" class="flex flex-wrap items-center gap-1.5 px-3 pt-2.5" data-test="chat-skill-chips">
+          <slot name="chips" />
+          <span
+            v-for="name in skills"
+            :key="name"
+            class="inline-flex max-w-full items-center gap-1 rounded-md border border-indigo-200 bg-indigo-50 py-0.5 pl-1.5 pr-1 text-xs font-medium text-indigo-700"
+            :data-test="`chat-skill-chip-${name}`"
+          >
+            <Icon icon="heroicons:sparkles" class="h-3.5 w-3.5 flex-shrink-0" />
+            <span class="truncate">/{{ name }}</span>
+            <button
+              type="button"
+              class="rounded p-0.5 text-indigo-400 hover:bg-indigo-100 hover:text-indigo-700"
+              :aria-label="`Remove skill ${name}`"
+              @click="removeSkill(name)"
+            >
+              <ChatGlyph name="x" class="h-3 w-3" />
+            </button>
+          </span>
+        </div>
 
-    <div class="flex flex-wrap items-center gap-0.5 px-2 pb-2 pt-1">
-      <button
-        type="button"
-        class="inline-flex h-7 w-7 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
-        title="Attach files (or drag, drop, paste)"
-        aria-label="Attach files"
-        data-test="chat-attach"
-        @click="fileInputRef?.click()"
-      >
-        <ChatGlyph name="paperclip" class="h-4 w-4" />
-      </button>
-      <slot name="left" />
-      <div class="ml-auto flex items-center gap-0.5">
-        <slot name="right" />
-        <span class="w-1"></span>
-        <button
-          v-if="voiceAvailable || voice !== 'idle'"
-          type="button"
-          data-test="composer-voice"
-          class="flex h-8 w-8 items-center justify-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
-          :class="voice === 'recording' ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700'"
-          :title="voice === 'recording' ? 'Stop recording' : 'Start voice input'"
-          :aria-label="voice === 'recording' ? 'Stop recording' : 'Start voice input'"
-          :disabled="voice === 'transcribing' || starting"
-          @click="toggleVoice"
+        <!-- Same textarea, mic and send as the product box -->
+        <div class="relative flex-grow">
+          <textarea
+            ref="textareaRef"
+            :value="modelValue"
+            data-test="chat-composer-input"
+            class="w-full px-3 py-2.5 pr-14 border-0 focus:ring-0 focus:outline-none resize-none bg-transparent text-[0.9375rem] leading-6"
+            :style="{ height: `${height}px`, minHeight: `${MIN_HEIGHT}px`, maxHeight: `${MAX_HEIGHT}px` }"
+            :placeholder="placeholder"
+            :aria-label="placeholder"
+            :disabled="starting"
+            @input="onInput"
+            @click="detectSlash"
+            @keydown="onTextareaKeydown"
+          ></textarea>
+
+          <button
+            v-if="voiceAvailable || voice !== 'idle'"
+            type="button"
+            data-test="composer-voice"
+            class="absolute bottom-2 right-14 flex items-center justify-center p-2 rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            :class="voice === 'recording' ? 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500/50' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 focus:ring-slate-400/50'"
+            :title="voice === 'recording' ? 'Stop recording' : 'Start voice input'"
+            :disabled="voice === 'transcribing' || starting"
+            @click="toggleVoice"
+          >
+            <Icon :icon="voice === 'recording' ? 'heroicons:stop-solid' : 'heroicons:microphone-solid'" class="h-5 w-5" />
+          </button>
+
+          <button
+            v-if="running"
+            type="button"
+            data-test="chat-stop"
+            class="absolute bottom-2 right-2 flex items-center justify-center p-2 text-white rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm bg-red-600 hover:bg-red-700 focus:ring-red-500/50"
+            title="Stop generation"
+            aria-label="Stop generation"
+            @click="emit('stop')"
+          >
+            <Icon icon="heroicons:stop-solid" class="h-5 w-5" />
+          </button>
+          <button
+            v-else
+            type="button"
+            data-test="chat-send"
+            class="absolute bottom-2 right-2 flex items-center justify-center p-2 text-white rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed bg-blue-600 hover:bg-blue-700 focus:ring-blue-500/50"
+            :disabled="!canSend"
+            :title="sendBlockedReason || 'Send message'"
+            :aria-label="sendBlockedReason || 'Send message'"
+            @click="submit"
+          >
+            <span v-if="starting" class="block h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>
+            <Icon v-else icon="heroicons:paper-airplane-solid" class="h-5 w-5" />
+          </button>
+        </div>
+
+        <div
+          v-if="voice !== 'idle'"
+          class="mx-3 mb-2 flex items-center justify-between rounded-lg border px-3 py-2 text-xs font-medium"
+          :class="voice === 'recording' ? 'border-red-200 bg-red-50 text-red-700' : 'border-blue-200 bg-blue-50 text-blue-700'"
+          data-test="composer-voice-status"
         >
-          <Icon :icon="voice === 'recording' ? 'heroicons:stop-solid' : 'heroicons:microphone-solid'" class="h-4 w-4" />
-        </button>
-        <button
-          v-if="running"
-          type="button"
-          data-test="chat-stop"
-          class="flex h-8 w-8 items-center justify-center rounded-full bg-red-600 text-white shadow-sm transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500/50"
-          title="Stop generation"
-          aria-label="Stop generation"
-          @click="emit('stop')"
-        >
-          <ChatGlyph name="stop" class="h-4 w-4" />
-        </button>
-        <button
-          v-else
-          type="button"
-          data-test="chat-send"
-          class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:cursor-not-allowed disabled:opacity-40"
-          :disabled="!canSend"
-          :title="sendBlockedReason || 'Send message'"
-          :aria-label="sendBlockedReason || 'Send message'"
-          @click="submit"
-        >
-          <span v-if="starting" class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>
-          <ChatGlyph v-else name="send" class="h-4 w-4" />
-        </button>
+          <div class="flex items-center gap-2">
+            <span class="h-2.5 w-2.5 rounded-full" :class="voice === 'recording' ? 'animate-pulse bg-red-500' : 'bg-blue-500'"></span>
+            <span>{{ voice === 'recording' ? 'Recording... Tap stop when you are done.' : 'Transcribing voice input...' }}</span>
+          </div>
+          <span v-if="voice === 'recording'" class="tabular-nums text-[0.6875rem] text-current/80">0:0{{ voiceSeconds }}</span>
+        </div>
       </div>
     </div>
 
-    <div
-      v-if="voice !== 'idle'"
-      class="mx-3 mb-2 flex items-center justify-between rounded-lg border px-3 py-2 text-xs font-medium"
-      :class="voice === 'recording' ? 'border-red-200 bg-red-50 text-red-700' : 'border-blue-200 bg-blue-50 text-blue-700'"
-      data-test="composer-voice-status"
-    >
-      <span class="flex items-center gap-2">
-        <span class="h-2.5 w-2.5 rounded-full" :class="voice === 'recording' ? 'animate-pulse bg-red-500' : 'bg-blue-500'"></span>
-        {{ voice === 'recording' ? 'Listening… click stop when done' : 'Transcribing voice input…' }}
-      </span>
-      <span v-if="voice === 'recording'" class="tabular-nums text-[0.6875rem]">0:0{{ voiceSeconds }}</span>
+    <!-- Chat-only footer: what can still be changed for this chat -->
+    <div class="flex flex-wrap items-center gap-0.5 rounded-b-xl border-t border-gray-100 bg-white px-2 py-1.5" data-test="chat-composer-footer">
+      <slot name="left" />
+      <div class="ml-auto flex items-center gap-0.5">
+        <slot name="right" />
+      </div>
     </div>
-
-    <FullScreenImageModal
-      v-if="previewUrl"
-      :visible="Boolean(previewUrl)"
-      :image-url="previewUrl"
-      alt-text="Attachment preview"
-      @close="previewUrl = null"
-    />
 
     <!-- Skill menu: opened by the Skills button or by typing "/" -->
     <div
@@ -207,8 +189,7 @@
 import { computed, nextTick, onMounted, ref, useSlots, watch } from 'vue'
 import { Icon } from '@iconify/vue'
 import ChatGlyph from '~/components/chat/ChatGlyph.vue'
-import ComposerAttachmentChips, { type ComposerAttachmentItem } from '~/components/composer/ComposerAttachmentChips.vue'
-import FullScreenImageModal from '~/components/common/FullScreenImageModal.vue'
+import ChatContextFilesArea from '~/components/chat/ChatContextFilesArea.vue'
 import { useVoiceInputStore } from '~/stores/voiceInputStore'
 import type { ChatAttachment } from '~/prototype/chat/chat-fixtures'
 import { CHAT_AGENTS, CHAT_ASSISTANT_ID, CHAT_SKILLS, CHAT_TEAMS } from '~/prototype/chat/chat-fixtures'
@@ -243,53 +224,13 @@ const emit = defineEmits<{
 const slots = useSlots()
 const rootRef = ref<HTMLElement | null>(null)
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
-const minHeight = computed(() => (props.size === 'large' ? 88 : 52))
-const height = ref(minHeight.value)
+// Same sizing as the product text area.
+const MIN_HEIGHT = 56
+const MAX_HEIGHT = 220
+const height = ref(MIN_HEIGHT)
 const canSend = computed(() => !props.starting && !props.sendBlockedReason && (props.modelValue.trim().length > 0 || props.skills.length > 0 || props.attachments.length > 0))
 // Evaluated at render time: slots are not reactive, so this must not be a computed.
-const hasChips = () => props.skills.length > 0 || props.attachments.length > 0 || Boolean(slots.chips)
-
-// Attachments (prototype-native: local files, previews via object URLs)
-const fileInputRef = ref<HTMLInputElement | null>(null)
-const dragging = ref(false)
-const previewUrl = ref<string | null>(null)
-const attachmentItems = computed<ComposerAttachmentItem[]>(() => props.attachments.map((item) => ({ key: item.id, label: item.name, kind: item.kind, previewUrl: item.previewUrl })))
-let attachmentCounter = 0
-const addFiles = (files: File[]) => {
-  if (!files.length) return
-  const next = files.map((file) => ({
-    id: `att-${Date.now().toString(36)}-${attachmentCounter++}`,
-    name: file.name || 'pasted-image.png',
-    kind: (file.type.startsWith('image/') ? 'image' : 'file') as ChatAttachment['kind'],
-    previewUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
-  }))
-  emit('update:attachments', [...props.attachments, ...next])
-  nextTick(() => textareaRef.value?.focus())
-}
-const onFileSelect = (event: Event) => {
-  const input = event.target as HTMLInputElement
-  addFiles(Array.from(input.files ?? []))
-  input.value = ''
-}
-const onDragLeave = (event: DragEvent) => {
-  if (!rootRef.value?.contains(event.relatedTarget as Node | null)) dragging.value = false
-}
-const onDrop = (event: DragEvent) => {
-  dragging.value = false
-  addFiles(Array.from(event.dataTransfer?.files ?? []))
-}
-const onPaste = (event: ClipboardEvent) => {
-  const files = Array.from(event.clipboardData?.files ?? [])
-  if (files.length) {
-    event.preventDefault()
-    addFiles(files)
-  }
-}
-const removeAttachment = (key: string) => emit('update:attachments', props.attachments.filter((item) => item.id !== key))
-const openAttachment = (key: string) => {
-  const item = props.attachments.find((candidate) => candidate.id === key)
-  if (item?.previewUrl) previewUrl.value = item.previewUrl
-}
+const hasChips = () => props.skills.length > 0 || Boolean(slots.chips)
 
 // Voice input: shown only when the Voice Input extension is installed and enabled
 // (same rule as the run views). Recording is simulated in the prototype.
@@ -355,7 +296,7 @@ const resize = () => {
   const el = textareaRef.value
   if (!el) return
   el.style.height = 'auto'
-  height.value = Math.min(240, Math.max(minHeight.value, el.scrollHeight))
+  height.value = Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, el.scrollHeight))
   el.style.height = `${height.value}px`
 }
 

@@ -1,6 +1,7 @@
 import type { TranslationCatalog } from '../../runtime/types';
 
 const shellMessages = {
+  'shell.pages.index.redirecting_to_chat': '正在打开对话...',
   'shell.navigation.chat': '对话',
   'shell.navigation.agents': '智能体',
   'shell.navigation.agentTeams': '智能体团队',
