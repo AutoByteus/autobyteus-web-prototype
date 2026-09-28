@@ -167,11 +167,6 @@
                   {{ message.text }}<span v-if="message.streaming" class="ml-0.5 inline-block h-4 w-1.5 translate-y-0.5 animate-pulse rounded-sm bg-gray-400"></span>
                 </div>
               </div>
-              <div v-else class="flex items-center gap-3 text-xs text-gray-400" data-test="chat-event">
-                <span class="h-px flex-1 bg-gray-200"></span>
-                <span>{{ message.text }}</span>
-                <span class="h-px flex-1 bg-gray-200"></span>
-              </div>
             </template>
           </div>
         </div>

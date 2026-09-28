@@ -380,7 +380,6 @@ const stopRun = (chatId: string) => {
   if (!chat || !chat.active) return
   stopChat(chatId)
   chat.active = false
-  chat.messages.push({ id: nextId('m'), role: 'event', text: 'Run stopped. Your next message resumes it.' })
 }
 
 const switchChatModel = (chatId: string, combo: ChatCombo) => {
@@ -392,9 +391,6 @@ const switchChatModel = (chatId: string, combo: ChatCombo) => {
   if (!changedModel && !changedThinking) return
   chat.modelId = combo.modelId
   chat.thinking = combo.thinking
-  const model = findModel(combo.modelId)
-  const label = [model?.name ?? combo.modelId, combo.thinking].filter(Boolean).join(' · ')
-  chat.messages.push({ id: nextId('m'), role: 'event', text: `Model switched to ${label}. It applies when the run resumes with your next message.` })
   rememberCombo(combo)
 }
 

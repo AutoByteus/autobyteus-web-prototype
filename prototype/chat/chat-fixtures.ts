@@ -214,7 +214,6 @@ export interface ChatAttachment {
 export type ChatMessage =
   | { id: string; role: 'user'; text: string; skills?: string[]; sentText?: string; attachments?: ChatAttachment[] }
   | { id: string; role: 'assistant'; text: string; streaming?: boolean }
-  | { id: string; role: 'event'; text: string }
 
 export interface ChatRecord {
   id: string

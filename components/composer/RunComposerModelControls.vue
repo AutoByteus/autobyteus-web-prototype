@@ -19,7 +19,6 @@ import { computed, reactive } from 'vue'
 import ChatModelPicker from '~/components/chat/ChatModelPicker.vue'
 import ChatEffortPicker from '~/components/chat/ChatEffortPicker.vue'
 import { useActiveContextStore } from '~/stores/activeContextStore'
-import { useToasts } from '~/composables/useToasts'
 import { AgentStatus } from '~/types/agent/AgentStatus'
 import { CHAT_RUNTIMES, type ChatCombo, type ChatRuntimeId } from '~/prototype/chat/chat-fixtures'
 import { findModel } from '~/composables/chat/usePrototypeChat'
@@ -28,7 +27,6 @@ import { findModel } from '~/composables/chat/usePrototypeChat'
 const thinkingByRun = reactive<Record<string, string>>({})
 
 const activeContextStore = useActiveContextStore()
-const { addToast } = useToasts()
 const context = computed(() => activeContextStore.activeAgentContext)
 const config = computed(() => context.value?.config ?? null)
 const runId = computed(() => context.value?.state.runId ?? '')
@@ -47,7 +45,6 @@ const onSelectModel = (combo: ChatCombo) => {
   if (!config.value || combo.modelId === modelId.value) return
   config.value.llmModelIdentifier = combo.modelId
   if (combo.thinking) thinkingByRun[runId.value] = combo.thinking
-  addToast(`Model switched to ${findModel(combo.modelId)?.name ?? combo.modelId}. It applies when the run resumes with your next message.`, 'info')
 }
 const onSelectThinking = (level: string) => {
   thinkingByRun[runId.value] = level

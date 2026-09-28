@@ -214,7 +214,7 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     expect(!(await page.locator('[data-test^="chat-runtime-"][data-runtime]').count()), 'runtime stays fixed: no runtime rows')
     await shot(page, '10c-stopped-model-menu')
     await $(page, 'chat-model-option-codex:gpt-5.5').click()
-    expect((await $(page, 'chat-event').last().innerText()).includes('Model switched to gpt-5.5'), 'switch note')
+    expect((await $(page, 'chat-model-trigger').innerText()).includes('gpt-5.5') && !(await $(page, 'chat-event').count()), 'footer shows the new model; no divider notes in the conversation')
   })
   await check('CHK-015', 'Right side matches the product: collapsed to the tool strip by default; an icon opens the panel on that tab', async () => {
     expect(!(await $(page, 'chat-workspace-panel').count()), 'panel collapsed by default')
