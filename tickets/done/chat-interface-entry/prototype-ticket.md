@@ -28,7 +28,7 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 
 - Review URL: http://127.0.0.1:3271/chat (ticket-owned dev server, port 3271)
 - Scenario selection: `localStorage.setItem('autobyteus.prototype.scenario', 'chat_first_run' | 'chat_catalog_error')`, then reload; `localStorage.clear()` to reset.
-- Change log: `tickets/in-progress/chat-interface-entry/prototype-change-log.md` (PC-001..PC-010)
+- Change log: `tickets/done/chat-interface-entry/prototype-change-log.md` (PC-001..PC-010 in round 1)
 - Browser validation: `node prototype/scripts/validate-chat-interface-entry.mjs` → 21/21 pass, 0 browser errors (`review-evidence/round-1/results.json`)
 - Static checks: typecheck pass (pre-existing duplicate-import warnings only), lint pass, 12/12 tests.
 - Non-normative review screenshots: `review-evidence/round-1/`
