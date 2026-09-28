@@ -5,7 +5,7 @@
 - Product ticket: `chat-interface-entry`
 - Stable requirements package: `chat-interface-entry` (SR-001, requirements Draft)
 - Title: Chat entry above Agents, New chat, and easy runtime/model selection
-- Status: `Completed`
+- Status: `In Progress` (revision R2: Chat box correction requested by Solution Designer, SR-003)
 - Mode: `Product Experience Prototyping`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-28
 - Decision questions: DEC-001 (primary: runtime + model picker), DEC-002 to DEC-007 (supporting); REQ-001 to REQ-007 draft
@@ -33,7 +33,15 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - Static checks: typecheck pass (pre-existing duplicate-import warnings only), lint pass, 12/12 tests.
 - Non-normative review screenshots: `review-evidence/round-1/`
 
-## Final Package
+## Revision R2 (Chat box correction)
+
+- Request: Solution Designer, Product Design Requested (Result Correction, Chat box only), SR-003 — `/Users/normy/autobyteus_org/autobyteus-worktrees/chat-interface-entry/tickets/in-progress/chat-interface-entry/product-design-revision-request-handoff.md`
+- Approved requirements: SR-003 (`requirements-doc.md`, Approved 2026-09-28)
+- Scope: DEC-014 (Chat box = existing message box + existing Context Files area; Chat adds footer controls, `/`, `@`, mic), DEC-011 (no Recent; New chat preselects last-used runtime + model), DEC-009 (thinking schema rule stated), DEC-013 (team/org run views unchanged: revert prototype run-view changes; UXJ-010/UIS-010/VIS-020 superseded), DEC-005 consistency (`/` lands on Chat).
+- Worktree: `/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/chat-interface-entry`, branch `prototype/chat-interface-entry`, base `personal@1579886`
+- Review port: 3271
+
+## Final Package (R1, superseded in part by R2)
 
 - User confirmation: user message 2026-09-28 — approval conditional on a final consistency check ("If you think everything is consistent, then I think we're done with prototype UI … create the details … so that [the] solution engineer [has] enough UI specification"). Final consistency pass completed (PC-035); no discrepancy remained.
 - UI/UX specification: `tickets/done/chat-interface-entry/ui-ux-spec.md` (status `Approved`)
@@ -84,3 +92,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-28: user: no duplicate Stop run in the message box; just lock, stop via the tree. Implemented PC-033. Validation 30/30, 0 browser errors.
 - 2026-09-28: user: divider notes not needed. Removed (PC-034). Validation 30/30, 0 browser errors.
 - 2026-09-28: final consistency pass (PC-035); user confirmation recorded; final references VIS-001–VIS-025 captured; ui-ux-spec.md, behavior matrix and runbook written. `Completed`.
+- 2026-09-28: reopened for revision R2 (Solution Designer SR-003 correction request). `In Progress`.
