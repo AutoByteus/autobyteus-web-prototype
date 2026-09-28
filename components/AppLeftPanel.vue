@@ -18,7 +18,7 @@
                 type="button"
                 class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm font-medium transition-colors"
                 :class="[
-                  itemIndex === 0 ? 'pr-12' : '',
+                  item.key === 'chat' ? 'pr-20' : itemIndex === 0 ? 'pr-12' : '',
                   isPrimaryNavActive(item.key)
                     ? 'bg-gray-100 text-gray-900'
                     : 'text-gray-700 hover:bg-gray-100',
@@ -46,6 +46,21 @@
                 </svg>
                 <Icon v-else :icon="item.icon" class="h-4 w-4 flex-shrink-0" />
                 <span class="truncate">{{ t(item.labelKey) }}</span>
+              </button>
+
+              <button
+                v-if="item.key === 'chat'"
+                type="button"
+                data-test="chat-new-chat"
+                class="absolute right-10 top-1/2 inline-flex -translate-y-1/2 rounded-md p-2 transition-colors"
+                title="New chat"
+                aria-label="New chat"
+                :class="isPrimaryNavActive(item.key)
+                  ? 'text-gray-500 hover:bg-gray-200 hover:text-gray-700'
+                  : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'"
+                @click.stop="startNewChat"
+              >
+                <Icon icon="heroicons:pencil-square" class="h-[18px] w-[18px]" />
               </button>
 
               <button
@@ -79,19 +94,8 @@
         tabindex="-1"
         class="min-h-0 flex-1 border-b border-gray-200 bg-white outline-none"
       >
-        <div class="flex h-full flex-col">
-          <div v-if="isChatRoute" class="flex-shrink-0 px-2 pb-1 pt-2">
-            <NuxtLink
-              to="/chat"
-              data-test="chat-new-chat"
-              class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
-            >
-              <Icon icon="heroicons:pencil-square" class="h-4 w-4 flex-shrink-0" />
-              <span class="truncate">New chat</span>
-            </NuxtLink>
-          </div>
+        <div class="h-full">
           <WorkspaceAgentRunsTreePanel
-            class="min-h-0 flex-1"
             @run-selected="onRunningRunSelected"
             @run-created="onRunningRunCreated"
           />
@@ -122,6 +126,7 @@ import { computed, onMounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
 import WorkspaceAgentRunsTreePanel from '~/components/workspace/history/WorkspaceAgentRunsTreePanel.vue';
+import { usePrototypeChat } from '~/composables/chat/usePrototypeChat';
 import { useAppLeftPanelSectionResize } from '~/composables/useAppLeftPanelSectionResize';
 import { useLeftPanel } from '~/composables/useLeftPanel';
 import {
@@ -149,7 +154,6 @@ const {
   initPrimarySectionResize,
 } = useAppLeftPanelSectionResize();
 
-const isChatRoute = computed(() => route.path.startsWith('/chat'));
 const isSettingsActive = computed(() => route.path.startsWith('/settings'));
 const showSettingsNavigation = computed(() => isFeatureAvailableInRuntime('desktopSettings'));
 
@@ -164,6 +168,12 @@ const pushRoute = async (target: RouteLocationRaw): Promise<void> => {
 const navigateToPrimary = async (key: ShellPrimaryNavKey): Promise<void> => {
   useAgentSelectionStore().beginSelectionIntent();
   await pushRoute(resolvePrimaryRoute(key));
+};
+
+// chat-interface-entry: the pencil on the Chat item always opens a fresh New chat.
+const startNewChat = async (): Promise<void> => {
+  usePrototypeChat().state.draft.text = '';
+  await pushRoute('/chat');
 };
 
 const navigateToSettings = async (): Promise<void> => {

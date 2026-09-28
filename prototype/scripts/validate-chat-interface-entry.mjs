@@ -191,6 +191,14 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     await $(page, 'chat-new').waitFor()
     expect((await $(page, 'chat-agent-trigger').innerText()).includes('Daily Assistant'), 'agent preset')
   })
+  await check('CHK-023', 'The pencil on the Chat menu item opens a fresh New chat; no separate New chat row', async () => {
+    const pencil = page.locator('[data-test="app-left-panel-primary-nav"] [data-test="chat-new-chat"]')
+    expect(await pencil.count() === 1, 'pencil on Chat item')
+    expect(!(await page.locator('[data-test="app-left-panel-run-history"] [data-test="chat-new-chat"]').count()), 'no New chat row in Workspaces area')
+    await pencil.click()
+    await page.waitForURL(/\/chat$/)
+    await $(page, 'chat-new').waitFor()
+  })
   await check('CHK-018', 'Agents catalog is unchanged and still reachable', async () => {
     await page.locator('[data-test="app-left-panel-primary-nav"] li').nth(1).locator('button').first().click()
     await page.waitForURL('**/agents**')

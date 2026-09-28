@@ -5,7 +5,7 @@
 - Product ticket: `chat-interface-entry`
 - Stable requirements package: `chat-interface-entry` (SR-001, requirements Draft)
 - Title: Chat entry above Agents, New chat, and easy runtime/model selection
-- Status: `Awaiting User Review` (round 3)
+- Status: `Awaiting User Review` (round 4)
 - Mode: `Product Experience Prototyping`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-28
 - Decision questions: DEC-001 (primary: runtime + model picker), DEC-002 to DEC-007 (supporting); REQ-001 to REQ-007 draft
@@ -50,3 +50,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-28: round-1 prototype ready; `Awaiting User Review`.
 - 2026-09-28: user feedback on round 1 picker: "This UI is terrible." `In Progress`; redesigned (PC-011..PC-013); round 2 `Awaiting User Review`. Validation 21/21, 0 browser errors (`review-evidence/round-2/`).
 - 2026-09-28: user decisions: chats shown under Workspaces (DEC-004), Option B — single-agent runs open in the chat view, remove Save setup as agent and the ⋯ menu (DEC-003 out of scope). Implemented PC-014..PC-016; validation 22/22, 0 browser errors (`review-evidence/round-3/`). Round 3 `Awaiting User Review`.
+- 2026-09-28: user feedback: New chat row not clean; asked for a button on the Chat menu item. Implemented PC-017; validation 23/23, 0 browser errors (`review-evidence/round-4/`). Round 4 `Awaiting User Review`.
