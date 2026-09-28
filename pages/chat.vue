@@ -79,12 +79,11 @@
             </p>
           </div>
           <button
+            v-if="!state.workspacePanelOpen"
             type="button"
-            class="rounded-md p-2 transition-colors"
-            :class="state.workspacePanelOpen ? 'bg-gray-100 text-gray-700' : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'"
-            :aria-pressed="state.workspacePanelOpen ? 'true' : 'false'"
-            aria-label="Show files, terminal and activity"
-            title="Files, terminal and activity"
+            class="rounded-md p-1.5 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
+            aria-label="Show workspace tools"
+            title="Workspace tools"
             data-test="chat-toggle-workspace-panel"
             @click="state.workspacePanelOpen = !state.workspacePanelOpen"
           >
@@ -144,12 +143,16 @@
           </ChatComposer>
         </div>
       </div>
-      <ChatWorkspacePanel
+      <!-- The product's own right-side tool panel (same tabs as the Workspace view). -->
+      <div
         v-if="state.workspacePanelOpen"
-        class="hidden lg:flex"
-        :workspace="activeWorkspace"
-        @close="state.workspacePanelOpen = false"
-      />
+        class="relative hidden min-h-0 min-w-0 flex-none flex-col overflow-hidden border-l border-gray-200 bg-white p-0 shadow lg:flex"
+        :style="{ width: `${rightPanelWidth}px` }"
+        data-test="chat-workspace-panel"
+        @click.capture="onRightPanelClickCapture"
+      >
+        <RightSideTabs mode="desktop" />
+      </div>
     </template>
 
 
@@ -170,11 +173,23 @@ import ChatComposer from '~/components/chat/ChatComposer.vue'
 import ChatGlyph from '~/components/chat/ChatGlyph.vue'
 import ChatModelPicker from '~/components/chat/ChatModelPicker.vue'
 import ChatEffortPicker from '~/components/chat/ChatEffortPicker.vue'
-import ChatWorkspacePanel from '~/components/chat/ChatWorkspacePanel.vue'
+import RightSideTabs from '~/components/layout/RightSideTabs.vue'
+import { useRightPanel } from '~/composables/useRightPanel'
 import ChatWorkspacePicker from '~/components/chat/ChatWorkspacePicker.vue'
 import { findAgent, findModel, findRuntime, usePrototypeChat } from '~/composables/chat/usePrototypeChat'
 
 const chat = usePrototypeChat()
+const { rightPanelWidth } = useRightPanel()
+// The panel's own collapse control closes the chat's panel (chat keeps its own
+// open/closed state; it is hidden by default).
+const onRightPanelClickCapture = (event: MouseEvent) => {
+  const target = event.target as HTMLElement | null
+  if (target?.closest('[data-test="right-side-panel-toggle"]')) {
+    event.stopPropagation()
+    event.preventDefault()
+    state.workspacePanelOpen = false
+  }
+}
 const { state } = chat
 const route = useRoute()
 const router = useRouter()

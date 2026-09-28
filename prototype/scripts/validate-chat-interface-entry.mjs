@@ -163,13 +163,18 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     await $(page, 'chat-event').last().waitFor()
     expect((await $(page, 'chat-event').last().innerText()).includes('Model switched to gpt-5.5'), 'event row')
   })
-  await check('CHK-015', 'Workspace panel is hidden by default and opens on demand', async () => {
+  await check('CHK-015', 'The product right panel (all workspace tool tabs) is hidden by default and opens on demand', async () => {
     expect(!(await $(page, 'chat-workspace-panel').count()), 'hidden by default')
     await $(page, 'chat-toggle-workspace-panel').click()
     await $(page, 'chat-workspace-panel').waitFor()
+    const tabs = (await page.locator('[data-test="chat-workspace-panel"] [data-test="right-side-tab-list"] [role="tab"]').allInnerTexts()).map((t) => t.trim())
+    expect(['Files', 'Terminal', 'Activity', 'Token', 'Artifacts', 'VNC Viewer'].every((name) => tabs.includes(name)), `tabs ${tabs.join(',')}`)
+    expect(!(await $(page, 'chat-toggle-workspace-panel').count()), 'header toggle hidden while open')
   })
   await shot(page, '11-active-workspace-panel')
   await check('CHK-016', 'No chat ⋯ menu; archive/delete stay on the tree row (with confirmation)', async () => {
+    await page.locator('[data-test="chat-workspace-panel"] [data-test="right-side-panel-toggle"]').click()
+    expect(!(await $(page, 'chat-workspace-panel').count()), 'panel collapse control closes it')
     expect(!(await $(page, 'chat-more').count()), 'no ⋯ menu')
     const row = page.locator('[data-test="workspace-agent-run-row"]', { hasText: 'Plan a weekend in Munich' })
     await row.hover()

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T13:12:15.324Z",
+  "generatedAt": "2026-09-28T13:16:01.171Z",
   "baseUrl": "http://127.0.0.1:3271",
   "total": 24,
   "passed": 24,
@@ -76,7 +76,7 @@
     },
     {
       "id": "CHK-015",
-      "description": "Workspace panel is hidden by default and opens on demand",
+      "description": "The product right panel (all workspace tool tabs) is hidden by default and opens on demand",
       "pass": true
     },
     {
