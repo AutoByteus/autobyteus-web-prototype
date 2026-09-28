@@ -4,9 +4,9 @@ import type { RunTreeRow } from '~/utils/runTreeProjection'
 import type { ChatRecord, ChatWorkspace } from '~/prototype/chat/chat-fixtures'
 import { findAgent } from '~/composables/chat/usePrototypeChat'
 
-// chat-interface-entry prototype: a chat is an ordinary single-agent run, so it
-// is projected into the existing Workspaces tree (workspace -> agent -> run).
-// Temp workspace is pinned first; runs are newest first.
+// chat-interface-entry prototype: a chat is an ordinary agent run, so it is
+// projected into the existing Workspaces tree with the product's normal rules:
+// workspaces by name, agents by name, runs newest first. No special ordering.
 export const CHAT_WORKSPACE_KEY_PREFIX = 'workspace:'
 
 export function mergeChatRunsIntoTree(
@@ -52,8 +52,11 @@ export function mergeChatRunsIntoTree(
     }
     agentNode.runs.push(row)
   }
-  const temp = merged.filter((node) => node.workspaceKind === 'temp')
-  return [...temp, ...merged.filter((node) => node.workspaceKind !== 'temp')]
+  for (const node of merged) {
+    node.agents.sort((a, b) => a.agentName.localeCompare(b.agentName) || a.agentDefinitionId.localeCompare(b.agentDefinitionId))
+    for (const agent of node.agents) agent.runs.sort((a, b) => b.lastActivityAt.localeCompare(a.lastActivityAt))
+  }
+  return merged.sort((a, b) => a.workspaceName.localeCompare(b.workspaceName) || a.workspaceRootPath.localeCompare(b.workspaceRootPath))
 }
 
 export const isChatRunId = (chats: ChatRecord[], runId: string) => chats.some((chat) => chat.id === runId)

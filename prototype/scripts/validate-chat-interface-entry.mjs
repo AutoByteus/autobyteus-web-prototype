@@ -194,6 +194,10 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     await page.locator('[data-test="chat-workspace-panel"] [data-test="right-side-panel-toggle"]').click()
     expect(!(await $(page, 'chat-workspace-panel').count()), 'panel collapse control closes it')
     expect(!(await $(page, 'chat-more').count()), 'no ⋯ menu')
+    // Workspaces are collapsed by default (product behavior); open Temp workspace like a user would.
+    const tempSection = page.locator('[data-test="app-left-panel-run-history"] section', { hasText: 'Temp workspace' }).first()
+    await tempSection.locator('button', { hasText: 'Temp workspace' }).first().click()
+    await tempSection.locator('button[aria-expanded]', { hasText: 'Daily Assistant' }).first().click()
     const row = page.locator('[data-test="workspace-agent-run-row"]', { hasText: 'Plan a weekend in Munich' })
     await row.hover()
     await row.locator('button[title]').last().click()
@@ -258,6 +262,15 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     await page.locator('[data-test="app-left-panel-run-history"]', { hasText: 'Product Review Team' }).waitFor()
     await page.waitForTimeout(1200)
     await shot(page, '21-team-view-after-send')
+  })
+  await check('CHK-027', 'Chats follow the normal Workspaces tree rules: workspaces by name, collapsed unless holding the open chat, agents under each workspace', async () => {
+    await page.goto(`${baseUrl}/chat`)
+    await page.waitForTimeout(1200)
+    const names = (await page.locator('[data-test="app-left-panel-run-history"] section > div button:first-child span.truncate').allInnerTexts()).map((t) => t.trim()).filter(Boolean)
+    const sorted = [...names].sort((a, b) => a.localeCompare(b))
+    expect(JSON.stringify(names) === JSON.stringify(sorted), `workspace order ${names.join(' | ')}`)
+    expect(!(await page.locator('[data-test="workspace-agent-run-row"]').count()), 'all collapsed on a fresh New chat')
+    await shot(page, '22-tree-normal-order')
   })
   await check('CHK-023', 'The pencil on the Chat menu item opens a fresh New chat; no separate New chat row', async () => {
     const pencil = page.locator('[data-test="app-left-panel-primary-nav"] [data-test="chat-new-chat"]')

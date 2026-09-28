@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-28T13:42:55.285Z",
+  "generatedAt": "2026-09-28T14:46:55.734Z",
   "baseUrl": "http://127.0.0.1:3271",
-  "total": 26,
-  "passed": 26,
+  "total": 27,
+  "passed": 27,
   "results": [
     {
       "id": "CHK-001",
@@ -102,6 +102,11 @@
     {
       "id": "CHK-026",
       "description": "\"@\" addresses an agent or team; a team chat uses one shared model/workspace and opens in the real Team view",
+      "pass": true
+    },
+    {
+      "id": "CHK-027",
+      "description": "Chats follow the normal Workspaces tree rules: workspaces by name, collapsed unless holding the open chat, agents under each workspace",
       "pass": true
     },
     {

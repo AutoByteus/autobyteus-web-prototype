@@ -208,16 +208,7 @@ const isChatRun = (runId: string) => isChatRunId(prototypeChat.state.chats, runI
 const leaveDeletedChat = async (runId: string) => {
   if (activeChatRunId.value === runId) await router.replace('/chat');
 };
-let tempWorkspaceExpandedOnce = false;
 const expandActiveChat = () => {
-  if (!tempWorkspaceExpandedOnce) {
-    const temp = displayWorkspaceNodes.value.find((node) => node.workspaceKind === 'temp');
-    if (temp) {
-      tempWorkspaceExpandedOnce = true;
-      treeState.setWorkspaceExpanded(temp.stableKey, true);
-      for (const agent of temp.agents) treeState.setAgentExpanded(temp.stableKey, agent.agentDefinitionId, true);
-    }
-  }
   const runId = activeChatRunId.value;
   if (!runId) return;
   for (const node of displayWorkspaceNodes.value) {
