@@ -61,6 +61,15 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - Default entry point: `/chat`, reached from the first primary-navigation item `Chat` with no preview-only state (the approved experience is part of the normal product shell).
 - Open items for Solution Designer: OPEN-001 thinking control shape (schema-driven), OPEN-002 landing route (DEC-005), OPEN-003 Daily Assistant provisioning, OPEN-004 Recent persistence scope, OPEN-005 instruction wording, DEC-008 disposition.
 
+## Integration And Cleanup (R2)
+
+- Ticket result revision: `efa5a97` on `prototype/chat-interface-entry` (R2 implementation `883751c`, final package `af5b6b0`, move to done `efa5a97`)
+- Integration: `Completed` — canonical `personal` fast-forwarded `1579886` → `efa5a97` (this record is the following docs commit on `personal`).
+- Baseline promotion: `Completed` — the approved experience is part of the normal product shell (`/` lands on `/chat`); no preview-only route or state.
+- Post-integration validation: canonical `personal` on port 3212 — `validate-chat-interface-entry.mjs` 31/31 pass, 0 browser errors; `pnpm test` 12/12 (`review-evidence/post-integration-r2/results.json`). VIS manifest: 24/24 SHA-256 match.
+- Remote: `personal` pushed to `origin` (`AutoByteus/autobyteus-web-prototype`).
+- Cleanup: ticket dev server (3271) and canonical validation server (3212) stopped; ticket worktree and merged local branch `prototype/chat-interface-entry` removed.
+
 ## Integration And Cleanup (R1)
 
 - Ticket result revision: `27f9b74` on `prototype/chat-interface-entry`
@@ -106,3 +115,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-28: R2 implemented (PC-036–PC-040). Validation 31/31, 0 browser errors; typecheck pass. `Awaiting User Review` for the revised Chat box.
 - 2026-09-28: R2 review feedback: send button into the footer row (PC-041). Validation 31/31, 0 browser errors.
 - 2026-09-28: user confirmed R2 ("I think now the chat box looks good"). Final references recaptured (24 + manifest), ui-ux-spec.md R2, matrix and runbook updated. `Completed`.
+- 2026-09-28: R2 integrated (`personal` `1579886` → `efa5a97`), post-integration validation 31/31, pushed, cleaned up.
