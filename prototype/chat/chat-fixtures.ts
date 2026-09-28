@@ -63,10 +63,12 @@ export const CHAT_RUNTIMES: ChatRuntime[] = [
     label: 'Grok Build',
     shortLabel: 'Grok Build',
     monogram: 'GB',
-    tint: 'bg-gray-50 text-gray-400 border-gray-200',
-    enabled: false,
+    tint: 'bg-gray-50 text-gray-700 border-gray-300',
+    // Available by default like the real product. The `chat_runtime_unavailable`
+    // scenario turns it off to show the unavailable-runtime state.
+    enabled: true,
     unavailableReason: 'Grok Build CLI was not found on this machine.',
-    catalogLatencyMs: 0,
+    catalogLatencyMs: 600,
   },
 ]
 
@@ -94,6 +96,9 @@ export const CHAT_MODELS: ChatModel[] = [
   // Antigravity CLI
   { id: 'ag:gemini-3-pro', name: 'gemini-3-pro', provider: 'Google', runtime: 'antigravity_cli', description: 'Long context, multimodal', thinkingLevels: EFFORT, defaultThinking: 'Medium' },
   { id: 'ag:gemini-3-flash', name: 'gemini-3-flash', provider: 'Google', runtime: 'antigravity_cli', description: 'Fast, low latency' },
+  // Grok Build (catalog is reported by the Grok CLI; names are illustrative)
+  { id: 'grok:grok-4.2', name: 'grok-4.2', provider: 'xAI', runtime: 'grok_build', description: 'Most capable Grok model', thinkingLevels: EFFORT, defaultThinking: 'Medium' },
+  { id: 'grok:grok-code-fast-2', name: 'grok-code-fast-2', provider: 'xAI', runtime: 'grok_build', description: 'Fast agentic coding' },
 ]
 
 export const CHAT_AGENTS: ChatAgent[] = [

@@ -84,11 +84,11 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     await shot(page, '03-model-menu-loading')
     await $(page, 'chat-model-option-ag:gemini-3-pro').waitFor({ timeout: 4000 })
   })
-  await check('CHK-006', 'Unavailable runtime is shown as Not installed and cannot be opened', async () => {
+  await check('CHK-006', 'Grok Build is an available runtime with its own models by default', async () => {
     const row = $(page, 'chat-runtime-grok_build')
-    expect((await row.innerText()).includes('Not installed'), 'label')
-    expect(await row.getAttribute('aria-disabled') === 'true', 'disabled')
-    expect((await row.getAttribute('title') || '').includes('not found'), 'reason tooltip')
+    expect(!(await row.getAttribute('aria-disabled')), 'enabled')
+    await row.click()
+    await $(page, 'chat-model-option-grok:grok-4.2').waitFor({ timeout: 4000 })
   })
   await check('CHK-007', 'Search is cross-runtime and labels each result with its runtime', async () => {
     await $(page, 'chat-model-search').fill('opus')
@@ -217,6 +217,20 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     await shot(page, '13-model-picker-error')
     await $(page, 'chat-model-retry').click()
     await $(page, 'chat-model-option-ag:gemini-3-pro').waitFor({ timeout: 4000 })
+  })
+  await context.close()
+}
+
+// ---- Unavailable runtime scenario ----
+{
+  const { context, page } = await open('/chat', { scenario: 'chat_runtime_unavailable' })
+  await check('CHK-024', 'Scenario: a runtime missing on this machine reads Not installed with its reason and cannot open', async () => {
+    await $(page, 'chat-model-trigger').click()
+    const row = $(page, 'chat-runtime-grok_build')
+    expect((await row.innerText()).includes('Not installed'), 'label')
+    expect(await row.getAttribute('aria-disabled') === 'true', 'disabled')
+    expect((await row.getAttribute('title') || '').includes('not found'), 'reason tooltip')
+    await shot(page, '18-runtime-unavailable-scenario')
   })
   await context.close()
 }

@@ -117,6 +117,8 @@ const initialize = () => {
   if (state.initialized && state.scenario === scenario) return
   state.scenario = scenario
   const firstRun = scenario === 'chat_first_run'
+  // Scenario-only: show a runtime that is not installed on this machine.
+  findRuntime('grok_build').enabled = scenario !== 'chat_runtime_unavailable'
   state.chats = firstRun ? [] : clone(INITIAL_CHATS)
   state.recents = firstRun ? [] : clone(INITIAL_RECENTS)
   state.favorites = firstRun ? [] : [...INITIAL_FAVORITES]

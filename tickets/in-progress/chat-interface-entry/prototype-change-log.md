@@ -27,4 +27,5 @@ All entries are **proposals under user review** (rounds 1–4). Nothing here is 
 
 - Chat state, catalogs, streaming replies and created agents are browser-local synthetic fixtures (`prototype/chat/chat-fixtures.ts`, `composables/chat/usePrototypeChat.ts`). No production run, catalog, GraphQL or stream protocol is reproduced.
 - Model names, descriptions, providers, workspace paths, chat titles and reply text are **illustrative**.
-- Scenarios: default; `chat_first_run` (no chats/recents/pins); `chat_catalog_error` (first Antigravity CLI catalog load fails, Retry recovers).
+- Runtimes: all five supported runtimes (AutoByteus, Codex App Server, Claude Agent SDK, Antigravity CLI, Grok Build) are available by default, matching the user's installation. Grok Build models are illustrative (the real catalog is reported by the Grok CLI).
+- Scenarios: default; `chat_first_run` (no chats/recents); `chat_catalog_error` (first Antigravity CLI catalog load fails, Retry recovers); `chat_runtime_unavailable` (Grok Build not installed on this machine — shows `Not installed` with the reason on hover).

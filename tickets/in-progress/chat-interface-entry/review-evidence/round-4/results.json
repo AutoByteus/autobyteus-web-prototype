@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-28T13:10:32.819Z",
+  "generatedAt": "2026-09-28T13:12:15.324Z",
   "baseUrl": "http://127.0.0.1:3271",
-  "total": 23,
-  "passed": 23,
+  "total": 24,
+  "passed": 24,
   "results": [
     {
       "id": "CHK-001",
@@ -31,7 +31,7 @@
     },
     {
       "id": "CHK-006",
-      "description": "Unavailable runtime is shown as Not installed and cannot be opened",
+      "description": "Grok Build is an available runtime with its own models by default",
       "pass": true
     },
     {
@@ -107,6 +107,11 @@
     {
       "id": "CHK-019",
       "description": "Catalog error shows retry and recovers",
+      "pass": true
+    },
+    {
+      "id": "CHK-024",
+      "description": "Scenario: a runtime missing on this machine reads Not installed with its reason and cannot open",
       "pass": true
     },
     {
