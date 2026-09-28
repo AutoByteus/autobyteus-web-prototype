@@ -53,20 +53,6 @@
       >
         <ChatGlyph name="paperclip" class="h-4 w-4" />
       </button>
-      <button
-        ref="skillsButtonRef"
-        type="button"
-        data-test="chat-skills-trigger"
-        class="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[0.8125rem] leading-5 text-gray-600 transition-colors hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
-        :class="picker.open.value && pickerMode === 'button' ? 'bg-gray-100' : ''"
-        :aria-expanded="picker.open.value ? 'true' : 'false'"
-        aria-haspopup="listbox"
-        title="Use a skill (or type /)"
-        @click="openFromButton"
-      >
-        <Icon icon="heroicons:sparkles" class="h-4 w-4" />
-        <span>Skills</span>
-      </button>
       <slot name="left" />
       <div class="ml-auto flex items-center gap-0.5">
         <slot name="right" />
@@ -105,20 +91,7 @@
       class="absolute left-2 z-50 flex w-[23rem] max-w-[calc(100%-1rem)] flex-col rounded-lg border border-gray-200 bg-white text-left shadow-lg"
       :class="picker.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5'"
     >
-      <div v-if="pickerMode === 'button'" class="flex items-center gap-2 border-b border-gray-100 px-3 py-2">
-        <ChatGlyph name="search" class="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
-        <input
-          ref="skillSearchRef"
-          v-model="buttonQuery"
-          data-test="chat-skill-search"
-          type="text"
-          class="w-full border-0 bg-transparent p-0 text-[0.8125rem] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0"
-          placeholder="Search skills"
-          aria-label="Search skills"
-          @keydown="onSearchKeydown"
-        >
-      </div>
-      <p v-else class="border-b border-gray-100 px-3 py-1.5 text-[0.6875rem] text-gray-400">
+      <p class="border-b border-gray-100 px-3 py-1.5 text-[0.6875rem] text-gray-400">
         <template v-if="menuKind === 'target'">Chat with <span class="font-medium text-gray-600">@{{ slashQuery }}</span> · ↑↓ to move, Enter to choose</template>
         <template v-else>Skills matching <span class="font-medium text-gray-600">/{{ slashQuery }}</span> · ↑↓ to move, Enter to add</template>
       </p>
@@ -213,21 +186,19 @@ const emit = defineEmits<{
 
 const rootRef = ref<HTMLElement | null>(null)
 const textareaRef = ref<HTMLTextAreaElement | null>(null)
-const skillsButtonRef = ref<HTMLElement | null>(null)
-const skillSearchRef = ref<HTMLInputElement | null>(null)
 const minHeight = computed(() => (props.size === 'large' ? 88 : 52))
 const height = ref(minHeight.value)
 const canSend = computed(() => !props.starting && !props.sendBlockedReason && (props.modelValue.trim().length > 0 || props.skills.length > 0))
 
 // Skill menu state
-const picker = useChatPopover(rootRef, skillsButtonRef, 340)
-const pickerMode = ref<'button' | 'slash'>('button')
+// The menu opens only from typing "/" (skills) or "@" (agents/teams).
+const picker = useChatPopover(rootRef, textareaRef, 340)
+const pickerMode = ref<'slash'>('slash')
 const menuKind = ref<'skill' | 'target'>('skill')
-const buttonQuery = ref('')
 const slashQuery = ref('')
 const slashStart = ref(-1)
 const highlight = ref(0)
-const activeQuery = computed(() => (pickerMode.value === 'slash' ? slashQuery.value : buttonQuery.value).trim().toLowerCase())
+const activeQuery = computed(() => slashQuery.value.trim().toLowerCase())
 // Rank: name prefix, then name contains, then description contains.
 const filteredSkills = computed(() => {
   const q = activeQuery.value
@@ -357,23 +328,6 @@ const onTextareaKeydown = (event: KeyboardEvent) => {
     event.preventDefault()
     submit()
   }
-}
-
-const onSearchKeydown = (event: KeyboardEvent) => {
-  if (event.key === 'ArrowDown') { event.preventDefault(); moveHighlight(1) }
-  else if (event.key === 'ArrowUp') { event.preventDefault(); moveHighlight(-1) }
-  else if (event.key === 'Enter' && filteredSkills.value.length) { event.preventDefault(); chooseSkill(filteredSkills.value[highlight.value].name) }
-}
-
-const openFromButton = async () => {
-  if (picker.open.value && pickerMode.value === 'button') { picker.close(true); return }
-  pickerMode.value = 'button'
-  menuKind.value = 'skill'
-  buttonQuery.value = ''
-  highlight.value = 0
-  if (!picker.open.value) await picker.show()
-  await nextTick()
-  skillSearchRef.value?.focus()
 }
 
 const submit = () => {

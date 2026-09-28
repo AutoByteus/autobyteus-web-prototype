@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T14:55:35.609Z",
+  "generatedAt": "2026-09-28T14:57:29.790Z",
   "baseUrl": "http://127.0.0.1:3271",
   "total": 28,
   "passed": 28,
@@ -51,7 +51,7 @@
     },
     {
       "id": "CHK-010",
-      "description": "Skills: \"/\" opens a ranked skill menu, Enter tags it; Skills button searches; chips removable",
+      "description": "Skills: \"/\" opens a ranked skill menu (bare \"/\" lists all), Enter or click tags it; chips removable",
       "pass": true
     },
     {
