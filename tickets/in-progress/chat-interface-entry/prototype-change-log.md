@@ -1,7 +1,7 @@
 # Prototype Change Log — chat-interface-entry
 
 Base: accepted prototype `5ae0fe1` (source pin `origin/personal@fcd3e83a4ca931ba52ed19bd37b8df3050ee529e`).
-R1 (PC-001–PC-035) was user-confirmed 2026-09-28. R2 (PC-036–PC-040) is a Solution Designer–requested correction (SR-003) under user review.
+R1 (PC-001–PC-035) was user-confirmed 2026-09-28. R2 (PC-036–PC-041) is a Solution Designer–requested correction (SR-003) under user review.
 
 | ID | Kind | Change | Related IDs | Preserved behavior |
 | --- | --- | --- | --- | --- |
@@ -45,6 +45,7 @@ R1 (PC-001–PC-035) was user-confirmed 2026-09-28. R2 (PC-036–PC-040) is a So
 | PC-038 | Rule (R2, DEC-009) | Thinking control is schema-driven: it shows only the parameters the selected runtime/model exposes (on/off, effort, budget or level) and is hidden when the model has none; choosing a model applies its default thinking. The prototype's effort levels remain illustrative. | DEC-009, REQ-006 | — |
 | PC-039 | Revert (R2, DEC-013) | Team-member and org-member run views are unchanged: the prototype's run-view message box files are restored to the accepted baseline (`5ae0fe1`); the run-view model/thinking footer and chip attachments are removed. UXJ-010, UIS-010 and VIS-020 are superseded. | DEC-013 | Product run-view message box and gear settings editor |
 | PC-040 | Consistency (R2, DEC-005) | The app lands on Chat (New chat): `/` redirects to `/chat` ("Opening Chat..."). | DEC-005 | — |
+| PC-041 | Change (R2 review, user: "why not put the send button on the same row on the last column?") | In the Chat box, send/stop (and the mic, when available) move from inside the textarea to the end of the footer row: `… model · thinking · [🎤] · ➤/■`. Product button styles kept (round, `bg-blue-600` send / `bg-red-600` stop / `bg-slate-100` mic, `shadow-sm`), sized 32px to fit the row; the textarea spans the full width. Team/org run views keep their own box unchanged (DEC-013). | DEC-014, REQ-013 | Send/stop/mic behavior |
 
 ## Simulation boundaries
 

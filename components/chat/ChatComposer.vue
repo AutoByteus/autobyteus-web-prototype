@@ -42,7 +42,7 @@
             ref="textareaRef"
             :value="modelValue"
             data-test="chat-composer-input"
-            class="w-full px-3 py-2.5 pr-14 border-0 focus:ring-0 focus:outline-none resize-none bg-transparent text-[0.9375rem] leading-6"
+            class="w-full px-3 py-2.5 border-0 focus:ring-0 focus:outline-none resize-none bg-transparent text-[0.9375rem] leading-6"
             :style="{ height: `${height}px`, minHeight: `${MIN_HEIGHT}px`, maxHeight: `${MAX_HEIGHT}px` }"
             :placeholder="placeholder"
             :aria-label="placeholder"
@@ -52,43 +52,6 @@
             @keydown="onTextareaKeydown"
           ></textarea>
 
-          <button
-            v-if="voiceAvailable || voice !== 'idle'"
-            type="button"
-            data-test="composer-voice"
-            class="absolute bottom-2 right-14 flex items-center justify-center p-2 rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-            :class="voice === 'recording' ? 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500/50' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 focus:ring-slate-400/50'"
-            :title="voice === 'recording' ? 'Stop recording' : 'Start voice input'"
-            :disabled="voice === 'transcribing' || starting"
-            @click="toggleVoice"
-          >
-            <Icon :icon="voice === 'recording' ? 'heroicons:stop-solid' : 'heroicons:microphone-solid'" class="h-5 w-5" />
-          </button>
-
-          <button
-            v-if="running"
-            type="button"
-            data-test="chat-stop"
-            class="absolute bottom-2 right-2 flex items-center justify-center p-2 text-white rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm bg-red-600 hover:bg-red-700 focus:ring-red-500/50"
-            title="Stop generation"
-            aria-label="Stop generation"
-            @click="emit('stop')"
-          >
-            <Icon icon="heroicons:stop-solid" class="h-5 w-5" />
-          </button>
-          <button
-            v-else
-            type="button"
-            data-test="chat-send"
-            class="absolute bottom-2 right-2 flex items-center justify-center p-2 text-white rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed bg-blue-600 hover:bg-blue-700 focus:ring-blue-500/50"
-            :disabled="!canSend"
-            :title="sendBlockedReason || 'Send message'"
-            :aria-label="sendBlockedReason || 'Send message'"
-            @click="submit"
-          >
-            <span v-if="starting" class="block h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>
-            <Icon v-else icon="heroicons:paper-airplane-solid" class="h-5 w-5" />
-          </button>
         </div>
 
         <div
@@ -111,6 +74,44 @@
       <slot name="left" />
       <div class="ml-auto flex items-center gap-0.5">
         <slot name="right" />
+        <span class="w-1"></span>
+        <!-- Mic, then send/stop: the last items of the footer row (product button styles) -->
+        <button
+          v-if="voiceAvailable || voice !== 'idle'"
+          type="button"
+          data-test="composer-voice"
+          class="flex h-8 w-8 items-center justify-center rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          :class="voice === 'recording' ? 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500/50' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 focus:ring-slate-400/50'"
+          :title="voice === 'recording' ? 'Stop recording' : 'Start voice input'"
+          :disabled="voice === 'transcribing' || starting"
+          @click="toggleVoice"
+        >
+          <Icon :icon="voice === 'recording' ? 'heroicons:stop-solid' : 'heroicons:microphone-solid'" class="h-4 w-4" />
+        </button>
+        <button
+          v-if="running"
+          type="button"
+          data-test="chat-stop"
+          class="flex h-8 w-8 items-center justify-center text-white rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm bg-red-600 hover:bg-red-700 focus:ring-red-500/50"
+          title="Stop generation"
+          aria-label="Stop generation"
+          @click="emit('stop')"
+        >
+          <Icon icon="heroicons:stop-solid" class="h-4 w-4" />
+        </button>
+        <button
+          v-else
+          type="button"
+          data-test="chat-send"
+          class="flex h-8 w-8 items-center justify-center text-white rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed bg-blue-600 hover:bg-blue-700 focus:ring-blue-500/50"
+          :disabled="!canSend"
+          :title="sendBlockedReason || 'Send message'"
+          :aria-label="sendBlockedReason || 'Send message'"
+          @click="submit"
+        >
+          <span v-if="starting" class="block h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>
+          <Icon v-else icon="heroicons:paper-airplane-solid" class="h-4 w-4" />
+        </button>
       </div>
     </div>
 

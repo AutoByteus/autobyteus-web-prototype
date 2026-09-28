@@ -94,3 +94,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-28: final consistency pass (PC-035); user confirmation recorded; final references VIS-001–VIS-025 captured; ui-ux-spec.md, behavior matrix and runbook written. `Completed`.
 - 2026-09-28: reopened for revision R2 (Solution Designer SR-003 correction request). `In Progress`.
 - 2026-09-28: R2 implemented (PC-036–PC-040). Validation 31/31, 0 browser errors; typecheck pass. `Awaiting User Review` for the revised Chat box.
+- 2026-09-28: R2 review feedback: send button into the footer row (PC-041). Validation 31/31, 0 browser errors.
