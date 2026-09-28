@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T16:45:57.006Z",
+  "generatedAt": "2026-09-28T16:57:57.164Z",
   "baseUrl": "http://127.0.0.1:3271",
   "total": 30,
   "passed": 30,
@@ -84,7 +84,7 @@
     },
     {
       "id": "CHK-014",
-      "description": "Live run: model and thinking are locked (product rule); Stop run unlocks them; the change applies when the run resumes",
+      "description": "Live run: model and thinking are simply locked (no extra Stop button); stopping the run in the tree unlocks them",
       "pass": true,
       "browserErrors": []
     },

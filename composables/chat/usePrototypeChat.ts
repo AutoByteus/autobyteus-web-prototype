@@ -380,7 +380,7 @@ const stopRun = (chatId: string) => {
   if (!chat || !chat.active) return
   stopChat(chatId)
   chat.active = false
-  chat.messages.push({ id: nextId('m'), role: 'event', text: 'Run stopped. You can change its model now; your next message resumes it.' })
+  chat.messages.push({ id: nextId('m'), role: 'event', text: 'Run stopped. Your next message resumes it.' })
 }
 
 const switchChatModel = (chatId: string, combo: ChatCombo) => {

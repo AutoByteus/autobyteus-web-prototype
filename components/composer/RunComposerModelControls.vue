@@ -39,7 +39,7 @@ const runtime = computed<ChatRuntimeId>(() => {
 const modelId = computed(() => String(config.value?.llmModelIdentifier || ''))
 // Product rule: model settings change only while the run is stopped (not active).
 const lockedReason = computed(() => context.value && context.value.state.currentStatus !== AgentStatus.Offline
-  ? 'This run is live. Stop it to change its model or thinking.'
+  ? 'Locked while the run is live. Stop it in the Workspaces tree to change the model or thinking.'
   : null)
 const thinking = computed(() => thinkingByRun[runId.value] ?? findModel(modelId.value)?.defaultThinking)
 

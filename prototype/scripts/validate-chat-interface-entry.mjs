@@ -50,7 +50,7 @@ async function check(id, description, fn) {
     await fn()
     results.push({ id, description, pass: true, browserErrors: errors.slice(errorsBefore).map((e) => e.text) })
   } catch (error) {
-    results.push({ id, description, pass: false, error: String(error?.message || error).split('\n')[0], browserErrors: errors.slice(errorsBefore).map((e) => e.text) })
+    results.push({ id, description, pass: false, error: String(error?.message || error).split('\n').slice(0, 6).join(' | '), browserErrors: errors.slice(errorsBefore).map((e) => e.text) })
     await currentPage?.screenshot({ path: resolve(outDir, `FAIL-${id}.png`) }).catch(() => {})
   }
 }
@@ -193,17 +193,21 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     expect(!(await page.locator('[data-test="chat-active"] header').innerText()).includes('Running'), 'run returned to idle')
   })
   await shot(page, '09-active-chat')
-  await check('CHK-014', 'Live run: model and thinking are locked (product rule); Stop run unlocks them; the change applies when the run resumes', async () => {
+  await check('CHK-014', 'Live run: model and thinking are simply locked (no extra Stop button); stopping the run in the tree unlocks them', async () => {
     expect((await $(page, 'chat-run-status').innerText()).includes('Idle'), 'live run shows Idle after the reply')
     expect((await $(page, 'chat-model-trigger').getAttribute('data-locked')) === 'true', 'model locked while live')
     expect((await $(page, 'chat-effort-trigger').getAttribute('data-locked')) === 'true', 'thinking locked while live')
-    await $(page, 'chat-model-trigger').click()
-    await $(page, 'chat-model-locked').waitFor()
-    expect((await $(page, 'chat-model-locked').innerText()).includes('Stop it to change'), 'explains the rule')
+    expect((await $(page, 'chat-model-trigger').getAttribute('aria-disabled')) === 'true', 'model exposed as disabled')
+    expect((await $(page, 'chat-effort-trigger').getAttribute('aria-disabled')) === 'true', 'thinking exposed as disabled')
+    await $(page, 'chat-model-trigger').click({ force: true })
+    await page.waitForTimeout(200)
+    expect(!(await $(page, 'chat-model-picker').count()) && !(await $(page, 'chat-model-locked').count()), 'clicking a locked control opens nothing')
+    expect(!(await $(page, 'chat-model-stop-run').count()), 'no duplicate Stop run in the box')
     await shot(page, '10-active-model-locked')
-    await $(page, 'chat-model-stop-run').click()
-    expect((await $(page, 'chat-run-status').innerText()).includes('Stopped'), 'run stopped')
-    expect((await $(page, 'chat-event').last().innerText()).includes('Run stopped'), 'stop note')
+    const runId = new URL(page.url()).searchParams.get('id')
+    await page.locator(`[data-test="terminate-agent-run"][data-run-id="${runId}"]`).click()
+    await page.waitForTimeout(400)
+    expect((await $(page, 'chat-run-status').innerText()).includes('Stopped'), 'run stopped from the tree')
     expect(!(await $(page, 'chat-model-trigger').getAttribute('data-locked')), 'unlocked when stopped')
     await $(page, 'chat-model-trigger').click()
     await $(page, 'chat-runtime-locked-note').waitFor()

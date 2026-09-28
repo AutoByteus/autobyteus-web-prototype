@@ -192,15 +192,13 @@
                 :model-id="activeChat.modelId"
                 :thinking="activeChat.thinking"
                 locked-runtime
-                :locked-reason="activeChat.active ? 'This run is live. Stop it to change its model or thinking; your next message resumes it.' : null"
-                can-stop
-                @stop-run="chat.stopRun(activeChat!.id)"
+                :locked-reason="activeChat.active ? LIVE_RUN_LOCK : null"
                 @select="(combo) => chat.switchChatModel(activeChat!.id, combo)"
               />
               <ChatEffortPicker
                 :model-id="activeChat.modelId"
                 :thinking="activeChat.thinking"
-                :locked-reason="activeChat.active ? 'This run is live. Stop it to change its model or thinking.' : null"
+                :locked-reason="activeChat.active ? LIVE_RUN_LOCK : null"
                 @select="(level) => chat.switchChatModel(activeChat!.id, { runtime: activeChat!.runtime, modelId: activeChat!.modelId, thinking: level })"
               />
             </template>
@@ -285,6 +283,7 @@ const draftBlockedReason = computed(() => {
 })
 
 const draftTeam = computed(() => findTeam(state.draft.teamId))
+const LIVE_RUN_LOCK = 'Locked while the run is live. Stop it in the Workspaces tree to change the model or thinking.'
 const isAssistantDraft = computed(() => state.draft.agentId === CHAT_ASSISTANT_ID && !state.draft.teamId)
 const onSelectTarget = (target: { kind: 'agent' | 'team'; id: string }) => {
   if (target.kind === 'team') chat.setDraftTeam(target.id)

@@ -4,8 +4,9 @@
       ref="triggerRef"
       type="button"
       data-test="chat-model-trigger"
-      class="inline-flex max-w-[20rem] items-center gap-1.5 rounded-md px-2 py-1 text-[0.8125rem] leading-5 transition-colors hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
-      :class="popover.open.value ? 'bg-gray-100' : ''"
+      class="inline-flex max-w-[20rem] items-center gap-1.5 rounded-md px-2 py-1 text-[0.8125rem] leading-5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+      :class="[lockedReason ? 'cursor-default' : 'hover:bg-gray-100', popover.open.value ? 'bg-gray-100' : '']"
+      :aria-disabled="lockedReason ? 'true' : undefined"
       :aria-expanded="popover.open.value ? 'true' : 'false'"
       aria-haspopup="menu"
       :aria-label="lockedReason ? `Model: ${modelName} on ${runtimeDef.label}. Locked: ${lockedReason}` : `Model: ${modelName} on ${runtimeDef.label}. Change model`"
@@ -20,31 +21,6 @@
     </button>
 
     <div v-if="popover.open.value" class="fixed inset-0 z-40 bg-black/20 sm:hidden" aria-hidden="true"></div>
-
-    <!-- Locked: the run is live; model settings change only while it is stopped. -->
-    <div
-      v-if="popover.open.value && lockedReason"
-      role="dialog"
-      aria-label="Model locked"
-      data-test="chat-model-locked"
-      class="absolute right-0 z-50 w-72 rounded-lg border border-gray-200 bg-white p-3 text-left shadow-lg max-sm:fixed max-sm:inset-x-2 max-sm:bottom-2 max-sm:top-auto max-sm:m-0 max-sm:w-auto"
-      :class="popover.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5'"
-    >
-      <p class="flex items-start gap-2 text-[0.8125rem] text-gray-700">
-        <ChatGlyph name="lock" class="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-400" />
-        <span>{{ lockedReason }}</span>
-      </p>
-      <div v-if="canStop" class="mt-3 flex justify-end">
-        <button
-          type="button"
-          data-test="chat-model-stop-run"
-          class="inline-flex items-center gap-1.5 rounded-md border border-gray-300 bg-white px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50"
-          @click="popover.close(true); emit('stop-run')"
-        >
-          <ChatGlyph name="stop" class="h-3 w-3 text-red-600" /> Stop run
-        </button>
-      </div>
-    </div>
 
     <div
       v-if="popover.open.value && !lockedReason"
@@ -203,11 +179,10 @@ const props = defineProps<{
   modelId: string
   thinking?: string
   lockedRuntime?: boolean
-  /** Set while the run is live: model settings can only change when it is stopped. */
+  /** Set while the run is live: the control is simply locked (stop the run in the Workspaces tree to unlock). */
   lockedReason?: string | null
-  canStop?: boolean
 }>()
-const emit = defineEmits<{ (e: 'select', value: ChatCombo): void; (e: 'stop-run'): void }>()
+const emit = defineEmits<{ (e: 'select', value: ChatCombo): void }>()
 
 const chat = usePrototypeChat()
 const rootRef = ref<HTMLElement | null>(null)
@@ -234,7 +209,7 @@ const isCurrent = (model: ChatModel) => model.runtime === props.runtime && model
 const recents = computed(() => chat.state.recents.filter((combo) => findRuntime(combo.runtime).enabled && findModel(combo.modelId)).slice(0, 3))
 
 const onToggle = async () => {
-  if (props.lockedReason) { await popover.toggle(); return }
+  if (props.lockedReason) return
   if (!popover.open.value) {
     query.value = ''
     submenuRuntime.value = null
