@@ -228,6 +228,25 @@ const expandActiveChat = () => {
   }
 };
 watch(() => [activeChatRunId.value, displayWorkspaceNodes.value.length], expandActiveChat, { immediate: true });
+// Prototype hand-off from Chat: open the team run in the existing Team view
+// through the product's own tree selection.
+const openPendingTeam = async () => {
+  const teamRunId = prototypeChat.state.pendingTeamOpen;
+  if (!teamRunId || route?.path !== '/workspace') return;
+  for (const node of displayWorkspaceNodes.value) {
+    const team = workspaceTeams(node.workspaceRootPath).find((candidate) => candidate.teamRunId === teamRunId);
+    if (!team) continue;
+    prototypeChat.state.pendingTeamOpen = null;
+    if (prototypeChat.state.pendingTeamNotice) {
+      addToast(prototypeChat.state.pendingTeamNotice, 'info');
+      prototypeChat.state.pendingTeamNotice = null;
+    }
+    if (!treeState.isWorkspaceExpanded(node.stableKey)) treeState.setWorkspaceExpanded(node.stableKey, true);
+    await onSelectTeam(team, node.stableKey);
+    return;
+  }
+};
+watch(() => [prototypeChat.state.pendingTeamOpen, route?.path, displayWorkspaceNodes.value.length], () => { void openPendingTeam(); });
 const { execute: executeSubjectAction } = useWorkspaceHistorySubjectActions();
 const {
   getOrgAvatarUrl,

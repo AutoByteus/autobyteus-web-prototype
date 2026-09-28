@@ -168,6 +168,30 @@ export const CHAT_AGENTS: ChatAgent[] = [
   },
 ]
 
+export interface ChatTeam {
+  id: string
+  name: string
+  initials: string
+  description: string
+  coordinator: string
+  memberCount: number
+  /** Prototype only: stored team run opened as a stand-in for the newly started run. */
+  standInRunId: string
+}
+
+// Mirrors the product fixture's team definition so the hand-off opens the real Team view.
+export const CHAT_TEAMS: ChatTeam[] = [
+  {
+    id: 'team-product',
+    name: 'Product Review Team',
+    initials: 'PR',
+    description: 'Coordinator researcher with a documentation writer.',
+    coordinator: 'researcher',
+    memberCount: 2,
+    standInRunId: 'team-run-001',
+  },
+]
+
 export const TEMP_WORKSPACE_ID = 'temp_ws_default'
 
 export const CHAT_WORKSPACES: ChatWorkspace[] = [
@@ -186,7 +210,7 @@ export const INITIAL_RECENTS: ChatCombo[] = [
 export const INITIAL_FAVORITES: string[] = ['codex_app_server|gpt-5.5-codex', 'autobyteus|qwen3-coder-30b']
 
 export type ChatMessage =
-  | { id: string; role: 'user'; text: string; skills?: string[] }
+  | { id: string; role: 'user'; text: string; skills?: string[]; sentText?: string }
   | { id: string; role: 'assistant'; text: string; streaming?: boolean }
   | { id: string; role: 'event'; text: string }
 

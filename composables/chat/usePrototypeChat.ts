@@ -2,6 +2,7 @@ import { computed, reactive } from 'vue'
 import {
   CHAT_ASSISTANT_ID,
   CHAT_AGENTS,
+  CHAT_TEAMS,
   CHAT_MODELS,
   CHAT_RUNTIMES,
   CHAT_WORKSPACES,
@@ -14,6 +15,7 @@ import {
   type ChatModel,
   type ChatRecord,
   type ChatRuntimeId,
+  type ChatTeam,
   type ChatWorkspace,
 } from '~/prototype/chat/chat-fixtures'
 
@@ -41,6 +43,8 @@ interface DraftState {
   workspaceId: string
   text: string
   skills: string[]
+  /** Set when the new chat is addressed to an agent team (its coordinator). */
+  teamId: string | null
 }
 
 interface ChatState {
@@ -57,6 +61,9 @@ interface ChatState {
   starting: boolean
   workspacePanelOpen: boolean
   toast: string | null
+  /** Prototype hand-off: team run to open in the existing Team workspace view. */
+  pendingTeamOpen: string | null
+  pendingTeamNotice: string | null
   loadedAt: number
   lastActivity: Record<string, number>
 }
@@ -77,10 +84,12 @@ const state = reactive<ChatState>({
     grok_build: 'idle',
   },
   catalogFailuresRemaining: {},
-  draft: { agentId: CHAT_ASSISTANT_ID, runtime: 'autobyteus', modelId: 'gpt-5.5', workspaceId: TEMP_WORKSPACE_ID, text: '', skills: [] },
+  draft: { agentId: CHAT_ASSISTANT_ID, runtime: 'autobyteus', modelId: 'gpt-5.5', workspaceId: TEMP_WORKSPACE_ID, text: '', skills: [], teamId: null },
   starting: false,
   workspacePanelOpen: false,
   toast: null,
+  pendingTeamOpen: null,
+  pendingTeamNotice: null,
   loadedAt: Date.now(),
   lastActivity: {},
 })
@@ -114,6 +123,7 @@ const resetDraft = () => {
     workspaceId: TEMP_WORKSPACE_ID,
     text: '',
     skills: [],
+    teamId: null,
   }
 }
 
@@ -125,6 +135,11 @@ const initialize = () => {
   // Scenario-only: show a runtime that is not installed on this machine.
   findRuntime('grok_build').enabled = scenario !== 'chat_runtime_unavailable'
   state.chats = firstRun ? [] : clone(INITIAL_CHATS)
+  for (const record of state.chats) {
+    for (const message of record.messages) {
+      if (message.role === 'user' && message.skills?.length) message.sentText = buildSentText(message.text, message.skills)
+    }
+  }
   state.recents = firstRun ? [] : clone(INITIAL_RECENTS)
   state.favorites = firstRun ? [] : [...INITIAL_FAVORITES]
   state.extraWorkspaces = []
@@ -147,7 +162,7 @@ const initialize = () => {
 const showToast = (message: string) => {
   state.toast = message
   if (toastTimer) clearTimeout(toastTimer)
-  toastTimer = setTimeout(() => { state.toast = null }, 2600)
+  toastTimer = setTimeout(() => { state.toast = null }, message.length > 90 ? 6000 : 2600)
 }
 
 const ensureCatalog = (runtime: ChatRuntimeId) => {
@@ -185,7 +200,15 @@ const toggleFavorite = (combo: { runtime: ChatRuntimeId; modelId: string }) => {
 
 const isFavorite = (combo: { runtime: ChatRuntimeId; modelId: string }) => state.favorites.includes(comboKey(combo))
 
+export const findTeam = (teamId: string | null) => CHAT_TEAMS.find((team) => team.id === teamId) ?? null
+
+const setDraftTeam = (teamId: string) => {
+  state.draft.agentId = CHAT_ASSISTANT_ID
+  state.draft.teamId = teamId
+}
+
 const setDraftAgent = (agentId: string) => {
+  state.draft.teamId = null
   state.draft.agentId = agentId
   const agent = findAgent(agentId)
   if (agent.defaultLaunch) {
@@ -218,6 +241,19 @@ const addWorkspace = (path: string): ChatWorkspace => {
   state.extraWorkspaces.push(workspace)
   return workspace
 }
+
+/**
+ * A skill tag becomes a plain instruction prepended to the message the agent
+ * receives. All skills stay available (lazy-loaded by name); the tag only names
+ * which one to use. Proposed default wording.
+ */
+export const skillInstruction = (skills: string[]): string => {
+  if (!skills.length) return ''
+  if (skills.length === 1) return `Use the ${skills[0]} skill for this request.`
+  return `Use these skills for this request: ${skills.join(', ')}.`
+}
+export const buildSentText = (text: string, skills: string[]): string =>
+  [skillInstruction(skills), text.trim()].filter(Boolean).join('\n\n')
 
 const titleFrom = (text: string) => {
   const clean = text.replace(/\s+/g, ' ').trim()
@@ -265,16 +301,34 @@ const streamReply = (chatId: string, text: string, skills: string[] = []) => {
   setTimeout(tick, 350)
 }
 
+/**
+ * Team quick path: every member uses the chat's runtime/model/effort and the one
+ * shared workspace; the message goes to the coordinator. The run then opens in the
+ * existing Team workspace view. The prototype opens a stored run as a stand-in.
+ */
+const startTeamChat = async (): Promise<ChatTeam | null> => {
+  const team = findTeam(state.draft.teamId)
+  if (!team) return null
+  state.starting = true
+  await new Promise((resolve) => setTimeout(resolve, 600))
+  rememberCombo({ runtime: state.draft.runtime, modelId: state.draft.modelId, thinking: state.draft.thinking })
+  state.pendingTeamOpen = team.standInRunId
+  state.starting = false
+  resetDraft()
+  state.pendingTeamNotice = `Prototype: ${team.name} opens in the Team view (stand-in run). In the product this is the new run, with your message sent to the ${team.coordinator} coordinator.`
+  return team
+}
+
 const startChat = async (): Promise<ChatRecord | null> => {
   const text = state.draft.text.trim()
-  if (!text || state.starting) return null
+  if ((!text && !state.draft.skills.length) || state.starting) return null
   const runtime = findRuntime(state.draft.runtime)
   if (!runtime.enabled || !findModel(state.draft.modelId)) return null
   state.starting = true
   await new Promise((resolve) => setTimeout(resolve, 500))
   const chat: ChatRecord = {
     id: nextId('chat'),
-    title: titleFrom(text),
+    title: titleFrom(text || state.draft.skills.map((name) => `/${name}`).join(' ')),
     agentId: state.draft.agentId,
     runtime: state.draft.runtime,
     modelId: state.draft.modelId,
@@ -284,7 +338,7 @@ const startChat = async (): Promise<ChatRecord | null> => {
     age: 'now',
     ageMinutes: 0,
     status: 'running',
-    messages: [{ id: nextId('m'), role: 'user', text, skills: [...state.draft.skills] }],
+    messages: [{ id: nextId('m'), role: 'user', text, skills: [...state.draft.skills], sentText: buildSentText(text, state.draft.skills) }],
   }
   state.chats.unshift(chat)
   state.lastActivity[chat.id] = Date.now()
@@ -298,8 +352,8 @@ const startChat = async (): Promise<ChatRecord | null> => {
 
 const sendInChat = (chatId: string, text: string, skills: string[] = []) => {
   const chat = state.chats.find((item) => item.id === chatId)
-  if (!chat || !text.trim() || chat.status === 'running') return
-  chat.messages.push({ id: nextId('m'), role: 'user', text: text.trim(), skills: [...skills] })
+  if (!chat || (!text.trim() && !skills.length) || chat.status === 'running') return
+  chat.messages.push({ id: nextId('m'), role: 'user', text: text.trim(), skills: [...skills], sentText: buildSentText(text, skills) })
   state.lastActivity[chat.id] = Date.now()
   streamReply(chat.id, text, skills)
 }
@@ -341,6 +395,8 @@ export function usePrototypeChat() {
     toggleFavorite,
     isFavorite,
     setDraftAgent,
+    setDraftTeam,
+    startTeamChat,
     setDraftContext,
     chatActivityAt,
     setDraftCombo,

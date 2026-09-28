@@ -5,7 +5,7 @@
 - Product ticket: `chat-interface-entry`
 - Stable requirements package: `chat-interface-entry` (SR-001, requirements Draft)
 - Title: Chat entry above Agents, New chat, and easy runtime/model selection
-- Status: `Awaiting User Review` (round 5)
+- Status: `Awaiting User Review` (round 6)
 - Mode: `Product Experience Prototyping`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-28
 - Decision questions: DEC-001 (primary: runtime + model picker), DEC-002 to DEC-007 (supporting); REQ-001 to REQ-007 draft
@@ -54,3 +54,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-28: user flagged Grok Build shown as `Not installed`. That was a fixture choice to demonstrate the unavailable state; corrected: Grok Build available by default with an illustrative xAI catalog, unavailable state moved to scenario `chat_runtime_unavailable`. Validation 24/24, 0 browser errors.
 - 2026-09-28: user flagged missing VNC Viewer and Artifacts tabs on the chat right side. Replaced the simplified panel with the product's own RightSideTabs (PC-018); tab set verified identical to /workspace. Validation 24/24, 0 browser errors.
 - 2026-09-28: user reframed chat: one general agent with all skills enabled (lazy-loaded); user tags a specific skill in chat to test it; chat is the easier UI than launching agents from the Agents page. Implemented PC-019/PC-020 with defaults (tag = use this skill, `/` trigger, several tags, built-in "AutoByteus Assistant"). Requirement impact for Solution Designer: DEC-002 resolved to a built-in general agent; new skill-tagging requirement. Validation 24/24, 0 browser errors (`review-evidence/round-5/`).
+- 2026-09-28: user: a tag prepends a 'use this skill' instruction to the sent message; Chat should also start agents and teams (team members share the chat model/workspace; full per-member setup stays on the Team page). User asked Product to choose the design. Implemented PC-021..PC-023 (`@` addressing, team quick path, team runs open in the existing Team view). Validation 26/26, 0 browser errors (`review-evidence/round-6/`).

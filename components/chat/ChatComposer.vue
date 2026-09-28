@@ -119,9 +119,36 @@
         >
       </div>
       <p v-else class="border-b border-gray-100 px-3 py-1.5 text-[0.6875rem] text-gray-400">
-        Skills matching <span class="font-medium text-gray-600">/{{ slashQuery }}</span> · ↑↓ to move, Enter to add
+        <template v-if="menuKind === 'target'">Chat with <span class="font-medium text-gray-600">@{{ slashQuery }}</span> · ↑↓ to move, Enter to choose</template>
+        <template v-else>Skills matching <span class="font-medium text-gray-600">/{{ slashQuery }}</span> · ↑↓ to move, Enter to add</template>
       </p>
-      <ul role="listbox" aria-label="Skills" class="max-h-64 overflow-y-auto p-1">
+      <ul v-if="menuKind === 'target'" role="listbox" aria-label="Agents and teams" class="max-h-64 overflow-y-auto p-1" data-test="chat-target-menu">
+        <li v-if="!filteredTargets.length" class="px-2 py-3 text-center text-[0.8125rem] text-gray-500">No agents or teams match</li>
+        <template v-for="(target, index) in filteredTargets" :key="target.key">
+          <li v-if="index === 0 || filteredTargets[index - 1].group !== target.group" class="px-2 pb-0.5 pt-1.5 text-[0.6875rem] font-medium text-gray-400">{{ target.group }}</li>
+          <li role="option" :aria-selected="index === highlight ? 'true' : 'false'">
+            <button
+              type="button"
+              :data-test="`chat-target-option-${target.id}`"
+              class="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left focus:outline-none"
+              :class="index === highlight ? 'bg-gray-100' : 'hover:bg-gray-50'"
+              @mouseenter="highlight = index"
+              @mousedown.prevent
+              @click="chooseTarget(index)"
+            >
+              <span
+                class="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center text-[0.5625rem] font-semibold text-slate-600"
+                :class="target.kind === 'team' ? 'rounded-md border border-gray-200 bg-gray-50' : 'rounded-full border border-emerald-200 bg-emerald-50'"
+              >{{ target.initials }}</span>
+              <span class="min-w-0 flex-1">
+                <span class="block truncate text-[0.8125rem] font-medium text-gray-900">{{ target.name }}</span>
+                <span class="block truncate text-xs text-gray-500">{{ target.description }}</span>
+              </span>
+            </button>
+          </li>
+        </template>
+      </ul>
+      <ul v-else role="listbox" aria-label="Skills" class="max-h-64 overflow-y-auto p-1">
         <li v-if="!filteredSkills.length" class="px-2 py-3 text-center text-[0.8125rem] text-gray-500">No skills match</li>
         <li v-for="(skill, index) in filteredSkills" :key="skill.name" role="option" :aria-selected="index === highlight ? 'true' : 'false'">
           <button
@@ -142,7 +169,10 @@
           </button>
         </li>
       </ul>
-      <footer class="flex items-center justify-between border-t border-gray-100 px-3 py-1.5 text-xs text-gray-400">
+      <footer v-if="menuKind === 'target'" class="border-t border-gray-100 px-3 py-1.5 text-xs text-gray-400">
+        Teams: your message goes to the coordinator
+      </footer>
+      <footer v-else class="flex items-center justify-between border-t border-gray-100 px-3 py-1.5 text-xs text-gray-400">
         <span>All skills are available to the assistant</span>
         <NuxtLink to="/skills" class="inline-flex items-center gap-1 whitespace-nowrap font-medium text-blue-700 hover:underline">
           Manage skills <ChatGlyph name="arrow-right" class="h-3 w-3" />
@@ -156,7 +186,7 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { Icon } from '@iconify/vue'
 import ChatGlyph from '~/components/chat/ChatGlyph.vue'
-import { CHAT_SKILLS } from '~/prototype/chat/chat-fixtures'
+import { CHAT_AGENTS, CHAT_ASSISTANT_ID, CHAT_SKILLS, CHAT_TEAMS } from '~/prototype/chat/chat-fixtures'
 import { useChatPopover } from '~/composables/chat/useChatPopover'
 
 const props = withDefaults(defineProps<{
@@ -168,7 +198,9 @@ const props = withDefaults(defineProps<{
   starting?: boolean
   sendBlockedReason?: string | null
   autofocus?: boolean
-}>(), { skills: () => [], size: 'normal', running: false, starting: false, sendBlockedReason: null, autofocus: false })
+  /** Enable "@" to address an agent or team (new chats only). */
+  mentions?: boolean
+}>(), { skills: () => [], size: 'normal', running: false, starting: false, sendBlockedReason: null, autofocus: false, mentions: false })
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
@@ -176,6 +208,7 @@ const emit = defineEmits<{
   (e: 'send'): void
   (e: 'stop'): void
   (e: 'attach'): void
+  (e: 'select-target', value: { kind: 'agent' | 'team'; id: string }): void
 }>()
 
 const rootRef = ref<HTMLElement | null>(null)
@@ -184,11 +217,12 @@ const skillsButtonRef = ref<HTMLElement | null>(null)
 const skillSearchRef = ref<HTMLInputElement | null>(null)
 const minHeight = computed(() => (props.size === 'large' ? 88 : 52))
 const height = ref(minHeight.value)
-const canSend = computed(() => !props.starting && !props.sendBlockedReason && props.modelValue.trim().length > 0)
+const canSend = computed(() => !props.starting && !props.sendBlockedReason && (props.modelValue.trim().length > 0 || props.skills.length > 0))
 
 // Skill menu state
 const picker = useChatPopover(rootRef, skillsButtonRef, 340)
 const pickerMode = ref<'button' | 'slash'>('button')
+const menuKind = ref<'skill' | 'target'>('skill')
 const buttonQuery = ref('')
 const slashQuery = ref('')
 const slashStart = ref(-1)
@@ -207,6 +241,17 @@ const filteredSkills = computed(() => {
 })
 watch(activeQuery, () => { highlight.value = 0 })
 
+const filteredTargets = computed(() => {
+  const q = activeQuery.value
+  const all = [
+    ...CHAT_AGENTS.filter((agent) => agent.id !== CHAT_ASSISTANT_ID).map((agent) => ({ key: `agent:${agent.id}`, kind: 'agent' as const, id: agent.id, name: agent.name, initials: agent.initials, description: agent.description, group: 'Agents' })),
+    ...CHAT_TEAMS.map((team) => ({ key: `team:${team.id}`, kind: 'team' as const, id: team.id, name: team.name, initials: team.initials, description: `${team.memberCount} members · coordinator ${team.coordinator}`, group: 'Agent teams' })),
+  ]
+  if (!q) return all
+  return all.filter((item) => item.name.toLowerCase().includes(q) || item.id.includes(q))
+})
+const activeCount = computed(() => (menuKind.value === 'target' ? filteredTargets.value.length : filteredSkills.value.length))
+
 const resize = () => {
   const el = textareaRef.value
   if (!el) return
@@ -219,11 +264,12 @@ const detectSlash = () => {
   const el = textareaRef.value
   if (!el) return
   const before = el.value.slice(0, el.selectionStart ?? el.value.length)
-  const match = /(^|\s)\/([\w.-]*)$/.exec(before)
-  if (match) {
+  const match = /(^|\s)([/@])([\w.-]*)$/.exec(before)
+  if (match && (match[2] === '/' || props.mentions)) {
     pickerMode.value = 'slash'
-    slashQuery.value = match[2]
-    slashStart.value = before.length - match[2].length - 1
+    menuKind.value = match[2] === '@' ? 'target' : 'skill'
+    slashQuery.value = match[3]
+    slashStart.value = before.length - match[3].length - 1
     if (!picker.open.value) void picker.show()
   } else if (picker.open.value && pickerMode.value === 'slash') {
     picker.close(false)
@@ -264,8 +310,34 @@ const chooseSkill = (name: string) => {
   }
 }
 
+const removeTriggerText = () => {
+  const el = textareaRef.value
+  const caret = el?.selectionStart ?? props.modelValue.length
+  const next = (props.modelValue.slice(0, slashStart.value) + props.modelValue.slice(caret)).replace(/^\s+/, '')
+  emit('update:modelValue', next)
+  nextTick(() => {
+    resize()
+    const pos = Math.min(slashStart.value, next.length)
+    textareaRef.value?.focus()
+    textareaRef.value?.setSelectionRange(pos, pos)
+  })
+}
+
+const chooseTarget = (index: number) => {
+  const target = filteredTargets.value[index]
+  if (!target) return
+  removeTriggerText()
+  picker.close(false)
+  emit('select-target', { kind: target.kind, id: target.id })
+}
+
+const chooseHighlighted = () => {
+  if (menuKind.value === 'target') chooseTarget(highlight.value)
+  else if (filteredSkills.value[highlight.value]) chooseSkill(filteredSkills.value[highlight.value].name)
+}
+
 const moveHighlight = (delta: number) => {
-  const count = filteredSkills.value.length
+  const count = activeCount.value
   if (!count) return
   highlight.value = (highlight.value + delta + count) % count
 }
@@ -274,9 +346,9 @@ const onTextareaKeydown = (event: KeyboardEvent) => {
   if (picker.open.value && pickerMode.value === 'slash') {
     if (event.key === 'ArrowDown') { event.preventDefault(); moveHighlight(1); return }
     if (event.key === 'ArrowUp') { event.preventDefault(); moveHighlight(-1); return }
-    if ((event.key === 'Enter' || event.key === 'Tab') && filteredSkills.value.length) {
+    if ((event.key === 'Enter' || event.key === 'Tab') && activeCount.value) {
       event.preventDefault()
-      chooseSkill(filteredSkills.value[highlight.value].name)
+      chooseHighlighted()
       return
     }
     if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); picker.close(false); return }
@@ -296,6 +368,7 @@ const onSearchKeydown = (event: KeyboardEvent) => {
 const openFromButton = async () => {
   if (picker.open.value && pickerMode.value === 'button') { picker.close(true); return }
   pickerMode.value = 'button'
+  menuKind.value = 'skill'
   buttonQuery.value = ''
   highlight.value = 0
   if (!picker.open.value) await picker.show()

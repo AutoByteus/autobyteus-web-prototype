@@ -4,11 +4,14 @@
     <div v-if="!activeId" class="flex min-w-0 flex-1 flex-col overflow-y-auto" data-test="chat-new">
       <div class="flex flex-1 flex-col items-center justify-center px-4 pb-[14vh] pt-10 sm:px-6">
         <h1 class="text-center text-[1.75rem] font-semibold tracking-tight text-gray-900">What should we work on?</h1>
-        <p v-if="!isAssistantDraft" class="mt-2 max-w-xl text-center text-sm text-gray-500">
+        <p v-if="draftTeam" class="mt-2 max-w-xl text-center text-sm text-gray-500">
+          Your message goes to {{ draftTeam.name }}’s coordinator.
+        </p>
+        <p v-else-if="!isAssistantDraft" class="mt-2 max-w-xl text-center text-sm text-gray-500">
           Chat with {{ draftAgent.name }}, using its own tools and skills.
         </p>
         <p v-else class="mt-2 max-w-xl text-center text-sm text-gray-500">
-          All your skills are available. Type <kbd class="rounded border border-gray-200 bg-gray-50 px-1 font-sans text-xs text-gray-600">/</kbd> to point the assistant at one.
+          All your skills are available. Type <kbd class="rounded border border-gray-200 bg-gray-50 px-1 font-sans text-xs text-gray-600">/</kbd> to use a skill, or <kbd class="rounded border border-gray-200 bg-gray-50 px-1 font-sans text-xs text-gray-600">@</kbd> to chat with an agent or team.
         </p>
         <div class="mt-8 w-full max-w-3xl">
           <ChatComposer
@@ -17,13 +20,24 @@
             v-model:skills="state.draft.skills"
             size="large"
             autofocus
-            :placeholder="isAssistantDraft ? 'Ask anything, or type / to use a skill' : `Ask ${draftAgent.name} anything…`"
+            mentions
+            :placeholder="draftTeam ? `Message ${draftTeam.name}…` : isAssistantDraft ? 'Ask anything · / for skills · @ for an agent or team' : `Ask ${draftAgent.name} anything…`"
             :starting="state.starting"
             :send-blocked-reason="draftBlockedReason"
             @send="startChat"
+            @select-target="onSelectTarget"
             @attach="chat.showToast('Context files: same attach flow as agent runs (not simulated).')"
           >
-            <template v-if="!isAssistantDraft" #chips>
+            <template v-if="draftTeam" #chips>
+              <span class="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 py-0.5 pl-1 pr-1 text-xs font-medium text-gray-700" data-test="chat-team-chip">
+                <span class="inline-flex h-4 w-4 items-center justify-center rounded border border-gray-300 bg-white text-[0.5rem] font-semibold text-slate-600">{{ draftTeam.initials }}</span>
+                {{ draftTeam.name }}
+                <button type="button" class="rounded p-0.5 text-gray-400 hover:bg-gray-200 hover:text-gray-700" :aria-label="`Chat with the assistant instead of ${draftTeam.name}`" title="Use the assistant instead" @click="chat.setDraftAgent(CHAT_ASSISTANT_ID)">
+                  <ChatGlyph name="x" class="h-3 w-3" />
+                </button>
+              </span>
+            </template>
+            <template v-else-if="!isAssistantDraft" #chips>
               <span class="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 py-0.5 pl-1 pr-1 text-xs font-medium text-gray-700" data-test="chat-agent-chip">
                 <span class="inline-flex h-4 w-4 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-[0.5rem] font-semibold text-slate-600">{{ draftAgent.initials }}</span>
                 {{ draftAgent.name }}
@@ -51,7 +65,11 @@
           </ChatComposer>
           <p class="mt-2.5 flex items-center justify-center gap-1.5 text-center text-xs text-gray-400" data-test="chat-new-hint">
             <template v-if="state.starting">
-              Starting {{ draftAgent.name }} on {{ draftRuntime.label }}…
+              Starting {{ draftTeam ? draftTeam.name : draftAgent.name }} on {{ draftRuntime.label }}…
+            </template>
+            <template v-else-if="draftTeam">
+              <span data-test="chat-team-note">All members use this model and the {{ draftWorkspace.isTemp ? 'temp workspace' : draftWorkspace.name }}. For per-member setup, start it from
+                <NuxtLink to="/agent-teams?view=team-list" class="font-medium text-blue-700 hover:underline">Agent Teams</NuxtLink>.</span>
             </template>
             <template v-else>
               <ChatGlyph name="folder" class="h-3.5 w-3.5" />
@@ -108,12 +126,27 @@
                   <ChatGlyph name="person" class="h-8 w-8 text-sky-600" />
                 </div>
                 <div class="min-w-0 flex-1 pt-1.5">
-                  <div v-if="message.skills?.length" class="mb-1.5 flex flex-wrap gap-1.5" data-test="chat-message-skills">
-                    <span v-for="name in message.skills" :key="name" class="inline-flex items-center gap-1 rounded-md border border-indigo-200 bg-indigo-50 px-1.5 py-0.5 text-xs font-medium text-indigo-700">
+                  <div
+                    v-if="message.skills?.length"
+                    class="group/skills relative mb-1.5 flex flex-wrap gap-1.5"
+                    data-test="chat-message-skills"
+                    tabindex="0"
+                    :aria-describedby="`sent-as-${message.id}`"
+                  >
+                    <span v-for="name in message.skills" :key="name" class="inline-flex cursor-default items-center gap-1 rounded-md border border-indigo-200 bg-indigo-50 px-1.5 py-0.5 text-xs font-medium text-indigo-700">
                       <Icon icon="heroicons:sparkles" class="h-3.5 w-3.5" />/{{ name }}
                     </span>
+                    <div
+                      :id="`sent-as-${message.id}`"
+                      role="tooltip"
+                      data-test="chat-sent-as"
+                      class="pointer-events-none absolute left-0 top-full z-20 mt-1.5 w-max max-w-md rounded-md bg-gray-900 px-2.5 py-2 text-xs leading-5 text-gray-100 opacity-0 shadow-lg transition-opacity duration-100 group-hover/skills:opacity-100 group-focus/skills:opacity-100"
+                    >
+                      <span class="block text-[0.6875rem] font-medium uppercase tracking-wide text-gray-400">Sent to the agent as</span>
+                      <span class="block whitespace-pre-wrap">{{ message.sentText }}</span>
+                    </div>
                   </div>
-                  <div class="whitespace-pre-wrap break-words leading-6 text-gray-900">{{ message.text }}</div>
+                  <div v-if="message.text" class="whitespace-pre-wrap break-words leading-6 text-gray-900">{{ message.text }}</div>
                 </div>
               </div>
               <div v-else-if="message.role === 'assistant'" class="flex items-start gap-3">
@@ -194,7 +227,7 @@ import ChatEffortPicker from '~/components/chat/ChatEffortPicker.vue'
 import RightSideTabs from '~/components/layout/RightSideTabs.vue'
 import { useRightPanel } from '~/composables/useRightPanel'
 import ChatWorkspacePicker from '~/components/chat/ChatWorkspacePicker.vue'
-import { findAgent, findModel, findRuntime, usePrototypeChat } from '~/composables/chat/usePrototypeChat'
+import { findAgent, findModel, findRuntime, findTeam, usePrototypeChat } from '~/composables/chat/usePrototypeChat'
 
 const chat = usePrototypeChat()
 const { rightPanelWidth } = useRightPanel()
@@ -221,14 +254,25 @@ const draftAgent = computed(() => findAgent(state.draft.agentId))
 const draftRuntime = computed(() => findRuntime(state.draft.runtime))
 const draftWorkspace = computed(() => chat.findWorkspace(state.draft.workspaceId))
 const draftBlockedReason = computed(() => {
+  if (!state.draft.text.trim() && !state.draft.skills.length) return null
   if (!draftRuntime.value.enabled) return `${draftRuntime.value.label} is unavailable. Choose another runtime.`
   if (!findModel(state.draft.modelId)) return 'Choose a model to start.'
   return null
 })
 
-const isAssistantDraft = computed(() => state.draft.agentId === CHAT_ASSISTANT_ID)
+const draftTeam = computed(() => findTeam(state.draft.teamId))
+const isAssistantDraft = computed(() => state.draft.agentId === CHAT_ASSISTANT_ID && !state.draft.teamId)
+const onSelectTarget = (target: { kind: 'agent' | 'team'; id: string }) => {
+  if (target.kind === 'team') chat.setDraftTeam(target.id)
+  else chat.setDraftAgent(target.id)
+}
 
 const startChat = async () => {
+  if (state.draft.teamId) {
+    const team = await chat.startTeamChat()
+    if (team) await router.push('/workspace')
+    return
+  }
   const created = await chat.startChat()
   if (created) await router.push({ path: '/chat', query: { id: created.id } })
 }
