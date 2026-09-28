@@ -121,25 +121,20 @@ export const CHAT_SKILLS: ChatSkill[] = [
   { name: 'llm-fine-tuning-skill', description: 'Staged LLM fine-tuning workflow' },
 ]
 
-/** The built-in general agent that backs Chat: general tools, every skill enabled (lazy-loaded). */
-export const CHAT_ASSISTANT_ID = 'autobyteus-assistant'
+/**
+ * The general agent that backs Chat: Daily Assistant, with general tools and
+ * every installed skill enabled (lazy-loaded). One agent, not a second assistant.
+ */
+export const CHAT_ASSISTANT_ID = 'daily-assistant'
 
 export const CHAT_AGENTS: ChatAgent[] = [
   {
     id: CHAT_ASSISTANT_ID,
-    name: 'AutoByteus Assistant',
-    initials: 'AA',
-    description: 'Built-in general agent for chat. All skills enabled.',
-    skills: CHAT_SKILLS.map((skill) => skill.name),
-    tools: ['bash', 'read_file', 'write_file', 'web_search', 'browser', 'media'],
-  },
-  {
-    id: 'daily-assistant',
     name: 'Daily Assistant',
     initials: 'DA',
-    description: 'General assistant with shell, web, browser and media tools.',
-    skills: ['shell-first-operating-practice'],
-    tools: ['bash', 'web_search', 'browser', 'media'],
+    description: 'General assistant for chat. All skills enabled.',
+    skills: CHAT_SKILLS.map((skill) => skill.name),
+    tools: ['bash', 'read_file', 'write_file', 'web_search', 'browser', 'media'],
   },
   {
     id: 'codex',

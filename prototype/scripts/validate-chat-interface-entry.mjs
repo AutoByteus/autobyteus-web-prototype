@@ -209,7 +209,7 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
   })
   await check('CHK-022', '+ on an agent in the tree starts a new chat: assistant by default, or that agent shown as a removable chip', async () => {
     const agentGroup = (name) => page.locator('button', { hasText: name }).filter({ has: page.locator('span') })
-    await agentGroup('AutoByteus Assistant').first().locator('xpath=..').locator('button').last().click()
+    await agentGroup('Daily Assistant').first().locator('xpath=..').locator('button').last().click()
     await page.waitForURL(/\/chat$/)
     expect(!(await $(page, 'chat-agent-chip').count()), 'assistant needs no chip')
     await page.locator('button', { hasText: 'autobyteus-workspace-superrepo' }).first().click()
@@ -245,7 +245,7 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     await $(page, 'chat-target-menu').waitFor()
     const menu = await $(page, 'chat-target-menu').innerText()
     expect(menu.includes('Agents') && menu.includes('Agent teams') && menu.includes('Codex') && menu.includes('Product Review Team'), 'agents and teams listed')
-    expect(!menu.includes('AutoByteus Assistant'), 'assistant is the default, not listed')
+    expect(!menu.includes('Daily Assistant'), 'Daily Assistant is the default, not listed')
     await input.pressSequentially('prod', { delay: 30 })
     await page.keyboard.press('Enter')
     await $(page, 'chat-team-chip').waitFor()
