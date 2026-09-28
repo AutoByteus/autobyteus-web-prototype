@@ -1,0 +1,764 @@
+{
+  "generatedAt": "2026-09-28T10:48:46.874Z",
+  "sourceBaseUrl": "http://127.0.0.1:4291",
+  "prototypeBaseUrl": "http://127.0.0.1:4199",
+  "mockBaseUrl": "http://127.0.0.1:4391",
+  "matrixMode": false,
+  "results": [
+    {
+      "item": {
+        "id": "HOST-005",
+        "path": "/settings?section=server-settings&mode=advanced",
+        "context": "electron_internal",
+        "scenario": "populated",
+        "action": "server-monitor"
+      },
+      "source": {
+        "target": "source",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/WEB-BASELINE-REFRESH-001/evidence/WEB-BASELINE-REFRESH-001/host-recheck/source/correction/HOST-005.png",
+        "screenshotSha256": "e5dc2bd21a81419b01ba6303a71e660d8c11841949c8b7653ac0d878d86de984",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nBasicsAdvancedMigrations\nExtensions\nUpdates\nAll Settings\nServer Status & Logs\nServer Status\nServer Running\n\nThe server is running and ready to use.\n\nRefresh Status\nRestart Server\nTechnical Details\nServer URL:\n\nhttp://127.0.0.1:4391/graphql\n\nHealth Check Status:\n\nHealthy: healthy\n\nLog File:\n\n/synthetic/logs/autobyteus-server.log\n\nServer Logs\nRefresh Logs\nOpen in Editor\nAuto-refresh\n[04:00:00] Synthetic Agent Server ready\n[04:00:01] Listening on deterministic fixture boundary",
+        "bodyTextSha256": "d3e804ca3212c396174602a3f3fcaaedaca6818d2e0daa7192e5ca47385ad4eb",
+        "semantic": {
+          "route": "/settings?section=server-settings&mode=advanced",
+          "lang": "",
+          "headings": [
+            "H2:Server Status",
+            "H3:Server Running",
+            "H3:Technical Details"
+          ],
+          "controls": [
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": "Back to workspace",
+              "text": "Back to Workspace",
+              "disabled": false
+            },
+            {
+              "tag": "svg",
+              "role": "img",
+              "label": null,
+              "text": ""
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "API Keys",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Token Statistics",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Display",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Language",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Local Tools",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "MCP Servers",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Application Packages",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Agent Packages",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Server Settings",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Basics",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Advanced",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Migrations",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Extensions",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Updates",
+              "disabled": false
+            },
+            {
+              "tag": "DIV",
+              "role": "separator",
+              "label": "Resize Settings menu",
+              "text": ""
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "All Settings",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Server Status & Logs",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Refresh Status",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Restart Server",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Refresh Logs",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Open in Editor",
+              "disabled": false
+            },
+            {
+              "tag": "INPUT",
+              "role": null,
+              "label": null,
+              "text": "",
+              "disabled": false
+            }
+          ],
+          "dialogs": []
+        },
+        "browserErrors": []
+      },
+      "prototype": {
+        "target": "prototype",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/WEB-BASELINE-REFRESH-001/evidence/WEB-BASELINE-REFRESH-001/host-recheck/prototype/correction/HOST-005.png",
+        "screenshotSha256": "e5dc2bd21a81419b01ba6303a71e660d8c11841949c8b7653ac0d878d86de984",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nBasicsAdvancedMigrations\nExtensions\nUpdates\nAll Settings\nServer Status & Logs\nServer Status\nServer Running\n\nThe server is running and ready to use.\n\nRefresh Status\nRestart Server\nTechnical Details\nServer URL:\n\nhttp://127.0.0.1:4391/graphql\n\nHealth Check Status:\n\nHealthy: healthy\n\nLog File:\n\n/synthetic/logs/autobyteus-server.log\n\nServer Logs\nRefresh Logs\nOpen in Editor\nAuto-refresh\n[04:00:00] Synthetic Agent Server ready\n[04:00:01] Listening on deterministic fixture boundary",
+        "bodyTextSha256": "d3e804ca3212c396174602a3f3fcaaedaca6818d2e0daa7192e5ca47385ad4eb",
+        "semantic": {
+          "route": "/settings?section=server-settings&mode=advanced",
+          "lang": "",
+          "headings": [
+            "H2:Server Status",
+            "H3:Server Running",
+            "H3:Technical Details"
+          ],
+          "controls": [
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": "Back to workspace",
+              "text": "Back to Workspace",
+              "disabled": false
+            },
+            {
+              "tag": "svg",
+              "role": "img",
+              "label": null,
+              "text": ""
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "API Keys",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Token Statistics",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Display",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Language",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Local Tools",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "MCP Servers",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Application Packages",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Agent Packages",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Server Settings",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Basics",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Advanced",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Migrations",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Extensions",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Updates",
+              "disabled": false
+            },
+            {
+              "tag": "DIV",
+              "role": "separator",
+              "label": "Resize Settings menu",
+              "text": ""
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "All Settings",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Server Status & Logs",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Refresh Status",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Restart Server",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Refresh Logs",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Open in Editor",
+              "disabled": false
+            },
+            {
+              "tag": "INPUT",
+              "role": null,
+              "label": null,
+              "text": "",
+              "disabled": false
+            }
+          ],
+          "dialogs": []
+        },
+        "browserErrors": []
+      },
+      "comparison": {
+        "semanticEqual": true,
+        "screenshotEqual": true,
+        "perceptual": {
+          "changedPixels": 0,
+          "totalPixels": 1296000,
+          "changedPixelRatio": 0,
+          "maximumChannelDelta": 0,
+          "normalizedRenderingNoiseOnly": true
+        },
+        "pass": true
+      }
+    },
+    {
+      "item": {
+        "id": "HOST-006",
+        "path": "/settings?section=extensions",
+        "context": "electron_external",
+        "scenario": "populated"
+      },
+      "source": {
+        "target": "source",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/WEB-BASELINE-REFRESH-001/evidence/WEB-BASELINE-REFRESH-001/host-recheck/source/correction/HOST-006.png",
+        "screenshotSha256": "6ad7a4df8f442275c53670a7f207522df82645f36805fcfd11746dc130559560",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nExtensions\nUpdates\n\nEXTENSIONS\n\nOptional capabilities\n\nInstall voice input without increasing the base app size. Runtime assets are downloaded on demand and managed locally.\n\nVoice Input\n\nRecord speech and transcribe it locally before sending.\n\nInstalled\nEnabled\n\nVoice Input is installed and enabled.\n\nLanguage\nAuto\nEnglish\nChinese\nAudio source\nRefresh\nSystem default\nAudio input 1\n\nSelected source: System default. 1 audio input source available.\n\nTest Voice Input\n\nRecord a short sample here to verify microphone capture and local transcription before using the composer.\n\nStart Test\nInput level\n0%\n\nManaged locally in your AutoByteus extensions folder.\n\nRuntime: 1.0.0-prototype · Model: tiny-prototype · Backend: faster-whisper\nDisable\nOpen Folder\nRemove\nReinstall",
+        "bodyTextSha256": "0927fa791b7aa43b720798e7c15d2a6d42c9738bd34517c26d3259b2da65e7a6",
+        "semantic": {
+          "route": "/settings?section=extensions",
+          "lang": "",
+          "headings": [
+            "H2:Optional capabilities",
+            "H3:Voice Input"
+          ],
+          "controls": [
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": "Back to workspace",
+              "text": "Back to Workspace",
+              "disabled": false
+            },
+            {
+              "tag": "svg",
+              "role": "img",
+              "label": null,
+              "text": ""
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "API Keys",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Token Statistics",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Display",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Language",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Local Tools",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "MCP Servers",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Application Packages",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Agent Packages",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Server Settings",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Extensions",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Updates",
+              "disabled": false
+            },
+            {
+              "tag": "DIV",
+              "role": "separator",
+              "label": "Resize Settings menu",
+              "text": ""
+            },
+            {
+              "tag": "SELECT",
+              "role": null,
+              "label": null,
+              "text": "AutoEnglishChinese",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Refresh",
+              "disabled": false
+            },
+            {
+              "tag": "SELECT",
+              "role": null,
+              "label": null,
+              "text": "System defaultAudio input 1",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Start Test",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Disable",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Open Folder",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Remove",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Reinstall",
+              "disabled": false
+            }
+          ],
+          "dialogs": []
+        },
+        "browserErrors": []
+      },
+      "prototype": {
+        "target": "prototype",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/WEB-BASELINE-REFRESH-001/evidence/WEB-BASELINE-REFRESH-001/host-recheck/prototype/correction/HOST-006.png",
+        "screenshotSha256": "6ad7a4df8f442275c53670a7f207522df82645f36805fcfd11746dc130559560",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nExtensions\nUpdates\n\nEXTENSIONS\n\nOptional capabilities\n\nInstall voice input without increasing the base app size. Runtime assets are downloaded on demand and managed locally.\n\nVoice Input\n\nRecord speech and transcribe it locally before sending.\n\nInstalled\nEnabled\n\nVoice Input is installed and enabled.\n\nLanguage\nAuto\nEnglish\nChinese\nAudio source\nRefresh\nSystem default\nAudio input 1\n\nSelected source: System default. 1 audio input source available.\n\nTest Voice Input\n\nRecord a short sample here to verify microphone capture and local transcription before using the composer.\n\nStart Test\nInput level\n0%\n\nManaged locally in your AutoByteus extensions folder.\n\nRuntime: 1.0.0-prototype · Model: tiny-prototype · Backend: faster-whisper\nDisable\nOpen Folder\nRemove\nReinstall",
+        "bodyTextSha256": "0927fa791b7aa43b720798e7c15d2a6d42c9738bd34517c26d3259b2da65e7a6",
+        "semantic": {
+          "route": "/settings?section=extensions",
+          "lang": "",
+          "headings": [
+            "H2:Optional capabilities",
+            "H3:Voice Input"
+          ],
+          "controls": [
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": "Back to workspace",
+              "text": "Back to Workspace",
+              "disabled": false
+            },
+            {
+              "tag": "svg",
+              "role": "img",
+              "label": null,
+              "text": ""
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "API Keys",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Token Statistics",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Display",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Language",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Local Tools",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "MCP Servers",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Application Packages",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Agent Packages",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Server Settings",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Extensions",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Updates",
+              "disabled": false
+            },
+            {
+              "tag": "DIV",
+              "role": "separator",
+              "label": "Resize Settings menu",
+              "text": ""
+            },
+            {
+              "tag": "SELECT",
+              "role": null,
+              "label": null,
+              "text": "AutoEnglishChinese",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Refresh",
+              "disabled": false
+            },
+            {
+              "tag": "SELECT",
+              "role": null,
+              "label": null,
+              "text": "System defaultAudio input 1",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Start Test",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Disable",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Open Folder",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Remove",
+              "disabled": false
+            },
+            {
+              "tag": "BUTTON",
+              "role": null,
+              "label": null,
+              "text": "Reinstall",
+              "disabled": false
+            }
+          ],
+          "dialogs": []
+        },
+        "browserErrors": []
+      },
+      "comparison": {
+        "semanticEqual": true,
+        "screenshotEqual": true,
+        "perceptual": {
+          "changedPixels": 0,
+          "totalPixels": 1296000,
+          "changedPixelRatio": 0,
+          "maximumChannelDelta": 0,
+          "normalizedRenderingNoiseOnly": true
+        },
+        "pass": true
+      }
+    }
+  ]
+}

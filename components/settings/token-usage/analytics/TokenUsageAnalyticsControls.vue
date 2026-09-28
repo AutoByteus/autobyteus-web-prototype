@@ -8,7 +8,7 @@
           class="inline-flex min-h-10 min-w-36 items-center justify-between gap-3 rounded-lg border border-slate-300 bg-white px-3 text-left text-sm font-semibold text-slate-800 shadow-sm transition hover:border-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           :aria-expanded="rangeOpen"
           aria-haspopup="menu"
-          @click="rangeOpen = !rangeOpen"
+          @click="toggleRange"
           @keydown.esc="closeRange"
         >
           <span class="grid gap-0.5">
@@ -28,7 +28,7 @@
             :key="preset.value"
             type="button"
             role="menuitem"
-            class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700"
+            class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             :class="store.selection.rangePreset === preset.value ? 'bg-blue-50 font-semibold text-blue-700' : ''"
             @click="selectPreset(preset.value)"
           >
@@ -92,7 +92,7 @@
         {{ t('settings.components.settings.TokenUsageAnalytics.endDate') }}
         <input v-model="store.selection.endDate" type="date" :min="store.selection.startDate" class="rounded-lg border-slate-300 text-sm font-medium normal-case tracking-normal text-slate-800 focus:border-blue-500 focus:ring-blue-500">
       </label>
-      <button type="button" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50" :disabled="Boolean(validationError)" @click="apply">
+      <button type="button" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" :disabled="Boolean(validationError)" @click="apply">
         {{ t('settings.components.settings.TokenUsageAnalytics.apply') }}
       </button>
       <p v-if="validationError" class="w-full text-sm text-rose-700" role="alert">{{ validationError }}</p>
@@ -110,33 +110,33 @@
           <h3 class="text-sm font-bold text-slate-950">{{ t('settings.components.settings.TokenUsageAnalytics.filterCurrentResult') }}</h3>
           <p class="mt-0.5 text-xs text-slate-500">{{ t('settings.components.settings.TokenUsageAnalytics.selectionRefetch') }}</p>
         </div>
-        <button type="button" class="text-xs font-semibold text-blue-700 hover:underline" @click="clearFilterDraft">
+        <button type="button" class="rounded text-xs font-semibold text-blue-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="clearFilterDraft">
           {{ t('settings.components.settings.TokenUsageAnalytics.clearAll') }}
         </button>
       </div>
       <div class="mt-4 grid items-end gap-3 sm:grid-cols-2 xl:grid-cols-[repeat(3,minmax(0,1fr))_auto]">
         <label class="grid gap-1 text-xs font-bold uppercase tracking-wider text-slate-500">
           {{ t('settings.components.settings.TokenUsageAnalytics.runtime') }}
-          <select v-model="store.selection.runtimeKind" class="rounded-lg border-slate-300 bg-white text-sm font-medium normal-case tracking-normal text-slate-800 focus:border-blue-500 focus:ring-blue-500">
+          <select v-model="filterDraft.runtimeKind" class="rounded-lg border-slate-300 bg-white text-sm font-medium normal-case tracking-normal text-slate-800 focus:border-blue-500 focus:ring-blue-500">
             <option :value="null">{{ t('settings.components.settings.TokenUsageAnalytics.allRuntimes') }}</option>
             <option v-for="runtime in store.filterOptions.runtimeKinds" :key="runtime" :value="runtime">{{ formatRuntime(runtime) }}</option>
           </select>
         </label>
         <label class="grid gap-1 text-xs font-bold uppercase tracking-wider text-slate-500">
           {{ t('settings.components.settings.TokenUsageAnalytics.provider') }}
-          <select v-model="store.selection.providerKey" class="rounded-lg border-slate-300 bg-white text-sm font-medium normal-case tracking-normal text-slate-800 focus:border-blue-500 focus:ring-blue-500">
+          <select v-model="filterDraft.providerKey" class="rounded-lg border-slate-300 bg-white text-sm font-medium normal-case tracking-normal text-slate-800 focus:border-blue-500 focus:ring-blue-500">
             <option :value="null">{{ t('settings.components.settings.TokenUsageAnalytics.allProviders') }}</option>
             <option v-for="provider in store.filterOptions.providers" :key="provider.key" :value="provider.key">{{ provider.displayName }}</option>
           </select>
         </label>
         <label class="grid gap-1 text-xs font-bold uppercase tracking-wider text-slate-500">
           {{ t('settings.components.settings.TokenUsageAnalytics.model') }}
-          <select v-model="store.selection.modelKey" class="rounded-lg border-slate-300 bg-white text-sm font-medium normal-case tracking-normal text-slate-800 focus:border-blue-500 focus:ring-blue-500">
+          <select v-model="filterDraft.modelKey" class="rounded-lg border-slate-300 bg-white text-sm font-medium normal-case tracking-normal text-slate-800 focus:border-blue-500 focus:ring-blue-500">
             <option :value="null">{{ t('settings.components.settings.TokenUsageAnalytics.allModels') }}</option>
             <option v-for="model in store.filterOptions.models" :key="model.key" :value="model.key">{{ model.displayName }}</option>
           </select>
         </label>
-        <button type="button" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700" @click="applyFilters">
+        <button type="button" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" @click="applyFilters">
           {{ t('settings.components.settings.TokenUsageAnalytics.applyFilters') }}
         </button>
       </div>
@@ -145,21 +145,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, reactive, ref } from 'vue';
 import { useLocalization } from '~/composables/useLocalization';
 import { useTokenUsageAnalyticsStore } from '~/stores/tokenUsageAnalytics';
 import type { TokenUsageAnalyticsMetric, TokenUsageAnalyticsRangePreset } from '~/types/tokenUsageAnalytics';
 
-const props = defineProps<{ metric: TokenUsageAnalyticsMetric }>();
-const emit = defineEmits<{ 'update:metric': [value: TokenUsageAnalyticsMetric] }>();
-void props;
-void emit;
+defineProps<{ metric: TokenUsageAnalyticsMetric }>();
+defineEmits<{ 'update:metric': [value: TokenUsageAnalyticsMetric] }>();
 const { t } = useLocalization();
 const store = useTokenUsageAnalyticsStore();
 const rangeOpen = ref(false);
 const filtersOpen = ref(false);
 const rangeButton = ref<HTMLButtonElement | null>(null);
 const filterButton = ref<HTMLButtonElement | null>(null);
+const filterDraft = reactive({ runtimeKind: null as string | null, providerKey: null as string | null, modelKey: null as string | null });
 const presets = computed<Array<{ value: TokenUsageAnalyticsRangePreset; label: string }>>(() => [
   { value: 'THIS_MONTH', label: t('settings.components.settings.TokenUsageAnalytics.thisMonth') },
   { value: 'LAST_MONTH', label: t('settings.components.settings.TokenUsageAnalytics.lastMonth') },
@@ -182,29 +181,69 @@ const activeFilterCount = computed(() => [activeFilters.value.runtimeKind, activ
 const activeSummary = computed(() => {
   const labels = [
     activeFilters.value.runtimeKind ? formatRuntime(activeFilters.value.runtimeKind) : null,
-    activeFilters.value.providerKey ? store.filterOptions.providers.find((item: any) => item.key === activeFilters.value.providerKey)?.displayName : null,
-    activeFilters.value.modelKey ? store.filterOptions.models.find((item: any) => item.key === activeFilters.value.modelKey)?.displayName : null,
+    activeFilters.value.providerKey
+      ? store.filterOptions.providers.find((item) => item.key === activeFilters.value.providerKey)?.displayName ?? activeFilters.value.providerKey
+      : null,
+    activeFilters.value.modelKey
+      ? store.filterOptions.models.find((item) => item.key === activeFilters.value.modelKey)?.displayName ?? activeFilters.value.modelKey
+      : null,
   ].filter(Boolean);
   return labels.length ? labels.join(' · ') : t('settings.components.settings.TokenUsageAnalytics.allUsage');
 });
-const runtimeLabels: Record<string, string> = { autobyteus: 'Autobyteus', codex_app_server: 'Codex', claude_agent_sdk: 'Claude SDK' };
+const runtimeLabels: Record<string, string> = { autobyteus: 'Autobyteus', codex_app_server: 'Codex', claude_agent_sdk: 'Claude SDK', grok_build: 'Grok Build' };
 const formatRuntime = (value: string) => runtimeLabels[value] ?? value;
 const apply = () => { if (!validationError.value) void store.fetch().catch(() => undefined); };
 const selectPreset = (preset: TokenUsageAnalyticsRangePreset) => {
   store.setPreset(preset);
-  rangeOpen.value = false;
+  closeRange();
   if (preset !== 'CUSTOM') apply();
 };
 const closeRange = () => {
   rangeOpen.value = false;
   void nextTick(() => rangeButton.value?.focus());
 };
+const toggleRange = () => {
+  if (rangeOpen.value) {
+    closeRange();
+    return;
+  }
+  filtersOpen.value = false;
+  rangeOpen.value = true;
+};
 const closeFilters = () => {
   filtersOpen.value = false;
   void nextTick(() => filterButton.value?.focus());
 };
-const toggleFilters = () => { filtersOpen.value ? closeFilters() : (filtersOpen.value = true); };
-const clearFilterDraft = () => store.clearFilters();
-const clearFilters = () => { store.clearFilters(); apply(); };
-const applyFilters = () => { apply(); closeFilters(); };
+const syncFilterDraft = () => {
+  const source = store.result?.appliedFilters ?? store.selection;
+  filterDraft.runtimeKind = source.runtimeKind ?? null;
+  filterDraft.providerKey = source.providerKey ?? null;
+  filterDraft.modelKey = source.modelKey ?? null;
+};
+const toggleFilters = () => {
+  if (filtersOpen.value) {
+    closeFilters();
+    return;
+  }
+  rangeOpen.value = false;
+  syncFilterDraft();
+  filtersOpen.value = true;
+};
+const clearFilterDraft = () => {
+  filterDraft.runtimeKind = null;
+  filterDraft.providerKey = null;
+  filterDraft.modelKey = null;
+};
+const clearFilters = () => {
+  store.clearFilters();
+  clearFilterDraft();
+  apply();
+};
+const applyFilters = () => {
+  store.selection.runtimeKind = filterDraft.runtimeKind;
+  store.selection.providerKey = filterDraft.providerKey;
+  store.selection.modelKey = filterDraft.modelKey;
+  apply();
+  closeFilters();
+};
 </script>

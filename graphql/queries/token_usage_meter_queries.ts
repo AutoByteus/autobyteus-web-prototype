@@ -71,6 +71,8 @@ export const TOKEN_USAGE_RUN_SUMMARY_FIELDS = gql`
     latestModelProvider
     latestModelIdentifier
     latestRuntimeKind
+    latestSelectedRawModelId
+    hasCacheWriteRateAssumption
     usageReportCount
     updatedAt
   }
@@ -99,6 +101,23 @@ export const GET_TEAM_MEMBER_TOKEN_USAGE_SUMMARY = gql`
   query GetTeamMemberTokenUsageSummary($teamRunId: String!, $agentRunId: String!) {
     getTeamMemberTokenUsageSummary(
       teamRunId: $teamRunId,
+      agentRunId: $agentRunId
+    ) {
+      ...TokenUsageRunSummaryFields
+    }
+  }
+`;
+
+export const GET_AGENT_ORG_MEMBER_TOKEN_USAGE_SUMMARY = gql`
+  ${TOKEN_USAGE_RUN_SUMMARY_FIELDS}
+  query GetAgentOrgMemberTokenUsageSummary(
+    $orgRunId: String!
+    $memberAddress: String!
+    $agentRunId: String!
+  ) {
+    getAgentOrgMemberTokenUsageSummary(
+      orgRunId: $orgRunId
+      memberAddress: $memberAddress
       agentRunId: $agentRunId
     ) {
       ...TokenUsageRunSummaryFields

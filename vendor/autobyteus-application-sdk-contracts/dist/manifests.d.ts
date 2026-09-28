@@ -1,17 +1,21 @@
 import type { ApplicationExecutionResourceKind, ApplicationExecutionResourceSource, ApplicationExecutionResourceRef } from "./execution-resources.js";
-export declare const APPLICATION_MANIFEST_VERSION_V4: "4";
+import type { ApplicationAgentToolDeclaration } from "./application-agent-tools.js";
+export declare const APPLICATION_MANIFEST_VERSION: "5";
 export type ApplicationSupportedAgentLaunchConfigDeclaration = {
     llmModelIdentifier?: boolean | null;
     runtimeKind?: boolean | null;
+    llmConfig?: boolean | null;
     workspaceRootPath?: boolean | null;
 };
 export type ApplicationSupportedTeamMemberOverrideDeclaration = {
     llmModelIdentifier?: boolean | null;
     runtimeKind?: boolean | null;
+    llmConfig?: boolean | null;
 };
 export type ApplicationSupportedTeamLaunchConfigDeclaration = {
     llmModelIdentifier?: boolean | null;
     runtimeKind?: boolean | null;
+    llmConfig?: boolean | null;
     workspaceRootPath?: boolean | null;
     memberOverrides?: ApplicationSupportedTeamMemberOverrideDeclaration | null;
 };
@@ -29,8 +33,8 @@ export type ApplicationExecutionResourceSlotDeclaration = {
     supportedLaunchConfig?: ApplicationSupportedLaunchConfigDeclaration | null;
     defaultExecutionResourceRef?: ApplicationExecutionResourceRef | null;
 };
-export type ApplicationManifestV4 = {
-    manifestVersion: typeof APPLICATION_MANIFEST_VERSION_V4;
+export type ApplicationManifest = {
+    manifestVersion: typeof APPLICATION_MANIFEST_VERSION;
     id: string;
     name: string;
     description?: string | null;
@@ -43,5 +47,6 @@ export type ApplicationManifestV4 = {
         bundleManifest: string;
     };
     executionResourceSlots?: ApplicationExecutionResourceSlotDeclaration[] | null;
+    agentTools?: readonly ApplicationAgentToolDeclaration[] | null;
 };
 //# sourceMappingURL=manifests.d.ts.map

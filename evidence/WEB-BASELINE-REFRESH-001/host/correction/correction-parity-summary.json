@@ -1,0 +1,10 @@
+{
+  "total": 13,
+  "passed": 11,
+  "failed": [
+    "HOST-005",
+    "HOST-006"
+  ],
+  "sourceBrowserErrorScenarios": [],
+  "prototypeBrowserErrorScenarios": []
+}

@@ -1,6 +1,15 @@
 import type { TranslationCatalog } from "../../runtime/types";
 
 const messages = {
+  "fileExplorer.workspaceUnavailable": "Workspace details are unavailable. Refresh or reopen Settings to load the saved workspace.",
+  "workspace.teamCopy.loading": "Reading saved Team configuration…",
+  "workspace.teamCopy.failed": "Could not copy this Team configuration: {error} Use New (+) to retry.",
+  "workspace.runModelConfig.modelRequired": "Select a model before launch.",
+  "workspace.agentOrg.runConfig.modelRequired": "Select a model for {address} before launch.",
+  "workspace.agentOrg.runConfig.retryInitialization": "Retry loading configuration",
+
+  "workspace.runModelConfig.orgOwnershipUnavailable": "This Org run is application-owned. Its model settings cannot be edited here.",
+  "workspace.agentOrg.inspectionUnavailable": "Saved Agent Org data is unavailable. No run was started.",
   "workspace.runModelConfig.loading": "Loading run configuration…",
   "workspace.runModelConfig.runUnavailable": "This run is no longer available.",
   "workspace.runModelConfig.save": "Save",
@@ -8,6 +17,7 @@ const messages = {
   "workspace.runModelConfig.verifying": "Verifying…",
   "workspace.runModelConfig.loadingModels": "Loading model options…",
   "workspace.runModelConfig.catalogError": "Model options could not be loaded. Saved settings were not changed.",
+  "workspace.runModelConfig.selectedModelUnavailable": "The selected model is unavailable for the current runtime.",
   "workspace.runModelConfig.retry": "Retry",
   "workspace.runModelConfig.refreshRequired": "Saved model settings must be refreshed before editing.",
   "workspace.runModelConfig.noAdjustableSettings": "This model has no adjustable settings.",
@@ -15,8 +25,18 @@ const messages = {
   "workspace.runModelConfig.agentStopped": "This run is stopped. Saved model settings will be used when it resumes.",
   "workspace.runModelConfig.agentActive": "Stop this run before changing model settings.",
   "workspace.runModelConfig.teamStopped": "This team is stopped. Saved model settings will be used when it resumes.",
+  "workspace.runModelConfig.orgStopped": "This Org is stopped. Save model settings and mounted Team workspaces for the next continuation. A Team workspace applies to all its configured Agents; existing files and history stay where they are.",
+  "workspace.runModelConfig.orgActive": "Stop the enclosing Org before changing its settings.",
   "workspace.runModelConfig.teamActive": "Stop this team before changing model settings.",
-  "workspace.runModelConfig.fixedIdentity": "Runtime and model are fixed for this existing run.",
+  "workspace.runModelConfig.fixedRuntime": "Runtime is fixed for this saved run.",
+  "workspace.runModelConfig.nativeModelHelp": "Choose a verified model with at least the saved model’s context capacity.",
+  "workspace.runModelConfig.externalModelHelp": "Choose any model offered by this runtime. The runtime handles context limits when the run resumes.",
+  "workspace.runModelConfig.unknownModelHelp": "Replacement models for this runtime are unavailable.",
+  "workspace.runModelConfig.loadingOptions": "Loading replacement models…",
+  "workspace.runModelConfig.optionsUnavailable": "Runtime model options are unavailable. Refresh this run to retry; its saved model identity remains visible.",
+  "workspace.runModelConfig.replacementInvalid": "This replacement is no longer offered or eligible. Refresh options before saving.",
+  "workspace.runModelConfig.noNativeReplacements": "No verified equal-or-larger replacement models are available.",
+  "workspace.runModelConfig.noCatalogReplacements": "No other models are currently offered by this runtime.",
   "workspace.runModelConfig.fixedWorkspace": "Workspace is fixed for existing runs.",
   "workspace.runModelConfig.validation.required": "A value is required.",
   "workspace.runModelConfig.validation.type": "Enter a value of type {expected}.",
@@ -32,6 +52,67 @@ const messages = {
     "This Team is still working. Wait for it to finish, then select this Team member again.",
   "workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.stream_recovery_retry":
     "Team activity changed while the conversation was being reloaded. Select this Team member again to retry.",
+  "workspace.agentOrg.recovery.exhausted":
+    "Live updates could not recover automatically. Select this Agent Org again to reload a verified complete conversation.",
+  "workspace.agentOrg.connecting": "Connecting to Agent Org…",
+  "workspace.agentOrg.stoppedHistory.title": "Stopped Agent Org",
+  "workspace.agentOrg.stoppedHistory.description":
+    "Select a member from the historical run in the sidebar to continue from its saved state.",
+  "workspace.agentOrg.activeUnfocused.title": "Choose an Agent or Team",
+  "workspace.agentOrg.activeUnfocused.description":
+    "Select a member from the active Agent Org in the sidebar. Teams focus their coordinator first.",
+  "workspace.agentOrg.history.refreshLabel": "Refresh Agent Org history",
+  "workspace.collaboration.identity.details": "Participant details",
+  "workspace.collaboration.identity.address": "Address",
+  "workspace.collaboration.identity.agentRun": "Agent run",
+  "workspace.collaboration.identity.task": "Task",
+  "workspace.collaboration.identity.hostRun": "Host run",
+  "workspace.collaboration.identity.executionRun": "Execution run",
+  "workspace.collaboration.identity.teamRun": "Team run",
+  "workspace.agentOrg.history.collectionLabel": "Orgs",
+  "workspace.agentOrg.history.stopLabel": "Stop Agent Org",
+  "workspace.agentOrg.history.archiveLabel": "Archive Agent Org history",
+  "workspace.agentOrg.history.deleteLabel": "Delete Agent Org history permanently",
+  "workspace.agentOrg.history.deleteConfirmation": "Delete this Agent Org history permanently? This removes only this run and cannot be undone.",
+  "workspace.agentOrg.history.archived": "Agent Org history archived.",
+  "workspace.agentOrg.history.archiveFailed": "Failed to archive Agent Org history. Please try again.",
+  "workspace.agentOrg.history.deleted": "Agent Org history deleted permanently.",
+  "workspace.agentOrg.history.deleteFailed": "Failed to delete Agent Org history. Please try again.",
+  "workspace.agentOrg.history.navigationCleanupFailed": "The Agent Org history changed, but the workspace could not leave the removed run. Select another item to continue.",
+  "workspace.agentOrg.history.workspaces": "Workspaces",
+  "workspace.agentOrg.history.running": "Running",
+  "workspace.agentOrg.history.stopped": "Stopped",
+  "workspace.agentOrg.history.newRun": "New - {{name}}",
+  "workspace.agentOrg.history.expandRun": "Expand {{name}} descendants",
+  "workspace.agentOrg.history.collapseRun": "Collapse {{name}} descendants",
+  "workspace.agentOrg.history.executionHierarchy": "{{name}} execution hierarchy",
+  "workspace.agentOrg.history.taskLabel": "Task: {{name}}",
+  "workspace.agentOrg.history.empty": "No Agent Org run history yet.",
+  "workspace.agentOrg.history.noWorkspace": "No workspace",
+  "workspace.agentOrg.history.relativeNow": "now",
+  "workspace.agentOrg.history.relativeMinutes": "{{count}}m",
+  "workspace.agentOrg.history.relativeHours": "{{count}}h",
+  "workspace.agentOrg.history.relativeDays": "{{count}}d",
+  "workspace.agentOrg.runConfig.orgLabel": "Agent Org",
+  "workspace.agentOrg.runConfig.runtimeHelp": "Selects the runtime used by this organization run.",
+  "workspace.agentOrg.runConfig.modelLabel": "Default LLM Model",
+  "workspace.agentOrg.runConfig.modelHelp": "Used across the organization unless a placement is customized.",
+  "workspace.agentOrg.runConfig.loading": "Loading Agent Org…",
+  "workspace.agentOrg.runConfig.starting": "Starting Agent Org…",
+  "workspace.agentOrg.runConfig.run": "Run Agent Org",
+  "workspace.agentOrg.runConfig.autoApprove": "Auto approve tools",
+  "workspace.agentOrg.runConfig.autoApproveHelp":
+    "Automatically allows tool calls and access requests for this run.",
+  "workspace.agentOrg.runConfig.workspaceRequired": "Workspace is required to run an Agent Org.",
+  "workspace.agentOrg.runConfig.memberOverrides": "Member overrides",
+  "workspace.agentOrg.runConfig.referencesLoading": "Loading organization members…",
+  "workspace.agentOrg.runConfig.referencesUnavailable": "Unable to load organization members: {references}",
+  "workspace.agentOrg.runConfig.schemaLoading": "Validating model configuration for {address}…",
+  "workspace.agentOrg.runConfig.schemaBlocked": "Model configuration for {address} is not ready: {error}",
+  "workspace.agentOrg.runConfig.schemaUnavailable": "The effective model configuration is unavailable.",
+  "workspace.agentOrg.runConfig.workspaceUnavailable": "Workspace '{{workspaceId}}' is unavailable.",
+  "workspace.agentOrg.runConfig.workspacePathRequired": "Workspace path is required.",
+  "workspace.agentOrg.runConfig.workspacePathUnavailable": "Selected workspace has no usable root path.",
   "workspace.components.conversation.segments.renderer.MermaidDiagram.expand_diagram":
     "Expand diagram",
   "workspace.components.conversation.segments.renderer.MermaidDiagram.viewer":
@@ -66,8 +147,12 @@ const messages = {
     "Configuration",
   "workspace.components.workspace.config.AgentRunConfigForm.auto_approve_tools_help":
     "High-trust mode for Codex: automatically allows tool calls and access/permission requests for this run.",
+  "workspace.components.workspace.config.AgentRunConfigForm.agy_auto_approve_tools_help":
+    "High-trust mode for Antigravity CLI: runs tools without interactive prompts. When off, denied actions cannot be approved in chat.",
   "workspace.components.workspace.config.TeamRunConfigForm.auto_approve_tools_help":
     "High-trust mode for Codex team members: automatically allows tool calls and access/permission requests for this run.",
+  "workspace.components.workspace.config.TeamRunConfigForm.agy_auto_approve_tools_help":
+    "High-trust mode for Antigravity CLI members: runs tools without interactive prompts. When off, denied actions cannot be approved in chat.",
   "workspace.components.workspace.config.TeamRunConfigForm.team_members_override":
     "Team Members Override",
   "workspace.components.workspace.config.TeamRunConfigForm.member_overrides_count":
@@ -84,6 +169,7 @@ const messages = {
   "workspace.components.workspace.config.TeamScopeConfigEditor.runtime_help": "Runtime used by this Team scope.",
   "workspace.components.workspace.config.TeamScopeConfigEditor.team_default_model": "Default LLM Model",
   "workspace.components.workspace.config.TeamScopeConfigEditor.model_help": "Nested Teams and Agents inherit this value unless customized.",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.flat_model_help": "Agents in this Team inherit this value unless customized.",
   "workspace.components.workspace.config.TeamScopeConfigEditor.auto_approve": "Auto approve tools",
   "workspace.components.workspace.config.TeamScopeConfigEditor.auto_help": "Inherited by descendant scopes without an override.",
   "workspace.components.workspace.config.TeamScopeConfigEditor.catalog_loading": "Loading models for {{address}}…",
@@ -135,6 +221,8 @@ const messages = {
     "AutoByteus-supplied · Claude SDK systemPrompt",
   "workspace.components.progress.SystemInstructionActivityItem.source.codex":
     "AutoByteus-supplied · Codex baseInstructions",
+  "workspace.components.progress.SystemInstructionActivityItem.source.grok":
+    "AutoByteus-supplied · Grok Build rules",
   "workspace.components.progress.SystemInstructionActivityItem.source.unknown":
     "AutoByteus-supplied system instructions",
   "workspace.components.workspace.running.AgentLibraryPanel.agentsHeading":
@@ -259,15 +347,15 @@ const messages = {
     "Updated {{time}}",
   "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.temporary_execution_title":
     "Temporary task execution",
-  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_running":
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.team_status_running":
     "Team status: Running",
-  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_initializing":
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.team_status_initializing":
     "Team status: Initializing",
-  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_error":
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.team_status_error":
     "Team status: Error",
-  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_idle":
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.team_status_idle":
     "Team status: Idle",
-  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_offline":
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.team_status_offline":
     "Team status: Offline",
   "workspace.history.hierarchy.tree_label": "{{name}} organization tree",
   "workspace.history.hierarchy.role.agent_team": "Agent team",

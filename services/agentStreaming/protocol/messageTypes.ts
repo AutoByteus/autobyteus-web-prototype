@@ -17,8 +17,6 @@ export type {
 } from './agentCommandTypes';
 import type { CompactionStatusPayload } from './compactionTypes';
 export type { CompactionStatusPayload } from './compactionTypes';
-import type { ExternalUserMessagePayload } from './externalUserMessageTypes';
-export type { ExternalUserMessageContextFilePathPayload, ExternalUserMessagePayload } from './externalUserMessageTypes';
 import type { MemberInputMessagePayload } from './memberInputMessageTypes';
 export type { MemberInputMessageContextFilePathPayload, MemberInputMessagePayload } from './memberInputMessageTypes';
 export type { UserMessageContextFilePathPayload, UserMessageProjectionPayload } from './userMessagePayloadTypes';
@@ -37,7 +35,6 @@ export type ServerMessageType =
   | 'SEGMENT_START'
   | 'SEGMENT_CONTENT'
   | 'SEGMENT_END'
-  | 'EXTERNAL_USER_MESSAGE'
   | 'MEMBER_INPUT_MESSAGE'
   | 'AGENT_STATUS'
   | 'AGENT_COMMAND_ACK'
@@ -152,6 +149,7 @@ export interface ToolExecutionSucceededPayload {
   result?: any;
 }
 
+
 export interface ToolExecutionFailedPayload {
   invocation_id: string;
   tool_name: string;
@@ -245,7 +243,14 @@ export interface FileChangePayload {
   updatedAt: string;
 }
 
-export type ErrorPayload = Readonly<{ code: string; message: string }> & (
+export type ErrorPayload = Readonly<{
+  code: string;
+  message: string;
+  details?: string | null;
+  provider_status?: number | string | null;
+  provider_code?: string | null;
+  provider_request_id?: string | null;
+}> & (
   | Readonly<{ error_scope: 'turn'; error_effect: 'diagnostic' | 'terminal'; turn_id: string }>
   | Readonly<{ error_scope: 'runtime'; error_effect: 'terminal'; turn_id: null }>
   | Readonly<{ error_scope: null; error_effect: null; turn_id: null }>
@@ -265,7 +270,6 @@ export type ServerMessage =
   | { type: 'SEGMENT_START'; payload: SegmentStartPayload }
   | { type: 'SEGMENT_CONTENT'; payload: SegmentContentPayload }
   | { type: 'SEGMENT_END'; payload: SegmentEndPayload }
-  | { type: 'EXTERNAL_USER_MESSAGE'; payload: ExternalUserMessagePayload }
   | { type: 'MEMBER_INPUT_MESSAGE'; payload: MemberInputMessagePayload }
   | { type: 'AGENT_STATUS'; payload: AgentStatusPayload }
   | { type: 'AGENT_COMMAND_ACK'; payload: AgentCommandAckPayload }

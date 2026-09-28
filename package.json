@@ -45,11 +45,15 @@
     "capture:aorg-team-status-final": "node prototype/scripts/capture-aorg-team-status-final.mjs",
     "validate:team-launch-baseline-refresh": "node prototype/scripts/validate-team-launch-baseline-refresh.mjs",
     "validate:aorg-team-overrides-review": "node prototype/scripts/validate-aorg-team-overrides-review.mjs",
-    "capture:aorg-team-overrides-final": "node prototype/scripts/capture-aorg-team-overrides-final.mjs"
+    "capture:aorg-team-overrides-final": "node prototype/scripts/capture-aorg-team-overrides-final.mjs",
+    "validate:web-baseline-refresh": "node prototype/scripts/validate-web-baseline-refresh.mjs",
+    "validate:web-baseline-refresh-flows": "node prototype/scripts/probe-flow.mjs"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
+    "@autobyteus/agent-presentation-contracts": "file:vendor/autobyteus-agent-presentation-contracts",
     "@autobyteus/application-sdk-contracts": "file:vendor/autobyteus-application-sdk-contracts",
+    "@autobyteus/collaboration-stream-contracts": "file:vendor/autobyteus-collaboration-stream-contracts",
     "@autobyteus/team-stream-contracts": "file:vendor/autobyteus-team-stream-contracts",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",

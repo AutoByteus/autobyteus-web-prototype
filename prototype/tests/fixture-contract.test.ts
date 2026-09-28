@@ -15,9 +15,9 @@ const snapshots = runtimeFixture.snapshots as Record<string, {
 
 describe('deterministic prototype fixture contract', () => {
   it('is pinned to the selected source and covers every recorded scenario', () => {
-    expect(runtimeFixture.sourceCommit).toBe('8ef282ba77705180d985e7000d801f0e0068cdc1')
-    expect(Object.keys(snapshots)).toHaveLength(52)
-    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'loading', 'error', 'permission_denied']))
+    expect(runtimeFixture.sourceCommit).toBe('fcd3e83a4ca931ba52ed19bd37b8df3050ee529e')
+    expect(Object.keys(snapshots)).toHaveLength(64)
+    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'projects_disabled', 'loading', 'error', 'permission_denied']))
   })
 
   it('uses synthetic domain records and local-only node addresses', () => {
@@ -40,11 +40,12 @@ describe('deterministic prototype fixture contract', () => {
     expect(Object.keys(snapshots)).toContain('permission_denied|paired|/mobile')
   })
 
-  it('derives the loading frame from a ready browser shell without a backend bootstrap', () => {
+  it('uses the captured source loading frame with unresolved capabilities', () => {
     const loading = snapshots['loading|desktop|/agents?view=list']
     expect(loading.state.server.status).toBe('running')
     expect(loading.state.applicationsCapability).toEqual({ capability: null, status: 'loading', error: null })
-    expect(loading.state.agentDefinition.agentDefinitions).toHaveLength(2)
+    expect(loading.state.projectsCapability).toEqual({ capability: null, status: 'loading', error: null })
+    expect(loading.state.agentDefinition.agentDefinitions).toHaveLength(0)
   })
 
   it('defines an isolated source-observation fixture for the catalog Team launch journey', () => {

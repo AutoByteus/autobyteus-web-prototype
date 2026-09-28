@@ -13,6 +13,8 @@ export interface RunProjectionConversationEntry {
   toolResult?: unknown | null;
   toolError?: string | null;
   media?: Record<string, string[]> | null;
+  fileAttachments?: ReadonlyArray<{ uri: string; fileType: string; fileName: string | null }>;
+  senderId?: string | null;
   ts?: number | null;
 }
 
@@ -59,6 +61,7 @@ const projectionEntryKey = (entry: RunProjectionConversationEntry): string => [
   stableJson(entry.toolResult),
   normalizeText(entry.toolError),
   stableJson(entry.media),
+  ...(entry.fileAttachments?.length ? [stableJson(entry.fileAttachments)] : []),
 ].join('\0');
 
 const projectionEntriesCanMerge = (
@@ -91,6 +94,7 @@ const mergeProjectionEntry = (
   toolResult: incoming.toolResult ?? current.toolResult ?? null,
   toolError: incoming.toolError ?? current.toolError ?? null,
   media: incoming.media ?? current.media ?? null,
+  fileAttachments: incoming.fileAttachments ?? current.fileAttachments,
 });
 
 const readMediaLocators = (
@@ -150,9 +154,14 @@ const buildUserContextFilePaths = (entry: RunProjectionConversationEntry): Conte
   ...readMediaLocators(entry.media, 'video').map((locator) =>
     hydrateContextAttachment({ locator, type: 'Video' }),
   ),
+  ...(entry.fileAttachments ?? []).map((file) => hydrateContextAttachment({
+    locator: file.uri, type: file.fileType, displayName: file.fileName,
+  })),
 ];
 
 const inferToolStatus = (entry: RunProjectionConversationEntry): ToolInvocationStatus => {
+  const result = asRecord(entry.toolResult);
+  if (result.status === 'denied' && (result.provider_state === 'ERROR' || result.provider_state === 'DONE')) return 'denied';
   if (entry.toolError) {
     return 'error';
   }
@@ -212,6 +221,15 @@ const buildAssistantSideSegments = (
     appendTextSegment(segments, entry.content);
     segments.push(...buildMediaSegments(entry));
     return segments;
+  }
+
+  if (entry.kind === 'system_task_notification') {
+    if (typeof entry.content !== 'string' || entry.content.trim().length === 0) return [];
+    return [{
+      type: 'system_task_notification',
+      senderId: entry.senderId ?? 'system',
+      content: entry.content,
+    }];
   }
 
   if (entry.kind === 'reasoning') {

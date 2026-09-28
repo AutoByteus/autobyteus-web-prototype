@@ -27,7 +27,9 @@
         :existing-model-config-reason="draftStore.reconciliationRequired ? 'REFRESH_REQUIRED' : draft.editability.reason"
         :saving="draftStore.saving || draftStore.reconciling"
         :model-config-field-errors="agentModelConfigFieldErrors"
-        @update:llm-config="draftStore.updateAgentModelConfig"
+        :original-model-identifier="draft.metadata.llmModelIdentifier"
+        :model-options="draftStore.modelOptionsByAddress['/']"
+        @selection-change="draftStore.updateAgentModelConfig"
         @schema-state="draftStore.setSchemaState('/', $event)"
       />
 
@@ -36,6 +38,16 @@
         :model="teamFormModel"
         :model-config-field-errors-by-address="teamModelConfigFieldErrorsByAddress"
         @update-existing-model-config="draftStore.updateTeamScopeModelConfig"
+        @schema-state="draftStore.setSchemaState"
+      />
+
+      <AgentOrgRunConfigForm
+        v-else-if="draft.kind === 'agent_org'"
+        class="mx-auto max-w-3xl"
+        :existing-model="agentOrgFormModel"
+        :model-config-field-errors-by-address="teamModelConfigFieldErrorsByAddress"
+        @update-existing-model-config="draftStore.updateAgentOrgScopeModelConfig"
+        @update:workspace-selection="draftStore.updateAgentOrgWorkspaceSelection"
         @schema-state="draftStore.setSchemaState"
       />
 
@@ -91,28 +103,40 @@ import { computed, onBeforeUnmount, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAgentSelectionStore } from '~/stores/agentSelectionStore'
 import { useRunHistoryStore } from '~/stores/runHistoryStore'
-import { useExistingRunModelConfigStore } from '~/stores/existingRunModelConfigStore'
+import { useExistingRunConfigStore } from '~/stores/existingRunConfigStore'
 import { useAgentContextsStore } from '~/stores/agentContextsStore'
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
 import type { AgentRunConfig, SkillAccessMode } from '~/types/agent/AgentRunConfig'
 import type { WorkspaceSelectionState } from '~/types/workspace/WorkspaceSelectionState'
 import { projectExistingTeamRunFormModel } from '~/services/runConfigEditing/existingTeamRunFormModel'
+import { projectExistingAgentOrgRunFormModel } from '~/services/runConfigEditing/existingAgentOrgRunFormModel'
 import AgentRunConfigForm from './AgentRunConfigForm.vue'
 import TeamRunConfigForm from './TeamRunConfigForm.vue'
+import AgentOrgRunConfigForm from './AgentOrgRunConfigForm.vue'
 import { useLocalization } from '~/composables/useLocalization'
 
 const selection = useAgentSelectionStore()
 const history = useRunHistoryStore()
-const draftStore = useExistingRunModelConfigStore()
+const draftStore = useExistingRunConfigStore()
 const contexts = useAgentContextsStore()
 const definitions = useAgentDefinitionStore()
 const { t } = useLocalization()
 const { draft } = storeToRefs(draftStore)
+const props = defineProps<{ target?: Readonly<{ kind: 'agent_org'; orgRunId: string }> | null }>()
 
-const selectedIdentity = computed(() => {
+type SelectedRunKind = 'agent' | 'team' | 'agent_org'
+const selectedKind = computed<SelectedRunKind | null>(() => {
+  if (props.target) return 'agent_org'
   const subject = selection.subject
-  if (subject?.kind === 'agent_run') return { kind: 'agent' as const, id: subject.runId }
-  if (subject?.kind === 'team_run') return { kind: 'team' as const, id: subject.rootTeamRunId }
+  if (subject?.kind === 'agent_run') return 'agent'
+  if (subject?.kind === 'team_run') return 'team'
+  return null
+})
+const selectedRunId = computed(() => {
+  if (props.target) return props.target.orgRunId
+  const subject = selection.subject
+  if (subject?.kind === 'agent_run') return subject.runId
+  if (subject?.kind === 'team_run') return subject.rootTeamRunId
   return null
 })
 
@@ -123,13 +147,14 @@ const selectedCanonical = computed(() => {
   return null
 })
 
-watch(selectedIdentity, (identity) => {
-  if (!identity) {
+watch([selectedKind, selectedRunId], ([kind, id]) => {
+  if (!kind || !id) {
     draftStore.clear()
     return
   }
-  if (identity.kind === 'agent') void draftStore.loadAgentCanonical(identity.id)
-  else void draftStore.loadTeamCanonical(identity.id)
+  if (kind === 'agent') void draftStore.loadAgentCanonical(id)
+  else if (kind === 'team') void draftStore.loadTeamCanonical(id)
+  else void draftStore.loadAgentOrgCanonical(id)
 }, { immediate: true })
 
 watch(selectedCanonical, (payload) => {
@@ -149,8 +174,7 @@ const agentConfig = computed<AgentRunConfig | null>(() => {
     agentDefinitionName: hydrated?.agentDefinitionName ?? 'Agent',
     agentAvatarUrl: hydrated?.agentAvatarUrl ?? null,
     runtimeKind: current.metadata.runtimeKind ?? 'autobyteus',
-    llmModelIdentifier: current.metadata.llmModelIdentifier,
-    llmConfig: current.draftLlmConfig,
+    ...current.draftSelection,
     workspaceId: hydrated?.workspaceId ?? null,
     workspaceMetadata: hydrated?.workspaceMetadata ?? null,
     autoExecuteTools: current.metadata.autoExecuteTools,
@@ -175,7 +199,7 @@ const agentModelConfigFieldErrors = computed<Record<string, string>>(() => Objec
 const teamModelConfigFieldErrorsByAddress = computed<Record<string, Record<string, string>>>(() => {
   const byAddress: Record<string, Record<string, string>> = {}
   for (const error of draftStore.fieldErrors) {
-    const match = /^patches\[(.+)]\.llmConfig\.([^.[]+)/.exec(error.path)
+    const match = /^(?:patches|modelPatches)\[(.+)]\.llmConfig\.([^.[]+)/.exec(error.path)
     if (!match) continue
     const addressErrors = byAddress[match[1]!] ??= {}
     addressErrors[match[2]!] = error.message
@@ -191,6 +215,21 @@ const teamFormModel = computed(() => {
     isActive: current.isActive,
     modelConfigEditable: current.editability.editable && !current.isActive && !draftStore.reconciliationRequired,
     modelConfigReason: draftStore.reconciliationRequired ? 'REFRESH_REQUIRED' : current.editability.reason ?? null,
+    modelOptionsByAddress: draftStore.modelOptionsByAddress,
+    saving: draftStore.saving || draftStore.reconciling,
+  })
+})
+const agentOrgFormModel = computed(() => {
+  const current = draft.value
+  if (current?.kind !== 'agent_org') throw new Error('Existing AgentOrg form requires an AgentOrg draft.')
+  return projectExistingAgentOrgRunFormModel({
+    workspaceDraft: current.workspaceDraft,
+    tree: current.executionTree,
+    planner: current.planner,
+    isActive: current.isActive,
+    modelConfigEditable: current.editability.editable && !current.isActive && !draftStore.reconciliationRequired,
+    modelConfigReason: draftStore.reconciliationRequired ? 'REFRESH_REQUIRED' : current.editability.reason ?? null,
+    modelOptionsByAddress: draftStore.modelOptionsByAddress,
     saving: draftStore.saving || draftStore.reconciling,
   })
 })

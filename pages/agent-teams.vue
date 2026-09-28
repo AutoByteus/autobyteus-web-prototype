@@ -1,12 +1,11 @@
 <template>
   <div class="h-full overflow-auto bg-gray-50">
-    <FlatAgentTeamExperience v-if="agentOrgReviewActive" />
-    <AgentTeamList v-else-if="currentView === 'team-list'" @navigate="handleNavigation" />
+    <AgentTeamList v-if="currentView === 'team-list'" @navigate="handleNavigation" />
     <AgentTeamCreate v-else-if="currentView === 'team-create'" @navigate="handleNavigation" />
     <AgentTeamDetail
       v-else-if="currentView === 'team-detail' && currentId"
       :team-definition-id="currentId"
-      :return-to-team-id="returnToTeamId"
+      :return-to-org-id="returnToOrgId"
       @navigate="handleNavigation"
     />
     <AgentTeamEdit
@@ -37,15 +36,12 @@ import AgentTeamList from '~/components/agentTeams/AgentTeamList.vue';
 import AgentTeamDetail from '~/components/agentTeams/AgentTeamDetail.vue';
 import AgentTeamCreate from '~/components/agentTeams/AgentTeamCreate.vue';
 import AgentTeamEdit from '~/components/agentTeams/AgentTeamEdit.vue';
-import FlatAgentTeamExperience from '~/components/agentTeams/FlatAgentTeamExperience.vue';
-import { useAgentOrgPrototypeReview } from '~/composables/useAgentOrgPrototypeReview';
 
 const route = useRoute();
 const router = useRouter();
 const workspaceStore = useWorkspaceStore();
 const agentDefStore = useAgentDefinitionStore();
 const agentTeamDefStore = useAgentTeamDefinitionStore();
-const { active: agentOrgReviewActive } = useAgentOrgPrototypeReview();
 
 onMounted(async () => {
   try {
@@ -71,11 +67,12 @@ const currentView = computed((): View => {
 });
 
 const currentId = computed(() => route.query.id as string | undefined);
-const returnToTeamId = computed(() => route.query.returnToTeam as string | undefined);
+const returnToOrgId = computed(() => route.query.returnToOrg as string | undefined);
 
 type AgentTeamNavigationPayload =
-  | { view: View; id?: string; returnToTeam?: string; clearReturnToTeam?: boolean }
-  | { target: 'agents'; view: 'detail'; id: string; returnToTeam: string };
+  | { view: View; id?: string }
+  | { target: 'agents'; view: 'detail'; id: string; returnToTeam: string }
+  | { target: 'agent-orgs'; view: 'org-detail'; id: string };
 
 const handleNavigation = (payload: AgentTeamNavigationPayload) => {
   if ('target' in payload && payload.target === 'agents') {
@@ -85,8 +82,14 @@ const handleNavigation = (payload: AgentTeamNavigationPayload) => {
         view: payload.view,
         id: payload.id,
         returnToTeam: payload.returnToTeam,
+        ...(returnToOrgId.value ? { returnToOrg: returnToOrgId.value } : {}),
       },
     });
+    return;
+  }
+
+  if ('target' in payload && payload.target === 'agent-orgs') {
+    router.push({ path: '/agent-orgs', query: { view: payload.view, id: payload.id } });
     return;
   }
 
@@ -95,11 +98,7 @@ const handleNavigation = (payload: AgentTeamNavigationPayload) => {
   if (id) {
     query.id = id;
   }
-  if (payload.returnToTeam) {
-    query.returnToTeam = payload.returnToTeam;
-  } else if (!payload.clearReturnToTeam && returnToTeamId.value && view !== 'team-list') {
-    query.returnToTeam = returnToTeamId.value;
-  }
+  if (returnToOrgId.value && view !== 'team-list') query.returnToOrg = returnToOrgId.value;
   router.push({ path: '/agent-teams', query });
 };
 </script>

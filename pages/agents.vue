@@ -13,7 +13,6 @@
       v-else-if="currentView === 'detail' && currentId"
       :agent-definition-id="currentId"
       :return-to-team-id="returnToTeamId"
-      :agent-definition-override="reviewAgentDefinition"
       @navigate="handleNavigation"
     />
     <AgentEdit v-else-if="currentView === 'edit' && currentId" :agent-definition-id="currentId" @navigate="handleNavigation" />
@@ -34,61 +33,18 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useWorkspaceStore } from '~/stores/workspace';
-import { useAgentDefinitionStore, type AgentDefinition } from '~/stores/agentDefinitionStore';
+import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore';
 import AgentList from '~/components/agents/AgentList.vue';
 import AgentDetail from '~/components/agents/AgentDetail.vue';
 import AgentCreate from '~/components/agents/AgentCreate.vue';
 import AgentEdit from '~/components/agents/AgentEdit.vue';
-import { agents as agentOrgReviewAgents } from '~/prototype/aorg-flat-team-fixtures';
-import { AGENT_ORG_PROTOTYPE_REVIEW_KEY, useAgentOrgPrototypeReview } from '~/composables/useAgentOrgPrototypeReview';
 
 const route = useRoute();
 const router = useRouter();
 const workspaceStore = useWorkspaceStore();
 const agentDefStore = useAgentDefinitionStore();
-const { active: agentOrgReviewActive, reviewActive: agentOrgReviewRouteActive } = useAgentOrgPrototypeReview();
 
 const loading = ref(true);
-
-const toReviewAgentDefinition = (id: string): AgentDefinition | null => {
-  const agent = agentOrgReviewAgents.find(candidate => candidate.id === id);
-  if (!agent) return null;
-  return {
-    __typename: 'AgentDefinition',
-    id: agent.id,
-    name: agent.name,
-    role: agent.role,
-    description: agent.description,
-    instructions: agent.instructions,
-    category: 'General',
-    avatarUrl: null,
-    toolNames: [],
-    inputProcessorNames: [],
-    llmResponseProcessorNames: [],
-    toolExecutionResultProcessorNames: [],
-    toolInvocationPreprocessorNames: [],
-    lifecycleProcessorNames: [],
-    skillNames: [],
-    ownershipScope: 'SHARED',
-    ownerTeamId: null,
-    ownerTeamName: null,
-    ownerApplicationId: null,
-    ownerApplicationName: null,
-    ownerPackageId: 'aorg-flat-team-prototype',
-    ownerLocalApplicationId: null,
-    defaultLaunchConfig: {
-      runtimeKind: 'autobyteus',
-      llmModelIdentifier: 'mock/gpt-prototype',
-      llmConfig: { temperature: 0.2 },
-    },
-  };
-};
-
-const reviewAgentDefinition = computed<AgentDefinition | null>(() => (
-  agentOrgReviewActive.value && currentId.value
-    ? toReviewAgentDefinition(currentId.value)
-    : null
-));
 
 onMounted(async () => {
   loading.value = true;
@@ -114,6 +70,7 @@ const currentView = computed((): View => {
 
 const currentId = computed(() => route.query.id as string | undefined);
 const returnToTeamId = computed(() => route.query.returnToTeam as string | undefined);
+const returnToOrgId = computed(() => route.query.returnToOrg as string | undefined);
 
 type AgentNavigationPayload =
   | { view: View; id?: string }
@@ -121,27 +78,22 @@ type AgentNavigationPayload =
 
 const handleNavigation = (payload: AgentNavigationPayload) => {
   if ('target' in payload && payload.target === 'agent-team') {
-    router.push({
-      path: '/agent-teams',
-      query: {
-        ...(agentOrgReviewRouteActive.value ? { prototypeReview: AGENT_ORG_PROTOTYPE_REVIEW_KEY } : {}),
-        view: payload.view,
-        id: payload.id,
-      },
-    });
+    router.push({ path: '/agent-teams', query: {
+      view: payload.view,
+      id: payload.id,
+      ...(returnToOrgId.value ? { returnToOrg: returnToOrgId.value } : {}),
+    } });
     return;
   }
 
   const { view, id } = payload;
   const query: Record<string, string> = { view };
-  if (agentOrgReviewRouteActive.value) {
-    query.prototypeReview = AGENT_ORG_PROTOTYPE_REVIEW_KEY;
-  }
   if (id) {
     query.id = id;
   }
   if (returnToTeamId.value && view !== 'list') {
     query.returnToTeam = returnToTeamId.value;
+    if (returnToOrgId.value) query.returnToOrg = returnToOrgId.value;
   }
   router.push({ path: '/agents', query });
 };

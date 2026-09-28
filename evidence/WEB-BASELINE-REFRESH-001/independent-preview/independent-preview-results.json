@@ -1,0 +1,30 @@
+{
+  "generatedAt": "2026-09-28T11:04:45.055Z",
+  "server": "node .output/server/index.mjs (PORT=4198); source and observation node stopped",
+  "results": [
+    {
+      "path": "/workspace",
+      "foreignRequests": [],
+      "errors": [],
+      "text": "Agents | Agent Teams | Agent Orgs | Applications | Skills | Memory | Nodes | Projects | Workspaces | prototype-workspace | TEAMS | Product Review Team | (1) | Review the current prototyp"
+    },
+    {
+      "path": "/agent-orgs?view=org-list",
+      "foreignRequests": [],
+      "errors": [],
+      "text": "Agents | Agent Teams | Agent Orgs | Applications | Skills | Memory | Nodes | Projects | Workspaces | prototype-workspace | Settings | Agent Orgs | Search Agent Orgs | Reload | Create Agent"
+    },
+    {
+      "path": "/projects/project-prototype-launch",
+      "foreignRequests": [],
+      "errors": [],
+      "text": "Agents | Agent Teams | Agent Orgs | Applications | Skills | Memory | Nodes | Projects | Workspaces | prototype-workspace | Settings | Projects | Prototype Launch |  | Synthetic project lin"
+    },
+    {
+      "path": "/settings?section=api-keys",
+      "foreignRequests": [],
+      "errors": [],
+      "text": "Back to Workspace | API Keys | Token Statistics | Display | Language | Local Tools | MCP Servers | Application Packages | Agent Packages | Server Settings | Extensions | Updates | API "
+    }
+  ]
+}

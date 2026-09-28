@@ -1,4 +1,5 @@
 import type { ApplicationExecutionResourceRef } from "./execution-resources.js";
+import type { ApplicationAgentMemberAddress } from "./application-agent-member-address.js";
 export type ApplicationAgentBindingStatus = "ATTACHED" | "TERMINATING" | "TERMINATED" | "FAILED" | "ORPHANED";
 type ApplicationAgentBindingFields = {
     bindingId: string;
@@ -19,12 +20,11 @@ export type ApplicationAgentBinding = ApplicationAgentBindingFields & {
         members: [];
     };
 };
-export type ApplicationAgentTeamBindingMember = {
-    memberAddress: string;
+export type ApplicationAgentTeamBindingMember = Readonly<{
+    memberAddress: ApplicationAgentMemberAddress;
     displayName: string;
     agentRunId: string;
-    runtimeKind: "AGENT" | "AGENT_TEAM_MEMBER";
-};
+}>;
 export type ApplicationAgentTeamBinding = ApplicationAgentBindingFields & {
     runtime: {
         subject: "TEAM_RUN";
@@ -36,18 +36,10 @@ export type ApplicationAgentTeamBinding = ApplicationAgentBindingFields & {
 export type ApplicationAgentBindingListFilter = {
     status?: ApplicationAgentBindingStatus | null;
 };
-export type ApplicationAgentTarget = {
-    kind: "AGENT_RUN";
-} | {
-    kind: "AGENT_TEAM_RUN";
-} | {
-    kind: "AGENT_TEAM_MEMBER";
-    agentRunId: string;
-};
-export type ApplicationAgentTargetAddress = {
+export type ApplicationAgentTargetAddress = Readonly<{
     bindingId: string;
-    target: ApplicationAgentTarget;
-};
+    memberAddress: ApplicationAgentMemberAddress | null;
+}>;
 export type ApplicationRuntimeInputContextFile = {
     uri: string;
     fileType?: string | null;
@@ -59,12 +51,10 @@ export type ApplicationAgentInput = {
     contextFiles?: ApplicationRuntimeInputContextFile[] | null;
     metadata?: Record<string, unknown> | null;
 };
-export type ApplicationExecutionProducerRuntimeKind = "AGENT" | "AGENT_TEAM_MEMBER";
-export type ApplicationExecutionProducer = {
+export type ApplicationExecutionProducer = Readonly<{
     agentRunId: string;
     displayName: string | null;
-    runtimeKind: ApplicationExecutionProducerRuntimeKind;
-};
+}>;
 export type ApplicationExecutionContext = Readonly<{
     applicationId: string;
     bindingId: string;

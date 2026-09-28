@@ -1,8 +1,10 @@
-import type { TokenUsageCostSummaryAggregate } from '~/types/tokenUsageCostSummary';
+import type { TokenUsageApiCostStatus } from '~/types/tokenUsageMeter';
 
 export type TokenUsageCreatedTimeSource = 'RUN_HISTORY' | 'FIRST_USAGE_OBSERVED';
 export type TokenUsageTaskRowKind = 'TEAM_RUN' | 'AGENT_RUN' | 'MEMBER_RUN' | 'TASK_TEAM_RUN' | 'TASK_AGENT_RUN';
+
 export type { TokenUsageCostSummaryAggregate } from '~/types/tokenUsageCostSummary';
+import type { TokenUsageCostSummaryAggregate } from '~/types/tokenUsageCostSummary';
 
 export interface TokenUsageTaskStatisticsRow {
   rowId: string;
@@ -31,3 +33,9 @@ export interface TokenUsageRuntimeModelStatisticsRow {
 
 export type TokenUsageTaskSortKey = 'createdAt' | 'totalCost' | 'input' | 'output' | 'runtime' | 'task';
 export type TokenUsageSortDirection = 'asc' | 'desc';
+
+export interface TokenUsageCostAggregate {
+  amount: number | null;
+  currency: string | null;
+  status: TokenUsageApiCostStatus;
+}

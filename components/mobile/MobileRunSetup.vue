@@ -59,6 +59,7 @@
       variant="agent"
       :runtime-kind="agentConfigForSelectedTarget.runtimeKind"
       :llm-model-identifier="agentConfigForSelectedTarget.llmModelIdentifier"
+      :seed-model-identifier="agentSeedModelIdentifier"
       :llm-config="agentConfigForSelectedTarget.llmConfig"
       @update:runtime-kind="updateRuntimeKind"
       @update:llm-model-identifier="updateLlmModelIdentifier"
@@ -67,9 +68,10 @@
     <MobileLaunchRuntimeModelCard
       v-else-if="mode === 'team' && teamConfigForSelectedTarget"
       variant="team"
-      :runtime-kind="teamConfigForSelectedTarget.runtimeKind"
-      :llm-model-identifier="teamConfigForSelectedTarget.llmModelIdentifier"
-      :llm-config="teamConfigForSelectedTarget.llmConfig"
+      :runtime-kind="teamConfigForSelectedTarget.rootConfig.runtimeKind"
+      :llm-model-identifier="teamConfigForSelectedTarget.rootConfig.llmModelIdentifier"
+      :seed-model-identifier="teamSeedModelIdentifier"
+      :llm-config="teamConfigForSelectedTarget.rootConfig.llmConfig"
       @update:runtime-kind="updateRuntimeKind"
       @update:llm-model-identifier="updateLlmModelIdentifier"
       @update:llm-config="updateLlmConfig"
@@ -78,6 +80,7 @@
     <MobileLaunchRunOptionsCard
       v-if="activeConfig"
       :auto-execute-tools="autoExecuteTools"
+      :runtime-kind="'rootConfig' in activeConfig ? activeConfig.rootConfig.runtimeKind : activeConfig.runtimeKind"
       @update:auto-execute-tools="setAutoExecuteTools"
     />
 
@@ -153,7 +156,9 @@ const {
   workspaceRefreshing,
   workspacePathLoading,
   agentConfigForSelectedTarget,
+  agentSeedModelIdentifier,
   teamConfigForSelectedTarget,
+  teamSeedModelIdentifier,
   activeConfig,
   canLaunch,
   blockingIssue,

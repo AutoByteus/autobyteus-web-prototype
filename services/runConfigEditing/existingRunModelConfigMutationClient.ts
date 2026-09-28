@@ -2,7 +2,7 @@ import { getApolloClient } from '~/utils/apolloClient'
 import { UpdateStoppedAgentRunModelConfig } from '~/graphql/mutations/runHistoryMutations'
 import { UpdateStoppedTeamRunModelConfigs } from '~/graphql/mutations/agentTeamRunMutations'
 import type { RunModelConfigEditability } from '~/stores/runHistoryTypes'
-import type { ExistingRunModelConfigFieldError } from '~/types/agent/ExistingRunModelConfigDraft'
+import type { ExistingRunModelConfigFieldError, ExistingRunModelSelection } from '~/types/agent/ExistingRunModelConfigDraft'
 import type { ExistingTeamModelConfigPatch } from './existingTeamModelConfigDraft'
 
 export type ExistingRunModelConfigMutationResult = Readonly<{
@@ -15,13 +15,12 @@ export type ExistingRunModelConfigMutationResult = Readonly<{
 }>
 
 export type AgentModelConfigMutationResult = ExistingRunModelConfigMutationResult & Readonly<{
-  canonicalLlmConfig?: Record<string, unknown> | null
+  canonicalSelection: ExistingRunModelSelection | null
 }>
 
 export type TeamModelConfigMutationResult = ExistingRunModelConfigMutationResult & Readonly<{
   canonicalExecutionTree?: unknown | null
 }>
-
 const requiredResult = <T>(
   response: { data?: Record<string, T> | null; errors?: readonly { message: string }[] },
   field: string,
@@ -34,6 +33,7 @@ const requiredResult = <T>(
 
 export const updateStoppedAgentModelConfig = async (input: {
   agentRunId: string
+  llmModelIdentifier: string
   llmConfig: Record<string, unknown> | null
 }): Promise<AgentModelConfigMutationResult> => {
   const response = await getApolloClient().mutate<Record<string, AgentModelConfigMutationResult>>({

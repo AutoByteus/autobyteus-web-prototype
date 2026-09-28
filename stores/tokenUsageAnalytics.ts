@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia';
-import { createTokenUsageAnalyticsResult } from '~/prototype/shared/token-statistics-refresh-fixture.js';
+import type { GetTokenUsageAnalyticsQuery, GetTokenUsageAnalyticsQueryVariables } from '~/generated/graphql';
+import { GET_TOKEN_USAGE_ANALYTICS } from '~/graphql/queries/token_usage_analytics_queries';
 import type {
   TokenUsageAnalyticsRangePreset,
   TokenUsageAnalyticsResult,
   TokenUsageAnalyticsSelection,
 } from '~/types/tokenUsageAnalytics';
+import { getApolloClient } from '~/utils/apolloClient';
 
 const DAY_MS = 86_400_000;
 const dateOnly = (date: Date): string => date.toISOString().slice(0, 10);
@@ -32,9 +34,6 @@ const defaultSelection = (): TokenUsageAnalyticsSelection => ({
   modelKey: null,
 });
 
-const scenario = (): string => typeof window === 'undefined'
-  ? 'populated'
-  : localStorage.getItem('autobyteus.prototype.scenario') || 'populated';
 const toIsoStart = (date: string): string => `${date}T00:00:00.000Z`;
 const toIsoEndExclusive = (date: string): string => new Date(Date.parse(`${date}T00:00:00.000Z`) + DAY_MS).toISOString();
 
@@ -68,24 +67,29 @@ export const useTokenUsageAnalyticsStore = defineStore('tokenUsageAnalytics', {
     },
     async fetch(): Promise<void> {
       const sequence = ++this.requestSequence;
-      const selectedScenario = scenario();
       this.loading = true;
       this.error = null;
       this.result = null;
-      try {
-        if (selectedScenario === 'loading') await new Promise(resolve => window.setTimeout(resolve, 1_500));
-        if (selectedScenario === 'error') throw new Error('Synthetic recoverable GraphQL failure.');
-        const result = createTokenUsageAnalyticsResult({
+      const variables: GetTokenUsageAnalyticsQueryVariables = {
+        input: {
           rangePreset: this.selection.rangePreset,
           startTime: toIsoStart(this.selection.startDate),
           endTimeExclusive: toIsoEndExclusive(this.selection.endDate),
           runtimeKind: this.selection.runtimeKind,
           providerKey: this.selection.providerKey,
           modelKey: this.selection.modelKey,
-        }, selectedScenario) as TokenUsageAnalyticsResult;
+        },
+      };
+      try {
+        const response = await getApolloClient().query<GetTokenUsageAnalyticsQuery, GetTokenUsageAnalyticsQueryVariables>({
+          query: GET_TOKEN_USAGE_ANALYTICS,
+          variables,
+          fetchPolicy: 'network-only',
+        });
+        if (response.errors?.length) throw new Error(response.errors.map((error: { message: string }) => error.message).join(', '));
         if (sequence === this.requestSequence) {
-          this.result = result;
-          this.filterOptions = result.filterOptions;
+          this.result = response.data.tokenUsageAnalytics;
+          this.filterOptions = response.data.tokenUsageAnalytics.filterOptions;
         }
       } catch (error) {
         if (sequence === this.requestSequence) this.error = error instanceof Error ? error.message : 'Unknown analytics error';

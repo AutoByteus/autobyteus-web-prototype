@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-02T12:22:07.083Z",
-  "root": "/home/autobyteus/workspace/autobyteus-web-prototype",
+  "generatedAt": "2026-09-28T11:17:06.738Z",
+  "root": "/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/WEB-BASELINE-REFRESH-001",
   "checks": [
     {
       "name": "No Electron/native runtime dependency",
@@ -60,7 +60,7 @@
     {
       "name": "Source evidence uses controlled loopback mock",
       "pass": true,
-      "evidence": "http://127.0.0.1:4310"
+      "evidence": "http://127.0.0.1:4391"
     },
     {
       "name": "Prototype has independently runnable Nuxt entry points",

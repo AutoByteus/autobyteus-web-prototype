@@ -17,8 +17,10 @@ import { useLocalization } from '~/composables/useLocalization';
 import type { TokenUsageAnalyticsResult } from '~/types/tokenUsageAnalytics';
 
 const props = defineProps<{ result: TokenUsageAnalyticsResult }>();
-const { t } = useLocalization();
-const coverageDate = computed(() => new Date(props.result.coverage.coverageStart).toISOString().replace('T', ' ').replace(/:\d{2}\.\d{3}Z$/, ' UTC'));
+const { t, resolvedLocale } = useLocalization();
+const coverageDate = computed(() => `${new Intl.DateTimeFormat(resolvedLocale.value, {
+  year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'UTC',
+}).format(new Date(props.result.coverage.coverageStart))} UTC`);
 const coverageTitle = computed(() => props.result.coverage.status === 'FULL'
   ? t('settings.components.settings.TokenUsageAnalytics.fullCoverageShort')
   : props.result.coverage.status === 'PARTIAL'

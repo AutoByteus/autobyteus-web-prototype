@@ -1,3 +1,4 @@
+import { autoExecuteForNewRuntimeSelection } from '~/utils/agentRunRuntimeDraftPolicy'
 import type { AgentDefinition } from '~/stores/agentDefinitionStore'
 import type { AgentTeamDefinition } from '~/stores/agentTeamDefinitionStore'
 import type { AgentRunConfig } from '~/types/agent/AgentRunConfig'
@@ -16,11 +17,6 @@ import {
   normalizeModelIdentifier,
   normalizeRuntimeKind,
 } from '~/utils/teamRunConfigUtils'
-
-// Compatibility exports retained for accepted prototype-only presentation
-// helpers that predate the source launch-configuration refactor. The current
-// source implementations remain the single normalization authority.
-export { normalizeModelIdentifier, normalizeRuntimeKind } from '~/utils/teamRunConfigUtils'
 
 const cloneWorkspaceMetadata = (metadata: WorkspaceMetadata | null): WorkspaceMetadata | null => metadata
   ? { workspaceId: metadata.workspaceId, workspaceRootPath: metadata.workspaceRootPath, displayName: metadata.displayName, kind: metadata.kind }
@@ -72,7 +68,9 @@ const authorableTeamDifference = (
     override.workspace = workspaceFromResolved(child)
   }
   if (child.llmModelIdentifier !== parent.llmModelIdentifier) override.llmModelIdentifier = child.llmModelIdentifier
-  if (!modelConfigsEqual(child.llmConfig, parent.llmConfig)) override.llmConfig = normalizeModelConfig(child.llmConfig)
+  // An explicit model/runtime override clears inherited parameters unless the seed carries them.
+  if (child.runtimeKind !== parent.runtimeKind || child.llmModelIdentifier !== parent.llmModelIdentifier
+    || !modelConfigsEqual(child.llmConfig, parent.llmConfig)) override.llmConfig = normalizeModelConfig(child.llmConfig)
   if (child.autoExecuteTools !== parent.autoExecuteTools) override.autoExecuteTools = child.autoExecuteTools
   return Object.keys(override).length ? override : null
 }
@@ -83,7 +81,9 @@ const authorableAgentDifference = (
   const override: AgentConfigOverride = {}
   if (child.runtimeKind !== parent.runtimeKind) override.runtimeKind = child.runtimeKind
   if (child.llmModelIdentifier !== parent.llmModelIdentifier) override.llmModelIdentifier = child.llmModelIdentifier
-  if (!modelConfigsEqual(child.llmConfig, parent.llmConfig)) override.llmConfig = normalizeModelConfig(child.llmConfig)
+  // An explicit model/runtime override clears inherited parameters unless the seed carries them.
+  if (child.runtimeKind !== parent.runtimeKind || child.llmModelIdentifier !== parent.llmModelIdentifier
+    || !modelConfigsEqual(child.llmConfig, parent.llmConfig)) override.llmConfig = normalizeModelConfig(child.llmConfig)
   if (child.autoExecuteTools !== parent.autoExecuteTools) override.autoExecuteTools = child.autoExecuteTools
   return Object.keys(override).length ? override : null
 }
@@ -133,7 +133,7 @@ export const buildAgentRunTemplate = (
     runtimeKind: normalizeRuntimeKind(defaults?.runtimeKind),
     workspaceId: null,
     workspaceMetadata: null,
-    autoExecuteTools: false,
+    autoExecuteTools: autoExecuteForNewRuntimeSelection(normalizeRuntimeKind(defaults?.runtimeKind), false),
     skillAccessMode: 'PRELOADED_ONLY',
     isLocked: false,
     llmConfig: normalizeModelConfig(defaults?.llmConfig),
@@ -151,7 +151,7 @@ export const buildTeamRunTemplate = (
       workspace: { workspaceId: null, workspaceMetadata: null },
       llmModelIdentifier: normalizeModelIdentifier(defaults?.llmModelIdentifier),
       llmConfig: normalizeModelConfig(defaults?.llmConfig),
-      autoExecuteTools: false,
+      autoExecuteTools: autoExecuteForNewRuntimeSelection(normalizeRuntimeKind(defaults?.runtimeKind), false),
       skillAccessMode: 'PRELOADED_ONLY',
     },
     teamOverrides: {},

@@ -1,0 +1,30 @@
+Product Prototyper acceptance — WEB-BASELINE-REFRESH-001
+Date: 2026-09-28
+Source authority: origin/personal@fcd3e83a4ca931ba52ed19bd37b8df3050ee529e (autobyteus-web, /Users/normy/autobyteus_org/autobyteus-workspace-superrepo)
+Candidate: Bootstrapper working-tree candidate on prototype/web-baseline-refresh-001 over base ba67ac0
+
+Reviewed directly:
+- prototype-bootstrap-report.md (Status Completed, Request type Refresh, no remaining perceptible/behavioral differences inside verified scope)
+- evidence/WEB-BASELINE-REFRESH-001/matrix/summary.json: total 82, passed 82, failed 0, exactPixelRows 55, noiseOnlyRows 27, prototypeBrowserErrorRows 0
+- evidence/WEB-BASELINE-REFRESH-001/flows/flow-results.json: 15/15 results, 0 failures
+- evidence/WEB-BASELINE-REFRESH-001/independent-preview/independent-preview-results.json: 4/4 results, 0 failures (source and observation node stopped)
+- Source confirms removal of Settings > Messaging at the pin.
+
+Product re-run of static checks in the candidate worktree:
+- corepack pnpm install --ignore-workspace --frozen-lockfile: pass (regenerated lockfile consistent)
+- corepack pnpm lint: pass
+- corepack pnpm test: 3 files / 12 tests pass
+- corepack pnpm validate:boundaries: pass
+- corepack pnpm typecheck: pass (pre-existing duplicate auto-import warnings only)
+
+Product browser spot check (candidate at http://127.0.0.1:4199, headless Chromium 1440x900, en-US):
+- /agents?view=list: shell nav (Agents, Agent Teams, Agent Orgs, Applications, Skills, Memory), Workspaces tree with prototype-workspace, two agent cards — renders cleanly
+- Agent catalog Run -> run configuration (Agent Definition, Runtime, LLM Model, Workspace Existing/New, Auto approve tools, Run Agent) — renders cleanly
+- /workspace empty state — renders cleanly
+
+Dispositions:
+- Accepted prototype changes superseded by source implementations and prototype-only review scaffolding removals: ACCEPTED. The user explicitly asked for the baseline to be "like the original project"; the source is the authority.
+- Legacy rich-state injector (workspace_*/mobile_* streaming/error/interrupted scenarios) not source-verified at this pin: ACCEPTED AS KNOWN LIMITATION. Future tickets add focused fixtures instead.
+- Historical ticket validators/review URLs target the previous baseline: retained as historical evidence only; not part of this baseline's validation.
+
+Result: ACCEPTED as the current-experience baseline at fcd3e83a4.

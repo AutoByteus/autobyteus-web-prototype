@@ -1,7 +1,6 @@
 <template>
   <div class="flex flex-col h-full bg-gray-100 font-sans text-gray-800">
     <WorkspaceAdaptiveLayout :show-file-content="showFileContent" />
-    <NestedTeamHierarchyReviewPanel v-if="!agentOrgReviewActive" />
   </div>
 </template>
 
@@ -12,13 +11,10 @@ import { useServerSettingsStore } from '~/stores/serverSettings';
 import { useWorkspaceStore } from '~/stores/workspace';
 import { useWorkspaceRouteSelection } from '~/composables/workspace/useWorkspaceRouteSelection';
 import WorkspaceAdaptiveLayout from '~/components/layout/WorkspaceAdaptiveLayout.vue';
-import NestedTeamHierarchyReviewPanel from '~/components/workspace/history/NestedTeamHierarchyReviewPanel.vue';
-import { useAgentOrgPrototypeReview } from '~/composables/useAgentOrgPrototypeReview';
 
 const fileExplorerStore = useFileExplorerStore();
 const serverSettingsStore = useServerSettingsStore();
 const workspaceStore = useWorkspaceStore();
-const { active: agentOrgReviewActive } = useAgentOrgPrototypeReview();
 
 useWorkspaceRouteSelection();
 

@@ -1,3 +1,5 @@
+import type { WorkspaceSelectorModel } from '~/types/workspace/WorkspaceSelectorModel'
+import type { ExistingRunModelOptionsState } from './ExistingRunModelConfigDraft'
 import type { AgentTeamAddress } from './AgentTeamAddress'
 import type { TeamAgentDisplayFields, TeamScopeDisplayFields } from './TeamRunFormDisplay'
 
@@ -8,15 +10,23 @@ export type ExistingWorkspaceDisplay = Readonly<{
   availability: 'available' | 'historical-only' | 'none'
 }>
 
+export type ExistingWorkspacePresentation =
+  | Readonly<{ kind: 'fixed-path' }>
+  | Readonly<{ kind: 'selector'; model: WorkspaceSelectorModel }>
+
 export type ExistingTeamScopeFormModel = TeamScopeDisplayFields & Readonly<{
   mode: 'existing'
-  storedWorkspace: ExistingWorkspaceDisplay | null
+  originalModelIdentifier: string
+  modelOptions?: ExistingRunModelOptionsState
+  workspacePresentation: ExistingWorkspacePresentation
   directlyEdited: boolean
 }>
 
 export type ExistingTeamFormAgentNode = TeamAgentDisplayFields & Readonly<{
   mode: 'existing'
-  storedWorkspace: ExistingWorkspaceDisplay | null
+  originalModelIdentifier: string
+  modelOptions?: ExistingRunModelOptionsState
+  workspacePresentation: ExistingWorkspacePresentation
   directlyEdited: boolean
 }>
 

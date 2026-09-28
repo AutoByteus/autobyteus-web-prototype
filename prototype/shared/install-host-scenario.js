@@ -9,7 +9,7 @@ export function installHostScenario(options = {}) {
   if (!context.startsWith('electron_')) return null
 
   const scenario = String(options.scenario || localStorage.getItem('autobyteus.prototype.scenario') || 'populated')
-  const baseUrl = String(options.mockBaseUrl || 'http://127.0.0.1:4310').replace(/\/$/, '')
+  const baseUrl = String(options.mockBaseUrl || 'http://127.0.0.1:4391').replace(/\/$/, '')
   const embedded = context === 'electron_internal'
   const listeners = { server: new Set(), node: new Set(), update: new Set(), browser: new Set(), quitting: new Set() }
   const cleanup = (set, callback) => { set.add(callback); return () => set.delete(callback) }

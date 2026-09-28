@@ -5,7 +5,6 @@ import {
   handleSegmentStart,
   handleSegmentContent,
   handleSegmentEnd,
-  handleExternalUserMessage,
   handleMemberInputMessage,
   handleToolApprovalRequested,
   handleToolApproved,
@@ -48,6 +47,13 @@ export type AgentStreamProjectionTarget =
       teamRunId: string;
       agentRunId: string;
       memberAddress: AgentTeamAddress;
+    }
+  | {
+      kind: 'agent_org_member';
+      context: AgentContext;
+      orgRunId: string;
+      agentRunId: string;
+      memberAddress: AgentTeamAddress;
     };
 
 const conversationResult = (
@@ -81,8 +87,6 @@ const dispatchToHandler = (
       const effect = handleSegmentEnd(message.payload, context);
       return conversationResult(effect !== 'NONE', effect);
     }
-    case 'EXTERNAL_USER_MESSAGE':
-      return conversationResult(handleExternalUserMessage(message.payload, context), 'STRUCTURAL');
     case 'MEMBER_INPUT_MESSAGE':
       return conversationResult(handleMemberInputMessage(message.payload, context), 'STRUCTURAL');
     case 'TOOL_APPROVAL_REQUESTED':
@@ -212,6 +216,7 @@ export const dispatchAgentStreamMessage = (
   commitRecentEventMonitorEffect(target.context, effects.eventMonitor);
   if (effects.navigation.kind !== 'NONE') {
     const currentStatus = target.context.state.currentStatus;
+    if (target.kind === 'agent_org_member') return effects;
     useRunHistoryStore().applyRunNavigationEffect(
       target.kind === 'standalone'
         ? { kind: 'standalone', runId: target.runId, currentStatus }

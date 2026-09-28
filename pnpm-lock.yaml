@@ -11,9 +11,15 @@ importers:
       '@apollo/client':
         specifier: ^3.13.8
         version: 3.14.1(graphql@16.14.2)
+      '@autobyteus/agent-presentation-contracts':
+        specifier: file:vendor/autobyteus-agent-presentation-contracts
+        version: file:vendor/autobyteus-agent-presentation-contracts
       '@autobyteus/application-sdk-contracts':
         specifier: file:vendor/autobyteus-application-sdk-contracts
         version: file:vendor/autobyteus-application-sdk-contracts
+      '@autobyteus/collaboration-stream-contracts':
+        specifier: file:vendor/autobyteus-collaboration-stream-contracts
+        version: file:vendor/autobyteus-collaboration-stream-contracts
       '@autobyteus/team-stream-contracts':
         specifier: file:vendor/autobyteus-team-stream-contracts
         version: file:vendor/autobyteus-team-stream-contracts
@@ -217,8 +223,14 @@ packages:
       subscriptions-transport-ws:
         optional: true
 
+  '@autobyteus/agent-presentation-contracts@file:vendor/autobyteus-agent-presentation-contracts':
+    resolution: {directory: vendor/autobyteus-agent-presentation-contracts, type: directory}
+
   '@autobyteus/application-sdk-contracts@file:vendor/autobyteus-application-sdk-contracts':
     resolution: {directory: vendor/autobyteus-application-sdk-contracts, type: directory}
+
+  '@autobyteus/collaboration-stream-contracts@file:vendor/autobyteus-collaboration-stream-contracts':
+    resolution: {directory: vendor/autobyteus-collaboration-stream-contracts, type: directory}
 
   '@autobyteus/team-stream-contracts@file:vendor/autobyteus-team-stream-contracts':
     resolution: {directory: vendor/autobyteus-team-stream-contracts, type: directory}
@@ -5098,10 +5110,20 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
 
+  '@autobyteus/agent-presentation-contracts@file:vendor/autobyteus-agent-presentation-contracts':
+    dependencies:
+      zod: 4.4.3
+
   '@autobyteus/application-sdk-contracts@file:vendor/autobyteus-application-sdk-contracts': {}
+
+  '@autobyteus/collaboration-stream-contracts@file:vendor/autobyteus-collaboration-stream-contracts':
+    dependencies:
+      '@autobyteus/agent-presentation-contracts': file:vendor/autobyteus-agent-presentation-contracts
+      zod: 4.4.3
 
   '@autobyteus/team-stream-contracts@file:vendor/autobyteus-team-stream-contracts':
     dependencies:
+      '@autobyteus/agent-presentation-contracts': file:vendor/autobyteus-agent-presentation-contracts
       zod: 4.4.3
 
   '@babel/code-frame@7.29.7':

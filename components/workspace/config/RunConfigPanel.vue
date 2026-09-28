@@ -32,6 +32,7 @@
         v-else-if="effectiveAgentConfig && activeAgentDefinition"
         :key="activeRunConfigContextRenderKey"
         :config="effectiveAgentConfig"
+        :seed-model-identifier="runConfigStore.seedModelIdentifier"
         :agent-definition="activeAgentDefinition"
         :workspace-loading-state="effectiveWorkspaceLoadingState"
         :workspace-selection="workspaceSelection"
@@ -81,7 +82,7 @@ import { useAgentTeamRunStore } from '~/stores/agentTeamRunStore'
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
 import { useAgentTeamDefinitionStore } from '~/stores/agentTeamDefinitionStore'
 import { useWorkspaceStore } from '~/stores/workspace'
-import { useExistingRunModelConfigStore } from '~/stores/existingRunModelConfigStore'
+import { useExistingRunConfigStore } from '~/stores/existingRunConfigStore'
 import { useWorkspaceCenterViewStore } from '~/stores/workspaceCenterViewStore'
 import { useRightSideTabs } from '~/composables/useRightSideTabs'
 import AgentRunConfigForm from './AgentRunConfigForm.vue'
@@ -104,7 +105,7 @@ const teamRunStore = useAgentTeamRunStore()
 const definitionStore = useAgentDefinitionStore()
 const teamDefinitionStore = useAgentTeamDefinitionStore()
 const workspaceStore = useWorkspaceStore()
-const existingRunModelConfigStore = useExistingRunModelConfigStore()
+const existingRunConfigStore = useExistingRunConfigStore()
 const workspaceCenterViewStore = useWorkspaceCenterViewStore()
 const { setActiveTab } = useRightSideTabs()
 const { t: $t } = useLocalization()
@@ -137,7 +138,7 @@ const activeAgentDefinition = computed(() => {
 
 const activeTeamDefinition = computed(() => {
   if (!effectiveTeamConfig.value?.teamDefinitionId) return null
-  return teamDefinitionStore.getAgentTeamDefinitionById(effectiveTeamConfig.value.teamDefinitionId) || null
+  return teamDefinitionStore.getCatalogAgentTeamDefinitionById(effectiveTeamConfig.value.teamDefinitionId) || null
 })
 const { reloadRuntimeKind: retryTeamRuntimeCatalog } = useTeamRunRuntimeCatalogSync(effectiveTeamConfig)
 
@@ -233,8 +234,9 @@ const teamRunFormModel = computed((): Readonly<TeamRunFormModel> | null => {
   if (!config || !definition) return null
   return projectEditableTeamRunFormModel({
     config,
+    seedConfig: teamRunConfigStore.selectedDraft?.seedConfig,
     teamDefinition: definition,
-    getTeamDefinitionById: teamDefinitionStore.getAgentTeamDefinitionById,
+    getTeamDefinitionById: teamDefinitionStore.getCatalogAgentTeamDefinitionById,
     repairAddresses: teamRunConfigStore.repairNotice?.addresses || [],
     workspaceOperationFor: (address) => teamRunConfigStore.teamWorkspaceAuthoringViewFor(address).operation,
     workspaceSelectionFor: (address) => teamRunConfigStore.teamWorkspaceAuthoringViewFor(address).selection,
@@ -384,7 +386,7 @@ const handleRun = async () => {
 }
 
 const showConversationView = () => {
-  existingRunModelConfigStore.clear()
+  existingRunConfigStore.clear()
   workspaceCenterViewStore.showChat()
 }
 

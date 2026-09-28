@@ -26,7 +26,7 @@ record('Scenario state is resettable', plugin.includes('setScenario(') && plugin
 
 const sourceFixture = JSON.parse(await readFile(resolve(root, 'prototype/fixtures/source-state-snapshots.json'), 'utf8'))
 record('Source evidence contains no page-capture errors', Object.values(sourceFixture.snapshots).every(value => Array.isArray(value.errors) && value.errors.length === 0), 'prototype/fixtures/source-state-snapshots.json')
-record('Source evidence uses controlled loopback mock', sourceFixture.mockBaseUrl === 'http://127.0.0.1:4310', sourceFixture.mockBaseUrl)
+record('Source evidence uses controlled loopback mock', /^http:\/\/127\.0\.0\.1:\d+$/.test(String(sourceFixture.mockBaseUrl)), sourceFixture.mockBaseUrl)
 
 const topLevel = await readdir(root)
 record('Prototype has independently runnable Nuxt entry points', ['app.vue', 'nuxt.config.ts', 'package.json'].every(name => topLevel.includes(name)), ['app.vue', 'nuxt.config.ts', 'package.json'])

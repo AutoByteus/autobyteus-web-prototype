@@ -3,6 +3,9 @@
     <div class="relative" ref="wrapperRef">
       <button
         @click="toggleDropdown"
+        aria-haspopup="listbox"
+        :aria-expanded="isOpen"
+        :aria-controls="listboxId"
         :disabled="disabled || loading"
         type="button"
         :class="[triggerClass, { 'cursor-not-allowed opacity-50': disabled || loading }]"
@@ -23,20 +26,23 @@
       <div
         v-if="isOpen"
         ref="popoverRef"
+        @keydown.esc.prevent="closeWithFocus"
         :style="popoverStyle"
         class="max-w-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg max-h-[30rem] overflow-y-auto flex flex-col"
       >
         <div class="p-2 sticky top-0 bg-white dark:bg-gray-800/95 z-10 backdrop-blur-sm">
           <input
             ref="searchInputRef"
+            @keydown.down.prevent="focusOption(0)"
             v-model="searchTerm"
             type="text"
             :placeholder="effectiveSearchPlaceholder"
+            :aria-label="effectiveSearchPlaceholder"
             class="w-full px-2 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
 
-        <div class="flex-grow overflow-y-auto">
+        <div class="flex-grow overflow-y-auto" role="listbox" :id="listboxId" :aria-label="effectivePlaceholder">
           <div v-if="filteredOptions.length === 0" class="p-3 text-sm text-center text-gray-500">{{ $t('agentTeams.components.agentTeams.SearchableGroupedSelect.no_options_found') }}</div>
           <div v-for="group in filteredOptions" :key="group.label" class="py-1">
             <div class="px-3 py-1.5 text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
@@ -46,12 +52,26 @@
               <li
                 v-for="item in group.items"
                 :key="item.id"
-                @click="selectItem(item.id)"
-                class="pl-6 pr-3 py-2 text-sm text-gray-800 dark:text-gray-200 cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/50 flex items-start justify-between"
-                :class="{ 'bg-blue-100 dark:bg-blue-800': modelValue === item.id }"
+                role="option"
+                tabindex="-1"
+                :aria-selected="isSelected(item)"
+                @keydown.enter.prevent="selectItem(item)"
+                @keydown.space.prevent="selectItem(item)"
+                @keydown.down.prevent="moveOption($event, 1)"
+                @keydown.up.prevent="moveOption($event, -1)"
+                @click="selectItem(item)"
+                class="pl-6 pr-3 py-2 text-sm text-gray-800 dark:text-gray-200 cursor-pointer focus:outline-none focus:bg-blue-50 focus:ring-2 focus:ring-inset focus:ring-blue-500 dark:focus:bg-blue-900/50 hover:bg-blue-50 dark:hover:bg-blue-900/50 flex items-start justify-between"
+                :class="{ 'bg-blue-100 dark:bg-blue-800': isSelected(item) }"
               >
                 <div class="min-w-0 flex-1">
-                  <span class="block truncate">{{ item.name }}</span>
+                  <div v-if="item.recommended" class="flex min-w-0 items-center gap-2">
+                    <span class="block truncate">{{ item.name }}</span>
+                    <span
+                      class="flex-shrink-0 rounded-full bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-700 dark:bg-blue-900/60 dark:text-blue-200"
+                      data-test="select-item-recommended"
+                    >{{ recommendedLabel }}</span>
+                  </div>
+                  <span v-else class="block truncate">{{ item.name }}</span>
                   <span
                     v-if="normalizedDescription(item)"
                     class="mt-0.5 block whitespace-normal break-words text-xs leading-4 text-gray-500 dark:text-gray-400"
@@ -59,7 +79,7 @@
                     {{ normalizedDescription(item) }}
                   </span>
                 </div>
-                <svg v-if="modelValue === item.id" class="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 ml-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg v-if="isSelected(item)" class="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 ml-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
                 </svg>
               </li>
@@ -72,7 +92,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, onUnmounted, nextTick, reactive } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, nextTick, reactive, useId } from 'vue'
 import { useLocalization } from '~/composables/useLocalization'
 
 export interface SelectItem {
@@ -80,6 +100,7 @@ export interface SelectItem {
   name: string
   description?: string | null
   selectedLabel?: string
+  recommended?: boolean
 }
 
 export interface GroupedOption {
@@ -95,6 +116,7 @@ const props = withDefaults(defineProps<{
   loading?: boolean
   disabled?: boolean
   variant?: 'default' | 'quiet'
+  selectedDisplay?: string | null
 }>(), {
   loading: false,
   disabled: false,
@@ -104,6 +126,7 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits(['update:modelValue'])
 const { t } = useLocalization()
 
+const listboxId = useId()
 const isOpen = ref(false)
 const searchTerm = ref('')
 const wrapperRef = ref<HTMLDivElement | null>(null)
@@ -128,6 +151,7 @@ const effectiveSearchPlaceholder = computed(() => (
 ))
 
 const loadingLabel = computed(() => t('agentTeams.components.agentTeams.SearchableGroupedSelect.loading'))
+const recommendedLabel = computed(() => t('agentTeams.components.agentTeams.SearchableGroupedSelect.recommended'))
 const triggerClass = computed(() => [
   'flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm transition-colors duration-200 focus:outline-none',
   props.variant === 'quiet'
@@ -139,6 +163,8 @@ const normalizedDescription = (item: SelectItem): string | null => {
   const normalized = item.description?.trim()
   return normalized || null
 }
+
+const isSelected = (item: SelectItem): boolean => item.id === props.modelValue
 
 const updatePopoverPosition = () => {
   if (!isOpen.value || !wrapperRef.value) return
@@ -172,7 +198,8 @@ const filteredOptions = computed(() => {
         item.name.toLowerCase().includes(searchLower) ||
         item.id.toLowerCase().includes(searchLower) ||
         item.selectedLabel?.toLowerCase().includes(searchLower) ||
-        normalizedDescription(item)?.toLowerCase().includes(searchLower),
+        normalizedDescription(item)?.toLowerCase().includes(searchLower) ||
+        (item.recommended && recommendedLabel.value.toLowerCase().includes(searchLower)),
       ),
     }))
     .filter((group) => group.items.length > 0)
@@ -183,12 +210,12 @@ const selectedItemLabel = computed(() => {
     return null
   }
   for (const group of props.options) {
-    const found = group.items.find((item) => item.id === props.modelValue)
+    const found = group.items.find(isSelected)
     if (found) {
       return found.selectedLabel || found.name
     }
   }
-  return props.modelValue
+  return props.selectedDisplay || props.modelValue
 })
 
 const toggleDropdown = () => {
@@ -196,10 +223,25 @@ const toggleDropdown = () => {
   isOpen.value = !isOpen.value
 }
 
-const selectItem = (itemId: string) => {
-  emit('update:modelValue', itemId)
+const closeWithFocus = () => {
+  isOpen.value = false
+  wrapperRef.value?.querySelector('button')?.focus()
+}
+const focusOption = (index: number) => {
+  const options = popoverRef.value?.querySelectorAll<HTMLElement>('[role="option"]')
+  if (options?.length) options[(index + options.length) % options.length]?.focus()
+}
+const moveOption = (event: KeyboardEvent, delta: number) => {
+  const options = Array.from(popoverRef.value?.querySelectorAll<HTMLElement>('[role="option"]') ?? [])
+  focusOption(options.indexOf(event.currentTarget as HTMLElement) + delta)
+}
+const selectItem = (item: SelectItem) => {
+  if (props.disabled || props.loading) return
+  // Only the exact offered ID is already selected; a current-only ID is distinct.
+  if (!isSelected(item)) emit('update:modelValue', item.id)
   isOpen.value = false
   searchTerm.value = ''
+  wrapperRef.value?.querySelector('button')?.focus()
 }
 
 const handleClickOutside = (event: MouseEvent) => {

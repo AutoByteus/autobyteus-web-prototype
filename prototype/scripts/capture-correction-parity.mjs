@@ -9,6 +9,8 @@ import { installHostScenario } from '../shared/install-host-scenario.js'
 import { applyExperienceScenario } from '../shared/apply-experience-scenario.js'
 
 const root = resolve(new URL('../..', import.meta.url).pathname)
+// Evidence output root; override with EVIDENCE_ROOT to keep a new run separate from historical evidence.
+const evidenceBase = resolve(root, process.env.EVIDENCE_ROOT || 'evidence')
 const sourceBaseUrl = process.env.SOURCE_BASE_URL || 'http://127.0.0.1:3100'
 const prototypeBaseUrl = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:3200'
 const mockBaseUrl = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4310'
@@ -221,8 +223,8 @@ async function capture(browser, baseUrl, target, item) {
   }
   await settle(page, 450)
   const screenshotGroup = correctionMatrixMode ? 'correction-matrix' : 'correction'
-  const screenshotPath = resolve(root, `evidence/${target}/${screenshotGroup}/${item.id}.png`)
-  await mkdir(resolve(root, `evidence/${target}/${screenshotGroup}`), { recursive: true })
+  const screenshotPath = resolve(evidenceBase, `${target}/${screenshotGroup}/${item.id}.png`)
+  await mkdir(resolve(evidenceBase, `${target}/${screenshotGroup}`), { recursive: true })
   const screenshot = await page.screenshot({ path: screenshotPath })
   const bodyText = await page.locator('body').innerText()
   const semantic = await page.locator('body').evaluate(body => ({
@@ -265,7 +267,7 @@ try {
 } finally { await browser.close() }
 const summary = { total: results.length, passed: results.filter(row => row.comparison.pass).length, failed: results.filter(row => !row.comparison.pass).map(row => row.item.id), sourceBrowserErrorScenarios: results.filter(row => row.source.browserErrors.length).map(row => row.item.id), prototypeBrowserErrorScenarios: results.filter(row => row.prototype.browserErrors.length).map(row => row.item.id) }
 const outputGroup = correctionMatrixMode ? 'correction-matrix' : 'correction'
-await mkdir(resolve(root, `evidence/${outputGroup}`), { recursive: true })
-await writeFile(resolve(root, `evidence/${outputGroup}/correction-parity-results.json`), `${JSON.stringify({ generatedAt: new Date().toISOString(), sourceBaseUrl, prototypeBaseUrl, mockBaseUrl, matrixMode: correctionMatrixMode, results }, null, 2)}\n`)
-await writeFile(resolve(root, `evidence/${outputGroup}/correction-parity-summary.json`), `${JSON.stringify(summary, null, 2)}\n`)
+await mkdir(resolve(evidenceBase, `${outputGroup}`), { recursive: true })
+await writeFile(resolve(evidenceBase, `${outputGroup}/correction-parity-results.json`), `${JSON.stringify({ generatedAt: new Date().toISOString(), sourceBaseUrl, prototypeBaseUrl, mockBaseUrl, matrixMode: correctionMatrixMode, results }, null, 2)}\n`)
+await writeFile(resolve(evidenceBase, `${outputGroup}/correction-parity-summary.json`), `${JSON.stringify(summary, null, 2)}\n`)
 if (summary.failed.length) process.exitCode = 1

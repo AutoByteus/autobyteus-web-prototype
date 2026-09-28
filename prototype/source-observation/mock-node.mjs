@@ -2,17 +2,20 @@
 import http from 'node:http'
 import { URL } from 'node:url'
 import { WebSocketServer } from 'ws'
-import { baseState, operationFixture, scenarioCatalog, syntheticApplicationHtml } from './fixtures.mjs'
+import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, baseState, operationFixture, scenarioCatalog, syntheticApplicationHtml } from './fixtures.mjs'
+import { createSchemaFiller } from './schema-filler.mjs'
 
 const port = Number(process.env.PROTOTYPE_MOCK_PORT || 4310)
 const host = process.env.PROTOTYPE_MOCK_HOST || '127.0.0.1'
 const state = baseState()
 const requestLog = []
+const completeWithSchema = createSchemaFiller(new URL('../../generated/graphql.ts', import.meta.url).pathname)
 
 function applyScenario(name) {
   if (!scenarioCatalog[name]) throw new Error(`Unknown scenario: ${name}`)
   state.scenario = name
   state.requestDelayMs = name === 'loading' ? 1500 : 0
+  state.launchedTeamRun = false
 }
 
 applyScenario(process.env.PROTOTYPE_SCENARIO || 'populated')
@@ -37,16 +40,6 @@ const readBody = async (req) => {
 }
 
 const operationNameFrom = (payload) => payload.operationName || String(payload.query || '').match(/\b(?:query|mutation)\s+([A-Za-z0-9_]+)/)?.[1] || 'AnonymousOperation'
-const rootFieldFrom = (payload, operationName) => {
-  const query = String(payload.query || '')
-  const start = query.search(new RegExp(`\\b(?:query|mutation)\\s+${operationName}\\b`))
-  if (start < 0) return operationName[0].toLowerCase() + operationName.slice(1)
-  const brace = query.indexOf('{', start)
-  const body = brace >= 0 ? query.slice(brace + 1) : ''
-  const match = body.match(/\b([A-Za-z_][A-Za-z0-9_]*)\s*(?:\(|\{|$)/)
-  return match?.[1] || (operationName[0].toLowerCase() + operationName.slice(1))
-}
-
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url || '/', `http://${req.headers.host || `${host}:${port}`}`)
   if (req.method === 'OPTIONS') return send(res, 204, '')
@@ -91,7 +84,9 @@ const server = http.createServer(async (req, res) => {
       return send(res, 200, { data: null, errors: [{ message: state.operationFailures[operationName] || 'Synthetic recoverable GraphQL failure.', extensions: { code: 'PROTOTYPE_FIXTURE_ERROR', operationName } }] })
     }
     const fixture = operationFixture(operationName, payload.variables || {}, state)
-    const data = fixture || { [rootFieldFrom(payload, operationName)]: null }
+    // Like the real node, a created TeamRun appears as active in later history reads.
+    if (operationName === 'CreateAgentTeamRun') state.launchedTeamRun = true
+    const data = completeWithSchema(payload.query, payload.operationName, fixture || {})
     return send(res, 200, { data, extensions: { prototypeFixture: true, operationName, scenario: state.scenario } })
   }
 
@@ -123,8 +118,8 @@ const server = http.createServer(async (req, res) => {
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640"><rect width="640" height="640" fill="#dbeafe"/><circle cx="320" cy="250" r="110" fill="#2563eb"/><text x="320" y="430" text-anchor="middle" font-family="system-ui" font-size="42" fill="#0f172a">Prototype media</text></svg>`
     return send(res, 200, svg, 'image/svg+xml')
   }
-  if (url.pathname.includes('/execution-resource-configurations')) return send(res, 200, { configurations: [] })
-  if (url.pathname.includes('/available-execution-resources')) return send(res, 200, { agentDefinitions: [operationFixture('GetAgentDefinitions', {}, state).agentDefinitions[0]], agentTeamDefinitions: [operationFixture('GetAgentTeamDefinitions', {}, state).agentTeamDefinitions[0]] })
+  if (/\/execution-resource-configurations$/.test(url.pathname)) return send(res, 200, applicationLaunchConfigurationView())
+  if (url.pathname.includes('/available-execution-resources')) return send(res, 200, applicationAvailableExecutionResources())
   if (url.pathname.includes('/application-bundles/') && url.pathname.endsWith('/ui/index.html')) return send(res, 200, syntheticApplicationHtml(), 'text/html; charset=utf-8')
   if (url.pathname.includes('/application-bundles/') && url.pathname.endsWith('prototype-app.svg')) {
     return send(res, 200, '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" rx="14" fill="#2563eb"/><path d="M18 20h28v24H18z" fill="white"/><path d="M23 27h18M23 33h14M23 39h10" stroke="#2563eb" stroke-width="3"/></svg>', 'image/svg+xml')

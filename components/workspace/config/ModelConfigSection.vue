@@ -102,6 +102,7 @@ const props = defineProps<{
   disabled?: boolean;
   readOnly?: boolean;
   applyDefaults?: boolean;
+  trackAutomaticChanges?: boolean;
   compact?: boolean;
   idPrefix?: string;
   thinkingLabel?: string;
@@ -113,10 +114,11 @@ const props = defineProps<{
   historicalValueUnavailableMessage?: string;
   historicalModelConfigTitle?: string;
   validationErrors?: Readonly<Record<string, string>>;
+  preserveInvalidDraft?: boolean;
 }>();
 
 const emit = defineEmits<{
-  (e: 'update:config', value: Record<string, unknown> | null): void;
+  (e: 'update:config', value: Record<string, unknown> | null, automatic?: boolean): void;
 }>();
 
 const showAdvancedParams = ref(false);
@@ -209,9 +211,10 @@ const showMissingHistoricalConfig = computed(() =>
   props.modelConfig == null,
 );
 
-const emitConfig = (nextConfig: Record<string, unknown> | null) => {
+const emitConfig = (nextConfig: Record<string, unknown> | null, automatic = false) => {
   if (props.readOnly) return;
-  emit('update:config', nextConfig ?? null);
+  if (props.trackAutomaticChanges) emit('update:config', nextConfig ?? null, automatic);
+  else emit('update:config', nextConfig ?? null);
 };
 
 const configsEqual = (
@@ -274,18 +277,19 @@ const applyDefaultsIfNeeded = () => {
   }
 
   if (changed && !configsEqual(nextConfig, props.modelConfig ?? null)) {
-    emitConfig(nextConfig);
+    emitConfig(nextConfig, true);
   }
 };
 
 const sanitizeConfigIfNeeded = (): boolean => {
   if (props.historical || props.readOnly) return false;
+  if (props.preserveInvalidDraft) return false;
   if (!hasSchema.value) return false;
   const sanitized = sanitizeModelConfigAgainstSchema(props.schema ?? null, props.modelConfig ?? null);
   if (configsEqual(sanitized, props.modelConfig ?? null)) {
     return false;
   }
-  emitConfig(sanitized);
+  emitConfig(sanitized, true);
   return true;
 };
 

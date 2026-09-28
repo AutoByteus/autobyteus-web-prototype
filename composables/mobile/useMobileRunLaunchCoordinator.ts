@@ -94,7 +94,7 @@ export function useMobileRunLaunchCoordinator() {
     if (config.teamDefinitionId !== draft.teamDefinitionId) {
       throw new Error('Team launch configuration is stale. Re-select the team before creating the run.');
     }
-    if (config.workspaceId !== draft.workspaceId) {
+    if (config.rootConfig.workspace.workspaceId !== draft.workspaceId) {
       throw new Error('Team launch workspace is stale. Re-select the workspace before creating the run.');
     }
     const readiness = teamRunConfigStore.launchReadiness;
@@ -119,16 +119,18 @@ export function useMobileRunLaunchCoordinator() {
   }
 
   function ensureTeamDraftConfig(draft: Extract<MobileRunCreationDraft, { kind: 'team' }>): AgentTeamDefinition {
-    const definition = teamDefinitionStore.getAgentTeamDefinitionById(draft.teamDefinitionId);
+    const definition = teamDefinitionStore.getCatalogAgentTeamDefinitionById(draft.teamDefinitionId);
     if (!definition) {
       throw new Error('Choose a team before creating the run.');
     }
     if (!teamRunConfigStore.config) {
       teamRunConfigStore.setTemplate(definition);
       teamRunConfigStore.applyConfigEdit({
-        kind: 'set_workspace',
-        workspaceId: draft.workspaceId,
-        workspaceMetadata: workspaceMetadataForId(workspaceStore, draft.workspaceId),
+        kind: 'set_root_workspace',
+        workspace: {
+          workspaceId: draft.workspaceId,
+          workspaceMetadata: workspaceMetadataForId(workspaceStore, draft.workspaceId),
+        },
       });
     }
     assertTeamConfigMatchesDraft(draft);
@@ -151,7 +153,8 @@ export function useMobileRunLaunchCoordinator() {
     if (!fallback) {
       throw new Error('This team has no focusable member for mobile Chat.');
     }
-    await runHistoryStore.focusTeamMemberAndEnsureHydrated(teamRunId, fallback);
+    const result = await runHistoryStore.inspectTeamMember(teamRunId, fallback, { selectionMode: 'mobile' });
+    if (result.disposition === 'rejected') throw new Error(result.message);
     const focused = teamContextsStore.getTeamContextById(teamRunId)?.view.getFocusedAgentRunId() ?? fallback;
     mobileWorkStore.rememberFocusedTeamMember(teamRunId, focused);
     return focused;

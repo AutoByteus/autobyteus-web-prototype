@@ -18,8 +18,7 @@ export type ExistingAgentModelConfigDraft = Readonly<{
   isActive: boolean
   editability: RunModelConfigEditability
   metadata: RunMetadataConfigPayload
-  canonicalLlmConfig: Record<string, unknown> | null
-  draftLlmConfig: Record<string, unknown> | null
+  draftSelection: ExistingRunModelSelection
 }>
 
 export type ExistingTeamRunModelConfigDraft = Readonly<{
@@ -31,4 +30,26 @@ export type ExistingTeamRunModelConfigDraft = Readonly<{
   planner: ExistingTeamModelConfigDraft
 }>
 
-export type ExistingRunModelConfigDraft = ExistingAgentModelConfigDraft | ExistingTeamRunModelConfigDraft
+export type ExistingRunModelSelection = Readonly<{
+  llmModelIdentifier: string
+  llmConfig: Record<string, unknown> | null
+}>
+export type ExistingRunModelOptions = Readonly<{
+  currentModelIdentifier: string
+  currentModel: ExistingRunModelChoice | null
+  replacements: readonly ExistingRunModelChoice[]
+  unavailableReason: string | null
+}>
+export type ExistingRunModelChoice = Readonly<{
+  llmModelIdentifier: string
+  providerName: string
+  displayName: string
+  canonicalName: string
+  description: string | null
+  configSchema: Record<string, unknown> | null
+  recommended: boolean
+}>
+export type ExistingRunModelOptionsState = Readonly<{
+  status: 'loading' | 'ready' | 'unavailable'
+  options: ExistingRunModelOptions | null
+}>

@@ -7,6 +7,8 @@ import { resolve } from 'node:path'
 import sharp from 'sharp'
 
 const root = resolve(new URL('../..', import.meta.url).pathname)
+// Evidence output root; override with EVIDENCE_ROOT to keep a new run separate from historical evidence.
+const evidenceBase = resolve(root, process.env.EVIDENCE_ROOT || 'evidence')
 const sourceBaseUrl = process.env.SOURCE_BASE_URL || 'http://127.0.0.1:3100'
 const prototypeBaseUrl = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:3200'
 const mockBaseUrl = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4310'
@@ -199,8 +201,8 @@ async function exercise(browser, baseUrl, target, journey) {
   await settle(page)
   await page.addStyleTag({ content: normalizedStyle })
   await page.waitForTimeout(50)
-  const screenshotPath = resolve(root, `evidence/${target}/journeys/${journey.id}.png`)
-  await mkdir(resolve(root, `evidence/${target}/journeys`), { recursive: true })
+  const screenshotPath = resolve(evidenceBase, `${target}/journeys/${journey.id}.png`)
+  await mkdir(resolve(evidenceBase, `${target}/journeys`), { recursive: true })
   const screenshot = await page.screenshot({ path: screenshotPath })
   const semantic = await page.locator('body').evaluate((body, suppliedActionEvidence) => ({
     route: location.pathname + location.search,
@@ -246,7 +248,7 @@ try {
 }
 
 const summary = { total: results.length, passed: results.filter(item => item.comparison.pass).length, failed: results.filter(item => !item.comparison.pass).map(item => item.journey.id) }
-await mkdir(resolve(root, 'evidence/interactions'), { recursive: true })
-await writeFile(resolve(root, 'evidence/interactions/browser-journey-results.json'), `${JSON.stringify({ generatedAt: new Date().toISOString(), sourceBaseUrl, prototypeBaseUrl, mockBaseUrl, results }, null, 2)}\n`)
-await writeFile(resolve(root, 'evidence/interactions/browser-journey-summary.json'), `${JSON.stringify(summary, null, 2)}\n`)
+await mkdir(resolve(evidenceBase, 'interactions'), { recursive: true })
+await writeFile(resolve(evidenceBase, 'interactions/browser-journey-results.json'), `${JSON.stringify({ generatedAt: new Date().toISOString(), sourceBaseUrl, prototypeBaseUrl, mockBaseUrl, results }, null, 2)}\n`)
+await writeFile(resolve(evidenceBase, 'interactions/browser-journey-summary.json'), `${JSON.stringify(summary, null, 2)}\n`)
 if (summary.failed.length) process.exitCode = 1

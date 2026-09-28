@@ -7,6 +7,8 @@ import { resolve } from 'node:path'
 import sharp from 'sharp'
 
 const root = resolve(new URL('../..', import.meta.url).pathname)
+// Evidence output root; override with EVIDENCE_ROOT to keep a new run separate from historical evidence.
+const evidenceBase = resolve(root, process.env.EVIDENCE_ROOT || 'evidence')
 const sourceBaseUrl = process.env.SOURCE_BASE_URL || 'http://127.0.0.1:3100'
 const prototypeBaseUrl = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:3200'
 const mockBaseUrl = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4310'
@@ -14,7 +16,7 @@ const sourcePin = '8ef282ba77705180d985e7000d801f0e0068cdc1'
 const require = createRequire(import.meta.url)
 const icons = Object.fromEntries(['heroicons', 'ph', 'mdi', 'svg-spinners', 'vscode-icons', 'logos'].map(prefix => [prefix, require(`@iconify-json/${prefix}/icons.json`)]))
 const monacoRoot = resolve(root, 'node_modules/monaco-editor/min/vs')
-const outputRoot = resolve(root, 'evidence/gap-009')
+const outputRoot = resolve(evidenceBase, 'gap-009')
 const style = '*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}'
 const sha256 = value => createHash('sha256').update(value).digest('hex')
 

@@ -1,7 +1,11 @@
 # AutoByteus Web Product Prototype
 
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
-commit `8ef282ba77705180d985e7000d801f0e0068cdc1`.
+commit `fcd3e83a4ca931ba52ed19bd37b8df3050ee529e` (`origin/personal`,
+refreshed by `WEB-BASELINE-REFRESH-001`; previous primary pin
+`8ef282ba77705180d985e7000d801f0e0068cdc1`). See
+[prototype-bootstrap-report.md](prototype-bootstrap-report.md) for the refresh
+scope, evidence, and known gaps.
 
 The repository is the cumulative accepted Product prototype baseline. Approved
 Product tickets are integrated here and promoted to normal/default product

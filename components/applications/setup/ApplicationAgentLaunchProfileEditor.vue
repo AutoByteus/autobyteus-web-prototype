@@ -37,6 +37,7 @@
       <SearchableGroupedSelect
         :model-value="draft.llmModelIdentifier"
         :options="groupedModelOptions"
+        :selected-display="currentModel.selectedDisplay.value"
         :disabled="disabled || !availableProviderGroups.length"
         :placeholder="$t('applications.components.applications.ApplicationLaunchSetupPanel.modelPlaceholder')"
         search-placeholder="Search models..."
@@ -47,7 +48,7 @@
       </p>
       <p v-if="selectedModelUnavailable" class="mt-1 text-xs text-amber-600">
         {{ $t('applications.components.applications.ApplicationLaunchSetupPanel.unavailableModelBeforeEntry', {
-          model: draft.llmModelIdentifier,
+          model: effectiveModelIdentifier,
         }) }}
       </p>
     </div>
@@ -80,6 +81,7 @@ import { computed, watch } from 'vue'
 import SearchableGroupedSelect from '~/components/agentTeams/SearchableGroupedSelect.vue'
 import ApplicationWorkspaceRootSelector from '~/components/applications/setup/ApplicationWorkspaceRootSelector.vue'
 import { useLocalization } from '~/composables/useLocalization'
+import { useRuntimeCurrentModelDescriptor } from '~/composables/useRuntimeCurrentModelDescriptor'
 import {
   normalizeScopedRuntimeKind,
   useRuntimeScopedModelSelection,
@@ -92,6 +94,8 @@ import type {
 const props = withDefaults(defineProps<{
   slot: import('@autobyteus/application-sdk-contracts').ApplicationExecutionResourceSlotDeclaration
   draft: ApplicationAgentLaunchProfileDraft
+  inheritedProfile: import('@autobyteus/application-sdk-contracts').ApplicationResolvedLaunchBaselineLeaf | null
+  serverOriginDraft?: ApplicationAgentLaunchProfileDraft | null
   disabled?: boolean
 }>(), {
   disabled: false,
@@ -106,10 +110,12 @@ const { t: $t } = useLocalization()
 
 const supportsRuntimeKind = computed(() => props.slot.supportedLaunchConfig?.AGENT?.runtimeKind === true)
 const supportsModelIdentifier = computed(() => props.slot.supportedLaunchConfig?.AGENT?.llmModelIdentifier === true)
+const supportsLlmConfig = computed(() => props.slot.supportedLaunchConfig?.AGENT?.llmConfig === true)
 const supportsWorkspaceRootPath = computed(() => props.slot.supportedLaunchConfig?.AGENT?.workspaceRootPath === true)
 
 const {
   availableProviderGroups,
+  effectiveRuntimeKind,
   groupedModelOptions,
   hasModelIdentifier,
   normalizedStoredRuntimeKind,
@@ -117,23 +123,54 @@ const {
   selectedRuntimeUnavailableReason,
 } = useRuntimeScopedModelSelection({
   runtimeKind: computed(() => props.draft.runtimeKind),
+  inheritedRuntimeKind: computed(() => props.inheritedProfile?.runtimeKind),
   allowBlankRuntime: true,
+  useDefaultRuntimeFallback: false,
 })
+
+const effectiveModelIdentifier = computed(() => (
+  props.draft.llmModelIdentifier.trim()
+  || props.inheritedProfile?.llmModelIdentifier?.trim()
+  || ''
+))
+const exactCurrentIdentifier = computed(() => {
+  const identifier = effectiveModelIdentifier.value
+  const runtime = effectiveRuntimeKind.value
+  if (!identifier || !runtime) return null
+  const saved = props.serverOriginDraft
+  const savedRuntime = saved?.runtimeKind || props.inheritedProfile?.runtimeKind
+  const savedCurrent = saved?.llmModelIdentifier === identifier && savedRuntime === runtime
+  const inheritedCurrent = props.inheritedProfile?.llmModelIdentifier === identifier
+    && props.inheritedProfile.runtimeKind === runtime
+  return savedCurrent || inheritedCurrent ? identifier : null
+})
+const currentModel = useRuntimeCurrentModelDescriptor(effectiveRuntimeKind, exactCurrentIdentifier)
 
 const selectedModelUnavailable = computed(() => (
   supportsModelIdentifier.value
-  && props.draft.llmModelIdentifier.trim().length > 0
-  && !hasModelIdentifier(props.draft.llmModelIdentifier)
+  && effectiveModelIdentifier.value.length > 0
+  && !hasModelIdentifier(effectiveModelIdentifier.value)
+  && !currentModel.loading.value
+  && !currentModel.descriptor.value
 ))
 
 watch(
-  () => [supportsRuntimeKind.value, supportsModelIdentifier.value, supportsWorkspaceRootPath.value, props.draft] as const,
+  () => [
+    supportsRuntimeKind.value,
+    supportsModelIdentifier.value,
+    supportsLlmConfig.value,
+    supportsWorkspaceRootPath.value,
+    props.draft,
+  ] as const,
   () => {
     const sanitizedDraft: ApplicationAgentLaunchProfileDraft = {
       ...props.draft,
       runtimeKind: supportsRuntimeKind.value ? props.draft.runtimeKind : '',
       llmModelIdentifier: supportsModelIdentifier.value ? props.draft.llmModelIdentifier : '',
       workspaceRootPath: supportsWorkspaceRootPath.value ? props.draft.workspaceRootPath : '',
+    }
+    if (!supportsLlmConfig.value) {
+      delete sanitizedDraft.llmConfig
     }
     if (JSON.stringify(sanitizedDraft) !== JSON.stringify(props.draft)) {
       emit('update:draft', sanitizedDraft)
@@ -146,21 +183,29 @@ watch(
   () => [
     props.draft.runtimeKind,
     props.draft.llmModelIdentifier,
+    props.inheritedProfile?.runtimeKind,
+    props.inheritedProfile?.llmModelIdentifier,
+    availableProviderGroups.value,
     selectedModelUnavailable.value,
+    currentModel.loading.value,
   ] as const,
   () => {
+    const hasRuntime = !supportsRuntimeKind.value || Boolean(effectiveRuntimeKind.value)
     const modelMissing = supportsModelIdentifier.value
-      && props.draft.llmModelIdentifier.trim().length === 0
-
+      && effectiveModelIdentifier.value.length === 0
+    const isReady = hasRuntime
+      && !modelMissing
+      && !currentModel.loading.value
+      && !selectedModelUnavailable.value
     emit('readiness-change', {
-      isReady: !modelMissing && !selectedModelUnavailable.value,
-      blockingReason: modelMissing
-        ? $t('applications.components.applications.ApplicationLaunchSetupPanel.requiredModelBeforeEntry', {
-          slot: props.slot.name,
+      isReady,
+      blockingReason: selectedModelUnavailable.value
+        ? $t('applications.components.applications.ApplicationLaunchSetupPanel.unavailableModelBeforeEntry', {
+          model: effectiveModelIdentifier.value,
         })
-        : selectedModelUnavailable.value
-          ? $t('applications.components.applications.ApplicationLaunchSetupPanel.unavailableModelBeforeEntry', {
-            model: props.draft.llmModelIdentifier,
+        : !isReady
+          ? $t('applications.components.applications.ApplicationLaunchSetupPanel.requiredModelBeforeEntry', {
+            slot: props.slot.name,
           })
           : null,
       hasEffectiveResource: true,
@@ -170,16 +215,20 @@ watch(
 )
 
 const updateRuntimeKind = (value: string) => {
+  const draft = { ...props.draft }
+  delete draft.llmConfig
   emit('update:draft', {
-    ...props.draft,
+    ...draft,
     runtimeKind: normalizeScopedRuntimeKind(value, true),
     llmModelIdentifier: '',
   })
 }
 
 const updateModel = (value: string) => {
+  const draft = { ...props.draft }
+  delete draft.llmConfig
   emit('update:draft', {
-    ...props.draft,
+    ...draft,
     llmModelIdentifier: value,
   })
 }

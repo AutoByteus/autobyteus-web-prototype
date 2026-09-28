@@ -212,8 +212,8 @@ type VisibleTaskRow = {
   depth: number;
 };
 
-const { t: $t } = useLocalization();
-const formatter = createTokenUsageStatisticsFormatter($t);
+const { t: $t, resolvedLocale } = useLocalization();
+const formatter = createTokenUsageStatisticsFormatter($t, () => resolvedLocale.value);
 const sortKey = ref<TokenUsageTaskSortKey>('createdAt');
 const sortDirection = ref<TokenUsageSortDirection>('desc');
 const expandedRows = reactive(new Set<string>());

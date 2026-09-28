@@ -1,8 +1,10 @@
 import agentInputMessages from './agentInput.generated';
+import agentOrgMessages from './agentOrgs';
 import agentTeamGeneratedMessages from './agentTeams.generated';
 import agentTeamMessages from './agentTeams';
 import agentGeneratedMessages from './agents.generated';
 import agentMessages from './agents';
+import handoffMessages from './handoffs';
 import generatedApplicationMessages from './applications.generated';
 import applicationMessages from './applications';
 import commonMessages from './common.generated';
@@ -11,8 +13,11 @@ import memoryMessages from './memory';
 import serverMessages from './server.generated';
 import generatedSettingsMessages from './settings.generated';
 import settingsMessages from './settings';
+import apiKeySettingsMessages from './api-key-settings';
+import packageMigrationSettingsMessages from './package-migration-settings';
 import tokenUsageSettingsMessages from './token-usage-settings';
 import memorySyncSettingsMessages from './memorySyncSettings';
+import projectMessages from './projects';
 import generatedShellMessages from './shell.generated';
 import shellMessages from './shell';
 import generatedSkillsMessages from './skills.generated';
@@ -25,10 +30,12 @@ import type { TranslationCatalog } from '../../runtime/types';
 
 const zhCnMessages: TranslationCatalog = {
   ...agentInputMessages,
+  ...agentOrgMessages,
   ...agentTeamGeneratedMessages,
   ...agentTeamMessages,
   ...agentGeneratedMessages,
   ...agentMessages,
+  ...handoffMessages,
   ...generatedApplicationMessages,
   ...applicationMessages,
   ...commonMessages,
@@ -37,8 +44,11 @@ const zhCnMessages: TranslationCatalog = {
   ...serverMessages,
   ...generatedSettingsMessages,
   ...settingsMessages,
+  ...apiKeySettingsMessages,
+  ...packageMigrationSettingsMessages,
   ...tokenUsageSettingsMessages,
   ...memorySyncSettingsMessages,
+  ...projectMessages,
   ...generatedShellMessages,
   ...shellMessages,
   ...generatedSkillsMessages,

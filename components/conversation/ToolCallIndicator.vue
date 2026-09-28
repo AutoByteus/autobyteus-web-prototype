@@ -38,14 +38,14 @@
             <button
               @click.stop="deny"
               class="px-2 py-1 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded text-xs font-medium transition-colors"
-              :disabled="isProcessing"
+              :disabled="isProcessing || activeContextStore.activeWorkspaceTarget?.access === 'read_only'"
             >
               {{ $t('workspace.components.conversation.ToolCallIndicator.deny') }}
             </button>
             <button
               @click.stop="approve"
               class="px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded text-xs font-medium transition-colors"
-              :disabled="isProcessing"
+              :disabled="isProcessing || activeContextStore.activeWorkspaceTarget?.access === 'read_only'"
             >
               {{ $t('workspace.components.conversation.ToolCallIndicator.approve') }}
             </button>
@@ -60,11 +60,6 @@
         </div>
       </div>
 
-      <div v-if="presentation.errorMessage" class="px-3 pb-2 pt-0 border-t border-red-100/50">
-        <div class="mt-2 rounded border border-red-100 bg-red-50 px-2 py-1 font-mono text-xs text-red-600 break-words">
-          {{ presentation.errorMessage }}
-        </div>
-      </div>
     </div>
   </div>
 </template>

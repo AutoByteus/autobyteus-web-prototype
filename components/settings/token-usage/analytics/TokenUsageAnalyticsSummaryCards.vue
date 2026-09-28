@@ -44,19 +44,24 @@ import { useLocalization } from '~/composables/useLocalization';
 import type { TokenUsageAnalyticsMetric, TokenUsageAnalyticsResult } from '~/types/tokenUsageAnalytics';
 
 const props = defineProps<{ result: TokenUsageAnalyticsResult; metric: TokenUsageAnalyticsMetric }>();
-const { t } = useLocalization();
-const integer = (value: number) => new Intl.NumberFormat().format(value);
-const compact = (value: number) => new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 2 }).format(value);
+const { t, resolvedLocale } = useLocalization();
+const integer = (value: number) => new Intl.NumberFormat(resolvedLocale.value).format(value);
+const compact = (value: number) => new Intl.NumberFormat(resolvedLocale.value, { notation: 'compact', maximumFractionDigits: 2 }).format(value);
 const cost = (value: number | null | undefined, currency: string | null | undefined) => {
   if (value == null) return t('settings.components.settings.TokenUsageAnalytics.notAvailable');
   const maximumFractionDigits = value !== 0 && Math.abs(value) < 0.01 ? 4 : 2;
-  return new Intl.NumberFormat(undefined, { style: 'currency', currency: currency || 'USD', maximumFractionDigits }).format(value);
+  if (!currency) {
+    return `${new Intl.NumberFormat(resolvedLocale.value, { maximumFractionDigits }).format(value)} · ${t('settings.components.settings.TokenUsageAnalytics.currencyUnavailable')}`;
+  }
+  return new Intl.NumberFormat(resolvedLocale.value, { style: 'currency', currency, maximumFractionDigits }).format(value);
 };
-const percent = (value: number) => new Intl.NumberFormat(undefined, { style: 'percent', maximumFractionDigits: 1 }).format(value);
-const formatDay = (value: string) => new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', timeZone: 'UTC' }).format(new Date(value));
+const percent = (value: number) => new Intl.NumberFormat(resolvedLocale.value, { style: 'percent', maximumFractionDigits: 1 }).format(value);
+const formatDay = (value: string) => new Intl.DateTimeFormat(resolvedLocale.value, { month: 'short', day: 'numeric', timeZone: 'UTC' }).format(new Date(value));
 const inclusiveEnd = computed(() => new Date(Date.parse(props.result.appliedRange.endTimeExclusive) - 1));
 const rangeLabel = computed(() => `${formatDay(props.result.appliedRange.startTime)}–${formatDay(inclusiveEnd.value.toISOString())}`);
-const coverageDate = computed(() => new Date(props.result.coverage.coverageStart).toISOString().replace('T', ' ').replace(/:\d{2}\.\d{3}Z$/, ' UTC'));
+const coverageDate = computed(() => `${new Intl.DateTimeFormat(resolvedLocale.value, {
+  year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'UTC',
+}).format(new Date(props.result.coverage.coverageStart))} UTC`);
 const coverageTitle = computed(() => props.result.coverage.status === 'FULL'
   ? t('settings.components.settings.TokenUsageAnalytics.fullCoverageShort')
   : props.result.coverage.status === 'PARTIAL'

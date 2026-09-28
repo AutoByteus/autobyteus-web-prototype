@@ -3,6 +3,9 @@ import type { AgentStatus } from '~/types/agent/AgentStatus';
 import type { RunProjectionConversationEntry } from '~/services/runHydration/runProjectionConversation';
 import type { RunProjectionActivityEntry } from '~/services/runHydration/runProjectionActivityHydration';
 import type { TeamRunExecutionTreeDto } from '@autobyteus/team-stream-contracts';
+import type { CollaborationTaskHeadingPresentation } from '~/types/workspace/collaborationTaskPresentation';
+import type { AgentOrgExecutionTree } from '~/types/collaboration/agentOrgExecution';
+import type { RunTreeWorkspaceNode } from '~/utils/runTreeProjection';
 
 export type RunKnownStatus = 'ACTIVE' | 'IDLE' | 'ERROR' | 'TERMINATED';
 
@@ -32,13 +35,37 @@ export interface RunHistoryWorkspaceGroup {
   teamDefinitions: TeamRunHistoryDefinitionGroup[];
 }
 
-export interface RunEditableFieldFlags {
-  llmModelIdentifier: boolean;
-  llmConfig: boolean;
-  autoExecuteTools: boolean;
-  skillAccessMode: boolean;
-  workspaceRootPath: boolean;
-  runtimeKind: boolean;
+export interface AgentOrgRunHistoryItem {
+  stableKey: string;
+  rootSubjectKind: 'agent_org';
+  rootRunId: string;
+  createdAt: string;
+  archivedAt: string | null;
+  isActive: boolean;
+  summary: string;
+  executionTree: AgentOrgExecutionTree;
+}
+
+export interface AgentOrgHistoryDefinitionGroup {
+  stableKey: string;
+  definitionId: string;
+  name: string;
+  runs: AgentOrgRunHistoryItem[];
+}
+
+export interface WorkspaceHistoryWorkspaceNode extends RunTreeWorkspaceNode {
+  stableKey: string;
+  agentOrgDefinitions: AgentOrgHistoryDefinitionGroup[];
+}
+
+export interface RunHistoryFamilyErrors {
+  workspace: string | null;
+  agentOrg: string | null;
+}
+
+export interface RunModelConfigEditability {
+  editable: boolean;
+  reason?: string | null;
 }
 
 export interface RunMetadataConfigPayload {
@@ -61,7 +88,7 @@ export interface RunResumeConfigPayload {
   runId: string;
   isActive: boolean;
   metadataConfig: RunMetadataConfigPayload;
-  editableFields: RunEditableFieldFlags;
+  modelConfigEditability: RunModelConfigEditability;
 }
 
 export type TeamRunDeleteLifecycle = 'READY' | 'CLEANUP_PENDING';
@@ -106,6 +133,7 @@ export interface TeamRunResumeConfigPayload {
   teamRunId: string;
   isActive: boolean;
   executionTree: TeamRunExecutionTreeDto;
+  modelConfigEditability: RunModelConfigEditability;
 }
 
 export interface TeamRunExecutionCheckpointPayload {
@@ -138,6 +166,11 @@ export interface TeamMemberFocusTarget {
   agentRunId: string;
 }
 
+export interface TeamMemberInspectionAttempt {
+  state: 'loading' | 'error';
+  detail: string | null;
+}
+
 export interface RunHistoryTeamExecutionRowBase {
   teamRunId: string;
   memberAddress: string;
@@ -159,6 +192,7 @@ export interface RunHistoryTransientExecutionRow extends RunHistoryTeamExecution
   kind: 'transient_execution';
   transientKind: 'task_agent' | 'task_team' | 'task_team_child';
   currentStatus: AgentStatus | string | null;
+  task: CollaborationTaskHeadingPresentation | null;
 }
 
 export type RunHistoryTeamExecutionRow =
@@ -206,6 +240,7 @@ export interface GetTeamRunResumeConfigQueryData {
     teamRunId: string;
     isActive: boolean;
     executionTree: unknown;
+    modelConfigEditability: RunModelConfigEditability;
   };
 }
 
@@ -241,6 +276,21 @@ export interface ArchiveStoredTeamRunMutationData {
   };
 }
 
+export interface DeleteStoredAgentOrgRunMutationData {
+  deleteStoredAgentOrgRun: {
+    success: boolean;
+    message: string;
+    orgRunId: string | null;
+  };
+}
+
+export interface ArchiveStoredAgentOrgRunMutationData {
+  archiveStoredAgentOrgRun: {
+    success: boolean;
+    message: string;
+    orgRunId: string | null;
+  };
+}
 
 export interface GetTaskDelegationRecordsQueryData {
   getTaskDelegationRecords: unknown[];

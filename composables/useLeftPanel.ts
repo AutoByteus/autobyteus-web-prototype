@@ -17,13 +17,6 @@ export function useLeftPanel() {
     isLeftPanelVisible.value = visible;
   };
 
-  const setLeftPanelWidth = (width: number): void => {
-    leftPanelWidth.value = Math.min(
-      Math.max(width, LEFT_PANEL_MIN_WIDTH_PX),
-      LEFT_PANEL_MAX_WIDTH_PX,
-    );
-  };
-
   const initDragLeftPanel = (event: MouseEvent): void => {
     if (!isLeftPanelVisible.value) return;
     event.preventDefault();
@@ -35,7 +28,7 @@ export function useLeftPanel() {
       try {
         const deltaX = e.clientX - startX;
         const nextWidth = startWidth + deltaX;
-        setLeftPanelWidth(nextWidth);
+        leftPanelWidth.value = Math.min(Math.max(nextWidth, LEFT_PANEL_MIN_WIDTH_PX), LEFT_PANEL_MAX_WIDTH_PX);
       } catch (error) {
         console.error('Error during left panel drag:', error);
       }
@@ -55,7 +48,6 @@ export function useLeftPanel() {
     leftPanelWidth,
     toggleLeftPanel,
     setLeftPanelVisible,
-    setLeftPanelWidth,
     initDragLeftPanel,
   };
 }

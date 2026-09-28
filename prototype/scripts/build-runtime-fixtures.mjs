@@ -5,29 +5,33 @@ import { resolve } from 'node:path'
 const root = resolve(new URL('../..', import.meta.url).pathname)
 const sourcePath = resolve(root, 'prototype/fixtures/source-state-snapshots.json')
 const outputPath = resolve(root, 'prototype/fixtures/runtime-state.json')
-const sourceCommit = '8ef282ba77705180d985e7000d801f0e0068cdc1'
+const sourceCommit = 'fcd3e83a4ca931ba52ed19bd37b8df3050ee529e'
 const source = JSON.parse(await readFile(sourcePath, 'utf8'))
 
 const snapshots = Object.fromEntries(Object.entries(source.snapshots).map(([key, value]) => [key, {
   item: value.item,
   actualPath: value.actualPath,
   state: value.state,
+  primaryNavHeight: value.primaryNavHeight ?? null,
   bootstrapPending: Boolean(value.bootstrapPending),
 }]))
 
-// The source capture taken during the delayed bootstrap has no mounted Pinia
-// stores. For the browser-only prototype, derive the same visible transient
-// frame from the populated shell, keep Applications unresolved, and let the
-// local adapter delay the two page bootstrap actions. This reproduces the
-// source spinner without retaining any backend bootstrap implementation.
+// The pinned source now mounts its stores before the delayed responses arrive,
+// so the captured loading frame (unresolved capabilities, history loading) is
+// used directly. Only if a capture was taken before any store mounted is the
+// transient frame derived from the populated shell, as in earlier baselines.
 const loadingKey = 'loading|desktop|/agents?view=list'
 const populatedKey = 'populated|desktop|/agents?view=list'
 const loading = snapshots[loadingKey]
 const populated = snapshots[populatedKey]
 if (!loading || !populated) throw new Error('Required loading/populated source snapshots are missing')
-loading.state = structuredClone(populated.state)
-loading.bootstrapPending = false
-loading.state.applicationsCapability = { capability: null, status: 'loading', error: null }
+if (loading.bootstrapPending || !Object.keys(loading.state || {}).length) {
+  loading.state = structuredClone(populated.state)
+  loading.bootstrapPending = false
+  loading.state.applicationsCapability = { capability: null, status: 'loading', error: null }
+  loading.state.projectsCapability = { capability: null, status: 'loading', error: null }
+}
+loading.primaryNavHeight = loading.primaryNavHeight || populated.primaryNavHeight
 
 await writeFile(outputPath, `${JSON.stringify({ sourceCommit, snapshots }, null, 2)}\n`)
 process.stdout.write(`Wrote ${Object.keys(snapshots).length} deterministic runtime snapshots to ${outputPath}\n`)

@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia';
 import { getApolloClient } from '~/utils/apolloClient';
 import { CreateAgentTeamRun, RestoreAgentTeamRun, TerminateAgentTeamRun } from '~/graphql/mutations/agentTeamRunMutations';
-import type { TeamMemberConfigInput } from '~/generated/graphql';
 import { useAgentTeamContextsStore } from '~/stores/agentTeamContextsStore';
-import { useAgentActivityStore } from '~/stores/agentActivityStore';
 import { useRunHistoryStore } from '~/stores/runHistoryStore';
 import { useContextFileUploadStore } from '~/stores/contextFileUploadStore';
 import { useTeamRunConfigStore } from '~/stores/teamRunConfigStore';
@@ -16,9 +14,8 @@ import { AgentStatus } from '~/types/agent/AgentStatus';
 import type { ToolApprovalTarget } from '~/types/segments';
 import { planContextAttachmentSubmission } from '~/utils/contextFiles/contextAttachmentSend';
 import { buildTeamMemberDraftContextFileOwner, buildTeamMemberFinalContextFileOwner } from '~/utils/contextFiles/contextFileOwner';
-import { resolveLeafTeamMembers } from '~/utils/teamDefinitionMembers';
-import { buildTeamRunMemberConfigRecords } from '~/utils/teamRunMemberConfigBuilder';
-import { evaluateTeamRunLaunchReadiness } from '~/utils/teamRunLaunchReadiness';
+import { buildTeamMemberTreeFromDefinition, flattenLeafAgentMemberNodes } from '~/utils/teamDefinitionMembers';
+import { projectTeamRunLaunchRecords } from '~/utils/teamRunLaunchHierarchy';
 import { applyOfflineOrTerminalCleanup } from '~/services/runStatus/agentRuntimeStatusState';
 import {
   beginLocalUserSubmission,
@@ -27,23 +24,26 @@ import {
   type LocalUserSubmissionHandle,
 } from '~/services/runSubmission/localUserSubmission';
 import { buildClientInterruptCommandId, buildClientMessageId, showInterruptCommandResult, showInterruptTransportFailure } from '~/services/agentStreaming/teamRunCommandPresentation';
-import { hydrateLiveTeamRunContext } from '~/services/runHydration/teamRunContextHydrationService';
+import {
+  hydrateLiveTeamRunContext,
+  type TeamRunHydrationCandidate,
+} from '~/services/runHydration/teamRunContextHydrationService';
+import {
+  commitTeamRunHydrationActivities,
+  markCommittedTeamRunHydrationAuthority,
+} from '~/services/runHydration/teamRunHydrationCommit';
 import { ensureRunHistoryWorkspaceByRootPath, resolveRunHistoryWorkspaceMetadataByRootPath } from '~/stores/runHistoryLoadActions';
 import { useAgentTeamDefinitionStore } from '~/stores/agentTeamDefinitionStore';
-import type { TeamRunConfig } from '~/types/agent/TeamRunConfig';
-import type { TeamLaunchDraft } from '~/types/agent/TeamLaunchDraft';
+import { useWorkspaceStore } from '~/stores/workspace';
+import { TeamLaunchRepairRequiredError, type TeamLaunchDraft } from '~/types/agent/TeamLaunchDraft';
 import type { AgentTeamContext } from '~/types/agent/AgentTeamContext';
 import { findConfiguredAgentByAddress } from '~/services/teamExecution/teamExecutionTreeSelectors';
+import { createWorkspaceMetadata } from '~/utils/workspaceMetadata';
+import { useRightSideTabs } from '~/composables/useRightSideTabs';
 
 const teamStreamingServices = new Map<string, TeamStreamingService>();
 const inputDedupeKey = (rootTeamRunId: string, agentRunId: string, messageId: string) =>
   `member_input:${rootTeamRunId}:${agentRunId}:${messageId}`;
-const mutableConfig = (config: Readonly<TeamRunConfig>): TeamRunConfig => ({
-  ...config,
-  workspaceMetadata: config.workspaceMetadata ? { ...config.workspaceMetadata } : null,
-  memberOverrides: Object.fromEntries(Object.entries(config.memberOverrides).map(([address, override]) => [address, { ...override }])),
-});
-
 type CreatePayload = { createAgentTeamRun?: { success?: boolean; message?: string; teamRunId?: string | null } | null };
 type RestorePayload = { restoreAgentTeamRun?: { success?: boolean; message?: string; teamRunId?: string | null } | null };
 type TerminatePayload = { terminateAgentTeamRun?: { success?: boolean; message?: string } | null };
@@ -134,6 +134,7 @@ export const useAgentTeamRunStore = defineStore('agentTeamRun', {
       rootTeamRunId: string;
       candidateContext: AgentTeamContext;
       expectedBaseChangeSequence: number;
+      beforeContextCommit?: () => void;
     }): Promise<TeamStreamingService> {
       const previousService = teamStreamingServices.get(input.rootTeamRunId);
       const contexts = useAgentTeamContextsStore();
@@ -172,6 +173,7 @@ export const useAgentTeamRunStore = defineStore('agentTeamRun', {
           || !previousService.isReopenRequired) {
           throw new Error(`Team stream '${input.rootTeamRunId}' changed before recovery commit.`);
         }
+        input.beforeContextCommit?.();
         contexts.replaceTeamContext(input.rootTeamRunId, previousContext, input.candidateContext);
         teamStreamingServices.set(input.rootTeamRunId, candidate);
         const notices = { ...this.streamRecoveryNoticesByRootTeamRunId };
@@ -205,10 +207,11 @@ export const useAgentTeamRunStore = defineStore('agentTeamRun', {
         this.disconnectTeamStream(rootTeamRunId);
         team?.view.setRootTeamActive(false);
         team?.view.listAgentContextEntries().forEach(({ agentContext }) => {
-          applyOfflineOrTerminalCleanup(agentContext); useAgentActivityStore().clearActivities(agentContext.state.runId);
+          applyOfflineOrTerminalCleanup(agentContext);
         });
-        useRunHistoryStore().markTeamAsInactive(rootTeamRunId);
-        void useRunHistoryStore().refreshTreeQuietly();
+        const history = useRunHistoryStore();
+        history.markTeamAsInactive(rootTeamRunId);
+        void history.refreshTreeQuietly();
         return true;
       } catch (error) { console.error(`Error terminating Team '${rootTeamRunId}':`, error); return false; }
       finally { const next = { ...this.stopPendingTeamIds }; delete next[rootTeamRunId]; this.stopPendingTeamIds = next; }
@@ -235,6 +238,7 @@ export const useAgentTeamRunStore = defineStore('agentTeamRun', {
       let rootTeamRunId: string | null = team?.view.getRootTeamRunId() ?? null;
       let targetAgentRunId = team?.view.getFocusedAgentRunId() ?? null;
       let localSubmission: LocalUserSubmissionHandle | null = null;
+      let retryAttachments = contextAttachments.map(cloneContextAttachment);
       let draftOwnerId = draft?.draftId ?? rootTeamRunId;
       try {
         if (draft) {
@@ -247,26 +251,38 @@ export const useAgentTeamRunStore = defineStore('agentTeamRun', {
           const { data, errors } = await getApolloClient().mutate<RestorePayload>({ mutation: RestoreAgentTeamRun, variables: { teamRunId: rootTeamRunId } });
           if (errors?.length) throw new Error(errors.map((entry: { message: string }) => entry.message).join(', '));
           if (!data?.restoreAgentTeamRun?.success) throw new Error(data?.restoreAgentTeamRun?.message || 'Team restore failed.');
+          const expectedContext = team;
           const hydrated = await this.hydrateRun(rootTeamRunId, { agentRunId: targetAgentRunId });
-          contexts.addTeamContext(hydrated);
-          team = hydrated; targetAgentRunId = hydrated.view.getFocusedAgentRunId();
+          if (contexts.getTeamContextById(rootTeamRunId) !== expectedContext) {
+            throw new Error(`Team context '${rootTeamRunId}' changed before restore commit.`);
+          }
+          commitTeamRunHydrationActivities(hydrated);
+          contexts.replaceTeamContext(rootTeamRunId, expectedContext, hydrated.hydratedContext);
+          markCommittedTeamRunHydrationAuthority(hydrated);
+          team = hydrated.hydratedContext;
+          // Hydration focus is presentation state, never a replacement send target.
         }
         if (!team || !targetAgentRunId || !rootTeamRunId || !draftOwnerId) throw new Error('Canonical Team execution was not created.');
-        team.view.setRootTeamActive(true);
         const member = team.view.getAgentContext(targetAgentRunId);
-        const memberAddress = team.view.getMemberAddress(targetAgentRunId);
-        if (!member || !memberAddress) throw new Error(`Focused Team AgentRun '${targetAgentRunId}' is not available.`);
+        if (!member) throw new Error(`Focused Team AgentRun '${targetAgentRunId}' is not available.`);
+        const location = team.view.getAgentExecutionLocation(targetAgentRunId);
+        if (!location) throw new Error(`Focused Team AgentRun '${targetAgentRunId}' has no exact execution location.`);
+        team.view.setRootTeamActive(true);
         localSubmission = beginLocalUserSubmission(member, {
           text, attachments: contextAttachments,
           navigationTarget: { kind: 'team_member', teamRunId: rootTeamRunId, agentRunId: targetAgentRunId },
         });
-        const draftOwner = buildTeamMemberDraftContextFileOwner(draftOwnerId, memberAddress);
+        const draftOwner = buildTeamMemberDraftContextFileOwner(draftOwnerId, location.memberAddress);
         const finalized = await useContextFileUploadStore().finalizeDraftAttachments({
           draftOwner,
-          finalOwner: buildTeamMemberFinalContextFileOwner(rootTeamRunId, memberAddress),
+          finalOwner: buildTeamMemberFinalContextFileOwner(
+            location.containingTeamRunId,
+            targetAgentRunId,
+          ),
           attachments: contextAttachments,
         });
         const plan = planContextAttachmentSubmission(finalized);
+        retryAttachments = plan.retainedMessageAttachments.map(cloneContextAttachment);
         const messageId = buildClientMessageId();
         const dedupeKey = inputDedupeKey(rootTeamRunId, targetAgentRunId, messageId);
         localSubmission.message.messageId = messageId;
@@ -275,9 +291,15 @@ export const useAgentTeamRunStore = defineStore('agentTeamRun', {
         useRunHistoryStore().markTeamAsActive(rootTeamRunId);
         void useRunHistoryStore().refreshTreeQuietly();
         const service = await this.ensureTeamStreamConnected(rootTeamRunId);
-        service.sendMessage(text, targetAgentRunId, plan.executable.contextFilePaths, plan.executable.imageUrls, { messageId, dedupeKey });
+        await service.sendMessage(text, targetAgentRunId, plan.executable.contextFilePaths, plan.executable.imageUrls, { messageId, dedupeKey });
       } catch (error) {
-        if (localSubmission) { failLocalSubmission(localSubmission, error); applyOfflineOrTerminalCleanup(localSubmission.context, AgentStatus.Error); return; }
+        if (localSubmission) {
+          failLocalSubmission(localSubmission, error);
+          localSubmission.context.requirement = text;
+          localSubmission.context.contextFilePaths = retryAttachments;
+          applyOfflineOrTerminalCleanup(localSubmission.context, AgentStatus.Error);
+          return;
+        }
         throw error;
       }
     },
@@ -296,7 +318,10 @@ export const useAgentTeamRunStore = defineStore('agentTeamRun', {
         { agentRunId: target.agentRunId },
       ) ?? false;
     },
-    async hydrateRun(rootTeamRunId: string, target: { agentRunId?: string | null; memberAddress?: string | null } = {}) {
+    async hydrateRun(
+      rootTeamRunId: string,
+      target: { agentRunId?: string | null; memberAddress?: string | null } = {},
+    ): Promise<TeamRunHydrationCandidate> {
       const payload = await hydrateLiveTeamRunContext({
         teamRunId: rootTeamRunId,
         agentRunId: target.agentRunId,
@@ -304,48 +329,110 @@ export const useAgentTeamRunStore = defineStore('agentTeamRun', {
         resolveWorkspaceMetadataByRootPath: resolveRunHistoryWorkspaceMetadataByRootPath,
         ensureWorkspaceByRootPath: ensureRunHistoryWorkspaceByRootPath,
       });
-      return payload.hydratedContext;
+      return payload;
     },
     async launchDraft(draft: TeamLaunchDraft) {
       const drafts = useTeamRunConfigStore();
-      drafts.admitDraftLaunch(draft);
-      try {
-        const definitions = useAgentTeamDefinitionStore();
-        const definition = definitions.getAgentTeamDefinitionById(draft.config.teamDefinitionId);
+      const definitions = useAgentTeamDefinitionStore();
+      const resolveMemberTree = () => {
+        const definition = definitions.getCatalogAgentTeamDefinitionById(draft.config.teamDefinitionId);
         if (!definition) throw new Error(`Team definition '${draft.config.teamDefinitionId}' was not found.`);
-        const leafMembers = resolveLeafTeamMembers(definition, { getTeamDefinitionById: (id) => definitions.getAgentTeamDefinitionById(id) });
-        if (!leafMembers.some((member) => member.address === draft.focusedMemberAddress)) throw new Error(`Draft focus '${draft.focusedMemberAddress}' is stale.`);
-        const leafAddresses = new Set(leafMembers.map((member) => member.address));
-        const stalePendingAddress = Object.keys(draft.pendingInputsByMemberAddress).find((address) => !leafAddresses.has(address));
-        if (stalePendingAddress) throw new Error(`Draft input target '${stalePendingAddress}' is stale.`);
-        const readiness = evaluateTeamRunLaunchReadiness(draft.config, drafts.runtimeModelCatalogs);
+        return buildTeamMemberTreeFromDefinition(definition, {
+          getTeamDefinitionById: (id) => definitions.getCatalogAgentTeamDefinitionById(id),
+        });
+      };
+      const preparation = drafts.reconcileAndPlanSelectedDraftLaunch(draft, resolveMemberTree());
+      if (preparation.status === 'repaired') {
+        throw new TeamLaunchRepairRequiredError(preparation.addresses);
+      }
+      if (preparation.status === 'blocked') {
+        throw new Error('Enter a workspace path to run this team.');
+      }
+      const plan = preparation.plan;
+      let admittedDraft: TeamLaunchDraft | null = null;
+      try {
+        const workspaceStore = useWorkspaceStore();
+        for (const request of plan.requests) {
+          const authorization = drafts.authorizeWorkspacePreparationRequest(
+            plan,
+            resolveMemberTree(),
+            request.teamAddresses,
+          );
+          if (authorization.status === 'repaired') {
+            throw new TeamLaunchRepairRequiredError(authorization.addresses, true);
+          }
+          try {
+            const workspaceId = await workspaceStore.createWorkspace({ root_path: request.rootPath });
+            const workspace = workspaceStore.workspaces[workspaceId] ?? null;
+            const workspaceMetadata = workspaceStore.workspaceMetadataById[workspaceId]
+              ?? (workspace ? workspaceStore.registerWorkspaceInfoMetadata(workspace) : null)
+              ?? createWorkspaceMetadata({ workspaceId, workspaceRootPath: request.rootPath });
+            const completion = drafts.completeWorkspacePreparation(
+              plan,
+              resolveMemberTree(),
+              request.teamAddresses,
+              { workspaceId, workspaceMetadata },
+            );
+            if (completion.status === 'repaired') {
+              throw new TeamLaunchRepairRequiredError(completion.addresses, true);
+            }
+          } catch (error) {
+            if (drafts.isWorkspacePreparationActive(plan)) {
+              const failure = drafts.failWorkspacePreparation(
+                plan,
+                resolveMemberTree(),
+                request.teamAddresses,
+                error instanceof Error ? error.message : 'Failed to load workspace',
+              );
+              if (failure.status === 'repaired') {
+                throw new TeamLaunchRepairRequiredError(failure.addresses, true);
+              }
+            }
+            throw error;
+          }
+        }
+        if (plan.requests.length) useRightSideTabs().setActiveTab('files');
+        const finalized = drafts.finalizeWorkspacePreparation(plan, resolveMemberTree());
+        if (finalized.status === 'repaired') {
+          throw new TeamLaunchRepairRequiredError(finalized.addresses, true);
+        }
+        const currentDraft = finalized.draft;
+        const memberTree = resolveMemberTree();
+        const readiness = drafts.launchReadiness;
         if (!readiness.canLaunch) throw new Error(readiness.blockingIssues[0]?.message || 'Team configuration is not launch-ready.');
-        const memberConfigs = buildTeamRunMemberConfigRecords({ config: mutableConfig(draft.config), leafMembers })
-          .map(({ workspaceMetadata: _workspaceMetadata, displayName: _displayName, ...config }) => ({
-            ...config,
-            skillAccessMode: config.skillAccessMode as TeamMemberConfigInput['skillAccessMode'],
-          }));
+        drafts.admitPreparedDraftLaunch(plan, currentDraft);
+        admittedDraft = currentDraft;
+        const leafMembers = flattenLeafAgentMemberNodes(memberTree);
+        if (!leafMembers.some((member) => member.address === currentDraft.focusedMemberAddress)) throw new Error(`Draft focus '${currentDraft.focusedMemberAddress}' is stale.`);
+        const leafAddresses = new Set(leafMembers.map((member) => member.address));
+        const stalePendingAddress = Object.keys(currentDraft.pendingInputsByMemberAddress).find((address) => !leafAddresses.has(address));
+        if (stalePendingAddress) throw new Error(`Draft input target '${stalePendingAddress}' is stale.`);
+        const { teamConfigs, memberConfigs } = projectTeamRunLaunchRecords(currentDraft.config, memberTree);
         const { data, errors } = await getApolloClient().mutate<CreatePayload>({
           mutation: CreateAgentTeamRun,
-          variables: { input: { teamDefinitionId: draft.config.teamDefinitionId, memberConfigs } },
+          variables: { input: { teamDefinitionId: currentDraft.config.teamDefinitionId, teamConfigs, memberConfigs } },
         });
         if (errors?.length) throw new Error(errors.map((entry: { message: string }) => entry.message).join(', '));
         const result = data?.createAgentTeamRun;
         if (!result?.success || !result.teamRunId) throw new Error(result?.message || 'Team launch failed without a real TeamRun ID.');
-        const context = await this.hydrateRun(result.teamRunId, { memberAddress: draft.focusedMemberAddress });
-        const execution = findConfiguredAgentByAddress(context.view.getExecutionTree(), draft.focusedMemberAddress);
-        if (!execution || !context.view.hasAgentRun(execution.agent_run_id)) throw new Error(`Launched Team is missing '${draft.focusedMemberAddress}'.`);
+        const candidate = await this.hydrateRun(result.teamRunId, { memberAddress: currentDraft.focusedMemberAddress });
+        const context = candidate.hydratedContext;
+        const execution = findConfiguredAgentByAddress(context.view.getExecutionTree(), currentDraft.focusedMemberAddress);
+        if (!execution || !context.view.hasAgentRun(execution.agent_run_id)) throw new Error(`Launched Team is missing '${currentDraft.focusedMemberAddress}'.`);
         const focusResult = context.view.focusAgent(execution.agent_run_id);
         if (focusResult.disposition === 'rejected') throw new Error(focusResult.message);
-        transferDraftPendingInputs(draft, context);
+        transferDraftPendingInputs(currentDraft, context);
         const contexts = useAgentTeamContextsStore();
         if (contexts.getTeamContextById(result.teamRunId)) throw new Error(`TeamRun '${result.teamRunId}' is already registered.`);
+        commitTeamRunHydrationActivities(candidate);
         contexts.addTeamContext(context);
-        useAgentSelectionStore().promoteTeamDraftLaunch(draft.draftId, result.teamRunId);
-        drafts.completeDraftLaunch(draft);
+        markCommittedTeamRunHydrationAuthority(candidate);
+        useAgentSelectionStore().promoteTeamDraftLaunch(currentDraft.draftId, result.teamRunId);
+        drafts.completeDraftLaunch(currentDraft);
         return { rootTeamRunId: result.teamRunId, agentRunId: execution.agent_run_id, context };
       } finally {
-        drafts.releaseDraftLaunch(draft);
+        drafts.cancelWorkspacePreparation(plan);
+        if (admittedDraft) drafts.releaseDraftLaunch(admittedDraft);
       }
     },
   },

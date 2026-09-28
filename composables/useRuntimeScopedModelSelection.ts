@@ -10,10 +10,7 @@ import {
   type ProviderWithModels,
 } from '~/stores/llmProviderConfig'
 import { useRuntimeAvailabilityStore } from '~/stores/runtimeAvailabilityStore'
-import {
-  getModelSelectionOptionLabel,
-  getModelSelectionSelectedLabel,
-} from '~/utils/modelSelectionLabel'
+import { buildModelSelectionGroups } from '~/utils/modelSelectionOptions'
 import { normalizeModelConfigSchema, type UiModelConfigSchema } from '~/utils/llmConfigSchema'
 import type { GroupedOption } from '~/components/agentTeams/SearchableGroupedSelect.vue'
 
@@ -38,25 +35,11 @@ export type RuntimeProviderSourceStatus = Readonly<{
 const cloneProviderSourceStatuses = (
   runtimeKind: string,
   llmStore: ReturnType<typeof useLLMProviderConfigStore>,
-): RuntimeProviderSourceStatus[] => (typeof (llmStore as any).providerSnapshots === 'function'
-  ? (llmStore as any).providerSnapshots(runtimeKind)
-  : []).map((snapshot: any) => ({
+): RuntimeProviderSourceStatus[] => llmStore.providerSnapshots(runtimeKind).map((snapshot) => ({
   providerId: snapshot.ownerProvider.id,
   providerName: snapshot.ownerProvider.name,
   sources: snapshot.sources.map((source) => ({ ...source })),
 }))
-
-// The accepted prototype deliberately keeps its small fixture-backed provider
-// store. Adapt that store at this one prototype boundary instead of importing
-// the source catalog protocol and persistence machinery.
-const providerRowsForSelection = (
-  runtimeKind: string,
-  llmStore: ReturnType<typeof useLLMProviderConfigStore>,
-): ProviderWithModels[] => {
-  const value = (llmStore as any).providersWithModelsForSelection
-  if (typeof value === 'function') return value(runtimeKind)
-  return Array.isArray(value) ? value : (llmStore as any).providersWithModels ?? []
-}
 
 export const normalizeScopedRuntimeKind = (
   runtimeKind: string | null | undefined,
@@ -81,10 +64,8 @@ export const loadRuntimeProviderGroupsForSelection = async (
   llmStore = useLLMProviderConfigStore(),
 ): Promise<ProviderWithModels[]> => {
   await llmStore.fetchProvidersWithModels(runtimeKind)
-  if (typeof (llmStore as any).ensureMissingDynamicProviders === 'function') {
-    await (llmStore as any).ensureMissingDynamicProviders(runtimeKind)
-  }
-  return cloneProviderRows(providerRowsForSelection(runtimeKind, llmStore))
+  await llmStore.ensureMissingDynamicProviders(runtimeKind)
+  return cloneProviderRows(llmStore.providersWithModelsForSelection(runtimeKind))
 }
 
 export const useRuntimeScopedModelSelection = (params: {
@@ -92,6 +73,7 @@ export const useRuntimeScopedModelSelection = (params: {
   inheritedRuntimeKind?: Ref<string | null | undefined>
   allowBlankRuntime?: boolean
   useDefaultRuntimeFallback?: boolean
+  loadCatalog?: boolean
 }) => {
   const llmStore = useLLMProviderConfigStore()
   const runtimeAvailabilityStore = useRuntimeAvailabilityStore()
@@ -128,7 +110,7 @@ export const useRuntimeScopedModelSelection = (params: {
         providerGroupsByRuntime.value = {
           ...providerGroupsByRuntime.value,
           [normalizedRuntimeKind]: cloneProviderRows(
-            providerRowsForSelection(normalizedRuntimeKind, llmStore),
+            llmStore.providersWithModelsForSelection(normalizedRuntimeKind),
           ),
         }
         providerSourceStatusesByRuntime.value = {
@@ -137,13 +119,11 @@ export const useRuntimeScopedModelSelection = (params: {
         }
       }
       publishRuntimeCatalogState()
-      if (typeof (llmStore as any).ensureMissingDynamicProviders === 'function') {
-        void (llmStore as any).ensureMissingDynamicProviders(normalizedRuntimeKind)
-          .then(() => publishRuntimeCatalogState(), (error: unknown) => {
-            console.error(`Failed to discover dynamic models for '${normalizedRuntimeKind}'.`, error)
-            publishRuntimeCatalogState()
-          })
-      }
+      void llmStore.ensureMissingDynamicProviders(normalizedRuntimeKind)
+        .then(() => publishRuntimeCatalogState(), (error) => {
+          console.error(`Failed to discover dynamic models for '${normalizedRuntimeKind}'.`, error)
+          publishRuntimeCatalogState()
+        })
     } catch (error) {
       modelLoadError.value = error instanceof Error ? error.message : String(error)
       throw error
@@ -160,12 +140,7 @@ export const useRuntimeScopedModelSelection = (params: {
     isLoadingModels.value = true
     modelLoadError.value = null
     try {
-      if (typeof (llmStore as any).refreshLocalCatalog === 'function') {
-        await (llmStore as any).refreshLocalCatalog(normalizedRuntimeKind)
-      } else {
-        ;(llmStore as any).hasFetchedProviders = false
-        await llmStore.fetchProvidersWithModels(normalizedRuntimeKind)
-      }
+      await llmStore.refreshLocalCatalog(normalizedRuntimeKind)
       await ensureModelsForRuntime(normalizedRuntimeKind)
     } catch (error) {
       modelLoadError.value = error instanceof Error ? error.message : String(error)
@@ -177,7 +152,7 @@ export const useRuntimeScopedModelSelection = (params: {
   watch(
     () => effectiveRuntimeKind.value,
     (runtimeKind) => {
-      if (runtimeKind) void ensureModelsForRuntime(runtimeKind).catch(() => undefined)
+      if (runtimeKind && params.loadCatalog !== false) void ensureModelsForRuntime(runtimeKind).catch(() => undefined)
     },
     { immediate: true },
   )
@@ -246,25 +221,9 @@ export const useRuntimeScopedModelSelection = (params: {
   )
 
   const groupedModelOptions = computed<GroupedOption[]>(() => {
-    if (!availableProviderGroups.value.length) {
-      return []
-    }
-
     const runtimeKind = effectiveRuntimeKind.value
     if (!runtimeKind) return []
-    return availableProviderGroups.value.map((providerGroup) => ({
-      label: providerGroup.provider.name,
-      items: providerGroup.models.map((model) => ({
-        id: model.modelIdentifier,
-        name: getModelSelectionOptionLabel(model, runtimeKind),
-        description: model.description,
-        selectedLabel: getModelSelectionSelectedLabel(
-          providerGroup.provider.name,
-          model,
-          runtimeKind,
-        ),
-      })),
-    }))
+    return buildModelSelectionGroups(availableProviderGroups.value, runtimeKind)
   })
 
   const modelIdentifiers = computed(() =>

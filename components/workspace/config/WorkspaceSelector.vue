@@ -137,28 +137,24 @@ import type {
   WorkspaceSelectionMode,
   WorkspaceSelectionState,
 } from '~/types/workspace/WorkspaceSelectionState';
-import type { ExistingWorkspaceDisplay } from '~/types/agent/ExistingTeamRunFormModel';
+import type { WorkspaceSelectorModel } from '~/types/workspace/WorkspaceSelectorModel';
 
 const props = withDefaults(defineProps<{
-  model:
-    | Readonly<{
-        mode: 'editable';
-        selection: WorkspaceSelectionState;
-        isLoading: boolean;
-        error: string | null;
-      }>
-    | Readonly<{
-        mode: 'stored';
-        workspace: ExistingWorkspaceDisplay | null;
-      }>;
+  model: WorkspaceSelectorModel;
   disabled?: boolean;
   workspaceLocked?: boolean;
   workspaceLockedMessage?: string;
   controlVariant?: 'default' | 'quiet';
   autoSelectDefault?: boolean;
   historicalValueUnavailableMessage?: string;
+  /**
+   * Opt-in explicit option list. When non-null, only these workspace ids are offered
+   * (in the given order), no temp entry is prepended, and nothing is auto-selected.
+   */
+  candidateWorkspaceIds?: readonly string[] | null;
 }>(), {
   autoSelectDefault: true,
+  candidateWorkspaceIds: null,
   historicalValueUnavailableMessage: 'Saved value is unavailable in current options.',
 });
 
@@ -203,20 +199,29 @@ const newWorkspaceInputClass = computed(() => [
 ]);
 
 // Computed
-const workspaceOptions = computed(() => {
+const toWorkspaceOption = (ws: { workspaceId: string; name: string; absolutePath?: string | null }) => ({
+  id: ws.workspaceId,
+  name: ws.name,
+  description: ws.absolutePath || ''
+});
+
+const inventoryWorkspaceOptions = () => {
+  if (props.candidateWorkspaceIds) {
+    return props.candidateWorkspaceIds
+      .map((workspaceId) => workspaceStore.workspaces[workspaceId])
+      .filter((ws): ws is NonNullable<typeof ws> => Boolean(ws))
+      .map(toWorkspaceOption);
+  }
+
   const tempId = workspaceStore.tempWorkspaceId;
   
   // Get all non-temp workspaces
   const regularWorkspaces = workspaceStore.allWorkspaces
     .filter(ws => ws.workspaceId !== tempId)
-    .map(ws => ({
-      id: ws.workspaceId,
-      name: ws.name,
-      description: ws.absolutePath || ''
-    }));
+    .map(toWorkspaceOption);
   
   // Put temp workspace at top with special styling
-  const inventoryOptions = workspaceStore.tempWorkspace
+  return workspaceStore.tempWorkspace
     ? [
       {
         id: tempId!,
@@ -226,6 +231,10 @@ const workspaceOptions = computed(() => {
       ...regularWorkspaces
     ]
     : regularWorkspaces;
+};
+
+const workspaceOptions = computed(() => {
+  const inventoryOptions = inventoryWorkspaceOptions();
   const stored = storedWorkspace.value;
   if (stored?.workspaceId && !inventoryOptions.some((option) => option.id === stored.workspaceId)) {
     inventoryOptions.push({
@@ -274,6 +283,7 @@ const proposeSelection = (changes: Partial<WorkspaceSelectionState>) => {
 const maybeAutoSelectDefaultWorkspace = (): boolean => {
   if (
     props.autoSelectDefault === false
+    || props.candidateWorkspaceIds !== null
     || props.model.mode !== 'editable'
     || modelValue.value.existingWorkspaceId
     || modelValue.value.newWorkspacePath
@@ -314,7 +324,8 @@ onMounted(async () => {
   }
   
   if (
-    workspaceOptions.value.length > 0
+    props.autoSelectDefault !== false
+    && workspaceOptions.value.length > 0
     && mode.value === 'new'
     && !modelValue.value.newWorkspacePath
     && !hasExplicitWorkspaceInteraction.value
@@ -343,7 +354,8 @@ watch(
 watch(workspaceOptions, (newOptions) => {
   if (isInteractionDisabled.value) return;
   if (
-    newOptions.length > 0
+    props.autoSelectDefault !== false
+    && newOptions.length > 0
     && mode.value === 'new'
     && !modelValue.value.newWorkspacePath
     && !hasExplicitWorkspaceInteraction.value

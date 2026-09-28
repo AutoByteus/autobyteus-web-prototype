@@ -50,6 +50,7 @@
         <SearchableGroupedSelect
           :model-value="member.llmModelIdentifier"
           :options="groupedModelOptions"
+          :selected-display="currentModelDescriptor ? formatRuntimeCurrentModelDisplay(effectiveRuntimeKind, currentModelDescriptor) : null"
           :disabled="disabled || !allowModelOverride"
           :placeholder="modelPlaceholder"
           search-placeholder="Search models..."
@@ -65,6 +66,7 @@ import { computed } from 'vue'
 import SearchableGroupedSelect from '~/components/agentTeams/SearchableGroupedSelect.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useRuntimeScopedModelSelection } from '~/composables/useRuntimeScopedModelSelection'
+import { formatRuntimeCurrentModelDisplay, type RuntimeCurrentModelDescriptor } from '~/composables/useRuntimeCurrentModelDescriptor'
 import type { ApplicationTeamMemberProfileDraft } from '~/utils/application/applicationLaunchProfile'
 import { buildUnavailableInheritedModelMessage } from '~/utils/teamRunConfigUtils'
 
@@ -72,6 +74,9 @@ const props = withDefaults(defineProps<{
   member: ApplicationTeamMemberProfileDraft
   globalRuntimeKind: string
   globalLlmModelIdentifier: string
+  inheritedRuntimeKind: string
+  inheritedLlmModelIdentifier: string
+  currentModelDescriptor?: RuntimeCurrentModelDescriptor | null
   allowRuntimeOverride?: boolean
   allowModelOverride?: boolean
   disabled?: boolean
@@ -87,27 +92,36 @@ const emit = defineEmits<{
 
 const { t: $t } = useLocalization()
 
-const effectiveRuntimeKind = computed(() => props.member.runtimeKind || props.globalRuntimeKind)
+const selectedRuntimeKind = computed(() => props.member.runtimeKind || props.globalRuntimeKind)
 const {
+  effectiveRuntimeKind,
   groupedModelOptions,
   hasModelIdentifier,
   runtimeOptions,
   selectedRuntimeUnavailableReason,
 } = useRuntimeScopedModelSelection({
-  runtimeKind: effectiveRuntimeKind,
+  runtimeKind: selectedRuntimeKind,
+  inheritedRuntimeKind: computed(() => props.inheritedRuntimeKind),
   allowBlankRuntime: false,
+  useDefaultRuntimeFallback: false,
 })
 
-const hasOverride = computed(() => Boolean(props.member.runtimeKind || props.member.llmModelIdentifier))
+const hasOverride = computed(() => Boolean(
+  props.member.runtimeKind
+  || props.member.llmModelIdentifier
+  || Object.prototype.hasOwnProperty.call(props.member, 'llmConfig'),
+))
 const isUnresolvedInheritedModel = computed(() => (
   Boolean(props.member.runtimeKind)
   && !props.member.llmModelIdentifier
-  && Boolean(props.globalLlmModelIdentifier)
-  && !hasModelIdentifier(props.globalLlmModelIdentifier)
+  && Boolean(props.globalLlmModelIdentifier || props.inheritedLlmModelIdentifier)
+  && !hasModelIdentifier(props.globalLlmModelIdentifier || props.inheritedLlmModelIdentifier)
+  && !props.currentModelDescriptor
 ))
 const unresolvedInheritedModelMessage = computed(() => buildUnavailableInheritedModelMessage({
-  globalLlmModelIdentifier: props.globalLlmModelIdentifier,
-  runtimeKind: effectiveRuntimeKind.value,
+  globalLlmModelIdentifier:
+    props.globalLlmModelIdentifier || props.inheritedLlmModelIdentifier,
+  runtimeKind: effectiveRuntimeKind.value ?? '',
   memberName: props.member.displayName,
 }))
 const modelPlaceholder = computed(() => (
@@ -117,16 +131,20 @@ const modelPlaceholder = computed(() => (
 ))
 
 const updateRuntimeKind = (value: string) => {
+  const member = { ...props.member }
+  delete member.llmConfig
   emit('update:member', {
-    ...props.member,
+    ...member,
     runtimeKind: value,
     llmModelIdentifier: '',
   })
 }
 
 const updateModel = (value: string) => {
+  const member = { ...props.member }
+  delete member.llmConfig
   emit('update:member', {
-    ...props.member,
+    ...member,
     llmModelIdentifier: value,
   })
 }

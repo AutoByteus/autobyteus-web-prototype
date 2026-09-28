@@ -14,6 +14,7 @@ export const scenarioCatalog = Object.freeze({
   loading: 'Successful responses are delayed by 1.5 seconds so loading surfaces remain observable.',
   team_launch: 'Populated catalogs with an empty history and a deterministic newly launched Team execution.',
   apps_disabled: 'Connected populated data with Applications capability disabled.',
+  projects_disabled: 'Connected populated data with the Projects capability at its initialized-disabled default.',
   bootstrap_error: 'Node health returns 503 and the Electron bridge can report startup failure.',
   token_empty: 'Token Statistics has full coverage but no tracked usage for the selected range.',
   token_partial: 'Token Statistics has tracked usage with partial history coverage and partial pricing.',
@@ -27,6 +28,7 @@ export const baseState = () => ({
   requestDelayMs: 0,
   applicationsEnabled: true,
   managedGatewayEnabled: true,
+  projectsEnabled: true,
   operationFailures: {},
 })
 
@@ -79,7 +81,11 @@ const team = {
   category: 'Product',
   avatarUrl: null,
   coordinatorMemberName: 'researcher',
+  revision: 'team-product-r1',
+  handoffs: [],
   ownershipScope: 'SHARED',
+  ownerOrgId: null,
+  ownerOrgName: null,
   ownerTeamId: null,
   ownerTeamName: null,
   ownerApplicationId: null,
@@ -92,8 +98,8 @@ const team = {
     llmConfig: { temperature: 0.2 },
   },
   nodes: [
-    { __typename: 'AgentTeamNode', memberName: 'researcher', ref: 'agent-researcher', refType: 'AGENT', refScope: 'SHARED' },
-    { __typename: 'AgentTeamNode', memberName: 'writer', ref: 'agent-writer', refType: 'AGENT', refScope: 'SHARED' },
+    { __typename: 'TeamMember', memberName: 'researcher', ref: 'agent-researcher', refScope: 'SHARED' },
+    { __typename: 'TeamMember', memberName: 'writer', ref: 'agent-writer', refScope: 'SHARED' },
   ],
 }
 
@@ -146,6 +152,25 @@ const run = {
   workspaceRootPath: workspace.workspaceRootPath,
 }
 
+const launchConfiguration = (workspaceRootPath = '/synthetic/prototype-workspace') => ({
+  runtime_kind: 'autobyteus', llm_model_identifier: 'mock/gpt-prototype', llm_config: { temperature: 0.2 },
+  auto_execute_tools: false, skill_access_mode: 'PRELOADED_ONLY', workspace_root_path: workspaceRootPath,
+})
+
+const teamRootExecution = (teamRunId, memberRunIds) => ({
+  address: '/',
+  team_definition_id: 'team-product',
+  team_definition_name: 'Product Review Team',
+  team_run_id: teamRunId,
+  coordinator_address: '/researcher',
+  default_launch_configuration: launchConfiguration(),
+  members: [
+    { kind: 'configured_agent', address: '/researcher', agent_definition_id: 'agent-researcher', role: null, description: null, agent_run_id: memberRunIds[0], platform_agent_run_id: null, launch_configuration: launchConfiguration() },
+    { kind: 'configured_agent', address: '/writer', agent_definition_id: 'agent-writer', role: null, description: null, agent_run_id: memberRunIds[1], platform_agent_run_id: null, launch_configuration: launchConfiguration() },
+  ],
+  task_executions: [],
+})
+
 const teamRun = {
   teamRunId: 'team-run-001',
   teamDefinitionId: team.id,
@@ -159,7 +184,7 @@ const teamRun = {
   isActive: false,
   shouldConnectStream: false,
   coordinatorAddress: '/researcher',
-  rootTeam: { teamDefinitionId: team.id, teamDefinitionName: team.name },
+  rootTeam: teamRootExecution('team-run-001', ['team-member-researcher-001', 'team-member-writer-001']),
   workspaceRootPath: workspace.workspaceRootPath,
   members: [
     { memberName: 'researcher', displayName: 'Research Assistant', memberAddress: '/researcher', agentRunId: 'team-member-researcher-001', agentDefinitionId: agent.id, agentName: agent.name, status: 'IDLE', runtimeKind: 'autobyteus', workspaceRootPath: '/synthetic/prototype-workspace' },
@@ -168,31 +193,107 @@ const teamRun = {
 }
 
 const createdTeamRunId = 'team-run-created-fixture'
-const createdTeamExecutionTree = {
-  schema_version: 1,
+const storedTeamExecutionTree = {
+  schema_version: 2,
   created_at: fixedNow,
   archived_at: null,
   application_binding: null,
   handoffs: [],
-  root_team: {
-    team_definition_id: team.id,
-    team_definition_name: team.name,
-    team_run_id: createdTeamRunId,
-    coordinator_address: '/researcher',
+  root_team: teamRootExecution('team-run-001', ['team-member-researcher-001', 'team-member-writer-001']),
+}
+
+const createdTeamExecutionTree = {
+  schema_version: 2,
+  created_at: fixedNow,
+  archived_at: null,
+  application_binding: null,
+  handoffs: [],
+  root_team: teamRootExecution(createdTeamRunId, ['team-member-researcher-created', 'team-member-writer-created']),
+}
+
+const org = {
+  __typename: 'AgentOrgDefinition',
+  id: 'org-product-launch',
+  name: 'Product Launch Org',
+  description: 'A deterministic synthetic organization with one direct agent and one reusable team.',
+  instructions: 'Coordinate a safe synthetic product launch review.',
+  category: 'Product',
+  avatarUrl: null,
+  revision: 'org-product-launch-r1',
+  handoffs: [{ __typename: 'AgentOrgHandoff', from: '/analyst', to: '/review-team', rules: ['Hand off reviewed findings for documentation.'] }],
+  members: [
+    { __typename: 'AgentOrgMember', memberName: 'analyst', ref: 'agent-researcher', refType: 'AGENT', refScope: 'SHARED' },
+    { __typename: 'AgentOrgMember', memberName: 'review-team', ref: 'team-product', refType: 'AGENT_TEAM', refScope: 'SHARED' },
+  ],
+  defaultLaunchConfig: { __typename: 'DefaultLaunchConfig', llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', llmConfig: { temperature: 0.2 } },
+}
+
+const orgLaunchConfiguration = {
+  runtimeKind: 'autobyteus', llmModelIdentifier: 'mock/gpt-prototype', llmConfig: { temperature: 0.2 },
+  autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', workspaceRootPath: '/synthetic/prototype-workspace',
+}
+
+const orgRunId = 'org-run-001'
+const orgExecutionTree = {
+  schemaVersion: 1,
+  subjectKind: 'agent_org',
+  createdAt: fixedNow,
+  archivedAt: null,
+  applicationBinding: null,
+  handoffs: [{ from: '/analyst', to: '/review-team', rules: ['Hand off reviewed findings for documentation.'] }],
+  rootOrg: {
+    address: '/',
+    orgDefinitionId: org.id,
+    orgDefinitionName: org.name,
+    orgRunId,
+    defaultLaunchConfiguration: orgLaunchConfiguration,
     members: [
+      { address: '/analyst', agentDefinitionId: 'agent-researcher', role: null, description: null, agentRunId: 'org-member-analyst-001', platformAgentRunId: null, launchConfiguration: orgLaunchConfiguration },
       {
-        kind: 'configured_agent', address: '/researcher', agent_definition_id: agent.id,
-        role: null, description: null, agent_run_id: 'team-member-researcher-created', platform_agent_run_id: null,
-        launch_configuration: { runtime_kind: 'AUTOBYTEUS', llm_model_identifier: 'mock/gpt-prototype', llm_config: { temperature: 0.2 }, auto_execute_tools: false, skill_access_mode: 'PRELOADED_ONLY', workspace_root_path: workspace.workspaceRootPath },
-      },
-      {
-        kind: 'configured_agent', address: '/writer', agent_definition_id: secondAgent.id,
-        role: null, description: null, agent_run_id: 'team-member-writer-created', platform_agent_run_id: null,
-        launch_configuration: { runtime_kind: 'AUTOBYTEUS', llm_model_identifier: 'mock/gpt-prototype', llm_config: { temperature: 0.2 }, auto_execute_tools: false, skill_access_mode: 'PRELOADED_ONLY', workspace_root_path: workspace.workspaceRootPath },
+        address: '/review-team', teamDefinitionId: 'team-product', role: null, description: null, teamRunId: 'org-team-run-001',
+        coordinatorAddress: '/review-team/researcher', defaultLaunchConfiguration: orgLaunchConfiguration,
+        members: [
+          { address: '/review-team/researcher', agentDefinitionId: 'agent-researcher', role: null, description: null, agentRunId: 'org-member-review-researcher-001', platformAgentRunId: null, launchConfiguration: orgLaunchConfiguration },
+          { address: '/review-team/writer', agentDefinitionId: 'agent-writer', role: null, description: null, agentRunId: 'org-member-review-writer-001', platformAgentRunId: null, launchConfiguration: orgLaunchConfiguration },
+        ],
+        taskExecutions: [],
       },
     ],
-    task_executions: [],
+    taskExecutions: [],
   },
+}
+
+const orgEndpoints = [
+  { __typename: 'DefinitionEndpoint', kind: 'agent', address: '/analyst', memberName: 'analyst', definitionId: 'agent-researcher', coordinatorAddress: null, coordinatorMemberName: null },
+  { __typename: 'DefinitionEndpoint', kind: 'agent_team', address: '/review-team', memberName: 'review-team', definitionId: 'team-product', coordinatorAddress: '/review-team/researcher', coordinatorMemberName: 'researcher' },
+]
+
+const project = {
+  __typename: 'Project',
+  projectId: 'project-prototype-launch',
+  name: 'Prototype Launch',
+  description: 'Synthetic project linking the prototype workspace and its launch tasks.',
+  createdAt: fixedNow,
+  updatedAt: fixedNow,
+  workspaces: [{ __typename: 'ProjectWorkspace', workspaceId: 'workspace-prototype', workspaceRootPath: '/synthetic/prototype-workspace', displayName: 'Prototype Workspace', description: 'Primary synthetic workspace for launch review.', addedAt: fixedNow, availability: 'AVAILABLE' }],
+  openTaskCount: 2,
+}
+
+const projectTasks = [
+  { __typename: 'ProjectTask', taskId: 'task-outline', projectId: project.projectId, description: 'Outline the launch checklist.', status: 'TODO', createdAt: fixedNow, updatedAt: fixedNow },
+  { __typename: 'ProjectTask', taskId: 'task-review', projectId: project.projectId, description: 'Review the synthetic navigation baseline.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow },
+  { __typename: 'ProjectTask', taskId: 'task-publish', projectId: project.projectId, description: 'Publish the deterministic evidence summary.', status: 'DONE', createdAt: fixedNow, updatedAt: fixedNow },
+]
+
+// History row for the deterministic TeamRun created by CreateAgentTeamRun.
+const launchedTeamRunHistoryItem = {
+  ...teamRun,
+  teamRunId: 'team-run-created-fixture',
+  summary: '',
+  isActive: true,
+  status: 'IDLE',
+  rootTeam: teamRootExecution('team-run-created-fixture', ['team-member-researcher-created', 'team-member-writer-created']),
+  members: teamRun.members.map((member, index) => ({ ...member, agentRunId: ['team-member-researcher-created', 'team-member-writer-created'][index] })),
 }
 
 const provider = {
@@ -323,6 +424,12 @@ const gatewayStatus = (state, enabled = state.managedGatewayEnabled) => ({
 
 const paged = (entries) => ({ total: entries.length, page: 1, pageSize: 20, totalPages: entries.length ? 1 : 0, entries })
 
+// Deterministic stored conversation projection shared by opened runs.
+export const storedConversation = (request, reply) => [
+  { kind: 'message', role: 'user', content: request, ts: '2026-08-22T04:01:00.000Z' },
+  { kind: 'message', role: 'assistant', content: reply, ts: '2026-08-22T04:02:00.000Z' },
+]
+
 export function fixtureContext(state) {
   const empty = state.scenario === 'empty'
   const appsEnabled = state.scenario === 'apps_disabled' ? false : state.applicationsEnabled
@@ -332,7 +439,10 @@ export function fixtureContext(state) {
   const workspaces = empty ? [] : [state.scenario === 'team_launch' ? { ...workspace, kind: 'filesystem' } : workspace]
   const skills = empty ? [] : [skill]
   const tools = empty ? [] : [tool]
-  return { empty, appsEnabled, agents, teams, applications, workspaces, skills, tools }
+  const orgs = empty ? [] : [org]
+  const projectsEnabled = state.scenario === 'projects_disabled' ? false : state.projectsEnabled !== false
+  const projects = empty ? [] : [project]
+  return { empty, appsEnabled, agents, teams, applications, workspaces, skills, tools, orgs, projectsEnabled, projects }
 }
 
 export function operationFixture(operationName, variables = {}, state) {
@@ -379,8 +489,35 @@ export function operationFixture(operationName, variables = {}, state) {
         ],
       }
 
+  const runModel = { llmModelIdentifier: model.modelIdentifier, providerName: provider.name, displayName: model.name, canonicalName: model.canonicalName, description: model.description, configSchema: {}, recommended: true }
+  const runModelOptions = { currentModelIdentifier: model.modelIdentifier, unavailableReason: null, currentModel: runModel, replacements: [runModel] }
+  const orgMemoryTargets = [
+    { memberAddress: '/analyst', displayName: 'analyst', agentRunId: 'org-member-analyst-001', agentDefinitionId: agent.id, lastUpdatedAt: fixedNow, memory: memoryFlags },
+    { memberAddress: '/review-team/researcher', displayName: 'researcher', agentRunId: 'org-member-review-researcher-001', agentDefinitionId: agent.id, lastUpdatedAt: fixedNow, memory: memoryFlags },
+    { memberAddress: '/review-team/writer', displayName: 'writer', agentRunId: 'org-member-review-writer-001', agentDefinitionId: secondAgent.id, lastUpdatedAt: fixedNow, memory: memoryFlags },
+  ]
   const fixtures = {
     GetAgentDefinitions: { agentDefinitions: c.agents },
+    GetAgentOrgDefinitions: { agentOrgDefinitions: c.orgs },
+    GetAgentOrgEndpointCatalog: { agentOrgEndpointCatalog: { __typename: 'DefinitionEndpointCatalog', from: orgEndpoints, to: orgEndpoints } },
+    GetAgentOrgReferencedAgent: { agentDefinition: [agent, secondAgent].find(item => item.id === variables.id) || null },
+    GetAgentOrgReferencedTeam: { agentTeamDefinition: variables.id === team.id ? team : null },
+    ListCollaborationRootHistory: { listCollaborationRootHistory: c.empty || teamLaunchScenario ? [] : [{ __typename: 'AgentOrgRootHistoryObject', root_subject_kind: 'agent_org', root_run_id: orgRunId, created_at: fixedNow, archived_at: null, is_active: false, summary: 'Coordinate the synthetic launch review', org: orgExecutionTree }] },
+    AgentOrgRunConfig: { getAgentOrgRunConfig: { orgRunId, executionTree: orgExecutionTree, isActive: false, editability: { editable: true, reason: null } } },
+    GetAgentOrgExecutionCheckpoint: { getAgentOrgExecutionCheckpoint: { orgRunId, changeSequence: 1, hasOpenExecutionWork: false } },
+    GetAgentOrgMemberRunProjection: { getAgentOrgMemberRunProjection: { agentRunId: variables.agentRunId || 'org-member-analyst-001', memberAddress: variables.memberAddress || '/analyst', summary: 'Coordinate the synthetic launch review', lastActivityAt: fixedNow, conversation: storedConversation('Coordinate the synthetic launch review.', 'The launch review is coordinated with the review team.'), activities: [], hasEarlierActiveTraceEvents: false } },
+    GetAgentOrgMemberEventMonitorActiveTracePage: { getAgentOrgMemberEventMonitorActiveTracePage: { beforeCursor: null, hasEarlier: false, loadedEarlierCount: 0, activeGeneration: 0, cursorStatus: 'IDLE', events: [] } },
+    AgentRunModelOptions: { agentRunModelOptions: runModelOptions },
+    TeamRunModelOptions: { teamRunModelOptions: [{ scopeKind: 'team', scopeAddress: '/', ...runModelOptions }] },
+    AgentOrgRunModelOptions: { agentOrgRunModelOptions: [{ scopeKind: 'org', scopeAddress: '/', ...runModelOptions }] },
+    RuntimeCurrentModelDescriptors: { runtimeCurrentModelDescriptors: (variables.identifiers || []).map(identifier => ({ identifier, model: identifier === model.modelIdentifier ? { modelIdentifier: model.modelIdentifier, name: model.name, canonicalName: model.canonicalName, providerName: provider.name, providerType: provider.providerType, description: model.description, configSchema: {} } : null })) },
+    GetProjectsCapability: { projectsCapability: { __typename: 'ProjectsCapability', enabled: c.projectsEnabled, settingKey: 'ENABLE_PROJECTS', source: c.projectsEnabled ? 'SERVER_SETTING' : 'INITIALIZED_DISABLED' } },
+    SetProjectsEnabled: { setProjectsEnabled: { __typename: 'ProjectsCapability', enabled: Boolean(variables.enabled), settingKey: 'ENABLE_PROJECTS', source: 'SERVER_SETTING' } },
+    GetProjects: { projects: c.projects },
+    GetProject: { project: c.projects.find(item => item.projectId === variables.projectId) || null },
+    GetProjectTasks: { projectTasks: variables.projectId === project.projectId && !c.empty ? projectTasks : [] },
+    ListAgentOrgsWithMemory: { listAgentOrgsWithMemory: paged(c.empty ? [] : [{ orgDefinitionId: org.id, orgDefinitionName: org.name, orgRunCount: 1, memberMemoryCount: 3, latestMemoryAt: fixedNow, memory: memoryFlags }]) },
+    ListAgentOrgRunsWithMemory: { listAgentOrgRunsWithMemory: paged(c.empty ? [] : [{ orgRunId, orgDefinitionId: org.id, orgDefinitionName: org.name, summary: 'Coordinate the synthetic launch review', workspaceRootPath: workspace.workspaceRootPath, createdAt: fixedNow, lastUpdatedAt: fixedNow, memory: memoryFlags, memberTargets: orgMemoryTargets }]) },
     GetAgentTeamDefinitions: { agentTeamDefinitions: c.teams },
     GetAgentCustomizationOptions: { availableToolNames: c.tools.map(item => item.name), availableOptionalInputProcessorNames: [], availableOptionalLlmResponseProcessorNames: [], availableOptionalToolExecutionResultProcessorNames: [], availableOptionalToolInvocationPreprocessorNames: [], availableOptionalLifecycleProcessorNames: [] },
     GetApplicationsCapability: { applicationsCapability: { __typename: 'ApplicationsCapability', enabled: c.appsEnabled, scope: 'BOUND_NODE', settingKey: 'ENABLE_APPLICATIONS', source: 'INITIALIZED_FROM_DISCOVERED_APPLICATIONS' } },
@@ -431,15 +568,27 @@ export function operationFixture(operationName, variables = {}, state) {
     UseGeminiMode: { useGeminiMode: { activeMode: variables.mode, aiStudioConfigured: true, vertexExpressConfigured: true, vertexProject: { project: 'prototype-project', location: 'us-central1' } } },
     GetRuntimeAvailabilities: { runtimeAvailabilities: [{ __typename: 'RuntimeAvailabilityObject', runtimeKind: 'autobyteus', enabled: true, reason: null }] },
     GetWorkingContextCompactionStrategies: { getWorkingContextCompactionStrategies: [{ id: 'default', name: 'Default' }] },
-    ListWorkspaceRunHistory: { listWorkspaceRunHistory: c.empty || teamLaunchScenario ? [] : [{ workspaceRootPath: workspace.workspaceRootPath, workspaceName: workspace.displayName, agentDefinitions: [{ agentDefinitionId: agent.id, agentName: agent.name, runs: [run] }], teamDefinitions: [{ teamDefinitionId: team.id, teamDefinitionName: team.name, runs: [teamRun] }] }] },
+    ListWorkspaceRunHistory: { listWorkspaceRunHistory: c.empty || teamLaunchScenario ? [] : [{ workspaceRootPath: workspace.workspaceRootPath, workspaceName: workspace.displayName, agentDefinitions: [{ agentDefinitionId: agent.id, agentName: agent.name, runs: [run] }], teamDefinitions: [{ teamDefinitionId: team.id, teamDefinitionName: team.name, runs: state.launchedTeamRun ? [launchedTeamRunHistoryItem, teamRun] : [teamRun] }] }] },
     GetWorkspaceRunHistory: { workspaceRunHistory: c.empty ? null : { workspaceRootPath: workspace.workspaceRootPath, workspaceName: workspace.displayName, agentDefinitions: teamLaunchScenario ? [] : [{ agentDefinitionId: agent.id, agentName: agent.name, runs: [run] }], teamDefinitions: teamLaunchScenario ? [] : [{ teamDefinitionId: team.id, teamDefinitionName: team.name, runs: [teamRun] }] } },
-    GetRunProjection: { getRunProjection: { runId: run.runId, summary: run.summary, lastActivityAt: fixedNow, conversation: [{ role: 'user', content: 'Review the current UI.' }, { role: 'assistant', content: 'The fixture-backed UI is ready.' }], activities: [], hasEarlierActiveTraceEvents: false } },
+    GetRunProjection: { getRunProjection: { runId: run.runId, summary: run.summary, lastActivityAt: fixedNow, conversation: storedConversation('Compare current navigation states.', 'The navigation states match the synthetic baseline.'), activities: [], hasEarlierActiveTraceEvents: false } },
     GetRunFileChanges: { getRunFileChanges: [{ id: 'file-change-1', runId: run.runId, path: 'README.md', type: 'modified', status: 'ready', sourceTool: 'write_file', sourceInvocationId: 'tool-1', content: '# Fixture', createdAt: fixedNow, updatedAt: fixedNow }] },
     GetRunEventMonitorActiveTracePage: { getRunEventMonitorActiveTracePage: { beforeCursor: null, hasEarlier: false, loadedEarlierCount: 0, activeGeneration: 0, cursorStatus: 'IDLE', events: [] } },
     GetTeamMemberEventMonitorActiveTracePage: { getTeamMemberEventMonitorActiveTracePage: { beforeCursor: null, hasEarlier: false, loadedEarlierCount: 0, activeGeneration: 0, cursorStatus: 'IDLE', events: [] } },
-    GetTeamRunResumeConfig: { getTeamRunResumeConfig: variables.teamRunId === createdTeamRunId ? { teamRunId: createdTeamRunId, isActive: true, executionTree: createdTeamExecutionTree } : { teamRunId: teamRun.teamRunId, isActive: false, executionTree: null } },
+    GetTeamRunResumeConfig: { getTeamRunResumeConfig: variables.teamRunId === createdTeamRunId
+      ? { teamRunId: createdTeamRunId, isActive: true, executionTree: createdTeamExecutionTree, modelConfigEditability: { editable: false, reason: null } }
+      : { teamRunId: teamRun.teamRunId, isActive: false, executionTree: storedTeamExecutionTree, modelConfigEditability: { editable: true, reason: null } } },
+    GetAgentOrgRunInspection: { getAgentOrgRunInspection: {
+      root_subject_kind: 'agent_org', root_run_id: orgRunId, schema_version: 1,
+      root_org: {
+        base_change_sequence: 1, is_active: false, execution_tree: orgExecutionTree,
+        task_records: { schemaVersion: 1, subjectKind: 'agent_org', orgRunId, records: [] },
+        communication_messages: { schemaVersion: 1, subjectKind: 'agent_org', orgRunId, messages: [] },
+        // A stored (inactive) root reports no live AgentRun statuses.
+        agent_statuses: [],
+      },
+    } },
     GetTeamRunExecutionCheckpoint: { getTeamRunExecutionCheckpoint: { rootTeamRunId: teamRun.teamRunId, changeSequence: 1, hasOpenExecutionWork: false } },
-    GetTeamMemberRunProjection: { getTeamMemberRunProjection: { agentRunId: variables.agentRunId || 'team-member-researcher-001', summary: run.summary, lastActivityAt: fixedNow, conversation: [], activities: [], hasEarlierActiveTraceEvents: false } },
+    GetTeamMemberRunProjection: { getTeamMemberRunProjection: { agentRunId: variables.agentRunId || 'team-member-researcher-001', summary: teamRun.summary, lastActivityAt: fixedNow, conversation: String(variables.agentRunId || '').endsWith('-created') ? [] : storedConversation('Review the current prototype baseline.', 'The baseline review is complete; no blocking differences were found.'), activities: [], hasEarlierActiveTraceEvents: false } },
     GetTeamCommunicationMessages: { getTeamCommunicationMessages: [] }, GetTaskDelegationRecords: { getTaskDelegationRecords: [] },
     GetAgentRunResumeConfig: { getAgentRunResumeConfig: { runId: run.runId, isActive: false, metadataConfig: { agentDefinitionId: agent.id, workspaceRootPath: workspace.workspaceRootPath, llmModelIdentifier: model.modelIdentifier, llmConfig: {}, autoExecuteTools: false, skillAccessMode: 'all', runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: true, llmConfig: true, autoExecuteTools: true, skillAccessMode: true, workspaceRootPath: true, runtimeKind: true } } },
     DeleteStoredRun: { deleteStoredRun: success }, ArchiveStoredRun: { archiveStoredRun: success }, DeleteStoredTeamRun: { deleteStoredTeamRun: success }, ArchiveStoredTeamRun: { archiveStoredTeamRun: success },
@@ -482,6 +631,8 @@ export function operationFixture(operationName, variables = {}, state) {
     ListAgentTeamsWithMemory: { listAgentTeamsWithMemory: paged(c.empty ? [] : [{ teamDefinitionId: team.id, teamDefinitionName: team.name, teamRunCount: 1, memberMemoryCount: 2, latestMemoryAt: fixedNow, memory: memoryFlags }]) },
     ListAgentTeamRunsWithMemory: { listAgentTeamRunsWithMemory: paged(c.empty ? [] : [{ ...teamRun, memory: memoryFlags, memberTargets: teamRun.members.map(member => ({ memberAddress: member.memberAddress, displayName: member.memberName, agentRunId: member.agentRunId, agentDefinitionId: member.agentDefinitionId, lastUpdatedAt: fixedNow, memory: memoryFlags })) }]) },
     GetAgentRunMemoryView: { getAgentRunMemoryView: runMemoryView }, GetTeamMemberRunMemoryView: { getTeamMemberRunMemoryView: runMemoryView },
+    GetAgentOrgMemberRunMemoryView: { getAgentOrgMemberRunMemoryView: runMemoryView },
+    GetAgentOrgMemberTokenUsageSummary: { getAgentOrgMemberTokenUsageSummary: teamMemberTokenSummary },
     GetAgentRunTokenUsageSummary: { getAgentRunTokenUsageSummary: agentTokenSummary }, GetTeamRunTokenUsageSummary: { getTeamRunTokenUsageSummary: teamTokenSummary }, GetTeamMemberTokenUsageSummary: { getTeamMemberTokenUsageSummary: teamMemberTokenSummary },
     GetTokenUsageAnalytics: { tokenUsageAnalytics: createTokenUsageAnalyticsResult(variables.input || {}, state.scenario) },
     GetTokenUsageTaskStatisticsInPeriod: { tokenUsageTaskStatisticsInPeriod: { rows: tokenRunStatistics.taskRows } },
@@ -497,8 +648,67 @@ export function operationFixture(operationName, variables = {}, state) {
   return fixtures[operationName] || null
 }
 
+const draftingAgentRef = { source: 'bundle', kind: 'AGENT', localId: 'drafting-agent' }
+const draftingBaseline = {
+  slotKey: 'draftingAgent',
+  executionResourceRef: draftingAgentRef,
+  resourceDefinitionId: 'agent-writer',
+  resourceKind: 'AGENT',
+  leaves: [{
+    memberAddress: null, displayName: 'Documentation Writer', agentDefinitionId: 'agent-writer',
+    runtimeKind: 'autobyteus', llmModelIdentifier: 'mock/gpt-prototype', llmConfig: null,
+    provenance: {
+      runtimeKind: { kind: 'PACKAGE_AGENT_DEFAULT', agentDefinitionId: 'agent-writer' },
+      llmModelIdentifier: { kind: 'PACKAGE_AGENT_DEFAULT', agentDefinitionId: 'agent-writer' },
+      llmConfig: null,
+    },
+  }],
+}
+
+/** Current `ApplicationLaunchConfigurationView` REST contract for the synthetic application. */
+export function applicationLaunchConfigurationView() {
+  return {
+    applicationId: 'sample-app',
+    slots: [{
+      slot: {
+        slotKey: 'draftingAgent', name: 'Drafting agent', description: 'Drafts the synthetic product brief.',
+        allowedExecutionResourceKinds: ['AGENT'], allowedExecutionResourceSources: ['bundle', 'shared'], required: true,
+        supportedLaunchConfig: { AGENT: { llmModelIdentifier: true, runtimeKind: true, llmConfig: true, workspaceRootPath: false } },
+        defaultExecutionResourceRef: draftingAgentRef,
+      },
+      packageBaseline: draftingBaseline,
+      selectedResourceBaseline: draftingBaseline,
+      savedOverride: null,
+      savedOverrideState: 'ABSENT',
+      effectiveConfiguration: {
+        slotKey: 'draftingAgent', executionResourceRef: draftingAgentRef, resourceDefinitionId: 'agent-writer', resourceKind: 'AGENT',
+        leaves: [{
+          memberAddress: null, displayName: 'Documentation Writer', agentDefinitionId: 'agent-writer',
+          runtimeKind: 'autobyteus', llmModelIdentifier: 'mock/gpt-prototype', llmConfig: null, workspaceRootPath: '/synthetic/applications/sample-app',
+          provenance: {
+            runtimeKind: { kind: 'PACKAGE_AGENT_DEFAULT', agentDefinitionId: 'agent-writer' },
+            llmModelIdentifier: { kind: 'PACKAGE_AGENT_DEFAULT', agentDefinitionId: 'agent-writer' },
+            llmConfig: null, workspaceRootPath: 'APPLICATION_RUNTIME',
+          },
+        }],
+      },
+      issues: [],
+      canResetToPackageDefaults: false,
+      updatedAt: null,
+    }],
+    readiness: { status: 'RUNNABLE', issues: [] },
+  }
+}
+
+export function applicationAvailableExecutionResources() {
+  return [
+    { source: 'bundle', kind: 'AGENT', localId: 'drafting-agent', definitionId: 'agent-writer', name: 'Documentation Writer', applicationId: 'sample-app' },
+    { source: 'shared', kind: 'AGENT', localId: null, definitionId: 'agent-researcher', name: 'Research Assistant', applicationId: null },
+  ]
+}
+
 export function syntheticApplicationHtml() {
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#f8fafc;color:#0f172a;font:14px system-ui,sans-serif}.shell{min-height:100vh;padding:32px}.badge{color:#2563eb;font-weight:700;text-transform:uppercase;letter-spacing:.12em}.card{margin-top:20px;max-width:760px;padding:24px;border:1px solid #cbd5e1;border-radius:16px;background:white;box-shadow:0 12px 30px #0f172a12}textarea{box-sizing:border-box;width:100%;min-height:180px;margin-top:16px;padding:12px;border:1px solid #94a3b8;border-radius:10px}button{margin-top:12px;border:0;border-radius:9px;background:#2563eb;color:white;padding:10px 16px;font-weight:650}</style></head><body><main class="shell"><div class="badge">Synthetic application fixture</div><section class="card"><h1>Brief Studio</h1><p>Draft a concise product brief using deterministic prototype resources.</p><textarea aria-label="Brief draft">Current-state baseline review</textarea><br><button type="button" onclick="this.textContent='Saved locally'">Save draft</button></section></main></body></html>`
 }
 
-export const exposedFixtures = Object.freeze({ agent, secondAgent, team, workspace, application, run, teamRun, createdTeamExecutionTree, provider, model, tool, skill, fixedNow })
+export const exposedFixtures = Object.freeze({ agent, secondAgent, team, org, orgExecutionTree, project, projectTasks, workspace, application, run, teamRun, createdTeamExecutionTree, provider, model, tool, skill, fixedNow })

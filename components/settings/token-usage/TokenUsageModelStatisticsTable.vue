@@ -50,7 +50,7 @@ defineProps<{
   rows: TokenUsageRuntimeModelStatisticsRow[];
 }>();
 
-const { t: $t } = useLocalization();
-const formatter = createTokenUsageStatisticsFormatter($t);
+const { t: $t, resolvedLocale } = useLocalization();
+const formatter = createTokenUsageStatisticsFormatter($t, () => resolvedLocale.value);
 
 </script>

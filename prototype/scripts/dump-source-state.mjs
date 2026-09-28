@@ -11,11 +11,13 @@ const output = process.env.OUTPUT || resolve(root, 'prototype/fixtures/source-st
 const routes = [
   '/', '/agents?view=list', '/agents?view=create', '/agents?view=detail&id=agent-researcher', '/agents?view=edit&id=agent-researcher', '/agents?view=unsupported',
   '/agent-teams?view=team-list', '/agent-teams?view=team-create', '/agent-teams?view=team-detail&id=team-product', '/agent-teams?view=team-edit&id=team-product', '/agent-teams?view=unsupported',
+  '/agent-orgs?view=org-list', '/agent-orgs?view=org-create', '/agent-orgs?view=org-detail&id=org-product-launch', '/agent-orgs?view=org-edit&id=org-product-launch',
   '/applications', '/applications/sample-app', '/skills', '/skills?skill=prototype-research',
-  '/memory?view=home&tab=agents', '/memory?view=home&tab=teams', '/memory?view=agent-detail&agentDefinitionId=agent-researcher&agentName=Research%20Assistant', '/memory?view=team-detail&teamDefinitionId=team-product&teamName=Product%20Review%20Team', '/memory?view=unsupported',
+  '/memory?view=home&tab=agents', '/memory?view=home&tab=teams', '/memory?view=home&tab=orgs', '/memory?view=agent-detail&agentDefinitionId=agent-researcher&agentName=Research%20Assistant', '/memory?view=team-detail&teamDefinitionId=team-product&teamName=Product%20Review%20Team', '/memory?view=org-detail&orgDefinitionId=org-product-launch&orgName=Product%20Launch%20Org', '/memory?view=unsupported',
   '/nodes?tab=manage', '/nodes?tab=memorySync', '/nodes?tab=phoneSetup', '/nodes?tab=dockerGuide',
+  '/projects', '/projects/project-prototype-launch',
   '/workspace', '/tools', '/media',
-  ...['api-keys', 'token-usage', 'messaging', 'display', 'language', 'local-tools', 'mcp-servers', 'application-packages', 'agent-packages', 'server-settings&mode=quick', 'server-settings&mode=advanced', 'server-settings&mode=migrations', 'extensions', 'updates'].map(section => `/settings?section=${section}`),
+  ...['api-keys', 'token-usage', 'display', 'language', 'local-tools', 'mcp-servers', 'application-packages', 'agent-packages', 'server-settings&mode=quick', 'server-settings&mode=advanced', 'server-settings&mode=migrations', 'extensions', 'updates'].map(section => `/settings?section=${section}`),
 ]
 
 const scenarios = routes.map(path => ({ path, scenario: 'populated', locale: 'en' }))
@@ -25,6 +27,11 @@ scenarios.push(
   { path: '/memory', scenario: 'empty', locale: 'en' },
   { path: '/skills', scenario: 'empty', locale: 'en' },
   { path: '/applications', scenario: 'apps_disabled', locale: 'en' },
+  { path: '/projects', scenario: 'projects_disabled', locale: 'en' },
+  { path: '/workspace', scenario: 'projects_disabled', locale: 'en' },
+  { path: '/settings?section=server-settings&mode=quick', scenario: 'projects_disabled', locale: 'en' },
+  { path: '/projects', scenario: 'empty', locale: 'en' },
+  { path: '/agent-orgs?view=org-list', scenario: 'empty', locale: 'en' },
   { path: '/agents?view=list', scenario: 'loading', locale: 'en', waitMs: 220 },
   { path: '/agents?view=list', scenario: 'error', locale: 'en' },
   { path: '/mobile', scenario: 'populated', locale: 'en', mobile: 'unpaired' },
@@ -78,7 +85,8 @@ try {
           keys: Object.keys(store).filter(key => !key.startsWith('$') && !key.startsWith('_')),
         }
       }
-      return { actualPath: location.pathname + location.search, state, stores, bodyText: document.body.innerText }
+      const primaryNavHeight = localStorage.getItem('autobyteus.app-left-panel.primary-nav-height')
+      return { actualPath: location.pathname + location.search, state, stores, bodyText: document.body.innerText, primaryNavHeight }
     })
     const key = `${item.scenario}|${item.mobile || 'desktop'}|${item.path}`
     snapshots[key] = { item, ...captured, errors }

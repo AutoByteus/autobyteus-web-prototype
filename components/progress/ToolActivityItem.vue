@@ -5,26 +5,26 @@
   >
     <!-- Header -->
     <div 
-      class="flex items-center justify-between px-4 py-3 cursor-pointer select-none"
+      class="flex flex-wrap items-center gap-2 px-4 py-3 cursor-pointer select-none"
       @click="toggleExpand"
     >
       <!-- Left: Icon + Title + ID -->
-      <div class="flex items-center gap-3">
+      <div class="flex min-w-0 flex-1 items-center gap-3">
         <!-- Icon -->
         <Icon :icon="statusIconName" class="w-5 h-5 flex-shrink-0" :class="iconColorClass" />
         
         <!-- Title & ID -->
-        <div class="flex items-center gap-2">
-          <span class="font-bold text-gray-800 text-sm">{{ activity.toolName }}</span>
-          <span class="font-mono text-xs text-gray-600">#{{ shortId }}</span>
+        <div class="flex min-w-0 items-center gap-2">
+          <span class="truncate font-bold text-gray-800 text-sm">{{ activity.toolName }}</span>
+          <span class="shrink-0 font-mono text-xs text-gray-600">#{{ shortId }}</span>
         </div>
       </div>
 
       <!-- Right: Status Chip -->
-      <div>
+      <div class="ml-auto shrink-0">
         <span 
-          class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide border shadow-sm"
-          :class="statusChipClasses"
+          class="inline-flex max-w-full px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide border shadow-sm"
+          :class="[statusChipClasses, 'whitespace-nowrap']"
         >
           {{ statusLabel }}
         </span>
@@ -96,7 +96,8 @@
 
         <!-- Error Section -->
         <div v-if="activity.error">
-           <div 
+          <div
+            data-test="tool-activity-error-toggle"
             class="flex items-center gap-1.5 mb-1.5 cursor-pointer hover:text-red-800 transition-colors"
             @click.stop="toggleSection('error')"
           >
@@ -106,7 +107,7 @@
             />
             <span class="text-xs font-semibold text-red-600">{{ $t('workspace.components.progress.ToolActivityItem.error') }}</span>
           </div>
-          <div v-show="sectionStates.error" class="pl-5">
+          <div v-show="sectionStates.error" data-test="tool-activity-error-body" class="pl-5">
              <div class="bg-red-50 border border-red-200 rounded p-2.5 font-mono text-xs text-red-700 whitespace-pre-wrap">
                {{ activity.error }}
              </div>
@@ -134,7 +135,7 @@ const sectionStates = reactive({
   args: false,
   logs: false,
   result: false,
-  error: true
+  error: false
 });
 
 const toggleExpand = () => {

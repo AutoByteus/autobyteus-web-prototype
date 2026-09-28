@@ -29,10 +29,17 @@
         <div class="line-plot" data-axis-x="true" data-axis-y="true">
           <svg class="trend-line-svg" preserveAspectRatio="none" viewBox="0 0 100 100">
             <line x1="0" y1="50" x2="100" y2="50" class="midpoint-guide" vector-effect="non-scaling-stroke" data-guide="midpoint" />
-            <path :d="linePath" class="trend-line" vector-effect="non-scaling-stroke" data-series="daily" />
+            <path
+              v-for="(path, index) in linePaths"
+              :key="index"
+              :d="path"
+              class="trend-line"
+              vector-effect="non-scaling-stroke"
+              data-series="daily"
+            />
           </svg>
           <span
-            v-for="point in points"
+            v-for="point in plottedPoints"
             :key="point.key"
             class="trend-point-wrap"
             :style="{ left: `${point.x}%`, top: `${point.y}%` }"
@@ -90,8 +97,10 @@ import type { TokenUsageAnalyticsMetric, TokenUsageAnalyticsResult } from '~/typ
 import { formatTokenUsageAnalyticsCost } from '~/utils/tokenUsageAnalyticsPresentation';
 
 const props = defineProps<{ result: TokenUsageAnalyticsResult; metric: TokenUsageAnalyticsMetric }>();
-const { t } = useLocalization();
-const unavailable = computed(() => props.metric === 'COST' && !['COMPLETE', 'PARTIAL'].includes(props.result.selectedCostQuality.kind));
+const { t, resolvedLocale } = useLocalization();
+const unavailable = computed(() => props.metric === 'COST' && (
+  !['COMPLETE', 'PARTIAL'].includes(props.result.selectedCostQuality.kind) || !props.result.selectedCostQuality.currency
+));
 const metricLabel = computed(() => props.metric === 'TOKENS'
   ? t('settings.components.settings.TokenUsageAnalytics.tokens')
   : t('settings.components.settings.TokenUsageAnalytics.cost'));
@@ -99,7 +108,7 @@ const yTitle = computed(() => props.metric === 'TOKENS'
   ? t('settings.components.settings.TokenUsageAnalytics.tokens')
   : t('settings.components.settings.TokenUsageAnalytics.costCurrency', { currency: props.result.selectedCostQuality.currency || '—' }));
 const notAvailable = computed(() => t('settings.components.settings.TokenUsageAnalytics.notAvailable'));
-const formatDate = (value: string, includeYear = false) => new Intl.DateTimeFormat(undefined, {
+const formatDate = (value: string, includeYear = false) => new Intl.DateTimeFormat(resolvedLocale.value, {
   month: 'short', day: 'numeric', ...(includeYear ? { year: 'numeric' } : {}), timeZone: 'UTC',
 }).format(new Date(value));
 const bucketLabel = (start: string, end: string) => {
@@ -114,18 +123,18 @@ const rawValue = (bucket: TokenUsageAnalyticsResult['trendBuckets'][number]): nu
     ? bucket.aggregate.estimatedApiTotalCost ?? null
     : null;
 };
-const visibleValues = computed(() => props.result.trendBuckets.map(rawValue).map((value) => value ?? 0));
-const maximum = computed(() => Math.max(...visibleValues.value, 0));
+const visibleValues = computed(() => props.result.trendBuckets.map(rawValue));
+const maximum = computed(() => Math.max(...visibleValues.value.filter((value): value is number => value != null), 0));
 const chartMax = computed(() => maximum.value || 1);
 const formatScale = (value: number) => {
-  if (props.metric === 'TOKENS') return new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(value);
+  if (props.metric === 'TOKENS') return new Intl.NumberFormat(resolvedLocale.value, { notation: 'compact', maximumFractionDigits: 1 }).format(value);
   const currency = props.result.selectedCostQuality.currency || 'USD';
-  return new Intl.NumberFormat(undefined, { style: 'currency', currency, maximumFractionDigits: 2 }).format(value);
+  return new Intl.NumberFormat(resolvedLocale.value, { style: 'currency', currency, maximumFractionDigits: 2 }).format(value);
 };
 const yLabels = computed(() => [formatScale(chartMax.value), formatScale(chartMax.value / 2), formatScale(0)]);
 const exactValue = (bucket: TokenUsageAnalyticsResult['trendBuckets'][number]) => {
   const amount = rawValue(bucket);
-  if (props.metric === 'TOKENS') return new Intl.NumberFormat().format(amount ?? 0);
+  if (props.metric === 'TOKENS') return new Intl.NumberFormat(resolvedLocale.value).format(amount ?? 0);
   return formatTokenUsageAnalyticsCost({
     value: amount,
     currency: bucket.costQuality.currency,
@@ -133,34 +142,49 @@ const exactValue = (bucket: TokenUsageAnalyticsResult['trendBuckets'][number]) =
     localLabel: t('settings.components.settings.TokenUsageAnalytics.localNoBill'),
     unpricedLabel: t('settings.components.settings.TokenUsageAnalytics.unpriced'),
     currencyUnavailableLabel: t('settings.components.settings.TokenUsageAnalytics.currencyUnavailable'),
+    locale: resolvedLocale.value,
   });
 };
 const qualityLabel = (kind: string) => t(`settings.components.settings.TokenUsageAnalytics.quality${kind}`);
 const points = computed(() => {
   const buckets = props.result.trendBuckets;
-  return buckets.map((bucket: any, index: number) => {
-    const value = rawValue(bucket) ?? 0;
+  return buckets.map((bucket, index) => {
+    const value = rawValue(bucket);
     return {
       key: bucket.bucketStart,
       x: buckets.length <= 1 ? 0 : (index / (buckets.length - 1)) * 100,
-      y: 92 - (value / chartMax.value) * 84,
+      y: value == null ? null : 92 - (value / chartMax.value) * 84,
       tooltip: `${bucketLabel(bucket.bucketStart, bucket.bucketEndExclusive)}: ${exactValue(bucket)}`,
     };
   });
 });
-const linePath = computed(() => points.value.map((point, index) => `${index ? 'L' : 'M'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`).join(' '));
+const plottedPoints = computed(() => points.value.flatMap((point) => point.y == null ? [] : [{ ...point, y: point.y }]));
+const linePaths = computed(() => {
+  const paths: string[] = [];
+  let current: string[] = [];
+  for (const point of points.value) {
+    if (point.y == null) {
+      if (current.length) paths.push(current.join(' '));
+      current = [];
+      continue;
+    }
+    current.push(`${current.length ? 'L' : 'M'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`);
+  }
+  if (current.length) paths.push(current.join(' '));
+  return paths;
+});
 const xTicks = computed(() => {
   const buckets = props.result.trendBuckets;
   if (!buckets.length) return [];
-  const desired = buckets.length >= 5 ? [0, Math.round((buckets.length - 1) * 0.25), Math.round((buckets.length - 1) * 0.5), Math.round((buckets.length - 1) * 0.75), buckets.length - 1] : buckets.map((_: any, index: number) => index);
+  const desired = buckets.length >= 5 ? [0, Math.round((buckets.length - 1) * 0.25), Math.round((buckets.length - 1) * 0.5), Math.round((buckets.length - 1) * 0.75), buckets.length - 1] : buckets.map((_, index) => index);
   return [...new Set(desired)].map((index) => ({
-    key: buckets[index].bucketStart,
-    x: points.value[index].x,
-    label: formatDate(buckets[index].bucketStart),
+    key: buckets[index]!.bucketStart,
+    x: points.value[index]!.x,
+    label: formatDate(buckets[index]!.bucketStart),
   }));
 });
 const accessibleChartLabel = computed(() => {
-  const series = props.result.trendBuckets.map((bucket: any) => `${bucketLabel(bucket.bucketStart, bucket.bucketEndExclusive)}: ${exactValue(bucket)}`).join('; ');
+  const series = props.result.trendBuckets.map((bucket) => `${bucketLabel(bucket.bucketStart, bucket.bucketEndExclusive)}: ${exactValue(bucket)}`).join('; ');
   return `${t('settings.components.settings.TokenUsageAnalytics.usageOverTime')}. ${yTitle.value}. ${t('settings.components.settings.TokenUsageAnalytics.dateUtc')}. ${series}`;
 });
 </script>

@@ -5,8 +5,8 @@
         v-if="node.kind === 'agent_team'"
         :scope="node.scope"
         :disabled="disabled"
+        :team-model-help-text="teamModelHelpText"
         :model-config-field-errors="modelConfigFieldErrorsByAddress[node.address]"
-        :model-help-text="teamModelHelpText"
         @update-override="emit('update-team', node.address, $event)"
         @reset="emit('reset-team', node.address)"
         @update:workspace-selection="forwardWorkspaceSelection"
@@ -19,8 +19,8 @@
             :member-nodes="node.children"
             :disabled="disabled"
             :nested="true"
-            :model-config-field-errors-by-address="modelConfigFieldErrorsByAddress"
             :team-model-help-text="teamModelHelpText"
+            :model-config-field-errors-by-address="modelConfigFieldErrorsByAddress"
             @update-team="forwardTeamUpdate"
             @reset-team="forwardTeamReset"
             @update-agent="forwardAgentUpdate"
@@ -48,11 +48,13 @@
 </template>
 
 <script setup lang="ts">
+import type { ExistingRunModelSelection } from '~/types/agent/ExistingRunModelConfigDraft'
 import { computed } from 'vue'
 import type { AgentTeamAddress } from '~/types/agent/AgentTeamAddress'
 import type { AgentConfigOverride, TeamScopeConfigOverride } from '~/types/agent/TeamRunConfig'
 import type { TeamRunFormMemberNode } from '~/types/agent/TeamRunFormModel'
 import type { WorkspaceSelectionState } from '~/types/workspace/WorkspaceSelectionState'
+import type { RuntimeModelConfigSchemaState } from '~/types/agent/RuntimeModelConfigSchemaState'
 import MemberOverrideItem from './MemberOverrideItem.vue'
 import TeamScopeConfigEditor from './TeamScopeConfigEditor.vue'
 
@@ -60,17 +62,17 @@ const props = withDefaults(defineProps<{
   memberNodes: readonly TeamRunFormMemberNode[]
   disabled: boolean
   nested?: boolean
+  teamModelHelpText?: string | null
   modelConfigFieldErrorsByAddress?: Readonly<Record<string, Readonly<Record<string, string>>>>
-  teamModelHelpText?: string
-}>(), { nested: false, teamModelHelpText: undefined })
+}>(), { nested: false, teamModelHelpText: null })
 const emit = defineEmits<{
   (e: 'update-team', address: AgentTeamAddress, override: TeamScopeConfigOverride | null): void
   (e: 'reset-team', address: AgentTeamAddress): void
   (e: 'update-agent', address: AgentTeamAddress, override: AgentConfigOverride | null): void
   (e: 'update:workspace-selection', address: AgentTeamAddress, selection: WorkspaceSelectionState): void
   (e: 'retry-runtime-catalog', runtimeKind: string): void
-  (e: 'update-existing-model-config', address: string, config: Record<string, unknown> | null): void
-  (e: 'schema-state', address: string, state: { status: 'loading' | 'ready' | 'invalid' | 'unavailable'; message: string | null }): void
+  (e: 'update-existing-model-config', address: string, config: ExistingRunModelSelection, directlyEdited: boolean): void
+  (e: 'schema-state', address: string, state: RuntimeModelConfigSchemaState): void
 }>()
 const modelConfigFieldErrorsByAddress = computed(() => props.modelConfigFieldErrorsByAddress ?? {})
 
@@ -87,8 +89,8 @@ const forwardAgentUpdate = (address: AgentTeamAddress, override: AgentConfigOver
 const forwardWorkspaceSelection = (address: AgentTeamAddress, selection: WorkspaceSelectionState) =>
   emit('update:workspace-selection', address, selection)
 const forwardRetryRuntimeCatalog = (runtimeKind: string) => emit('retry-runtime-catalog', runtimeKind)
-const forwardExistingModelConfig = (address: string, config: Record<string, unknown> | null) =>
-  emit('update-existing-model-config', address, config)
-const forwardSchemaState = (address: string, state: { status: 'loading' | 'ready' | 'invalid' | 'unavailable'; message: string | null }) =>
+const forwardExistingModelConfig = (address: string, config: ExistingRunModelSelection, directlyEdited: boolean) =>
+  emit('update-existing-model-config', address, config, directlyEdited)
+const forwardSchemaState = (address: string, state: RuntimeModelConfigSchemaState) =>
   emit('schema-state', address, state)
 </script>

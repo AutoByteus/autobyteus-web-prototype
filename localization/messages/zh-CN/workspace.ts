@@ -1,6 +1,15 @@
 import type { TranslationCatalog } from "../../runtime/types";
 
 const messages = {
+  "fileExplorer.workspaceUnavailable": "工作目录信息暂不可用。请刷新或重新打开设置以加载已保存的工作目录。",
+  "workspace.teamCopy.loading": "正在读取已保存的团队配置…",
+  "workspace.teamCopy.failed": "无法复制此团队配置：{error}。请点击新建（+）重试。" ,
+  "workspace.runModelConfig.modelRequired": "启动前请选择模型。",
+  "workspace.agentOrg.runConfig.modelRequired": "启动前请为 {address} 选择模型。",
+  "workspace.agentOrg.runConfig.retryInitialization": "重试加载配置",
+
+  "workspace.runModelConfig.orgOwnershipUnavailable": "此组织运行由应用管理，无法在此编辑模型设置。",
+  "workspace.agentOrg.inspectionUnavailable": "无法读取已保存的智能体组织数据。未启动任何运行。",
   "workspace.runModelConfig.loading": "正在加载运行配置…",
   "workspace.runModelConfig.runUnavailable": "此运行已不可用。",
   "workspace.runModelConfig.save": "保存",
@@ -8,6 +17,7 @@ const messages = {
   "workspace.runModelConfig.verifying": "正在验证…",
   "workspace.runModelConfig.loadingModels": "正在加载模型选项…",
   "workspace.runModelConfig.catalogError": "无法加载模型选项。已保存的设置未更改。",
+  "workspace.runModelConfig.selectedModelUnavailable": "所选模型在当前运行时中不可用。",
   "workspace.runModelConfig.retry": "重试",
   "workspace.runModelConfig.refreshRequired": "编辑前必须刷新已保存的模型设置。",
   "workspace.runModelConfig.noAdjustableSettings": "此模型没有可调整的设置。",
@@ -15,8 +25,18 @@ const messages = {
   "workspace.runModelConfig.agentStopped": "此运行已停止。下次恢复时将使用已保存的模型设置。",
   "workspace.runModelConfig.agentActive": "请先停止此运行，再更改模型设置。",
   "workspace.runModelConfig.teamStopped": "此团队已停止。下次恢复时将使用已保存的模型设置。",
+  "workspace.runModelConfig.orgStopped": "此组织已停止。保存模型设置和挂载团队的工作目录后，下次继续运行时生效。团队工作目录适用于其所有配置智能体；现有文件和历史记录不会移动。",
+  "workspace.runModelConfig.orgActive": "请先停止整个组织，再更改其设置。",
   "workspace.runModelConfig.teamActive": "请先停止此团队，再更改模型设置。",
-  "workspace.runModelConfig.fixedIdentity": "此现有运行的运行时和模型已固定。",
+  "workspace.runModelConfig.fixedRuntime": "此已保存运行的运行时不可更改。",
+  "workspace.runModelConfig.nativeModelHelp": "请选择已验证且上下文容量不小于已保存模型的模型。",
+  "workspace.runModelConfig.externalModelHelp": "可选择此运行时提供的任意模型。恢复运行时由该运行时处理上下文限制。",
+  "workspace.runModelConfig.unknownModelHelp": "此运行时的替换模型不可用。",
+  "workspace.runModelConfig.loadingOptions": "正在加载替换模型…",
+  "workspace.runModelConfig.optionsUnavailable": "运行时模型选项暂不可用。请刷新此运行后重试；已保存的模型标识仍可查看。",
+  "workspace.runModelConfig.replacementInvalid": "此替换模型已不再提供或不符合条件。保存前请刷新选项。",
+  "workspace.runModelConfig.noNativeReplacements": "没有已验证的上下文容量相等或更大的替换模型。",
+  "workspace.runModelConfig.noCatalogReplacements": "此运行时目前未提供其他模型。",
   "workspace.runModelConfig.fixedWorkspace": "现有运行的工作区已固定。",
   "workspace.runModelConfig.validation.required": "此项为必填项。",
   "workspace.runModelConfig.validation.type": "请输入 {expected} 类型的值。",
@@ -32,6 +52,67 @@ const messages = {
     "该团队仍在工作。请等待其完成，然后再次选择此团队成员。",
   "workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.stream_recovery_retry":
     "重新加载对话时团队活动发生了变化。请再次选择此团队成员以重试。",
+  "workspace.agentOrg.recovery.exhausted":
+    "实时更新无法自动恢复。请重新选择此智能体组织，以重新加载经过验证的完整对话。",
+  "workspace.agentOrg.connecting": "正在连接智能体组织…",
+  "workspace.agentOrg.stoppedHistory.title": "已停止的智能体组织",
+  "workspace.agentOrg.stoppedHistory.description":
+    "请从侧栏中的历史运行选择成员，以从其保存状态继续。",
+  "workspace.agentOrg.activeUnfocused.title": "选择智能体或团队",
+  "workspace.agentOrg.activeUnfocused.description":
+    "请从侧栏中的当前智能体组织选择成员。选择团队时会先聚焦其协调者。",
+  "workspace.agentOrg.history.refreshLabel": "刷新智能体组织历史记录",
+  "workspace.collaboration.identity.details": "参与者详情",
+  "workspace.collaboration.identity.address": "地址",
+  "workspace.collaboration.identity.agentRun": "智能体运行",
+  "workspace.collaboration.identity.task": "任务",
+  "workspace.collaboration.identity.hostRun": "宿主运行",
+  "workspace.collaboration.identity.executionRun": "执行运行",
+  "workspace.collaboration.identity.teamRun": "团队运行",
+  "workspace.agentOrg.history.collectionLabel": "组织",
+  "workspace.agentOrg.history.stopLabel": "停止智能体组织",
+  "workspace.agentOrg.history.archiveLabel": "归档智能体组织历史记录",
+  "workspace.agentOrg.history.deleteLabel": "永久删除智能体组织历史记录",
+  "workspace.agentOrg.history.deleteConfirmation": "要永久删除此智能体组织历史记录吗？此操作仅删除本次运行，且无法撤销。",
+  "workspace.agentOrg.history.archived": "智能体组织历史记录已归档。",
+  "workspace.agentOrg.history.archiveFailed": "无法归档智能体组织历史记录，请重试。",
+  "workspace.agentOrg.history.deleted": "智能体组织历史记录已永久删除。",
+  "workspace.agentOrg.history.deleteFailed": "无法删除智能体组织历史记录，请重试。",
+  "workspace.agentOrg.history.navigationCleanupFailed": "智能体组织历史记录已更改，但工作区无法离开已移除的运行。请选择其他项目继续。",
+  "workspace.agentOrg.history.workspaces": "工作区",
+  "workspace.agentOrg.history.running": "运行中",
+  "workspace.agentOrg.history.stopped": "已停止",
+  "workspace.agentOrg.history.newRun": "新建 - {{name}}",
+  "workspace.agentOrg.history.expandRun": "展开 {{name}} 下的成员",
+  "workspace.agentOrg.history.collapseRun": "折叠 {{name}} 下的成员",
+  "workspace.agentOrg.history.executionHierarchy": "{{name}} 执行层级",
+  "workspace.agentOrg.history.taskLabel": "任务：{{name}}",
+  "workspace.agentOrg.history.empty": "暂无智能体组织运行历史记录。",
+  "workspace.agentOrg.history.noWorkspace": "无工作区",
+  "workspace.agentOrg.history.relativeNow": "刚刚",
+  "workspace.agentOrg.history.relativeMinutes": "{{count}} 分钟",
+  "workspace.agentOrg.history.relativeHours": "{{count}} 小时",
+  "workspace.agentOrg.history.relativeDays": "{{count}} 天",
+  "workspace.agentOrg.runConfig.orgLabel": "智能体组织",
+  "workspace.agentOrg.runConfig.runtimeHelp": "选择此组织运行所使用的运行时。",
+  "workspace.agentOrg.runConfig.modelLabel": "默认大语言模型",
+  "workspace.agentOrg.runConfig.modelHelp": "应用于整个组织，除非某个位置已自定义。",
+  "workspace.agentOrg.runConfig.loading": "正在加载智能体组织…",
+  "workspace.agentOrg.runConfig.starting": "正在启动智能体组织…",
+  "workspace.agentOrg.runConfig.run": "运行智能体组织",
+  "workspace.agentOrg.runConfig.autoApprove": "自动批准工具",
+  "workspace.agentOrg.runConfig.autoApproveHelp":
+    "自动允许本次运行中的工具调用和访问请求。",
+  "workspace.agentOrg.runConfig.workspaceRequired": "运行智能体组织需要工作区。",
+  "workspace.agentOrg.runConfig.memberOverrides": "成员覆盖",
+  "workspace.agentOrg.runConfig.referencesLoading": "正在加载组织成员…",
+  "workspace.agentOrg.runConfig.referencesUnavailable": "无法加载组织成员：{references}",
+  "workspace.agentOrg.runConfig.schemaLoading": "正在验证 {address} 的模型配置…",
+  "workspace.agentOrg.runConfig.schemaBlocked": "{address} 的模型配置尚未就绪：{error}",
+  "workspace.agentOrg.runConfig.schemaUnavailable": "有效模型配置不可用。",
+  "workspace.agentOrg.runConfig.workspaceUnavailable": "工作区“{{workspaceId}}”不可用。",
+  "workspace.agentOrg.runConfig.workspacePathRequired": "必须提供工作区路径。",
+  "workspace.agentOrg.runConfig.workspacePathUnavailable": "所选工作区没有可用的根路径。",
   "workspace.components.conversation.segments.renderer.MermaidDiagram.expand_diagram":
     "放大图表",
   "workspace.components.conversation.segments.renderer.MermaidDiagram.viewer":
@@ -66,8 +147,12 @@ const messages = {
     "配置",
   "workspace.components.workspace.config.AgentRunConfigForm.auto_approve_tools_help":
     "Codex 高信任模式：本次运行会自动允许工具调用以及访问/权限请求。",
+  "workspace.components.workspace.config.AgentRunConfigForm.agy_auto_approve_tools_help":
+    "Antigravity CLI 高信任模式：工具无需交互式确认即可运行。关闭后，被拒绝的操作无法在聊天中批准。",
   "workspace.components.workspace.config.TeamRunConfigForm.auto_approve_tools_help":
     "Codex 团队成员高信任模式：本次运行会自动允许工具调用以及访问/权限请求。",
+  "workspace.components.workspace.config.TeamRunConfigForm.agy_auto_approve_tools_help":
+    "Antigravity CLI 成员高信任模式：工具无需交互式确认即可运行。关闭后，被拒绝的操作无法在聊天中批准。",
   "workspace.components.workspace.config.TeamRunConfigForm.team_members_override":
     "团队成员覆盖",
   "workspace.components.workspace.config.TeamRunConfigForm.member_overrides_count":
@@ -84,6 +169,7 @@ const messages = {
   "workspace.components.workspace.config.TeamScopeConfigEditor.runtime_help": "此团队范围使用的运行时。",
   "workspace.components.workspace.config.TeamScopeConfigEditor.team_default_model": "默认 LLM 模型",
   "workspace.components.workspace.config.TeamScopeConfigEditor.model_help": "嵌套团队和智能体会继承此值，除非另行自定义。",
+  "workspace.components.workspace.config.TeamScopeConfigEditor.flat_model_help": "此团队中的智能体会继承该值，除非另行自定义。",
   "workspace.components.workspace.config.TeamScopeConfigEditor.auto_approve": "自动批准工具",
   "workspace.components.workspace.config.TeamScopeConfigEditor.auto_help": "未覆盖的后代范围会继承此设置。",
   "workspace.components.workspace.config.TeamScopeConfigEditor.catalog_loading": "正在为 {{address}} 加载模型…",
@@ -135,6 +221,8 @@ const messages = {
     "由 AutoByteus 提供 · Claude SDK systemPrompt",
   "workspace.components.progress.SystemInstructionActivityItem.source.codex":
     "由 AutoByteus 提供 · Codex baseInstructions",
+  "workspace.components.progress.SystemInstructionActivityItem.source.grok":
+    "由 AutoByteus 提供 · Grok Build rules",
   "workspace.components.progress.SystemInstructionActivityItem.source.unknown":
     "由 AutoByteus 提供的系统指令",
   "workspace.components.workspace.running.AgentLibraryPanel.agentsHeading":
@@ -258,15 +346,15 @@ const messages = {
     "更新于 {{time}}",
   "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.temporary_execution_title":
     "临时任务执行",
-  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_running":
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.team_status_running":
     "团队状态：运行中",
-  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_initializing":
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.team_status_initializing":
     "团队状态：正在初始化",
-  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_error":
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.team_status_error":
     "团队状态：错误",
-  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_idle":
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.team_status_idle":
     "团队状态：空闲",
-  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.nested_team_status_offline":
+  "workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.team_status_offline":
     "团队状态：离线",
   "workspace.history.hierarchy.tree_label": "{{name}}组织树",
   "workspace.history.hierarchy.role.agent_team": "智能体团队",

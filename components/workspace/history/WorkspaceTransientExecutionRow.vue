@@ -1,51 +1,44 @@
 <template>
   <div
-    class="transient-execution-row relative flex w-full cursor-pointer items-center rounded-md bg-indigo-50/40 text-sm transition-colors hover:bg-indigo-50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-300"
+    class="transient-execution-row relative flex min-h-7 w-full cursor-pointer items-center rounded-md border border-dashed border-indigo-200 bg-indigo-50/40 text-sm transition-colors hover:bg-indigo-50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-300"
     :class="rowClasses"
     :style="rowStyle"
     data-test="workspace-team-transient-execution-row"
     data-row-kind="transient_execution"
+    :data-node-kind="row.memberKind"
     :data-transient-kind="row.transientKind"
     :data-team-run-id="row.teamRunId"
     :data-member-address="row.memberAddress"
     :data-tree-depth="row.depth"
-    :title="prototypeReviewActive ? identityLabel : $t('workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.temporary_execution_title')"
-    :aria-label="ariaLabel"
+    :title="identityLabel"
+    :aria-label="accessibleLabel"
     :aria-current="isSelected ? 'true' : undefined"
-    :aria-selected="prototypeReviewActive ? isSelected : undefined"
-    :aria-level="prototypeReviewActive ? row.depth + 1 : undefined"
-    :aria-expanded="prototypeReviewActive && hasChildren ? expanded : undefined"
-    :role="prototypeReviewActive ? 'treeitem' : 'button'"
+    :aria-selected="isSelected"
+    :aria-busy="inspectionAttempt?.state === 'loading' ? 'true' : undefined"
+    :aria-level="row.depth + 1"
+    :aria-expanded="hasChildren ? expanded : undefined"
+    role="treeitem"
     tabindex="0"
     @click="activateRow"
     @keydown.enter="activateRow"
     @keydown.space.prevent="activateRow"
   >
-    <span
-      v-if="prototypeReviewActive && hierarchyTreatment !== 'surfaces'"
-      class="hierarchy-branches pointer-events-none absolute inset-0"
-      aria-hidden="true"
-    >
-      <span
-        v-for="branchDepth in continuingAncestorDepths"
-        :key="branchDepth"
-        class="absolute bottom-[-0.2rem] top-[-0.2rem] w-px bg-slate-300"
-        :style="{ left: `calc((${branchDepth} + 1) * 0.875rem - 1px)` }"
-      />
-      <span
-        class="hierarchy-current-branch absolute bottom-[-0.2rem] top-[-0.2rem]"
-        :class="{ 'continues-to-sibling': hasFollowingSibling }"
-        :style="{ left: `calc((${row.depth} + 1) * 0.875rem - 1px)` }"
-      />
-    </span>
+    <WorkspaceHierarchyBranches
+      :depth="row.depth"
+      :continuing-ancestor-depths="continuingAncestorDepths"
+      :has-following-sibling="hasFollowingSibling"
+    />
+
     <button
       v-if="hasChildren"
       type="button"
-      class="hierarchy-disclosure ml-2 mr-1 inline-flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+      class="ml-2 mr-1 inline-flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
       data-test="workspace-team-transient-disclosure"
       :data-team-run-id="row.teamRunId"
       :data-member-address="row.memberAddress"
       :aria-expanded="expanded"
+      :aria-label="disclosureLabel"
+      :title="disclosureLabel"
       @click.stop="$emit('toggle', row)"
       @keydown.enter.stop
       @keydown.space.stop
@@ -63,7 +56,7 @@
       aria-hidden="true"
     />
 
-    <div class="hierarchy-row-content flex min-w-0 flex-1 items-center py-1 pr-2">
+    <div class="flex min-w-0 flex-1 items-start py-1 pr-2">
       <span class="member-status inline-flex flex-shrink-0 items-center">
         <StatusDot
           v-if="row.memberKind === 'agent'"
@@ -74,26 +67,41 @@
         />
       </span>
       <span
-        v-if="prototypeReviewActive && row.memberKind === 'agent_team'"
+        v-if="row.memberKind === 'agent_team'"
         class="mr-1.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-[0.2rem] border border-dashed border-indigo-400 bg-white text-indigo-600"
+        data-team-icon="temporary-task-team"
         aria-hidden="true"
       >
         <Icon icon="heroicons:bolt-20-solid" class="h-3 w-3" />
       </span>
-      <span class="node-label min-w-0 flex-1">
-        <span
-          v-if="prototypeReviewActive && row.memberKind === 'agent_team' && teamIdentity === 'header'"
-          class="block truncate text-[0.5625rem] font-semibold uppercase leading-3 tracking-[0.12em] text-indigo-600"
-        >Temporary task team</span>
+      <span class="min-w-0 flex-1" :class="{ 'font-semibold': row.memberKind === 'agent_team' }">
         <span class="block truncate">{{ row.displayName }}</span>
+        <span
+          v-if="combinedTaskStatus"
+          class="mt-0.5 block truncate text-[0.6875rem] font-medium text-slate-600"
+          data-test="workspace-transient-task-status"
+        >{{ combinedTaskStatus }}</span>
+        <span
+          v-if="inspectionAttempt?.state === 'loading'"
+          class="mt-0.5 block text-[0.6875rem] font-medium text-indigo-700"
+          role="status"
+        >{{ t('workspace.task_monitor.loading') }}</span>
+        <span
+          v-else-if="inspectionAttempt?.state === 'error'"
+          class="mt-0.5 flex items-center gap-1 text-[0.6875rem] font-medium text-red-700"
+          role="alert"
+        >
+          <span>{{ t('workspace.task_monitor.load_error') }}</span>
+          <button
+            type="button"
+            class="rounded px-1 py-0.5 underline focus:outline-none focus-visible:ring-1 focus-visible:ring-red-500"
+            :aria-label="t('workspace.task_monitor.retry_accessible')"
+            @click.stop="emit('select', row)"
+          >{{ t('workspace.task_monitor.retry') }}</button>
+        </span>
       </span>
-      <span
-        v-if="prototypeReviewActive && row.memberKind === 'agent_team' && teamIdentity === 'band'"
-        class="ml-1 flex-shrink-0 text-[0.5625rem] font-bold uppercase tracking-[0.1em] text-indigo-600"
-      >Task team</span>
     </div>
     <span
-      v-if="prototypeReviewActive"
       class="hierarchy-identity-tooltip pointer-events-none absolute left-2 right-2 top-full z-50 hidden break-words rounded-md bg-slate-900 px-2 py-1.5 text-left text-[0.6875rem] font-medium leading-4 text-white shadow-lg"
       role="tooltip"
     >{{ identityLabel }}</span>
@@ -104,31 +112,23 @@
 import { computed } from 'vue';
 import { Icon } from '@iconify/vue';
 import StatusDot from '~/components/workspace/common/StatusDot.vue';
+import WorkspaceHierarchyBranches from '~/components/workspace/history/WorkspaceHierarchyBranches.vue';
+import { useLocalization } from '~/composables/useLocalization';
+import { AgentStatus } from '~/types/agent/AgentStatus';
 import type { RunHistoryTransientExecutionRow } from '~/stores/runHistoryTypes';
+import { useRunHistoryStore } from '~/stores/runHistoryStore';
 
 const props = withDefaults(defineProps<{
   row: RunHistoryTransientExecutionRow;
   isSelected?: boolean;
   hasChildren?: boolean;
   expanded?: boolean;
-  prototypeReviewActive?: boolean;
-  hierarchyTreatment?: 'rails' | 'surfaces' | 'hybrid';
-  metadataTreatment?: 'full' | 'responsive' | 'on-demand';
-  teamIdentity?: 'icon' | 'header' | 'band';
-  panelWidth?: 260 | 320 | 520;
-  fontSize?: 'default' | 'extra-large';
   continuingAncestorDepths?: number[];
   hasFollowingSibling?: boolean;
 }>(), {
   isSelected: false,
   hasChildren: false,
   expanded: false,
-  prototypeReviewActive: false,
-  hierarchyTreatment: 'hybrid',
-  metadataTreatment: 'responsive',
-  teamIdentity: 'header',
-  panelWidth: 320,
-  fontSize: 'default',
   continuingAncestorDepths: () => [],
   hasFollowingSibling: false,
 });
@@ -138,118 +138,81 @@ const emit = defineEmits<{
   (e: 'toggle', row: RunHistoryTransientExecutionRow): void;
 }>();
 
-const rowStyle = computed(() => ({
-  ...(props.prototypeReviewActive
-      ? {
-          '--tree-depth': String(props.row.depth),
-          paddingLeft: `calc((${props.row.depth} + 1) * 0.875rem)`,
-        }
-    : { marginLeft: `${props.row.depth * 12}px` }),
+const { t } = useLocalization();
+const runHistoryStore = useRunHistoryStore();
+
+const roleLabel = computed(() => t(
+  props.row.memberKind === 'agent_team'
+    ? 'workspace.history.hierarchy.role.temporary_task_team'
+    : 'workspace.history.hierarchy.role.temporary_task_agent',
+));
+
+const status = computed(() => props.row.currentStatus || AgentStatus.Offline);
+const statusLabel = computed(() => t(`workspace.history.hierarchy.status.${status.value}`));
+const executionStatusLabel = computed(() => t(`workspace.task_monitor.execution.${status.value}`));
+const lifecycleStatusLabel = computed(() => props.row.task
+  ? t(`workspace.task_monitor.lifecycle.${props.row.task.displayStatus}`)
+  : '');
+const combinedTaskStatus = computed(() => props.row.task && props.row.memberKind === 'agent'
+  ? t('workspace.task_monitor.combined_status', {
+    lifecycle: lifecycleStatusLabel.value,
+    execution: executionStatusLabel.value,
+  })
+  : lifecycleStatusLabel.value);
+const inspectionAttempt = computed(() => props.row.agentRunId
+  ? runHistoryStore.getTeamMemberInspectionAttempt(props.row.teamRunId, props.row.agentRunId)
+  : null);
+
+const identityLabel = computed(() => t('workspace.history.hierarchy.identity', {
+  role: roleLabel.value,
+  name: props.row.task?.description || props.row.displayName,
+  address: props.row.memberAddress,
 }));
 
-const identityLabel = computed(() => {
-  const role = props.row.memberKind === 'agent_team' ? 'Temporary task team' : 'Temporary task agent';
-  return `${role} · ${props.row.displayName} · ${props.row.memberAddress}`;
-});
+const accessibleLabel = computed(() => t('workspace.history.hierarchy.tree_item', {
+  role: roleLabel.value,
+  name: props.row.task?.description || props.row.displayName,
+  address: props.row.memberAddress,
+  level: props.row.depth + 1,
+  status: combinedTaskStatus.value || statusLabel.value,
+}));
 
-const ariaLabel = computed(() => props.prototypeReviewActive
-  ? `${identityLabel.value}, level ${props.row.depth + 1}, ${props.row.currentStatus || 'offline'}`
-  : `${props.row.displayName}. ${props.row.memberAddress}`);
+const disclosureLabel = computed(() => t(
+  props.expanded
+    ? 'workspace.history.hierarchy.collapse'
+    : 'workspace.history.hierarchy.expand',
+  { name: props.row.displayName },
+));
 
-const rowClasses = computed(() => [
-  props.prototypeReviewActive
-    ? (props.isSelected ? 'is-selected text-indigo-900' : 'text-gray-600')
-    : (props.isSelected ? 'text-indigo-900 ring-1 ring-indigo-200' : 'text-gray-600'),
-  props.prototypeReviewActive ? [
-      `hierarchy-${props.hierarchyTreatment}`,
-      `metadata-${props.metadataTreatment}`,
-      `identity-${props.teamIdentity}`,
-      props.row.memberKind === 'agent_team' ? 'node-team' : 'node-agent',
-    ] : [],
-]);
+const rowStyle = computed(() => ({
+  paddingLeft: `calc((${props.row.depth} + 1) * 0.875rem)`,
+}));
+
+const rowClasses = computed(() => ({
+  'is-selected text-indigo-900': props.isSelected,
+  'text-gray-600': !props.isSelected,
+}));
 
 const activateRow = (): void => {
-  if (props.hasChildren) {
-    emit('toggle', props.row);
-  }
+  if (props.hasChildren) emit('toggle', props.row);
   emit('select', props.row);
 };
 </script>
 
 <style scoped>
-.transient-execution-row[class*="hierarchy-"] {
+.transient-execution-row {
   isolation: isolate;
-  min-height: 1.75rem;
-  border: 1px dashed #c7d2fe;
 }
 
-.transient-execution-row[class*="hierarchy-"] > :not(.hierarchy-identity-tooltip):not(.hierarchy-branches) {
+.transient-execution-row > :not(.hierarchy-identity-tooltip):not(.hierarchy-branches) {
   position: relative;
   z-index: 2;
 }
 
-.hierarchy-branches {
-  z-index: 1;
-}
-
-.hierarchy-current-branch {
-  width: 0.5rem;
-}
-
-.hierarchy-current-branch::before,
-.hierarchy-current-branch::after {
-  position: absolute;
-  background: #94a3b8;
-  content: '';
-}
-
-.hierarchy-current-branch::before {
-  top: 0;
-  left: 0;
-  width: 1px;
-  height: calc(50% + 0.5px);
-}
-
-.hierarchy-current-branch.continues-to-sibling::before {
-  height: 100%;
-}
-
-.hierarchy-current-branch::after {
-  top: 50%;
-  left: 0;
-  width: 0.5rem;
-  height: 1px;
-}
-
-.hierarchy-surfaces {
-  border-left: 3px solid #a5b4fc;
-  background-color: #f5f7ff;
-}
-
-.identity-band.node-team {
-  border-left-width: 4px;
-  font-weight: 650;
-}
-
-.transient-execution-row[class*="hierarchy-"].is-selected {
+.transient-execution-row.is-selected {
   border-radius: 0;
-  background-color: #eef2ff !important;
+  background-color: #eef2ff;
   box-shadow: inset 2px 0 #6366f1;
-}
-
-.metadata-on-demand .member-status {
-  max-width: 0;
-  margin: 0;
-  overflow: hidden;
-  opacity: 0;
-}
-
-.metadata-on-demand:hover .member-status,
-.metadata-on-demand:focus .member-status,
-.metadata-on-demand:focus-within .member-status {
-  max-width: 2rem;
-  margin-right: 0.375rem;
-  opacity: 1;
 }
 
 .transient-execution-row:focus-visible > .hierarchy-identity-tooltip {
@@ -258,5 +221,12 @@ const activateRow = (): void => {
 
 .transient-execution-row:focus-visible {
   z-index: 60;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .transient-execution-row,
+  .transient-execution-row * {
+    transition-duration: 0.01ms !important;
+  }
 }
 </style>
