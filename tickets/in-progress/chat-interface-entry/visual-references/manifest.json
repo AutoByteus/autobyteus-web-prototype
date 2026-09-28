@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-09-28T17:11:45.353Z",
+  "capturedAt": "2026-09-28T18:11:53.956Z",
   "baseUrl": "http://127.0.0.1:3271",
   "references": [
     {
@@ -7,18 +7,18 @@
       "filename": "VIS-001-new-chat-default-1440x900.png",
       "viewport": "1440x900",
       "surface": "UIS-001 New chat",
-      "state": "Default (Daily Assistant, Temp workspace, Auto-approve, last-used model)",
+      "state": "Default: Chat box (Context Files area, textarea, footer with send), Daily Assistant, Temp workspace, Auto-approve, last-used model",
       "journeys": "UXJ-001",
-      "sha256": "74b6d8c57c8bd2d65040eefd9e0369d51b1e005543b8815ec20d3eb06a41df63"
+      "sha256": "294a9be33346df68575faf170ed4d4e6d3cc681a9c17ba5e46bf33e088d458e0"
     },
     {
       "id": "VIS-002",
-      "filename": "VIS-002-model-menu-recent-runtimes-1440x900.png",
+      "filename": "VIS-002-model-menu-search-runtimes-1440x900.png",
       "viewport": "1440x900",
       "surface": "UIS-003 Model menu",
-      "state": "Open: search, Recent, Runtimes",
+      "state": "Open: search, Runtimes (no Recent)",
       "journeys": "UXJ-002",
-      "sha256": "e82916c8061a967c1605c1ddb3c77ce374ba1546d0edd9a7cabd1311c22e196c"
+      "sha256": "7fb8739df8415e94f7624ba516d297a1fd571e5198281add1a2d58b86d0d9138"
     },
     {
       "id": "VIS-003",
@@ -27,7 +27,7 @@
       "surface": "UIS-003 Model menu",
       "state": "Runtime submenu (AutoByteus models by provider)",
       "journeys": "UXJ-002",
-      "sha256": "fdf5d250dc5d152d0e3b59ed149a2e6069118dddcce0e3836b10f2a3b4d1a9de"
+      "sha256": "7ffccf0bf8254b8ea805dbc76b1f521fccb55cc03aec20fd91e9d94329cb6f6a"
     },
     {
       "id": "VIS-004",
@@ -36,7 +36,7 @@
       "surface": "UIS-003 Model menu",
       "state": "Cross-runtime search \"opus\"",
       "journeys": "UXJ-002",
-      "sha256": "8997cc7deea23238bb9f9df2b7b0e1235dd929642cc3d6788b35e1de7d5e6255"
+      "sha256": "f7e29b0c707186aeaf9ff8a119ad92358684be7062445a1f74b136f31271e22c"
     },
     {
       "id": "VIS-005",
@@ -45,7 +45,7 @@
       "surface": "UIS-003 Model menu",
       "state": "Runtime catalog loading (Antigravity CLI)",
       "journeys": "UXJ-002",
-      "sha256": "392c3d7529f7815bd55f1101827de3d28c9a9865ebd17871eb5be5febca752a4"
+      "sha256": "79a63b36e7f63f3b81c25903f678a885a78b847ada8b7c7ae259eab8bfa66012"
     },
     {
       "id": "VIS-006",
@@ -54,7 +54,7 @@
       "surface": "UIS-003 Model menu",
       "state": "Catalog error with Retry",
       "journeys": "UXJ-002",
-      "sha256": "c8d75332e0940fd104530f11ddca4ff023b6aa968dfb56bdc435b126b21fd947"
+      "sha256": "b6a4516533d29f6436bae9139f6730ec7b46d5b9cfabf0f8616e8b38f237dad8"
     },
     {
       "id": "VIS-007",
@@ -63,7 +63,7 @@
       "surface": "UIS-003 Model menu",
       "state": "Runtime not installed (Grok Build)",
       "journeys": "UXJ-002",
-      "sha256": "54cd7435485cb46da139e916728bcc53d4e97c90017327bca1591b0953a656de"
+      "sha256": "6df647af9f33ce3b5175a9c0fa51983989b8d47907b6a6cf80274139367fa0ae"
     },
     {
       "id": "VIS-008",
@@ -72,7 +72,7 @@
       "surface": "UIS-004 Thinking control",
       "state": "Open (illustrative effort levels)",
       "journeys": "UXJ-002",
-      "sha256": "1706ef778cb901ba4075b700bd5edab9067ece6673c939ede6e1aa1d693d66e9"
+      "sha256": "e316b7d6c6df9c77ed80f73bda8e79e42f5e69e1b2e078efdc7acd834a6b7ce2"
     },
     {
       "id": "VIS-009",
@@ -81,7 +81,7 @@
       "surface": "UIS-005 Workspace menu",
       "state": "Open: Temp workspace default, your workspaces, open another folder",
       "journeys": "UXJ-003",
-      "sha256": "6d0280091a792f4b48ef77345d872569ff2f48b1ee85f58652997c6fba1693e4"
+      "sha256": "afef176a20b086a3fa90a5dad661518912b8c14cbad791e96e7ee9f336014b42"
     },
     {
       "id": "VIS-010",
@@ -90,16 +90,16 @@
       "surface": "UIS-006 Skill menu",
       "state": "\"/sk\" ranked matches",
       "journeys": "UXJ-004",
-      "sha256": "e549fe5296c8ca88e06ac6b02e0f40a8be4be19d069fefb7f8c19c596f79115f"
+      "sha256": "62e0ff5350ef0118e990a5bd04542b9ee6c14cb5db772311428eeac5adfe34ea"
     },
     {
       "id": "VIS-011",
       "filename": "VIS-011-composer-chips-attachments-ask-first-1440x900.png",
       "viewport": "1440x900",
-      "surface": "UIS-002 Message box",
-      "state": "Skill chips + file chip + image thumbnail + text; Ask first",
+      "surface": "UIS-002 Chat box",
+      "state": "Context Files (2) list with image thumbnail and file row + skill chips + text; Ask first",
       "journeys": "UXJ-004, UXJ-008",
-      "sha256": "ccd712d5498fe93c0087bb4953d2dffa4593ce94f2472cc6cfdbc7af86821a35"
+      "sha256": "db31c5267065274d02d8ea5f0613e5d375aa3f8193c2e58e86e8113ed4ceaae9"
     },
     {
       "id": "VIS-012",
@@ -108,7 +108,7 @@
       "surface": "UIS-007 Agent/team menu",
       "state": "\"@\" lists Agents and Agent teams",
       "journeys": "UXJ-005",
-      "sha256": "018b831c72c0df63e5a5fd5ebf634cc0b6e03fef5266acb87dbc378fedef2a43"
+      "sha256": "acce2ef3d94df7b0db9ff08f12c552aa3bc628d33c0dff5083dc20609c2fc415"
     },
     {
       "id": "VIS-013",
@@ -117,7 +117,7 @@
       "surface": "UIS-001 New chat",
       "state": "Addressed to a team: team chip, coordinator subtitle, quick-path note",
       "journeys": "UXJ-006",
-      "sha256": "55e53ceb9e036aec1aa8cecb97269a46d43126aff425f7d5017ec193dbfdcf9d"
+      "sha256": "2364b19093debd8d8dfbc4fde692af44efd298b358dfa22019a035502cb20f37"
     },
     {
       "id": "VIS-014",
@@ -126,7 +126,7 @@
       "surface": "UIS-001 New chat",
       "state": "Addressed to Codex: agent chip; \"/\" lists only Codex skills",
       "journeys": "UXJ-005",
-      "sha256": "a124a551d3a53ef02f81a7d9765419c7db229351b40510c7ae6737d37c52833c"
+      "sha256": "fbae0e6f9559ad3a877d6dbfc17b66b92e285f87fe16818dd651a7e72be7c5ba"
     },
     {
       "id": "VIS-015",
@@ -135,7 +135,7 @@
       "surface": "UIS-008 Active chat",
       "state": "Live run (Idle): model and thinking locked; tree row selected with Terminate",
       "journeys": "UXJ-001, UXJ-007",
-      "sha256": "4a6226a53e3c96abf116cc0cd1fcbe1fabbe4b181ef9474ba7cbcb1fb00632b2"
+      "sha256": "175746894cf37b68a7136c235b5903aae1289e83f70590a75af91ecb3ce8f847"
     },
     {
       "id": "VIS-016",
@@ -144,7 +144,7 @@
       "surface": "UIS-008 Active chat",
       "state": "Hover skill chips: \"Sent to the agent as\"",
       "journeys": "UXJ-004",
-      "sha256": "7ef384e5f70b3d05b4a44d35840cb352b717f9f573adac25d24366258a89725b"
+      "sha256": "7020a4c0f490b9fe310256f36f1f17680780d4d5978f80292806b6b049d65298"
     },
     {
       "id": "VIS-017",
@@ -153,7 +153,7 @@
       "surface": "UIS-008 Active chat",
       "state": "Terminated run (Offline): model editable, runtime fixed",
       "journeys": "UXJ-007",
-      "sha256": "6b293004d011e32dfda62d757bd9f66d14bce2e85c44f9bf18a1bbd8232ce6df"
+      "sha256": "279b62c6564725b77e441a01a1dad8b5cfcf53c51b033180037a2ad472b95159"
     },
     {
       "id": "VIS-018",
@@ -162,7 +162,7 @@
       "surface": "UIS-009 Right tool strip / panel",
       "state": "Panel opened from the strip on Artifacts",
       "journeys": "UXJ-009",
-      "sha256": "ca69f8c13305af5512a4fe5f8ad14a8342c386d2b494f0652a799b62fd6ed5ba"
+      "sha256": "4277c29ee3172cc4f53265344eb08e7e93006ed069bd671d07dd9aa749cc069b"
     },
     {
       "id": "VIS-019",
@@ -171,16 +171,7 @@
       "surface": "UIS-008 Active chat",
       "state": "Stored chat from history (Offline), right strip collapsed",
       "journeys": "UXJ-001, UXJ-009",
-      "sha256": "fe168032e3d6597c9d3bf80319b18fdacd0f36a2b31c05f49bbb9419499d98eb"
-    },
-    {
-      "id": "VIS-020",
-      "filename": "VIS-020-team-member-run-view-unified-box-1440x900.png",
-      "viewport": "1440x900",
-      "surface": "UIS-010 Run view message box",
-      "state": "Team member focus with the unified box and a file chip",
-      "journeys": "UXJ-010",
-      "sha256": "7d6e2af70b8a654d42393a0300f096395194b4922818a4004fdab4b30a2b8225"
+      "sha256": "9931ede300a15bf6b12ce1602fcc6217cfd3f6185fc0a6b789392ecc66b313e5"
     },
     {
       "id": "VIS-021",
@@ -189,16 +180,16 @@
       "surface": "UIS-011 Workspaces tree",
       "state": "Normal product ordering; Daily Assistant group like any agent",
       "journeys": "UXJ-001",
-      "sha256": "e45d41b12549cfe44aeb0129b5eaee7813581efeed4fc85c1a4dd834f12e645f"
+      "sha256": "9636e4f35a1a10e6317b178928ff7a3c826ab0c3b8eb977b01f46138ae184c62"
     },
     {
       "id": "VIS-022",
       "filename": "VIS-022-first-run-model-menu-1440x900.png",
       "viewport": "1440x900",
       "surface": "UIS-003 Model menu",
-      "state": "First run: no Recent, AutoByteus default",
+      "state": "First run: no last-used value, runtime default (AutoByteus)",
       "journeys": "UXJ-002",
-      "sha256": "03141ce88730ebd71941a4731c3327ec12e406b1ec51046ce9d85b9d0b0f2dab"
+      "sha256": "193fb3709faec6e69dc1712f310994aac1770fc351b063882a1355a16bd58859"
     },
     {
       "id": "VIS-023",
@@ -207,7 +198,7 @@
       "surface": "UIS-001 New chat",
       "state": "Narrow viewport",
       "journeys": "UXJ-001",
-      "sha256": "3a1b09ab17913298d4bf59da5021f0be64c485531a558b191f75c76dc4bd06b0"
+      "sha256": "abdfbd0d06d413c3d6a2461d7e10e3a84e4e4b4c1843bc92d3272a0ff0879b2b"
     },
     {
       "id": "VIS-024",
@@ -216,16 +207,16 @@
       "surface": "UIS-003 Model menu",
       "state": "Narrow bottom sheet",
       "journeys": "UXJ-002",
-      "sha256": "bc588446bad63a96739120beee3ef239d3101985c560938c6f4cb943cc189d37"
+      "sha256": "3a4ff72b755831d755cf2f77cb4b3aa7191012134ed09658914d7ec25904d59c"
     },
     {
       "id": "VIS-025",
       "filename": "VIS-025-chat-with-voice-available-1440x900.png",
       "viewport": "1440x900",
-      "surface": "UIS-002 Message box",
-      "state": "Voice Input extension installed: mic before send (desktop app)",
+      "surface": "UIS-002 Chat box",
+      "state": "Voice Input extension installed: mic before send in the footer (desktop app)",
       "journeys": "UXJ-008",
-      "sha256": "0fa4a52e481563b8ef992b613d920802b55202dcad6e52be6c34cd86a9aa3fc4"
+      "sha256": "afcb5c4cd1af098d3460383e8d78da5ef448701baf7599eff2204156edf945de"
     }
   ],
   "errors": []

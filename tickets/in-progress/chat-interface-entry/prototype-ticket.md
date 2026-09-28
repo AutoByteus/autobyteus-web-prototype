@@ -3,9 +3,9 @@
 ## Identity And Scope
 
 - Product ticket: `chat-interface-entry`
-- Stable requirements package: `chat-interface-entry` (SR-001, requirements Draft)
+- Stable requirements package: `chat-interface-entry` (SR-001 → SR-003, requirements Approved)
 - Title: Chat entry above Agents, New chat, and easy runtime/model selection
-- Status: `Awaiting User Review` (revision R2: Chat box correction requested by Solution Designer, SR-003)
+- Status: `Completed` (revision R2: Chat box correction requested by Solution Designer, SR-003)
 - Mode: `Product Experience Prototyping`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-28
 - Decision questions: DEC-001 (primary: runtime + model picker), DEC-002 to DEC-007 (supporting); REQ-001 to REQ-007 draft
@@ -41,6 +41,16 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - Worktree: `/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/chat-interface-entry`, branch `prototype/chat-interface-entry`, base `personal@1579886`
 - Review port: 3271
 
+## Final Package (R2)
+
+- User confirmation: user message 2026-09-28 — "Do you have any more questions? I think now the chat box looks good." (after PC-036–PC-041)
+- UI/UX specification: `tickets/done/chat-interface-entry/ui-ux-spec.md` (status `Approved`, R2)
+- Final visual references: `tickets/done/chat-interface-entry/visual-references/` — VIS-001–VIS-019, VIS-021–VIS-025 (24 files, recaptured for R2) + `manifest.json` (SHA-256 per file); VIS-020 superseded (DEC-013) and removed; VIS-002 renamed `VIS-002-model-menu-search-runtimes-1440x900.png`
+- Change log: PC-036–PC-041 (R2); PC-029–PC-031 superseded
+- Final validation: `validate-chat-interface-entry.mjs` 31/31 pass, 0 browser errors; typecheck pass — `review-evidence/r2/`
+- Default entry point: `/` lands on `/chat` (DEC-005)
+- Open items: none (DEC-005, DEC-009, DEC-010, DEC-011, DEC-012, DEC-013, DEC-014 resolved in SR-003)
+
 ## Final Package (R1, superseded in part by R2)
 
 - User confirmation: user message 2026-09-28 — approval conditional on a final consistency check ("If you think everything is consistent, then I think we're done with prototype UI … create the details … so that [the] solution engineer [has] enough UI specification"). Final consistency pass completed (PC-035); no discrepancy remained.
@@ -51,7 +61,7 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - Default entry point: `/chat`, reached from the first primary-navigation item `Chat` with no preview-only state (the approved experience is part of the normal product shell).
 - Open items for Solution Designer: OPEN-001 thinking control shape (schema-driven), OPEN-002 landing route (DEC-005), OPEN-003 Daily Assistant provisioning, OPEN-004 Recent persistence scope, OPEN-005 instruction wording, DEC-008 disposition.
 
-## Integration And Cleanup
+## Integration And Cleanup (R1)
 
 - Ticket result revision: `27f9b74` on `prototype/chat-interface-entry`
 - Integration: `Completed` — canonical `personal` fast-forwarded `5ae0fe1` → `27f9b74` (this record is the following docs commit on `personal`).
@@ -95,3 +105,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-28: reopened for revision R2 (Solution Designer SR-003 correction request). `In Progress`.
 - 2026-09-28: R2 implemented (PC-036–PC-040). Validation 31/31, 0 browser errors; typecheck pass. `Awaiting User Review` for the revised Chat box.
 - 2026-09-28: R2 review feedback: send button into the footer row (PC-041). Validation 31/31, 0 browser errors.
+- 2026-09-28: user confirmed R2 ("I think now the chat box looks good"). Final references recaptured (24 + manifest), ui-ux-spec.md R2, matrix and runbook updated. `Completed`.

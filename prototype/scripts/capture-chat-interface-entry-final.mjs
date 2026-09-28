@@ -91,8 +91,8 @@ const openTeamRun = async (page) => {
   await page.waitForTimeout(800)
 }
 
-await capture('VIS-001', 'new-chat-default', { surface: 'UIS-001 New chat', state: 'Default (Daily Assistant, Temp workspace, Auto-approve, last-used model)', journeys: 'UXJ-001' }, async () => {})
-await capture('VIS-002', 'model-menu-recent-runtimes', { surface: 'UIS-003 Model menu', state: 'Open: search, Recent, Runtimes', journeys: 'UXJ-002' }, async (page) => {
+await capture('VIS-001', 'new-chat-default', { surface: 'UIS-001 New chat', state: 'Default: Chat box (Context Files area, textarea, footer with send), Daily Assistant, Temp workspace, Auto-approve, last-used model', journeys: 'UXJ-001' }, async () => {})
+await capture('VIS-002', 'model-menu-search-runtimes', { surface: 'UIS-003 Model menu', state: 'Open: search, Runtimes (no Recent)', journeys: 'UXJ-002' }, async (page) => {
   await $(page, 'chat-model-trigger').click()
   await $(page, 'chat-model-picker').waitFor()
 })
@@ -133,7 +133,7 @@ await capture('VIS-010', 'skill-slash-menu', { surface: 'UIS-006 Skill menu', st
   await $(page, 'chat-composer-input').pressSequentially('/sk', { delay: 30 })
   await $(page, 'chat-skill-menu').waitFor()
 })
-await capture('VIS-011', 'composer-chips-attachments-ask-first', { surface: 'UIS-002 Message box', state: 'Skill chips + file chip + image thumbnail + text; Ask first', journeys: 'UXJ-004, UXJ-008' }, async (page) => {
+await capture('VIS-011', 'composer-chips-attachments-ask-first', { surface: 'UIS-002 Chat box', state: 'Context Files (2) list with image thumbnail and file row + skill chips + text; Ask first', journeys: 'UXJ-004, UXJ-008' }, async (page) => {
   const input = $(page, 'chat-composer-input')
   await input.click()
   await input.pressSequentially('/skill-opt', { delay: 20 })
@@ -193,18 +193,13 @@ await capture('VIS-018', 'right-tool-panel-open', { surface: 'UIS-009 Right tool
   await $(page, 'chat-workspace-panel').waitFor()
 }, { path: '/chat?id=chat-skill-review' })
 await capture('VIS-019', 'stored-chat-strip-collapsed', { surface: 'UIS-008 Active chat', state: 'Stored chat from history (Offline), right strip collapsed', journeys: 'UXJ-001, UXJ-009' }, async () => {}, { path: '/chat?id=chat-skill-review' })
-await capture('VIS-020', 'team-member-run-view-unified-box', { surface: 'UIS-010 Run view message box', state: 'Team member focus with the unified box and a file chip', journeys: 'UXJ-010' }, async (page) => {
-  await openTeamRun(page)
-  await page.locator('[data-test="run-composer"] input[type=file]').setInputFiles([FIXTURE_TEXT])
-  await page.waitForTimeout(800)
-}, { path: '/workspace' })
 await capture('VIS-021', 'workspaces-tree-normal-order', { surface: 'UIS-011 Workspaces tree', state: 'Normal product ordering; Daily Assistant group like any agent', journeys: 'UXJ-001' }, async (page) => {
   const temp = page.locator('[data-test="app-left-panel-run-history"] section', { hasText: 'Temp workspace' }).first()
   await temp.locator('button', { hasText: 'Temp workspace' }).first().click()
   await temp.locator('button[aria-expanded]', { hasText: 'Daily Assistant' }).first().click()
   await page.mouse.move(1430, 890)
 })
-await capture('VIS-022', 'first-run-model-menu', { surface: 'UIS-003 Model menu', state: 'First run: no Recent, AutoByteus default', journeys: 'UXJ-002' }, async (page) => {
+await capture('VIS-022', 'first-run-model-menu', { surface: 'UIS-003 Model menu', state: 'First run: no last-used value, runtime default (AutoByteus)', journeys: 'UXJ-002' }, async (page) => {
   await $(page, 'chat-model-trigger').click()
   await $(page, 'chat-model-picker').waitFor()
 }, { scenario: 'chat_first_run' })
@@ -213,7 +208,7 @@ await capture('VIS-024', 'narrow-model-bottom-sheet', { surface: 'UIS-003 Model 
   await $(page, 'chat-model-trigger').click()
   await $(page, 'chat-model-picker').waitFor()
 }, { width: 390, height: 844 })
-await capture('VIS-025', 'chat-with-voice-available', { surface: 'UIS-002 Message box', state: 'Voice Input extension installed: mic before send (desktop app)', journeys: 'UXJ-008' }, async (page) => {
+await capture('VIS-025', 'chat-with-voice-available', { surface: 'UIS-002 Chat box', state: 'Voice Input extension installed: mic before send in the footer (desktop app)', journeys: 'UXJ-008' }, async (page) => {
   await $(page, 'composer-voice').waitFor({ timeout: 6000 })
 }, { context: 'electron_internal' })
 
