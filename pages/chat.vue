@@ -95,8 +95,9 @@
           <div class="min-w-0 flex-1">
             <div class="flex items-center gap-2">
               <h1 class="truncate text-[0.9375rem] font-semibold text-gray-900" data-test="chat-title">{{ activeChat.title }}</h1>
-              <span v-if="activeChat.status === 'running'" class="inline-flex flex-shrink-0 items-center gap-1.5 text-xs text-gray-600">
-                <span class="h-2 w-2 rounded-full bg-blue-500"></span>Running
+              <span class="inline-flex flex-shrink-0 items-center gap-1.5 text-xs text-gray-600" data-test="chat-run-status">
+                <span class="h-2 w-2 rounded-full" :class="activeChat.status === 'running' ? 'bg-blue-500' : activeChat.active ? 'bg-green-500' : 'bg-gray-400'"></span>
+                {{ activeChat.status === 'running' ? 'Running' : activeChat.active ? 'Idle' : 'Stopped' }}
               </span>
             </div>
             <p class="flex items-center gap-1.5 truncate text-xs text-gray-500">
@@ -191,11 +192,15 @@
                 :model-id="activeChat.modelId"
                 :thinking="activeChat.thinking"
                 locked-runtime
+                :locked-reason="activeChat.active ? 'This run is live. Stop it to change its model or thinking; your next message resumes it.' : null"
+                can-stop
+                @stop-run="chat.stopRun(activeChat!.id)"
                 @select="(combo) => chat.switchChatModel(activeChat!.id, combo)"
               />
               <ChatEffortPicker
                 :model-id="activeChat.modelId"
                 :thinking="activeChat.thinking"
+                :locked-reason="activeChat.active ? 'This run is live. Stop it to change its model or thinking.' : null"
                 @select="(level) => chat.switchChatModel(activeChat!.id, { runtime: activeChat!.runtime, modelId: activeChat!.modelId, thinking: level })"
               />
             </template>

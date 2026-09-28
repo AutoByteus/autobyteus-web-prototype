@@ -4,15 +4,20 @@
       ref="triggerRef"
       type="button"
       data-test="chat-effort-trigger"
-      class="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[0.8125rem] leading-5 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
-      :class="popover.open.value ? 'bg-gray-100 text-gray-700' : ''"
+      class="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[0.8125rem] leading-5 text-gray-500 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+      :class="[
+        lockedReason ? 'cursor-default text-gray-400' : 'hover:bg-gray-100 hover:text-gray-700',
+        popover.open.value ? 'bg-gray-100 text-gray-700' : '',
+      ]"
       :aria-expanded="popover.open.value ? 'true' : 'false'"
       aria-haspopup="menu"
-      :aria-label="`Reasoning effort: ${value}. Change`"
-      title="Reasoning effort"
-      @click="toggle"
+      :aria-label="lockedReason ? `Reasoning effort: ${value}. Locked: ${lockedReason}` : `Reasoning effort: ${value}. Change`"
+      :aria-disabled="lockedReason ? 'true' : undefined"
+      :title="lockedReason || 'Reasoning effort'"
+      :data-locked="lockedReason ? 'true' : undefined"
+      @click="!lockedReason && toggle()"
     >
-      <ChatGlyph name="bulb" class="h-3.5 w-3.5" />
+      <ChatGlyph :name="lockedReason ? 'lock' : 'bulb'" class="h-3.5 w-3.5" />
       <span>{{ value }}</span>
       <ChatGlyph name="chevron-down" class="h-3 w-3 text-gray-400" />
     </button>
@@ -50,7 +55,7 @@ import ChatGlyph from '~/components/chat/ChatGlyph.vue'
 import { findModel } from '~/composables/chat/usePrototypeChat'
 import { useChatPopover } from '~/composables/chat/useChatPopover'
 
-const props = defineProps<{ modelId: string; thinking?: string }>()
+const props = defineProps<{ modelId: string; thinking?: string; lockedReason?: string | null }>()
 const emit = defineEmits<{ (e: 'select', value: string): void }>()
 
 const rootRef = ref<HTMLElement | null>(null)

@@ -289,6 +289,7 @@ const streamReply = (chatId: string, text: string, skills: string[] = []) => {
   const messageId = nextId('m')
   chat.messages.push({ id: messageId, role: 'assistant', text: '', streaming: true })
   chat.status = 'running'
+  chat.active = true
   const words = full.split(/(\s+)/)
   let index = 0
   const tick = () => {
@@ -344,6 +345,7 @@ const startChat = async (): Promise<ChatRecord | null> => {
     age: 'now',
     ageMinutes: 0,
     status: 'running',
+    active: true,
     autoApprove: state.draft.autoApprove,
     messages: [{ id: nextId('m'), role: 'user', text, skills: [...state.draft.skills], attachments: [...state.draft.attachments], sentText: buildSentText(text, state.draft.skills) }],
   }
@@ -372,9 +374,19 @@ const stopChat = (chatId: string) => {
   chat.status = 'idle'
 }
 
+/** Stop (terminate) the live run. Its model settings become editable; the next message resumes it. */
+const stopRun = (chatId: string) => {
+  const chat = state.chats.find((item) => item.id === chatId)
+  if (!chat || !chat.active) return
+  stopChat(chatId)
+  chat.active = false
+  chat.messages.push({ id: nextId('m'), role: 'event', text: 'Run stopped. You can change its model now; your next message resumes it.' })
+}
+
 const switchChatModel = (chatId: string, combo: ChatCombo) => {
   const chat = state.chats.find((item) => item.id === chatId)
-  if (!chat || combo.runtime !== chat.runtime) return
+  // Product rule (runModelConfigEditability): only a run that is not active can change its model.
+  if (!chat || chat.active || combo.runtime !== chat.runtime) return
   const changedModel = chat.modelId !== combo.modelId
   const changedThinking = chat.thinking !== combo.thinking
   if (!changedModel && !changedThinking) return
@@ -382,7 +394,7 @@ const switchChatModel = (chatId: string, combo: ChatCombo) => {
   chat.thinking = combo.thinking
   const model = findModel(combo.modelId)
   const label = [model?.name ?? combo.modelId, combo.thinking].filter(Boolean).join(' · ')
-  chat.messages.push({ id: nextId('m'), role: 'event', text: `Model switched to ${label}. It applies from the next message.` })
+  chat.messages.push({ id: nextId('m'), role: 'event', text: `Model switched to ${label}. It applies when the run resumes with your next message.` })
   rememberCombo(combo)
 }
 
@@ -410,6 +422,7 @@ export function usePrototypeChat() {
     startChat,
     sendInChat,
     stopChat,
+    stopRun,
     switchChatModel,
     deleteChat,
     showToast,

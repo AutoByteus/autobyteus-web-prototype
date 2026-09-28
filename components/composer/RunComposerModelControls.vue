@@ -7,9 +7,10 @@
       :model-id="modelId"
       :thinking="thinking"
       locked-runtime
+      :locked-reason="lockedReason"
       @select="onSelectModel"
     />
-    <ChatEffortPicker :model-id="modelId" :thinking="thinking" @select="onSelectThinking" />
+    <ChatEffortPicker :model-id="modelId" :thinking="thinking" :locked-reason="lockedReason" @select="onSelectThinking" />
   </template>
 </template>
 
@@ -19,6 +20,7 @@ import ChatModelPicker from '~/components/chat/ChatModelPicker.vue'
 import ChatEffortPicker from '~/components/chat/ChatEffortPicker.vue'
 import { useActiveContextStore } from '~/stores/activeContextStore'
 import { useToasts } from '~/composables/useToasts'
+import { AgentStatus } from '~/types/agent/AgentStatus'
 import { CHAT_RUNTIMES, type ChatCombo, type ChatRuntimeId } from '~/prototype/chat/chat-fixtures'
 import { findModel } from '~/composables/chat/usePrototypeChat'
 
@@ -35,13 +37,17 @@ const runtime = computed<ChatRuntimeId>(() => {
   return (CHAT_RUNTIMES.some((item) => item.id === kind) ? kind : 'autobyteus') as ChatRuntimeId
 })
 const modelId = computed(() => String(config.value?.llmModelIdentifier || ''))
+// Product rule: model settings change only while the run is stopped (not active).
+const lockedReason = computed(() => context.value && context.value.state.currentStatus !== AgentStatus.Offline
+  ? 'This run is live. Stop it to change its model or thinking.'
+  : null)
 const thinking = computed(() => thinkingByRun[runId.value] ?? findModel(modelId.value)?.defaultThinking)
 
 const onSelectModel = (combo: ChatCombo) => {
   if (!config.value || combo.modelId === modelId.value) return
   config.value.llmModelIdentifier = combo.modelId
   if (combo.thinking) thinkingByRun[runId.value] = combo.thinking
-  addToast(`Model switched to ${findModel(combo.modelId)?.name ?? combo.modelId}. It applies from the next message.`, 'info')
+  addToast(`Model switched to ${findModel(combo.modelId)?.name ?? combo.modelId}. It applies when the run resumes with your next message.`, 'info')
 }
 const onSelectThinking = (level: string) => {
   thinkingByRun[runId.value] = level

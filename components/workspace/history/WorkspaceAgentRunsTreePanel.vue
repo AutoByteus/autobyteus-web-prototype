@@ -304,7 +304,7 @@ const {
   confirmDeleteRun,
 } = useWorkspaceHistoryMutations({
   terminateRun: async (runId: string) => {
-    if (isChatRun(runId)) { prototypeChat.stopChat(runId); return true; }
+    if (isChatRun(runId)) { prototypeChat.stopRun(runId); return true; }
     return agentRunStore.terminateRun(runId);
   },
   terminateTeamRun: (teamRunId: string) => teamRunStore.terminateTeamRun(teamRunId),

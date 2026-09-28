@@ -40,13 +40,14 @@ export function mergeChatRunsIntoTree(
       node.agents.push(agentNode)
     }
     const running = chat.status === 'running'
+    const live = Boolean(chat.active)
     const row: RunTreeRow = {
       runId: chat.id,
       summary: chat.title,
       lastActivityAt: activityAt(chat),
-      currentStatus: running ? AgentStatus.Running : AgentStatus.Idle,
-      lastKnownStatus: running ? 'ACTIVE' : 'IDLE',
-      isActive: running,
+      currentStatus: running ? AgentStatus.Running : live ? AgentStatus.Idle : AgentStatus.Offline,
+      lastKnownStatus: live ? 'ACTIVE' : 'IDLE',
+      isActive: live,
       source: 'history',
       isDraft: false,
     }

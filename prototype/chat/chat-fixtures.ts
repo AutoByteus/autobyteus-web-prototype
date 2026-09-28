@@ -229,6 +229,8 @@ export interface ChatRecord {
   /** Minutes before prototype load; drives the tree's relative time. */
   ageMinutes: number
   status: 'idle' | 'running'
+  /** The run is live (active). Stored chats from history are stopped. Model settings change only while stopped. */
+  active?: boolean
   /** Tool calls run without asking (default) or ask first. Fixed once the chat starts. */
   autoApprove?: boolean
   messages: ChatMessage[]
