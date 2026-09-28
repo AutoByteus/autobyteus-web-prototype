@@ -55,6 +55,8 @@ interface ChatState {
   starting: boolean
   workspacePanelOpen: boolean
   toast: string | null
+  loadedAt: number
+  lastActivity: Record<string, number>
 }
 
 const state = reactive<ChatState>({
@@ -77,6 +79,8 @@ const state = reactive<ChatState>({
   starting: false,
   workspacePanelOpen: false,
   toast: null,
+  loadedAt: Date.now(),
+  lastActivity: {},
 })
 
 let toastTimer: ReturnType<typeof setTimeout> | null = null
@@ -127,6 +131,8 @@ const initialize = () => {
   }
   state.catalogFailuresRemaining = scenario === 'chat_catalog_error' ? { antigravity_cli: 1 } : {}
   state.workspacePanelOpen = false
+  state.loadedAt = Date.now()
+  state.lastActivity = {}
   state.initialized = true
   resetDraft()
 }
@@ -181,6 +187,13 @@ const setDraftAgent = (agentId: string) => {
     state.draft.thinking = agent.defaultLaunch.thinking
   }
 }
+
+const setDraftContext = (agentId: string, workspaceId: string) => {
+  setDraftAgent(agentId)
+  state.draft.workspaceId = workspaceId
+}
+
+const chatActivityAt = (chat: ChatRecord) => new Date(state.lastActivity[chat.id] ?? state.loadedAt - chat.ageMinutes * 60_000).toISOString()
 
 const setDraftCombo = (combo: ChatCombo) => {
   state.draft.runtime = combo.runtime
@@ -259,10 +272,12 @@ const startChat = async (): Promise<ChatRecord | null> => {
     workspaceId: state.draft.workspaceId,
     group: 'Today',
     age: 'now',
+    ageMinutes: 0,
     status: 'running',
     messages: [{ id: nextId('m'), role: 'user', text }],
   }
   state.chats.unshift(chat)
+  state.lastActivity[chat.id] = Date.now()
   rememberCombo({ runtime: chat.runtime, modelId: chat.modelId, thinking: chat.thinking })
   state.lastAgentId = chat.agentId
   state.starting = false
@@ -275,6 +290,7 @@ const sendInChat = (chatId: string, text: string) => {
   const chat = state.chats.find((item) => item.id === chatId)
   if (!chat || !text.trim() || chat.status === 'running') return
   chat.messages.push({ id: nextId('m'), role: 'user', text: text.trim() })
+  state.lastActivity[chat.id] = Date.now()
   streamReply(chat.id, text)
 }
 
@@ -315,6 +331,8 @@ export function usePrototypeChat() {
     toggleFavorite,
     isFavorite,
     setDraftAgent,
+    setDraftContext,
+    chatActivityAt,
     setDraftCombo,
     startChat,
     sendInChat,

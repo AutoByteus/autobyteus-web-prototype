@@ -90,27 +90,6 @@
           >
             <ChatGlyph name="panel-right" class="h-5 w-5" />
           </button>
-          <div ref="menuRootRef" class="relative">
-            <button
-              ref="menuTriggerRef"
-              type="button"
-              class="rounded-md p-2 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
-              aria-label="More chat actions"
-              :aria-expanded="menu.open.value ? 'true' : 'false'"
-              data-test="chat-more"
-              @click="menu.toggle"
-            >
-              <ChatGlyph name="ellipsis" class="h-5 w-5" />
-            </button>
-            <div v-if="menu.open.value" role="menu" class="absolute right-0 top-full z-50 mt-1 w-56 rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
-              <button type="button" role="menuitem" class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50" data-test="chat-save-as-agent" @click="openSave">
-                <ChatGlyph name="user-plus" class="h-4 w-4 text-gray-500" /> Save setup as agent…
-              </button>
-              <button type="button" role="menuitem" class="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50" @click="removeActive">
-                <ChatGlyph name="trash" class="h-4 w-4" /> Delete chat
-              </button>
-            </div>
-          </div>
         </header>
 
         <div ref="scrollRef" class="min-h-0 flex-1 overflow-y-auto" data-test="chat-messages">
@@ -173,16 +152,6 @@
       />
     </template>
 
-    <ChatSaveAsAgentDialog
-      v-if="saveOpen && activeChat"
-      :agent="activeAgent"
-      :runtime-label="findRuntime(activeChat.runtime).shortLabel"
-      :model-label="findModel(activeChat.modelId)?.name ?? activeChat.modelId"
-      :thinking="activeChat.thinking"
-      :suggested-name="`${activeAgent.name} – ${activeChat.title}`.slice(0, 48)"
-      @close="saveOpen = false"
-      @save="onSaved"
-    />
 
     <div
       v-if="state.toast"
@@ -201,11 +170,9 @@ import ChatComposer from '~/components/chat/ChatComposer.vue'
 import ChatGlyph from '~/components/chat/ChatGlyph.vue'
 import ChatModelPicker from '~/components/chat/ChatModelPicker.vue'
 import ChatEffortPicker from '~/components/chat/ChatEffortPicker.vue'
-import ChatSaveAsAgentDialog from '~/components/chat/ChatSaveAsAgentDialog.vue'
 import ChatWorkspacePanel from '~/components/chat/ChatWorkspacePanel.vue'
 import ChatWorkspacePicker from '~/components/chat/ChatWorkspacePicker.vue'
 import { findAgent, findModel, findRuntime, usePrototypeChat } from '~/composables/chat/usePrototypeChat'
-import { useChatPopover } from '~/composables/chat/useChatPopover'
 
 const chat = usePrototypeChat()
 const { state } = chat
@@ -248,22 +215,4 @@ const scrollToEnd = () => nextTick(() => {
 })
 watch(() => [activeId.value, activeChat.value?.messages.length, activeChat.value?.messages.at(-1)?.text], scrollToEnd, { immediate: true })
 
-const menuRootRef = ref<HTMLElement | null>(null)
-const menuTriggerRef = ref<HTMLElement | null>(null)
-const menu = useChatPopover(menuRootRef, menuTriggerRef, 200)
-const saveOpen = ref(false)
-const openSave = () => {
-  menu.close(false)
-  saveOpen.value = true
-}
-const onSaved = (name: string) => {
-  saveOpen.value = false
-  chat.showToast(`Agent “${name}” created (prototype only).`)
-}
-const removeActive = () => {
-  menu.close(false)
-  if (!activeChat.value) return
-  chat.deleteChat(activeChat.value.id)
-  void router.push('/chat')
-}
 </script>

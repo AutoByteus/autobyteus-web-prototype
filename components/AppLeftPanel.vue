@@ -79,10 +79,19 @@
         tabindex="-1"
         class="min-h-0 flex-1 border-b border-gray-200 bg-white outline-none"
       >
-        <div class="h-full">
-          <ChatHistoryPanel v-if="isChatRoute" />
+        <div class="flex h-full flex-col">
+          <div v-if="isChatRoute" class="flex-shrink-0 px-2 pb-1 pt-2">
+            <NuxtLink
+              to="/chat"
+              data-test="chat-new-chat"
+              class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100"
+            >
+              <Icon icon="heroicons:pencil-square" class="h-4 w-4 flex-shrink-0" />
+              <span class="truncate">New chat</span>
+            </NuxtLink>
+          </div>
           <WorkspaceAgentRunsTreePanel
-            v-else
+            class="min-h-0 flex-1"
             @run-selected="onRunningRunSelected"
             @run-created="onRunningRunCreated"
           />
@@ -113,7 +122,6 @@ import { computed, onMounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
 import WorkspaceAgentRunsTreePanel from '~/components/workspace/history/WorkspaceAgentRunsTreePanel.vue';
-import ChatHistoryPanel from '~/components/chat/ChatHistoryPanel.vue';
 import { useAppLeftPanelSectionResize } from '~/composables/useAppLeftPanelSectionResize';
 import { useLeftPanel } from '~/composables/useLeftPanel';
 import {

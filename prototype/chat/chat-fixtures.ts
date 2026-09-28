@@ -138,7 +138,7 @@ export const CHAT_WORKSPACES: ChatWorkspace[] = [
   { id: TEMP_WORKSPACE_ID, name: 'Temp workspace', path: '~/.autobyteus/temp_workspace', isTemp: true },
   { id: 'ws-agents', name: 'autobyteus-agents', path: '~/autobyteus_org/autobyteus-agents' },
   { id: 'ws-superrepo', name: 'autobyteus-workspace-superrepo', path: '~/autobyteus_org/autobyteus-workspace-superrepo' },
-  { id: 'ws-prototype', name: 'Prototype Workspace', path: '~/prototype-workspace' },
+  { id: 'ws-prototype', name: 'prototype-workspace', path: '/synthetic/prototype-workspace' },
 ]
 
 export const INITIAL_RECENTS: ChatCombo[] = [
@@ -164,6 +164,8 @@ export interface ChatRecord {
   workspaceId: string
   group: 'Today' | 'Yesterday' | 'Previous 7 days'
   age: string
+  /** Minutes before prototype load; drives the tree's relative time. */
+  ageMinutes: number
   status: 'idle' | 'running'
   messages: ChatMessage[]
 }
@@ -179,6 +181,7 @@ export const INITIAL_CHATS: ChatRecord[] = [
     workspaceId: 'ws-agents',
     group: 'Today',
     age: '2h',
+    ageMinutes: 120,
     status: 'idle',
     messages: [
       { id: 'm1', role: 'user', text: 'Review the shell-first-operating-practice skill and suggest what to tighten.' },
@@ -199,6 +202,7 @@ export const INITIAL_CHATS: ChatRecord[] = [
     workspaceId: TEMP_WORKSPACE_ID,
     group: 'Today',
     age: '5h',
+    ageMinutes: 300,
     status: 'idle',
     messages: [
       { id: 'm1', role: 'user', text: 'Plan a relaxed weekend in Munich for two.' },
@@ -215,6 +219,7 @@ export const INITIAL_CHATS: ChatRecord[] = [
     workspaceId: 'ws-superrepo',
     group: 'Yesterday',
     age: '1d',
+    ageMinutes: 1500,
     status: 'idle',
     messages: [
       { id: 'm1', role: 'user', text: 'Where is the run config locked after the first message?' },
@@ -230,6 +235,7 @@ export const INITIAL_CHATS: ChatRecord[] = [
     workspaceId: TEMP_WORKSPACE_ID,
     group: 'Previous 7 days',
     age: '4d',
+    ageMinutes: 5760,
     status: 'idle',
     messages: [
       { id: 'm1', role: 'user', text: 'Say hello from the local model.' },
