@@ -48,6 +48,7 @@
             </template>
             <template #left>
               <ChatWorkspacePicker :workspace-id="state.draft.workspaceId" @select="(id) => (state.draft.workspaceId = id)" />
+              <ChatAutoApproveToggle v-model="state.draft.autoApprove" />
             </template>
             <template #right>
               <ChatModelPicker
@@ -68,7 +69,7 @@
               Starting {{ draftTeam ? draftTeam.name : draftAgent.name }} on {{ draftRuntime.label }}…
             </template>
             <template v-else-if="draftTeam">
-              <span data-test="chat-team-note">All members use this model and the {{ draftWorkspace.isTemp ? 'temp workspace' : draftWorkspace.name }}. For per-member setup, start it from
+              <span data-test="chat-team-note">All members use this model, the {{ draftWorkspace.isTemp ? 'temp workspace' : draftWorkspace.name }} and this approval setting. For per-member setup, start it from
                 <NuxtLink to="/agent-teams?view=team-list" class="font-medium text-blue-700 hover:underline">Agent Teams</NuxtLink>.</span>
             </template>
             <template v-else>
@@ -103,6 +104,16 @@
               <span class="text-gray-300">·</span>
               <ChatGlyph name="folder" class="h-3.5 w-3.5 flex-shrink-0" />
               <span class="truncate" :title="activeWorkspace.path">{{ activeWorkspace.name }}</span>
+              <span class="text-gray-300">·</span>
+              <span
+                class="inline-flex flex-shrink-0 items-center gap-1"
+                :class="activeChat.autoApprove === false ? 'text-amber-700' : ''"
+                data-test="chat-header-approval"
+                :title="activeChat.autoApprove === false ? 'Tools ask before running in this chat' : 'Tools run without asking in this chat'"
+              >
+                <ChatGlyph :name="activeChat.autoApprove === false ? 'shield-hand' : 'shield-check'" class="h-3.5 w-3.5" />
+                {{ activeChat.autoApprove === false ? 'Ask first' : 'Auto-approve' }}
+              </span>
             </p>
           </div>
           <button
@@ -227,6 +238,7 @@ import ChatEffortPicker from '~/components/chat/ChatEffortPicker.vue'
 import RightSideTabs from '~/components/layout/RightSideTabs.vue'
 import { useRightPanel } from '~/composables/useRightPanel'
 import ChatWorkspacePicker from '~/components/chat/ChatWorkspacePicker.vue'
+import ChatAutoApproveToggle from '~/components/chat/ChatAutoApproveToggle.vue'
 import { findAgent, findModel, findRuntime, findTeam, usePrototypeChat } from '~/composables/chat/usePrototypeChat'
 
 const chat = usePrototypeChat()

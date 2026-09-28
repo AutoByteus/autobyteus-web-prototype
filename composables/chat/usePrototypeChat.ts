@@ -45,6 +45,8 @@ interface DraftState {
   skills: string[]
   /** Set when the new chat is addressed to an agent team (its coordinator). */
   teamId: string | null
+  /** Auto-approve tools: on by default for every new chat, in any workspace. */
+  autoApprove: boolean
 }
 
 interface ChatState {
@@ -84,7 +86,7 @@ const state = reactive<ChatState>({
     grok_build: 'idle',
   },
   catalogFailuresRemaining: {},
-  draft: { agentId: CHAT_ASSISTANT_ID, runtime: 'autobyteus', modelId: 'gpt-5.5', workspaceId: TEMP_WORKSPACE_ID, text: '', skills: [], teamId: null },
+  draft: { agentId: CHAT_ASSISTANT_ID, runtime: 'autobyteus', modelId: 'gpt-5.5', workspaceId: TEMP_WORKSPACE_ID, text: '', skills: [], teamId: null, autoApprove: true },
   starting: false,
   workspacePanelOpen: false,
   toast: null,
@@ -124,6 +126,7 @@ const resetDraft = () => {
     text: '',
     skills: [],
     teamId: null,
+    autoApprove: true,
   }
 }
 
@@ -338,6 +341,7 @@ const startChat = async (): Promise<ChatRecord | null> => {
     age: 'now',
     ageMinutes: 0,
     status: 'running',
+    autoApprove: state.draft.autoApprove,
     messages: [{ id: nextId('m'), role: 'user', text, skills: [...state.draft.skills], sentText: buildSentText(text, state.draft.skills) }],
   }
   state.chats.unshift(chat)

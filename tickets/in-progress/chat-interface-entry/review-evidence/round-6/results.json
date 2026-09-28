@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-28T14:46:55.734Z",
+  "generatedAt": "2026-09-28T14:55:35.609Z",
   "baseUrl": "http://127.0.0.1:3271",
-  "total": 27,
-  "passed": 27,
+  "total": 28,
+  "passed": 28,
   "results": [
     {
       "id": "CHK-001",
@@ -107,6 +107,11 @@
     {
       "id": "CHK-027",
       "description": "Chats follow the normal Workspaces tree rules: workspaces by name, collapsed unless holding the open chat, agents under each workspace",
+      "pass": true
+    },
+    {
+      "id": "CHK-028",
+      "description": "Auto-approve is on by default in every workspace, can be turned off, and the chat header shows the mode",
       "pass": true
     },
     {
