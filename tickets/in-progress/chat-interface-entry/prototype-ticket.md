@@ -5,7 +5,7 @@
 - Product ticket: `chat-interface-entry`
 - Stable requirements package: `chat-interface-entry` (SR-001, requirements Draft)
 - Title: Chat entry above Agents, New chat, and easy runtime/model selection
-- Status: `Awaiting User Review` (round 6)
+- Status: `Completed`
 - Mode: `Product Experience Prototyping`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-28
 - Decision questions: DEC-001 (primary: runtime + model picker), DEC-002 to DEC-007 (supporting); REQ-001 to REQ-007 draft
@@ -33,13 +33,23 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - Static checks: typecheck pass (pre-existing duplicate-import warnings only), lint pass, 12/12 tests.
 - Non-normative review screenshots: `review-evidence/round-1/`
 
+## Final Package
+
+- User confirmation: user message 2026-09-28 — approval conditional on a final consistency check ("If you think everything is consistent, then I think we're done with prototype UI … create the details … so that [the] solution engineer [has] enough UI specification"). Final consistency pass completed (PC-035); no discrepancy remained.
+- UI/UX specification: `tickets/done/chat-interface-entry/ui-ux-spec.md` (status `Approved`)
+- Final visual references: `tickets/done/chat-interface-entry/visual-references/VIS-001`…`VIS-025` + `manifest.json` (SHA-256 per file)
+- Behavior matrix: `ui-behavior-test-matrix.md`; runbook: `prototype-runbook.md`; change log: `prototype-change-log.md` (PC-001–PC-035)
+- Final validation: `validate-chat-interface-entry.mjs` 30/30 pass, 0 browser errors (1 known baseline upload error classified separately), typecheck pass — `review-evidence/final-validation/`
+- Default entry point: `/chat`, reached from the first primary-navigation item `Chat` with no preview-only state (the approved experience is part of the normal product shell).
+- Open items for Solution Designer: OPEN-001 thinking control shape (schema-driven), OPEN-002 landing route (DEC-005), OPEN-003 Daily Assistant provisioning, OPEN-004 Recent persistence scope, OPEN-005 instruction wording, DEC-008 disposition.
+
 ## Intake Findings
 
 - Current source (`fcd3e83a4`) supports replacing the model of an existing run while keeping the runtime locked (`ExistingRunModelChoice`, `RuntimeModelConfigFields` `originalModelIdentifier`). Relevant to DEC-006.
 
 ## Runtime
 
-- Ticket review port: `3271` (stopped while paused).
+- Ticket review port: `3271` (ticket worktree dev server; stopped at cleanup).
 
 ## Status History
 
@@ -64,3 +74,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-28: user: model settings can only change when a run is stopped, not while running. Verified against the server rule (`runModelConfigEditability`: RUN_ACTIVE). Implemented PC-032 (locked controls + Stop run; Stopped state; run views locked while live). Validation 30/30, 0 browser errors.
 - 2026-09-28: user: no duplicate Stop run in the message box; just lock, stop via the tree. Implemented PC-033. Validation 30/30, 0 browser errors.
 - 2026-09-28: user: divider notes not needed. Removed (PC-034). Validation 30/30, 0 browser errors.
+- 2026-09-28: final consistency pass (PC-035); user confirmation recorded; final references VIS-001–VIS-025 captured; ui-ux-spec.md, behavior matrix and runbook written. `Completed`.

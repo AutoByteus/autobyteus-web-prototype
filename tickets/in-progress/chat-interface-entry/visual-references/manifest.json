@@ -1,0 +1,232 @@
+{
+  "capturedAt": "2026-09-28T17:11:45.353Z",
+  "baseUrl": "http://127.0.0.1:3271",
+  "references": [
+    {
+      "id": "VIS-001",
+      "filename": "VIS-001-new-chat-default-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-001 New chat",
+      "state": "Default (Daily Assistant, Temp workspace, Auto-approve, last-used model)",
+      "journeys": "UXJ-001",
+      "sha256": "74b6d8c57c8bd2d65040eefd9e0369d51b1e005543b8815ec20d3eb06a41df63"
+    },
+    {
+      "id": "VIS-002",
+      "filename": "VIS-002-model-menu-recent-runtimes-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-003 Model menu",
+      "state": "Open: search, Recent, Runtimes",
+      "journeys": "UXJ-002",
+      "sha256": "e82916c8061a967c1605c1ddb3c77ce374ba1546d0edd9a7cabd1311c22e196c"
+    },
+    {
+      "id": "VIS-003",
+      "filename": "VIS-003-model-menu-runtime-submenu-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-003 Model menu",
+      "state": "Runtime submenu (AutoByteus models by provider)",
+      "journeys": "UXJ-002",
+      "sha256": "fdf5d250dc5d152d0e3b59ed149a2e6069118dddcce0e3836b10f2a3b4d1a9de"
+    },
+    {
+      "id": "VIS-004",
+      "filename": "VIS-004-model-menu-search-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-003 Model menu",
+      "state": "Cross-runtime search \"opus\"",
+      "journeys": "UXJ-002",
+      "sha256": "8997cc7deea23238bb9f9df2b7b0e1235dd929642cc3d6788b35e1de7d5e6255"
+    },
+    {
+      "id": "VIS-005",
+      "filename": "VIS-005-model-menu-loading-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-003 Model menu",
+      "state": "Runtime catalog loading (Antigravity CLI)",
+      "journeys": "UXJ-002",
+      "sha256": "392c3d7529f7815bd55f1101827de3d28c9a9865ebd17871eb5be5febca752a4"
+    },
+    {
+      "id": "VIS-006",
+      "filename": "VIS-006-model-menu-catalog-error-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-003 Model menu",
+      "state": "Catalog error with Retry",
+      "journeys": "UXJ-002",
+      "sha256": "c8d75332e0940fd104530f11ddca4ff023b6aa968dfb56bdc435b126b21fd947"
+    },
+    {
+      "id": "VIS-007",
+      "filename": "VIS-007-model-menu-runtime-not-installed-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-003 Model menu",
+      "state": "Runtime not installed (Grok Build)",
+      "journeys": "UXJ-002",
+      "sha256": "54cd7435485cb46da139e916728bcc53d4e97c90017327bca1591b0953a656de"
+    },
+    {
+      "id": "VIS-008",
+      "filename": "VIS-008-thinking-menu-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-004 Thinking control",
+      "state": "Open (illustrative effort levels)",
+      "journeys": "UXJ-002",
+      "sha256": "1706ef778cb901ba4075b700bd5edab9067ece6673c939ede6e1aa1d693d66e9"
+    },
+    {
+      "id": "VIS-009",
+      "filename": "VIS-009-workspace-menu-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-005 Workspace menu",
+      "state": "Open: Temp workspace default, your workspaces, open another folder",
+      "journeys": "UXJ-003",
+      "sha256": "6d0280091a792f4b48ef77345d872569ff2f48b1ee85f58652997c6fba1693e4"
+    },
+    {
+      "id": "VIS-010",
+      "filename": "VIS-010-skill-slash-menu-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-006 Skill menu",
+      "state": "\"/sk\" ranked matches",
+      "journeys": "UXJ-004",
+      "sha256": "e549fe5296c8ca88e06ac6b02e0f40a8be4be19d069fefb7f8c19c596f79115f"
+    },
+    {
+      "id": "VIS-011",
+      "filename": "VIS-011-composer-chips-attachments-ask-first-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-002 Message box",
+      "state": "Skill chips + file chip + image thumbnail + text; Ask first",
+      "journeys": "UXJ-004, UXJ-008",
+      "sha256": "ccd712d5498fe93c0087bb4953d2dffa4593ce94f2472cc6cfdbc7af86821a35"
+    },
+    {
+      "id": "VIS-012",
+      "filename": "VIS-012-at-agent-team-menu-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-007 Agent/team menu",
+      "state": "\"@\" lists Agents and Agent teams",
+      "journeys": "UXJ-005",
+      "sha256": "018b831c72c0df63e5a5fd5ebf634cc0b6e03fef5266acb87dbc378fedef2a43"
+    },
+    {
+      "id": "VIS-013",
+      "filename": "VIS-013-team-chat-draft-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-001 New chat",
+      "state": "Addressed to a team: team chip, coordinator subtitle, quick-path note",
+      "journeys": "UXJ-006",
+      "sha256": "55e53ceb9e036aec1aa8cecb97269a46d43126aff425f7d5017ec193dbfdcf9d"
+    },
+    {
+      "id": "VIS-014",
+      "filename": "VIS-014-agent-chat-draft-codex-skills-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-001 New chat",
+      "state": "Addressed to Codex: agent chip; \"/\" lists only Codex skills",
+      "journeys": "UXJ-005",
+      "sha256": "a124a551d3a53ef02f81a7d9765419c7db229351b40510c7ae6737d37c52833c"
+    },
+    {
+      "id": "VIS-015",
+      "filename": "VIS-015-active-chat-live-locked-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-008 Active chat",
+      "state": "Live run (Idle): model and thinking locked; tree row selected with Terminate",
+      "journeys": "UXJ-001, UXJ-007",
+      "sha256": "4a6226a53e3c96abf116cc0cd1fcbe1fabbe4b181ef9474ba7cbcb1fb00632b2"
+    },
+    {
+      "id": "VIS-016",
+      "filename": "VIS-016-sent-as-tooltip-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-008 Active chat",
+      "state": "Hover skill chips: \"Sent to the agent as\"",
+      "journeys": "UXJ-004",
+      "sha256": "7ef384e5f70b3d05b4a44d35840cb352b717f9f573adac25d24366258a89725b"
+    },
+    {
+      "id": "VIS-017",
+      "filename": "VIS-017-stopped-chat-model-menu-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-008 Active chat",
+      "state": "Terminated run (Offline): model editable, runtime fixed",
+      "journeys": "UXJ-007",
+      "sha256": "6b293004d011e32dfda62d757bd9f66d14bce2e85c44f9bf18a1bbd8232ce6df"
+    },
+    {
+      "id": "VIS-018",
+      "filename": "VIS-018-right-tool-panel-open-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-009 Right tool strip / panel",
+      "state": "Panel opened from the strip on Artifacts",
+      "journeys": "UXJ-009",
+      "sha256": "ca69f8c13305af5512a4fe5f8ad14a8342c386d2b494f0652a799b62fd6ed5ba"
+    },
+    {
+      "id": "VIS-019",
+      "filename": "VIS-019-stored-chat-strip-collapsed-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-008 Active chat",
+      "state": "Stored chat from history (Offline), right strip collapsed",
+      "journeys": "UXJ-001, UXJ-009",
+      "sha256": "fe168032e3d6597c9d3bf80319b18fdacd0f36a2b31c05f49bbb9419499d98eb"
+    },
+    {
+      "id": "VIS-020",
+      "filename": "VIS-020-team-member-run-view-unified-box-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-010 Run view message box",
+      "state": "Team member focus with the unified box and a file chip",
+      "journeys": "UXJ-010",
+      "sha256": "7d6e2af70b8a654d42393a0300f096395194b4922818a4004fdab4b30a2b8225"
+    },
+    {
+      "id": "VIS-021",
+      "filename": "VIS-021-workspaces-tree-normal-order-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-011 Workspaces tree",
+      "state": "Normal product ordering; Daily Assistant group like any agent",
+      "journeys": "UXJ-001",
+      "sha256": "e45d41b12549cfe44aeb0129b5eaee7813581efeed4fc85c1a4dd834f12e645f"
+    },
+    {
+      "id": "VIS-022",
+      "filename": "VIS-022-first-run-model-menu-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-003 Model menu",
+      "state": "First run: no Recent, AutoByteus default",
+      "journeys": "UXJ-002",
+      "sha256": "03141ce88730ebd71941a4731c3327ec12e406b1ec51046ce9d85b9d0b0f2dab"
+    },
+    {
+      "id": "VIS-023",
+      "filename": "VIS-023-narrow-new-chat-390x844.png",
+      "viewport": "390x844",
+      "surface": "UIS-001 New chat",
+      "state": "Narrow viewport",
+      "journeys": "UXJ-001",
+      "sha256": "3a1b09ab17913298d4bf59da5021f0be64c485531a558b191f75c76dc4bd06b0"
+    },
+    {
+      "id": "VIS-024",
+      "filename": "VIS-024-narrow-model-bottom-sheet-390x844.png",
+      "viewport": "390x844",
+      "surface": "UIS-003 Model menu",
+      "state": "Narrow bottom sheet",
+      "journeys": "UXJ-002",
+      "sha256": "bc588446bad63a96739120beee3ef239d3101985c560938c6f4cb943cc189d37"
+    },
+    {
+      "id": "VIS-025",
+      "filename": "VIS-025-chat-with-voice-available-1440x900.png",
+      "viewport": "1440x900",
+      "surface": "UIS-002 Message box",
+      "state": "Voice Input extension installed: mic before send (desktop app)",
+      "journeys": "UXJ-008",
+      "sha256": "0fa4a52e481563b8ef992b613d920802b55202dcad6e52be6c34cd86a9aa3fc4"
+    }
+  ],
+  "errors": []
+}
