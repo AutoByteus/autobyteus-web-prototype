@@ -17,7 +17,7 @@
       @input="onInput"
       @keydown.enter.exact.prevent="submit"
     ></textarea>
-    <div class="flex flex-wrap items-center gap-1.5 px-2.5 pb-2.5 pt-1">
+    <div class="flex flex-wrap items-center gap-0.5 px-2 pb-2 pt-1">
       <button
         type="button"
         class="inline-flex h-7 w-7 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
@@ -29,8 +29,9 @@
         <ChatGlyph name="paperclip" class="h-4 w-4" />
       </button>
       <slot name="left" />
-      <div class="ml-auto flex items-center gap-1.5">
+      <div class="ml-auto flex items-center gap-0.5">
         <slot name="right" />
+        <span class="w-1"></span>
         <button
           v-if="running"
           type="button"

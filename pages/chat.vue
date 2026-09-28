@@ -30,6 +30,11 @@
                 :thinking="state.draft.thinking"
                 @select="chat.setDraftCombo"
               />
+              <ChatEffortPicker
+                :model-id="state.draft.modelId"
+                :thinking="state.draft.thinking"
+                @select="(level) => (state.draft.thinking = level)"
+              />
             </template>
           </ChatComposer>
           <p class="mt-2.5 flex items-center justify-center gap-1.5 text-center text-xs text-gray-400" data-test="chat-new-hint">
@@ -151,6 +156,11 @@
                 locked-runtime
                 @select="(combo) => chat.switchChatModel(activeChat!.id, combo)"
               />
+              <ChatEffortPicker
+                :model-id="activeChat.modelId"
+                :thinking="activeChat.thinking"
+                @select="(level) => chat.switchChatModel(activeChat!.id, { runtime: activeChat!.runtime, modelId: activeChat!.modelId, thinking: level })"
+              />
             </template>
           </ChatComposer>
         </div>
@@ -190,6 +200,7 @@ import ChatAgentPicker from '~/components/chat/ChatAgentPicker.vue'
 import ChatComposer from '~/components/chat/ChatComposer.vue'
 import ChatGlyph from '~/components/chat/ChatGlyph.vue'
 import ChatModelPicker from '~/components/chat/ChatModelPicker.vue'
+import ChatEffortPicker from '~/components/chat/ChatEffortPicker.vue'
 import ChatSaveAsAgentDialog from '~/components/chat/ChatSaveAsAgentDialog.vue'
 import ChatWorkspacePanel from '~/components/chat/ChatWorkspacePanel.vue'
 import ChatWorkspacePicker from '~/components/chat/ChatWorkspacePicker.vue'

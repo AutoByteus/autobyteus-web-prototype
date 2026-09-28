@@ -4,8 +4,8 @@
       ref="triggerRef"
       type="button"
       data-test="chat-agent-trigger"
-      class="inline-flex max-w-[14rem] items-center gap-1.5 rounded-md border border-gray-200 bg-white py-1 pl-1 pr-2 text-[0.8125rem] leading-5 text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
-      :class="popover.open.value ? 'bg-gray-50 ring-2 ring-blue-500/30' : ''"
+      class="inline-flex max-w-[14rem] items-center gap-1.5 rounded-md px-2 py-1 text-[0.8125rem] leading-5 text-gray-600 transition-colors hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+      :class="popover.open.value ? 'bg-gray-100' : ''"
       :aria-expanded="popover.open.value ? 'true' : 'false'"
       aria-haspopup="listbox"
       :aria-label="`Agent: ${agent.name}. Change agent`"
@@ -13,7 +13,7 @@
       @click="toggle"
     >
       <span class="inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-[0.5625rem] font-semibold text-slate-600">{{ agent.initials }}</span>
-      <span class="truncate font-medium text-gray-900">{{ agent.name }}</span>
+      <span class="truncate font-medium text-gray-800">{{ agent.name }}</span>
       <ChatGlyph name="chevron-down" class="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
     </button>
 

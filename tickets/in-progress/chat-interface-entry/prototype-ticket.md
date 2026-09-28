@@ -5,7 +5,7 @@
 - Product ticket: `chat-interface-entry`
 - Stable requirements package: `chat-interface-entry` (SR-001, requirements Draft)
 - Title: Chat entry above Agents, New chat, and easy runtime/model selection
-- Status: `Awaiting User Review` (round 1)
+- Status: `Awaiting User Review` (round 2)
 - Mode: `Product Experience Prototyping`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-28
 - Decision questions: DEC-001 (primary: runtime + model picker), DEC-002 to DEC-007 (supporting); REQ-001 to REQ-007 draft
@@ -48,3 +48,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-28: refresh accepted and integrated (`personal` fast-forwarded `ba67ac0` -> `5ae0fe1`); ticket branch fast-forwarded to `5ae0fe1` and WIP reapplied without conflict. Resumed `In Progress`.
 - Note: the legacy `workspace_*` rich-state scenarios are not source-verified at the new pin; chat states use focused prototype-native fixtures in this ticket.
 - 2026-09-28: round-1 prototype ready; `Awaiting User Review`.
+- 2026-09-28: user feedback on round 1 picker: "This UI is terrible." `In Progress`; redesigned (PC-011..PC-013); round 2 `Awaiting User Review`. Validation 21/21, 0 browser errors (`review-evidence/round-2/`).
