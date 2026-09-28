@@ -43,6 +43,15 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - Default entry point: `/chat`, reached from the first primary-navigation item `Chat` with no preview-only state (the approved experience is part of the normal product shell).
 - Open items for Solution Designer: OPEN-001 thinking control shape (schema-driven), OPEN-002 landing route (DEC-005), OPEN-003 Daily Assistant provisioning, OPEN-004 Recent persistence scope, OPEN-005 instruction wording, DEC-008 disposition.
 
+## Integration And Cleanup
+
+- Ticket result revision: `27f9b74` on `prototype/chat-interface-entry`
+- Integration: `Completed` — canonical `personal` fast-forwarded `5ae0fe1` → `27f9b74` (this record is the following docs commit on `personal`).
+- Baseline promotion: `Completed` — the approved experience is part of the normal product shell (`/chat`, first primary-navigation item); no preview-only route or state.
+- Post-integration validation: canonical `personal` on port 3212 — `validate-chat-interface-entry.mjs` 30/30 pass, 0 browser errors; `pnpm test` 12/12 (`review-evidence/post-integration/results.json`).
+- Remote: `personal` pushed to `origin` (`AutoByteus/autobyteus-web-prototype`).
+- Cleanup: ticket dev server (3271) and canonical validation server (3212) stopped; ticket worktree and merged local branch `prototype/chat-interface-entry` removed.
+
 ## Intake Findings
 
 - Current source (`fcd3e83a4`) supports replacing the model of an existing run while keeping the runtime locked (`ExistingRunModelChoice`, `RuntimeModelConfigFields` `originalModelIdentifier`). Relevant to DEC-006.
