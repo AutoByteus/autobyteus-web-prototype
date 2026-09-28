@@ -13,12 +13,12 @@
       >
         <nav :aria-label="$t('shell.components.AppLeftPanel.primary_navigation')">
           <ul class="space-y-1">
-            <li v-for="item in primaryNavItems" :key="item.key" class="relative">
+            <li v-for="(item, itemIndex) in primaryNavItems" :key="item.key" class="relative">
               <button
                 type="button"
                 class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm font-medium transition-colors"
                 :class="[
-                  item.key === 'agents' ? 'pr-12' : '',
+                  itemIndex === 0 ? 'pr-12' : '',
                   isPrimaryNavActive(item.key)
                     ? 'bg-gray-100 text-gray-900'
                     : 'text-gray-700 hover:bg-gray-100',
@@ -49,7 +49,7 @@
               </button>
 
               <button
-                v-if="item.key === 'agents'"
+                v-if="itemIndex === 0"
                 type="button"
                 class="absolute right-1.5 top-1/2 hidden -translate-y-1/2 rounded-md p-2 transition-colors md:inline-flex"
                 :title="$t('shell.components.AppLeftPanel.collapse_left_panel')"
@@ -80,7 +80,9 @@
         class="min-h-0 flex-1 border-b border-gray-200 bg-white outline-none"
       >
         <div class="h-full">
+          <ChatHistoryPanel v-if="isChatRoute" />
           <WorkspaceAgentRunsTreePanel
+            v-else
             @run-selected="onRunningRunSelected"
             @run-created="onRunningRunCreated"
           />
@@ -111,6 +113,7 @@ import { computed, onMounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
 import WorkspaceAgentRunsTreePanel from '~/components/workspace/history/WorkspaceAgentRunsTreePanel.vue';
+import ChatHistoryPanel from '~/components/chat/ChatHistoryPanel.vue';
 import { useAppLeftPanelSectionResize } from '~/composables/useAppLeftPanelSectionResize';
 import { useLeftPanel } from '~/composables/useLeftPanel';
 import {
@@ -138,6 +141,7 @@ const {
   initPrimarySectionResize,
 } = useAppLeftPanelSectionResize();
 
+const isChatRoute = computed(() => route.path.startsWith('/chat'));
 const isSettingsActive = computed(() => route.path.startsWith('/settings'));
 const showSettingsNavigation = computed(() => isFeatureAvailableInRuntime('desktopSettings'));
 

@@ -1,0 +1,114 @@
+{
+  "generatedAt": "2026-09-28T11:34:58.054Z",
+  "baseUrl": "http://127.0.0.1:3271",
+  "total": 21,
+  "passed": 21,
+  "results": [
+    {
+      "id": "CHK-001",
+      "description": "Chat is the first primary navigation entry above Agents",
+      "pass": true
+    },
+    {
+      "id": "CHK-002",
+      "description": "Clicking Chat opens the New chat composer",
+      "pass": true
+    },
+    {
+      "id": "CHK-003",
+      "description": "New chat defaults: last agent, remembered model, temp workspace",
+      "pass": true
+    },
+    {
+      "id": "CHK-004",
+      "description": "Model picker shows quick picks, runtime rail and runtime-scoped models",
+      "pass": true
+    },
+    {
+      "id": "CHK-005",
+      "description": "Browsing a not-yet-loaded runtime shows loading then models",
+      "pass": true
+    },
+    {
+      "id": "CHK-006",
+      "description": "Unavailable runtime explains why and offers no models",
+      "pass": true
+    },
+    {
+      "id": "CHK-007",
+      "description": "Search spans runtimes and groups results by runtime",
+      "pass": true
+    },
+    {
+      "id": "CHK-008",
+      "description": "Choosing a search result updates the pill and closes the picker",
+      "pass": true
+    },
+    {
+      "id": "CHK-009",
+      "description": "Reasoning effort changes in place",
+      "pass": true
+    },
+    {
+      "id": "CHK-010",
+      "description": "Agent picker lists agents; agent default model is applied",
+      "pass": true
+    },
+    {
+      "id": "CHK-011",
+      "description": "Workspace picker: temp default, existing folders, open another folder",
+      "pass": true
+    },
+    {
+      "id": "CHK-012",
+      "description": "Quick pick restores a recent runtime+model in one click",
+      "pass": true
+    },
+    {
+      "id": "CHK-013",
+      "description": "Sending the first message starts a chat run and opens it",
+      "pass": true
+    },
+    {
+      "id": "CHK-014",
+      "description": "Mid-chat picker keeps the runtime and switches the model",
+      "pass": true
+    },
+    {
+      "id": "CHK-015",
+      "description": "Workspace panel is hidden by default and opens on demand",
+      "pass": true
+    },
+    {
+      "id": "CHK-016",
+      "description": "Save setup as agent dialog previews agent, skills and model",
+      "pass": true
+    },
+    {
+      "id": "CHK-017",
+      "description": "Existing chats reopen from the Chats list",
+      "pass": true
+    },
+    {
+      "id": "CHK-018",
+      "description": "Agents catalog is unchanged and still reachable",
+      "pass": true
+    },
+    {
+      "id": "CHK-019",
+      "description": "Catalog error shows retry and recovers",
+      "pass": true
+    },
+    {
+      "id": "CHK-020",
+      "description": "First run: no chats, no quick picks, AutoByteus default model",
+      "pass": true
+    },
+    {
+      "id": "CHK-021",
+      "description": "Narrow: composer controls wrap without overflow; picker fits the viewport",
+      "pass": true
+    }
+  ],
+  "browserErrors": []
+}

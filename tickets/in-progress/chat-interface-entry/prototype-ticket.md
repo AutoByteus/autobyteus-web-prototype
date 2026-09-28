@@ -1,0 +1,50 @@
+# Prototype Ticket
+
+## Identity And Scope
+
+- Product ticket: `chat-interface-entry`
+- Stable requirements package: `chat-interface-entry` (SR-001, requirements Draft)
+- Title: Chat entry above Agents, New chat, and easy runtime/model selection
+- Status: `Awaiting User Review` (round 1)
+- Mode: `Product Experience Prototyping`
+- Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-28
+- Decision questions: DEC-001 (primary: runtime + model picker), DEC-002 to DEC-007 (supporting); REQ-001 to REQ-007 draft
+- Requirements context: `/Users/normy/autobyteus_org/autobyteus-worktrees/chat-interface-entry/tickets/in-progress/chat-interface-entry/`
+
+## Repository And Baseline
+
+- Canonical prototype repository/root: `/Users/normy/autobyteus_org/autobyteus-web-prototype`
+- Product task worktree: `/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/chat-interface-entry`
+- Product ticket branch: `prototype/chat-interface-entry`
+- Accepted prototype base at creation: `ba67ac069e6cf0bb95a7342a7e25185f08a0d4e4`
+- Current accepted prototype base: `5ae0fe1` (`WEB-BASELINE-REFRESH-001`, source pin `origin/personal@fcd3e83a4ca931ba52ed19bd37b8df3050ee529e`)
+- Selected frontend: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/autobyteus-web`
+
+## Pause Reason (resolved)
+
+On 2026-09-28 the user asked to bring the prototype baseline up to the latest source before continuing. `WEB-BASELINE-REFRESH-001` refreshes the baseline to `origin/personal@fcd3e83a4`. This ticket resumes on the refreshed accepted base, reconciling the uncommitted WIP deliberately.
+
+## Review Round 1
+
+- Review URL: http://127.0.0.1:3271/chat (ticket-owned dev server, port 3271)
+- Scenario selection: `localStorage.setItem('autobyteus.prototype.scenario', 'chat_first_run' | 'chat_catalog_error')`, then reload; `localStorage.clear()` to reset.
+- Change log: `tickets/in-progress/chat-interface-entry/prototype-change-log.md` (PC-001..PC-010)
+- Browser validation: `node prototype/scripts/validate-chat-interface-entry.mjs` → 21/21 pass, 0 browser errors (`review-evidence/round-1/results.json`)
+- Static checks: typecheck pass (pre-existing duplicate-import warnings only), lint pass, 12/12 tests.
+- Non-normative review screenshots: `review-evidence/round-1/`
+
+## Intake Findings
+
+- Current source (`fcd3e83a4`) supports replacing the model of an existing run while keeping the runtime locked (`ExistingRunModelChoice`, `RuntimeModelConfigFields` `originalModelIdentifier`). Relevant to DEC-006.
+
+## Runtime
+
+- Ticket review port: `3271` (stopped while paused).
+
+## Status History
+
+- 2026-09-28: opened, `In Progress`.
+- 2026-09-28: paused for user-requested baseline refresh `WEB-BASELINE-REFRESH-001`.
+- 2026-09-28: refresh accepted and integrated (`personal` fast-forwarded `ba67ac0` -> `5ae0fe1`); ticket branch fast-forwarded to `5ae0fe1` and WIP reapplied without conflict. Resumed `In Progress`.
+- Note: the legacy `workspace_*` rich-state scenarios are not source-verified at the new pin; chat states use focused prototype-native fixtures in this ticket.
+- 2026-09-28: round-1 prototype ready; `Awaiting User Review`.

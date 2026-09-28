@@ -374,7 +374,9 @@ export default defineNuxtPlugin({
     // selected snapshot (capability-gated routes resolve first).
     if (!localStorage.getItem('autobyteus.app-left-panel.primary-nav-height')) {
       const [, initialSnapshot] = findSnapshot()
-      localStorage.setItem('autobyteus.app-left-panel.primary-nav-height', initialSnapshot?.primaryNavHeight || '260')
+      // chat-interface-entry PC-003: the new first `Chat` item adds one 40px
+      // navigation row, so the initial split grows by that row.
+      localStorage.setItem('autobyteus.app-left-panel.primary-nav-height', String(Number(initialSnapshot?.primaryNavHeight || '260') + 40))
     }
     const pinia = nuxtApp.$pinia as PrototypePinia
     const router = nuxtApp.$router as Router
