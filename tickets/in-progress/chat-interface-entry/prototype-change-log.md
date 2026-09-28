@@ -1,7 +1,7 @@
 # Prototype Change Log — chat-interface-entry
 
 Base: accepted prototype `5ae0fe1` (source pin `origin/personal@fcd3e83a4ca931ba52ed19bd37b8df3050ee529e`).
-All entries are **proposals under user review** (round 1). Nothing here is approved yet.
+All entries are **proposals under user review** (rounds 1–2). Nothing here is approved yet.
 
 | ID | Kind | Change | Related IDs | Preserved behavior |
 | --- | --- | --- | --- | --- |
