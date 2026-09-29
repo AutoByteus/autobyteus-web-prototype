@@ -127,3 +127,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-29: reopened for R3 (SR-012). Implemented PC-042–PC-044; validation 31/31, 0 browser errors. `Awaiting User Review`.
 - 2026-09-29: user review: simplify; the chat run view is an agent view. Implemented PC-045 (header avatar/title/status only; product run-view body). Validation 31/31, 0 browser errors; typecheck pass. `Awaiting User Review`.
 - 2026-09-29: user: use the same view and the same settings as the agent view. Implemented PC-046 (⚙ product run settings, ＋ new run; shared right-panel state kept). Validation 32/32, 0 browser errors; typecheck pass. `Awaiting User Review`.
+- 2026-09-29: user: remove model/thinking from the box after the chat has started (consistent with agent/team views); keep `/`. Implemented PC-047. Validation 32/32, 0 browser errors; typecheck pass. `Awaiting User Review`.

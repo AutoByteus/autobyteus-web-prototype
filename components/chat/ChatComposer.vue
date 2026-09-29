@@ -43,6 +43,7 @@
             :value="modelValue"
             data-test="chat-composer-input"
             class="w-full px-3 py-2.5 border-0 focus:ring-0 focus:outline-none resize-none bg-transparent text-[0.9375rem] leading-6"
+            :class="hasFooter() ? '' : (voiceAvailable || voice !== 'idle') ? 'pr-28' : 'pr-14'"
             :style="{ height: `${height}px`, minHeight: `${MIN_HEIGHT}px`, maxHeight: `${MAX_HEIGHT}px` }"
             :placeholder="placeholder"
             :aria-label="placeholder"
@@ -52,6 +53,44 @@
             @keydown="onTextareaKeydown"
           ></textarea>
 
+          <!-- Run view (no footer): the product box's own mic and send positions -->
+          <template v-if="!hasFooter()">
+            <button
+              v-if="voiceAvailable || voice !== 'idle'"
+              type="button"
+              data-test="composer-voice"
+              class="absolute bottom-2 right-14 flex items-center justify-center p-2 rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              :class="voice === 'recording' ? 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500/50' : 'bg-slate-100 text-slate-700 hover:bg-slate-200 focus:ring-slate-400/50'"
+              :title="voice === 'recording' ? 'Stop recording' : 'Start voice input'"
+              :disabled="voice === 'transcribing' || starting"
+              @click="toggleVoice"
+            >
+              <Icon :icon="voice === 'recording' ? 'heroicons:stop-solid' : 'heroicons:microphone-solid'" class="h-5 w-5" />
+            </button>
+            <button
+              v-if="running"
+              type="button"
+              data-test="chat-stop"
+              class="absolute bottom-2 right-2 flex items-center justify-center p-2 text-white rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm bg-red-600 hover:bg-red-700 focus:ring-red-500/50"
+              title="Stop generation"
+              aria-label="Stop generation"
+              @click="emit('stop')"
+            >
+              <Icon icon="heroicons:stop-solid" class="h-5 w-5" />
+            </button>
+            <button
+              v-else
+              type="button"
+              data-test="chat-send"
+              class="absolute bottom-2 right-2 flex items-center justify-center p-2 text-white rounded-full focus:outline-none focus:ring-2 transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed bg-blue-600 hover:bg-blue-700 focus:ring-blue-500/50"
+              :disabled="!canSend"
+              :title="sendBlockedReason || 'Send message'"
+              :aria-label="sendBlockedReason || 'Send message'"
+              @click="submit"
+            >
+              <Icon icon="heroicons:paper-airplane-solid" class="h-5 w-5" />
+            </button>
+          </template>
         </div>
 
         <div
@@ -70,7 +109,7 @@
     </div>
 
     <!-- Chat-only footer: what can still be changed for this chat -->
-    <div class="flex flex-wrap items-center gap-0.5 rounded-b-xl border-t border-gray-100 bg-white px-2 py-1.5" data-test="chat-composer-footer">
+    <div v-if="hasFooter()" class="flex flex-wrap items-center gap-0.5 rounded-b-xl border-t border-gray-100 bg-white px-2 py-1.5" data-test="chat-composer-footer">
       <slot name="left" />
       <div class="ml-auto flex items-center gap-0.5">
         <slot name="right" />
@@ -232,6 +271,8 @@ const height = ref(MIN_HEIGHT)
 const canSend = computed(() => !props.starting && !props.sendBlockedReason && (props.modelValue.trim().length > 0 || props.skills.length > 0 || props.attachments.length > 0))
 // Evaluated at render time: slots are not reactive, so this must not be a computed.
 const hasChips = () => props.skills.length > 0 || Boolean(slots.chips)
+// New chat has footer controls; the run view box has none (model/thinking live under ⚙).
+const hasFooter = () => Boolean(slots.left || slots.right)
 
 // Voice input: shown only when the Voice Input extension is installed and enabled
 // (same rule as the run views). Recording is simulated in the prototype.
