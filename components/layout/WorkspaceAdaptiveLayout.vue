@@ -15,7 +15,11 @@
         :style="centerPaneStyle"
       >
         <div data-test="workspace-center-content-shell" class="relative flex-1 min-h-0 overflow-hidden">
-          <AgentOrgRunConfigPanel v-if="showAgentOrgRunConfig" />
+          <!-- chat-interface-entry R3: the Chat run view supplies its own center
+               content and reuses this frame's right tabs, strip, resize handle and
+               drawer unchanged. -->
+          <slot v-if="$slots.center" name="center" />
+          <AgentOrgRunConfigPanel v-else-if="showAgentOrgRunConfig" />
           <AgentOrgWorkspaceView v-else-if="showAgentOrgActive" />
           <RunConfigPanel v-else-if="showSelectedRunConfig" />
           <AgentWorkspaceView v-else-if="isAgentSelected" />

@@ -5,7 +5,7 @@
 - Product ticket: `chat-interface-entry`
 - Stable requirements package: `chat-interface-entry` (SR-001 → SR-003, requirements Approved)
 - Title: Chat entry above Agents, New chat, and easy runtime/model selection
-- Status: `Completed` (revision R2: Chat box correction requested by Solution Designer, SR-003)
+- Status: `Awaiting User Review` (revision R3: chat run view top area and right-side tabs, SR-012)
 - Mode: `Product Experience Prototyping`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-28
 - Decision questions: DEC-001 (primary: runtime + model picker), DEC-002 to DEC-007 (supporting); REQ-001 to REQ-007 draft
@@ -40,6 +40,14 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - Scope: DEC-014 (Chat box = existing message box + existing Context Files area; Chat adds footer controls, `/`, `@`, mic), DEC-011 (no Recent; New chat preselects last-used runtime + model), DEC-009 (thinking schema rule stated), DEC-013 (team/org run views unchanged: revert prototype run-view changes; UXJ-010/UIS-010/VIS-020 superseded), DEC-005 consistency (`/` lands on Chat).
 - Worktree: `/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/chat-interface-entry`, branch `prototype/chat-interface-entry`, base `personal@1579886`
 - Review port: 3271
+
+## Revision R3 (chat run view top area and right tabs)
+
+- Request: Solution Designer, Product Design Requested (Result Correction), SR-012 — `/Users/normy/autobyteus_org/autobyteus-worktrees/chat-interface-entry/tickets/in-progress/chat-interface-entry/product-design-revision-request-r3-handoff.md`
+- User words: "the chat page on top is not in line with the other page … the right side tabs are not the same as other area, workspace area."
+- Worktree: `/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/chat-interface-entry`, branch `prototype/chat-interface-entry-r3`, base `personal@8ac6cad`
+- Review URL: http://127.0.0.1:3271/chat?id=chat-skill-review (port 3271)
+- Changes: PC-042–PC-044. Validation 31/31, 0 browser errors (CHK-015 rewritten for the workspace frame geometry and strip → tab); typecheck pass.
 
 ## Final Package (R2)
 
@@ -116,3 +124,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-28: R2 review feedback: send button into the footer row (PC-041). Validation 31/31, 0 browser errors.
 - 2026-09-28: user confirmed R2 ("I think now the chat box looks good"). Final references recaptured (24 + manifest), ui-ux-spec.md R2, matrix and runbook updated. `Completed`.
 - 2026-09-28: R2 integrated (`personal` `1579886` → `efa5a97`), post-integration validation 31/31, pushed, cleaned up.
+- 2026-09-29: reopened for R3 (SR-012). Implemented PC-042–PC-044; validation 31/31, 0 browser errors. `Awaiting User Review`.

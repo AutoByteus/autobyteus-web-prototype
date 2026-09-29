@@ -87,7 +87,7 @@ const leftDrawerBackdropStyle = computed(() => ({
   // The workspace right strip is a normal 50px flow item, not an overlay.
   // Keep that opposite-side opener outside this backdrop's hit-test region
   // while the left drawer is open.
-  ...(route.path === '/workspace' && responsiveWorkspaceShellState.value.showRightStrip
+  ...((route.path === '/workspace' || (route.path === '/chat' && Boolean(route.query.id))) && responsiveWorkspaceShellState.value.showRightStrip
     ? { right: `${responsiveWorkspaceShellState.value.rightPanel.consumedWidth}px` }
     : {}),
 }))

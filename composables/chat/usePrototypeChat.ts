@@ -64,7 +64,6 @@ interface ChatState {
   catalogFailuresRemaining: Partial<Record<ChatRuntimeId, number>>
   draft: DraftState
   starting: boolean
-  workspacePanelOpen: boolean
   toast: string | null
   /** Prototype hand-off: team run to open in the existing Team workspace view. */
   pendingTeamOpen: string | null
@@ -91,7 +90,6 @@ const state = reactive<ChatState>({
   catalogFailuresRemaining: {},
   draft: { agentId: CHAT_ASSISTANT_ID, runtime: 'autobyteus', modelId: 'gpt-5.5', workspaceId: TEMP_WORKSPACE_ID, text: '', skills: [], teamId: null, autoApprove: true, attachments: [] },
   starting: false,
-  workspacePanelOpen: false,
   toast: null,
   pendingTeamOpen: null,
   pendingTeamNotice: null,
@@ -161,7 +159,6 @@ const initialize = () => {
     grok_build: 'idle',
   }
   state.catalogFailuresRemaining = scenario === 'chat_catalog_error' ? { antigravity_cli: 1 } : {}
-  state.workspacePanelOpen = false
   state.loadedAt = Date.now()
   state.lastActivity = {}
   state.initialized = true
