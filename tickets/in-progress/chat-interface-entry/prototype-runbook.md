@@ -9,7 +9,7 @@
 - Prototype repository/root (separate Git repository): `/Users/normy/autobyteus_org/autobyteus-web-prototype` (`AutoByteus/autobyteus-web-prototype`, branch `personal`)
 - Prototype ticket worktree: `/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/chat-interface-entry` (removed after integration)
 - Prototype ticket branch: `prototype/chat-interface-entry`
-- Accepted prototype base revision: `5ae0fe1` (R1); R2 based on `personal@1579886`
+- Accepted prototype base revision: `5ae0fe1` (R1); R2 based on `personal@1579886`; R3 based on `personal@8ac6cad` (branch `prototype/chat-interface-entry-r3`)
 - Prototype revision or commit: see `prototype-ticket.md`
 - Ticket folder: `tickets/done/chat-interface-entry/`
 - Package manager: pnpm (via corepack)
@@ -39,7 +39,8 @@
 | UXJ-002 | New chat (last-used gpt-5.5 · Codex preselected) | Model button → runtime submenu / search (no Recent) | Button shows the chosen model + runtime |
 | UXJ-004 | New chat | Type `/sk`, Enter, write, send; hover chips | Chips; "Sent to the agent as" tooltip |
 | UXJ-006 | New chat | Type `@prod`, Enter, send | Team view opens (stand-in run) |
-| UXJ-007 | Live chat | Hover locked model; Terminate run in tree; change model | Offline; model editable; runtime fixed |
+| UXJ-007 | Live chat | ⚙ (locked note); Terminate run in tree; ⚙ change thinking; Save | Offline; settings editable; runtime and workspace fixed |
+| UXJ-009 | Chat run view | Collapse the right panel; click a strip icon | Panel reopens on that tab; same frame as the Team view |
 | UXJ-008 | New chat | Context Files `+` (or drag/paste), add a file; toggle shield | "Context Files (1)" list; Ask first |
 | DEC-013 check | Tree → prototype-workspace → Product Review Team → run → member | Inspect the message box | Unchanged product box (UXJ-010 superseded) |
 
@@ -56,10 +57,11 @@
 
 - Desktop: 1440×900
 - Narrow mobile: 390×844
-- Build / typecheck / lint / tests: typecheck pass; `node prototype/scripts/validate-chat-interface-entry.mjs` 31/31 (set `PROTOTYPE_BASE_URL`); final references: `node prototype/scripts/capture-chat-interface-entry-final.mjs` (set `PROTOTYPE_BASE_URL` and `VIS_DIR=tickets/done/chat-interface-entry/visual-references`)
+- Build / typecheck / lint / tests: typecheck pass; `node prototype/scripts/validate-chat-interface-entry.mjs` 32/32 (set `PROTOTYPE_BASE_URL`); final references: `node prototype/scripts/capture-chat-interface-entry-final.mjs` (set `PROTOTYPE_BASE_URL` and `VIS_DIR=tickets/done/chat-interface-entry/visual-references`)
 
 ## Known Limitations And Product Questions
 
 - Team from Chat opens a stored stand-in team run.
+- The chat run settings (⚙) feed the product settings form with the prototype chat run; the prototype registers the chat run's runtime and workspace in product stores when it opens.
 - The Chat Context Files area is a prototype mirror of the product component using local files; the Daily Assistant fixture is not listed in the prototype Agents catalog.
 - Thinking levels are illustrative (schema-driven rule, DEC-009). No open product decisions; see `ui-ux-spec.md`.

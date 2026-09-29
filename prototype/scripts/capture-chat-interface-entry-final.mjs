@@ -164,14 +164,16 @@ await capture('VIS-014', 'agent-chat-draft-codex-skills', { surface: 'UIS-001 Ne
   await $(page, 'chat-composer-input').pressSequentially('/', { delay: 30 })
   await $(page, 'chat-skill-menu').waitFor()
 })
-await capture('VIS-015', 'active-chat-live-locked', { surface: 'UIS-008 Active chat', state: 'Live run (Idle): model and thinking locked; tree row selected with Terminate', journeys: 'UXJ-001, UXJ-007' }, async (page) => {
+// R3: after the first message the chat run is shown as a normal agent view in the
+// product workspace frame (right tabs column open by default: shared product setting).
+await capture('VIS-015', 'chat-run-view-live', { surface: 'UIS-008 Chat run view', state: 'Live run (Idle): product header (avatar, title, status, ⚙ ＋), product box (Context Files, textarea, send; no model/thinking), right tabs column open; tree row selected with Terminate', journeys: 'UXJ-001, UXJ-009' }, async (page) => {
   const input = $(page, 'chat-composer-input')
   await input.click()
   await input.pressSequentially('/skill-opt', { delay: 20 })
   await page.keyboard.press('Enter')
   await sendFirst(page, 'Help me write a skill for weekly planning')
 })
-await capture('VIS-016', 'sent-as-tooltip', { surface: 'UIS-008 Active chat', state: 'Hover skill chips: "Sent to the agent as"', journeys: 'UXJ-004' }, async (page) => {
+await capture('VIS-016', 'sent-as-tooltip', { surface: 'UIS-008 Chat run view', state: 'Hover skill chips: "Sent to the agent as"', journeys: 'UXJ-004' }, async (page) => {
   const input = $(page, 'chat-composer-input')
   await input.click()
   await input.pressSequentially('/skill-opt', { delay: 20 })
@@ -179,20 +181,33 @@ await capture('VIS-016', 'sent-as-tooltip', { surface: 'UIS-008 Active chat', st
   await sendFirst(page, 'Help me write a skill for weekly planning')
   await $(page, 'chat-message-skills').first().hover()
 })
-await capture('VIS-017', 'stopped-chat-model-menu', { surface: 'UIS-008 Active chat', state: 'Terminated run (Offline): model editable, runtime fixed', journeys: 'UXJ-007' }, async (page) => {
+await capture('VIS-017', 'chat-run-settings-stopped', { surface: 'UIS-013 Run settings (⚙)', state: 'Terminated run (Offline): product Agent Configuration, model + thinking editable, runtime and workspace fixed, Save', journeys: 'UXJ-007' }, async (page) => {
   await sendFirst(page, 'Help me write a skill for weekly planning')
   const runId = new URL(page.url()).searchParams.get('id')
   await page.locator(`[data-test="terminate-agent-run"][data-run-id="${runId}"]`).click()
   await page.waitForTimeout(400)
+  await $(page, 'workspace-header-edit-config').click()
+  await $(page, 'chat-run-settings').waitFor()
   await page.mouse.move(1430, 890)
-  await $(page, 'chat-model-trigger').click()
-  await $(page, 'chat-runtime-locked-note').waitFor()
 })
-await capture('VIS-018', 'right-tool-panel-open', { surface: 'UIS-009 Right tool strip / panel', state: 'Panel opened from the strip on Artifacts', journeys: 'UXJ-009' }, async (page) => {
-  await page.locator('[data-test="chat-right-tool-strip"] button[data-tab-name="artifacts"]').click()
-  await $(page, 'chat-workspace-panel').waitFor()
+await capture('VIS-026', 'chat-run-settings-live-locked', { surface: 'UIS-013 Run settings (⚙)', state: 'Live run: model and thinking locked ("Stop this run before changing model settings.")', journeys: 'UXJ-007' }, async (page) => {
+  await sendFirst(page, 'Help me write a skill for weekly planning')
+  await $(page, 'workspace-header-edit-config').click()
+  await $(page, 'chat-run-settings').waitFor()
+  await page.mouse.move(1430, 890)
+})
+await capture('VIS-018', 'right-tool-panel-open', { surface: 'UIS-009 Right tabs (workspace frame)', state: 'Panel reopened from the strip on Artifacts', journeys: 'UXJ-009' }, async (page) => {
+  await page.locator('[data-test="chat-run-frame"] [data-test="right-side-panel-toggle"]').click()
+  await page.locator('[data-test="chat-run-frame"] [data-test="workspace-right-tool-strip"] button[data-tab-name="artifacts"]').click()
+  await page.locator('[data-test="chat-run-frame"] [data-test="workspace-right-panel"]').waitFor()
+  await page.mouse.move(1430, 890)
 }, { path: '/chat?id=chat-skill-review' })
-await capture('VIS-019', 'stored-chat-strip-collapsed', { surface: 'UIS-008 Active chat', state: 'Stored chat from history (Offline), right strip collapsed', journeys: 'UXJ-001, UXJ-009' }, async () => {}, { path: '/chat?id=chat-skill-review' })
+await capture('VIS-019', 'stored-chat-strip-collapsed', { surface: 'UIS-008 Chat run view', state: 'Stored chat (Offline), right tabs collapsed to the strip', journeys: 'UXJ-001, UXJ-009' }, async (page) => {
+  await page.locator('[data-test="chat-run-frame"] [data-test="right-side-panel-toggle"]').click()
+  await page.locator('[data-test="chat-run-frame"] [data-test="workspace-right-tool-strip"]').waitFor()
+  await page.mouse.move(1430, 890)
+}, { path: '/chat?id=chat-skill-review' })
+await capture('VIS-027', 'narrow-chat-run-view', { surface: 'UIS-008 Chat run view', state: 'Narrow viewport: left and right strips (product responsive policy)', journeys: 'UXJ-001, UXJ-009' }, async () => {}, { path: '/chat?id=chat-skill-review', width: 390, height: 844 })
 await capture('VIS-021', 'workspaces-tree-normal-order', { surface: 'UIS-011 Workspaces tree', state: 'Normal product ordering; Daily Assistant group like any agent', journeys: 'UXJ-001' }, async (page) => {
   const temp = page.locator('[data-test="app-left-panel-run-history"] section', { hasText: 'Temp workspace' }).first()
   await temp.locator('button', { hasText: 'Temp workspace' }).first().click()

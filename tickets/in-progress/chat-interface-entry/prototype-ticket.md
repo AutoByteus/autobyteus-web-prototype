@@ -5,7 +5,7 @@
 - Product ticket: `chat-interface-entry`
 - Stable requirements package: `chat-interface-entry` (SR-001 → SR-003, requirements Approved)
 - Title: Chat entry above Agents, New chat, and easy runtime/model selection
-- Status: `Awaiting User Review` (revision R3: chat run view top area and right-side tabs, SR-012)
+- Status: `Completed` (revision R3: chat run view top area and right-side tabs, SR-012)
 - Mode: `Product Experience Prototyping`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-28
 - Decision questions: DEC-001 (primary: runtime + model picker), DEC-002 to DEC-007 (supporting); REQ-001 to REQ-007 draft
@@ -47,7 +47,15 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - User words: "the chat page on top is not in line with the other page … the right side tabs are not the same as other area, workspace area."
 - Worktree: `/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/chat-interface-entry`, branch `prototype/chat-interface-entry-r3`, base `personal@8ac6cad`
 - Review URL: http://127.0.0.1:3271/chat?id=chat-skill-review (port 3271)
-- Changes: PC-042–PC-044. Validation 31/31, 0 browser errors (CHK-015 rewritten for the workspace frame geometry and strip → tab); typecheck pass.
+- Changes: PC-042–PC-047. Validation 32/32, 0 browser errors (CHK-014/015/028 rewritten, CHK-032 added); typecheck pass.
+
+## Final Package (R3)
+
+- User confirmation: user message 2026-09-29 — "I think it looks correct." (after PC-042–PC-047)
+- UI/UX specification: `tickets/done/chat-interface-entry/ui-ux-spec.md` (status `Approved`, R3)
+- Final visual references: 26 files + `manifest.json`, all recaptured. New: VIS-026 (run settings, live), VIS-027 (narrow chat run view). Renamed: VIS-015 `chat-run-view-live`, VIS-017 `chat-run-settings-stopped`. VIS-020 still superseded.
+- Final validation: `validate-chat-interface-entry.mjs` 32/32, 0 browser errors; typecheck pass — `review-evidence/r3/`
+- Requirement impact for Solution Designer: REQ-016 (header no longer shows agent · workspace · approval), REQ-014 (after the first message the approval mode is shown under ⚙), REQ-011/REQ-013 (after the first message model/thinking only under ⚙; the run view box is the product box with `/`), DEC-007 (right panel open/collapsed is the shared product setting, product default open, instead of collapsed-by-default in chat).
 
 ## Final Package (R2)
 
@@ -128,3 +136,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-29: user review: simplify; the chat run view is an agent view. Implemented PC-045 (header avatar/title/status only; product run-view body). Validation 31/31, 0 browser errors; typecheck pass. `Awaiting User Review`.
 - 2026-09-29: user: use the same view and the same settings as the agent view. Implemented PC-046 (⚙ product run settings, ＋ new run; shared right-panel state kept). Validation 32/32, 0 browser errors; typecheck pass. `Awaiting User Review`.
 - 2026-09-29: user: remove model/thinking from the box after the chat has started (consistent with agent/team views); keep `/`. Implemented PC-047. Validation 32/32, 0 browser errors; typecheck pass. `Awaiting User Review`.
+- 2026-09-29: user confirmed R3 ("I think it looks correct."). Removed obsolete picker lock code; final references recaptured (26 + manifest); spec R3, matrix, runbook updated. Validation 32/32. `Completed`.

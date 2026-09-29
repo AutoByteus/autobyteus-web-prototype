@@ -5,17 +5,14 @@
       type="button"
       data-test="chat-model-trigger"
       class="inline-flex max-w-[20rem] items-center gap-1.5 rounded-md px-2 py-1 text-[0.8125rem] leading-5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
-      :class="[lockedReason ? 'cursor-default' : 'hover:bg-gray-100', popover.open.value ? 'bg-gray-100' : '']"
-      :aria-disabled="lockedReason ? 'true' : undefined"
+      :class="['hover:bg-gray-100', popover.open.value ? 'bg-gray-100' : '']"
       :aria-expanded="popover.open.value ? 'true' : 'false'"
       aria-haspopup="menu"
-      :aria-label="lockedReason ? `Model: ${modelName} on ${runtimeDef.label}. Locked: ${lockedReason}` : `Model: ${modelName} on ${runtimeDef.label}. Change model`"
-      :title="lockedReason || `${modelName} · ${runtimeDef.label}`"
-      :data-locked="lockedReason ? 'true' : undefined"
+      :aria-label="`Model: ${modelName} on ${runtimeDef.label}. Change model`"
+      :title="`${modelName} · ${runtimeDef.label}`"
       @click="onToggle"
     >
-      <ChatGlyph v-if="lockedReason" name="lock" class="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
-      <span class="truncate font-medium" :class="lockedReason ? 'text-gray-500' : 'text-gray-800'">{{ modelName }}</span>
+      <span class="truncate font-medium text-gray-800">{{ modelName }}</span>
       <span class="truncate text-gray-400 max-sm:hidden">{{ runtimeDef.shortLabel }}</span>
       <ChatGlyph name="chevron-down" class="h-3.5 w-3.5 flex-shrink-0 text-gray-400" />
     </button>
@@ -23,7 +20,7 @@
     <div v-if="popover.open.value" class="fixed inset-0 z-40 bg-black/20 sm:hidden" aria-hidden="true"></div>
 
     <div
-      v-if="popover.open.value && !lockedReason"
+      v-if="popover.open.value"
       ref="menuRef"
       role="menu"
       aria-label="Choose model"
@@ -56,7 +53,7 @@
         >
       </div>
 
-      <div class="p-1" :class="query.trim() || drilled || lockedRuntime ? 'max-h-[22rem] overflow-y-auto' : ''">
+      <div class="p-1" :class="query.trim() || drilled ? 'max-h-[22rem] overflow-y-auto' : ''">
         <!-- Narrow drill-in: one runtime's models -->
         <ModelList v-if="drilled" :runtime-id="submenuRuntime!" />
 
@@ -82,9 +79,6 @@
             <span class="h-3 w-3 animate-spin rounded-full border-2 border-gray-200 border-t-gray-400"></span> Searching all runtimes…
           </p>
         </template>
-
-        <!-- Existing chat: runtime fixed, one level -->
-        <ModelList v-else-if="lockedRuntime" :runtime-id="runtime" />
 
         <!-- Browse -->
         <template v-else>
@@ -140,9 +134,6 @@
         </template>
       </div>
 
-      <p v-if="lockedRuntime && !query.trim()" class="rounded-b-lg border-t border-gray-100 px-3 py-2 text-xs text-gray-400" data-test="chat-runtime-locked-note">
-        Runtime fixed · {{ runtimeDef.label }}
-      </p>
     </div>
   </div>
 </template>
@@ -158,9 +149,6 @@ const props = defineProps<{
   runtime: ChatRuntimeId
   modelId: string
   thinking?: string
-  lockedRuntime?: boolean
-  /** Set while the run is live: the control is simply locked (stop the run in the Workspaces tree to unlock). */
-  lockedReason?: string | null
 }>()
 const emit = defineEmits<{ (e: 'select', value: ChatCombo): void }>()
 
@@ -188,7 +176,6 @@ const isCurrent = (model: ChatModel) => model.runtime === props.runtime && model
 
 
 const onToggle = async () => {
-  if (props.lockedReason) return
   if (!popover.open.value) {
     query.value = ''
     submenuRuntime.value = null
@@ -240,7 +227,7 @@ const choose = (model: ChatModel) => {
 }
 
 // Search across enabled runtimes (or the fixed runtime in an existing chat).
-const searchableRuntimes = computed(() => CHAT_RUNTIMES.filter((item) => item.enabled && (!props.lockedRuntime || item.id === props.runtime)))
+const searchableRuntimes = computed(() => CHAT_RUNTIMES.filter((item) => item.enabled))
 watch(query, (value) => { if (value.trim()) searchableRuntimes.value.forEach((item) => chat.ensureCatalog(item.id)) })
 const searchLoading = computed(() => searchableRuntimes.value.some((item) => chat.state.catalog[item.id] === 'loading'))
 const searchResults = computed(() => {
