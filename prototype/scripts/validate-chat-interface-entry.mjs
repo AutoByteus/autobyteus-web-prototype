@@ -434,6 +434,33 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
 
 // ---- Landing (DEC-005) ----
 {
+  const { context, page } = await open('/chat?id=chat-skill-review')
+  await check('CHK-032', 'The chat run header is the product run-view header: ⚙ opens the product run settings (model/thinking saved while Offline), ＋ starts a new run of this agent (R3)', async () => {
+    await $(page, 'chat-run-header').waitFor()
+    const header = await $(page, 'chat-run-header').innerText()
+    expect(!/Auto-approve|Ask first|Daily Assistant|autobyteus-agents/.test(header), `no duplicated agent/workspace/approval details: ${header}`)
+    await $(page, 'workspace-header-edit-config').click()
+    await $(page, 'chat-run-settings').waitFor()
+    await page.getByText('Agent Configuration').first().waitFor()
+    const settings = await $(page, 'chat-run-settings').innerText()
+    expect(settings.includes('Daily Assistant') && settings.includes('Runtime is fixed') && settings.includes('Workspace is fixed') && settings.includes('Auto approve tools'), 'product run settings content')
+    expect(!/not available in current capabilities|unavailable in current options/.test(settings), 'no fixture gaps in the settings view')
+    expect(await $(page, 'save-existing-model-config').isDisabled(), 'Save disabled until something changes')
+    await page.locator('[data-test="chat-run-settings"] select').last().selectOption('low')
+    await $(page, 'save-existing-model-config').click()
+    await $(page, 'run-config-back-to-events').click()
+    await $(page, 'chat-active').waitFor()
+    const effort = await $(page, 'chat-effort-trigger').innerText()
+    expect(/Low/.test(effort), `saved thinking reaches the Chat box footer: ${effort}`)
+    await shot(page, '25-chat-run-settings-saved')
+    await $(page, 'workspace-header-new-run').click()
+    await $(page, 'chat-new').waitFor()
+    expect((await $(page, 'chat-new-hint').innerText()).includes('autobyteus-agents'), 'new run keeps this agent and workspace')
+  })
+  await context.close()
+}
+
+{
   const { context, page } = await open('/')
   await check('CHK-031', 'The app lands on Chat (New chat) at startup (DEC-005)', async () => {
     await page.waitForURL(/\/chat$/, { timeout: 10000 })

@@ -93,7 +93,8 @@
          column is its center pane. -->
     <WorkspaceAdaptiveLayout v-else :show-file-content="false" data-test="chat-run-frame">
       <template #center>
-        <div class="flex h-full min-w-0 flex-col bg-white" data-test="chat-active">
+        <ChatRunSettingsPanel v-if="settingsOpen" :chat-id="activeChat.id" @close="settingsOpen = false" />
+        <div v-else class="flex h-full min-w-0 flex-col bg-white" data-test="chat-active">
           <!-- Same header as the product standalone-agent run view: avatar, run title, status. -->
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 px-3 py-2 sm:px-4" data-test="chat-run-header">
             <div class="flex h-10 min-w-0 flex-1 items-center space-x-3">
@@ -101,6 +102,7 @@
               <h4 class="truncate text-base font-medium text-gray-800" :title="activeChat.title" data-test="chat-title">{{ activeChat.title }}</h4>
               <AgentStatusDisplay class="flex-shrink-0" :status="activeChat.status === 'running' ? 'running' : activeChat.active ? 'idle' : 'offline'" data-test="chat-run-status" />
             </div>
+            <WorkspaceHeaderActions @new-agent="newChatWithAgent" @edit-config="settingsOpen = true" />
           </div>
 
           <!-- Same body as the product run view (AgentEventMonitor): p-4 frame, full-width feed, box at the bottom. -->
@@ -211,6 +213,8 @@ import ChatModelPicker from '~/components/chat/ChatModelPicker.vue'
 import ChatEffortPicker from '~/components/chat/ChatEffortPicker.vue'
 import WorkspaceAdaptiveLayout from '~/components/layout/WorkspaceAdaptiveLayout.vue'
 import AgentStatusDisplay from '~/components/workspace/agent/AgentStatusDisplay.vue'
+import WorkspaceHeaderActions from '~/components/workspace/common/WorkspaceHeaderActions.vue'
+import ChatRunSettingsPanel from '~/components/chat/ChatRunSettingsPanel.vue'
 import ChatWorkspacePicker from '~/components/chat/ChatWorkspacePicker.vue'
 import ChatAutoApproveToggle from '~/components/chat/ChatAutoApproveToggle.vue'
 import { findAgent, findModel, findRuntime, findTeam, usePrototypeChat } from '~/composables/chat/usePrototypeChat'
@@ -251,6 +255,16 @@ const startChat = async () => {
   }
   const created = await chat.startChat()
   if (created) await router.push({ path: '/chat', query: { id: created.id } })
+}
+
+// Product header actions: ⚙ opens the run's settings view, ＋ starts a new run of
+// this agent (a New chat preset to this agent and workspace).
+const settingsOpen = ref(false)
+watch(activeId, () => { settingsOpen.value = false })
+const newChatWithAgent = async () => {
+  if (!activeChat.value) return
+  chat.setDraftContext(activeChat.value.agentId, activeChat.value.workspaceId)
+  await router.push('/chat')
 }
 
 const followUp = ref('')
