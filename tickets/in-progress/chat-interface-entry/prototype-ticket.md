@@ -125,3 +125,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-28: user confirmed R2 ("I think now the chat box looks good"). Final references recaptured (24 + manifest), ui-ux-spec.md R2, matrix and runbook updated. `Completed`.
 - 2026-09-28: R2 integrated (`personal` `1579886` → `efa5a97`), post-integration validation 31/31, pushed, cleaned up.
 - 2026-09-29: reopened for R3 (SR-012). Implemented PC-042–PC-044; validation 31/31, 0 browser errors. `Awaiting User Review`.
+- 2026-09-29: user review: simplify; the chat run view is an agent view. Implemented PC-045 (header avatar/title/status only; product run-view body). Validation 31/31, 0 browser errors; typecheck pass. `Awaiting User Review`.

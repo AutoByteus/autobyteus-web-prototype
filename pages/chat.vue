@@ -94,34 +94,21 @@
     <WorkspaceAdaptiveLayout v-else :show-file-content="false" data-test="chat-run-frame">
       <template #center>
         <div class="flex h-full min-w-0 flex-col bg-white" data-test="chat-active">
-          <!-- Same header structure and styling as the product run views. -->
+          <!-- Same header as the product standalone-agent run view: avatar, run title, status. -->
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 px-3 py-2 sm:px-4" data-test="chat-run-header">
             <div class="flex h-10 min-w-0 flex-1 items-center space-x-3">
               <div class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-slate-100 text-[0.625rem] font-semibold tracking-wide text-slate-600">{{ activeAgent.initials }}</div>
-              <h4 class="max-w-[45%] shrink-0 truncate text-base font-medium text-gray-800" :title="activeChat.title" data-test="chat-title">{{ activeChat.title }}</h4>
+              <h4 class="truncate text-base font-medium text-gray-800" :title="activeChat.title" data-test="chat-title">{{ activeChat.title }}</h4>
               <AgentStatusDisplay class="flex-shrink-0" :status="activeChat.status === 'running' ? 'running' : activeChat.active ? 'idle' : 'offline'" data-test="chat-run-status" />
-              <p
-                class="hidden min-w-0 flex-1 truncate border-l border-gray-200 pl-3 text-sm text-gray-500 md:block"
-                :title="`${activeAgent.name} · ${activeWorkspace.name} (${activeWorkspace.path}) · ${activeChat.autoApprove === false ? 'Ask first' : 'Auto-approve'}`"
-                data-test="chat-run-meta"
-              >
-                <span>{{ activeAgent.name }}</span>
-                <span class="mx-1.5 text-gray-300">·</span>
-                <ChatGlyph name="folder" class="-mt-0.5 mr-1 inline h-4 w-4 align-middle" />
-                <span>{{ activeWorkspace.name }}</span>
-                <span class="mx-1.5 text-gray-300">·</span>
-                <span
-                  :class="activeChat.autoApprove === false ? 'text-amber-700' : ''"
-                  data-test="chat-header-approval"
-                ><ChatGlyph :name="activeChat.autoApprove === false ? 'shield-hand' : 'shield-check'" class="-mt-0.5 mr-1 inline h-4 w-4 align-middle" />{{ activeChat.autoApprove === false ? 'Ask first' : 'Auto-approve' }}</span>
-              </p>
             </div>
           </div>
 
-          <div ref="scrollRef" class="min-h-0 flex-1 overflow-y-auto" data-test="chat-messages">
-            <div class="mx-auto w-full max-w-3xl space-y-6 px-4 py-6 sm:px-6">
+          <!-- Same body as the product run view (AgentEventMonitor): p-4 frame, full-width feed, box at the bottom. -->
+          <div class="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden overscroll-none p-4" data-test="chat-run-body">
+          <div ref="scrollRef" class="min-h-0 flex-1 overflow-y-auto overscroll-contain" data-test="chat-messages">
+            <div class="rounded-xl bg-white">
               <template v-for="message in activeChat.messages" :key="message.id">
-                <div v-if="message.role === 'user'" class="flex items-start gap-3">
+                <div v-if="message.role === 'user'" class="flex items-start gap-3 break-words px-2 py-3">
                   <div class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-sky-200 bg-white">
                     <ChatGlyph name="person" class="h-8 w-8 text-sky-600" />
                   </div>
@@ -158,7 +145,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-else-if="message.role === 'assistant'" class="flex items-start gap-3">
+                <div v-else-if="message.role === 'assistant'" class="flex items-start gap-3 break-words px-2 py-3">
                   <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50">
                     <span class="text-xs font-semibold tracking-wide text-slate-600">{{ activeAgent.initials }}</span>
                   </div>
@@ -170,7 +157,7 @@
             </div>
           </div>
 
-          <div class="mx-auto w-full max-w-3xl flex-shrink-0 px-4 pb-4 sm:px-6">
+          <div class="shrink-0">
             <ChatComposer
               v-model="followUp"
               v-model:skills="followUpSkills"
@@ -198,6 +185,7 @@
                 />
               </template>
             </ChatComposer>
+          </div>
           </div>
         </div>
       </template>

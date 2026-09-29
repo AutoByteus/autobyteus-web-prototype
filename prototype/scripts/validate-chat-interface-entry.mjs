@@ -341,7 +341,7 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     expect(!(await page.locator('[data-test="workspace-agent-run-row"]').count()), 'all collapsed on a fresh New chat')
     await shot(page, '22-tree-normal-order')
   })
-  await check('CHK-028', 'Auto-approve is on by default in every workspace, can be turned off, and the chat header shows the mode', async () => {
+  await check('CHK-028', 'Auto-approve is on by default in every workspace, can be turned off; the run view header stays the product header (avatar, title, status only; R3)', async () => {
     await page.locator('[data-test="app-left-panel-primary-nav"] [data-test="chat-new-chat"]').click()
     await $(page, 'chat-new').waitFor()
     const toggle = $(page, 'chat-auto-approve')
@@ -354,7 +354,8 @@ const shot = (page, name) => page.screenshot({ path: resolve(outDir, `${name}.pn
     await $(page, 'chat-composer-input').fill('Clean up old logs')
     await $(page, 'chat-send').click()
     await page.waitForURL('**/chat?id=*')
-    expect((await $(page, 'chat-header-approval').innerText()).includes('Ask first'), 'header shows Ask first')
+    const header = await $(page, 'chat-run-header').innerText()
+    expect(!/Auto-approve|Ask first|Daily Assistant|autobyteus-agents/.test(header), `header has no agent/workspace/approval details: ${header}`)
     await page.locator('[data-test="app-left-panel-primary-nav"] [data-test="chat-new-chat"]').click()
     await $(page, 'chat-new').waitFor()
     expect((await $(page, 'chat-auto-approve').getAttribute('aria-pressed')) === 'true', 'next new chat is on again')
