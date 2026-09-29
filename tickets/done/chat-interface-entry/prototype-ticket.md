@@ -77,6 +77,15 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - Default entry point: `/chat`, reached from the first primary-navigation item `Chat` with no preview-only state (the approved experience is part of the normal product shell).
 - Open items for Solution Designer: OPEN-001 thinking control shape (schema-driven), OPEN-002 landing route (DEC-005), OPEN-003 Daily Assistant provisioning, OPEN-004 Recent persistence scope, OPEN-005 instruction wording, DEC-008 disposition.
 
+## Integration And Cleanup (R3)
+
+- Ticket result revision: `39dbef1` on `prototype/chat-interface-entry-r3` (review commits `3286937`–`314a976`, final package `f898789`, move to done `39dbef1`)
+- Integration: `Completed` — canonical `personal` fast-forwarded `8ac6cad` → `39dbef1` (this record is the following docs commit on `personal`).
+- Baseline promotion: `Completed` — the chat run view is reached through the normal product shell (`/chat?id=<runId>`, Workspaces tree); no preview-only state.
+- Post-integration validation: canonical `personal` on port 3212 — `validate-chat-interface-entry.mjs` 32/32 pass, 0 browser errors; `pnpm test` 12/12 (`review-evidence/post-integration-r3/results.json`). VIS manifest: 26/26 SHA-256 match.
+- Remote: `personal` pushed to `origin` (`AutoByteus/autobyteus-web-prototype`).
+- Cleanup: review server (3271) and canonical validation server (3212) stopped; ticket worktree and merged local branch `prototype/chat-interface-entry-r3` removed.
+
 ## Integration And Cleanup (R2)
 
 - Ticket result revision: `efa5a97` on `prototype/chat-interface-entry` (R2 implementation `883751c`, final package `af5b6b0`, move to done `efa5a97`)
@@ -137,3 +146,4 @@ On 2026-09-28 the user asked to bring the prototype baseline up to the latest so
 - 2026-09-29: user: use the same view and the same settings as the agent view. Implemented PC-046 (⚙ product run settings, ＋ new run; shared right-panel state kept). Validation 32/32, 0 browser errors; typecheck pass. `Awaiting User Review`.
 - 2026-09-29: user: remove model/thinking from the box after the chat has started (consistent with agent/team views); keep `/`. Implemented PC-047. Validation 32/32, 0 browser errors; typecheck pass. `Awaiting User Review`.
 - 2026-09-29: user confirmed R3 ("I think it looks correct."). Removed obsolete picker lock code; final references recaptured (26 + manifest); spec R3, matrix, runbook updated. Validation 32/32. `Completed`.
+- 2026-09-29: R3 integrated (`personal` `8ac6cad` → `39dbef1`), post-integration validation 32/32, pushed, cleaned up.
