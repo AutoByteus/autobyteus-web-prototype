@@ -66,7 +66,7 @@ check('V-11', 'Sent message shows the mention as an inline chip (AC-002)', (awai
 check('V-12', 'Composer is cleared after send', (await box(page).inputValue()) === '' && await page.locator('[data-test="agent-input-mention-chips"]').count() === 0)
 await page.waitForTimeout(7500)
 const treeText = (await tree(page).innerText()).replace(/\n+/g, ' | ')
-check('V-13', 'The Team and its members appear under the run (AC-003)', /product team \| product prototyper \| prototype bootstrapper/.test(treeText), treeText)
+check('V-13', 'The Team and its members appear under the run (AC-003)', /product team \| PP \| product prototyper \| PB \| prototype bootstrapper/.test(treeText), treeText)
 check('V-14', 'It uses the existing task Team presentation with no "Added" text', await page.locator('[data-test="workspace-team-transient-execution-row"]').count() === 3
   && await page.locator('[data-team-icon="temporary-task-team"]').count() === 1
   && !/Added|Started by/.test(treeText))
