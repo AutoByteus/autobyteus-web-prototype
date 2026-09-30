@@ -20,6 +20,7 @@ import { memberAddressBasename, type AgentTeamAddress } from '~/types/agent/Agen
 import { collectConfiguredAgents } from './teamExecutionTreeSelectors'
 import { initializeRuntimeStatusState } from '~/services/runStatus/agentRuntimeStatusState'
 import { resolvedTeamRunLaunchConfigsEqual } from '~/utils/teamRunConfigUtils'
+import { runMentionAgentSource } from '~/prototype/run-mentions/runMentionState'
 
 const runtimeKind = (value: AgentLaunchConfigurationDto['runtime_kind']): AgentRuntimeKind => value as AgentRuntimeKind
 const deepFreeze = <T>(value: T): T => {
@@ -65,7 +66,17 @@ export const createTeamAgentContext = (input: {
   address: AgentTeamAddress
   workspaceMetadata: WorkspaceMetadata | null
 }): AgentContext | null => {
-  const source = configuredAgentAtAddress(input.tree, input.address)
+  // Prototype (cross-scope-agent-mentions): a collaborator added by `@` is not a configured
+  // member, so its identity and inherited launch settings come from the prototype record.
+  const added = runMentionAgentSource(input.agentRunId)
+  const source: ConfiguredAgentExecutionDto | null = configuredAgentAtAddress(input.tree, input.address)
+    ?? (added && added.address === input.address
+      ? {
+          kind: 'configured_agent', address: added.address, agent_definition_id: added.agentDefinitionId,
+          role: null, description: null, agent_run_id: input.agentRunId, platform_agent_run_id: null,
+          launch_configuration: added.launchConfiguration,
+        }
+      : null)
   if (!source) return null
   const conversation = {
     id: input.agentRunId, messages: [], createdAt: input.tree.created_at, updatedAt: input.tree.created_at,

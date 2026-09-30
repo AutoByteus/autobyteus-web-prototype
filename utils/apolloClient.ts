@@ -11,6 +11,7 @@
  * subscriptions stay inert.
  */
 import { operationFixture, baseState } from '~/prototype/source-observation/fixtures.mjs'
+import { resumedTeamRunIds } from '~/prototype/run-mentions/runMentionState'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
 
@@ -37,7 +38,22 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (scenario === 'permission_denied') return { data: null, errors: [{ message: 'Synthetic permission denied.' }] }
   const state = { ...baseState(), scenario: localScenario(), launchedTeamRun }
   const data = operationFixture(name, request.variables || {}, state)
-  return { data: data ? structuredClone(data) : {} }
+  return { data: data ? markResumedTeamRuns(structuredClone(data)) : {} }
+}
+
+// cross-scope-agent-mentions: a stored Team run that was resumed by sending a
+// message in this browser context is listed as active, as after a real restore.
+const markResumedTeamRuns = (data: any): any => {
+  if (!resumedTeamRunIds.size) return data
+  const groups = [...(data?.listWorkspaceRunHistory ?? []), ...(data?.workspaceRunHistory ? [data.workspaceRunHistory] : [])]
+  for (const group of groups) {
+    for (const definition of group?.teamDefinitions ?? []) {
+      for (const run of definition?.runs ?? []) {
+        if (resumedTeamRunIds.has(run.teamRunId)) run.isActive = true
+      }
+    }
+  }
+  return data
 }
 
 const emptyResult = async () => ({ data: {} })

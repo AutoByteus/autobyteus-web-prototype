@@ -1,0 +1,70 @@
+<template>
+  <!-- `@` in a live run: shared Agents and Teams that can be brought into the current run. -->
+  <div
+    data-test="run-mention-menu"
+    class="flex min-h-0 w-[23rem] max-w-[calc(100vw-1rem)] flex-col rounded-lg border border-gray-200 bg-white text-left shadow-lg"
+  >
+    <p class="border-b border-gray-100 px-3 py-1.5 text-[0.6875rem] text-gray-400">
+      {{ $t('chat.mentions.headerPrefix') }} <span class="font-medium text-gray-600">@{{ query }}</span> · {{ $t('chat.targets.headerHint') }}
+    </p>
+    <ul :id="listId" role="listbox" :aria-label="$t('chat.mentions.listAria')" class="min-h-0 max-h-64 overflow-y-auto p-1">
+      <li v-if="!options.length" class="px-2 py-3 text-center" data-test="run-mention-menu-empty">
+        <span class="block text-[0.8125rem] text-gray-500">{{ $t('chat.targets.noMatch') }}</span>
+        <span class="mt-0.5 block text-xs text-gray-400">{{ $t('chat.mentions.noMatchHint') }}</span>
+      </li>
+      <template v-for="(option, index) in options" :key="option.key">
+        <li v-if="index === 0 || options[index - 1]!.kind !== option.kind" role="presentation" class="px-2 pb-0.5 pt-1.5 text-[0.6875rem] font-medium text-gray-400">
+          {{ option.kind === 'team' ? $t('chat.targets.teams') : $t('chat.targets.agents') }}
+        </li>
+        <li :id="`${listId}-option-${index}`" role="option" :aria-selected="index === highlight ? 'true' : 'false'">
+          <button
+            type="button"
+            tabindex="-1"
+            :data-test="`run-mention-option-${option.id}`"
+            class="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left focus:outline-none"
+            :class="index === highlight ? 'bg-gray-100' : 'hover:bg-gray-50'"
+            @mouseenter="emit('highlight', index)"
+            @mousedown.prevent
+            @click="emit('choose', index)"
+          >
+            <span
+              class="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center text-[0.5625rem] font-semibold text-slate-600"
+              :class="option.kind === 'team' ? 'rounded-md border border-gray-200 bg-gray-50' : 'rounded-full border border-emerald-200 bg-emerald-50'"
+              aria-hidden="true"
+            >{{ option.initials }}</span>
+            <span class="min-w-0 flex-1">
+              <span class="block truncate text-[0.8125rem] font-medium text-gray-900">{{ option.name }}</span>
+              <span class="block truncate text-xs text-gray-500">{{ option.description }}</span>
+            </span>
+            <span
+              v-if="option.inRun"
+              class="flex-shrink-0 rounded-full border border-gray-200 bg-white px-1.5 py-0.5 text-[0.6875rem] font-medium text-gray-500"
+              data-test="run-mention-option-in-run"
+            >{{ $t('chat.mentions.inRun') }}</span>
+          </button>
+        </li>
+      </template>
+    </ul>
+    <footer class="border-t border-gray-100 px-3 py-1.5 text-xs text-gray-400" data-test="run-mention-menu-footer">
+      {{ route === 'direct' ? $t('chat.mentions.footerDirect') : $t('chat.mentions.footerRelay', { agent: focusedName }) }}
+    </footer>
+  </div>
+</template>
+
+<script setup lang="ts">
+import type { RunMentionOption } from '~/composables/agentInput/useRunMentions'
+
+defineProps<{
+  listId: string
+  query: string
+  options: RunMentionOption[]
+  highlight: number
+  /** The agent the user is talking to; it receives the message. */
+  focusedName: string
+  route: 'relay' | 'direct'
+}>()
+const emit = defineEmits<{
+  (event: 'choose', index: number): void
+  (event: 'highlight', index: number): void
+}>()
+</script>

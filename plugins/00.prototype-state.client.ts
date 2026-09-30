@@ -548,6 +548,20 @@ export default defineNuxtPlugin({
           if (context() === 'paired' && store.$id === 'runHistory' && actionName === 'fetchTree') {
             throw new Error('Synthetic mobile recent-history refresh failed')
           }
+          // cross-scope-agent-mentions: a message sent in a Team run plays a
+          // deterministic local run (prototype/run-mentions), including `@`
+          // mentions that bring a shared Agent or Team into the run.
+          // The run itself is registered by plugins/20.prototype-run-mentions.client.ts.
+          // The composer's own send runs unchanged for a Team member so it reaches that run.
+          if (store.$id === 'activeContext' && actionName === 'send'
+            && window.__AUTOBYTEUS_PROTOTYPE_TEAM_RUN_SEND__ && pinia._s.get('agentTeamContexts')?.activeTeamContext
+            && pinia._s.get('agentSelection')?.selectedType === 'team') {
+            return originalAction.apply(store, args)
+          }
+          if (store.$id === 'agentTeamRun' && actionName === 'sendMessageToFocusedMember'
+            && window.__AUTOBYTEUS_PROTOTYPE_TEAM_RUN_SEND__ && pinia._s.get('agentTeamContexts')?.activeTeamContext) {
+            return window.__AUTOBYTEUS_PROTOTYPE_TEAM_RUN_SEND__(String(args[0] ?? ''))
+          }
           const result = actionResult(store, actionName, args)
           if ((store.$id === 'agentDefinition' || store.$id === 'agentTeamDefinition' || store.$id === 'toolManagement') && result) {
             stateOverlays.set(store.$id, clone(store.$state))
@@ -648,6 +662,8 @@ export default defineNuxtPlugin({
 
 declare global {
   interface Window {
+    /** Deterministic local Team run send (cross-scope-agent-mentions). */
+    __AUTOBYTEUS_PROTOTYPE_TEAM_RUN_SEND__?: (content: string) => Promise<void>
     __AUTOBYTEUS_PROTOTYPE__: {
       sourceCommit: string
       readonly scenario: string

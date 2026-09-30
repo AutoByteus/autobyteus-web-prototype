@@ -14,6 +14,11 @@
         </div>
         <h4 class="truncate text-base font-medium text-gray-800" :title="memberName">{{ memberName }}</h4>
         <AgentStatusDisplay :status="target.context.state.currentStatus" />
+        <span
+          v-if="addedCollaborator"
+          class="flex-shrink-0 rounded-full border border-sky-200 bg-sky-50 px-2 py-0.5 text-xs font-medium text-sky-800"
+          data-test="team-workspace-added-badge"
+        >{{ $t('workspace.members.added') }}</span>
       </div>
       <WorkspaceHeaderActions
         v-if="showHeaderActions"
@@ -21,6 +26,11 @@
         @edit-config="$emit('edit-config')"
       />
     </div>
+    <p
+      v-if="addedCollaborator"
+      class="border-b border-gray-100 bg-gray-50 px-3 py-1.5 text-xs text-gray-600 sm:px-4"
+      data-test="team-workspace-added-settings"
+    >{{ $t('workspace.members.added_inherits', { settings: inheritedSettings }) }}</p>
     <WorkspaceRecoveryNotice
       v-if="recoveryNotice"
       :message="recoveryNotice"
@@ -37,8 +47,14 @@
         :browse-subject="target.browse"
         class="h-full"
       >
-        <template v-if="skillTarget" #composerContext>
-          <SkillImprovementComposerCta :target="skillTarget" />
+        <template v-if="skillTarget || target.kind === 'standalone_team_member'" #composerContext>
+          <RunMentionNotices
+            v-if="target.kind === 'standalone_team_member'"
+            :root-run-id="target.team.rootRunId"
+            :agent-run-id="target.context.state.runId"
+            @open="openAddedCollaborator"
+          />
+          <SkillImprovementComposerCta v-if="skillTarget" :target="skillTarget" />
         </template>
       </AgentEventMonitor>
     </div>
@@ -55,6 +71,10 @@ import WorkspaceRecoveryNotice from '~/components/workspace/common/WorkspaceReco
 import SkillImprovementComposerCta from '~/components/workspace/skill-improvement/SkillImprovementComposerCta.vue'
 import type { SkillImprovementComposerCtaTarget } from '~/components/workspace/skill-improvement/skillImprovementComposerCtaTarget'
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
+import { useAgentTeamContextsStore } from '~/stores/agentTeamContextsStore'
+import { useRunHistoryStore } from '~/stores/runHistoryStore'
+import RunMentionNotices from '~/components/workspace/team/RunMentionNotices.vue'
+import { findAddedCollaborator } from '~/prototype/run-mentions/runMentionState'
 
 type TeamTarget = Extract<ActiveAgentWorkspaceTarget,
   { kind: 'standalone_team_member' | 'agent_org_team_member' | 'agent_org_task_team_member' }>
@@ -90,5 +110,27 @@ const skillTarget = computed<SkillImprovementComposerCtaTarget | null>(() =>
           || props.target.context.config.agentDefinitionName === 'Retrospective Skill Improver',
       }
     : null)
+// A collaborator added to this run by an `@` mention (cross-scope-agent-mentions) shows that it was
+// added and which of the run's settings it uses.
+const addedCollaborator = computed(() => props.target.kind === 'standalone_team_member'
+  ? findAddedCollaborator({ rootRunId: props.target.team.rootRunId, agentRunId: props.target.context.state.runId })
+  : null)
+const runtimeLabels: Record<string, string> = {
+  autobyteus: 'AutoByteus', codex_app_server: 'Codex', claude_agent_sdk: 'Claude', antigravity_cli: 'Antigravity', grok_build: 'Grok',
+}
+const inheritedSettings = computed(() => {
+  const config = props.target.context.config
+  return [
+    runtimeLabels[String(config.runtimeKind)] ?? String(config.runtimeKind),
+    config.llmModelIdentifier,
+    config.workspaceMetadata?.displayName || config.workspaceMetadata?.name,
+  ].filter(Boolean).join(' · ')
+})
+const openAddedCollaborator = (agentRunId: string) => {
+  const team = useAgentTeamContextsStore().activeTeamContext
+  if (team?.view.focusAgent(agentRunId).disposition === 'applied') {
+    useRunHistoryStore().refreshRunNavigationTopology('team-stream-structure')
+  }
+}
 watch(avatarUrl, () => { avatarFailed.value = false })
 </script>

@@ -1,3 +1,4 @@
+import { runMentionAgentSource } from '~/prototype/run-mentions/runMentionState'
 import {
   teamRunExecutionTreeDtoSchema,
   type TeamRunExecutionTreeDto,
@@ -291,7 +292,9 @@ const hydrateCurrentTeamRunContext = async (
       tree: currentTree,
       agentRunId,
       address,
-      workspaceMetadata: workspaces.get(address) ?? null,
+      // Prototype (cross-scope-agent-mentions): an added collaborator uses the run's workspace.
+      workspaceMetadata: workspaces.get(address)
+        ?? (runMentionAgentSource(agentRunId) ? workspaces.values().next().value ?? null : null),
     }),
   });
   const focus = view.focusAgentForInspection(initialFocusedAgentRunId);

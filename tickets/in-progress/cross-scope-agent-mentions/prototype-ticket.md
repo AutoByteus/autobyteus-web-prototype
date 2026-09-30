@@ -5,7 +5,7 @@
 - Product ticket: `cross-scope-agent-mentions`
 - Stable requirements package: `cross-scope-agent-mentions` (SR-001, requirements Draft, not approved)
 - Title: `@` in a live run brings a shared Agent or Team into the current run
-- Status: `In Progress`
+- Status: `Awaiting User Review`
 - Mode: `Product Experience Prototyping`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-30
 - User words: "send request to product prototyper, i need to work on the ui first. working with ui is easier for me to see them"
@@ -43,9 +43,30 @@
 - The accepted click-through journeys work and are used here: Agent Teams → Run → Run Team, and opening stored Team/Org runs from the Workspaces tree.
 - A live Org launch (Agent Orgs → Run → Run Agent Org) ends on "No agent or team run selected"; it is outside the verified refresh scope. The stored Org run is used for the Org variant.
 
+## Review Round 1
+
+- Review URL (recommended route): http://127.0.0.1:3282/workspace#mentionRoute=relay — then Workspaces → `prototype-workspace` → `Product Review Team` → `Review the current prototype baseline`
+- Comparison URL (Q1 option a, review-only): http://127.0.0.1:3282/workspace#mentionRoute=direct (kept for the browser session)
+- Changes: PC-001–PC-011 (`prototype-change-log.md`)
+- Scope built: the full journey on a standalone Team run (SC-001–SC-006).
+- Not built in this round: the Org run variant (SC-007) and standalone Agent runs. The Org run uses a different execution context that reloads from the server when a child starts, and a live Org launch is outside the verified baseline; the same presentation is proposed there. Decision requested from the user.
+- Proposed answers: Q1 option b (relay) as default; concept word "Added"; inherited settings shown in the collaborator header; failures shown as a notice above the composer.
+- Fixture note: `Product Team`, `Marketing Team` and `Code Reviewer` are illustrative definitions that exist only in the live-run `@` menu; agent prose is scripted.
+- Browser validation: `prototype/scripts/validate-cross-scope-agent-mentions.mjs` 30/30, 0 page errors, 0 external requests (`review-evidence/round-1/results.json`)
+- Static checks: typecheck exit 0, lint pass, test 12/12, `validate:boundaries` pass
+- Non-normative review screenshots: `review-evidence/round-1/` (`relay-*`, `direct-*`; `journey.mjs` reproduces them)
+
+## Findings For Requirements (observed, not decided)
+
+- F-001 (REQ-003/004): the client can only build a conversation for a delegated child whose address is a configured member (`createTeamAgentContext` → `configuredAgentAtAddress`), and the task-execution DTO carries no definition identity or launch settings. A collaborator that is not mounted needs both from the server. The prototype supplies them locally.
+- F-002 (DEC-003): today a delegated child renders as a dashed "temporary task" row with "Started by <agent>". The proposal gives a mention-added collaborator a member-style row instead, because REQ-003 persists it with the run. The UI therefore needs to tell "added by mention" apart from an ordinary task child.
+- F-003 (DEC-004): an inter-agent delivery is rendered in the recipient's conversation by the existing code as a user-style message with no sender shown. Unchanged here; it is visible when the collaborator's conversation is opened.
+- F-004 (REQ-001): the Org run and standalone Agent run composers are separate paths from the Team run composer path used here.
+
 ## Status History
 
 - 2026-09-30: opened from Solution Designer request; baseline applicable and accepted at the same source pin; `In Progress`.
+- 2026-09-30: round 1 review URL ready; `Awaiting User Review`.
 
 ## Finalization
 

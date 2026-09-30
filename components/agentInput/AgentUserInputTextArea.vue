@@ -13,7 +13,7 @@
         }"
         :placeholder="skillTagging?.placeholder || $t('agentInput.components.agentInput.AgentUserInputTextArea.type_a_message')"
         @keydown="handleKeyDown"
-        @click="skillMenu.detect"
+        @click="detectMenus"
         :disabled="!target"
         @dragover.prevent
         @drop.prevent="handleDrop"
@@ -28,6 +28,29 @@
         :disabled="isActionDisabled"
         @activate="handlePrimaryAction"
       />
+
+      <!-- `@` menu: bring a shared Agent or Team into this run (Team runs). -->
+      <template v-if="mentionMenu.open.value">
+        <div v-if="mentionMenu.popover.narrow.value" class="fixed inset-0 z-40 bg-black/20" aria-hidden="true"></div>
+        <div
+          class="z-50 flex flex-col"
+          :class="mentionMenu.popover.narrow.value
+            ? 'fixed inset-x-2 bottom-2 [&>div]:w-auto'
+            : ['absolute left-2', mentionMenu.popover.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5']"
+          :style="mentionMenu.popover.narrow.value ? undefined : { maxHeight: `${mentionMenu.popover.maxHeight.value}px` }"
+        >
+          <RunMentionMenu
+            :list-id="mentionMenuListId"
+            :query="mentionMenu.query.value"
+            :options="mentionMenu.filtered.value"
+            :highlight="mentionMenu.highlight.value"
+            :focused-name="mentionMenu.mentions.focusedName.value"
+            :route="mentionMenu.mentions.route.value"
+            @highlight="mentionMenu.highlight.value = $event"
+            @choose="mentionMenu.choose"
+          />
+        </div>
+      </template>
 
       <!-- `/` skill menu: standalone runs only (skillTagging). -->
       <template v-if="skillTagging && skillMenu.open.value">
@@ -69,6 +92,8 @@ import VoiceInputButton from '~/components/agentInput/VoiceInputButton.vue';
 import VoiceInputStatusRow from '~/components/agentInput/VoiceInputStatusRow.vue';
 import MessagePrimaryActionButton from '~/components/agentInput/MessagePrimaryActionButton.vue';
 import ChatSkillMenu from '~/components/chat/ChatSkillMenu.vue';
+import RunMentionMenu from '~/components/agentInput/RunMentionMenu.vue';
+import { useRunMentionMenu } from '~/composables/agentInput/useRunMentionMenu';
 import { useSkillTagMenu, type SkillTaggingCapability } from '~/composables/agentInput/useSkillTagMenu';
 import { hasSendableDraft } from '~/services/runSubmission/agentPrimaryAction';
 
@@ -106,6 +131,7 @@ const MAX_TEXTAREA_HEIGHT = 220;
 const textareaHeight = ref(MIN_TEXTAREA_HEIGHT);
 const rootRef = ref<HTMLElement | null>(null);
 const skillMenuListId = `agent-skill-menu-${useId()}`;
+const mentionMenuListId = `agent-mention-menu-${useId()}`;
 let pendingLocalAcknowledgementContext: AgentContext | null = null;
 
 const adjustTextareaHeight = () => {
@@ -178,9 +204,25 @@ const skillMenu = useSkillTagMenu({
   setText: setRequirement,
 });
 
+const mentionMenu = useRunMentionMenu({
+  rootRef,
+  textareaRef: textarea,
+  getText: () => internalRequirement.value,
+  setText: setRequirement,
+});
+
+/** One menu at a time: `@` (Team runs) takes the token when it matches, otherwise `/`. */
+const detectMenus = () => {
+  if (mentionMenu.detect()) {
+    skillMenu.close();
+    return;
+  }
+  skillMenu.detect();
+};
+
 const handleInput = (event: Event) => {
   setRequirement((event.target as HTMLTextAreaElement).value);
-  nextTick(skillMenu.detect);
+  nextTick(detectMenus);
 };
 
 const handleSend = async () => {
@@ -265,6 +307,7 @@ const handleDrop = async (event: DragEvent) => {
 };
 
 const handleKeyDown = (event: KeyboardEvent) => {
+  if (mentionMenu.onKeydown(event)) return;
   if (skillMenu.onKeydown(event)) return;
   if (event.key === 'Enter' && !event.shiftKey && !event.ctrlKey && !event.altKey) {
     event.preventDefault();

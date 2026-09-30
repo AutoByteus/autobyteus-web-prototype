@@ -1,13 +1,22 @@
 <template>
   <div
     class="rounded-xl border border-gray-200 bg-white shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-300"
-    :class="skillTagging ? 'relative' : 'overflow-hidden'"
+    :class="hasMenus ? 'relative' : 'overflow-hidden'"
   >
-    <!-- With skill tagging, only the Context Files area clips, so the `/` menu can open above the box. -->
-    <div :class="skillTagging ? 'overflow-hidden rounded-t-xl' : ''">
+    <!-- With a `/` or `@` menu, only the Context Files area clips, so the menu can open above the box. -->
+    <div :class="hasMenus ? 'overflow-hidden rounded-t-xl' : ''">
       <ContextFilePathInputArea :target="target" />
     </div>
-    <div class="border-t border-gray-100" :class="skillTagging ? 'rounded-b-xl' : ''">
+    <div class="border-t border-gray-100" :class="hasMenus ? 'rounded-b-xl' : ''">
+      <!-- `@` mentions chosen for this message, and who receives it (cross-scope-agent-mentions). -->
+      <div
+        v-if="mentions.chips.value.length"
+        class="flex flex-wrap items-center gap-x-2 gap-y-1.5 px-3 pt-2.5"
+        data-test="agent-input-mention-chips"
+      >
+        <RunMentionChips :chips="mentions.chips.value" @remove="removeMention" />
+        <span class="min-w-0 text-xs text-gray-500" data-test="agent-input-mention-hint">{{ mentionHint }}</span>
+      </div>
       <div
         v-if="skillTagging && requestedSkillNames.length"
         class="flex flex-wrap items-center gap-1.5 px-3 pt-2.5"
@@ -24,17 +33,47 @@
 import ContextFilePathInputArea from '~/components/agentInput/ContextFilePathInputArea.vue';
 import AgentUserInputTextArea from '~/components/agentInput/AgentUserInputTextArea.vue';
 import SkillTagChips from '~/components/chat/SkillTagChips.vue';
+import RunMentionChips from '~/components/agentInput/RunMentionChips.vue';
+import { mentionToken, useRunMentions, type RunMentionChip } from '~/composables/agentInput/useRunMentions';
+import { removeDraftMention } from '~/prototype/run-mentions/runMentionState';
+import { useLocalization } from '~/composables/useLocalization';
 import { computed } from 'vue';
 import { useComposerTarget } from '~/composables/agentInput/useComposerTarget';
 import type { SkillTaggingCapability } from '~/composables/agentInput/useSkillTagMenu';
 
-defineProps<{
+const props = defineProps<{
   beforeSend?: () => void | Promise<void>;
   /** `/` skill tags and their chip row; supplied only for standalone agent runs. */
   skillTagging?: SkillTaggingCapability | null;
 }>();
 
+const { t } = useLocalization();
 const target = useComposerTarget();
+const mentions = useRunMentions();
+const hasMenus = computed(() => Boolean(props.skillTagging) || mentions.available.value);
+
+/** Says who receives the message and what happens to the mentioned collaborators. */
+const mentionHint = computed(() => {
+  const chips = mentions.chips.value;
+  const fresh = chips.filter((chip) => !chip.inRun).map((chip) => chip.name);
+  const existing = chips.filter((chip) => chip.inRun).map((chip) => chip.name);
+  const agent = mentions.focusedName.value;
+  if (mentions.route.value === 'direct') {
+    return t('chat.mentions.hintDirect', { names: chips.map((chip) => chip.name).join(', ') });
+  }
+  const parts: string[] = [];
+  if (fresh.length) parts.push(t('chat.mentions.hintRelay', { agent, names: fresh.join(', ') }));
+  if (existing.length) parts.push(t(fresh.length ? 'chat.mentions.hintInRunAlso' : 'chat.mentions.hintInRun', { agent, names: existing.join(', ') }));
+  return parts.join(' ');
+});
+
+/** Removing a chip keeps the words and drops the mention. */
+const removeMention = (chip: RunMentionChip) => {
+  const context = target.value?.context;
+  if (!context) return;
+  removeDraftMention(context.state.runId, chip.key);
+  context.requirement = context.requirement.split(mentionToken(chip.name)).join(chip.name);
+};
 const requestedSkillNames = computed(() => target.value?.context.requestedSkillNames ?? []);
 const removeSkill = (name: string) => {
   const context = target.value?.context;
