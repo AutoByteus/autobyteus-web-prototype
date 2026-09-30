@@ -36,6 +36,15 @@ export const illustrativeRunMentionDefinitions: readonly RunMentionDefinition[] 
     unrunnableReason: 'Its agents need the Codex runtime, and this run uses AutoByteus.',
   },
   {
+    key: 'agent:fixture-computer-use-agent',
+    kind: 'agent',
+    id: 'fixture-computer-use-agent',
+    name: 'Computer Use Agent',
+    description: 'Operates the desktop and browser to carry out tasks on screen.',
+    members: [],
+    unrunnableReason: null,
+  },
+  {
     key: 'agent:fixture-code-reviewer',
     kind: 'agent',
     id: 'fixture-code-reviewer',
@@ -53,7 +62,7 @@ export const runMentionScript = {
   relayDone: (name: string, entry: string) => `${name} is in this run now. I sent ${entry} the brief and will pick this up again when they report back.`,
   relayExisting: (name: string, entry: string) => `${name} is already in this run, so I messaged ${entry} instead of starting another copy.`,
   relayFailed: (name: string, reason: string) => `I couldn't bring ${name} into this run. ${reason} Nothing was added.`,
-  collaboratorAck: 'Got it. I\'ll start from the chat page input box and report back with a prototype.',
-  collaboratorReport: (name: string) => `Prototype is ready for ${name}: the input box sits lower and every menu opens upward. Please review.`,
+  collaboratorAck: 'Got it. I\'ll start on this now and report back.',
+  collaboratorReport: (name: string) => `Done, ${name}. The result is ready for you to review.`,
   collaboratorReportShort: 'Noted. I\'ll fold this into the same prototype.',
 }
