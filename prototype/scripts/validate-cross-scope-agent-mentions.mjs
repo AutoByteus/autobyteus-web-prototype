@@ -66,15 +66,15 @@ check('V-11', 'Sent message shows the mention as an inline chip (AC-002)', (awai
 check('V-12', 'Composer is cleared after send', (await box(page).inputValue()) === '' && await page.locator('[data-test="agent-input-mention-chips"]').count() === 0)
 await page.waitForTimeout(7500)
 const treeText = (await tree(page).innerText()).replace(/\n+/g, ' | ')
-check('V-13', 'Added Team and its members appear under the run (AC-003)', /product team \| Added \| Added by researcher \| PP \| product prototyper \| PB \| prototype bootstrapper/.test(treeText), treeText)
-check('V-14', 'Added rows are distinct from configured members and from temporary task rows', await page.locator('[data-test="workspace-added-badge"]').count() === 1
-  && await page.locator('[data-test="workspace-team-transient-execution-row"][data-added="true"]').count() === 3
-  && await page.locator('[data-team-icon="temporary-task-team"]').count() === 0)
+check('V-13', 'The Team and its members appear under the run (AC-003)', /product team \| Started by researcher \| product prototyper \| prototype bootstrapper/.test(treeText), treeText)
+check('V-14', 'It uses the existing task Team presentation with no "Added" text', await page.locator('[data-test="workspace-team-transient-execution-row"]').count() === 3
+  && await page.locator('[data-team-icon="temporary-task-team"]').count() === 1
+  && !/Added/.test(treeText))
 check('V-15', 'Focused conversation shows the join notice with an Open action', await page.locator('[data-test="run-mention-notice-added"]').isVisible() && /Product Team joined this run/.test(await page.locator('[data-test="run-mention-notice-added"]').innerText()))
 check('V-16', 'Team tab shows the messages exchanged with the collaborator (AC-004)', await page.locator('[data-test="team-communication-message-row"]').count() === 2)
 await page.locator('[data-test="run-mention-notice-open"]').click(); await page.waitForTimeout(900)
-check('V-17', 'Open focuses the collaborator; header shows Added and the inherited settings (AC-003)', await page.locator('[data-test="team-workspace-added-badge"]').isVisible()
-  && (await page.locator('[data-test="team-workspace-added-settings"]').innerText()) === 'Added to this run · uses this run’s settings: AutoByteus · mock/gpt-prototype · prototype-workspace')
+check('V-17', 'Open focuses the collaborator; its header is the ordinary member header', (await page.locator('[data-testid="team-workspace-surface"] h4').innerText()) === 'product prototyper'
+  && !/Added/.test(await page.locator('[data-testid="team-workspace-surface"]').innerText()))
 await type(page, 'also keep the workspace hint under the box'); await page.keyboard.press('Enter'); await page.waitForTimeout(2600)
 check('V-18', 'The user can chat with the added collaborator directly (SC-003)', /also keep the workspace hint under the box/.test(await page.locator('[data-testid="agent-event-monitor"]').innerText()))
 await page.locator('[data-test^="workspace-team-member-"]').filter({ hasText: 'researcher' }).first().click(); await page.waitForTimeout(900)
@@ -84,7 +84,7 @@ await page.locator('[data-test="run-mention-option-fixture-product-team"]').clic
 check('V-20', 'Re-mention chip and hint say no second copy is started (SC-005)', await page.locator('[data-test="run-mention-chip-Product Team"][data-in-run="true"]').isVisible()
   && (await page.locator('[data-test="agent-input-mention-hint"]').innerText()) === 'researcher gets this message and passes it on. No second copy is started.')
 await page.keyboard.press('Enter'); await page.waitForTimeout(4200)
-check('V-21', 'Re-mention adds no duplicate row (AC-005)', await page.locator('[data-test="workspace-added-badge"]').count() === 1 && await page.locator('[data-test="workspace-team-transient-execution-row"][data-added="true"]').count() === 3)
+check('V-21', 'Re-mention adds no duplicate row (AC-005)', await page.locator('[data-test="workspace-team-transient-execution-row"]').count() === 3)
 await type(page, 'ask @mark'); await page.locator('[data-test="run-mention-option-fixture-marketing-team"]').click(); await page.keyboard.type('for launch copy', { delay: 4 })
 const rowsBefore = await tree(page).locator('[role="treeitem"]').count()
 await page.keyboard.press('Enter'); await page.waitForTimeout(4200)
@@ -100,8 +100,8 @@ await openTeamRun(direct)
 await type(direct, 'please talk to @prod'); await direct.locator('[data-test="run-mention-option-fixture-product-team"]').click(); await direct.keyboard.type('to fix the UI first', { delay: 4 }); await direct.waitForTimeout(250)
 check('V-25', 'Direct variant hint says the message goes straight to the collaborator', (await direct.locator('[data-test="agent-input-mention-hint"]').innerText()) === 'This message goes straight to Product Team, which joins this run.')
 await direct.keyboard.press('Enter'); await direct.waitForTimeout(3500)
-check('V-26', 'Direct variant: view follows the message to the collaborator; "Added by you"; no Team messages', await direct.locator('[data-test="team-workspace-added-badge"]').isVisible()
-  && /Added by you/.test(await tree(direct).innerText()) && await direct.locator('[data-test="team-communication-message-row"]').count() === 0)
+check('V-26', 'Direct variant: view follows the message to the collaborator; no Team messages', (await direct.locator('[data-testid="team-workspace-surface"] h4').innerText()) === 'product prototyper'
+  && await direct.locator('[data-test="team-communication-message-row"]').count() === 0)
 await direct.context().close()
 
 // ---- Narrow window and preserved behavior ----

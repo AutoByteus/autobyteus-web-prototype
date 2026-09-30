@@ -61,6 +61,14 @@
 - User, 2026-09-30 (after trying `@Product Team` in the Team run): "The task team itself is shown inside the product review team itself, right? That's a really, really good one … That's actually the experience I'm expecting". This is positive feedback on the relay route and the added-Team tree presentation; it is not yet final approval of the package.
 - User request: "can you also add, like in the UI, I can also add another independent agent, for example, computer use agent." → PC-012 added; evidence `review-evidence/round-1/agent-01`–`agent-04`.
 
+## Review Round 2
+
+- User feedback, 2026-09-30: "there's no need to show added this kind of text … The UI should remain as clean as possible … we delegate a task to computer use agents. And then it should be shown as a task agent … remove the added this kind of text, and remove this added by this kind of text as well."
+- Decisions recorded: DEC-006 — no separate concept word; a mention-added collaborator is a delegated task Agent/Team. DEC-003 — use the existing task row presentation. F-002 is resolved: no distinct "added by mention" presentation is needed.
+- Change: PC-013. Evidence: `review-evidence/round-2/` (validation 30/30, `agent-01`–`agent-04`).
+- Open: the existing task row shows "Started by <member>" for every delegated child in the product today. Hiding it is a change to existing behavior; asked the user.
+- Status: `Awaiting User Review`.
+
 ## Findings For Requirements (observed, not decided)
 
 - F-001 (REQ-003/004): the client can only build a conversation for a delegated child whose address is a configured member (`createTeamAgentContext` → `configuredAgentAtAddress`), and the task-execution DTO carries no definition identity or launch settings. A collaborator that is not mounted needs both from the server. The prototype supplies them locally.
@@ -72,6 +80,7 @@
 
 - 2026-09-30: opened from Solution Designer request; baseline applicable and accepted at the same source pin; `In Progress`.
 - 2026-09-30: round 1 review URL ready; `Awaiting User Review`.
+- 2026-09-30: round 2 (PC-012, PC-013) applied from user feedback; `Awaiting User Review`.
 
 ## Finalization
 
