@@ -5,7 +5,7 @@
 - Product ticket: `cross-scope-agent-mentions`
 - Stable requirements package: `cross-scope-agent-mentions` (SR-001, requirements Draft, not approved)
 - Title: `@` in a live run brings a shared Agent or Team into the current run
-- Status: `Awaiting User Review`
+- Status: `Completed`
 - Mode: `Product Experience Prototyping`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-30
 - User words: "send request to product prototyper, i need to work on the ui first. working with ui is easier for me to see them"
@@ -142,6 +142,16 @@
 - F-003 (DEC-004): an inter-agent delivery is rendered in the recipient's conversation by the existing code as a user-style message with no sender shown. Unchanged here; it is visible when the collaborator's conversation is opened.
 - F-004 (REQ-001): the Org run and standalone Agent run composers are separate paths from the Team run composer path used here.
 
+## Final Package
+
+- User confirmation: user message 2026-09-30 — "Okay, finally I confirm now. All good now."
+- Post-approval cleanup (no visible change to the approved default): review-only comparison variants removed (`#mentionRoute=direct`, `#taskIcon=bolt|ring`); the approved task Agent marker (initials) is the only one.
+- UI/UX specification: `ui-ux-spec.md` (`Approved`)
+- Final visual references: `visual-references/VIS-001`–`VIS-014` + `manifest.json` (SHA-256), captured from the production build (`PORT=3283 node .output/server/index.mjs`) with `prototype/scripts/capture-cross-scope-agent-mentions-final.mjs`, 0 browser errors
+- Behavior matrix: `ui-behavior-test-matrix.md`; change log: `prototype-change-log.md` (PC-001–PC-027)
+- Final validation (production build, entry `/` then Workspaces/Chat): `validate-cross-scope-agent-mentions.mjs` 46/46, 0 page errors, 0 external requests (`review-evidence/final-validation/results.json`); typecheck exit 0, lint exit 0, test 12/12, `validate:boundaries` 0 failures, build exit 0
+- Decisions recorded: DEC-001 menu/chip/inline chip as specified; DEC-002 message goes to the focused agent, which delegates (Q1 option b), no routing hint text; DEC-003 existing task rows, no "Started by" line, member marker, centered, straight branch; DEC-004 brief is the system task notice, Team/Org tab shows later exchanges only; DEC-005 failure notice only, no success notice, inherited settings not shown as text, already-in-run candidates not offered; DEC-006 no new concept word (collaborators are task Agents / task Teams). Scope extended by the user to Org runs and standalone Agent runs.
+
 ## Status History
 
 - 2026-09-30: opened from Solution Designer request; baseline applicable and accepted at the same source pin; `In Progress`.
@@ -149,7 +159,8 @@
 - 2026-09-30: round 2 (PC-012, PC-013) applied from user feedback; `Awaiting User Review`.
 - 2026-09-30: round 3 (PC-014–PC-016) applied from user feedback; `Awaiting User Review`.
 - 2026-09-30: round 4 (PC-017, PC-018) applied from user feedback; `Awaiting User Review`.
-- 2026-09-30: baseline refreshed (`WEB-BASELINE-REFRESH-003`) and merged; rounds 6–8 (PC-019–PC-024) applied from user feedback; `Awaiting User Review`.
+- 2026-09-30: baseline refreshed (`WEB-BASELINE-REFRESH-003`) and merged; rounds 6–10 (PC-019–PC-027) applied from user feedback; `Awaiting User Review`.
+- 2026-09-30: user approved; final validation 46/46; references VIS-001–VIS-014 captured; `Completed`.
 
 ## Finalization
 

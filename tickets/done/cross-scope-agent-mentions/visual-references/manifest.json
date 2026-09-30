@@ -1,0 +1,104 @@
+{
+  "base": "http://127.0.0.1:3283",
+  "capturedAt": "2026-09-30T17:12:45.569Z",
+  "references": [
+    {
+      "id": "VIS-001",
+      "filename": "VIS-001-team-run-at-menu-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run, focused on researcher: `@` menu open above the composer; only standalone Agents and Agent Teams that are not in the run are listed.",
+      "sha256": "ed43dacc16eddb11b58172c063c2e252e9f96e93b137e931d82e17ca321a0bd9"
+    },
+    {
+      "id": "VIS-002",
+      "filename": "VIS-002-team-run-at-menu-empty-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run: `@zzz` has no match; empty state with the Agent Org note.",
+      "sha256": "cf24f65e3d5e3f8b73f9cdf7749da42957106d4d8113fecfd19fb798f4e91e76"
+    },
+    {
+      "id": "VIS-003",
+      "filename": "VIS-003-team-run-composer-mention-chip-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run: `@Product Team` chosen; chip row above the text, `@Product Team` inline in the text.",
+      "sha256": "88ea3c8f8c9abe67ba8e61cbe23cdb9d598080fa09d1ba6b97e34c3eaa78d269"
+    },
+    {
+      "id": "VIS-004",
+      "filename": "VIS-004-team-run-task-team-added-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run after send: mention chip in the sent message, `delegate_task` call, task Team and its members in the run tree, Team tab with the later message from the task Team.",
+      "sha256": "3a9686417d35882ab5bdaa4dcaaab7f03361f3dbf56a335c575f1c42828d4a92"
+    },
+    {
+      "id": "VIS-005",
+      "filename": "VIS-005-team-run-task-member-conversation-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run: task Team member focused; the delegated brief is the system task notice at the top of its conversation.",
+      "sha256": "0c423529d8c5f72d152ba1f721d6f84647f27d37e23fd851b59468857c7baa86"
+    },
+    {
+      "id": "VIS-006",
+      "filename": "VIS-006-team-run-task-agent-and-task-team-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run with a task Agent and a task Team under the run: task rows with solid status dot and initials, no \"Started by\" line, straight branch line.",
+      "sha256": "4012af77d20d5fc74e5dbcee160b45749a21385c55e244b9b3c7f3e2cfee9601"
+    },
+    {
+      "id": "VIS-007",
+      "filename": "VIS-007-team-run-add-failed-notice-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run: the collaborator could not be brought in; failure notice above the composer, run tree unchanged.",
+      "sha256": "c9bd04889e64bb282d1d92317bc64cc734bf09eb75bc83d817f288d3e550fe37"
+    },
+    {
+      "id": "VIS-008",
+      "filename": "VIS-008-org-run-at-menu-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Org run, focused on analyst: `@` menu; the Org, its members and its teams are not listed.",
+      "sha256": "c78d4cbb0f180df9481249cbac5cee3f8439c7126cbf74ed84138b10326dfe40"
+    },
+    {
+      "id": "VIS-009",
+      "filename": "VIS-009-org-run-task-agent-and-task-team-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Org run with a task Agent and a task Team under the Org run; Org tab with the later messages.",
+      "sha256": "1fe0391cb908d68287bc1b28300c529657e0ac37ec0c6c7a78678dbc2368d7d5"
+    },
+    {
+      "id": "VIS-010",
+      "filename": "VIS-010-org-run-task-agent-conversation-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Org run: task Agent focused; system task notice, its reply, composer available.",
+      "sha256": "ca8c3513b0853d9e76d3c43b19673131fc8870cb75fb57bdeeecd9f88c5b36d3"
+    },
+    {
+      "id": "VIS-011",
+      "filename": "VIS-011-agent-run-at-menu-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Standalone Agent run (Research Assistant): `@` menu; the run's own agent is not listed.",
+      "sha256": "c82404c824dc516a7cbc411bdd84ffee2143be61f40cfa5cdc6d8a50809a1392"
+    },
+    {
+      "id": "VIS-012",
+      "filename": "VIS-012-agent-run-task-agent-and-task-team-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Standalone Agent run with a task Agent and a task Team listed under the run row; Team tab present with the later messages.",
+      "sha256": "834253e9d14a82e5c91a95336058661c9b5d6fbef2b49a9e6c404d7ed74678c5"
+    },
+    {
+      "id": "VIS-013",
+      "filename": "VIS-013-agent-run-task-agent-conversation-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Standalone Agent run: task Agent focused; header titled by its name; run row no longer highlighted.",
+      "sha256": "c7b2a59dc611c1f0e483086502487f5b1df85c0e08cab65fd3cbb23493908a98"
+    },
+    {
+      "id": "VIS-014",
+      "filename": "VIS-014-team-run-at-menu-small-window-1024x640.png",
+      "viewport": "1024x640",
+      "state": "Team run in a 1024x640 window: the `@` menu stays inside the window above the composer.",
+      "sha256": "c3c84eacd39de5aa37abac73ba63c786dcc386e645341fc6325b158fea94602d"
+    }
+  ]
+}

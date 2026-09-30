@@ -136,6 +136,18 @@ the machine summary records the exact loopback URLs and matched environment.
 No source observer, backend, Electron host, credential, or live service is
 needed for ordinary prototype review.
 
+## cross-scope-agent-mentions: `@` in a live run
+
+Approved Product experience (ticket `tickets/done/cross-scope-agent-mentions/`). From the default
+entry, open a run in Workspaces and type `@` in its composer:
+
+- Team run: `prototype-workspace` → `Product Review Team` → `Review the current prototype baseline` → `researcher`
+- Org run: `prototype-workspace` → `Product Launch Org` → `Coordinate the synthetic launch review` → `analyst`
+- Standalone Agent run: `prototype-workspace` → `Research Assistant` → `Compare current navigation states` (or send a first message in Chat)
+
+Sending plays a deterministic local run (`prototype/run-mentions/`); reload to reset. Validate with
+`PROTOTYPE_BASE_URL=<url> node prototype/scripts/validate-cross-scope-agent-mentions.mjs`.
+
 ## Identity
 
 - Package: `initial-prototype-baseline`
