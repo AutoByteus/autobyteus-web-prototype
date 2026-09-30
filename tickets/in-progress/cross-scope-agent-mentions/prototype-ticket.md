@@ -84,6 +84,11 @@
 - Evidence: `review-evidence/round-4/` (`tree-avatar.png`, `tree-bolt.png`, `tree-ring.png`, validation 30/30).
 - Status: `Awaiting User Review`.
 
+## Baseline Refresh In Progress
+
+- 2026-09-30: the user asked to update the baseline after `origin/personal` moved to `e9aa4a74c` (v1.4.92-beta.3, To-Do panel removed). Refresh ticket `WEB-BASELINE-REFRESH-003` (`prototype/web-baseline-refresh-003`) opened and sent to the Bootstrapper.
+- This ticket stays at `79a39c1` with no further future-state edits until the refresh is accepted and integrated into `personal`; then merge `personal` here, revalidate (`validate-cross-scope-agent-mentions.mjs`), and resume the review.
+
 ## Findings For Requirements (observed, not decided)
 
 - F-001 (REQ-003/004): the client can only build a conversation for a delegated child whose address is a configured member (`createTeamAgentContext` → `configuredAgentAtAddress`), and the task-execution DTO carries no definition identity or launch settings. A collaborator that is not mounted needs both from the server. The prototype supplies them locally.
