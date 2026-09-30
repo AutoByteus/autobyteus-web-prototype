@@ -1,9 +1,11 @@
 # AutoByteus Web Product Prototype
 
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
-commit `fcd3e83a4ca931ba52ed19bd37b8df3050ee529e` (`origin/personal`,
-refreshed by `WEB-BASELINE-REFRESH-001`; previous primary pin
-`8ef282ba77705180d985e7000d801f0e0068cdc1`). See
+commit `57df63f079363ccab4f2301213f9d8a3458f72fa` (`origin/personal`,
+refreshed by `WEB-BASELINE-REFRESH-002`; previous primary pin
+`fcd3e83a4ca931ba52ed19bd37b8df3050ee529e`). The source's shipped Chat entry
+(`/chat`) replaced the accepted prototype-only `chat-interface-entry`
+implementation. See
 [prototype-bootstrap-report.md](prototype-bootstrap-report.md) for the refresh
 scope, evidence, and known gaps.
 

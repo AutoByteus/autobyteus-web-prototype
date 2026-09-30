@@ -1,0 +1,26 @@
+[
+  {
+    "view": "full",
+    "source": [
+      390,
+      918
+    ],
+    "prototype": [
+      390,
+      918
+    ],
+    "differingBytes": 0
+  },
+  {
+    "view": "scrolled",
+    "source": [
+      390,
+      844
+    ],
+    "prototype": [
+      390,
+      844
+    ],
+    "differingBytes": 0
+  }
+]

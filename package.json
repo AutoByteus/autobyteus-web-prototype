@@ -47,7 +47,9 @@
     "validate:aorg-team-overrides-review": "node prototype/scripts/validate-aorg-team-overrides-review.mjs",
     "capture:aorg-team-overrides-final": "node prototype/scripts/capture-aorg-team-overrides-final.mjs",
     "validate:web-baseline-refresh": "node prototype/scripts/validate-web-baseline-refresh.mjs",
-    "validate:web-baseline-refresh-flows": "node prototype/scripts/probe-flow.mjs"
+    "validate:web-baseline-refresh-flows": "node prototype/scripts/probe-flow.mjs",
+    "fixtures:icons": "node prototype/scripts/build-icon-collections.mjs",
+    "validate:chat-baseline-refresh-flows": "node prototype/scripts/probe-chat-flows.mjs"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",

@@ -15,9 +15,9 @@ const snapshots = runtimeFixture.snapshots as Record<string, {
 
 describe('deterministic prototype fixture contract', () => {
   it('is pinned to the selected source and covers every recorded scenario', () => {
-    expect(runtimeFixture.sourceCommit).toBe('fcd3e83a4ca931ba52ed19bd37b8df3050ee529e')
-    expect(Object.keys(snapshots)).toHaveLength(64)
-    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'projects_disabled', 'loading', 'error', 'permission_denied']))
+    expect(runtimeFixture.sourceCommit).toBe('57df63f079363ccab4f2301213f9d8a3458f72fa')
+    expect(Object.keys(snapshots)).toHaveLength(66)
+    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'projects_disabled', 'loading', 'error', 'permission_denied', 'skill_name_issues']))
   })
 
   it('uses synthetic domain records and local-only node addresses', () => {
@@ -38,6 +38,8 @@ describe('deterministic prototype fixture contract', () => {
     expect(Object.keys(snapshots)).toContain('populated|paired|/mobile')
     expect(Object.keys(snapshots)).toContain('populated|unpaired|/mobile')
     expect(Object.keys(snapshots)).toContain('permission_denied|paired|/mobile')
+    expect(Object.keys(snapshots)).toContain('populated|desktop|/chat')
+    expect(Object.keys(snapshots)).toContain('skill_name_issues|desktop|/skills')
   })
 
   it('uses the captured source loading frame with unresolved capabilities', () => {
@@ -59,6 +61,7 @@ describe('deterministic prototype fixture contract', () => {
         workspaceRootPath: '/synthetic/prototype-workspace',
         kind: 'filesystem',
       }),
+      expect.objectContaining({ workspaceId: 'temp_ws_default', isTemp: true }),
     ])
 
     expect(operationFixture('ListWorkspaceRunHistory', {}, state)).toEqual({ listWorkspaceRunHistory: [] })

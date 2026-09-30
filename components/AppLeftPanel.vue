@@ -51,16 +51,16 @@
               <button
                 v-if="item.key === 'chat'"
                 type="button"
-                data-test="chat-new-chat"
+                data-test="app-left-panel-new-chat"
                 class="absolute right-10 top-1/2 inline-flex -translate-y-1/2 rounded-md p-2 transition-colors"
-                title="New chat"
-                aria-label="New chat"
+                :title="$t('shell.components.AppLeftPanel.new_chat')"
+                :aria-label="$t('shell.components.AppLeftPanel.new_chat')"
                 :class="isPrimaryNavActive(item.key)
                   ? 'text-gray-500 hover:bg-gray-200 hover:text-gray-700'
                   : 'text-gray-400 hover:bg-gray-100 hover:text-gray-600'"
                 @click.stop="startNewChat"
               >
-                <Icon icon="heroicons:pencil-square" class="h-[18px] w-[18px]" />
+                <Icon icon="heroicons:pencil-square" class="h-[1.125rem] w-[1.125rem]" aria-hidden="true" />
               </button>
 
               <button
@@ -95,10 +95,7 @@
         class="min-h-0 flex-1 border-b border-gray-200 bg-white outline-none"
       >
         <div class="h-full">
-          <WorkspaceAgentRunsTreePanel
-            @run-selected="onRunningRunSelected"
-            @run-created="onRunningRunCreated"
-          />
+          <WorkspaceAgentRunsTreePanel @run-selected="onRunningRunSelected" />
         </div>
       </section>
     </div>
@@ -126,7 +123,6 @@ import { computed, onMounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
 import WorkspaceAgentRunsTreePanel from '~/components/workspace/history/WorkspaceAgentRunsTreePanel.vue';
-import { usePrototypeChat } from '~/composables/chat/usePrototypeChat';
 import { useAppLeftPanelSectionResize } from '~/composables/useAppLeftPanelSectionResize';
 import { useLeftPanel } from '~/composables/useLeftPanel';
 import {
@@ -135,6 +131,8 @@ import {
   type ShellPrimaryNavKey,
 } from '~/composables/useShellPrimaryNavigation';
 import { isFeatureAvailableInRuntime } from '~/utils/mobileFeatureGates';
+import { useChatDraftStore } from '~/stores/chatDraftStore';
+import { resolveSelectionRoute, type RunSelectionRouteInput } from '~/services/workspace/workspaceNavigationService';
 
 const { t } = useLocalization();
 const {
@@ -167,12 +165,15 @@ const pushRoute = async (target: RouteLocationRaw): Promise<void> => {
 
 const navigateToPrimary = async (key: ShellPrimaryNavKey): Promise<void> => {
   useAgentSelectionStore().beginSelectionIntent();
+  // Chat always opens a fresh New chat.
+  if (key === 'chat') useChatDraftStore().startNewChat();
   await pushRoute(resolvePrimaryRoute(key));
 };
 
-// chat-interface-entry: the pencil on the Chat item always opens a fresh New chat.
+// The pencil on the Chat item always opens a fresh New chat.
 const startNewChat = async (): Promise<void> => {
-  usePrototypeChat().state.draft.text = '';
+  useAgentSelectionStore().beginSelectionIntent();
+  useChatDraftStore().startNewChat();
   await pushRoute('/chat');
 };
 
@@ -181,17 +182,20 @@ const navigateToSettings = async (): Promise<void> => {
   await pushRoute('/settings');
 };
 
-const isPlainWorkspaceRoute = (): boolean =>
-  route.path === '/workspace' && Object.keys(route.query).length === 0;
-
-const onRunningRunSelected = async (): Promise<void> => {
-  if (isPlainWorkspaceRoute()) return;
-  await pushRoute('/workspace');
+const isCurrentRoute = (target: RouteLocationRaw): boolean => {
+  if (typeof target === 'string') return route.path === target && Object.keys(route.query).length === 0;
+  const location = target as { path?: string; query?: Record<string, unknown> };
+  const query = location.query ?? {};
+  return route.path === location.path
+    && Object.keys(route.query).length === Object.keys(query).length
+    && Object.entries(query).every(([key, value]) => route.query[key] === value);
 };
 
-const onRunningRunCreated = async (): Promise<void> => {
-  if (isPlainWorkspaceRoute()) return;
-  await pushRoute('/workspace');
+// Standalone agent runs open in the chat view; team runs in the workspace Team view.
+const onRunningRunSelected = async (selection: RunSelectionRouteInput): Promise<void> => {
+  const target = resolveSelectionRoute(selection);
+  if (isCurrentRoute(target)) return;
+  await pushRoute(target);
 };
 
 onMounted(() => {

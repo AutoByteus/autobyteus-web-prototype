@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-09-30T05:01:27.694Z",
+  "base": "http://127.0.0.1:4198",
+  "note": "Built preview (node .output/server/index.mjs) with the pinned source and the observation node stopped.",
+  "results": [
+    {
+      "id": "IND-001-chat",
+      "path": "/",
+      "route": "/chat",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-002-chat-thinking-menu",
+      "path": "/chat",
+      "route": "/chat",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-003-chat-send",
+      "path": "/chat",
+      "route": "/chat?id=run-prepared-fixture",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-004-workspace-team-run",
+      "path": "/workspace",
+      "route": "/workspace",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-005-skills-banner",
+      "path": "/skills",
+      "route": "/skills",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-006-agents",
+      "path": "/agents?view=list",
+      "route": "/agents?view=list",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    }
+  ]
+}
