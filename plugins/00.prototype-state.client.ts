@@ -43,6 +43,14 @@ const localActions: Record<string, Set<string>> = {
   // utils/apolloClient.ts answers its create mutation and reads locally with a
   // deterministic created TeamRun.
   agentTeamRun: new Set(['launchDraft', 'hydrateRun']),
+  // A Chat first send runs the current source's own send path: the prepare
+  // mutation is answered locally (utils/apolloClient.ts) and the stream is the
+  // local PrototypeWebSocket, so the chat run view opens exactly as in the source.
+  agentRun: new Set(['sendUserInputAndSubscribe', 'ensureAgentStreamConnected']),
+  contextFileUpload: new Set(['finalizeDraftAttachments']),
+  // Run settings (Edit Config) for an agent or Team run read the resume config
+  // and model options through the source's own code and the local adapter.
+  existingRunConfig: new Set(['loadAgentCanonical', 'loadTeamCanonical', 'refreshModelOptions']),
   uiError: new Set(['push', 'remove', 'clear', 'toggle', 'open', 'close']),
   mobileWork: new Set(['selectContext', 'setActiveTab', 'requestRunSetup', 'consumeRunSetupIntent', 'requestFilePreview', 'consumeFilePreviewRequest', 'addDraftContextAttachment', 'removeDraftContextAttachment', 'clearDraftContextAttachments', 'consumeDraftContextAttachments', 'getPendingTeamRunAttachments', 'hasPendingTeamRunAttachments', 'addPendingTeamRunAttachment', 'moveDraftAttachmentsToPendingTeamRun', 'removePendingTeamRunAttachment', 'clearPendingTeamRunAttachments', 'consumePendingTeamRunAttachments', 'rememberFocusedTeamMember', 'getRememberedFocusedTeamMember', 'updateFocusedTeamMember', 'clearContext']),
   memoryExplorerStore: new Set(['setSelectedSourceByKey', 'setHomeTab', 'setSelectedAgentFromRoute', 'setSelectedTeamFromRoute', 'setAgentsSearch', 'setTeamsSearch', 'setAgentRunsSearch', 'setTeamRunsSearch', 'changeAgentRunsPage', 'changeTeamRunsPage', 'changeHomePage', 'resetPagesForSourceChange', 'clearSelections']),
@@ -57,6 +65,9 @@ const localActions: Record<string, Set<string>> = {
   messagingProviderScopeStore: new Set(['applyManagedAccountHints', 'setSelectedProvider']),
   messagingVerificationStore: new Set(['resetVerificationChecks', 'setVerificationCheckStatusForProvider', 'setVerificationResultForProvider', 'clearVerificationResultForProvider', 'resetAllProviderVerificationStates']),
   skill: new Set(['setCurrentSkill', 'clearError']),
+  // D-19 skill-name checks run as in the source: issue reads resolve locally
+  // (utils/apolloClient.ts) and the wrapped import action stays stubbed.
+  skillNames: new Set(['fetchIssues', 'runWithSkillNameChecks']),
   application: new Set(['clearError']),
   applicationPackages: new Set(['clearError']),
   agentPackages: new Set(['isPackageActionLoading', 'clearError']),
@@ -374,9 +385,7 @@ export default defineNuxtPlugin({
     // selected snapshot (capability-gated routes resolve first).
     if (!localStorage.getItem('autobyteus.app-left-panel.primary-nav-height')) {
       const [, initialSnapshot] = findSnapshot()
-      // chat-interface-entry PC-003: the new first `Chat` item adds one 40px
-      // navigation row, so the initial split grows by that row.
-      localStorage.setItem('autobyteus.app-left-panel.primary-nav-height', String(Number(initialSnapshot?.primaryNavHeight || '260') + 40))
+      localStorage.setItem('autobyteus.app-left-panel.primary-nav-height', initialSnapshot?.primaryNavHeight || '300')
     }
     const pinia = nuxtApp.$pinia as PrototypePinia
     const router = nuxtApp.$router as Router
@@ -415,6 +424,17 @@ export default defineNuxtPlugin({
       }
     }
     const collectionKinds = new Map<string, Map<string, 'map' | 'set'>>()
+    const liveMapKeys: Record<string, string[]> = {
+      workspace: ['fileSystemConnections', 'fileExplorerLiveConsumers', 'fileExplorerSnapshotRefreshes', 'workspaceMetadataRegistrationTasks'],
+      fileExplorer: ['fileExplorerStateByWorkspace'],
+    }
+    // Once a chat has been sent in this browser context, the run it created is
+    // live client state, as in the source (a single-page app keeps its stores
+    // across navigation). Route snapshots are then no longer re-applied to the
+    // run-owning stores, so the run stays in the Workspaces tree and can be
+    // reopened after navigating elsewhere.
+    let liveRunSession = false
+    const liveRunStores = new Set(['agentContexts', 'agentSelection', 'runHistory', 'chatDraft', 'workspace', 'agentRun'])
     const patchStore = (store: any): void => {
       if (!collectionKinds.has(store.$id)) {
         collectionKinds.set(store.$id, new Map(Object.entries(store.$state)
@@ -423,8 +443,15 @@ export default defineNuxtPlugin({
       }
       const [, selected] = findSnapshot()
       const state = selected?.state?.[store.$id]
+      // Live file-explorer sessions and loaded trees are Map-typed client state
+      // that captured JSON snapshots cannot carry. Keep the live values across
+      // a route re-patch, as the source keeps them across navigation.
+      const liveMaps = (liveMapKeys[store.$id] || [])
+        .map(key => [key, store[key]] as const)
+        .filter(([, value]) => value instanceof Map)
       const isRichExperience = scenario().startsWith('workspace_') || scenario().startsWith('mobile_')
       if (state
+        && !(liveRunSession && liveRunStores.has(store.$id))
         && !(context().startsWith('electron_') && hostOwnedStores.has(store.$id))
         && !(isRichExperience && richExperienceOwnedStores.has(store.$id))
         && !(agentOrgRuntimeRoute() && agentOrgRuntimeOwnedStores.has(store.$id))) {
@@ -438,6 +465,7 @@ export default defineNuxtPlugin({
           queueMicrotask(restoreError)
         }
       }
+      for (const [key, value] of liveMaps) store[key] = value
       if (store.$id === 'workspace') {
         for (const key of ['fileSystemConnections', 'fileExplorerLiveConsumers', 'fileExplorerSnapshotRefreshes', 'workspaceMetadataRegistrationTasks']) {
           if (!(store[key] instanceof Map)) store[key] = new Map()
@@ -465,7 +493,7 @@ export default defineNuxtPlugin({
         }
       }
       const overlay = stateOverlays.get(store.$id)
-      if (overlay && !(agentOrgRuntimeRoute() && agentOrgRuntimeOwnedStores.has(store.$id))) {
+      if (overlay && !(agentOrgRuntimeRoute() && agentOrgRuntimeOwnedStores.has(store.$id)) && !(liveRunSession && liveRunStores.has(store.$id))) {
         store.$patch(clone(overlay))
       }
       restoreCollectionTypes(store, collectionKinds.get(store.$id) || new Map())
@@ -484,6 +512,11 @@ export default defineNuxtPlugin({
             const activeRuntime = setAgentOrgRuntimePhase('active', router)
             if (activeRuntime) applyExperienceScenario({ scenario: activeRuntime.scenario, context: context() })
           })
+        })
+      }
+      if (store.$id === 'agentRun') {
+        store.$onAction(({ name, after }) => {
+          if (name === 'sendUserInputAndSubscribe') after(() => { liveRunSession = true })
         })
       }
       if (navigationOverlayStores.has(store.$id)) {
@@ -524,8 +557,17 @@ export default defineNuxtPlugin({
       }
     })
 
+    // A chat run route (`/chat?id=<runId>`, 57df63f) shows live run state that
+    // the source's own send/open/hydration code owns. Store snapshots are
+    // applied when stores are created, but not re-applied on navigation into
+    // a chat run, so a just-sent chat or an opened stored run is not reset.
+    const isChatRunRoute = (): boolean => window.location.pathname === '/chat' && new URLSearchParams(window.location.search).has('id')
     const applyCurrentSnapshot = (): void => {
       const [key] = findSnapshot()
+      if (isChatRunRoute()) {
+        document.documentElement.dataset.prototypeSnapshot = key
+        return
+      }
       for (const store of pinia._s.values()) patchStore(store)
       document.documentElement.dataset.prototypeSnapshot = key
       if (localStorage.getItem('autobyteus.prototype.deferExperienceScenario') !== '1') {

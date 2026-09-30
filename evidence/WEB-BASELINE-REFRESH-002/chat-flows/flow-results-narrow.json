@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-09-30T05:02:59.467Z",
+  "results": [
+    {
+      "id": "CHT-030",
+      "title": "New chat (390x844): model menu as a bottom sheet",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat",
+        "/chat"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "CHT-031",
+      "title": "New chat (390x844): workspace menu as a bottom sheet",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat",
+        "/chat"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

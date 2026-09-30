@@ -44,8 +44,8 @@ const emptyResult = async () => ({ data: {} })
 
 // Launch mutations that the retained source launch flow awaits before
 // hydrating the created run. They return a deterministic synthetic run ID;
-// nothing is started.
-const LOCAL_LAUNCH_MUTATIONS = new Set(['CreateAgentTeamRun'])
+// nothing is started. PrepareAgentRun backs the Chat first send (57df63f).
+const LOCAL_LAUNCH_MUTATIONS = new Set(['CreateAgentTeamRun', 'PrepareAgentRun'])
 
 const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const definition = request.mutation?.definitions?.find((entry: any) => entry.kind === 'OperationDefinition')

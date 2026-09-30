@@ -55,6 +55,14 @@ control, CSV preparation/download path, or replacement export workflow.
 | `team_launch` | `/agent-teams?view=team-list` → `/workspace` | Source-observation fixture for empty pre-launch history, valid Team draft/create/resume, chosen-workspace projection, and launched-member focus |
 | `error` | `/agents?view=list` | Recoverable catalog error presentation |
 | `permission_denied` | `/mobile`, `paired` | Denied/offline mobile recovery guidance |
+| `skill_name_issues` | `/skills` | Skills page duplicate-name banner (D-19): one conflict and one ignored runtime-default copy, with Show/Hide details |
+
+The populated fixture also contains, since `WEB-BASELINE-REFRESH-002`, the
+built-in Daily Assistant (backs a New chat), the built-in temp workspace
+(`temp_ws_default`, the New chat and launch-form default), and a second model
+`mock/reasoning-prototype` with a thinking switch and Low/Medium/High effort so
+the Chat thinking control and menu are observable. A Chat first send runs the
+source's own send path locally and opens `/chat?id=run-prepared-fixture`.
 
 ## Electron Host Scenarios
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// WEB-BASELINE-REFRESH-001 paired source/prototype route and state matrix.
+// WEB-BASELINE-REFRESH-001/-002 paired source/prototype route and state matrix.
 //
 // Runs the pinned source (served from an exact export against the synthetic
 // observation node) and the independently runnable prototype under identical
@@ -40,6 +40,8 @@ export const ROUTES = [
   ...['api-keys', 'token-usage', 'display', 'language', 'local-tools', 'mcp-servers', 'application-packages', 'agent-packages',
     'server-settings&mode=quick', 'server-settings&mode=advanced', 'server-settings&mode=migrations', 'extensions', 'updates']
     .map(section => `/settings?section=${section}`),
+  // WEB-BASELINE-REFRESH-002: the Chat entry surface shipped at 57df63f.
+  '/chat',
 ]
 
 const VARIANTS = [
@@ -71,6 +73,7 @@ const stateRows = [
   { id: 'WBR-S014', path: '/mobile', scenario: 'populated', mobile: 'paired', viewport: 'narrow' },
   { id: 'WBR-S015', path: '/mobile?unsupported=desktopSettings', scenario: 'populated', mobile: 'paired', viewport: 'narrow' },
   { id: 'WBR-S016', path: '/mobile', scenario: 'permission_denied', mobile: 'paired', viewport: 'narrow' },
+  { id: 'WBR-S017', path: '/skills', scenario: 'skill_name_issues' },
 ].map(row => ({ kind: 'state', viewport: 'desktop', locale: 'en', ...row }))
 
 // Proportionate coverage: every route in the primary configuration (desktop,
@@ -81,6 +84,7 @@ const SAMPLED_ALTERNATES = new Set([
   'WBR-R002-NEN', 'WBR-R002-DZH', 'WBR-R007-NZH', 'WBR-R012-NEN', 'WBR-R012-DZH', 'WBR-R014-NZH',
   'WBR-R016-NEN', 'WBR-R020-NZH', 'WBR-R027-NEN', 'WBR-R031-NEN', 'WBR-R031-DZH', 'WBR-R032-NZH',
   'WBR-R033-NEN', 'WBR-R033-DZH', 'WBR-R033-NZH', 'WBR-R037-NZH', 'WBR-R039-NEN', 'WBR-R043-DZH',
+  'WBR-R049-NEN', 'WBR-R049-DZH',
 ])
 const primaryRows = process.env.MATRIX_MODE === 'full'
   ? routeRows

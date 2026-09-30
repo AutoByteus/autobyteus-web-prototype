@@ -68,13 +68,13 @@
       </div>
 
       <div
-        v-if="!runHistoryStore.loading && displayWorkspaceNodes.length === 0"
+        v-if="!runHistoryStore.loading && workspaceNodes.length === 0"
         class="px-3 py-4 text-xs text-gray-500"
       >{{ $t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.no_run_history_yet') }}</div>
 
-      <div v-if="displayWorkspaceNodes.length > 0" class="space-y-1">
+      <div v-if="workspaceNodes.length > 0" class="space-y-1">
         <WorkspaceHistoryWorkspaceSection
-          v-for="workspaceNode in displayWorkspaceNodes"
+          v-for="workspaceNode in workspaceNodes"
           :key="workspaceNode.stableKey"
           :workspace-node="workspaceNode"
           :workspace-teams="workspaceTeams(workspaceNode.workspaceRootPath)"
@@ -111,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router';
 import { Icon } from '@iconify/vue';
@@ -143,15 +143,12 @@ import { useWorkspaceHistoryWorkspaceRemoval } from '~/composables/useWorkspaceH
 import { useWorkspaceHistoryMutations } from '~/composables/useWorkspaceHistoryMutations';
 import { useWorkspaceHistorySubjectActions } from '~/composables/useWorkspaceHistorySubjectActions';
 import { useLocalization } from '~/composables/useLocalization';
-import type { RunTreeRow, RunTreeWorkspaceNode } from '~/utils/runTreeProjection';
-import { usePrototypeChat } from '~/composables/chat/usePrototypeChat';
-import { isChatRunId, mergeChatRunsIntoTree } from '~/composables/chat/chatTreeProjection';
-import { CHAT_AGENTS } from '~/prototype/chat/chat-fixtures';
+import { useChatDraftStore } from '~/stores/chatDraftStore';
+import type { RunTreeWorkspaceNode } from '~/utils/runTreeProjection';
 
 const emit = defineEmits<{
   (e: 'run-selected', payload: { type: 'agent'; runId: string }): void;
   (e: 'run-selected', payload: { type: 'team'; runId: string }): void;
-  (e: 'run-created', payload: { type: 'agent'; definitionId: string }): void;
 }>();
 
 const HISTORY_REFRESH_INTERVAL_MS = 5000;
@@ -193,51 +190,6 @@ const treeState = useWorkspaceHistoryTreeState({
   selectedAgentOrg,
 });
 const { workspaceNodes, workspaceTeams, workspaceTeamHistoryGroups } = treeState;
-
-// chat-interface-entry prototype: chats are ordinary single-agent runs shown in
-// this tree; single-agent runs open in the chat view (Option B).
-const prototypeChat = usePrototypeChat();
-const displayWorkspaceNodes = computed(() => mergeChatRunsIntoTree(
-  workspaceNodes.value,
-  prototypeChat.state.chats,
-  prototypeChat.findWorkspace,
-  prototypeChat.chatActivityAt,
-));
-const activeChatRunId = computed(() => (route?.path.startsWith('/chat') && typeof route.query.id === 'string' ? route.query.id : null));
-const isChatRun = (runId: string) => isChatRunId(prototypeChat.state.chats, runId);
-const leaveDeletedChat = async (runId: string) => {
-  if (activeChatRunId.value === runId) await router.replace('/chat');
-};
-const expandActiveChat = () => {
-  const runId = activeChatRunId.value;
-  if (!runId) return;
-  for (const node of displayWorkspaceNodes.value) {
-    const agent = node.agents.find((candidate) => candidate.runs.some((run) => run.runId === runId));
-    if (!agent) continue;
-    if (!treeState.isWorkspaceExpanded(node.stableKey)) treeState.setWorkspaceExpanded(node.stableKey, true);
-    if (!treeState.isAgentExpanded(node.stableKey, agent.agentDefinitionId)) treeState.setAgentExpanded(node.stableKey, agent.agentDefinitionId, true);
-  }
-};
-watch(() => [activeChatRunId.value, displayWorkspaceNodes.value.length], expandActiveChat, { immediate: true });
-// Prototype hand-off from Chat: open the team run in the existing Team view
-// through the product's own tree selection.
-const openPendingTeam = async () => {
-  const teamRunId = prototypeChat.state.pendingTeamOpen;
-  if (!teamRunId || route?.path !== '/workspace') return;
-  for (const node of displayWorkspaceNodes.value) {
-    const team = workspaceTeams(node.workspaceRootPath).find((candidate) => candidate.teamRunId === teamRunId);
-    if (!team) continue;
-    prototypeChat.state.pendingTeamOpen = null;
-    if (prototypeChat.state.pendingTeamNotice) {
-      addToast(prototypeChat.state.pendingTeamNotice, 'info');
-      prototypeChat.state.pendingTeamNotice = null;
-    }
-    if (!treeState.isWorkspaceExpanded(node.stableKey)) treeState.setWorkspaceExpanded(node.stableKey, true);
-    await onSelectTeam(team, node.stableKey);
-    return;
-  }
-};
-watch(() => [prototypeChat.state.pendingTeamOpen, route?.path, displayWorkspaceNodes.value.length], () => { void openPendingTeam(); });
 const { execute: executeSubjectAction } = useWorkspaceHistorySubjectActions();
 const {
   getOrgAvatarUrl,
@@ -303,25 +255,16 @@ const {
   closeDeleteConfirmation,
   confirmDeleteRun,
 } = useWorkspaceHistoryMutations({
-  terminateRun: async (runId: string) => {
-    if (isChatRun(runId)) { prototypeChat.stopRun(runId); return true; }
-    return agentRunStore.terminateRun(runId);
-  },
+  terminateRun: (runId: string) => agentRunStore.terminateRun(runId),
   terminateTeamRun: (teamRunId: string) => teamRunStore.terminateTeamRun(teamRunId),
   removeDraftRun: async (runId: string) => {
     await agentRunStore.closeAgent(runId, { terminate: false });
     return true;
   },
-  deleteRun: async (runId: string) => {
-    if (isChatRun(runId)) { prototypeChat.deleteChat(runId); await leaveDeletedChat(runId); return true; }
-    return runHistoryStore.deleteRun(runId);
-  },
+  deleteRun: (runId: string) => runHistoryStore.deleteRun(runId),
   deleteTeamRun: (teamRunId: string) => runHistoryStore.deleteTeamRun(teamRunId),
   deleteAgentOrgRun: (orgRunId: string) => runHistoryStore.deleteAgentOrgRun(orgRunId),
-  archiveRun: async (runId: string) => {
-    if (isChatRun(runId)) { prototypeChat.deleteChat(runId); await leaveDeletedChat(runId); return true; }
-    return runHistoryStore.archiveRun(runId);
-  },
+  archiveRun: (runId: string) => runHistoryStore.archiveRun(runId),
   archiveTeamRun: (teamRunId: string) => runHistoryStore.archiveTeamRun(teamRunId),
   archiveAgentOrgRun: (orgRunId: string) => runHistoryStore.archiveAgentOrgRun(orgRunId),
   onAgentOrgMutationSuccess: async (orgRunId: string) => {
@@ -367,7 +310,10 @@ const {
     }
     emit('run-selected', { type: 'team', runId: payload.runId });
   },
-  emitRunCreated: (payload) => emit('run-created', payload),
+  startPresetChat: async (preset) => {
+    useChatDraftStore().startNewChat(preset);
+    await router.push('/chat');
+  },
   presentTeamStreamRecoveryFeedback: (feedback) => {
     const key = feedback === 'wait'
       ? 'workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.stream_recovery_wait'
@@ -417,7 +363,11 @@ const removeWorkspaceConfirmationMessage = computed(() => {
 
 const sectionState: WorkspaceHistorySectionState = {
   get selectedRunId() {
-    if (route?.path.startsWith('/chat')) return activeChatRunId.value;
+    // On Chat, the highlighted row is the displayed chat (none on New chat).
+    if (route?.path?.startsWith('/chat')) {
+      const id = route.query.id;
+      return typeof id === 'string' && id ? id : null;
+    }
     return treeState.selectedRunId.value;
   },
   isTeamRunSelected: (teamRunId: string) =>
@@ -447,6 +397,8 @@ const sectionState: WorkspaceHistorySectionState = {
   toggleAgentOrgRun: treeState.toggleAgentOrgRun,
   isAgentOrgTeamExpanded: treeState.isAgentOrgTeamExpanded,
   toggleAgentOrgTeam: treeState.toggleAgentOrgTeam,
+  isAgentOrgTaskTeamExpanded: treeState.isAgentOrgTaskTeamExpanded,
+  toggleAgentOrgTaskTeam: treeState.toggleAgentOrgTaskTeam,
   isAgentOrgRunSelected: treeState.isAgentOrgRunSelected,
   isAgentOrgMemberSelected: treeState.isAgentOrgMemberSelected,
   isAgentOrgTerminating: (rootRunId: string) => Boolean(agentOrgContextsStore.operations[rootRunId]) || agentOrgRunStore.terminatingRunIds.has(rootRunId),
@@ -474,30 +426,10 @@ const sectionAvatarBindings: WorkspaceHistoryAvatarBindings = {
   getTeamMemberInitials,
 };
 
-// Option B: every single-agent run opens in the chat view; "+" on an agent
-// starts a new chat with that agent in that workspace.
-const openRunInChat = async (run: RunTreeRow): Promise<void> => {
-  if (!isChatRun(run.runId)) {
-    await onSelectRun(run);
-    return;
-  }
-  await router.push({ path: '/chat', query: { id: run.runId } });
-};
-const startChatFromTree = async (workspaceRootPath: string, agentDefinitionId: string): Promise<void> => {
-  if (!CHAT_AGENTS.some((agent) => agent.id === agentDefinitionId)) {
-    await onCreateRun(workspaceRootPath, agentDefinitionId);
-    return;
-  }
-  const workspace = prototypeChat.allWorkspaces.value.find((item) => item.path === workspaceRootPath)
-    ?? prototypeChat.addWorkspace(workspaceRootPath);
-  prototypeChat.setDraftContext(agentDefinitionId, workspace.id);
-  await router.push('/chat');
-};
-
 const sectionActions: WorkspaceHistorySectionActions = {
   onRemoveWorkspace,
-  onCreateRun: startChatFromTree,
-  onSelectRun: openRunInChat,
+  onCreateRun,
+  onSelectRun,
   onTerminateRun,
   onArchiveRun,
   onDeleteRun,

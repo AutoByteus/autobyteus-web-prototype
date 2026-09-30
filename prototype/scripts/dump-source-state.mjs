@@ -9,7 +9,7 @@ const mockBaseUrl = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4310'
 const output = process.env.OUTPUT || resolve(root, 'prototype/fixtures/source-state-snapshots.json')
 
 const routes = [
-  '/', '/agents?view=list', '/agents?view=create', '/agents?view=detail&id=agent-researcher', '/agents?view=edit&id=agent-researcher', '/agents?view=unsupported',
+  '/', '/chat', '/agents?view=list', '/agents?view=create', '/agents?view=detail&id=agent-researcher', '/agents?view=edit&id=agent-researcher', '/agents?view=unsupported',
   '/agent-teams?view=team-list', '/agent-teams?view=team-create', '/agent-teams?view=team-detail&id=team-product', '/agent-teams?view=team-edit&id=team-product', '/agent-teams?view=unsupported',
   '/agent-orgs?view=org-list', '/agent-orgs?view=org-create', '/agent-orgs?view=org-detail&id=org-product-launch', '/agent-orgs?view=org-edit&id=org-product-launch',
   '/applications', '/applications/sample-app', '/skills', '/skills?skill=prototype-research',
@@ -34,6 +34,7 @@ scenarios.push(
   { path: '/agent-orgs?view=org-list', scenario: 'empty', locale: 'en' },
   { path: '/agents?view=list', scenario: 'loading', locale: 'en', waitMs: 220 },
   { path: '/agents?view=list', scenario: 'error', locale: 'en' },
+  { path: '/skills', scenario: 'skill_name_issues', locale: 'en' },
   { path: '/mobile', scenario: 'populated', locale: 'en', mobile: 'unpaired' },
   { path: '/mobile', scenario: 'populated', locale: 'en', mobile: 'paired' },
   { path: '/mobile?unsupported=desktopSettings', scenario: 'populated', locale: 'en', mobile: 'paired' },

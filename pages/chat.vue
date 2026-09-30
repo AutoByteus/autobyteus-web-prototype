@@ -1,270 +1,122 @@
 <template>
-  <div class="flex h-full bg-white" data-test="chat-page">
-    <!-- New chat -->
-    <div v-if="!activeId" class="flex min-w-0 flex-1 flex-col overflow-y-auto" data-test="chat-new">
-      <div class="flex flex-1 flex-col items-center justify-center px-4 pb-[14vh] pt-10 sm:px-6">
-        <h1 class="text-center text-[1.75rem] font-semibold tracking-tight text-gray-900">What should we work on?</h1>
-        <p v-if="draftTeam" class="mt-2 max-w-xl text-center text-sm text-gray-500">
-          Your message goes to {{ draftTeam.name }}’s coordinator.
-        </p>
-        <p v-else-if="!isAssistantDraft" class="mt-2 max-w-xl text-center text-sm text-gray-500">
-          Chat with {{ draftAgent.name }}, using its own tools and skills.
-        </p>
-        <p v-else class="mt-2 max-w-xl text-center text-sm text-gray-500">
-          All your skills are available. Type <kbd class="rounded border border-gray-200 bg-gray-50 px-1 font-sans text-xs text-gray-600">/</kbd> to use a skill, or <kbd class="rounded border border-gray-200 bg-gray-50 px-1 font-sans text-xs text-gray-600">@</kbd> to chat with an agent or team.
-        </p>
-        <div class="mt-8 w-full max-w-3xl">
-          <ChatComposer
-            ref="newComposerRef"
-            v-model="state.draft.text"
-            v-model:skills="state.draft.skills"
-            :available-skills="draftTeam ? [] : draftAgent.skills"
-            v-model:attachments="state.draft.attachments"
-            size="large"
-            autofocus
-            mentions
-            :placeholder="draftTeam ? `Message ${draftTeam.name}…` : isAssistantDraft ? 'Ask anything · / for skills · @ for an agent or team' : `Ask ${draftAgent.name} anything…`"
-            :starting="state.starting"
-            :send-blocked-reason="draftBlockedReason"
-            @send="startChat"
-            @select-target="onSelectTarget"
-          >
-            <template v-if="draftTeam" #chips>
-              <span class="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 py-0.5 pl-1 pr-1 text-xs font-medium text-gray-700" data-test="chat-team-chip">
-                <span class="inline-flex h-4 w-4 items-center justify-center rounded border border-gray-300 bg-white text-[0.5rem] font-semibold text-slate-600">{{ draftTeam.initials }}</span>
-                {{ draftTeam.name }}
-                <button type="button" class="rounded p-0.5 text-gray-400 hover:bg-gray-200 hover:text-gray-700" :aria-label="`Chat with the assistant instead of ${draftTeam.name}`" title="Use the assistant instead" @click="chat.setDraftAgent(CHAT_ASSISTANT_ID)">
-                  <ChatGlyph name="x" class="h-3 w-3" />
-                </button>
-              </span>
-            </template>
-            <template v-else-if="!isAssistantDraft" #chips>
-              <span class="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 py-0.5 pl-1 pr-1 text-xs font-medium text-gray-700" data-test="chat-agent-chip">
-                <span class="inline-flex h-4 w-4 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-[0.5rem] font-semibold text-slate-600">{{ draftAgent.initials }}</span>
-                {{ draftAgent.name }}
-                <button type="button" class="rounded p-0.5 text-gray-400 hover:bg-gray-200 hover:text-gray-700" :aria-label="`Chat with the assistant instead of ${draftAgent.name}`" title="Use the assistant instead" @click="chat.setDraftAgent(CHAT_ASSISTANT_ID)">
-                  <ChatGlyph name="x" class="h-3 w-3" />
-                </button>
-              </span>
-            </template>
-            <template #left>
-              <ChatWorkspacePicker :workspace-id="state.draft.workspaceId" @select="(id) => (state.draft.workspaceId = id)" />
-              <ChatAutoApproveToggle v-model="state.draft.autoApprove" />
-            </template>
-            <template #right>
-              <ChatModelPicker
-                :runtime="state.draft.runtime"
-                :model-id="state.draft.modelId"
-                :thinking="state.draft.thinking"
-                @select="chat.setDraftCombo"
-              />
-              <ChatEffortPicker
-                :model-id="state.draft.modelId"
-                :thinking="state.draft.thinking"
-                @select="(level) => (state.draft.thinking = level)"
-              />
-            </template>
-          </ChatComposer>
-          <p class="mt-2.5 flex items-center justify-center gap-1.5 text-center text-xs text-gray-400" data-test="chat-new-hint">
-            <template v-if="state.starting">
-              Starting {{ draftTeam ? draftTeam.name : draftAgent.name }} on {{ draftRuntime.label }}…
-            </template>
-            <template v-else-if="draftTeam">
-              <span data-test="chat-team-note">All members use this model, the {{ draftWorkspace.isTemp ? 'temp workspace' : draftWorkspace.name }} and this approval setting. For per-member setup, start it from
-                <NuxtLink to="/agent-teams?view=team-list" class="font-medium text-blue-700 hover:underline">Agent Teams</NuxtLink>.</span>
-            </template>
-            <template v-else>
-              <ChatGlyph name="folder" class="h-3.5 w-3.5" />
-              <span class="truncate">Files are saved in {{ draftWorkspace.isTemp ? 'the temp workspace' : draftWorkspace.name }} · {{ draftWorkspace.path }}</span>
-            </template>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Missing chat -->
-    <div v-else-if="!activeChat" class="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center" data-test="chat-missing">
-      <p class="text-base font-semibold text-gray-800">This chat no longer exists</p>
-      <NuxtLink to="/chat" class="rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700">New chat</NuxtLink>
-    </div>
-
-    <!-- Active chat: the product's workspace frame (same right tabs column, strip,
-         resize handle and drawer as the Agent Team / Agent Org views); the chat
-         column is its center pane. -->
-    <WorkspaceAdaptiveLayout v-else :show-file-content="false" data-test="chat-run-frame">
-      <template #center>
-        <ChatRunSettingsPanel v-if="settingsOpen" :chat-id="activeChat.id" @close="settingsOpen = false" />
-        <div v-else class="flex h-full min-w-0 flex-col bg-white" data-test="chat-active">
-          <!-- Same header as the product standalone-agent run view: avatar, run title, status. -->
-          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-200 px-3 py-2 sm:px-4" data-test="chat-run-header">
-            <div class="flex h-10 min-w-0 flex-1 items-center space-x-3">
-              <div class="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-slate-100 text-[0.625rem] font-semibold tracking-wide text-slate-600">{{ activeAgent.initials }}</div>
-              <h4 class="truncate text-base font-medium text-gray-800" :title="activeChat.title" data-test="chat-title">{{ activeChat.title }}</h4>
-              <AgentStatusDisplay class="flex-shrink-0" :status="activeChat.status === 'running' ? 'running' : activeChat.active ? 'idle' : 'offline'" data-test="chat-run-status" />
-            </div>
-            <WorkspaceHeaderActions @new-agent="newChatWithAgent" @edit-config="settingsOpen = true" />
-          </div>
-
-          <!-- Same body as the product run view (AgentEventMonitor): p-4 frame, full-width feed, box at the bottom. -->
-          <div class="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden overscroll-none p-4" data-test="chat-run-body">
-          <div ref="scrollRef" class="min-h-0 flex-1 overflow-y-auto overscroll-contain" data-test="chat-messages">
-            <div class="rounded-xl bg-white">
-              <template v-for="message in activeChat.messages" :key="message.id">
-                <div v-if="message.role === 'user'" class="flex items-start gap-3 break-words px-2 py-3">
-                  <div class="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-sky-200 bg-white">
-                    <ChatGlyph name="person" class="h-8 w-8 text-sky-600" />
-                  </div>
-                  <div class="min-w-0 flex-1 pt-1.5">
-                    <div
-                      v-if="message.skills?.length"
-                      class="group/skills relative mb-1.5 flex flex-wrap gap-1.5"
-                      data-test="chat-message-skills"
-                      tabindex="0"
-                      :aria-describedby="`sent-as-${message.id}`"
-                    >
-                      <span v-for="name in message.skills" :key="name" class="inline-flex cursor-default items-center gap-1 rounded-md border border-indigo-200 bg-indigo-50 px-1.5 py-0.5 text-xs font-medium text-indigo-700">
-                        <Icon icon="heroicons:sparkles" class="h-3.5 w-3.5" />/{{ name }}
-                      </span>
-                      <div
-                        :id="`sent-as-${message.id}`"
-                        role="tooltip"
-                        data-test="chat-sent-as"
-                        class="pointer-events-none absolute left-0 top-full z-20 mt-1.5 w-max max-w-md rounded-md bg-gray-900 px-2.5 py-2 text-xs leading-5 text-gray-100 opacity-0 shadow-lg transition-opacity duration-100 group-hover/skills:opacity-100 group-focus/skills:opacity-100"
-                      >
-                        <span class="block text-[0.6875rem] font-medium uppercase tracking-wide text-gray-400">Sent to the agent as</span>
-                        <span class="block whitespace-pre-wrap">{{ message.sentText }}</span>
-                      </div>
-                    </div>
-                    <div v-if="message.text" class="whitespace-pre-wrap break-words leading-6 text-gray-900">{{ message.text }}</div>
-                    <div v-if="message.attachments?.length" class="mt-2" data-test="chat-message-attachments">
-                      <p class="text-xs font-medium text-gray-500">Context files</p>
-                      <ul class="mt-1 flex flex-wrap gap-2">
-                        <li v-for="item in message.attachments" :key="item.id">
-                          <span v-if="item.previewUrl" class="block h-12 w-12 overflow-hidden rounded-md border border-sky-200 bg-sky-50"><img :src="item.previewUrl" :alt="item.name" class="h-full w-full object-cover"></span>
-                          <span v-else class="inline-block max-w-full truncate rounded-md border border-sky-200 bg-sky-50 px-2 py-1 text-xs text-sky-700">{{ item.name }}</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div v-else-if="message.role === 'assistant'" class="flex items-start gap-3 break-words px-2 py-3">
-                  <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50">
-                    <span class="text-xs font-semibold tracking-wide text-slate-600">{{ activeAgent.initials }}</span>
-                  </div>
-                  <div class="min-w-0 flex-1 whitespace-pre-wrap break-words pt-1.5 leading-6 text-gray-900">
-                    {{ message.text }}<span v-if="message.streaming" class="ml-0.5 inline-block h-4 w-1.5 translate-y-0.5 animate-pulse rounded-sm bg-gray-400"></span>
-                  </div>
-                </div>
-              </template>
-            </div>
-          </div>
-
-          <div class="shrink-0">
-            <ChatComposer
-              v-model="followUp"
-              v-model:skills="followUpSkills"
-              :available-skills="activeAgent.skills"
-              v-model:attachments="followUpAttachments"
-              :placeholder="activeAgent.id === CHAT_ASSISTANT_ID ? 'Reply, or type / to use a skill' : `Message ${activeAgent.name}…`"
-              :running="activeChat.status === 'running'"
-              @send="sendFollowUp"
-              @stop="chat.stopChat(activeChat.id)"
-            >
-            </ChatComposer>
-          </div>
-          </div>
-        </div>
-      </template>
-    </WorkspaceAdaptiveLayout>
-
+  <div class="flex h-full min-h-0 min-w-0 bg-white font-sans text-gray-800" data-test="chat-page">
+    <ChatNewSurface v-if="!routeRunId" />
     <div
-      v-if="state.toast"
-      role="status"
-      class="pointer-events-none fixed bottom-6 left-1/2 z-[70] -translate-x-1/2 rounded-lg bg-gray-900 px-4 py-2 text-sm text-white shadow-lg"
-      data-test="chat-toast"
-    >{{ state.toast }}</div>
+      v-else-if="openState === 'missing'"
+      class="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center"
+      data-test="chat-missing"
+    >
+      <p class="text-base font-semibold text-gray-800">{{ $t('chat.missing.title') }}</p>
+      <button
+        type="button"
+        class="rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+        data-test="chat-missing-new-chat"
+        @click="startNewChat"
+      >{{ $t('chat.missing.newChat') }}</button>
+    </div>
+    <!-- The chat run view is the product agent run view in the workspace frame (D-17). -->
+    <div v-else-if="displayedContext" class="flex h-full min-h-0 w-full flex-col bg-gray-100" data-test="chat-run-frame">
+      <WorkspaceAdaptiveLayout :show-file-content="showFileContent" />
+    </div>
+    <div v-else class="flex flex-1 items-center justify-center" data-test="chat-opening">
+      <span class="h-6 w-6 animate-spin rounded-full border-2 border-gray-200 border-t-blue-600 motion-reduce:animate-none" :aria-label="$t('chat.run.opening')"></span>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Icon } from '@iconify/vue'
-import { CHAT_ASSISTANT_ID, type ChatAttachment } from '~/prototype/chat/chat-fixtures'
-import ChatComposer from '~/components/chat/ChatComposer.vue'
-import ChatGlyph from '~/components/chat/ChatGlyph.vue'
-import ChatModelPicker from '~/components/chat/ChatModelPicker.vue'
-import ChatEffortPicker from '~/components/chat/ChatEffortPicker.vue'
+import ChatNewSurface from '~/components/chat/ChatNewSurface.vue'
 import WorkspaceAdaptiveLayout from '~/components/layout/WorkspaceAdaptiveLayout.vue'
-import AgentStatusDisplay from '~/components/workspace/agent/AgentStatusDisplay.vue'
-import WorkspaceHeaderActions from '~/components/workspace/common/WorkspaceHeaderActions.vue'
-import ChatRunSettingsPanel from '~/components/chat/ChatRunSettingsPanel.vue'
-import ChatWorkspacePicker from '~/components/chat/ChatWorkspacePicker.vue'
-import ChatAutoApproveToggle from '~/components/chat/ChatAutoApproveToggle.vue'
-import { findAgent, findModel, findRuntime, findTeam, usePrototypeChat } from '~/composables/chat/usePrototypeChat'
+import { useWorkspaceFileContentVisible } from '~/composables/workspace/useWorkspaceFileContentVisible'
+import { useChatRouteRunSync } from '~/composables/chat/useChatRouteRunSync'
+import { useAgentContextsStore } from '~/stores/agentContextsStore'
+import { useAgentSelectionStore } from '~/stores/agentSelectionStore'
+import { useChatDraftStore } from '~/stores/chatDraftStore'
+import { useWorkspaceCenterViewStore } from '~/stores/workspaceCenterViewStore'
+import { buildAgentRunChatRoute, openWorkspaceExecutionLink } from '~/services/workspace/workspaceNavigationService'
+import { isTemporaryRunId } from '~/utils/chat/chatDefaults'
 
-const chat = usePrototypeChat()
-const { state } = chat
+/**
+ * `/chat` shows the New chat surface; `/chat?id=<runId>` shows that single-agent run in the
+ * workspace frame (the product agent run view), opening it first when it is not mounted. An id that is neither registered nor openable
+ * shows the missing-chat state; a `temp-*` id that is no longer registered returns to New chat.
+ */
 const route = useRoute()
 const router = useRouter()
+const agentContextsStore = useAgentContextsStore()
+const selectionStore = useAgentSelectionStore()
+const chatDraftStore = useChatDraftStore()
+const showFileContent = useWorkspaceFileContentVisible()
 
-const activeId = computed(() => (typeof route.query.id === 'string' ? route.query.id : null))
-const activeChat = computed(() => state.chats.find((item) => item.id === activeId.value) ?? null)
-const activeAgent = computed(() => findAgent(activeChat.value?.agentId ?? state.draft.agentId))
-const activeWorkspace = computed(() => chat.findWorkspace(activeChat.value?.workspaceId ?? state.draft.workspaceId))
-
-const draftAgent = computed(() => findAgent(state.draft.agentId))
-const draftRuntime = computed(() => findRuntime(state.draft.runtime))
-const draftWorkspace = computed(() => chat.findWorkspace(state.draft.workspaceId))
-const draftBlockedReason = computed(() => {
-  if (!state.draft.text.trim() && !state.draft.skills.length) return null
-  if (!draftRuntime.value.enabled) return `${draftRuntime.value.label} is unavailable. Choose another runtime.`
-  if (!findModel(state.draft.modelId)) return 'Choose a model to start.'
-  return null
+const routeRunId = computed(() => {
+  const value = route.query.id
+  const id = Array.isArray(value) ? value[0] : value
+  return typeof id === 'string' && id.trim() ? id.trim() : null
 })
+const displayedContext = computed(() => (routeRunId.value ? agentContextsStore.getRun(routeRunId.value) ?? null : null))
+const openState = ref<'idle' | 'opening' | 'missing'>('idle')
+let openGeneration = 0
 
-const draftTeam = computed(() => findTeam(state.draft.teamId))
-const isAssistantDraft = computed(() => state.draft.agentId === CHAT_ASSISTANT_ID && !state.draft.teamId)
-const onSelectTarget = (target: { kind: 'agent' | 'team'; id: string }) => {
-  if (target.kind === 'team') chat.setDraftTeam(target.id)
-  else chat.setDraftAgent(target.id)
-}
-
-const startChat = async () => {
-  if (state.draft.teamId) {
-    const team = await chat.startTeamChat()
-    if (team) await router.push('/workspace')
+const ensureRunOpen = async (runId: string | null) => {
+  const generation = ++openGeneration
+  openState.value = 'idle'
+  if (!runId) return
+  if (agentContextsStore.getRun(runId)) {
+    if (selectionStore.selectedType !== 'agent' || selectionStore.selectedRunId !== runId) {
+      selectionStore.selectRunWithoutShellNavigation(runId, 'agent')
+    }
     return
   }
-  const created = await chat.startChat()
-  if (created) await router.push({ path: '/chat', query: { id: created.id } })
+  if (isTemporaryRunId(runId)) {
+    // Temporary contexts do not survive a reload.
+    await router.replace('/chat')
+    return
+  }
+  openState.value = 'opening'
+  try {
+    await openWorkspaceExecutionLink({ kind: 'agent', runId })
+    if (generation !== openGeneration) return
+    openState.value = agentContextsStore.getRun(runId) ? 'idle' : 'missing'
+  } catch (error) {
+    if (generation !== openGeneration) return
+    console.warn(`Chat '${runId}' could not be opened:`, error)
+    openState.value = 'missing'
+  }
 }
 
-// Product header actions: ⚙ opens the run's settings view, ＋ starts a new run of
-// this agent (a New chat preset to this agent and workspace).
-const settingsOpen = ref(false)
-watch(activeId, () => { settingsOpen.value = false })
-const newChatWithAgent = async () => {
-  if (!activeChat.value) return
-  chat.setDraftContext(activeChat.value.agentId, activeChat.value.workspaceId)
+watch(routeRunId, (runId) => { void ensureRunOpen(runId) }, { immediate: true })
+
+// Run settings (⚙) belong to the run they were opened for. The center view mode is global, so when
+// Chat displays any other run (a new chat, another chat, or settings left open elsewhere) it shows
+// that run's conversation. Promotion (temp → permanent) keeps the same context object, so the
+// settings of a draft stay open across its first send.
+const workspaceCenterViewStore = useWorkspaceCenterViewStore()
+let settingsContext: object | null = null
+watch(() => workspaceCenterViewStore.isConfigMode, (configMode) => {
+  settingsContext = configMode ? displayedContext.value : null
+})
+watch(displayedContext, (context) => {
+  if (!context || !workspaceCenterViewStore.isConfigMode) return
+  if (context !== settingsContext) workspaceCenterViewStore.showChat()
+}, { immediate: true })
+
+// A displayed run that disappears (for example, deleted from the Workspaces tree) is re-resolved.
+// A promoted context keeps its object but carries the new id; useChatRouteRunSync moves the route.
+watch(displayedContext, (context, previous) => {
+  if (context || !previous || !routeRunId.value) return
+  if (previous.state.runId !== routeRunId.value) return
+  if (!agentContextsStore.getRun(routeRunId.value)) void ensureRunOpen(routeRunId.value)
+})
+
+useChatRouteRunSync({
+  routeRunId,
+  replaceRouteRunId: (runId) => router.replace(buildAgentRunChatRoute(runId)),
+})
+
+const startNewChat = async () => {
+  chatDraftStore.startNewChat()
   await router.push('/chat')
 }
-
-const followUp = ref('')
-const followUpSkills = ref<string[]>([])
-const followUpAttachments = ref<ChatAttachment[]>([])
-const sendFollowUp = () => {
-  if (!activeChat.value) return
-  chat.sendInChat(activeChat.value.id, followUp.value, followUpSkills.value, followUpAttachments.value)
-  followUp.value = ''
-  followUpSkills.value = []
-  followUpAttachments.value = []
-}
-
-const scrollRef = ref<HTMLElement | null>(null)
-const scrollToEnd = () => nextTick(() => {
-  if (scrollRef.value) scrollRef.value.scrollTop = scrollRef.value.scrollHeight
-})
-watch(() => [activeId.value, activeChat.value?.messages.length, activeChat.value?.messages.at(-1)?.text], scrollToEnd, { immediate: true })
-
 </script>

@@ -21,7 +21,7 @@ const isMobileRuntime = computed(() => isMobileRemoteAccessRuntime());
 
 onMounted(() => {
   if (!isMobileRuntime.value) {
-    // chat-interface-entry (DEC-005): the app lands on Chat (New chat).
+    // DEC-005: the desktop app lands on Chat (New chat).
     navigateTo('/chat', { replace: true });
   }
 });

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Paired click-through probe for WEB-BASELINE-REFRESH-001 flow checks.
+// Paired click-through probe for WEB-BASELINE-REFRESH-001/-002 flow checks.
 // Usage: node probe-flow.mjs <flow-id> ; steps defined below.
 import { chromium } from 'playwright-core'
 import { createRequire } from 'node:module'
@@ -12,13 +12,12 @@ const root = resolve(new URL('../..', import.meta.url).pathname)
 const SOURCE = process.env.SOURCE_BASE_URL || 'http://127.0.0.1:4291'
 const PROTO = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4199'
 const MOCK = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4391'
-const OUT = resolve(root, process.env.FLOW_DIR || 'evidence/WEB-BASELINE-REFRESH-001/flows')
+const OUT = resolve(root, process.env.FLOW_DIR || 'evidence/WEB-BASELINE-REFRESH-002/flows')
 const CHROME = process.env.CHROMIUM_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const style = '*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}'
 
 const click = text => async page => { await page.getByText(text, { exact: true }).first().click(); await page.waitForTimeout(900) }
 const clickRole = (role, name) => async page => { await page.getByRole(role, { name, exact: true }).first().click(); await page.waitForTimeout(900) }
-const chooseFirstWorkspace = async page => { await page.getByText('Select a workspace...', { exact: true }).first().click(); await page.waitForTimeout(400); await page.getByRole('listbox').getByRole('option').first().click(); await page.waitForTimeout(900) }
 const type = text => async page => { await page.getByPlaceholder('Type a message...').first().fill(text); await page.waitForTimeout(400) }
 const expandWorkspace = async page => { await page.getByText('prototype-workspace', { exact: true }).first().click(); await page.waitForTimeout(900) }
 
@@ -35,8 +34,11 @@ export const FLOWS = {
   'FLW-010': { title: 'Primary navigation to Projects', path: '/agents?view=list', steps: [click('Projects')] },
   'FLW-011': { title: 'Stored team run: focus writer member', path: '/workspace', steps: [expandWorkspace, click('Product Review Team'), click('Review the current prototype baseline'), click('writer')] },
   'FLW-012': { title: 'Stored team run: compose a chat message', path: '/workspace', steps: [expandWorkspace, click('Product Review Team'), click('Review the current prototype baseline'), type('Please summarize the open questions.')] },
-  'FLW-013': { title: 'Team catalog Run -> workspace -> Run Team launches and projects the new Team', path: '/agent-teams?view=team-list', steps: [clickRole('button', 'Run'), chooseFirstWorkspace, clickRole('button', 'Run Team')], settleMs: 6500 },
-  'FLW-014': { title: 'Agent catalog Run -> workspace -> Run Agent launches a new agent run', path: '/agents?view=list', steps: [clickRole('button', 'Run'), chooseFirstWorkspace, clickRole('button', 'Run Agent')] },
+  // WEB-BASELINE-REFRESH-002 (57df63f): the temp workspace is preselected in
+  // launch forms, and Daily Assistant (no default model) is listed first, so
+  // the Agent launch uses Research Assistant's Run.
+  'FLW-013': { title: 'Team catalog Run -> Run Team (temp workspace preselected) launches and projects the new Team', path: '/agent-teams?view=team-list', steps: [clickRole('button', 'Run'), clickRole('button', 'Run Team')], settleMs: 6500 },
+  'FLW-014': { title: 'Agent catalog Run (Research Assistant) -> Run Agent launches a new agent run', path: '/agents?view=list', steps: [async page => { await page.getByRole('button', { name: 'Run', exact: true }).nth(2).click(); await page.waitForTimeout(900) }, clickRole('button', 'Run Agent')] },
   'FLW-015': { title: 'Stored Agent Org run: open analyst member conversation', path: '/workspace', steps: [expandWorkspace, click('Product Launch Org'), click('Coordinate the synthetic launch review'), click('analyst')] },
 }
 
@@ -84,7 +86,8 @@ async function run(base, target, id) {
   const file = resolve(OUT, target, `${id}.png`)
   await page.screenshot({ path: file })
   const text = await page.locator('body').innerText()
-  const route = await page.evaluate(() => location.pathname + location.search)
+  // Draft run ids embed Date.now() (`temp-<ms>-<n>`); compare them by shape.
+  const route = (await page.evaluate(() => location.pathname + location.search)).replace(/temp-\d+-/g, 'temp-<ms>-')
   await ctx.close()
   return { file, text, route, errors, stepError, external }
 }

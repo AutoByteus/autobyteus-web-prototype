@@ -53,6 +53,7 @@ export type AgentDefinition = {
   ownershipScope: AgentDefinitionOwnershipScope;
   role?: Maybe<Scalars['String']['output']>;
   skillNames: Array<Scalars['String']['output']>;
+  skillScope: AgentSkillScope;
   toolExecutionResultProcessorNames: Array<Scalars['String']['output']>;
   toolInvocationPreprocessorNames: Array<Scalars['String']['output']>;
   toolNames: Array<Scalars['String']['output']>;
@@ -63,6 +64,11 @@ export enum AgentDefinitionOwnershipScope {
   ApplicationOwned = 'APPLICATION_OWNED',
   Shared = 'SHARED',
   TeamLocal = 'TEAM_LOCAL'
+}
+
+export enum AgentSkillScope {
+  AllInstalled = 'ALL_INSTALLED',
+  Configured = 'CONFIGURED'
 }
 
 export enum AgentMemberRefScope {
@@ -641,6 +647,7 @@ export type CreateAgentDefinitionInput = {
   name: Scalars['String']['input'];
   role?: InputMaybe<Scalars['String']['input']>;
   skillNames?: InputMaybe<Array<Scalars['String']['input']>>;
+  skillScope?: InputMaybe<AgentSkillScope>;
   toolExecutionResultProcessorNames?: InputMaybe<Array<Scalars['String']['input']>>;
   toolInvocationPreprocessorNames?: InputMaybe<Array<Scalars['String']['input']>>;
   toolNames?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -2146,7 +2153,6 @@ export type Query = {
   getSecretVaultStatus: SecretVaultStatus;
   getServerSettings: Array<ServerSetting>;
   getSkillImprovementRunRecord?: Maybe<GraphqlSkillImprovementRunRecord>;
-  getTaskDelegationRecords: Array<TaskDelegationRecordObject>;
   getTeamCommunicationMessages: Array<TeamCommunicationMessageObject>;
   getTeamMemberEventMonitorActiveTracePage: EventMonitorActiveTracePage;
   getTeamMemberRunMemoryView: AgentMemoryView;
@@ -2359,11 +2365,6 @@ export type QueryGetRunProjectionArgs = {
 
 export type QueryGetSkillImprovementRunRecordArgs = {
   improvementRunId: Scalars['String']['input'];
-};
-
-
-export type QueryGetTaskDelegationRecordsArgs = {
-  teamRunId: Scalars['String']['input'];
 };
 
 
@@ -2902,42 +2903,6 @@ export type StreamableHttpMcpServerConfigInput = {
   url: Scalars['String']['input'];
 };
 
-export type TaskDelegationRecordObject = {
-  __typename?: 'TaskDelegationRecordObject';
-  createdAt: Scalars['String']['output'];
-  delegatorAgentRunId: Scalars['String']['output'];
-  description: Scalars['String']['output'];
-  recipientAddress: Scalars['String']['output'];
-  referenceFiles: Array<TaskDelegationReferenceFileObject>;
-  status: Scalars['String']['output'];
-  targetAgentRunId?: Maybe<Scalars['String']['output']>;
-  targetTeamRunId?: Maybe<Scalars['String']['output']>;
-  taskId: Scalars['String']['output'];
-  updates: Array<TaskDelegationUpdateObject>;
-};
-
-export type TaskDelegationReferenceFileObject = {
-  __typename?: 'TaskDelegationReferenceFileObject';
-  createdAt: Scalars['String']['output'];
-  path: Scalars['String']['output'];
-  referenceId: Scalars['String']['output'];
-  type: Scalars['String']['output'];
-  updatedAt: Scalars['String']['output'];
-};
-
-export type TaskDelegationUpdateObject = {
-  __typename?: 'TaskDelegationUpdateObject';
-  content?: Maybe<Scalars['String']['output']>;
-  createdAt: Scalars['String']['output'];
-  decision?: Maybe<Scalars['String']['output']>;
-  interruptionId?: Maybe<Scalars['String']['output']>;
-  kind: Scalars['String']['output'];
-  referenceFiles: Array<TaskDelegationReferenceFileObject>;
-  reviewId?: Maybe<Scalars['String']['output']>;
-  reviewedSubmissionId?: Maybe<Scalars['String']['output']>;
-  submissionId?: Maybe<Scalars['String']['output']>;
-};
-
 export type TeamCommunicationMessageObject = {
   __typename?: 'TeamCommunicationMessageObject';
   content: Scalars['String']['output'];
@@ -3351,6 +3316,7 @@ export type UpdateAgentDefinitionInput = {
   name?: InputMaybe<Scalars['String']['input']>;
   role?: InputMaybe<Scalars['String']['input']>;
   skillNames?: InputMaybe<Array<Scalars['String']['input']>>;
+  skillScope?: InputMaybe<AgentSkillScope>;
   toolExecutionResultProcessorNames?: InputMaybe<Array<Scalars['String']['input']>>;
   toolInvocationPreprocessorNames?: InputMaybe<Array<Scalars['String']['input']>>;
   toolNames?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -3620,21 +3586,21 @@ export type RemoveApplicationPackageMutationVariables = Exact<{
 
 export type RemoveApplicationPackageMutation = { __typename?: 'Mutation', removeApplicationPackage: Array<{ __typename?: 'ApplicationPackage', packageId: string, displayName: string, sourceKind: ApplicationPackageSourceKind, sourceSummary?: string | null, applicationCount: number, isPlatformOwned: boolean, isRemovable: boolean }> };
 
-export type AgentDefinitionMutationFieldsFragment = { __typename: 'AgentDefinition', id: string, name: string, role?: string | null, description: string, instructions: string, category?: string | null, avatarUrl?: string | null, toolNames: Array<string>, inputProcessorNames: Array<string>, llmResponseProcessorNames: Array<string>, toolExecutionResultProcessorNames: Array<string>, toolInvocationPreprocessorNames: Array<string>, lifecycleProcessorNames: Array<string>, skillNames: Array<string>, ownershipScope: AgentDefinitionOwnershipScope, ownerTeamId?: string | null, ownerTeamName?: string | null, ownerApplicationId?: string | null, ownerApplicationName?: string | null, ownerPackageId?: string | null, ownerLocalApplicationId?: string | null, defaultLaunchConfig?: { __typename?: 'DefaultLaunchConfig', llmModelIdentifier?: string | null, runtimeKind?: string | null, llmConfig?: any | null } | null };
+export type AgentDefinitionMutationFieldsFragment = { __typename: 'AgentDefinition', id: string, name: string, role?: string | null, description: string, instructions: string, category?: string | null, avatarUrl?: string | null, toolNames: Array<string>, inputProcessorNames: Array<string>, llmResponseProcessorNames: Array<string>, toolExecutionResultProcessorNames: Array<string>, toolInvocationPreprocessorNames: Array<string>, lifecycleProcessorNames: Array<string>, skillNames: Array<string>, skillScope: AgentSkillScope, ownershipScope: AgentDefinitionOwnershipScope, ownerTeamId?: string | null, ownerTeamName?: string | null, ownerApplicationId?: string | null, ownerApplicationName?: string | null, ownerPackageId?: string | null, ownerLocalApplicationId?: string | null, defaultLaunchConfig?: { __typename?: 'DefaultLaunchConfig', llmModelIdentifier?: string | null, runtimeKind?: string | null, llmConfig?: any | null } | null };
 
 export type CreateAgentDefinitionMutationVariables = Exact<{
   input: CreateAgentDefinitionInput;
 }>;
 
 
-export type CreateAgentDefinitionMutation = { __typename?: 'Mutation', createAgentDefinition: { __typename: 'AgentDefinition', id: string, name: string, role?: string | null, description: string, instructions: string, category?: string | null, avatarUrl?: string | null, toolNames: Array<string>, inputProcessorNames: Array<string>, llmResponseProcessorNames: Array<string>, toolExecutionResultProcessorNames: Array<string>, toolInvocationPreprocessorNames: Array<string>, lifecycleProcessorNames: Array<string>, skillNames: Array<string>, ownershipScope: AgentDefinitionOwnershipScope, ownerTeamId?: string | null, ownerTeamName?: string | null, ownerApplicationId?: string | null, ownerApplicationName?: string | null, ownerPackageId?: string | null, ownerLocalApplicationId?: string | null, defaultLaunchConfig?: { __typename?: 'DefaultLaunchConfig', llmModelIdentifier?: string | null, runtimeKind?: string | null, llmConfig?: any | null } | null } };
+export type CreateAgentDefinitionMutation = { __typename?: 'Mutation', createAgentDefinition: { __typename: 'AgentDefinition', id: string, name: string, role?: string | null, description: string, instructions: string, category?: string | null, avatarUrl?: string | null, toolNames: Array<string>, inputProcessorNames: Array<string>, llmResponseProcessorNames: Array<string>, toolExecutionResultProcessorNames: Array<string>, toolInvocationPreprocessorNames: Array<string>, lifecycleProcessorNames: Array<string>, skillNames: Array<string>, skillScope: AgentSkillScope, ownershipScope: AgentDefinitionOwnershipScope, ownerTeamId?: string | null, ownerTeamName?: string | null, ownerApplicationId?: string | null, ownerApplicationName?: string | null, ownerPackageId?: string | null, ownerLocalApplicationId?: string | null, defaultLaunchConfig?: { __typename?: 'DefaultLaunchConfig', llmModelIdentifier?: string | null, runtimeKind?: string | null, llmConfig?: any | null } | null } };
 
 export type UpdateAgentDefinitionMutationVariables = Exact<{
   input: UpdateAgentDefinitionInput;
 }>;
 
 
-export type UpdateAgentDefinitionMutation = { __typename?: 'Mutation', updateAgentDefinition: { __typename: 'AgentDefinition', id: string, name: string, role?: string | null, description: string, instructions: string, category?: string | null, avatarUrl?: string | null, toolNames: Array<string>, inputProcessorNames: Array<string>, llmResponseProcessorNames: Array<string>, toolExecutionResultProcessorNames: Array<string>, toolInvocationPreprocessorNames: Array<string>, lifecycleProcessorNames: Array<string>, skillNames: Array<string>, ownershipScope: AgentDefinitionOwnershipScope, ownerTeamId?: string | null, ownerTeamName?: string | null, ownerApplicationId?: string | null, ownerApplicationName?: string | null, ownerPackageId?: string | null, ownerLocalApplicationId?: string | null, defaultLaunchConfig?: { __typename?: 'DefaultLaunchConfig', llmModelIdentifier?: string | null, runtimeKind?: string | null, llmConfig?: any | null } | null } };
+export type UpdateAgentDefinitionMutation = { __typename?: 'Mutation', updateAgentDefinition: { __typename: 'AgentDefinition', id: string, name: string, role?: string | null, description: string, instructions: string, category?: string | null, avatarUrl?: string | null, toolNames: Array<string>, inputProcessorNames: Array<string>, llmResponseProcessorNames: Array<string>, toolExecutionResultProcessorNames: Array<string>, toolInvocationPreprocessorNames: Array<string>, lifecycleProcessorNames: Array<string>, skillNames: Array<string>, skillScope: AgentSkillScope, ownershipScope: AgentDefinitionOwnershipScope, ownerTeamId?: string | null, ownerTeamName?: string | null, ownerApplicationId?: string | null, ownerApplicationName?: string | null, ownerPackageId?: string | null, ownerLocalApplicationId?: string | null, defaultLaunchConfig?: { __typename?: 'DefaultLaunchConfig', llmModelIdentifier?: string | null, runtimeKind?: string | null, llmConfig?: any | null } | null } };
 
 export type DeleteAgentDefinitionMutationVariables = Exact<{
   id: Scalars['String']['input'];
@@ -4215,7 +4181,7 @@ export type GetAgentCustomizationOptionsQuery = { __typename?: 'Query', availabl
 export type GetAgentDefinitionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAgentDefinitionsQuery = { __typename?: 'Query', agentDefinitions: Array<{ __typename: 'AgentDefinition', id: string, name: string, role?: string | null, description: string, instructions: string, category?: string | null, avatarUrl?: string | null, toolNames: Array<string>, inputProcessorNames: Array<string>, llmResponseProcessorNames: Array<string>, toolExecutionResultProcessorNames: Array<string>, toolInvocationPreprocessorNames: Array<string>, lifecycleProcessorNames: Array<string>, skillNames: Array<string>, ownershipScope: AgentDefinitionOwnershipScope, ownerTeamId?: string | null, ownerTeamName?: string | null, ownerApplicationId?: string | null, ownerApplicationName?: string | null, ownerPackageId?: string | null, ownerLocalApplicationId?: string | null, defaultLaunchConfig?: { __typename?: 'DefaultLaunchConfig', llmModelIdentifier?: string | null, runtimeKind?: string | null, llmConfig?: any | null } | null }> };
+export type GetAgentDefinitionsQuery = { __typename?: 'Query', agentDefinitions: Array<{ __typename: 'AgentDefinition', id: string, name: string, role?: string | null, description: string, instructions: string, category?: string | null, avatarUrl?: string | null, toolNames: Array<string>, inputProcessorNames: Array<string>, llmResponseProcessorNames: Array<string>, toolExecutionResultProcessorNames: Array<string>, toolInvocationPreprocessorNames: Array<string>, lifecycleProcessorNames: Array<string>, skillNames: Array<string>, skillScope: AgentSkillScope, ownershipScope: AgentDefinitionOwnershipScope, ownerTeamId?: string | null, ownerTeamName?: string | null, ownerApplicationId?: string | null, ownerApplicationName?: string | null, ownerPackageId?: string | null, ownerLocalApplicationId?: string | null, defaultLaunchConfig?: { __typename?: 'DefaultLaunchConfig', llmModelIdentifier?: string | null, runtimeKind?: string | null, llmConfig?: any | null } | null }> };
 
 export type GetAgentOrgDefinitionsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4614,13 +4580,6 @@ export type GetTeamCommunicationMessagesQueryVariables = Exact<{
 
 export type GetTeamCommunicationMessagesQuery = { __typename?: 'Query', getTeamCommunicationMessages: Array<{ __typename?: 'TeamCommunicationMessageObject', messageId: string, senderAgentRunId: string, receiverAgentRunId: string, content: string, messageType: string, createdAt: string, referenceFiles: Array<{ __typename?: 'TeamCommunicationReferenceFileObject', referenceId: string, path: string, type: string, createdAt: string, updatedAt: string }> }> };
 
-export type GetTaskDelegationRecordsQueryVariables = Exact<{
-  teamRunId: Scalars['String']['input'];
-}>;
-
-
-export type GetTaskDelegationRecordsQuery = { __typename?: 'Query', getTaskDelegationRecords: Array<{ __typename?: 'TaskDelegationRecordObject', taskId: string, delegatorAgentRunId: string, recipientAddress: string, targetAgentRunId?: string | null, targetTeamRunId?: string | null, status: string, description: string, createdAt: string, referenceFiles: Array<{ __typename?: 'TaskDelegationReferenceFileObject', referenceId: string, path: string, type: string, createdAt: string, updatedAt: string }>, updates: Array<{ __typename?: 'TaskDelegationUpdateObject', kind: string, submissionId?: string | null, reviewId?: string | null, interruptionId?: string | null, reviewedSubmissionId?: string | null, decision?: string | null, content?: string | null, createdAt: string, referenceFiles: Array<{ __typename?: 'TaskDelegationReferenceFileObject', referenceId: string, path: string, type: string, createdAt: string, updatedAt: string }> }> }> };
-
 export type GetAgentRunResumeConfigQueryVariables = Exact<{
   runId: Scalars['String']['input'];
 }>;
@@ -4990,6 +4949,7 @@ export const AgentDefinitionMutationFieldsFragmentDoc = gql`
   toolInvocationPreprocessorNames
   lifecycleProcessorNames
   skillNames
+  skillScope
   ownershipScope
   ownerTeamId
   ownerTeamName
@@ -8498,6 +8458,7 @@ export const GetAgentDefinitionsDocument = gql`
     toolInvocationPreprocessorNames
     lifecycleProcessorNames
     skillNames
+    skillScope
     ownershipScope
     ownerTeamId
     ownerTeamName
@@ -10753,67 +10714,6 @@ export function useGetTeamCommunicationMessagesLazyQuery(variables?: GetTeamComm
   return VueApolloComposable.useLazyQuery<GetTeamCommunicationMessagesQuery, GetTeamCommunicationMessagesQueryVariables>(GetTeamCommunicationMessagesDocument, variables, options);
 }
 export type GetTeamCommunicationMessagesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetTeamCommunicationMessagesQuery, GetTeamCommunicationMessagesQueryVariables>;
-export const GetTaskDelegationRecordsDocument = gql`
-    query GetTaskDelegationRecords($teamRunId: String!) {
-  getTaskDelegationRecords(teamRunId: $teamRunId) {
-    taskId
-    delegatorAgentRunId
-    recipientAddress
-    targetAgentRunId
-    targetTeamRunId
-    status
-    description
-    referenceFiles {
-      referenceId
-      path
-      type
-      createdAt
-      updatedAt
-    }
-    updates {
-      kind
-      submissionId
-      reviewId
-      interruptionId
-      reviewedSubmissionId
-      decision
-      content
-      referenceFiles {
-        referenceId
-        path
-        type
-        createdAt
-        updatedAt
-      }
-      createdAt
-    }
-    createdAt
-  }
-}
-    `;
-
-/**
- * __useGetTaskDelegationRecordsQuery__
- *
- * To run a query within a Vue component, call `useGetTaskDelegationRecordsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTaskDelegationRecordsQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param variables that will be passed into the query
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useGetTaskDelegationRecordsQuery({
- *   teamRunId: // value for 'teamRunId'
- * });
- */
-export function useGetTaskDelegationRecordsQuery(variables: GetTaskDelegationRecordsQueryVariables | VueCompositionApi.Ref<GetTaskDelegationRecordsQueryVariables> | ReactiveFunction<GetTaskDelegationRecordsQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetTaskDelegationRecordsQuery, GetTaskDelegationRecordsQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetTaskDelegationRecordsQuery, GetTaskDelegationRecordsQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetTaskDelegationRecordsQuery, GetTaskDelegationRecordsQueryVariables>> = {}) {
-  return VueApolloComposable.useQuery<GetTaskDelegationRecordsQuery, GetTaskDelegationRecordsQueryVariables>(GetTaskDelegationRecordsDocument, variables, options);
-}
-export function useGetTaskDelegationRecordsLazyQuery(variables?: GetTaskDelegationRecordsQueryVariables | VueCompositionApi.Ref<GetTaskDelegationRecordsQueryVariables> | ReactiveFunction<GetTaskDelegationRecordsQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetTaskDelegationRecordsQuery, GetTaskDelegationRecordsQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetTaskDelegationRecordsQuery, GetTaskDelegationRecordsQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetTaskDelegationRecordsQuery, GetTaskDelegationRecordsQueryVariables>> = {}) {
-  return VueApolloComposable.useLazyQuery<GetTaskDelegationRecordsQuery, GetTaskDelegationRecordsQueryVariables>(GetTaskDelegationRecordsDocument, variables, options);
-}
-export type GetTaskDelegationRecordsQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetTaskDelegationRecordsQuery, GetTaskDelegationRecordsQueryVariables>;
 export const GetAgentRunResumeConfigDocument = gql`
     query GetAgentRunResumeConfig($runId: String!) {
   getAgentRunResumeConfig(runId: $runId) {

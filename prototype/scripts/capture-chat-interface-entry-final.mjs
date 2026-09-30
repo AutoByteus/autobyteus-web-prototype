@@ -82,14 +82,6 @@ const sendFirst = async (page, text) => {
   await page.waitForTimeout(3200)
   await page.mouse.move(1430, 890)
 }
-const openTeamRun = async (page) => {
-  const section = page.locator('[data-test="app-left-panel-run-history"] section', { hasText: 'prototype-workspace' }).first()
-  await section.locator('button', { hasText: 'prototype-workspace' }).first().click()
-  await page.locator('button', { hasText: 'Product Review Team' }).first().click()
-  await page.locator('[data-test="app-left-panel-run-history"]').getByText('Review the current prot', { exact: false }).first().click()
-  await $(page, 'run-composer').waitFor()
-  await page.waitForTimeout(800)
-}
 
 await capture('VIS-001', 'new-chat-default', { surface: 'UIS-001 New chat', state: 'Default: Chat box (Context Files area, textarea, footer with send), Daily Assistant, Temp workspace, Auto-approve, last-used model', journeys: 'UXJ-001' }, async () => {})
 await capture('VIS-002', 'model-menu-search-runtimes', { surface: 'UIS-003 Model menu', state: 'Open: search, Runtimes (no Recent)', journeys: 'UXJ-002' }, async (page) => {

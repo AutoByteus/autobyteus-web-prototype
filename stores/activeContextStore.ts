@@ -1,4 +1,3 @@
-import type { CollaborationTasksContextView } from '~/types/workspace/collaborationTasksContextView';
 import { defineStore } from 'pinia';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
@@ -13,7 +12,7 @@ import type { AgentRunConfig } from '~/types/agent/AgentRunConfig';
 import type { ContextFilePath } from '~/types/conversation';
 import type { ToolApprovalTarget } from '~/types/segments';
 import { AgentStatus } from '~/types/agent/AgentStatus';
-import { resolveAgentPrimaryAction } from '~/services/runSubmission/agentPrimaryAction';
+import { hasSendableDraft, resolveAgentPrimaryAction } from '~/services/runSubmission/agentPrimaryAction';
 import { useAgentOrgContextsStore } from './agentOrgContextsStore';
 import type {
   ActiveAgentWorkspaceTarget,
@@ -23,7 +22,6 @@ import type { CollaborationMessagesContextView } from '~/types/workspace/collabo
 import type { AgentTeamContext } from '~/types/agent/AgentTeamContext';
 import { parseAgentTeamAddress } from '~/types/agent/AgentTeamAddress';
 import { projectTeamCommunicationPerspective, projectTeamCommunicationMemberIdentity } from '~/utils/teamCommunication/teamCommunicationPerspective';
-import { deriveDelegatedTaskEntries } from '~/utils/teamDelegatedTaskEntries';
 import { isTeamMemberProjectionAuthoritative } from '~/services/runHydration/teamMemberProjectionHydrationService';
 
 /**
@@ -54,7 +52,6 @@ export const useActiveContextStore = defineStore('activeContext', () => {
       coordinatorAddress: parseAgentTeamAddress(tree.root_team.coordinator_address),
       focusedMemberAddress: view.getFocusedMemberAddress(),
       focusedAgentRunId: view.getFocusedAgentRunId(), focusedAgentContext: focusedContext,
-      focusedTaskPresentation: () => view.getFocusedNavigationRow()?.task ?? null,
       isFocusedProjectionAuthoritative: () =>
         isTeamMemberProjectionAuthoritative(team, view.getFocusedAgentRunId()),
       listMembers: () => Object.freeze(entries.map((entry) => Object.freeze({
@@ -62,19 +59,6 @@ export const useActiveContextStore = defineStore('activeContext', () => {
         context: entry.agentContext, coordinator: entry.memberAddress === tree.root_team.coordinator_address,
       }))),
 
-    });
-  };
-
-  const standaloneTeamTasksView = (team: AgentTeamContext): CollaborationTasksContextView => {
-    const view = team.view;
-    return Object.freeze({ rootKind: 'agent_team', rootRunId: view.getRootTeamRunId(),
-      focusedAgentRunId: view.getFocusedAgentRunId(),
-      listDelegatedTaskEntries: () => Object.freeze(deriveDelegatedTaskEntries(
-        team,
-        view.getFocusedAgentRunId(),
-      )),
-      taskReferenceContentPath: (taskId: string, referenceId: string) =>
-        `team-runs/${encodeURIComponent(view.getRootTeamRunId())}/task-delegations/${encodeURIComponent(taskId)}/references/${encodeURIComponent(referenceId)}/content`,
     });
   };
 
@@ -128,7 +112,6 @@ export const useActiveContextStore = defineStore('activeContext', () => {
       const target = {
         kind: 'standalone_team_member' as const, context, team: teamView,
         collaborationMessages: standaloneTeamMessagesView(team),
-        collaborationTasks: standaloneTeamTasksView(team),
         browse: Object.freeze({
           kind: 'teamMember' as const, teamRunId: team.view.getRootTeamRunId(),
           memberAddress: team.view.getFocusedMemberAddress(), agentRunId: context.state.runId,
@@ -241,7 +224,9 @@ export const useActiveContextStore = defineStore('activeContext', () => {
       status: context.state.currentStatus,
       submissionPending: context.submissionPending,
       isUploading: contextFileUploadStore.isUploading,
-      hasDraft: Boolean(context.requirement.trim()),
+      hasDraft: hasSendableDraft(context, {
+        attachmentsAreSendable: activeWorkspaceTarget.value?.kind === 'standalone_agent',
+      }),
     });
     if (action.kind !== 'send') {
       console.warn(`Send action aborted: Primary action is '${action.kind}'.`);
@@ -268,7 +253,9 @@ export const useActiveContextStore = defineStore('activeContext', () => {
       status: context.state.currentStatus,
       submissionPending: context.submissionPending,
       isUploading: contextFileUploadStore.isUploading,
-      hasDraft: Boolean(context.requirement.trim()),
+      hasDraft: hasSendableDraft(context, {
+        attachmentsAreSendable: activeWorkspaceTarget.value?.kind === 'standalone_agent',
+      }),
     });
     if (action.kind !== 'interrupt') {
       console.warn(`Interrupt action aborted: Primary action is '${action.kind}'.`);

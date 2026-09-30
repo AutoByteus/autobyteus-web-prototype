@@ -1,193 +1,267 @@
 # Prototype Bootstrap Report
 
-Refresh of the AutoByteus Web current-experience baseline to the latest source,
-for Product ticket `WEB-BASELINE-REFRESH-001` (stable package
-`chat-interface-entry`). The previous report is preserved in Git history
-(accepted base `ba67ac0`).
+Refresh of the AutoByteus Web current-experience baseline to
+`origin/personal@57df63f`, for Product ticket `WEB-BASELINE-REFRESH-002`
+(stable package `chat-composer-menus-open-upward`; this refresh is its
+prerequisite). The previous report (`WEB-BASELINE-REFRESH-001`, pin `fcd3e83`)
+is preserved in Git history at accepted base `ef5f909`.
 
 ## Status
 
 - Status: `Completed`
 - Request type: `Refresh`
-- User request: "bring … the baseline to the latest, like the original
-  project … so that we can develop on top of the latest."
-- Result: the prototype mirrors `origin/personal@fcd3e83` and runs
-  independently in a browser with synthetic data. All 82 page/state rows, 15
-  changed-surface flows, and 13 desktop-host rows match the pinned source.
+- Result: the prototype mirrors `origin/personal@57df63f` and runs on its own
+  in a browser with synthetic data. The shipped Chat surface replaced the
+  prototype-only `chat-interface-entry` implementation.
+  - Every changed surface passes its paired source/prototype check:
+    - Chat entry, composer menus, thinking, `/` skills, `@` targets, send,
+      chat run view, run settings, and reopening a chat from the tree;
+    - skill-scope chips, the D-19 skill-name banner, the temp-workspace launch
+      default, and the right tool shell.
+  - Unchanged surfaces got one load-and-look pass through the route matrix.
 - Next expected action: Product Prototyper reviews and accepts the candidate,
-  creates the accepted commit, integrates it into `personal`, then resumes
-  `chat-interface-entry` on the refreshed base.
+  creates the accepted commit on `prototype/web-baseline-refresh-002`, and
+  integrates it into `personal`. `chat-composer-menus-open-upward` then merges
+  the refreshed `personal` and resumes.
 
 ## Source Identity
 
 - Source project: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`
 - Selected frontend: `autobyteus-web`
-- Governing authority: `origin/personal`
-- Pinned revision: `fcd3e83a4ca931ba52ed19bd37b8df3050ee529e` (source `HEAD`
-  and `origin/personal` both equal the pin; `autobyteus-web` working tree clean)
-- Previous pins: primary `8ef282ba77705180d985e7000d801f0e0068cdc1`, plus the
-  focused Team-launch refresh at `5fb16658e7bd2aefd750f99eb596a17382e161ac`
-- Instructions read: `autobyteus-web/AGENTS.md`. The source tree was not
-  modified.
-- Source observation: an exact `git archive` export of the pin at
-  `/tmp/autobyteus-prototype-WEB-BASELINE-REFRESH-001/source-export`, served
-  with `BACKEND_NODE_BASE_URL=http://127.0.0.1:4391 ENABLE_APPLICATIONS=true
-  nuxt dev --port 4291` against the synthetic observation node
-  (`PROTOTYPE_MOCK_PORT=4391 node prototype/source-observation/mock-node.mjs`)
+- Governing authority: `origin/personal` (explicit constraint from Product Prototyper)
+- Pinned revision: `57df63f079363ccab4f2301213f9d8a3458f72fa`
+  - Fetched on 2026-09-30. Source `HEAD` and `origin/personal` both equal the pin.
+  - `autobyteus-web` and the contract packages are clean.
+- Previous primary pin: `fcd3e83a4ca931ba52ed19bd37b8df3050ee529e`
+- Instructions read: `autobyteus-web/AGENTS.md` at the pin. Its only change
+  since `fcd3e83` is a link to the workspace `TESTING.md`. The source tree was
+  not modified.
+- Source observation:
+  - An exact `git archive` export of the pin at
+    `/tmp/autobyteus-prototype-WEB-BASELINE-REFRESH-002/source-export/autobyteus-web`,
+    with its `node_modules` symlinked read-only to the source install.
+  - Served with
+    `BACKEND_NODE_BASE_URL=http://127.0.0.1:4391 ENABLE_APPLICATIONS=true nuxt dev --host 127.0.0.1 --port 4291`.
+  - Backed by the synthetic observation node:
+    `PROTOTYPE_MOCK_PORT=4391 node prototype/source-observation/mock-node.mjs`.
 
 ## Prototype Identity
 
 - Prototype repository/root: `/Users/normy/autobyteus_org/autobyteus-web-prototype`
-- Product ticket: `WEB-BASELINE-REFRESH-001`
-- Ticket branch: `prototype/web-baseline-refresh-001`
-- Target worktree: `/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/WEB-BASELINE-REFRESH-001`
-- Accepted base: `ba67ac069e6cf0bb95a7342a7e25185f08a0d4e4`
+- Product ticket: `WEB-BASELINE-REFRESH-002`
+- Ticket branch: `prototype/web-baseline-refresh-002`
+- Target worktree: `/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/WEB-BASELINE-REFRESH-002`
+- Accepted base: `ef5f90998a12dd42c52b422de3ea0634f0e2e887` (worktree `HEAD`
+  `57b7431` is the Product ticket-open commit on top of it)
 - Bootstrap candidate: uncommitted working-tree changes on the ticket branch.
   The Bootstrapper created no commit.
-- Install: `corepack pnpm install --ignore-workspace` (the lockfile was
-  regenerated because two vendored contract packages were added; Product
-  Prototyper should commit `pnpm-lock.yaml` with the candidate)
+  - `pnpm-lock.yaml` is unchanged.
+  - The canonical checkout and the `chat-composer-menus-open-upward` worktree
+    were not touched.
+- Install: `corepack pnpm install --ignore-workspace --frozen-lockfile`
 - Start: `corepack pnpm dev --port 4199`
-- Review URL: `http://127.0.0.1:4199/workspace`
+- Review URLs:
+  - `http://127.0.0.1:4199/chat` (the app now lands on Chat)
+  - `http://127.0.0.1:4199/workspace`
+- Bootstrapper ports: prototype `4199`, built preview `4198`, source `4291`,
+  observation node `4391`. Earlier checks briefly used `4292`/`4392`.
 - Stack: Nuxt 3, Vue 3, TypeScript, Pinia, Tailwind (unchanged)
-- Scenario selection and reset: `localStorage['autobyteus.prototype.scenario']`
-  set to `populated` (default), `empty`, `apps_disabled`, `projects_disabled`,
-  `loading`, `error` or `permission_denied`; context key
-  `autobyteus.prototype.context` (`desktop`, `paired`, `unpaired`,
-  `electron_internal`, `electron_external`). Reload, or open a fresh browser
-  context, to reset.
+- Scenario selection and reset:
+  - Set `localStorage['autobyteus.prototype.scenario']` to `populated`
+    (default), `empty`, `apps_disabled`, `projects_disabled`, `loading`,
+    `error`, `permission_denied` or the new `skill_name_issues`.
+  - Set the context key `autobyteus.prototype.context` to `desktop`,
+    `paired`, `unpaired`, `electron_internal` or `electron_external`.
+  - Reload, or open a fresh browser context, to reset.
 
 ## What Changed In The Refresh
 
-Work followed the source diff (707 `autobyteus-web` files changed since the
-last focused pin; 852 since the primary pin).
+Work followed the source diff `fcd3e83..57df63f`: 389 `autobyteus-web` files
+changed, of which 218 are outside tests.
 
-- **Presentation synced to the pin:** 242 retained files updated, 136 new
-  source files added, and 61 files the source deleted were removed. Source
-  plugins stay replaced by the prototype plugins, as before.
-- **New surfaces now present:** Agent Orgs (catalog, detail, create/edit,
-  Org launch, Org runs in workspace history), Projects (capability-gated
-  navigation, list, detail, task board, dialogs, settings toggle), the Memory
-  Orgs tab and org detail, the new Applications launch-defaults setup, the
-  provider model sections, collaboration message/task panels, and
-  stopped-run model replacement.
-- **Removed by the source:** the Settings → Messaging section and its
-  components/stores.
-- **Vendored contracts:** `agent-presentation-contracts` and
-  `collaboration-stream-contracts` added; `application-sdk-contracts` and
-  `team-stream-contracts` updated to the pin (`vendor/`).
-- **Accepted prototype changes:** the user asked for the baseline to match the
-  source, so the source now wins everywhere.
-  - Superseded by source implementations: accepted AgentOrg flat-team
-    experience, AgentTeam member overrides, mounted-Team status, nested-Team
-    hierarchy review, the Token Statistics presentation, and the prototype
-    Handoff manager. The source now ships its own versions.
-  - Removed as prototype-only review scaffolding: `FlatAgentTeamExperience.vue`,
-    `components/handoffs/HandoffManager.vue`,
-    `NestedTeamHierarchyReviewPanel.vue`, the three `use*PrototypeReview`
-    composables, `utils/aggregateAgentStatuses.ts`, and
-    `prototype/aorg-*.ts`.
-  - Product Prototyper should confirm these removals.
+- **Presentation synced to the pin:**
+  - 107 retained files updated, 46 new source files added, and 16 files the
+    source deleted were removed.
+  - Every synced path was byte-verified against the pin.
+  - `README.md` and `package.json` keep their prototype versions; the source
+    only changed its version and e2e scripts.
+  - No source plugin changed.
+- **Vendored contracts:** `collaboration-stream-contracts` and
+  `team-stream-contracts` were updated to the pin (`src/` and `dist/`). They
+  drop `schemaVersion`/`schema_version` and `task_records`, and delegated-task
+  records become `TASK_EXECUTION_STARTED`.
+- **New surfaces now present:**
+  - Chat entry (`/chat`, landing route) with its composer menus: workspace
+    with search and "Open another folder…", model with runtime drill-in and
+    search, schema-driven thinking single list, `/` skill menu and chips,
+    `@` agent/team targets, and the Auto-approve/Ask first toggle.
+  - Chat first send → chat run view (`/chat?id=…`) in the workspace frame, with:
+    - header ⚙ run settings and ＋ New chat;
+    - the right tool shell (`WorkspaceToolShell`);
+    - the run composer with `/`.
+  - Chat nav New chat pencil, and ＋ on a tree agent row.
+  - Agent skill scope ("All installed skills" chip, editor, detail).
+  - D-19 skill-name banner, conflict dialog and notices.
+  - Composer primary action and voice buttons, and delegated Team row collapse.
+  - Temp workspace preselected in launch forms; toasts above dialogs.
+- **Removed by the source:** the delegated-task navigator and detail panes
+  (`TeamDelegatedTask*`, `CollaborationDelegatedTasksSection`,
+  `CollaborationTaskHeading`, `TeamTaskReferenceViewer`) and their services.
+- **Accepted prototype changes:** superseded by the source.
+  - The source now ships its own Chat (`codex/chat-interface-entry` merged,
+    plus `chat-composer-polish`). Per the rule, the source version wins for
+    all of `chat-interface-entry` PC-001–PC-047.
+  - Removed as prototype-only implementation:
+    - `components/chat/Chat{AutoApproveToggle,ContextFilesArea,EffortPicker,Glyph,ModelPicker,RunSettingsPanel,RuntimeBadge,WorkspacePicker}.vue`;
+    - `composables/chat/{chatTreeProjection,useChatPopover,usePrototypeChat}.ts`;
+    - `prototype/chat/chat-fixtures.ts`;
+    - the plugin's `+40px` primary-nav tweak (PC-003). The source snapshots
+      now include the Chat row, so the split is 300px.
+  - Replaced by the source file of the same name: `ChatComposer.vue`,
+    `pages/chat.vue`, `pages/index.vue`, `AppLeftPanel.vue`,
+    `WorkspaceAdaptiveLayout.vue`, `WorkspaceAgentRunsTreePanel.vue`,
+    `useShellPrimaryNavigation.ts`, `layouts/default.vue`, and shell locale
+    files.
+  - Preserved prototype-only changes: none.
+  - Left illustrative: none.
+  - Known drift the ticket named is now source-exact:
+    - New-chat vertical bias (`pb-[6vh]`): route rows WBR-R049 and WBR-R001.
+    - Workspace menu search: CHT-002.
+    - Thinking single list: CHT-008 and CHT-009.
+  - The historical `chat-interface-entry` scripts
+    (`capture-chat-interface-entry-final.mjs`,
+    `validate-chat-interface-entry.mjs`, `chat-review-shot.mjs`) target the
+    removed implementation. They were kept as history and not re-run. One unused
+    function was deleted so `pnpm lint` passes.
+  - **Product Prototyper should confirm these supersessions.**
 
 ## Implementation Simplifications
 
 | Visible capability | Prototype simulation | Absent |
 | --- | --- | --- |
-| Catalog, settings and page data | Pinia snapshots re-captured from the pinned source (`prototype/fixtures/runtime-state.json`, 64 snapshots) | GraphQL server |
-| Direct source reads (open stored run, model descriptors, Org references, history refresh) | `utils/apolloClient.ts` answers GraphQL *queries* locally from the same synthetic fixtures the source observation uses; it also mirrors the `loading`, `error` and `permission_denied` scenarios | Apollo client, network |
-| Team launch | The source's own `launchDraft`/`hydrateRun` run as-is; the adapter answers `CreateAgentTeamRun` with a deterministic created run, which later history reads list as active | Run scheduler, model calls |
-| Node health, application launch setup | Answered in the prototype fetch boundary | Node server |
-| Streams | Local `PrototypeWebSocket`, which now also dispatches `open`/`close` events | Stream servers |
-| Desktop host (updates, extensions, embedded server) | Unchanged `install-host-scenario.js` fake `window.electronAPI` | Electron |
+| Catalog, settings and page data | Pinia snapshots re-captured from the pinned source: 66 snapshots, including `/chat` and `skill_name_issues` `/skills` | GraphQL server |
+| Direct source reads (open run, resume config, model options, skill-name issues, Org references, history) | `utils/apolloClient.ts` answers queries locally from the observation fixtures | Apollo, network |
+| Chat first send | The source's `launchAgentChat` → `sendUserInputAndSubscribe` run as-is. `PrepareAgentRun` is answered locally (`run-prepared-fixture`), and the stream is the local `PrototypeWebSocket` | Run preparation, model inference, agent stream |
+| Chat run settings (Edit Config) | The source's `existingRunConfig.loadAgentCanonical`/`loadTeamCanonical`/`refreshModelOptions` run against local reads | Run config service |
+| Skill-name checks (D-19) | The source's `skillNames.fetchIssues`/`runWithSkillNameChecks` run. The wrapped import action stays stubbed | Skill catalog server |
+| Team launch, desktop host, streams | Unchanged from the previous refresh | Scheduler, Electron, stream servers |
 
 Interceptor changes in `plugins/00.prototype-state.client.ts`:
 
-- Only `async` store actions (the backend boundary) are stubbed; synchronous
-  actions now run as in the source.
-- Map/Set-typed state is restored after each snapshot patch.
-- Run-opening actions (`runHistory` and `agentSelection` intents) execute the
-  source code.
-- The initial navigation/workspace split height is taken from each captured
-  source snapshot.
+- The new enumerated source-run actions listed above.
+- After a chat send, route snapshots are no longer re-applied to the
+  run-owning stores. The run stays in the Workspaces tree across navigation,
+  as in the single-page source.
+- `/chat?id=…` routes do not re-apply a snapshot on navigation.
+- Live file-explorer Maps (`workspace` sessions, `fileExplorer` trees) survive
+  a route re-patch. Before this, the launch-form Files tab lost the temp
+  workspace tree.
 
-The source-observation node gained a schema-aware completion step
-(`prototype/source-observation/schema-filler.mjs`, driven by the pinned
-`generated/graphql.ts`) and fixtures for Agent Orgs, Projects, Org memory,
-execution trees, conversations, and application launch configuration. It is
-used only for comparison.
+Observation fixtures (`prototype/source-observation/fixtures.mjs`) gained
+synthetic data the new surfaces need:
+
+- the built-in Daily Assistant (`ALL_INSTALLED` skills);
+- the built-in temp workspace;
+- a `mock/reasoning-prototype` model with a thinking switch and effort levels;
+- explicit `CONFIGURED` skill scope for the two existing agents;
+- the `skill_name_issues` scenario;
+- a successful `PrepareAgentRun`;
+- a run-aware agent resume config with `modelConfigEditability`;
+- the contract-shape updates.
+
+The new `prototype/scripts/build-icon-collections.mjs`
+(`pnpm fixtures:icons`) added 5 icons to the offline bundle, including
+`shield-check`, `light-bulb` and `folder-plus`.
 
 ## Validation Evidence
 
-All runs used headless Chrome with the same viewport, locale, UTC timezone,
-light theme and reduced motion, identical synthetic data, and external
-requests blocked.
+All paired runs used headless Chrome with the same viewport, locale, UTC
+timezone, light theme and reduced motion, identical synthetic data, and
+external requests blocked. Evidence root:
+`/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/WEB-BASELINE-REFRESH-002/evidence/WEB-BASELINE-REFRESH-002/`.
 
-- **Pages and states (`validate:web-baseline-refresh`):** 82/82 pass.
-  - Every one of the 48 routes on desktop English, plus 18 sampled
-    narrow/zh-CN rows and 16 state rows: empty, apps/projects disabled,
-    loading, error, and mobile unpaired/paired/unsupported/denied.
-  - 55 rows are pixel-identical. 27 differ only by rendering noise, with
-    identical text, controls, DOM geometry and computed styles:
-    - 26 edge-antialiasing rows: ≤0.01% of the frame.
-    - 1 compositing-rounding row: ≥99% of changed pixels within 2/255, none
-      above 16/255 (API Keys, alpha-blend rounding).
-  - Evidence: `evidence/WEB-BASELINE-REFRESH-001/matrix/`
-    (`summary.json`, `results.json`, `source/`, `prototype/`, `diff/`)
-- **Changed-surface flows (`validate:web-baseline-refresh-flows`):** 15/15
-  pass (12 pixel-identical, 3 edge-antialiasing only). Evidence:
-  `evidence/WEB-BASELINE-REFRESH-001/flows/`
-  - FLW-001–003, 011, 015: expand workspace history; open a stored Team run;
-    open a stored Agent Org run; focus a Team member; open an Org member
-    conversation.
-  - FLW-004–006: Agent, Team and Org catalog **Run** open the current launch
-    forms.
-  - FLW-012: compose a chat message in a Team run.
-  - FLW-013: Team launch end-to-end (catalog → workspace → **Run Team** →
-    new active Team projected), compared after the source's 5 s history
-    refresh.
-  - FLW-014: Agent launch end-to-end.
-  - FLW-007–010: Projects create dialog, Project new-task dialog, Org create
-    validation, navigation to Projects.
-- **Desktop-host rows:** HOST-001–008 and STATE-009–013 pass 13/13. These are
-  browser-simulated desktop screens (updates, extensions, embedded-server
-  states), re-checked because those source screens changed. The first run's
-  HOST-005 difference was the synthetic endpoint port, fixed by aligning the
-  host fixture default to 4391. Evidence:
-  `evidence/WEB-BASELINE-REFRESH-001/host/` and `host-recheck/`
-- **Independent run:** the built preview (`node .output/server/index.mjs`) was
-  run with the source and observation node stopped. `/workspace` (including
-  opening a stored Team run), Agent Orgs, Project detail and API Keys all
-  rendered with zero browser errors and zero requests outside the prototype.
-  Evidence: `evidence/WEB-BASELINE-REFRESH-001/independent-preview/`
-- **Checks:** `pnpm lint` passes. `pnpm typecheck` passes (pre-existing
-  duplicate auto-import warnings only). `pnpm test` passes 3 files / 12 tests.
-  `pnpm validate:boundaries` passes 13/13. `pnpm build` passes.
+- **Route and state matrix (`validate:web-baseline-refresh`)**
+  - Scope: 86 rows.
+    - All 49 routes on desktop English. `/chat` is new as WBR-R049.
+    - 20 sampled narrow/zh-CN rows.
+    - 17 state rows. WBR-S017 (`skill_name_issues`) is new.
+  - Results: 85 pass. 62 are pixel-identical. 23 are edge anti-aliasing and 1
+    is compositing rounding, each with identical text, controls, DOM geometry
+    and styles.
+  - WBR-S015 (`/mobile?unsupported=desktopSettings`, narrow) shows no
+    perceptible difference:
+    - The viewport, full-page and scrolled screenshots are byte-identical.
+    - Scroll is identical.
+    - Only the `html`/`body` box height differs (844 vs 918px). The
+      prototype's Nuxt 3.21.11 dev renderer preloads the default layout's
+      global `height: 100%` stylesheet; the source runs 3.21.1.
+    - Recorded in `matrix/s015-height-note/`.
+  - Evidence: `matrix/`
+- **Changed-surface Chat flows (`validate:chat-baseline-refresh-flows`)**
+  - Results: 30/30 pass, all pixel-identical. The 2 narrow bottom-sheet rows
+    also pass (`flow-results-narrow.json`).
+  - Evidence: `chat-flows/`
+  - CHT-001–006, 021: workspace menu, search, existing workspace, and "Open
+    another folder…" relative-path validation; model menu, search, and
+    runtime drill-in.
+  - CHT-007–009: choose the thinking model, open the thinking menu, choose High.
+  - CHT-010–016: approval toggle, `/` menu and chip, `@` menu, address a team
+    or agent, and typing.
+  - CHT-017, 022–029: send → chat run view; Edit Config; header ＋; reply;
+    Files tab; collapse tool shell; reopen from the tree after leaving; ＋ on
+    the Daily Assistant tree row; `/` in the run composer.
+  - CHT-018–020: Chat nav, collapse left panel, New chat pencil.
+  - SKL-001: D-19 banner Show details.
+  - CHT-030–031: model and workspace menus as narrow bottom sheets.
+- **Workspace and catalog flows (`validate:web-baseline-refresh-flows`)**
+  - Results: FLW-001–015 pass 15/15 (12 pixel-identical, 3 anti-aliasing only).
+  - FLW-013/014 were updated because the source now preselects the temp
+    workspace and lists Daily Assistant (no default model) first.
+  - FLW-014's route carries a `Date.now()` draft id. The probes compare it by
+    shape; see `flow-results-flw014-recheck.json`.
+  - Evidence: `flows/`
+- **Desktop-host rows**
+  - Scope: HOST-001–008 and STATE-009–013.
+  - Results: 12/13 pass under the older script's strict rule.
+  - HOST-006 (Extensions, external window) differs by 1 pixel with a channel
+    delta of 6 and identical semantics. That is anti-aliasing noise under the
+    matrix rule.
+  - Evidence: `host/`
+- **Independent run**
+  - Command: `PORT=4198 node .output/server/index.mjs` with the source and
+    observation node stopped.
+  - Checked: Chat; model → thinking menu; send → chat run view; Workspace Team
+    run; D-19 banner; Agents.
+  - Result: zero browser errors and zero non-local requests.
+  - Evidence: `independent-preview/`
+- **Checks:** all pass.
+  - `pnpm typecheck` passes, with the usual duplicate auto-import warnings.
+  - `pnpm lint`
+  - `pnpm test`: 3 files, 12 tests.
+  - `pnpm validate:boundaries`: 13/13.
+  - `pnpm build`
 
 ## Known Gaps And Next Action
 
-- **Legacy rich-state injector not refreshed:**
-  - `prototype/shared/apply-experience-scenario.js` (the `workspace_*` and
-    `mobile_*` scenarios: streaming, completed, error, interrupted,
-    active-mobile work) targets the previous store shapes. It still renders,
-    but it is not source-verified at this pin, and it crashes the new source
-    when injected there.
-  - Stored and launched runs now come from the source's own code paths
-    instead (FLW-001–015).
-  - Recommendation: if `chat-interface-entry` needs streaming or error chat
-    states, add them as focused fixtures in that ticket rather than reviving
-    the injector.
-- **Not re-run:**
-  - Historical review URLs (`/workspace?root=org|team`) and historical
-    validation scripts (`validate:gap-009/010`, `validate:aorg-*`,
-    `validate:final-package`, `capture:*-final`, `validate:correction-journeys`)
-    target the previous baseline.
-  - Paired-mobile work tabs (MOB-001–014) were not re-checked; they depend on
-    the injector.
-- **Harness and fixture notes:**
-  - `validate-browser`, `capture-correction-parity`,
-    `validate-correction-journeys` and `validate-gap-009/010` gained an
-    `EVIDENCE_ROOT` override so new runs don't overwrite historical evidence.
-  - The synthetic standalone agent run is not listed in workspace history in
-    either app; source and prototype agree.
+- **Not re-run or not refreshed:** carried over from `WEB-BASELINE-REFRESH-001`
+  and unchanged by this refresh.
+  - The legacy rich-state injector `apply-experience-scenario.js`
+    (`workspace_*`/`mobile_*` streaming, error and interrupted states).
+  - Paired-mobile work tabs MOB-001–014.
+  - Historical review scripts and URLs.
+  - Streaming or completed chat replies are not simulated. The synthetic
+    stream stays silent, so a sent chat shows the user message with status
+    Offline, identically in source and prototype. If
+    `chat-composer-menus-open-upward` needs reply states, add them as focused
+    fixtures in that ticket.
+- **Fixture notes:** the populated catalog now has 3 agents, 2 workspaces
+  (including Temp Workspace) and 2 models. Every compared screen used the same
+  values in the source.
 - **Perceptible or behavioral differences remaining inside the verified
   scope:** none.
+- **Recommended next action for `product_prototyper`:**
+  - Accept and commit the candidate; the evidence folder is 20 MB.
+  - Confirm the `chat-interface-entry` supersession.
+  - Integrate into `personal`, then resume `chat-composer-menus-open-upward`
+    on the refreshed base. The Chat composer menus open downward/anchored
+    today; see CHT-001, CHT-005 and CHT-008.

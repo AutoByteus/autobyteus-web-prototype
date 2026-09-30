@@ -21,6 +21,7 @@ export const scenarioCatalog = Object.freeze({
   token_unavailable: 'Token Statistics range predates analytics tracking and cannot be reconstructed.',
   token_mixed_currency: 'Token Statistics contains exact rows in currencies that cannot be combined.',
   token_local: 'Token Statistics contains only local usage with no API bill.',
+  skill_name_issues: 'Populated data where the skill catalog reports one duplicate-name conflict and one ignored runtime default copy (D-19 banner).',
 })
 
 export const baseState = () => ({
@@ -48,6 +49,7 @@ const agent = {
   toolInvocationPreprocessorNames: [],
   lifecycleProcessorNames: [],
   skillNames: ['prototype-research'],
+  skillScope: 'CONFIGURED',
   ownershipScope: 'SHARED',
   ownerTeamId: null,
   ownerTeamName: null,
@@ -70,6 +72,23 @@ const secondAgent = {
   description: 'A second deterministic synthetic agent.',
   toolNames: ['read_file', 'write_file'],
   skillNames: ['prototype-writing'],
+}
+
+// WEB-BASELINE-REFRESH-002: the built-in agent that backs a New chat at
+// 57df63f (DEFAULT_CHAT_AGENT_DEFINITION_ID). Synthetic copy of its public
+// identity so the Chat send journey is observable.
+const dailyAssistant = {
+  ...agent,
+  id: 'autobyteus-daily-assistant',
+  name: 'Daily Assistant',
+  role: 'General Agent',
+  description: 'General-purpose assistant for everyday tasks, with access to all installed skills.',
+  instructions: 'You are Daily Assistant, a general-purpose assistant.',
+  toolNames: ['run_bash', 'read_url', 'search_web'],
+  skillNames: [],
+  skillScope: 'ALL_INSTALLED',
+  ownerPackageId: null,
+  defaultLaunchConfig: null,
 }
 
 const team = {
@@ -113,6 +132,20 @@ const workspace = {
   absolutePath: '/synthetic/prototype-workspace',
   kind: 'local',
   isTemp: false,
+}
+
+// WEB-BASELINE-REFRESH-002: every node has the built-in temp workspace; the
+// New chat at 57df63f uses it by default.
+const tempWorkspace = {
+  __typename: 'Workspace',
+  workspaceId: 'temp_ws_default',
+  name: 'temp_workspace',
+  displayName: 'Temp Workspace',
+  config: {},
+  workspaceRootPath: '/synthetic/temp_workspace',
+  absolutePath: '/synthetic/temp_workspace',
+  kind: 'local',
+  isTemp: true,
 }
 
 const application = {
@@ -194,7 +227,6 @@ const teamRun = {
 
 const createdTeamRunId = 'team-run-created-fixture'
 const storedTeamExecutionTree = {
-  schema_version: 2,
   created_at: fixedNow,
   archived_at: null,
   application_binding: null,
@@ -203,7 +235,6 @@ const storedTeamExecutionTree = {
 }
 
 const createdTeamExecutionTree = {
-  schema_version: 2,
   created_at: fixedNow,
   archived_at: null,
   application_binding: null,
@@ -235,7 +266,6 @@ const orgLaunchConfiguration = {
 
 const orgRunId = 'org-run-001'
 const orgExecutionTree = {
-  schemaVersion: 1,
   subjectKind: 'agent_org',
   createdAt: fixedNow,
   archivedAt: null,
@@ -326,16 +356,35 @@ const model = {
   metadataProvenance: 'fixture',
 }
 
+// WEB-BASELINE-REFRESH-002: a second synthetic model whose config schema has a
+// thinking switch and effort levels, so the Chat composer's thinking control
+// and menu (shipped at 57df63f) are observable. No inference request is made.
+const thinkingModel = {
+  ...model,
+  modelIdentifier: 'mock/reasoning-prototype',
+  name: 'Reasoning Prototype Model',
+  description: 'Deterministic model fixture with thinking settings; no inference request is made.',
+  value: 'mock/reasoning-prototype',
+  canonicalName: 'mock/reasoning-prototype',
+  configSchema: {
+    type: 'object',
+    properties: {
+      thinking_enabled: { type: 'boolean', title: 'Thinking', default: false },
+      reasoning_effort: { type: 'string', title: 'Effort', enum: ['low', 'medium', 'high'], default: 'medium' },
+    },
+  },
+}
+
 const providerCatalogSnapshot = {
   __typename: 'ProviderModelCatalogSnapshotObject',
   runtimeKind: 'autobyteus',
   ownerProvider: { __typename: 'CatalogProviderObject', ...provider, catalogMode: 'STATIC' },
   sources: [{
     __typename: 'ModelSourceStatusObject',
-    modelKind: 'LLM', state: 'READY', modelCount: 1,
+    modelKind: 'LLM', state: 'READY', modelCount: 2,
     successfulUnitCount: 1, failedUnitCount: 0, safeMessage: null,
   }],
-  llmModels: [{ __typename: 'ModelDetail', ...model }],
+  llmModels: [{ __typename: 'ModelDetail', ...model }, { __typename: 'ModelDetail', ...thinkingModel }],
   audioModels: [], imageModels: [], videoModels: [],
 }
 
@@ -433,10 +482,10 @@ export const storedConversation = (request, reply) => [
 export function fixtureContext(state) {
   const empty = state.scenario === 'empty'
   const appsEnabled = state.scenario === 'apps_disabled' ? false : state.applicationsEnabled
-  const agents = empty ? [] : [agent, secondAgent]
+  const agents = empty ? [] : [agent, secondAgent, dailyAssistant]
   const teams = empty ? [] : [team]
   const applications = empty ? [] : [application]
-  const workspaces = empty ? [] : [state.scenario === 'team_launch' ? { ...workspace, kind: 'filesystem' } : workspace]
+  const workspaces = empty ? [] : [state.scenario === 'team_launch' ? { ...workspace, kind: 'filesystem' } : workspace, tempWorkspace]
   const skills = empty ? [] : [skill]
   const tools = empty ? [] : [tool]
   const orgs = empty ? [] : [org]
@@ -529,6 +578,10 @@ export function operationFixture(operationName, variables = {}, state) {
     CreateWorkspace: { createWorkspace: { ...workspace, ...agentInput } },
     RemoveWorkspace: { removeWorkspace: { ...success, workspaceId: variables.input?.workspaceId || workspace.workspaceId, workspaceRootPath: variables.input?.workspaceRootPath || workspace.workspaceRootPath } },
     GetSkills: { skills: c.skills },
+    GetSkillNameIssues: { skillNameIssues: state.scenario === 'skill_name_issues' ? [
+      { name: 'prototype-research', usedPath: '/synthetic/skills/prototype-research', ignoredPaths: ['/synthetic/agent-packages/research-pack/skills/prototype-research'], kind: 'conflict' },
+      { name: 'code-review', usedPath: '/synthetic/skills/code-review', ignoredPaths: ['/synthetic/runtime-defaults/codex/skills/code-review'], kind: 'shadowed_runtime_default' },
+    ] : [] },
     GetSkill: { skill: c.skills.find(item => item.name === variables.name) || null },
     GetSkillFileTree: { skillFileTree: JSON.stringify([{ name: 'SKILL.md', path: 'SKILL.md', isDirectory: false }, { name: 'references', path: 'references', isDirectory: true, children: [{ name: 'fixture.md', path: 'references/fixture.md', isDirectory: false }] }]) },
     GetSkillFileContent: { skillFileContent: variables.path === 'SKILL.md' ? skill.content : '# Fixture reference\nSynthetic evidence only.' },
@@ -550,8 +603,8 @@ export function operationFixture(operationName, variables = {}, state) {
     DeleteMcpServer: { deleteMcpServer: { __typename: 'McpMutationResult', ...success } },
     DiscoverAndRegisterMcpServerTools: { discoverAndRegisterMcpServerTools: { __typename: 'McpDiscoveryResult', ...success, discoveredTools: c.tools } },
     ImportMcpServerConfigs: { importMcpServerConfigs: { __typename: 'McpImportResult', ...success, importedCount: 1, failedCount: 0 } },
-    GetProviderSettings: { providerSettings: c.empty ? [] : [{ provider, llmModels: [model], audioModels: [], imageModels: [], videoModels: [] }] },
-    GetAvailableLLMProvidersWithModels: { availableLlmProvidersWithModels: c.empty ? [] : [{ provider, models: [model] }], availableAudioProvidersWithModels: [], availableImageProvidersWithModels: [], availableVideoProvidersWithModels: [] },
+    GetProviderSettings: { providerSettings: c.empty ? [] : [{ provider, llmModels: [model, thinkingModel], audioModels: [], imageModels: [], videoModels: [] }] },
+    GetAvailableLLMProvidersWithModels: { availableLlmProvidersWithModels: c.empty ? [] : [{ provider, models: [model, thinkingModel] }], availableAudioProvidersWithModels: [], availableImageProvidersWithModels: [], availableVideoProvidersWithModels: [] },
     GetProviderCredentialSettings: { providerCredentialSettings: c.empty ? [] : [{ provider: providerCatalogSnapshot.ownerProvider, apiKeyConfigured: true }] },
     GetProviderModelCatalogSnapshots: { providerModelCatalogSnapshots: c.empty ? [] : [providerCatalogSnapshot] },
     EnsureProviderModelCatalog: { ensureProviderModelCatalog: providerCatalogSnapshot },
@@ -578,10 +631,9 @@ export function operationFixture(operationName, variables = {}, state) {
       ? { teamRunId: createdTeamRunId, isActive: true, executionTree: createdTeamExecutionTree, modelConfigEditability: { editable: false, reason: null } }
       : { teamRunId: teamRun.teamRunId, isActive: false, executionTree: storedTeamExecutionTree, modelConfigEditability: { editable: true, reason: null } } },
     GetAgentOrgRunInspection: { getAgentOrgRunInspection: {
-      root_subject_kind: 'agent_org', root_run_id: orgRunId, schema_version: 1,
+      root_subject_kind: 'agent_org', root_run_id: orgRunId,
       root_org: {
         base_change_sequence: 1, is_active: false, execution_tree: orgExecutionTree,
-        task_records: { schemaVersion: 1, subjectKind: 'agent_org', orgRunId, records: [] },
         communication_messages: { schemaVersion: 1, subjectKind: 'agent_org', orgRunId, messages: [] },
         // A stored (inactive) root reports no live AgentRun statuses.
         agent_statuses: [],
@@ -589,11 +641,14 @@ export function operationFixture(operationName, variables = {}, state) {
     } },
     GetTeamRunExecutionCheckpoint: { getTeamRunExecutionCheckpoint: { rootTeamRunId: teamRun.teamRunId, changeSequence: 1, hasOpenExecutionWork: false } },
     GetTeamMemberRunProjection: { getTeamMemberRunProjection: { agentRunId: variables.agentRunId || 'team-member-researcher-001', summary: teamRun.summary, lastActivityAt: fixedNow, conversation: String(variables.agentRunId || '').endsWith('-created') ? [] : storedConversation('Review the current prototype baseline.', 'The baseline review is complete; no blocking differences were found.'), activities: [], hasEarlierActiveTraceEvents: false } },
-    GetTeamCommunicationMessages: { getTeamCommunicationMessages: [] }, GetTaskDelegationRecords: { getTaskDelegationRecords: [] },
-    GetAgentRunResumeConfig: { getAgentRunResumeConfig: { runId: run.runId, isActive: false, metadataConfig: { agentDefinitionId: agent.id, workspaceRootPath: workspace.workspaceRootPath, llmModelIdentifier: model.modelIdentifier, llmConfig: {}, autoExecuteTools: false, skillAccessMode: 'all', runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: true, llmConfig: true, autoExecuteTools: true, skillAccessMode: true, workspaceRootPath: true, runtimeKind: true } } },
+    GetTeamCommunicationMessages: { getTeamCommunicationMessages: [] },
+    GetAgentRunResumeConfig: { getAgentRunResumeConfig: variables.runId === 'run-prepared-fixture'
+      // The Chat first send (57df63f): Daily Assistant in the temp workspace.
+      ? { runId: 'run-prepared-fixture', isActive: true, metadataConfig: { agentDefinitionId: dailyAssistant.id, workspaceRootPath: tempWorkspace.workspaceRootPath, llmModelIdentifier: model.modelIdentifier, llmConfig: {}, autoExecuteTools: true, skillAccessMode: 'PRELOADED_ONLY', runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: false, llmConfig: false, autoExecuteTools: false, skillAccessMode: false, workspaceRootPath: false, runtimeKind: false }, modelConfigEditability: { editable: false, reason: null } }
+      : { runId: run.runId, isActive: false, metadataConfig: { agentDefinitionId: agent.id, workspaceRootPath: workspace.workspaceRootPath, llmModelIdentifier: model.modelIdentifier, llmConfig: {}, autoExecuteTools: false, skillAccessMode: 'all', runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: true, llmConfig: true, autoExecuteTools: true, skillAccessMode: true, workspaceRootPath: true, runtimeKind: true }, modelConfigEditability: { editable: false, reason: null } } },
     DeleteStoredRun: { deleteStoredRun: success }, ArchiveStoredRun: { archiveStoredRun: success }, DeleteStoredTeamRun: { deleteStoredTeamRun: success }, ArchiveStoredTeamRun: { archiveStoredTeamRun: success },
     CreateAgentRun: { createAgentRun: { agentRunId: 'run-created-fixture', runId: 'run-created-fixture', status: 'IDLE' } },
-    PrepareAgentRun: { prepareAgentRun: { agentRunId: 'run-prepared-fixture', runId: 'run-prepared-fixture', status: 'PREPARED' } },
+    PrepareAgentRun: { prepareAgentRun: { ...success, runId: 'run-prepared-fixture', activationState: 'PREPARED', preparedExpiresAt: null } },
     CancelPreparedAgentRun: { cancelPreparedAgentRun: success }, TerminateAgentRun: { terminateAgentRun: success }, RestoreAgentRun: { restoreAgentRun: { ...run, status: 'IDLE' } }, ApproveToolInvocation: { approveToolInvocation: success },
     CreateAgentTeamRun: { createAgentTeamRun: { __typename: 'CreateAgentTeamRunResult', ...success, teamRunId: createdTeamRunId, status: 'IDLE' } }, TerminateAgentTeamRun: { terminateAgentTeamRun: success }, RestoreAgentTeamRun: { restoreAgentTeamRun: { ...teamRun, status: 'IDLE' } },
     CreateAgentDefinition: { createAgentDefinition: { ...agent, ...agentInput, id: agentInput.id || 'agent-created-fixture' } }, UpdateAgentDefinition: { updateAgentDefinition: { ...agent, ...agentInput } }, DeleteAgentDefinition: { deleteAgentDefinition: success }, RefreshAgentDefinitionCatalog: { refreshAgentDefinitionCatalog: c.agents },
@@ -711,4 +766,4 @@ export function syntheticApplicationHtml() {
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#f8fafc;color:#0f172a;font:14px system-ui,sans-serif}.shell{min-height:100vh;padding:32px}.badge{color:#2563eb;font-weight:700;text-transform:uppercase;letter-spacing:.12em}.card{margin-top:20px;max-width:760px;padding:24px;border:1px solid #cbd5e1;border-radius:16px;background:white;box-shadow:0 12px 30px #0f172a12}textarea{box-sizing:border-box;width:100%;min-height:180px;margin-top:16px;padding:12px;border:1px solid #94a3b8;border-radius:10px}button{margin-top:12px;border:0;border-radius:9px;background:#2563eb;color:white;padding:10px 16px;font-weight:650}</style></head><body><main class="shell"><div class="badge">Synthetic application fixture</div><section class="card"><h1>Brief Studio</h1><p>Draft a concise product brief using deterministic prototype resources.</p><textarea aria-label="Brief draft">Current-state baseline review</textarea><br><button type="button" onclick="this.textContent='Saved locally'">Save draft</button></section></main></body></html>`
 }
 
-export const exposedFixtures = Object.freeze({ agent, secondAgent, team, org, orgExecutionTree, project, projectTasks, workspace, application, run, teamRun, createdTeamExecutionTree, provider, model, tool, skill, fixedNow })
+export const exposedFixtures = Object.freeze({ agent, secondAgent, dailyAssistant, team, org, orgExecutionTree, project, projectTasks, workspace, tempWorkspace, application, run, teamRun, createdTeamExecutionTree, provider, model, thinkingModel, tool, skill, fixedNow })
