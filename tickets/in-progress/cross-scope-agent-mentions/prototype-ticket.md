@@ -98,6 +98,14 @@
 - Asked the user whether the same sentence in the `@` menu footer and the chip itself should also go.
 - Status: `Awaiting User Review`.
 
+## Review Round 7
+
+- User question, 2026-09-30: is the delegated task brief really shown as a message? Asked Solution Designer on the user's instruction; reply (source read at `origin/personal@8caa610ff`, v1.4.92-beta.4): the brief is not a Team/Org tab message; the child shows it as a system task notification; later run-ID `send_message_to` exchanges are Team/Org tab messages. Product Prototyper re-read the same sources (`task-execution-input.ts`, `collaboration-agent-presentation-event-adapter.ts`, `root-task-execution-lifecycle.ts`, `root-team-run.ts`, `SystemTaskNotificationSegment.vue`) and confirmed. Neither ran the real server.
+- User decision, 2026-09-30: "we take the same idea if it's already implemented there like that." → DEC-004: no new behavior; keep today's delegated-task presentation.
+- Change: PC-020. Evidence: `review-evidence/round-7/` (`delegator.png`, `task-agent.png`, validation 30/30).
+- Not verified: how the real app renders an agent-to-agent `send_message_to` delivery inside the receiving conversation (F-003).
+- Status: `Awaiting User Review`.
+
 ## Findings For Requirements (observed, not decided)
 
 - F-001 (REQ-003/004): the client can only build a conversation for a delegated child whose address is a configured member (`createTeamAgentContext` → `configuredAgentAtAddress`), and the task-execution DTO carries no definition identity or launch settings. A collaborator that is not mounted needs both from the server. The prototype supplies them locally.

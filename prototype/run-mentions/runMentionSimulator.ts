@@ -106,9 +106,24 @@ const createRun = (team: AgentTeamContext) => {
     return invocationId
   }
 
-  const toolEnd = (agentRunId: string, turnId: string, invocationId: string, toolName: string, args: Record<string, string>, error: string | null): void => {
+  const toolEnd = (agentRunId: string, turnId: string, invocationId: string, toolName: string, args: Record<string, string>, error: string | null, result: Record<string, string | boolean | null> = { accepted: true }): void => {
     if (error) emit({ type: 'TOOL_EXECUTION_FAILED', payload: { agent_run_id: agentRunId, invocation_id: invocationId, tool_name: toolName, turn_id: turnId, arguments: args, error } })
-    else emit({ type: 'TOOL_EXECUTION_SUCCEEDED', payload: { agent_run_id: agentRunId, invocation_id: invocationId, tool_name: toolName, turn_id: turnId, arguments: args, result: { accepted: true } } })
+    else emit({ type: 'TOOL_EXECUTION_SUCCEEDED', payload: { agent_run_id: agentRunId, invocation_id: invocationId, tool_name: toolName, turn_id: turnId, arguments: args, result } })
+  }
+
+  /**
+   * The delegated work packet as the product delivers it today: a system task notification in
+   * the child's conversation (never a Team tab message), with the delegator's address and run ID.
+   */
+  const taskNotification = (agentRunId: string, delegatorAgentRunId: string, description: string): void => {
+    emit({ type: 'SYSTEM_TASK_NOTIFICATION', payload: {
+      agent_run_id: agentRunId, sender: { kind: 'system' },
+      content: [
+        `Task delegator address: ${view.getMemberAddress(delegatorAgentRunId)}`,
+        `Task delegator AgentRun ID: ${delegatorAgentRunId}`,
+        '', 'Description:', description,
+      ].join('\n'),
+    } })
   }
 
   const teamMessage = (senderAgentRunId: string, receiverAgentRunId: string, content: string): string => {
@@ -186,7 +201,7 @@ const createRun = (team: AgentTeamContext) => {
     return agent ? { agentRunId: agent.agent_run_id, name: memberAddressBasename(agent.address as AgentTeamAddress) } : null
   }
 
-  return { view, rootRunId, activate, status, input, text, toolStart, toolEnd, teamMessage, turnStart, turnEnd, addCollaborator, existingEntry }
+  return { view, rootRunId, activate, status, input, text, toolStart, toolEnd, taskNotification, teamMessage, turnStart, turnEnd, addCollaborator, existingEntry }
 }
 
 type Run = ReturnType<typeof createRun>
@@ -245,7 +260,9 @@ const playRelay = async (run: Run, focusedAgentRunId: string, content: string, m
     await wait(1200)
     if (definition.unrunnableReason) {
       // SC-006: visible failure; the run tree is unchanged.
-      run.toolEnd(focusedAgentRunId, turnId, invocationId, 'delegate_task', args, `${definition.name} cannot run in this run. ${definition.unrunnableReason}`)
+      // As in the product today, `delegate_task` returns normally with no run ID and the reason.
+      run.toolEnd(focusedAgentRunId, turnId, invocationId, 'delegate_task', args, null,
+        { target_agent_run_id: null, message: `${definition.name} cannot run in this run. ${definition.unrunnableReason}` })
       run.text(focusedAgentRunId, turnId, runMentionScript.relayFailed(definition.name, definition.unrunnableReason))
       pushRunMentionNotice({
         id: nextId('notice'), rootRunId: run.rootRunId, agentRunId: focusedAgentRunId, kind: 'failed',
@@ -255,8 +272,8 @@ const playRelay = async (run: Run, focusedAgentRunId: string, content: string, m
     }
     const record = run.addCollaborator(definition, focusedAgentRunId)
     run.status(record.entryAgentRunId, 'initializing')
-    run.toolEnd(focusedAgentRunId, turnId, invocationId, 'delegate_task', args, null)
-    run.teamMessage(focusedAgentRunId, record.entryAgentRunId, brief)
+    run.toolEnd(focusedAgentRunId, turnId, invocationId, 'delegate_task', args, null, { target_agent_run_id: record.entryAgentRunId })
+    run.taskNotification(record.entryAgentRunId, focusedAgentRunId, brief)
     const entryName = memberAddressBasename(run.view.getMemberAddress(record.entryAgentRunId) as AgentTeamAddress)
     await wait(500)
     run.text(focusedAgentRunId, turnId, runMentionScript.relayDone(definition.name, definition.kind === 'team' ? entryName : definition.name))

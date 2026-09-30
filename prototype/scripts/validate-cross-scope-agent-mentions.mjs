@@ -71,10 +71,13 @@ check('V-14', 'It uses the existing task Team presentation with no "Added" text'
   && await page.locator('[data-team-icon="temporary-task-team"]').count() === 1
   && !/Added|Started by/.test(treeText))
 check('V-15', 'Success shows no notice above the composer; the tree is the signal', await page.locator('[data-test="run-mention-notices"]').count() === 0)
-check('V-16', 'Team tab shows the messages exchanged with the collaborator (AC-004)', await page.locator('[data-test="team-communication-message-row"]').count() === 2)
+check('V-16', 'Team tab shows the later message from the collaborator, not the delegated brief (AC-004)', await page.locator('[data-test="team-communication-message-row"]').count() === 1
+  && /from product prototyper/.test(await page.locator('[data-test="team-communication-message-row"]').first().innerText()))
 await page.locator('[data-test="workspace-team-transient-execution-row"]').filter({ hasText: 'product prototyper' }).click(); await page.waitForTimeout(1500)
 check('V-17', 'Clicking the task row focuses the collaborator with its conversation and no load error', (await page.locator('[data-testid="team-workspace-surface"] h4').innerText()) === 'product prototyper'
   && /Got it/.test(await page.locator('[data-testid="agent-event-monitor"]').innerText())
+  && /Task delegator address: \/researcher/.test(await page.locator('[data-testid="system-task-notification-segment"]').first().innerText())
+  && /Task delegator AgentRun ID: team-member-researcher-001/.test(await page.locator('[data-testid="system-task-notification-segment"]').first().innerText())
   && !/Couldn't load activity/.test(await tree(page).innerText()))
 await type(page, 'also keep the workspace hint under the box'); await page.keyboard.press('Enter'); await page.waitForTimeout(2600)
 check('V-18', 'The user can chat with the added collaborator directly (SC-003)', /also keep the workspace hint under the box/.test(await page.locator('[data-testid="agent-event-monitor"]').innerText()))

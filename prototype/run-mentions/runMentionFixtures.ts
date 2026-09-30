@@ -57,7 +57,7 @@ export const illustrativeRunMentionDefinitions: readonly RunMentionDefinition[] 
 
 /** Scripted, illustrative agent prose for the deterministic run. */
 export const runMentionScript = {
-  brief: (request: string) => `The user asked: "${request}" Please take this on and report back to me.`,
+  brief: (request: string) => `The user asked: "${request}"\nPlease take this on and report back to me.`,
   relayPlan: (name: string) => `I'll bring ${name} into this run and pass on your request.`,
   relayDone: (name: string, entry: string) => `${name} is in this run now. I sent ${entry} the brief and will pick this up again when they report back.`,
   relayExisting: (name: string, entry: string) => `${name} is already in this run, so I messaged ${entry} instead of starting another copy.`,
