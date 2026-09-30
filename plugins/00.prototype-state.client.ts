@@ -555,9 +555,7 @@ export default defineNuxtPlugin({
           // mentions that bring a shared Agent or Team into the run.
           // The run itself is registered by plugins/20.prototype-run-mentions.client.ts.
           // The composer's own send runs unchanged for a Team member so it reaches that run.
-          if (store.$id === 'activeContext' && actionName === 'send'
-            && window.__AUTOBYTEUS_PROTOTYPE_TEAM_RUN_SEND__ && pinia._s.get('agentTeamContexts')?.activeTeamContext
-            && pinia._s.get('agentSelection')?.selectedType === 'team') {
+          if (store.$id === 'activeContext' && actionName === 'send' && window.__AUTOBYTEUS_PROTOTYPE_LOCAL_SEND__?.()) {
             return originalAction.apply(store, args)
           }
           if (store.$id === 'agentTeamRun' && actionName === 'sendMessageToFocusedMember'
@@ -666,6 +664,9 @@ declare global {
   interface Window {
     /** Deterministic local Team run send (cross-scope-agent-mentions). */
     __AUTOBYTEUS_PROTOTYPE_TEAM_RUN_SEND__?: (content: string) => Promise<void>
+    __AUTOBYTEUS_PROTOTYPE_AGENT_RUN_SEND__?: (content: string) => Promise<void>
+    /** True when the local run handles a message sent for the selected run. */
+    __AUTOBYTEUS_PROTOTYPE_LOCAL_SEND__?: () => boolean
     __AUTOBYTEUS_PROTOTYPE__: {
       sourceCommit: string
       readonly scenario: string

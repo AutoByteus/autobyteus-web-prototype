@@ -2,15 +2,12 @@ import { computed, type ComputedRef } from 'vue'
 import { useActiveContextStore } from '~/stores/activeContextStore'
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
 import { useAgentTeamDefinitionStore } from '~/stores/agentTeamDefinitionStore'
-import { useAgentTeamContextsStore } from '~/stores/agentTeamContextsStore'
 import { useLocalization } from '~/composables/useLocalization'
 import { initialsFor, type ChatTargetOption } from '~/components/chat/chatComposerMenus'
 import { DEFAULT_CHAT_AGENT_DEFINITION_ID } from '~/utils/chat/chatDefaults'
-import { collectConfiguredAgents, collectConfiguredTeams } from '~/services/teamExecution/teamExecutionTreeSelectors'
-import { memberAddressBasename } from '~/types/agent/AgentTeamAddress'
+import { resolveRunMentionScope } from '~/prototype/run-mentions/runMentionScopes'
 import { illustrativeRunMentionDefinitions } from '~/prototype/run-mentions/runMentionFixtures'
 import {
-  addedCollaborators,
   draftMentionKeys,
   runMentionRoute,
   type RunMentionDefinition,
@@ -85,41 +82,23 @@ export const listRunMentionDefinitions = (): RunMentionDefinition[] => {
 
 /**
  * `@` in a live run (cross-scope-agent-mentions): shared Agents and Teams that can be brought
- * into the current run. Agent Orgs are not offered. Supplied for Team runs; other run kinds
- * return `available: false` and the composer keeps its current behavior.
+ * into the current run. Agent Orgs are not offered. Supplied for Team runs, Org runs and
+ * standalone Agent runs; launch drafts return `available: false`.
  */
 export function useRunMentions() {
   const activeContextStore = useActiveContextStore()
-  const teamContextsStore = useAgentTeamContextsStore()
   const { t } = useLocalization()
 
   const target = computed(() => activeContextStore.activeWorkspaceTarget)
-  const teamContext = computed(() => (target.value?.kind === 'standalone_team_member'
-    ? teamContextsStore.activeTeamContext
-    : null))
-  const available = computed(() => Boolean(teamContext.value) && target.value?.access === 'live')
-  const rootRunId = computed(() => teamContext.value?.view.getRootTeamRunId() ?? null)
-  const focusedRunId = computed(() => target.value?.context.state.runId ?? null)
-  const focusedName = computed(() => {
-    const address = teamContext.value?.view.getFocusedMemberAddress()
-    return address ? memberAddressBasename(address) : ''
-  })
+  const scope = computed(() => resolveRunMentionScope())
+  const available = computed(() => Boolean(scope.value))
+  const rootRunId = computed(() => scope.value?.rootRunId ?? null)
+  const focusedRunId = computed(() => scope.value?.focusedRunId ?? null)
+  const focusedName = computed(() => scope.value?.focusedName ?? '')
   const route = computed(() => runMentionRoute())
 
   const definitions = computed<RunMentionDefinition[]>(() => listRunMentionDefinitions())
-
-  /** Definition keys already reachable in this run. */
-  const inRunKeys = computed<ReadonlySet<string>>(() => {
-    const keys = new Set<string>()
-    const tree = teamContext.value?.view.getExecutionTree()
-    if (tree) {
-      keys.add(`team:${tree.root_team.team_definition_id}`)
-      collectConfiguredAgents(tree).forEach((agent) => keys.add(`agent:${agent.agent_definition_id}`))
-      collectConfiguredTeams(tree).forEach((team) => keys.add(`team:${team.team_definition_id}`))
-    }
-    addedCollaborators(rootRunId.value).forEach((entry) => keys.add(entry.definitionKey))
-    return keys
-  })
+  const inRunKeys = computed<ReadonlySet<string>>(() => scope.value?.inRunKeys ?? new Set<string>())
 
   const options = computed<RunMentionOption[]>(() => definitions.value.map((definition) => ({
     key: definition.key,

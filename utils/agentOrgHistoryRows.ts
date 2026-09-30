@@ -1,3 +1,4 @@
+import { runMentionOrgSources } from '~/prototype/run-mentions/runMentionState'
 import type { AgentOrgExecutionContext } from '~/services/agentOrgExecution/agentOrgExecutionContext'
 import { projectAgentOrgTeamBranchStatus } from '~/services/agentOrgExecution/agentOrgTeamBranchStatus'
 import type { AgentOrgRunHistoryItem } from '~/stores/runHistoryTypes'
@@ -99,8 +100,11 @@ const statusSource = (
       address: addresses.get(delegatorAgentRunId) ?? null,
     }),
     coordinatorFor: (team) => {
+      // Prototype (cross-scope-agent-mentions): a task Team brought in by `@` has its source in the prototype.
       const source = (context?.executionTree ?? run.executionTree).rootOrg.members.find((member) =>
         'teamRunId' in member && member.address === team.address)
+        ?? (runMentionOrgSources(run.rootRunId) as Array<{ address: string; teamRunId?: string; coordinatorAddress: string }>)
+          .find((member) => 'teamRunId' in member && member.address === team.address)
       if (!source || !('teamRunId' in source)) throw new Error(`Missing captured Team source '${team.address}'.`)
       const findMembers = (node: TaskTeamNode): { agentRunId: string; address: string }[] => node.members.flatMap((member) =>
         'agentRunId' in member ? [member] : findMembers(member))

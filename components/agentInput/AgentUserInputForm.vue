@@ -1,4 +1,10 @@
 <template>
+  <!-- An `@` mention that could not be brought into this run (cross-scope-agent-mentions). -->
+  <RunMentionNotices
+    v-if="mentions.rootRunId.value && mentions.focusedRunId.value"
+    :root-run-id="mentions.rootRunId.value"
+    :agent-run-id="mentions.focusedRunId.value"
+  />
   <div
     class="rounded-xl border border-gray-200 bg-white shadow-sm focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-300"
     :class="hasMenus ? 'relative' : 'overflow-hidden'"
@@ -33,6 +39,7 @@ import ContextFilePathInputArea from '~/components/agentInput/ContextFilePathInp
 import AgentUserInputTextArea from '~/components/agentInput/AgentUserInputTextArea.vue';
 import SkillTagChips from '~/components/chat/SkillTagChips.vue';
 import RunMentionChips from '~/components/agentInput/RunMentionChips.vue';
+import RunMentionNotices from '~/components/agentInput/RunMentionNotices.vue';
 import { mentionToken, useRunMentions, type RunMentionChip } from '~/composables/agentInput/useRunMentions';
 import { removeDraftMention } from '~/prototype/run-mentions/runMentionState';
 import { computed } from 'vue';

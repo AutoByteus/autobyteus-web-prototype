@@ -11,7 +11,7 @@
  * subscriptions stay inert.
  */
 import { operationFixture, baseState } from '~/prototype/source-observation/fixtures.mjs'
-import { resumedTeamRunIds } from '~/prototype/run-mentions/runMentionState'
+import { resumedOrgRunIds, resumedTeamRunIds } from '~/prototype/run-mentions/runMentionState'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
 
@@ -44,6 +44,7 @@ const resolveLocally = async (request: OperationRequest = {}) => {
 // cross-scope-agent-mentions: a stored Team run that was resumed by sending a
 // message in this browser context is listed as active, as after a real restore.
 const markResumedTeamRuns = (data: any): any => {
+  if (resumedOrgRunIds.size) markResumedOrgRuns(data)
   if (!resumedTeamRunIds.size) return data
   const groups = [...(data?.listWorkspaceRunHistory ?? []), ...(data?.workspaceRunHistory ? [data.workspaceRunHistory] : [])]
   for (const group of groups) {
@@ -54,6 +55,14 @@ const markResumedTeamRuns = (data: any): any => {
     }
   }
   return data
+}
+
+// The same for an Org run: any history row of a locally driven Org run is listed as active.
+const markResumedOrgRuns = (value: any): void => {
+  if (!value || typeof value !== 'object') return
+  if (Array.isArray(value)) { value.forEach(markResumedOrgRuns); return }
+  if (typeof value.root_run_id === 'string' && resumedOrgRunIds.has(value.root_run_id) && 'is_active' in value) value.is_active = true
+  Object.values(value).forEach(markResumedOrgRuns)
 }
 
 const emptyResult = async () => ({ data: {} })

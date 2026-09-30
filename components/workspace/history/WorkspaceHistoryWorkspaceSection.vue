@@ -104,17 +104,16 @@
           v-if="state.isAgentExpanded(workspacePresentationId, agentNode.agentDefinitionId)"
           class="ml-3 space-y-0.5"
         >
+          <template v-for="run in agentNode.runs" :key="run.runId">
           <button
-            v-for="run in agentNode.runs"
-            :key="run.runId"
             type="button"
             data-test="workspace-agent-run-row"
             :data-run-id="run.runId"
             class="group/run-row flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-sm transition-colors"
-            :class="state.selectedRunId === run.runId
+            :class="state.selectedRunId === run.runId && !agentRunScope(run.runId)?.focusedRunId
               ? 'bg-indigo-50 text-indigo-900'
               : 'text-gray-700 hover:bg-gray-50'"
-            @click="actions.onSelectRun(run)"
+            @click="selectAgentRun(run)"
           >
             <div class="min-w-0 flex items-center">
               <StatusDot class="mr-2" :status="run.currentStatus" />
@@ -171,6 +170,14 @@
               </span>
             </div>
           </button>
+          <!-- cross-scope-agent-mentions: task Agents and task Teams brought into this Agent run. -->
+          <AgentRunTaskRows
+            :run-id="run.runId"
+            :label="formatRunLabel(run.summary)"
+            :run-selected="state.selectedRunId === run.runId"
+            @select-run="actions.onSelectRun(run)"
+          />
+          </template>
         </div>
       </div>
 
@@ -319,6 +326,8 @@
 </template>
 
 <script setup lang="ts">
+import AgentRunTaskRows from '~/components/workspace/history/AgentRunTaskRows.vue';
+import { agentRunScope } from '~/prototype/run-mentions/runMentionState';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import StatusDot from '~/components/workspace/common/StatusDot.vue';
@@ -380,6 +389,13 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (relativeTimeTimer !== null) clearInterval(relativeTimeTimer);
 });
+
+// Selecting the run row shows the run's own agent again (not a task Agent under it).
+const selectAgentRun = (run: Parameters<typeof props.actions.onSelectRun>[0]) => {
+  const scope = agentRunScope(run.runId);
+  if (scope) scope.focusedRunId = null;
+  return props.actions.onSelectRun(run);
+};
 
 const isTeamDisplayRowExpanded = (
   team: TeamTreeNode,

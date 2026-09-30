@@ -48,3 +48,15 @@ An exact export of the pinned source is run against `prototype/source-observatio
 Exact source Vue components, pages, layouts, styles, localization and assets are retained because they are the smallest reliable way to preserve a 100% current UI appearance. Read-only store/view-model definitions remain where components consume their getters directly. A byte audit proves all 369 retained presentation files match the pin. Runtime behavior is nevertheless supplied by one prototype adapter and small fixtures; production clients/processes/contracts are not runtime dependencies.
 
 This is high experience fidelity and deliberately low implementation fidelity—not a production frontend copy, Electron build, integration environment, or target architecture.
+
+## cross-scope-agent-mentions: local run
+
+Sending a message in a Team run, an Org run or a standalone Agent run plays a
+deterministic script in the browser (`prototype/run-mentions/`). It feeds the
+same client events the real streams deliver (Agent status, segments, tool
+calls, system task notification, inter-agent messages, task execution started)
+into the product's own execution views, so the conversation, the run tree and
+the Team/Org tab are rendered by unchanged presentation code. No model, runtime,
+server, persistence or network is involved; agent prose and the `Product Team`,
+`Marketing Team`, `Computer Use Agent` and `Code Reviewer` definitions in the
+live-run `@` menu are illustrative. A page reload resets everything.

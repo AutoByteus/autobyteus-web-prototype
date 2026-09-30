@@ -37,13 +37,8 @@
         :browse-subject="target.browse"
         class="h-full"
       >
-        <template v-if="skillTarget || target.kind === 'standalone_team_member'" #composerContext>
-          <RunMentionNotices
-            v-if="target.kind === 'standalone_team_member'"
-            :root-run-id="target.team.rootRunId"
-            :agent-run-id="target.context.state.runId"
-          />
-          <SkillImprovementComposerCta v-if="skillTarget" :target="skillTarget" />
+        <template v-if="skillTarget" #composerContext>
+          <SkillImprovementComposerCta :target="skillTarget" />
         </template>
       </AgentEventMonitor>
     </div>
@@ -60,7 +55,6 @@ import WorkspaceRecoveryNotice from '~/components/workspace/common/WorkspaceReco
 import SkillImprovementComposerCta from '~/components/workspace/skill-improvement/SkillImprovementComposerCta.vue'
 import type { SkillImprovementComposerCtaTarget } from '~/components/workspace/skill-improvement/skillImprovementComposerCtaTarget'
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
-import RunMentionNotices from '~/components/workspace/team/RunMentionNotices.vue'
 
 type TeamTarget = Extract<ActiveAgentWorkspaceTarget,
   { kind: 'standalone_team_member' | 'agent_org_team_member' | 'agent_org_task_team_member' }>

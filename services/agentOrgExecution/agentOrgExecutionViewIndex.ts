@@ -1,3 +1,4 @@
+import { runMentionOrgSources } from '~/prototype/run-mentions/runMentionState'
 import type { AgentOrgExecutionViewDto } from '@autobyteus/collaboration-stream-contracts'
 import { parseAgentTeamAddress, type AgentTeamAddress } from '~/types/agent/AgentTeamAddress'
 
@@ -58,6 +59,12 @@ export class AgentOrgExecutionViewIndex {
     for (const member of root.members) {
       configured(member)
       if ('teamRunId' in member) member.members.forEach(configured)
+    }
+    // Prototype (cross-scope-agent-mentions): a collaborator brought in by `@` is not a configured
+    // Org member, so its source (identity and inherited launch settings) comes from the prototype.
+    for (const source of runMentionOrgSources(root.orgRunId) as OrgConfiguredMember[]) {
+      configured(source)
+      if ('teamRunId' in source) source.members.forEach(configured)
     }
     const rootHost: OrgExecutionHost = { kind: 'root', runId: root.orgRunId }
     for (const member of root.members) {

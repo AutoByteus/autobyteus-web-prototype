@@ -50,7 +50,7 @@
 - Comparison URL (Q1 option a, review-only): http://127.0.0.1:3282/workspace#mentionRoute=direct (kept for the browser session)
 - Changes: PC-001–PC-012 (`prototype-change-log.md`)
 - Scope built: the full journey on a standalone Team run (SC-001–SC-006).
-- Not built in this round: the Org run variant (SC-007) and standalone Agent runs. The Org run uses a different execution context that reloads from the server when a child starts, and a live Org launch is outside the verified baseline; the same presentation is proposed there. Decision requested from the user.
+- Not built in round 1: the Org run variant (SC-007) and standalone Agent runs (built in round 8).
 - Proposed answers: Q1 option b (relay) as default; concept word "Added"; inherited settings shown in the collaborator header; failures shown as a notice above the composer.
 - Fixture note: `Product Team`, `Marketing Team`, `Computer Use Agent` and `Code Reviewer` are illustrative definitions that exist only in the live-run `@` menu; agent prose is scripted.
 - Browser validation: `prototype/scripts/validate-cross-scope-agent-mentions.mjs` 30/30, 0 page errors, 0 external requests (`review-evidence/round-1/results.json`)
@@ -106,6 +106,17 @@
 - Not verified: how the real app renders an agent-to-agent `send_message_to` delivery inside the receiving conversation (F-003).
 - Status: `Awaiting User Review`.
 
+## Review Round 8
+
+- User request, 2026-09-30: "you should build for not just agent team … standalone agent as well, and agent org as well … implement the missing ones" (after noticing `@` did nothing in the prototype's Org run).
+- Changes: PC-021 (Org run), PC-022 (standalone Agent run), PC-023, PC-024.
+- How to reach them: Org run — Workspaces → `prototype-workspace` → `Product Launch Org` → `Coordinate the synthetic launch review` → `analyst`. Standalone Agent run — Chat → send a first message → the run view (the baseline has no stored standalone Agent run).
+- Evidence: `review-evidence/round-8/` (`org-01`–`07`, `agent-01`–`07`, `scopes.mjs`); `validate-cross-scope-agent-mentions.mjs` 44/44 (`round-8/results.json`), 0 page errors, 0 external requests; typecheck exit 0, lint exit 0.
+- F-001 extended to Org runs: the Org execution index resolves every task execution through a configured Org member at the same address (`AgentOrgExecutionViewIndex.addAgent/addTeam`), and the Org tree needs the configured Team source for a task Team's coordinator (`utils/agentOrgHistoryRows.ts`). A non-mounted collaborator needs its source from the server.
+- F-005 (REQ-001): a standalone Agent run has no collaboration root in the product today (no child rows, no Team tab, no task executions). PC-022 is a proposal for that presentation and needs a requirements and architecture decision.
+- F-006: the first message of a launch draft (New chat, or Agents → Run) is not covered; New chat `@` keeps picking the launch target, as required.
+- Status: `Awaiting User Review`.
+
 ## Findings For Requirements (observed, not decided)
 
 - F-001 (REQ-003/004): the client can only build a conversation for a delegated child whose address is a configured member (`createTeamAgentContext` → `configuredAgentAtAddress`), and the task-execution DTO carries no definition identity or launch settings. A collaborator that is not mounted needs both from the server. The prototype supplies them locally.
@@ -120,6 +131,7 @@
 - 2026-09-30: round 2 (PC-012, PC-013) applied from user feedback; `Awaiting User Review`.
 - 2026-09-30: round 3 (PC-014–PC-016) applied from user feedback; `Awaiting User Review`.
 - 2026-09-30: round 4 (PC-017, PC-018) applied from user feedback; `Awaiting User Review`.
+- 2026-09-30: baseline refreshed (`WEB-BASELINE-REFRESH-003`) and merged; rounds 6–8 (PC-019–PC-024) applied from user feedback; `Awaiting User Review`.
 
 ## Finalization
 

@@ -1,3 +1,4 @@
+import { resolveAgentRunTarget } from '~/prototype/run-mentions/agentRunTarget';
 import { defineStore } from 'pinia';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
@@ -92,15 +93,20 @@ export const useActiveContextStore = defineStore('activeContext', () => {
     if (selectionStore.selectedType === 'agent') {
       const context = agentContextsStore.activeRun || null;
       if (!context) return null;
+      const interaction = Object.freeze({
+        send: async () => { await agentRunStore.sendUserInputAndSubscribe(); },
+        interrupt: async () => { await agentRunStore.interruptGeneration(context.state.runId); },
+        decideTool: async (invocationId: string, approved: boolean, reason: string | null) => {
+          await agentRunStore.postToolExecutionApproval(context.state.runId, invocationId, approved, reason);
+        },
+      });
+      // Prototype (cross-scope-agent-mentions): a standalone Agent run can gain task Agents and
+      // task Teams by `@` mention; the prototype target shows the focused child and its messages.
+      const mentionTarget = resolveAgentRunTarget(context, interaction);
+      if (mentionTarget) return mentionTarget;
       return Object.freeze({
         kind: 'standalone_agent', access: 'live', context,
-        interaction: Object.freeze({
-          send: async () => { await agentRunStore.sendUserInputAndSubscribe(); },
-          interrupt: async () => { await agentRunStore.interruptGeneration(context.state.runId); },
-          decideTool: async (invocationId: string, approved: boolean, reason: string | null) => {
-            await agentRunStore.postToolExecutionApproval(context.state.runId, invocationId, approved, reason);
-          },
-        }),
+        interaction,
         browse: Object.freeze({ kind: 'run', runId: context.state.runId }),
       });
     }

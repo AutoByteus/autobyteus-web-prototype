@@ -8,7 +8,8 @@
  * store) so the prototype action interceptor never replaces it. Nothing here is
  * a production contract.
  */
-import { reactive } from 'vue'
+import { reactive, shallowReactive } from 'vue'
+import type { AgentContext } from '~/types/agent/AgentContext'
 import type { AgentLaunchConfigurationDto } from '@autobyteus/team-stream-contracts'
 
 export type RunMentionKind = 'agent' | 'team'
@@ -148,4 +149,67 @@ export const taskAgentIconVariant = (): TaskAgentIconVariant => {
   if (fromUrl === 'avatar' || fromUrl === 'bolt' || fromUrl === 'ring') sessionStorage.setItem(TASK_ICON_KEY, fromUrl)
   const stored = sessionStorage.getItem(TASK_ICON_KEY)
   return stored === 'bolt' || stored === 'ring' ? stored : 'avatar'
+}
+
+/** Org runs this browser context drives locally (see `resumedTeamRunIds`). */
+export const resumedOrgRunIds = new Set<string>()
+
+/**
+ * Configured-member-shaped sources for collaborators brought into an Org run.
+ * The Org execution index resolves every execution through a configured member
+ * at the same address; a collaborator that is not mounted has none, so the
+ * prototype supplies its identity and inherited launch settings here. Raw data.
+ */
+const orgSourcesByRoot = new Map<string, unknown[]>()
+export const runMentionOrgSources = (orgRunId: string): readonly unknown[] => orgSourcesByRoot.get(orgRunId) ?? []
+export const addRunMentionOrgSource = (orgRunId: string, source: unknown): void => {
+  orgSourcesByRoot.set(orgRunId, [...runMentionOrgSources(orgRunId), source])
+}
+
+/**
+ * A standalone Agent run that has task Agents or task Teams (cross-scope-agent-mentions).
+ * Today a standalone Agent run has no children, no run tree below it and no Team tab; this is
+ * the prototype's proposal for that case, held entirely in the browser.
+ */
+export interface AgentRunScopeMessage {
+  messageId: string
+  senderAgentRunId: string
+  receiverAgentRunId: string
+  content: string
+  createdAt: string
+}
+export interface AgentRunScope {
+  rootRunId: string
+  /** The child AgentRun shown in the center, or null for the run's own agent. */
+  focusedRunId: string | null
+  /** Child AgentRun ID -> its address and conversation context. */
+  children: Map<string, { address: string; context: AgentContext }>
+  messages: AgentRunScopeMessage[]
+  expandedTeamRunIds: string[]
+}
+/** The address of a task Agent under a standalone Agent run, by its run ID (null for any other run). */
+export const agentRunChildAddress = (agentRunId: string | null | undefined): string | null => {
+  if (!agentRunId) return null
+  for (const scope of agentRunScopes.values()) {
+    const child = scope.children.get(agentRunId)
+    if (child) return child.address
+  }
+  return null
+}
+
+/** Address shown for a standalone run's own agent (it has no configured address). */
+export const standaloneAgentAddress = (agentName: string | null | undefined): string =>
+  `/${(agentName || 'agent').toLowerCase()}`
+
+const agentRunScopes = shallowReactive(new Map<string, AgentRunScope>())
+export const agentRunScope = (rootRunId: string | null | undefined): AgentRunScope | null =>
+  (rootRunId && agentRunScopes.get(rootRunId)) || null
+export const ensureAgentRunScope = (rootRunId: string): AgentRunScope => {
+  const existing = agentRunScopes.get(rootRunId)
+  if (existing) return existing
+  const scope = reactive({
+    rootRunId, focusedRunId: null, children: shallowReactive(new Map()), messages: [], expandedTeamRunIds: [],
+  }) as AgentRunScope
+  agentRunScopes.set(rootRunId, scope)
+  return scope
 }
