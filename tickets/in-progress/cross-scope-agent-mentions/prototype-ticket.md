@@ -27,9 +27,10 @@
 - Canonical prototype repository/root: `/Users/normy/autobyteus_org/autobyteus-web-prototype` (branch `personal`, remote `AutoByteus/autobyteus-web-prototype`)
 - Product task worktree: `/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/cross-scope-agent-mentions`
 - Product ticket branch: `prototype/cross-scope-agent-mentions`
-- Accepted prototype base: `df1377c4dde63c67fb5548f63e03c90c6b685d85` (`personal` = `origin/personal` at intake)
+- Accepted prototype base at creation: `df1377c4dde63c67fb5548f63e03c90c6b685d85`
+- Current accepted prototype base: `5da5a9f` (`WEB-BASELINE-REFRESH-003`), merged into this branch at `b7bf8f6`
 - Selected frontend: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/autobyteus-web`
-- Source pin: `origin/personal@57df63f079363ccab4f2301213f9d8a3458f72fa` — equal to the Solution Designer base for this package
+- Source pin: `origin/personal@e9aa4a74ca36f62303bb7f5f0efd74bf89a9ea71` (v1.4.92-beta.3; refreshed on the user's request — was `57df63f07`, the Solution Designer base for this package)
 - Baseline status: `Accepted` — `prototype-bootstrap-report.md` (`WEB-BASELINE-REFRESH-002`). Surfaces used by this ticket and their accepted evidence: stored Team run, member focus and run composer (FLW-002, FLW-011, FLW-012, FLW-013); stored Agent Org run and member conversation (FLW-003, FLW-015); New chat `@` menu (CHT-012–016).
 
 ## Runtime
@@ -88,6 +89,7 @@
 
 - 2026-09-30: the user asked to update the baseline after `origin/personal` moved to `e9aa4a74c` (v1.4.92-beta.3, To-Do panel removed). Refresh ticket `WEB-BASELINE-REFRESH-003` (`prototype/web-baseline-refresh-003`) opened and sent to the Bootstrapper.
 - This ticket stays at `79a39c1` with no further future-state edits until the refresh is accepted and integrated into `personal`; then merge `personal` here, revalidate (`validate-cross-scope-agent-mentions.mjs`), and resume the review.
+- 2026-09-30: refresh accepted (`personal@5da5a9f`) and merged (`b7bf8f6`; two generated files regenerated). Revalidated: browser validation 30/30 (`review-evidence/round-5/results.json`), typecheck exit 0, lint exit 0, test 12/12, `validate:boundaries` 0 failures. Activity tab shows Background Tasks and no To-Do (`round-5/activity-tab-refreshed.png`). Review resumed; `Awaiting User Review`.
 
 ## Findings For Requirements (observed, not decided)
 
