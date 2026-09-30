@@ -164,5 +164,8 @@
 
 ## Finalization
 
-- Integration result: `Pending`
-- Cleanup result: `Pending`
+- Integration result: `Completed` — `personal` fast-forwarded `5dffe00` → `c4d4764` (final package `96755f3`, then a merge of `personal`); this record is the following docs commit on `personal`.
+- Baseline promotion: `Completed` — the approved behavior is the normal prototype: open a run from Workspaces (or start one from Chat) and type `@`; no preview-only state or URL flag.
+- Post-integration validation: canonical `personal` dev server on port 3212 — `validate-cross-scope-agent-mentions.mjs` 46/46, 0 page errors, 0 external requests (`review-evidence/post-integration-results.json`). The canonical checkout first needed `corepack pnpm install --ignore-workspace --frozen-lockfile`, because its installed copies of the vendored contract packages predated `WEB-BASELINE-REFRESH-003` (symptom: "Failed to open team: ZodError … schema_version").
+- Remote: `personal` pushed to `origin` (`AutoByteus/autobyteus-web-prototype`).
+- Cleanup result: `Completed` — review server (3282), production preview (3283) and canonical validation server (3212) stopped; ticket worktree and merged local branch `prototype/cross-scope-agent-mentions` removed; `/tmp/autobyteus-prototype-cross-scope-agent-mentions` deleted.
