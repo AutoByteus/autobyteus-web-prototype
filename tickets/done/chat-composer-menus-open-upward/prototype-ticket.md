@@ -9,7 +9,7 @@
 - Mode: `Product Experience Prototyping`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-30
 - User words: "the input message box area is too hihg, causing the workspace dropdown goes down. i feel like its better to always make them go up and move down the input message box a bit."
-- Requirements context: `/Users/normy/autobyteus_org/autobyteus-worktrees/chat-composer-menus-open-upward/tickets/in-progress/chat-composer-menus-open-upward/` (`requirements-doc.md`, `investigation-notes.md`, `solution-revision-record.md`, `product-design-request-handoff.md`, `user-screenshot-2026-09-30.png`)
+- Requirements context: `/Users/normy/autobyteus_org/autobyteus-worktrees/chat-composer-menus-open-upward/tickets/done/chat-composer-menus-open-upward/` (`requirements-doc.md`, `investigation-notes.md`, `solution-revision-record.md`, `product-design-request-handoff.md`, `user-screenshot-2026-09-30.png`)
 
 ## Decision Questions
 

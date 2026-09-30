@@ -6,7 +6,7 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { chromium } from 'playwright-core'
 
 const base = process.argv[2] || 'http://127.0.0.1:3281'
-const outDir = process.argv[3] || 'tickets/in-progress/chat-composer-menus-open-upward/review-evidence/final-validation'
+const outDir = process.argv[3] || 'tickets/done/chat-composer-menus-open-upward/review-evidence/final-validation'
 const capture = process.argv.includes('--capture')
 const visDir = outDir.replace(/review-evidence\/.*$/, 'visual-references')
 const CHROME = process.env.CHROMIUM_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
