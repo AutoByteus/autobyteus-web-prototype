@@ -130,6 +130,7 @@
 
 - User confirmation, 2026-09-30: in a standalone Agent run, an Agent Team run and an Agent Org run, the user can bring in a standalone Agent or an Agent Team.
 - User decision, 2026-09-30: "the agent is already in the team, of course, it's not offered … it's only offered for the agents and agent teams which are not in … the agent team" → PC-027. SC-005/REQ-006 are now met by not offering what is already in the run.
+- User rationale, 2026-09-30 (purpose of `@` in a live run): teammates in a Team, and members of one Org, already reach each other by `send_message_to` and configured handoff rules, so they are not listed. `@` is for reaching outside the current run: a standalone Team run that suddenly needs another Team; a standalone Agent run that needs another Agent or Team; an agent inside an Org that needs a standalone Agent or Team that is not in that Org.
 - Evidence: `review-evidence/round-10/` (`menu-only-outside-run.png`, validation 48/48).
 - Requirement impact to report with the final package: REQ-006/SC-005 wording ("re-mention shows it is already available") changes to "not offered"; Daily Assistant stays excluded as in New chat `@` unless the user decides otherwise.
 - Status: `Awaiting User Review`.
