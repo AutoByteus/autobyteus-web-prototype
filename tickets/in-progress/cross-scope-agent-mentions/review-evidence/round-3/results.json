@@ -1,0 +1,188 @@
+{
+  "base": "http://127.0.0.1:3282",
+  "checkedAt": "2026-09-30T07:54:24.477Z",
+  "passed": 30,
+  "total": 30,
+  "results": [
+    {
+      "id": "V-01",
+      "title": "`@` opens the menu above the run composer (AC-001)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-02",
+      "title": "Menu lists shared Agents and Teams and no Agent Org (AC-001)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-03",
+      "title": "Menu says who receives the message",
+      "pass": true,
+      "detail": "researcher gets your message and brings them into this run"
+    },
+    {
+      "id": "V-04",
+      "title": "Definitions already in the run are tagged \"In this run\"",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-05",
+      "title": "No match shows the empty state and the Org note",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-06",
+      "title": "Enter with no match does not send",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-07",
+      "title": "Escape closes the menu and keeps the text",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-08",
+      "title": "Enter chooses the highlighted option and inserts `@Product Team `",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-09",
+      "title": "Composer shows the mention chip and the routing hint",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-10",
+      "title": "Removing the chip keeps the words and drops the mention",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-11",
+      "title": "Sent message shows the mention as an inline chip (AC-002)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-12",
+      "title": "Composer is cleared after send",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-13",
+      "title": "The Team and its members appear under the run (AC-003)",
+      "pass": true,
+      "detail": "R | researcher | 5w | W | writer | 5w | product team | product prototyper | prototype bootstrapper"
+    },
+    {
+      "id": "V-14",
+      "title": "It uses the existing task Team presentation with no \"Added\" text",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-15",
+      "title": "Success shows no notice above the composer; the tree is the signal",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-16",
+      "title": "Team tab shows the messages exchanged with the collaborator (AC-004)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-17",
+      "title": "Clicking the task row focuses the collaborator with its conversation and no load error",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-18",
+      "title": "The user can chat with the added collaborator directly (SC-003)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-19",
+      "title": "Re-mention: the added Team is tagged \"In this run\" in the menu (SC-005)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-20",
+      "title": "Re-mention chip and hint say no second copy is started (SC-005)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-21",
+      "title": "Re-mention adds no duplicate row (AC-005)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-22",
+      "title": "Failure to add is visible and says nothing was added (AC-006)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-23",
+      "title": "Failure leaves the run tree unchanged (AC-006)",
+      "pass": true,
+      "detail": "5 rows"
+    },
+    {
+      "id": "V-24",
+      "title": "Notices can be dismissed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-25",
+      "title": "Direct variant hint says the message goes straight to the collaborator",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-26",
+      "title": "Direct variant: view follows the message to the collaborator; no Team messages",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-27",
+      "title": "Menu stays inside a 1024x640 window",
+      "pass": true,
+      "detail": "{\"x\":348,\"y\":243,\"width\":368,\"height\":300}"
+    },
+    {
+      "id": "V-28",
+      "title": "New chat `@` is unchanged: launch-target picker without run-only entries",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-29",
+      "title": "No page errors",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "V-30",
+      "title": "No external requests",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

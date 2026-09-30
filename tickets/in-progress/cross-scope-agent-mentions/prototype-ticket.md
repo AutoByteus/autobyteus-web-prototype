@@ -69,6 +69,14 @@
 - Open: the existing task row shows "Started by <member>" for every delegated child in the product today. Hiding it is a change to existing behavior; asked the user.
 - Status: `Awaiting User Review`.
 
+## Review Round 3
+
+- User feedback, 2026-09-30 (screenshot of `@Computer Use Agent`): "I don't think we need to show this open agent, this blue area, because it's very clear, it's right on the left side"; "why do I have this started by researcher stuff and also have this text, couldn't load activity retry?"
+- Changes: PC-014 (join notice removed), PC-015 ("Started by" line removed from task rows — an existing-product change, flagged to the user), PC-016 (row click defect fixed).
+- F-001 extended: selecting a task Agent row also requires a configured placement (`teamMemberProjectionHydrationService` → `findConfiguredAgentByAddress`), so a non-mounted collaborator cannot be opened from the tree without a client/server change.
+- Evidence: `review-evidence/round-3/` (validation 30/30, `agent-row-clicked.png`).
+- Status: `Awaiting User Review`.
+
 ## Findings For Requirements (observed, not decided)
 
 - F-001 (REQ-003/004): the client can only build a conversation for a delegated child whose address is a configured member (`createTeamAgentContext` → `configuredAgentAtAddress`), and the task-execution DTO carries no definition identity or launch settings. A collaborator that is not mounted needs both from the server. The prototype supplies them locally.
@@ -81,6 +89,7 @@
 - 2026-09-30: opened from Solution Designer request; baseline applicable and accepted at the same source pin; `In Progress`.
 - 2026-09-30: round 1 review URL ready; `Awaiting User Review`.
 - 2026-09-30: round 2 (PC-012, PC-013) applied from user feedback; `Awaiting User Review`.
+- 2026-09-30: round 3 (PC-014–PC-016) applied from user feedback; `Awaiting User Review`.
 
 ## Finalization
 

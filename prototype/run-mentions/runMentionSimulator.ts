@@ -249,7 +249,7 @@ const playRelay = async (run: Run, focusedAgentRunId: string, content: string, m
       run.text(focusedAgentRunId, turnId, runMentionScript.relayFailed(definition.name, definition.unrunnableReason))
       pushRunMentionNotice({
         id: nextId('notice'), rootRunId: run.rootRunId, agentRunId: focusedAgentRunId, kind: 'failed',
-        definitionKey: definition.key, definitionName: definition.name, detail: definition.unrunnableReason, entryAgentRunId: null,
+        definitionKey: definition.key, definitionName: definition.name, detail: definition.unrunnableReason,
       })
       continue
     }
@@ -260,10 +260,6 @@ const playRelay = async (run: Run, focusedAgentRunId: string, content: string, m
     const entryName = memberAddressBasename(run.view.getMemberAddress(record.entryAgentRunId) as AgentTeamAddress)
     await wait(500)
     run.text(focusedAgentRunId, turnId, runMentionScript.relayDone(definition.name, definition.kind === 'team' ? entryName : definition.name))
-    pushRunMentionNotice({
-      id: nextId('notice'), rootRunId: run.rootRunId, agentRunId: focusedAgentRunId, kind: 'added',
-      definitionKey: definition.key, definitionName: definition.name, detail: entryName, entryAgentRunId: record.entryAgentRunId,
-    })
     replies.push(playCollaboratorReply(run, record.entryAgentRunId, focusedAgentRunId, true))
   }
   run.turnEnd(focusedAgentRunId, turnId)
@@ -277,7 +273,7 @@ const playDirect = async (run: Run, focusedAgentRunId: string, content: string, 
     if (definition.unrunnableReason) {
       pushRunMentionNotice({
         id: nextId('notice'), rootRunId: run.rootRunId, agentRunId: focusedAgentRunId, kind: 'failed',
-        definitionKey: definition.key, definitionName: definition.name, detail: definition.unrunnableReason, entryAgentRunId: null,
+        definitionKey: definition.key, definitionName: definition.name, detail: definition.unrunnableReason,
       })
       continue
     }

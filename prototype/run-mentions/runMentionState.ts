@@ -52,12 +52,10 @@ export interface RunMentionNotice {
   rootRunId: string
   /** The conversation (AgentRun) the notice belongs to. */
   agentRunId: string
-  kind: 'added' | 'failed'
+  kind: 'failed'
   definitionKey: string
   definitionName: string
   detail: string
-  /** AgentRun to open from an `added` notice. */
-  entryAgentRunId: string | null
 }
 
 export const runMentionState = reactive({

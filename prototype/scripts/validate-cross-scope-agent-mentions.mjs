@@ -66,15 +66,16 @@ check('V-11', 'Sent message shows the mention as an inline chip (AC-002)', (awai
 check('V-12', 'Composer is cleared after send', (await box(page).inputValue()) === '' && await page.locator('[data-test="agent-input-mention-chips"]').count() === 0)
 await page.waitForTimeout(7500)
 const treeText = (await tree(page).innerText()).replace(/\n+/g, ' | ')
-check('V-13', 'The Team and its members appear under the run (AC-003)', /product team \| Started by researcher \| product prototyper \| prototype bootstrapper/.test(treeText), treeText)
+check('V-13', 'The Team and its members appear under the run (AC-003)', /product team \| product prototyper \| prototype bootstrapper/.test(treeText), treeText)
 check('V-14', 'It uses the existing task Team presentation with no "Added" text', await page.locator('[data-test="workspace-team-transient-execution-row"]').count() === 3
   && await page.locator('[data-team-icon="temporary-task-team"]').count() === 1
-  && !/Added/.test(treeText))
-check('V-15', 'Focused conversation shows the join notice with an Open action', await page.locator('[data-test="run-mention-notice-added"]').isVisible() && /Product Team joined this run/.test(await page.locator('[data-test="run-mention-notice-added"]').innerText()))
+  && !/Added|Started by/.test(treeText))
+check('V-15', 'Success shows no notice above the composer; the tree is the signal', await page.locator('[data-test="run-mention-notices"]').count() === 0)
 check('V-16', 'Team tab shows the messages exchanged with the collaborator (AC-004)', await page.locator('[data-test="team-communication-message-row"]').count() === 2)
-await page.locator('[data-test="run-mention-notice-open"]').click(); await page.waitForTimeout(900)
-check('V-17', 'Open focuses the collaborator; its header is the ordinary member header', (await page.locator('[data-testid="team-workspace-surface"] h4').innerText()) === 'product prototyper'
-  && !/Added/.test(await page.locator('[data-testid="team-workspace-surface"]').innerText()))
+await page.locator('[data-test="workspace-team-transient-execution-row"]').filter({ hasText: 'product prototyper' }).click(); await page.waitForTimeout(1500)
+check('V-17', 'Clicking the task row focuses the collaborator with its conversation and no load error', (await page.locator('[data-testid="team-workspace-surface"] h4').innerText()) === 'product prototyper'
+  && /Got it/.test(await page.locator('[data-testid="agent-event-monitor"]').innerText())
+  && !/Couldn't load activity/.test(await tree(page).innerText()))
 await type(page, 'also keep the workspace hint under the box'); await page.keyboard.press('Enter'); await page.waitForTimeout(2600)
 check('V-18', 'The user can chat with the added collaborator directly (SC-003)', /also keep the workspace hint under the box/.test(await page.locator('[data-testid="agent-event-monitor"]').innerText()))
 await page.locator('[data-test^="workspace-team-member-"]').filter({ hasText: 'researcher' }).first().click(); await page.waitForTimeout(900)

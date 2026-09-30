@@ -42,7 +42,6 @@
             v-if="target.kind === 'standalone_team_member'"
             :root-run-id="target.team.rootRunId"
             :agent-run-id="target.context.state.runId"
-            @open="openAddedCollaborator"
           />
           <SkillImprovementComposerCta v-if="skillTarget" :target="skillTarget" />
         </template>
@@ -61,8 +60,6 @@ import WorkspaceRecoveryNotice from '~/components/workspace/common/WorkspaceReco
 import SkillImprovementComposerCta from '~/components/workspace/skill-improvement/SkillImprovementComposerCta.vue'
 import type { SkillImprovementComposerCtaTarget } from '~/components/workspace/skill-improvement/skillImprovementComposerCtaTarget'
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
-import { useAgentTeamContextsStore } from '~/stores/agentTeamContextsStore'
-import { useRunHistoryStore } from '~/stores/runHistoryStore'
 import RunMentionNotices from '~/components/workspace/team/RunMentionNotices.vue'
 
 type TeamTarget = Extract<ActiveAgentWorkspaceTarget,
@@ -99,11 +96,5 @@ const skillTarget = computed<SkillImprovementComposerCtaTarget | null>(() =>
           || props.target.context.config.agentDefinitionName === 'Retrospective Skill Improver',
       }
     : null)
-const openAddedCollaborator = (agentRunId: string) => {
-  const team = useAgentTeamContextsStore().activeTeamContext
-  if (team?.view.focusAgent(agentRunId).disposition === 'applied') {
-    useRunHistoryStore().refreshRunNavigationTopology('team-stream-structure')
-  }
-}
 watch(avatarUrl, () => { avatarFailed.value = false })
 </script>

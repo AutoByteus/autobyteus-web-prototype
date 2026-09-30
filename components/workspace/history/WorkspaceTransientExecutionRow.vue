@@ -78,11 +78,6 @@
       <span class="min-w-0 flex-1" :class="{ 'font-semibold': row.memberKind === 'agent_team' }">
         <span class="block truncate">{{ row.displayName }}</span>
         <span
-          v-if="startedByLabel"
-          class="mt-0.5 block truncate text-[0.6875rem] text-slate-500"
-          data-test="workspace-transient-started-by"
-        >{{ startedByLabel }}</span>
-        <span
           v-if="inspectionAttempt?.state === 'loading'"
           class="mt-0.5 block text-[0.6875rem] font-medium text-indigo-700"
           role="status"

@@ -1,3 +1,4 @@
+import { runMentionAgentSource } from '~/prototype/run-mentions/runMentionState'
 import type { WorkspaceSelectionIntent } from '~/stores/agentSelectionStore';
 import type { AgentContext } from '~/types/agent/AgentContext';
 import type { AgentTeamContext } from '~/types/agent/AgentTeamContext';
@@ -51,7 +52,9 @@ const attemptHydration = async (
   intent?: WorkspaceSelectionIntent,
 ): Promise<TeamMemberProjectionHydrationResult | null> => {
   const agent = exactMountedContext(team, agentRunId);
-  if (authoritativeContexts.has(agent)) {
+  // Prototype (cross-scope-agent-mentions): a collaborator brought in by `@` is driven by the
+  // local run, so its mounted conversation is the only source; there is nothing to fetch.
+  if (authoritativeContexts.has(agent) || runMentionAgentSource(agentRunId)) {
     return Object.freeze({ disposition: 'authoritative', agentRunId });
   }
   const rootTeamRunId = team.view.getRootTeamRunId();
