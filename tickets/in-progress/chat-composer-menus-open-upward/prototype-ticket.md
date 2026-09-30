@@ -5,7 +5,7 @@
 - Product ticket: `chat-composer-menus-open-upward`
 - Stable requirements package: `chat-composer-menus-open-upward` (SR-001, requirements Draft)
 - Title: New-chat composer menus always open upward; composer moves lower
-- Status: `Awaiting User Review`
+- Status: `Completed`
 - Mode: `Product Experience Prototyping`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-09-30
 - User words: "the input message box area is too hihg, causing the workspace dropdown goes down. i feel like its better to always make them go up and move down the input message box a bit."
@@ -48,11 +48,22 @@
 - Static checks: typecheck exit 0, lint pass, test 12/12.
 - Non-normative review screenshots: `review-evidence/round-1/` (`refresh-4199-at.png` = current behavior).
 
+## Final Package
+
+- User confirmation: user message 2026-09-30 — "Okay, I'm satisfied. The work is done." (after confirming "they will always go upward … instead of downward" and being told the full rule)
+- UI/UX specification: `tickets/done/chat-composer-menus-open-upward/ui-ux-spec.md` (`Approved`)
+- Final visual references: `visual-references/VIS-001`–`VIS-010` + `manifest.json` (SHA-256)
+- Behavior matrix: `ui-behavior-test-matrix.md`; change log: `prototype-change-log.md` (PC-001–PC-004)
+- Final validation from the default entry `/`: `prototype/scripts/validate-chat-composer-menus-open-upward.mjs` 15/15, 0 page errors, 0 external requests (`review-evidence/final-validation/results.json`); typecheck exit 0, lint pass, test 12/12
+- Decisions: DEC-001 always up (≥640px); DEC-002 padding `pt-[14vh] pb-10` (56px lower at 952px tall); DEC-003 height = min(preferred, space above − 22px), list scrolls, never flips, no floor; DEC-004 hint stays under the composer
+- Default entry point: `/` → `/chat`; the approved behavior is the normal product shell, no preview-only state
+
 ## Status History
 
 - 2026-09-30: opened from Solution Designer request; baseline found stale for the new-chat surface (pin `fcd3e83a4` vs request source `57df63f07`); `Baseline Needed`, waiting for `WEB-BASELINE-REFRESH-002`.
 - 2026-09-30: refresh accepted and integrated (`personal@045a4f7`), merged; `In Progress`.
 - 2026-09-30: round 1 review URL ready; `Awaiting User Review`.
+- 2026-09-30: user approved; final validation 15/15, references captured; `Completed`.
 
 ## Finalization
 

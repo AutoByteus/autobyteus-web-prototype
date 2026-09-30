@@ -1,0 +1,20 @@
+{
+  "ticket": "chat-composer-menus-open-upward",
+  "capturedAt": "2026-09-30",
+  "deviceScaleFactor": 1,
+  "locale": "en-US",
+  "scenario": "populated",
+  "entry": "/ (lands on /chat)",
+  "sha256": {
+    "VIS-001-new-chat-composer-lower-1512x952.png": "96736a09e3cf6f35082bd29ad635feab30694f9f5cb7058e8e41dc723b80cfc4",
+    "VIS-002-at-menu-above-1512x952.png": "d2ec2bf61f98543855f2f96f658f89c947a7e4f9f27de88e7ba62db5b885c829",
+    "VIS-003-slash-menu-above-1512x952.png": "fd51bdb9e774c02f90dedfb2c43b19e294b3709bbcc1f68918776564ebd8ff62",
+    "VIS-004-workspace-menu-above-1512x952.png": "a63f7a8e2d92ba25c855cbb5dc1cdc5fa2be55614601dd12793c06085103e4ec",
+    "VIS-005-model-menu-runtime-flyout-above-1512x952.png": "ab85d2e122ccae525e3de290d7bd237e9170682a70935fc8e84093f33193fef4",
+    "VIS-006-thinking-menu-above-1512x952.png": "f523c4814c968cc4005ed77fd2388f10fc576dbe130b1e170b108b39271d21f8",
+    "VIS-007-at-menu-above-1280x720.png": "05326f99f1f0d5051ef8c293e6519a2c15a4b31bbbd1ad1d3c19d0ed9de8508c",
+    "VIS-008-at-menu-short-window-scrolls-1024x520.png": "888cd39444b96694f2175f08f325639b79ecfaac68ed0a5d1802df5df086fd55",
+    "VIS-009-narrow-bottom-sheet-preserved-390x844.png": "99a0a5c8b54c523a66b40f6f368bf860a8f743a351be8ab25d9311f44514bb86",
+    "VIS-010-run-view-slash-menu-preserved-1512x952.png": "16fa3238d55e59e6b7fbf60bb1fa172880e9d0e44c6d6f07f2ec3c8960b92c9d"
+  }
+}
