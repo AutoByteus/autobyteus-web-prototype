@@ -2,25 +2,41 @@ import { nextTick, onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
 
 const NARROW_MAX_WIDTH_PX = 640
 const VIEWPORT_MARGIN_PX = 16
+/** Gap between the menu and the box it opens above; matches the menus' `mb-1.5`. */
 const MENU_GAP_PX = 6
+const AUTO_MIN_HEIGHT_PX = 220
 
 /**
- * `auto` picks below/above by available space (running-conversation `/` menu).
- * `above` always opens upward and limits the height to the space above the trigger; the menu
- * content scrolls instead of flipping down (new-chat composer menus).
+ * Where a menu may open.
+ * - `auto`: below when the preferred height fits there, otherwise whichever side has more room
+ *   (the running-conversation `/` skill menu).
+ * - `above`: always upward, never flipping down. The height shrinks to the space above the menu's
+ *   containing block and the menu's own list scrolls (the new-chat composer menus).
  */
 export type AnchoredPopoverPlacementPolicy = 'auto' | 'above'
 
+export interface AnchoredPopoverOptions {
+  placement?: AnchoredPopoverPlacementPolicy
+}
+
+/**
+ * The box an absolutely positioned child of `root` is placed against: `root` itself when it is
+ * positioned, otherwise its offset parent (e.g. the composer card for the message box's menus).
+ */
+const containingBlockOf = (root: HTMLElement): HTMLElement =>
+  getComputedStyle(root).position !== 'static' ? root : (root.offsetParent as HTMLElement | null) ?? root
+
 /**
  * Anchored popover behavior shared by the Chat menus and the message box's `/` skill menu:
- * toggling, outside-click and Escape dismissal with focus return, above/below placement with a
- * bounded height, and the narrow (bottom sheet) breakpoint.
+ * toggling, outside-click and Escape dismissal with focus return, the placement policy with a
+ * bounded height, and the narrow (bottom sheet) breakpoint. Placement and height are measured
+ * when the menu opens.
  */
 export function useAnchoredPopover(
   rootRef: Ref<HTMLElement | null>,
   triggerRef: Ref<HTMLElement | null>,
   preferredHeight = 460,
-  options: { placement?: AnchoredPopoverPlacementPolicy } = {},
+  options: AnchoredPopoverOptions = {},
 ) {
   const policy = options.placement ?? 'auto'
   const open = ref(false)
@@ -46,34 +62,33 @@ export function useAnchoredPopover(
     }
   }
 
-  const measure = () => {
+  const measureAbove = () => {
+    const root = rootRef.value
+    const box = root ? containingBlockOf(root) : triggerRef.value
+    if (!box) return
+    const spaceAbove = box.getBoundingClientRect().top - MENU_GAP_PX - VIEWPORT_MARGIN_PX
+    placement.value = 'above'
+    maxHeight.value = Math.max(0, Math.min(preferredHeight, Math.floor(spaceAbove)))
+  }
+
+  const measureAuto = () => {
     const trigger = triggerRef.value
     if (!trigger) return
     const rect = trigger.getBoundingClientRect()
     const below = window.innerHeight - rect.bottom - VIEWPORT_MARGIN_PX
     const above = rect.top - VIEWPORT_MARGIN_PX
-    if (policy === 'above') {
-      // The menu is positioned against its containing block (the root when positioned, otherwise
-      // the root's offset parent, e.g. the composer card), so measure the space above that box.
-      const root = rootRef.value
-      const anchor = root && getComputedStyle(root).position === 'static'
-        ? (root.offsetParent as HTMLElement | null) ?? root
-        : root ?? trigger
-      const spaceAbove = anchor.getBoundingClientRect().top - MENU_GAP_PX - VIEWPORT_MARGIN_PX
-      placement.value = 'above'
-      maxHeight.value = Math.max(0, Math.min(preferredHeight, Math.floor(spaceAbove)))
-      return
-    }
     const fitsBelow = below >= preferredHeight
     const fitsAbove = above >= preferredHeight
     if (fitsBelow || (!fitsAbove && below >= above)) {
       placement.value = 'below'
-      maxHeight.value = Math.max(220, Math.min(preferredHeight, below))
+      maxHeight.value = Math.max(AUTO_MIN_HEIGHT_PX, Math.min(preferredHeight, below))
     } else {
       placement.value = 'above'
-      maxHeight.value = Math.max(220, Math.min(preferredHeight, above))
+      maxHeight.value = Math.max(AUTO_MIN_HEIGHT_PX, Math.min(preferredHeight, above))
     }
   }
+
+  const measure = policy === 'above' ? measureAbove : measureAuto
 
   const show = async () => {
     updateNarrow()

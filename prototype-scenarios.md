@@ -83,7 +83,7 @@ source's own send path locally and opens `/chat?id=run-prepared-fixture`.
 
 | Scenario | Route/context | Visible purpose |
 | --- | --- | --- |
-| `workspace_agent_active` | `/workspace`, desktop | Active agent conversation, files/tools/activity/todos/token/artifacts/VNC |
+| `workspace_agent_active` | `/workspace`, desktop | Active agent conversation, files/tools/activity/background tasks/token/artifacts/VNC |
 | `workspace_agent_streaming` | `/workspace`, desktop | Progressive assistant content |
 | `workspace_agent_completed` | `/workspace`, desktop | Completed/stopped run |
 | `workspace_agent_error` | `/workspace`, desktop | Error plus follow-up/recovery |

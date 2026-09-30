@@ -1,11 +1,12 @@
 # AutoByteus Web Product Prototype
 
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
-commit `57df63f079363ccab4f2301213f9d8a3458f72fa` (`origin/personal`,
-refreshed by `WEB-BASELINE-REFRESH-002`; previous primary pin
-`fcd3e83a4ca931ba52ed19bd37b8df3050ee529e`). The source's shipped Chat entry
-(`/chat`) replaced the accepted prototype-only `chat-interface-entry`
-implementation. See
+commit `e9aa4a74ca36f62303bb7f5f0efd74bf89a9ea71` (`origin/personal`,
+refreshed by `WEB-BASELINE-REFRESH-003`; previous primary pin
+`57df63f079363ccab4f2301213f9d8a3458f72fa`). The Activity tab now shows the
+source's Background Tasks section in place of the removed To-Do list, and the
+source's shipped upward-opening Chat composer menus replaced the accepted
+prototype `chat-composer-menus-open-upward` implementation. See
 [prototype-bootstrap-report.md](prototype-bootstrap-report.md) for the refresh
 scope, evidence, and known gaps.
 

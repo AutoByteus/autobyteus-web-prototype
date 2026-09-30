@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T06:09:00.818Z",
+  "generatedAt": "2026-09-30T10:17:59.567Z",
   "root": "/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/cross-scope-agent-mentions",
   "checks": [
     {
@@ -60,7 +60,7 @@
     {
       "name": "Source evidence uses controlled loopback mock",
       "pass": true,
-      "evidence": "http://127.0.0.1:4391"
+      "evidence": "http://127.0.0.1:4396"
     },
     {
       "name": "Prototype has independently runnable Nuxt entry points",

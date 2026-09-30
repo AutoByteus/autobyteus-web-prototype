@@ -3,6 +3,7 @@
 // surface shipped at origin/personal@57df63f (composer menus, thinking,
 // skills, targets, approval, send) plus the D-19 Skills banner and nav changes.
 // Same matched conditions and pass rule as probe-flow.mjs.
+// WEB-BASELINE-REFRESH-003 added the BGT-* Background Tasks rows (e9aa4a7).
 // Usage: node probe-chat-flows.mjs [flow-id ...]
 import { chromium } from 'playwright-core'
 import { createRequire } from 'node:module'
@@ -15,7 +16,7 @@ const root = resolve(new URL('../..', import.meta.url).pathname)
 const SOURCE = process.env.SOURCE_BASE_URL || 'http://127.0.0.1:4291'
 const PROTO = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4199'
 const MOCK = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4391'
-const OUT = resolve(root, process.env.FLOW_DIR || 'evidence/WEB-BASELINE-REFRESH-002/chat-flows')
+const OUT = resolve(root, process.env.FLOW_DIR || 'evidence/WEB-BASELINE-REFRESH-003/chat-flows')
 const CHROME = process.env.CHROMIUM_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const style = '*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}'
 
@@ -36,6 +37,32 @@ const pickReasoning = async page => {
 }
 const sendFirst = async page => { await focusComposer(page); await page.keyboard.type('Summarize the synthetic baseline.', { delay: 20 }); await page.keyboard.press('Enter'); await page.waitForTimeout(2500) }
 const openThinking = role('button', /^Thinking: /)
+// WEB-BASELINE-REFRESH-003 (origin/personal@e9aa4a7): Background Tasks replaced
+// the To-Do section of the Activity tab. The source store is live-only, so the
+// same synthetic task snapshots are upserted through it in source and prototype.
+const BACKGROUND_TASKS = [
+  { taskId: 'bg-task-1', kind: 'shell', description: 'Run the synthetic parity capture', status: 'running', summary: null, startedAt: '2026-08-22T04:03:00.000Z' },
+  { taskId: 'bg-task-2', kind: 'subagent', description: 'Compare current UI surfaces', status: 'completed', summary: 'Compared the synthetic workspace surfaces and recorded every matched state. No perceptible difference was found in the sampled screens, and the evidence folder lists each compared surface with its viewport.', startedAt: '2026-08-22T04:02:00.000Z' },
+  { taskId: 'bg-task-3', kind: 'monitor', description: 'Watch the synthetic build log', status: 'failed', summary: 'Synthetic monitor exited with code 1.', startedAt: '2026-08-22T04:01:00.000Z' },
+  { taskId: 'bg-task-4', kind: 'workflow', description: '', status: 'stopped', summary: null, startedAt: '2026-08-22T04:00:30.000Z' },
+]
+const seedTasks = async page => {
+  const applied = await page.evaluate(tasks => {
+    const pinia = document.querySelector('#__nuxt')?.__vue_app__?.config?.globalProperties?.$pinia
+    const runId = pinia?._s.get('activeContext')?.activeAgentContext?.state?.runId
+    const store = pinia?._s.get('agentBackgroundTask')
+    if (!runId || !store) return false
+    for (const task of tasks) store.upsertTask(runId, task)
+    return true
+  }, BACKGROUND_TASKS)
+  if (!applied) throw new Error('background-task store or active run unavailable')
+  await page.waitForTimeout(500)
+}
+const openActivityTab = async page => { await page.locator('[data-test="right-side-tab-list"]').getByText(/^(Activity|活动)$/).first().click(); await page.waitForTimeout(700) }
+const toggleBackgroundTasks = async page => { await page.locator('[data-test="background-tasks-header"]').first().click(); await page.waitForTimeout(500) }
+const openStoredTeamRun = async page => {
+  for (const label of ['prototype-workspace', 'Product Review Team', 'Review the current prototype baseline']) { await page.getByText(label, { exact: true }).first().click(); await page.waitForTimeout(900) }
+}
 
 export const FLOWS = {
   'CHT-001': { title: 'New chat: open workspace menu', path: '/chat', steps: [openWorkspace] },
@@ -70,6 +97,15 @@ export const FLOWS = {
   // Narrow viewport: the composer menus become bottom sheets (sampled).
   'CHT-030': { title: 'New chat (390x844): model menu as a bottom sheet', path: '/chat', viewport: { width: 390, height: 844 }, steps: [openModel] },
   'CHT-031': { title: 'New chat (390x844): workspace menu as a bottom sheet', path: '/chat', viewport: { width: 390, height: 844 }, steps: [openWorkspace] },
+  'BGT-001': { title: 'Chat run: Activity tab shows Background Tasks (collapsed, 0 running) above Activity', path: '/chat', steps: [sendFirst, openActivityTab] },
+  'BGT-002': { title: 'Chat run: expand Background Tasks, empty state', path: '/chat', steps: [sendFirst, openActivityTab, toggleBackgroundTasks] },
+  'BGT-003': { title: 'Chat run: task snapshots arrive, collapsed header counts update', path: '/chat', steps: [sendFirst, openActivityTab, seedTasks] },
+  'BGT-004': { title: 'Chat run: Background Tasks list (running, completed, failed, stopped; untitled fallback)', path: '/chat', steps: [sendFirst, openActivityTab, seedTasks, toggleBackgroundTasks] },
+  'BGT-005': { title: 'Chat run: expand a finished task summary', path: '/chat', steps: [sendFirst, openActivityTab, seedTasks, toggleBackgroundTasks, async page => { await page.locator('[data-test="background-task-summary"]').first().click(); await page.waitForTimeout(400) }] },
+  'BGT-006': { title: 'Chat run: collapse Background Tasks again (both sections collapsed)', path: '/chat', steps: [sendFirst, openActivityTab, seedTasks, toggleBackgroundTasks, toggleBackgroundTasks] },
+  'BGT-007': { title: 'Chat run: tasks arriving on the Files tab do not switch tabs (To-Do auto-switch removed)', path: '/chat', steps: [sendFirst, openActivityTab, text('Files'), seedTasks] },
+  'BGT-008': { title: 'Stored team run: Activity tab Background Tasks for the focused member', path: '/workspace', steps: [openStoredTeamRun, openActivityTab, seedTasks, toggleBackgroundTasks] },
+  'BGT-009': { title: 'Stored team run (zh-CN): Background Tasks list', path: '/workspace', locale: 'zh-CN', steps: [openStoredTeamRun, openActivityTab, seedTasks, toggleBackgroundTasks] },
   'SKL-001': { title: 'Skills: name-issues banner expands details', path: '/skills', scenario: 'skill_name_issues', steps: [role('button', 'Show details')] },
 }
 
@@ -82,7 +118,7 @@ await mkdir(resolve(OUT, 'source'), { recursive: true }); await mkdir(resolve(OU
 async function run(base, target, id) {
   const flow = FLOWS[id]
   await fetch(`${MOCK}/__prototype/scenario`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ scenario: flow.scenario || 'populated', operationFailures: {} }) })
-  const ctx = await browser.newContext({ viewport: flow.viewport || { width: 1440, height: 900 }, locale: 'en-US', colorScheme: 'light', reducedMotion: 'reduce', timezoneId: 'UTC' })
+  const ctx = await browser.newContext({ viewport: flow.viewport || { width: 1440, height: 900 }, locale: flow.locale === 'zh-CN' ? 'zh-CN' : 'en-US', colorScheme: 'light', reducedMotion: 'reduce', timezoneId: 'UTC' })
   const external = []
   await ctx.route('**/*', async route => {
     const url = new URL(route.request().url())
@@ -94,15 +130,16 @@ async function run(base, target, id) {
     if (['data:', 'blob:'].includes(url.protocol) || ['127.0.0.1', 'localhost'].includes(url.hostname)) return route.continue()
     external.push(url.href); return route.abort('blockedbyclient')
   })
-  await ctx.addInitScript(scenario => {
+  await ctx.addInitScript(({ scenario, locale }) => {
     if (sessionStorage.getItem('__flow_init')) return
     sessionStorage.setItem('__flow_init', '1')
     localStorage.clear()
-    localStorage.setItem('autobyteus.localization.preference-mode', 'en')
+    localStorage.setItem('autobyteus.localization.preference-mode', locale)
     localStorage.setItem('autobyteus.prototype.scenario', scenario)
     localStorage.setItem('autobyteus.prototype.context', 'desktop')
-  }, flow.scenario || 'populated')
+  }, { scenario: flow.scenario || 'populated', locale: flow.locale || 'en' })
   const page = await ctx.newPage()
+  page.setDefaultTimeout(10000)
   const errors = []
   page.on('pageerror', e => errors.push(`pageerror: ${e.message}`))
   page.on('console', m => { if (m.type() === 'error') errors.push(`console: ${m.text().slice(0, 300)}`) })

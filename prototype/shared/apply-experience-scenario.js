@@ -189,13 +189,20 @@ export function applyExperienceScenario(input = {}) {
       ]
     }
   }
-  const todo = store('agentTodo')
-  if (todo && !(todo.todosByRunId instanceof Map)) todo.todosByRunId = new Map()
-  todo?.setTodos(runId, [
-    { todoId: 'todo-1', description: 'Compare current UI surfaces', status: 'DONE' },
-    { todoId: 'todo-2', description: 'Verify deterministic interactions', status: scenario.includes('completed') ? 'DONE' : 'IN_PROGRESS' },
-    { todoId: 'todo-3', description: 'Record review evidence', status: 'PENDING' },
-  ])
+  // Background Tasks replaced the To-Do list at origin/personal@e9aa4a7. The
+  // source store is live-only (upsert per stream snapshot), so the synthetic
+  // tasks are applied through the same action; one task per visible status.
+  const backgroundTasks = store('agentBackgroundTask')
+  if (backgroundTasks) {
+    if (!(backgroundTasks.tasksByRunId instanceof Map)) backgroundTasks.tasksByRunId = new Map()
+    const finished = scenario.includes('completed')
+    for (const task of [
+      { taskId: 'bg-task-1', kind: 'shell', description: 'Run the synthetic parity capture', status: finished ? 'completed' : 'running', summary: finished ? 'Captured 12 matched synthetic screens.' : null, startedAt: '2026-08-22T04:03:00.000Z' },
+      { taskId: 'bg-task-2', kind: 'subagent', description: 'Compare current UI surfaces', status: 'completed', summary: 'Compared the synthetic workspace surfaces and recorded every matched state. No perceptible difference was found in the sampled screens, and the evidence folder lists each compared surface with its viewport.', startedAt: '2026-08-22T04:02:00.000Z' },
+      { taskId: 'bg-task-3', kind: 'monitor', description: 'Watch the synthetic build log', status: 'failed', summary: 'Synthetic monitor exited with code 1.', startedAt: '2026-08-22T04:01:00.000Z' },
+      { taskId: 'bg-task-4', kind: 'workflow', description: '', status: 'stopped', summary: null, startedAt: '2026-08-22T04:00:30.000Z' },
+    ]) backgroundTasks.upsertTask(runId, task)
+  }
   const activity = store('agentActivity')
   if (activity) {
     if (!(activity.activitiesByRunId instanceof Map)) activity.activitiesByRunId = new Map()
