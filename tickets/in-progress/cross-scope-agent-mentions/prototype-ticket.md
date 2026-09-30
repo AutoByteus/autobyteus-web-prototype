@@ -77,6 +77,13 @@
 - Evidence: `review-evidence/round-3/` (validation 30/30, `agent-row-clicked.png`).
 - Status: `Awaiting User Review`.
 
+## Review Round 4
+
+- User feedback, 2026-09-30: the green circle on the task row "is not in the middle. It's like a little bit up"; "can we use other icons to represent task agents?"; "the vertical line is still not straight" on the task row.
+- Changes: PC-017 (alignment; measured branch x = 49px on every depth-0 row, marker center = name center), PC-018 (task Agent marker proposal with two review-only alternatives).
+- Evidence: `review-evidence/round-4/` (`tree-avatar.png`, `tree-bolt.png`, `tree-ring.png`, validation 30/30).
+- Status: `Awaiting User Review`.
+
 ## Findings For Requirements (observed, not decided)
 
 - F-001 (REQ-003/004): the client can only build a conversation for a delegated child whose address is a configured member (`createTeamAgentContext` → `configuredAgentAtAddress`), and the task-execution DTO carries no definition identity or launch settings. A collaborator that is not mounted needs both from the server. The prototype supplies them locally.
@@ -90,6 +97,7 @@
 - 2026-09-30: round 1 review URL ready; `Awaiting User Review`.
 - 2026-09-30: round 2 (PC-012, PC-013) applied from user feedback; `Awaiting User Review`.
 - 2026-09-30: round 3 (PC-014–PC-016) applied from user feedback; `Awaiting User Review`.
+- 2026-09-30: round 4 (PC-017, PC-018) applied from user feedback; `Awaiting User Review`.
 
 ## Finalization
 

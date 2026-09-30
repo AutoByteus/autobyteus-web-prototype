@@ -134,3 +134,18 @@ export const runMentionRoute = (): RunMentionRoute => {
  * so a periodic history refresh does not reset their member statuses.
  */
 export const resumedTeamRunIds = new Set<string>()
+
+/**
+ * Review-only choice of the task Agent marker in the run tree, selected with
+ * `#taskIcon=avatar|bolt|ring` and kept for the browser session.
+ * `avatar` is the proposal; `ring` is the current product marker, centered.
+ */
+export type TaskAgentIconVariant = 'avatar' | 'bolt' | 'ring'
+const TASK_ICON_KEY = 'autobyteus.prototype.taskIcon'
+export const taskAgentIconVariant = (): TaskAgentIconVariant => {
+  if (typeof window === 'undefined') return 'avatar'
+  const fromUrl = new URLSearchParams(window.location.hash.replace(/^#/, '')).get('taskIcon')
+  if (fromUrl === 'avatar' || fromUrl === 'bolt' || fromUrl === 'ring') sessionStorage.setItem(TASK_ICON_KEY, fromUrl)
+  const stored = sessionStorage.getItem(TASK_ICON_KEY)
+  return stored === 'bolt' || stored === 'ring' ? stored : 'avatar'
+}
