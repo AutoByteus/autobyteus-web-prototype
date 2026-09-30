@@ -247,7 +247,15 @@ export const buildRunTreeProjection = (input: BuildRunTreeProjectionInput): RunT
       continue;
     }
 
-    const workspaceNode = workspaceNodes.get(normalizedWorkspace);
+    // Prototype fixture correction (cross-scope-agent-mentions): the synthetic project workspace is
+    // captured with kind `local`, so it has no descriptor and its stored standalone Agent run was
+    // dropped here. Keep that history under the same history-only workspace node the Team and Org
+    // history already use, so a standalone Agent run can be opened from the tree.
+    const workspaceNode = workspaceNodes.get(normalizedWorkspace)
+      ?? (workspace.agents.length > 0
+        ? ensureWorkspaceNode(workspaceNodes, `history:${normalizedWorkspace}`, normalizedWorkspace,
+          normalizedWorkspace.split('/').filter(Boolean).at(-1) || normalizedWorkspace, 'filesystem', false)
+        : undefined);
     if (!workspaceNode) {
       continue;
     }

@@ -151,6 +151,9 @@ export const taskAgentIconVariant = (): TaskAgentIconVariant => {
   return stored === 'bolt' || stored === 'ring' ? stored : 'avatar'
 }
 
+/** Standalone Agent runs this browser context drives locally (see `resumedTeamRunIds`). */
+export const resumedAgentRunIds = new Set<string>()
+
 /** Org runs this browser context drives locally (see `resumedTeamRunIds`). */
 export const resumedOrgRunIds = new Set<string>()
 

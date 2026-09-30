@@ -437,6 +437,12 @@ export default defineNuxtPlugin({
     // reopened after navigating elsewhere.
     let liveRunSession = false
     const liveRunStores = new Set(['agentContexts', 'agentSelection', 'runHistory', 'chatDraft', 'workspace', 'agentRun'])
+    // cross-scope-agent-mentions: a run played by the local run keeps its conversations. Only the
+    // store that owns standalone Agent conversations is exempt from route snapshots; Team and Org
+    // runs keep their own contexts already.
+    let localRunSession = false
+    const localRunStores = new Set(['agentContexts'])
+    window.__AUTOBYTEUS_PROTOTYPE_MARK_LIVE_RUN__ = () => { localRunSession = true }
     const patchStore = (store: any): void => {
       if (!collectionKinds.has(store.$id)) {
         collectionKinds.set(store.$id, new Map(Object.entries(store.$state)
@@ -454,6 +460,10 @@ export default defineNuxtPlugin({
       const isRichExperience = scenario().startsWith('workspace_') || scenario().startsWith('mobile_')
       if (state
         && !(liveRunSession && liveRunStores.has(store.$id))
+        && !(localRunSession && localRunStores.has(store.$id))
+        // An opened Team run is live client state: a route change right after opening it (for
+        // example from a chat run route back to /workspace) must not drop its context.
+        && !(store.$id === 'agentTeamContexts' && store.teams instanceof Map && store.teams.size > 0)
         && !(context().startsWith('electron_') && hostOwnedStores.has(store.$id))
         && !(isRichExperience && richExperienceOwnedStores.has(store.$id))
         && !(agentOrgRuntimeRoute() && agentOrgRuntimeOwnedStores.has(store.$id))) {
@@ -495,7 +505,7 @@ export default defineNuxtPlugin({
         }
       }
       const overlay = stateOverlays.get(store.$id)
-      if (overlay && !(agentOrgRuntimeRoute() && agentOrgRuntimeOwnedStores.has(store.$id)) && !(liveRunSession && liveRunStores.has(store.$id))) {
+      if (overlay && !(agentOrgRuntimeRoute() && agentOrgRuntimeOwnedStores.has(store.$id)) && !(liveRunSession && liveRunStores.has(store.$id)) && !(localRunSession && localRunStores.has(store.$id))) {
         store.$patch(clone(overlay))
       }
       restoreCollectionTypes(store, collectionKinds.get(store.$id) || new Map())
@@ -665,6 +675,8 @@ declare global {
     /** Deterministic local Team run send (cross-scope-agent-mentions). */
     __AUTOBYTEUS_PROTOTYPE_TEAM_RUN_SEND__?: (content: string) => Promise<void>
     __AUTOBYTEUS_PROTOTYPE_AGENT_RUN_SEND__?: (content: string) => Promise<void>
+    /** Keeps run-owning stores from being reset by route snapshots after a local run started. */
+    __AUTOBYTEUS_PROTOTYPE_MARK_LIVE_RUN__?: () => void
     /** True when the local run handles a message sent for the selected run. */
     __AUTOBYTEUS_PROTOTYPE_LOCAL_SEND__?: () => boolean
     __AUTOBYTEUS_PROTOTYPE__: {

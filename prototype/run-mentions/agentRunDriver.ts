@@ -9,7 +9,7 @@ import { dispatchAgentStreamMessage } from '~/services/agentStreaming/agentStrea
 import { toAgentPresentationProjectionMessage } from '~/services/agentStreaming/teamStreamDtoAdapters'
 import { parseAgentTeamAddress } from '~/types/agent/AgentTeamAddress'
 import { createCollaboratorContext, type RunDriver } from './runMentionPlayer'
-import { agentRunScope, ensureAgentRunScope, standaloneAgentAddress } from './runMentionState'
+import { agentRunScope, ensureAgentRunScope, resumedAgentRunIds, standaloneAgentAddress } from './runMentionState'
 import { selectedStandaloneAgentRun } from './runMentionScopes'
 
 export const createAgentRunDriver = (): RunDriver | null => {
@@ -29,7 +29,10 @@ export const createAgentRunDriver = (): RunDriver | null => {
     focusedAgentRunId: focusedChild ? existing!.focusedRunId! : rootRunId,
     focusedContext: focusedChild?.context ?? root,
     addressOf,
-    activate: () => history.markRunAsActive(rootRunId),
+    activate: () => {
+      resumedAgentRunIds.add(rootRunId)
+      history.markRunAsActive(rootRunId)
+    },
     present: (agentRunId, event) => {
       const context = contextOf(agentRunId)
       if (!context) return

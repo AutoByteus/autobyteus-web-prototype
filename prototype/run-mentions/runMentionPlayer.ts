@@ -100,7 +100,8 @@ export const createCollaboratorContext = (input: {
     workspaceMetadata: input.workspaceMetadata,
     autoExecuteTools: input.autoExecuteTools,
     skillAccessMode: input.skillAccessMode as SkillAccessMode,
-    llmConfig: input.llmConfig ? structuredClone(input.llmConfig) : null,
+    // The source config may be a reactive proxy, which structuredClone rejects.
+    llmConfig: input.llmConfig ? JSON.parse(JSON.stringify(input.llmConfig)) : null,
     isLocked: true,
   }
   const state = new AgentRunState(input.agentRunId, {
@@ -296,6 +297,7 @@ const playDirect = async (run: Run, content: string, mentions: readonly RunMenti
  * so the run settles at Idle and the user can continue the conversation.
  */
 export const playReplyOnly = async (driver: RunDriver): Promise<void> => {
+  window.__AUTOBYTEUS_PROTOTYPE_MARK_LIVE_RUN__?.()
   driver.activate()
   const run = createRun(driver)
   const focused = driver.focusedAgentRunId
@@ -323,6 +325,7 @@ export const playRunSend = async (driver: RunDriver, content: string): Promise<v
   // A new message replaces the previous outcome notices of this conversation.
   runMentionState.noticesByRoot[driver.rootRunId] = (runMentionState.noticesByRoot[driver.rootRunId] ?? [])
     .filter((notice) => notice.agentRunId !== focused)
+  window.__AUTOBYTEUS_PROTOTYPE_MARK_LIVE_RUN__?.()
   driver.activate()
   const run = createRun(driver)
   if (runMentionRoute() === 'direct' && mentions.length) await playDirect(run, content, mentions)

@@ -11,7 +11,7 @@
  * subscriptions stay inert.
  */
 import { operationFixture, baseState } from '~/prototype/source-observation/fixtures.mjs'
-import { resumedOrgRunIds, resumedTeamRunIds } from '~/prototype/run-mentions/runMentionState'
+import { resumedAgentRunIds, resumedOrgRunIds, resumedTeamRunIds } from '~/prototype/run-mentions/runMentionState'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
 
@@ -45,9 +45,17 @@ const resolveLocally = async (request: OperationRequest = {}) => {
 // message in this browser context is listed as active, as after a real restore.
 const markResumedTeamRuns = (data: any): any => {
   if (resumedOrgRunIds.size) markResumedOrgRuns(data)
-  if (!resumedTeamRunIds.size) return data
+  // A resumed Agent run is reported active when it is reopened, so its live conversation is kept.
+  const resume = data?.getAgentRunResumeConfig
+  if (resume && resumedAgentRunIds.has(resume.runId)) resume.isActive = true
+  if (!resumedTeamRunIds.size && !resumedAgentRunIds.size) return data
   const groups = [...(data?.listWorkspaceRunHistory ?? []), ...(data?.workspaceRunHistory ? [data.workspaceRunHistory] : [])]
   for (const group of groups) {
+    for (const definition of group?.agentDefinitions ?? []) {
+      for (const run of definition?.runs ?? []) {
+        if (resumedAgentRunIds.has(run.runId)) run.isActive = true
+      }
+    }
     for (const definition of group?.teamDefinitions ?? []) {
       for (const run of definition?.runs ?? []) {
         if (resumedTeamRunIds.has(run.teamRunId)) run.isActive = true

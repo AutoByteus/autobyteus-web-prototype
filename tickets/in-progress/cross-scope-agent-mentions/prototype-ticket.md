@@ -117,6 +117,15 @@
 - F-006: the first message of a launch draft (New chat, or Agents → Run) is not covered; New chat `@` keeps picking the launch target, as required.
 - Status: `Awaiting User Review`.
 
+## Review Round 9
+
+- User feedback, 2026-09-30 (tree screenshot): the prototype tree has only an agent team and an agent org, no standalone agent; support `@` in a standalone Agent run and in the runs of Agent Org members.
+- Changes: PC-025 (stored standalone Agent run listed and usable), PC-026 (run switching fix). `@` for Org members was delivered in round 8 (PC-021).
+- How to reach the standalone Agent run: Workspaces → `prototype-workspace` → `Research Assistant` → `Compare current navigation states`.
+- Evidence: `review-evidence/round-9/` (`tree-01-workspace.png`, `agent-run-02`–`04`, `all-three-runs.png`, `back-to-org.png`); `validate-cross-scope-agent-mentions.mjs` 48/48 (`round-9/results.json`), 0 page errors, 0 external requests; typecheck exit 0, lint exit 0, test 12/12, `validate:boundaries` 0 failures.
+- Baseline finding B-001 (for a later baseline correction, not part of this design): the synthetic workspace fixture has kind `local`, so stored standalone Agent history is hidden in the accepted baseline; and a route change right after opening a Team run drops its context.
+- Status: `Awaiting User Review`.
+
 ## Findings For Requirements (observed, not decided)
 
 - F-001 (REQ-003/004): the client can only build a conversation for a delegated child whose address is a configured member (`createTeamAgentContext` → `configuredAgentAtAddress`), and the task-execution DTO carries no definition identity or launch settings. A collaborator that is not mounted needs both from the server. The prototype supplies them locally.

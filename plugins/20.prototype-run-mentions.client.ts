@@ -1,7 +1,7 @@
 import { defineNuxtPlugin } from '#app'
 import type { Pinia } from 'pinia'
 import { simulateAgentRunReply, simulateAgentRunSend, simulateOrgRunSend, simulateTeamRunSend } from '~/prototype/run-mentions/runMentionSimulator'
-import { agentRunScope, draftMentionKeys, resumedOrgRunIds, resumedTeamRunIds } from '~/prototype/run-mentions/runMentionState'
+import { agentRunScope, draftMentionKeys, resumedAgentRunIds, resumedOrgRunIds, resumedTeamRunIds } from '~/prototype/run-mentions/runMentionState'
 
 /**
  * cross-scope-agent-mentions: registers the deterministic local run that plays
@@ -45,6 +45,11 @@ export default defineNuxtPlugin({
         store.$onAction(({ name, after }: { name: string; after: (callback: () => void) => void }) => {
           if (name === 'sendUserInputAndSubscribe') after(() => { void simulateAgentRunReply() })
         })
+        // As for a Team run: a locally driven Agent run has no socket; report its stream as ready
+        // so a history refresh keeps the status the local run set.
+        const originalReady = store.isAgentStreamReady
+        store.isAgentStreamReady = (runId: string): boolean =>
+          resumedAgentRunIds.has(runId) || originalReady.call(store, runId)
         store.__prototypeRunMentions = true
       }
       if (store.$id === 'agentOrgContexts') {
