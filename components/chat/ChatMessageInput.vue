@@ -25,10 +25,10 @@
     <div v-if="menuOpen && popover.narrow.value" class="fixed inset-0 z-40 bg-black/20" aria-hidden="true"></div>
     <div
       v-if="menuOpen"
-      class="z-50 flex flex-col"
+      class="z-50"
       :class="popover.narrow.value
         ? 'fixed inset-x-2 bottom-2 [&>div]:w-auto'
-        : ['absolute left-2', popover.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5']"
+        : ['absolute left-2 flex flex-col', popover.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5']"
       :style="popover.narrow.value ? undefined : { maxHeight: `${popover.maxHeight.value}px` }"
     >
       <ChatTargetMenu

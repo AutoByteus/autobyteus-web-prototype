@@ -6,7 +6,7 @@
     <p class="border-b border-gray-100 px-3 py-1.5 text-[0.6875rem] text-gray-400">
       {{ $t('chat.targets.headerPrefix') }} <span class="font-medium text-gray-600">@{{ query }}</span> · {{ $t('chat.targets.headerHint') }}
     </p>
-    <ul :id="listId" role="listbox" :aria-label="$t('chat.targets.listAria')" class="min-h-0 max-h-64 overflow-y-auto p-1">
+    <ul :id="listId" role="listbox" :aria-label="$t('chat.targets.listAria')" class="max-h-64 min-h-0 overflow-y-auto p-1">
       <li v-if="!targets.length" class="px-2 py-3 text-center text-[0.8125rem] text-gray-500" data-test="chat-target-menu-empty">{{ $t('chat.targets.noMatch') }}</li>
       <template v-for="(target, index) in targets" :key="target.key">
         <li v-if="index === 0 || targets[index - 1]!.kind !== target.kind" role="presentation" class="px-2 pb-0.5 pt-1.5 text-[0.6875rem] font-medium text-gray-400">

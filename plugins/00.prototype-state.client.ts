@@ -21,7 +21,9 @@ const localActions: Record<string, Set<string>> = {
   activeContext: new Set(['addContextFilePath', 'removeContextFilePath', 'clearContextFilePaths']),
   agentRunConfig: new Set(['setTemplate', 'setAgentConfig', 'updateAgentConfig', 'setWorkspaceLoading', 'setWorkspaceLoaded', 'setWorkspaceError', 'clearWorkspaceState', 'collapsePanel', 'expandPanel', 'togglePanel', 'markFirstMessageSent', 'clearConfig']),
   agentSelection: new Set(['beginSelectionIntent', 'invalidateSelectionIntent', 'setRunSelection', 'setTeamDraftSelection', 'clearRunSelection', 'promoteTeamDraftLaunch', 'selectRunWithoutShellNavigation', 'selectTeamDraftWithoutShellNavigation', 'clearSelectionWithoutShellNavigation', 'selectRun', 'selectTeamDraft', 'clearSelection']),
-  agentTodo: new Set(['_ensureEntry', 'setTodos', 'clearTodos']),
+  // Background Tasks (Activity tab) are live-only in the source: each stream
+  // snapshot upserts one task. The prototype applies the same upsert locally.
+  agentBackgroundTask: new Set(['upsertTask']),
   agentTeamContexts: new Set(['addTeamContext', 'replaceTeamContext', 'removeTeamContext', 'focusMember']),
   teamRunConfig: new Set([
     'createDraft', 'setTemplate', 'setConfig', 'applyConfigEdit',
@@ -394,7 +396,7 @@ export default defineNuxtPlugin({
     // persistence, a backend, or cross-reviewer mutable state.
     const stateOverlays = new Map<string, Record<string, any>>()
     const hostOwnedStores = new Set(['server', 'nodeStore', 'windowNodeContext', 'appUpdate', 'extensions', 'voiceInput', 'browserShell'])
-    const richExperienceOwnedStores = new Set(['agentContexts', 'agentTeamContexts', 'agentTodo', 'agentActivity', 'fileExplorer', 'runFileChanges'])
+    const richExperienceOwnedStores = new Set(['agentContexts', 'agentTeamContexts', 'agentBackgroundTask', 'agentActivity', 'fileExplorer', 'runFileChanges'])
     const agentOrgRuntimeOwnedStores = new Set(['agentDefinition', 'agentTeamDefinition', 'agentRunConfig', 'teamRunConfig', 'agentSelection', 'runHistory'])
     const agentOrgRuntimeRequiredStores = ['agentContexts', 'agentSelection', 'workspace', 'runHistory', 'agentDefinition', 'agentTeamDefinition', 'agentRunConfig', 'teamRunConfig']
     let lastAppliedAgentOrgRuntimeKey = ''

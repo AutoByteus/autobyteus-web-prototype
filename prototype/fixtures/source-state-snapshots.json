@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-30T04:42:26.248Z",
-  "sourceBaseUrl": "http://127.0.0.1:4291",
-  "mockBaseUrl": "http://127.0.0.1:4391",
+  "generatedAt": "2026-09-30T09:28:32.034Z",
+  "sourceBaseUrl": "http://127.0.0.1:4296",
+  "mockBaseUrl": "http://127.0.0.1:4396",
   "snapshots": {
     "populated|desktop|/": {
       "item": {
@@ -62,7 +62,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -70,8 +70,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:10.785Z",
-              "updatedAt": "2026-09-30T04:40:10.785Z"
+              "createdAt": "2026-09-30T09:25:58.374Z",
+              "updatedAt": "2026-09-30T09:25:58.374Z"
             }
           ],
           "initialized": true,
@@ -80,7 +80,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -2727,7 +2727,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -2735,8 +2735,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:12.630Z",
-              "updatedAt": "2026-09-30T04:40:12.630Z"
+              "createdAt": "2026-09-30T09:26:00.639Z",
+              "updatedAt": "2026-09-30T09:26:00.639Z"
             }
           ],
           "initialized": true,
@@ -2745,7 +2745,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -5392,7 +5392,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -5400,8 +5400,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:14.719Z",
-              "updatedAt": "2026-09-30T04:40:14.719Z"
+              "createdAt": "2026-09-30T09:26:02.587Z",
+              "updatedAt": "2026-09-30T09:26:02.587Z"
             }
           ],
           "initialized": true,
@@ -5410,7 +5410,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -7662,7 +7662,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -7670,8 +7670,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:16.635Z",
-              "updatedAt": "2026-09-30T04:40:16.635Z"
+              "createdAt": "2026-09-30T09:26:04.912Z",
+              "updatedAt": "2026-09-30T09:26:04.912Z"
             }
           ],
           "initialized": true,
@@ -7680,7 +7680,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -10209,7 +10209,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -10217,8 +10217,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:18.696Z",
-              "updatedAt": "2026-09-30T04:40:18.696Z"
+              "createdAt": "2026-09-30T09:26:07.110Z",
+              "updatedAt": "2026-09-30T09:26:07.110Z"
             }
           ],
           "initialized": true,
@@ -10227,7 +10227,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -12300,7 +12300,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -12308,8 +12308,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:20.755Z",
-              "updatedAt": "2026-09-30T04:40:20.755Z"
+              "createdAt": "2026-09-30T09:26:09.382Z",
+              "updatedAt": "2026-09-30T09:26:09.382Z"
             }
           ],
           "initialized": true,
@@ -12318,7 +12318,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -14847,7 +14847,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -14855,8 +14855,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:22.906Z",
-              "updatedAt": "2026-09-30T04:40:22.906Z"
+              "createdAt": "2026-09-30T09:26:11.605Z",
+              "updatedAt": "2026-09-30T09:26:11.605Z"
             }
           ],
           "initialized": true,
@@ -14865,7 +14865,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -17117,7 +17117,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -17125,8 +17125,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:25.081Z",
-              "updatedAt": "2026-09-30T04:40:25.081Z"
+              "createdAt": "2026-09-30T09:26:13.738Z",
+              "updatedAt": "2026-09-30T09:26:13.738Z"
             }
           ],
           "initialized": true,
@@ -17135,7 +17135,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -19387,7 +19387,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -19395,8 +19395,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:27.076Z",
-              "updatedAt": "2026-09-30T04:40:27.076Z"
+              "createdAt": "2026-09-30T09:26:15.786Z",
+              "updatedAt": "2026-09-30T09:26:15.786Z"
             }
           ],
           "initialized": true,
@@ -19405,7 +19405,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -21675,7 +21675,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -21683,8 +21683,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:29.216Z",
-              "updatedAt": "2026-09-30T04:40:29.216Z"
+              "createdAt": "2026-09-30T09:26:18.009Z",
+              "updatedAt": "2026-09-30T09:26:18.009Z"
             }
           ],
           "initialized": true,
@@ -21693,7 +21693,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -23876,7 +23876,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -23884,8 +23884,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:31.282Z",
-              "updatedAt": "2026-09-30T04:40:31.282Z"
+              "createdAt": "2026-09-30T09:26:20.146Z",
+              "updatedAt": "2026-09-30T09:26:20.146Z"
             }
           ],
           "initialized": true,
@@ -23894,7 +23894,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -26164,7 +26164,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -26172,8 +26172,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:33.423Z",
-              "updatedAt": "2026-09-30T04:40:33.423Z"
+              "createdAt": "2026-09-30T09:26:22.357Z",
+              "updatedAt": "2026-09-30T09:26:22.357Z"
             }
           ],
           "initialized": true,
@@ -26182,7 +26182,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -28434,7 +28434,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -28442,8 +28442,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:35.551Z",
-              "updatedAt": "2026-09-30T04:40:35.551Z"
+              "createdAt": "2026-09-30T09:26:24.435Z",
+              "updatedAt": "2026-09-30T09:26:24.435Z"
             }
           ],
           "initialized": true,
@@ -28452,7 +28452,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -30471,7 +30471,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -30479,8 +30479,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:37.561Z",
-              "updatedAt": "2026-09-30T04:40:37.561Z"
+              "createdAt": "2026-09-30T09:26:26.667Z",
+              "updatedAt": "2026-09-30T09:26:26.667Z"
             }
           ],
           "initialized": true,
@@ -30489,7 +30489,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -32523,7 +32523,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -32531,8 +32531,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:39.649Z",
-              "updatedAt": "2026-09-30T04:40:39.649Z"
+              "createdAt": "2026-09-30T09:26:28.837Z",
+              "updatedAt": "2026-09-30T09:26:28.837Z"
             }
           ],
           "initialized": true,
@@ -32541,7 +32541,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -34560,7 +34560,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -34568,8 +34568,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:41.725Z",
-              "updatedAt": "2026-09-30T04:40:41.725Z"
+              "createdAt": "2026-09-30T09:26:31.062Z",
+              "updatedAt": "2026-09-30T09:26:31.062Z"
             }
           ],
           "initialized": true,
@@ -34578,7 +34578,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -36612,7 +36612,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -36620,8 +36620,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:43.942Z",
-              "updatedAt": "2026-09-30T04:40:43.942Z"
+              "createdAt": "2026-09-30T09:26:33.254Z",
+              "updatedAt": "2026-09-30T09:26:33.254Z"
             }
           ],
           "initialized": true,
@@ -36630,7 +36630,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -38700,7 +38700,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -38708,8 +38708,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:46.260Z",
-              "updatedAt": "2026-09-30T04:40:46.260Z"
+              "createdAt": "2026-09-30T09:26:36.238Z",
+              "updatedAt": "2026-09-30T09:26:36.238Z"
             }
           ],
           "initialized": true,
@@ -38718,7 +38718,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -41077,7 +41077,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -41085,8 +41085,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:48.449Z",
-              "updatedAt": "2026-09-30T04:40:48.449Z"
+              "createdAt": "2026-09-30T09:26:38.356Z",
+              "updatedAt": "2026-09-30T09:26:38.356Z"
             }
           ],
           "initialized": true,
@@ -41095,7 +41095,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -43187,7 +43187,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -43195,8 +43195,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:50.522Z",
-              "updatedAt": "2026-09-30T04:40:50.522Z"
+              "createdAt": "2026-09-30T09:26:40.615Z",
+              "updatedAt": "2026-09-30T09:26:40.615Z"
             }
           ],
           "initialized": true,
@@ -43205,7 +43205,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -45297,7 +45297,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -45305,8 +45305,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:52.500Z",
-              "updatedAt": "2026-09-30T04:40:52.500Z"
+              "createdAt": "2026-09-30T09:26:42.635Z",
+              "updatedAt": "2026-09-30T09:26:42.635Z"
             }
           ],
           "initialized": true,
@@ -45315,7 +45315,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -47579,7 +47579,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -47587,8 +47587,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:54.525Z",
-              "updatedAt": "2026-09-30T04:40:54.525Z"
+              "createdAt": "2026-09-30T09:26:44.977Z",
+              "updatedAt": "2026-09-30T09:26:44.977Z"
             }
           ],
           "initialized": true,
@@ -47597,7 +47597,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -49860,7 +49860,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -49868,8 +49868,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:56.598Z",
-              "updatedAt": "2026-09-30T04:40:56.598Z"
+              "createdAt": "2026-09-30T09:26:47.182Z",
+              "updatedAt": "2026-09-30T09:26:47.182Z"
             }
           ],
           "initialized": true,
@@ -49878,7 +49878,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -52141,7 +52141,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -52149,8 +52149,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:40:58.666Z",
-              "updatedAt": "2026-09-30T04:40:58.666Z"
+              "createdAt": "2026-09-30T09:26:49.437Z",
+              "updatedAt": "2026-09-30T09:26:49.437Z"
             }
           ],
           "initialized": true,
@@ -52159,7 +52159,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -54438,7 +54438,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -54446,8 +54446,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:00.756Z",
-              "updatedAt": "2026-09-30T04:41:00.756Z"
+              "createdAt": "2026-09-30T09:26:51.837Z",
+              "updatedAt": "2026-09-30T09:26:51.837Z"
             }
           ],
           "initialized": true,
@@ -54456,7 +54456,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -56776,7 +56776,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -56784,8 +56784,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:02.917Z",
-              "updatedAt": "2026-09-30T04:41:02.917Z"
+              "createdAt": "2026-09-30T09:26:54.059Z",
+              "updatedAt": "2026-09-30T09:26:54.059Z"
             }
           ],
           "initialized": true,
@@ -56794,7 +56794,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -59134,7 +59134,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -59142,8 +59142,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:04.985Z",
-              "updatedAt": "2026-09-30T04:41:04.985Z"
+              "createdAt": "2026-09-30T09:26:56.297Z",
+              "updatedAt": "2026-09-30T09:26:56.297Z"
             }
           ],
           "initialized": true,
@@ -59152,7 +59152,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -61416,7 +61416,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -61424,8 +61424,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:07.166Z",
-              "updatedAt": "2026-09-30T04:41:07.166Z"
+              "createdAt": "2026-09-30T09:26:58.501Z",
+              "updatedAt": "2026-09-30T09:26:58.501Z"
             }
           ],
           "initialized": true,
@@ -61434,7 +61434,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -63390,7 +63390,7 @@
           ]
         }
       },
-      "bodyText": "Chat\nAgents\nAgent Teams\nAgent Orgs\nApplications\nSkills\nMemory\nNodes\nProjects\nWorkspaces\nTemp Workspace\nprototype-workspace\nSettings\nManage Nodes\nMemory Sync\nPhone Setup\nDocker Guide\nCurrent Window Node\n\nEmbedded Node EMBEDDED\n\nhttp://127.0.0.1:4391\n\nAdd Remote Node\n\nRegister a reachable AutoByteus node for window access and capability display. Configure browser automation directly on Docker/remote nodes through MCP servers such as BrowserServer.\n\nAdd Node\nConfigured Nodes\nEMBEDDED\nready\n\nhttp://127.0.0.1:4391\n\nOpen",
+      "bodyText": "Chat\nAgents\nAgent Teams\nAgent Orgs\nApplications\nSkills\nMemory\nNodes\nProjects\nWorkspaces\nTemp Workspace\nprototype-workspace\nSettings\nManage Nodes\nMemory Sync\nPhone Setup\nDocker Guide\nCurrent Window Node\n\nEmbedded Node EMBEDDED\n\nhttp://127.0.0.1:4396\n\nAdd Remote Node\n\nRegister a reachable AutoByteus node for window access and capability display. Configure browser automation directly on Docker/remote nodes through MCP servers such as BrowserServer.\n\nAdd Node\nConfigured Nodes\nEMBEDDED\nready\n\nhttp://127.0.0.1:4396\n\nOpen",
       "primaryNavHeight": "300",
       "errors": []
     },
@@ -63453,7 +63453,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -63461,8 +63461,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:09.135Z",
-              "updatedAt": "2026-09-30T04:41:09.135Z"
+              "createdAt": "2026-09-30T09:27:00.694Z",
+              "updatedAt": "2026-09-30T09:27:00.694Z"
             }
           ],
           "initialized": true,
@@ -63471,7 +63471,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -65427,7 +65427,7 @@
           ]
         }
       },
-      "bodyText": "Chat\nAgents\nAgent Teams\nAgent Orgs\nApplications\nSkills\nMemory\nNodes\nProjects\nWorkspaces\nTemp Workspace\nprototype-workspace\nSettings\nManage Nodes\nMemory Sync\nPhone Setup\nDocker Guide\nCurrent Window Node\n\nEmbedded Node EMBEDDED\n\nhttp://127.0.0.1:4391\n\nAdd Remote Node\n\nRegister a reachable AutoByteus node for window access and capability display. Configure browser automation directly on Docker/remote nodes through MCP servers such as BrowserServer.\n\nAdd Node\nConfigured Nodes\nEMBEDDED\nready\n\nhttp://127.0.0.1:4391\n\nOpen",
+      "bodyText": "Chat\nAgents\nAgent Teams\nAgent Orgs\nApplications\nSkills\nMemory\nNodes\nProjects\nWorkspaces\nTemp Workspace\nprototype-workspace\nSettings\nManage Nodes\nMemory Sync\nPhone Setup\nDocker Guide\nCurrent Window Node\n\nEmbedded Node EMBEDDED\n\nhttp://127.0.0.1:4396\n\nAdd Remote Node\n\nRegister a reachable AutoByteus node for window access and capability display. Configure browser automation directly on Docker/remote nodes through MCP servers such as BrowserServer.\n\nAdd Node\nConfigured Nodes\nEMBEDDED\nready\n\nhttp://127.0.0.1:4396\n\nOpen",
       "primaryNavHeight": "300",
       "errors": []
     },
@@ -65490,7 +65490,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -65498,8 +65498,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:11.244Z",
-              "updatedAt": "2026-09-30T04:41:11.244Z"
+              "createdAt": "2026-09-30T09:27:02.847Z",
+              "updatedAt": "2026-09-30T09:27:02.847Z"
             }
           ],
           "initialized": true,
@@ -65508,7 +65508,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -67464,7 +67464,7 @@
           ]
         }
       },
-      "bodyText": "Chat\nAgents\nAgent Teams\nAgent Orgs\nApplications\nSkills\nMemory\nNodes\nProjects\nWorkspaces\nTemp Workspace\nprototype-workspace\nSettings\nManage Nodes\nMemory Sync\nPhone Setup\nDocker Guide\nCurrent Window Node\n\nEmbedded Node EMBEDDED\n\nhttp://127.0.0.1:4391\n\nAdd Remote Node\n\nRegister a reachable AutoByteus node for window access and capability display. Configure browser automation directly on Docker/remote nodes through MCP servers such as BrowserServer.\n\nAdd Node\nConfigured Nodes\nEMBEDDED\nready\n\nhttp://127.0.0.1:4391\n\nOpen",
+      "bodyText": "Chat\nAgents\nAgent Teams\nAgent Orgs\nApplications\nSkills\nMemory\nNodes\nProjects\nWorkspaces\nTemp Workspace\nprototype-workspace\nSettings\nManage Nodes\nMemory Sync\nPhone Setup\nDocker Guide\nCurrent Window Node\n\nEmbedded Node EMBEDDED\n\nhttp://127.0.0.1:4396\n\nAdd Remote Node\n\nRegister a reachable AutoByteus node for window access and capability display. Configure browser automation directly on Docker/remote nodes through MCP servers such as BrowserServer.\n\nAdd Node\nConfigured Nodes\nEMBEDDED\nready\n\nhttp://127.0.0.1:4396\n\nOpen",
       "primaryNavHeight": "300",
       "errors": []
     },
@@ -67527,7 +67527,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -67535,8 +67535,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:13.289Z",
-              "updatedAt": "2026-09-30T04:41:13.289Z"
+              "createdAt": "2026-09-30T09:27:05.104Z",
+              "updatedAt": "2026-09-30T09:27:05.104Z"
             }
           ],
           "initialized": true,
@@ -67545,7 +67545,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -69501,7 +69501,7 @@
           ]
         }
       },
-      "bodyText": "Chat\nAgents\nAgent Teams\nAgent Orgs\nApplications\nSkills\nMemory\nNodes\nProjects\nWorkspaces\nTemp Workspace\nprototype-workspace\nSettings\nManage Nodes\nMemory Sync\nPhone Setup\nDocker Guide\nCurrent Window Node\n\nEmbedded Node EMBEDDED\n\nhttp://127.0.0.1:4391\n\nAdd Remote Node\n\nRegister a reachable AutoByteus node for window access and capability display. Configure browser automation directly on Docker/remote nodes through MCP servers such as BrowserServer.\n\nAdd Node\nConfigured Nodes\nEMBEDDED\nready\n\nhttp://127.0.0.1:4391\n\nOpen",
+      "bodyText": "Chat\nAgents\nAgent Teams\nAgent Orgs\nApplications\nSkills\nMemory\nNodes\nProjects\nWorkspaces\nTemp Workspace\nprototype-workspace\nSettings\nManage Nodes\nMemory Sync\nPhone Setup\nDocker Guide\nCurrent Window Node\n\nEmbedded Node EMBEDDED\n\nhttp://127.0.0.1:4396\n\nAdd Remote Node\n\nRegister a reachable AutoByteus node for window access and capability display. Configure browser automation directly on Docker/remote nodes through MCP servers such as BrowserServer.\n\nAdd Node\nConfigured Nodes\nEMBEDDED\nready\n\nhttp://127.0.0.1:4396\n\nOpen",
       "primaryNavHeight": "300",
       "errors": []
     },
@@ -69564,7 +69564,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -69572,8 +69572,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:15.398Z",
-              "updatedAt": "2026-09-30T04:41:15.398Z"
+              "createdAt": "2026-09-30T09:27:07.274Z",
+              "updatedAt": "2026-09-30T09:27:07.274Z"
             }
           ],
           "initialized": true,
@@ -69582,7 +69582,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -71661,7 +71661,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -71669,8 +71669,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:17.543Z",
-              "updatedAt": "2026-09-30T04:41:17.543Z"
+              "createdAt": "2026-09-30T09:27:09.451Z",
+              "updatedAt": "2026-09-30T09:27:09.451Z"
             }
           ],
           "initialized": true,
@@ -71679,7 +71679,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -73817,7 +73817,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -73825,8 +73825,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:19.730Z",
-              "updatedAt": "2026-09-30T04:41:19.730Z"
+              "createdAt": "2026-09-30T09:27:11.926Z",
+              "updatedAt": "2026-09-30T09:27:11.926Z"
             }
           ],
           "initialized": true,
@@ -73835,7 +73835,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -74994,9 +74994,6 @@
           ],
           "loading": false,
           "error": null
-        },
-        "agentTodo": {
-          "todosByRunId": {}
         },
         "mobileNodeSession": {
           "session": null,
@@ -76183,22 +76180,6 @@
             "remove"
           ]
         },
-        "agentTodo": {
-          "actions": [
-            "_ensureEntry",
-            "setTodos",
-            "clearTodos"
-          ],
-          "getters": [
-            "getTodos"
-          ],
-          "keys": [
-            "todosByRunId",
-            "setTodos",
-            "clearTodos",
-            "getTodos"
-          ]
-        },
         "mobileNodeSession": {
           "actions": [
             "initializeFromStorage",
@@ -76300,7 +76281,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -76308,8 +76289,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:21.690Z",
-              "updatedAt": "2026-09-30T04:41:21.690Z"
+              "createdAt": "2026-09-30T09:27:13.809Z",
+              "updatedAt": "2026-09-30T09:27:13.809Z"
             }
           ],
           "initialized": true,
@@ -76318,7 +76299,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -78469,7 +78450,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -78477,8 +78458,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:23.697Z",
-              "updatedAt": "2026-09-30T04:41:23.697Z"
+              "createdAt": "2026-09-30T09:27:16.001Z",
+              "updatedAt": "2026-09-30T09:27:16.001Z"
             }
           ],
           "initialized": true,
@@ -78487,7 +78468,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -78537,7 +78518,7 @@
             {
               "filename": "prototype-images.svg",
               "category": "images",
-              "url": "http://127.0.0.1:4391/rest/media/images/prototype-images.svg",
+              "url": "http://127.0.0.1:4396/rest/media/images/prototype-images.svg",
               "size": 2400,
               "createdAt": "2026-08-22T04:00:00.000Z"
             }
@@ -80549,7 +80530,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -80557,8 +80538,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:26.238Z",
-              "updatedAt": "2026-09-30T04:41:26.238Z"
+              "createdAt": "2026-09-30T09:27:18.183Z",
+              "updatedAt": "2026-09-30T09:27:18.183Z"
             }
           ],
           "initialized": true,
@@ -80567,7 +80548,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -81152,7 +81133,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -81160,8 +81141,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:27.951Z",
-              "updatedAt": "2026-09-30T04:41:27.951Z"
+              "createdAt": "2026-09-30T09:27:20.414Z",
+              "updatedAt": "2026-09-30T09:27:20.414Z"
             }
           ],
           "initialized": true,
@@ -81170,7 +81151,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -85832,7 +85813,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -85840,8 +85821,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:30.084Z",
-              "updatedAt": "2026-09-30T04:41:30.084Z"
+              "createdAt": "2026-09-30T09:27:22.739Z",
+              "updatedAt": "2026-09-30T09:27:22.739Z"
             }
           ],
           "initialized": true,
@@ -85850,7 +85831,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -86435,7 +86416,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -86443,8 +86424,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:32.154Z",
-              "updatedAt": "2026-09-30T04:41:32.154Z"
+              "createdAt": "2026-09-30T09:27:24.917Z",
+              "updatedAt": "2026-09-30T09:27:24.917Z"
             }
           ],
           "initialized": true,
@@ -86453,7 +86434,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -87038,7 +87019,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -87046,8 +87027,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:34.207Z",
-              "updatedAt": "2026-09-30T04:41:34.207Z"
+              "createdAt": "2026-09-30T09:27:27.291Z",
+              "updatedAt": "2026-09-30T09:27:27.291Z"
             }
           ],
           "initialized": true,
@@ -87056,7 +87037,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -87773,7 +87754,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -87781,8 +87762,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:36.288Z",
-              "updatedAt": "2026-09-30T04:41:36.288Z"
+              "createdAt": "2026-09-30T09:27:29.468Z",
+              "updatedAt": "2026-09-30T09:27:29.468Z"
             }
           ],
           "initialized": true,
@@ -87791,7 +87772,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -88531,7 +88512,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -88539,8 +88520,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:38.341Z",
-              "updatedAt": "2026-09-30T04:41:38.341Z"
+              "createdAt": "2026-09-30T09:27:31.703Z",
+              "updatedAt": "2026-09-30T09:27:31.703Z"
             }
           ],
           "initialized": true,
@@ -88549,7 +88530,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -89181,7 +89162,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -89189,8 +89170,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:40.407Z",
-              "updatedAt": "2026-09-30T04:41:40.407Z"
+              "createdAt": "2026-09-30T09:27:33.867Z",
+              "updatedAt": "2026-09-30T09:27:33.867Z"
             }
           ],
           "initialized": true,
@@ -89199,7 +89180,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -89855,7 +89836,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -89863,8 +89844,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:42.456Z",
-              "updatedAt": "2026-09-30T04:41:42.456Z"
+              "createdAt": "2026-09-30T09:27:36.214Z",
+              "updatedAt": "2026-09-30T09:27:36.214Z"
             }
           ],
           "initialized": true,
@@ -89873,7 +89854,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -90889,7 +90870,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -90897,8 +90878,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:44.510Z",
-              "updatedAt": "2026-09-30T04:41:44.510Z"
+              "createdAt": "2026-09-30T09:27:38.342Z",
+              "updatedAt": "2026-09-30T09:27:38.342Z"
             }
           ],
           "initialized": true,
@@ -90907,7 +90888,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -91561,7 +91542,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -91569,8 +91550,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:46.577Z",
-              "updatedAt": "2026-09-30T04:41:46.577Z"
+              "createdAt": "2026-09-30T09:27:40.504Z",
+              "updatedAt": "2026-09-30T09:27:40.504Z"
             }
           ],
           "initialized": true,
@@ -91579,7 +91560,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -92271,7 +92252,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -92279,8 +92260,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:48.635Z",
-              "updatedAt": "2026-09-30T04:41:48.635Z"
+              "createdAt": "2026-09-30T09:27:42.602Z",
+              "updatedAt": "2026-09-30T09:27:42.602Z"
             }
           ],
           "initialized": true,
@@ -92289,7 +92270,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -92930,7 +92911,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -92938,8 +92919,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:50.708Z",
-              "updatedAt": "2026-09-30T04:41:50.708Z"
+              "createdAt": "2026-09-30T09:27:44.776Z",
+              "updatedAt": "2026-09-30T09:27:44.776Z"
             }
           ],
           "initialized": true,
@@ -92948,7 +92929,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -93533,7 +93514,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -93541,8 +93522,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:52.844Z",
-              "updatedAt": "2026-09-30T04:41:52.844Z"
+              "createdAt": "2026-09-30T09:27:47.002Z",
+              "updatedAt": "2026-09-30T09:27:47.002Z"
             }
           ],
           "initialized": true,
@@ -93551,7 +93532,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -94847,7 +94828,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -94855,8 +94836,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:54.812Z",
-              "updatedAt": "2026-09-30T04:41:54.812Z"
+              "createdAt": "2026-09-30T09:27:49.041Z",
+              "updatedAt": "2026-09-30T09:27:49.041Z"
             }
           ],
           "initialized": true,
@@ -94865,7 +94846,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -95960,7 +95941,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -95968,8 +95949,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:56.881Z",
-              "updatedAt": "2026-09-30T04:41:56.881Z"
+              "createdAt": "2026-09-30T09:27:51.165Z",
+              "updatedAt": "2026-09-30T09:27:51.165Z"
             }
           ],
           "initialized": true,
@@ -95978,7 +95959,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -97267,7 +97248,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -97275,8 +97256,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:41:59.081Z",
-              "updatedAt": "2026-09-30T04:41:59.081Z"
+              "createdAt": "2026-09-30T09:27:53.460Z",
+              "updatedAt": "2026-09-30T09:27:53.460Z"
             }
           ],
           "initialized": true,
@@ -97285,7 +97266,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -98410,7 +98391,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -98418,8 +98399,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:42:01.030Z",
-              "updatedAt": "2026-09-30T04:42:01.030Z"
+              "createdAt": "2026-09-30T09:27:55.454Z",
+              "updatedAt": "2026-09-30T09:27:55.454Z"
             }
           ],
           "initialized": true,
@@ -98428,7 +98409,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -101075,7 +101056,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -101083,8 +101064,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:42:03.087Z",
-              "updatedAt": "2026-09-30T04:42:03.087Z"
+              "createdAt": "2026-09-30T09:27:57.601Z",
+              "updatedAt": "2026-09-30T09:27:57.601Z"
             }
           ],
           "initialized": true,
@@ -101093,7 +101074,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -103740,7 +103721,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -103748,8 +103729,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:42:05.347Z",
-              "updatedAt": "2026-09-30T04:42:05.347Z"
+              "createdAt": "2026-09-30T09:27:59.978Z",
+              "updatedAt": "2026-09-30T09:27:59.978Z"
             }
           ],
           "initialized": true,
@@ -103758,7 +103739,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -104917,9 +104898,6 @@
           ],
           "loading": false,
           "error": null
-        },
-        "agentTodo": {
-          "todosByRunId": {}
         },
         "mobileNodeSession": {
           "session": null,
@@ -106106,22 +106084,6 @@
             "remove"
           ]
         },
-        "agentTodo": {
-          "actions": [
-            "_ensureEntry",
-            "setTodos",
-            "clearTodos"
-          ],
-          "getters": [
-            "getTodos"
-          ],
-          "keys": [
-            "todosByRunId",
-            "setTodos",
-            "clearTodos",
-            "getTodos"
-          ]
-        },
         "mobileNodeSession": {
           "actions": [
             "initializeFromStorage",
@@ -106223,7 +106185,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -106231,8 +106193,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:42:07.273Z",
-              "updatedAt": "2026-09-30T04:42:07.273Z"
+              "createdAt": "2026-09-30T09:28:01.916Z",
+              "updatedAt": "2026-09-30T09:28:01.916Z"
             }
           ],
           "initialized": true,
@@ -106241,7 +106203,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -107257,7 +107219,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -107265,8 +107227,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:42:09.318Z",
-              "updatedAt": "2026-09-30T04:42:09.318Z"
+              "createdAt": "2026-09-30T09:28:04.068Z",
+              "updatedAt": "2026-09-30T09:28:04.068Z"
             }
           ],
           "initialized": true,
@@ -107275,7 +107237,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -108377,7 +108339,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -108385,8 +108347,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:42:11.395Z",
-              "updatedAt": "2026-09-30T04:42:11.395Z"
+              "createdAt": "2026-09-30T09:28:06.275Z",
+              "updatedAt": "2026-09-30T09:28:06.275Z"
             }
           ],
           "initialized": true,
@@ -108395,7 +108357,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -109459,7 +109421,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -109467,8 +109429,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:42:13.518Z",
-              "updatedAt": "2026-09-30T04:42:13.518Z"
+              "createdAt": "2026-09-30T09:28:08.506Z",
+              "updatedAt": "2026-09-30T09:28:08.506Z"
             }
           ],
           "initialized": true,
@@ -109477,7 +109439,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -110483,7 +110445,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -110491,8 +110453,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:42:14.079Z",
-              "updatedAt": "2026-09-30T04:42:14.079Z"
+              "createdAt": "2026-09-30T09:28:09.311Z",
+              "updatedAt": "2026-09-30T09:28:09.311Z"
             }
           ],
           "initialized": true,
@@ -110501,7 +110463,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -110516,83 +110478,83 @@
         "uiError": {
           "errors": [
             {
-              "id": "b6b6a3fc-c06f-4e2c-bc85-2583dd27f5a2",
+              "id": "b2ca9144-cc33-4d19-9cb8-47ea5018066a",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch server settings:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [\n        {\n          \"message\": \"Synthetic recoverable GraphQL failure.\",\n          \"extensions\": {\n            \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n            \"operationName\": \"GetServerSettings\"\n          }\n        }\n      ],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": null,\n      \"message\": \"Synthetic recoverable GraphQL failure.\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-09-30T04:42:14.154Z",
+              "time": "2026-09-30T09:28:09.400Z",
               "count": 1
             },
             {
-              "id": "33bf054a-ad0c-4396-b514-343da8c6e641",
+              "id": "53404ad9-3097-42f5-b119-fc24646e7bb2",
               "message": "Synthetic recoverable GraphQL failure.",
               "detail": "{\n  \"message\": \"Synthetic recoverable GraphQL failure.\",\n  \"operation\": \"GetServerSettings\",\n  \"extensions\": {\n    \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n    \"operationName\": \"GetServerSettings\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:14.154Z",
+              "time": "2026-09-30T09:28:09.400Z",
               "count": 1
             },
             {
-              "id": "dfc7729b-02e6-4472-a0f8-59f5ca17f90a",
+              "id": "b2dded6c-c3ff-47b7-afc7-41ef86a57164",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch agent definitions:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [\n        {\n          \"message\": \"Synthetic recoverable GraphQL failure.\",\n          \"extensions\": {\n            \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n            \"operationName\": \"GetAgentDefinitions\"\n          }\n        }\n      ],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": null,\n      \"message\": \"Synthetic recoverable GraphQL failure.\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-09-30T04:42:14.154Z",
+              "time": "2026-09-30T09:28:09.400Z",
               "count": 1
             },
             {
-              "id": "2bac9ada-40c2-4e6c-9054-f99e7a5a77e5",
+              "id": "bbd3dfa7-2efb-480e-94ad-605af5584d14",
               "message": "Synthetic recoverable GraphQL failure.",
               "detail": "{\n  \"message\": \"Synthetic recoverable GraphQL failure.\",\n  \"operation\": \"GetAgentOrgDefinitions\",\n  \"extensions\": {\n    \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n    \"operationName\": \"GetAgentOrgDefinitions\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:14.154Z",
+              "time": "2026-09-30T09:28:09.399Z",
               "count": 2
             },
             {
-              "id": "d9e54c8b-bd49-496c-948a-db4b6cc41520",
+              "id": "fa3b290f-4f00-4917-a88c-f6da3c43ad0f",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch agent team definitions:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [\n        {\n          \"message\": \"Synthetic recoverable GraphQL failure.\",\n          \"extensions\": {\n            \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n            \"operationName\": \"GetAgentTeamDefinitions\"\n          }\n        }\n      ],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": null,\n      \"message\": \"Synthetic recoverable GraphQL failure.\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-09-30T04:42:14.150Z",
+              "time": "2026-09-30T09:28:09.395Z",
               "count": 1
             },
             {
-              "id": "4d52a404-86f7-4981-9c51-a87fc2039db7",
+              "id": "0784b276-5a6d-48b3-9707-c366ef430758",
               "message": "Synthetic recoverable GraphQL failure.",
               "detail": "{\n  \"message\": \"Synthetic recoverable GraphQL failure.\",\n  \"operation\": \"ListWorkspaceRunHistory\",\n  \"extensions\": {\n    \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n    \"operationName\": \"ListWorkspaceRunHistory\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:14.150Z",
+              "time": "2026-09-30T09:28:09.395Z",
               "count": 3
             },
             {
-              "id": "11a2986e-0f12-473c-a3fb-77d35003a654",
+              "id": "2d5bd043-872d-4c0b-a60e-f4b1da71ab89",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch agent definitions:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [\n        {\n          \"message\": \"Synthetic recoverable GraphQL failure.\",\n          \"extensions\": {\n            \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n            \"operationName\": \"GetAgentDefinitions\"\n          }\n        }\n      ],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": null,\n      \"message\": \"Synthetic recoverable GraphQL failure.\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-09-30T04:42:14.149Z",
+              "time": "2026-09-30T09:28:09.394Z",
               "count": 2
             },
             {
-              "id": "c320b7e0-f4d7-4514-9a3c-494315a0dad9",
+              "id": "43dfe6a9-3306-4489-a428-1492718fcf37",
               "message": "Synthetic recoverable GraphQL failure.",
               "detail": "{\n  \"message\": \"Synthetic recoverable GraphQL failure.\",\n  \"operation\": \"GetAgentDefinitions\",\n  \"extensions\": {\n    \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n    \"operationName\": \"GetAgentDefinitions\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:14.148Z",
+              "time": "2026-09-30T09:28:09.393Z",
               "count": 1
             },
             {
-              "id": "e11eef6b-a142-4e91-be23-125761943f04",
+              "id": "8be31619-13cf-443a-9845-21b55651b8e1",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch all workspace metadata:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [\n        {\n          \"message\": \"Synthetic recoverable GraphQL failure.\",\n          \"extensions\": {\n            \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n            \"operationName\": \"GetAllWorkspaces\"\n          }\n        }\n      ],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": null,\n      \"message\": \"Synthetic recoverable GraphQL failure.\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-09-30T04:42:14.146Z",
+              "time": "2026-09-30T09:28:09.391Z",
               "count": 3
             },
             {
-              "id": "b38f9721-033c-4315-b8d3-a49bd19095a6",
+              "id": "e63ddefc-441f-4435-8757-edc92405bad7",
               "message": "Synthetic recoverable GraphQL failure.",
               "detail": "{\n  \"message\": \"Synthetic recoverable GraphQL failure.\",\n  \"operation\": \"GetApplicationsCapability\",\n  \"extensions\": {\n    \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n    \"operationName\": \"GetApplicationsCapability\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:14.146Z",
+              "time": "2026-09-30T09:28:09.390Z",
               "count": 3
             }
           ],
@@ -111982,7 +111944,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -111990,8 +111952,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:42:16.213Z",
-              "updatedAt": "2026-09-30T04:42:16.213Z"
+              "createdAt": "2026-09-30T09:28:11.458Z",
+              "updatedAt": "2026-09-30T09:28:11.458Z"
             }
           ],
           "initialized": true,
@@ -112000,7 +111962,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -114110,7 +114072,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -114118,8 +114080,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:42:18.333Z",
-              "updatedAt": "2026-09-30T04:42:18.333Z"
+              "createdAt": "2026-09-30T09:28:13.618Z",
+              "updatedAt": "2026-09-30T09:28:13.618Z"
             }
           ],
           "initialized": true,
@@ -114128,7 +114090,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "embedded-local",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 0,
           "initialized": true,
           "lastReadyError": null
@@ -114955,7 +114917,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -114963,8 +114925,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:42:20.384Z",
-              "updatedAt": "2026-09-30T04:42:20.384Z"
+              "createdAt": "2026-09-30T09:28:15.789Z",
+              "updatedAt": "2026-09-30T09:28:15.789Z"
             }
           ],
           "initialized": true,
@@ -114973,7 +114935,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "mobile-paired-node",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 1,
           "initialized": true,
           "lastReadyError": null
@@ -114982,12 +114944,12 @@
           "session": {
             "version": 1,
             "nodeId": "mobile-paired-node",
-            "serverBaseUrl": "http://127.0.0.1:4391",
+            "serverBaseUrl": "http://127.0.0.1:4396",
             "credential": "prototype_mobile_session",
             "device": {
               "deviceId": "prototype-phone",
               "displayName": "Prototype phone",
-              "clientFacingBaseUrl": "http://127.0.0.1:4391",
+              "clientFacingBaseUrl": "http://127.0.0.1:4396",
               "createdAt": "2026-08-22T04:00:00.000Z",
               "lastSeenAt": "2026-08-22T04:00:00.000Z",
               "revokedAt": null
@@ -116791,7 +116753,7 @@
           ]
         }
       },
-      "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\nPrototype Node\n\nhttp://127.0.0.1:4391\n\nConnected\nRecent work\nSwitch work\nResearch Assistant\nCompare current navigation states\nIdle · Prototype Workspace\nProduct Review Team\nReview the current prototype baseline\nInactive · Prototype Workspace\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
+      "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\nPrototype Node\n\nhttp://127.0.0.1:4396\n\nConnected\nRecent work\nSwitch work\nResearch Assistant\nCompare current navigation states\nIdle · Prototype Workspace\nProduct Review Team\nReview the current prototype baseline\nInactive · Prototype Workspace\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
       "primaryNavHeight": null,
       "errors": []
     },
@@ -116855,7 +116817,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -116863,8 +116825,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:42:22.451Z",
-              "updatedAt": "2026-09-30T04:42:22.451Z"
+              "createdAt": "2026-09-30T09:28:17.920Z",
+              "updatedAt": "2026-09-30T09:28:17.920Z"
             }
           ],
           "initialized": true,
@@ -116873,7 +116835,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "mobile-paired-node",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 1,
           "initialized": true,
           "lastReadyError": null
@@ -116882,12 +116844,12 @@
           "session": {
             "version": 1,
             "nodeId": "mobile-paired-node",
-            "serverBaseUrl": "http://127.0.0.1:4391",
+            "serverBaseUrl": "http://127.0.0.1:4396",
             "credential": "prototype_mobile_session",
             "device": {
               "deviceId": "prototype-phone",
               "displayName": "Prototype phone",
-              "clientFacingBaseUrl": "http://127.0.0.1:4391",
+              "clientFacingBaseUrl": "http://127.0.0.1:4396",
               "createdAt": "2026-08-22T04:00:00.000Z",
               "lastSeenAt": "2026-08-22T04:00:00.000Z",
               "revokedAt": null
@@ -117197,16 +117159,6 @@
           "teamMemberInspectionByIdentity": {},
           "navigationProjection": {
             "workspaceNodes": [
-              {
-                "workspaceId": "temp_ws_default",
-                "workspaceRootPath": "/synthetic/temp_workspace",
-                "workspaceName": "Temp Workspace",
-                "workspaceKind": "temp",
-                "canRemoveFromWorkspaces": false,
-                "agents": [],
-                "stableKey": "workspace:/synthetic/temp_workspace",
-                "agentOrgDefinitions": []
-              },
               {
                 "stableKey": "workspace:/synthetic/prototype-workspace",
                 "workspaceId": "history:/synthetic/prototype-workspace",
@@ -118691,7 +118643,7 @@
           ]
         }
       },
-      "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\nPrototype Node\n\nhttp://127.0.0.1:4391\n\nConnected\n\nUnsupported on phone\n\nDesktop settings are managed from the desktop app. Phone Access exposes only phone connection controls.\n\nRecent work\nSwitch work\nResearch Assistant\nCompare current navigation states\nIdle · Prototype Workspace\nProduct Review Team\nReview the current prototype baseline\nInactive · Prototype Workspace\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
+      "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\nPrototype Node\n\nhttp://127.0.0.1:4396\n\nConnected\n\nUnsupported on phone\n\nDesktop settings are managed from the desktop app. Phone Access exposes only phone connection controls.\n\nRecent work\nSwitch work\nResearch Assistant\nCompare current navigation states\nIdle · Prototype Workspace\nProduct Review Team\nReview the current prototype baseline\nInactive · Prototype Workspace\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
       "primaryNavHeight": null,
       "errors": []
     },
@@ -118755,7 +118707,7 @@
             {
               "id": "embedded-local",
               "name": "Embedded Node",
-              "baseUrl": "http://127.0.0.1:4391",
+              "baseUrl": "http://127.0.0.1:4396",
               "nodeType": "embedded",
               "capabilities": {
                 "terminal": true,
@@ -118763,8 +118715,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-09-30T04:42:24.536Z",
-              "updatedAt": "2026-09-30T04:42:24.536Z"
+              "createdAt": "2026-09-30T09:28:20.066Z",
+              "updatedAt": "2026-09-30T09:28:20.066Z"
             }
           ],
           "initialized": true,
@@ -118773,7 +118725,7 @@
         "windowNodeContext": {
           "windowId": 0,
           "nodeId": "mobile-paired-node",
-          "nodeBaseUrl": "http://127.0.0.1:4391",
+          "nodeBaseUrl": "http://127.0.0.1:4396",
           "bindingRevision": 1,
           "initialized": true,
           "lastReadyError": null
@@ -118782,12 +118734,12 @@
           "session": {
             "version": 1,
             "nodeId": "mobile-paired-node",
-            "serverBaseUrl": "http://127.0.0.1:4391",
+            "serverBaseUrl": "http://127.0.0.1:4396",
             "credential": "prototype_mobile_session",
             "device": {
               "deviceId": "prototype-phone",
               "displayName": "Prototype phone",
-              "clientFacingBaseUrl": "http://127.0.0.1:4391",
+              "clientFacingBaseUrl": "http://127.0.0.1:4396",
               "createdAt": "2026-08-22T04:00:00.000Z",
               "lastSeenAt": "2026-08-22T04:00:00.000Z",
               "revokedAt": null
@@ -118816,112 +118768,112 @@
         "uiError": {
           "errors": [
             {
-              "id": "b5b725d8-c924-4ccf-86b8-8da875a5514d",
+              "id": "f9a06932-e980-44c4-8841-f009e7b41bac",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch all workspace metadata:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": {\n        \"name\": \"ServerError\",\n        \"response\": {},\n        \"statusCode\": 403,\n        \"result\": {\n          \"errors\": [\n            {\n              \"message\": \"Synthetic permission denied.\",\n              \"extensions\": {\n                \"code\": \"FORBIDDEN\"\n              }\n            }\n          ]\n        }\n      },\n      \"message\": \"Response not successful: Received status code 403\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-09-30T04:42:24.590Z",
+              "time": "2026-09-30T09:28:20.119Z",
               "count": 1
             },
             {
-              "id": "76943f29-8bce-4bca-af5b-6e1062013f3f",
+              "id": "86f0c9b4-23d0-480f-b0cf-987d31380c32",
               "message": "Response not successful: Received status code 403",
-              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=c35562bd:19:17)\n    at parseJsonBody (http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=c35562bd:120:9)\n    at http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=c35562bd:176:48",
+              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=5aff7e01:19:17)\n    at parseJsonBody (http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=5aff7e01:120:9)\n    at http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=5aff7e01:176:48",
               "detail": "{\n  \"name\": \"ServerError\",\n  \"response\": {},\n  \"statusCode\": 403,\n  \"result\": {\n    \"errors\": [\n      {\n        \"message\": \"Synthetic permission denied.\",\n        \"extensions\": {\n          \"code\": \"FORBIDDEN\"\n        }\n      }\n    ]\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:24.590Z",
+              "time": "2026-09-30T09:28:20.119Z",
               "count": 1
             },
             {
-              "id": "4ad99a78-74c2-4ffc-ac1c-6ad663d888f6",
+              "id": "81ca32f2-f565-4c10-999e-9c1b243b1d75",
               "message": "Synthetic permission denied.",
               "detail": "{\n  \"message\": \"Synthetic permission denied.\",\n  \"operation\": \"GetAllWorkspaces\",\n  \"extensions\": {\n    \"code\": \"FORBIDDEN\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:24.590Z",
+              "time": "2026-09-30T09:28:20.119Z",
               "count": 1
             },
             {
-              "id": "7a1cbf65-3ea9-4158-8a2c-59810c3ff0fd",
+              "id": "f75fe175-4112-4cdf-a5c0-d49157b01e41",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch agent team definitions:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": {\n        \"name\": \"ServerError\",\n        \"response\": {},\n        \"statusCode\": 403,\n        \"result\": {\n          \"errors\": [\n            {\n              \"message\": \"Synthetic permission denied.\",\n              \"extensions\": {\n                \"code\": \"FORBIDDEN\"\n              }\n            }\n          ]\n        }\n      },\n      \"message\": \"Response not successful: Received status code 403\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-09-30T04:42:24.590Z",
+              "time": "2026-09-30T09:28:20.119Z",
               "count": 1
             },
             {
-              "id": "d797d556-b0e2-422a-b593-a0db97420557",
+              "id": "844a06e8-4d90-491f-bd7a-a598686ed591",
               "message": "Response not successful: Received status code 403",
-              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=c35562bd:19:17)\n    at parseJsonBody (http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=c35562bd:120:9)\n    at http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=c35562bd:176:48",
+              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=5aff7e01:19:17)\n    at parseJsonBody (http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=5aff7e01:120:9)\n    at http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=5aff7e01:176:48",
               "detail": "{\n  \"name\": \"ServerError\",\n  \"response\": {},\n  \"statusCode\": 403,\n  \"result\": {\n    \"errors\": [\n      {\n        \"message\": \"Synthetic permission denied.\",\n        \"extensions\": {\n          \"code\": \"FORBIDDEN\"\n        }\n      }\n    ]\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:24.590Z",
+              "time": "2026-09-30T09:28:20.119Z",
               "count": 1
             },
             {
-              "id": "cf4124ee-5881-43ee-8329-82a659cac050",
+              "id": "ed595f24-8db1-410a-9e99-5f7ed36fbb72",
               "message": "Synthetic permission denied.",
               "detail": "{\n  \"message\": \"Synthetic permission denied.\",\n  \"operation\": \"GetAgentTeamDefinitions\",\n  \"extensions\": {\n    \"code\": \"FORBIDDEN\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:24.590Z",
+              "time": "2026-09-30T09:28:20.119Z",
               "count": 1
             },
             {
-              "id": "020dfb74-bb58-43f6-afd6-53465803bee3",
+              "id": "57769164-9f0b-495c-916e-46b96bf45e57",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch agent definitions:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": {\n        \"name\": \"ServerError\",\n        \"response\": {},\n        \"statusCode\": 403,\n        \"result\": {\n          \"errors\": [\n            {\n              \"message\": \"Synthetic permission denied.\",\n              \"extensions\": {\n                \"code\": \"FORBIDDEN\"\n              }\n            }\n          ]\n        }\n      },\n      \"message\": \"Response not successful: Received status code 403\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-09-30T04:42:24.589Z",
+              "time": "2026-09-30T09:28:20.119Z",
               "count": 1
             },
             {
-              "id": "546ca1e0-fee0-444a-ba3f-da3a2719e6d4",
+              "id": "4171eb27-a66b-4557-88a3-51ae3ead0846",
               "message": "Response not successful: Received status code 403",
-              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=c35562bd:19:17)\n    at parseJsonBody (http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=c35562bd:120:9)\n    at http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=c35562bd:176:48",
+              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=5aff7e01:19:17)\n    at parseJsonBody (http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=5aff7e01:120:9)\n    at http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=5aff7e01:176:48",
               "detail": "{\n  \"name\": \"ServerError\",\n  \"response\": {},\n  \"statusCode\": 403,\n  \"result\": {\n    \"errors\": [\n      {\n        \"message\": \"Synthetic permission denied.\",\n        \"extensions\": {\n          \"code\": \"FORBIDDEN\"\n        }\n      }\n    ]\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:24.589Z",
+              "time": "2026-09-30T09:28:20.119Z",
               "count": 1
             },
             {
-              "id": "e690291e-ede9-4257-aaa5-676dfe897fed",
+              "id": "e19a27b2-2a63-4cf8-ac6d-13d0474fa3a8",
               "message": "Synthetic permission denied.",
               "detail": "{\n  \"message\": \"Synthetic permission denied.\",\n  \"operation\": \"GetAgentDefinitions\",\n  \"extensions\": {\n    \"code\": \"FORBIDDEN\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:24.589Z",
+              "time": "2026-09-30T09:28:20.118Z",
               "count": 1
             },
             {
-              "id": "fa1190af-5c3c-4f65-b343-26ddf05e55ae",
+              "id": "de9925e2-0e61-47f8-91c9-2c294ba913e0",
               "message": "Response not successful: Received status code 403",
-              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=c35562bd:19:17)\n    at parseJsonBody (http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=c35562bd:120:9)\n    at http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=c35562bd:176:48",
+              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=5aff7e01:19:17)\n    at parseJsonBody (http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=5aff7e01:120:9)\n    at http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=5aff7e01:176:48",
               "detail": "{\n  \"name\": \"ServerError\",\n  \"response\": {},\n  \"statusCode\": 403,\n  \"result\": {\n    \"errors\": [\n      {\n        \"message\": \"Synthetic permission denied.\",\n        \"extensions\": {\n          \"code\": \"FORBIDDEN\"\n        }\n      }\n    ]\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:24.588Z",
+              "time": "2026-09-30T09:28:20.118Z",
               "count": 1
             },
             {
-              "id": "95741f22-ab8c-4d1e-be9c-5d4fec8c75b7",
+              "id": "130a8a45-8985-48e8-96f0-b17db8c6e202",
               "message": "Synthetic permission denied.",
               "detail": "{\n  \"message\": \"Synthetic permission denied.\",\n  \"operation\": \"ListCollaborationRootHistory\",\n  \"extensions\": {\n    \"code\": \"FORBIDDEN\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:24.588Z",
+              "time": "2026-09-30T09:28:20.118Z",
               "count": 1
             },
             {
-              "id": "481b09a5-b2d5-450f-a019-89082bc93d71",
+              "id": "a16e3c6e-6baa-4bbd-84c8-e3de17963a14",
               "message": "Response not successful: Received status code 403",
-              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=c35562bd:19:17)\n    at parseJsonBody (http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=c35562bd:120:9)\n    at http://127.0.0.1:4291/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=c35562bd:176:48",
+              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=5aff7e01:19:17)\n    at parseJsonBody (http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=5aff7e01:120:9)\n    at http://127.0.0.1:4296/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=5aff7e01:176:48",
               "detail": "{\n  \"name\": \"ServerError\",\n  \"response\": {},\n  \"statusCode\": 403,\n  \"result\": {\n    \"errors\": [\n      {\n        \"message\": \"Synthetic permission denied.\",\n        \"extensions\": {\n          \"code\": \"FORBIDDEN\"\n        }\n      }\n    ]\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:24.586Z",
+              "time": "2026-09-30T09:28:20.116Z",
               "count": 1
             },
             {
-              "id": "8b59736d-29b9-4616-93d5-cc9b0355da7c",
+              "id": "9fdd01f6-3db6-4bc4-8d27-ca64ee14a66d",
               "message": "Synthetic permission denied.",
               "detail": "{\n  \"message\": \"Synthetic permission denied.\",\n  \"operation\": \"ListWorkspaceRunHistory\",\n  \"extensions\": {\n    \"code\": \"FORBIDDEN\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-09-30T04:42:24.586Z",
+              "time": "2026-09-30T09:28:20.115Z",
               "count": 1
             }
           ],
@@ -119784,7 +119736,7 @@
           ]
         }
       },
-      "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\n127.0.0.1:4391\n\nhttp://127.0.0.1:4391\n\nOffline\n\nCannot reach AutoByteus desktop\n\nYour phone cannot reach the desktop node over the current private network.\n\nCheck that AutoByteus is running and your LAN, VPN, or tailnet is connected.\n\nRecent work\nSwitch work\nNo recent runs yet. Choose an agent, team, or workspace to start.\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
+      "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\n127.0.0.1:4396\n\nhttp://127.0.0.1:4396\n\nOffline\n\nCannot reach AutoByteus desktop\n\nYour phone cannot reach the desktop node over the current private network.\n\nCheck that AutoByteus is running and your LAN, VPN, or tailnet is connected.\n\nRecent work\nSwitch work\nNo recent runs yet. Choose an agent, team, or workspace to start.\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
       "primaryNavHeight": null,
       "errors": []
     }
