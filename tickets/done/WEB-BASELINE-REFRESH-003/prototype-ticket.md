@@ -47,5 +47,8 @@
 
 ## Finalization
 
-- Integration result: `Pending`
-- Cleanup result: `Pending`
+- Integration result: `Completed` — `personal` fast-forwarded `df1377c` → `5da5a9f` (accepted baseline commit); this record is the following docs commit. Post-integration on the canonical checkout: test 12/12, typecheck exit 0.
+- Baseline promotion: `Completed` — the refreshed experience is the default prototype (`/` → `/chat`, `/workspace`); no preview-only state.
+- Dependent ticket: `cross-scope-agent-mentions` merged the refreshed `personal` (`b7bf8f6`) and revalidated 30/30.
+- Remote: `personal` pushed to `origin`.
+- Cleanup result: `Completed` — Bootstrapper and review servers on 4195/4196/4296/4396 stopped; ticket worktree and merged local branch `prototype/web-baseline-refresh-003` removed; `/tmp/autobyteus-prototype-WEB-BASELINE-REFRESH-003` deleted.
