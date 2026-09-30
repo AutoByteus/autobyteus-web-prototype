@@ -29,6 +29,7 @@
       :class="popover.narrow.value
         ? 'fixed inset-x-2 bottom-2 max-h-[80vh]'
         : ['absolute right-0 w-[19rem] max-w-[calc(100vw-1rem)]', popover.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5']"
+      :style="popover.narrow.value ? undefined : { maxHeight: `${popover.maxHeight.value}px` }"
       @keydown="onMenuKeydown"
     >
       <button
@@ -57,7 +58,7 @@
       </div>
 
       <!-- Browsing runtimes must not clip the side submenu; lists scroll. -->
-      <div class="p-1" :class="query.trim() || drilledRuntime ? 'max-h-[22rem] overflow-y-auto' : ''">
+      <div class="min-h-0 p-1" :class="query.trim() || drilledRuntime ? 'max-h-[22rem] overflow-y-auto' : ''">
         <!-- Narrow drill-in: one runtime's models -->
         <ChatModelList
           v-if="drilledRuntime"
@@ -139,11 +140,11 @@
               :aria-label="$t('chat.model.runtimeModelsAria', { runtime: runtime.label })"
               class="absolute z-50 w-[17rem] rounded-lg border border-gray-200 bg-white p-1 shadow-lg"
               :class="flyoutSide === 'left' ? 'right-full mr-1.5' : 'left-full ml-1.5'"
-              :style="{ top: `${flyoutOffset}px` }"
+              :style="{ bottom: '-5px' }"
               data-test="chat-model-submenu"
               @keydown.left.stop.prevent="closeSubmenu(true)"
             >
-              <div class="max-h-[20rem] overflow-y-auto">
+              <div class="overflow-y-auto" :style="{ maxHeight: `${flyoutListMaxHeight}px` }">
                 <ChatModelList
                   :runtime-kind="runtime.runtimeKind"
                   :state="catalog.catalogState(runtime.runtimeKind)"
@@ -189,11 +190,13 @@ const rootRef = ref<HTMLElement | null>(null)
 const triggerRef = ref<HTMLElement | null>(null)
 const menuRef = ref<HTMLElement | null>(null)
 const searchRef = ref<HTMLInputElement | null>(null)
-const popover = useAnchoredPopover(rootRef, triggerRef, 360)
+const popover = useAnchoredPopover(rootRef, triggerRef, 360, { placement: 'above' })
 const query = ref('')
+const FLYOUT_LIST_MAX_PX = 320
 const submenuRuntime = ref<string | null>(null)
 const flyoutSide = ref<'left' | 'right'>('right')
-const flyoutOffset = ref(-5)
+// The menu opens upward, so the side submenu grows upward from its runtime row (bottom-aligned).
+const flyoutListMaxHeight = ref(FLYOUT_LIST_MAX_PX)
 const drilledRuntime = computed(() => (popover.narrow.value ? submenuRuntime.value : null))
 
 const runtimeLabelFor = (runtimeKind: string) => runtimeKindToLabel(runtimeKind)
@@ -230,9 +233,9 @@ const openSubmenu = (runtimeKind: string, immediate: boolean) => {
       const rect = menu.getBoundingClientRect()
       flyoutSide.value = rect.right + 290 > window.innerWidth ? 'left' : 'right'
       const row = menu.querySelector<HTMLElement>(`[data-runtime="${runtimeKind}"]`)
-      const rowTop = row?.getBoundingClientRect().top ?? rect.top
-      const overflow = rowTop - 5 + 330 - (window.innerHeight - 12)
-      flyoutOffset.value = overflow > 0 ? -5 - overflow : -5
+      const rowBottom = row?.getBoundingClientRect().bottom ?? rect.bottom
+      // Row bottom + 5px overhang, minus a 12px viewport margin and the flyout's 10px padding/border.
+      flyoutListMaxHeight.value = Math.max(0, Math.min(FLYOUT_LIST_MAX_PX, Math.floor(rowBottom + 5 - 12 - 10)))
     }
     submenuRuntime.value = runtimeKind
     catalog.ensureCatalog(runtimeKind)

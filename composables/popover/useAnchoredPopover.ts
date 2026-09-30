@@ -1,6 +1,15 @@
 import { nextTick, onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
 
 const NARROW_MAX_WIDTH_PX = 640
+const VIEWPORT_MARGIN_PX = 16
+const MENU_GAP_PX = 6
+
+/**
+ * `auto` picks below/above by available space (running-conversation `/` menu).
+ * `above` always opens upward and limits the height to the space above the trigger; the menu
+ * content scrolls instead of flipping down (new-chat composer menus).
+ */
+export type AnchoredPopoverPlacementPolicy = 'auto' | 'above'
 
 /**
  * Anchored popover behavior shared by the Chat menus and the message box's `/` skill menu:
@@ -11,9 +20,11 @@ export function useAnchoredPopover(
   rootRef: Ref<HTMLElement | null>,
   triggerRef: Ref<HTMLElement | null>,
   preferredHeight = 460,
+  options: { placement?: AnchoredPopoverPlacementPolicy } = {},
 ) {
+  const policy = options.placement ?? 'auto'
   const open = ref(false)
-  const placement = ref<'above' | 'below'>('below')
+  const placement = ref<'above' | 'below'>(policy === 'above' ? 'above' : 'below')
   const maxHeight = ref(preferredHeight)
   const narrow = ref(false)
 
@@ -39,8 +50,20 @@ export function useAnchoredPopover(
     const trigger = triggerRef.value
     if (!trigger) return
     const rect = trigger.getBoundingClientRect()
-    const below = window.innerHeight - rect.bottom - 16
-    const above = rect.top - 16
+    const below = window.innerHeight - rect.bottom - VIEWPORT_MARGIN_PX
+    const above = rect.top - VIEWPORT_MARGIN_PX
+    if (policy === 'above') {
+      // The menu is positioned against its containing block (the root when positioned, otherwise
+      // the root's offset parent, e.g. the composer card), so measure the space above that box.
+      const root = rootRef.value
+      const anchor = root && getComputedStyle(root).position === 'static'
+        ? (root.offsetParent as HTMLElement | null) ?? root
+        : root ?? trigger
+      const spaceAbove = anchor.getBoundingClientRect().top - MENU_GAP_PX - VIEWPORT_MARGIN_PX
+      placement.value = 'above'
+      maxHeight.value = Math.max(0, Math.min(preferredHeight, Math.floor(spaceAbove)))
+      return
+    }
     const fitsBelow = below >= preferredHeight
     const fitsAbove = above >= preferredHeight
     if (fitsBelow || (!fitsAbove && below >= above)) {
