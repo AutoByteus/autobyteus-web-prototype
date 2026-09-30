@@ -13,11 +13,9 @@ import {
   type RunMentionDefinition,
 } from '~/prototype/run-mentions/runMentionState'
 
-/** A shared Agent or Team offered by `@` in a live run, with its relation to that run. */
+/** A shared Agent or Team offered by `@` in a live run. */
 export interface RunMentionOption extends ChatTargetOption {
   definition: RunMentionDefinition
-  /** Already reachable in this run (a configured member or an added collaborator). */
-  inRun: boolean
 }
 
 /** A chosen mention that is still present in the composer text. */
@@ -25,7 +23,6 @@ export interface RunMentionChip {
   key: string
   kind: 'agent' | 'team'
   name: string
-  inRun: boolean
 }
 
 export const mentionToken = (name: string): string => `@${name}`
@@ -100,23 +97,25 @@ export function useRunMentions() {
   const definitions = computed<RunMentionDefinition[]>(() => listRunMentionDefinitions())
   const inRunKeys = computed<ReadonlySet<string>>(() => scope.value?.inRunKeys ?? new Set<string>())
 
-  const options = computed<RunMentionOption[]>(() => definitions.value.map((definition) => ({
-    key: definition.key,
-    kind: definition.kind,
-    id: definition.id,
-    name: definition.name,
-    initials: initialsFor(definition.name),
-    description: definition.kind === 'team'
-      ? t('chat.targets.teamDescription', { count: definition.members.length, coordinator: definition.members[0]?.name ?? '' })
-      : definition.description,
-    definition,
-    inRun: inRunKeys.value.has(definition.key),
-  }))
-    // Agents, then Teams; within each, what can still be brought in comes first.
+  /**
+   * What `@` offers: shared Agents, then shared Teams, that are not in this run yet. A member of
+   * the run and anything already brought in are left out: the run's agents can already reach them.
+   */
+  const options = computed<RunMentionOption[]>(() => definitions.value
+    .filter((definition) => !inRunKeys.value.has(definition.key))
+    .map((definition) => ({
+      key: definition.key,
+      kind: definition.kind,
+      id: definition.id,
+      name: definition.name,
+      initials: initialsFor(definition.name),
+      description: definition.kind === 'team'
+        ? t('chat.targets.teamDescription', { count: definition.members.length, coordinator: definition.members[0]?.name ?? '' })
+        : definition.description,
+      definition,
+    }))
     .map((option, index) => ({ option, index }))
-    .sort((left, right) => Number(left.option.kind === 'team') - Number(right.option.kind === 'team')
-      || Number(left.option.inRun) - Number(right.option.inRun)
-      || left.index - right.index)
+    .sort((left, right) => Number(left.option.kind === 'team') - Number(right.option.kind === 'team') || left.index - right.index)
     .map((entry) => entry.option))
 
   const chips = computed<RunMentionChip[]>(() => {
@@ -124,7 +123,7 @@ export function useRunMentions() {
     return draftMentionKeys(focusedRunId.value)
       .map((key) => options.value.find((option) => option.key === key))
       .filter((option): option is RunMentionOption => Boolean(option) && textHasMention(text, option!.name))
-      .map((option) => ({ key: option.key, kind: option.kind, name: option.name, inRun: option.inRun }))
+      .map((option) => ({ key: option.key, kind: option.kind, name: option.name }))
   })
 
   return { available, rootRunId, focusedRunId, focusedName, route, options, chips }

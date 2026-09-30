@@ -126,6 +126,14 @@
 - Baseline finding B-001 (for a later baseline correction, not part of this design): the synthetic workspace fixture has kind `local`, so stored standalone Agent history is hidden in the accepted baseline; and a route change right after opening a Team run drops its context.
 - Status: `Awaiting User Review`.
 
+## Review Round 10
+
+- User confirmation, 2026-09-30: in a standalone Agent run, an Agent Team run and an Agent Org run, the user can bring in a standalone Agent or an Agent Team.
+- User decision, 2026-09-30: "the agent is already in the team, of course, it's not offered … it's only offered for the agents and agent teams which are not in … the agent team" → PC-027. SC-005/REQ-006 are now met by not offering what is already in the run.
+- Evidence: `review-evidence/round-10/` (`menu-only-outside-run.png`, validation 48/48).
+- Requirement impact to report with the final package: REQ-006/SC-005 wording ("re-mention shows it is already available") changes to "not offered"; Daily Assistant stays excluded as in New chat `@` unless the user decides otherwise.
+- Status: `Awaiting User Review`.
+
 ## Findings For Requirements (observed, not decided)
 
 - F-001 (REQ-003/004): the client can only build a conversation for a delegated child whose address is a configured member (`createTeamAgentContext` → `configuredAgentAtAddress`), and the task-execution DTO carries no definition identity or launch settings. A collaborator that is not mounted needs both from the server. The prototype supplies them locally.

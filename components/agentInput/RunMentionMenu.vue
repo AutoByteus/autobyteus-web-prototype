@@ -1,5 +1,5 @@
 <template>
-  <!-- `@` in a live run: shared Agents and Teams that can be brought into the current run. -->
+  <!-- `@` in a live run: shared Agents and Teams that are not in the current run yet. -->
   <div
     data-test="run-mention-menu"
     class="flex min-h-0 w-[23rem] max-w-[calc(100vw-1rem)] flex-col rounded-lg border border-gray-200 bg-white text-left shadow-lg"
@@ -36,11 +36,6 @@
               <span class="block truncate text-[0.8125rem] font-medium text-gray-900">{{ option.name }}</span>
               <span class="block truncate text-xs text-gray-500">{{ option.description }}</span>
             </span>
-            <span
-              v-if="option.inRun"
-              class="flex-shrink-0 rounded-full border border-gray-200 bg-white px-1.5 py-0.5 text-[0.6875rem] font-medium text-gray-500"
-              data-test="run-mention-option-in-run"
-            >{{ $t('chat.mentions.inRun') }}</span>
           </button>
         </li>
       </template>

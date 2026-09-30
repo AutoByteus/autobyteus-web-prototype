@@ -82,7 +82,6 @@ const chatMessages = {
   'chat.targets.teamDescription': '{{count}} 名成员 · 协调者 {{coordinator}}',
   'chat.mentions.headerPrefix': '加入本次运行',
   'chat.mentions.listAria': '可加入本次运行的智能体和团队',
-  'chat.mentions.inRun': '已在本次运行中',
   'chat.mentions.noMatchHint': '无法提及智能体组织。',
   'chat.mentions.footerRelay': '{{agent}} 会收到你的消息并将其加入本次运行',
   'chat.mentions.footerDirect': '你的消息将直接发送给对方；对方加入本次运行',
