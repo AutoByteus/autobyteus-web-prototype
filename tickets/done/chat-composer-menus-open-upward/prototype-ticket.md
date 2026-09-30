@@ -67,5 +67,14 @@
 
 ## Finalization
 
-- Integration result: Pending
-- Cleanup result: Pending
+- Integration result: `Completed` (see Integration And Cleanup)
+- Cleanup result: `Completed` (see Integration And Cleanup)
+
+## Integration And Cleanup
+
+- Ticket result revision: `d0c39a5` on `prototype/chat-composer-menus-open-upward` (review `7130a4d`, final package `81ab2ae`, move to done `d0c39a5`)
+- Integration: `Completed` — canonical `personal` fast-forwarded `045a4f7` → `d0c39a5` (this record is the following docs commit on `personal`).
+- Baseline promotion: `Completed` — the approved behavior is the normal new-chat surface reached from `/` → `/chat`; no preview-only state.
+- Post-integration validation: canonical `personal` on port 3212 — `validate-chat-composer-menus-open-upward.mjs` 15/15, 0 page errors (`review-evidence/post-integration-results.json`); `pnpm test` 12/12; VIS manifest 10/10 SHA-256 match.
+- Remote: `personal` pushed to `origin` (`AutoByteus/autobyteus-web-prototype`).
+- Cleanup: review server (3281) and canonical validation server (3212) stopped; ticket worktree and merged local branch `prototype/chat-composer-menus-open-upward` removed.
