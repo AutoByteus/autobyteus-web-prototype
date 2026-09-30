@@ -91,6 +91,13 @@
 - This ticket stays at `79a39c1` with no further future-state edits until the refresh is accepted and integrated into `personal`; then merge `personal` here, revalidate (`validate-cross-scope-agent-mentions.mjs`), and resume the review.
 - 2026-09-30: refresh accepted (`personal@5da5a9f`) and merged (`b7bf8f6`; two generated files regenerated). Revalidated: browser validation 30/30 (`review-evidence/round-5/results.json`), typecheck exit 0, lint exit 0, test 12/12, `validate:boundaries` 0 failures. Activity tab shows Background Tasks and no To-Do (`round-5/activity-tab-refreshed.png`). Review resumed; `Awaiting User Review`.
 
+## Review Round 6
+
+- User feedback, 2026-09-30 (composer screenshot): "researcher gets this message and brings computer user agent into this [run]. This text is redundant. Remove it." Keep the UI clean.
+- Change: PC-019. Evidence: `review-evidence/round-6/results.json` (30/30).
+- Asked the user whether the same sentence in the `@` menu footer and the chip itself should also go.
+- Status: `Awaiting User Review`.
+
 ## Findings For Requirements (observed, not decided)
 
 - F-001 (REQ-003/004): the client can only build a conversation for a delegated child whose address is a configured member (`createTeamAgentContext` → `configuredAgentAtAddress`), and the task-execution DTO carries no definition identity or launch settings. A collaborator that is not mounted needs both from the server. The prototype supplies them locally.

@@ -8,14 +8,13 @@
       <ContextFilePathInputArea :target="target" />
     </div>
     <div class="border-t border-gray-100" :class="hasMenus ? 'rounded-b-xl' : ''">
-      <!-- `@` mentions chosen for this message, and who receives it (cross-scope-agent-mentions). -->
+      <!-- `@` mentions chosen for this message (cross-scope-agent-mentions). -->
       <div
         v-if="mentions.chips.value.length"
         class="flex flex-wrap items-center gap-x-2 gap-y-1.5 px-3 pt-2.5"
         data-test="agent-input-mention-chips"
       >
         <RunMentionChips :chips="mentions.chips.value" @remove="removeMention" />
-        <span class="min-w-0 text-xs text-gray-500" data-test="agent-input-mention-hint">{{ mentionHint }}</span>
       </div>
       <div
         v-if="skillTagging && requestedSkillNames.length"
@@ -36,7 +35,6 @@ import SkillTagChips from '~/components/chat/SkillTagChips.vue';
 import RunMentionChips from '~/components/agentInput/RunMentionChips.vue';
 import { mentionToken, useRunMentions, type RunMentionChip } from '~/composables/agentInput/useRunMentions';
 import { removeDraftMention } from '~/prototype/run-mentions/runMentionState';
-import { useLocalization } from '~/composables/useLocalization';
 import { computed } from 'vue';
 import { useComposerTarget } from '~/composables/agentInput/useComposerTarget';
 import type { SkillTaggingCapability } from '~/composables/agentInput/useSkillTagMenu';
@@ -47,25 +45,9 @@ const props = defineProps<{
   skillTagging?: SkillTaggingCapability | null;
 }>();
 
-const { t } = useLocalization();
 const target = useComposerTarget();
 const mentions = useRunMentions();
 const hasMenus = computed(() => Boolean(props.skillTagging) || mentions.available.value);
-
-/** Says who receives the message and what happens to the mentioned collaborators. */
-const mentionHint = computed(() => {
-  const chips = mentions.chips.value;
-  const fresh = chips.filter((chip) => !chip.inRun).map((chip) => chip.name);
-  const existing = chips.filter((chip) => chip.inRun).map((chip) => chip.name);
-  const agent = mentions.focusedName.value;
-  if (mentions.route.value === 'direct') {
-    return t('chat.mentions.hintDirect', { names: chips.map((chip) => chip.name).join(', ') });
-  }
-  const parts: string[] = [];
-  if (fresh.length) parts.push(t('chat.mentions.hintRelay', { agent, names: fresh.join(', ') }));
-  if (existing.length) parts.push(t(fresh.length ? 'chat.mentions.hintInRunAlso' : 'chat.mentions.hintInRun', { agent, names: existing.join(', ') }));
-  return parts.join(' ');
-});
 
 /** Removing a chip keeps the words and drops the mention. */
 const removeMention = (chip: RunMentionChip) => {
