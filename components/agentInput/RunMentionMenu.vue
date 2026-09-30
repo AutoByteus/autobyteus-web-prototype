@@ -41,7 +41,7 @@
       </template>
     </ul>
     <footer class="border-t border-gray-100 px-3 py-1.5 text-xs text-gray-400" data-test="run-mention-menu-footer">
-      {{ route === 'direct' ? $t('chat.mentions.footerDirect') : $t('chat.mentions.footerRelay', { agent: focusedName }) }}
+      {{ $t('chat.mentions.footerRelay', { agent: focusedName }) }}
     </footer>
   </div>
 </template>
@@ -56,7 +56,6 @@ defineProps<{
   highlight: number
   /** The agent the user is talking to; it receives the message. */
   focusedName: string
-  route: 'relay' | 'direct'
 }>()
 const emit = defineEmits<{
   (event: 'choose', index: number): void

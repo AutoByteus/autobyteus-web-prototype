@@ -9,7 +9,6 @@ import { resolveRunMentionScope } from '~/prototype/run-mentions/runMentionScope
 import { illustrativeRunMentionDefinitions } from '~/prototype/run-mentions/runMentionFixtures'
 import {
   draftMentionKeys,
-  runMentionRoute,
   type RunMentionDefinition,
 } from '~/prototype/run-mentions/runMentionState'
 
@@ -92,7 +91,6 @@ export function useRunMentions() {
   const rootRunId = computed(() => scope.value?.rootRunId ?? null)
   const focusedRunId = computed(() => scope.value?.focusedRunId ?? null)
   const focusedName = computed(() => scope.value?.focusedName ?? '')
-  const route = computed(() => runMentionRoute())
 
   const definitions = computed<RunMentionDefinition[]>(() => listRunMentionDefinitions())
   const inRunKeys = computed<ReadonlySet<string>>(() => scope.value?.inRunKeys ?? new Set<string>())
@@ -126,7 +124,7 @@ export function useRunMentions() {
       .map((option) => ({ key: option.key, kind: option.kind, name: option.name }))
   })
 
-  return { available, rootRunId, focusedRunId, focusedName, route, options, chips }
+  return { available, rootRunId, focusedRunId, focusedName, options, chips }
 }
 
 /** Names that render as mention chips in sent messages. */

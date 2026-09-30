@@ -96,7 +96,6 @@ export const createTeamRunDriver = (): RunDriver | null => {
           : collectConfiguredTeams(tree).find((entry) => entry.team_definition_id === definition.id)?.coordinator_address))
       return agent?.agent_run_id ?? null
     },
-    focus: (agentRunId) => { view.focusAgent(agentRunId) },
     refresh: () => history.refreshRunNavigationTopology('team-stream-structure'),
   }
 }

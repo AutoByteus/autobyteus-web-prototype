@@ -45,7 +45,6 @@
             :options="mentionMenu.filtered.value"
             :highlight="mentionMenu.highlight.value"
             :focused-name="mentionMenu.mentions.focusedName.value"
-            :route="mentionMenu.mentions.route.value"
             @highlight="mentionMenu.highlight.value = $event"
             @choose="mentionMenu.choose"
           />

@@ -85,7 +85,6 @@ const chatMessages = {
   'chat.mentions.listAria': 'Agents and teams you can bring into this run',
   'chat.mentions.noMatchHint': 'Agent Orgs can’t be mentioned.',
   'chat.mentions.footerRelay': '{{agent}} gets your message and brings them into this run',
-  'chat.mentions.footerDirect': 'Your message goes straight to them; they join this run',
   'chat.mentions.removeMention': 'Remove mention {{name}}',
   'chat.mentions.noticeFailed': 'Couldn’t add {{name}} to this run',
   'chat.mentions.noticeFailedDetail': '{{reason}} Nothing was added.',

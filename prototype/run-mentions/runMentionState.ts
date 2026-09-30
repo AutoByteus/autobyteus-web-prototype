@@ -114,42 +114,11 @@ export const dismissRunMentionNotice = (rootRunId: string, id: string): void => 
 }
 
 /**
- * Review-only comparison for decision Q1: `relay` (recommended) sends the
- * message to the focused agent, which brings the collaborator in; `direct`
- * sends it straight to the collaborator. Select with `#mentionRoute=direct`
- * (kept for the browser session; `#mentionRoute=relay` switches back).
- */
-export type RunMentionRoute = 'relay' | 'direct'
-const ROUTE_KEY = 'autobyteus.prototype.mentionRoute'
-export const runMentionRoute = (): RunMentionRoute => {
-  if (typeof window === 'undefined') return 'relay'
-  // The hash keeps the route path unchanged, so the prototype resolves the same page state.
-  const fromUrl = new URLSearchParams(window.location.hash.replace(/^#/, '')).get('mentionRoute')
-  if (fromUrl === 'direct' || fromUrl === 'relay') sessionStorage.setItem(ROUTE_KEY, fromUrl)
-  return sessionStorage.getItem(ROUTE_KEY) === 'direct' ? 'direct' : 'relay'
-}
-
-/**
  * Team runs this browser context has resumed by sending a message. The local
  * history adapter reports them as active, as the server would after a restore,
  * so a periodic history refresh does not reset their member statuses.
  */
 export const resumedTeamRunIds = new Set<string>()
-
-/**
- * Review-only choice of the task Agent marker in the run tree, selected with
- * `#taskIcon=avatar|bolt|ring` and kept for the browser session.
- * `avatar` is the proposal; `ring` is the current product marker, centered.
- */
-export type TaskAgentIconVariant = 'avatar' | 'bolt' | 'ring'
-const TASK_ICON_KEY = 'autobyteus.prototype.taskIcon'
-export const taskAgentIconVariant = (): TaskAgentIconVariant => {
-  if (typeof window === 'undefined') return 'avatar'
-  const fromUrl = new URLSearchParams(window.location.hash.replace(/^#/, '')).get('taskIcon')
-  if (fromUrl === 'avatar' || fromUrl === 'bolt' || fromUrl === 'ring') sessionStorage.setItem(TASK_ICON_KEY, fromUrl)
-  const stored = sessionStorage.getItem(TASK_ICON_KEY)
-  return stored === 'bolt' || stored === 'ring' ? stored : 'avatar'
-}
 
 /** Standalone Agent runs this browser context drives locally (see `resumedTeamRunIds`). */
 export const resumedAgentRunIds = new Set<string>()

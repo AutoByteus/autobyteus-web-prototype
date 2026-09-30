@@ -65,38 +65,22 @@
           class="mr-1.5"
           data-test="workspace-transient-status-dot"
           :status="row.currentStatus"
-          :variant="taskAgentIcon === 'ring' ? 'transient' : 'solid'"
         />
       </span>
-      <span
-        v-if="row.memberKind === 'agent_team'"
-        class="mr-1.5 inline-flex h-5 flex-shrink-0 items-center"
-        aria-hidden="true"
-      >
+      <span class="mr-1.5 inline-flex h-5 flex-shrink-0 items-center" aria-hidden="true">
         <span
+          v-if="row.memberKind === 'agent_team'"
           class="inline-flex h-4 w-4 items-center justify-center rounded-[0.2rem] border border-dashed border-indigo-400 bg-white text-indigo-600"
           data-team-icon="temporary-task-team"
         >
           <Icon icon="heroicons:bolt-20-solid" class="h-3 w-3" />
         </span>
-      </span>
-      <span
-        v-else-if="taskAgentIcon !== 'ring'"
-        class="mr-1.5 inline-flex h-5 flex-shrink-0 items-center"
-        aria-hidden="true"
-      >
-        <span
-          v-if="taskAgentIcon === 'avatar'"
-          class="inline-flex h-4 w-4 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600"
-          data-task-agent-icon="avatar"
-        >{{ initials }}</span>
+        <!-- A task Agent shows the same solid status dot and initials as a member. -->
         <span
           v-else
-          class="inline-flex h-4 w-4 items-center justify-center rounded-full border border-dashed border-indigo-400 bg-white text-indigo-600"
-          data-task-agent-icon="bolt"
-        >
-          <Icon icon="heroicons:bolt-20-solid" class="h-3 w-3" />
-        </span>
+          class="inline-flex h-4 w-4 items-center justify-center overflow-hidden rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600"
+          data-test="workspace-task-agent-avatar"
+        >{{ initials }}</span>
       </span>
       <span class="min-w-0 flex-1" :class="{ 'font-semibold': row.memberKind === 'agent_team' }">
         <span class="block truncate">{{ row.displayName }}</span>
@@ -140,7 +124,7 @@ import { useLocalization } from '~/composables/useLocalization';
 import { AgentStatus } from '~/types/agent/AgentStatus';
 import type { RunHistoryTransientExecutionRow } from '~/stores/runHistoryTypes';
 import { useRunHistoryStore } from '~/stores/runHistoryStore';
-import { findAddedCollaborator, taskAgentIconVariant } from '~/prototype/run-mentions/runMentionState';
+import { findAddedCollaborator } from '~/prototype/run-mentions/runMentionState';
 
 const props = withDefaults(defineProps<{
   row: RunHistoryTransientExecutionRow;
@@ -165,9 +149,6 @@ const emit = defineEmits<{
 const { t } = useLocalization();
 const runHistoryStore = useRunHistoryStore();
 
-// Task Agent marker (cross-scope-agent-mentions review): `avatar` (proposed) shows the same solid
-// status dot and initials as a member; `bolt` and `ring` are review-only alternatives.
-const taskAgentIcon = taskAgentIconVariant();
 const initials = computed(() => props.row.displayName.split(/\s+/).filter(Boolean).slice(0, 2)
   .map((part) => part[0]?.toUpperCase() ?? '').join('') || 'AI');
 

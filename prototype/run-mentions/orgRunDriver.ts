@@ -126,7 +126,6 @@ export const createOrgRunDriver = (orgRunId: string): RunDriver | null => {
       }
       return null
     },
-    focus: (agentRunId) => store.select(orgRunId, { kind: 'agent_execution', agentRunId }),
     refresh: () => history.refreshRunNavigationTopology('agent-org-activity'),
   }
 }

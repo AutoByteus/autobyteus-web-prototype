@@ -64,7 +64,6 @@ export const createAgentRunDriver = (): RunDriver | null => {
     },
     configuredEntry: (definition) =>
       definition.kind === 'agent' && definition.id === root.config.agentDefinitionId ? rootRunId : null,
-    focus: (agentRunId) => { ensureAgentRunScope(rootRunId).focusedRunId = agentRunId === rootRunId ? null : agentRunId },
     refresh: () => history.refreshRunNavigationTopology('run-reconcile'),
   }
 }

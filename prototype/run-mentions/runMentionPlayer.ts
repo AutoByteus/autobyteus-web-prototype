@@ -22,7 +22,6 @@ import {
   clearDraftMentions,
   draftMentionKeys,
   pushRunMentionNotice,
-  runMentionRoute,
   runMentionState,
   type AddedCollaborator,
   type RunMentionDefinition,
@@ -53,7 +52,6 @@ export interface RunDriver {
   startTask(plan: CollaboratorPlan, definition: RunMentionDefinition, delegatorAgentRunId: string | null): void
   /** The AgentRun of a configured member that already runs this definition, if any. */
   configuredEntry(definition: RunMentionDefinition): string | null
-  focus(agentRunId: string): void
   /** Re-projects the run tree after a structural or status change. */
   refresh(): void
 }
@@ -271,27 +269,6 @@ const playRelay = async (run: Run, content: string, mentions: readonly RunMentio
   await Promise.all(replies)
 }
 
-/** Review-only comparison (Q1 option a): the message goes straight to the collaborator. */
-const playDirect = async (run: Run, content: string, mentions: readonly RunMentionDefinition[]): Promise<void> => {
-  for (const definition of mentions) {
-    if (definition.unrunnableReason) {
-      pushRunMentionNotice({
-        id: nextId('notice'), rootRunId: run.driver.rootRunId, agentRunId: run.driver.focusedAgentRunId, kind: 'failed',
-        definitionKey: definition.key, definitionName: definition.name, detail: definition.unrunnableReason,
-      })
-      continue
-    }
-    const existing = run.existingEntry(definition)
-    const entryAgentRunId = existing ?? run.addCollaborator(definition, null).entryAgentRunId
-    if (!existing) run.status(entryAgentRunId, 'initializing')
-    run.input(entryAgentRunId, content, 'user_message', null, null)
-    // The message lives in the collaborator's conversation, so the view follows it there.
-    run.driver.focus(entryAgentRunId)
-    run.driver.refresh()
-    await playCollaboratorReply(run, entryAgentRunId, null, true)
-  }
-}
-
 /**
  * Answers a message the product's own send already delivered (the first message of a chat),
  * so the run settles at Idle and the user can continue the conversation.
@@ -328,6 +305,5 @@ export const playRunSend = async (driver: RunDriver, content: string): Promise<v
   window.__AUTOBYTEUS_PROTOTYPE_MARK_LIVE_RUN__?.()
   driver.activate()
   const run = createRun(driver)
-  if (runMentionRoute() === 'direct' && mentions.length) await playDirect(run, content, mentions)
-  else await playRelay(run, content, mentions)
+  await playRelay(run, content, mentions)
 }

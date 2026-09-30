@@ -33,7 +33,7 @@ const menu = (page) => page.locator('[data-test="run-mention-menu"]')
 const tree = (page) => page.locator('[data-test="workspace-team-execution-tree"]').first()
 const type = async (page, text) => { await box(page).click(); await page.keyboard.type(text, { delay: 4 }); await page.waitForTimeout(350) }
 
-// ---- Relay route (recommended): the focused agent brings the collaborator in ----
+// ---- Team run: the focused agent receives the message and brings the collaborator in ----
 const page = await openPage()
 await openTeamRun(page)
 await type(page, 'the input box is too high. please talk to @')
@@ -96,16 +96,6 @@ check('V-23', 'Failure leaves the run tree unchanged (AC-006)', await tree(page)
 await page.locator('[data-test="run-mention-notice-dismiss"]').click(); await page.waitForTimeout(200)
 check('V-24', 'Notices can be dismissed', await page.locator('[data-test="run-mention-notices"]').count() === 0)
 await page.context().close()
-
-// ---- Review-only comparison (Q1 option a): straight to the collaborator ----
-const direct = await openPage({ hash: '#mentionRoute=direct' })
-await openTeamRun(direct)
-await type(direct, 'please talk to @prod'); await direct.locator('[data-test="run-mention-option-fixture-product-team"]').click(); await direct.keyboard.type('to fix the UI first', { delay: 4 }); await direct.waitForTimeout(250)
-check('V-25', 'Direct variant shows the same clean chip row', (await direct.locator('[data-test="agent-input-mention-chips"]').innerText()).trim() === '@Product Team')
-await direct.keyboard.press('Enter'); await direct.waitForTimeout(3500)
-check('V-26', 'Direct variant: view follows the message to the collaborator; no Team messages', (await direct.locator('[data-testid="team-workspace-surface"] h4').innerText()) === 'product prototyper'
-  && await direct.locator('[data-test="team-communication-message-row"]').count() === 0)
-await direct.context().close()
 
 // ---- Narrow window and preserved behavior ----
 const narrow = await openPage({ width: 1024, height: 640 })
