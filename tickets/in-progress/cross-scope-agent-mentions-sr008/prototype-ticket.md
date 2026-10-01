@@ -5,7 +5,7 @@
 - Product ticket: `cross-scope-agent-mentions-sr008`
 - Stable requirements package: `cross-scope-agent-mentions`, SR-008 (Approved 2026-10-01)
 - Title: Collaborator reached with `send_message_to`; briefing as an ordinary message; add checked on send
-- Status: `In Progress`
+- Status: `Awaiting User Review`
 - Mode: `Product Experience Prototyping` (user-directed revision of the approved package `tickets/done/cross-scope-agent-mentions/`)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-10-01
 - User words: "approved. ask product prototyper to update UI thanks"
@@ -36,9 +36,18 @@
 
 - RD-004 product behavior (source `origin/personal@8caa610ff`): a `send_message_to` delivery reaches the recipient as `MEMBER_INPUT_MESSAGE` with `input_origin: inter_agent_delivery`; `memberInputMessageHandler` → `buildUserMessageFromProjectionPayload` renders it as a user-style message without a sender. Stored conversations do the same (`runProjectionConversation`: role `user`). The `InterAgentMessageSegment` ("From <sender>:") exists but its `INTER_AGENT_MESSAGE` event is filtered out of Team/Org streams (`collaboration-agent-presentation-adapter.ts`: `filtered_collaboration_duplicate`). F-003 is therefore confirmed: user-style today.
 
+## Review Round 1
+
+- Review URL: http://127.0.0.1:3284/workspace (ticket-owned dev server)
+- Changes: PC-028–PC-031 (`prototype-change-log.md`)
+- Browser validation: `validate-cross-scope-agent-mentions.mjs` 49/49 (new V-49 Offline before first message, V-50 `send_message_to` not `delegate_task`, V-51 blocked send), 0 page errors (`review-evidence/round-1/results.json`)
+- Non-normative screenshots: `review-evidence/round-1/` (VIS-004/005/007/010/012/013 states)
+- Question to the user (RD-004): keep the briefing in the collaborator's conversation as the product shows `send_message_to` deliveries today (user-style message, no sender), or show it with its sender?
+
 ## Status History
 
 - 2026-10-01: opened from Solution Designer request (SR-008); `In Progress`.
+- 2026-10-01: round 1 review URL ready; `Awaiting User Review`.
 
 ## Finalization
 

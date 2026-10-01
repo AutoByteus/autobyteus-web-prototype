@@ -59,10 +59,8 @@ export const illustrativeRunMentionDefinitions: readonly RunMentionDefinition[] 
 export const runMentionScript = {
   brief: (request: string) => `The user asked: "${request}"\nPlease take this on and report back to me.`,
   plainReply: 'Understood. I\'ll take it from here.',
-  relayPlan: (name: string) => `I'll bring ${name} into this run and pass on your request.`,
-  relayDone: (name: string, entry: string) => `${name} is in this run now. I sent ${entry} the brief and will pick this up again when they report back.`,
-  relayExisting: (name: string, entry: string) => `${name} is already in this run, so I messaged ${entry} instead of starting another copy.`,
-  relayFailed: (name: string, reason: string) => `I couldn't bring ${name} into this run. ${reason} Nothing was added.`,
+  relayPlan: (name: string) => `I'll brief ${name} on this.`,
+  relayDone: (name: string) => `I sent ${name} the brief and will pick this up again when they report back.`,
   collaboratorAck: 'Got it. I\'ll start on this now and report back.',
   collaboratorReport: (name: string) => `Done, ${name}. The result is ready for you to review.`,
   collaboratorReportShort: 'Noted. I\'ll fold this into the same prototype.',

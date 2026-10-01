@@ -140,20 +140,6 @@ const createRun = (driver: RunDriver) => {
   const toolEnd = (agentRunId: string, turnId: string, invocationId: string, toolName: string, args: Record<string, string>, result: Record<string, string | boolean | null> = { accepted: true }): void => {
     driver.present(agentRunId, { type: 'TOOL_EXECUTION_SUCCEEDED', payload: { invocation_id: invocationId, tool_name: toolName, turn_id: turnId, arguments: args, result } })
   }
-  /**
-   * The delegated work packet as the product delivers it today: a system task notification in
-   * the child's conversation (never a Team/Org tab message), with the delegator's address and run ID.
-   */
-  const taskNotification = (agentRunId: string, delegatorAgentRunId: string, description: string): void => {
-    driver.present(agentRunId, { type: 'SYSTEM_TASK_NOTIFICATION', payload: {
-      sender: { kind: 'system' },
-      content: [
-        `Task delegator address: ${driver.addressOf(delegatorAgentRunId)}`,
-        `Task delegator AgentRun ID: ${delegatorAgentRunId}`,
-        '', 'Description:', description,
-      ].join('\n'),
-    } })
-  }
   /** A `send_message_to` delivery: one Team/Org tab message plus the recipient's input. */
   const message = (senderAgentRunId: string, receiverAgentRunId: string, content: string): void => {
     const messageId = nextId('message')
@@ -187,7 +173,7 @@ const createRun = (driver: RunDriver) => {
   const existingEntry = (definition: RunMentionDefinition): string | null =>
     addedCollaborators(driver.rootRunId).find((entry) => entry.definitionKey === definition.key)?.entryAgentRunId
     ?? driver.configuredEntry(definition)
-  return { driver, status, input, text, toolStart, toolEnd, taskNotification, message, turnStart, turnEnd, addCollaborator, existingEntry }
+  return { driver, status, input, text, toolStart, toolEnd, message, turnStart, turnEnd, addCollaborator, existingEntry }
 }
 
 type Run = ReturnType<typeof createRun>
@@ -210,60 +196,37 @@ const playCollaboratorReply = async (run: Run, entryAgentRunId: string, replyToA
   run.turnEnd(entryAgentRunId, turnId)
 }
 
-const playRelay = async (run: Run, content: string, mentions: readonly RunMentionDefinition[]): Promise<void> => {
+/**
+ * The focused agent receives the message and briefs each collaborator with `send_message_to` by
+ * address, like any other run member (SR-008). The briefing is an ordinary message: a Team/Org tab
+ * row plus an inter-agent delivery in the collaborator's conversation.
+ */
+const playRelay = async (run: Run, content: string, collaborators: ReadonlyArray<{ definition: RunMentionDefinition; entryAgentRunId: string; address: string }>): Promise<void> => {
   const focused = run.driver.focusedAgentRunId
   run.input(focused, content, 'user_message', null, null)
   await wait(350)
   run.status(focused, 'running')
   const turnId = run.turnStart(focused)
-  if (!mentions.length) {
+  if (!collaborators.length) {
     await wait(700)
     run.text(focused, turnId, runMentionScript.plainReply)
     run.turnEnd(focused, turnId)
     return
   }
   const replies: Array<Promise<void>> = []
-  for (const definition of mentions) {
-    const existing = run.existingEntry(definition)
-    if (existing) {
-      // SC-005: already in this run. Message the existing member; never start a second copy.
-      await wait(700)
-      const args = { target_agent_run_id: existing, content: runMentionScript.brief(content) }
-      const invocationId = run.toolStart(focused, turnId, 'send_message_to', args)
-      await wait(600)
-      run.toolEnd(focused, turnId, invocationId, 'send_message_to', args)
-      if (existing !== focused) run.message(focused, existing, args.content)
-      run.text(focused, turnId, runMentionScript.relayExisting(definition.name, nameAt(run.driver.addressOf(existing))))
-      if (existing !== focused) replies.push(playCollaboratorReply(run, existing, null, false))
-      continue
-    }
+  for (const { definition, entryAgentRunId, address } of collaborators) {
     await wait(700)
     run.text(focused, turnId, runMentionScript.relayPlan(definition.name))
     await wait(600)
     const brief = runMentionScript.brief(content)
-    const args = { recipient_address: `/${definition.name.toLowerCase()}`, description: brief }
-    const invocationId = run.toolStart(focused, turnId, 'delegate_task', args)
-    await wait(1200)
-    if (definition.unrunnableReason) {
-      // SC-006: visible failure; the run tree is unchanged. As in the product today,
-      // `delegate_task` returns normally with no run ID and the reason.
-      run.toolEnd(focused, turnId, invocationId, 'delegate_task', args,
-        { target_agent_run_id: null, message: `${definition.name} cannot run in this run. ${definition.unrunnableReason}` })
-      run.text(focused, turnId, runMentionScript.relayFailed(definition.name, definition.unrunnableReason))
-      pushRunMentionNotice({
-        id: nextId('notice'), rootRunId: run.driver.rootRunId, agentRunId: focused, kind: 'failed',
-        definitionKey: definition.key, definitionName: definition.name, detail: definition.unrunnableReason,
-      })
-      continue
-    }
-    const record = run.addCollaborator(definition, focused)
-    run.status(record.entryAgentRunId, 'initializing')
-    run.toolEnd(focused, turnId, invocationId, 'delegate_task', args, { target_agent_run_id: record.entryAgentRunId })
-    run.taskNotification(record.entryAgentRunId, focused, brief)
-    await wait(500)
-    run.text(focused, turnId, runMentionScript.relayDone(definition.name,
-      definition.kind === 'team' ? nameAt(run.driver.addressOf(record.entryAgentRunId)) : definition.name))
-    replies.push(playCollaboratorReply(run, record.entryAgentRunId, focused, true))
+    const args = { recipient_address: address, content: brief }
+    const invocationId = run.toolStart(focused, turnId, 'send_message_to', args)
+    await wait(700)
+    run.toolEnd(focused, turnId, invocationId, 'send_message_to', args)
+    if (entryAgentRunId !== focused) run.message(focused, entryAgentRunId, brief)
+    await wait(400)
+    run.text(focused, turnId, runMentionScript.relayDone(definition.name))
+    if (entryAgentRunId !== focused) replies.push(playCollaboratorReply(run, entryAgentRunId, focused, true))
   }
   run.turnEnd(focused, turnId)
   await Promise.all(replies)
@@ -296,14 +259,34 @@ export const playRunSend = async (driver: RunDriver, content: string): Promise<v
   const chosen = draftMentionKeys(focused)
   const mentions = listRunMentionDefinitions()
     .filter((definition) => chosen.includes(definition.key) && textHasMention(content, definition.name))
+  // A new send replaces the previous outcome notices of this conversation.
+  runMentionState.noticesByRoot[driver.rootRunId] = (runMentionState.noticesByRoot[driver.rootRunId] ?? [])
+    .filter((notice) => notice.agentRunId !== focused)
+  // Adding is checked when the user sends (D-R1). If any mentioned collaborator cannot be added,
+  // nothing is added and the message is not sent: the draft and its chips stay in the composer.
+  const blocked = mentions.filter((definition) => definition.unrunnableReason)
+  if (blocked.length) {
+    for (const definition of blocked) {
+      pushRunMentionNotice({
+        id: nextId('notice'), rootRunId: driver.rootRunId, agentRunId: focused, kind: 'failed',
+        definitionKey: definition.key, definitionName: definition.name, detail: definition.unrunnableReason!,
+      })
+    }
+    return
+  }
   context.requirement = ''
   context.contextFilePaths = []
   clearDraftMentions(focused)
-  // A new message replaces the previous outcome notices of this conversation.
-  runMentionState.noticesByRoot[driver.rootRunId] = (runMentionState.noticesByRoot[driver.rootRunId] ?? [])
-    .filter((notice) => notice.agentRunId !== focused)
   window.__AUTOBYTEUS_PROTOTYPE_MARK_LIVE_RUN__?.()
   driver.activate()
   const run = createRun(driver)
-  await playRelay(run, content, mentions)
+  // One collaborator per definition and run, added when the message is sent. It stays Offline
+  // until its first message (D-R2); a definition already in the run is reused.
+  const collaborators = mentions.map((definition) => {
+    const existing = run.existingEntry(definition)
+    const entryAgentRunId = existing ?? run.addCollaborator(definition, null).entryAgentRunId
+    const record = addedCollaborators(driver.rootRunId).find((entry) => entry.entryAgentRunId === entryAgentRunId)
+    return { definition, entryAgentRunId, address: record?.address ?? driver.addressOf(entryAgentRunId) }
+  })
+  await playRelay(run, content, collaborators)
 }
