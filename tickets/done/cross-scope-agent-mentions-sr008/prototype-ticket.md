@@ -66,5 +66,8 @@
 
 ## Finalization
 
-- Integration result: `Pending`
-- Cleanup result: `Pending`
+- Integration result: `Completed` — `personal` fast-forwarded `9ca5651` → `0659cb0` (final package); this record is the following docs commit on `personal`.
+- Baseline promotion: `Completed` — the revised behavior is the normal prototype (open a run from Workspaces, or start one from Chat, and type `@`); no preview-only state.
+- Post-integration validation: canonical `personal` dev server on port 3212 — `validate-cross-scope-agent-mentions.mjs` 49/49, 0 page errors, 0 external requests (`review-evidence/post-integration-results.json`).
+- Remote: `personal` pushed to `origin`.
+- Cleanup result: `Completed` — review (3284), production preview (3285) and canonical validation (3212) servers stopped; ticket worktree and merged local branch `prototype/cross-scope-agent-mentions-sr008` removed; `/tmp/autobyteus-prototype-cross-scope-agent-mentions-sr008` deleted.
