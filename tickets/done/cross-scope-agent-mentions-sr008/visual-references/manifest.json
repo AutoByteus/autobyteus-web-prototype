@@ -1,0 +1,111 @@
+{
+  "base": "http://127.0.0.1:3285",
+  "capturedAt": "2026-10-01T03:59:33.376Z",
+  "references": [
+    {
+      "id": "VIS-001",
+      "filename": "VIS-001-team-run-at-menu-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run, focused on researcher: `@` menu open above the composer; only standalone Agents and Agent Teams that are not in the run are listed.",
+      "sha256": "ed43dacc16eddb11b58172c063c2e252e9f96e93b137e931d82e17ca321a0bd9"
+    },
+    {
+      "id": "VIS-002",
+      "filename": "VIS-002-team-run-at-menu-empty-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run: `@zzz` has no match; empty state with the Agent Org note.",
+      "sha256": "cf24f65e3d5e3f8b73f9cdf7749da42957106d4d8113fecfd19fb798f4e91e76"
+    },
+    {
+      "id": "VIS-003",
+      "filename": "VIS-003-team-run-composer-mention-chip-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run: `@Product Team` chosen; chip row above the text, `@Product Team` inline in the text.",
+      "sha256": "88ea3c8f8c9abe67ba8e61cbe23cdb9d598080fa09d1ba6b97e34c3eaa78d269"
+    },
+    {
+      "id": "VIS-015",
+      "filename": "VIS-015-team-run-collaborator-offline-on-send-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run right after send: the collaborator Team and its members are in the run tree, Offline before their first message (D-R2).",
+      "sha256": "2bdda8acd5b449bd3cf20c1f93e2b3af17ca79038648e1db0a67179ea5210d23"
+    },
+    {
+      "id": "VIS-004",
+      "filename": "VIS-004-team-run-collaborator-briefed-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run after send: inline mention in the sent message; the focused agent briefs the collaborator with a `send_message_to` card; Team tab shows the briefing row (to the collaborator) and its later report.",
+      "sha256": "b29021011164f54908da5128f23522a4814eca1d52927457f4d3d21383067e64"
+    },
+    {
+      "id": "VIS-005",
+      "filename": "VIS-005-team-run-task-member-conversation-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run: collaborator focused; its conversation starts with the briefing as an agent-to-agent message (\"From Researcher:\"), no system task notice.",
+      "sha256": "bfe91f008da7920278173f48fc06380656a1c7fe38aed9fe07ec74ed20a043bc"
+    },
+    {
+      "id": "VIS-006",
+      "filename": "VIS-006-team-run-task-agent-and-task-team-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run with two collaborators under the run: task rows with solid status dot and initials, no \"Started by\" line, straight branch line; the second collaborator's briefing via `send_message_to`.",
+      "sha256": "80deefec029a9966607441c82c5c4bda24711b4730c857ce874c6fc57ac02834"
+    },
+    {
+      "id": "VIS-007",
+      "filename": "VIS-007-team-run-add-failed-notice-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Team run: adding fails on send; the message is not sent, no agent turn, the draft and chip stay in the composer, red notice above it, run tree unchanged (D-R1).",
+      "sha256": "47b0f0ea06e001e77689813944dd899b9df1da5b0a3becb565edb31471468774"
+    },
+    {
+      "id": "VIS-008",
+      "filename": "VIS-008-org-run-at-menu-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Org run, focused on analyst: `@` menu; the Org, its members and its teams are not listed.",
+      "sha256": "c78d4cbb0f180df9481249cbac5cee3f8439c7126cbf74ed84138b10326dfe40"
+    },
+    {
+      "id": "VIS-009",
+      "filename": "VIS-009-org-run-task-agent-and-task-team-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Org run with two collaborators (an Agent and a Team) under the Org run; Org tab with the briefing rows and the reports.",
+      "sha256": "adc316ef84764e0ea1b080dea368840f08b255bb79714450af5027ae810a86e0"
+    },
+    {
+      "id": "VIS-010",
+      "filename": "VIS-010-org-run-task-agent-conversation-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Org run: collaborator Agent focused; briefing as \"From Analyst:\", its reply, composer available.",
+      "sha256": "c0bd5b2af4913e95232700c5700427ef3d8ea93acd5505240cf5c336fb9b7ba4"
+    },
+    {
+      "id": "VIS-011",
+      "filename": "VIS-011-agent-run-at-menu-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Standalone Agent run (Research Assistant): `@` menu; the run's own agent is not listed.",
+      "sha256": "c82404c824dc516a7cbc411bdd84ffee2143be61f40cfa5cdc6d8a50809a1392"
+    },
+    {
+      "id": "VIS-012",
+      "filename": "VIS-012-agent-run-task-agent-and-task-team-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Standalone Agent run with two collaborators listed under the run row; Team tab with the briefing rows and the reports.",
+      "sha256": "18b1904472cd57f6da4487cae126fcc74bb731f482093ff975d6d7d58b32b9b9"
+    },
+    {
+      "id": "VIS-013",
+      "filename": "VIS-013-agent-run-task-agent-conversation-1512x952.png",
+      "viewport": "1512x952",
+      "state": "Standalone Agent run: collaborator Agent focused; briefing as \"From …\"; header titled by its name; run row no longer highlighted.",
+      "sha256": "7c275c7e7ea471f65536e053f8184754d070bd45e0cdef77b51eaab7b9a119ba"
+    },
+    {
+      "id": "VIS-014",
+      "filename": "VIS-014-team-run-at-menu-small-window-1024x640.png",
+      "viewport": "1024x640",
+      "state": "Team run in a 1024x640 window: the `@` menu stays inside the window above the composer.",
+      "sha256": "c3c84eacd39de5aa37abac73ba63c786dcc386e645341fc6325b158fea94602d"
+    }
+  ]
+}

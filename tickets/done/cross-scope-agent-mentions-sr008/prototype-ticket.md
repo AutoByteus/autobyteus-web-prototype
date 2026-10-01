@@ -5,7 +5,7 @@
 - Product ticket: `cross-scope-agent-mentions-sr008`
 - Stable requirements package: `cross-scope-agent-mentions`, SR-008 (Approved 2026-10-01)
 - Title: Collaborator reached with `send_message_to`; briefing as an ordinary message; add checked on send
-- Status: `Awaiting User Review`
+- Status: `Completed`
 - Mode: `Product Experience Prototyping` (user-directed revision of the approved package `tickets/done/cross-scope-agent-mentions/`)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`), Product Design Requested (New Request), 2026-10-01
 - User words: "approved. ask product prototyper to update UI thanks"
@@ -49,10 +49,20 @@
 - Question RD-004 asked; user: "what do you think then?" → recommendation: show the sender with the existing "From <sender>:" style for all agent-to-agent messages, flagged as product-wide. User: "okayyyy. agreed".
 - Change: PC-032. Evidence: `review-evidence/round-2/` (`r2-focused.png`, `r2-collaborator.png`, validation 49/49).
 
+## Final Package
+
+- User confirmation: user message 2026-10-01 — "You checked yourself right? Everything's right? If you checked yourself everything's right then you're done. Yeah, it's correct." (confirmation conditional on Product Prototyper's own check, which passed: 49/49 browser checks in dev and on the production build, and a visual review of every state)
+- UI/UX specification: `ui-ux-spec.md` (`Approved`, supersedes `tickets/done/cross-scope-agent-mentions/ui-ux-spec.md`)
+- Final visual references: `visual-references/VIS-001`–`VIS-015` + `manifest.json` (SHA-256), production build (`PORT=3285`), 0 browser errors. New: VIS-015 (Offline on send). Changed: VIS-004, VIS-005, VIS-006, VIS-007, VIS-009, VIS-010, VIS-012, VIS-013. Unchanged in content: VIS-001–003, VIS-008, VIS-011, VIS-014 (recaptured).
+- Behavior matrix: `ui-behavior-test-matrix.md`; change log `prototype-change-log.md` (PC-028–PC-032)
+- Final validation: production build `validate-cross-scope-agent-mentions.mjs` 49/49, 0 page errors, 0 external requests (`review-evidence/final-validation/results.json`); typecheck exit 0, lint exit 0, build exit 0
+- Decisions: RD-001–RD-003 as requested (SR-008, D-R1, D-R2); RD-004 agent-to-agent messages show their sender (product-wide)
+
 ## Status History
 
 - 2026-10-01: opened from Solution Designer request (SR-008); `In Progress`.
 - 2026-10-01: round 1 review URL ready; `Awaiting User Review`.
+- 2026-10-01: round 2 (RD-004) applied; user confirmed; final validation 49/49; references VIS-001–VIS-015 captured; `Completed`.
 
 ## Finalization
 
