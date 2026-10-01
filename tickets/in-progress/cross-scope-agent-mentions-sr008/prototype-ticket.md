@@ -44,6 +44,11 @@
 - Non-normative screenshots: `review-evidence/round-1/` (VIS-004/005/007/010/012/013 states)
 - Question to the user (RD-004): keep the briefing in the collaborator's conversation as the product shows `send_message_to` deliveries today (user-style message, no sender), or show it with its sender?
 
+## Review Round 2
+
+- Question RD-004 asked; user: "what do you think then?" → recommendation: show the sender with the existing "From <sender>:" style for all agent-to-agent messages, flagged as product-wide. User: "okayyyy. agreed".
+- Change: PC-032. Evidence: `review-evidence/round-2/` (`r2-focused.png`, `r2-collaborator.png`, validation 49/49).
+
 ## Status History
 
 - 2026-10-01: opened from Solution Designer request (SR-008); `In Progress`.

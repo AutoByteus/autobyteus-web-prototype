@@ -84,6 +84,7 @@ await page.locator('[data-test="workspace-team-transient-execution-row"]').filte
 check('V-17', 'Clicking the task row focuses the collaborator with its conversation and no load error', (await page.locator('[data-testid="team-workspace-surface"] h4').innerText()) === 'product prototyper'
   && /Got it/.test(await page.locator('[data-testid="agent-event-monitor"]').innerText())
   && /The user asked: “?"?the input box is too high/.test(await page.locator('[data-testid="agent-event-monitor"]').innerText())
+  && /From Researcher:/.test(await page.locator('[data-testid="inter-agent-inline"]').first().innerText())
   && await page.locator('[data-testid="system-task-notification-segment"]').count() === 0
   && !/Couldn't load activity/.test(await tree(page).innerText()))
 await type(page, 'also keep the workspace hint under the box'); await page.keyboard.press('Enter'); await page.waitForTimeout(2600)
