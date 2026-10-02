@@ -3,7 +3,7 @@
 ## Identity and scope
 - Product ticket: `project-task-manager-foundations`.
 - Stable package: `PROJ-TASK-MANAGER-20261002-001`; intake `SR-001`, latest received canonical draft `SR-002`.
-- Status: `Awaiting User Review` — UF-008–014 simplification candidate: continuous three-column board, direct workspace fields, visible Task Edit/Delete without metadata. Task Manager orchestration UI remains discussion-only.
+- Status: `Awaiting User Review` — UF-016 earlier Existing workspace / New folder buttons restored and browser-validated. Other simplification changes preserved; broader Task Manager discussion remains open.
 - Selected mode: Product Experience Prototyping; this concerns the existing Projects experience. No exploratory-visualizer mode.
 - Request: Solution Designer's Product Design Requested handoff, 2026-10-02; user explicitly requested UI brainstorming.
 - Scope: clarify manager entry/context, durable Tasks, dependencies, execution attempts, results and updates (DEC-001–010; SCN-001–006). Canonical requirements remain Draft.
@@ -43,10 +43,10 @@
 - No final ui-ux-spec.md or normative VIS references. Manager, dependencies, execution linkage and results proposals remain discussion-only.
 
 ## Review and finalization
-- Review package: `ui-brainstorm-record.md` (historical proposals/feedback), `review-round-1.md` (Project candidate and timer supplement), `review-round-3.md` (Task-page candidate), `review-round-4.md` (voice/context-file candidate), `review-round-5.md` (simplification and superseded alternatives).
+- Review package: `ui-brainstorm-record.md` (historical proposals/feedback), `review-round-1.md` (Project candidate and timer supplement), `review-round-3.md` (Task-page candidate), `review-round-4.md` (voice/context-file candidate), `review-round-5.md` (simplification and superseded alternatives), `review-round-6.md` (restored workspace choices).
 - Current review focus: simpler continuous three-column board, direct optional workspace authoring, clear adjacent Task Edit/Delete with no metadata disclosure, and creation returning to the board. Voice/context files and non-popup forms remain available. Wider manager/dependency/execution/result decisions remain open.
 - User confirmation: no final design approval. UF-001–003 requested the non-overlay prototype and optional workspace authoring; the concrete candidate still needs user review.
-- Ticket revision: round-5 is the commit introducing `review-round-5.md` (resolve through git history); preceding round-4 `89234ba`. Round-3 candidate `ea6e3d2`; round-4 revision is the commit introducing `review-round-4.md` (resolve through git history). Discussion opening `66c4c40`; prior gate record `2788d75`; round-1 candidate commit is the commit introducing `review-round-1.md` (resolve via git history). Source changes are local to this unapproved ticket branch.
+- Ticket revision: round-6 is the commit introducing `review-round-6.md`; previous revision `240f2b7` and round-5 candidate `04a8e15`. Round-5 is the commit introducing `review-round-5.md` (resolve through git history); preceding round-4 `89234ba`. Round-3 candidate `ea6e3d2`; round-4 revision is the commit introducing `review-round-4.md` (resolve through git history). Discussion opening `66c4c40`; prior gate record `2788d75`; round-1 candidate commit is the commit introducing `review-round-1.md` (resolve via git history). Source changes are local to this unapproved ticket branch.
 - Integration/promotion: Pending; no approved candidate, no integration performed.
 - Cleanup: Pending; worktree and ticket-owned runtime retained for requested user inspection. Browser tab marked deliverable; do not stop while user reviews.
 - Remote push: not performed.
@@ -72,3 +72,5 @@
 - Investigation/history references are linked from that handoff and remain Solution Designer-owned.
 
 - 2026-10-02: UF-008–014 iteratively refined; rejected List view, filters, individual floating-card treatment, workspace counters/Edit/Done steps and Task-information disclosure removed. FS-001–009 browser checks, 24 tests, configured lint, scoped direct typecheck pass. `Awaiting User Review`; no new full build/prepare, Product approval, integration or handoff.
+
+- 2026-10-02: UF-015 workspace-entry question clarified without UI changes; UF-016 explicitly restores earlier Existing/New choices. Template-only correction preserves active drafts. WC-001–006, 24 tests, configured lint, scoped typecheck pass. `Awaiting User Review`; no final approval, integration or handoff.

@@ -1,0 +1,73 @@
+{
+  "package": "PROJ-TASK-MANAGER-20261002-001",
+  "feedback": "UF-016",
+  "desktop": {
+    "height": 862,
+    "width": 1512
+  },
+  "narrow": {
+    "buttons": [
+      {
+        "bottom": 647,
+        "height": 56,
+        "left": 91,
+        "right": 194,
+        "top": 591,
+        "width": 103,
+        "x": 91,
+        "y": 591
+      },
+      {
+        "bottom": 647,
+        "height": 56,
+        "left": 194,
+        "right": 297,
+        "top": 591,
+        "width": 103,
+        "x": 194,
+        "y": 591
+      }
+    ],
+    "height": 844,
+    "scrollWidth": 390,
+    "width": 390
+  },
+  "checks": [
+    {
+      "id": "WC-001",
+      "pass": true,
+      "detail": "Existing workspace and New folder buttons are restored; dropdown contains existing workspaces only."
+    },
+    {
+      "id": "WC-002",
+      "pass": true,
+      "detail": "New folder directly shows Folder path; no preliminary dropdown selection."
+    },
+    {
+      "id": "WC-003",
+      "pass": true,
+      "detail": "Switching back to Existing preserves its previous selection."
+    },
+    {
+      "id": "WC-004",
+      "pass": true,
+      "detail": "Switching back to New preserves the folder-path draft and description."
+    },
+    {
+      "id": "WC-005",
+      "pass": true,
+      "detail": "Both mode choices and folder input fit 390×844 without horizontal overflow."
+    },
+    {
+      "id": "WC-006",
+      "pass": true,
+      "detail": "No browser console errors in the restored-choice review tab."
+    }
+  ],
+  "consoleErrors": [],
+  "boundaries": [
+    "Template-only refinement, no production/source write or real folder creation.",
+    "Synthetic in-memory state; no full Product approval or handoff.",
+    "Round 5 dropdown folder-path choice is superseded; other simplifications remain."
+  ]
+}

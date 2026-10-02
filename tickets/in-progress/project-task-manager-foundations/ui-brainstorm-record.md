@@ -123,3 +123,9 @@ Continue direct brainstorming with the user. Record exact decisions against DEC/
 - Clarification: this is one Workspaces section with repeated editable entries. The first was already linked; the second is an unsaved entry appended by Add workspace. There are not separate read-only and add sections.
 - Proposed minimal clarification: retain one Workspaces heading, hide redundant repeated Workspace labels visually (retain accessible labels), and make the blank selector placeholder explicitly “Choose another workspace”. Add inserts a blank entry only on request; existing entries remain directly editable. No count, new section, Edit/Done step or alternate mode. This proposal is not implemented or approved in this turn.
 - Continue direct Product review; no final approval or Solution Designer handoff.
+
+## UF-016 — restore earlier Existing/New choices, 2026-10-02
+- User explicitly prefers the earlier Existing/New buttons and rejects hiding folder-path choice in a dropdown as an extra step.
+- Restored Existing workspace / New folder paired buttons. Existing selects a registered workspace; New directly shows Folder path. Optional description, Add/Remove and direct editing remain. No counts or Edit/Done steps restored. Mode switching preserves drafts.
+- This supersedes the Round 5 dropdown-based source selector, not the other simplification decisions. UF-015 label/placeholder proposal remains unimplemented/unapproved.
+- Review/validation evidence: review-round-6.md and WC-001–006. User requested this focused correction, not final Product-stage approval; no Solution Designer handoff.
