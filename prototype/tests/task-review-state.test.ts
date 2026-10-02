@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { useProjectDesignStore } from '../project-review/useProjectDesignStore'
 import { useTaskDesignStore } from '../project-review/useTaskDesignStore'
+import { mergeTranscriptWithDraft } from '../../utils/voiceInputCapture'
 
 describe('Task page review synthetic state', () => {
   beforeEach(() => setActivePinia(createPinia()))
@@ -41,5 +42,26 @@ describe('Task page review synthetic state', () => {
     setActivePinia(createPinia())
     expect(useTaskDesignStore().tasks).toHaveLength(3)
     expect(useTaskDesignStore().searchByProject).toEqual({})
+  })
+  it('saves attachment metadata and retains it when editing text only', () => {
+    const tasks = useTaskDesignStore()
+    const attachments = [{ id: 'context-review', name: 'review-note.txt', size: 80, type: 'File' as const }]
+    const task = tasks.create('project-prototype-launch', 'Review the note', attachments)
+    attachments[0].name = 'Draft-only replacement'
+    expect(task.attachments[0].name).toBe('review-note.txt')
+    expect(tasks.update(task.projectId, task.taskId, 'Updated description')!.attachments[0].name).toBe('review-note.txt')
+  })
+  it('removes context files on save without changing task status or identity', () => {
+    const tasks = useTaskDesignStore()
+    const task = tasks.create('project-prototype-launch', 'Review', [{ id: 'file', name: 'note.txt', size: 30, type: 'File' }])
+    const edited = tasks.update(task.projectId, task.taskId, 'Review', [])!
+    expect(edited.attachments).toEqual([])
+    expect(edited.taskId).toBe(task.taskId)
+    expect(edited.status).toBe('TODO')
+  })
+  it('uses the agent input transcript-merge behavior without overwriting typed text', () => {
+    expect(mergeTranscriptWithDraft('Typed detail', 'Voice detail')).toBe('Typed detail Voice detail')
+    expect(mergeTranscriptWithDraft('', ' Voice detail ')).toBe('Voice detail')
+    expect(mergeTranscriptWithDraft('Typed detail', '')).toBe('Typed detail')
   })
 })

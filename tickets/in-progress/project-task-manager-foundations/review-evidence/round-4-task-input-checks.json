@@ -1,0 +1,113 @@
+{
+  "started": "2026-10-02T08:05:29.444Z",
+  "checks": [
+    {
+      "id": "TI-001",
+      "pass": true,
+      "detail": "Required description remains inline; no popup."
+    },
+    {
+      "id": "TI-002",
+      "pass": true,
+      "detail": "Save blocked while voice input is active."
+    },
+    {
+      "id": "TI-003",
+      "pass": true,
+      "detail": "Cancel recording preserves draft and re-enables Save."
+    },
+    {
+      "id": "TI-004",
+      "pass": true,
+      "detail": "Save blocked during scripted transcription."
+    },
+    {
+      "id": "TI-005",
+      "pass": true,
+      "detail": "Sample speech appends to existing text, remains editable; no microphone prompt."
+    },
+    {
+      "id": "TI-006",
+      "pass": true,
+      "detail": "Native picker adds two synthetic files; metadata, remove buttons and image thumbnail displayed. Programmatic multi-file set blocked by extension permission; no permission changed."
+    },
+    {
+      "id": "TI-007",
+      "pass": true,
+      "detail": "List collapse preserves selections."
+    },
+    {
+      "id": "TI-008",
+      "pass": true,
+      "detail": "Created session-only Task retains both attachments and To Do status."
+    },
+    {
+      "id": "TI-009",
+      "pass": true,
+      "detail": "Image opens inline on Task Detail, no overlay."
+    },
+    {
+      "id": "TI-010",
+      "pass": true,
+      "detail": "Edit task starts with saved context files."
+    },
+    {
+      "id": "TI-011",
+      "pass": true,
+      "detail": "Clear all removes draft files, not saved task yet."
+    },
+    {
+      "id": "TI-012",
+      "pass": true,
+      "detail": "Cancel discards file removals and preserves original saved files."
+    },
+    {
+      "id": "TI-013",
+      "pass": true,
+      "detail": "Saving file removal retains Task ID/status and remaining image."
+    },
+    {
+      "id": "TI-014",
+      "pass": true,
+      "detail": "Board card displays compact attachment count."
+    },
+    {
+      "id": "TI-015",
+      "pass": true,
+      "detail": "390×844: no page horizontal overflow; voice, file removal and Save reachable. Real phone keyboard not tested."
+    },
+    {
+      "id": "TI-016",
+      "pass": true,
+      "detail": "Scripted transcription error preserves draft, exposes persistent recovery text, permits retry."
+    },
+    {
+      "id": "TI-017",
+      "pass": true,
+      "detail": "No-speech state preserves draft and leaves typing/save available."
+    },
+    {
+      "id": "TI-018",
+      "pass": true,
+      "detail": "No browser console errors during stable task-input checks. Earlier nuxt-prepare reference-tab dynamic-import transition recorded separately."
+    },
+    {
+      "id": "TI-019",
+      "pass": true,
+      "detail": "Normal board entry opens full-page composer without scenario query."
+    },
+    {
+      "id": "TI-020",
+      "pass": true,
+      "detail": "Required validation clears as description becomes valid after final polish."
+    }
+  ],
+  "errors": [],
+  "limitations": [
+    "Programmatic file chooser setFiles blocked by Chrome extension file-URL permission; native picker fallback verified.",
+    "Multiple-select in a single chooser, drag/drop and clipboard-file paste not browser-tested.",
+    "Real microphone, speech recognition/upload/persistence and actual phone keyboard deliberately not exercised.",
+    "One HMR form remount reset synthetic draft after validation polish; recovered from normal New Task form.",
+    "One native action used a stale AX index after full snapshot; no action occurred; corrected from fresh index."
+  ]
+}

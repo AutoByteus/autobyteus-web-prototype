@@ -100,3 +100,11 @@ Continue direct brainstorming with the user. Record exact decisions against DEC/
 - PC-007: preserve explicit destructive confirmation as an inline warning panel on Task detail, with Cancel focus first. No task popup, dimmed backdrop or drawer, and no active-work cancellation policy is inferred. Project deletion confirmation/global shell overlays are outside this feedback.
 - Relevant draft context REQ-007/009, SCN-002/005/006, DEC-006; AC-013 still covers primary Project forms only. Task presentation is new review evidence for later canonical refinement, not a silent amendment to the requirements.
 - Implemented/validated Product candidate: `review-round-3.md` and TP-001–020 evidence. User has not approved the concrete design or finished the broader stage. UF-004 remains: no Solution Designer handoff yet.
+
+## UF-007 — learn from agent input, 2026-10-02
+- User: “i would like to ask you to learn from the agent input form, there we have one audio input, and also attachment in the task we should also support that thanks”.
+- PC-008: agent-style Task composer with speech-to-editable-text mic, Context Files plus/list/removal/clear controls, recording/transcribing/recovery states. This interprets audio input consistently with the referenced agent input, not as automatic raw-audio storage.
+- PC-009: saved context on Task Detail with inline image preview; Edit/Cancel preserve saved context; compact attachment count on cards. All primary Task flows remain pages.
+- Reference learning, implementation, mocked boundaries and validation: `review-round-4.md`. Source upload/voice services are not reused; only the pure transcript-merge helper. Voice is scripted and files browser-local/session-only.
+- Voice permission/privacy/availability, file storage/limits/agent access, attachment-only authoring and raw recorded audio remain open for explicit Product decisions and later canonical refinement. No new architecture or production capability is claimed.
+- Awaiting user review, not approval. UF-004 gate remains; no interim Solution Designer handoff.

@@ -1,0 +1,2 @@
+Synthetic task context for a UI review.
+Check voice input and attachment presentation.

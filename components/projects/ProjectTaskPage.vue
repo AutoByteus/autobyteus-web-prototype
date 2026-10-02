@@ -16,7 +16,7 @@
           <p class="mb-2 break-words text-sm font-medium text-slate-500" data-testid="task-project-context">{{ project.name }}</p>
           <h1 ref="heading" tabindex="-1" class="break-words text-3xl font-semibold tracking-tight text-slate-900 outline-none" data-testid="task-page-heading">{{ title }}</h1>
           <p v-if="mode === 'create'" class="mt-2 text-sm leading-6 text-slate-600">Describe the work to be done. You can add more detail as the task develops.</p>
-          <p v-else-if="mode === 'edit'" class="mt-2 text-sm leading-6 text-slate-600">Update the description without changing this task's identity or status.</p>
+          <p v-else-if="mode === 'edit'" class="mt-2 text-sm leading-6 text-slate-600">Update the description and context files without changing this task's identity or status.</p>
           <div v-else class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500">
             <span class="inline-flex items-center gap-2"><span>Status</span><span class="rounded-full px-2.5 py-1 font-medium ring-1 ring-inset" :class="task!.status === 'DONE' ? 'bg-emerald-50 text-emerald-800 ring-emerald-200' : task!.status === 'IN_PROGRESS' ? 'bg-blue-50 text-blue-800 ring-blue-200' : 'bg-slate-100 text-slate-700 ring-slate-200'" data-testid="task-page-status">{{ t(TASK_STATUS_LABEL_KEYS[task!.status]) }}</span></span>
             <span>{{ t('projects.components.projects.ProjectTaskDialog.updated', { time: formatDateTime(task!.updatedAt) }) }}</span>
@@ -31,14 +31,13 @@
             <div class="mt-5">
               <label for="task-page-description" class="block text-sm font-medium text-slate-700">{{ t('projects.components.projects.ProjectTaskDialog.descriptionLabel') }} <span class="font-normal text-slate-400">(required)</span></label>
               <p id="task-page-help" class="mt-2 text-sm leading-5 text-slate-500">The first line is the task's summary on the board. Use the remaining lines for context and expected outcomes.</p>
-              <textarea id="task-page-description" v-model="draft" rows="8" :disabled="busy" :placeholder="t('projects.components.projects.ProjectTaskDialog.descriptionPlaceholder')" :aria-invalid="fieldError ? 'true' : 'false'" :aria-describedby="fieldError ? 'task-page-help task-page-error' : 'task-page-help'" class="mt-3 block w-full resize-y rounded-md border bg-white px-3 py-3 text-base leading-6 text-slate-900 shadow-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 sm:text-sm" :class="fieldError ? 'border-red-400 focus:ring-red-500' : 'border-slate-300 focus:border-blue-500 focus:ring-blue-500'" data-testid="task-page-description-input" @keydown.enter.ctrl.exact.prevent="save" @keydown.enter.meta.exact.prevent="save" />
+              <TaskDescriptionComposer v-model="draft" v-model:attachments="attachments" :disabled="busy" :error="fieldError" :placeholder="t('projects.components.projects.ProjectTaskDialog.descriptionPlaceholder')" :demo-outcome="String(route.query.voiceDemo || '')" @pending="inputPending = $event" @save="save" />
               <p v-if="fieldError" id="task-page-error" class="mt-2 text-sm text-red-600" role="alert" data-testid="task-page-description-error">{{ fieldError }}</p>
-              <p class="mt-3 text-xs leading-5 text-slate-500">Press Ctrl+Enter or ⌘+Enter to save.</p>
             </div>
           </section>
           <div class="mt-6 flex justify-end gap-3 border-t border-slate-200 pt-5 pb-2">
             <NuxtLink :to="mode === 'create' ? boardTarget : detailTarget" :class="secondaryButton" class="flex-1 sm:flex-none" data-testid="task-page-cancel">{{ t('projects.common.cancel') }}</NuxtLink>
-            <button type="submit" :disabled="busy" :class="primaryButton" class="flex-1 sm:flex-none" data-testid="task-page-save">{{ busy ? t('projects.common.saving') : mode === 'create' ? t('projects.components.projects.ProjectTaskDialog.create') : 'Save changes' }}</button>
+            <button type="submit" :disabled="busy || inputPending" :class="primaryButton" class="flex-1 sm:flex-none" data-testid="task-page-save">{{ busy ? t('projects.common.saving') : mode === 'create' ? t('projects.components.projects.ProjectTaskDialog.create') : 'Save changes' }}</button>
           </div>
         </form>
 
@@ -46,9 +45,13 @@
           <section class="rounded-xl border border-slate-200 bg-white p-5 sm:p-6" aria-labelledby="task-description-heading">
             <div class="flex flex-wrap items-center justify-between gap-3">
               <h2 id="task-description-heading" class="text-base font-semibold text-slate-900">{{ t('projects.components.projects.ProjectTaskDialog.descriptionLabel') }}</h2>
-              <NuxtLink :to="`${detailTarget}/edit`" :class="secondaryButton" data-testid="task-page-edit">Edit description</NuxtLink>
+              <NuxtLink :to="`${detailTarget}/edit`" :class="secondaryButton" data-testid="task-page-edit">Edit task</NuxtLink>
             </div>
             <p class="mt-5 whitespace-pre-wrap break-words text-sm leading-7 text-slate-800" data-testid="task-page-description">{{ task!.description }}</p>
+          </section>
+          <section v-if="task!.attachments?.length" class="mt-5 rounded-xl border border-slate-200 bg-white p-5 sm:p-6" aria-labelledby="task-context-files-heading" data-testid="task-page-context-files">
+            <h2 id="task-context-files-heading" class="mb-4 text-base font-semibold text-slate-900">Context Files ({{ task!.attachments.length }})</h2>
+            <TaskContextFileList :files="task!.attachments || []" />
           </section>
           <dl class="mt-5 flex flex-wrap gap-x-8 gap-y-3 px-1 text-xs leading-5 text-slate-500">
             <div class="min-w-0"><dt>Task ID</dt><dd class="break-all font-mono text-slate-600" data-testid="task-page-id">{{ task!.taskId }}</dd></div>
@@ -79,6 +82,9 @@ import { useRoute, useRouter } from 'vue-router'
 import { useLocalization } from '~/composables/useLocalization'
 import { useProjectDesignStore } from '~/prototype/project-review/useProjectDesignStore'
 import { useTaskDesignStore } from '~/prototype/project-review/useTaskDesignStore'
+import type { TaskContextFile } from '~/prototype/project-review/useTaskDesignStore'
+import TaskDescriptionComposer from '~/components/projects/TaskDescriptionComposer.vue'
+import TaskContextFileList from '~/components/projects/TaskContextFileList.vue'
 import { TASK_STATUS_LABEL_KEYS } from '~/utils/projects/taskStatusLabelKey'
 import { taskSummary } from '~/utils/projects/taskSummary'
 
@@ -91,7 +97,10 @@ const tasks = useTaskDesignStore()
 const project = computed(() => projects.projectById(props.projectId))
 const task = computed(() => props.taskId ? tasks.taskById(props.projectId, props.taskId) : null)
 const draft = ref(task.value?.description || '')
+const attachments = ref<TaskContextFile[]>((task.value?.attachments || []).map(file => ({ ...file })))
+const inputPending = ref(false)
 const fieldError = ref('')
+watch(draft, value => { if (fieldError.value && value.trim()) fieldError.value = '' })
 const busy = ref(false)
 const confirmingDelete = ref(false)
 const heading = ref<HTMLElement | null>(null)
@@ -118,7 +127,7 @@ onBeforeUnmount(() => { if (noticeTimer !== undefined) clearTimeout(noticeTimer)
 onMounted(() => heading.value?.focus())
 
 const save = async () => {
-  if (busy.value || !project.value) return
+  if (busy.value || inputPending.value || !project.value) return
   fieldError.value = ''
   if (!draft.value.trim()) {
     fieldError.value = t('projects.errors.taskDescriptionRequired')
@@ -128,7 +137,7 @@ const save = async () => {
   }
   busy.value = true
   await new Promise(resolve => window.setTimeout(resolve, 250))
-  const saved = props.mode === 'create' ? tasks.create(props.projectId, draft.value.trim()) : tasks.update(props.projectId, props.taskId!, draft.value.trim())
+  const saved = props.mode === 'create' ? tasks.create(props.projectId, draft.value.trim(), attachments.value) : tasks.update(props.projectId, props.taskId!, draft.value.trim(), attachments.value)
   if (saved) await router.push({ path: `${boardTarget.value}/tasks/${saved.taskId}`, query: { notice: props.mode === 'create' ? 'created' : 'saved' } })
   busy.value = false
 }

@@ -3,7 +3,7 @@
 ## Identity and scope
 - Product ticket: `project-task-manager-foundations`.
 - Stable package: `PROJ-TASK-MANAGER-20261002-001`; intake `SR-001`, latest received canonical draft `SR-002`.
-- Status: `Awaiting User Review` — UF-006 non-popup task create/view/edit candidate implemented and validated. Task Manager orchestration UI remains discussion-only.
+- Status: `Awaiting User Review` — UF-007 agent-style voice/attachment task input candidate browser-validated and available. Task Manager orchestration UI remains discussion-only.
 - Selected mode: Product Experience Prototyping; this concerns the existing Projects experience. No exploratory-visualizer mode.
 - Request: Solution Designer's Product Design Requested handoff, 2026-10-02; user explicitly requested UI brainstorming.
 - Scope: clarify manager entry/context, durable Tasks, dependencies, execution attempts, results and updates (DEC-001–010; SCN-001–006). Canonical requirements remain Draft.
@@ -39,13 +39,14 @@
 - Round-2 refinement: Project-created and Changes-saved inline success notices clear after 3000ms while the Project content/tab remains. URL notice marker is removed to prevent resurfacing on tab navigation. Timers are cleaned up on leaving the component; error/action-required messages are unchanged. Seven focused browser checks passed (`review-evidence/round-2-notice-checks.json`), observed expiry ~2.96s/3.01s after visible checks; 16 tests still pass. No fresh build/phone/source-parity audit in this timer-only round.
 - Round-3 candidate: Task creation, reading and description editing are pages. Task cards are links; Back to tasks retains per-project search. Deletion remains explicitly confirmed in an inline warning panel, not a popup. Task status remains read-only and no execution/status tools are simulated as real. Small handwritten `useTaskDesignStore.ts` supplies three illustrative baseline task states and scripted session-only changes/counts; existing inherited API store is not used for candidate saves.
 - Round-3 validation: configured lint, 21 unit tests, scoped TypeScript check and Nuxt build pass. TP-001–020 browser checks pass across desktop and 390×844 narrow; native create/edit/Cancel, shortcut, identity/status, search context, delete safeguard/removal, not-found recovery, new-Project integration and counts inspected. See `review-round-3.md`. No new source-parity/phone delivery claim. Route generation/dev preparation reset the user's prior mock-created Project; its real installation/data were not involved. Review tab recovered through Projects to the stable baseline New Task page.
+- Round-4: agent-style voice/context-file composer added to New/Edit Task, saved file list/inline image preview and board attachment count. Voice is a handwritten sample, not real microphone capture. Files are local metadata/image previews only; no upload or backend persistence. 24 unit tests, configured lint, scoped typecheck and Nuxt build pass; desktop/narrow browser TI-001–020 pass. Native picker fallback verified after extension-permission limitation; no permission changed. See `review-round-4.md`.
 - No final ui-ux-spec.md or normative VIS references. Manager, dependencies, execution linkage and results proposals remain discussion-only.
 
 ## Review and finalization
-- Review package: `ui-brainstorm-record.md` (historical proposals/feedback), `review-round-1.md` (Project candidate and timer supplement), `review-round-3.md` (Task-page candidate).
-- Current review focus: non-popup New/Edit/Task detail and return-to-board; prior Project/workspace forms remain available. Wider manager/dependency/execution/result decisions remain open.
+- Review package: `ui-brainstorm-record.md` (historical proposals/feedback), `review-round-1.md` (Project candidate and timer supplement), `review-round-3.md` (Task-page candidate), `review-round-4.md` (voice/context-file candidate).
+- Current review focus: familiar voice/context-file input on non-popup Task pages and saved Task context; prior Project/workspace forms remain available. Wider manager/dependency/execution/result decisions remain open.
 - User confirmation: no final design approval. UF-001–003 requested the non-overlay prototype and optional workspace authoring; the concrete candidate still needs user review.
-- Ticket revision: discussion opening `66c4c40`; prior gate record `2788d75`; round-1 candidate commit is the commit introducing `review-round-1.md` (resolve via git history). Source changes are local to this unapproved ticket branch.
+- Ticket revision: round-3 candidate `ea6e3d2`; round-4 revision is the commit introducing `review-round-4.md` (resolve through git history). Discussion opening `66c4c40`; prior gate record `2788d75`; round-1 candidate commit is the commit introducing `review-round-1.md` (resolve via git history). Source changes are local to this unapproved ticket branch.
 - Integration/promotion: Pending; no approved candidate, no integration performed.
 - Cleanup: Pending; worktree and ticket-owned runtime retained for requested user inspection. Browser tab marked deliverable; do not stop while user reviews.
 - Remote push: not performed.
@@ -61,6 +62,8 @@
 - 2026-10-02: PC-001–003 implemented and validated in the isolated prototype; round-1 screenshots and 23 browser checks persisted. `Awaiting User Review`; runtime retained, no approval/integration/handoff inferred.
 - 2026-10-02: UF-005 asks whether the green creation confirmation should disappear in about three seconds. `In Progress` during localized timer change, then `Awaiting User Review` after create/save/expiry/tab regression checks. User's existing Project state preserved; test used a separate temporary tab. No Solution Designer handoff.
 - 2026-10-02: UF-006 asks “possible to make tasks also not popup? think about how to improve the UI”, with New Task overlay screenshot. PC-005–007 page-based Task candidate built and browser-validated; `Awaiting User Review`. No final Product approval or handoff.
+
+- 2026-10-02: UF-007 asks to reuse the agent input audio/attachment pattern. PC-008–009 browser-validated; `Awaiting User Review`. Small voice/file simulations only, no mic/upload/permission change, no Product approval or Solution Designer handoff.
 
 ## Canonical input references (read-only)
 - `/Users/normy/autobyteus_org/autobyteus-worktrees/project-task-manager-foundations/tickets/in-progress/project-task-manager-foundations/product-design-handoff.md`
