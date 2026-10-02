@@ -62,3 +62,11 @@ Should the manager conversation live in a Project Manager tab beside Tasks/Works
 
 ## Next stage
 Continue direct brainstorming with the user. Record exact decisions against DEC/REQ/SCN IDs; send clarified evidence and remaining unknowns to Solution Designer for canonical refinement and explicit approval when this stage closes. Do not label this work Prototype Completed.
+
+## Subsequent feedback and handoff timing
+- UF-002: user asks to update the UI so they can inspect the suggested design. This authorizes a prototype review candidate, not production implementation or final UI approval.
+- UF-003: user wants optional workspace additions, each with its own description, in the same New Project flow. Creating a Project without workspaces must remain possible; adding them later remains possible. Exact selection/registration UI is still under Product design.
+- Received canonical SR-002 handoff at `/Users/normy/autobyteus_org/autobyteus-worktrees/project-task-manager-foundations/tickets/in-progress/project-task-manager-foundations/product-design-handoff-sr-002.md`: UF-001 incorporated, requirements still Draft, AC-013 added. No phone delivery/global modal removal/active-work policy implied.
+- UF-004 exact user direction: “Wait, I think, hey, I want to tell you that we should focus on the product design first, okay? Only after product design is done, then you can send to solution designer. Not now, only after we finish, okay? If you look at your skill, you know?”
+- Required review gate: keep Product design, runnable preview iterations and user feedback in Product ownership. Do not send further interim findings/requirements-impact messages to Solution Designer. Accumulate them here and hand off only after the user finishes the Product-design stage. Prior UF-001 delivery occurred before this gate; do not repeat it or infer permission for more early deliveries.
+- Pending review slice: non-overlay New/Edit Project pages; optional workspace links/descriptions during creation. Broader Task Manager decisions remain open.

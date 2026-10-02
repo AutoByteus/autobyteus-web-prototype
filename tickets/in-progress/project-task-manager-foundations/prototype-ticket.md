@@ -41,13 +41,14 @@
 - Integration/promotion: Pending; no approved candidate, no integration performed.
 - Cleanup: Pending; worktree and ticket-owned runtime retained for requested user inspection. Browser tab marked deliverable; do not stop while user reviews.
 - Remote push: not performed.
-- Handoff: UF-001 feedback round classified `Requirement Impact`; `requirement-impact.md` carries canonical-refinement request. Overall Product discussion is not complete; no final prototype/spec handed off.
+- Handoff: UF-001 feedback round delivered and canonical SR-002 received. UF-004 user gate now prohibits further interim Solution Designer handoffs: finish Product design and user review first. Accumulate findings within Product artifacts. Overall Product discussion is not complete; no final prototype/spec handed off.
 
 ## Status history
 - 2026-10-02: isolated Product ticket opened; `In Progress`.
 - 2026-10-02: direct brainstorm opening prepared; `Awaiting User Review`.
 - 2026-10-02: user asks to start the UI project first; existing cumulative prototype started and verified in Chrome, `Awaiting User Review`. No design choice inferred.
 - 2026-10-02: UF-001 overlay feedback received, recorded (`In Progress` during evidence update), alternatives proposed; `Awaiting User Review`. Requirement Impact round prepared for canonical refinement; UI source unchanged. Tool receipt is the delivery authority.
+- 2026-10-02: UF-002 requests a preview update; UF-003 adds optional workspace links/descriptions to creation; UF-004 requires Product design/review to finish before any further Solution Designer handoff. `In Progress`; no new handoff performed.
 
 ## Canonical input references (read-only)
 - `/Users/normy/autobyteus_org/autobyteus-worktrees/project-task-manager-foundations/tickets/in-progress/project-task-manager-foundations/product-design-handoff.md`
