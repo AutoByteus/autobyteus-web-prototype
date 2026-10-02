@@ -3,7 +3,7 @@
 ## Identity and scope
 - Product ticket: `project-task-manager-foundations`.
 - Stable package: `PROJ-TASK-MANAGER-20261002-001`; intake `SR-001`, latest received canonical draft `SR-002`.
-- Status: `Awaiting User Review` — UF-007 agent-style voice/attachment task input candidate browser-validated and available. Task Manager orchestration UI remains discussion-only.
+- Status: `Awaiting User Review` — UF-008–014 simplification candidate: continuous three-column board, direct workspace fields, visible Task Edit/Delete without metadata. Task Manager orchestration UI remains discussion-only.
 - Selected mode: Product Experience Prototyping; this concerns the existing Projects experience. No exploratory-visualizer mode.
 - Request: Solution Designer's Product Design Requested handoff, 2026-10-02; user explicitly requested UI brainstorming.
 - Scope: clarify manager entry/context, durable Tasks, dependencies, execution attempts, results and updates (DEC-001–010; SCN-001–006). Canonical requirements remain Draft.
@@ -28,7 +28,7 @@
 - Ticket-owned runtime: `http://127.0.0.1:3286`; restarted after an interrupted turn, listener PID `80255` (Nuxt), exec session `23963`. Previous PID/session no longer live.
 - Runtime files: isolated worktree-local `node_modules` and `.nuxt`; browser-local synthetic state scoped to origin `127.0.0.1:3286`. No source install/service reused.
 - Install: `corepack pnpm install --ignore-workspace --frozen-lockfile`; success, lockfile unchanged. Start: `corepack pnpm dev --port 3286`; Nuxt ready. Existing duplicate-import warnings; no startup error.
-- Current review URL: `http://127.0.0.1:3286/projects/project-prototype-launch/tasks/new`; existing Task detail at `/projects/project-prototype-launch/tasks/task-outline`. Project form at `/projects/new`; normal Projects index at `/projects`.
+- Current review URL: `http://127.0.0.1:3286/projects/project-prototype-launch`; existing Task detail at `/projects/project-prototype-launch/tasks/task-outline`. Project form at `/projects/new`; normal Projects index at `/projects`.
 - Scenario: existing `populated` default with synthetic Projects visible. No installed-app feature toggle or production backend involved. Reload resets mutable fixtures; scenario reset via existing `window.__AUTOBYTEUS_PROTOTYPE__.reset()` when needed.
 - Browser smoke verification: Projects index renders synthetic Project link; opening it renders the full-width Project page, Tasks/Workspaces tabs, and To Do/In Progress/Done columns. Browser console error log empty. This is not a source-parity comparison or comprehensive journey test.
 - Non-normative screenshot: `review-evidence/current-project-board.jpg` (1512×806); existing prototype only, no future-state approval.
@@ -43,10 +43,10 @@
 - No final ui-ux-spec.md or normative VIS references. Manager, dependencies, execution linkage and results proposals remain discussion-only.
 
 ## Review and finalization
-- Review package: `ui-brainstorm-record.md` (historical proposals/feedback), `review-round-1.md` (Project candidate and timer supplement), `review-round-3.md` (Task-page candidate), `review-round-4.md` (voice/context-file candidate).
-- Current review focus: familiar voice/context-file input on non-popup Task pages and saved Task context; prior Project/workspace forms remain available. Wider manager/dependency/execution/result decisions remain open.
+- Review package: `ui-brainstorm-record.md` (historical proposals/feedback), `review-round-1.md` (Project candidate and timer supplement), `review-round-3.md` (Task-page candidate), `review-round-4.md` (voice/context-file candidate), `review-round-5.md` (simplification and superseded alternatives).
+- Current review focus: simpler continuous three-column board, direct optional workspace authoring, clear adjacent Task Edit/Delete with no metadata disclosure, and creation returning to the board. Voice/context files and non-popup forms remain available. Wider manager/dependency/execution/result decisions remain open.
 - User confirmation: no final design approval. UF-001–003 requested the non-overlay prototype and optional workspace authoring; the concrete candidate still needs user review.
-- Ticket revision: round-3 candidate `ea6e3d2`; round-4 revision is the commit introducing `review-round-4.md` (resolve through git history). Discussion opening `66c4c40`; prior gate record `2788d75`; round-1 candidate commit is the commit introducing `review-round-1.md` (resolve via git history). Source changes are local to this unapproved ticket branch.
+- Ticket revision: round-5 is the commit introducing `review-round-5.md` (resolve through git history); preceding round-4 `89234ba`. Round-3 candidate `ea6e3d2`; round-4 revision is the commit introducing `review-round-4.md` (resolve through git history). Discussion opening `66c4c40`; prior gate record `2788d75`; round-1 candidate commit is the commit introducing `review-round-1.md` (resolve via git history). Source changes are local to this unapproved ticket branch.
 - Integration/promotion: Pending; no approved candidate, no integration performed.
 - Cleanup: Pending; worktree and ticket-owned runtime retained for requested user inspection. Browser tab marked deliverable; do not stop while user reviews.
 - Remote push: not performed.
@@ -70,3 +70,5 @@
 - `/Users/normy/autobyteus_org/autobyteus-worktrees/project-task-manager-foundations/tickets/in-progress/project-task-manager-foundations/product-design-handoff-sr-002.md`
 - `/Users/normy/autobyteus_org/autobyteus-worktrees/project-task-manager-foundations/tickets/in-progress/project-task-manager-foundations/requirements-doc.md`
 - Investigation/history references are linked from that handoff and remain Solution Designer-owned.
+
+- 2026-10-02: UF-008–014 iteratively refined; rejected List view, filters, individual floating-card treatment, workspace counters/Edit/Done steps and Task-information disclosure removed. FS-001–009 browser checks, 24 tests, configured lint, scoped direct typecheck pass. `Awaiting User Review`; no new full build/prepare, Product approval, integration or handoff.

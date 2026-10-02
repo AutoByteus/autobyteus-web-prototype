@@ -1,11 +1,12 @@
 <template>
   <NuxtLink
     :to="`/projects/${task.projectId}/tasks/${task.taskId}`"
-    class="block w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-left shadow-sm transition hover:border-blue-300 hover:shadow focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+    class="block w-full px-4 py-3.5 text-left transition-colors hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500"
     :aria-label="summary"
     :data-testid="`project-task-card-${task.taskId}`"
   >
-    <span class="line-clamp-3 whitespace-pre-line break-words text-sm leading-5 text-slate-800" data-testid="project-task-card-text">{{ task.description }}</span>
+    <span class="block line-clamp-2 break-words text-sm font-medium leading-6 text-slate-800" data-testid="project-task-card-text">{{ summary }}</span>
+    <span v-if="preview" class="mt-1 block line-clamp-2 text-xs leading-5 text-slate-500">{{ preview }}</span>
     <span v-if="task.attachments?.length" class="mt-2 inline-flex items-center gap-1 text-xs text-slate-500" data-testid="task-card-file-count"><Icon icon="heroicons:paper-clip" class="h-3.5 w-3.5" aria-hidden="true" />{{ task.attachments.length }} {{ task.attachments.length === 1 ? 'file' : 'files' }}</span>
   </NuxtLink>
 </template>
@@ -17,8 +18,9 @@ import type { ProjectTask } from '~/types/project'
 import type { TaskContextFile } from '~/prototype/project-review/useTaskDesignStore'
 import { taskSummary } from '~/utils/projects/taskSummary'
 
-// A card shows only the Task's description (up to 3 lines); its accessible name is the summary.
+// The first line is the summary; remaining lines are a quieter context preview.
 const props = defineProps<{ task: ProjectTask & { attachments?: TaskContextFile[] } }>()
 
 const summary = computed(() => taskSummary(props.task.description))
+const preview = computed(() => props.task.description.trim().split(/\r?\n/).slice(1).filter(line => line.trim()).join(' '))
 </script>

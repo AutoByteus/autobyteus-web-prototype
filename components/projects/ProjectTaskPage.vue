@@ -1,9 +1,12 @@
 <template>
   <div class="h-full flex-1 overflow-auto bg-slate-50" data-testid="project-task-page">
-    <div class="mx-auto w-full max-w-[880px] px-4 py-6 sm:px-8 sm:py-8">
+    <div :class="mode === 'view' ? 'w-full max-w-[1040px] px-4 py-5 sm:px-6 lg:px-8' : 'mx-auto w-full max-w-[880px] px-4 py-6 sm:px-8 sm:py-8'">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
       <NuxtLink :to="boardTarget" class="inline-flex min-h-9 items-center gap-1.5 rounded text-sm font-medium text-slate-600 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="task-back-to-board">
         <Icon icon="heroicons:arrow-left" class="h-4 w-4" aria-hidden="true" />Back to tasks
       </NuxtLink>
+      <span v-if="mode === 'view' && project" class="min-w-0 break-words border-l border-slate-300 pl-3 text-sm text-slate-500" data-testid="task-project-context">{{ project.name }}</span>
+      </div>
 
       <div v-if="!project || (mode !== 'create' && !task)" class="mt-5 rounded-xl border border-slate-200 bg-white p-6" role="status" data-testid="task-page-not-found">
         <h1 ref="heading" tabindex="-1" class="text-lg font-semibold text-slate-900 outline-none">{{ !project ? 'Project not found' : 'Task not found' }}</h1>
@@ -12,18 +15,33 @@
       </div>
 
       <template v-else>
-        <header class="mb-6 mt-4">
+        <header v-if="mode === 'view'" class="mb-4 mt-4 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex flex-wrap items-center gap-3">
+            <h1 ref="heading" tabindex="-1" class="text-2xl font-semibold tracking-tight text-slate-900 outline-none" data-testid="task-page-heading">Task details</h1>
+            <span class="rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset" :class="task!.status === 'DONE' ? 'bg-emerald-50 text-emerald-800 ring-emerald-200' : task!.status === 'IN_PROGRESS' ? 'bg-blue-50 text-blue-800 ring-blue-200' : 'bg-slate-100 text-slate-700 ring-slate-200'" :aria-label="`Status: ${t(TASK_STATUS_LABEL_KEYS[task!.status])}`" data-testid="task-page-status">{{ t(TASK_STATUS_LABEL_KEYS[task!.status]) }}</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <NuxtLink :to="`${detailTarget}/edit`" :class="secondaryButton" data-testid="task-page-edit"><Icon icon="heroicons:pencil-square" class="mr-2 h-4 w-4" aria-hidden="true" />Edit task</NuxtLink>
+            <button ref="deleteButton" type="button" :disabled="busy" class="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-red-200 bg-white px-4 py-2 text-sm font-medium text-red-700 hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 disabled:opacity-60" data-testid="task-page-delete" @click="requestDelete"><Icon icon="heroicons:trash" class="h-4 w-4" aria-hidden="true" />Delete task</button>
+          </div>
+        </header>
+        <header v-else class="mb-6 mt-4">
           <p class="mb-2 break-words text-sm font-medium text-slate-500" data-testid="task-project-context">{{ project.name }}</p>
           <h1 ref="heading" tabindex="-1" class="break-words text-3xl font-semibold tracking-tight text-slate-900 outline-none" data-testid="task-page-heading">{{ title }}</h1>
           <p v-if="mode === 'create'" class="mt-2 text-sm leading-6 text-slate-600">Describe the work to be done. You can add more detail as the task develops.</p>
           <p v-else-if="mode === 'edit'" class="mt-2 text-sm leading-6 text-slate-600">Update the description and context files without changing this task's identity or status.</p>
-          <div v-else class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500">
-            <span class="inline-flex items-center gap-2"><span>Status</span><span class="rounded-full px-2.5 py-1 font-medium ring-1 ring-inset" :class="task!.status === 'DONE' ? 'bg-emerald-50 text-emerald-800 ring-emerald-200' : task!.status === 'IN_PROGRESS' ? 'bg-blue-50 text-blue-800 ring-blue-200' : 'bg-slate-100 text-slate-700 ring-slate-200'" data-testid="task-page-status">{{ t(TASK_STATUS_LABEL_KEYS[task!.status]) }}</span></span>
-            <span>{{ t('projects.components.projects.ProjectTaskDialog.updated', { time: formatDateTime(task!.updatedAt) }) }}</span>
-          </div>
         </header>
 
         <p v-if="successNotice" class="mb-5 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800" role="status" data-testid="task-page-save-notice">{{ successNotice }}</p>
+
+          <section v-if="mode === 'view' && confirmingDelete" class="mb-4 rounded-lg border border-red-200 bg-red-50 p-4" aria-labelledby="task-delete-heading" data-testid="task-page-delete-confirmation" @keydown.esc.prevent="cancelDelete">
+            <h2 id="task-delete-heading" class="font-semibold text-red-900">{{ t('projects.components.projects.ProjectTaskDialog.deleteTitle') }}</h2>
+            <p class="mt-2 break-words text-sm leading-6 text-red-800">{{ t('projects.components.projects.ProjectTaskDialog.deleteMessage', { summary: taskSummary(task!.description) }) }}</p>
+            <div class="mt-4 flex flex-wrap justify-end gap-3">
+              <button ref="deleteCancel" type="button" :disabled="busy" :class="secondaryButton" data-testid="task-page-delete-cancel" @click="cancelDelete">{{ t('projects.common.cancel') }}</button>
+              <button type="button" :disabled="busy" class="inline-flex min-h-11 items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 disabled:opacity-60" data-testid="task-page-delete-confirm" @click="remove">{{ busy ? t('projects.components.projects.ProjectTaskDialog.deleting') : t('projects.components.projects.ProjectTaskDialog.confirmDelete') }}</button>
+            </div>
+          </section>
 
         <form v-if="mode !== 'view'" novalidate @submit.prevent="save">
           <section class="rounded-xl border border-slate-200 bg-white p-5 sm:p-6" aria-labelledby="task-details-heading">
@@ -41,35 +59,17 @@
           </div>
         </form>
 
-        <template v-else>
-          <section class="rounded-xl border border-slate-200 bg-white p-5 sm:p-6" aria-labelledby="task-description-heading">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-              <h2 id="task-description-heading" class="text-base font-semibold text-slate-900">{{ t('projects.components.projects.ProjectTaskDialog.descriptionLabel') }}</h2>
-              <NuxtLink :to="`${detailTarget}/edit`" :class="secondaryButton" data-testid="task-page-edit">Edit task</NuxtLink>
-            </div>
-            <p class="mt-5 whitespace-pre-wrap break-words text-sm leading-7 text-slate-800" data-testid="task-page-description">{{ task!.description }}</p>
-          </section>
-          <section v-if="task!.attachments?.length" class="mt-5 rounded-xl border border-slate-200 bg-white p-5 sm:p-6" aria-labelledby="task-context-files-heading" data-testid="task-page-context-files">
-            <h2 id="task-context-files-heading" class="mb-4 text-base font-semibold text-slate-900">Context Files ({{ task!.attachments.length }})</h2>
-            <TaskContextFileList :files="task!.attachments || []" />
-          </section>
-          <dl class="mt-5 flex flex-wrap gap-x-8 gap-y-3 px-1 text-xs leading-5 text-slate-500">
-            <div class="min-w-0"><dt>Task ID</dt><dd class="break-all font-mono text-slate-600" data-testid="task-page-id">{{ task!.taskId }}</dd></div>
-            <div><dt>Created</dt><dd class="text-slate-600">{{ formatDateTime(task!.createdAt) }}</dd></div>
-          </dl>
-
-          <section v-if="confirmingDelete" class="mt-6 rounded-xl border border-red-200 bg-red-50 p-5" aria-labelledby="task-delete-heading" data-testid="task-page-delete-confirmation" @keydown.esc.prevent="cancelDelete">
-            <h2 id="task-delete-heading" class="font-semibold text-red-900">{{ t('projects.components.projects.ProjectTaskDialog.deleteTitle') }}</h2>
-            <p class="mt-2 break-words text-sm leading-6 text-red-800">{{ t('projects.components.projects.ProjectTaskDialog.deleteMessage', { summary: taskSummary(task!.description) }) }}</p>
-            <div class="mt-4 flex flex-wrap justify-end gap-3">
-              <button ref="deleteCancel" type="button" :disabled="busy" :class="secondaryButton" data-testid="task-page-delete-cancel" @click="cancelDelete">{{ t('projects.common.cancel') }}</button>
-              <button type="button" :disabled="busy" class="inline-flex min-h-11 items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 disabled:opacity-60" data-testid="task-page-delete-confirm" @click="remove">{{ busy ? t('projects.components.projects.ProjectTaskDialog.deleting') : t('projects.components.projects.ProjectTaskDialog.confirmDelete') }}</button>
-            </div>
-          </section>
-          <div v-else class="mt-6 border-t border-slate-200 pt-5">
-            <button ref="deleteButton" type="button" class="inline-flex min-h-10 items-center gap-1.5 rounded-md px-2 text-sm font-medium text-red-700 hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500" data-testid="task-page-delete" @click="requestDelete"><Icon icon="heroicons:trash" class="h-4 w-4" aria-hidden="true" />Delete task</button>
+        <section v-else class="overflow-hidden rounded-xl border border-slate-200 bg-white" aria-labelledby="task-description-heading" data-testid="task-page-reading-surface">
+          <div class="p-5 sm:p-6">
+            <h2 id="task-description-heading" class="text-xs font-medium text-slate-500">{{ t('projects.components.projects.ProjectTaskDialog.descriptionLabel') }}</h2>
+            <p class="mt-3 max-w-[80ch] whitespace-pre-wrap break-words text-base leading-7 text-slate-800" data-testid="task-page-description">{{ task!.description }}</p>
+            <section v-if="task!.attachments?.length" class="mt-6 border-t border-slate-100 pt-5" aria-labelledby="task-context-files-heading" data-testid="task-page-context-files">
+              <h2 id="task-context-files-heading" class="mb-3 text-sm font-medium text-slate-600">Context Files ({{ task!.attachments.length }})</h2>
+              <TaskContextFileList :files="task!.attachments || []" />
+            </section>
           </div>
-        </template>
+
+        </section>
       </template>
     </div>
   </div>
@@ -138,7 +138,15 @@ const save = async () => {
   busy.value = true
   await new Promise(resolve => window.setTimeout(resolve, 250))
   const saved = props.mode === 'create' ? tasks.create(props.projectId, draft.value.trim(), attachments.value) : tasks.update(props.projectId, props.taskId!, draft.value.trim(), attachments.value)
-  if (saved) await router.push({ path: `${boardTarget.value}/tasks/${saved.taskId}`, query: { notice: props.mode === 'create' ? 'created' : 'saved' } })
+  if (saved) {
+    if (props.mode === 'create') {
+      // Show all tasks after creation so an old search cannot hide the new card.
+      tasks.searchByProject[props.projectId] = ''
+      await router.push({ path: boardTarget.value, query: { notice: 'task-created' } })
+    } else {
+      await router.push({ path: `${boardTarget.value}/tasks/${saved.taskId}`, query: { notice: 'saved' } })
+    }
+  }
   busy.value = false
 }
 const requestDelete = async () => {

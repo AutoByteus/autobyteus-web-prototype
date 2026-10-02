@@ -47,7 +47,7 @@
     </div>
 
     <template v-else>
-      <p v-if="route.query.notice === 'created' || route.query.notice === 'saved' || route.query.notice === 'task-deleted'" class="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800" role="status" data-testid="project-save-notice">{{ route.query.notice === 'created' ? 'Project created.' : route.query.notice === 'saved' ? 'Changes saved.' : 'Task deleted.' }}</p>
+      <p v-if="route.query.notice === 'created' || route.query.notice === 'saved' || route.query.notice === 'task-deleted' || route.query.notice === 'task-created'" class="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800" role="status" data-testid="project-save-notice">{{ route.query.notice === 'created' ? 'Project created.' : route.query.notice === 'saved' ? 'Changes saved.' : route.query.notice === 'task-created' ? 'Task created.' : 'Task deleted.' }}</p>
       <header class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div class="min-w-0">
           <h1 class="break-words text-2xl font-semibold text-slate-900" data-testid="project-detail-name">{{ project.name }}</h1>
@@ -196,7 +196,7 @@ const clearNoticeTimer = () => {
 }
 watch([() => route.query.notice, () => state.value, () => project.value?.projectId], ([notice, detailState, projectId]) => {
   clearNoticeTimer()
-  if (detailState !== 'ready' || !projectId || !['created', 'saved', 'task-deleted'].includes(String(notice))) return
+  if (detailState !== 'ready' || !projectId || !['created', 'saved', 'task-deleted', 'task-created'].includes(String(notice))) return
   noticeTimer = setTimeout(() => {
     const { notice: _expired, ...query } = route.query
     void router.replace({ query })

@@ -1,0 +1,137 @@
+{
+  "package": "PROJ-TASK-MANAGER-20261002-001",
+  "reviewStatus": "Awaiting User Review",
+  "viewports": [
+    {
+      "width": 1512,
+      "height": 806
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "FS-001",
+      "pass": true,
+      "detail": "Three continuous column containers, adjacent rows with zero gap, no row shadow/border/radius."
+    },
+    {
+      "id": "FS-002",
+      "pass": true,
+      "detail": "Delete immediately follows Edit; Task information, ID and timestamps are absent."
+    },
+    {
+      "id": "FS-003",
+      "pass": true,
+      "detail": "Delete still requires explicit inline confirmation; Cancel preserves the Task and restores Delete focus."
+    },
+    {
+      "id": "FS-004",
+      "pass": true,
+      "detail": "Workspace form has direct selection/description, Add/Remove only; no visible count, Edit/Done or source-mode buttons."
+    },
+    {
+      "id": "FS-005",
+      "pass": true,
+      "detail": "Add supports another workspace and optional description; folder path is selected through the same native selector, not a mode switch."
+    },
+    {
+      "id": "FS-006",
+      "pass": true,
+      "detail": "Simplified Project form has no horizontal overflow at 390×844."
+    },
+    {
+      "id": "FS-007",
+      "pass": true,
+      "detail": "Simplified Project form saves through the existing session-only path and returns to the Project."
+    },
+    {
+      "id": "FS-008",
+      "pass": true,
+      "detail": "At 390×844 Edit and Delete stay adjacent, visible, and within the viewport."
+    },
+    {
+      "id": "FS-009",
+      "pass": true,
+      "detail": "No console errors in the final simplified candidate review tab."
+    }
+  ],
+  "columnGeometry": {
+    "columnBorders": [
+      "1px",
+      "1px",
+      "1px"
+    ],
+    "columnCount": 3,
+    "rowGap": 0,
+    "rowStyles": [
+      {
+        "border": "0px",
+        "radius": "0px",
+        "shadow": "none"
+      },
+      {
+        "border": "0px",
+        "radius": "0px",
+        "shadow": "none"
+      }
+    ]
+  },
+  "taskActionGeometry": {
+    "delete": {
+      "bottom": 116,
+      "height": 44,
+      "left": 1198.5546875,
+      "right": 1331,
+      "top": 72,
+      "width": 132.4453125,
+      "x": 1198.5546875,
+      "y": 72
+    },
+    "edit": {
+      "bottom": 116,
+      "height": 44,
+      "left": 1075.2578125,
+      "right": 1190.5546875,
+      "top": 72,
+      "width": 115.296875,
+      "x": 1075.2578125,
+      "y": 72
+    },
+    "id": false,
+    "information": false
+  },
+  "narrowTaskGeometry": {
+    "delete": {
+      "bottom": 160,
+      "height": 44,
+      "left": 189.296875,
+      "right": 321.7421875,
+      "top": 116,
+      "width": 132.4453125,
+      "x": 189.296875,
+      "y": 116
+    },
+    "edit": {
+      "bottom": 160,
+      "height": 44,
+      "left": 66,
+      "right": 181.296875,
+      "top": 116,
+      "width": 115.296875,
+      "x": 66,
+      "y": 116
+    },
+    "scrollWidth": 390,
+    "width": 390
+  },
+  "consoleErrors": [],
+  "boundaries": [
+    "Synthetic session-only prototype.",
+    "Voice and files retain Round 4 simulation boundaries.",
+    "Earlier List/Board, separate-card, compact-workspace and Task-information alternatives are superseded.",
+    "No production/backend/source writes; no full Product approval or handoff."
+  ]
+}

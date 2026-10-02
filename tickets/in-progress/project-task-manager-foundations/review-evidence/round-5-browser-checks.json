@@ -1,0 +1,184 @@
+{
+  "package": "PROJ-TASK-MANAGER-20261002-001",
+  "round": 5,
+  "startedAt": "2026-10-02T09:09:11.073Z",
+  "finishedAt": "2026-10-02T09:28:31.874Z",
+  "viewports": [
+    {
+      "width": 1512,
+      "height": 806
+    },
+    {
+      "width": 390,
+      "height": 844
+    }
+  ],
+  "checks": [
+    {
+      "id": "RF-001",
+      "pass": true,
+      "detail": "List is the normal initial view with all three baseline statuses."
+    },
+    {
+      "id": "RF-002",
+      "pass": true,
+      "detail": "Status filter shows In Progress task without changing its status."
+    },
+    {
+      "id": "RF-003",
+      "pass": true,
+      "detail": "Search empty result and clear recovery rendered."
+    },
+    {
+      "id": "RF-004",
+      "pass": true,
+      "detail": "Board remains available with three clearer lanes."
+    },
+    {
+      "id": "RF-005",
+      "pass": true,
+      "detail": "Returning from existing detail retains Board choice."
+    },
+    {
+      "id": "RF-006",
+      "pass": true,
+      "detail": "Create returns to List / All, clears previous search/status filter, shows new task."
+    },
+    {
+      "id": "RF-007",
+      "pass": true,
+      "detail": "Brief Task created confirmation appears on task list."
+    },
+    {
+      "id": "RF-008",
+      "pass": true,
+      "detail": "Confirmation expires without losing task list. Observed post-visible interval 3113ms."
+    },
+    {
+      "id": "RF-009",
+      "pass": true,
+      "detail": "Detail shows description once; ID/timestamps are in collapsed information."
+    },
+    {
+      "id": "RF-010",
+      "pass": true,
+      "detail": "Task information disclosure retains identity and timestamps."
+    },
+    {
+      "id": "RF-011",
+      "pass": true,
+      "detail": "Delete is explicit inline confirmation with Cancel focused first."
+    },
+    {
+      "id": "RF-012",
+      "pass": true,
+      "detail": "Edit still has agent-style voice and Context Files controls."
+    },
+    {
+      "id": "RF-013",
+      "pass": true,
+      "detail": "Cancel leaves saved description unchanged."
+    },
+    {
+      "id": "RF-014",
+      "pass": true,
+      "detail": "Voice simulation/cancel retains edit draft and re-enables Save."
+    },
+    {
+      "id": "RF-015",
+      "pass": true,
+      "detail": "Selected synthetic image survives Edit save and previews inline in compact detail. No upload or browser permissions changed."
+    },
+    {
+      "id": "RF-016",
+      "pass": true,
+      "detail": "Context file count stays visible in the compact task row."
+    },
+    {
+      "id": "RF-017",
+      "pass": true,
+      "detail": "Edit project starts with a compact linked-workspace summary, not nested editors."
+    },
+    {
+      "id": "RF-018",
+      "pass": true,
+      "detail": "Inline workspace edit collapses into a compact summary with the unsaved description."
+    },
+    {
+      "id": "RF-019",
+      "pass": true,
+      "detail": "Cancel discards the Project draft; saved workspace description remains unchanged."
+    },
+    {
+      "id": "RF-020",
+      "pass": true,
+      "detail": "Blank Project name shows inline validation and focuses Name."
+    },
+    {
+      "id": "RF-021",
+      "pass": true,
+      "detail": "New Project accepts zero workspaces and opens its empty Tasks list."
+    },
+    {
+      "id": "RF-022",
+      "pass": true,
+      "detail": "An incomplete collapsed workspace reopens on Save with inline recovery and focus."
+    },
+    {
+      "id": "RF-023",
+      "pass": true,
+      "detail": "Second existing-workspace selector excludes the already linked Documentation choice."
+    },
+    {
+      "id": "RF-024",
+      "pass": true,
+      "detail": "Saving optional existing and folder-path rows preserves separate descriptions in Workspaces."
+    },
+    {
+      "id": "RF-025",
+      "pass": true,
+      "detail": "390×844 Task list wraps toolbar/status chips and has no horizontal overflow; rows expose text, read-only status and file count."
+    },
+    {
+      "id": "RF-026",
+      "pass": true,
+      "detail": "Narrow Board stacks the three status lanes without horizontal overflow."
+    },
+    {
+      "id": "RF-027",
+      "pass": true,
+      "detail": "390×844 compact detail shows description once, reachable Edit, inline image preview and collapsed information without overflow."
+    },
+    {
+      "id": "RF-028",
+      "pass": true,
+      "detail": "390×844 Project summary and inline workspace editor have no horizontal overflow; Save/Cancel are reachable and Save remains on one line."
+    },
+    {
+      "id": "RF-029",
+      "pass": true,
+      "detail": "Workspace validation clears immediately when a valid choice is selected."
+    },
+    {
+      "id": "RF-030",
+      "pass": true,
+      "detail": "Done returns focus to the collapsed row Edit control."
+    },
+    {
+      "id": "RF-031",
+      "pass": true,
+      "detail": "Removing an unsaved draft row restores Add workspace focus; no saved record is deleted."
+    },
+    {
+      "id": "RF-032",
+      "pass": true,
+      "detail": "No browser console errors captured during stable Round 5 journeys."
+    }
+  ],
+  "consoleErrors": [],
+  "boundaries": [
+    "Prototype-only, synthetic in-memory state; no production write.",
+    "No real microphone, upload, persistence, phone keyboard or orchestration validation.",
+    "All screenshots are unapproved non-normative review aids."
+  ]
+}
