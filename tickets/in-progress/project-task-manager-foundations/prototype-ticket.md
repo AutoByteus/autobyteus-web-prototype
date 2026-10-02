@@ -3,7 +3,7 @@
 ## Identity and scope
 - Product ticket: `project-task-manager-foundations`.
 - Stable package: `PROJ-TASK-MANAGER-20261002-001`; Solution revision `SR-001`.
-- Status: `Awaiting User Review` — direct brainstorm opening, not a runnable prototype review.
+- Status: `Awaiting User Review` — existing cumulative prototype started for user inspection before brainstorming. No Task Manager proposal implemented.
 - Selected mode: Product Experience Prototyping; this concerns the existing Projects experience. No exploratory-visualizer mode.
 - Request: Solution Designer's Product Design Requested handoff, 2026-10-02; user explicitly requested UI brainstorming.
 - Scope: clarify manager entry/context, durable Tasks, dependencies, execution attempts, results and updates (DEC-001–010; SCN-001–006). Canonical requirements remain Draft.
@@ -23,25 +23,30 @@
 - Intake: canonical checkout clean on `personal`; no branch/worktree for this ticket existed. Existing `cross-node-agent-communication` worktree left untouched. New worktree created at recorded base, clean before ticket artifacts.
 
 ## Runtime and evidence boundary
-- Runtime port/process/temp state: N/A — discussion-only; no server started or resources reused.
-- Runtime reset/scenario command: N/A for this stage.
-- UI validation/screenshots: not performed; no live appearance or parity claim.
-- Current-product context comes from the Solution Designer's source-investigation handoff, not fresh UI observation.
-- Stage recommendation: direct clarification is more useful than rendering unresolved policies now. No final ui-ux-spec.md or normative VIS references.
+- Ticket-owned runtime: `http://127.0.0.1:3286`; available port verified before launch. Listener PID `51024` (Nuxt), exec session `75723`.
+- Runtime files: isolated worktree-local `node_modules` and `.nuxt`; browser-local synthetic state scoped to origin `127.0.0.1:3286`. No source install/service reused.
+- Install: `corepack pnpm install --ignore-workspace --frozen-lockfile`; success, lockfile unchanged. Start: `corepack pnpm dev --port 3286`; Nuxt ready. Existing duplicate-import warnings; no startup error.
+- Review URL: `http://127.0.0.1:3286/projects/project-prototype-launch`; Projects index at `/projects`.
+- Scenario: existing `populated` default with synthetic Projects visible. No installed-app feature toggle or production backend involved. Reload resets mutable fixtures; scenario reset via existing `window.__AUTOBYTEUS_PROTOTYPE__.reset()` when needed.
+- Browser smoke verification: Projects index renders synthetic Project link; opening it renders the full-width Project page, Tasks/Workspaces tabs, and To Do/In Progress/Done columns. Browser console error log empty. This is not a source-parity comparison or comprehensive journey test.
+- Non-normative screenshot: `review-evidence/current-project-board.jpg` (1512×806); existing prototype only, no future-state approval.
+- Current-product policy context comes from Solution Designer's source-investigation handoff. Runtime inspection verifies the older cumulative prototype, not the handoff source pin.
+- No final ui-ux-spec.md or normative VIS references. Manager, dependencies, execution linkage and results proposals remain discussion-only.
 
 ## Review and finalization
 - Review package: `ui-brainstorm-record.md`, BR-001–003 (proposals, not decisions).
 - First review focus: DEC-007, manager conversation location relative to the full-width board and existing execution UI.
 - User confirmation: not received.
-- Ticket revision: initial discussion evidence on ticket branch; see git history.
+- Ticket revision: discussion opening `66c4c40`; runtime evidence in following ticket commit, see git history. UI source unchanged from accepted cumulative base.
 - Integration/promotion: Pending; no approved candidate, no integration performed.
-- Cleanup: Pending; worktree retained for discussion. No runtime process to clean up.
+- Cleanup: Pending; worktree and ticket-owned runtime retained for requested user inspection. Browser tab marked deliverable; do not stop while user reviews.
 - Remote push: not performed.
 - Handoff: no terminal outcome yet; return clarified user decisions to Solution Designer when the discussion stage closes.
 
 ## Status history
 - 2026-10-02: isolated Product ticket opened; `In Progress`.
 - 2026-10-02: direct brainstorm opening prepared; `Awaiting User Review`.
+- 2026-10-02: user asks to start the UI project first; existing cumulative prototype started and verified in Chrome, `Awaiting User Review`. No design choice inferred.
 
 ## Canonical input references (read-only)
 - `/Users/normy/autobyteus_org/autobyteus-worktrees/project-task-manager-foundations/tickets/in-progress/project-task-manager-foundations/product-design-handoff.md`

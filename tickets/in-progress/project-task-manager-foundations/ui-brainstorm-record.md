@@ -30,6 +30,16 @@ Should the manager conversation live in a Project Manager tab beside Tasks/Works
 - Explicit UI or requirements approval: None.
 - Browser evidence: None; text discussion is sufficient for the first entry/context choice.
 
+## User-requested inspection before discussion
+- User: “Can you please first start the UI project so I can look at it? Then we will discuss.”
+- Action: started the existing cumulative prototype from the isolated Product worktree, without implementing BR-001–003. User request is runtime inspection, not approval of a design alternative.
+- Review URL: `http://127.0.0.1:3286/projects/project-prototype-launch`; index `http://127.0.0.1:3286/projects`.
+- Verified via Chrome: Projects index → synthetic Project → full-width board with Tasks/Workspaces tabs and three populated columns. No browser console errors returned. Screenshot `review-evidence/current-project-board.jpg` (1512×806), non-normative and not evidence of new-feature behavior.
+- Runtime: ticket-owned loopback port 3286, Nuxt PID 51024/session 75723, kept available. See prototype-ticket.md for start/reset/isolation details.
+- Existing default `populated` scenario renders Projects with synthetic enabled state. Installed application remains untouched; no production feature enablement or calls.
+- Baseline limitation: existing prototype source pin remains `e9aa4a7`; parity to the newer handoff pin not newly established. No Task Manager, dependencies or execution/result linkage added.
+- Outcome: awaiting the user's inspection and discussion; all DEC decisions remain open.
+
 ## Unresolved and preserved boundaries
 - All DEC-001–010 remain open. Do not infer approval from silence or from this record.
 - ENABLE_PROJECTS stays default-off; user's installed setting/data untouched.
