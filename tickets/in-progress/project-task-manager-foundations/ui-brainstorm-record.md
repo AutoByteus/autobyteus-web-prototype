@@ -40,8 +40,20 @@ Should the manager conversation live in a Project Manager tab beside Tasks/Works
 - Baseline limitation: existing prototype source pin remains `e9aa4a7`; parity to the newer handoff pin not newly established. No Task Manager, dependencies or execution/result linkage added.
 - Outcome: awaiting the user's inspection and discussion; all DEC decisions remain open.
 
+## Overlay feedback — UF-001, 2026-10-02
+- User feedback: “One question is it possible not to use overlay? You know, is it possible? Then do not use overlay? What are better like? Because overlay always give people, for example, overlay if people in the future use the phone, I'm just wondering if in the future we support phone. Overlay is really extremely bad for phone experience, you know. Are there other options for better UI?”
+- Supplied evidence: `review-evidence/user-edit-project-overlay.png` and `review-evidence/user-new-project-overlay.png`; screenshots of the existing Edit project and New project modal dialogs with dimmed background. These are user-supplied review evidence, not prototype fixtures or normative future references.
+- Confirmed direction: avoid overlay/modal treatment for the primary Projects forms shown. Explore non-overlay task/detail/manager flows consistently. Do not infer authorization to remove every dialog or navigation overlay throughout the application.
+- Motivation: accommodate a potential future phone experience; user has not approved phone delivery scope or a final responsive design.
+- BR-004 proposal (not approved): dedicated New project and Edit project content pages with an explicit back path, a readable desktop form width inside the preserved product shell, and a single-column full-page form on narrow screens. Save/Create leads to Project detail; Cancel returns to the originating screen and preserves useful navigation state. Exact routing, unsaved-change handling, focus, layout and mobile actions await reviewed design.
+- BR-005 alternative: inline edit for small values on Project detail. Keeps context but becomes cluttered for longer descriptions or growing task details. A non-modal side panel is another desktop option, but it still narrows the board and needs a full-page phone fallback; not the recommended default.
+- Suggested consistency: primary task detail as a page, Manager as a tab/page, no floating drawer substitution. This remains a recommendation, not approval of BR-001, BR-004 or BR-005.
+- Requirement impact: REQ-007 (user-approved experience), REQ-009 (preserved manual authoring intentionally changes presentation); SCN-002,005,006; DEC-006,007 and their UI supplement. Avoid-overlays is new user feedback on preserved current CRUD, not a silent baseline correction. Deletion/active-work policies remain DEC-009 open; removing overlays must not remove confirmation safeguards.
+- No UI source changed. Existing prototype continues running on 3286. No parity claim at the newer source pin; applicable baseline acceptance still required before rendered future-state work.
+- Outcome for this feedback round: `Requirement Impact`, to Solution Designer for canonical draft refinement. Product brainstorm remains open; no final requirements or UI/UX approval received.
+
 ## Unresolved and preserved boundaries
-- All DEC-001–010 remain open. Do not infer approval from silence or from this record.
+- All DEC-001–010 remain open; UF-001 adds an explicit non-overlay direction for primary Projects forms, not a final design choice. Do not infer approval from silence or from this record.
 - ENABLE_PROJECTS stays default-off; user's installed setting/data untouched.
 - Existing manual Tasks, workspace links, node-local records and run history preserved.
 - Discovery and fresh delegation already exist; new Project tool/linkage/update capabilities are proposed, not implemented or tested here.

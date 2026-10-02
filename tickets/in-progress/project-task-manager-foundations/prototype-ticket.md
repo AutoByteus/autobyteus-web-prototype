@@ -36,17 +36,18 @@
 ## Review and finalization
 - Review package: `ui-brainstorm-record.md`, BR-001–003 (proposals, not decisions).
 - First review focus: DEC-007, manager conversation location relative to the full-width board and existing execution UI.
-- User confirmation: not received.
+- User confirmation: no final design approval; UF-001 requests avoiding overlays in primary Projects forms. Exact replacement remains under discussion.
 - Ticket revision: discussion opening `66c4c40`; runtime evidence in following ticket commit, see git history. UI source unchanged from accepted cumulative base.
 - Integration/promotion: Pending; no approved candidate, no integration performed.
 - Cleanup: Pending; worktree and ticket-owned runtime retained for requested user inspection. Browser tab marked deliverable; do not stop while user reviews.
 - Remote push: not performed.
-- Handoff: no terminal outcome yet; return clarified user decisions to Solution Designer when the discussion stage closes.
+- Handoff: UF-001 feedback round classified `Requirement Impact`; `requirement-impact.md` carries canonical-refinement request. Overall Product discussion is not complete; no final prototype/spec handed off.
 
 ## Status history
 - 2026-10-02: isolated Product ticket opened; `In Progress`.
 - 2026-10-02: direct brainstorm opening prepared; `Awaiting User Review`.
 - 2026-10-02: user asks to start the UI project first; existing cumulative prototype started and verified in Chrome, `Awaiting User Review`. No design choice inferred.
+- 2026-10-02: UF-001 overlay feedback received, recorded (`In Progress` during evidence update), alternatives proposed; `Awaiting User Review`. Requirement Impact round sent for canonical refinement; UI source unchanged.
 
 ## Canonical input references (read-only)
 - `/Users/normy/autobyteus_org/autobyteus-worktrees/project-task-manager-foundations/tickets/in-progress/project-task-manager-foundations/product-design-handoff.md`
