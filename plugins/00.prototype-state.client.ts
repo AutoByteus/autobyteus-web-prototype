@@ -201,7 +201,7 @@ const findSnapshot = (): [string, RuntimeSnapshot] => {
   // fallback snapshot. Domain edits live separately in small native review state.
   const pathname = window.location.pathname
   const projectReviewPath = pathname === '/projects/new' ? '/projects'
-    : pathname.startsWith('/projects/') && (pathname.endsWith('/edit') || pathname.startsWith('/projects/project-review-'))
+    : pathname.startsWith('/projects/') && (pathname.endsWith('/edit') || pathname.includes('/tasks/') || pathname.startsWith('/projects/project-review-'))
       ? '/projects/project-prototype-launch' : null
   const aliasedPath = projectReviewPath || defaultRouteAliases[path] || path
   const wantedScenario = scenario()

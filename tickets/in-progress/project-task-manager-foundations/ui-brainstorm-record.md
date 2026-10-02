@@ -92,3 +92,11 @@ Continue direct brainstorming with the user. Record exact decisions against DEC/
 - Implemented in the prototype only. The timer begins when a ready Project displays the success notice, clears the notice query marker without losing other query state, and is cleaned up on navigation. No action/Undo is hidden by this message.
 - Seven focused browser checks passed: immediate creation/save feedback, expiry measured ~2.96s/3.01s, saved workspace content/selected tab retained, no resurfacing after tab changes, no console errors. Non-normative before/after screenshots and details are linked from `review-round-1.md`.
 - This feedback does not approve the whole Product design. Continue review directly with the user; UF-004 handoff gate remains in force.
+
+## UF-006 — Task flows without popups, 2026-10-02
+- User: “possible to make tasks also not popup? think about how to improve the UI”. Screenshot: `review-evidence/user-task-popup-feedback.png`, New Task multiline description over a dimmed board.
+- Recommendation/candidate PC-005: full-page New Task and Edit Task in the preserved shell, consistent with Project authoring. Keep one required description, first-line summary, inline validation and Ctrl/Meta+Enter. No separate title, priority, assignee or due-date fields invented.
+- PC-006: card links open a full-page Task detail with Project context, readable multiline description, read-only status and Task ID/timestamps. Back to tasks retains search. Space is available for later dependencies/executions/results, but no speculative widgets or unapproved orchestration behavior are added now.
+- PC-007: preserve explicit destructive confirmation as an inline warning panel on Task detail, with Cancel focus first. No task popup, dimmed backdrop or drawer, and no active-work cancellation policy is inferred. Project deletion confirmation/global shell overlays are outside this feedback.
+- Relevant draft context REQ-007/009, SCN-002/005/006, DEC-006; AC-013 still covers primary Project forms only. Task presentation is new review evidence for later canonical refinement, not a silent amendment to the requirements.
+- Implemented/validated Product candidate: `review-round-3.md` and TP-001–020 evidence. User has not approved the concrete design or finished the broader stage. UF-004 remains: no Solution Designer handoff yet.

@@ -1,0 +1,127 @@
+{
+  "date": "2026-10-02",
+  "stage": "Unapproved Product review candidate",
+  "feedback": "UF-006",
+  "viewports": [
+    "1512×806",
+    "390×844"
+  ],
+  "checks": [
+    {
+      "id": "TP-001",
+      "pass": true,
+      "evidence": "Normal New task action opens full page, no dialog"
+    },
+    {
+      "id": "TP-002",
+      "pass": true,
+      "evidence": "Required-description inline error and textarea focus"
+    },
+    {
+      "id": "TP-003",
+      "pass": true,
+      "evidence": "Cancel returns to original three-state populated board"
+    },
+    {
+      "id": "TP-004",
+      "pass": true,
+      "evidence": "Multiline create opens full Task detail, status To Do, no popup"
+    },
+    {
+      "id": "TP-005",
+      "pass": true,
+      "evidence": "Task success feedback clears after three seconds and URL marker is removed"
+    },
+    {
+      "id": "TP-006",
+      "pass": true,
+      "evidence": "Edit description is a prefilled content page, not a dialog"
+    },
+    {
+      "id": "TP-007",
+      "pass": true,
+      "evidence": "Cancel editing discards draft, preserves saved description"
+    },
+    {
+      "id": "TP-008",
+      "pass": true,
+      "evidence": "Ctrl+Enter saves changed description while identity/status remain unchanged"
+    },
+    {
+      "id": "TP-009",
+      "pass": true,
+      "evidence": "Back to tasks preserves board search and shows created/edited task card"
+    },
+    {
+      "id": "TP-010",
+      "pass": true,
+      "evidence": "Existing In Progress task opens as page; status stays read-only"
+    },
+    {
+      "id": "TP-011",
+      "pass": true,
+      "evidence": "Delete uses explicit inline confirmation, not a popup or immediate deletion"
+    },
+    {
+      "id": "TP-012",
+      "pass": true,
+      "evidence": "Cancelling deletion keeps the task and returns focus to Delete task"
+    },
+    {
+      "id": "TP-013",
+      "pass": true,
+      "evidence": "Confirmed removal returns to board; only selected mock task removed"
+    },
+    {
+      "id": "TP-014",
+      "pass": true,
+      "evidence": "Unknown/missing Task route has clear recovery, not a popup or blank page"
+    },
+    {
+      "id": "TP-015",
+      "pass": true,
+      "evidence": {
+        "documentWidth": 390,
+        "pageScrollWidth": 340,
+        "pageWidth": 340,
+        "viewportWidth": 390
+      }
+    },
+    {
+      "id": "TP-016",
+      "pass": true,
+      "evidence": "Narrow create succeeded; fresh UI inspection confirms Task detail and expired notice after locator wait reported a deadline/no-match diagnostic"
+    },
+    {
+      "id": "TP-017",
+      "pass": true,
+      "evidence": {
+        "documentWidth": 390,
+        "pageScrollWidth": 340,
+        "pageWidth": 340
+      }
+    },
+    {
+      "id": "TP-018",
+      "pass": true,
+      "evidence": "New Project with zero workspaces → full-page New Task → detail → board shows created task"
+    },
+    {
+      "id": "TP-019",
+      "pass": true,
+      "evidence": "New Project card reflects one open task after creation (visible no-workspaces label, corrected locator)"
+    },
+    {
+      "id": "TP-020",
+      "pass": true,
+      "evidence": "No browser console errors during the stable task-page validation"
+    }
+  ],
+  "errors": [],
+  "limitations": [
+    "Session-only mock state resets on full reload/dev route generation",
+    "No agent execution, status tools, dependencies or results implemented",
+    "Narrow browser viewport, not a device/soft-keyboard test",
+    "One narrow-expiry locator wait returned a deadline/no-match; fresh DOM independently verified successful creation and notice absence"
+  ]
+}

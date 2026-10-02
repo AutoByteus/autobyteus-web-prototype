@@ -13,15 +13,14 @@
           :placeholder="t('projects.components.projects.ProjectTaskBoard.searchPlaceholder')"
         />
       </div>
-      <button
-        type="button"
+      <NuxtLink
+        :to="`/projects/${projectId}/tasks/new`"
         class="inline-flex flex-shrink-0 items-center gap-2 self-start whitespace-nowrap rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 sm:self-auto"
         data-testid="project-tasks-new-button"
-        @click="openDialog(null)"
       >
         <Icon icon="heroicons:plus" class="h-4 w-4" aria-hidden="true" />
         {{ t('projects.components.projects.ProjectTaskBoard.newTask') }}
-      </button>
+      </NuxtLink>
     </div>
 
     <p v-if="boardState === 'loading'" class="mt-6 py-10 text-center text-sm text-slate-500" role="status" data-testid="project-tasks-loading">
@@ -69,32 +68,26 @@
         </p>
         <ul v-else class="space-y-2">
           <li v-for="task in columns[status]" :key="task.taskId">
-            <ProjectTaskCard :task="task" @open="openDialog" />
+            <ProjectTaskCard :task="task" />
           </li>
         </ul>
       </section>
     </div>
 
-    <ProjectTaskDialog
-      v-if="dialog.open"
-      :project-id="projectId"
-      :task="dialog.task"
-      @close="closeDialog"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { Icon } from '@iconify/vue'
 import ProjectTaskCard from '~/components/projects/ProjectTaskCard.vue'
-import ProjectTaskDialog from '~/components/projects/ProjectTaskDialog.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useProjectTaskStore } from '~/stores/projectTaskStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 import { PROJECT_TASK_STATUSES, type ProjectTask, type ProjectTaskStatus } from '~/types/project'
 import { TASK_STATUS_LABEL_KEYS } from '~/utils/projects/taskStatusLabelKey'
 import { useProjectDesignStore } from '~/prototype/project-review/useProjectDesignStore'
+import { useTaskDesignStore } from '~/prototype/project-review/useTaskDesignStore'
 
 const props = defineProps<{ projectId: string }>()
 
@@ -106,11 +99,13 @@ const uid = Math.random().toString(36).slice(2, 8)
 const searchId = `project-tasks-search-${uid}`
 const columnHeadingId = (status: ProjectTaskStatus) => `project-task-column-${status}-${uid}`
 
-const searchQuery = ref('')
-const dialog = reactive<{ open: boolean; task: ProjectTask | null }>({ open: false, task: null })
-
 const review = useProjectDesignStore()
-const list = computed(() => review.createdIds.includes(props.projectId) ? { status: 'ready', tasks: [], error: null } : projectTaskStore.getList(props.projectId))
+const taskReview = useTaskDesignStore()
+const searchQuery = computed({
+  get: () => taskReview.searchByProject[props.projectId] || '',
+  set: value => { taskReview.searchByProject[props.projectId] = value },
+})
+const list = computed(() => review.projectById(props.projectId) ? { status: 'ready', tasks: taskReview.tasksFor(props.projectId), error: null } : projectTaskStore.getList(props.projectId))
 const tasks = computed(() => list.value?.tasks ?? [])
 const boardState = computed(() => {
   if (!list.value || (list.value.status === 'loading' && tasks.value.length === 0)) return 'loading'
@@ -135,6 +130,7 @@ const columns = computed<Record<ProjectTaskStatus, ProjectTask[]>>(() => {
 const isNoMatch = computed(() => searchQuery.value.trim().length > 0 && tasks.value.length > 0 && matchingTasks.value.length === 0)
 
 const load = (force = false): void => {
+  if (review.projectById(props.projectId)) return
   void projectTaskStore.fetchTasks(props.projectId, force).catch(() => undefined)
 }
 
@@ -143,21 +139,9 @@ const clearSearch = (): void => {
   document.getElementById(searchId)?.focus()
 }
 
-const openDialog = (task: ProjectTask | null): void => {
-  dialog.task = task
-  dialog.open = true
-}
-
-const closeDialog = (): void => {
-  dialog.open = false
-  dialog.task = null
-}
-
 onMounted(() => load(true))
 
 watch(() => props.projectId, () => {
-  searchQuery.value = ''
-  closeDialog()
   load(true)
 })
 
