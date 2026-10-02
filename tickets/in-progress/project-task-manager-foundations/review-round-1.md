@@ -58,3 +58,14 @@ Canonical prototype root `/Users/normy/autobyteus_org/autobyteus-web-prototype`;
 Source frontend `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/autobyteus-web`; retained accepted baseline source pin `e9aa4a74ca36f62303bb7f5f0efd74bf89a9ea71`. Solution investigation pin `e04cfef23550c3b78286a53befc6bd5d71fb1061` is separate, not silently substituted. DATA-001 [provenance assessment](review-evidence/DATA-001-assessment.md) found repeated synthetic UI state, not evidence of production records in inspected inputs. Broad baseline cleanup remains held; no corrected baseline claimed.
 
 The candidate is committed only on the Product ticket branch. No canonical integration/promotion, remote push or production edit. Projects remains experimental/default-off in the real product; no installed setting changed. Per UF-004, accumulate Product findings here and continue directly with the user; **no further Solution Designer handoff until Product design is finished and the user confirms**.
+
+## Round 2 supplement — UF-005 / PC-004
+
+Creation and saved-change success notices now expire after 3000ms. Only the brief success marker is removed; the Project, selected tab and workspace descriptions stay. The marker is removed from the URL, so tab navigation does not resurrect it. Cleanup cancels timers when leaving; error/action-required messages are unchanged. Status announcements remain non-focusing, non-overlay feedback.
+
+Focused Chrome checks [NF-001–007](review-evidence/round-2-notice-checks.json) all passed. Observed creation expiry 2959ms and saved-change expiry 3005ms after the visible check; no console errors in this run. The test used a separate temporary tab, leaving the user's “hello” Project and current review page untouched. All 16 unit tests and the configured lint scope pass. Round-1 build, narrow layout and source-pin evidence remain historical; this timer-only round did not rerun those audits.
+
+- [Creation notice visible](review-evidence/round-2-created-notice-visible.jpg)
+- [Same Project after notice clears](review-evidence/round-2-created-notice-cleared.jpg)
+
+These are non-normative review screenshots. Round-1 code revision `110841c494bd1c83c2b8d49e50e797c738a89b4b`; PC-004 revision is the following commit introducing this supplement. Ticket remains Awaiting User Review; no final approval, integration or handoff.

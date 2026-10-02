@@ -3,7 +3,7 @@
 ## Identity and scope
 - Product ticket: `project-task-manager-foundations`.
 - Stable package: `PROJ-TASK-MANAGER-20261002-001`; intake `SR-001`, latest received canonical draft `SR-002`.
-- Status: `Awaiting User Review` — focused New/Edit Project and optional workspace authoring candidate is running and validated. Task Manager orchestration UI remains discussion-only.
+- Status: `Awaiting User Review` — UF-005 success-confirmation expiry refinement implemented and validated. Task Manager orchestration UI remains discussion-only.
 - Selected mode: Product Experience Prototyping; this concerns the existing Projects experience. No exploratory-visualizer mode.
 - Request: Solution Designer's Product Design Requested handoff, 2026-10-02; user explicitly requested UI brainstorming.
 - Scope: clarify manager entry/context, durable Tasks, dependencies, execution attempts, results and updates (DEC-001–010; SCN-001–006). Canonical requirements remain Draft.
@@ -36,6 +36,7 @@
 - New candidate uses a separate handwritten prototype-native state module (`prototype/project-review/useProjectDesignStore.ts`, kilobytes), scripted memory-only saves, native selectors and page navigation. No new capture/replay fixture or production operation introduced. Existing baseline snapshot machinery is unchanged except mapping new routes to their accepted parent shell.
 - Round-1 validation: lint passed (repository's configured scope), 16 Vitest tests passed, scoped TypeScript check passed, Nuxt build passed. First build refused the active dev lock; documented `NUXT_IGNORE_LOCK=1` rerun succeeded. Browser checks RV-001–023 passed across desktop and 390×844 narrow layouts; creation with zero/multiple links, descriptions, validation, Edit/Cancel, add later, normal entry and existing board verified. See `review-round-1.md` and `review-evidence/round-1-browser-checks.json`.
 - Preview screenshots are non-normative review evidence, not final VIS references. Phone-width verification is not a claim of phone delivery or device/keyboard compatibility. No newer-source parity, backend or orchestration validation claimed.
+- Round-2 refinement: Project-created and Changes-saved inline success notices clear after 3000ms while the Project content/tab remains. URL notice marker is removed to prevent resurfacing on tab navigation. Timers are cleaned up on leaving the component; error/action-required messages are unchanged. Seven focused browser checks passed (`review-evidence/round-2-notice-checks.json`), observed expiry ~2.96s/3.01s after visible checks; 16 tests still pass. No fresh build/phone/source-parity audit in this timer-only round.
 - No final ui-ux-spec.md or normative VIS references. Manager, dependencies, execution linkage and results proposals remain discussion-only.
 
 ## Review and finalization
@@ -56,6 +57,7 @@
 - 2026-10-02: UF-002 requests a preview update; UF-003 adds optional workspace links/descriptions to creation; UF-004 requires Product design/review to finish before any further Solution Designer handoff. `In Progress`; no new handoff performed.
 - 2026-10-02: DATA-001 internal provenance assessment returned, correction held with no runtime/UI changes; user's parity feedback preserved. Focused candidate built on the existing accepted baseline. Review validation underway; no further Solution Designer messages.
 - 2026-10-02: PC-001–003 implemented and validated in the isolated prototype; round-1 screenshots and 23 browser checks persisted. `Awaiting User Review`; runtime retained, no approval/integration/handoff inferred.
+- 2026-10-02: UF-005 asks whether the green creation confirmation should disappear in about three seconds. `In Progress` during localized timer change, then `Awaiting User Review` after create/save/expiry/tab regression checks. User's existing Project state preserved; test used a separate temporary tab. No Solution Designer handoff.
 
 ## Canonical input references (read-only)
 - `/Users/normy/autobyteus_org/autobyteus-worktrees/project-task-manager-foundations/tickets/in-progress/project-task-manager-foundations/product-design-handoff.md`

@@ -148,7 +148,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import ProjectDialogFrame from '~/components/projects/ProjectDialogFrame.vue'
@@ -185,6 +185,23 @@ const state = ref<'loading' | 'ready' | 'error'>('loading')
 const loadError = ref<string | null>(null)
 const review = useProjectDesignStore()
 const project = computed(() => review.deletedIds.includes(props.projectId) ? null : review.projectById(props.projectId) || projectStore.getProjectById(props.projectId))
+
+// Brief, non-actionable success feedback. Clear the URL marker too so changing
+// tabs or returning through history does not resurrect an expired confirmation.
+let noticeTimer: ReturnType<typeof setTimeout> | undefined
+const clearNoticeTimer = () => {
+  if (noticeTimer !== undefined) clearTimeout(noticeTimer)
+  noticeTimer = undefined
+}
+watch([() => route.query.notice, () => state.value, () => project.value?.projectId], ([notice, detailState, projectId]) => {
+  clearNoticeTimer()
+  if (detailState !== 'ready' || !projectId || (notice !== 'created' && notice !== 'saved')) return
+  noticeTimer = setTimeout(() => {
+    const { notice: _expired, ...query } = route.query
+    void router.replace({ query })
+  }, 3000)
+}, { immediate: true })
+onBeforeUnmount(clearNoticeTimer)
 
 // Tasks is the default tab; `?tab=workspaces` selects Workspaces.
 const activeTab = computed<ProjectDetailTab>(() => (route.query.tab === 'workspaces' ? 'workspaces' : 'tasks'))

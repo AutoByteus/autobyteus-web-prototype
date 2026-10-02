@@ -85,3 +85,10 @@ Continue direct brainstorming with the user. Record exact decisions against DEC/
 - Normal New/Edit entry links use the candidate, not a hidden preview flag. Existing Task dialogs, deletion confirmation and global navigation behavior are outside this change.
 - Validation and non-normative screenshots: `review-round-1.md`; `review-evidence/round-1-browser-checks.json` records 23 passed checks. Desktop and narrow browser viewports inspected, not actual phone support certified.
 - Current state: `Awaiting User Review`; URL `http://127.0.0.1:3286/projects/new`. No Product completion or final spec; no further Solution Designer messages. Next action is the user's inspection/feedback, then focused Product iteration.
+
+## UF-005 — temporary success feedback, 2026-10-02
+- User: “after i created the project, the green should dispappear forexample in 3 secons or something right? from the user experinece persepective”. Evidence: `review-evidence/user-success-notice-feedback.png`.
+- Product response/refinement PC-004: a brief, non-actionable creation confirmation clears automatically after 3000ms; apply the same behavior to Changes saved. Keep the existing inline/non-overlay status treatment and do not steal focus. Errors or action-required feedback are not auto-dismissed.
+- Implemented in the prototype only. The timer begins when a ready Project displays the success notice, clears the notice query marker without losing other query state, and is cleaned up on navigation. No action/Undo is hidden by this message.
+- Seven focused browser checks passed: immediate creation/save feedback, expiry measured ~2.96s/3.01s, saved workspace content/selected tab retained, no resurfacing after tab changes, no console errors. Non-normative before/after screenshots and details are linked from `review-round-1.md`.
+- This feedback does not approve the whole Product design. Continue review directly with the user; UF-004 handoff gate remains in force.

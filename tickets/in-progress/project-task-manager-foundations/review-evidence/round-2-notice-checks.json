@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-02",
+  "stage": "Unapproved Product feedback iteration",
+  "feedback": "UF-005",
+  "durationMs": 3000,
+  "checks": [
+    {
+      "id": "NF-001",
+      "pass": true,
+      "evidence": "Creation success message shown immediately"
+    },
+    {
+      "id": "NF-002",
+      "pass": true,
+      "evidence": {
+        "visibleMsAfterSubmit": 735,
+        "absentMsAfterVisible": 2959
+      }
+    },
+    {
+      "id": "NF-003",
+      "pass": true,
+      "evidence": "Expired notice removed from URL; workspace tab and saved content retained"
+    },
+    {
+      "id": "NF-004",
+      "pass": true,
+      "evidence": "Edit success message appears"
+    },
+    {
+      "id": "NF-005",
+      "pass": true,
+      "evidence": {
+        "absentMsAfterVisible": 3005
+      }
+    },
+    {
+      "id": "NF-006",
+      "pass": true,
+      "evidence": "Switching tabs after expiry does not restore the green confirmation"
+    },
+    {
+      "id": "NF-007",
+      "pass": true,
+      "evidence": "No browser console errors during focused timer validation"
+    }
+  ],
+  "errors": [],
+  "scope": "Desktop scripted create/edit; no CSS change or fresh phone/build/parity audit"
+}
