@@ -42,6 +42,7 @@ The promoted default product entries are:
 - Agent Teams: <http://127.0.0.1:3210/agent-teams?view=team-list>
 - Agent Orgs: <http://127.0.0.1:3210/agent-orgs?view=org-list>
 - Workspace: <http://127.0.0.1:3210/workspace>
+- Projects: <http://127.0.0.1:3210/projects>
 - Token Statistics: <http://127.0.0.1:3210/settings?section=token-usage>
 
 Normal navigation and launch/configuration journeys do not depend on
@@ -125,3 +126,23 @@ Review-package artifacts:
 - [Behavior matrix](tickets/done/REQPKG-TSUI-001/ui-behavior-test-matrix.md)
 - [Ticket runbook](tickets/done/REQPKG-TSUI-001/prototype-runbook.md)
 - [Non-normative review screenshots](tickets/done/REQPKG-TSUI-001/review-evidence/final-prototype-review)
+
+
+## Approved Projects / Tasks UI — 2026-10-02
+
+PROJ-TASK-MANAGER-20261002-001: the approved manual authoring/board slice is
+reachable through normal Chat → Projects navigation. New/Edit Project and
+Task flows are pages; Project forms optionally include direct Existing/New
+workspace choices and descriptions. Tasks use only three continuous status
+columns, with no alternate List view. Create returns to the Project board.
+Task detail has adjacent Edit/Delete and no ID/date/information disclosure.
+Voice and context files are explicitly local simulations, not real services.
+
+The current contract for these intentionally changed surfaces is the
+[approved UI/UX supplement](tickets/done/project-task-manager-foundations/ui-ux-spec.md),
+with normative ticket-scoped VIS-001–020 references. See the
+[ticket/runbook](tickets/done/project-task-manager-foundations/prototype-ticket.md)
+for exact revisions, integration, validation and cleanup. Other inherited
+baseline references remain preservation context. Broader Manager/dependency/
+execution/result requirements are still Draft, not authorized for implementation.
+Installed Projects remains experimental/default-off and was not changed.

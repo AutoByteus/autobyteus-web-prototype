@@ -3,10 +3,10 @@
 ## Identity and scope
 - Product ticket: `project-task-manager-foundations`.
 - Stable package: `PROJ-TASK-MANAGER-20261002-001`; intake `SR-001`, latest received canonical draft `SR-002`.
-- Status: `Awaiting User Review` — UF-016 earlier Existing workspace / New folder buttons restored and browser-validated. Other simplification changes preserved; broader Task Manager discussion remains open.
+- Status: `In Progress` — explicit UF-017 approval received; final approved UI artifacts/browser validation complete; local integration finalization underway. Wider SR-002 Manager/orchestration requirements remain open, not UI-approved by inference.
 - Selected mode: Product Experience Prototyping; this concerns the existing Projects experience. No exploratory-visualizer mode.
 - Request: Solution Designer's Product Design Requested handoff, 2026-10-02; user explicitly requested UI brainstorming.
-- Scope: clarify manager entry/context, durable Tasks, dependencies, execution attempts, results and updates (DEC-001–010; SCN-001–006). Canonical requirements remain Draft.
+- Completed review scope: represented Projects/Tasks manual authoring, optional workspace links/descriptions, page flows, voice/context UI, simple continuous three-column board and adjacent Task actions. Original wider manager/dependency/execution/result questions remain requirements-refinement inputs (DEC-001–010; SCN-001–006). Canonical requirements remain Draft.
 - No production implementation, architecture authorization, feature enablement, or data changes.
 
 ## Repository and isolation
@@ -40,17 +40,17 @@
 - Round-3 candidate: Task creation, reading and description editing are pages. Task cards are links; Back to tasks retains per-project search. Deletion remains explicitly confirmed in an inline warning panel, not a popup. Task status remains read-only and no execution/status tools are simulated as real. Small handwritten `useTaskDesignStore.ts` supplies three illustrative baseline task states and scripted session-only changes/counts; existing inherited API store is not used for candidate saves.
 - Round-3 validation: configured lint, 21 unit tests, scoped TypeScript check and Nuxt build pass. TP-001–020 browser checks pass across desktop and 390×844 narrow; native create/edit/Cancel, shortcut, identity/status, search context, delete safeguard/removal, not-found recovery, new-Project integration and counts inspected. See `review-round-3.md`. No new source-parity/phone delivery claim. Route generation/dev preparation reset the user's prior mock-created Project; its real installation/data were not involved. Review tab recovered through Projects to the stable baseline New Task page.
 - Round-4: agent-style voice/context-file composer added to New/Edit Task, saved file list/inline image preview and board attachment count. Voice is a handwritten sample, not real microphone capture. Files are local metadata/image previews only; no upload or backend persistence. 24 unit tests, configured lint, scoped typecheck and Nuxt build pass; desktop/narrow browser TI-001–020 pass. Native picker fallback verified after extension-permission limitation; no permission changed. See `review-round-4.md`.
-- No final ui-ux-spec.md or normative VIS references. Manager, dependencies, execution linkage and results proposals remain discussion-only.
+- Final approved ui-ux-spec.md and VIS-001–020 references are now present (UF-017). Manager, dependencies, execution linkage and results proposals remain discussion-only.
 
 ## Review and finalization
 - Review package: `ui-brainstorm-record.md` (historical proposals/feedback), `review-round-1.md` (Project candidate and timer supplement), `review-round-3.md` (Task-page candidate), `review-round-4.md` (voice/context-file candidate), `review-round-5.md` (simplification and superseded alternatives), `review-round-6.md` (restored workspace choices).
 - Current review focus: simpler continuous three-column board, direct optional workspace authoring, clear adjacent Task Edit/Delete with no metadata disclosure, and creation returning to the board. Voice/context files and non-popup forms remain available. Wider manager/dependency/execution/result decisions remain open.
-- User confirmation: no final design approval. UF-001–003 requested the non-overlay prototype and optional workspace authoring; the concrete candidate still needs user review.
+- User confirmation: UF-017, 2026-10-02: “the ui is good now. now i confirm the ui is good. continue”. Approval applies to Round 6 UI at 84ed47bac6877e2cdc6350cca789b0c30ffb55a3, not all Draft SR-002 requirements or production implementation.
 - Ticket revision: round-6 is the commit introducing `review-round-6.md`; previous revision `240f2b7` and round-5 candidate `04a8e15`. Round-5 is the commit introducing `review-round-5.md` (resolve through git history); preceding round-4 `89234ba`. Round-3 candidate `ea6e3d2`; round-4 revision is the commit introducing `review-round-4.md` (resolve through git history). Discussion opening `66c4c40`; prior gate record `2788d75`; round-1 candidate commit is the commit introducing `review-round-1.md` (resolve via git history). Source changes are local to this unapproved ticket branch.
-- Integration/promotion: Pending; no approved candidate, no integration performed.
-- Cleanup: Pending; worktree and ticket-owned runtime retained for requested user inspection. Browser tab marked deliverable; do not stop while user reviews.
+- Integration/promotion: finalization underway. Canonical personal still equals intake df2f5cd before merge; README permits approved local ticket integration. Approved UI is already reachable through normal links in ticket, no preview flag. Exact integration receipt appended after fast-forward and canonical default-entry validation.
+- Cleanup: review ended; ticket-owned PID 80255 stopped for final full build. Integration smoke runtime will be isolated and stopped. Retain clean ticket checkout pending handoff under management rule (removal only after durable handoff); no other worktree/process touched.
 - Remote push: not performed.
-- Handoff: UF-001 feedback round delivered and canonical SR-002 received. UF-004 user gate now prohibits further interim Solution Designer handoffs: finish Product design and user review first. Accumulate findings within Product artifacts. Overall Product discussion is not complete; no final prototype/spec handed off.
+- Handoff: historical UF-001 feedback round delivered and canonical SR-002 received. UF-017 closes the represented UI review and releases UF-004 gate. Final Product handoff only after durable local integration; full requirements refinement/approval remains downstream.
 
 ## Status history
 - 2026-10-02: isolated Product ticket opened; `In Progress`.
@@ -74,3 +74,13 @@
 - 2026-10-02: UF-008–014 iteratively refined; rejected List view, filters, individual floating-card treatment, workspace counters/Edit/Done steps and Task-information disclosure removed. FS-001–009 browser checks, 24 tests, configured lint, scoped direct typecheck pass. `Awaiting User Review`; no new full build/prepare, Product approval, integration or handoff.
 
 - 2026-10-02: UF-015 workspace-entry question clarified without UI changes; UF-016 explicitly restores earlier Existing/New choices. Template-only correction preserves active drafts. WC-001–006, 24 tests, configured lint, scoped typecheck pass. `Awaiting User Review`; no final approval, integration or handoff.
+
+
+## UF-017 final approval and final artifacts (current authority)
+- 2026-10-02 user: “the ui is good now. now i confirm the ui is good. continue”. No post-confirmation UI changes.
+- Exact approved UI revision: 84ed47bac6877e2cdc6350cca789b0c30ffb55a3. Artifact package revision is the Git commit introducing tickets/done/project-task-manager-foundations/ui-ux-spec.md; final integration receipt follows.
+- Final artifacts: ui-ux-spec.md, visual-references/VIS-001–020 screenshots, final-browser-validation.json, ui-behavior-test-matrix.md, prototype-runbook.md, prototype-change-log.md, handoff-notes.md. Historical review-round-* and ui-brainstorm-record.md retained; their earlier no-approval statements are historical, not current authority.
+- FV-001–013 pass through normal root/Chat/Projects navigation and authoring/read/edit/search/Cancel/confirm safeguards plus desktop/narrow review. Final 24 tests/5 files, configured lint/scoped TS/full Nuxt build/diff-check pass. Exact limits and warnings in matrix/build-output.
+- Mock provenance: new Project/Task store files total 6,038 bytes, handwritten. No new source captures/services introduced; inherited synthetic snapshot coupling limitation preserved.
+- Completed UI supplement resolves only presentation/authoring slice. Manager entry, tool policies, dependencies, execution linkage, results, active-work deletion and real voice/file contracts remain open in handoff-notes.md. No installed Projects toggle, source/production edit, requirements amendment, architecture/implementation authorization or push.
+- Durable target folder: tickets/done/project-task-manager-foundations/. Historical absolute in-progress/worktree paths in review reports identify capture provenance; active locators are the canonical done folder after integration.

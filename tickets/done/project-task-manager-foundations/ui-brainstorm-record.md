@@ -129,3 +129,11 @@ Continue direct brainstorming with the user. Record exact decisions against DEC/
 - Restored Existing workspace / New folder paired buttons. Existing selects a registered workspace; New directly shows Folder path. Optional description, Add/Remove and direct editing remain. No counts or Edit/Done steps restored. Mode switching preserves drafts.
 - This supersedes the Round 5 dropdown-based source selector, not the other simplification decisions. UF-015 label/placeholder proposal remains unimplemented/unapproved.
 - Review/validation evidence: review-round-6.md and WC-001–006. User requested this focused correction, not final Product-stage approval; no Solution Designer handoff.
+
+
+## UF-017 — explicit UI approval, 2026-10-02
+- User: “the ui is good now. now i confirm the ui is good. continue”.
+- Approved basis: Round 6 UI at 84ed47bac6877e2cdc6350cca789b0c30ffb55a3, including retained Round 5 simplifications. Previous unapproved statements above are historical.
+- Approval closes the represented Projects/Tasks UI review and releases UF-004's handoff gate. It does not approve all Draft SR-002 requirements, Manager/dependency/execution/result policies, phone delivery or implementation.
+- Final current authority: ui-ux-spec.md, normative VIS references and final-browser-validation.json. No visible/behavioral changes after approval.
+- Continue with Solution Designer canonical refinement/explicit full requirements approval after Product repository finalization.

@@ -165,3 +165,17 @@ Historical runtime logs and the explicitly historical
 contain prior workspace or task-worktree paths as capture provenance. They are
 not active artifact locators. Every active locator in this index resolves under
 `/home/autobyteus/workspace/autobyteus-web-prototype`.
+
+
+## Projects / Tasks approved experience supplement (2026-10-02)
+
+Current canonical owner for this slice is `/Users/normy/autobyteus_org/autobyteus-web-prototype`.
+Historical `/home/` locators above remain capture provenance, not this ticket's active paths.
+- [UI contract and normative VIS references](tickets/done/project-task-manager-foundations/ui-ux-spec.md)
+- [Lifecycle/integration receipt](tickets/done/project-task-manager-foundations/prototype-ticket.md)
+- [Validation matrix](tickets/done/project-task-manager-foundations/ui-behavior-test-matrix.md)
+- [Requirements-refinement findings](tickets/done/project-task-manager-foundations/handoff-notes.md)
+
+Approved UI 84ed47bac6877e2cdc6350cca789b0c30ffb55a3, base df2f5cd, source e9aa4a7.
+These references supersede inherited Projects visuals only for the explicit deltas in the supplement.
+Review screenshots/alternatives remain non-normative. No approval of orchestration/backend inferred.

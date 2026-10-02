@@ -1,0 +1,283 @@
+{
+  "date": "2026-10-02",
+  "uiRevision": "84ed47bac6877e2cdc6350cca789b0c30ffb55a3",
+  "approval": "UF-017",
+  "checks": [
+    {
+      "id": "FV-001",
+      "result": "Pass",
+      "detail": "Root redirected to Chat; normal Projects navigation opened /projects without preview switches."
+    },
+    {
+      "id": "FV-002",
+      "result": "Pass",
+      "detail": "New Task is a normal page; empty save displays Describe the task. and focuses description."
+    },
+    {
+      "id": "FV-003",
+      "result": "Pass",
+      "detail": "Sample voice transcription inserted editable text; save blocked while recording/transcribing. Native picker attached handwritten 87-byte review-note.txt; no permission changed (extension chooser blocked file-URL access)."
+    },
+    {
+      "id": "FV-004",
+      "result": "Pass",
+      "detail": "Create returns to all Tasks in this Project; new To Do task, context preview and 1 file visible; success marker expires.",
+      "metrics": {
+        "columns": 3,
+        "display": "364.328px 364.336px 364.336px",
+        "listToggle": false,
+        "notice": false,
+        "rows": [
+          {
+            "border": "0px",
+            "margin": "0px",
+            "radius": "0px",
+            "shadow": "none",
+            "text": "Review the project flow and list the remaining improvements."
+          },
+          {
+            "border": "0px",
+            "margin": "0px",
+            "radius": "0px",
+            "shadow": "none",
+            "text": "Outline the launch checklist."
+          },
+          {
+            "border": "0px",
+            "margin": "0px",
+            "radius": "0px",
+            "shadow": "none",
+            "text": "Review the synthetic navigation baseline."
+          },
+          {
+            "border": "0px",
+            "margin": "0px",
+            "radius": "0px",
+            "shadow": "none",
+            "text": "Publish the deterministic evidence summary."
+          }
+        ],
+        "columnSelector": "section[data-testid^=\"project-task-column-\"]"
+      }
+    },
+    {
+      "id": "FV-005",
+      "result": "Pass",
+      "detail": "Description appears once; files retained. Edit followed by Delete visible; no Task information/ID/timestamp section.",
+      "metrics": [
+        {
+          "text": "Edit task",
+          "x": 1075.2578125,
+          "y": 72
+        },
+        {
+          "text": "Delete task",
+          "x": 1198.5546875,
+          "y": 72
+        }
+      ]
+    },
+    {
+      "id": "FV-006",
+      "result": "Pass",
+      "detail": "Delete opens inline confirmation, focuses Cancel; Cancel closes it and restores Delete focus. No deletion performed in final screenshot journey."
+    },
+    {
+      "id": "FV-007",
+      "result": "Pass",
+      "detail": "Task edit returns to same identity/status detail; description updated and saved context file retained."
+    },
+    {
+      "id": "FV-008",
+      "result": "Pass",
+      "detail": "Nonmatching search shows No matching tasks/Clear search; clear restores three continuous columns and focuses search."
+    },
+    {
+      "id": "FV-009",
+      "result": "Pass",
+      "detail": "Edit entered via normal link. Existing/New visible; New directly reveals path; return preserves original selection and description, no counts/Edit-Done steps."
+    },
+    {
+      "id": "FV-010",
+      "result": "Pass",
+      "detail": "Workspaces Add navigates to same Project form with existing and blank entries; Documentation selection/description saved, returns to Workspaces with original link intact."
+    },
+    {
+      "id": "FV-011",
+      "result": "Pass",
+      "detail": "Blank project name shows Enter a project name. and focuses Name; valid name creates with zero workspaces and opens three empty Tasks groups."
+    },
+    {
+      "id": "FV-012",
+      "result": "Pass",
+      "detail": "390x844 board, Project form, Task composer and Task actions inspected; no document horizontal overflow in all references; same three groups stack, actions remain reachable. Viewport override reset."
+    },
+    {
+      "id": "FV-013",
+      "result": "Pass",
+      "detail": "No browser console errors returned."
+    }
+  ],
+  "visualReferences": [
+    {
+      "id": "VIS-001",
+      "file": "VIS-001-projects-index-desktop-1512x862.jpg",
+      "height": 862,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects"
+    },
+    {
+      "id": "VIS-007",
+      "file": "VIS-007-new-task-desktop-1512x862.jpg",
+      "height": 862,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch/tasks/new"
+    },
+    {
+      "id": "VIS-013",
+      "file": "VIS-013-task-validation-desktop-1512x862.jpg",
+      "height": 862,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch/tasks/new"
+    },
+    {
+      "id": "VIS-014",
+      "file": "VIS-014-task-voice-recording-desktop-1512x862.jpg",
+      "height": 862,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch/tasks/new"
+    },
+    {
+      "id": "VIS-015",
+      "file": "VIS-015-task-context-files-desktop-1512x806.jpg",
+      "height": 806,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch/tasks/new"
+    },
+    {
+      "id": "VIS-002",
+      "file": "VIS-002-continuous-board-desktop-1512x806.jpg",
+      "height": 806,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch"
+    },
+    {
+      "id": "VIS-008",
+      "file": "VIS-008-task-detail-desktop-1512x806.jpg",
+      "height": 806,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch/tasks/task-review-created-1"
+    },
+    {
+      "id": "VIS-009",
+      "file": "VIS-009-task-delete-confirmation-desktop-1512x806.jpg",
+      "height": 806,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch/tasks/task-review-created-1"
+    },
+    {
+      "id": "VIS-016",
+      "file": "VIS-016-edit-task-desktop-1512x806.jpg",
+      "height": 806,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch/tasks/task-review-created-1/edit"
+    },
+    {
+      "id": "VIS-017",
+      "file": "VIS-017-board-no-match-desktop-1512x806.jpg",
+      "height": 806,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch"
+    },
+    {
+      "id": "VIS-004",
+      "file": "VIS-004-edit-project-existing-desktop-1512x806.jpg",
+      "height": 806,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch/edit"
+    },
+    {
+      "id": "VIS-005",
+      "file": "VIS-005-edit-project-new-folder-desktop-1512x806.jpg",
+      "height": 806,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch/edit"
+    },
+    {
+      "id": "VIS-006",
+      "file": "VIS-006-project-workspaces-desktop-1512x806.jpg",
+      "height": 806,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch?tab=workspaces"
+    },
+    {
+      "id": "VIS-003",
+      "file": "VIS-003-new-project-desktop-1512x806.jpg",
+      "height": 806,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/new"
+    },
+    {
+      "id": "VIS-018",
+      "file": "VIS-018-project-validation-desktop-1512x806.jpg",
+      "height": 806,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/new"
+    },
+    {
+      "id": "VIS-019",
+      "file": "VIS-019-empty-board-desktop-1512x806.jpg",
+      "height": 806,
+      "overflow": false,
+      "width": 1512,
+      "url": "http://127.0.0.1:3286/projects/project-review-1"
+    },
+    {
+      "id": "VIS-010",
+      "file": "VIS-010-continuous-board-narrow-390x844.jpg",
+      "height": 844,
+      "overflow": false,
+      "width": 390,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch"
+    },
+    {
+      "id": "VIS-011",
+      "file": "VIS-011-project-form-narrow-390x844.jpg",
+      "height": 844,
+      "overflow": false,
+      "width": 390,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch/edit"
+    },
+    {
+      "id": "VIS-012",
+      "file": "VIS-012-task-composer-narrow-390x844.jpg",
+      "height": 844,
+      "overflow": false,
+      "width": 390,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch/tasks/new"
+    },
+    {
+      "id": "VIS-020",
+      "file": "VIS-020-task-actions-narrow-390x844.jpg",
+      "height": 844,
+      "overflow": false,
+      "width": 390,
+      "url": "http://127.0.0.1:3286/projects/project-prototype-launch/tasks/task-review-created-1"
+    }
+  ]
+}
