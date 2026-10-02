@@ -3,9 +3,9 @@
 Package `PROJ-TASK-MANAGER-20261002-001`, `SR-001`; Product ticket `project-task-manager-foundations`.
 
 ## Authority and provenance
-This is clarification evidence, not an approved UI/UX specification or a second requirements document. No user decision has been received. Selected mode: Product Experience Prototyping; discussion only at this step.
+This is clarification/review evidence, not an approved UI/UX specification or a second requirements document. User direction UF-001–004 is recorded below; no final UI/UX approval has been received. Selected mode: Product Experience Prototyping. Opening sections are historical; the current runnable candidate and evidence are in `review-round-1.md`.
 
-Prototype root `/Users/normy/autobyteus_org/autobyteus-web-prototype`; active branch `prototype/project-task-manager-foundations` at worktree `/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/project-task-manager-foundations`; accepted cumulative base `df2f5cdaf9b168298dcae79ac47c11f31dd82d7c`. Source handoff pin `e04cfef23550c3b78286a53befc6bd5d71fb1061`; existing prototype baseline pin differs (`e9aa4a74ca36f62303bb7f5f0efd74bf89a9ea71`). No rendered prototype/Projects baseline acceptance claimed.
+Prototype root `/Users/normy/autobyteus_org/autobyteus-web-prototype`; active branch `prototype/project-task-manager-foundations` at worktree `/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/project-task-manager-foundations`; accepted cumulative base `df2f5cdaf9b168298dcae79ac47c11f31dd82d7c`. Source handoff pin `e04cfef23550c3b78286a53befc6bd5d71fb1061`; existing accepted prototype baseline pin differs (`e9aa4a74ca36f62303bb7f5f0efd74bf89a9ea71`). Existing acceptance is retained; no new parity claim to the handoff pin is made.
 
 Canonical draft intent and current-product context: `/Users/normy/autobyteus_org/autobyteus-worktrees/project-task-manager-foundations/tickets/in-progress/project-task-manager-foundations/product-design-handoff.md` and adjacent `requirements-doc.md`.
 
@@ -70,3 +70,18 @@ Continue direct brainstorming with the user. Record exact decisions against DEC/
 - UF-004 exact user direction: “Wait, I think, hey, I want to tell you that we should focus on the product design first, okay? Only after product design is done, then you can send to solution designer. Not now, only after we finish, okay? If you look at your skill, you know?”
 - Required review gate: keep Product design, runnable preview iterations and user feedback in Product ownership. Do not send further interim findings/requirements-impact messages to Solution Designer. Accumulate them here and hand off only after the user finishes the Product-design stage. Prior UF-001 delivery occurred before this gate; do not repeat it or infer permission for more early deliveries.
 - Pending review slice: non-overlay New/Edit Project pages; optional workspace links/descriptions during creation. Broader Task Manager decisions remain open.
+
+## Baseline scope and candidate preparation
+- User feedback: “the UI from baseline is looking exactly like my real product”; preserve existing navigation, appearance, interactions and visible states with fake data. User allows internal refactoring but does not request a redesign or source refresh.
+- Current authoring baseline remains accepted cumulative df2f5cd at source e9aa4a7. Established acceptance and paired Projects matrix evidence reviewed; e04cfef remains a separately recorded Solution investigation pin, not a new parity claim.
+- DATA-001 concern reclassified after independent provenance audit: repeated synthetic UI state, not a proven production-data/API-response archive. No correction candidate made; broad cleanup held. Copied audit at `review-evidence/DATA-001-assessment.md` explains limitation. No new capture machinery is used for this future-state candidate.
+- PC-001 candidate: New Project and Edit Project become normal content pages within the preserved shell. Cancel/Back return to origin; name validation stays inline; scripted save reflects local changes and gives feedback. Awaiting actual user review, not approved UI.
+- PC-002 candidate: optional Workspaces section inside the same form; add/remove multiple draft entries, existing-workspace/native selector or new-folder path, individual optional descriptions. Create accepts zero entries. Edit also includes links so adding/editing later can use the same page without a secondary overlay.
+- PC-003 candidate: normal Project detail/board remains the destination; a creation with workspace links opens Workspaces to show results, otherwise Tasks. Existing Task/deletion dialogs and global shell are not redesigned. No manager/task dependency model built.
+- Prototype-native domain fixture module is kilobytes and hand-written; mock edits last only within the current browser page session. New folders are not created or registered on disk, and writes never reach the installed application.
+
+## Runnable review round 1 — 2026-10-02
+- PC-001–003 are implemented in the active Product branch and reviewed in Chrome: full-page New/Edit Project, optional workspace rows/descriptions, zero-workspace creation, and later editing through the same page. Original board and shell remain the context.
+- Normal New/Edit entry links use the candidate, not a hidden preview flag. Existing Task dialogs, deletion confirmation and global navigation behavior are outside this change.
+- Validation and non-normative screenshots: `review-round-1.md`; `review-evidence/round-1-browser-checks.json` records 23 passed checks. Desktop and narrow browser viewports inspected, not actual phone support certified.
+- Current state: `Awaiting User Review`; URL `http://127.0.0.1:3286/projects/new`. No Product completion or final spec; no further Solution Designer messages. Next action is the user's inspection/feedback, then focused Product iteration.

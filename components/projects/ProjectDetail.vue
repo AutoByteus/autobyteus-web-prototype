@@ -47,6 +47,7 @@
     </div>
 
     <template v-else>
+      <p v-if="route.query.notice === 'created' || route.query.notice === 'saved'" class="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800" role="status" data-testid="project-save-notice">{{ route.query.notice === 'created' ? 'Project created.' : 'Changes saved.' }}</p>
       <header class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div class="min-w-0">
           <h1 class="break-words text-2xl font-semibold text-slate-900" data-testid="project-detail-name">{{ project.name }}</h1>
@@ -59,14 +60,13 @@
           </p>
         </div>
         <div class="flex flex-shrink-0 gap-2">
-          <button
-            type="button"
+          <NuxtLink
+            :to="`/projects/${project.projectId}/edit${activeTab === 'workspaces' ? '?tab=workspaces' : ''}`"
             class="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
             data-testid="project-edit-button"
-            @click="showEditDialog = true"
           >
             {{ t('projects.components.projects.ProjectDetail.edit') }}
-          </button>
+          </NuxtLink>
           <button
             type="button"
             class="rounded-md border border-red-200 bg-white px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1"
@@ -109,12 +109,6 @@
       </div>
     </template>
 
-    <ProjectFormDialog
-      v-if="showEditDialog && project"
-      :project="project"
-      @close="showEditDialog = false"
-      @saved="showEditDialog = false"
-    />
 
     <ProjectDialogFrame
       v-if="showDeleteDialog && project"
@@ -158,7 +152,7 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import ProjectDialogFrame from '~/components/projects/ProjectDialogFrame.vue'
-import ProjectFormDialog from '~/components/projects/ProjectFormDialog.vue'
+import { useProjectDesignStore } from '~/prototype/project-review/useProjectDesignStore'
 import ProjectTaskBoard from '~/components/projects/ProjectTaskBoard.vue'
 import ProjectWorkspacesPanel from '~/components/projects/ProjectWorkspacesPanel.vue'
 import { useLocalization } from '~/composables/useLocalization'
@@ -189,12 +183,12 @@ const panelId = (tab: ProjectDetailTab) => `project-tabpanel-${tab}-${uid}`
 
 const state = ref<'loading' | 'ready' | 'error'>('loading')
 const loadError = ref<string | null>(null)
-const project = computed(() => projectStore.getProjectById(props.projectId))
+const review = useProjectDesignStore()
+const project = computed(() => review.deletedIds.includes(props.projectId) ? null : review.projectById(props.projectId) || projectStore.getProjectById(props.projectId))
 
 // Tasks is the default tab; `?tab=workspaces` selects Workspaces.
 const activeTab = computed<ProjectDetailTab>(() => (route.query.tab === 'workspaces' ? 'workspaces' : 'tasks'))
 
-const showEditDialog = ref(false)
 const showDeleteDialog = ref(false)
 const deleting = ref(false)
 const deleteError = ref<string | null>(null)
@@ -260,7 +254,7 @@ const confirmDelete = async (): Promise<void> => {
   deleting.value = true
   deleteError.value = null
   try {
-    await projectStore.deleteProject(props.projectId)
+    review.remove(props.projectId)
     projectTaskStore.forget(props.projectId)
     showDeleteDialog.value = false
     await navigateTo('/projects')

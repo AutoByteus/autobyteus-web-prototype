@@ -1,0 +1,141 @@
+{
+  "date": "2026-10-02",
+  "stage": "Unapproved Product review candidate",
+  "origin": "http://127.0.0.1:3286",
+  "viewports": [
+    "1512×806 desktop",
+    "390×844 narrow"
+  ],
+  "checks": [
+    {
+      "id": "RV-001",
+      "pass": true,
+      "evidence": "New Project is a page; no dialog"
+    },
+    {
+      "id": "RV-002",
+      "pass": true,
+      "evidence": "Required-name inline error"
+    },
+    {
+      "id": "RV-003",
+      "pass": true,
+      "evidence": "Duplicate-name error"
+    },
+    {
+      "id": "RV-004",
+      "pass": true,
+      "evidence": "Created with no workspace; navigated to Project"
+    },
+    {
+      "id": "RV-005",
+      "pass": true,
+      "evidence": "New Project shows three empty board columns, not a loading spinner"
+    },
+    {
+      "id": "RV-008",
+      "pass": true,
+      "evidence": "Reload clears mock-created records; unknown edit shows recovery link"
+    },
+    {
+      "id": "RV-006",
+      "pass": true,
+      "evidence": "Cancel discards draft and returns to Project"
+    },
+    {
+      "id": "RV-007",
+      "pass": true,
+      "evidence": "Edit saves and reflects changed name"
+    },
+    {
+      "id": "RV-009",
+      "pass": true,
+      "evidence": "Incomplete added row has inline error; no implicit workspace added"
+    },
+    {
+      "id": "RV-010",
+      "pass": true,
+      "evidence": "Second existing-workspace selector excludes an already selected workspace"
+    },
+    {
+      "id": "RV-011",
+      "pass": true,
+      "evidence": "Create saves both workspace descriptions and opens Workspaces tab"
+    },
+    {
+      "id": "RV-012",
+      "pass": true,
+      "evidence": "No modal during inline workspace creation/result inspection"
+    },
+    {
+      "id": "RV-013",
+      "pass": true,
+      "evidence": "Edit restores both existing links, including a newly added folder"
+    },
+    {
+      "id": "RV-014",
+      "pass": true,
+      "evidence": "Workspace description edit saves and returns to original Workspaces tab"
+    },
+    {
+      "id": "RV-015",
+      "pass": true,
+      "evidence": "Adding later opens page editor with another inline row"
+    },
+    {
+      "id": "RV-016",
+      "pass": true,
+      "evidence": "Remove draft workspace works without unlinking saved work"
+    },
+    {
+      "id": "RV-017",
+      "pass": true,
+      "evidence": "390×844 creation page with no modal"
+    },
+    {
+      "id": "RV-018",
+      "pass": true,
+      "evidence": {
+        "documentWidth": 390,
+        "pageScrollWidth": 340,
+        "pageWidth": 340,
+        "viewportWidth": 390
+      }
+    },
+    {
+      "id": "RV-019",
+      "pass": true,
+      "evidence": "Phone-width form actions reachable by scrolling; create/result succeeds"
+    },
+    {
+      "id": "RV-020",
+      "pass": true,
+      "evidence": "Normal Projects index → existing Project retains shell, tabs and populated board"
+    },
+    {
+      "id": "RV-021",
+      "pass": true,
+      "evidence": "Edit entry opens regular page with prefilled Project/workspace fields; no dialog"
+    },
+    {
+      "id": "RV-022",
+      "pass": true,
+      "evidence": "Cancel New Project retains Project list search"
+    },
+    {
+      "id": "RV-023",
+      "pass": true,
+      "evidence": "No browser console errors during final stable index/board/Edit/Cancel/New navigation"
+    }
+  ],
+  "finalStableRun": {
+    "startedAt": "2026-10-02T06:41:03.111Z",
+    "errors": []
+  },
+  "limitations": [
+    "Prototype only; session memory resets on reload/dev preparation",
+    "English default scenario inspected; not a new source-parity audit",
+    "Phone-width browser viewport, not a device/keyboard test",
+    "No production persistence, filesystem registration or agent delegation"
+  ]
+}

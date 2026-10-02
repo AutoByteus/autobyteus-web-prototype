@@ -197,7 +197,13 @@ const context = (): string => localStorage.getItem(CONTEXT_KEY) || (window.locat
 
 const findSnapshot = (): [string, RuntimeSnapshot] => {
   const path = normalizePath()
-  const aliasedPath = defaultRouteAliases[path] || path
+  // New Projects review pages inherit the accepted Projects shell, not Chat's
+  // fallback snapshot. Domain edits live separately in small native review state.
+  const pathname = window.location.pathname
+  const projectReviewPath = pathname === '/projects/new' ? '/projects'
+    : pathname.startsWith('/projects/') && (pathname.endsWith('/edit') || pathname.startsWith('/projects/project-review-'))
+      ? '/projects/project-prototype-launch' : null
+  const aliasedPath = projectReviewPath || defaultRouteAliases[path] || path
   const wantedScenario = scenario()
   const wantedContext = context()
   const entries = Object.entries(snapshots)

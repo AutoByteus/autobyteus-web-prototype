@@ -94,6 +94,7 @@ import { useProjectTaskStore } from '~/stores/projectTaskStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 import { PROJECT_TASK_STATUSES, type ProjectTask, type ProjectTaskStatus } from '~/types/project'
 import { TASK_STATUS_LABEL_KEYS } from '~/utils/projects/taskStatusLabelKey'
+import { useProjectDesignStore } from '~/prototype/project-review/useProjectDesignStore'
 
 const props = defineProps<{ projectId: string }>()
 
@@ -108,7 +109,8 @@ const columnHeadingId = (status: ProjectTaskStatus) => `project-task-column-${st
 const searchQuery = ref('')
 const dialog = reactive<{ open: boolean; task: ProjectTask | null }>({ open: false, task: null })
 
-const list = computed(() => projectTaskStore.getList(props.projectId))
+const review = useProjectDesignStore()
+const list = computed(() => review.createdIds.includes(props.projectId) ? { status: 'ready', tasks: [], error: null } : projectTaskStore.getList(props.projectId))
 const tasks = computed(() => list.value?.tasks ?? [])
 const boardState = computed(() => {
   if (!list.value || (list.value.status === 'loading' && tasks.value.length === 0)) return 'loading'
