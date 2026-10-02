@@ -279,5 +279,6 @@
       "width": 390,
       "url": "http://127.0.0.1:3286/projects/project-prototype-launch/tasks/task-review-created-1"
     }
-  ]
+  ],
+  "postIntegrationEvidence": "integration-validation.json"
 }

@@ -221,4 +221,4 @@ See [handoff-notes.md](handoff-notes.md). DEC-006 authoring/board/detail present
 - Normal/default entry, affected desktop/narrow journeys: validated; final refs match current code. No post-approval UI change.
 - Unit/configured lint/scoped TS/full build results: in matrix; not a comprehensive source-feature lint/type audit.
 - Mock boundaries, unresolved policies and illustrative content: explicit.
-- Finalization/integration/cleanup receipt: prototype-ticket.md; do not infer terminal completion from this file alone.
+- Finalization/integration/cleanup receipt: prototype-ticket.md and [post-integration validation](integration-validation.json); local canonical promotion complete, preview runtimes stopped, clean worktree retained for handoff.

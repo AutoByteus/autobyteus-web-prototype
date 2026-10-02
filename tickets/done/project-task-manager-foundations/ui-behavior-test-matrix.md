@@ -43,7 +43,7 @@ Historical RF/SB alternate-view comparisons and review screenshots are not curre
 - `git diff --check`: **Pass**.
 - Browser console error log: empty for final test tab. Native filechooser API hit extension file-URL permission limitation; native macOS picker successfully selected only the handwritten 87-byte review-note.txt. No browser permissions/settings changed.
 - Desktop actual native viewports 1512×862 / 1512×806, narrow 390×844; temporary override reset.
-- Post-integration default-entry smoke evidence is appended to final-browser-validation.json and ticket before completion.
+- Post-integration default-entry smoke evidence is in [integration-validation.json](integration-validation.json) and the ticket. Canonical 24/5 tests, configured lint/scoped TS/diff-check pass; PI-005 cold Vite import errors recovered, PI-006 fresh normal-entry rerun has no new errors.
 
 ## Not validated / not approved by these checks
 Production persistence or API/MCP parity; node rebinding of prototype-native authoring state; real mic/transcription/file upload; attachment storage/security/permissions; status tools/ownership; agents/teams/dependencies/dispatch/results; actual phone keyboard/device/AT; exhaustive source parity at e04cfef; exhaustive WCAG or performance. Known inherited Project-delete open-count issue remains a requirement gap, not a passed deletion count criterion.

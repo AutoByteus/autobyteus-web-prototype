@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-02",
+  "canonicalRoot": "/Users/normy/autobyteus_org/autobyteus-web-prototype",
+  "integrationRevision": "134e8e05169bb96e0b8132ad0f524ffc28c354f0",
+  "uiRevision": "84ed47bac6877e2cdc6350cca789b0c30ffb55a3",
+  "runtime": {
+    "port": 3286,
+    "pid": 31097,
+    "session": 11661,
+    "ownership": "isolated integration smoke"
+  },
+  "checks": [
+    {
+      "id": "PI-001",
+      "result": "Pass",
+      "detail": "Root → Chat → normal Projects link → Project; no preview flags",
+      "board": {
+        "columns": 3,
+        "listToggle": false,
+        "styles": [
+          {
+            "border": "0px",
+            "radius": "0px",
+            "shadow": "none"
+          },
+          {
+            "border": "0px",
+            "radius": "0px",
+            "shadow": "none"
+          },
+          {
+            "border": "0px",
+            "radius": "0px",
+            "shadow": "none"
+          }
+        ],
+        "url": "http://127.0.0.1:3286/projects/project-prototype-launch"
+      }
+    },
+    {
+      "id": "PI-002",
+      "result": "Pass",
+      "detail": "Normal Project Edit → paired Existing/New → direct Folder path; Cancel returns board"
+    },
+    {
+      "id": "PI-003",
+      "result": "Pass",
+      "detail": "Normal New Task exposes composer, mic/files; Create returns all Tasks board with Task created. and new To Do row",
+      "composer": {
+        "url": "http://127.0.0.1:3286/projects/project-prototype-launch/tasks/new",
+        "composer": true,
+        "voice": true,
+        "attach": true
+      }
+    },
+    {
+      "id": "PI-004",
+      "result": "Pass",
+      "detail": "Created row opens simple detail with adjacent Edit/Delete and no metadata",
+      "detailState": {
+        "actions": [
+          "Edit task",
+          "Delete task"
+        ],
+        "idLabel": false,
+        "info": false,
+        "status": "To Do"
+      }
+    },
+    {
+      "id": "PI-005",
+      "result": "Recovered",
+      "detail": "Cold canonical dev runtime dependency optimization triggered three initial dynamic-import errors at 10:55:18 UTC; Vite optimized dependencies/reloaded. No UI code change. Kept original logs as evidence.",
+      "errors": [
+        {
+          "level": "error",
+          "message": "TypeError: Failed to fetch dynamically imported module: http://127.0.0.1:3286/_nuxt/pages/index.vue",
+          "timestamp": "2026-10-02T10:55:18.134Z",
+          "url": "http://127.0.0.1:3286/_nuxt/node_modules/.pnpm/vue-router@4.6.4_vue@3.5.41_typescript@5.9.3_/node_modules/vue-router/dist/vue-router.mjs?v=a32104fc"
+        },
+        {
+          "level": "error",
+          "message": "[nuxt] error caught during app initialization H3Error: Failed to fetch dynamically imported module: http://127.0.0.1:3286/_nuxt/pages/index.vue",
+          "timestamp": "2026-10-02T10:55:18.134Z",
+          "url": "http://127.0.0.1:3286/_nuxt/node_modules/.pnpm/nuxt@3.21.11_@oxc-project+types@0.143.0_@types+node@22.20.1_@vue+compiler-sfc@3.5.41_ca_4ff1461f20d8c9421cfe67b1029b4fd4/node_modules/nuxt/dist/app/nuxt.js?v=a32104fc"
+        },
+        {
+          "level": "error",
+          "message": "[nuxt] error caught during app initialization H3Error: Failed to fetch dynamically imported module: http://127.0.0.1:3286/_nuxt/pages/index.vue",
+          "timestamp": "2026-10-02T10:55:18.148Z",
+          "url": "http://127.0.0.1:3286/_nuxt/node_modules/.pnpm/nuxt@3.21.11_@oxc-project+types@0.143.0_@types+node@22.20.1_@vue+compiler-sfc@3.5.41_ca_4ff1461f20d8c9421cfe67b1029b4fd4/node_modules/nuxt/dist/app/nuxt.js?v=a32104fc"
+        }
+      ]
+    },
+    {
+      "id": "PI-006",
+      "result": "Pass",
+      "detail": "After dependency warmup, fresh root → Chat → Projects → board → Task detail navigation succeeds; no new console errors since recheck start.",
+      "recheckStart": "2026-10-02T10:57:10.155Z",
+      "errors": []
+    }
+  ],
+  "screenshot": "review-evidence/integrated-default-board.jpg"
+}
