@@ -1,71 +1,22 @@
 <template>
   <div class="flex h-full flex-col bg-white" data-test="agent-org-run-config">
     <div class="min-h-0 flex-1 overflow-y-auto px-4 py-4">
-      <div v-if="org" class="mx-auto max-w-3xl space-y-4">
-        <div>
-          <label class="mb-1 block text-sm font-medium text-gray-700">{{ t('workspace.agentOrg.runConfig.orgLabel') }}</label>
-          <div class="block w-full select-none rounded-md bg-slate-50 px-3 py-2 text-sm text-gray-500">{{ org.name }}</div>
-        </div>
-
-        <AgentOrgRunConfigForm
-          v-if="initializationReady"
+      <div v-if="org" class="mx-auto max-w-2xl space-y-4">
+        <!-- run-settings-ui-unification: org defaults + compact placements list in the Chat vocabulary. -->
+        <OrgLaunchSettings
+          v-if="initializationReady && formModel"
           :key="configStore.draftEpoch"
-          :editable-model="formModel"
-          :expanded-direct-agent="editingDirectAgent"
-          :member-overrides-label="t('workspace.agentOrg.runConfig.memberOverrides')"
-          :team-model-help-text="t('workspace.components.workspace.config.TeamScopeConfigEditor.flat_model_help')"
-          @toggle-direct-agent="toggleDirectAgent"
-          @update-team="configStore.setTeamOverride"
-          @reset-team="configStore.resetTeamOverride"
-          @update-agent="configStore.setAgentOverride"
-          @update:workspace-selection="handleTeamWorkspaceSelection"
-          @schema-state="handleModelSchemaState"
-        >
-          <RuntimeModelConfigFields
-            :runtime-kind="runtimeKind"
-            :llm-model-identifier="llmModelIdentifier"
-            :llm-config="llmConfig"
-            :runtime-help-text="t('workspace.agentOrg.runConfig.runtimeHelp')"
-            :model-label="t('workspace.agentOrg.runConfig.modelLabel')"
-            :model-help-text="t('workspace.agentOrg.runConfig.modelHelp')"
-            id-prefix="org-run"
-            control-variant="quiet"
-            @update:runtime-kind="configStore.setRootRuntimeKind"
-            @update:llm-model-identifier="configStore.setRootLlmModelIdentifier"
-            @update:llm-config="configStore.setRootLlmConfig"
-            @schema-state="configStore.setModelSchemaState('/', $event)"
-          />
-
-          <div class="pt-4">
-            <WorkspaceSelector
-              :model="{ mode: 'editable', selection: workspaceSelection, isLoading: workspaceLoading, error: workspaceError }"
-              control-variant="quiet"
-              :auto-select-default="false"
-              @update:model-value="handleWorkspaceSelection"
-            />
-          </div>
-
-          <div class="flex items-center justify-between gap-4 py-2" data-test="org-auto-approve-row">
-            <div class="min-w-0">
-              <label class="block text-base text-gray-900">{{ t('workspace.agentOrg.runConfig.autoApprove') }}</label>
-              <p class="mt-1 text-xs text-gray-500" data-test="org-auto-approve-help">
-                {{ t(autoApproveLocked ? 'workspace.runModelConfig.agyAutoApproveLocked' : 'workspace.agentOrg.runConfig.autoApproveHelp') }}
-              </p>
-            </div>
-            <button
-              type="button"
-              role="switch"
-              :aria-checked="effectiveRootAutoExecuteTools"
-              :disabled="autoApproveLocked"
-              class="relative inline-flex h-6 w-11 flex-none rounded-full border-2 border-transparent transition-colors focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
-              :class="effectiveRootAutoExecuteTools ? 'bg-blue-600' : 'bg-gray-200'"
-              @click="configStore.setRootAutoExecuteTools(!autoExecuteTools)"
-            >
-              <span class="sr-only">{{ t('workspace.agentOrg.runConfig.autoApprove') }}</span>
-              <span class="inline-block h-5 w-5 rounded-full bg-white shadow transition" :class="effectiveRootAutoExecuteTools ? 'translate-x-5' : 'translate-x-0'" />
-            </button>
-          </div>
-        </AgentOrgRunConfigForm>
+          :org-name="org.name"
+          :root-values="rootRunSettings"
+          :model="formModel"
+          @root-workspace="handleWorkspaceSelection"
+          @root-model="selectRootModel"
+          @root-thinking="configStore.setRootLlmConfig"
+          @root-approval="configStore.setRootAutoExecuteTools"
+          @agent-override="configStore.setAgentOverride"
+          @team-override="(address, value) => value ? configStore.setTeamOverride(address, value) : configStore.resetTeamOverride(address)"
+          @team-workspace="handleTeamWorkspaceSelection"
+        />
         <p v-if="initializationError" role="alert" class="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700" data-test="org-seed-error">
           {{ initializationError }}
           <button type="button" class="ml-2 underline" data-test="org-seed-retry" @click="retryInitialization++">{{ t('workspace.agentOrg.runConfig.retryInitialization') }}</button>
@@ -86,7 +37,7 @@
           {{ launchError }}
         </p>
         <p
-          v-if="modelSchemaBlockingDiagnostic"
+          v-if="modelSchemaBlockingDiagnostic && !modelSchemaBlockingDiagnostic.missing"
           id="org-model-schema-status"
           :role="modelSchemaBlockingDiagnostic.neutral ? 'status' : 'alert'"
           class="rounded-md border p-3 text-sm"
@@ -114,7 +65,8 @@
       >
         {{ orgRunStore.launching ? t('workspace.agentOrg.runConfig.starting') : t('workspace.agentOrg.runConfig.run') }}
       </button>
-      <p v-if="initializationReady && !workspaceReady" class="mt-2 text-xs text-amber-700">{{ t('workspace.agentOrg.runConfig.workspaceRequired') }}</p>
+      <p v-if="initializationReady && !workspaceReady" class="mt-2 text-xs text-amber-700">{{ t('runSettings.validation.workspaceRequired') }}</p>
+      <p v-else-if="modelSchemaBlockingDiagnostic?.missing" class="mt-2 text-xs text-amber-700" data-test="org-run-model-required">{{ modelSchemaBlockingDiagnostic.message }}</p>
     </div>
   </div>
 </template>
@@ -123,9 +75,9 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
-import RuntimeModelConfigFields from '~/components/launch-config/RuntimeModelConfigFields.vue'
-import AgentOrgRunConfigForm from './AgentOrgRunConfigForm.vue'
-import WorkspaceSelector from './WorkspaceSelector.vue'
+import OrgLaunchSettings from '~/components/run-settings/OrgLaunchSettings.vue'
+import { fromSelectionState, type RunModelChoice, type RunSettingsValues } from '~/components/run-settings/runSettings'
+import { useRunSettingsPresentation } from '~/components/run-settings/useRunSettingsPresentation'
 import { useLocalization } from '~/composables/useLocalization'
 import { useRightSideTabs } from '~/composables/useRightSideTabs'
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
@@ -309,19 +261,61 @@ watch(formModel, (model) => {
     ...model.mountedTeams.flatMap((team) => [team.address, ...team.children.map((agent) => agent.address)]),
   ])
 }, { immediate: true })
+// run-settings-ui-unification (REQ-003): name the agent or team, never the raw address.
+const scopeNames = computed<Record<string, string>>(() => {
+  const names: Record<string, string> = { '/': org.value?.name ?? '' }
+  const model = formModel.value
+  if (!model) return names
+  model.directAgents.forEach((agent) => { names[agent.address] = agent.displayName })
+  model.mountedTeams.forEach((team) => {
+    names[team.address] = team.scope.displayName
+    team.children.forEach((child) => { names[child.address] = child.kind === 'agent' ? child.displayName : child.scope.displayName })
+  })
+  return names
+})
 const modelSchemaBlockingDiagnostic = computed(() => {
   if (!initializationReady.value) return null
   const blocked = firstModelSchemaBlock.value
   if (!blocked) return null
   const missing = blocked.state.reason === 'model_required'
-  const message = missing ? t('workspace.agentOrg.runConfig.modelRequired', { address: blocked.address }) : blocked.state.status === 'loading'
-    ? t('workspace.agentOrg.runConfig.schemaLoading', { address: blocked.address })
-    : t('workspace.agentOrg.runConfig.schemaBlocked', {
-        address: blocked.address,
-        error: blocked.state.message || t('workspace.agentOrg.runConfig.schemaUnavailable'),
-      })
-  return Object.freeze({ status: blocked.state.status, message, neutral: missing || blocked.state.status === 'loading' })
+  const name = scopeNames.value[blocked.address] || org.value?.name || ''
+  const message = missing
+    ? (blocked.address === '/' ? t('runSettings.validation.modelRequired') : t('runSettings.validation.memberModelRequired', { name }))
+    : blocked.state.status === 'loading'
+      ? t('runSettings.validation.modelsLoading')
+      : t('workspace.agentOrg.runConfig.schemaBlocked', {
+          address: name,
+          error: blocked.state.message || t('workspace.agentOrg.runConfig.schemaUnavailable'),
+        })
+  return Object.freeze({ status: blocked.state.status, message, missing, neutral: missing || blocked.state.status === 'loading' })
 })
+// The run-settings card has no per-field schema editor: a scope is ready once it has a model.
+watch([formModel, llmModelIdentifier], ([model, rootModel]) => {
+  if (!model) return
+  const ready = { status: 'ready', message: null } as const
+  const missing = { status: 'invalid', message: null, reason: 'model_required' } as const
+  configStore.setModelSchemaState('/', rootModel?.trim() ? ready : missing)
+  const visit = (address: string, identifier: string | null | undefined) =>
+    configStore.setModelSchemaState(address, identifier?.trim() ? ready : missing)
+  model.directAgents.forEach((agent) => visit(agent.address, agent.effectiveConfig.llmModelIdentifier))
+  model.mountedTeams.forEach((team) => {
+    visit(team.address, team.scope.effectiveConfig.llmModelIdentifier)
+    team.children.forEach((child) => visit(child.address, child.kind === 'agent' ? child.effectiveConfig.llmModelIdentifier : child.scope.effectiveConfig.llmModelIdentifier))
+  })
+}, { immediate: true, flush: 'post' })
+const rootRunSettings = computed<RunSettingsValues>(() => ({
+  workspace: fromSelectionState(workspaceSelection.value),
+  runtimeKind: runtimeKind.value,
+  llmModelIdentifier: llmModelIdentifier.value,
+  llmConfig: llmConfig.value,
+  autoExecuteTools: effectiveRootAutoExecuteTools.value,
+}))
+const runSettingsPresentation = useRunSettingsPresentation()
+const selectRootModel = (choice: RunModelChoice) => {
+  if (choice.runtimeKind !== runtimeKind.value) configStore.setRootRuntimeKind(choice.runtimeKind)
+  configStore.setRootLlmModelIdentifier(choice.llmModelIdentifier)
+  configStore.setRootLlmConfig(runSettingsPresentation.defaultConfigFor(choice))
+}
 const workspaceReady = computed(() => Boolean(rootWorkspacePath.value))
 const teamWorkspacesReady = computed(() => Object.entries(configStore.teamWorkspaceSelections).every(
   ([address, selection]) => {

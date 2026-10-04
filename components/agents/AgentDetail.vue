@@ -105,6 +105,7 @@ import AgentDefinitionDetailSections from '~/components/agents/AgentDefinitionDe
 import { useAgentRunConfigStore } from '~/stores/agentRunConfigStore';
 import { useAgentSelectionStore } from '~/stores/agentSelectionStore';
 import { useLocalization } from '~/composables/useLocalization';
+import { useStartRunInChat } from '~/composables/runSettings/useStartRunInChat';
 import { formatApplicationOwnershipLabel } from '~/utils/definitionOwnership';
 
 const props = defineProps<{
@@ -186,10 +187,10 @@ onMounted(async () => {
   }
 });
 
+// run-settings-ui-unification (round 2): Run opens New chat addressed to the agent.
+const { runAgent: startAgentInChat } = useStartRunInChat();
 const selectAgentToRun = (agentDef: AgentDefinition) => {
-  runConfigStore.setTemplate(agentDef);
-  selectionStore.clearSelection();
-  navigateTo('/workspace');
+  void startAgentInChat(agentDef.id);
 };
 
 const handleDelete = (id: string) => {

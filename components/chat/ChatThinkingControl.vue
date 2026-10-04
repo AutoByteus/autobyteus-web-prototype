@@ -33,7 +33,7 @@
       class="z-50 rounded-lg border border-gray-200 bg-white p-1 shadow-lg"
       :class="popover.narrow.value
         ? 'fixed inset-x-2 bottom-2'
-        : ['absolute right-0 w-44 overflow-y-auto', popover.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5']"
+        : [align === 'left' ? 'absolute left-0' : 'absolute right-0', 'w-44 overflow-y-auto', popover.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5']"
       :style="popover.narrow.value ? undefined : { maxHeight: `${popover.maxHeight.value}px` }"
       @keydown="onKeydown"
     >
@@ -101,17 +101,20 @@ import type { UiModelConfigSchema } from '~/utils/llmConfigSchema'
  * exposes are offered, and the control is hidden when there are none. Models with an on/off switch
  * get one merged list (Off · effort levels); picking any dependent setting turns thinking on.
  */
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   schema: UiModelConfigSchema | null
   llmConfig: Record<string, unknown> | null
-}>()
+  /** run-settings-ui-unification: run panels open menus where they fit and align them to the chip. */
+  placement?: 'above' | 'auto'
+  align?: 'left' | 'right'
+}>(), { placement: 'above', align: 'right' })
 const emit = defineEmits<{ (event: 'update', value: Record<string, unknown> | null): void }>()
 
 const { t } = useLocalization()
 const rootRef = ref<HTMLElement | null>(null)
 const triggerRef = ref<HTMLElement | null>(null)
 const menuRef = ref<HTMLElement | null>(null)
-const popover = useAnchoredPopover(rootRef, triggerRef, 240, { placement: 'above' })
+const popover = useAnchoredPopover(rootRef, triggerRef, 240, { placement: props.placement })
 
 const menu = computed(() => buildChatThinkingMenu(props.schema, props.llmConfig, (key) => t(key)))
 const groups = computed<ChatThinkingParameter[]>(() => {

@@ -1,6 +1,6 @@
 import type { ComposerTarget } from '~/composables/agentInput/useComposerTarget'
 import type { ChatDraft } from '~/stores/chatDraftStore'
-import { launchAgentChat, launchTeamChat, type ChatLaunchNavigate } from '~/services/chat/chatLaunchService'
+import { launchAgentChat, launchOrgChat, launchTeamChat, type ChatLaunchNavigate } from '~/services/chat/chatLaunchService'
 import { buildAgentDraftContextFileOwner } from '~/utils/contextFiles/contextFileOwner'
 
 /**
@@ -16,6 +16,10 @@ export const createChatDraftComposerTarget = (
   draftOwner: buildAgentDraftContextFileOwner(draft.context.state.runId),
   access: 'draft',
   send: async () => {
+    if (draft.target.kind === 'org') {
+      await launchOrgChat(draft, deps)
+      return
+    }
     if (draft.target.kind === 'team') {
       await launchTeamChat(draft, deps)
       return

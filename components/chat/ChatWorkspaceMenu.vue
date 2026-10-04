@@ -4,8 +4,8 @@
       ref="triggerRef"
       type="button"
       data-test="chat-workspace-trigger"
-      class="inline-flex max-w-[15rem] items-center gap-1.5 rounded-md px-2 py-1 text-[0.8125rem] leading-5 text-gray-600 transition-colors hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
-      :class="popover.open.value ? 'bg-gray-100' : ''"
+      class="inline-flex max-w-[15rem] items-center gap-1.5 rounded-md px-2 py-1 text-[0.8125rem] leading-5 transition-colors hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+      :class="[popover.open.value ? 'bg-gray-100' : '', muted ? 'text-gray-500' : 'text-gray-600']"
       :aria-expanded="popover.open.value ? 'true' : 'false'"
       aria-haspopup="listbox"
       :aria-label="$t('chat.workspace.triggerAria', { name: selectedName })"
@@ -146,7 +146,13 @@ import { isAbsoluteFolderPath } from '~/utils/chat/chatDefaults'
 import { useLocalization } from '~/composables/useLocalization'
 import { filterWorkspaceOptions } from '~/components/chat/chatComposerMenus'
 
-const props = defineProps<{ workspace: ChatDraftWorkspace }>()
+const props = withDefaults(defineProps<{
+  workspace: ChatDraftWorkspace
+  /** run-settings-ui-unification: run panels open menus where they fit. */
+  placement?: 'above' | 'auto'
+  /** Muted chip text for a value inherited from org defaults. */
+  muted?: boolean
+}>(), { placement: 'above', muted: false })
 const emit = defineEmits<{ (event: 'select', value: ChatDraftWorkspace): void }>()
 
 const { t } = useLocalization()
@@ -156,7 +162,7 @@ const triggerRef = ref<HTMLElement | null>(null)
 const listRef = ref<HTMLElement | null>(null)
 const pathRef = ref<HTMLInputElement | null>(null)
 const searchRef = ref<HTMLInputElement | null>(null)
-const popover = useAnchoredPopover(rootRef, triggerRef, 420, { placement: 'above' })
+const popover = useAnchoredPopover(rootRef, triggerRef, 420, { placement: props.placement })
 const adding = ref(false)
 const path = ref('')
 const error = ref('')

@@ -27,6 +27,11 @@ import { buildAgentDraftContextFileOwner } from '~/utils/contextFiles/contextFil
 import { normalizeMemberAddress } from '~/utils/teamDefinitionMembers'
 import { buildChatTeamLaunchConfig } from '~/services/chat/chatTeamLaunchConfig'
 import type { TeamLaunchDraftId } from '~/types/agent/TeamLaunchDraft'
+import type { AgentConfigOverride } from '~/types/agent/TeamRunConfig'
+import { useAgentOrgDefinitionStore } from '~/stores/agentOrgDefinitionStore'
+import { useAgentOrgRunStore } from '~/stores/agentOrgRunStore'
+import { useRunHistoryStore } from '~/stores/runHistoryStore'
+import { toAgentOrgPlacementLaunchConfiguration } from '~/utils/agentOrgLaunchPatch'
 
 const t = (key: string, params?: Record<string, string | number>): string =>
   localizationRuntime.translate(key, params)
@@ -44,6 +49,11 @@ export const resolveChatLaunchReadiness = (draft: ChatDraft): ChatLaunchReadines
     if (definitions.agentDefinitions.length > 0
       && !definitions.getAgentDefinitionById(draft.target.agentDefinitionId)) {
       return { ready: false, reason: t('chat.launch.agentUnavailable') }
+    }
+  } else if (draft.target.kind === 'org') {
+    const orgId = draft.target.orgDefinitionId
+    if (!useAgentOrgDefinitionStore().byId(orgId)) {
+      return { ready: false, reason: t('chat.launch.orgUnavailable') }
     }
   } else {
     const teamId = draft.target.teamDefinitionId
@@ -178,11 +188,23 @@ export const launchTeamChat = async (
     })
     // Team launch readiness checks the chosen runtime's catalog on the team config owner.
     const catalogs = useLLMProviderConfigStore()
-    await catalogs.fetchProvidersWithModels(context.config.runtimeKind)
-    teamRunConfigStore.setRuntimeModelCatalog(context.config.runtimeKind, catalogs.models(context.config.runtimeKind))
+    // run-settings-ui-unification (round 2): members may use other runtimes than the defaults.
+    const runtimeKinds = new Set([context.config.runtimeKind, ...Object.values(draft.memberSettings)
+      .map((settings) => settings.runtimeKind).filter((kind): kind is string => Boolean(kind))])
+    for (const runtimeKind of runtimeKinds) {
+      await catalogs.fetchProvidersWithModels(runtimeKind)
+      teamRunConfigStore.setRuntimeModelCatalog(runtimeKind, catalogs.models(runtimeKind))
+    }
     selectionStore.beginSelectionIntent()
     teamDraftId = teamRunConfigStore.createDraft(config, normalizeMemberAddress(definition.coordinatorMemberName))
     selectionStore.selectTeamDraftWithoutShellNavigation(teamDraftId)
+    // run-settings-ui-unification (round 2): members customized in New chat launch with their own settings.
+    for (const [agentAddress, settings] of Object.entries(draft.memberSettings)) {
+      const { workspace: _workspace, ...override } = settings
+      if (Object.keys(override).length) {
+        teamRunConfigStore.applyConfigEdit({ kind: 'set_agent_override', agentAddress, override: override as AgentConfigOverride })
+      }
+    }
   } catch (error) {
     chatDraftStore.clearStarting(draft)
     throw error
@@ -219,4 +241,59 @@ export const launchTeamChat = async (
   await deps.navigate('/workspace')
   chatDraftStore.startNewChat()
   return { teamRunId }
+}
+
+/**
+ * run-settings-ui-unification (round 2): launch a New chat addressed to an Agent Org with the
+ * composer's settings as Org defaults and each customized agent or placed team as an override.
+ * The UI reference launches through the same Org launch path as the Org Run form and lands in
+ * the same Org view; delivering the first message to the Org is a production concern.
+ */
+export const launchOrgChat = async (
+  draft: ChatDraft,
+  deps: { navigate: ChatLaunchNavigate },
+): Promise<{ orgRunId: string }> => {
+  if (draft.target.kind !== 'org') throw new Error('launchOrgChat requires an org-addressed draft.')
+  const readiness = resolveChatLaunchReadiness(draft)
+  if (!readiness.ready) throw new Error(readiness.reason)
+  const chatDraftStore = useChatDraftStore()
+  const orgId = draft.target.orgDefinitionId
+  const org = useAgentOrgDefinitionStore().byId(orgId)
+  if (!org) throw new Error(t('chat.launch.orgUnavailable'))
+  chatDraftStore.markStarting(draft)
+  try {
+    const { workspaceMetadata } = await resolveChatWorkspace(draft.workspace)
+    const teamAddresses = new Set(org.members.filter((member) => member.refType === 'AGENT_TEAM').map((member) => `/${member.memberName}`))
+    const teamOverrides: Array<{ address: string; configuration: Record<string, unknown> }> = []
+    const agentOverrides: Array<{ address: string; configuration: Record<string, unknown> }> = []
+    for (const [address, settings] of Object.entries(draft.memberSettings)) {
+      const { workspace, ...patch } = settings
+      const workspaceRootPath = workspace ? (await resolveChatWorkspace(workspace)).workspaceMetadata.workspaceRootPath : null
+      const configuration = toAgentOrgPlacementLaunchConfiguration(patch, workspaceRootPath)
+      if (!Object.keys(configuration).length) continue
+      ;(teamAddresses.has(address) ? teamOverrides : agentOverrides).push({ address, configuration })
+    }
+    const context = draft.context
+    const orgRunId = await useAgentOrgRunStore().launch({
+      agentOrgDefinitionId: org.id,
+      rootConfiguration: {
+        runtimeKind: context.config.runtimeKind,
+        llmModelIdentifier: context.config.llmModelIdentifier,
+        llmConfig: context.config.llmConfig ?? null,
+        autoExecuteTools: draft.autoExecuteTools,
+        skillAccessMode: 'PRELOADED_ONLY',
+        workspaceRootPath: workspaceMetadata.workspaceRootPath,
+      },
+      teamOverrides,
+      agentOverrides,
+    })
+    void useRunHistoryStore().refreshTreeQuietly()
+    writeChatLastModel({ runtimeKind: context.config.runtimeKind, llmModelIdentifier: context.config.llmModelIdentifier })
+    await deps.navigate({ path: '/workspace', query: { rootSubjectKind: 'agent_org', definitionId: org.id, orgRunId, mode: 'active' } })
+    chatDraftStore.startNewChat()
+    return { orgRunId }
+  } catch (error) {
+    chatDraftStore.clearStarting(draft)
+    throw error
+  }
 }

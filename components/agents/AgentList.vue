@@ -144,6 +144,7 @@ import { storeToRefs } from 'pinia';
 import { useAgentDefinitionStore, type AgentDefinition } from '~/stores/agentDefinitionStore';
 import AgentCard from '~/components/agents/AgentCard.vue';
 import { useRunActions } from '~/composables/useRunActions';
+import { useStartRunInChat } from '~/composables/runSettings/useStartRunInChat'
 import { useServerSettingsStore } from '~/stores/serverSettings';
 import { useToasts } from '~/composables/useToasts';
 import {
@@ -272,9 +273,10 @@ const viewDetails = (agentDefinitionId: string) => {
   emit('navigate', { view: 'detail', id: agentDefinitionId });
 };
 
+// run-settings-ui-unification (round 2): Run opens New chat addressed to the agent.
+const { runAgent: startAgentInChat } = useStartRunInChat();
 const runAgent = (agentDef: AgentDefinition) => {
-  prepareAgentRun(agentDef);
-  navigateTo('/workspace');
+  void startAgentInChat(agentDef.id);
 };
 
 </script>

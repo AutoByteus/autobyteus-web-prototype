@@ -11,7 +11,7 @@ import { useLocalization } from '~/composables/useLocalization'
  * Data for the Chat `/` and `@` menus.
  * - `/` lists the addressed agent's effective skills: every enabled installed skill for an
  *   ALL_INSTALLED agent (the same catalog the runtime receives), otherwise its configured skills.
- * - `@` lists agents (except Daily Assistant, the default) and agent teams. Agent Orgs are not addressable.
+ * - `@` lists agents (except General Agent, the default) and agent teams. Agent Orgs are not addressable.
  */
 export function useChatComposerOptions(agentDefinitionId: Ref<string | null>) {
   const agentDefinitionStore = useAgentDefinitionStore()

@@ -19,7 +19,7 @@
     type="button"
     data-test="chat-approval-toggle"
     class="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[0.8125rem] leading-5 transition-colors hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
-    :class="modelValue ? 'text-gray-600' : 'text-amber-700'"
+    :class="muted ? 'text-gray-500' : modelValue ? 'text-gray-600' : 'text-amber-700'"
     :aria-pressed="modelValue ? 'true' : 'false'"
     :aria-label="modelValue ? $t('chat.approval.autoApproveAria') : $t('chat.approval.askFirstAria')"
     :title="modelValue ? $t('chat.approval.autoApproveTooltip') : $t('chat.approval.askFirstTooltip')"
@@ -33,7 +33,11 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
 
-/** `locked`: the runtime always auto-approves (Antigravity); shown on and not changeable. */
-defineProps<{ modelValue: boolean; locked?: boolean }>()
+/**
+ * `locked`: the runtime always auto-approves (Antigravity); shown on and not changeable
+ * (as shipped in source `origin/personal@0a32261`). `muted`: the value is inherited from
+ * team/org defaults (run-settings-ui-unification).
+ */
+withDefaults(defineProps<{ modelValue: boolean; locked?: boolean; muted?: boolean }>(), { locked: false, muted: false })
 const emit = defineEmits<{ (event: 'update:modelValue', value: boolean): void }>()
 </script>

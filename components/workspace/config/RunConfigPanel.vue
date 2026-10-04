@@ -26,30 +26,28 @@
       :key="`existing:${selectionStore.selectedType}:${selectionStore.selectedRunId}`"
     />
 
-    <div v-else class="flex-1 overflow-y-auto px-4 py-4">
+    <div v-else class="flex-1 overflow-y-auto px-4 py-5">
       <div v-if="!effectiveAgentConfig && !teamRunFormModel" class="flex h-full flex-col items-center justify-center text-center text-gray-500">
         <span class="i-heroicons-cursor-arrow-rays-20-solid mb-2 h-12 w-12 text-gray-300"></span>
         <p>{{ $t('workspace.components.workspace.config.RunConfigPanel.select_an_agent_or_team_to') }}</p>
       </div>
 
-      <AgentRunConfigForm
+      <!-- run-settings-ui-unification: new launches use the Chat controls in one settings card. -->
+      <AgentLaunchSettings
         v-else-if="effectiveAgentConfig && activeAgentDefinition"
         :key="activeRunConfigContextRenderKey"
         :config="effectiveAgentConfig"
-        :seed-model-identifier="runConfigStore.seedModelIdentifier"
-        :agent-definition="activeAgentDefinition"
-        :workspace-loading-state="effectiveWorkspaceLoadingState"
+        :definition-name="activeAgentDefinition.name"
         :workspace-selection="workspaceSelection"
         @update:workspace-selection="handleWorkspaceSelectionChange"
       />
 
-      <TeamRunConfigForm
-        v-else-if="teamRunFormModel"
+      <TeamLaunchSettings
+        v-else-if="teamRunFormModel && teamRunFormModel.mode === 'editable'"
         :key="activeRunConfigContextRenderKey"
         :model="teamRunFormModel"
+        @edit="handleTeamConfigEdit"
         @update:workspace-selection="handleTeamWorkspaceSelectionChange"
-        @edit-config="handleTeamConfigEdit"
-        @retry-runtime-catalog="retryTeamRuntimeCatalog"
       />
 
       <div v-else class="mt-4 text-center text-red-500">{{ $t('workspace.components.workspace.config.RunConfigPanel.error_definition_not_found') }}</div>
@@ -70,6 +68,13 @@
       >
         {{ firstTeamBlockingIssue }}
       </p>
+      <p
+        v-else-if="showAgentModelRequired"
+        data-test="agent-run-model-required"
+        class="mt-2 text-xs text-amber-700"
+      >
+        {{ $t('runSettings.validation.modelRequired') }}
+      </p>
     </div>
   </div>
 </template>
@@ -89,11 +94,12 @@ import { useWorkspaceStore } from '~/stores/workspace'
 import { useExistingRunConfigStore } from '~/stores/existingRunConfigStore'
 import { useWorkspaceCenterViewStore } from '~/stores/workspaceCenterViewStore'
 import { useRightSideTabs } from '~/composables/useRightSideTabs'
-import AgentRunConfigForm from './AgentRunConfigForm.vue'
-import TeamRunConfigForm from './TeamRunConfigForm.vue'
+import AgentLaunchSettings from '~/components/run-settings/AgentLaunchSettings.vue'
+import TeamLaunchSettings from '~/components/run-settings/TeamLaunchSettings.vue'
 import ExistingRunConfigEditor from './ExistingRunConfigEditor.vue'
 import DraftRunConfigEditor from './DraftRunConfigEditor.vue'
 import { isTemporaryRunId } from '~/utils/chat/chatDefaults'
+import { runtimeKindToLabel } from '~/types/agent/AgentRunConfig'
 import type { AgentRunConfig } from '~/types/agent/AgentRunConfig'
 import type { TeamRunConfig } from '~/types/agent/TeamRunConfig'
 import type { TeamRunFormModel } from '~/types/agent/TeamRunFormModel'
@@ -332,7 +338,25 @@ const canLaunchTeamBeforeRun = computed(() =>
   Boolean(effectiveTeamConfig.value) && effectiveTeamBlockingIssues.value.length === 0,
 )
 
-const firstTeamBlockingIssue = computed(() => effectiveTeamBlockingIssues.value[0]?.message || '')
+// run-settings-ui-unification (REQ-003): name the member, never the raw address.
+const firstTeamBlockingIssue = computed(() => {
+  const issue = effectiveTeamBlockingIssues.value[0]
+  if (!issue) return ''
+  const isRoot = !issue.subjectAddress || issue.subjectAddress === '/'
+  const name = issue.memberName || activeTeamDefinition.value?.name || ''
+  switch (issue.code) {
+    case 'WORKSPACE_REQUIRED':
+      return isRoot ? $t('runSettings.validation.workspaceRequired') : $t('runSettings.validation.memberWorkspaceRequired', { name })
+    case 'MODEL_REQUIRED':
+      return isRoot ? $t('runSettings.validation.modelRequired') : $t('runSettings.validation.memberModelRequired', { name })
+    case 'MODEL_CATALOG_PENDING':
+      return $t('runSettings.validation.modelsLoading')
+    case 'MODEL_UNAVAILABLE':
+      return $t('runSettings.validation.modelUnavailable', { name, runtime: runtimeKindToLabel(issue.runtimeKind || '') })
+    default:
+      return issue.message
+  }
+})
 const showTeamBlockingIssue = computed(() =>
   !isSelectionMode.value &&
   Boolean(effectiveTeamConfig.value) &&
@@ -349,6 +373,9 @@ const canLaunchAgentBeforeRun = computed(() => {
   }
   return Boolean(config.workspaceId)
 })
+
+const showAgentModelRequired = computed(() => !isSelectionMode.value
+  && Boolean(effectiveAgentConfig.value) && !effectiveAgentConfig.value?.llmModelIdentifier)
 
 const isRunDisabled = computed(() => {
   if (isRunPreparationPending.value || isTeamLaunchPending.value || effectiveWorkspaceLoadingState.value.isLoading) {

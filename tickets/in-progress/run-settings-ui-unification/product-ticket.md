@@ -1,0 +1,81 @@
+# Product Ticket — run-settings-ui-unification
+
+## Identity And Scope
+
+- Product ticket: `run-settings-ui-unification` (same as the stable package identifier; no second ID)
+- Stable package: `run-settings-ui-unification`, solution revision `SR-001`
+- Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
+- Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
+- Status: `Baseline Needed` — paused for `WEB-BASELINE-REFRESH-004`; resumes `Awaiting User Review` on the refreshed base
+- Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
+- Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
+- Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
+- In-scope IDs: UC-001..004, SCN-001..005, BEH-001..005, REQ-001..004, QR-001, DEC-001, DEC-002
+- User words (via request): the chat composer's four settings "look very clean and simple"; the Agent run form "not clean, not user-friendly"; Team and Org forms "a super long list of configuration".
+
+## Decision Questions
+
+- DEC-001: refresh the run panels with chat-style controls, or have Run open the chat composer?
+- DEC-002: which settings do member overrides need?
+
+## Repository And Baseline
+
+- Canonical design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (branch `personal`)
+- Ticket worktree: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/run-settings-ui-unification`
+- Ticket branch: `design/run-settings-ui-unification`
+- Accepted design base: `a714bb234e0a609c7c704fb09b6562f831febce2` (`personal`)
+- Selected frontend: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/autobyteus-web`
+- Baseline source pin: `origin/personal@e9aa4a74ca36f62303bb7f5f0efd74bf89a9ea71` (`ui-baseline-report.md`, WEB-BASELINE-REFRESH-003, accepted)
+- Baseline applicability: accepted and applicable. Every in-scope run-config component in the baseline is byte-identical to the pin.
+- Source delta to the Solution Designer's base `26b555126`: limited to the surfaces this ticket replaces (Antigravity "always auto-approve" lock, catalog Retry link, removed skill-access field, fresh launches default to auto-approve). No baseline refresh was requested: the request names `26b555126` as the code-reading base, not as a new design source authority, and the redesign supersedes those exact rows. The AGY lock is carried into the design from source `26b555126`. The auto-approve default for fresh launches stays at the baseline's behaviour. This is open for the user: a formal refresh can be requested if wanted.
+
+## Runtime
+
+- Review server: `corepack pnpm dev --port 4520` in the ticket worktree (process owned by this ticket)
+- Temp/evidence scratch: `/tmp/autobyteus-design-run-settings-ui-unification`
+- Fixture state: browser-local; reset with `localStorage.clear()`
+- Design-only state switch for saved runs: `localStorage['autobyteus.design.runSettings.existingState'] = 'refresh_required' | 'model_unavailable'`
+
+## Mock Data Added
+
+- `prototype/run-settings/runtimeCatalogFixture.ts` (~4 KB, hand-written): three illustrative runtimes (Codex App Server, Claude Agent SDK, Antigravity CLI) with four invented models, so model+runtime choice, effort levels and the AGY lock are reviewable. The values are illustrative.
+
+## Findings
+
+- F-001 (pre-existing, not caused by this ticket): `prototype/fixtures/runtime-state.json` (2.7 MB) and `source-state-snapshots.json` (4.4 MB) are store-state snapshots captured from the source app running against the synthetic observation node. The domain values are synthetic, but the size and the capture mechanism do not meet the current data-boundary rule. Recommend a separate baseline data-boundary correction ticket. This ticket adds none.
+- F-002 (pre-existing): the saved Org run settings stay on "Loading run configuration…" in the baseline fixture. The new saved-run view for Org uses the same component as Team. It is shown with the Team saved run and is not reachable for Org in the review build.
+- F-003 (pre-existing): the legacy `workspace_*` scenarios error in the baseline. Saved runs are reviewed through the populated workspace tree instead.
+- F-004 (pre-existing): Org Run in the review build lands on "No agent or team run selected", the same as the baseline.
+
+## Status History
+
+- 2026-10-04: opened from the Solution Designer handoff; worktree created from `a714bb2`; `In Progress`.
+- 2026-10-04: round-1 proposal built and browser-validated; `Awaiting User Review`.
+- 2026-10-04: user feedback — keep the Chat page's simple settings for every Run and reach member settings from there; `In Progress`.
+- 2026-10-04: round 2 (Run opens Chat, Org as Chat target, "Customize members" line + inline member settings) built and browser-validated; `Awaiting User Review` (see `review-round-2.md`). Pending requirement impact recorded there.
+- 2026-10-04: user asked for member settings in a right-side panel; round 3 built and browser-validated; `Awaiting User Review` (see `review-round-3.md`).
+- 2026-10-04: user asked to show the target as the page heading instead of a chip in the message box; round 4 built and validated (see `review-round-4.md`).
+- 2026-10-04: general agent shown with the same heading; team heading without member count; round 5 (see `review-round-5.md`).
+- 2026-10-04: avatar beside the name only when present; heading moved up; round 6 (see `review-round-6.md`).
+- 2026-10-04: removed redundant heading text and the back link; round 7 (see `review-round-7.md`).
+
+## Finalization
+
+- Integration: Pending
+- Baseline promotion: Pending
+- Cleanup: Pending
+
+## Baseline Correction (2026-10-04)
+
+- User found the live-run `@` mention on two lines in the design app; the product shipped the
+  single inline mention (`006fd69`). Root cause (Product UI/UX Designer error): this ticket was
+  branched from the canonical checkout's local `personal` without `git fetch`, and the baseline
+  refresh was declined at intake on a too-narrow diff (run-config and chat components only,
+  against `26b5551` rather than the latest fetched `origin/personal`).
+- User direction: always fetch first and branch from `origin/personal`, never from the local
+  checkout; keep the local design repo up to date. The user had the 15 unpushed local `personal`
+  commits pushed; `origin/personal` = `a714bb2`.
+- Refresh requested: `WEB-BASELINE-REFRESH-004` to source `origin/personal@0a32261`.
+- After acceptance and integration: rebuild this ticket on the refreshed `origin/personal`
+  (carry rounds 1–7a, `6436116`), revalidate, and resume review. Earlier "no refresh" note under
+  Repository And Baseline is superseded.

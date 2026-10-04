@@ -1,0 +1,188 @@
+<template>
+  <div class="flex min-h-0 flex-1 flex-col" data-test="existing-run-settings" :data-state="stateKey">
+    <div class="flex-1 overflow-y-auto px-4 py-5">
+      <div class="mx-auto max-w-2xl">
+        <RunSubjectHeader :kind="kind" :name="name" :subtitle="subtitle" :status="isActive ? 'active' : 'stopped'" />
+
+        <!-- One quiet status line instead of coloured banners (REQ-004). -->
+        <p
+          class="-mt-2 mb-4 flex items-center gap-1.5 text-xs"
+          :class="refreshRequired ? 'text-amber-700' : 'text-gray-500'"
+          :role="refreshRequired ? 'alert' : 'status'"
+          data-test="existing-run-note"
+        >
+          <Icon :icon="refreshRequired ? 'heroicons:exclamation-triangle' : lockedForModel ? 'heroicons:lock-closed' : 'heroicons:information-circle'" class="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
+          <span>{{ refreshRequired ? $t('runSettings.existing.refreshNote') : lockedForModel ? $t('runSettings.existing.activeNote') : $t('runSettings.existing.stoppedNote') }}</span>
+          <button
+            v-if="refreshRequired"
+            type="button"
+            class="rounded px-1 font-medium text-blue-600 hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+            data-test="existing-run-refresh"
+            @click="emit('refresh')"
+          >
+            {{ $t('runSettings.existing.refresh') }}
+          </button>
+        </p>
+
+        <div class="mb-2 flex items-baseline justify-between gap-3">
+          <h3 class="text-xs font-medium text-gray-500">{{ sectionTitle }}</h3>
+        </div>
+        <RunSettingsCard
+          :values="rootValues"
+          :locked="rootLocked"
+          runtime-locked
+          :model-unavailable="modelUnavailable"
+          :model-note="keptNote(rootValues)"
+          test-suffix="root"
+          @update:model="edit(rootAddress, { runtimeKind: $event.runtimeKind, llmModelIdentifier: $event.llmModelIdentifier, llmConfig: presentation.defaultConfigFor($event) })"
+          @update:thinking="edit(rootAddress, { llmConfig: $event })"
+        />
+        <RunWorkspaceHint :workspace="rootValues.workspace" />
+
+        <RunMembersSection
+          v-if="memberNodes.length"
+          :nodes="memberNodes"
+          :inherited-label="kind === 'org' ? $t('runSettings.inherited.org') : $t('runSettings.inherited.team')"
+          :defaults-label="kind === 'org' ? $t('runSettings.members.usesOrgDefaults') : $t('runSettings.members.usesTeamDefaults')"
+          :locked="memberLocked"
+          runtime-locked
+          read-only
+          @update="updateMember"
+        />
+      </div>
+    </div>
+
+    <!-- Save appears only when something changed. -->
+    <div v-if="dirty || feedback" class="flex items-center gap-3 border-t border-gray-200 bg-gray-50 px-4 py-3" data-test="existing-run-save-bar">
+      <p class="min-w-0 flex-1 truncate text-xs" :class="feedback ? 'text-emerald-700' : 'text-gray-600'" role="status" aria-live="polite">
+        {{ feedback || $t('runSettings.save.unsaved') }}
+      </p>
+      <template v-if="dirty">
+        <button
+          type="button"
+          class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+          :disabled="saving"
+          data-test="existing-run-discard"
+          @click="discard"
+        >
+          {{ $t('runSettings.save.discard') }}
+        </button>
+        <button
+          type="button"
+          class="rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
+          :disabled="saving"
+          data-test="save-existing-model-config"
+          @click="save"
+        >
+          {{ saving ? $t('runSettings.save.saving') : $t('runSettings.save.save') }}
+        </button>
+      </template>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed, onBeforeUnmount, ref } from 'vue'
+import { Icon } from '@iconify/vue'
+import type { ExistingTeamFormMemberNode } from '~/types/agent/ExistingTeamRunFormModel'
+import { useLocalization } from '~/composables/useLocalization'
+import RunSubjectHeader from './RunSubjectHeader.vue'
+import RunSettingsCard from './RunSettingsCard.vue'
+import RunWorkspaceHint from './RunWorkspaceHint.vue'
+import RunMembersSection from './RunMembersSection.vue'
+import { buildExistingMemberNodes } from './memberNodes'
+import type { RunModelChoice, RunSettingField, RunSettingFlags, RunSettingsValues } from './runSettings'
+import { useRunSettingsPresentation } from './useRunSettingsPresentation'
+
+/**
+ * Saved-run settings (SCN-004). Runtime, workspace and tool approval are fixed for the run and
+ * read as plain values with a lock; model and thinking change only while the run is stopped.
+ * Save is scripted in the UI reference: it keeps the change locally and confirms it.
+ */
+const props = withDefaults(defineProps<{
+  kind: 'agent' | 'team' | 'org'
+  name: string
+  isActive: boolean
+  editable: boolean
+  refreshRequired?: boolean
+  modelUnavailable?: boolean
+  baseValues: RunSettingsValues
+  rootAddress?: string
+  members?: readonly ExistingTeamFormMemberNode[]
+}>(), { refreshRequired: false, modelUnavailable: false, rootAddress: '/', members: () => [] })
+const emit = defineEmits<{ (event: 'refresh'): void }>()
+
+const { t } = useLocalization()
+const presentation = useRunSettingsPresentation()
+
+const saved = ref<Record<string, Partial<RunSettingsValues>>>({})
+const edits = ref<Record<string, Partial<RunSettingsValues>>>({})
+const saving = ref(false)
+const feedback = ref('')
+let feedbackTimer: ReturnType<typeof setTimeout> | null = null
+onBeforeUnmount(() => { if (feedbackTimer) clearTimeout(feedbackTimer) })
+
+const overlay = computed(() => {
+  const merged: Record<string, Partial<RunSettingsValues>> = {}
+  for (const source of [saved.value, edits.value]) {
+    for (const [key, value] of Object.entries(source)) merged[key] = { ...merged[key], ...value }
+  }
+  return merged
+})
+const rootValues = computed<RunSettingsValues>(() => ({ ...props.baseValues, ...overlay.value[props.rootAddress] }))
+const memberNodes = computed(() => buildExistingMemberNodes(props.members, overlay.value, rootValues.value, props.baseValues))
+const dirty = computed(() => Object.keys(edits.value).length > 0)
+const canEdit = computed(() => props.editable && !props.isActive && !props.refreshRequired && !saving.value)
+/** As today: a run whose model settings cannot change asks to be stopped first. */
+const lockedForModel = computed(() => !props.editable || props.isActive)
+
+const rootLocked = computed<RunSettingFlags>(() => ({ workspace: true, approval: true, model: !canEdit.value, thinking: !canEdit.value }))
+const memberLocked = computed<RunSettingFlags>(() => ({
+  workspace: !(props.kind === 'org' && canEdit.value),
+  approval: true,
+  model: !canEdit.value,
+  thinking: !canEdit.value,
+}))
+
+const subtitle = computed(() => props.kind === 'agent' ? t('runSettings.existing.agentRun')
+  : props.kind === 'team' ? t('runSettings.existing.teamRun') : t('runSettings.existing.orgRun'))
+const sectionTitle = computed(() => props.kind === 'agent' ? t('runSettings.section.settings')
+  : props.kind === 'team' ? t('runSettings.section.teamDefaults') : t('runSettings.section.orgDefaults'))
+const stateKey = computed(() => props.refreshRequired ? 'refresh-required' : props.isActive ? 'active' : 'stopped')
+
+const edit = (key: string, patch: Partial<RunSettingsValues>) => {
+  feedback.value = ''
+  edits.value = { ...edits.value, [key]: { ...edits.value[key], ...patch } }
+}
+
+const updateMember = (key: string, field: RunSettingField, value: unknown) => {
+  if (field === 'model') {
+    const choice = value as RunModelChoice
+    edit(key, { runtimeKind: choice.runtimeKind, llmModelIdentifier: choice.llmModelIdentifier, llmConfig: presentation.defaultConfigFor(choice) })
+  } else if (field === 'thinking') edit(key, { llmConfig: value as Record<string, unknown> | null })
+  else if (field === 'workspace') edit(key, { workspace: value as RunSettingsValues['workspace'] })
+}
+
+/** Saved settings the current model schema no longer offers stay visible (historical config). */
+const keptNote = (values: RunSettingsValues): string | null => {
+  const schema = presentation.thinkingSchema(values) ?? {}
+  if (!values.llmConfig) return null
+  const kept = Object.entries(values.llmConfig).filter(([key]) => !(key in schema))
+  return kept.length ? t('runSettings.model.keptSettings', { settings: kept.map(([key, value]) => `${key} ${String(value)}`).join(', ') }) : null
+}
+
+const discard = () => { edits.value = {} }
+const save = () => {
+  saving.value = true
+  setTimeout(() => {
+    const merged = { ...saved.value }
+    for (const [key, value] of Object.entries(edits.value)) merged[key] = { ...merged[key], ...value }
+    saved.value = merged
+    edits.value = {}
+    saving.value = false
+    feedback.value = t('runSettings.save.saved')
+    if (feedbackTimer) clearTimeout(feedbackTimer)
+    feedbackTimer = setTimeout(() => { feedback.value = '' }, 3000)
+  }, 600)
+}
+</script>

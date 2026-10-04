@@ -1,8 +1,7 @@
 <template>
   <div class="flex min-h-0 flex-1 flex-col" :aria-busy="draftStore.loadingCanonical || draftStore.saving || draftStore.reconciling">
-    <div class="flex-1 overflow-y-auto px-4 py-4">
+    <div v-if="!draft" class="flex-1 overflow-y-auto px-4 py-4">
       <div
-        v-if="!draft"
         :role="draftStore.feedback?.kind === 'error' ? 'alert' : 'status'"
         class="rounded border px-3 py-2 text-sm"
         :class="draftStore.feedback?.kind === 'error'
@@ -13,87 +12,20 @@
           ? draftStore.feedback.message
           : t('workspace.runModelConfig.loading') }}
       </div>
-
-      <AgentRunConfigForm
-        v-else-if="draft.kind === 'agent' && agentConfig && agentDefinition"
-        :config="agentConfig"
-        :agent-definition="agentDefinition"
-        :workspace-loading-state="{ isLoading: false, error: null, loadedPath: draft.metadata.workspaceRootPath }"
-        :workspace-selection="agentWorkspaceSelection"
-        :workspace-locked="true"
-        :runtime-locked="true"
-        :existing-run="true"
-        :existing-model-config-editable="draft.editability.editable && !draft.isActive && !draftStore.reconciliationRequired"
-        :existing-model-config-reason="draftStore.reconciliationRequired ? 'REFRESH_REQUIRED' : draft.editability.reason"
-        :saving="draftStore.saving || draftStore.reconciling"
-        :model-config-field-errors="agentModelConfigFieldErrors"
-        :original-model-identifier="draft.metadata.llmModelIdentifier"
-        :model-options="draftStore.modelOptionsByAddress['/']"
-        @selection-change="draftStore.updateAgentModelConfig"
-        @schema-state="draftStore.setSchemaState('/', $event)"
-      />
-
-      <TeamRunConfigForm
-        v-else-if="draft.kind === 'team'"
-        :model="teamFormModel"
-        :model-config-field-errors-by-address="teamModelConfigFieldErrorsByAddress"
-        @update-existing-model-config="draftStore.updateTeamScopeModelConfig"
-        @schema-state="draftStore.setSchemaState"
-      />
-
-      <AgentOrgRunConfigForm
-        v-else-if="draft.kind === 'agent_org'"
-        class="mx-auto max-w-3xl"
-        :existing-model="agentOrgFormModel"
-        :model-config-field-errors-by-address="teamModelConfigFieldErrorsByAddress"
-        @update-existing-model-config="draftStore.updateAgentOrgScopeModelConfig"
-        @update:workspace-selection="draftStore.updateAgentOrgWorkspaceSelection"
-        @schema-state="draftStore.setSchemaState"
-      />
-
-      <div v-else role="alert" class="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-        {{ t('workspace.runModelConfig.runUnavailable') }}
-      </div>
-
-      <ul v-if="draftStore.fieldErrors.length" role="alert" class="mt-4 space-y-1 rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-        <li v-for="error in draftStore.fieldErrors" :key="`${error.path}:${error.message}`">
-          <span class="font-mono text-xs">{{ error.path }}</span>: {{ error.message }}
-        </li>
-      </ul>
     </div>
 
-    <div class="border-t border-gray-200 bg-gray-50 px-4 py-3">
-      <p
-        v-if="draftStore.feedback && draft"
-        :role="draftStore.feedback.kind === 'error' ? 'alert' : 'status'"
-        :aria-live="draftStore.feedback.kind === 'error' ? 'assertive' : 'polite'"
-        class="mb-2 text-xs"
-        :class="draftStore.feedback.kind === 'error' ? 'text-red-700' : draftStore.feedback.kind === 'success' ? 'text-emerald-700' : 'text-blue-700'"
-      >
-        {{ draftStore.feedback.message }}
-      </p>
-      <button
-        v-if="draftStore.reconciliationRequired || draft?.editability.reason === 'REFRESH_REQUIRED'"
-        type="button"
-        class="mb-2 inline-flex w-full justify-center rounded-md border border-indigo-200 bg-white px-4 py-2 text-sm font-medium text-indigo-700 shadow-sm hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-        :disabled="draftStore.loadingCanonical || draftStore.reconciling"
-        @click="draftStore.retryCanonicalRefresh"
-      >
-        {{ t('workspace.runModelConfig.retry') }}
-      </button>
-      <button
-        type="button"
-        data-test="save-existing-model-config"
-        class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-        :disabled="!draftStore.canSave"
-        @click="draftStore.save"
-      >
-        {{ draftStore.saving
-          ? t('workspace.runModelConfig.saving')
-          : draftStore.reconciling
-            ? t('workspace.runModelConfig.verifying')
-            : t('workspace.runModelConfig.save') }}
-      </button>
+    <!-- run-settings-ui-unification (SCN-004): saved-run settings in the run-settings vocabulary. -->
+    <ExistingRunSettings
+      v-else-if="existingSettings"
+      :key="existingSettings.key"
+      v-bind="existingSettings.props"
+      @refresh="draftStore.retryCanonicalRefresh"
+    />
+
+    <div v-else class="flex-1 overflow-y-auto px-4 py-4">
+      <div role="alert" class="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+        {{ t('workspace.runModelConfig.runUnavailable') }}
+      </div>
     </div>
   </div>
 </template>
@@ -111,9 +43,9 @@ import type { AgentRunConfig } from '~/types/agent/AgentRunConfig'
 import type { WorkspaceSelectionState } from '~/types/workspace/WorkspaceSelectionState'
 import { projectExistingTeamRunFormModel } from '~/services/runConfigEditing/existingTeamRunFormModel'
 import { projectExistingAgentOrgRunFormModel } from '~/services/runConfigEditing/existingAgentOrgRunFormModel'
-import AgentRunConfigForm from './AgentRunConfigForm.vue'
-import TeamRunConfigForm from './TeamRunConfigForm.vue'
-import AgentOrgRunConfigForm from './AgentOrgRunConfigForm.vue'
+import ExistingRunSettings from '~/components/run-settings/ExistingRunSettings.vue'
+import { valuesFromResolved } from '~/components/run-settings/memberNodes'
+import { toChatWorkspace } from '~/components/run-settings/runSettings'
 import { useLocalization } from '~/composables/useLocalization'
 
 const selection = useAgentSelectionStore()
@@ -238,5 +170,53 @@ const agentOrgFormModel = computed(() => {
     modelOptionsByAddress: draftStore.modelOptionsByAddress,
     saving: draftStore.saving || draftStore.reconciling,
   })
+})
+
+// run-settings-ui-unification: deterministic review states the synthetic fixtures do not reach.
+// localStorage `autobyteus.design.runSettings.existingState` = `refresh_required` | `model_unavailable`.
+const designState = typeof window === 'undefined' ? null : window.localStorage.getItem('autobyteus.design.runSettings.existingState')
+const existingSettings = computed(() => {
+  const current = draft.value
+  if (!current) return null
+  const refreshRequired = draftStore.reconciliationRequired || current.editability.reason === 'REFRESH_REQUIRED' || designState === 'refresh_required'
+  const common = {
+    isActive: current.isActive,
+    editable: current.editability.editable,
+    refreshRequired,
+    modelUnavailable: designState === 'model_unavailable',
+  }
+  if (current.kind === 'agent' && agentConfig.value) {
+    const config = agentConfig.value
+    return {
+      key: `agent:${current.runId}`,
+      props: {
+        ...common,
+        kind: 'agent' as const,
+        name: agentDefinition.value?.name ?? config.agentDefinitionName,
+        baseValues: {
+          workspace: toChatWorkspace(agentWorkspaceSelection.value.existingWorkspaceId, current.metadata.workspaceRootPath),
+          runtimeKind: config.runtimeKind,
+          llmModelIdentifier: config.llmModelIdentifier || '',
+          llmConfig: config.llmConfig ?? null,
+          autoExecuteTools: config.autoExecuteTools,
+        },
+      },
+    }
+  }
+  if (current.kind === 'team' || current.kind === 'agent_org') {
+    const model = current.kind === 'team' ? teamFormModel.value : agentOrgFormModel.value
+    return {
+      key: `${current.kind}:${current.kind === 'team' ? current.teamRunId : (current as { orgRunId?: string }).orgRunId ?? ''}`,
+      props: {
+        ...common,
+        kind: current.kind === 'team' ? 'team' as const : 'org' as const,
+        name: model.definitionLabel,
+        baseValues: valuesFromResolved(model.root.effectiveConfig),
+        rootAddress: model.root.address,
+        members: model.members,
+      },
+    }
+  }
+  return null
 })
 </script>

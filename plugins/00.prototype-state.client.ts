@@ -9,6 +9,7 @@ import { installHostScenario } from '~/prototype/shared/install-host-scenario.js
 import { applyExperienceScenario } from '~/prototype/shared/apply-experience-scenario.js'
 import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, taskContextUpload } from '~/prototype/source-observation/fixtures.mjs'
 import { localFixtureState } from '~/utils/apolloClient'
+import { RUN_SETTINGS_RUNTIME_AVAILABILITIES, RUN_SETTINGS_RUNTIME_CATALOGS } from '~/prototype/run-settings/runtimeCatalogFixture'
 
 const SCENARIO_KEY = 'autobyteus.prototype.scenario'
 const CONTEXT_KEY = 'autobyteus.prototype.context'
@@ -250,6 +251,10 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
     // route snapshot never loaded it, reuse the deterministic ready catalog
     // captured from the pinned source without touching credential state.
     const runtime = String(args[0] || 'autobyteus')
+    // run-settings-ui-unification: hand-written review runtimes (see runtimeCatalogFixture.ts).
+    if (RUN_SETTINGS_RUNTIME_CATALOGS[runtime] && store.catalogByRuntimeKind?.[runtime]?.state !== 'ready') {
+      store.$patch({ catalogByRuntimeKind: { ...store.catalogByRuntimeKind, [runtime]: clone(RUN_SETTINGS_RUNTIME_CATALOGS[runtime]) } })
+    }
     if (store.catalogByRuntimeKind?.[runtime]?.state !== 'ready') {
       const reference = readyStoreState('llmProviderConfig', state => state.catalogByRuntimeKind?.[runtime]?.state === 'ready')
       if (reference) store.$patch({ catalogByRuntimeKind: { ...store.catalogByRuntimeKind, [runtime]: clone(reference.catalogByRuntimeKind[runtime]) } })
@@ -263,7 +268,11 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
     }
     return store.providerCredentialSettings || []
   }
-  if (action === 'fetchRuntimeAvailabilities') return store.availabilities || []
+  if (action === 'fetchRuntimeAvailabilities') {
+    // run-settings-ui-unification: the review runtimes are always available.
+    store.$patch({ availabilities: clone(RUN_SETTINGS_RUNTIME_AVAILABILITIES), hasFetched: true })
+    return store.availabilities
+  }
   if (store.$id === 'workspace' && action === 'ensureWorkspaceMetadata') {
     const workspaceId = args[0]?.workspaceId || args[0]?.id
     return workspaceId ? store.workspaces?.[workspaceId] : undefined
@@ -574,6 +583,12 @@ export default defineNuxtPlugin({
           // switcher therefore shows the exact visible `!` segment indicator.
           if (context() === 'paired' && store.$id === 'runHistory' && actionName === 'fetchTree') {
             throw new Error('Synthetic mobile recent-history refresh failed')
+          }
+          // run-settings-ui-unification (round 2): a Team started from New chat launches its
+          // draft through the source's own launch path; the first message itself is not played.
+          if (store.$id === 'agentTeamRun' && actionName === 'sendMessageToFocusedMember') {
+            const teamDraft = pinia._s.get('teamRunConfig')?.selectedDraft
+            if (teamDraft && !pinia._s.get('agentTeamContexts')?.activeTeamContext) return store.launchDraft(teamDraft)
           }
           const result = actionResult(store, actionName, args)
           if ((store.$id === 'agentDefinition' || store.$id === 'agentTeamDefinition' || store.$id === 'toolManagement') && result) {

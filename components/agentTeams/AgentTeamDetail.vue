@@ -86,6 +86,7 @@ import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
 import { useAgentOrgDefinitionStore } from '~/stores/agentOrgDefinitionStore'
 import { loadAgentOrgDefinitionReferences, type AgentOrgDefinitionReferences } from '~/services/agentOrgDefinition/agentOrgDefinitionReferences'
 import { useRunActions } from '~/composables/useRunActions'
+import { useStartRunInChat } from '~/composables/runSettings/useStartRunInChat'
 import { useLocalization } from '~/composables/useLocalization'
 import { buildTeamLocalAgentDefinitionId } from '~/utils/teamLocalDefinitionId'
 import { toEditableHandoffs, type HandoffEndpointOption } from '~/types/collaboration/handoffs'
@@ -135,7 +136,9 @@ watch([teamDefinitionId, returnToOrgId], async ([teamId, orgId], _, onCleanup) =
     if (current) referenceError.value = error instanceof Error ? error.message : String(error)
   } finally { if (current) loading.value = false }
 }, { immediate: true })
-const runTeam = (): void => { if (teamDef.value) { prepareTeamRun(teamDef.value); void router.push('/workspace') } }
+// run-settings-ui-unification (round 2): Run opens New chat addressed to the team.
+const { runTeam: startTeamInChat } = useStartRunInChat()
+const runTeam = (): void => { if (teamDef.value) void startTeamInChat(teamDef.value.id) }
 const viewAgent = (node: TeamNode): void => { if (teamDef.value) emit('navigate', { target: 'agents', view: 'detail', id: agentId(node), returnToTeam: teamDef.value.id }) }
 const deleteTeam = async (): Promise<void> => {
   if (!teamDef.value) return

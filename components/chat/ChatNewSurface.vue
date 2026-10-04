@@ -1,20 +1,43 @@
 <template>
-  <div class="flex min-w-0 flex-1 flex-col overflow-y-auto bg-white" data-test="chat-new">
+  <div
+    class="flex min-w-0 flex-1 flex-col overflow-y-auto bg-white transition-[padding] duration-200 ease-out motion-reduce:transition-none"
+    :class="membersPanelOpen ? 'lg:pr-[30rem]' : ''"
+    data-test="chat-new"
+  >
     <div class="flex flex-1 flex-col items-center justify-center px-4 pb-10 pt-[14vh] sm:px-6">
-      <h1 class="text-center text-[1.75rem] font-semibold tracking-tight text-gray-900">{{ $t('chat.new.heading') }}</h1>
-      <p v-if="team" class="mt-2 max-w-xl text-center text-sm text-gray-500" data-test="chat-new-subtitle">
-        {{ $t('chat.new.subtitleTeam', { team: team.name }) }}
-      </p>
-      <p v-else-if="!isDefaultAgent" class="mt-2 max-w-xl text-center text-sm text-gray-500" data-test="chat-new-subtitle">
-        {{ $t('chat.new.subtitleAgent', { agent: agentName }) }}
-      </p>
-      <p v-else class="mt-2 max-w-xl text-center text-sm text-gray-500" data-test="chat-new-subtitle">
-        {{ $t('chat.new.subtitleDefaultBeforeSlash') }}
-        <kbd class="rounded border border-gray-200 bg-gray-50 px-1 font-sans text-xs text-gray-600">/</kbd>
-        {{ $t('chat.new.subtitleDefaultBetween') }}
-        <kbd class="rounded border border-gray-200 bg-gray-50 px-1 font-sans text-xs text-gray-600">@</kbd>
-        {{ $t('chat.new.subtitleDefaultAfterAt') }}
-      </p>
+      <!-- run-settings-ui-unification (round 4): who you are talking to is the page heading, not a chip in the message box. -->
+      <template v-if="identity">
+        <!-- Round 6: an avatar only when the target has one, beside the name; no placeholder initials or icons. -->
+        <div class="relative -top-6 flex max-w-full items-center justify-center gap-3 sm:-top-10" data-test="chat-new-target">
+          <img
+            v-if="identity.avatarUrl"
+            :src="identity.avatarUrl"
+            alt=""
+            class="h-10 w-10 flex-shrink-0 rounded-full object-cover"
+            data-test="chat-new-target-avatar"
+          >
+          <h1 class="min-w-0 break-words text-center text-[1.5rem] font-semibold leading-tight tracking-tight text-gray-900 sm:text-[1.75rem]" data-test="chat-new-target-name">{{ identity.name }}</h1>
+        </div>
+        <!-- Clean heading: the general agent keeps its skill and @ hint; others show only a line that adds information. -->
+        <p v-if="identity.isDefault" class="mt-2 max-w-xl text-center text-sm text-gray-500" data-test="chat-new-subtitle">
+          {{ $t('chat.new.subtitleDefaultBeforeSlash') }}
+          <kbd class="rounded border border-gray-200 bg-gray-50 px-1 font-sans text-xs text-gray-600">/</kbd>
+          {{ $t('chat.new.subtitleDefaultBetween') }}
+          <kbd class="rounded border border-gray-200 bg-gray-50 px-1 font-sans text-xs text-gray-600">@</kbd>
+          {{ $t('chat.new.subtitleDefaultAfterAt') }}
+        </p>
+        <p v-else-if="identity.subtitle" class="mt-2 max-w-xl text-center text-sm text-gray-500" data-test="chat-new-subtitle">{{ identity.subtitle }}</p>
+      </template>
+      <template v-else>
+        <h1 class="text-center text-[1.75rem] font-semibold tracking-tight text-gray-900">{{ $t('chat.new.heading') }}</h1>
+        <p class="mt-2 max-w-xl text-center text-sm text-gray-500" data-test="chat-new-subtitle">
+          {{ $t('chat.new.subtitleDefaultBeforeSlash') }}
+          <kbd class="rounded border border-gray-200 bg-gray-50 px-1 font-sans text-xs text-gray-600">/</kbd>
+          {{ $t('chat.new.subtitleDefaultBetween') }}
+          <kbd class="rounded border border-gray-200 bg-gray-50 px-1 font-sans text-xs text-gray-600">@</kbd>
+          {{ $t('chat.new.subtitleDefaultAfterAt') }}
+        </p>
+      </template>
 
       <div class="mt-8 w-full max-w-3xl">
         <ChatComposer
@@ -22,7 +45,7 @@
           ref="composerRef"
           :target="target"
           :placeholder="placeholder"
-          :skill-options="team ? null : options.skillOptions.value"
+          :skill-options="team || org ? null : options.skillOptions.value"
           :skills-all-installed="options.skillsAllInstalled.value"
           :target-options="options.targetOptions.value"
           :starting="draft.starting"
@@ -30,36 +53,6 @@
           autofocus
           @select-target="chatDraftStore.setTarget"
         >
-          <template v-if="team" #chips>
-            <span class="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 py-0.5 pl-1 pr-1 text-xs font-medium text-gray-700" data-test="chat-team-chip">
-              <span class="inline-flex h-4 w-4 items-center justify-center rounded border border-gray-300 bg-white text-[0.5rem] font-semibold text-slate-600" aria-hidden="true">{{ initialsFor(team.name) }}</span>
-              {{ team.name }}
-              <button
-                type="button"
-                class="rounded p-0.5 text-gray-400 hover:bg-gray-200 hover:text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
-                :aria-label="$t('chat.new.useAssistantInsteadOf', { name: team.name })"
-                :title="$t('chat.new.useAssistantInstead')"
-                @click="resetTarget"
-              >
-                <Icon icon="heroicons:x-mark" class="h-3 w-3" aria-hidden="true" />
-              </button>
-            </span>
-          </template>
-          <template v-else-if="!isDefaultAgent" #chips>
-            <span class="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-gray-50 py-0.5 pl-1 pr-1 text-xs font-medium text-gray-700" data-test="chat-agent-chip">
-              <span class="inline-flex h-4 w-4 items-center justify-center rounded-full border border-emerald-200 bg-emerald-50 text-[0.5rem] font-semibold text-slate-600" aria-hidden="true">{{ initialsFor(agentName) }}</span>
-              {{ agentName }}
-              <button
-                type="button"
-                class="rounded p-0.5 text-gray-400 hover:bg-gray-200 hover:text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
-                :aria-label="$t('chat.new.useAssistantInsteadOf', { name: agentName })"
-                :title="$t('chat.new.useAssistantInstead')"
-                @click="resetTarget"
-              >
-                <Icon icon="heroicons:x-mark" class="h-3 w-3" aria-hidden="true" />
-              </button>
-            </span>
-          </template>
           <template #footer-left>
             <ChatWorkspaceMenu :workspace="draft.workspace" @select="chatDraftStore.setWorkspace" />
             <ChatApprovalToggle
@@ -85,19 +78,15 @@
 
         <p class="mt-2.5 flex items-center justify-center gap-1.5 text-center text-xs text-gray-400" data-test="chat-new-hint">
           <template v-if="draft?.starting">
-            {{ $t('chat.new.starting', { name: team ? team.name : agentName, runtime: runtimeLabel }) }}
-          </template>
-          <template v-else-if="team">
-            <span data-test="chat-team-note">
-              {{ $t('chat.new.teamNote', { workspace: teamWorkspaceLabel }) }}
-              <NuxtLink :to="{ path: '/agent-teams', query: { view: 'team-list' } }" class="font-medium text-blue-700 hover:underline">{{ $t('chat.new.agentTeamsLink') }}</NuxtLink>.
-            </span>
+            {{ $t('chat.new.starting', { name: org ? org.name : team ? team.name : agentName, runtime: runtimeLabel }) }}
           </template>
           <template v-else>
             <Icon icon="heroicons:folder" class="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
             <span class="truncate">{{ workspaceHint }}</span>
           </template>
         </p>
+        <!-- run-settings-ui-unification (round 2): members follow the composer unless customized here. -->
+        <ChatTargetMembers v-if="draft && (team || org) && !draft.starting" :key="draft.context.state.runId + (org?.id ?? team?.id ?? '')" class="mt-1.5" :draft="draft" @update:open="membersPanelOpen = $event" />
       </div>
     </div>
   </div>
@@ -112,8 +101,9 @@ import ChatWorkspaceMenu from '~/components/chat/ChatWorkspaceMenu.vue'
 import ChatApprovalToggle from '~/components/chat/ChatApprovalToggle.vue'
 import ChatModelMenu from '~/components/chat/ChatModelMenu.vue'
 import ChatThinkingControl from '~/components/chat/ChatThinkingControl.vue'
+import ChatTargetMembers from '~/components/run-settings/ChatTargetMembers.vue'
+import { useAgentOrgDefinitionStore } from '~/stores/agentOrgDefinitionStore'
 import { useChatDraftModelControls } from '~/components/chat/chatDraftModelControls'
-import { initialsFor } from '~/components/chat/chatComposerMenus'
 import { createChatDraftComposerTarget } from '~/composables/chat/chatDraftComposerTarget'
 import { useChatComposerOptions } from '~/composables/chat/useChatComposerOptions'
 import { useChatDraftStore } from '~/stores/chatDraftStore'
@@ -149,11 +139,33 @@ const team = computed(() => {
   if (current?.kind !== 'team') return null
   return teamDefinitionStore.agentTeamDefinitions.find((entry) => entry.id === current.teamDefinitionId) ?? null
 })
+// Round 3: the member settings panel docks on the right; the composer moves left to stay visible.
+const membersPanelOpen = ref(false)
+const orgDefinitionStore = useAgentOrgDefinitionStore()
+const org = computed(() => {
+  const current = draft.value?.target
+  if (current?.kind !== 'org') return null
+  return orgDefinitionStore.byId(current.orgDefinitionId)
+})
+const identity = computed(() => {
+  if (org.value) {
+    return { kind: 'org' as const, isDefault: false, avatarUrl: org.value.avatarUrl ?? null, name: org.value.name, kindLabel: t('runSettings.kind.orgPlain'), subtitle: '' }
+  }
+  if (team.value) {
+    return { kind: 'team' as const, isDefault: false, avatarUrl: team.value.avatarUrl ?? null, name: team.value.name, kindLabel: t('runSettings.kind.teamPlain'), subtitle: '' }
+  }
+  // Round 5: the general agent is shown the same way, so every New chat names who it talks to.
+  if (agentName.value) {
+    return { kind: 'agent' as const, isDefault: isDefaultAgent.value, avatarUrl: options.agentDefinition.value?.avatarUrl || draftContext.value?.config.agentAvatarUrl || null, name: agentName.value, kindLabel: t('runSettings.kind.agent'), subtitle: '' }
+  }
+  return null
+})
 const isDefaultAgent = computed(() => agentDefinitionId.value === DEFAULT_CHAT_AGENT_DEFINITION_ID)
 const agentName = computed(() => options.agentDefinition.value?.name || draftContext.value?.config.agentDefinitionName || '')
 const runtimeLabel = computed(() => runtimeKindToLabel(controls.runtimeKind.value))
 
 const placeholder = computed(() => {
+  if (org.value) return t('chat.new.placeholderOrg', { org: org.value.name })
   if (team.value) return t('chat.new.placeholderTeam', { team: team.value.name })
   if (!isDefaultAgent.value) return t('chat.new.placeholderAgent', { agent: agentName.value })
   return t('chat.new.placeholderDefault')
@@ -177,21 +189,12 @@ const workspaceHint = computed(() => {
     ? t('chat.new.hintTemp', { path: workspace.path })
     : t('chat.new.hintWorkspace', { workspace: workspace.name, path: workspace.path })
 })
-const teamWorkspaceLabel = computed(() => (selectedWorkspace.value?.isTemp
-  ? t('chat.new.tempWorkspaceLower')
-  : selectedWorkspace.value?.name ?? ''))
-
 const sendBlockedReason = computed(() => {
   const current = draft.value
   if (!current || !hasSendableDraft(current.context, { attachmentsAreSendable: true })) return null
   const readiness = resolveChatLaunchReadiness(current)
   return readiness.ready ? null : readiness.reason
 })
-
-const resetTarget = () => {
-  chatDraftStore.setTarget({ kind: 'agent', agentDefinitionId: DEFAULT_CHAT_AGENT_DEFINITION_ID })
-  composerRef.value?.focus()
-}
 
 onMounted(() => {
   chatDraftStore.ensureDraft()
