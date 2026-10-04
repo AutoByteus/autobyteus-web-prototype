@@ -491,9 +491,9 @@ interaction affordances and responsive behavior are requirements-defining.
 
 - Runnable prototype: `/home/autobyteus/workspace/autobyteus-web-prototype`
 - Production-build review URL: <http://127.0.0.1:3210>
-- Run instructions: `prototype-runbook.md`
+- Run instructions: `ui-reference-runbook.md`
 - Accepted baseline review: `product-prototyper-baseline-review.md` (`PPA-001`, `PPA-002`)
-- Bootstrap report: `prototype-bootstrap-report.md`
+- Bootstrap report: `ui-baseline-report.md`
 - Complete inventory: `parity-inventory.md`
 - Comparison results: `comparison-report.md`
 - Evidence map: `evidence-index.md`

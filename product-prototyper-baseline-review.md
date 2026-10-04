@@ -23,10 +23,10 @@
 The Product Prototyper directly inspected:
 
 - the live production-build prototype at the canonical URL;
-- `prototype-bootstrap-report.md`;
+- `ui-baseline-report.md`;
 - `parity-inventory.md`;
 - `comparison-report.md` and both machine-readable result/summary pairs;
-- `evidence-index.md`, `prototype-runbook.md`, `prototype-scenarios.md`, and `mock-boundaries.md`;
+- `evidence-index.md`, `ui-reference-runbook.md`, `prototype-scenarios.md`, and `mock-boundaries.md`;
 - final validation and isolation logs;
 - the deterministic fixture and scenario adapter;
 - selected pinned-source pages, components, stores, tests, and product documentation needed to audit inventory completeness.
@@ -43,7 +43,7 @@ The following IDs are stable Product Prototyper review-gap IDs. Bootstrapper cor
 - Current evidence: no `CFG-*`, `STATE-*`, or journey row represents an Electron runtime; every recorded fixture has `server.isElectron = false`, the `appUpdate` snapshots have `isElectron = false`, and the only documented runnable contexts are `desktop`, `unpaired`, and `paired`.
 - Direct probe: requesting context `electron_internal` falls back to `populated|desktop|...`; the Extensions page still says it is available only in Electron and `window.electronAPI` is absent. The Updates page still exposes the browser-only notice and disables `Check for Updates`.
 - Source contradiction: `components/settings/ExtensionsManager.vue` renders the extension card only for Electron; `components/settings/AboutSettingsManager.vue` enables update actions only for Electron; `components/settings/ServerSettingsManager.vue` exposes embedded server status/logs only in an embedded window; native folder selection changes Workspace and Application setup behavior.
-- Existing assertions affected: the context-equivalence statement in `prototype-scenarios.md` and the Electron/internal-node coverage assertion in `prototype-bootstrap-report.md` are unsubstantiated. `ROUTE-037`–`ROUTE-041` are browser/external-node evidence only, not Electron/internal-node evidence.
+- Existing assertions affected: the context-equivalence statement in `prototype-scenarios.md` and the Electron/internal-node coverage assertion in `ui-baseline-report.md` are unsubstantiated. `ROUTE-037`–`ROUTE-041` are browser/external-node evidence only, not Electron/internal-node evidence.
 - Required correction: add a deterministic Electron/internal-node host adapter and complete source-versus-prototype inventory/evidence for every materially different visible surface, state, interaction, and journey. Mock the native bridge; do not bundle Electron or reach production.
 
 ### PP-GAP-002 — Electron/external-node window configuration is missing
@@ -94,7 +94,7 @@ No discrepancy was found in the browser/external-node screenshots or journeys ac
 
 ## Required Bootstrapper Return
 
-Return a corrected `prototype-bootstrap-report.md`, parity inventory, comparison evidence, scenario/runbook and mock-boundary record that:
+Return a corrected `ui-baseline-report.md`, parity inventory, comparison evidence, scenario/runbook and mock-boundary record that:
 
 1. resolves `PP-GAP-001` through `PP-GAP-008`;
 2. gives all newly discovered obligations stable inventory IDs;

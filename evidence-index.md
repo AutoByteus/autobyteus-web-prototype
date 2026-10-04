@@ -14,7 +14,7 @@ Focused current-experience evidence for source authority `origin/personal` at
 - `validation/` — browser, typecheck, lint, unit, boundary, and build logs
 
 The bootstrap authority, inventory, simplifications, and completion gate are
-documented in `prototype-bootstrap-report.md`. These are current-state refresh
+documented in `ui-baseline-report.md`. These are current-state refresh
 artifacts awaiting Product acceptance, not approved future-state references.
 
 Package `initial-prototype-baseline`, current requirements revision `RER-017`

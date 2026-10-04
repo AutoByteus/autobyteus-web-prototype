@@ -1,4 +1,4 @@
-# Prototype Bootstrap Report
+# UI Baseline Report
 
 Refresh of the AutoByteus Web current-experience baseline to
 `origin/personal@e9aa4a7` (v1.4.92-beta.3), for Product ticket
@@ -17,10 +17,10 @@ pin `57df63f`) is preserved in Git history at accepted base `df1377c`.
   - The Chat composer menus are the source's shipped upward-opening version.
   - Every changed surface passes its paired source/prototype check, and the
     unchanged surfaces passed one load-and-look pass through the route matrix.
-- One finding outside this refresh, for Product Prototyper to decide on: the
+- One finding outside this refresh, for Product UI/UX Designer to decide on: the
   legacy `workspace_*` scenario injector is already broken at the accepted
   base. See "Known Gaps And Next Action".
-- Next expected action: Product Prototyper reviews and accepts the candidate,
+- Next expected action: Product UI/UX Designer reviews and accepts the candidate,
   creates the accepted commit on `prototype/web-baseline-refresh-003`, and
   integrates it into `personal`. `cross-scope-agent-mentions` then merges the
   refreshed `personal` and revalidates.
@@ -48,10 +48,10 @@ pin `57df63f`) is preserved in Git history at accepted base `df1377c`.
 
 ## Prototype Identity
 
-- Prototype repository/root: `/Users/normy/autobyteus_org/autobyteus-web-prototype`
+- Prototype repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design`
 - Product ticket: `WEB-BASELINE-REFRESH-003`
 - Ticket branch: `prototype/web-baseline-refresh-003`
-- Target worktree: `/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/WEB-BASELINE-REFRESH-003`
+- Target worktree: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-003`
 - Accepted base: `df1377c4dde63c67fb5548f63e03c90c6b685d85` (worktree `HEAD`
   `96831d5` is the Product ticket-open commit on top of it)
 - Bootstrap candidate: uncommitted working-tree changes on the ticket branch.
@@ -115,7 +115,7 @@ Work followed the source diff `57df63f..e9aa4a7`: 14 commits, 52
   - Left illustrative: none.
   - The historical `validate-chat-composer-menus-open-upward.mjs` script was
     kept as history and not re-run.
-  - **Product Prototyper should confirm this supersession.**
+  - **Product UI/UX Designer should confirm this supersession.**
 
 ## Implementation Simplifications
 
@@ -150,7 +150,7 @@ Prototype-owned changes:
 All paired runs used headless Chrome 154 with the same viewport, locale, UTC
 timezone, light theme and reduced motion, identical synthetic data, and
 external requests blocked. Evidence root:
-`/Users/normy/autobyteus_org/autobyteus-web-prototype-worktrees/WEB-BASELINE-REFRESH-003/evidence/WEB-BASELINE-REFRESH-003/`.
+`/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-003/evidence/WEB-BASELINE-REFRESH-003/`.
 
 - **Changed-surface flows (`validate:chat-baseline-refresh-flows`)**
   - Results: 41/41 pass, all pixel-identical, with matching text and routes.
@@ -225,7 +225,7 @@ external requests blocked. Evidence root:
     the user message with status Offline, identically in source and prototype.
 - **Perceptible or behavioral differences remaining inside the verified
   scope:** none.
-- **Recommended next action for `product_prototyper`:**
+- **Recommended next action for `product_ui_ux_designer`:**
   - Accept and commit the candidate; the evidence folder is 19 MB.
   - Confirm the `chat-composer-menus-open-upward` supersession.
   - Decide whether the legacy `workspace_*` scenarios should be repaired or

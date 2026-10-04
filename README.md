@@ -1,4 +1,4 @@
-# AutoByteus Web Product Prototype
+# AutoByteus Web Design
 
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
 commit `e9aa4a74ca36f62303bb7f5f0efd74bf89a9ea71` (`origin/personal`,
@@ -7,16 +7,16 @@ refreshed by `WEB-BASELINE-REFRESH-003`; previous primary pin
 source's Background Tasks section in place of the removed To-Do list, and the
 source's shipped upward-opening Chat composer menus replaced the accepted
 prototype `chat-composer-menus-open-upward` implementation. See
-[prototype-bootstrap-report.md](prototype-bootstrap-report.md) for the refresh
+[ui-baseline-report.md](ui-baseline-report.md) for the refresh
 scope, evidence, and known gaps.
 
-The repository is the cumulative accepted Product prototype baseline. Approved
+The repository is the cumulative accepted Product baseline. Approved
 Product tickets are integrated here and promoted to normal/default product
 entry points before they are treated as the next baseline.
 
 Canonical ownership: independent sibling repository
 `https://github.com/AutoByteus/autobyteus-web-prototype.git`, checked out at
-`/home/autobyteus/workspace/autobyteus-web-prototype` on branch `personal`.
+`/Users/normy/autobyteus_org/autobyteus-web-design` on branch `personal`.
 RER-017 restores that repository as the sole active owner after the historical
 RER-015 workspace interval; see
 [independent-repository-restoration.md](independent-repository-restoration.md).
@@ -34,7 +34,7 @@ corepack pnpm install --ignore-workspace --frozen-lockfile
 corepack pnpm dev --port 3210
 ```
 
-Open <http://127.0.0.1:3210>. See [prototype-runbook.md](prototype-runbook.md)
+Open <http://127.0.0.1:3210>. See [ui-reference-runbook.md](ui-reference-runbook.md)
 for production-preview and scenario commands.
 
 The promoted default product entries are:
@@ -57,7 +57,7 @@ focused catalog and validation procedure are documented in the runbook.
 
 ## Evidence
 
-- [prototype-bootstrap-report.md](prototype-bootstrap-report.md)
+- [ui-baseline-report.md](ui-baseline-report.md)
 - [pp-gap-009-correction.md](pp-gap-009-correction.md)
 - [pp-gap-010-correction.md](pp-gap-010-correction.md)
 - [parity-inventory.md](parity-inventory.md)

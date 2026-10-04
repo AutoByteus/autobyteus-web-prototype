@@ -1,4 +1,4 @@
-# Prototype Runbook
+# UI Reference Runbook
 
 ## Promoted Default Product Baseline
 
@@ -287,7 +287,7 @@ corepack pnpm validate:gap-010-package
 corepack pnpm validate:independent-repository
 ```
 
-Do not run `capture:final-references` or modify `ui-ux-spec.md` during bootstrap correction. Those are Product Prototyper-owned post-acceptance artifacts.
+Do not run `capture:final-references` or modify `ui-ux-spec.md` during bootstrap correction. Those are Product UI/UX Designer-owned post-acceptance artifacts.
 
 ## Reproduce PP-GAP-009 And PP-GAP-010 Source-Versus-Prototype Evidence
 
