@@ -239,6 +239,12 @@ const findSnapshot = (): [string, RuntimeSnapshot] => {
   return ['populated|desktop|/', snapshots['populated|desktop|/']]
 }
 
+// run-settings-ui-unification: review runtimes are verified-ready (the source checks per-kind request status).
+const runSettingsRuntimeState = () => ({
+  availabilities: clone(RUN_SETTINGS_RUNTIME_AVAILABILITIES),
+  requestsByKind: Object.fromEntries(RUN_SETTINGS_RUNTIME_AVAILABILITIES.map((row, index) => [row.runtimeKind, { status: 'ready', error: null, sequence: index + 1 }])),
+  hasFetched: true,
+})
 const actionResult = (store: any, action: string, args: any[] = []): any => {
   if (action.startsWith('is')) return false
   if (action.startsWith('get')) return undefined
@@ -270,7 +276,7 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
   }
   if (action === 'fetchRuntimeAvailabilities') {
     // run-settings-ui-unification: the review runtimes are always available.
-    store.$patch({ availabilities: clone(RUN_SETTINGS_RUNTIME_AVAILABILITIES), hasFetched: true })
+    store.$patch(runSettingsRuntimeState())
     return store.availabilities
   }
   if (store.$id === 'workspace' && action === 'ensureWorkspaceMetadata') {
@@ -504,7 +510,7 @@ export default defineNuxtPlugin({
       // run-settings-ui-unification: the hand-written review runtimes (runtimeCatalogFixture.ts)
       // stay available on every route; route snapshots carry only the captured runtime list.
       if (store.$id === 'runtimeAvailability') {
-        store.$patch({ availabilities: clone(RUN_SETTINGS_RUNTIME_AVAILABILITIES), hasFetched: true })
+        store.$patch(runSettingsRuntimeState())
       }
       if (store.$id === 'workspace') {
         for (const key of ['fileSystemConnections', 'fileExplorerLiveConsumers', 'fileExplorerSnapshotRefreshes', 'workspaceMetadataRegistrationTasks']) {

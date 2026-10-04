@@ -33,6 +33,7 @@ import { useWorkspaceCenterViewStore } from '~/stores/workspaceCenterViewStore'
 import { useAgentTeamContextsStore } from '~/stores/agentTeamContextsStore'
 import { loadTeamRunLaunchSeed } from '~/services/runConfigEditing/teamRunLaunchSeed'
 import { useLocalization } from '~/composables/useLocalization'
+import { useStartRunInChat } from '~/composables/runSettings/useStartRunInChat'
 
 const active = useActiveContextStore()
 const definitions = useAgentDefinitionStore()
@@ -56,6 +57,7 @@ const copyError = ref<string | null>(null)
 let mounted = true
 onBeforeUnmount(() => { mounted = false })
 watch(() => selection.subject, () => { copyError.value = null })
+const startRunInChat = useStartRunInChat()
 const createNewTeamRun = async () => {
   const source = teamContexts.activeTeamContext
   if (!source || copyPending.value) return
@@ -73,9 +75,8 @@ const createNewTeamRun = async () => {
       workspaceMetadata: Object.values(configuration.teamsByAddress).flatMap(team => team.effectiveConfig.workspaceMetadata ? [team.effectiveConfig.workspaceMetadata] : []),
     })
     if (!current()) return
-    teamRunConfig.setConfig(seed)
-    agentRunConfig.clearConfig()
-    selection.clearSelection()
+    // run-settings-ui-unification (round 8): the copy opens New chat, like every other Run.
+    await startRunInChat.runTeamFromCopy(seed)
   } catch (cause) {
     if (current()) copyError.value = t('workspace.teamCopy.failed', { error: cause instanceof Error ? cause.message : String(cause) })
   } finally { if (mounted) copyPending.value = false }

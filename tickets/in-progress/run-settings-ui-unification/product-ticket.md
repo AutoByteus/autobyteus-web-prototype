@@ -6,7 +6,7 @@
 - Stable package: `run-settings-ui-unification`, solution revision `SR-001`
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Awaiting User Review` (round 7a, rebuilt on the refreshed baseline)
+- Status: `Awaiting User Review` (round 8, on the refreshed baseline)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -96,3 +96,5 @@
   send; member panel with Codex override carried into the Team launch; Org launch; saved Team
   run settings with Save on change; running Team composer shows the single inline `@` mention.
 - Checks: repository typecheck pass, tests 13/13, lint pass; vue-tsc clean for ticket-owned files.
+
+- 2026-10-04: round 8 — Team and Org "+" open New chat prefilled from the run (see `review-round-8.md`).
