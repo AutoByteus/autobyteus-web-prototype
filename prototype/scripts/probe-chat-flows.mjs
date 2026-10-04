@@ -13,10 +13,10 @@ import sharp from 'sharp'
 const require = createRequire(import.meta.url)
 const icons = Object.fromEntries(['heroicons', 'ph', 'mdi', 'svg-spinners', 'vscode-icons', 'logos'].map(p => [p, require(`@iconify-json/${p}/icons.json`)]))
 const root = resolve(new URL('../..', import.meta.url).pathname)
-const SOURCE = process.env.SOURCE_BASE_URL || 'http://127.0.0.1:4291'
-const PROTO = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4199'
-const MOCK = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4391'
-const OUT = resolve(root, process.env.FLOW_DIR || 'evidence/WEB-BASELINE-REFRESH-003/chat-flows')
+const SOURCE = process.env.SOURCE_BASE_URL || 'http://127.0.0.1:4533'
+const PROTO = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4531'
+const MOCK = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4534'
+const OUT = resolve(root, process.env.FLOW_DIR || 'evidence/WEB-BASELINE-REFRESH-004/chat-flows')
 const CHROME = process.env.CHROMIUM_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const style = '*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}'
 
@@ -60,9 +60,51 @@ const seedTasks = async page => {
 }
 const openActivityTab = async page => { await page.locator('[data-test="right-side-tab-list"]').getByText(/^(Activity|活动)$/).first().click(); await page.waitForTimeout(700) }
 const toggleBackgroundTasks = async page => { await page.locator('[data-test="background-tasks-header"]').first().click(); await page.waitForTimeout(500) }
-const openStoredTeamRun = async page => {
-  for (const label of ['prototype-workspace', 'Product Review Team', 'Review the current prototype baseline']) { await page.getByText(label, { exact: true }).first().click(); await page.waitForTimeout(900) }
+// WEB-BASELINE-REFRESH-004: with the server's real workspace kind the synthetic workspace can
+// already be expanded; open it only when its runs are not shown.
+const ensureWorkspaceOpen = async page => {
+  if (!(await page.getByText('Product Review Team', { exact: true }).first().isVisible().catch(() => false))) {
+    await page.getByText('prototype-workspace', { exact: true }).first().click(); await page.waitForTimeout(900)
+  }
 }
+const openStoredTeamRun = async page => {
+  await ensureWorkspaceOpen(page)
+  for (const label of ['Product Review Team', 'Review the current prototype baseline']) { await page.getByText(label, { exact: true }).first().click(); await page.waitForTimeout(900) }
+}
+
+// WEB-BASELINE-REFRESH-004 (0a32261): compaction status (stopped phase and gray tone added) and the
+// collaborator add-failure notice are live-only, so the same synthetic values are applied through
+// the source's own store/context in source and prototype, as for the Background Tasks rows.
+const COMPACTIONS = [
+  { kind: 'compaction', activityId: 'cmp-1', phase: 'completed', message: 'Context compacted', timestamp: '2026-08-22T04:03:00.000Z', compactedBlockCount: 12, summaryCharCount: 1840, summaryTokenCount: 460, summarizerProvider: 'autobyteus', completionStatus: 'completed', compactionModelIdentifier: 'mock/gpt-prototype' },
+  { kind: 'compaction', activityId: 'cmp-2', phase: 'failed', message: 'Context compaction failed', timestamp: '2026-08-22T04:04:00.000Z', completionStatus: 'failed', completionReason: 'Synthetic summarizer timeout.' },
+  { kind: 'compaction', activityId: 'cmp-3', phase: 'stopped', message: 'Context compaction stopped', timestamp: '2026-08-22T04:05:00.000Z' },
+  { kind: 'compaction', activityId: 'cmp-4', phase: 'started', message: 'Compacting context…', timestamp: '2026-08-22T04:06:00.000Z' },
+]
+const seedCompactions = async page => {
+  const applied = await page.evaluate(items => {
+    const pinia = document.querySelector('#__nuxt')?.__vue_app__?.config?.globalProperties?.$pinia
+    const runId = pinia?._s.get('activeContext')?.activeAgentContext?.state?.runId
+    const store = pinia?._s.get('agentActivity')
+    if (!runId || !store) return false
+    for (const item of items) store.upsertCompactionActivity(runId, { ...item, timestamp: new Date(item.timestamp) })
+    return true
+  }, COMPACTIONS)
+  if (!applied) throw new Error('activity store or active run unavailable')
+  await page.waitForTimeout(600)
+}
+const seedAddFailure = async page => {
+  const applied = await page.evaluate(() => {
+    const pinia = document.querySelector('#__nuxt')?.__vue_app__?.config?.globalProperties?.$pinia
+    const context = pinia?._s.get('activeContext')?.activeWorkspaceTarget?.context
+    if (!context) return false
+    context.collaboratorAddFailure = Object.freeze({ name: 'Documentation Writer', reason: 'The synthetic node could not start this collaborator.' })
+    return true
+  })
+  if (!applied) throw new Error('active composer context unavailable')
+  await page.waitForTimeout(500)
+}
+const runComposer = async page => { await page.locator('textarea.composer-text').last().click(); await page.waitForTimeout(300) }
 
 export const FLOWS = {
   'CHT-001': { title: 'New chat: open workspace menu', path: '/chat', steps: [openWorkspace] },
@@ -88,12 +130,20 @@ export const FLOWS = {
   'CHT-021': { title: 'New chat: model menu runtime drill-in lists models', path: '/chat', steps: [openModel, async page => { await page.locator('[data-test="chat-runtime-autobyteus"]').first().click(); await page.waitForTimeout(700) }] },
   'CHT-022': { title: 'Chat run: open run settings (Edit Config)', path: '/chat', steps: [sendFirst, role('button', 'Edit Config')] },
   'CHT-023': { title: 'Chat run: header + starts a New chat', path: '/chat', steps: [sendFirst, role('button', 'New Agent')] },
-  'CHT-024': { title: 'Chat run: reply in the run composer', path: '/chat', steps: [sendFirst, fill('Reply, or type / to use a skill', 'Add the open questions.'), press('Enter')], settleMs: 1500 },
+  // WEB-BASELINE-REFRESH-004 (0a32261): a live chat run's composer offers `@`, so its placeholder
+  // reads "Ask anything · @ for an agent or team"; the composer is located as the run textarea.
+  'CHT-024': { title: 'Chat run: reply in the run composer', path: '/chat', steps: [sendFirst, async page => { await page.locator('textarea.composer-text').last().fill('Add the open questions.'); await page.waitForTimeout(600) }, press('Enter')], settleMs: 1500 },
   'CHT-025': { title: 'Chat run: right tool shell Files tab', path: '/chat', steps: [sendFirst, text('Files')] },
   'CHT-026': { title: 'Chat run: collapse the right tool shell', path: '/chat', steps: [sendFirst, role('button', 'Toggle Sidebar')] },
   'CHT-027': { title: 'Chat run: reopen the chat from the Workspaces tree after leaving', path: '/chat', steps: [sendFirst, text('Agents'), text('Summarize the synthetic baseline.')], settleMs: 1500 },
-  'CHT-028': { title: 'Workspaces tree: + on the Daily Assistant row after a chat opens a New chat preset to it', path: '/chat', steps: [sendFirst, role('button', 'New run with this agent')] },
-  'CHT-029': { title: 'Chat run: / skill menu in the run composer', path: '/chat', steps: [sendFirst, async page => { await page.getByPlaceholder('Reply, or type / to use a skill').first().click(); await page.keyboard.type('/'); await page.waitForTimeout(700) }] },
+  'CHT-028': { title: 'Workspaces tree: + on the General Agent row after a chat opens a New chat preset to it', path: '/chat', steps: [sendFirst, role('button', 'New run with this agent')] },
+  'CHT-029': { title: 'Chat run: / skill menu in the run composer', path: '/chat', steps: [sendFirst, async page => { await page.locator('textarea.composer-text').last().click(); await page.keyboard.type('/'); await page.waitForTimeout(700) }] },
+  'CHT-032': { title: 'Chat run: @ opens the live-run mention menu (0a32261)', path: '/chat', steps: [sendFirst, async page => { await page.locator('textarea.composer-text').last().click(); await page.keyboard.type('@'); await page.waitForTimeout(800) }] },
+  'CHT-033': { title: 'Chat run: a reply with an @ mention shows the inline mention chip (0a32261)', path: '/chat', steps: [sendFirst, runComposer, typeKeys('@Doc'), press('Enter'), typeKeys('please review.'), press('Enter')], settleMs: 1500 },
+  'CHT-034': { title: 'Chat run: collaborator add-failure notice above the composer (0a32261)', path: '/chat', steps: [sendFirst, seedAddFailure] },
+  'CHT-035': { title: 'Chat run: dismiss the collaborator add-failure notice', path: '/chat', steps: [sendFirst, seedAddFailure, async page => { await page.locator('[data-test="collaborator-add-failure-dismiss"]').first().click(); await page.waitForTimeout(400) }] },
+  'CMP-001': { title: 'Chat run: compaction status rows (completed, failed, stopped, started) (0a32261)', path: '/chat', steps: [sendFirst, seedCompactions] },
+  'CMP-002': { title: 'Chat run: Activity tab compaction items', path: '/chat', steps: [sendFirst, seedCompactions, openActivityTab] },
   // Narrow viewport: the composer menus become bottom sheets (sampled).
   'CHT-030': { title: 'New chat (390x844): model menu as a bottom sheet', path: '/chat', viewport: { width: 390, height: 844 }, steps: [openModel] },
   'CHT-031': { title: 'New chat (390x844): workspace menu as a bottom sheet', path: '/chat', viewport: { width: 390, height: 844 }, steps: [openWorkspace] },

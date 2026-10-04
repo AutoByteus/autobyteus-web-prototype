@@ -1,3 +1,4 @@
+import { agentInputStateSchema, compactionRecoveryBlockSchema } from "@autobyteus/agent-presentation-contracts";
 import { z } from "zod";
 import {
   teamAgentErrorPayloadSchema,
@@ -10,7 +11,10 @@ import {
   teamMemberInputMessagePayloadSchema,
 } from "./team-collaboration-message-dtos.js";
 import { teamConnectedPayloadSchema, teamRunLifecyclePayloadSchema } from "./team-control-message-dtos.js";
-import { teamTaskExecutionStartedPayloadSchema } from "./team-task-execution-message-dtos.js";
+import {
+  teamCollaboratorAddedPayloadSchema,
+  teamTaskExecutionStartedPayloadSchema,
+} from "./team-task-execution-message-dtos.js";
 import { readonlyParsed } from "./schema-helpers.js";
 import {
   teamAgentStatusDtoSchema,
@@ -27,6 +31,7 @@ export const teamExecutionViewSnapshotPayloadSchema = z.object({
   execution_tree: teamRunExecutionTreeDtoSchema,
   messages: z.array(teamCommunicationMessageDtoSchema),
   agent_statuses: z.array(teamAgentStatusDtoSchema),
+  agent_input_states: z.array(z.object({ agent_run_id: z.string().min(1), state: agentInputStateSchema }).strict()),
 }).strict();
 
 export const teamStreamServerMessageSchema = z.discriminatedUnion("type", [
@@ -39,6 +44,9 @@ export const teamStreamServerMessageSchema = z.discriminatedUnion("type", [
   message("SEGMENT_END", teamAgentPayloadSchemas.SEGMENT_END),
   message("AGENT_STATUS", teamAgentPayloadSchemas.AGENT_STATUS),
   message("COMPACTION_STATUS", teamAgentPayloadSchemas.COMPACTION_STATUS),
+  message("COMPACTION_BLOCKED", teamAgentPayloadSchemas.COMPACTION_BLOCKED),
+  message("COMPACTION_RESUMED", teamAgentPayloadSchemas.COMPACTION_RESUMED),
+  message("AGENT_INPUT_STATE", teamAgentPayloadSchemas.AGENT_INPUT_STATE),
   message("TOKEN_USAGE_UPDATED", teamAgentPayloadSchemas.TOKEN_USAGE_UPDATED),
   message("ASSISTANT_COMPLETE", teamAgentPayloadSchemas.ASSISTANT_COMPLETE),
   message("TOOL_APPROVAL_REQUESTED", teamAgentPayloadSchemas.TOOL_APPROVAL_REQUESTED),
@@ -58,6 +66,7 @@ export const teamStreamServerMessageSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("TEAM_EXECUTION_VIEW_SNAPSHOT"), payload: teamExecutionViewSnapshotPayloadSchema }).strict(),
   z.object({ type: z.literal("AGENT_COMMAND_ACK"), payload: teamInterruptCommandAckPayloadSchema }).strict(),
   z.object({ type: z.literal("TASK_EXECUTION_STARTED"), payload: teamTaskExecutionStartedPayloadSchema }).strict(),
+  z.object({ type: z.literal("COLLABORATOR_ADDED"), payload: teamCollaboratorAddedPayloadSchema }).strict(),
   z.object({ type: z.literal("TEAM_COMMUNICATION_MESSAGE"), payload: teamCommunicationMessagePayloadSchema }).strict(),
   z.object({ type: z.literal("MEMBER_INPUT_MESSAGE"), payload: teamMemberInputMessagePayloadSchema }).strict(),
   z.object({ type: z.literal("ERROR"), payload: teamAgentErrorPayloadSchema }).strict(),
@@ -77,6 +86,7 @@ export type TeamStreamServerMessage =
   | Readonly<{ type: "TEAM_EXECUTION_VIEW_SNAPSHOT"; payload: z.infer<typeof teamExecutionViewSnapshotPayloadSchema> }>
   | Readonly<{ type: "AGENT_COMMAND_ACK"; payload: z.infer<typeof teamInterruptCommandAckPayloadSchema> }>
   | Readonly<{ type: "TASK_EXECUTION_STARTED"; payload: z.infer<typeof teamTaskExecutionStartedPayloadSchema> }>
+  | Readonly<{ type: "COLLABORATOR_ADDED"; payload: z.infer<typeof teamCollaboratorAddedPayloadSchema> }>
   | Readonly<{ type: "TEAM_COMMUNICATION_MESSAGE"; payload: z.infer<typeof teamCommunicationMessagePayloadSchema> }>
   | Readonly<{ type: "MEMBER_INPUT_MESSAGE"; payload: z.infer<typeof teamMemberInputMessagePayloadSchema> }>
   | Readonly<{ type: "ERROR"; payload: z.infer<typeof teamAgentErrorPayloadSchema> }>;

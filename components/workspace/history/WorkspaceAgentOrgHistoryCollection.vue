@@ -135,8 +135,8 @@
               <button type="button" v-else-if="display.row.kind === 'task_agent'" @click="actions.onInspectAgentOrgExecution?.(run, display.row.agentRunId, display.row.address)" :aria-selected="isMemberSelected(run.rootRunId, display.row.address, display.row.agentRunId)" class="org-execution-row relative flex min-h-7 w-full items-center rounded-md text-left text-sm" :class="isMemberSelected(run.rootRunId, display.row.address, display.row.agentRunId) ? 'is-selected text-indigo-900' : 'text-gray-600 hover:bg-gray-50'" :title="`${display.row.address} · ${display.row.agentRunId}`" :style="rowStyle(display.row.depth)" :aria-label="agentRowLabel(display.row)" :aria-level="display.row.depth + 1" :data-test="`agent-org-task-agent-row-${display.row.agentRunId}`" :data-agent-run-id="display.row.agentRunId" :data-status="display.row.status" role="treeitem">
                 <WorkspaceHierarchyBranches :depth="display.row.depth" :continuing-ancestor-depths="display.continuingAncestorDepths" :has-following-sibling="display.hasFollowingSibling" />
                 <span class="ml-2 mr-1 h-3.5 w-3.5 flex-none" aria-hidden="true" />
-                <!-- A task Agent shows the same solid status dot and initials as a member; no "Started by" line
-                     (cross-scope-agent-mentions, user decision). The starter stays in the accessible label. -->
+                <!-- A task Agent shows the same solid status dot and initials as a member; no visible
+                     "Started by" line. The starter stays in the accessible label. -->
                 <StatusDot class="mr-1.5 flex-none" :status="display.row.status" />
                 <span class="mr-1.5 inline-flex h-4 w-4 flex-none items-center justify-center rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600" data-test="agent-org-task-agent-avatar">{{ initials(display.row.address) }}</span>
                 <span class="truncate">{{ label(display.row.address) }}</span>
@@ -157,6 +157,7 @@
 </template>
 
 <script setup lang="ts">
+import { memberDisplayName } from '~/utils/collaboration/memberDisplayName'
 import { Icon } from '@iconify/vue'
 import StatusDot from '~/components/workspace/common/StatusDot.vue'
 import TeamAggregateStatusDot from './TeamAggregateStatusDot.vue'
@@ -186,7 +187,7 @@ const isTerminating = (rootRunId: string) => props.state.isAgentOrgTerminating?.
 const isDeleting = (rootRunId: string) => props.state.isAgentOrgDeleting?.(rootRunId) ?? false
 const isArchiving = (rootRunId: string) => props.state.isAgentOrgArchiving?.(rootRunId) ?? false
 const terminationError = (rootRunId: string) => props.state.agentOrgTerminationError?.(rootRunId) ?? null
-const label = (address: string) => address.split('/').filter(Boolean).at(-1)?.replace(/[_-]+/g, ' ') || address
+const label = memberDisplayName
 const initials = (address: string) => label(address).split(/\s+/).slice(0, 2).map((part) => part[0]?.toUpperCase()).join('')
 const startedBy = (delegator: AgentOrgHistoryDelegator) =>
   t('workspace.members.started_by', { name: delegator.address ? label(delegator.address) : delegator.agentRunId })

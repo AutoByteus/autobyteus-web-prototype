@@ -1,4 +1,3 @@
-import { runMentionOrgSources } from '~/prototype/run-mentions/runMentionState'
 import type { AgentOrgExecutionContext } from '~/services/agentOrgExecution/agentOrgExecutionContext'
 import { projectAgentOrgTeamBranchStatus } from '~/services/agentOrgExecution/agentOrgTeamBranchStatus'
 import type { AgentOrgRunHistoryItem } from '~/stores/runHistoryTypes'
@@ -10,6 +9,12 @@ import {
   type AgentOrgTaskTeamMember,
 } from '~/types/collaboration/agentOrgExecution'
 import { foldTeamAggregateStatus, type TeamStatusAuthority } from '~/utils/workspaceTeamAggregateStatus'
+import {
+  catalogTeamSourceAt,
+  collaborationTaskExecutionLists,
+  collaboratorExecutionNodes,
+  collaboratorTeamSourceAt,
+} from '~/services/collaborators/agentSourceSelectors'
 
 export type AgentOrgHistoryAgentRow = Readonly<{
   key: string; kind: 'agent'; address: string; agentRunId: string; status: AgentStatus; depth: number
@@ -54,6 +59,12 @@ type StatusSource = Readonly<{
   isTaskTeamExpanded(teamRunId: string): boolean
 }>
 
+/** Root-level delegated children as the tree shows them: collaborators first, then extra copies. */
+const rootTaskExecutions = (rootOrg: AgentOrgRunHistoryItem['executionTree']['rootOrg']): readonly AgentOrgTaskExecutionNode[] => [
+  ...collaboratorExecutionNodes(rootOrg.collaborators ?? []) as AgentOrgTaskExecutionNode[],
+  ...rootOrg.taskExecutions,
+]
+
 const collectAgentAddresses = (tree: AgentOrgRunHistoryItem['executionTree']): ReadonlyMap<string, string> => {
   const addresses = new Map<string, string>()
   const visitTaskMembers = (members: readonly AgentOrgTaskTeamMember[]) => {
@@ -75,7 +86,7 @@ const collectAgentAddresses = (tree: AgentOrgRunHistoryItem['executionTree']): R
       visitTasks(member.taskExecutions)
     }
   }
-  visitTasks(tree.rootOrg.taskExecutions)
+  visitTasks(rootTaskExecutions(tree.rootOrg))
   return addresses
 }
 
@@ -100,12 +111,14 @@ const statusSource = (
       address: addresses.get(delegatorAgentRunId) ?? null,
     }),
     coordinatorFor: (team) => {
-      // Prototype (cross-scope-agent-mentions): a task Team brought in by `@` has its source in the prototype.
-      const source = (context?.executionTree ?? run.executionTree).rootOrg.members.find((member) =>
-        'teamRunId' in member && member.address === team.address)
-        ?? (runMentionOrgSources(run.rootRunId) as Array<{ address: string; teamRunId?: string; coordinatorAddress: string }>)
-          .find((member) => 'teamRunId' in member && member.address === team.address)
-      if (!source || !('teamRunId' in source)) throw new Error(`Missing captured Team source '${team.address}'.`)
+      const rootOrg = (context?.executionTree ?? run.executionTree).rootOrg
+      const configured = rootOrg.members.find((member) => 'teamRunId' in member && member.address === team.address)
+      // A task Team at a collaborator address takes its layout from the collaborator entry.
+      const source = configured && 'teamRunId' in configured
+        ? configured
+        : collaboratorTeamSourceAt(rootOrg.collaborators ?? [], team.address)
+          ?? catalogTeamSourceAt(collaborationTaskExecutionLists(rootOrg), team.address)
+      if (!source) throw new Error(`Missing captured Team source '${team.address}'.`)
       const findMembers = (node: TaskTeamNode): { agentRunId: string; address: string }[] => node.members.flatMap((member) =>
         'agentRunId' in member ? [member] : findMembers(member))
       const matches = findMembers(team).filter((member) => member.address === source.coordinatorAddress)
@@ -214,7 +227,7 @@ export const projectAgentOrgHistoryRows = (input: Readonly<{
     })))
     for (const task of member.taskExecutions) rows.push(...flattenTask(task, 1, source))
   }
-  for (const task of tree.rootOrg.taskExecutions) rows.push(...flattenTask(task, 0, source))
+  for (const task of rootTaskExecutions(tree.rootOrg)) rows.push(...flattenTask(task, 0, source))
 
   const hasSibling = (index: number, depth: number): boolean => {
     for (let next = index + 1; next < rows.length; next += 1) {

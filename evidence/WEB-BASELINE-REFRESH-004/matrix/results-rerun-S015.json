@@ -1,0 +1,69 @@
+{
+  "generatedAt": "2026-10-04T11:34:18.132Z",
+  "sourceBaseUrl": "http://127.0.0.1:4533",
+  "prototypeBaseUrl": "http://127.0.0.1:4531",
+  "mockBaseUrl": "http://127.0.0.1:4534",
+  "chromiumPath": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "normalizedStyle": "*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}",
+  "rows": [
+    {
+      "row": {
+        "kind": "state",
+        "viewport": "narrow",
+        "locale": "en",
+        "id": "WBR-S015",
+        "path": "/mobile?unsupported=desktopSettings",
+        "scenario": "populated",
+        "mobile": "paired"
+      },
+      "source": {
+        "target": "source",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-004/evidence/WEB-BASELINE-REFRESH-004/matrix/source/WBR-S015.png",
+        "screenshotSha256": "e162c3f4b52412cd80ba7936f7ccd32864fdb350c1eeec8dd836528a33eaf310",
+        "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\nPrototype Node\n\nhttp://127.0.0.1:4534\n\nConnected\n\nUnsupported on phone\n\nDesktop settings are managed from the desktop app. Phone Access exposes only phone connection controls.\n\nRecent work\nSwitch work\nResearch Assistant\nCompare current navigation states\nIdle · prototype-workspace\nProduct Review Team\nReview the current prototype baseline\nInactive · prototype-workspace\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
+        "bodyTextSha256": "484bfd7574e8e70b64ea25bd5ab8539f33d2333bf425a1de0b8ffd6c495a2f39",
+        "route": "/mobile?unsupported=desktopSettings",
+        "lang": "",
+        "controlsSha256": "299eabb22c9020b72e756d7fdd81feb94e8b139cb768f6984740d00ab96b6ede",
+        "geometrySha256": "8ca10b29b709e86c2148b167616bb4e97c4bda9a90806077fdc986d2024cdfaf",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "prototype": {
+        "target": "prototype",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-004/evidence/WEB-BASELINE-REFRESH-004/matrix/prototype/WBR-S015.png",
+        "screenshotSha256": "e162c3f4b52412cd80ba7936f7ccd32864fdb350c1eeec8dd836528a33eaf310",
+        "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\nPrototype Node\n\nhttp://127.0.0.1:4534\n\nConnected\n\nUnsupported on phone\n\nDesktop settings are managed from the desktop app. Phone Access exposes only phone connection controls.\n\nRecent work\nSwitch work\nResearch Assistant\nCompare current navigation states\nIdle · prototype-workspace\nProduct Review Team\nReview the current prototype baseline\nInactive · prototype-workspace\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
+        "bodyTextSha256": "484bfd7574e8e70b64ea25bd5ab8539f33d2333bf425a1de0b8ffd6c495a2f39",
+        "route": "/mobile?unsupported=desktopSettings",
+        "lang": "",
+        "controlsSha256": "299eabb22c9020b72e756d7fdd81feb94e8b139cb768f6984740d00ab96b6ede",
+        "geometrySha256": "8ca10b29b709e86c2148b167616bb4e97c4bda9a90806077fdc986d2024cdfaf",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "comparison": {
+        "routeEqual": true,
+        "bodyTextEqual": true,
+        "controlsEqual": true,
+        "geometryEqual": true,
+        "screenshotEqual": true,
+        "pixels": {
+          "dimensionsEqual": true,
+          "changedPixels": 0,
+          "totalPixels": 329160,
+          "changedPixelRatio": 0,
+          "maximumChannelDelta": 0,
+          "changedBox": null,
+          "diffPath": null,
+          "lowDeltaPixels": 0,
+          "noiseClass": "A-edge-antialiasing"
+        },
+        "prototypeBrowserErrors": 0,
+        "prototypeExternalRequests": 0,
+        "pass": true
+      },
+      "geometryDelta": []
+    }
+  ]
+}

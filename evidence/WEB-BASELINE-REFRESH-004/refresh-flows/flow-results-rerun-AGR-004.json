@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-10-04T11:27:46.725Z",
+  "source": "http://127.0.0.1:4533",
+  "prototype": "http://127.0.0.1:4531",
+  "mock": "http://127.0.0.1:4534",
+  "results": [
+    {
+      "id": "AGR-004",
+      "title": "Stored Agent run: the run row returns to the host conversation",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

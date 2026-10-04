@@ -1,3 +1,4 @@
+import { handleAgentInputState } from './handlers/agentInputStateHandler';
 import type { AgentContext } from '~/types/agent/AgentContext';
 import type { ServerMessage } from './protocol';
 import type { AgentTeamAddress } from '~/types/agent/AgentTeamAddress';
@@ -52,6 +53,14 @@ export type AgentStreamProjectionTarget =
       kind: 'agent_org_member';
       context: AgentContext;
       orgRunId: string;
+      agentRunId: string;
+      memberAddress: AgentTeamAddress;
+    }
+  | {
+      /** A task child of a standalone run's collaboration root. */
+      kind: 'agent_collaboration_member';
+      context: AgentContext;
+      hostRunId: string;
       agentRunId: string;
       memberAddress: AgentTeamAddress;
     };
@@ -126,7 +135,8 @@ const dispatchToHandler = (
     }
     case 'AGENT_COMMAND_ACK': {
       if (message.payload.command_type !== 'SEND_MESSAGE') return NO_AGENT_STREAM_MUTATION;
-      let effects = NO_AGENT_STREAM_MUTATION;
+      context.submissionPending = false;
+      let effects = presentationMutationEffects();
       if (message.payload.status) {
         const result = handleAgentStatus(message.payload.status, context);
         effects = mergeAgentStreamMutationEffects(
@@ -138,7 +148,8 @@ const dispatchToHandler = (
           conversationResult(result.conversationEffect !== 'NONE', result.conversationEffect),
         );
       }
-      if (!message.payload.accepted) {
+      // A rejected add posted nothing: the notice above the composer reports it, not the conversation.
+      if (!message.payload.accepted && message.payload.code !== 'COLLABORATOR_ADD_FAILED') {
         const eventMonitor = handleError({
           code: message.payload.code ?? 'AGENT_COMMAND_REJECTED',
           message: message.payload.message ?? 'Agent command was not accepted.',
@@ -153,6 +164,12 @@ const dispatchToHandler = (
       }
       return effects;
     }
+    case 'AGENT_INPUT_STATE':
+      return conversationResult(handleAgentInputState(message.payload, context), 'STRUCTURAL');
+    case 'COMPACTION_BLOCKED':
+    case 'COMPACTION_RESUMED':
+      // The revisioned input state reconciles recovery; diagnostic facts cannot clear a newer epoch.
+      return NO_AGENT_STREAM_MUTATION;
     case 'COMPACTION_STATUS': {
       const result = handleCompactionStatus(message.payload, context);
       return {
@@ -216,7 +233,8 @@ export const dispatchAgentStreamMessage = (
   commitRecentEventMonitorEffect(target.context, effects.eventMonitor);
   if (effects.navigation.kind !== 'NONE') {
     const currentStatus = target.context.state.currentStatus;
-    if (target.kind === 'agent_org_member') return effects;
+    // Root views (Org, Agent collaboration) own their own tree rows.
+    if (target.kind === 'agent_org_member' || target.kind === 'agent_collaboration_member') return effects;
     useRunHistoryStore().applyRunNavigationEffect(
       target.kind === 'standalone'
         ? { kind: 'standalone', runId: target.runId, currentStatus }

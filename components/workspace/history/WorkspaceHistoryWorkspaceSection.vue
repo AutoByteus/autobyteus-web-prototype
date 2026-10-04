@@ -110,7 +110,7 @@
             data-test="workspace-agent-run-row"
             :data-run-id="run.runId"
             class="group/run-row flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-sm transition-colors"
-            :class="state.selectedRunId === run.runId && !agentRunScope(run.runId)?.focusedRunId
+            :class="state.selectedRunId === run.runId && !collaboration.selectedChild(run.runId)
               ? 'bg-indigo-50 text-indigo-900'
               : 'text-gray-700 hover:bg-gray-50'"
             @click="selectAgentRun(run)"
@@ -170,11 +170,12 @@
               </span>
             </div>
           </button>
-          <!-- cross-scope-agent-mentions: task Agents and task Teams brought into this Agent run. -->
+          <!-- Task Agents and task Teams brought into this run with `@`. -->
           <AgentRunTaskRows
             :run-id="run.runId"
             :label="formatRunLabel(run.summary)"
             :run-selected="state.selectedRunId === run.runId"
+            :has-collaboration="run.hasCollaboration === true"
             @select-run="actions.onSelectRun(run)"
           />
           </template>
@@ -326,14 +327,14 @@
 </template>
 
 <script setup lang="ts">
-import AgentRunTaskRows from '~/components/workspace/history/AgentRunTaskRows.vue';
-import { agentRunScope } from '~/prototype/run-mentions/runMentionState';
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { Icon } from '@iconify/vue';
 import StatusDot from '~/components/workspace/common/StatusDot.vue';
 import TeamActivityDot from '~/components/workspace/common/TeamActivityDot.vue';
 import WorkspaceTeamExecutionTree from '~/components/workspace/history/WorkspaceTeamExecutionTree.vue';
 import WorkspaceAgentOrgHistoryCollection from '~/components/workspace/history/WorkspaceAgentOrgHistoryCollection.vue';
+import AgentRunTaskRows from '~/components/workspace/history/AgentRunTaskRows.vue';
+import { useAgentRunCollaborationStore } from '~/stores/agentRunCollaborationStore';
 import type {
   WorkspaceHistoryAvatarBindings,
   WorkspaceHistorySectionActions,
@@ -365,6 +366,12 @@ const props = defineProps<{
   actions: WorkspaceHistorySectionActions;
 }>();
 const { t } = useLocalization();
+const collaboration = useAgentRunCollaborationStore();
+/** The run row shows the run's own agent again (not a task child under it). */
+const selectAgentRun = (run: Parameters<typeof props.actions.onSelectRun>[0]) => {
+  collaboration.selectChild(run.runId, null);
+  return props.actions.onSelectRun(run);
+};
 const workspacePresentationId = computed(() => props.workspaceNode.stableKey);
 const workspaceDisplayName = computed(() => props.workspaceNode.workspaceRootPath === NO_WORKSPACE_HISTORY_ROOT
   ? t('workspace.agentOrg.history.noWorkspace')
@@ -390,11 +397,9 @@ onBeforeUnmount(() => {
   if (relativeTimeTimer !== null) clearInterval(relativeTimeTimer);
 });
 
-// Selecting the run row shows the run's own agent again (not a task Agent under it).
-const selectAgentRun = (run: Parameters<typeof props.actions.onSelectRun>[0]) => {
-  const scope = agentRunScope(run.runId);
-  if (scope) scope.focusedRunId = null;
-  return props.actions.onSelectRun(run);
+const opensOnAppear = (team: TeamTreeNode, rowKey: string): boolean => {
+  const row = team.executionRows.find((candidate) => candidate.rowKey === rowKey);
+  return row?.kind === 'transient_execution' && row.opensOnAppear === true;
 };
 
 const isTeamDisplayRowExpanded = (
@@ -404,6 +409,7 @@ const isTeamDisplayRowExpanded = (
   workspacePresentationId.value,
   team.teamRunId,
   rowKey,
+  opensOnAppear(team, rowKey),
 );
 
 const toggleTeamDisplayRow = (
@@ -413,6 +419,7 @@ const toggleTeamDisplayRow = (
   workspacePresentationId.value,
   team.teamRunId,
   row.rowKey,
+  opensOnAppear(team, row.rowKey),
 );
 
 const selectTeamDisplayRow = (

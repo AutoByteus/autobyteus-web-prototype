@@ -2,7 +2,7 @@
 import http from 'node:http'
 import { URL } from 'node:url'
 import { WebSocketServer } from 'ws'
-import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, baseState, operationFixture, scenarioCatalog, syntheticApplicationHtml } from './fixtures.mjs'
+import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, baseState, operationFixture, scenarioCatalog, syntheticApplicationHtml, taskContextUpload } from './fixtures.mjs'
 import { createSchemaFiller } from './schema-filler.mjs'
 
 const port = Number(process.env.PROTOTYPE_MOCK_PORT || 4310)
@@ -16,6 +16,8 @@ function applyScenario(name) {
   state.scenario = name
   state.requestDelayMs = name === 'loading' ? 1500 : 0
   state.launchedTeamRun = false
+  state.projectData = null
+  state.taskContextFiles = {}
 }
 
 applyScenario(process.env.PROTOTYPE_SCENARIO || 'populated')
@@ -84,6 +86,7 @@ const server = http.createServer(async (req, res) => {
       return send(res, 200, { data: null, errors: [{ message: state.operationFailures[operationName] || 'Synthetic recoverable GraphQL failure.', extensions: { code: 'PROTOTYPE_FIXTURE_ERROR', operationName } }] })
     }
     const fixture = operationFixture(operationName, payload.variables || {}, state)
+    if (fixture?.__projectError) return send(res, 200, { data: null, errors: [fixture.__projectError] })
     // Like the real node, a created TeamRun appears as active in later history reads.
     if (operationName === 'CreateAgentTeamRun') state.launchedTeamRun = true
     const data = completeWithSchema(payload.query, payload.operationName, fixture || {})
@@ -126,6 +129,25 @@ const server = http.createServer(async (req, res) => {
   }
   if (url.pathname.includes('/application-bundles/') || url.pathname.includes('/applications/')) return send(res, 200, { ok: true, fixture: true })
   if (url.pathname.includes('/content') || url.pathname.includes('/file-change-content')) return send(res, 200, '# Synthetic file\n\nFixture content only.', 'text/plain; charset=utf-8')
+  // Project Task context files (0a32261): draft begin/upload/remove/discard.
+  if (/^\/rest\/projects\/[^/]+\/task-context-drafts$/.test(url.pathname) && req.method === 'POST') {
+    state.taskDraftSeq = (state.taskDraftSeq || 0) + 1
+    return send(res, 200, { draftId: `draft-${state.taskDraftSeq}` })
+  }
+  if (/^\/rest\/projects\/[^/]+\/task-context-drafts\/[^/]+\/context-files$/.test(url.pathname) && req.method === 'POST') {
+    const chunks = []
+    for await (const chunk of req) chunks.push(chunk)
+    const body = Buffer.concat(chunks)
+    const name = /filename="([^"]+)"/.exec(body.toString('latin1'))?.[1] || 'file'
+    const type = /Content-Type: ([^\r\n]+)/i.exec(body.toString('latin1'))?.[1] || 'application/octet-stream'
+    const start = body.indexOf('\r\n\r\n') + 4
+    const end = body.lastIndexOf('\r\n--')
+    return send(res, 200, taskContextUpload(state, { name, type, size: Math.max(0, end - start) }))
+  }
+  if (/^\/rest\/projects\/[^/]+\/(task-context-drafts|tasks)\//.test(url.pathname)) {
+    if (req.method === 'DELETE') return send(res, 200, { ok: true })
+    return send(res, 200, '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" fill="#dbeafe"/></svg>', 'image/svg+xml')
+  }
   if (url.pathname.startsWith('/rest/drafts/') || url.pathname.startsWith('/rest/context-files/')) return send(res, 200, { storedFilename: 'ctx_prototype__fixture.txt', originalFilename: 'fixture.txt', locator: '/rest/context-files/ctx_prototype__fixture.txt', mediaType: 'text/plain', size: 42 })
   if (url.pathname.startsWith('/rest/')) return send(res, 200, { ok: true, fixture: true, path: url.pathname })
 

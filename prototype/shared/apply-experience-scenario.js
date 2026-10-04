@@ -67,7 +67,7 @@ export function applyExperienceScenario(input = {}) {
   const now = '2026-08-22T04:00:00.000Z'
   const workspaceMetadata = {
     workspaceId, name: 'prototype-workspace', displayName: 'Prototype Workspace',
-    workspaceRootPath: '/synthetic/prototype-workspace', absolutePath: '/synthetic/prototype-workspace', kind: 'local', isTemp: false,
+    workspaceRootPath: '/synthetic/prototype-workspace', absolutePath: '/synthetic/prototype-workspace', kind: 'filesystem', isTemp: false,
   }
   const activeAgentDefinitionId = isAgentOrgConfig || isAgentOrgActive || isAgentOrgAgentConfig || isAgentOrgAgentActive
     ? routeEntryId || 'requirements-engineer'
@@ -95,7 +95,7 @@ export function applyExperienceScenario(input = {}) {
   if (!(agentContexts.runs instanceof Map)) agentContexts.runs = new Map()
   const agentContext = agentContexts.upsertProjectionContext({
     runId,
-    config: { agentDefinitionId: activeAgentDefinitionId, agentDefinitionName: activeAgentDefinitionName, agentAvatarUrl: null, llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', workspaceId, workspaceMetadata, autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', isLocked: true, llmConfig: { temperature: 0.2 } },
+    config: { agentDefinitionId: activeAgentDefinitionId, agentDefinitionName: activeAgentDefinitionName, agentAvatarUrl: null, llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', workspaceId, workspaceMetadata, autoExecuteTools: false, isLocked: true, llmConfig: { temperature: 0.2 } },
     conversation, status: runStatus,
   })
   if (scenario.includes('error')) agentContext.state.currentStatus = 'error'
@@ -246,7 +246,7 @@ export function applyExperienceScenario(input = {}) {
       runAncestryById: { [runId]: { workspaceId, agentDefinitionId: activeAgentDefinitionId } },
       teamAncestryById: {}, memberAncestorExecutionKeysByIdentity: {},
     }
-    runHistory.resumeConfigByRunId = { ...runHistory.resumeConfigByRunId, [runId]: { runId, isActive: runStatus === 'running', metadataConfig: { agentDefinitionId: activeAgentDefinitionId, workspaceRootPath: workspaceMetadata.workspaceRootPath, llmModelIdentifier: 'mock/gpt-prototype', llmConfig: {}, autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: runStatus !== 'running', llmConfig: runStatus !== 'running', autoExecuteTools: runStatus !== 'running', skillAccessMode: runStatus !== 'running', workspaceRootPath: false, runtimeKind: false } } }
+    runHistory.resumeConfigByRunId = { ...runHistory.resumeConfigByRunId, [runId]: { runId, isActive: runStatus === 'running', metadataConfig: { agentDefinitionId: activeAgentDefinitionId, workspaceRootPath: workspaceMetadata.workspaceRootPath, llmModelIdentifier: 'mock/gpt-prototype', llmConfig: {}, autoExecuteTools: false, runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: runStatus !== 'running', llmConfig: runStatus !== 'running', autoExecuteTools: runStatus !== 'running', workspaceRootPath: false, runtimeKind: false } } }
   }
 
   if (isAgentOrgConfig) {
@@ -274,7 +274,6 @@ export function applyExperienceScenario(input = {}) {
           llmModelIdentifier: 'mock/gpt-prototype',
           llmConfig: null,
           autoExecuteTools: false,
-          skillAccessMode: 'PRELOADED_ONLY',
         },
         teamOverrides: {},
         agentOverrides: {},
@@ -296,8 +295,7 @@ export function applyExperienceScenario(input = {}) {
       agentDefinitionName: activeAgentDefinitionName,
       agentAvatarUrl: null, llmModelIdentifier: 'mock/gpt-prototype',
       runtimeKind: 'autobyteus', llmConfig: { temperature: 0.2 },
-      workspaceId: null, workspaceMetadata: null, autoExecuteTools: false,
-      skillAccessMode: 'PRELOADED_ONLY', isLocked: false,
+      workspaceId: null, workspaceMetadata: null, autoExecuteTools: false, isLocked: false,
     })
     return { applied: true, kind: 'agent-org-agent-entry-config', agentDefinitionId: activeAgentDefinitionId }
   }
@@ -316,7 +314,6 @@ export function applyExperienceScenario(input = {}) {
         llmModelIdentifier: 'mock/gpt-prototype',
         llmConfig: null,
         autoExecuteTools: false,
-        skillAccessMode: 'PRELOADED_ONLY',
       },
       teamOverrides: {},
       agentOverrides: {},
@@ -385,7 +382,6 @@ export function applyExperienceScenario(input = {}) {
         workspaceId,
         workspaceMetadata,
         autoExecuteTools: false,
-        skillAccessMode: 'PRELOADED_ONLY',
         isLocked: true,
         llmConfig: { temperature: 0.2 },
       }
@@ -480,7 +476,6 @@ export function applyExperienceScenario(input = {}) {
           llmModelIdentifier: 'mock/gpt-prototype',
           llmConfig: { temperature: 0.2 },
           autoExecuteTools: false,
-          skillAccessMode: 'PRELOADED_ONLY',
           memberOverrides: {},
           isLocked: true,
         }),
@@ -492,7 +487,7 @@ export function applyExperienceScenario(input = {}) {
         hasAgentRun: id => configuredEntries.some(entry => entry.agentRunId === id),
         getAgentContext: id => configuredEntries.find(entry => entry.agentRunId === id)?.agentContext || null,
         getMemberAddress: id => configuredEntries.find(entry => entry.agentRunId === id)?.memberAddress || null,
-        getExecutionTree: () => ({ root_team: { team_run_id: rootTeamRunId, members: [], task_executions: [] } }),
+        getExecutionTree: () => ({ root_team: { team_run_id: rootTeamRunId, members: [], collaborators: [], task_executions: [] } }),
         focusAgent(id) {
           if (!configuredEntries.some(entry => entry.agentRunId === id)) return { disposition: 'rejected' }
           this._focusedAgentRunId = id
@@ -597,7 +592,7 @@ export function applyExperienceScenario(input = {}) {
     const writerAddress = isAgentOrgTeamActive ? '/prototype_bootstrapper' : standaloneTeam ? `/${standaloneTeam.secondName}` : hierarchyReview ? '/operations-liaison' : launchedFromCatalog ? '/writer' : '/product-review/evidence-writer'
     const rootRowKey = launchedFromCatalog || isAgentOrgTeamActive || standaloneTeam ? `team:${rootTeamRunId}` : 'team:root'
     const rootAddress = launchedFromCatalog || isAgentOrgTeamActive || standaloneTeam ? '/' : '/product-review'
-    const memberConfig = (id, name) => ({ agentDefinitionId: id, agentDefinitionName: name, agentAvatarUrl: null, llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', workspaceId, workspaceMetadata, autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', isLocked: true, llmConfig: { temperature: 0.2 } })
+    const memberConfig = (id, name) => ({ agentDefinitionId: id, agentDefinitionName: name, agentAvatarUrl: null, llmModelIdentifier: 'mock/gpt-prototype', runtimeKind: 'autobyteus', workspaceId, workspaceMetadata, autoExecuteTools: false, isLocked: true, llmConfig: { temperature: 0.2 } })
     const teamStatus = scenario.includes('error') ? 'error' : scenario.includes('completed') || scenario.includes('history') || scenario.includes('interrupted') ? 'idle' : 'running'
     const memberStatus = launchedFromCatalog ? 'offline' : teamStatus
     const teamLastActivityAt = launchedFromCatalog || isAgentOrgTeamActive || standaloneTeam ? new Date().toISOString() : now
@@ -734,7 +729,7 @@ export function applyExperienceScenario(input = {}) {
     const taskRows = launchedFromCatalog ? [] : [{ task: { task_id: 'task-visual-parity', status: 'accepted', description: 'Validate exact visual parity for the workspace.', created_at: '2026-08-22T04:00:30.000Z', reference_files: [], updates: [{ kind: 'submission', submission_id: 'submission-1', created_at: '2026-08-22T04:02:30.000Z', message: 'All matched frames pass.', reference_files: [ref] }, { kind: 'review', review_id: 'review-1', reviewed_submission_id: 'submission-1', decision: 'accept', comment: 'Accepted for baseline evidence.', created_at: '2026-08-22T04:03:30.000Z', reference_files: [] }] }, label: 'Visual parity validation', targetKind: 'agent', targetAgentRunId: writerRunId, targetTeamRunId: null, targetAddress: '/product-review/evidence-writer', delegatorAgentRunId: reviewerRunId }]
     const launchConfiguration = {
       runtime_kind: 'AUTOBYTEUS', llm_model_identifier: 'mock/gpt-prototype', llm_config: { temperature: 0.2 },
-      auto_execute_tools: false, skill_access_mode: 'PRELOADED_ONLY', workspace_root_path: workspaceMetadata.workspaceRootPath,
+      auto_execute_tools: false, workspace_root_path: workspaceMetadata.workspaceRootPath,
     }
     const launchExecutionTree = {
       schema_version: 1, created_at: now, archived_at: null, application_binding: null, handoffs: [],
@@ -751,12 +746,13 @@ export function applyExperienceScenario(input = {}) {
             { kind: 'configured_agent', address: reviewerAddress, agent_definition_id: reviewerDefinitionId, role: null, description: null, agent_run_id: reviewerRunId, platform_agent_run_id: null, launch_configuration: launchConfiguration },
             { kind: 'configured_agent', address: writerAddress, agent_definition_id: writerDefinitionId, role: null, description: null, agent_run_id: writerRunId, platform_agent_run_id: null, launch_configuration: launchConfiguration },
           ],
+        collaborators: [],
         task_executions: [],
       },
     }
     const executionTree = launchedFromCatalog
       ? launchExecutionTree
-      : { root_team: { team_run_id: rootTeamRunId, members: [], task_executions: [] } }
+      : { root_team: { team_run_id: rootTeamRunId, members: [], collaborators: [], task_executions: [] } }
     const view = {
       _focusedAgentRunId: reviewerRunId,
       getRootTeamRunId: () => rootTeamRunId, getTeamDefinitionName: () => teamDefinitionName, getFocusedAgentContext() { return entries.find(item => item.agentRunId === this._focusedAgentRunId)?.agentContext || null },
@@ -764,7 +760,7 @@ export function applyExperienceScenario(input = {}) {
       getConfigurationView: () => ({
         teamDefinitionId, teamDefinitionName, runtimeKind: 'autobyteus',
         workspaceId, workspaceMetadata, llmModelIdentifier: 'mock/gpt-prototype', llmConfig: { temperature: 0.2 },
-        autoExecuteTools: false, skillAccessMode: 'PRELOADED_ONLY', memberOverrides: {}, isLocked: true,
+        autoExecuteTools: false, memberOverrides: {}, isLocked: true,
       }),
       isRootTeamActive: () => launchedFromCatalog || teamStatus === 'running', listNavigationRows: () => rows, listAgentContextEntries: () => entries,
       listCommunicationMessages: () => messages, listTaskHistoryRows: () => taskRows, hasAgentRun: id => entries.some(item => item.agentRunId === id),

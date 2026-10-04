@@ -37,6 +37,7 @@
         :has-earlier-active-trace-events="target.context.state.hasEarlierActiveTraceEvents"
         :browse-subject="target.browse"
         :skill-tagging="skillTagging"
+        :composer-placeholder="composerPlaceholder"
         class="h-full"
       >
         <template v-if="skillTarget" #composerContext>
@@ -48,7 +49,6 @@
 </template>
 
 <script setup lang="ts">
-import { agentRunChildAddress } from '~/prototype/run-mentions/runMentionState'
 import { computed, ref, watch } from 'vue'
 import type { ActiveAgentWorkspaceTarget } from '~/types/workspace/activeAgentWorkspaceTarget'
 import AgentEventMonitor from '~/components/workspace/agent/AgentEventMonitor.vue'
@@ -67,7 +67,9 @@ const props = withDefaults(defineProps<{
   recoveryNotice?: string | null
   /** `/` skill tags in the box; supplied only for standalone agent runs. */
   skillTagging?: SkillTaggingCapability | null
-}>(), { showHeaderActions: false, recoveryNotice: null, skillTagging: null })
+  /** Composer placeholder for a target without skill tags. */
+  composerPlaceholder?: string | null
+}>(), { showHeaderActions: false, recoveryNotice: null, skillTagging: null, composerPlaceholder: null })
 defineEmits<{ (event: 'new-agent'): void; (event: 'edit-config'): void }>()
 
 const definitions = useAgentDefinitionStore()
@@ -82,16 +84,15 @@ const initials = computed(() => agentName.value.split(/\s+/).filter(Boolean).sli
 // A standalone run is titled by its run summary (the first message), like its Workspaces tree row.
 const standaloneRunTitle = useStandaloneRunTitle(computed(() =>
   props.target.kind === 'standalone_agent' ? props.target.context : null))
-// Prototype (cross-scope-agent-mentions): a task Agent under a standalone Agent run is titled by its name.
-const taskAgentTitle = computed(() =>
-  agentRunChildAddress(props.target.context.state.runId)?.split('/').filter(Boolean).at(-1) ?? null)
 const fallbackTitle = computed(() => {
   if (props.target.context.state.runId.startsWith('temp-')) return `New - ${agentName.value}`
   const suffix = props.target.context.state.runId.slice(-4).toUpperCase()
   return `${agentName.value} - ${suffix}`
 })
-const headerTitle = computed(() => taskAgentTitle.value ?? standaloneRunTitle.title.value ?? fallbackTitle.value)
-const headerFullTitle = computed(() => taskAgentTitle.value ?? standaloneRunTitle.fullTitle.value ?? fallbackTitle.value)
+// A task child of a standalone run is titled by its name.
+const isRunChild = computed(() => props.target.kind === 'agent_run_task_agent' || props.target.kind === 'agent_run_task_team_member')
+const headerTitle = computed(() => isRunChild.value ? agentName.value : standaloneRunTitle.title.value ?? fallbackTitle.value)
+const headerFullTitle = computed(() => isRunChild.value ? agentName.value : standaloneRunTitle.fullTitle.value ?? fallbackTitle.value)
 const senderNameByAgentRunId = computed(() => 'collaborationMessages' in props.target
   ? Object.freeze(Object.fromEntries(Object.entries(
       props.target.collaborationMessages.memberIdentityByAgentRunId(),

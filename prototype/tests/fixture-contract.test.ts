@@ -15,9 +15,9 @@ const snapshots = runtimeFixture.snapshots as Record<string, {
 
 describe('deterministic prototype fixture contract', () => {
   it('is pinned to the selected source and covers every recorded scenario', () => {
-    expect(runtimeFixture.sourceCommit).toBe('e9aa4a74ca36f62303bb7f5f0efd74bf89a9ea71')
-    expect(Object.keys(snapshots)).toHaveLength(66)
-    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'projects_disabled', 'loading', 'error', 'permission_denied', 'skill_name_issues']))
+    expect(runtimeFixture.sourceCommit).toBe('0a32261d681e19491264a03a652ba23d1f8b8248')
+    expect(Object.keys(snapshots)).toHaveLength(72)
+    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'projects_disabled', 'loading', 'error', 'permission_denied', 'skill_name_issues', 'agy_runtime']))
   })
 
   it('uses synthetic domain records and local-only node addresses', () => {
@@ -40,6 +40,17 @@ describe('deterministic prototype fixture contract', () => {
     expect(Object.keys(snapshots)).toContain('permission_denied|paired|/mobile')
     expect(Object.keys(snapshots)).toContain('populated|desktop|/chat')
     expect(Object.keys(snapshots)).toContain('skill_name_issues|desktop|/skills')
+  })
+
+  it('keeps Project and Task saves in one resettable in-memory copy (0a32261)', () => {
+    const state = baseState()
+    const created = operationFixture('CreateProject', { input: { name: 'Launch Review', description: '', workspaces: [{ workspaceId: 'workspace-prototype', description: 'Primary' }] } }, state)
+    expect(created.createProject).toMatchObject({ name: 'Launch Review', taskCount: 0, openTaskCount: 0 })
+    expect(operationFixture('CreateProject', { input: { name: 'prototype launch', description: '' } }, state).__projectError.extensions.code).toBe('PROJECT_NAME_TAKEN')
+    const task = operationFixture('CreateProjectTask', { input: { projectId: 'project-prototype-launch', description: 'Draft notes.' } }, state).createProjectTask
+    expect(task).toMatchObject({ status: 'TODO', contextFiles: [] })
+    expect(operationFixture('GetProjects', {}, state).projects.find((item: { projectId: string }) => item.projectId === 'project-prototype-launch')).toMatchObject({ taskCount: 4, openTaskCount: 3 })
+    expect(operationFixture('GetProjects', {}, baseState()).projects).toHaveLength(1)
   })
 
   it('uses the captured source loading frame with unresolved capabilities', () => {

@@ -16,6 +16,9 @@ const routes = [
   '/memory?view=home&tab=agents', '/memory?view=home&tab=teams', '/memory?view=home&tab=orgs', '/memory?view=agent-detail&agentDefinitionId=agent-researcher&agentName=Research%20Assistant', '/memory?view=team-detail&teamDefinitionId=team-product&teamName=Product%20Review%20Team', '/memory?view=org-detail&orgDefinitionId=org-product-launch&orgName=Product%20Launch%20Org', '/memory?view=unsupported',
   '/nodes?tab=manage', '/nodes?tab=memorySync', '/nodes?tab=phoneSetup', '/nodes?tab=dockerGuide',
   '/projects', '/projects/project-prototype-launch',
+  // WEB-BASELINE-REFRESH-004 (0a32261): Project and Task authoring pages.
+  '/projects/new', '/projects/project-prototype-launch/edit', '/projects/project-prototype-launch/tasks/new',
+  '/projects/project-prototype-launch/tasks/task-outline', '/projects/project-prototype-launch/tasks/task-outline/edit',
   '/workspace', '/tools', '/media',
   ...['api-keys', 'token-usage', 'display', 'language', 'local-tools', 'mcp-servers', 'application-packages', 'agent-packages', 'server-settings&mode=quick', 'server-settings&mode=advanced', 'server-settings&mode=migrations', 'extensions', 'updates'].map(section => `/settings?section=${section}`),
 ]
@@ -35,6 +38,7 @@ scenarios.push(
   { path: '/agents?view=list', scenario: 'loading', locale: 'en', waitMs: 220 },
   { path: '/agents?view=list', scenario: 'error', locale: 'en' },
   { path: '/skills', scenario: 'skill_name_issues', locale: 'en' },
+  { path: '/chat', scenario: 'agy_runtime', locale: 'en' },
   { path: '/mobile', scenario: 'populated', locale: 'en', mobile: 'unpaired' },
   { path: '/mobile', scenario: 'populated', locale: 'en', mobile: 'paired' },
   { path: '/mobile?unsupported=desktopSettings', scenario: 'populated', locale: 'en', mobile: 'paired' },

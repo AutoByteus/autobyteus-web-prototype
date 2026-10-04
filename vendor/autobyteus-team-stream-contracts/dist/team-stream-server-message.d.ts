@@ -2,7 +2,7 @@ import { z } from "zod";
 import { teamAgentErrorPayloadSchema, teamAgentPayloadSchemas, teamInterruptCommandAckPayloadSchema, type TeamAgentMessageType } from "./team-agent-message-dtos.js";
 import { teamCommunicationMessagePayloadSchema, teamMemberInputMessagePayloadSchema } from "./team-collaboration-message-dtos.js";
 import { teamConnectedPayloadSchema, teamRunLifecyclePayloadSchema } from "./team-control-message-dtos.js";
-import { teamTaskExecutionStartedPayloadSchema } from "./team-task-execution-message-dtos.js";
+import { teamCollaboratorAddedPayloadSchema, teamTaskExecutionStartedPayloadSchema } from "./team-task-execution-message-dtos.js";
 export declare const teamExecutionViewSnapshotPayloadSchema: z.ZodObject<{
     root_team_run_id: z.ZodString;
     base_change_sequence: z.ZodNumber;
@@ -26,6 +26,7 @@ export declare const teamExecutionViewSnapshotPayloadSchema: z.ZodObject<{
             coordinator_address: string;
             default_launch_configuration: import("./team-execution-view-dtos.js").AgentLaunchConfigurationDto;
             members: readonly import("./team-execution-view-dtos.js").ConfiguredMemberExecutionDto[];
+            collaborators: readonly import("./team-execution-view-dtos.js").CollaboratorEntryDto[];
             task_executions: readonly import("./team-execution-view-dtos.js").TaskExecutionDto[];
         }>;
     }>, unknown, z.core.$ZodTypeInternals<Readonly<{
@@ -48,6 +49,7 @@ export declare const teamExecutionViewSnapshotPayloadSchema: z.ZodObject<{
             coordinator_address: string;
             default_launch_configuration: import("./team-execution-view-dtos.js").AgentLaunchConfigurationDto;
             members: readonly import("./team-execution-view-dtos.js").ConfiguredMemberExecutionDto[];
+            collaborators: readonly import("./team-execution-view-dtos.js").CollaboratorEntryDto[];
             task_executions: readonly import("./team-execution-view-dtos.js").TaskExecutionDto[];
         }>;
     }>, unknown>>;
@@ -89,6 +91,71 @@ export declare const teamExecutionViewSnapshotPayloadSchema: z.ZodObject<{
         tool_name: z.ZodNullable<z.ZodString>;
         error_message: z.ZodNullable<z.ZodString>;
         error_details: z.ZodNullable<z.ZodString>;
+        recoverableBlock: z.ZodNullable<z.ZodObject<{
+            operationId: z.ZodString;
+            failureEpoch: z.ZodNumber;
+            position: z.ZodDiscriminatedUnion<[z.ZodObject<{
+                kind: z.ZodLiteral<"held_turn">;
+                turnId: z.ZodString;
+            }, z.core.$strict>, z.ZodObject<{
+                kind: z.ZodLiteral<"next_turn">;
+                failedTurnId: z.ZodString;
+            }, z.core.$strict>], "kind">;
+            state: z.ZodEnum<{
+                awaiting_user: "awaiting_user";
+                authorized: "authorized";
+                recovering: "recovering";
+            }>;
+            code: z.ZodString;
+            message: z.ZodString;
+        }, z.core.$strict>>;
+    }, z.core.$strict>>;
+    agent_input_states: z.ZodArray<z.ZodObject<{
+        agent_run_id: z.ZodString;
+        state: z.ZodObject<{
+            run_instance_id: z.ZodString;
+            revision: z.ZodNumber;
+            entries: z.ZodArray<z.ZodObject<{
+                sequence: z.ZodNumber;
+                message_id: z.ZodNullable<z.ZodString>;
+                dedupe_key: z.ZodNullable<z.ZodString>;
+                turn_id: z.ZodNullable<z.ZodString>;
+                state: z.ZodEnum<{
+                    queued: "queued";
+                    held: "held";
+                    forwarded: "forwarded";
+                }>;
+                content: z.ZodString;
+                sender_type: z.ZodEnum<{
+                    user: "user";
+                    agent: "agent";
+                    system: "system";
+                }>;
+                file_attachments: z.ZodArray<z.ZodObject<{
+                    uri: z.ZodString;
+                    file_type: z.ZodString;
+                    file_name: z.ZodNullable<z.ZodString>;
+                }, z.core.$strict>>;
+            }, z.core.$strict>>;
+            recoverableBlock: z.ZodNullable<z.ZodObject<{
+                operationId: z.ZodString;
+                failureEpoch: z.ZodNumber;
+                position: z.ZodDiscriminatedUnion<[z.ZodObject<{
+                    kind: z.ZodLiteral<"held_turn">;
+                    turnId: z.ZodString;
+                }, z.core.$strict>, z.ZodObject<{
+                    kind: z.ZodLiteral<"next_turn">;
+                    failedTurnId: z.ZodString;
+                }, z.core.$strict>], "kind">;
+                state: z.ZodEnum<{
+                    awaiting_user: "awaiting_user";
+                    authorized: "authorized";
+                    recovering: "recovering";
+                }>;
+                code: z.ZodString;
+                message: z.ZodString;
+            }, z.core.$strict>>;
+        }, z.core.$strict>;
     }, z.core.$strict>>;
 }, z.core.$strict>;
 export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.ZodObject<{
@@ -175,6 +242,24 @@ export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.Z
 }, z.core.$strict>, z.ZodObject<{
     type: z.ZodLiteral<"AGENT_STATUS">;
     payload: z.ZodObject<{
+        recoverableBlock: z.ZodNullable<z.ZodObject<{
+            operationId: z.ZodString;
+            failureEpoch: z.ZodNumber;
+            position: z.ZodDiscriminatedUnion<[z.ZodObject<{
+                kind: z.ZodLiteral<"held_turn">;
+                turnId: z.ZodString;
+            }, z.core.$strict>, z.ZodObject<{
+                kind: z.ZodLiteral<"next_turn">;
+                failedTurnId: z.ZodString;
+            }, z.core.$strict>], "kind">;
+            state: z.ZodEnum<{
+                awaiting_user: "awaiting_user";
+                authorized: "authorized";
+                recovering: "recovering";
+            }>;
+            code: z.ZodString;
+            message: z.ZodString;
+        }, z.core.$strict>>;
         status: z.ZodEnum<{
             error: "error";
             offline: "offline";
@@ -202,13 +287,13 @@ export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.Z
         selected_block_count: z.ZodNullable<z.ZodNumber>;
         compacted_block_count: z.ZodNullable<z.ZodNumber>;
         raw_trace_count: z.ZodNullable<z.ZodNumber>;
-        semantic_fact_count: z.ZodNullable<z.ZodNumber>;
-        compaction_agent_definition_id: z.ZodNullable<z.ZodString>;
-        compaction_agent_name: z.ZodNullable<z.ZodString>;
-        compaction_runtime_kind: z.ZodNullable<z.ZodString>;
+        summary_char_count: z.ZodNullable<z.ZodNumber>;
+        compaction_invocation_id: z.ZodNullable<z.ZodString>;
+        summarizer_provider: z.ZodNullable<z.ZodString>;
+        completion_status: z.ZodNullable<z.ZodString>;
         compaction_model_identifier: z.ZodNullable<z.ZodString>;
-        compaction_run_id: z.ZodNullable<z.ZodString>;
-        compaction_task_id: z.ZodNullable<z.ZodString>;
+        completion_reason: z.ZodNullable<z.ZodString>;
+        summary_token_count: z.ZodNullable<z.ZodNumber>;
         error_message: z.ZodNullable<z.ZodString>;
         provider: z.ZodNullable<z.ZodString>;
         source_surface: z.ZodNullable<z.ZodString>;
@@ -220,6 +305,110 @@ export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.Z
         trigger: z.ZodNullable<z.ZodString>;
         pre_tokens: z.ZodNullable<z.ZodNumber>;
         rotation_eligible: z.ZodNullable<z.ZodBoolean>;
+        change_sequence: z.ZodNumber;
+        agent_run_id: z.ZodString;
+    }, z.core.$strict>;
+}, z.core.$strict>, z.ZodObject<{
+    type: z.ZodLiteral<"COMPACTION_BLOCKED">;
+    payload: z.ZodObject<{
+        block: z.ZodObject<{
+            operationId: z.ZodString;
+            failureEpoch: z.ZodNumber;
+        }, z.core.$strict>;
+        recovery: z.ZodNullable<z.ZodObject<{
+            operationId: z.ZodString;
+            failureEpoch: z.ZodNumber;
+            position: z.ZodDiscriminatedUnion<[z.ZodObject<{
+                kind: z.ZodLiteral<"held_turn">;
+                turnId: z.ZodString;
+            }, z.core.$strict>, z.ZodObject<{
+                kind: z.ZodLiteral<"next_turn">;
+                failedTurnId: z.ZodString;
+            }, z.core.$strict>], "kind">;
+            state: z.ZodEnum<{
+                awaiting_user: "awaiting_user";
+                authorized: "authorized";
+                recovering: "recovering";
+            }>;
+            code: z.ZodString;
+            message: z.ZodString;
+        }, z.core.$strict>>;
+        change_sequence: z.ZodNumber;
+        agent_run_id: z.ZodString;
+    }, z.core.$strict>;
+}, z.core.$strict>, z.ZodObject<{
+    type: z.ZodLiteral<"COMPACTION_RESUMED">;
+    payload: z.ZodObject<{
+        block: z.ZodObject<{
+            operationId: z.ZodString;
+            failureEpoch: z.ZodNumber;
+        }, z.core.$strict>;
+        recovery: z.ZodNullable<z.ZodObject<{
+            operationId: z.ZodString;
+            failureEpoch: z.ZodNumber;
+            position: z.ZodDiscriminatedUnion<[z.ZodObject<{
+                kind: z.ZodLiteral<"held_turn">;
+                turnId: z.ZodString;
+            }, z.core.$strict>, z.ZodObject<{
+                kind: z.ZodLiteral<"next_turn">;
+                failedTurnId: z.ZodString;
+            }, z.core.$strict>], "kind">;
+            state: z.ZodEnum<{
+                awaiting_user: "awaiting_user";
+                authorized: "authorized";
+                recovering: "recovering";
+            }>;
+            code: z.ZodString;
+            message: z.ZodString;
+        }, z.core.$strict>>;
+        change_sequence: z.ZodNumber;
+        agent_run_id: z.ZodString;
+    }, z.core.$strict>;
+}, z.core.$strict>, z.ZodObject<{
+    type: z.ZodLiteral<"AGENT_INPUT_STATE">;
+    payload: z.ZodObject<{
+        run_instance_id: z.ZodString;
+        revision: z.ZodNumber;
+        entries: z.ZodArray<z.ZodObject<{
+            sequence: z.ZodNumber;
+            message_id: z.ZodNullable<z.ZodString>;
+            dedupe_key: z.ZodNullable<z.ZodString>;
+            turn_id: z.ZodNullable<z.ZodString>;
+            state: z.ZodEnum<{
+                queued: "queued";
+                held: "held";
+                forwarded: "forwarded";
+            }>;
+            content: z.ZodString;
+            sender_type: z.ZodEnum<{
+                user: "user";
+                agent: "agent";
+                system: "system";
+            }>;
+            file_attachments: z.ZodArray<z.ZodObject<{
+                uri: z.ZodString;
+                file_type: z.ZodString;
+                file_name: z.ZodNullable<z.ZodString>;
+            }, z.core.$strict>>;
+        }, z.core.$strict>>;
+        recoverableBlock: z.ZodNullable<z.ZodObject<{
+            operationId: z.ZodString;
+            failureEpoch: z.ZodNumber;
+            position: z.ZodDiscriminatedUnion<[z.ZodObject<{
+                kind: z.ZodLiteral<"held_turn">;
+                turnId: z.ZodString;
+            }, z.core.$strict>, z.ZodObject<{
+                kind: z.ZodLiteral<"next_turn">;
+                failedTurnId: z.ZodString;
+            }, z.core.$strict>], "kind">;
+            state: z.ZodEnum<{
+                awaiting_user: "awaiting_user";
+                authorized: "authorized";
+                recovering: "recovering";
+            }>;
+            code: z.ZodString;
+            message: z.ZodString;
+        }, z.core.$strict>>;
         change_sequence: z.ZodNumber;
         agent_run_id: z.ZodString;
     }, z.core.$strict>;
@@ -632,6 +821,7 @@ export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.Z
                 coordinator_address: string;
                 default_launch_configuration: import("./team-execution-view-dtos.js").AgentLaunchConfigurationDto;
                 members: readonly import("./team-execution-view-dtos.js").ConfiguredMemberExecutionDto[];
+                collaborators: readonly import("./team-execution-view-dtos.js").CollaboratorEntryDto[];
                 task_executions: readonly import("./team-execution-view-dtos.js").TaskExecutionDto[];
             }>;
         }>, unknown, z.core.$ZodTypeInternals<Readonly<{
@@ -654,6 +844,7 @@ export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.Z
                 coordinator_address: string;
                 default_launch_configuration: import("./team-execution-view-dtos.js").AgentLaunchConfigurationDto;
                 members: readonly import("./team-execution-view-dtos.js").ConfiguredMemberExecutionDto[];
+                collaborators: readonly import("./team-execution-view-dtos.js").CollaboratorEntryDto[];
                 task_executions: readonly import("./team-execution-view-dtos.js").TaskExecutionDto[];
             }>;
         }>, unknown>>;
@@ -695,6 +886,71 @@ export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.Z
             tool_name: z.ZodNullable<z.ZodString>;
             error_message: z.ZodNullable<z.ZodString>;
             error_details: z.ZodNullable<z.ZodString>;
+            recoverableBlock: z.ZodNullable<z.ZodObject<{
+                operationId: z.ZodString;
+                failureEpoch: z.ZodNumber;
+                position: z.ZodDiscriminatedUnion<[z.ZodObject<{
+                    kind: z.ZodLiteral<"held_turn">;
+                    turnId: z.ZodString;
+                }, z.core.$strict>, z.ZodObject<{
+                    kind: z.ZodLiteral<"next_turn">;
+                    failedTurnId: z.ZodString;
+                }, z.core.$strict>], "kind">;
+                state: z.ZodEnum<{
+                    awaiting_user: "awaiting_user";
+                    authorized: "authorized";
+                    recovering: "recovering";
+                }>;
+                code: z.ZodString;
+                message: z.ZodString;
+            }, z.core.$strict>>;
+        }, z.core.$strict>>;
+        agent_input_states: z.ZodArray<z.ZodObject<{
+            agent_run_id: z.ZodString;
+            state: z.ZodObject<{
+                run_instance_id: z.ZodString;
+                revision: z.ZodNumber;
+                entries: z.ZodArray<z.ZodObject<{
+                    sequence: z.ZodNumber;
+                    message_id: z.ZodNullable<z.ZodString>;
+                    dedupe_key: z.ZodNullable<z.ZodString>;
+                    turn_id: z.ZodNullable<z.ZodString>;
+                    state: z.ZodEnum<{
+                        queued: "queued";
+                        held: "held";
+                        forwarded: "forwarded";
+                    }>;
+                    content: z.ZodString;
+                    sender_type: z.ZodEnum<{
+                        user: "user";
+                        agent: "agent";
+                        system: "system";
+                    }>;
+                    file_attachments: z.ZodArray<z.ZodObject<{
+                        uri: z.ZodString;
+                        file_type: z.ZodString;
+                        file_name: z.ZodNullable<z.ZodString>;
+                    }, z.core.$strict>>;
+                }, z.core.$strict>>;
+                recoverableBlock: z.ZodNullable<z.ZodObject<{
+                    operationId: z.ZodString;
+                    failureEpoch: z.ZodNumber;
+                    position: z.ZodDiscriminatedUnion<[z.ZodObject<{
+                        kind: z.ZodLiteral<"held_turn">;
+                        turnId: z.ZodString;
+                    }, z.core.$strict>, z.ZodObject<{
+                        kind: z.ZodLiteral<"next_turn">;
+                        failedTurnId: z.ZodString;
+                    }, z.core.$strict>], "kind">;
+                    state: z.ZodEnum<{
+                        awaiting_user: "awaiting_user";
+                        authorized: "authorized";
+                        recovering: "recovering";
+                    }>;
+                    code: z.ZodString;
+                    message: z.ZodString;
+                }, z.core.$strict>>;
+            }, z.core.$strict>;
         }, z.core.$strict>>;
     }, z.core.$strict>;
 }, z.core.$strict>, z.ZodObject<{
@@ -727,6 +983,7 @@ export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.Z
             platform_agent_run_id: string | null;
             delegator_agent_run_id: string | null;
             started_at: string;
+            source?: import("./team-execution-view-dtos.js").TaskAgentExecutionSourceDto;
         }>, unknown, z.core.$ZodTypeInternals<Readonly<{
             kind: "task_agent";
             address: string;
@@ -734,6 +991,7 @@ export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.Z
             platform_agent_run_id: string | null;
             delegator_agent_run_id: string | null;
             started_at: string;
+            source?: import("./team-execution-view-dtos.js").TaskAgentExecutionSourceDto;
         }>, unknown>>, z.ZodType<Readonly<{
             kind: "task_team";
             address: string;
@@ -742,6 +1000,7 @@ export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.Z
             task_executions: readonly import("./team-execution-view-dtos.js").TaskExecutionDto[];
             delegator_agent_run_id: string | null;
             started_at: string;
+            source?: import("./team-execution-view-dtos.js").TaskTeamExecutionSourceDto;
         }>, unknown, z.core.$ZodTypeInternals<Readonly<{
             kind: "task_team";
             address: string;
@@ -750,7 +1009,14 @@ export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.Z
             task_executions: readonly import("./team-execution-view-dtos.js").TaskExecutionDto[];
             delegator_agent_run_id: string | null;
             started_at: string;
+            source?: import("./team-execution-view-dtos.js").TaskTeamExecutionSourceDto;
         }>, unknown>>]>;
+    }, z.core.$strict>;
+}, z.core.$strict>, z.ZodObject<{
+    type: z.ZodLiteral<"COLLABORATOR_ADDED">;
+    payload: z.ZodObject<{
+        change_sequence: z.ZodNumber;
+        collaborator: z.ZodType<import("./team-execution-view-dtos.js").CollaboratorEntryDto, unknown, z.core.$ZodTypeInternals<import("./team-execution-view-dtos.js").CollaboratorEntryDto, unknown>>;
     }, z.core.$strict>;
 }, z.core.$strict>, z.ZodObject<{
     type: z.ZodLiteral<"TEAM_COMMUNICATION_MESSAGE">;
@@ -815,6 +1081,7 @@ export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.Z
         provider_request_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
         change_sequence: z.ZodNullable<z.ZodNumber>;
         agent_run_id: z.ZodNullable<z.ZodString>;
+        collaborator_name: z.ZodOptional<z.ZodString>;
     }, z.core.$strict>, z.ZodObject<{
         error_scope: z.ZodLiteral<"turn">;
         error_effect: z.ZodEnum<{
@@ -830,6 +1097,7 @@ export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.Z
         provider_request_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
         change_sequence: z.ZodNullable<z.ZodNumber>;
         agent_run_id: z.ZodNullable<z.ZodString>;
+        collaborator_name: z.ZodOptional<z.ZodString>;
     }, z.core.$strict>, z.ZodObject<{
         error_scope: z.ZodLiteral<"runtime">;
         error_effect: z.ZodLiteral<"terminal">;
@@ -842,6 +1110,7 @@ export declare const teamStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.Z
         provider_request_id: z.ZodOptional<z.ZodNullable<z.ZodString>>;
         change_sequence: z.ZodNullable<z.ZodNumber>;
         agent_run_id: z.ZodNullable<z.ZodString>;
+        collaborator_name: z.ZodOptional<z.ZodString>;
     }, z.core.$strict>]>;
 }, z.core.$strict>], "type">;
 type TeamAgentServerMessage = {
@@ -865,6 +1134,9 @@ export type TeamStreamServerMessage = TeamAgentServerMessage | Readonly<{
 }> | Readonly<{
     type: "TASK_EXECUTION_STARTED";
     payload: z.infer<typeof teamTaskExecutionStartedPayloadSchema>;
+}> | Readonly<{
+    type: "COLLABORATOR_ADDED";
+    payload: z.infer<typeof teamCollaboratorAddedPayloadSchema>;
 }> | Readonly<{
     type: "TEAM_COMMUNICATION_MESSAGE";
     payload: z.infer<typeof teamCommunicationMessagePayloadSchema>;

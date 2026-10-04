@@ -23,6 +23,8 @@ export interface ProjectionRunItem {
   currentStatus: AgentStatus;
   lastKnownStatus: ProjectionRunKnownStatus;
   isActive: boolean;
+  /** The run has task children brought in with `@` (a collaboration package). */
+  hasCollaboration?: boolean;
 }
 
 export interface ProjectionAgentGroup {
@@ -247,15 +249,7 @@ export const buildRunTreeProjection = (input: BuildRunTreeProjectionInput): RunT
       continue;
     }
 
-    // Prototype fixture correction (cross-scope-agent-mentions): the synthetic project workspace is
-    // captured with kind `local`, so it has no descriptor and its stored standalone Agent run was
-    // dropped here. Keep that history under the same history-only workspace node the Team and Org
-    // history already use, so a standalone Agent run can be opened from the tree.
-    const workspaceNode = workspaceNodes.get(normalizedWorkspace)
-      ?? (workspace.agents.length > 0
-        ? ensureWorkspaceNode(workspaceNodes, `history:${normalizedWorkspace}`, normalizedWorkspace,
-          normalizedWorkspace.split('/').filter(Boolean).at(-1) || normalizedWorkspace, 'filesystem', false)
-        : undefined);
+    const workspaceNode = workspaceNodes.get(normalizedWorkspace);
     if (!workspaceNode) {
       continue;
     }
@@ -276,6 +270,7 @@ export const buildRunTreeProjection = (input: BuildRunTreeProjectionInput): RunT
           currentStatus: run.currentStatus,
           lastKnownStatus: run.lastKnownStatus,
           isActive: run.isActive,
+          hasCollaboration: run.hasCollaboration === true,
           source: 'history',
           isDraft: false,
         });

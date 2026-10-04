@@ -7,13 +7,18 @@ import iconCollections from '~/prototype/fixtures/icon-collections.json'
 import { defineNuxtPlugin } from '#app'
 import { installHostScenario } from '~/prototype/shared/install-host-scenario.js'
 import { applyExperienceScenario } from '~/prototype/shared/apply-experience-scenario.js'
-import { applicationAvailableExecutionResources, applicationLaunchConfigurationView } from '~/prototype/source-observation/fixtures.mjs'
+import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, taskContextUpload } from '~/prototype/source-observation/fixtures.mjs'
+import { localFixtureState } from '~/utils/apolloClient'
 
 const SCENARIO_KEY = 'autobyteus.prototype.scenario'
 const CONTEXT_KEY = 'autobyteus.prototype.context'
 const DEFAULT_SCENARIO = 'populated'
 const DEFAULT_CONTEXT = 'desktop'
 const navigationOverlayStores = new Set(['agentRunConfig', 'agentSelection', 'teamRunConfig'])
+// Projects and Tasks (0a32261) run the source's own stores unchanged: reads and
+// saves are answered by utils/apolloClient.ts from the local fixtures, and
+// their client cache is never reset by route snapshots.
+const sourceLoadedStores = new Set(['projects', 'projectTasks'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),
@@ -110,7 +115,9 @@ const localActions: Record<string, Set<string>> = {
     'reconcileActiveTeamRunIds', 'refreshAgentResumeConfig', 'refreshTeamResumeConfig',
     'refreshTreeQuietly',
   ]),
-  workspace: new Set(['registerSkillWorkspace', 'acquireFileExplorerLiveSession', 'releaseFileExplorerLiveSession', 'clearFileExplorerLiveSessionForWorkspace', 'connectFileExplorerLiveStream', 'disconnectFileExplorerLiveStream', 'disconnectAllFileExplorerLiveStreams', 'refreshFileExplorerSnapshot', 'fetchFolderChildren']),
+  // Projects (0a32261): a new-workspace row creates its workspace through the
+  // source's own action; utils/apolloClient.ts answers CreateWorkspace locally.
+  workspace: new Set(['createWorkspace', 'registerSkillWorkspace', 'acquireFileExplorerLiveSession', 'releaseFileExplorerLiveSession', 'clearFileExplorerLiveSessionForWorkspace', 'connectFileExplorerLiveStream', 'disconnectFileExplorerLiveStream', 'disconnectAllFileExplorerLiveStreams', 'refreshFileExplorerSnapshot', 'fetchFolderChildren']),
 }
 
 type RuntimeSnapshot = { item: { path: string, scenario: string, mobile?: string }, actualPath: string, state: Record<string, any>, primaryNavHeight?: string | null, bootstrapPending?: boolean }
@@ -197,12 +204,12 @@ const context = (): string => localStorage.getItem(CONTEXT_KEY) || (window.locat
 
 const findSnapshot = (): [string, RuntimeSnapshot] => {
   const path = normalizePath()
-  // New Projects review pages inherit the accepted Projects shell, not Chat's
-  // fallback snapshot. Domain edits live separately in small native review state.
+  // Projects pages (0a32261) have their own captured snapshots. A created
+  // Project or Task (synthetic ID) uses the snapshot of the same page type.
   const pathname = window.location.pathname
-  const projectReviewPath = pathname === '/projects/new' ? '/projects'
-    : pathname.startsWith('/projects/') && (pathname.endsWith('/edit') || pathname.includes('/tasks/') || pathname.startsWith('/projects/project-review-'))
-      ? '/projects/project-prototype-launch' : null
+  const hasCapturedPath = Object.values(snapshots).some(value => canonicalPath(value.item.path) === path)
+  const projectReviewPath = hasCapturedPath || !pathname.startsWith('/projects/') ? null
+    : pathname.replace(/^\/projects\/[^/]+/, '/projects/project-prototype-launch').replace(/\/tasks\/(?!new$)[^/]+/, '/tasks/task-outline')
   const aliasedPath = projectReviewPath || defaultRouteAliases[path] || path
   const wantedScenario = scenario()
   const wantedContext = context()
@@ -443,12 +450,6 @@ export default defineNuxtPlugin({
     // reopened after navigating elsewhere.
     let liveRunSession = false
     const liveRunStores = new Set(['agentContexts', 'agentSelection', 'runHistory', 'chatDraft', 'workspace', 'agentRun'])
-    // cross-scope-agent-mentions: a run played by the local run keeps its conversations. Only the
-    // store that owns standalone Agent conversations is exempt from route snapshots; Team and Org
-    // runs keep their own contexts already.
-    let localRunSession = false
-    const localRunStores = new Set(['agentContexts'])
-    window.__AUTOBYTEUS_PROTOTYPE_MARK_LIVE_RUN__ = () => { localRunSession = true }
     const patchStore = (store: any): void => {
       if (!collectionKinds.has(store.$id)) {
         collectionKinds.set(store.$id, new Map(Object.entries(store.$state)
@@ -465,15 +466,23 @@ export default defineNuxtPlugin({
         .filter(([, value]) => value instanceof Map)
       const isRichExperience = scenario().startsWith('workspace_') || scenario().startsWith('mobile_')
       if (state
+        // Projects and Tasks (0a32261) load and save through the source's own
+        // stores against the local fixtures, so their client cache survives
+        // navigation exactly as in the source.
+        && !sourceLoadedStores.has(store.$id)
         && !(liveRunSession && liveRunStores.has(store.$id))
-        && !(localRunSession && localRunStores.has(store.$id))
         // An opened Team run is live client state: a route change right after opening it (for
         // example from a chat run route back to /workspace) must not drop its context.
         && !(store.$id === 'agentTeamContexts' && store.teams instanceof Map && store.teams.size > 0)
         && !(context().startsWith('electron_') && hostOwnedStores.has(store.$id))
         && !(isRichExperience && richExperienceOwnedStores.has(store.$id))
         && !(agentOrgRuntimeRoute() && agentOrgRuntimeOwnedStores.has(store.$id))) {
-        store.$patch(clone(state))
+        const next = clone(state)
+        // The node binding revision is live client state: rewinding it on a
+        // route re-patch would make the source's node-scoped caches (Projects,
+        // 0a32261) drop their in-flight reads as if the window was rebound.
+        if (store.$id === 'windowNodeContext') delete next.bindingRevision
+        store.$patch(next)
         if (state.error && typeof state.error === 'object' && typeof state.error.message === 'string' && 'error' in store) {
           const restoreError = (): void => { store.error = new Error(state.error.message) }
           restoreError()
@@ -504,14 +513,14 @@ export default defineNuxtPlugin({
         store.navigationProjection = {
           workspaceNodes: [{
             workspaceId: 'workspace-prototype', workspaceRootPath: '/synthetic/prototype-workspace',
-            workspaceName: 'Prototype Workspace', workspaceKind: 'filesystem', canRemoveFromWorkspaces: true, agents: [],
+            workspaceName: 'prototype-workspace', workspaceKind: 'filesystem', canRemoveFromWorkspaces: true, agents: [],
           }],
           teamNodes: [], teamNodesByWorkspaceRoot: {}, runIndexById: {}, teamIndexById: {}, memberIndexByIdentity: {},
           runAncestryById: {}, teamAncestryById: {}, memberAncestorExecutionKeysByIdentity: {},
         }
       }
       const overlay = stateOverlays.get(store.$id)
-      if (overlay && !(agentOrgRuntimeRoute() && agentOrgRuntimeOwnedStores.has(store.$id)) && !(liveRunSession && liveRunStores.has(store.$id)) && !(localRunSession && localRunStores.has(store.$id))) {
+      if (overlay && !(agentOrgRuntimeRoute() && agentOrgRuntimeOwnedStores.has(store.$id)) && !(liveRunSession && liveRunStores.has(store.$id))) {
         store.$patch(clone(overlay))
       }
       restoreCollectionTypes(store, collectionKinds.get(store.$id) || new Map())
@@ -542,6 +551,7 @@ export default defineNuxtPlugin({
           if (safe.has(name)) after(() => stateOverlays.set(store.$id, clone(store.$state)))
         })
       }
+      if (sourceLoadedStores.has(store.$id)) return
       for (const actionName of Object.keys(options.actions || {})) {
         const pureReadAction = /^(get|is|has|format|build|resolve|find|bindingsForScope|providerStepOrder|stepStatesForProvider|selectedStepForProvider)/.test(actionName)
         if (safe.has(actionName) || pureReadAction) continue
@@ -565,18 +575,6 @@ export default defineNuxtPlugin({
           // switcher therefore shows the exact visible `!` segment indicator.
           if (context() === 'paired' && store.$id === 'runHistory' && actionName === 'fetchTree') {
             throw new Error('Synthetic mobile recent-history refresh failed')
-          }
-          // cross-scope-agent-mentions: a message sent in a Team run plays a
-          // deterministic local run (prototype/run-mentions), including `@`
-          // mentions that bring a shared Agent or Team into the run.
-          // The run itself is registered by plugins/20.prototype-run-mentions.client.ts.
-          // The composer's own send runs unchanged for a Team member so it reaches that run.
-          if (store.$id === 'activeContext' && actionName === 'send' && window.__AUTOBYTEUS_PROTOTYPE_LOCAL_SEND__?.()) {
-            return originalAction.apply(store, args)
-          }
-          if (store.$id === 'agentTeamRun' && actionName === 'sendMessageToFocusedMember'
-            && window.__AUTOBYTEUS_PROTOTYPE_TEAM_RUN_SEND__ && pinia._s.get('agentTeamContexts')?.activeTeamContext) {
-            return window.__AUTOBYTEUS_PROTOTYPE_TEAM_RUN_SEND__(String(args[0] ?? ''))
           }
           const result = actionResult(store, actionName, args)
           if ((store.$id === 'agentDefinition' || store.$id === 'agentTeamDefinition' || store.$id === 'toolManagement') && result) {
@@ -630,6 +628,21 @@ export default defineNuxtPlugin({
       if (/\/applications\/[^/]+\/available-execution-resources$/.test(resolved.pathname)) {
         return Promise.resolve(new Response(JSON.stringify(applicationAvailableExecutionResources()), { status: 200, headers: { 'content-type': 'application/json' } }))
       }
+      // Project Task context files (0a32261): draft begin/upload/remove/discard
+      // return small synthetic records; nothing is uploaded or stored.
+      if (/\/projects\/[^/]+\/task-context-drafts$/.test(resolved.pathname) && init?.method === 'POST') {
+        localFixtureState.taskDraftSeq = (localFixtureState.taskDraftSeq || 0) + 1
+        return Promise.resolve(new Response(JSON.stringify({ draftId: `draft-${localFixtureState.taskDraftSeq}` }), { status: 200, headers: { 'content-type': 'application/json' } }))
+      }
+      if (/\/projects\/[^/]+\/task-context-drafts\/[^/]+\/context-files$/.test(resolved.pathname) && init?.method === 'POST') {
+        const file = (init.body as FormData | undefined)?.get?.('file') as File | null
+        return Promise.resolve(new Response(JSON.stringify(taskContextUpload(localFixtureState, file)), { status: 200, headers: { 'content-type': 'application/json' } }))
+      }
+      if (/\/projects\/[^/]+\/(task-context-drafts|tasks)\//.test(resolved.pathname)) {
+        return Promise.resolve(init?.method === 'DELETE'
+          ? new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'content-type': 'application/json' } })
+          : new Response('<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" fill="#dbeafe"/></svg>', { status: 200, headers: { 'content-type': 'image/svg+xml' } }))
+      }
       if (resolved.origin !== window.location.origin || /^\/(graphql|rest)(\/|$)/.test(resolved.pathname)) {
         return Promise.reject(new Error(`Prototype boundary blocked external request: ${resolved.href}`))
       }
@@ -678,13 +691,6 @@ export default defineNuxtPlugin({
 
 declare global {
   interface Window {
-    /** Deterministic local Team run send (cross-scope-agent-mentions). */
-    __AUTOBYTEUS_PROTOTYPE_TEAM_RUN_SEND__?: (content: string) => Promise<void>
-    __AUTOBYTEUS_PROTOTYPE_AGENT_RUN_SEND__?: (content: string) => Promise<void>
-    /** Keeps run-owning stores from being reset by route snapshots after a local run started. */
-    __AUTOBYTEUS_PROTOTYPE_MARK_LIVE_RUN__?: () => void
-    /** True when the local run handles a message sent for the selected run. */
-    __AUTOBYTEUS_PROTOTYPE_LOCAL_SEND__?: () => boolean
     __AUTOBYTEUS_PROTOTYPE__: {
       sourceCommit: string
       readonly scenario: string

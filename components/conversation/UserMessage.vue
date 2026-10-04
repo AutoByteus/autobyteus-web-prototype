@@ -30,6 +30,9 @@
           data-test="user-message-mention"
         >@{{ part.value }}</span><template v-else>{{ part.value }}</template></template></div>
 
+        <p v-if="message.pendingInput && message.pendingInput.state !== 'forwarded'" role="status" class="mt-2 text-xs text-amber-700">
+          {{ message.pendingInput.state === 'held' ? $t('workspace.components.conversation.UserMessage.compaction_held') : $t('workspace.components.conversation.UserMessage.queued') }}
+        </p>
         <div v-if="displayedAttachments.length" class="mt-2">
           <p class="text-xs font-medium text-gray-500">{{ $t('workspace.components.conversation.UserMessage.context_files') }}</p>
           <ul class="mt-1 flex flex-wrap gap-2">
@@ -78,8 +81,8 @@ import { useWorkspaceStore } from '~/stores/workspace';
 import type { ContextAttachment, UserMessage } from '~/types/conversation';
 import { contextAttachmentPresentation } from '~/utils/contextFiles/contextAttachmentPresentation';
 import { skillRequestInstruction } from '~/utils/skills/skillRequestInstruction';
+import { presentSentUserMessage, splitMentionText } from '~/utils/collaborators/collaboratorMentionText';
 import SkillRequestChips from '~/components/conversation/SkillRequestChips.vue';
-import { splitMentionText, useRunMentionNames } from '~/composables/agentInput/useRunMentions';
 
 const props = defineProps<{
   message: UserMessage;
@@ -95,10 +98,10 @@ const failedAttachmentPreviewKeys = ref(new Set<string>());
 
 // Skill tags travel as an instruction prefix in the content; show them as chips and the user's own text.
 const skillRequest = computed(() => skillRequestInstruction.parse(props.message.text ?? ''));
-const displayText = computed(() => (skillRequest.value ? skillRequest.value.text : props.message.text));
-// `@Agent` and `@Team` mentions sent from a live run show as inline chips (cross-scope-agent-mentions).
-const mentionNames = useRunMentionNames();
-const displayParts = computed(() => splitMentionText(displayText.value ?? '', mentionNames.value));
+// `@` mentions: the server appends a `[Mentioned collaborators]` note; show the words with inline `@Name` chips.
+const presentation = computed(() => presentSentUserMessage(props.message.text ?? '', props.message.mentionNames ?? []));
+const displayText = computed(() => presentation.value.text);
+const displayParts = computed(() => splitMentionText(displayText.value, presentation.value.mentionNames));
 
 const displayUserName = computed(() => props.userDisplayName?.trim() || 'You');
 const showAvatarImage = computed(() => Boolean(props.userAvatarUrl) && !avatarLoadError.value);

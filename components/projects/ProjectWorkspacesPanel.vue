@@ -11,7 +11,7 @@
         type="button"
         class="inline-flex flex-shrink-0 items-center gap-2 self-start whitespace-nowrap rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
         data-testid="project-add-workspace-button"
-        @click="openEditor(null)"
+        @click="openLinkDialog(null)"
       >
         <Icon icon="heroicons:plus" class="h-4 w-4" aria-hidden="true" />
         {{ t('projects.components.projects.ProjectDetail.addWorkspace') }}
@@ -31,10 +31,11 @@
         :key="link.workspaceId"
         :link="link"
         :busy="unlinkingWorkspaceId === link.workspaceId"
-        @edit="openEditor"
+        @edit="openLinkDialog"
         @unlink="unlink"
       />
     </ul>
+
 
   </section>
 </template>
@@ -45,29 +46,29 @@ import { useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import ProjectWorkspaceRow from '~/components/projects/ProjectWorkspaceRow.vue'
 import { useLocalization } from '~/composables/useLocalization'
-import { useProjectDesignStore } from '~/prototype/project-review/useProjectDesignStore'
+import { useProjectStore } from '~/stores/projectStore'
 import type { Project, ProjectWorkspace } from '~/types/project'
 import { projectErrorMessageKey } from '~/utils/projects/projectErrorMessageKey'
 
 const props = defineProps<{ project: Project }>()
 
 const { t } = useLocalization()
-const review = useProjectDesignStore()
-const router = useRouter()
+const projectStore = useProjectStore()
 
 const headingId = `project-workspaces-heading-${Math.random().toString(36).slice(2, 8)}`
 const unlinkingWorkspaceId = ref<string | null>(null)
 const rowError = ref<string | null>(null)
 
-const openEditor = (link: ProjectWorkspace | null): void => {
-  void router.push({ path: `/projects/${props.project.projectId}/edit`, query: { tab: 'workspaces', ...(link ? { workspace: link.workspaceId } : { addWorkspace: '1' }) } })
+const router = useRouter()
+const openLinkDialog = (link: ProjectWorkspace | null): void => {
+  void router.push({path: `/projects/${props.project.projectId}/edit`, query: {tab: 'workspaces', ...(link ? {workspace: link.workspaceId} : {addWorkspace: '1'})}})
 }
 
 const unlink = async (link: ProjectWorkspace): Promise<void> => {
   rowError.value = null
   unlinkingWorkspaceId.value = link.workspaceId
   try {
-    review.unlinkWorkspace(props.project.projectId, link.workspaceId)
+    await projectStore.removeWorkspace(props.project.projectId, link.workspaceId)
   } catch (error) {
     rowError.value = t(projectErrorMessageKey(error))
   } finally {

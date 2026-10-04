@@ -1,3 +1,4 @@
+import { useAgentActivityStore } from '~/stores/agentActivityStore';
 import type { TeamWorkspacePatch } from '~/services/runConfigEditing/existingAgentOrgWorkspaceDraft'
 import type { WorkspaceMetadata } from '~/types/workspace/WorkspaceMetadata'
 import type { AgentOrgExecutionTree } from '~/types/collaboration/agentOrgExecution'
@@ -16,7 +17,7 @@ import type { OrgWorkspaceSelection } from '~/services/agentOrgExecution/agentOr
 import type { AgentOrgExecutionContext } from '~/services/agentOrgExecution/agentOrgExecutionContext'
 import { stageAgentOrgExecutionContext } from '~/services/agentOrgExecution/agentOrgContextHydration'
 import { AgentOrgStreamingService } from '~/services/agentOrgExecution/agentOrgStreamingService'
-import { beginLocalUserSubmission, failLocalSubmission, finalizeLocalSubmissionAttachments, type LocalUserSubmissionHandle } from '~/services/runSubmission/localUserSubmission'
+import { acceptLocalSubmission, beginLocalUserSubmission, failLocalSubmission, finalizeLocalSubmissionAttachments, type LocalUserSubmissionHandle } from '~/services/runSubmission/localUserSubmission'
 import { upsertUserMessageByIdentity } from '~/services/agentStreaming/handlers/userMessageProjection'
 import { readAgentOrgRunInspection } from '~/services/agentOrgExecution/agentOrgRunInspection'
 import { useRunHistoryStore } from '~/stores/runHistoryStore'
@@ -24,6 +25,7 @@ import { useContextFileUploadStore } from '~/stores/contextFileUploadStore'
 import { buildOrgMemberDraftContextFileOwner, buildOrgMemberFinalContextFileOwner } from '~/utils/contextFiles/contextFileOwner'
 import { useAgentOrgRunStore } from '~/stores/agentOrgRunStore'
 import { parseAgentOrgExecutionTree } from '~/types/collaboration/agentOrgExecution'
+import { mentionsPresentInText, toCollaboratorMentionDtos } from '~/utils/collaborators/collaboratorMentionText'
 
 export const useAgentOrgContextsStore = defineStore('agentOrgContexts', () => {
   const contexts = ref<Record<string, AgentOrgExecutionContext>>({})
@@ -66,6 +68,7 @@ export const useAgentOrgContextsStore = defineStore('agentOrgContexts', () => {
     contexts.value = { ...contexts.value, [id]: candidate }
     errors.value = { ...errors.value, [id]: null }
     useRunHistoryStore().applyAgentOrgActivity(id, candidate.isActive)
+    void useRunHistoryStore().refreshAgentOrgHistoryItem(id)
   }
 
   const retireStream = (id: string) => {
@@ -78,6 +81,7 @@ export const useAgentOrgContextsStore = defineStore('agentOrgContexts', () => {
     contexts.value[id]?.setActive(false)
     retainSubmissionExclusion(id, contexts.value[id])
     useRunHistoryStore().applyAgentOrgActivity(id, false)
+    void useRunHistoryStore().refreshAgentOrgHistoryItem(id)
     retireStream(id)
   }
 
@@ -92,7 +96,8 @@ export const useAgentOrgContextsStore = defineStore('agentOrgContexts', () => {
       publish: (candidate, commitActivities) => publish(id, candidate, commitActivities),
       reportError: (message) => report(id, message),
       onInactive: () => markHistorical(id),
-      onAcceptedExternalUserMessage: () => { void useRunHistoryStore().refreshAgentOrgHistory() },
+      onExecutionTreeChanged: () => { void useRunHistoryStore().refreshAgentOrgHistoryItem(id) },
+      onAcceptedExternalUserMessage: () => { void useRunHistoryStore().refreshAgentOrgHistoryItem(id) },
     })
     services.set(id, service)
     service.connect()
@@ -190,8 +195,8 @@ export const useAgentOrgContextsStore = defineStore('agentOrgContexts', () => {
     let attachments = contextPaths.map((attachment) => ({ ...attachment }))
     const messageId = crypto.randomUUID()
     const dedupeKey = `member_input:${id}:${agentRunId}:${messageId}`
-    const submission = beginLocalUserSubmission(context, { text: content, attachments, navigationTarget: null })
-    Object.assign(submission.message, { messageId, dedupeKey })
+    const mentions = mentionsPresentInText(content, context.requestedMentions)
+    const submission = beginLocalUserSubmission(context, { text: content, attachments, navigationTarget: null, mentions, identity: { messageId, dedupeKey } })
     const key = keyFor(id, agentRunId)
     submissions.set(key, submission)
     let draftEdited = false
@@ -203,6 +208,7 @@ export const useAgentOrgContextsStore = defineStore('agentOrgContexts', () => {
         // Restore acceptance is not a ready stream; retain unknown truth on failure.
         org.requireReopen('AgentOrg restored; stream is synchronizing.')
         useRunHistoryStore().applyAgentOrgActivity(id, true)
+        void useRunHistoryStore().refreshAgentOrgHistoryItem(id)
         const service = attach(id)
         await service.whenReady()
       }
@@ -219,10 +225,13 @@ export const useAgentOrgContextsStore = defineStore('agentOrgContexts', () => {
         })
         finalizeLocalSubmissionAttachments(submission, attachments)
       }
-      await service.sendPrepared({ agentRunId, content, attachments, messageId, dedupeKey })
+      await service.sendPrepared({ agentRunId, content, attachments, messageId, dedupeKey,
+        mentions: toCollaboratorMentionDtos(content, mentions) })
+      acceptLocalSubmission(submission)
     } catch (cause) {
-      failLocalSubmission(submission, cause)
-      if (!draftEdited) { context.requirement = content; context.contextFilePaths = attachments }
+      // A rejected add posted nothing: the notice shows and the draft stays as typed.
+      if (failLocalSubmission(submission, cause) === 'kept_draft') return
+      if (!draftEdited) { context.requirement = content; context.contextFilePaths = attachments; context.requestedMentions = [...mentions] }
       throw cause
     } finally {
       stopWatching()
@@ -258,6 +267,14 @@ export const useAgentOrgContextsStore = defineStore('agentOrgContexts', () => {
     if (operations.value[id]) throw new Error('AgentOrg operation is already pending.')
     errors.value = { ...errors.value, [id]: null }
     operations.value = { ...operations.value, [id]: 'stop' }
+    const context = contexts.value[id]
+    const view = context?.view
+    const binding = useWindowNodeContextStore().bindingRevision
+    const activities = useAgentActivityStore()
+    const members = context?.listAgentContextEntries().map((entry) => ({
+      ...entry, state: entry.context.state, instance: entry.context.state.inputProjection?.runInstanceId,
+      ids: activities.getNativeCompactionActivityIds(entry.agentRunId),
+    })) ?? []
     generations.delete(id)
     retireStream(id)
     // The old transport cannot publish during Stop, including a rejected Stop.
@@ -265,6 +282,18 @@ export const useAgentOrgContextsStore = defineStore('agentOrgContexts', () => {
     if (contexts.value[id]?.isActive) contexts.value[id]?.requireReopen('AgentOrg stop is pending.')
     try {
       await useAgentOrgRunStore().terminate(id)
+      // This owner intentionally retired its transport before the mutation.
+      if (contexts.value[id] !== context || context?.view !== view || services.has(id)
+        || operations.value[id] !== 'stop' || useWindowNodeContextStore().bindingRevision !== binding
+        || members.some((entry) => context?.getAgentContext(entry.agentRunId) !== entry.context
+          || context.index.requireAgent(entry.agentRunId).address !== entry.memberAddress
+          || entry.context.state !== entry.state || entry.state.runId !== entry.agentRunId
+          || (entry.state.inputProjection?.runInstanceId && entry.state.inputProjection.runInstanceId !== entry.instance))) return
+      for (const { agentRunId, context: member, ids } of members) {
+        if (member.config.runtimeKind !== 'autobyteus') continue
+        member.state.compactionStatus = activities.applyConfirmedNativeTermination(agentRunId,
+          [...ids, ...activities.getNativeCompactionActivityIds(agentRunId)], member.state.compactionStatus)
+      }
       markHistorical(id)
       await readInspection(id)
     } catch (cause) { report(id, cause); throw cause }

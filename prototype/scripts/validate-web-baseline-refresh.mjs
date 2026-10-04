@@ -42,6 +42,9 @@ export const ROUTES = [
     .map(section => `/settings?section=${section}`),
   // WEB-BASELINE-REFRESH-002: the Chat entry surface shipped at 57df63f.
   '/chat',
+  // WEB-BASELINE-REFRESH-004 (0a32261): Project and Task authoring pages.
+  '/projects/new', '/projects/project-prototype-launch/edit', '/projects/project-prototype-launch/tasks/new',
+  '/projects/project-prototype-launch/tasks/task-outline', '/projects/project-prototype-launch/tasks/task-outline/edit',
 ]
 
 const VARIANTS = [
@@ -74,6 +77,8 @@ const stateRows = [
   { id: 'WBR-S015', path: '/mobile?unsupported=desktopSettings', scenario: 'populated', mobile: 'paired', viewport: 'narrow' },
   { id: 'WBR-S016', path: '/mobile', scenario: 'permission_denied', mobile: 'paired', viewport: 'narrow' },
   { id: 'WBR-S017', path: '/skills', scenario: 'skill_name_issues' },
+  // WEB-BASELINE-REFRESH-004: Antigravity runtime available (locked auto-approve).
+  { id: 'WBR-S018', path: '/chat', scenario: 'agy_runtime' },
 ].map(row => ({ kind: 'state', viewport: 'desktop', locale: 'en', ...row }))
 
 // Proportionate coverage: every route in the primary configuration (desktop,
@@ -85,6 +90,7 @@ const SAMPLED_ALTERNATES = new Set([
   'WBR-R016-NEN', 'WBR-R020-NZH', 'WBR-R027-NEN', 'WBR-R031-NEN', 'WBR-R031-DZH', 'WBR-R032-NZH',
   'WBR-R033-NEN', 'WBR-R033-DZH', 'WBR-R033-NZH', 'WBR-R037-NZH', 'WBR-R039-NEN', 'WBR-R043-DZH',
   'WBR-R049-NEN', 'WBR-R049-DZH',
+  'WBR-R050-NEN', 'WBR-R050-DZH', 'WBR-R052-NEN', 'WBR-R053-NEN', 'WBR-R053-NZH',
 ])
 const primaryRows = process.env.MATRIX_MODE === 'full'
   ? routeRows

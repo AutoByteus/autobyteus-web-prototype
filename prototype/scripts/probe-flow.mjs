@@ -18,8 +18,17 @@ const style = '*,*::before,*::after{animation:none!important;transition:none!imp
 
 const click = text => async page => { await page.getByText(text, { exact: true }).first().click(); await page.waitForTimeout(900) }
 const clickRole = (role, name) => async page => { await page.getByRole(role, { name, exact: true }).first().click(); await page.waitForTimeout(900) }
-const type = text => async page => { await page.getByPlaceholder('Type a message...').first().fill(text); await page.waitForTimeout(400) }
-const expandWorkspace = async page => { await page.getByText('prototype-workspace', { exact: true }).first().click(); await page.waitForTimeout(900) }
+// WEB-BASELINE-REFRESH-004 (0a32261): a live-run composer's placeholder names `@`, so the
+// composer is located as the run's message textarea rather than by placeholder.
+const type = text => async page => { await page.locator('textarea.composer-text').last().fill(text); await page.waitForTimeout(400) }
+// WEB-BASELINE-REFRESH-004: with the server's real workspace kind the synthetic workspace can
+// already be expanded; open it only when its runs are not shown.
+const ensureWorkspaceOpen = async page => {
+  if (!(await page.getByText('Product Review Team', { exact: true }).first().isVisible().catch(() => false))) {
+    await page.getByText('prototype-workspace', { exact: true }).first().click(); await page.waitForTimeout(900)
+  }
+}
+const expandWorkspace = ensureWorkspaceOpen
 
 export const FLOWS = {
   'FLW-001': { title: 'Expand workspace history (Teams and Orgs groups)', path: '/workspace', steps: [expandWorkspace] },
@@ -28,8 +37,8 @@ export const FLOWS = {
   'FLW-004': { title: 'Agent catalog Run opens workspace launch configuration', path: '/agents?view=list', steps: [clickRole('button', 'Run')] },
   'FLW-005': { title: 'Team catalog Run opens Team launch configuration', path: '/agent-teams?view=team-list', steps: [clickRole('button', 'Run')] },
   'FLW-006': { title: 'Agent Org catalog Run opens Org launch configuration', path: '/agent-orgs?view=org-list', steps: [clickRole('button', 'Run')] },
-  'FLW-007': { title: 'Projects: open create-project dialog', path: '/projects', steps: [clickRole('button', 'New project')] },
-  'FLW-008': { title: 'Project detail: open add-task dialog', path: '/projects/project-prototype-launch', steps: [clickRole('button', 'New task')] },
+  // FLW-007/-008 (create-project and add-task dialogs) were retired by WEB-BASELINE-REFRESH-004:
+  // source 0a32261 replaced the dialogs with pages (probe-refresh-004.mjs PRJ-001, TSK-001).
   'FLW-009': { title: 'Agent Org create: required validation', path: '/agent-orgs?view=org-create', steps: [clickRole('button', 'Create Org')] },
   'FLW-010': { title: 'Primary navigation to Projects', path: '/agents?view=list', steps: [click('Projects')] },
   'FLW-011': { title: 'Stored team run: focus writer member', path: '/workspace', steps: [expandWorkspace, click('Product Review Team'), click('Review the current prototype baseline'), click('writer')] },

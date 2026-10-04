@@ -55,7 +55,7 @@
           {{ option.label }}
         </option>
       </select>
-      <p v-if="selectedRuntimeUnavailableReason" class="mt-1 text-xs text-amber-600">{{ selectedRuntimeUnavailableReason }}</p>
+      <p v-if="selectedRuntimeUnavailableReason" class="mt-1 text-xs text-amber-600">{{ selectedRuntimeUnavailableReason }} <button type="button" class="ml-1 font-semibold underline disabled:opacity-50" :disabled="isInteractionDisabled" @click="retryRuntimeCatalog">{{ t('workspace.components.workspace.config.TeamScopeConfigEditor.retry') }}</button></p>
       <p
         v-if="runtimeCatalogPresentationState.status === 'loading'"
         role="status"
@@ -117,13 +117,16 @@
       <input
         :id="`override-auto-${inputIdSuffix}`"
         type="checkbox"
-        :checked="node.effectiveConfig.autoExecuteTools"
-        :indeterminate="Boolean(editableNode && editableNode.override?.autoExecuteTools === undefined)"
-        :disabled="isFixedFieldDisabled"
+        :checked="autoExecuteChecked"
+        :indeterminate="!autoApproveLocked && Boolean(editableNode && editableNode.override?.autoExecuteTools === undefined)"
+        :disabled="isFixedFieldDisabled || autoApproveLocked"
         class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 disabled:opacity-50"
         @change="handleAutoExecuteChange"
       />
       <label :for="`override-auto-${inputIdSuffix}`" class="ml-2 select-none text-xs text-gray-600">{{ autoExecuteStateLabel }}</label>
+      <p v-if="autoApproveLocked" class="mt-1 text-xs text-gray-500" data-test="member-auto-approve-locked">
+        {{ t('workspace.runModelConfig.agyAutoApproveLocked') }}
+      </p>
     </div>
 
     <ModelConfigSection
@@ -159,6 +162,7 @@ import ModelConfigSection from './ModelConfigSection.vue'
 import WorkspaceSelector from './WorkspaceSelector.vue'
 import FixedWorkspacePath from './FixedWorkspacePath.vue'
 import { useLocalization } from '~/composables/useLocalization'
+import { effectiveAutoExecuteTools, isAutoApproveLockedForRuntime } from '~/utils/agentRunRuntimeDraftPolicy'
 import { loadRuntimeProviderGroupsForSelection, useRuntimeScopedModelSelection } from '~/composables/useRuntimeScopedModelSelection'
 import {
   buildUnavailableInheritedModelMessage,
@@ -170,6 +174,7 @@ import {
 } from '~/utils/teamRunConfigUtils'
 import {
   normalizeModelConfigSchema,
+  modelConfigSchemaFromProviderGroups,
   validateUiModelConfig,
   type UiModelConfigSchema,
   type UiModelConfigValidationIssue,
@@ -214,6 +219,7 @@ const {
   hasModelIdentifier,
   isLoadingModels,
   modelLoadError,
+  reloadModelsForRuntime,
   modelConfigSchemaByIdentifier,
   runtimeOptions,
   selectedRuntimeUnavailableReason,
@@ -234,7 +240,8 @@ const runtimeCatalogPresentationState = computed(() => {
   if (operation?.schemaState.status === 'unavailable') {
     return { status: 'error' as const, error: operation.schemaState.message }
   }
-  if (operation) return { status: 'loading' as const, error: null }
+  if (operation || isLoadingModels.value) return { status: 'loading' as const, error: null }
+  if (modelLoadError.value) return { status: 'error' as const, error: modelLoadError.value }
   return editableNode.value?.runtimeCatalogState ?? { status: 'idle' as const, error: null }
 })
 const explicitModelIdentifier = computed(() => editableOverride.value?.llmModelIdentifier || '')
@@ -259,6 +266,8 @@ const unresolvedInheritedModelMessage = computed(() => buildUnavailableInherited
   memberName: props.node.displayName,
 }))
 const effectiveModelIdentifier = computed(() => props.node.effectiveConfig.llmModelIdentifier || '')
+const isLoadingCurrentModel = computed(() => effectiveModelIdentifier.value === seedModelIdentifier.value
+  && !hasModelIdentifier(effectiveModelIdentifier.value) && currentModel.loading.value)
 const selectedModelIdentifier = computed(() => existingNode.value ? effectiveModelIdentifier.value : explicitModelIdentifier.value)
 const modelConfigSchema = computed(() => modelConfigSchemaByIdentifier(effectiveModelIdentifier.value)
   || (effectiveModelIdentifier.value === seedModelIdentifier.value ? currentModel.schema.value : null))
@@ -293,6 +302,7 @@ watch(
     editableNode,
     runtimeEditOperation,
     isLoadingModels,
+    isLoadingCurrentModel,
     modelLoadError,
     selectedRuntimeUnavailableReason,
     isUnresolvedInheritedModel,
@@ -305,7 +315,7 @@ watch(
     if (!editableNode.value) return
     if (runtimeEditOperation.value) return
     let state: RuntimeModelConfigSchemaState
-    if (isLoadingModels.value || (effectiveModelIdentifier.value === seedModelIdentifier.value && currentModel.loading.value)) {
+    if (isLoadingModels.value || isLoadingCurrentModel.value) {
       state = { status: 'loading', message: null }
     } else if (modelLoadError.value || selectedRuntimeUnavailableReason.value) {
       state = {
@@ -342,7 +352,11 @@ watch(
   },
   { flush: 'post' },
 )
+const memberRuntimeKind = computed(() => editableNode.value ? effectiveRuntimeKind.value : props.node.effectiveConfig.runtimeKind)
+const autoApproveLocked = computed(() => isAutoApproveLockedForRuntime(memberRuntimeKind.value))
+const autoExecuteChecked = computed(() => effectiveAutoExecuteTools(memberRuntimeKind.value, props.node.effectiveConfig.autoExecuteTools))
 const autoExecuteStateLabel = computed(() => {
+  if (autoApproveLocked.value) return t('workspace.components.workspace.config.MemberOverrideItem.auto_execute_on')
   if (existingNode.value) {
     return props.node.effectiveConfig.autoExecuteTools
       ? t('workspace.components.workspace.config.MemberOverrideItem.auto_execute_on')
@@ -380,17 +394,6 @@ const shouldOpenAdvancedForSchema = (
   const state = getThinkingControlState(schema, config)
   return state.supported && state.enabled
 }
-const modelConfigSchemaFromRows = (
-  rows: ProviderWithModels[],
-  modelIdentifier: string | null | undefined,
-): UiModelConfigSchema | null => {
-  const identifier = (modelIdentifier || '').trim()
-  for (const row of rows) {
-    const normalized = normalizeModelConfigSchema(row.models.find((model) => model.modelIdentifier === identifier)?.configSchema)
-    if (normalized && Object.keys(normalized).length) return normalized
-  }
-  return null
-}
 const maybeOpenAdvanced = (schema: UiModelConfigSchema | null, config: Record<string, unknown> | null | undefined) => {
   if (shouldOpenAdvancedForSchema(schema, config)) memberAdvancedExplicitlyExpanded.value = true
 }
@@ -418,6 +421,7 @@ const handleRuntimeChange = async (value: string) => {
       loadRuntimeProviderGroupsForSelection(nextEffectiveRuntimeKind),
       loadRuntimeCurrentModelDescriptors(nextEffectiveRuntimeKind,
         [globalModelIdentifier.value, explicitModelIdentifier.value]),
+
     ])
   } catch (cause) {
     runtimeEditOperation.value = {
@@ -454,7 +458,7 @@ const handleRuntimeChange = async (value: string) => {
     effectiveRuntimeKind: nextEffectiveRuntimeKind,
     schemaState: { status: 'loading', message: null },
   }
-  maybeOpenAdvanced(modelConfigSchemaFromRows(nextRows, effectiveModel)
+  maybeOpenAdvanced(modelConfigSchemaFromProviderGroups(nextRows, effectiveModel)
     || (effectiveModel && exactCurrent[effectiveModel]?.configSchema
       ? normalizeModelConfigSchema(exactCurrent[effectiveModel]!.configSchema) : null),
     retainedConfig ?? editable.baselineConfig.llmConfig)
@@ -483,7 +487,7 @@ const handleModelChange = (value: string) => {
 }
 const handleAutoExecuteChange = () => {
   const editable = editableNode.value
-  if (!editable || isInteractionDisabled.value) return
+  if (!editable || isInteractionDisabled.value || autoApproveLocked.value) return
   const current = editable.override?.autoExecuteTools
   emitEditableOverride(buildOverride({
     runtimeKind: editable.override?.runtimeKind,
@@ -499,6 +503,7 @@ const retryRuntimeCatalog = () => {
     void handleRuntimeChange(failedOperation.requestedOverrideRuntimeKind ?? '')
     return
   }
+  if (effectiveRuntimeKind.value) void reloadModelsForRuntime(effectiveRuntimeKind.value)
   emit('retry-runtime-catalog', effectiveRuntimeKind.value ?? '')
 }
 </script>

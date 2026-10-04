@@ -14,6 +14,7 @@ The prototype preserves the exact observable current UI while replacing all prod
 | Persistence | Locale/layout/scenario continuity and local UI mutations | Isolated `localStorage` and in-memory Pinia overlays | Database, durable customer writes |
 | Agent/team execution | Catalog Run, workspace draft, launch readiness, chosen-workspace Team/member projection and member focus, conversation, streaming, activity/background tasks, messages, delegation, status, interrupt/error/recovery/history | Real presentation state with synthetic messages and scripted transitions; focused `launchDraft` creates one local deterministic context; enumerated local selection/focus actions mutate resettable reactive view state | Model/provider calls, run scheduler, production stream |
 | Chat (New chat and chat run, 57df63f) | Composer menus (workspace, model, thinking, `/` skills, `@` targets), approval toggle, first send → `/chat?id=…` run view, run settings, reopening from the Workspaces tree | The source's own chat draft, send (`sendUserInputAndSubscribe`) and Edit Config code; `PrepareAgentRun` and reads answered locally by `utils/apolloClient.ts`; after a send, route snapshots are no longer re-applied to the run-owning stores | Run preparation, model inference, agent stream server |
+| Projects and Tasks (0a32261) | List, create/edit/delete Project pages with existing or new-folder workspaces, Workspaces tab, Task board/search, create/detail/edit/delete Task pages, context files, validation and notices | The source's own `projects`/`projectTasks` stores; queries and mutations answered by `utils/apolloClient.ts` from one in-memory fixture copy; context-file uploads answered by the `fetch` boundary | Project/Task persistence, file storage, voice transcription |
 | WebSocket streaming | Open/ready presentation and visible transitions | Local `EventTarget`-based `PrototypeWebSocket` | Agent/team/file/terminal/transcription servers |
 | Files/workspace/viewers | Tree, viewer, context actions, create dialogs, attachment feedback | Synthetic `TreeNode` objects and text/media fixtures | Filesystem access, file watcher, production path |
 | Terminal | Terminal tab/shell presentation and scripted output | Local view state | PTY/shell/command execution |
@@ -49,14 +50,22 @@ Exact source Vue components, pages, layouts, styles, localization and assets are
 
 This is high experience fidelity and deliberately low implementation fidelity—not a production frontend copy, Electron build, integration environment, or target architecture.
 
-## cross-scope-agent-mentions: local run
+## Projects, Tasks and live-run `@` mentions (WEB-BASELINE-REFRESH-004)
 
-Sending a message in a Team run, an Org run or a standalone Agent run plays a
-deterministic script in the browser (`prototype/run-mentions/`). It feeds the
-same client events the real streams deliver (Agent status, segments, tool
-calls, system task notification, inter-agent messages, task execution started)
-into the product's own execution views, so the conversation, the run tree and
-the Team/Org tab are rendered by unchanged presentation code. No model, runtime,
-server, persistence or network is involved; agent prose and the `Product Team`,
-`Marketing Team`, `Computer Use Agent` and `Code Reviewer` definitions in the
-live-run `@` menu are illustrative. A page reload resets everything.
+Source `0a32261` shipped its own page-based Project/Task authoring and live-run
+`@` mentions, replacing the accepted prototype versions. The prototype now runs
+the source's own Projects stores and composer code unchanged:
+
+- `utils/apolloClient.ts` answers the Project/Task queries and mutations,
+  `CreateWorkspace`, runtime availability and `@` candidates from
+  `prototype/source-observation/fixtures.mjs`. Saves update one in-memory
+  copy per browser context; a reload resets it. The observation node uses the
+  same fixtures, so both sides show the same scripted outcome.
+- Task context-file uploads are answered by the prototype `fetch` boundary with
+  a small synthetic file record (name, type, size of the chosen browser file).
+  Nothing is uploaded or stored.
+- Sending a message in a live run uses the source's own send path against the
+  silent local stream. Adding a collaborator, its run, and the agents' replies
+  are not simulated, exactly as in the source against the synthetic node. The
+  earlier scripted local run (`prototype/run-mentions/`) was removed because it
+  patched source files that the shipped version replaced.

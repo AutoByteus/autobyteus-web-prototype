@@ -1,3 +1,4 @@
+import { handleAgentInputState } from '~/services/agentStreaming/handlers/agentInputStateHandler';
 import { reactive, ref, shallowRef } from 'vue';
 import {
   teamExecutionViewSnapshotPayloadSchema,
@@ -82,7 +83,7 @@ const sequenceOf = (message: Exclude<TeamStreamServerMessage,
 };
 
 const targetAgentRunId = (message: Exclude<TeamStreamServerMessage,
-  { type: 'CONNECTED' | 'TEAM_RUN_LIFECYCLE' | 'TEAM_EXECUTION_VIEW_SNAPSHOT' | 'AGENT_COMMAND_ACK' | 'TASK_EXECUTION_STARTED' | 'TEAM_COMMUNICATION_MESSAGE' }>): string | null => {
+  { type: 'CONNECTED' | 'TEAM_RUN_LIFECYCLE' | 'TEAM_EXECUTION_VIEW_SNAPSHOT' | 'AGENT_COMMAND_ACK' | 'TASK_EXECUTION_STARTED' | 'TEAM_COMMUNICATION_MESSAGE' | 'COLLABORATOR_ADDED' }>): string | null => {
   if (message.type === 'MEMBER_INPUT_MESSAGE') return message.payload.recipient_agent_run_id;
   if (message.type === 'ERROR') return message.payload.agent_run_id;
   return message.payload.agent_run_id;
@@ -249,7 +250,7 @@ export const createTeamExecutionViewState = (
       const planned = planContextAssociations(payload.execution_tree, nextLocations);
       const plannedContexts = new Map(planned.map((entry) => [entry.agentRunId, entry.agentContext]));
       const statusIds = new Set<string>();
-      const validatedStatuses: Array<{ context: AgentContext; status: AgentStatus }> = [];
+      const validatedStatuses: Array<{ context: AgentContext; status: AgentStatus; recoverableBlock: import("@autobyteus/agent-presentation-contracts").CompactionRecoveryBlockDto | null }> = [];
       for (const status of payload.agent_statuses) {
         const location = nextLocations.get(status.agent_run_id);
         if (statusIds.has(status.agent_run_id) || location?.memberAddress !== status.member_address) {
@@ -258,18 +259,30 @@ export const createTeamExecutionViewState = (
         const context = publication.value.contexts.get(status.agent_run_id) ?? plannedContexts.get(status.agent_run_id);
         if (!context) throw new Error(`Agent status target '${status.agent_run_id}' is missing.`);
         statusIds.add(status.agent_run_id);
-        validatedStatuses.push({ context, status: status.status as AgentStatus });
+        validatedStatuses.push({ context, status: status.status as AgentStatus, recoverableBlock: status.recoverableBlock });
       }
       // Every tree placement reports a status; shut-down children report offline.
       if ([...nextLocations.keys()].some((agentRunId) => !statusIds.has(agentRunId))) {
         throw new Error('Snapshot omitted a canonical Agent status.');
+      }
+      const inputIds = new Set<string>();
+      for (const entry of payload.agent_input_states) {
+        if (!nextLocations.has(entry.agent_run_id) || inputIds.has(entry.agent_run_id)) throw new Error('Invalid input-state target.');
+        inputIds.add(entry.agent_run_id);
       }
       publication.value = {
         tree: structuredClone(payload.execution_tree), locations: nextLocations,
         messages: structuredClone(payload.messages),
         contexts: prepareContextAssociations(planned), changeSequence: payload.base_change_sequence,
       };
-      validatedStatuses.forEach(({ context, status }) => { context.state.currentStatus = status; });
+      validatedStatuses.forEach(({ context, status, recoverableBlock }) => {
+        context.state.currentStatus = status; context.state.recoverableBlock = recoverableBlock;
+        if (!inputIds.has(context.state.runId)) {
+          context.state.inputProjection = null;
+          for (const message of context.conversation.messages) if (message.type === 'user') delete message.pendingInput;
+        }
+      });
+      for (const entry of payload.agent_input_states) handleAgentInputState(entry.state, publication.value.contexts.get(entry.agent_run_id)!);
       streamRecoveryRequired.value = false;
       repairFocus();
       return Object.freeze({
@@ -316,6 +329,26 @@ export const createTeamExecutionViewState = (
           });
         }
         effects.push({ kind: 'reconcile_team_navigation' });
+      } else if (message.type === 'COLLABORATOR_ADDED') {
+        // One hosted instance per entry: its executions are placed (Offline) with the entry.
+        const collaborators = publication.value.tree.root_team.collaborators ?? [];
+        if (collaborators.some((entry) => entry.address === message.payload.collaborator.address)) {
+          throw new Error(`Duplicate collaborator address '${message.payload.collaborator.address}'.`);
+        }
+        const nextTree = structuredClone(publication.value.tree);
+        nextTree.root_team = { ...nextTree.root_team, collaborators: [...collaborators, structuredClone(message.payload.collaborator)] };
+        const nextLocations = collectValidatedLocations(nextTree);
+        const planned = planContextAssociations(nextTree, nextLocations);
+        publication.value = { ...publication.value, tree: nextTree, locations: nextLocations,
+          contexts: prepareContextAssociations(planned), changeSequence: sequence ?? publication.value.changeSequence };
+        if (planned.length > 0) {
+          effects.push({
+            kind: 'invalidate_team_member_projection',
+            agentRunIds: Object.freeze(planned.map((entry) => entry.agentRunId)),
+          });
+        }
+        effects.push({ kind: 'reconcile_team_navigation' });
+        effects.push({ kind: 'collaborators_changed' });
       } else if (message.type === 'TEAM_COMMUNICATION_MESSAGE') {
         if (publication.value.messages.some((entry) => entry.message_id === message.payload.message.message_id)) {
           return Object.freeze({ disposition: 'rejected', code: 'TEAM_COMMUNICATION_DUPLICATE_MESSAGE', message: `Duplicate Team message '${message.payload.message.message_id}'.`, effects: Object.freeze([]) });

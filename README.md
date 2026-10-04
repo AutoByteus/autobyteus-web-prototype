@@ -1,14 +1,14 @@
 # AutoByteus Web Design
 
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
-commit `e9aa4a74ca36f62303bb7f5f0efd74bf89a9ea71` (`origin/personal`,
-refreshed by `WEB-BASELINE-REFRESH-003`; previous primary pin
-`57df63f079363ccab4f2301213f9d8a3458f72fa`). The Activity tab now shows the
-source's Background Tasks section in place of the removed To-Do list, and the
-source's shipped upward-opening Chat composer menus replaced the accepted
-prototype `chat-composer-menus-open-upward` implementation. See
-[ui-baseline-report.md](ui-baseline-report.md) for the refresh
-scope, evidence, and known gaps.
+commit `0a32261d681e19491264a03a652ba23d1f8b8248` (`origin/personal`,
+refreshed by `WEB-BASELINE-REFRESH-004`; previous primary pin
+`e9aa4a74ca36f62303bb7f5f0efd74bf89a9ea71`). The source's shipped page-based
+Project and Task authoring, live-run `@` mentions with one inline highlight,
+"From <Sender>:" agent-to-agent messages, Agent-run task rows, Antigravity's
+locked auto-approve and the run forms without run-level skill access replaced
+the earlier versions. See [ui-baseline-report.md](ui-baseline-report.md) for
+the refresh scope, evidence, and known gaps.
 
 The repository is the cumulative accepted Product baseline. Approved
 Product tickets are integrated here and promoted to normal/default product
@@ -129,6 +129,12 @@ Review-package artifacts:
 
 
 ## Approved Projects / Tasks UI — 2026-10-02
+
+> **Superseded by the source (WEB-BASELINE-REFRESH-004).** Source `0a32261`
+> shipped its own page-based Project and Task authoring. The runnable Projects
+> surfaces are now the source's pages and stores (the prototype review stores
+> were removed); this section and its supplement remain the historical design
+> record. See [ui-baseline-report.md](ui-baseline-report.md).
 
 PROJ-TASK-MANAGER-20261002-001: the approved manual authoring/board slice is
 reachable through normal Chat → Projects navigation. New/Edit Project and

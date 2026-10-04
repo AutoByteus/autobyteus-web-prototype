@@ -1,17 +1,42 @@
 <template>
   <div class="flex flex-col bg-white">
+    <p v-if="targetContext?.state.recoverableBlock && targetContext.state.recoverableBlock.state !== 'recovering'" role="status" class="px-3 pt-2 text-xs text-amber-700">
+      {{ $t('agentInput.components.agentInput.AgentUserInputTextArea.compaction_retry') }}
+    </p>
     <div ref="rootRef" class="relative flex-grow">
+      <!-- Background only: native textarea owns text, selection, undo and accessibility. -->
+      <div
+        v-if="activeMentionNames.length"
+        class="mention-mirror-viewport"
+        aria-hidden="true"
+        :style="{ width: `${mirrorMetrics.width}px`, height: `${mirrorMetrics.height}px` }"
+        data-test="composer-mention-mirror"
+      >
+        <div
+          class="composer-text mention-mirror"
+          :style="{ transform: `translate(${-mirrorMetrics.scrollLeft}px, ${-mirrorMetrics.scrollTop}px)` }"
+        ><template v-for="(part, index) in mentionParts" :key="index"><span
+          :class="{ 'mention-highlight': part.kind === 'mention' }"
+        >{{ part.kind === 'mention' ? '@' + part.value : part.value }}</span></template></div>
+      </div>
       <textarea
         :value="internalRequirement"
         @input="handleInput"
+        @scroll="syncMirrorMetrics"
+        :aria-label="t('chat.mentions.messageLabel')"
         ref="textarea"
-        class="w-full px-3 py-2.5 pr-14 border-0 focus:ring-0 focus:outline-none resize-none bg-transparent text-[0.9375rem] leading-6"
+        class="composer-text relative w-full border-0 focus:ring-0 focus:outline-none resize-none bg-transparent"
         :style="{
           height: `${textareaHeight}px`,
           minHeight: `${MIN_TEXTAREA_HEIGHT}px`,
           maxHeight: `${MAX_TEXTAREA_HEIGHT}px`
         }"
-        :placeholder="skillTagging?.placeholder || $t('agentInput.components.agentInput.AgentUserInputTextArea.type_a_message')"
+        :placeholder="composerPlaceholder"
+        :role="hasMenus ? 'combobox' : undefined"
+        :aria-autocomplete="hasMenus ? 'list' : undefined"
+        :aria-expanded="hasMenus ? (activeMenu ? 'true' : 'false') : undefined"
+        :aria-controls="activeMenu?.listId"
+        :aria-activedescendant="activeMenu && activeMenu.count ? `${activeMenu.listId}-option-${activeMenu.highlight}` : undefined"
         @keydown="handleKeyDown"
         @click="detectMenus"
         :disabled="!target"
@@ -20,7 +45,7 @@
         data-file-drop-target="true"
       ></textarea>
 
-      <VoiceInputButton :target="target" class="absolute bottom-2 right-14" />
+      <VoiceInputButton :target="voiceTarget" class="absolute bottom-2 right-14" />
 
       <MessagePrimaryActionButton
         class="absolute bottom-2 right-2"
@@ -28,28 +53,6 @@
         :disabled="isActionDisabled"
         @activate="handlePrimaryAction"
       />
-
-      <!-- `@` menu: bring a shared Agent or Team into this run (Team runs). -->
-      <template v-if="mentionMenu.open.value">
-        <div v-if="mentionMenu.popover.narrow.value" class="fixed inset-0 z-40 bg-black/20" aria-hidden="true"></div>
-        <div
-          class="z-50 flex flex-col"
-          :class="mentionMenu.popover.narrow.value
-            ? 'fixed inset-x-2 bottom-2 [&>div]:w-auto'
-            : ['absolute left-2', mentionMenu.popover.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5']"
-          :style="mentionMenu.popover.narrow.value ? undefined : { maxHeight: `${mentionMenu.popover.maxHeight.value}px` }"
-        >
-          <RunMentionMenu
-            :list-id="mentionMenuListId"
-            :query="mentionMenu.query.value"
-            :options="mentionMenu.filtered.value"
-            :highlight="mentionMenu.highlight.value"
-            :focused-name="mentionMenu.mentions.focusedName.value"
-            @highlight="mentionMenu.highlight.value = $event"
-            @choose="mentionMenu.choose"
-          />
-        </div>
-      </template>
 
       <!-- `/` skill menu: standalone runs only (skillTagging). -->
       <template v-if="skillTagging && skillMenu.open.value">
@@ -73,6 +76,29 @@
           />
         </div>
       </template>
+
+      <!-- `@` menu: bring a shared Agent or Team into this live run. -->
+      <template v-if="mentionMenu.open.value">
+        <div v-if="mentionMenu.popover.narrow.value" class="fixed inset-0 z-40 bg-black/20" aria-hidden="true"></div>
+        <div
+          class="z-50 flex flex-col"
+          :class="mentionMenu.popover.narrow.value
+            ? 'fixed inset-x-2 bottom-2 [&>div]:w-auto'
+            : ['absolute left-2', mentionMenu.popover.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5']"
+          :style="mentionMenu.popover.narrow.value ? undefined : { maxHeight: `${mentionMenu.popover.maxHeight.value}px` }"
+        >
+          <ChatTargetMenu
+            variant="run"
+            :list-id="mentionMenuListId"
+            :query="mentionMenu.query.value"
+            :targets="mentionMenu.filtered.value"
+            :highlight="mentionMenu.highlight.value"
+            :focused-name="mentionMenu.focusedName.value"
+            @highlight="mentionMenu.highlight.value = $event"
+            @choose="mentionMenu.choose"
+          />
+        </div>
+      </template>
     </div>
 
     <VoiceInputStatusRow class="mx-3 mb-2" />
@@ -87,22 +113,27 @@ import type { AgentContext } from '~/types/agent/AgentContext';
 import { resolveAgentPrimaryAction } from '~/services/runSubmission/agentPrimaryAction';
 import { AgentStatus } from '~/types/agent/AgentStatus';
 import type { ComposerTarget } from '~/composables/agentInput/useComposerTarget';
-import VoiceInputButton from '~/components/agentInput/VoiceInputButton.vue';
+import { useComposerVoiceTarget } from '~/composables/voiceInput/useComposerVoiceTarget';
+import VoiceInputButton from '~/components/voiceInput/VoiceInputButton.vue';
 import VoiceInputStatusRow from '~/components/agentInput/VoiceInputStatusRow.vue';
 import MessagePrimaryActionButton from '~/components/agentInput/MessagePrimaryActionButton.vue';
 import ChatSkillMenu from '~/components/chat/ChatSkillMenu.vue';
-import RunMentionMenu from '~/components/agentInput/RunMentionMenu.vue';
+import ChatTargetMenu from '~/components/chat/ChatTargetMenu.vue';
 import { useRunMentionMenu } from '~/composables/agentInput/useRunMentionMenu';
 import { useSkillTagMenu, type SkillTaggingCapability } from '~/composables/agentInput/useSkillTagMenu';
 import { hasSendableDraft } from '~/services/runSubmission/agentPrimaryAction';
+import { useLocalization } from '~/composables/useLocalization';
+import { mentionsPresentInText, splitMentionText } from '~/utils/collaborators/collaboratorMentionText';
 
 const props = defineProps<{
   target: ComposerTarget | null;
   beforeSend?: () => void | Promise<void>;
   /** `/` skill tags; supplied only for standalone agent runs. */
   skillTagging?: SkillTaggingCapability | null;
+  placeholder?: string | null;
 }>();
 
+const { t } = useLocalization();
 const contextFileUploadStore = useContextFileUploadStore();
 const { resolveDroppedFilePaths } = useComposerFilePathDrop();
 const internalRequirement = ref('');
@@ -132,6 +163,17 @@ const rootRef = ref<HTMLElement | null>(null);
 const skillMenuListId = `agent-skill-menu-${useId()}`;
 const mentionMenuListId = `agent-mention-menu-${useId()}`;
 let pendingLocalAcknowledgementContext: AgentContext | null = null;
+let textareaResizeObserver: ResizeObserver | null = null;
+const mirrorMetrics = ref({ width: 0, height: 0, scrollTop: 0, scrollLeft: 0 });
+const syncMirrorMetrics = () => {
+  const element = textarea.value;
+  if (!element) return;
+  // client dimensions exclude native scrollbars; the mirror clips independently of menus.
+  mirrorMetrics.value = {
+    width: element.clientWidth, height: element.clientHeight,
+    scrollTop: element.scrollTop, scrollLeft: element.scrollLeft,
+  };
+};
 
 const adjustTextareaHeight = () => {
   if (textarea.value) {
@@ -141,6 +183,7 @@ const adjustTextareaHeight = () => {
     textarea.value.style.height = `${newHeight}px`;
     textarea.value.style.overflowY = scrollHeight > MAX_TEXTAREA_HEIGHT ? 'auto' : 'hidden';
     textareaHeight.value = newHeight;
+    syncMirrorMetrics();
   }
 };
 
@@ -157,6 +200,7 @@ watch(
   targetContext,
   (context) => {
     syncInternalRequirement(context?.requirement ?? '');
+    nextTick(adjustTextareaHeight);
   },
   { immediate: true },
 );
@@ -206,11 +250,22 @@ const skillMenu = useSkillTagMenu({
 const mentionMenu = useRunMentionMenu({
   rootRef,
   textareaRef: textarea,
+  context: targetContext,
+  scope: computed(() => props.target?.mentionScope ?? null),
   getText: () => internalRequirement.value,
   setText: setRequirement,
 });
 
-/** One menu at a time: `@` (Team runs) takes the token when it matches, otherwise `/`. */
+const composerPlaceholder = computed(() => mentionMenu.available.value
+  ? t('chat.mentions.placeholderMention')
+  : props.skillTagging?.placeholder || props.placeholder
+    || t('agentInput.components.agentInput.AgentUserInputTextArea.type_a_message'));
+const activeMentionNames = computed(() => mentionsPresentInText(
+  internalRequirement.value, targetContext.value?.requestedMentions,
+).map((mention) => mention.name));
+const mentionParts = computed(() => splitMentionText(internalRequirement.value, activeMentionNames.value));
+
+/** One menu at a time: `@` takes the token when it matches, otherwise `/`. */
 const detectMenus = () => {
   if (mentionMenu.detect()) {
     skillMenu.close();
@@ -218,6 +273,18 @@ const detectMenus = () => {
   }
   skillMenu.detect();
 };
+
+const hasMenus = computed(() => Boolean(props.skillTagging) || mentionMenu.available.value);
+/** The open menu, for the textarea's combobox semantics. */
+const activeMenu = computed(() => {
+  if (mentionMenu.open.value) {
+    return { listId: mentionMenuListId, count: mentionMenu.filtered.value.length, highlight: mentionMenu.highlight.value };
+  }
+  if (props.skillTagging && skillMenu.open.value) {
+    return { listId: skillMenuListId, count: skillMenu.filteredSkills.value.length, highlight: skillMenu.highlight.value };
+  }
+  return null;
+});
 
 const handleInput = (event: Event) => {
   setRequirement((event.target as HTMLTextAreaElement).value);
@@ -318,18 +385,59 @@ const handleResize = () => {
   adjustTextareaHeight();
 };
 
-onMounted(async () => {
-  await nextTick();
+onMounted(() => {
   adjustTextareaHeight();
+  textareaResizeObserver = new ResizeObserver(handleResize);
+  if (textarea.value) textareaResizeObserver.observe(textarea.value);
   window.addEventListener('resize', handleResize);
 });
 
 onUnmounted(() => {
+  textareaResizeObserver?.disconnect();
   window.removeEventListener('resize', handleResize);
 });
+const voiceTarget = useComposerVoiceTarget(() => props.target);
 </script>
 
 <style scoped>
+/* A single metric policy for native glyphs and their decorative backgrounds. */
+.composer-text {
+  box-sizing: border-box;
+  padding: 10px 56px 10px 12px;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  line-height: 24px;
+  letter-spacing: normal;
+  tab-size: 8;
+  text-align: start;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+.mention-mirror-viewport {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.mention-mirror {
+  width: 100%;
+  color: transparent;
+}
+.mention-highlight {
+  background: #f0f9ff;
+  box-shadow: inset 0 0 0 1px #bae6fd;
+  border-radius: 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+@media (forced-colors: active) {
+  /* Native controls may paint an opaque Canvas even with a transparent CSS background. */
+  .mention-mirror-viewport { z-index: 1; }
+  .mention-mirror { forced-color-adjust: none; }
+  .mention-highlight { background: transparent; box-shadow: inset 0 0 0 1px Highlight; }
+}
 textarea {
   outline: none;
   overflow-y: hidden;

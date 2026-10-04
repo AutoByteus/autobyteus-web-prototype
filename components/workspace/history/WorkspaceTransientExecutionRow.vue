@@ -82,6 +82,7 @@
           data-test="workspace-task-agent-avatar"
         >{{ initials }}</span>
       </span>
+      <!-- No visible "Started by" line; the starter stays in the accessible label. -->
       <span class="min-w-0 flex-1" :class="{ 'font-semibold': row.memberKind === 'agent_team' }">
         <span class="block truncate">{{ row.displayName }}</span>
         <span
@@ -111,12 +112,8 @@
   </div>
 </template>
 
-<script lang="ts">
-const autoExpandedRowKeys = new Set<string>();
-</script>
-
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import { Icon } from '@iconify/vue';
 import StatusDot from '~/components/workspace/common/StatusDot.vue';
 import WorkspaceHierarchyBranches from '~/components/workspace/history/WorkspaceHierarchyBranches.vue';
@@ -124,7 +121,6 @@ import { useLocalization } from '~/composables/useLocalization';
 import { AgentStatus } from '~/types/agent/AgentStatus';
 import type { RunHistoryTransientExecutionRow } from '~/stores/runHistoryTypes';
 import { useRunHistoryStore } from '~/stores/runHistoryStore';
-import { findAddedCollaborator } from '~/prototype/run-mentions/runMentionState';
 
 const props = withDefaults(defineProps<{
   row: RunHistoryTransientExecutionRow;
@@ -149,9 +145,6 @@ const emit = defineEmits<{
 const { t } = useLocalization();
 const runHistoryStore = useRunHistoryStore();
 
-const initials = computed(() => props.row.displayName.split(/\s+/).filter(Boolean).slice(0, 2)
-  .map((part) => part[0]?.toUpperCase() ?? '').join('') || 'AI');
-
 const roleLabel = computed(() => t(
   props.row.memberKind === 'agent_team'
     ? 'workspace.history.hierarchy.role.temporary_task_team'
@@ -163,6 +156,8 @@ const statusLabel = computed(() => t(`workspace.history.hierarchy.status.${statu
 const startedByLabel = computed(() => props.row.delegatedBy
   ? t('workspace.members.started_by', { name: props.row.delegatedBy })
   : '');
+const initials = computed(() => props.row.displayName.split(/\s+/).filter(Boolean).slice(0, 2)
+  .map((part) => part[0]?.toUpperCase() ?? '').join('') || 'AI');
 const inspectionAttempt = computed(() => props.row.agentRunId
   ? runHistoryStore.getTeamMemberInspectionAttempt(props.row.teamRunId, props.row.agentRunId)
   : null);
@@ -196,17 +191,6 @@ const rowClasses = computed(() => ({
   'is-selected text-indigo-900': props.isSelected,
   'text-gray-600': !props.isSelected,
 }));
-
-// cross-scope-agent-mentions: a Team brought in by an `@` mention is an ordinary task Team row.
-// It opens once when it appears so its members are visible; after that the user's own
-// collapse/expand choice is kept.
-onMounted(() => {
-  if (props.row.memberKind !== 'agent_team' || !props.hasChildren || props.expanded) return;
-  if (!findAddedCollaborator({ rootRunId: props.row.teamRunId, teamRunId: props.row.teamRunIdForNode })) return;
-  if (autoExpandedRowKeys.has(props.row.rowKey)) return;
-  autoExpandedRowKeys.add(props.row.rowKey);
-  emit('toggle', props.row);
-});
 
 const activateRow = (): void => {
   if (props.hasChildren) emit('toggle', props.row);

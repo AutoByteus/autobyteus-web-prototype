@@ -16,11 +16,8 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  /** DateTime scalar supporting ISO strings and date-only YYYY-MM-DD values */
   DateTime: { input: any; output: any; }
-  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: { input: any; output: any; }
-  /** The `SafeInt` scalar type represents non-fractional signed whole numeric values that are considered safe as defined by the ECMAScript specification. */
   SafeInt: { input: number; output: number; }
 };
 
@@ -64,11 +61,6 @@ export enum AgentDefinitionOwnershipScope {
   ApplicationOwned = 'APPLICATION_OWNED',
   Shared = 'SHARED',
   TeamLocal = 'TEAM_LOCAL'
-}
-
-export enum AgentSkillScope {
-  AllInstalled = 'ALL_INSTALLED',
-  Configured = 'CONFIGURED'
 }
 
 export enum AgentMemberRefScope {
@@ -169,7 +161,6 @@ export type AgentOrgPlacementLaunchConfigurationInput = {
   llmConfig?: InputMaybe<Scalars['JSON']['input']>;
   llmModelIdentifier?: InputMaybe<Scalars['String']['input']>;
   runtimeKind?: InputMaybe<Scalars['String']['input']>;
-  skillAccessMode?: InputMaybe<SkillAccessModeEnum>;
   workspaceRootPath?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -194,7 +185,6 @@ export type AgentOrgRootLaunchConfigurationInput = {
   llmConfig?: InputMaybe<Scalars['JSON']['input']>;
   llmModelIdentifier: Scalars['String']['input'];
   runtimeKind: Scalars['String']['input'];
-  skillAccessMode: SkillAccessModeEnum;
   workspaceRootPath?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -215,6 +205,28 @@ export type AgentOrgRunConfigUpdateResult = {
   message: Scalars['String']['output'];
   outcome: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
+};
+
+export type AgentOrgRunMemoryPage = {
+  __typename?: 'AgentOrgRunMemoryPage';
+  entries: Array<AgentOrgRunMemorySummary>;
+  page: Scalars['Int']['output'];
+  pageSize: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+  totalPages: Scalars['Int']['output'];
+};
+
+export type AgentOrgRunMemorySummary = {
+  __typename?: 'AgentOrgRunMemorySummary';
+  createdAt?: Maybe<Scalars['String']['output']>;
+  lastUpdatedAt?: Maybe<Scalars['String']['output']>;
+  memberTargets: Array<CollaborationMemberMemoryTargetSummary>;
+  memory: MemoryAvailabilitySummary;
+  orgDefinitionId: Scalars['String']['output'];
+  orgDefinitionName: Scalars['String']['output'];
+  orgRunId: Scalars['String']['output'];
+  summary?: Maybe<Scalars['String']['output']>;
+  workspaceRootPath?: Maybe<Scalars['String']['output']>;
 };
 
 export type AgentOrgRunModelConfigPatchInput = {
@@ -251,6 +263,25 @@ export type AgentOrgStoredRunMutationResult = {
 export type AgentOrgTeamWorkspacePatchInput = {
   teamAddress: Scalars['String']['input'];
   workspaceRootPath: Scalars['String']['input'];
+};
+
+export type AgentOrgWithMemoryPage = {
+  __typename?: 'AgentOrgWithMemoryPage';
+  entries: Array<AgentOrgWithMemorySummary>;
+  page: Scalars['Int']['output'];
+  pageSize: Scalars['Int']['output'];
+  total: Scalars['Int']['output'];
+  totalPages: Scalars['Int']['output'];
+};
+
+export type AgentOrgWithMemorySummary = {
+  __typename?: 'AgentOrgWithMemorySummary';
+  latestMemoryAt?: Maybe<Scalars['String']['output']>;
+  memberMemoryCount: Scalars['Int']['output'];
+  memory: MemoryAvailabilitySummary;
+  orgDefinitionId: Scalars['String']['output'];
+  orgDefinitionName: Scalars['String']['output'];
+  orgRunCount: Scalars['Int']['output'];
 };
 
 export type AgentPackage = {
@@ -304,6 +335,17 @@ export enum AgentPackageUpdateStatus {
   UpToDate = 'UP_TO_DATE'
 }
 
+export type AgentRunCollaborationMemberProjectionPayload = {
+  __typename?: 'AgentRunCollaborationMemberProjectionPayload';
+  activities: Array<Scalars['JSON']['output']>;
+  agentRunId: Scalars['String']['output'];
+  conversation: Array<Scalars['JSON']['output']>;
+  hasEarlierActiveTraceEvents: Scalars['Boolean']['output'];
+  lastActivityAt?: Maybe<Scalars['String']['output']>;
+  memberAddress: Scalars['String']['output'];
+  summary?: Maybe<Scalars['String']['output']>;
+};
+
 export type AgentRunMemoryPage = {
   __typename?: 'AgentRunMemoryPage';
   entries: Array<AgentRunMemorySummary>;
@@ -324,6 +366,11 @@ export type AgentRunMemorySummary = {
   summary?: Maybe<Scalars['String']['output']>;
   workspaceRootPath?: Maybe<Scalars['String']['output']>;
 };
+
+export enum AgentSkillScope {
+  AllInstalled = 'ALL_INSTALLED',
+  Configured = 'CONFIGURED'
+}
 
 export type AgentTeamDefinition = {
   __typename?: 'AgentTeamDefinition';
@@ -628,7 +675,56 @@ export type CatalogProviderObject = {
   providerType: Scalars['String']['output'];
 };
 
+export enum CollaborationMemberExecutionKind {
+  Configured = 'CONFIGURED',
+  TaskAgent = 'TASK_AGENT',
+  TaskTeamMember = 'TASK_TEAM_MEMBER'
+}
+
+export type CollaborationMemberMemoryTargetSummary = {
+  __typename?: 'CollaborationMemberMemoryTargetSummary';
+  agentDefinitionId?: Maybe<Scalars['String']['output']>;
+  agentRunId: Scalars['String']['output'];
+  displayName: Scalars['String']['output'];
+  executionKind: CollaborationMemberExecutionKind;
+  groupPath: Array<CollaborationMemoryGroup>;
+  lastUpdatedAt?: Maybe<Scalars['String']['output']>;
+  memberAddress: Scalars['String']['output'];
+  memory: MemoryAvailabilitySummary;
+  startedAt?: Maybe<Scalars['String']['output']>;
+};
+
+export type CollaborationMemoryGroup = {
+  __typename?: 'CollaborationMemoryGroup';
+  address: Scalars['String']['output'];
+  displayName: Scalars['String']['output'];
+  kind: CollaborationMemoryGroupKind;
+  startedAt?: Maybe<Scalars['String']['output']>;
+  teamRunId: Scalars['String']['output'];
+};
+
+export enum CollaborationMemoryGroupKind {
+  ConfiguredTeam = 'CONFIGURED_TEAM',
+  TaskTeam = 'TASK_TEAM'
+}
+
 export type CollaborationRootHistoryItem = AgentOrgRootHistoryObject | AgentTeamRootHistoryObject;
+
+export type CollaboratorMentionCandidateObject = {
+  __typename?: 'CollaboratorMentionCandidateObject';
+  coordinatorName?: Maybe<Scalars['String']['output']>;
+  definitionId: Scalars['String']['output'];
+  description: Scalars['String']['output'];
+  kind: Scalars['String']['output'];
+  memberCount?: Maybe<Scalars['Int']['output']>;
+  name: Scalars['String']['output'];
+};
+
+export type CollaboratorMentionCandidatesPayload = {
+  __typename?: 'CollaboratorMentionCandidatesPayload';
+  availability: Scalars['String']['output'];
+  candidates: Array<CollaboratorMentionCandidateObject>;
+};
 
 export type ConfigureMcpServerResult = {
   __typename?: 'ConfigureMcpServerResult';
@@ -678,50 +774,8 @@ export type CreateAgentRunInput = {
   llmConfig?: InputMaybe<Scalars['JSON']['input']>;
   llmModelIdentifier: Scalars['String']['input'];
   runtimeKind: Scalars['String']['input'];
-  skillAccessMode: SkillAccessModeEnum;
   workspaceId?: InputMaybe<Scalars['String']['input']>;
   workspaceRootPath: Scalars['String']['input'];
-};
-
-export type AgentOrgRunMemoryPage = {
-  __typename?: 'AgentOrgRunMemoryPage';
-  entries: Array<AgentOrgRunMemorySummary>;
-  page: Scalars['Int']['output'];
-  pageSize: Scalars['Int']['output'];
-  total: Scalars['Int']['output'];
-  totalPages: Scalars['Int']['output'];
-};
-
-export type AgentOrgRunMemorySummary = {
-  __typename?: 'AgentOrgRunMemorySummary';
-  createdAt?: Maybe<Scalars['String']['output']>;
-  lastUpdatedAt?: Maybe<Scalars['String']['output']>;
-  memberTargets: Array<CollaborationMemberMemoryTargetSummary>;
-  memory: MemoryAvailabilitySummary;
-  orgDefinitionId: Scalars['String']['output'];
-  orgDefinitionName: Scalars['String']['output'];
-  orgRunId: Scalars['String']['output'];
-  summary?: Maybe<Scalars['String']['output']>;
-  workspaceRootPath?: Maybe<Scalars['String']['output']>;
-};
-
-export type AgentOrgWithMemoryPage = {
-  __typename?: 'AgentOrgWithMemoryPage';
-  entries: Array<AgentOrgWithMemorySummary>;
-  page: Scalars['Int']['output'];
-  pageSize: Scalars['Int']['output'];
-  total: Scalars['Int']['output'];
-  totalPages: Scalars['Int']['output'];
-};
-
-export type AgentOrgWithMemorySummary = {
-  __typename?: 'AgentOrgWithMemorySummary';
-  latestMemoryAt?: Maybe<Scalars['String']['output']>;
-  memberMemoryCount: Scalars['Int']['output'];
-  memory: MemoryAvailabilitySummary;
-  orgDefinitionId: Scalars['String']['output'];
-  orgDefinitionName: Scalars['String']['output'];
-  orgRunCount: Scalars['Int']['output'];
 };
 
 export type CreateAgentRunResult = {
@@ -764,9 +818,11 @@ export type CreateMemoryHubCredentialInput = {
 export type CreateProjectInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
+  workspaces?: InputMaybe<Array<ProjectWorkspaceFormInput>>;
 };
 
 export type CreateProjectTaskInput = {
+  contextDraft?: InputMaybe<ProjectTaskContextDraftInput>;
   description: Scalars['String']['input'];
   projectId: Scalars['String']['input'];
 };
@@ -912,39 +968,6 @@ export type EventMonitorActiveTracePage = {
   hasEarlier: Scalars['Boolean']['output'];
   loadedEarlierCount: Scalars['Int']['output'];
 };
-
-export enum CollaborationMemberExecutionKind {
-  Configured = 'CONFIGURED',
-  TaskAgent = 'TASK_AGENT',
-  TaskTeamMember = 'TASK_TEAM_MEMBER'
-}
-
-export type CollaborationMemberMemoryTargetSummary = {
-  __typename?: 'CollaborationMemberMemoryTargetSummary';
-  agentDefinitionId?: Maybe<Scalars['String']['output']>;
-  agentRunId: Scalars['String']['output'];
-  displayName: Scalars['String']['output'];
-  executionKind: CollaborationMemberExecutionKind;
-  groupPath: Array<CollaborationMemoryGroup>;
-  lastUpdatedAt?: Maybe<Scalars['String']['output']>;
-  memberAddress: Scalars['String']['output'];
-  memory: MemoryAvailabilitySummary;
-  startedAt?: Maybe<Scalars['String']['output']>;
-};
-
-export type CollaborationMemoryGroup = {
-  __typename?: 'CollaborationMemoryGroup';
-  address: Scalars['String']['output'];
-  displayName: Scalars['String']['output'];
-  kind: CollaborationMemoryGroupKind;
-  startedAt?: Maybe<Scalars['String']['output']>;
-  teamRunId: Scalars['String']['output'];
-};
-
-export enum CollaborationMemoryGroupKind {
-  ConfiguredTeam = 'CONFIGURED_TEAM',
-  TaskTeam = 'TASK_TEAM'
-}
 
 export type EventMonitorActiveTracePageEvent = {
   __typename?: 'EventMonitorActiveTracePageEvent';
@@ -2037,18 +2060,40 @@ export type Project = {
   name: Scalars['String']['output'];
   openTaskCount: Scalars['Int']['output'];
   projectId: Scalars['String']['output'];
+  taskCount: Scalars['Int']['output'];
   updatedAt: Scalars['String']['output'];
   workspaces: Array<ProjectWorkspace>;
 };
 
 export type ProjectTask = {
   __typename?: 'ProjectTask';
+  contextFiles: Array<ProjectTaskContextFile>;
   createdAt: Scalars['String']['output'];
   description: Scalars['String']['output'];
   projectId: Scalars['String']['output'];
   status: ProjectTaskStatus;
   taskId: Scalars['String']['output'];
   updatedAt: Scalars['String']['output'];
+};
+
+export type ProjectTaskContextChangesInput = {
+  addStoredFilenames?: InputMaybe<Array<Scalars['String']['input']>>;
+  draftId?: InputMaybe<Scalars['String']['input']>;
+  removeStoredFilenames?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+export type ProjectTaskContextDraftInput = {
+  draftId: Scalars['String']['input'];
+  storedFilenames: Array<Scalars['String']['input']>;
+};
+
+export type ProjectTaskContextFile = {
+  __typename?: 'ProjectTaskContextFile';
+  displayName: Scalars['String']['output'];
+  locator: Scalars['String']['output'];
+  mimeType: Scalars['String']['output'];
+  sizeBytes: Scalars['Int']['output'];
+  storedFilename: Scalars['String']['output'];
 };
 
 export enum ProjectTaskStatus {
@@ -2071,6 +2116,11 @@ export enum ProjectWorkspaceAvailability {
   Available = 'AVAILABLE',
   Unregistered = 'UNREGISTERED'
 }
+
+export type ProjectWorkspaceFormInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  workspaceId: Scalars['String']['input'];
+};
 
 export type ProjectsCapability = {
   __typename?: 'ProjectsCapability';
@@ -2110,6 +2160,9 @@ export type Query = {
   agentOrgEndpointCatalog: DefinitionEndpointCatalog;
   agentOrgRunModelOptions: Array<AgentOrgRunModelOptionObject>;
   agentPackages: Array<AgentPackage>;
+  agentRunCollaboration?: Maybe<Scalars['JSON']['output']>;
+  agentRunCollaborationMemberEventMonitorActiveTracePage: EventMonitorActiveTracePage;
+  agentRunCollaborationMemberProjection: AgentRunCollaborationMemberProjectionPayload;
   agentRunModelOptions: RunModelOptionsObject;
   agentTeamDefinition?: Maybe<AgentTeamDefinition>;
   agentTeamDefinitions: Array<AgentTeamDefinition>;
@@ -2126,6 +2179,7 @@ export type Query = {
   availableOptionalToolExecutionResultProcessorNames: Array<Scalars['String']['output']>;
   availableOptionalToolInvocationPreprocessorNames: Array<Scalars['String']['output']>;
   availableToolNames: Array<Scalars['String']['output']>;
+  collaboratorMentionCandidates: CollaboratorMentionCandidatesPayload;
   definitionAdmissionDiagnostics: Array<DefinitionAdmissionDiagnostic>;
   fileContent: Scalars['String']['output'];
   folderChildren: Scalars['String']['output'];
@@ -2134,6 +2188,7 @@ export type Query = {
   getAgentOrgMemberRunMemoryView: AgentMemoryView;
   getAgentOrgMemberRunProjection: AgentOrgMemberRunProjectionPayload;
   getAgentOrgMemberTokenUsageSummary: TokenUsageRunSummaryGraphql;
+  getAgentOrgRootHistory?: Maybe<AgentOrgRootHistoryObject>;
   getAgentOrgRunConfig: AgentOrgRunConfigObject;
   getAgentOrgRunInspection: Scalars['JSON']['output'];
   getAgentRunMemoryView: AgentMemoryView;
@@ -2142,7 +2197,6 @@ export type Query = {
   getAgentRunTokenUsageSummary: TokenUsageRunSummaryGraphql;
   getAppDataMigrations: Array<AppDataMigrationRecordObject>;
   getEffectiveStreamingContentFlushIntervalMs: Scalars['Int']['output'];
-  getEffectiveWorkingContextCompactionStrategyId: Scalars['String']['output'];
   getGeminiSetupConfig: GeminiSetupStateObject;
   getMemoryHubConnectionInfo: MemoryHubConnectionInfoGql;
   getMemorySyncStatus: MemorySyncStatusGql;
@@ -2162,7 +2216,6 @@ export type Query = {
   getTeamRunExecutionCheckpoint: TeamRunExecutionCheckpointPayload;
   getTeamRunResumeConfig: TeamRunResumeConfigPayload;
   getTeamRunTokenUsageSummary: TokenUsageRunSummaryGraphql;
-  getWorkingContextCompactionStrategies: Array<WorkingContextCompactionStrategyOption>;
   health: HealthStatus;
   listAgentOrgRunsWithMemory: AgentOrgRunMemoryPage;
   listAgentOrgsWithMemory: AgentOrgWithMemoryPage;
@@ -2185,7 +2238,8 @@ export type Query = {
   providerCredentialSettings: Array<ProviderCredentialSettingObject>;
   providerModelCatalogSnapshots: Array<ProviderModelCatalogSnapshotObject>;
   qwenSetupStatus: QwenSetupStatus;
-  runtimeAvailabilities: Array<RuntimeAvailabilityObject>;
+  runtimeAvailability: RuntimeAvailabilityObject;
+  runtimeAvailabilityKinds: Array<Scalars['String']['output']>;
   runtimeCurrentModelDescriptors: Array<RuntimeCurrentModelDescriptorObject>;
   searchFiles: Array<Scalars['String']['output']>;
   skill?: Maybe<Skill>;
@@ -2193,6 +2247,7 @@ export type Query = {
   skillFileTree?: Maybe<Scalars['String']['output']>;
   skillImprovementCapability: SkillImprovementCapability;
   skillImprovementStrategyCatalog: GraphqlSkillImprovementStrategyCatalog;
+  skillNameIssues: Array<SkillNameIssue>;
   skillSources: Array<SkillSource>;
   skills: Array<Skill>;
   teamRunModelOptions: Array<TeamScopeModelOptionsObject>;
@@ -2229,6 +2284,26 @@ export type QueryAgentOrgRunModelOptionsArgs = {
 };
 
 
+export type QueryAgentRunCollaborationArgs = {
+  runId: Scalars['String']['input'];
+};
+
+
+export type QueryAgentRunCollaborationMemberEventMonitorActiveTracePageArgs = {
+  agentRunId: Scalars['String']['input'];
+  beforeCursor?: InputMaybe<Scalars['String']['input']>;
+  hostRunId: Scalars['String']['input'];
+  memberAddress: Scalars['String']['input'];
+};
+
+
+export type QueryAgentRunCollaborationMemberProjectionArgs = {
+  agentRunId: Scalars['String']['input'];
+  hostRunId: Scalars['String']['input'];
+  memberAddress: Scalars['String']['input'];
+};
+
+
 export type QueryAgentRunModelOptionsArgs = {
   agentRunId: Scalars['String']['input'];
 };
@@ -2251,6 +2326,12 @@ export type QueryApplicationArgs = {
 
 export type QueryApplicationPackageDetailsArgs = {
   packageId: Scalars['String']['input'];
+};
+
+
+export type QueryCollaboratorMentionCandidatesArgs = {
+  rootRunId: Scalars['String']['input'];
+  rootSubjectKind: Scalars['String']['input'];
 };
 
 
@@ -2279,6 +2360,21 @@ export type QueryGetAgentOrgMemberEventMonitorActiveTracePageArgs = {
 };
 
 
+export type QueryGetAgentOrgMemberRunMemoryViewArgs = {
+  agentRunId: Scalars['String']['input'];
+  includeArchive?: Scalars['Boolean']['input'];
+  includeEpisodic?: Scalars['Boolean']['input'];
+  includeRawTraceFiles?: Scalars['Boolean']['input'];
+  includeRawTraces?: Scalars['Boolean']['input'];
+  includeSemantic?: Scalars['Boolean']['input'];
+  includeWorkingContext?: Scalars['Boolean']['input'];
+  orgRunId: Scalars['String']['input'];
+  rawTraceFileName?: InputMaybe<Scalars['String']['input']>;
+  rawTraceLimit?: InputMaybe<Scalars['Int']['input']>;
+  source?: InputMaybe<MemoryExplorerSourceInput>;
+};
+
+
 export type QueryGetAgentOrgMemberRunProjectionArgs = {
   agentRunId: Scalars['String']['input'];
   memberAddress: Scalars['String']['input'];
@@ -2293,6 +2389,11 @@ export type QueryGetAgentOrgMemberTokenUsageSummaryArgs = {
 };
 
 
+export type QueryGetAgentOrgRootHistoryArgs = {
+  orgRunId: Scalars['String']['input'];
+};
+
+
 export type QueryGetAgentOrgRunConfigArgs = {
   orgRunId: Scalars['String']['input'];
 };
@@ -2300,21 +2401,6 @@ export type QueryGetAgentOrgRunConfigArgs = {
 
 export type QueryGetAgentOrgRunInspectionArgs = {
   orgRunId: Scalars['String']['input'];
-};
-
-
-export type QueryGetAgentOrgMemberRunMemoryViewArgs = {
-  agentRunId: Scalars['String']['input'];
-  includeArchive?: Scalars['Boolean']['input'];
-  includeEpisodic?: Scalars['Boolean']['input'];
-  includeRawTraceFiles?: Scalars['Boolean']['input'];
-  includeRawTraces?: Scalars['Boolean']['input'];
-  includeSemantic?: Scalars['Boolean']['input'];
-  includeWorkingContext?: Scalars['Boolean']['input'];
-  orgRunId: Scalars['String']['input'];
-  rawTraceFileName?: InputMaybe<Scalars['String']['input']>;
-  rawTraceLimit?: InputMaybe<Scalars['Int']['input']>;
-  source?: InputMaybe<MemoryExplorerSourceInput>;
 };
 
 
@@ -2515,6 +2601,11 @@ export type QueryProviderModelCatalogSnapshotsArgs = {
 };
 
 
+export type QueryRuntimeAvailabilityArgs = {
+  runtimeKind: Scalars['String']['input'];
+};
+
+
 export type QueryRuntimeCurrentModelDescriptorsArgs = {
   identifiers: Array<Scalars['String']['input']>;
   runtimeKind: Scalars['String']['input'];
@@ -2687,6 +2778,7 @@ export type RunHistoryItemObject = {
   __typename?: 'RunHistoryItemObject';
   archivedAt?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['String']['output'];
+  hasCollaboration: Scalars['Boolean']['output'];
   isActive: Scalars['Boolean']['output'];
   runId: Scalars['String']['output'];
   shouldConnectStream: Scalars['Boolean']['output'];
@@ -2704,7 +2796,6 @@ export type RunMetadataConfigObject = {
   llmModelIdentifier: Scalars['String']['output'];
   runtimeKind: Scalars['String']['output'];
   runtimeReference: RunRuntimeReferenceObject;
-  skillAccessMode?: Maybe<SkillAccessModeEnum>;
   workspaceRootPath: Scalars['String']['output'];
 };
 
@@ -2833,11 +2924,6 @@ export type Skill = {
   updatedAt?: Maybe<Scalars['String']['output']>;
 };
 
-export enum SkillAccessModeEnum {
-  None = 'NONE',
-  PreloadedOnly = 'PRELOADED_ONLY'
-}
-
 export type SkillCatalogReloadResult = {
   __typename?: 'SkillCatalogReloadResult';
   skillSources: Array<SkillSource>;
@@ -2849,6 +2935,14 @@ export type SkillImprovementCapability = {
   enabled: Scalars['Boolean']['output'];
   settingKey: Scalars['String']['output'];
   source: Scalars['String']['output'];
+};
+
+export type SkillNameIssue = {
+  __typename?: 'SkillNameIssue';
+  ignoredPaths: Array<Scalars['String']['output']>;
+  kind: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  usedPath: Scalars['String']['output'];
 };
 
 export type SkillSource = {
@@ -2937,7 +3031,6 @@ export type TeamMemberConfigInput = {
   llmModelIdentifier: Scalars['String']['input'];
   memberAddress: Scalars['String']['input'];
   runtimeKind: Scalars['String']['input'];
-  skillAccessMode: SkillAccessModeEnum;
   workspaceRootPath?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -2984,7 +3077,6 @@ export type TeamScopeLaunchConfigInput = {
   llmConfig?: InputMaybe<Scalars['JSON']['input']>;
   llmModelIdentifier: Scalars['String']['input'];
   runtimeKind: Scalars['String']['input'];
-  skillAccessMode: SkillAccessModeEnum;
   teamAddress: Scalars['String']['input'];
   workspaceRootPath?: InputMaybe<Scalars['String']['input']>;
 };
@@ -3369,9 +3461,11 @@ export type UpdateProjectInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   projectId: Scalars['String']['input'];
+  workspaces?: InputMaybe<Array<ProjectWorkspaceFormInput>>;
 };
 
 export type UpdateProjectTaskInput = {
+  contextChanges?: InputMaybe<ProjectTaskContextChangesInput>;
   description: Scalars['String']['input'];
   projectId: Scalars['String']['input'];
   taskId: Scalars['String']['input'];
@@ -3453,12 +3547,6 @@ export type UsageStatistics = {
   thinkingCost?: Maybe<Scalars['Float']['output']>;
   thinkingTokens: Scalars['SafeInt']['output'];
   totalCost?: Maybe<Scalars['Float']['output']>;
-};
-
-export type WorkingContextCompactionStrategyOption = {
-  __typename?: 'WorkingContextCompactionStrategyOption';
-  id: Scalars['String']['output'];
-  name: Scalars['String']['output'];
 };
 
 export type WorkspaceHistoryTeamDefinitionObject = {
@@ -4005,14 +4093,14 @@ export type CreateProjectMutationVariables = Exact<{
 }>;
 
 
-export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> } };
+export type CreateProjectMutation = { __typename?: 'Mutation', createProject: { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, taskCount: number, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> } };
 
 export type UpdateProjectMutationVariables = Exact<{
   input: UpdateProjectInput;
 }>;
 
 
-export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> } };
+export type UpdateProjectMutation = { __typename?: 'Mutation', updateProject: { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, taskCount: number, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> } };
 
 export type DeleteProjectMutationVariables = Exact<{
   projectId: Scalars['String']['input'];
@@ -4026,35 +4114,35 @@ export type AddProjectWorkspaceMutationVariables = Exact<{
 }>;
 
 
-export type AddProjectWorkspaceMutation = { __typename?: 'Mutation', addProjectWorkspace: { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> } };
+export type AddProjectWorkspaceMutation = { __typename?: 'Mutation', addProjectWorkspace: { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, taskCount: number, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> } };
 
 export type UpdateProjectWorkspaceMutationVariables = Exact<{
   input: UpdateProjectWorkspaceInput;
 }>;
 
 
-export type UpdateProjectWorkspaceMutation = { __typename?: 'Mutation', updateProjectWorkspace: { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> } };
+export type UpdateProjectWorkspaceMutation = { __typename?: 'Mutation', updateProjectWorkspace: { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, taskCount: number, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> } };
 
 export type RemoveProjectWorkspaceMutationVariables = Exact<{
   input: RemoveProjectWorkspaceInput;
 }>;
 
 
-export type RemoveProjectWorkspaceMutation = { __typename?: 'Mutation', removeProjectWorkspace: { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> } };
+export type RemoveProjectWorkspaceMutation = { __typename?: 'Mutation', removeProjectWorkspace: { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, taskCount: number, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> } };
 
 export type CreateProjectTaskMutationVariables = Exact<{
   input: CreateProjectTaskInput;
 }>;
 
 
-export type CreateProjectTaskMutation = { __typename?: 'Mutation', createProjectTask: { __typename?: 'ProjectTask', taskId: string, projectId: string, description: string, status: ProjectTaskStatus, createdAt: string, updatedAt: string } };
+export type CreateProjectTaskMutation = { __typename?: 'Mutation', createProjectTask: { __typename?: 'ProjectTask', taskId: string, projectId: string, description: string, status: ProjectTaskStatus, createdAt: string, updatedAt: string, contextFiles: Array<{ __typename?: 'ProjectTaskContextFile', storedFilename: string, displayName: string, mimeType: string, sizeBytes: number, locator: string }> } };
 
 export type UpdateProjectTaskMutationVariables = Exact<{
   input: UpdateProjectTaskInput;
 }>;
 
 
-export type UpdateProjectTaskMutation = { __typename?: 'Mutation', updateProjectTask: { __typename?: 'ProjectTask', taskId: string, projectId: string, description: string, status: ProjectTaskStatus, createdAt: string, updatedAt: string } };
+export type UpdateProjectTaskMutation = { __typename?: 'Mutation', updateProjectTask: { __typename?: 'ProjectTask', taskId: string, projectId: string, description: string, status: ProjectTaskStatus, createdAt: string, updatedAt: string, contextFiles: Array<{ __typename?: 'ProjectTaskContextFile', storedFilename: string, displayName: string, mimeType: string, sizeBytes: number, locator: string }> } };
 
 export type DeleteProjectTaskMutationVariables = Exact<{
   input: DeleteProjectTaskInput;
@@ -4248,6 +4336,37 @@ export type ListCollaborationRootHistoryQueryVariables = Exact<{ [key: string]: 
 
 
 export type ListCollaborationRootHistoryQuery = { __typename?: 'Query', listCollaborationRootHistory: Array<{ __typename: 'AgentOrgRootHistoryObject', root_subject_kind: string, root_run_id: string, created_at: string, archived_at?: string | null, is_active: boolean, summary: string, org: any } | { __typename: 'AgentTeamRootHistoryObject', root_subject_kind: string, root_run_id: string }> };
+
+export type GetAgentOrgRootHistoryQueryVariables = Exact<{
+  orgRunId: Scalars['String']['input'];
+}>;
+
+
+export type GetAgentOrgRootHistoryQuery = { __typename?: 'Query', getAgentOrgRootHistory?: { __typename?: 'AgentOrgRootHistoryObject', root_subject_kind: string, root_run_id: string, created_at: string, archived_at?: string | null, is_active: boolean, summary: string, org: any } | null };
+
+export type GetCollaboratorMentionCandidatesQueryVariables = Exact<{
+  rootSubjectKind: Scalars['String']['input'];
+  rootRunId: Scalars['String']['input'];
+}>;
+
+
+export type GetCollaboratorMentionCandidatesQuery = { __typename?: 'Query', collaboratorMentionCandidates: { __typename?: 'CollaboratorMentionCandidatesPayload', availability: string, candidates: Array<{ __typename?: 'CollaboratorMentionCandidateObject', kind: string, definitionId: string, name: string, description: string, memberCount?: number | null, coordinatorName?: string | null }> } };
+
+export type GetAgentRunCollaborationQueryVariables = Exact<{
+  runId: Scalars['String']['input'];
+}>;
+
+
+export type GetAgentRunCollaborationQuery = { __typename?: 'Query', agentRunCollaboration?: any | null };
+
+export type GetAgentRunCollaborationMemberProjectionQueryVariables = Exact<{
+  hostRunId: Scalars['String']['input'];
+  memberAddress: Scalars['String']['input'];
+  agentRunId: Scalars['String']['input'];
+}>;
+
+
+export type GetAgentRunCollaborationMemberProjectionQuery = { __typename?: 'Query', agentRunCollaborationMemberProjection: { __typename?: 'AgentRunCollaborationMemberProjectionPayload', agentRunId: string, memberAddress: string, conversation: Array<any>, activities: Array<any>, summary?: string | null, lastActivityAt?: string | null, hasEarlierActiveTraceEvents: boolean } };
 
 export type GetFileContentQueryVariables = Exact<{
   workspaceId: Scalars['String']['input'];
@@ -4447,28 +4566,28 @@ export type GetAgentOrgMemberRunMemoryViewQueryVariables = Exact<{
 
 export type GetAgentOrgMemberRunMemoryViewQuery = { __typename?: 'Query', getAgentOrgMemberRunMemoryView: { __typename?: 'AgentMemoryView', runId: string, episodic?: Array<any> | null, semantic?: Array<any> | null, selectedRawTraceFileName?: string | null, workingContext?: Array<{ __typename?: 'MemoryMessage', role: string, content?: string | null, reasoning?: string | null, toolPayload?: any | null, ts?: number | null }> | null, rawTraceFiles?: Array<{ __typename?: 'RawTraceFileSummary', fileName: string, kind: string, recordCount: number, segmentIndex?: number | null, firstTimestamp?: number | null, lastTimestamp?: number | null }> | null, rawTraces?: Array<{ __typename?: 'MemoryTraceEvent', scope: string, id?: string | null, traceType: string, sourceEvent?: string | null, content?: string | null, toolName?: string | null, toolCallId?: string | null, toolArgs?: any | null, toolResult?: any | null, toolError?: string | null, media?: any | null, turnId?: string | null, seq?: number | null, ts: number, fileAttachments?: Array<{ __typename?: 'MemoryFileAttachment', uri: string, fileType: string, fileName?: string | null }> | null }> | null } };
 
-export type ProjectFieldsFragment = { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> };
+export type ProjectFieldsFragment = { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, taskCount: number, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> };
 
 export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> }> };
+export type GetProjectsQuery = { __typename?: 'Query', projects: Array<{ __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, taskCount: number, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> }> };
 
 export type GetProjectQueryVariables = Exact<{
   projectId: Scalars['String']['input'];
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> } | null };
+export type GetProjectQuery = { __typename?: 'Query', project?: { __typename?: 'Project', projectId: string, name: string, description: string, createdAt: string, updatedAt: string, taskCount: number, openTaskCount: number, workspaces: Array<{ __typename?: 'ProjectWorkspace', workspaceId: string, workspaceRootPath: string, displayName: string, description: string, addedAt: string, availability: ProjectWorkspaceAvailability }> } | null };
 
-export type ProjectTaskFieldsFragment = { __typename?: 'ProjectTask', taskId: string, projectId: string, description: string, status: ProjectTaskStatus, createdAt: string, updatedAt: string };
+export type ProjectTaskFieldsFragment = { __typename?: 'ProjectTask', taskId: string, projectId: string, description: string, status: ProjectTaskStatus, createdAt: string, updatedAt: string, contextFiles: Array<{ __typename?: 'ProjectTaskContextFile', storedFilename: string, displayName: string, mimeType: string, sizeBytes: number, locator: string }> };
 
 export type GetProjectTasksQueryVariables = Exact<{
   projectId: Scalars['String']['input'];
 }>;
 
 
-export type GetProjectTasksQuery = { __typename?: 'Query', projectTasks: Array<{ __typename?: 'ProjectTask', taskId: string, projectId: string, description: string, status: ProjectTaskStatus, createdAt: string, updatedAt: string }> };
+export type GetProjectTasksQuery = { __typename?: 'Query', projectTasks: Array<{ __typename?: 'ProjectTask', taskId: string, projectId: string, description: string, status: ProjectTaskStatus, createdAt: string, updatedAt: string, contextFiles: Array<{ __typename?: 'ProjectTaskContextFile', storedFilename: string, displayName: string, mimeType: string, sizeBytes: number, locator: string }> }> };
 
 export type ProjectsCapabilityFieldsFragment = { __typename?: 'ProjectsCapability', enabled: boolean, settingKey: string, source: ProjectsCapabilitySource };
 
@@ -4482,7 +4601,7 @@ export type ListWorkspaceRunHistoryQueryVariables = Exact<{
 }>;
 
 
-export type ListWorkspaceRunHistoryQuery = { __typename?: 'Query', listWorkspaceRunHistory: Array<{ __typename?: 'WorkspaceRunHistoryGroupObject', workspaceRootPath: string, workspaceName: string, agentDefinitions: Array<{ __typename?: 'RunHistoryAgentGroupObject', agentDefinitionId: string, agentName: string, runs: Array<{ __typename?: 'RunHistoryItemObject', runId: string, summary: string, createdAt: string, archivedAt?: string | null, terminatedAt?: string | null, status: string, isActive: boolean, shouldConnectStream: boolean, statusSource: string }> }>, teamDefinitions: Array<{ __typename?: 'WorkspaceHistoryTeamDefinitionObject', teamDefinitionId: string, teamDefinitionName: string, runs: Array<{ __typename?: 'WorkspaceHistoryTeamRunItemObject', teamRunId: string, teamDefinitionId: string, teamDefinitionName: string, coordinatorAddress: string, workspaceRootPath?: string | null, summary: string, createdAt: string, archivedAt?: string | null, terminatedAt?: string | null, isActive: boolean, rootTeam: any, members: Array<{ __typename?: 'WorkspaceHistoryTeamRunMemberObject', memberAddress: string, displayName: string, agentRunId: string, status: string, runtimeKind: string, workspaceRootPath?: string | null }> }> }> }> };
+export type ListWorkspaceRunHistoryQuery = { __typename?: 'Query', listWorkspaceRunHistory: Array<{ __typename?: 'WorkspaceRunHistoryGroupObject', workspaceRootPath: string, workspaceName: string, agentDefinitions: Array<{ __typename?: 'RunHistoryAgentGroupObject', agentDefinitionId: string, agentName: string, runs: Array<{ __typename?: 'RunHistoryItemObject', runId: string, summary: string, createdAt: string, archivedAt?: string | null, terminatedAt?: string | null, status: string, isActive: boolean, shouldConnectStream: boolean, statusSource: string, hasCollaboration: boolean }> }>, teamDefinitions: Array<{ __typename?: 'WorkspaceHistoryTeamDefinitionObject', teamDefinitionId: string, teamDefinitionName: string, runs: Array<{ __typename?: 'WorkspaceHistoryTeamRunItemObject', teamRunId: string, teamDefinitionId: string, teamDefinitionName: string, coordinatorAddress: string, workspaceRootPath?: string | null, summary: string, createdAt: string, archivedAt?: string | null, terminatedAt?: string | null, isActive: boolean, rootTeam: any, members: Array<{ __typename?: 'WorkspaceHistoryTeamRunMemberObject', memberAddress: string, displayName: string, agentRunId: string, status: string, runtimeKind: string, workspaceRootPath?: string | null }> }> }> }> };
 
 export type GetWorkspaceRunHistoryQueryVariables = Exact<{
   workspaceId: Scalars['String']['input'];
@@ -4490,7 +4609,7 @@ export type GetWorkspaceRunHistoryQueryVariables = Exact<{
 }>;
 
 
-export type GetWorkspaceRunHistoryQuery = { __typename?: 'Query', workspaceRunHistory: { __typename?: 'WorkspaceRunHistoryGroupObject', workspaceRootPath: string, workspaceName: string, agentDefinitions: Array<{ __typename?: 'RunHistoryAgentGroupObject', agentDefinitionId: string, agentName: string, runs: Array<{ __typename?: 'RunHistoryItemObject', runId: string, summary: string, createdAt: string, archivedAt?: string | null, terminatedAt?: string | null, status: string, isActive: boolean, shouldConnectStream: boolean, statusSource: string }> }>, teamDefinitions: Array<{ __typename?: 'WorkspaceHistoryTeamDefinitionObject', teamDefinitionId: string, teamDefinitionName: string, runs: Array<{ __typename?: 'WorkspaceHistoryTeamRunItemObject', teamRunId: string, teamDefinitionId: string, teamDefinitionName: string, coordinatorAddress: string, workspaceRootPath?: string | null, summary: string, createdAt: string, archivedAt?: string | null, terminatedAt?: string | null, isActive: boolean, rootTeam: any, members: Array<{ __typename?: 'WorkspaceHistoryTeamRunMemberObject', memberAddress: string, displayName: string, agentRunId: string, status: string, runtimeKind: string, workspaceRootPath?: string | null }> }> }> } };
+export type GetWorkspaceRunHistoryQuery = { __typename?: 'Query', workspaceRunHistory: { __typename?: 'WorkspaceRunHistoryGroupObject', workspaceRootPath: string, workspaceName: string, agentDefinitions: Array<{ __typename?: 'RunHistoryAgentGroupObject', agentDefinitionId: string, agentName: string, runs: Array<{ __typename?: 'RunHistoryItemObject', runId: string, summary: string, createdAt: string, archivedAt?: string | null, terminatedAt?: string | null, status: string, isActive: boolean, shouldConnectStream: boolean, statusSource: string, hasCollaboration: boolean }> }>, teamDefinitions: Array<{ __typename?: 'WorkspaceHistoryTeamDefinitionObject', teamDefinitionId: string, teamDefinitionName: string, runs: Array<{ __typename?: 'WorkspaceHistoryTeamRunItemObject', teamRunId: string, teamDefinitionId: string, teamDefinitionName: string, coordinatorAddress: string, workspaceRootPath?: string | null, summary: string, createdAt: string, archivedAt?: string | null, terminatedAt?: string | null, isActive: boolean, rootTeam: any, members: Array<{ __typename?: 'WorkspaceHistoryTeamRunMemberObject', memberAddress: string, displayName: string, agentRunId: string, status: string, runtimeKind: string, workspaceRootPath?: string | null }> }> }> } };
 
 export type GetRunProjectionQueryVariables = Exact<{
   runId: Scalars['String']['input'];
@@ -4585,7 +4704,7 @@ export type GetAgentRunResumeConfigQueryVariables = Exact<{
 }>;
 
 
-export type GetAgentRunResumeConfigQuery = { __typename?: 'Query', getAgentRunResumeConfig: { __typename?: 'RunResumeConfigPayload', runId: string, isActive: boolean, metadataConfig: { __typename?: 'RunMetadataConfigObject', agentDefinitionId: string, workspaceRootPath: string, llmModelIdentifier: string, llmConfig?: any | null, autoExecuteTools: boolean, skillAccessMode?: SkillAccessModeEnum | null, runtimeKind: string, runtimeReference: { __typename?: 'RunRuntimeReferenceObject', runtimeKind: string, sessionId?: string | null, threadId?: string | null, metadata?: any | null } }, modelConfigEditability: { __typename?: 'RunModelConfigEditabilityObject', editable: boolean, reason?: string | null } } };
+export type GetAgentRunResumeConfigQuery = { __typename?: 'Query', getAgentRunResumeConfig: { __typename?: 'RunResumeConfigPayload', runId: string, isActive: boolean, metadataConfig: { __typename?: 'RunMetadataConfigObject', agentDefinitionId: string, workspaceRootPath: string, llmModelIdentifier: string, llmConfig?: any | null, autoExecuteTools: boolean, runtimeKind: string, runtimeReference: { __typename?: 'RunRuntimeReferenceObject', runtimeKind: string, sessionId?: string | null, threadId?: string | null, metadata?: any | null } }, modelConfigEditability: { __typename?: 'RunModelConfigEditabilityObject', editable: boolean, reason?: string | null } } };
 
 export type GetAgentOrgRunInspectionQueryVariables = Exact<{
   orgRunId: Scalars['String']['input'];
@@ -4633,15 +4752,22 @@ export type RuntimeCurrentModelDescriptorsQueryVariables = Exact<{
 
 export type RuntimeCurrentModelDescriptorsQuery = { __typename?: 'Query', runtimeCurrentModelDescriptors: Array<{ __typename?: 'RuntimeCurrentModelDescriptorObject', identifier: string, model?: { __typename?: 'ModelDetail', modelIdentifier: string, name: string, canonicalName: string, providerName: string, providerType: string, description?: string | null, configSchema?: any | null } | null }> };
 
-export type GetRuntimeAvailabilitiesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetRuntimeAvailabilityKindsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetRuntimeAvailabilitiesQuery = { __typename?: 'Query', runtimeAvailabilities: Array<{ __typename?: 'RuntimeAvailabilityObject', runtimeKind: string, enabled: boolean, reason?: string | null }> };
+export type GetRuntimeAvailabilityKindsQuery = { __typename?: 'Query', runtimeAvailabilityKinds: Array<string> };
+
+export type GetRuntimeAvailabilityQueryVariables = Exact<{
+  runtimeKind: Scalars['String']['input'];
+}>;
+
+
+export type GetRuntimeAvailabilityQuery = { __typename?: 'Query', runtimeAvailability: { __typename?: 'RuntimeAvailabilityObject', runtimeKind: string, enabled: boolean, reason?: string | null } };
 
 export type GetServerSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetServerSettingsQuery = { __typename?: 'Query', getEffectiveWorkingContextCompactionStrategyId: string, getEffectiveStreamingContentFlushIntervalMs: number, getServerSettings: Array<{ __typename: 'ServerSetting', key: string, value: string, description: string, isEditable: boolean, isDeletable: boolean }> };
+export type GetServerSettingsQuery = { __typename?: 'Query', getEffectiveStreamingContentFlushIntervalMs: number, getServerSettings: Array<{ __typename: 'ServerSetting', key: string, value: string, description: string, isEditable: boolean, isDeletable: boolean }> };
 
 export type GetSearchConfigQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4760,11 +4886,6 @@ export type GetToolsGroupedByCategoryQueryVariables = Exact<{
 
 export type GetToolsGroupedByCategoryQuery = { __typename?: 'Query', toolsGroupedByCategory: Array<{ __typename: 'ToolCategoryGroup', categoryName: string, tools: Array<{ __typename: 'ToolDefinitionDetail', name: string, description: string, origin: ToolOriginEnum, category: string, argumentSchema?: { __typename: 'ToolArgumentSchema', parameters: Array<{ __typename: 'ToolParameterDefinition', name: string, paramType: ToolParameterTypeEnum, description: string, required: boolean, defaultValue?: string | null, enumValues?: Array<string> | null, jsonSchema?: any | null }> } | null }> }> };
 
-export type GetWorkingContextCompactionStrategiesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetWorkingContextCompactionStrategiesQuery = { __typename?: 'Query', getWorkingContextCompactionStrategies: Array<{ __typename?: 'WorkingContextCompactionStrategyOption', id: string, name: string }> };
-
 export type GetAllWorkspacesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -4879,6 +5000,11 @@ export type EnableSkillMutationVariables = Exact<{
 
 
 export type EnableSkillMutation = { __typename?: 'Mutation', enableSkill: { __typename?: 'Skill', name: string, isDisabled: boolean } };
+
+export type GetSkillNameIssuesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetSkillNameIssuesQuery = { __typename?: 'Query', skillNameIssues: Array<{ __typename?: 'SkillNameIssue', name: string, usedPath: string, ignoredPaths: Array<string>, kind: string }> };
 
 export const AgentPackageFieldsFragmentDoc = gql`
     fragment AgentPackageFields on AgentPackage {
@@ -5244,6 +5370,7 @@ export const ProjectFieldsFragmentDoc = gql`
     addedAt
     availability
   }
+  taskCount
   openTaskCount
 }
     `;
@@ -5254,6 +5381,13 @@ export const ProjectTaskFieldsFragmentDoc = gql`
   description
   status
   createdAt
+  contextFiles {
+    storedFilename
+    displayName
+    mimeType
+    sizeBytes
+    locator
+  }
   updatedAt
 }
     `;
@@ -8905,6 +9039,154 @@ export function useListCollaborationRootHistoryLazyQuery(options: VueApolloCompo
   return VueApolloComposable.useLazyQuery<ListCollaborationRootHistoryQuery, ListCollaborationRootHistoryQueryVariables>(ListCollaborationRootHistoryDocument, {}, options);
 }
 export type ListCollaborationRootHistoryQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<ListCollaborationRootHistoryQuery, ListCollaborationRootHistoryQueryVariables>;
+export const GetAgentOrgRootHistoryDocument = gql`
+    query GetAgentOrgRootHistory($orgRunId: String!) {
+  getAgentOrgRootHistory(orgRunId: $orgRunId) {
+    root_subject_kind
+    root_run_id
+    created_at
+    archived_at
+    is_active
+    summary
+    org
+  }
+}
+    `;
+
+/**
+ * __useGetAgentOrgRootHistoryQuery__
+ *
+ * To run a query within a Vue component, call `useGetAgentOrgRootHistoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAgentOrgRootHistoryQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetAgentOrgRootHistoryQuery({
+ *   orgRunId: // value for 'orgRunId'
+ * });
+ */
+export function useGetAgentOrgRootHistoryQuery(variables: GetAgentOrgRootHistoryQueryVariables | VueCompositionApi.Ref<GetAgentOrgRootHistoryQueryVariables> | ReactiveFunction<GetAgentOrgRootHistoryQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetAgentOrgRootHistoryQuery, GetAgentOrgRootHistoryQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetAgentOrgRootHistoryQuery, GetAgentOrgRootHistoryQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetAgentOrgRootHistoryQuery, GetAgentOrgRootHistoryQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetAgentOrgRootHistoryQuery, GetAgentOrgRootHistoryQueryVariables>(GetAgentOrgRootHistoryDocument, variables, options);
+}
+export function useGetAgentOrgRootHistoryLazyQuery(variables?: GetAgentOrgRootHistoryQueryVariables | VueCompositionApi.Ref<GetAgentOrgRootHistoryQueryVariables> | ReactiveFunction<GetAgentOrgRootHistoryQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetAgentOrgRootHistoryQuery, GetAgentOrgRootHistoryQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetAgentOrgRootHistoryQuery, GetAgentOrgRootHistoryQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetAgentOrgRootHistoryQuery, GetAgentOrgRootHistoryQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetAgentOrgRootHistoryQuery, GetAgentOrgRootHistoryQueryVariables>(GetAgentOrgRootHistoryDocument, variables, options);
+}
+export type GetAgentOrgRootHistoryQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetAgentOrgRootHistoryQuery, GetAgentOrgRootHistoryQueryVariables>;
+export const GetCollaboratorMentionCandidatesDocument = gql`
+    query GetCollaboratorMentionCandidates($rootSubjectKind: String!, $rootRunId: String!) {
+  collaboratorMentionCandidates(
+    rootSubjectKind: $rootSubjectKind
+    rootRunId: $rootRunId
+  ) {
+    availability
+    candidates {
+      kind
+      definitionId
+      name
+      description
+      memberCount
+      coordinatorName
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCollaboratorMentionCandidatesQuery__
+ *
+ * To run a query within a Vue component, call `useGetCollaboratorMentionCandidatesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCollaboratorMentionCandidatesQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetCollaboratorMentionCandidatesQuery({
+ *   rootSubjectKind: // value for 'rootSubjectKind'
+ *   rootRunId: // value for 'rootRunId'
+ * });
+ */
+export function useGetCollaboratorMentionCandidatesQuery(variables: GetCollaboratorMentionCandidatesQueryVariables | VueCompositionApi.Ref<GetCollaboratorMentionCandidatesQueryVariables> | ReactiveFunction<GetCollaboratorMentionCandidatesQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetCollaboratorMentionCandidatesQuery, GetCollaboratorMentionCandidatesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetCollaboratorMentionCandidatesQuery, GetCollaboratorMentionCandidatesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetCollaboratorMentionCandidatesQuery, GetCollaboratorMentionCandidatesQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetCollaboratorMentionCandidatesQuery, GetCollaboratorMentionCandidatesQueryVariables>(GetCollaboratorMentionCandidatesDocument, variables, options);
+}
+export function useGetCollaboratorMentionCandidatesLazyQuery(variables?: GetCollaboratorMentionCandidatesQueryVariables | VueCompositionApi.Ref<GetCollaboratorMentionCandidatesQueryVariables> | ReactiveFunction<GetCollaboratorMentionCandidatesQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetCollaboratorMentionCandidatesQuery, GetCollaboratorMentionCandidatesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetCollaboratorMentionCandidatesQuery, GetCollaboratorMentionCandidatesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetCollaboratorMentionCandidatesQuery, GetCollaboratorMentionCandidatesQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetCollaboratorMentionCandidatesQuery, GetCollaboratorMentionCandidatesQueryVariables>(GetCollaboratorMentionCandidatesDocument, variables, options);
+}
+export type GetCollaboratorMentionCandidatesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetCollaboratorMentionCandidatesQuery, GetCollaboratorMentionCandidatesQueryVariables>;
+export const GetAgentRunCollaborationDocument = gql`
+    query GetAgentRunCollaboration($runId: String!) {
+  agentRunCollaboration(runId: $runId)
+}
+    `;
+
+/**
+ * __useGetAgentRunCollaborationQuery__
+ *
+ * To run a query within a Vue component, call `useGetAgentRunCollaborationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAgentRunCollaborationQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetAgentRunCollaborationQuery({
+ *   runId: // value for 'runId'
+ * });
+ */
+export function useGetAgentRunCollaborationQuery(variables: GetAgentRunCollaborationQueryVariables | VueCompositionApi.Ref<GetAgentRunCollaborationQueryVariables> | ReactiveFunction<GetAgentRunCollaborationQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetAgentRunCollaborationQuery, GetAgentRunCollaborationQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetAgentRunCollaborationQuery, GetAgentRunCollaborationQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetAgentRunCollaborationQuery, GetAgentRunCollaborationQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetAgentRunCollaborationQuery, GetAgentRunCollaborationQueryVariables>(GetAgentRunCollaborationDocument, variables, options);
+}
+export function useGetAgentRunCollaborationLazyQuery(variables?: GetAgentRunCollaborationQueryVariables | VueCompositionApi.Ref<GetAgentRunCollaborationQueryVariables> | ReactiveFunction<GetAgentRunCollaborationQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetAgentRunCollaborationQuery, GetAgentRunCollaborationQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetAgentRunCollaborationQuery, GetAgentRunCollaborationQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetAgentRunCollaborationQuery, GetAgentRunCollaborationQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetAgentRunCollaborationQuery, GetAgentRunCollaborationQueryVariables>(GetAgentRunCollaborationDocument, variables, options);
+}
+export type GetAgentRunCollaborationQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetAgentRunCollaborationQuery, GetAgentRunCollaborationQueryVariables>;
+export const GetAgentRunCollaborationMemberProjectionDocument = gql`
+    query GetAgentRunCollaborationMemberProjection($hostRunId: String!, $memberAddress: String!, $agentRunId: String!) {
+  agentRunCollaborationMemberProjection(
+    hostRunId: $hostRunId
+    memberAddress: $memberAddress
+    agentRunId: $agentRunId
+  ) {
+    agentRunId
+    memberAddress
+    conversation
+    activities
+    summary
+    lastActivityAt
+    hasEarlierActiveTraceEvents
+  }
+}
+    `;
+
+/**
+ * __useGetAgentRunCollaborationMemberProjectionQuery__
+ *
+ * To run a query within a Vue component, call `useGetAgentRunCollaborationMemberProjectionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAgentRunCollaborationMemberProjectionQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetAgentRunCollaborationMemberProjectionQuery({
+ *   hostRunId: // value for 'hostRunId'
+ *   memberAddress: // value for 'memberAddress'
+ *   agentRunId: // value for 'agentRunId'
+ * });
+ */
+export function useGetAgentRunCollaborationMemberProjectionQuery(variables: GetAgentRunCollaborationMemberProjectionQueryVariables | VueCompositionApi.Ref<GetAgentRunCollaborationMemberProjectionQueryVariables> | ReactiveFunction<GetAgentRunCollaborationMemberProjectionQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetAgentRunCollaborationMemberProjectionQuery, GetAgentRunCollaborationMemberProjectionQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetAgentRunCollaborationMemberProjectionQuery, GetAgentRunCollaborationMemberProjectionQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetAgentRunCollaborationMemberProjectionQuery, GetAgentRunCollaborationMemberProjectionQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetAgentRunCollaborationMemberProjectionQuery, GetAgentRunCollaborationMemberProjectionQueryVariables>(GetAgentRunCollaborationMemberProjectionDocument, variables, options);
+}
+export function useGetAgentRunCollaborationMemberProjectionLazyQuery(variables?: GetAgentRunCollaborationMemberProjectionQueryVariables | VueCompositionApi.Ref<GetAgentRunCollaborationMemberProjectionQueryVariables> | ReactiveFunction<GetAgentRunCollaborationMemberProjectionQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetAgentRunCollaborationMemberProjectionQuery, GetAgentRunCollaborationMemberProjectionQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetAgentRunCollaborationMemberProjectionQuery, GetAgentRunCollaborationMemberProjectionQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetAgentRunCollaborationMemberProjectionQuery, GetAgentRunCollaborationMemberProjectionQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetAgentRunCollaborationMemberProjectionQuery, GetAgentRunCollaborationMemberProjectionQueryVariables>(GetAgentRunCollaborationMemberProjectionDocument, variables, options);
+}
+export type GetAgentRunCollaborationMemberProjectionQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetAgentRunCollaborationMemberProjectionQuery, GetAgentRunCollaborationMemberProjectionQueryVariables>;
 export const GetFileContentDocument = gql`
     query GetFileContent($workspaceId: String!, $filePath: String!) {
   fileContent(workspaceId: $workspaceId, filePath: $filePath)
@@ -10190,6 +10472,7 @@ export const ListWorkspaceRunHistoryDocument = gql`
         isActive
         shouldConnectStream
         statusSource
+        hasCollaboration
       }
     }
     teamDefinitions {
@@ -10261,6 +10544,7 @@ export const GetWorkspaceRunHistoryDocument = gql`
         isActive
         shouldConnectStream
         statusSource
+        hasCollaboration
       }
     }
     teamDefinitions {
@@ -10725,7 +11009,6 @@ export const GetAgentRunResumeConfigDocument = gql`
       llmModelIdentifier
       llmConfig
       autoExecuteTools
-      skillAccessMode
       runtimeKind
       runtimeReference {
         runtimeKind
@@ -11007,9 +11290,34 @@ export function useRuntimeCurrentModelDescriptorsLazyQuery(variables?: RuntimeCu
   return VueApolloComposable.useLazyQuery<RuntimeCurrentModelDescriptorsQuery, RuntimeCurrentModelDescriptorsQueryVariables>(RuntimeCurrentModelDescriptorsDocument, variables, options);
 }
 export type RuntimeCurrentModelDescriptorsQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<RuntimeCurrentModelDescriptorsQuery, RuntimeCurrentModelDescriptorsQueryVariables>;
-export const GetRuntimeAvailabilitiesDocument = gql`
-    query GetRuntimeAvailabilities {
-  runtimeAvailabilities {
+export const GetRuntimeAvailabilityKindsDocument = gql`
+    query GetRuntimeAvailabilityKinds {
+  runtimeAvailabilityKinds
+}
+    `;
+
+/**
+ * __useGetRuntimeAvailabilityKindsQuery__
+ *
+ * To run a query within a Vue component, call `useGetRuntimeAvailabilityKindsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRuntimeAvailabilityKindsQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetRuntimeAvailabilityKindsQuery();
+ */
+export function useGetRuntimeAvailabilityKindsQuery(options: VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilityKindsQuery, GetRuntimeAvailabilityKindsQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilityKindsQuery, GetRuntimeAvailabilityKindsQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilityKindsQuery, GetRuntimeAvailabilityKindsQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetRuntimeAvailabilityKindsQuery, GetRuntimeAvailabilityKindsQueryVariables>(GetRuntimeAvailabilityKindsDocument, {}, options);
+}
+export function useGetRuntimeAvailabilityKindsLazyQuery(options: VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilityKindsQuery, GetRuntimeAvailabilityKindsQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilityKindsQuery, GetRuntimeAvailabilityKindsQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilityKindsQuery, GetRuntimeAvailabilityKindsQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetRuntimeAvailabilityKindsQuery, GetRuntimeAvailabilityKindsQueryVariables>(GetRuntimeAvailabilityKindsDocument, {}, options);
+}
+export type GetRuntimeAvailabilityKindsQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetRuntimeAvailabilityKindsQuery, GetRuntimeAvailabilityKindsQueryVariables>;
+export const GetRuntimeAvailabilityDocument = gql`
+    query GetRuntimeAvailability($runtimeKind: String!) {
+  runtimeAvailability(runtimeKind: $runtimeKind) {
     runtimeKind
     enabled
     reason
@@ -11018,24 +11326,27 @@ export const GetRuntimeAvailabilitiesDocument = gql`
     `;
 
 /**
- * __useGetRuntimeAvailabilitiesQuery__
+ * __useGetRuntimeAvailabilityQuery__
  *
- * To run a query within a Vue component, call `useGetRuntimeAvailabilitiesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetRuntimeAvailabilitiesQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * To run a query within a Vue component, call `useGetRuntimeAvailabilityQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRuntimeAvailabilityQuery` returns an object from Apollo Client that contains result, loading and error properties
  * you can use to render your UI.
  *
+ * @param variables that will be passed into the query
  * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
  *
  * @example
- * const { result, loading, error } = useGetRuntimeAvailabilitiesQuery();
+ * const { result, loading, error } = useGetRuntimeAvailabilityQuery({
+ *   runtimeKind: // value for 'runtimeKind'
+ * });
  */
-export function useGetRuntimeAvailabilitiesQuery(options: VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilitiesQuery, GetRuntimeAvailabilitiesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilitiesQuery, GetRuntimeAvailabilitiesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilitiesQuery, GetRuntimeAvailabilitiesQueryVariables>> = {}) {
-  return VueApolloComposable.useQuery<GetRuntimeAvailabilitiesQuery, GetRuntimeAvailabilitiesQueryVariables>(GetRuntimeAvailabilitiesDocument, {}, options);
+export function useGetRuntimeAvailabilityQuery(variables: GetRuntimeAvailabilityQueryVariables | VueCompositionApi.Ref<GetRuntimeAvailabilityQueryVariables> | ReactiveFunction<GetRuntimeAvailabilityQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilityQuery, GetRuntimeAvailabilityQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilityQuery, GetRuntimeAvailabilityQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilityQuery, GetRuntimeAvailabilityQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetRuntimeAvailabilityQuery, GetRuntimeAvailabilityQueryVariables>(GetRuntimeAvailabilityDocument, variables, options);
 }
-export function useGetRuntimeAvailabilitiesLazyQuery(options: VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilitiesQuery, GetRuntimeAvailabilitiesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilitiesQuery, GetRuntimeAvailabilitiesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilitiesQuery, GetRuntimeAvailabilitiesQueryVariables>> = {}) {
-  return VueApolloComposable.useLazyQuery<GetRuntimeAvailabilitiesQuery, GetRuntimeAvailabilitiesQueryVariables>(GetRuntimeAvailabilitiesDocument, {}, options);
+export function useGetRuntimeAvailabilityLazyQuery(variables?: GetRuntimeAvailabilityQueryVariables | VueCompositionApi.Ref<GetRuntimeAvailabilityQueryVariables> | ReactiveFunction<GetRuntimeAvailabilityQueryVariables>, options: VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilityQuery, GetRuntimeAvailabilityQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilityQuery, GetRuntimeAvailabilityQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetRuntimeAvailabilityQuery, GetRuntimeAvailabilityQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetRuntimeAvailabilityQuery, GetRuntimeAvailabilityQueryVariables>(GetRuntimeAvailabilityDocument, variables, options);
 }
-export type GetRuntimeAvailabilitiesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetRuntimeAvailabilitiesQuery, GetRuntimeAvailabilitiesQueryVariables>;
+export type GetRuntimeAvailabilityQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetRuntimeAvailabilityQuery, GetRuntimeAvailabilityQueryVariables>;
 export const GetServerSettingsDocument = gql`
     query GetServerSettings {
   getServerSettings {
@@ -11046,7 +11357,6 @@ export const GetServerSettingsDocument = gql`
     isEditable
     isDeletable
   }
-  getEffectiveWorkingContextCompactionStrategyId
   getEffectiveStreamingContentFlushIntervalMs
 }
     `;
@@ -11676,34 +11986,6 @@ export function useGetToolsGroupedByCategoryLazyQuery(variables?: GetToolsGroupe
   return VueApolloComposable.useLazyQuery<GetToolsGroupedByCategoryQuery, GetToolsGroupedByCategoryQueryVariables>(GetToolsGroupedByCategoryDocument, variables, options);
 }
 export type GetToolsGroupedByCategoryQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetToolsGroupedByCategoryQuery, GetToolsGroupedByCategoryQueryVariables>;
-export const GetWorkingContextCompactionStrategiesDocument = gql`
-    query GetWorkingContextCompactionStrategies {
-  getWorkingContextCompactionStrategies {
-    id
-    name
-  }
-}
-    `;
-
-/**
- * __useGetWorkingContextCompactionStrategiesQuery__
- *
- * To run a query within a Vue component, call `useGetWorkingContextCompactionStrategiesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetWorkingContextCompactionStrategiesQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useGetWorkingContextCompactionStrategiesQuery();
- */
-export function useGetWorkingContextCompactionStrategiesQuery(options: VueApolloComposable.UseQueryOptions<GetWorkingContextCompactionStrategiesQuery, GetWorkingContextCompactionStrategiesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetWorkingContextCompactionStrategiesQuery, GetWorkingContextCompactionStrategiesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetWorkingContextCompactionStrategiesQuery, GetWorkingContextCompactionStrategiesQueryVariables>> = {}) {
-  return VueApolloComposable.useQuery<GetWorkingContextCompactionStrategiesQuery, GetWorkingContextCompactionStrategiesQueryVariables>(GetWorkingContextCompactionStrategiesDocument, {}, options);
-}
-export function useGetWorkingContextCompactionStrategiesLazyQuery(options: VueApolloComposable.UseQueryOptions<GetWorkingContextCompactionStrategiesQuery, GetWorkingContextCompactionStrategiesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetWorkingContextCompactionStrategiesQuery, GetWorkingContextCompactionStrategiesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetWorkingContextCompactionStrategiesQuery, GetWorkingContextCompactionStrategiesQueryVariables>> = {}) {
-  return VueApolloComposable.useLazyQuery<GetWorkingContextCompactionStrategiesQuery, GetWorkingContextCompactionStrategiesQueryVariables>(GetWorkingContextCompactionStrategiesDocument, {}, options);
-}
-export type GetWorkingContextCompactionStrategiesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetWorkingContextCompactionStrategiesQuery, GetWorkingContextCompactionStrategiesQueryVariables>;
 export const GetAllWorkspacesDocument = gql`
     query GetAllWorkspaces {
   workspaces {
@@ -12241,3 +12523,33 @@ export function useEnableSkillMutation(options: VueApolloComposable.UseMutationO
   return VueApolloComposable.useMutation<EnableSkillMutation, EnableSkillMutationVariables>(EnableSkillDocument, options);
 }
 export type EnableSkillMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<EnableSkillMutation, EnableSkillMutationVariables>;
+export const GetSkillNameIssuesDocument = gql`
+    query GetSkillNameIssues {
+  skillNameIssues {
+    name
+    usedPath
+    ignoredPaths
+    kind
+  }
+}
+    `;
+
+/**
+ * __useGetSkillNameIssuesQuery__
+ *
+ * To run a query within a Vue component, call `useGetSkillNameIssuesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSkillNameIssuesQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useGetSkillNameIssuesQuery();
+ */
+export function useGetSkillNameIssuesQuery(options: VueApolloComposable.UseQueryOptions<GetSkillNameIssuesQuery, GetSkillNameIssuesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetSkillNameIssuesQuery, GetSkillNameIssuesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetSkillNameIssuesQuery, GetSkillNameIssuesQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<GetSkillNameIssuesQuery, GetSkillNameIssuesQueryVariables>(GetSkillNameIssuesDocument, {}, options);
+}
+export function useGetSkillNameIssuesLazyQuery(options: VueApolloComposable.UseQueryOptions<GetSkillNameIssuesQuery, GetSkillNameIssuesQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<GetSkillNameIssuesQuery, GetSkillNameIssuesQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<GetSkillNameIssuesQuery, GetSkillNameIssuesQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<GetSkillNameIssuesQuery, GetSkillNameIssuesQueryVariables>(GetSkillNameIssuesDocument, {}, options);
+}
+export type GetSkillNameIssuesQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<GetSkillNameIssuesQuery, GetSkillNameIssuesQueryVariables>;

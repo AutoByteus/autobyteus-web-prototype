@@ -1,3 +1,4 @@
+import { useAgentActivityStore } from '~/stores/agentActivityStore';
 import { defineStore } from 'pinia';
 import { getApolloClient } from '~/utils/apolloClient';
 import { CreateAgentTeamRun, RestoreAgentTeamRun, TerminateAgentTeamRun } from '~/graphql/mutations/agentTeamRunMutations';
@@ -22,6 +23,7 @@ import { buildTeamMemberTreeFromDefinition, flattenLeafAgentMemberNodes } from '
 import { projectTeamRunLaunchRecords } from '~/utils/teamRunLaunchHierarchy';
 import { applyOfflineOrTerminalCleanup } from '~/services/runStatus/agentRuntimeStatusState';
 import {
+  acceptLocalSubmission,
   beginLocalUserSubmission,
   failLocalSubmission,
   finalizeLocalSubmissionAttachments,
@@ -44,6 +46,7 @@ import type { AgentTeamContext } from '~/types/agent/AgentTeamContext';
 import { findConfiguredAgentByAddress } from '~/services/teamExecution/teamExecutionTreeSelectors';
 import { createWorkspaceMetadata } from '~/utils/workspaceMetadata';
 import { useRightSideTabs } from '~/composables/useRightSideTabs';
+import { mentionsPresentInText, toCollaboratorMentionDtos } from '~/utils/collaborators/collaboratorMentionText';
 
 const teamStreamingServices = new Map<string, TeamStreamingService>();
 const inputDedupeKey = (rootTeamRunId: string, agentRunId: string, messageId: string) =>
@@ -203,11 +206,35 @@ export const useAgentTeamRunStore = defineStore('agentTeamRun', {
     async terminateTeamRun(rootTeamRunId: string): Promise<boolean> {
       const team = useAgentTeamContextsStore().getTeamContextById(rootTeamRunId);
       if (!rootTeamRunId.trim() || this.stopPendingTeamIds[rootTeamRunId] || (team && !team.view.isRootTeamActive())) return false;
+      const view = team?.view;
+      const service = teamStreamingServices.get(rootTeamRunId);
+      const binding = useWindowNodeContextStore().bindingRevision;
+      const activities = useAgentActivityStore();
+      const members = new Map(view?.listAgentContextEntries().map((entry) => [entry.agentRunId, {
+        ...entry, state: entry.agentContext.state,
+        instance: entry.agentContext.state.inputProjection?.runInstanceId,
+        ids: activities.getNativeCompactionActivityIds(entry.agentRunId),
+      }]));
       this.stopPendingTeamIds = { ...this.stopPendingTeamIds, [rootTeamRunId]: true };
       try {
         const { data, errors } = await getApolloClient().mutate<TerminatePayload>({ mutation: TerminateAgentTeamRun, variables: { teamRunId: rootTeamRunId } });
         if (errors?.length) throw new Error(errors.map((entry: { message: string }) => entry.message).join(', '));
         if (!data?.terminateAgentTeamRun?.success) throw new Error(data?.terminateAgentTeamRun?.message || 'Team termination failed.');
+        if (useAgentTeamContextsStore().getTeamContextById(rootTeamRunId) !== team
+          || team?.view !== view || teamStreamingServices.get(rootTeamRunId) !== service
+          || useWindowNodeContextStore().bindingRevision !== binding) return false;
+        const entries = view?.listAgentContextEntries() ?? [];
+        if (entries.some((entry) => entry.agentContext.state.runId !== entry.agentRunId)) return false;
+        if ([...members.values()].some((old) => !entries.some((entry) =>
+          entry.agentRunId === old.agentRunId && entry.memberAddress === old.memberAddress
+          && entry.agentContext === old.agentContext && entry.agentContext.state === old.state
+          && (!old.state.inputProjection?.runInstanceId || old.state.inputProjection.runInstanceId === old.instance)))) return false;
+        for (const { agentRunId, agentContext } of entries) {
+          if (agentContext.config.runtimeKind !== 'autobyteus') continue;
+          agentContext.state.compactionStatus = activities.applyConfirmedNativeTermination(agentRunId,
+            [...(members.get(agentRunId)?.ids ?? []), ...activities.getNativeCompactionActivityIds(agentRunId)],
+            agentContext.state.compactionStatus);
+        }
         this.disconnectTeamStream(rootTeamRunId);
         team?.view.setRootTeamActive(false);
         team?.view.listAgentContextEntries().forEach(({ agentContext }) => {
@@ -253,6 +280,10 @@ export const useAgentTeamRunStore = defineStore('agentTeamRun', {
       let localSubmission: LocalUserSubmissionHandle | null = null;
       let retryAttachments = contextAttachments.map(cloneContextAttachment);
       let draftOwnerId = draft?.draftId ?? rootTeamRunId;
+      // `@` mentions exist only in a live run; a launch draft's first message never carries them.
+      const mentions = team && !draft && targetAgentRunId
+        ? mentionsPresentInText(text, team.view.getAgentContext(targetAgentRunId)?.requestedMentions ?? [])
+        : [];
       try {
         if (draft) {
           const launched = await this.launchDraft(draft);
@@ -281,9 +312,12 @@ export const useAgentTeamRunStore = defineStore('agentTeamRun', {
         const location = team.view.getAgentExecutionLocation(targetAgentRunId);
         if (!location) throw new Error(`Focused Team AgentRun '${targetAgentRunId}' has no exact execution location.`);
         team.view.setRootTeamActive(true);
+        const messageId = buildClientMessageId();
+        const dedupeKey = inputDedupeKey(rootTeamRunId, targetAgentRunId, messageId);
         localSubmission = beginLocalUserSubmission(member, {
-          text, attachments: contextAttachments,
+          text, attachments: contextAttachments, identity: { messageId, dedupeKey },
           navigationTarget: { kind: 'team_member', teamRunId: rootTeamRunId, agentRunId: targetAgentRunId },
+          mentions,
         });
         const draftOwner = options.attachmentDraftOwner
           ?? buildTeamMemberDraftContextFileOwner(draftOwnerId, location.memberAddress);
@@ -297,20 +331,19 @@ export const useAgentTeamRunStore = defineStore('agentTeamRun', {
         });
         const plan = planContextAttachmentSubmission(finalized);
         retryAttachments = plan.retainedMessageAttachments.map(cloneContextAttachment);
-        const messageId = buildClientMessageId();
-        const dedupeKey = inputDedupeKey(rootTeamRunId, targetAgentRunId, messageId);
-        localSubmission.message.messageId = messageId;
-        localSubmission.message.dedupeKey = dedupeKey;
         finalizeLocalSubmissionAttachments(localSubmission, plan.retainedMessageAttachments);
         useRunHistoryStore().markTeamAsActive(rootTeamRunId);
         void useRunHistoryStore().refreshTreeQuietly();
         const service = await this.ensureTeamStreamConnected(rootTeamRunId);
-        await service.sendMessage(text, targetAgentRunId, plan.executable.contextFilePaths, plan.executable.imageUrls, { messageId, dedupeKey });
+        await service.sendMessage(text, targetAgentRunId, plan.executable.contextFilePaths, plan.executable.imageUrls, { messageId, dedupeKey, mentions: toCollaboratorMentionDtos(text, mentions) });
+        acceptLocalSubmission(localSubmission);
       } catch (error) {
         if (localSubmission) {
-          failLocalSubmission(localSubmission, error);
+          // A rejected add posted nothing: the notice shows and the draft stays as typed.
+          if (failLocalSubmission(localSubmission, error) === 'kept_draft') return;
           localSubmission.context.requirement = text;
           localSubmission.context.contextFilePaths = retryAttachments;
+          localSubmission.context.requestedMentions = [...mentions];
           applyOfflineOrTerminalCleanup(localSubmission.context, AgentStatus.Error);
           return;
         }

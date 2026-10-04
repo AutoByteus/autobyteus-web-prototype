@@ -66,9 +66,13 @@ export interface Message {
 }
 
 export interface UserMessage extends Message {
+  /** Transient live-run projection, not durable delivery state. */
+  pendingInput?: { runInstanceId: string; state: "queued" | "held" | "forwarded" };
   type: 'user';
   text: string;
   contextFilePaths?: ContextAttachment[];
+  /** Names of the collaborators mentioned with `@` in this local send; shown as inline chips. */
+  mentionNames?: string[];
   messageId?: string;
   dedupeKey?: string;
   promptTokens?: number;

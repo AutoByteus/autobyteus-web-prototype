@@ -9,7 +9,6 @@ export type AgentLaunchConfigurationDto = Readonly<{
     llm_model_identifier: string;
     llm_config: Readonly<Record<string, import("./schema-helpers.js").JsonValue>> | null;
     auto_execute_tools: boolean;
-    skill_access_mode: string;
     workspace_root_path: string | null;
 }>;
 export type ConfiguredAgentExecutionDto = Readonly<{
@@ -22,6 +21,27 @@ export type ConfiguredAgentExecutionDto = Readonly<{
     platform_agent_run_id: string | null;
     launch_configuration: AgentLaunchConfigurationDto;
 }>;
+/** The definition snapshot of a task copy started from the catalog (absent for every other copy). */
+export type TaskAgentExecutionSourceDto = Readonly<{
+    kind: "agent";
+    agent_definition_id: string;
+    launch_configuration: AgentLaunchConfigurationDto;
+}>;
+export type TaskTeamExecutionSourceDto = Readonly<{
+    kind: "agent_team";
+    team_definition_id: string;
+    coordinator_address: string;
+    members: readonly Readonly<{
+        address: string;
+        agent_definition_id: string;
+    }>[];
+    handoffs: readonly Readonly<{
+        from: string;
+        to: string;
+        rules: readonly string[];
+    }>[];
+    default_launch_configuration: AgentLaunchConfigurationDto;
+}>;
 /** A delegated child Agent; `delegator_agent_run_id` is the AgentRun that started it (null when not recorded). */
 export type TaskAgentExecutionDto = Readonly<{
     kind: "task_agent";
@@ -30,6 +50,7 @@ export type TaskAgentExecutionDto = Readonly<{
     platform_agent_run_id: string | null;
     delegator_agent_run_id: string | null;
     started_at: string;
+    source?: TaskAgentExecutionSourceDto;
 }>;
 export type TaskTeamAgentExecutionDto = Readonly<{
     kind: "task_team_agent";
@@ -54,6 +75,7 @@ export type TaskTeamExecutionDto = Readonly<{
     task_executions: readonly TaskExecutionDto[];
     delegator_agent_run_id: string | null;
     started_at: string;
+    source?: TaskTeamExecutionSourceDto;
 }>;
 export type TaskExecutionDto = TaskAgentExecutionDto | TaskTeamExecutionDto;
 export type ConfiguredTeamExecutionDto = Readonly<{
@@ -69,8 +91,44 @@ export type ConfiguredTeamExecutionDto = Readonly<{
     task_executions: readonly TaskExecutionDto[];
 }>;
 export type ConfiguredMemberExecutionDto = ConfiguredAgentExecutionDto | ConfiguredTeamExecutionDto;
+/**
+ * One collaborator of the run: one instance of a shared Agent or Agent Team definition added
+ * with `@`. Its run IDs are recorded in the entry; it starts on its first message.
+ */
+export type CollaboratorEntryDto = Readonly<{
+    kind: "agent";
+    address: string;
+    agent_definition_id: string;
+    agent_run_id: string;
+    platform_agent_run_id: string | null;
+    launch_configuration: AgentLaunchConfigurationDto;
+    added_at: string;
+    added_via_agent_run_id: string;
+}> | Readonly<{
+    kind: "agent_team";
+    address: string;
+    team_definition_id: string;
+    team_run_id: string;
+    coordinator_address: string;
+    members: readonly Readonly<{
+        address: string;
+        agent_definition_id: string;
+        agent_run_id: string;
+        platform_agent_run_id: string | null;
+    }>[];
+    handoffs: readonly Readonly<{
+        from: string;
+        to: string;
+        rules: readonly string[];
+    }>[];
+    default_launch_configuration: AgentLaunchConfigurationDto;
+    task_executions: readonly TaskExecutionDto[];
+    added_at: string;
+    added_via_agent_run_id: string;
+}>;
 export declare const taskAgentExecutionDtoSchema: z.ZodType<TaskAgentExecutionDto>;
 export declare const taskTeamExecutionDtoSchema: z.ZodType<TaskTeamExecutionDto>;
+export declare const collaboratorEntryDtoSchema: z.ZodType<CollaboratorEntryDto>;
 export type TeamRunExecutionTreeDto = Readonly<{
     created_at: string;
     archived_at: string | null;
@@ -91,6 +149,7 @@ export type TeamRunExecutionTreeDto = Readonly<{
         coordinator_address: string;
         default_launch_configuration: AgentLaunchConfigurationDto;
         members: readonly ConfiguredMemberExecutionDto[];
+        collaborators: readonly CollaboratorEntryDto[];
         task_executions: readonly TaskExecutionDto[];
     }>;
 }>;
@@ -109,6 +168,24 @@ export declare const teamAgentStatusDtoSchema: z.ZodObject<{
     tool_name: z.ZodNullable<z.ZodString>;
     error_message: z.ZodNullable<z.ZodString>;
     error_details: z.ZodNullable<z.ZodString>;
+    recoverableBlock: z.ZodNullable<z.ZodObject<{
+        operationId: z.ZodString;
+        failureEpoch: z.ZodNumber;
+        position: z.ZodDiscriminatedUnion<[z.ZodObject<{
+            kind: z.ZodLiteral<"held_turn">;
+            turnId: z.ZodString;
+        }, z.core.$strict>, z.ZodObject<{
+            kind: z.ZodLiteral<"next_turn">;
+            failedTurnId: z.ZodString;
+        }, z.core.$strict>], "kind">;
+        state: z.ZodEnum<{
+            awaiting_user: "awaiting_user";
+            authorized: "authorized";
+            recovering: "recovering";
+        }>;
+        code: z.ZodString;
+        message: z.ZodString;
+    }, z.core.$strict>>;
 }, z.core.$strict>;
 export type TeamMemberExecutionIdentityDto = Readonly<z.infer<typeof teamMemberExecutionIdentityDtoSchema>>;
 export type TeamAgentStatusDto = Readonly<z.infer<typeof teamAgentStatusDtoSchema>>;

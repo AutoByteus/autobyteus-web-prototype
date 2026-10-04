@@ -27,6 +27,9 @@ export const teamAgentPayloadSchemas = {
   SEGMENT_END: withExecution(agentPresentationPayloadSchemas.SEGMENT_END),
   AGENT_STATUS: withExecution(agentPresentationPayloadSchemas.AGENT_STATUS),
   COMPACTION_STATUS: withExecution(agentPresentationPayloadSchemas.COMPACTION_STATUS),
+  COMPACTION_BLOCKED: withExecution(agentPresentationPayloadSchemas.COMPACTION_BLOCKED),
+  COMPACTION_RESUMED: withExecution(agentPresentationPayloadSchemas.COMPACTION_RESUMED),
+  AGENT_INPUT_STATE: withExecution(agentPresentationPayloadSchemas.AGENT_INPUT_STATE),
   TOKEN_USAGE_UPDATED: withExecution(agentPresentationPayloadSchemas.TOKEN_USAGE_UPDATED.extend({
     run_summary_after_event: tokenUsageRunSummaryDtoSchema.nullable(),
   }).strict()),
@@ -48,6 +51,8 @@ export const teamAgentPayloadSchemas = {
 const errorExecution = {
   change_sequence: z.number().int().positive().nullable(),
   agent_run_id: nonEmptyStringSchema.nullable(),
+  /** With `COLLABORATOR_ADD_FAILED`: the collaborator that could not be added (the message is the reason). */
+  collaborator_name: nonEmptyStringSchema.optional(),
 };
 export const teamAgentErrorPayloadSchema = z.union(
   [

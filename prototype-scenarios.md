@@ -56,13 +56,27 @@ control, CSV preparation/download path, or replacement export workflow.
 | `error` | `/agents?view=list` | Recoverable catalog error presentation |
 | `permission_denied` | `/mobile`, `paired` | Denied/offline mobile recovery guidance |
 | `skill_name_issues` | `/skills` | Skills page duplicate-name banner (D-19): one conflict and one ignored runtime-default copy, with Show/Hide details |
+| `agy_runtime` | `/chat` | The Antigravity runtime is also available; choosing it shows the locked (always-on) auto-approve control (`WEB-BASELINE-REFRESH-004`) |
 
 The populated fixture also contains, since `WEB-BASELINE-REFRESH-002`, the
-built-in Daily Assistant (backs a New chat), the built-in temp workspace
+built-in General Agent (named Daily Assistant before `WEB-BASELINE-REFRESH-004`;
+backs a New chat), the built-in temp workspace
 (`temp_ws_default`, the New chat and launch-form default), and a second model
 `mock/reasoning-prototype` with a thinking switch and Low/Medium/High effort so
 the Chat thinking control and menu are observable. A Chat first send runs the
 source's own send path locally and opens `/chat?id=run-prepared-fixture`.
+
+Since `WEB-BASELINE-REFRESH-004` (source `0a32261`):
+
+- Projects and Tasks run the source's own stores. Creating, editing and
+  deleting a Project or Task, linking an existing workspace or a new folder,
+  and attaching a context file update a small in-memory copy of the synthetic
+  Project (`Prototype Launch`, three tasks). A page reload or a scenario change
+  restores it.
+- A stored Team run composer offers the live-run `@` menu with two synthetic
+  candidates (`Documentation Writer`, `Product Review Team`).
+- The stored Team run's `writer` conversation opens with one agent-to-agent
+  delivery from `researcher`, rendered as the "From <Sender>:" block.
 
 ## Electron Host Scenarios
 

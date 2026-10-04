@@ -1,4 +1,3 @@
-import { runMentionAgentSource } from '~/prototype/run-mentions/runMentionState'
 import {
   teamRunExecutionTreeDtoSchema,
   type TeamRunExecutionTreeDto,
@@ -36,6 +35,7 @@ import {
   collectAgentExecutionLocations,
   findConfiguredAgentByAddress,
 } from '~/services/teamExecution/teamExecutionTreeSelectors';
+import { teamAgentSourceAt } from '~/services/collaborators/agentSourceSelectors';
 
 export interface LoadTeamRunContextHydrationInput {
   teamRunId: string;
@@ -173,8 +173,8 @@ const stageProjection = (input: {
   expectedActivityRevision: number;
 }): ActivityProjectionReplacement | null => {
   if (!input.projection) return null;
-  const configured = findConfiguredAgentByAddress(input.tree, input.address);
-  if (!configured) throw new Error(`AgentRun '${input.agentRunId}' has no configured placement.`);
+  const configured = teamAgentSourceAt(input.tree, input.address);
+  if (!configured) throw new Error(`AgentRun '${input.agentRunId}' has no configured or collaborator placement.`);
   input.context.state.conversation = buildConversationFromProjection(
     input.agentRunId,
     input.projection.conversation ?? [],
@@ -292,9 +292,7 @@ const hydrateCurrentTeamRunContext = async (
       tree: currentTree,
       agentRunId,
       address,
-      // Prototype (cross-scope-agent-mentions): an added collaborator uses the run's workspace.
-      workspaceMetadata: workspaces.get(address)
-        ?? (runMentionAgentSource(agentRunId) ? workspaces.values().next().value ?? null : null),
+      workspaceMetadata: workspaces.get(address) ?? null,
     }),
   });
   const focus = view.focusAgentForInspection(initialFocusedAgentRunId);

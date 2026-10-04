@@ -20,7 +20,6 @@ export declare const APPLICATION_BACKEND_DEFINITION_CONTRACT_VERSION: "7";
 export declare const APPLICATION_FRONTEND_SDK_CONTRACT_VERSION: "6";
 export declare const APPLICATION_EVENT_DELIVERY_SEMANTICS: "AT_LEAST_ONCE";
 export type ApplicationRouteMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS";
-export type ApplicationSkillAccessMode = "PRELOADED_ONLY" | "NONE";
 export type ApplicationBackendSupportedExposures = {
     queries: boolean;
     commands: boolean;
@@ -77,14 +76,12 @@ export type ApplicationAgentRunLaunch = {
     llmModelIdentifier: string;
     autoExecuteTools?: boolean | null;
     llmConfig?: Record<string, unknown> | null;
-    skillAccessMode?: ApplicationSkillAccessMode | null;
     runtimeKind?: string | null;
 };
 export type ApplicationTeamRunPreset = {
     workspaceRootPath: string;
     llmModelIdentifier: string;
     autoExecuteTools?: boolean | null;
-    skillAccessMode?: ApplicationSkillAccessMode | null;
     runtimeKind?: string | null;
     llmConfig?: Record<string, unknown> | null;
 };
@@ -92,7 +89,6 @@ export type ApplicationTeamScopeLaunchConfig = Readonly<{
     teamAddress: string;
     llmModelIdentifier: string;
     autoExecuteTools: boolean;
-    skillAccessMode: ApplicationSkillAccessMode;
     workspaceRootPath: string;
     llmConfig?: Record<string, unknown> | null;
     runtimeKind: string;
@@ -103,7 +99,6 @@ export type ApplicationTeamMemberLaunchConfig = Readonly<{
     agentDefinitionId: string;
     llmModelIdentifier: string;
     autoExecuteTools: boolean;
-    skillAccessMode: ApplicationSkillAccessMode;
     workspaceRootPath: string;
     llmConfig?: Record<string, unknown> | null;
     runtimeKind: string;

@@ -1,4 +1,3 @@
-import { runMentionAgentSource } from '~/prototype/run-mentions/runMentionState'
 import type { WorkspaceSelectionIntent } from '~/stores/agentSelectionStore';
 import type { AgentContext } from '~/types/agent/AgentContext';
 import type { AgentTeamContext } from '~/types/agent/AgentTeamContext';
@@ -9,7 +8,7 @@ import { useAgentTeamContextsStore } from '~/stores/agentTeamContextsStore';
 import { buildConversationFromProjection } from './runProjectionConversation';
 import { buildActivitiesFromProjection } from './runProjectionActivityHydration';
 import { fetchExactTeamMemberProjection } from './teamRunContextHydrationService';
-import { findConfiguredAgentByAddress } from '~/services/teamExecution/teamExecutionTreeSelectors';
+import { teamAgentSourceAt } from '~/services/collaborators/agentSourceSelectors';
 import {
   primeRecentEventMonitorBaseline,
   resetRecentEventMonitorBaseline,
@@ -52,16 +51,14 @@ const attemptHydration = async (
   intent?: WorkspaceSelectionIntent,
 ): Promise<TeamMemberProjectionHydrationResult | null> => {
   const agent = exactMountedContext(team, agentRunId);
-  // Prototype (cross-scope-agent-mentions): a collaborator brought in by `@` is driven by the
-  // local run, so its mounted conversation is the only source; there is nothing to fetch.
-  if (authoritativeContexts.has(agent) || runMentionAgentSource(agentRunId)) {
+  if (authoritativeContexts.has(agent)) {
     return Object.freeze({ disposition: 'authoritative', agentRunId });
   }
   const rootTeamRunId = team.view.getRootTeamRunId();
   const location = team.view.getAgentExecutionLocation(agentRunId)!;
-  const configured = findConfiguredAgentByAddress(team.view.getExecutionTree(), location.memberAddress);
+  const configured = teamAgentSourceAt(team.view.getExecutionTree(), location.memberAddress);
   if (!configured) {
-    throw new Error(`AgentRun '${agentRunId}' has no configured Team placement.`);
+    throw new Error(`AgentRun '${agentRunId}' has no configured or collaborator Team placement.`);
   }
   const liveToolAuthority = hasLiveToolAuthority(team, agent);
   const expectedPresentationRevision = agent.state.eventMonitorPresentationRevision;

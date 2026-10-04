@@ -90,15 +90,15 @@
       </li>
     </ul>
 
+
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { Icon } from '@iconify/vue'
 import ProjectCard from '~/components/projects/ProjectCard.vue'
-import { useProjectDesignStore } from '~/prototype/project-review/useProjectDesignStore'
 import { useLocalization } from '~/composables/useLocalization'
 import { useProjectStore } from '~/stores/projectStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
@@ -106,12 +106,10 @@ import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 const { t } = useLocalization()
 const projectStore = useProjectStore()
 const windowNodeContextStore = useWindowNodeContextStore()
-const review = useProjectDesignStore()
-const { projects: baselineProjects, loading, error } = storeToRefs(projectStore)
-const projects = computed(() => [...baselineProjects.value.filter(project => !review.deletedIds.includes(project.projectId) && !review.projects.some(item => item.projectId === project.projectId)), ...review.projects].sort((a, b) => a.name.localeCompare(b.name)))
+const { projects, loading, error } = storeToRefs(projectStore)
 
 const searchId = `projects-search-${Math.random().toString(36).slice(2, 8)}`
-const searchQuery = computed({ get: () => review.listSearch, set: value => { review.listSearch = value } })
+const searchQuery = ref('')
 
 const filteredProjects = computed(() => {
   const query = searchQuery.value.trim().toLocaleLowerCase()

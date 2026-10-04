@@ -1,4 +1,5 @@
 import { readAgentOrgRunInspection } from './agentOrgRunInspection'
+import { collaboratorAddRejectionOf } from '~/services/collaborators/collaboratorAddFailures'
 import type { OrgWorkspaceSelection } from './agentOrgExecutionViewIndex'
 import {
   CollaborationStreamServerMessageSchema,
@@ -16,6 +17,7 @@ import { stageAgentOrgExecutionContext } from './agentOrgContextHydration'
 import {
   AgentOrgExecutionContext,
 } from './agentOrgExecutionContext'
+import type { CollaboratorMentionDto } from '~/utils/collaborators/collaboratorMentionText'
 
 type CommandAck = Extract<CollaborationStreamServerMessage, { type: 'AGENT_COMMAND_ACK' }>
 type PendingCommand = Readonly<{
@@ -65,6 +67,7 @@ export class AgentOrgStreamingService {
     orgRunId: string
     publish(context: AgentOrgExecutionContext, commitActivities: () => void): void
     onInactive?(): void
+    onExecutionTreeChanged?(): void
     reportError(message: string): void
     onAcceptedExternalUserMessage?(event: Readonly<{
       orgRunId: string
@@ -195,13 +198,15 @@ export class AgentOrgStreamingService {
   }
 
   sendPrepared(input: Readonly<{ agentRunId: string; content: string;
-    attachments: readonly ContextFilePath[]; messageId: string; dedupeKey: string }>): Promise<void> {
+    attachments: readonly ContextFilePath[]; messageId: string; dedupeKey: string;
+    mentions?: readonly CollaboratorMentionDto[] }>): Promise<void> {
     const context = this.requireReadyContext()
     if (!context.index.requireAgent(input.agentRunId).live) throw new Error('AgentOrg send target is not live.')
     return this.command({ type: 'SEND_MESSAGE', payload: {
       ...this.commandRoot(input.agentRunId), content: input.content,
       context_file_paths: input.attachments.map(attachmentLocator), image_urls: [],
       message_id: input.messageId, dedupe_key: input.dedupeKey,
+      ...(input.mentions?.length ? { mentions: input.mentions.map((mention) => ({ ...mention })) } : {}),
     } })
   }
 
@@ -323,6 +328,9 @@ export class AgentOrgStreamingService {
       }
       const application = this.context.applyEvent(message.payload.change_sequence, message.payload.event)
       if (application === 'checkpoint_required') await this.reopenOwned(generation)
+      else if (application === 'applied' && message.payload.event.kind === 'collaborator_added' && this.isCurrent(generation)) {
+        this.options.onExecutionTreeChanged?.()
+      }
       return
     }
     this.context.setActive(message.payload.is_active)
@@ -378,7 +386,8 @@ export class AgentOrgStreamingService {
           console.error('Accepted AgentOrg message history refresh could not be requested.', cause)
         }
       }
-    } else command.reject(new Error(message.payload.message ?? message.payload.code ?? 'AgentOrg command rejected.'))
+    } else command.reject(collaboratorAddRejectionOf(message.payload)
+      ?? new Error(message.payload.message ?? message.payload.code ?? 'AgentOrg command rejected.'))
   }
 
   private failClosed(cause: unknown, generation: StreamGeneration): void {

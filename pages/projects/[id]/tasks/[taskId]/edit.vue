@@ -1,9 +1,6 @@
-<template><ProjectTaskPage :key="`${projectId}/${taskId}`" :project-id="projectId" :task-id="taskId" mode="edit" /></template>
+<template><div class="h-full flex-1 overflow-auto bg-slate-50"><ProjectTaskEditor :project-id="String(route.params.id)" :task-id="String(route.params.taskId)" :key="JSON.stringify([route.params.id, route.params.taskId])" /></div></template>
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import ProjectTaskPage from '~/components/projects/ProjectTaskPage.vue'
+import ProjectTaskEditor from '~/components/projects/ProjectTaskEditor.vue'
 const route = useRoute()
-const projectId = computed(() => String(route.params.id))
-const taskId = computed(() => String(route.params.taskId))
 </script>

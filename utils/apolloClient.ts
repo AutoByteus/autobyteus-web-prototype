@@ -10,8 +10,7 @@
  * source without an Apollo client, schema, or network boundary. Mutations and
  * subscriptions stay inert.
  */
-import { operationFixture, baseState } from '~/prototype/source-observation/fixtures.mjs'
-import { resumedAgentRunIds, resumedOrgRunIds, resumedTeamRunIds } from '~/prototype/run-mentions/runMentionState'
+import { operationFixture, baseState, PROJECT_MUTATIONS } from '~/prototype/source-observation/fixtures.mjs'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
 
@@ -20,12 +19,25 @@ const queryOperationNameOf = (document: any): string | null => {
   return definition?.operation === 'query' ? definition?.name?.value ?? null : null
 }
 
-// Mirrors the observation node: once a TeamRun is created in this browser
-// context, later history reads list it as active.
-let launchedTeamRun = false
-
 const localScenario = (): string => {
   try { return localStorage.getItem('autobyteus.prototype.scenario') || 'populated' } catch { return 'populated' }
+}
+
+// One browser context's fixture state, mirroring the observation node's
+// in-memory state: a created TeamRun is listed as active in later history
+// reads, and Project/Task saves update a small in-memory copy (0a32261).
+// A page reload resets it.
+export const localFixtureState: Record<string, any> = { ...baseState(), launchedTeamRun: false }
+let localStateScenario = ''
+const fixtureState = (): Record<string, any> => {
+  const scenario = localScenario()
+  if (scenario !== localStateScenario) {
+    localStateScenario = scenario
+    localFixtureState.projectData = null
+    localFixtureState.taskContextFiles = {}
+  }
+  localFixtureState.scenario = scenario
+  return localFixtureState
 }
 
 const resolveLocally = async (request: OperationRequest = {}) => {
@@ -36,56 +48,24 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (scenario === 'loading') await new Promise(done => setTimeout(done, 1500))
   if (scenario === 'error') return { data: null, errors: [{ message: 'Synthetic recoverable GraphQL failure.' }] }
   if (scenario === 'permission_denied') return { data: null, errors: [{ message: 'Synthetic permission denied.' }] }
-  const state = { ...baseState(), scenario: localScenario(), launchedTeamRun }
-  const data = operationFixture(name, request.variables || {}, state)
-  return { data: data ? markResumedTeamRuns(structuredClone(data)) : {} }
+  const data = operationFixture(name, request.variables || {}, fixtureState())
+  return { data: data ? structuredClone(data) : {} }
 }
 
-// cross-scope-agent-mentions: a stored Team run that was resumed by sending a
-// message in this browser context is listed as active, as after a real restore.
-const markResumedTeamRuns = (data: any): any => {
-  if (resumedOrgRunIds.size) markResumedOrgRuns(data)
-  // A resumed Agent run is reported active when it is reopened, so its live conversation is kept.
-  const resume = data?.getAgentRunResumeConfig
-  if (resume && resumedAgentRunIds.has(resume.runId)) resume.isActive = true
-  if (!resumedTeamRunIds.size && !resumedAgentRunIds.size) return data
-  const groups = [...(data?.listWorkspaceRunHistory ?? []), ...(data?.workspaceRunHistory ? [data.workspaceRunHistory] : [])]
-  for (const group of groups) {
-    for (const definition of group?.agentDefinitions ?? []) {
-      for (const run of definition?.runs ?? []) {
-        if (resumedAgentRunIds.has(run.runId)) run.isActive = true
-      }
-    }
-    for (const definition of group?.teamDefinitions ?? []) {
-      for (const run of definition?.runs ?? []) {
-        if (resumedTeamRunIds.has(run.teamRunId)) run.isActive = true
-      }
-    }
-  }
-  return data
-}
-
-// The same for an Org run: any history row of a locally driven Org run is listed as active.
-const markResumedOrgRuns = (value: any): void => {
-  if (!value || typeof value !== 'object') return
-  if (Array.isArray(value)) { value.forEach(markResumedOrgRuns); return }
-  if (typeof value.root_run_id === 'string' && resumedOrgRunIds.has(value.root_run_id) && 'is_active' in value) value.is_active = true
-  Object.values(value).forEach(markResumedOrgRuns)
-}
-
-const emptyResult = async () => ({ data: {} })
-
-// Launch mutations that the retained source launch flow awaits before
-// hydrating the created run. They return a deterministic synthetic run ID;
-// nothing is started. PrepareAgentRun backs the Chat first send (57df63f).
-const LOCAL_LAUNCH_MUTATIONS = new Set(['CreateAgentTeamRun', 'PrepareAgentRun'])
+// Mutations whose results the retained source flows await. They return
+// deterministic synthetic results; nothing is started or persisted.
+// PrepareAgentRun backs the Chat first send (57df63f); CreateWorkspace and the
+// Project/Task mutations back the Projects pages (0a32261).
+const LOCAL_MUTATIONS = new Set(['CreateAgentTeamRun', 'PrepareAgentRun', 'CreateWorkspace', ...PROJECT_MUTATIONS])
 
 const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const definition = request.mutation?.definitions?.find((entry: any) => entry.kind === 'OperationDefinition')
   const name = definition?.name?.value
-  if (!name || !LOCAL_LAUNCH_MUTATIONS.has(name)) return { data: {} }
-  if (name === 'CreateAgentTeamRun') launchedTeamRun = true
-  const data = operationFixture(name, request.variables || {}, { ...baseState(), scenario: localScenario() })
+  if (!name || !LOCAL_MUTATIONS.has(name)) return { data: {} }
+  const state = fixtureState()
+  if (name === 'CreateAgentTeamRun') state.launchedTeamRun = true
+  const data = operationFixture(name, request.variables || {}, state)
+  if (data?.__projectError) return { data: null, errors: [data.__projectError] }
   return { data: data ? structuredClone(data) : {} }
 }
 
