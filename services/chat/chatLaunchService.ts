@@ -281,7 +281,6 @@ export const launchOrgChat = async (
         llmModelIdentifier: context.config.llmModelIdentifier,
         llmConfig: context.config.llmConfig ?? null,
         autoExecuteTools: draft.autoExecuteTools,
-        skillAccessMode: 'PRELOADED_ONLY',
         workspaceRootPath: workspaceMetadata.workspaceRootPath,
       },
       teamOverrides,

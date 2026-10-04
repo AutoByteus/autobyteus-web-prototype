@@ -291,7 +291,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -1707,7 +1707,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -3062,7 +3062,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -4332,7 +4332,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -5817,7 +5817,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -7041,7 +7041,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -8526,7 +8526,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -9796,7 +9796,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -11066,7 +11066,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -12421,7 +12421,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -13656,7 +13656,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -15011,7 +15011,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -16272,7 +16272,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -17485,7 +17485,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -18702,7 +18702,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -19915,7 +19915,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -21971,7 +21971,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -23247,7 +23247,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -24617,7 +24617,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -25849,7 +25849,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -27190,7 +27190,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -28530,7 +28530,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -29870,7 +29870,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -31226,7 +31226,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -32623,7 +32623,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -34040,7 +34040,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -35381,7 +35381,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -36585,7 +36585,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -37798,7 +37798,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -39011,7 +39011,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -40224,7 +40224,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -41474,7 +41474,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -42759,7 +42759,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -44008,7 +44008,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -45284,7 +45284,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -46540,7 +46540,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -47860,7 +47860,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -49145,7 +49145,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -50466,7 +50466,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -51748,7 +51748,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -52972,7 +52972,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -56730,7 +56730,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -59327,7 +59327,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -60743,7 +60743,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -62966,7 +62966,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -63494,7 +63494,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -65840,7 +65840,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -66310,7 +66310,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -68550,7 +68550,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"
@@ -69661,7 +69661,7 @@
               "description": "A second deterministic synthetic agent.",
               "instructions": "Use the supplied synthetic workspace and return concise evidence.",
               "category": "General",
-              "avatarUrl": null,
+              "avatarUrl": "/prototype-assets/run-settings/avatar-documentation-writer.svg",
               "toolNames": [
                 "read_file",
                 "write_file"

@@ -18,6 +18,20 @@ import { getDefaultThinkingConfig, getThinkingParamKeys } from '~/utils/llmThink
 export type ChatTarget =
   | Readonly<{ kind: 'agent'; agentDefinitionId: string }>
   | Readonly<{ kind: 'team'; teamDefinitionId: string }>
+  // run-settings-ui-unification (round 2): an Agent Org can be started from New chat.
+  | Readonly<{ kind: 'org'; orgDefinitionId: string }>
+
+/**
+ * run-settings-ui-unification (round 2): what one Team/Org member or placed team sets itself
+ * instead of the composer's settings. Absent fields follow the defaults.
+ */
+export type ChatMemberSettings = Readonly<{
+  runtimeKind?: string
+  llmModelIdentifier?: string
+  llmConfig?: Record<string, unknown> | null
+  autoExecuteTools?: boolean
+  workspace?: ChatDraftWorkspace
+}>
 
 /** Where a New chat's files live, chosen before the first message. */
 export type ChatDraftWorkspace =
@@ -30,6 +44,8 @@ export interface ChatDraft {
   target: ChatTarget
   workspace: ChatDraftWorkspace
   autoExecuteTools: boolean
+  /** Per-member exceptions by member address (`/writer`, `/review-team/writer`). */
+  memberSettings: Record<string, ChatMemberSettings>
   /** Set while the first send is in flight; the New chat page renders the starting state from it. */
   starting: boolean
 }
@@ -135,6 +151,7 @@ export const useChatDraftStore = defineStore('chatDraft', () => {
       target: { kind: 'agent', agentDefinitionId },
       workspace: resolveInitialWorkspace(preset.workspaceRootPath),
       autoExecuteTools: true,
+      memberSettings: {},
       starting: false,
     }
     draft.value = next
@@ -245,7 +262,23 @@ export const useChatDraftStore = defineStore('chatDraft', () => {
       current.context.state.conversation.agentDefinitionId = identity.id
     }
     current.context.requestedSkillNames = []
+    const sameTarget = JSON.stringify(current.target) === JSON.stringify(target)
     current.target = target
+    if (!sameTarget) current.memberSettings = {}
+  }
+
+  /** Replace one member's own settings; an empty object returns it to the defaults. */
+  const setMemberSettings = (address: string, settings: ChatMemberSettings | null) => {
+    const current = draft.value
+    if (!current) return
+    const next = { ...current.memberSettings }
+    if (settings && Object.keys(settings).length) next[address] = settings
+    else delete next[address]
+    current.memberSettings = next
+  }
+
+  const resetAllMemberSettings = () => {
+    if (draft.value) draft.value.memberSettings = {}
   }
 
   const setWorkspace = (workspace: ChatDraftWorkspace) => {
@@ -271,6 +304,8 @@ export const useChatDraftStore = defineStore('chatDraft', () => {
     startNewChat,
     ensureDraft,
     setTarget,
+    setMemberSettings,
+    resetAllMemberSettings,
     setWorkspace,
     setAutoExecuteTools,
     setModel,

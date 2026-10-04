@@ -501,6 +501,11 @@ export default defineNuxtPlugin({
         }
       }
       for (const [key, value] of liveMaps) store[key] = value
+      // run-settings-ui-unification: the hand-written review runtimes (runtimeCatalogFixture.ts)
+      // stay available on every route; route snapshots carry only the captured runtime list.
+      if (store.$id === 'runtimeAvailability') {
+        store.$patch({ availabilities: clone(RUN_SETTINGS_RUNTIME_AVAILABILITIES), hasFetched: true })
+      }
       if (store.$id === 'workspace') {
         for (const key of ['fileSystemConnections', 'fileExplorerLiveConsumers', 'fileExplorerSnapshotRefreshes', 'workspaceMetadataRegistrationTasks']) {
           if (!(store[key] instanceof Map)) store[key] = new Map()

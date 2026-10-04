@@ -6,7 +6,7 @@
 - Stable package: `run-settings-ui-unification`, solution revision `SR-001`
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Baseline Needed` — paused for `WEB-BASELINE-REFRESH-004`; resumes `Awaiting User Review` on the refreshed base
+- Status: `Awaiting User Review` (round 7a, rebuilt on the refreshed baseline)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -79,3 +79,20 @@
 - After acceptance and integration: rebuild this ticket on the refreshed `origin/personal`
   (carry rounds 1–7a, `6436116`), revalidate, and resume review. Earlier "no refresh" note under
   Repository And Baseline is superseded.
+
+## Rebuilt On The Refreshed Baseline (2026-10-04)
+
+- `WEB-BASELINE-REFRESH-004` accepted and integrated: design `origin/personal` = `8fdf0b7`
+  (pushed), baseline pin = source `origin/personal@0a32261` (source later advanced to `1b9739c`
+  with no `autobyteus-web` UI change; one test file only).
+- This ticket was squashed (history kept in tag `archive/run-settings-ui-unification-pre-refresh-004`)
+  and rebased onto fetched `origin/personal@8fdf0b7`: accepted base is now `8fdf0b7`.
+- Conflict resolution: product code wins where the refresh changed it (General Agent copy,
+  skill-access removal, zh-CN AGY copy, scripted mention hooks removed); design changes re-applied
+  on top (ChatApprovalToggle `muted`, chat draft Org target and member settings, Org run panel,
+  run-settings runtime catalog fixture kept across route snapshots). The hand-made General Agent
+  fixture rename was dropped; the Documentation Writer illustrative avatar re-applied.
+- Revalidated in the browser on port 4520: General Agent heading; Agent/Team/Org Run → chat →
+  send; member panel with Codex override carried into the Team launch; Org launch; saved Team
+  run settings with Save on change; running Team composer shows the single inline `@` mention.
+- Checks: repository typecheck pass, tests 13/13, lint pass; vue-tsc clean for ticket-owned files.
