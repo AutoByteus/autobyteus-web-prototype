@@ -1,5 +1,21 @@
 <template>
-  <div ref="rootRef">
+  <div ref="rootRef" class="relative">
+    <!-- run-settings-ui-unification (round 9): `@` brings a collaborator in, shown as the same single
+         inline highlight as in a running conversation. Background only; the textarea owns the text. -->
+    <div
+      v-if="activeMentionNames.length"
+      class="mention-mirror-viewport"
+      aria-hidden="true"
+      :style="{ width: `${mirrorMetrics.width}px`, height: `${mirrorMetrics.height}px` }"
+      data-test="composer-mention-mirror"
+    >
+      <div
+        class="mention-mirror"
+        :style="{ transform: `translate(${-mirrorMetrics.scrollLeft}px, ${-mirrorMetrics.scrollTop}px)` }"
+      ><template v-for="(part, index) in mentionParts" :key="index"><span
+        :class="{ 'mention-highlight': part.kind === 'mention' }"
+      >{{ part.kind === 'mention' ? '@' + part.value : part.value }}</span></template></div>
+    </div>
     <textarea
       ref="textareaRef"
       :value="context?.requirement ?? ''"
@@ -10,11 +26,12 @@
       :aria-controls="menuOpen ? listId : undefined"
       :aria-activedescendant="menuOpen && activeCount ? `${listId}-option-${highlight}` : undefined"
       :aria-label="placeholder"
-      class="block w-full resize-none border-0 bg-transparent px-3 py-2.5 text-[0.9375rem] leading-6 focus:outline-none focus:ring-0"
+      class="relative block w-full resize-none border-0 bg-transparent px-3 py-2.5 text-[0.9375rem] leading-6 focus:outline-none focus:ring-0"
       :style="{ height: `${height}px`, minHeight: `${MIN_HEIGHT}px`, maxHeight: `${MAX_HEIGHT}px` }"
       :placeholder="placeholder"
       :disabled="disabled || !context"
       @input="onInput"
+      @scroll="syncMirrorMetrics"
       @click="detectTrigger"
       @keydown="onKeydown"
       @dragover.prevent
@@ -37,6 +54,8 @@
         :query="triggerQuery"
         :targets="filteredTargets"
         :highlight="highlight"
+        variant="run"
+        :focused-name="mentionFocusedName"
         @highlight="highlight = $event"
         @choose="chooseTarget"
       />
@@ -60,16 +79,18 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
 import ChatSkillMenu from '~/components/chat/ChatSkillMenu.vue'
 import ChatTargetMenu from '~/components/chat/ChatTargetMenu.vue'
-import { filterTargets, toChatTarget, type ChatTargetOption } from '~/components/chat/chatComposerMenus'
+import { filterTargets, type ChatTargetOption } from '~/components/chat/chatComposerMenus'
+import { mentionToken, mentionsPresentInText, splitMentionText, type RequestedCollaboratorMention } from '~/utils/collaborators/collaboratorMentionText'
 import { detectMenuTrigger, rankSkills, type SkillTagOption } from '~/utils/skills/skillTagMenu'
 import { useAnchoredPopover } from '~/composables/popover/useAnchoredPopover'
 import { useComposerFilePathDrop } from '~/composables/agentInput/useComposerFilePathDrop'
-import type { ChatTarget } from '~/stores/chatDraftStore'
 import type { AgentContext } from '~/types/agent/AgentContext'
 
 /**
- * The Chat textarea: `/` adds skill tags to the context, `@` (New chat only) addresses an
- * agent or team, Enter submits and Shift+Enter inserts a newline.
+ * The Chat textarea: `/` adds skill tags to the context, `@` brings an agent or team in as a
+ * collaborator (the agent you are talking to receives the message and brings them in — the same
+ * as in a running conversation; run-settings-ui-unification round 9), Enter submits and
+ * Shift+Enter inserts a newline.
  */
 const props = defineProps<{
   context: AgentContext | null
@@ -78,13 +99,14 @@ const props = defineProps<{
   /** The addressed agent's skills; null when `/` is not offered (team target). */
   skillOptions: SkillTagOption[] | null
   skillsAllInstalled: boolean
-  /** Agents and teams for `@`; null when addressing is not offered (after the first message). */
+  /** Agents and teams `@` can bring in; null when `@` is not offered. */
   targetOptions: ChatTargetOption[] | null
+  /** Who receives the message and brings the collaborator in (menu footer). */
+  mentionFocusedName?: string
   autofocus?: boolean
 }>()
 const emit = defineEmits<{
   (event: 'submit'): void
-  (event: 'select-target', target: ChatTarget): void
 }>()
 
 const MIN_HEIGHT = 56
@@ -113,6 +135,7 @@ const resize = () => {
   height.value = Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, element.scrollHeight))
   element.style.height = `${height.value}px`
   element.style.overflowY = element.scrollHeight > MAX_HEIGHT ? 'auto' : 'hidden'
+  syncMirrorMetrics()
 }
 watch(() => props.context?.requirement, () => nextTick(resize))
 
@@ -172,12 +195,40 @@ const chooseSkill = (name: string) => {
   popover.close(false)
 }
 
+/** Replace the typed `@q` token with `@Name ` and record the mention on the draft context. */
 const chooseTarget = (index: number) => {
   const option = filteredTargets.value[index]
-  if (!option) return
-  removeTriggerText()
+  const context = props.context
+  if (!option || !context) return
+  const element = textareaRef.value
+  const text = context.requirement ?? ''
+  const caret = element?.selectionStart ?? text.length
+  const tokenStart = Math.max(0, triggerStart.value)
+  const inserted = `${mentionToken(option.name)} `
+  setText(text.slice(0, tokenStart) + inserted + text.slice(caret).replace(/^ /, ''))
+  const mention: RequestedCollaboratorMention = {
+    kind: option.kind === 'team' ? 'agent_team' : 'agent', definitionId: option.id, name: option.name,
+  }
+  if (!context.requestedMentions.some((entry) => entry.kind === mention.kind && entry.definitionId === mention.definitionId)) {
+    context.requestedMentions = [...context.requestedMentions, mention]
+  }
   popover.close(false)
-  emit('select-target', toChatTarget(option))
+  void nextTick(() => {
+    resize()
+    const position = tokenStart + inserted.length
+    element?.focus()
+    element?.setSelectionRange(position, position)
+  })
+}
+
+const activeMentionNames = computed(() => mentionsPresentInText(props.context?.requirement ?? '', props.context?.requestedMentions)
+  .map((mention) => mention.name))
+const mentionParts = computed(() => splitMentionText(props.context?.requirement ?? '', activeMentionNames.value))
+const mirrorMetrics = ref({ width: 0, height: 0, scrollTop: 0, scrollLeft: 0 })
+const syncMirrorMetrics = () => {
+  const element = textareaRef.value
+  if (!element) return
+  mirrorMetrics.value = { width: element.clientWidth, height: element.clientHeight, scrollTop: element.scrollTop, scrollLeft: element.scrollLeft }
 }
 
 const moveHighlight = (delta: number) => {
@@ -237,3 +288,38 @@ onBeforeUnmount(() => window.removeEventListener('resize', handleResize))
 
 defineExpose({ focus: () => textareaRef.value?.focus() })
 </script>
+
+<style scoped>
+/* Same metrics as the textarea (px-3 py-2.5, 0.9375rem/24px) so the highlight sits under the glyphs. */
+.mention-mirror-viewport {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.mention-mirror {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  line-height: 24px;
+  letter-spacing: normal;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  color: transparent;
+}
+.mention-highlight {
+  background: #f0f9ff;
+  box-shadow: inset 0 0 0 1px #bae6fd;
+  border-radius: 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+@media (forced-colors: active) {
+  .mention-mirror-viewport { z-index: 1; }
+  .mention-mirror { forced-color-adjust: none; }
+  .mention-highlight { background: transparent; box-shadow: inset 0 0 0 1px Highlight; }
+}
+</style>

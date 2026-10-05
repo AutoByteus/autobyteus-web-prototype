@@ -169,7 +169,8 @@ export const useAgentRunStore = defineStore('agentRun', {
       const messageId = createClientMessageId();
       let dedupeKey = `agent_run_input:${runId}:${messageId}`;
       // `@` mentions exist only for an existing run; a first message never carries them.
-      const mentions = isNewAgent ? [] : mentionsPresentInText(userText, currentAgent.requestedMentions);
+      // run-settings-ui-unification (round 9): `@` brings a collaborator in on the first message too.
+      const mentions = mentionsPresentInText(userText, currentAgent.requestedMentions);
       const localSubmission = beginLocalUserSubmission(currentAgent, {
         text: messageContent, identity: { messageId, dedupeKey },
         attachments: draftAttachments,

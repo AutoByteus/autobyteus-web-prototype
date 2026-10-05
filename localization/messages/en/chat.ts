@@ -5,7 +5,7 @@ const chatMessages = {
   'chat.new.heading': 'What should we work on?',
   'chat.new.subtitleDefaultBeforeSlash': 'All your skills are available. Type',
   'chat.new.subtitleDefaultBetween': 'to use a skill, or',
-  'chat.new.subtitleDefaultAfterAt': 'to chat with an agent or team.',
+  'chat.new.subtitleDefaultAfterAt': 'to bring in an agent or team.',
   'chat.new.subtitleAgent': 'Chat with {{agent}}, using its own tools and skills.',
   'chat.new.subtitleTeam': 'Your message goes to {{team}}’s coordinator.',
   'chat.new.placeholderDefault': 'Ask anything · / for skills · @ for an agent or team',

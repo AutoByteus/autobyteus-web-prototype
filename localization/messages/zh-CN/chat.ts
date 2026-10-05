@@ -4,7 +4,7 @@ const chatMessages = {
   'chat.new.heading': '我们要做什么？',
   'chat.new.subtitleDefaultBeforeSlash': '所有技能都可以使用。输入',
   'chat.new.subtitleDefaultBetween': '使用技能，或输入',
-  'chat.new.subtitleDefaultAfterAt': '与智能体或团队对话。',
+  'chat.new.subtitleDefaultAfterAt': '将智能体或团队加入进来。',
   'chat.new.subtitleAgent': '与 {{agent}} 对话，使用它自己的工具和技能。',
   'chat.new.subtitleTeam': '你的消息将发送给 {{team}} 的协调者。',
   'chat.new.placeholderDefault': '随便问 · / 使用技能 · @ 选择智能体或团队',

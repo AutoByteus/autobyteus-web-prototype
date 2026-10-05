@@ -26,7 +26,7 @@
           :target-options="targetOptions"
           :autofocus="autofocus"
           @submit="activatePrimaryAction"
-          @select-target="emit('select-target', $event)"
+          :mention-focused-name="mentionFocusedName"
         />
 
         <VoiceInputStatusRow class="mx-3 mb-2" />
@@ -66,7 +66,6 @@ import SkillTagChips from '~/components/chat/SkillTagChips.vue'
 import type { ChatTargetOption } from '~/components/chat/chatComposerMenus'
 import type { SkillTagOption } from '~/utils/skills/skillTagMenu'
 import type { ComposerTarget } from '~/composables/agentInput/useComposerTarget'
-import type { ChatTarget } from '~/stores/chatDraftStore'
 import { useContextFileUploadStore } from '~/stores/contextFileUploadStore'
 import { useToasts } from '~/composables/useToasts'
 import { hasSendableDraft, resolveAgentPrimaryAction } from '~/services/runSubmission/agentPrimaryAction'
@@ -78,6 +77,8 @@ const props = withDefaults(defineProps<{
   skillOptions: SkillTagOption[] | null
   skillsAllInstalled?: boolean
   targetOptions?: ChatTargetOption[] | null
+  /** Who receives the message and brings an `@` collaborator in. */
+  mentionFocusedName?: string
   /** The first send of a New chat is in flight. */
   starting?: boolean
   /** Why the draft cannot be sent (e.g. its runtime is unavailable); labels the disabled send button. */
@@ -86,11 +87,11 @@ const props = withDefaults(defineProps<{
 }>(), {
   skillsAllInstalled: false,
   targetOptions: null,
+  mentionFocusedName: '',
   starting: false,
   sendBlockedReason: null,
   autofocus: false,
 })
-const emit = defineEmits<{ (event: 'select-target', target: ChatTarget): void }>()
 
 const slots = useSlots()
 const inputRef = ref<InstanceType<typeof ChatMessageInput> | null>(null)

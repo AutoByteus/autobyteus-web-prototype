@@ -47,11 +47,11 @@
           :placeholder="placeholder"
           :skill-options="team || org ? null : options.skillOptions.value"
           :skills-all-installed="options.skillsAllInstalled.value"
-          :target-options="options.targetOptions.value"
+          :target-options="mentionOptions"
+          :mention-focused-name="mentionFocusedName"
           :starting="draft.starting"
           :send-blocked-reason="sendBlockedReason"
           autofocus
-          @select-target="chatDraftStore.setTarget"
         >
           <template #footer-left>
             <ChatWorkspaceMenu :workspace="draft.workspace" @select="chatDraftStore.setWorkspace" />
@@ -159,6 +159,21 @@ const identity = computed(() => {
     return { kind: 'agent' as const, isDefault: isDefaultAgent.value, avatarUrl: options.agentDefinition.value?.avatarUrl || draftContext.value?.config.agentAvatarUrl || null, name: agentName.value, kindLabel: t('runSettings.kind.agent'), subtitle: '' }
   }
   return null
+})
+// Round 9: `@` always brings a collaborator in; who you talk to is set by how the chat started.
+// The agent or team already being addressed is not offered again.
+const mentionOptions = computed(() => options.targetOptions.value.filter((option) => {
+  const current = draft.value?.target
+  if (!current) return true
+  if (current.kind === 'agent') return !(option.kind === 'agent' && option.id === current.agentDefinitionId)
+  if (current.kind === 'team') return !(option.kind === 'team' && option.id === current.teamDefinitionId)
+  return true
+}))
+/** Who receives the message and brings the collaborator in (menu footer). */
+const mentionFocusedName = computed(() => {
+  if (org.value) return org.value.name
+  if (team.value) return team.value.coordinatorMemberName || team.value.name
+  return agentName.value
 })
 const isDefaultAgent = computed(() => agentDefinitionId.value === DEFAULT_CHAT_AGENT_DEFINITION_ID)
 const agentName = computed(() => options.agentDefinition.value?.name || draftContext.value?.config.agentDefinitionName || '')

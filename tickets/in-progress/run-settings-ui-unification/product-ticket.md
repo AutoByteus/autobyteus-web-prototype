@@ -98,3 +98,10 @@
 - Checks: repository typecheck pass, tests 13/13, lint pass; vue-tsc clean for ticket-owned files.
 
 - 2026-10-04: round 8 — Team and Org "+" open New chat prefilled from the run (see `review-round-8.md`).
+- 2026-10-05: before round 9, source `origin/personal` had advanced to `4dee901` (38 frontend files:
+  Skills sources dialog, event monitor, token usage, small collaboration changes).
+  `WEB-BASELINE-REFRESH-005` was opened (branch from fetched `origin/personal@8fdf0b7`) and sent to
+  the Bootstrapper, then **withdrawn by the user** ("it belongs to new change in the current
+  ticket"): the consistent `@` behaviour is a new design change owned by this ticket. The
+  Bootstrapper stopped with no commits; its partial working-tree changes were discarded and the
+  refresh worktree/branch removed. Baseline remains pin `0a32261` (design `origin/personal@8fdf0b7`).
