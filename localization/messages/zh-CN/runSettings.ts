@@ -58,7 +58,6 @@ const runSettingsMessages = {
   'runSettings.validation.modelsLoading': '正在加载模型…',
   'runSettings.model.lockedRuntimeTooltip': '此运行的运行时已固定',
   'runSettings.model.unavailable': '{{runtime}} 已不再提供此模型。请在运行恢复前选择其他模型。',
-  'runSettings.model.keptSettings': '沿用已保存运行的设置：{{settings}}',
   'runSettings.locked.fixed': '此运行中固定',
   'runSettings.locked.fixedAria': '{{setting}}：{{value}}。此运行中固定',
   'runSettings.status.active': '运行中',

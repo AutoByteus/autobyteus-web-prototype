@@ -55,7 +55,6 @@
             :drill-in="nested"
             @select="emit('update:model', $event)"
           />
-          <p v-if="modelNote" class="px-2 pb-1 text-xs leading-5 text-gray-500" data-test="run-setting-model-note">{{ modelNote }}</p>
           <p v-if="modelUnavailable" class="px-2 pb-1 text-xs leading-5 text-amber-700" data-test="run-setting-model-unavailable">
             {{ $t('runSettings.model.unavailable', { runtime: presentation.runtimeLabel(values.runtimeKind) }) }}
           </p>
@@ -141,8 +140,6 @@ const props = withDefaults(defineProps<{
   /** A saved run keeps its runtime: the model menu lists only that runtime's models. */
   runtimeLocked?: boolean
   modelUnavailable?: boolean
-  /** Secondary line under the model, e.g. saved settings the model no longer offers. */
-  modelNote?: string | null
   /** Saved runs show what differs but offer no per-field reset. */
   resettable?: boolean
   nested?: boolean
@@ -153,7 +150,6 @@ const props = withDefaults(defineProps<{
   locked: () => ({}),
   runtimeLocked: false,
   modelUnavailable: false,
-  modelNote: null,
   resettable: true,
   nested: false,
   testSuffix: '',

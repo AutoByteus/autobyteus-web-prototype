@@ -59,7 +59,6 @@ const runSettingsMessages = {
   'runSettings.validation.modelsLoading': 'Loading models…',
   'runSettings.model.lockedRuntimeTooltip': 'The runtime is fixed for this run',
   'runSettings.model.unavailable': 'No longer offered by {{runtime}}. Choose another model before this run resumes.',
-  'runSettings.model.keptSettings': 'Kept from the saved run: {{settings}}',
   'runSettings.locked.fixed': 'Fixed for this run',
   'runSettings.locked.fixedAria': '{{setting}}: {{value}}. Fixed for this run',
   'runSettings.status.active': 'Running',

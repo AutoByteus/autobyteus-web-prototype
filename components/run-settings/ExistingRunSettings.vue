@@ -50,7 +50,6 @@
             :locked="rootLocked"
             runtime-locked
             :model-unavailable="modelUnavailable"
-            :model-note="keptNote(rootValues)"
             test-suffix="root"
             @update:model="edit(rootAddress, { runtimeKind: $event.runtimeKind, llmModelIdentifier: $event.llmModelIdentifier, llmConfig: presentation.defaultConfigFor($event) })"
             @update:thinking="edit(rootAddress, { llmConfig: $event })"
@@ -179,13 +178,6 @@ const updateMember = (key: string, field: RunSettingField, value: unknown) => {
   else if (field === 'workspace') edit(key, { workspace: value as RunSettingsValues['workspace'] })
 }
 
-/** Saved settings the current model schema no longer offers stay visible (historical config). */
-const keptNote = (values: RunSettingsValues): string | null => {
-  const schema = presentation.thinkingSchema(values) ?? {}
-  if (!values.llmConfig) return null
-  const kept = Object.entries(values.llmConfig).filter(([key]) => !(key in schema))
-  return kept.length ? t('runSettings.model.keptSettings', { settings: kept.map(([key, value]) => `${key} ${String(value)}`).join(', ') }) : null
-}
 
 const discard = () => { edits.value = {} }
 const save = () => {
