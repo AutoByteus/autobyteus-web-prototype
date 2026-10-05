@@ -10,8 +10,6 @@ const chatMessages = {
   'chat.new.placeholderDefault': '随便问 · / 使用技能 · @ 选择智能体或团队',
   'chat.new.placeholderAgent': '向 {{agent}} 提问…',
   'chat.new.placeholderTeam': '给 {{team}} 发消息…',
-  'chat.new.hintTemp': '文件保存在临时工作区 · {{path}}',
-  'chat.new.hintWorkspace': '文件保存在 {{workspace}} · {{path}}',
   'chat.new.starting': '正在 {{runtime}} 上启动 {{name}}…',
   'chat.new.teamNote': '所有成员都使用此模型、{{workspace}}和此审批设置。如需为每个成员单独设置，请从以下位置启动：',
   'chat.new.agentTeamsLink': '智能体团队',

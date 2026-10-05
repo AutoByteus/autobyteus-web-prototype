@@ -6,7 +6,7 @@
 - Stable package: `run-settings-ui-unification`, solution revision `SR-001`
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Awaiting User Review` (round 16, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
+- Status: `Awaiting User Review` (round 17, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -124,3 +124,4 @@
 - 2026-10-05: round 14 — clearer member rows: two-line summary, Customized label, one surface when opened (see `review-round-14.md`).
 - 2026-10-05: round 15 — member panel text as clear as the message box; an opened member is a white bordered card (see `review-round-15.md`).
 - 2026-10-05: round 16 — member panel resizable from its left edge (remembered width); dark setting labels (see `review-round-16.md`).
+- 2026-10-05: round 17 — removed the "Files are saved in …" line under the message box (see `review-round-17.md`).

@@ -11,8 +11,6 @@ const chatMessages = {
   'chat.new.placeholderDefault': 'Ask anything · / for skills · @ for an agent or team',
   'chat.new.placeholderAgent': 'Ask {{agent}} anything…',
   'chat.new.placeholderTeam': 'Message {{team}}…',
-  'chat.new.hintTemp': 'Files are saved in the temp workspace · {{path}}',
-  'chat.new.hintWorkspace': 'Files are saved in {{workspace}} · {{path}}',
   'chat.new.starting': 'Starting {{name}} on {{runtime}}…',
   'chat.new.teamNote': 'All members use this model, the {{workspace}} and this approval setting. For per-member setup, start it from',
   'chat.new.agentTeamsLink': 'Agent Teams',

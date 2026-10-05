@@ -77,17 +77,13 @@
           </template>
         </ChatComposer>
 
-        <p class="mt-2.5 flex items-center justify-center gap-1.5 text-center text-xs text-gray-400" data-test="chat-new-hint">
-          <template v-if="draft?.starting">
-            {{ $t('chat.new.starting', { name: org ? org.name : team ? team.name : agentName, runtime: runtimeLabel }) }}
-          </template>
-          <template v-else>
-            <Icon icon="heroicons:folder" class="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
-            <span class="truncate">{{ workspaceHint }}</span>
-          </template>
+        <!-- Round 17: no "Files are saved in …" line; the workspace control already names the
+             workspace and shows its path on hover. Only the starting state is announced here. -->
+        <p v-if="draft?.starting" class="mt-2.5 text-center text-xs text-gray-400" data-test="chat-new-hint">
+          {{ $t('chat.new.starting', { name: org ? org.name : team ? team.name : agentName, runtime: runtimeLabel }) }}
         </p>
         <!-- run-settings-ui-unification (round 2): members follow the composer unless customized here. -->
-        <ChatTargetMembers v-if="draft && (team || org) && !draft.starting" :key="draft.context.state.runId + (org?.id ?? team?.id ?? '')" class="mt-1.5" :draft="draft" @update:open="membersPanelOpen = $event" @update:width="membersPanelWidth = $event" @update:resizing="membersPanelResizing = $event" />
+        <ChatTargetMembers v-if="draft && (team || org) && !draft.starting" :key="draft.context.state.runId + (org?.id ?? team?.id ?? '')" class="mt-2.5" :draft="draft" @update:open="membersPanelOpen = $event" @update:width="membersPanelWidth = $event" @update:resizing="membersPanelResizing = $event" />
       </div>
     </div>
   </div>
@@ -96,7 +92,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { Icon } from '@iconify/vue'
 import ChatComposer from '~/components/chat/ChatComposer.vue'
 import ChatWorkspaceMenu from '~/components/chat/ChatWorkspaceMenu.vue'
 import ChatApprovalToggle from '~/components/chat/ChatApprovalToggle.vue'
@@ -190,24 +185,6 @@ const placeholder = computed(() => {
   return t('chat.new.placeholderDefault')
 })
 
-const selectedWorkspace = computed(() => {
-  const workspace = draft.value?.workspace
-  if (!workspace) return null
-  if (workspace.kind === 'folder') {
-    const name = workspace.rootPath.replace(/[/\\]+$/, '').split(/[/\\]/).pop() || workspace.rootPath
-    return { isTemp: false, name, path: workspace.rootPath }
-  }
-  const info = workspaceStore.workspaces[workspace.workspaceId]
-  const isTemp = !info || Boolean(info.isTemp) || info.workspaceId === workspaceStore.tempWorkspaceId
-  return { isTemp, name: info?.name ?? '', path: info?.absolutePath ?? '' }
-})
-const workspaceHint = computed(() => {
-  const workspace = selectedWorkspace.value
-  if (!workspace) return ''
-  return workspace.isTemp
-    ? t('chat.new.hintTemp', { path: workspace.path })
-    : t('chat.new.hintWorkspace', { workspace: workspace.name, path: workspace.path })
-})
 const sendBlockedReason = computed(() => {
   const current = draft.value
   if (!current || !hasSendableDraft(current.context, { attachmentsAreSendable: true })) return null
