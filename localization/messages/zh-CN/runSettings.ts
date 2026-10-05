@@ -68,6 +68,7 @@ const runSettingsMessages = {
   'runSettings.existing.orgRun': '组织运行',
   'runSettings.existing.activeNote': '停止此运行后才能更改模型或思考设置。',
   'runSettings.existing.stoppedNote': '更改将在此运行恢复时生效。',
+  'runSettings.existing.readOnlyNote': '此运行的设置无法更改。',
   'runSettings.existing.refreshNote': '需要刷新已保存的设置后才能更改。',
   'runSettings.existing.refresh': '刷新',
   'runSettings.save.unsaved': '有未保存的更改',

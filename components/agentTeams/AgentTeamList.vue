@@ -118,7 +118,6 @@
 import { computed, onMounted, ref } from 'vue';
 import { useAgentTeamDefinitionStore, type AgentTeamDefinition } from '~/stores/agentTeamDefinitionStore';
 import AgentTeamCard from '~/components/agentTeams/AgentTeamCard.vue';
-import { useRunActions } from '~/composables/useRunActions';
 import { useStartRunInChat } from '~/composables/runSettings/useStartRunInChat'
 import { useServerSettingsStore } from '~/stores/serverSettings';
 import {
@@ -130,7 +129,6 @@ import {
 const emit = defineEmits(['navigate']);
 
 const store = useAgentTeamDefinitionStore();
-const { prepareTeamRun } = useRunActions();
 const router = useRouter();
 const serverSettingsStore = useServerSettingsStore();
 

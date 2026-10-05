@@ -50,19 +50,6 @@ export function useRunSettingsPresentation() {
   const approvalLabel = (autoExecuteTools: boolean) =>
     autoExecuteTools ? t('chat.approval.autoApprove') : t('chat.approval.askFirst')
 
-  /** Collapsed member row: only the values this member sets itself. */
-  const customizedSummary = (values: RunSettingsValues, customized: RunSettingFlags, fields: readonly RunSettingField[]): string[] => {
-    const parts: string[] = []
-    if (fields.includes('workspace') && customized.workspace) parts.push(t('runSettings.members.workspaceSummary', { workspace: workspaceName(values.workspace) }))
-    if (fields.includes('model') && customized.model) parts.push(modelLabel(values) || t('chat.model.chooseModel'))
-    if (fields.includes('thinking') && customized.thinking) {
-      const menu = thinkingMenu(values)
-      if (menu.mode !== 'hidden') parts.push(`${t('runSettings.row.thinking')} ${menu.summary}`)
-    }
-    if (fields.includes('approval') && customized.approval && !isApprovalLockedForRuntime(values.runtimeKind)) parts.push(approvalLabel(values.autoExecuteTools))
-    return parts
-  }
-
   /** Choosing a model applies that model's default thinking, as in Chat. */
   const defaultConfigFor = (choice: RunModelChoice): Record<string, unknown> | null =>
     explicitChatModelConfig(catalog.schemaFor(choice.runtimeKind, choice.llmModelIdentifier), null)
@@ -73,13 +60,11 @@ export function useRunSettingsPresentation() {
     ensureRuntime,
     workspaceName,
     workspacePath,
-    isTempWorkspace,
     modelLabel,
     runtimeLabel: (runtimeKind: string) => runtimeKindToLabel(runtimeKind),
     runtimeShortLabel: (runtimeKind: string) => runtimeShortLabel(runtimeKind),
     thinkingSchema,
     thinkingMenu,
     approvalLabel,
-    customizedSummary,
   }
 }

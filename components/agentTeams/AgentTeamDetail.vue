@@ -85,7 +85,6 @@ import { useAgentTeamDefinitionStore, type AgentTeamDefinition } from '~/stores/
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
 import { useAgentOrgDefinitionStore } from '~/stores/agentOrgDefinitionStore'
 import { loadAgentOrgDefinitionReferences, type AgentOrgDefinitionReferences } from '~/services/agentOrgDefinition/agentOrgDefinitionReferences'
-import { useRunActions } from '~/composables/useRunActions'
 import { useStartRunInChat } from '~/composables/runSettings/useStartRunInChat'
 import { useLocalization } from '~/composables/useLocalization'
 import { buildTeamLocalAgentDefinitionId } from '~/utils/teamLocalDefinitionId'
@@ -97,7 +96,6 @@ const emit = defineEmits(['navigate'])
 const router = useRouter()
 const teamStore = useAgentTeamDefinitionStore()
 const agentStore = useAgentDefinitionStore()
-const { prepareTeamRun } = useRunActions()
 const { t } = useLocalization()
 const loading = ref(false)
 const referenceError = ref('')

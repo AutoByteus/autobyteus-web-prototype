@@ -5,7 +5,7 @@
       type="button"
       data-test="chat-workspace-trigger"
       class="inline-flex max-w-[15rem] items-center gap-1.5 rounded-md px-2 py-1 text-[0.8125rem] leading-5 transition-colors hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
-      :class="[popover.open.value ? 'bg-gray-100' : '', muted ? 'text-gray-500' : 'text-gray-600']"
+      :class="[popover.open.value ? 'bg-gray-100' : '', 'text-gray-600']"
       :aria-expanded="popover.open.value ? 'true' : 'false'"
       aria-haspopup="listbox"
       :aria-label="$t('chat.workspace.triggerAria', { name: selectedName })"
@@ -153,8 +153,7 @@ const props = withDefaults(defineProps<{
   /** run-settings-ui-unification: run panels open menus where they fit. */
   placement?: 'above' | 'auto'
   /** Muted chip text for a value inherited from org defaults. */
-  muted?: boolean
-}>(), { placement: 'above', muted: false })
+}>(), { placement: 'above' })
 const emit = defineEmits<{ (event: 'select', value: ChatDraftWorkspace): void }>()
 
 const { t } = useLocalization()

@@ -12,7 +12,7 @@
           data-test="existing-run-note"
         >
           <Icon :icon="refreshRequired ? 'heroicons:exclamation-triangle' : lockedForModel ? 'heroicons:lock-closed' : 'heroicons:information-circle'" class="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
-          <span>{{ refreshRequired ? $t('runSettings.existing.refreshNote') : lockedForModel ? $t('runSettings.existing.activeNote') : $t('runSettings.existing.stoppedNote') }}</span>
+          <span>{{ refreshRequired ? $t('runSettings.existing.refreshNote') : isActive ? $t('runSettings.existing.activeNote') : lockedForModel ? $t('runSettings.existing.readOnlyNote') : $t('runSettings.existing.stoppedNote') }}</span>
           <button
             v-if="refreshRequired"
             type="button"
@@ -24,26 +24,27 @@
           </button>
         </p>
 
-        <div class="mb-2 flex items-baseline justify-between gap-3">
-          <h3 class="text-xs font-medium text-gray-500">{{ sectionTitle }}</h3>
+        <!-- Round 20: no "Team defaults" title and no "Files are saved in …" line; the card is the
+             run's settings and the locked workspace shows its path on hover. -->
+        <!-- Round 20: the same white card as an opened member, without row dividers. -->
+        <div class="rounded-xl border border-gray-200 bg-white px-4 py-2 shadow-sm" data-test="existing-run-root-card">
+          <RunSettingsCard
+            :values="rootValues"
+            :locked="rootLocked"
+            runtime-locked
+            :model-unavailable="modelUnavailable"
+            :model-note="keptNote(rootValues)"
+            test-suffix="root"
+            @update:model="edit(rootAddress, { runtimeKind: $event.runtimeKind, llmModelIdentifier: $event.llmModelIdentifier, llmConfig: presentation.defaultConfigFor($event) })"
+            @update:thinking="edit(rootAddress, { llmConfig: $event })"
+          />
         </div>
-        <RunSettingsCard
-          :values="rootValues"
-          :locked="rootLocked"
-          runtime-locked
-          :model-unavailable="modelUnavailable"
-          :model-note="keptNote(rootValues)"
-          test-suffix="root"
-          @update:model="edit(rootAddress, { runtimeKind: $event.runtimeKind, llmModelIdentifier: $event.llmModelIdentifier, llmConfig: presentation.defaultConfigFor($event) })"
-          @update:thinking="edit(rootAddress, { llmConfig: $event })"
-        />
-        <RunWorkspaceHint :workspace="rootValues.workspace" />
 
+        <!-- Round 20: the same member rows as the member panel in New chat. -->
         <RunMembersSection
           v-if="memberNodes.length"
+          :title="$t('runSettings.members.title')"
           :nodes="memberNodes"
-          :inherited-label="kind === 'org' ? $t('runSettings.inherited.org') : $t('runSettings.inherited.team')"
-          :defaults-label="kind === 'org' ? $t('runSettings.members.usesOrgDefaults') : $t('runSettings.members.usesTeamDefaults')"
           :locked="memberLocked"
           runtime-locked
           read-only
@@ -88,7 +89,6 @@ import type { ExistingTeamFormMemberNode } from '~/types/agent/ExistingTeamRunFo
 import { useLocalization } from '~/composables/useLocalization'
 import RunSubjectHeader from './RunSubjectHeader.vue'
 import RunSettingsCard from './RunSettingsCard.vue'
-import RunWorkspaceHint from './RunWorkspaceHint.vue'
 import RunMembersSection from './RunMembersSection.vue'
 import { buildExistingMemberNodes } from './memberNodes'
 import type { RunModelChoice, RunSettingField, RunSettingFlags, RunSettingsValues } from './runSettings'
@@ -146,8 +146,6 @@ const memberLocked = computed<RunSettingFlags>(() => ({
 
 const subtitle = computed(() => props.kind === 'agent' ? t('runSettings.existing.agentRun')
   : props.kind === 'team' ? t('runSettings.existing.teamRun') : t('runSettings.existing.orgRun'))
-const sectionTitle = computed(() => props.kind === 'agent' ? t('runSettings.section.settings')
-  : props.kind === 'team' ? t('runSettings.section.teamDefaults') : t('runSettings.section.orgDefaults'))
 const stateKey = computed(() => props.refreshRequired ? 'refresh-required' : props.isActive ? 'active' : 'stopped')
 
 const edit = (key: string, patch: Partial<RunSettingsValues>) => {

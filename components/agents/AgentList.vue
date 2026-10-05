@@ -143,7 +143,6 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAgentDefinitionStore, type AgentDefinition } from '~/stores/agentDefinitionStore';
 import AgentCard from '~/components/agents/AgentCard.vue';
-import { useRunActions } from '~/composables/useRunActions';
 import { useStartRunInChat } from '~/composables/runSettings/useStartRunInChat'
 import { useServerSettingsStore } from '~/stores/serverSettings';
 import { useToasts } from '~/composables/useToasts';
@@ -158,7 +157,6 @@ import { normalizeDefinitionOwnershipScope } from '~/utils/definitionOwnership';
 const emit = defineEmits(['navigate']);
 
 const agentDefinitionStore = useAgentDefinitionStore();
-const { prepareAgentRun } = useRunActions();
 const { addToast } = useToasts();
 const { deleteResult } = storeToRefs(agentDefinitionStore);
 const serverSettingsStore = useServerSettingsStore();

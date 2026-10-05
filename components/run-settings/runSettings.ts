@@ -6,7 +6,6 @@
  * runtime), Thinking and Tool approval.
  */
 import type { ChatDraftWorkspace } from '~/stores/chatDraftStore'
-import type { WorkspaceSelectionState } from '~/types/workspace/WorkspaceSelectionState'
 
 export type RunSettingField = 'workspace' | 'model' | 'thinking' | 'approval'
 export const ALL_RUN_SETTING_FIELDS: readonly RunSettingField[] = ['workspace', 'model', 'thinking', 'approval']
@@ -65,16 +64,6 @@ export const toChatWorkspace = (
   if (rootPath) return { kind: 'folder', rootPath }
   return null
 }
-
-export const fromSelectionState = (selection: WorkspaceSelectionState | null | undefined): ChatDraftWorkspace | null => {
-  if (!selection) return null
-  if (selection.mode === 'existing') return selection.existingWorkspaceId ? { kind: 'existing', workspaceId: selection.existingWorkspaceId } : null
-  return selection.newWorkspacePath.trim() ? { kind: 'folder', rootPath: selection.newWorkspacePath.trim() } : null
-}
-
-export const toSelectionState = (workspace: ChatDraftWorkspace): WorkspaceSelectionState => workspace.kind === 'existing'
-  ? { mode: 'existing', existingWorkspaceId: workspace.workspaceId, newWorkspacePath: '' }
-  : { mode: 'new', existingWorkspaceId: null, newWorkspacePath: workspace.rootPath }
 
 export const sameWorkspace = (left: ChatDraftWorkspace | null, right: ChatDraftWorkspace | null): boolean => {
   if (!left || !right) return left === right

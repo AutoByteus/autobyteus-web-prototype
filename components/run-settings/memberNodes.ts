@@ -1,10 +1,8 @@
-import type { EditableTeamFormMemberNode } from '~/types/agent/EditableTeamRunFormModel'
 import type { ExistingTeamFormMemberNode } from '~/types/agent/ExistingTeamRunFormModel'
 import type { ResolvedTeamRunLaunchConfig } from '~/types/agent/TeamRunConfig'
 import type { ChatDraftWorkspace } from '~/stores/chatDraftStore'
 import {
   customizedFromOverride,
-  fromSelectionState,
   MEMBER_RUN_SETTING_FIELDS,
   sameWorkspace,
   TEAM_PLACEMENT_RUN_SETTING_FIELDS,
@@ -32,39 +30,6 @@ export const valuesFromResolved = (
   llmModelIdentifier: config.llmModelIdentifier || '',
   llmConfig: config.llmConfig ?? null,
   autoExecuteTools: config.autoExecuteTools,
-})
-
-/** Launch draft member tree → run-settings member rows (team placements keep their own workspace). */
-export const buildEditableMemberNodes = (
-  nodes: readonly EditableTeamFormMemberNode[],
-  parentWorkspace: ChatDraftWorkspace | null,
-): RunMemberNode[] => nodes.map((node) => {
-  if (node.kind === 'agent') {
-    return {
-      key: node.address,
-      kind: 'agent',
-      name: node.displayName,
-      isCoordinator: node.isCoordinator,
-      values: valuesFromResolved(node.effectiveConfig, parentWorkspace),
-      customized: customizedFromOverride(node.override),
-      fields: MEMBER_RUN_SETTING_FIELDS,
-      detail: node.address,
-    }
-  }
-  const teamWorkspace = fromSelectionState(node.scope.workspaceSelection)
-    ?? toChatWorkspace(node.scope.effectiveConfig.workspaceId, node.scope.effectiveConfig.workspaceRootPath)
-  const customized = customizedFromOverride(node.scope.override)
-  customized.workspace = Boolean(teamWorkspace && parentWorkspace && !sameWorkspace(teamWorkspace, parentWorkspace))
-  return {
-    key: node.address,
-    kind: 'team',
-    name: node.scope.displayName,
-    values: valuesFromResolved(node.scope.effectiveConfig, teamWorkspace),
-    customized,
-    fields: TEAM_PLACEMENT_RUN_SETTING_FIELDS,
-    children: buildEditableMemberNodes(node.children, teamWorkspace),
-    detail: node.address,
-  }
 })
 
 /** What a saved member sets itself, compared with its parent's saved values. */

@@ -12,7 +12,7 @@
       :title="`${modelLabel} · ${runtimeLabel}`"
       @click="onToggle"
     >
-      <span class="truncate whitespace-nowrap font-medium" :class="!modelLabel ? 'text-amber-700' : muted ? 'text-gray-500' : 'text-gray-800'">{{ modelLabel || $t('chat.model.chooseModel') }}</span>
+      <span class="truncate whitespace-nowrap font-medium" :class="!modelLabel ? 'text-amber-700' : 'text-gray-800'">{{ modelLabel || $t('chat.model.chooseModel') }}</span>
       <span class="truncate whitespace-nowrap text-gray-400 max-sm:hidden">{{ runtimeShortLabel }}</span>
       <Icon icon="heroicons:chevron-down" class="h-3.5 w-3.5 flex-shrink-0 text-gray-400" aria-hidden="true" />
     </button>
@@ -204,10 +204,9 @@ const props = withDefaults(defineProps<{
   /** A saved run keeps its runtime: the menu lists only that runtime's models. */
   runtimeLocked?: boolean
   /** Muted chip text for a value inherited from team/org defaults. */
-  muted?: boolean
   /** Open a runtime's models in place instead of a side flyout (narrow side panels). */
   drillIn?: boolean
-}>(), { placement: 'above', align: 'right', runtimeLocked: false, muted: false, drillIn: false })
+}>(), { placement: 'above', align: 'right', runtimeLocked: false, drillIn: false })
 const emit = defineEmits<{
   (event: 'select', value: ChatModelSelection): void
 }>()

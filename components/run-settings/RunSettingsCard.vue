@@ -1,18 +1,17 @@
 <template>
   <div
-    :class="flat ? 'space-y-0.5' : ['divide-y divide-gray-100', nested ? 'rounded-md border border-gray-200 bg-white' : 'rounded-lg border border-gray-200 bg-white']"
+    class="space-y-0.5"
     :data-test="`run-settings-card${testSuffix ? `-${testSuffix}` : ''}`"
   >
     <div
       v-for="field in fields"
       :key="field"
-      class="flex items-center gap-2"
-      :class="flat ? 'min-h-[2.25rem]' : ['min-h-[2.75rem] py-1', nested ? 'pl-3 pr-2' : 'px-3']"
+      class="flex min-h-[2.25rem] items-center gap-2"
       :data-test="`run-setting-${field}`"
       :data-state="isLocked(field) ? 'locked' : isInherited(field) ? 'inherited' : customized?.[field] ? 'customized' : 'set'"
     >
-      <!-- Round 15: in the member panel, labels and values read as clearly as the message box. -->
-      <span class="flex-shrink-0 text-[0.8125rem]" :class="flat ? 'w-24 text-gray-900' :'w-[5.25rem] text-gray-500 sm:w-[6.5rem]'">{{ fieldLabel(field) }}</span>
+      <!-- Rounds 15/16/20: labels and values read as clearly as the message box; no row dividers. -->
+      <span class="w-24 flex-shrink-0 text-[0.8125rem] text-gray-900">{{ fieldLabel(field) }}</span>
 
       <div class="flex min-w-0 flex-1 flex-col items-start [&>div>button]:max-w-full [&>div]:max-w-full">
         <!-- Workspace -->
@@ -26,7 +25,6 @@
             v-else-if="values.workspace"
             :workspace="values.workspace"
             placement="auto"
-            :muted="!flat && isInherited('workspace')"
             @select="emit('update:workspace', $event)"
           />
           <button
@@ -55,7 +53,6 @@
             :align="nested ? 'right' : 'left'"
             :runtime-locked="runtimeLocked"
             :drill-in="nested"
-            :muted="!flat && isInherited('model')"
             @select="emit('update:model', $event)"
           />
           <p v-if="modelNote" class="px-2 pb-1 text-xs leading-5 text-gray-500" data-test="run-setting-model-note">{{ modelNote }}</p>
@@ -66,7 +63,7 @@
 
         <!-- Thinking -->
         <template v-else-if="field === 'thinking'">
-          <span v-if="thinkingHidden" class="px-2 py-1 text-[0.8125rem] leading-5" :class="flat ? 'text-gray-500' : 'text-gray-400'" data-test="run-setting-thinking-unavailable">
+          <span v-if="thinkingHidden" class="px-2 py-1 text-[0.8125rem] leading-5 text-gray-500" data-test="run-setting-thinking-unavailable">
             {{ values.llmModelIdentifier ? $t('runSettings.thinking.unavailable') : '—' }}
           </span>
           <span v-else-if="isLocked('thinking')" class="inline-flex items-center gap-1 px-2 py-1 text-[0.8125rem] leading-5 text-gray-600" :aria-label="lockedAria(field, thinkingSummary)" data-test="run-setting-locked">
@@ -95,16 +92,14 @@
             v-else
             :model-value="approvalRuntimeLocked || values.autoExecuteTools"
             :locked="approvalRuntimeLocked"
-            :muted="!flat && isInherited('approval')"
             @update:model-value="emit('update:approval', $event)"
           />
         </template>
       </div>
 
       <!-- Trailing: inherited marker or reset for a member's own value -->
-      <span v-if="isInherited(field) && inheritedLabel && !flat" class="flex-shrink-0 pr-1 text-[0.6875rem] text-gray-400" data-test="run-setting-inherited">{{ inheritedLabel }}</span>
       <button
-        v-else-if="canReset(field)"
+        v-if="canReset(field)"
         type="button"
         class="flex-shrink-0 rounded px-1.5 py-0.5 text-xs font-medium text-blue-600 hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
         :aria-label="$t('runSettings.inherited.resetAria', { setting: fieldLabel(field) })"
@@ -139,9 +134,8 @@ import { useRunSettingsPresentation } from './useRunSettingsPresentation'
 const props = withDefaults(defineProps<{
   values: RunSettingsValues
   fields?: readonly RunSettingField[]
-  /** Fields whose value comes from team/org defaults (shown muted with `inheritedLabel`). */
+  /** Which fields a member sets itself; the rest follow the team/org settings. */
   customized?: RunSettingFlags | null
-  inheritedLabel?: string | null
   /** Fields that cannot change for this run (saved runtime/workspace, active run). */
   locked?: RunSettingFlags
   /** A saved run keeps its runtime: the model menu lists only that runtime's models. */
@@ -152,20 +146,16 @@ const props = withDefaults(defineProps<{
   /** Saved runs show what differs but offer no per-field reset. */
   resettable?: boolean
   nested?: boolean
-  /** No box, no dividers, no "Default" tags: inherited values read muted (member panel). */
-  flat?: boolean
   testSuffix?: string
 }>(), {
   fields: () => ALL_RUN_SETTING_FIELDS,
   customized: null,
-  inheritedLabel: null,
   locked: () => ({}),
   runtimeLocked: false,
   modelUnavailable: false,
   modelNote: null,
   resettable: true,
   nested: false,
-  flat: false,
   testSuffix: '',
 })
 

@@ -69,6 +69,7 @@ const runSettingsMessages = {
   'runSettings.existing.orgRun': 'Org run',
   'runSettings.existing.activeNote': 'Stop this run to change its model or thinking.',
   'runSettings.existing.stoppedNote': 'Changes apply when this run resumes.',
+  'runSettings.existing.readOnlyNote': "This run's settings can't be changed.",
   'runSettings.existing.refreshNote': 'Saved settings need a refresh before you can change them.',
   'runSettings.existing.refresh': 'Refresh',
   'runSettings.save.unsaved': 'Unsaved changes',

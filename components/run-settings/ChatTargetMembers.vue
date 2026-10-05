@@ -86,15 +86,11 @@
           </header>
 
           <div class="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-5 py-2">
-            <!-- What every member gets unless changed: the composer's settings, read-only here. -->
             <!-- Round 13: members only. The defaults are the message box beside the panel (one place to
-                 change them); an opened member shows what it inherits, muted. -->
+                 change them). -->
             <RunMembersSection
               class="!mt-0"
-              flat
               :nodes="members.nodes.value"
-              :inherited-label="$t('runSettings.chat.inheritedLabel')"
-              :defaults-label="$t('runSettings.chat.defaultsLabel')"
               @update="members.update"
               @reset="members.reset"
               @reset-all="members.resetAll"
