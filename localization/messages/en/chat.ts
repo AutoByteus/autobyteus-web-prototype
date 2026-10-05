@@ -76,6 +76,8 @@ const chatMessages = {
   'chat.targets.headerHint': '↑↓ to move, Enter to choose',
   'chat.targets.agents': 'Agents',
   'chat.targets.teams': 'Agent teams',
+  'chat.switch.aria': 'Choose who to chat with (now {{name}})',
+  'chat.switch.search': 'Search agents and teams',
   'chat.targets.noMatch': 'No agents or teams match',
   'chat.targets.teamDescription': '{{count}} members · coordinator {{coordinator}}',
   'chat.mentions.placeholderMention': 'Ask anything · @ for an agent or team',

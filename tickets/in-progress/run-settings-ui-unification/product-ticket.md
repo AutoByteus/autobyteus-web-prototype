@@ -6,7 +6,7 @@
 - Stable package: `run-settings-ui-unification`, solution revision `SR-001`
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Awaiting User Review` (SR-003 revision, round 31: Org launch page; reopened from `Completed` at `b8ce240`)
+- Status: `Awaiting User Review` (SR-003 revision, rounds 31–32: Org launch page; heading switcher; reopened from `Completed` at `b8ce240`)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -156,3 +156,4 @@
 - 2026-10-05: user approved; final references VIS-001..011 and `ui-ux-spec.md` written; `Completed`; ticket moved to `tickets/done/`.
 - 2026-10-05: reopened for SR-003 (Solution Designer `product-design-request-r2.md`): Orgs are not chat targets; Org launch page; Terminate/Stop wording. Design `origin/personal@b8ce240`, source unchanged (pin `10fb695` applicable). `In Progress`.
 - 2026-10-05: round 31 built and browser-validated; `Awaiting User Review` (see `review-round-31.md`).
+- 2026-10-05: round 32 — user agreed to pick the New chat target from a heading switcher (not `@`); built and validated (see `review-round-32.md`); `Awaiting User Review`.

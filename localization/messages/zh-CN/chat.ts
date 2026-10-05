@@ -75,6 +75,8 @@ const chatMessages = {
   'chat.targets.headerHint': '↑↓ 移动，Enter 选择',
   'chat.targets.agents': '智能体',
   'chat.targets.teams': '智能体团队',
+  'chat.switch.aria': '选择对话对象（当前：{{name}}）',
+  'chat.switch.search': '搜索智能体和团队',
   'chat.targets.noMatch': '没有匹配的智能体或团队',
   'chat.targets.teamDescription': '{{count}} 名成员 · 协调者 {{coordinator}}',
   'chat.mentions.placeholderMention': '随便问 · @ 选择智能体或团队',

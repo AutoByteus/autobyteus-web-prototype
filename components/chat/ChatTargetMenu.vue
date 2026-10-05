@@ -1,8 +1,6 @@
 <template>
-  <!--
-    `launch`: New chat `@` picks the launch target.
-    `run`: `@` in a live run brings a shared Agent or Team into that run.
-  -->
+  <!-- `@` brings a shared Agent or Team into the run, in New chat and in a live run alike. Who you chat
+       with is chosen from the New chat heading (ChatTargetSwitcher). -->
   <div
     data-test="run-mention-menu"
     class="flex min-h-0 w-[23rem] max-w-[calc(100vw-1rem)] flex-col rounded-lg border border-gray-200 bg-white text-left shadow-lg"

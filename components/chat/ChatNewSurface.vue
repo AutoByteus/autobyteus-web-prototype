@@ -9,15 +9,16 @@
       <!-- run-settings-ui-unification (round 4): who you are talking to is the page heading, not a chip in the message box. -->
       <template v-if="identity">
         <!-- Round 6: an avatar only when the target has one, beside the name; no placeholder initials or icons. -->
-        <div class="relative -top-6 flex max-w-full items-center justify-center gap-3 sm:-top-10" data-test="chat-new-target">
-          <img
-            v-if="identity.avatarUrl"
-            :src="identity.avatarUrl"
-            alt=""
-            class="h-10 w-10 flex-shrink-0 rounded-full object-cover"
-            data-test="chat-new-target-avatar"
-          >
-          <h1 class="min-w-0 break-words text-center text-[1.5rem] font-semibold leading-tight tracking-tight text-gray-900 sm:text-[1.75rem]" data-test="chat-new-target-name">{{ identity.name }}</h1>
+        <!-- Round 32: the heading is also where you choose who to chat with (Agents and Agent Teams). -->
+        <div class="relative -top-6 flex max-w-full items-center justify-center sm:-top-10" data-test="chat-new-target">
+          <ChatTargetSwitcher
+            :name="identity.name"
+            :avatar-url="identity.avatarUrl"
+            :options="switcherOptions"
+            :current-key="currentTargetKey"
+            :disabled="Boolean(draft?.starting)"
+            @choose="chooseTarget"
+          />
         </div>
         <!-- Clean heading: the general agent keeps its skill and @ hint; others show only a line that adds information. -->
         <p v-if="identity.isDefault" class="mt-2 max-w-xl text-center text-sm text-gray-500" data-test="chat-new-subtitle">
@@ -89,7 +90,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ChatComposer from '~/components/chat/ChatComposer.vue'
 import ChatWorkspaceMenu from '~/components/chat/ChatWorkspaceMenu.vue'
@@ -97,6 +98,9 @@ import ChatApprovalToggle from '~/components/chat/ChatApprovalToggle.vue'
 import ChatModelMenu from '~/components/chat/ChatModelMenu.vue'
 import ChatThinkingControl from '~/components/chat/ChatThinkingControl.vue'
 import ChatTargetMembers from '~/components/run-settings/ChatTargetMembers.vue'
+import ChatTargetSwitcher from '~/components/chat/ChatTargetSwitcher.vue'
+import { initialsFor, toChatTarget, type ChatTargetOption } from '~/components/chat/chatComposerMenus'
+import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
 import { chatDraftMemberSource } from '~/components/run-settings/memberSettingsSource'
 import { useChatDraftModelControls } from '~/components/chat/chatDraftModelControls'
 import { createChatDraftComposerTarget } from '~/composables/chat/chatDraftComposerTarget'
@@ -170,6 +174,25 @@ const mentionFocusedName = computed(() => {
   return agentName.value
 })
 const isDefaultAgent = computed(() => agentDefinitionId.value === DEFAULT_CHAT_AGENT_DEFINITION_ID)
+// Round 32: the heading switcher lists the General Agent first, then the shared Agents and Agent Teams.
+const agentDefinitionStore = useAgentDefinitionStore()
+const switcherOptions = computed<ChatTargetOption[]>(() => {
+  const general = agentDefinitionStore.getAgentDefinitionById(DEFAULT_CHAT_AGENT_DEFINITION_ID)
+  const generalOption: ChatTargetOption[] = general ? [{
+    key: `agent:${general.id}`, kind: 'agent', id: general.id, name: general.name,
+    initials: initialsFor(general.name), description: general.description ?? '',
+  }] : []
+  return [...generalOption, ...options.targetOptions.value]
+})
+const currentTargetKey = computed(() => {
+  const current = draft.value?.target
+  if (!current) return ''
+  return current.kind === 'team' ? `team:${current.teamDefinitionId}` : `agent:${current.agentDefinitionId}`
+})
+const chooseTarget = (option: ChatTargetOption) => {
+  chatDraftStore.setTarget(toChatTarget(option))
+  void nextTick(() => document.querySelector<HTMLTextAreaElement>('[data-test="chat-new"] textarea')?.focus())
+}
 const agentName = computed(() => options.agentDefinition.value?.name || draftContext.value?.config.agentDefinitionName || '')
 const runtimeLabel = computed(() => runtimeKindToLabel(controls.runtimeKind.value))
 
