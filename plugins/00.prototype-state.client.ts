@@ -10,6 +10,7 @@ import { applyExperienceScenario } from '~/prototype/shared/apply-experience-sce
 import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, taskContextUpload } from '~/prototype/source-observation/fixtures.mjs'
 import { localFixtureState } from '~/utils/apolloClient'
 import { RUN_SETTINGS_RUNTIME_AVAILABILITIES, RUN_SETTINGS_RUNTIME_CATALOGS } from '~/prototype/run-settings/runtimeCatalogFixture'
+import { withAutobyteusOrgDefinitions } from '~/prototype/run-settings/autobyteusOrgFixture'
 
 const SCENARIO_KEY = 'autobyteus.prototype.scenario'
 const CONTEXT_KEY = 'autobyteus.prototype.context'
@@ -511,6 +512,12 @@ export default defineNuxtPlugin({
       // stay available on every route; route snapshots carry only the captured runtime list.
       if (store.$id === 'runtimeAvailability') {
         store.$patch(runSettingsRuntimeState())
+      }
+      // run-settings-ui-unification: the real AutoByteus Org shape (autobyteusOrgFixture.ts) joins the
+      // populated catalog, so member settings can be reviewed at a realistic size.
+      if (scenario() === DEFAULT_SCENARIO) {
+        const additions = withAutobyteusOrgDefinitions(store.$id, store.$state)
+        if (additions) store.$patch(additions)
       }
       if (store.$id === 'workspace') {
         for (const key of ['fileSystemConnections', 'fileExplorerLiveConsumers', 'fileExplorerSnapshotRefreshes', 'workspaceMetadataRegistrationTasks']) {

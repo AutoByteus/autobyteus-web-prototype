@@ -11,6 +11,7 @@
  * subscriptions stay inert.
  */
 import { operationFixture, baseState, PROJECT_MUTATIONS, SKILL_SOURCE_MUTATIONS } from '~/prototype/source-observation/fixtures.mjs'
+import { withAutobyteusOrgOperation } from '~/prototype/run-settings/autobyteusOrgFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
 
@@ -49,7 +50,9 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (scenario === 'loading') await new Promise(done => setTimeout(done, 1500))
   if (scenario === 'error') return { data: null, errors: [{ message: 'Synthetic recoverable GraphQL failure.' }] }
   if (scenario === 'permission_denied') return { data: null, errors: [{ message: 'Synthetic permission denied.' }] }
-  const data = operationFixture(name, request.variables || {}, fixtureState())
+  const fixture = operationFixture(name, request.variables || {}, fixtureState())
+  // run-settings-ui-unification: the real AutoByteus Org shape joins the populated catalog.
+  const data = scenario === 'populated' ? withAutobyteusOrgOperation(name, request.variables || {}, fixture) : fixture
   return { data: data ? structuredClone(data) : {} }
 }
 
