@@ -1,6 +1,7 @@
 <template>
-  <!-- run-settings-ui-unification (round 32): who you chat with is chosen from the heading, never with `@`
-       (which always brings a collaborator in). Agents and Agent Teams only; an Org has no recipient. -->
+  <!-- run-settings-ui-unification (round 32/34): what to run is chosen from the heading, never with `@`
+       (which always brings a collaborator in). Agents and Agent Teams start in New chat; an Agent Org
+       (no recipient) shows the Org launch page. -->
   <div ref="rootRef" class="relative flex max-w-full justify-center" data-test="chat-target-switcher">
     <button
       ref="triggerRef"
@@ -55,7 +56,7 @@
         </li>
         <template v-for="(option, index) in filtered" :key="option.key">
           <li v-if="index === 0 || filtered[index - 1]!.kind !== option.kind" role="presentation" class="px-2 pb-0.5 pt-1.5 text-[0.6875rem] font-medium text-gray-400">
-            {{ option.kind === 'team' ? $t('chat.targets.teams') : $t('chat.targets.agents') }}
+            {{ option.kind === 'org' ? $t('chat.switch.orgs') : option.kind === 'team' ? $t('chat.targets.teams') : $t('chat.targets.agents') }}
           </li>
           <li :id="`${listId}-option-${index}`" role="option" :aria-selected="option.key === currentKey ? 'true' : 'false'">
             <button
@@ -70,9 +71,9 @@
             >
               <span
                 class="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center text-[0.5625rem] font-semibold text-slate-600"
-                :class="option.kind === 'team' ? 'rounded-md border border-gray-200 bg-gray-50' : 'rounded-full border border-emerald-200 bg-emerald-50'"
+                :class="option.kind === 'agent' ? 'rounded-full border border-emerald-200 bg-emerald-50' : 'rounded-md border border-gray-200 bg-gray-50'"
                 aria-hidden="true"
-              >{{ option.initials }}</span>
+              ><Icon v-if="option.kind === 'org'" icon="heroicons:building-office-2" class="h-3.5 w-3.5" /><template v-else>{{ option.initials }}</template></span>
               <span class="min-w-0 flex-1">
                 <span class="block truncate text-[0.8125rem] font-medium text-gray-900">{{ option.name }}</span>
                 <span v-if="option.description" class="block truncate text-xs text-gray-500">{{ option.description }}</span>
@@ -91,18 +92,18 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { Icon } from '@iconify/vue'
-import { filterTargets, type ChatTargetOption } from '~/components/chat/chatComposerMenus'
+import type { RunTargetOption } from '~/composables/runSettings/useRunTargetSwitcher'
 
 const props = withDefaults(defineProps<{
   name: string
   avatarUrl?: string | null
-  /** Agents (General Agent first) and Agent Teams. */
-  options: readonly ChatTargetOption[]
-  /** `agent:<id>` / `team:<id>` of the current target. */
+  /** Agents (General Agent first), Agent Teams and Agent Orgs. */
+  options: readonly RunTargetOption[]
+  /** `agent:<id>` / `team:<id>` / `org:<id>` of the current target. */
   currentKey: string
   disabled?: boolean
 }>(), { avatarUrl: null, disabled: false })
-const emit = defineEmits<{ (event: 'choose', option: ChatTargetOption): void }>()
+const emit = defineEmits<{ (event: 'choose', option: RunTargetOption): void }>()
 
 const listId = `chat-target-switcher-${Math.random().toString(36).slice(2, 8)}`
 const open = ref(false)
@@ -124,7 +125,10 @@ const placeMenu = () => {
   menuShift.value = shift
 }
 
-const filtered = computed(() => filterTargets(props.options, query.value))
+const filtered = computed(() => {
+  const q = query.value.trim().toLowerCase()
+  return q ? props.options.filter((option) => option.name.toLowerCase().includes(q) || option.id.toLowerCase().includes(q)) : [...props.options]
+})
 watch(query, () => { highlight.value = 0 })
 
 const onDocumentPointer = (event: PointerEvent) => {
@@ -147,7 +151,7 @@ const close = (returnFocus: boolean) => {
   document.removeEventListener('pointerdown', onDocumentPointer)
   if (returnFocus) void nextTick(() => triggerRef.value?.focus())
 }
-const choose = (option: ChatTargetOption) => {
+const choose = (option: RunTargetOption) => {
   close(false)
   if (option.key !== props.currentKey) emit('choose', option)
 }

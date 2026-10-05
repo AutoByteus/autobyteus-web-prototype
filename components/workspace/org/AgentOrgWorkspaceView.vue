@@ -70,6 +70,8 @@ import { computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { useActiveContextStore } from '~/stores/activeContextStore'
+import { useOrgLaunchDraftStore } from '~/stores/orgLaunchDraftStore'
+import { orgLaunchRoute } from '~/composables/runSettings/useRunTargetSwitcher'
 import AgentWorkspaceSurface from '~/components/workspace/agent/AgentWorkspaceSurface.vue'
 import TeamWorkspaceSurface from '~/components/workspace/team/TeamWorkspaceSurface.vue'
 import WorkspaceRecoveryNotice from '~/components/workspace/common/WorkspaceRecoveryNotice.vue'
@@ -126,10 +128,8 @@ const openNewOrgRun = () => {
   if (!source) return
   // run-settings-ui-unification (SR-003): "+" opens the Org launch page prefilled from this run.
   center.showChat()
-  void router.push({
-    path: '/workspace',
-    query: { rootSubjectKind: 'agent_org', definitionId: source.orgDefinitionId, sourceOrgRunId: source.orgRunId, mode: 'configuration' },
-  })
+  useOrgLaunchDraftStore().start(source.orgDefinitionId, source.orgRunId)
+  void router.push(orgLaunchRoute(source.orgDefinitionId, source.orgRunId))
 }
 const headerActionsAvailable = computed(() => Boolean(target.value && (target.value.access === 'live'
   || target.value.kind === 'agent_org_direct_agent' || target.value.kind === 'agent_org_team_member')))

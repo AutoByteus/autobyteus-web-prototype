@@ -179,6 +179,8 @@ import {
   type AgentOrgEndpointCatalogItem,
 } from '~/services/agentOrgDefinition/agentOrgEndpointCatalog'
 import { useLocalization } from '~/composables/useLocalization'
+import { useOrgLaunchDraftStore } from '~/stores/orgLaunchDraftStore'
+import { orgLaunchRoute } from '~/composables/runSettings/useRunTargetSwitcher'
 import { useAgentDefinitionStore, type AgentDefinition } from '~/stores/agentDefinitionStore'
 import { useAgentTeamDefinitionStore } from '~/stores/agentTeamDefinitionStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
@@ -454,8 +456,13 @@ const confirmDelete = async () => {
   } finally { deletePending.value = false }
 }
 const openTeam = (id: string) => router.push({ path: '/agent-teams', query: { view: 'team-detail', id, returnToOrg: selectedOrg.value.id } })
-// run-settings-ui-unification (SR-003): an Agent Org starts on the Org launch page, not in chat.
-const openLaunch = (id: string) => router.push({ path: '/workspace', query: { rootSubjectKind: 'agent_org', definitionId: id, mode: 'configuration' } })
+// run-settings-ui-unification (SR-003): an Agent Org starts on the Org launch page, not in chat; Run
+// always starts a fresh Org draft (as Run does for Agents and Teams).
+const orgLaunchDrafts = useOrgLaunchDraftStore()
+const openLaunch = (id: string) => {
+  orgLaunchDrafts.start(id)
+  return router.push(orgLaunchRoute(id))
+}
 const reloadOrgs = async (): Promise<void> => { reloading.value = true; try { await orgStore.fetchAll(true) } finally { reloading.value = false } }
 const openMemberPicker = (): void => { memberPickerTab.value = 'agents'; memberSearch.value = ''; memberPickerOpen.value = true }
 const closeMemberPicker = (): void => { memberPickerOpen.value = false; memberSearch.value = '' }

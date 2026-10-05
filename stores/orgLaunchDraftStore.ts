@@ -71,7 +71,9 @@ export const useOrgLaunchDraftStore = defineStore('orgLaunchDraft', () => {
   }
 
   /** Org default launch config, else the last model used in chat, else the default runtime's first model. */
-  const start = (orgDefinitionId: string, sourceOrgRunId: string | null = null): OrgLaunchDraft => {
+  /** Settings carried from another start page (heading switcher), so a switch keeps what the user chose. */
+  type CarriedSettings = Pick<OrgLaunchDraft, 'workspace' | 'runtimeKind' | 'llmModelIdentifier' | 'llmConfig' | 'autoExecuteTools'>
+  const start = (orgDefinitionId: string, sourceOrgRunId: string | null = null, carried: CarriedSettings | null = null): OrgLaunchDraft => {
     const org = useAgentOrgDefinitionStore().byId(orgDefinitionId)
     const defaults = normalizeDefaultLaunchConfig(org?.defaultLaunchConfig)
     const last = readChatLastModel()
@@ -85,6 +87,11 @@ export const useOrgLaunchDraftStore = defineStore('orgLaunchDraft', () => {
       workspace: tempWorkspace(),
       ...model,
       autoExecuteTools: true,
+      ...(carried && !sourceOrgRunId ? {
+        workspace: carried.workspace ?? tempWorkspace(),
+        autoExecuteTools: carried.autoExecuteTools,
+        ...(carried.llmModelIdentifier ? { runtimeKind: carried.runtimeKind, llmModelIdentifier: carried.llmModelIdentifier, llmConfig: carried.llmConfig } : {}),
+      } : {}),
       memberSettings: {},
       phase: sourceOrgRunId ? 'preparing' : 'ready',
       error: null,

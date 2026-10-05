@@ -99,8 +99,7 @@ import ChatModelMenu from '~/components/chat/ChatModelMenu.vue'
 import ChatThinkingControl from '~/components/chat/ChatThinkingControl.vue'
 import ChatTargetMembers from '~/components/run-settings/ChatTargetMembers.vue'
 import ChatTargetSwitcher from '~/components/chat/ChatTargetSwitcher.vue'
-import { initialsFor, toChatTarget, type ChatTargetOption } from '~/components/chat/chatComposerMenus'
-import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
+import { useRunTargetSwitcher, type RunTargetOption } from '~/composables/runSettings/useRunTargetSwitcher'
 import { chatDraftMemberSource } from '~/components/run-settings/memberSettingsSource'
 import { useChatDraftModelControls } from '~/components/chat/chatDraftModelControls'
 import { createChatDraftComposerTarget } from '~/composables/chat/chatDraftComposerTarget'
@@ -174,23 +173,28 @@ const mentionFocusedName = computed(() => {
   return agentName.value
 })
 const isDefaultAgent = computed(() => agentDefinitionId.value === DEFAULT_CHAT_AGENT_DEFINITION_ID)
-// Round 32: the heading switcher lists the General Agent first, then the shared Agents and Agent Teams.
-const agentDefinitionStore = useAgentDefinitionStore()
-const switcherOptions = computed<ChatTargetOption[]>(() => {
-  const general = agentDefinitionStore.getAgentDefinitionById(DEFAULT_CHAT_AGENT_DEFINITION_ID)
-  const generalOption: ChatTargetOption[] = general ? [{
-    key: `agent:${general.id}`, kind: 'agent', id: general.id, name: general.name,
-    initials: initialsFor(general.name), description: general.description ?? '',
-  }] : []
-  return [...generalOption, ...options.targetOptions.value]
-})
+// Round 32/34: the heading switcher lists Agents (General Agent first), Agent Teams and Agent Orgs.
+const runTargets = useRunTargetSwitcher()
+const switcherOptions = runTargets.options
 const currentTargetKey = computed(() => {
   const current = draft.value?.target
   if (!current) return ''
   return current.kind === 'team' ? `team:${current.teamDefinitionId}` : `agent:${current.agentDefinitionId}`
 })
-const chooseTarget = (option: ChatTargetOption) => {
-  chatDraftStore.setTarget(toChatTarget(option))
+const chooseTarget = (option: RunTargetOption) => {
+  const current = draft.value
+  // An Agent Org has no recipient: it starts on the Org launch page with these settings.
+  if (option.kind === 'org') {
+    void runTargets.openOrg(option.id, current ? {
+      workspace: current.workspace,
+      runtimeKind: current.context.config.runtimeKind,
+      llmModelIdentifier: current.context.config.llmModelIdentifier,
+      llmConfig: current.context.config.llmConfig ?? null,
+      autoExecuteTools: current.autoExecuteTools,
+    } : null)
+    return
+  }
+  chatDraftStore.setTarget(option.kind === 'team' ? { kind: 'team', teamDefinitionId: option.id } : { kind: 'agent', agentDefinitionId: option.id })
   void nextTick(() => document.querySelector<HTMLTextAreaElement>('[data-test="chat-new"] textarea')?.focus())
 }
 const agentName = computed(() => options.agentDefinition.value?.name || draftContext.value?.config.agentDefinitionName || '')

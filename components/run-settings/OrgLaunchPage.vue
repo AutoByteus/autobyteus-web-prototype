@@ -9,11 +9,16 @@
     <!-- SR-003: an Agent Org has no recipient, so it starts here instead of from chat: the same heading,
          a settings card where the message box would be, the same members line, and "Run Agent Org". -->
     <div class="flex flex-1 flex-col items-center justify-center px-4 pb-10 pt-[14vh] sm:px-6">
-      <div class="relative -top-6 flex max-w-full items-center justify-center gap-3 sm:-top-10" data-test="org-launch-target">
-        <img v-if="org?.avatarUrl" :src="org.avatarUrl" alt="" class="h-10 w-10 flex-shrink-0 rounded-full object-cover">
-        <h1 class="min-w-0 break-words text-center text-[1.5rem] font-semibold leading-tight tracking-tight text-gray-900 sm:text-[1.75rem]" data-test="org-launch-name">
-          {{ org?.name ?? '' }}
-        </h1>
+      <!-- Round 34: the same "what to run" switcher as New chat; choosing an Agent or Team goes to New chat. -->
+      <div class="relative -top-6 flex max-w-full items-center justify-center sm:-top-10" data-test="org-launch-target">
+        <ChatTargetSwitcher
+          :name="org?.name ?? ''"
+          :avatar-url="org?.avatarUrl ?? null"
+          :options="runTargets.options.value"
+          :current-key="`org:${definitionId}`"
+          :disabled="draft?.phase === 'launching'"
+          @choose="chooseTarget"
+        />
       </div>
 
       <!-- Unavailable: nothing to configure. -->
@@ -92,6 +97,8 @@ import { useWorkspaceStore } from '~/stores/workspace'
 import { useLocalization } from '~/composables/useLocalization'
 import { runtimeKindToLabel } from '~/types/agent/AgentRunConfig'
 import ChatTargetMembers from './ChatTargetMembers.vue'
+import ChatTargetSwitcher from '~/components/chat/ChatTargetSwitcher.vue'
+import { useRunTargetSwitcher, type RunTargetOption } from '~/composables/runSettings/useRunTargetSwitcher'
 import RunSettingsCard from './RunSettingsCard.vue'
 import type { MemberSettingsSource } from './memberSettingsSource'
 import type { RunModelChoice, RunSettingFlags, RunSettingsValues } from './runSettings'
@@ -176,6 +183,13 @@ const stateKey = computed(() => {
 })
 
 const run = () => { void store.launch((target) => router.push(target)) }
+
+const runTargets = useRunTargetSwitcher()
+const chooseTarget = (option: RunTargetOption) => {
+  const carried = { ...values.value }
+  if (option.kind === 'org') void runTargets.openOrg(option.id, carried)
+  else void runTargets.openChat(option, carried)
+}
 
 // The members line and drawer: the same ones Team New chat uses, with this card as the defaults.
 const membersPanelOpen = ref(false)
