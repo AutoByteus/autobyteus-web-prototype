@@ -82,7 +82,7 @@
           data-test="existing-run-discard"
           @click="discard"
         >
-          {{ $t('runSettings.save.discard') }}
+          {{ $t('runSettings.save.cancel') }}
         </button>
         <button
           type="button"

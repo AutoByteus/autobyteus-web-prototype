@@ -70,7 +70,7 @@ const runSettingsMessages = {
   'runSettings.existing.refreshNote': 'Saved settings need a refresh before you can change them.',
   'runSettings.existing.refresh': 'Refresh',
   'runSettings.save.unsavedResumes': 'Unsaved changes · they apply when this run resumes',
-  'runSettings.save.discard': 'Discard',
+  'runSettings.save.cancel': 'Cancel',
   'runSettings.save.save': 'Save',
   'runSettings.save.saving': 'Saving…',
   'runSettings.save.saved': 'Saved. Changes apply when this run resumes.',

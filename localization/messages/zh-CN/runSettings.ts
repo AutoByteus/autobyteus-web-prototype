@@ -69,7 +69,7 @@ const runSettingsMessages = {
   'runSettings.existing.refreshNote': '需要刷新已保存的设置后才能更改。',
   'runSettings.existing.refresh': '刷新',
   'runSettings.save.unsavedResumes': '有未保存的更改 · 将在此运行恢复时生效',
-  'runSettings.save.discard': '放弃',
+  'runSettings.save.cancel': '取消',
   'runSettings.save.save': '保存',
   'runSettings.save.saving': '正在保存…',
   'runSettings.save.saved': '已保存。更改将在此运行恢复时生效。',
