@@ -6,7 +6,7 @@
 - Stable package: `run-settings-ui-unification`, solution revision `SR-001`
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Awaiting User Review` (round 22, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
+- Status: `Awaiting User Review` (round 23, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -140,3 +140,4 @@
 - 2026-10-05: round 20 — consistency pass: saved-run settings use the New chat / member panel language; unreachable launch forms removed (see `review-round-20.md`).
 - 2026-10-05: round 21 — saved-run header: no "Team run" / "Agent run" / "Org run" subtitle (the icon and panel title say it); status is a small badge beside the name (grey "● Stopped", green "● Running"); unused copy removed.
 - 2026-10-05: round 22 — "Stop run" button in the saved-run settings status line while the run is running (same terminate action as the workspace tree); after stopping, the view shows Stopped / "Changes apply when this run resumes." and the model becomes editable.
+- 2026-10-05: round 23 — no status sentences: a running run has only a stop icon button (tree's stop icon, tooltip "Stop run") at the right of the header; "they apply when this run resumes" moved into the Save bar; the status line remains only for refresh-required, a failed stop, and a stopped run whose settings cannot change.

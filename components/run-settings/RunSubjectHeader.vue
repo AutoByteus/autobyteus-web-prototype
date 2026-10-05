@@ -22,6 +22,8 @@
         {{ status === 'active' ? $t('runSettings.status.active') : $t('runSettings.status.stopped') }}
       </span>
     </div>
+    <!-- Run actions (e.g. stop), right-aligned. -->
+    <div class="ml-auto flex flex-shrink-0 items-center gap-2"><slot /></div>
   </div>
 </template>
 

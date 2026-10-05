@@ -2,17 +2,34 @@
   <div class="flex min-h-0 flex-1 flex-col" data-test="existing-run-settings" :data-state="stateKey">
     <div class="flex-1 overflow-y-auto px-4 py-5">
       <div class="mx-auto max-w-2xl">
-        <RunSubjectHeader :kind="kind" :name="name" :status="isActive ? 'active' : 'stopped'" />
+        <!-- Round 23: a running run has just a stop button beside its name (the tree's stop icon);
+             the lock icons on the settings already show what cannot change while it runs. -->
+        <RunSubjectHeader :kind="kind" :name="name" :status="isActive ? 'active' : 'stopped'">
+          <button
+            v-if="isActive"
+            type="button"
+            class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md border border-gray-300 bg-white text-gray-600 shadow-sm hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 disabled:cursor-default disabled:opacity-60"
+            :disabled="stopping"
+            :title="stopping ? $t('runSettings.existing.stopping') : $t('runSettings.existing.stop')"
+            :aria-label="stopping ? $t('runSettings.existing.stopping') : $t('runSettings.existing.stop')"
+            data-test="existing-run-stop"
+            @click="emit('stop')"
+          >
+            <Icon icon="heroicons:stop-20-solid" class="h-4 w-4" :class="stopping ? 'animate-pulse' : ''" aria-hidden="true" />
+          </button>
+        </RunSubjectHeader>
 
-        <!-- One quiet status line instead of coloured banners (REQ-004). -->
+        <!-- Only what the settings themselves cannot show: a needed refresh, a run whose settings
+             cannot change, or a failed stop. -->
         <p
+          v-if="refreshRequired || stopError || (lockedForModel && !isActive)"
           class="-mt-2 mb-4 flex items-center gap-1.5 text-xs"
-          :class="refreshRequired ? 'text-amber-700' : 'text-gray-500'"
-          :role="refreshRequired ? 'alert' : 'status'"
+          :class="refreshRequired ? 'text-amber-700' : stopError ? 'text-red-600' : 'text-gray-500'"
+          :role="refreshRequired || stopError ? 'alert' : 'status'"
           data-test="existing-run-note"
         >
-          <Icon :icon="refreshRequired ? 'heroicons:exclamation-triangle' : lockedForModel ? 'heroicons:lock-closed' : 'heroicons:information-circle'" class="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
-          <span>{{ refreshRequired ? $t('runSettings.existing.refreshNote') : isActive ? $t('runSettings.existing.activeNote') : lockedForModel ? $t('runSettings.existing.readOnlyNote') : $t('runSettings.existing.stoppedNote') }}</span>
+          <Icon :icon="refreshRequired || stopError ? 'heroicons:exclamation-triangle' : 'heroicons:lock-closed'" class="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
+          <span>{{ refreshRequired ? $t('runSettings.existing.refreshNote') : stopError ? stopError : $t('runSettings.existing.readOnlyNote') }}</span>
           <button
             v-if="refreshRequired"
             type="button"
@@ -22,20 +39,6 @@
           >
             {{ $t('runSettings.existing.refresh') }}
           </button>
-          <!-- Round 22: stop the run right where the line asks for it (same action as the
-               workspace tree's stop button). -->
-          <button
-            v-else-if="isActive"
-            type="button"
-            class="ml-1 inline-flex flex-shrink-0 items-center gap-1 rounded-md border border-gray-300 bg-white px-2 py-0.5 font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 disabled:cursor-default disabled:opacity-60"
-            :disabled="stopping"
-            data-test="existing-run-stop"
-            @click="emit('stop')"
-          >
-            <Icon icon="heroicons:stop-20-solid" class="h-3.5 w-3.5" :class="stopping ? 'animate-pulse' : ''" aria-hidden="true" />
-            {{ stopping ? $t('runSettings.existing.stopping') : $t('runSettings.existing.stop') }}
-          </button>
-          <span v-if="stopError" class="text-red-600" role="alert" data-test="existing-run-stop-error">{{ stopError }}</span>
         </p>
 
         <!-- Round 20: no "Team defaults" title and no "Files are saved in …" line; the card is the
@@ -70,7 +73,7 @@
     <!-- Save appears only when something changed. -->
     <div v-if="dirty || feedback" class="flex items-center gap-3 border-t border-gray-200 bg-gray-50 px-4 py-3" data-test="existing-run-save-bar">
       <p class="min-w-0 flex-1 truncate text-xs" :class="feedback ? 'text-emerald-700' : 'text-gray-600'" role="status" aria-live="polite">
-        {{ feedback || $t('runSettings.save.unsaved') }}
+        {{ feedback || $t('runSettings.save.unsavedResumes') }}
       </p>
       <template v-if="dirty">
         <button
