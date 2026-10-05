@@ -26,7 +26,7 @@
         <span class="flex min-w-0 flex-shrink items-baseline gap-1.5">
           <span class="truncate text-[0.8125rem] font-medium text-gray-900">{{ node.name }}</span>
           <span v-if="node.isCoordinator" class="flex-shrink-0 text-[0.6875rem] text-gray-400 max-sm:hidden">{{ $t('runSettings.members.coordinator') }}</span>
-          <span v-if="node.kind === 'team'" class="flex-shrink-0 text-[0.6875rem] text-gray-400">{{ $t('runSettings.members.memberCount', { count: node.children?.length ?? 0 }) }}</span>
+          <span v-if="node.kind === 'team' && !flat" class="flex-shrink-0 text-[0.6875rem] text-gray-400">{{ $t('runSettings.members.memberCount', { count: node.children?.length ?? 0 }) }}</span>
         </span>
 
         <span class="ml-auto flex min-w-0 items-center justify-end gap-1.5 pl-3 text-xs" data-test="run-member-summary">
@@ -39,7 +39,7 @@
             <span class="truncate text-gray-700 max-sm:hidden">{{ summary.join(' · ') }}</span>
           </template>
           <span v-else-if="childCustomizedCount" class="truncate text-gray-500 max-sm:hidden">{{ $t('runSettings.members.customizedCount', { count: childCustomizedCount }) }}</span>
-          <span v-else class="truncate text-gray-400 max-sm:hidden">{{ defaultsLabel }}</span>
+          <span v-else-if="!flat" class="truncate text-gray-400 max-sm:hidden">{{ defaultsLabel }}</span>
         </span>
       </button>
 
@@ -85,7 +85,7 @@
       />
 
       <template v-if="node.children?.length">
-        <p class="mb-1.5 mt-3 text-[0.6875rem] font-medium text-gray-400">{{ $t('runSettings.members.teamMembers', { team: node.name }) }}</p>
+        <p class="mb-1.5 mt-3 text-[0.6875rem] font-medium text-gray-400">{{ flat ? $t('runSettings.members.title') : $t('runSettings.members.teamMembers', { team: node.name }) }}</p>
         <div :class="flat ? 'divide-y divide-gray-100 border-t border-gray-100' : 'divide-y divide-gray-100 rounded-md border border-gray-200 bg-white [&>*:first-child>div:first-child]:rounded-t-md [&>*:last-child>div:first-child]:rounded-b-md'">
           <RunMemberRow
             v-for="child in node.children"

@@ -47,7 +47,7 @@
             </span>
             <div class="min-w-0 flex-1">
               <h2 class="truncate text-[0.9375rem] font-semibold leading-5 text-gray-900">{{ $t('runSettings.chat.panelTitle') }}</h2>
-              <p class="mt-0.5 truncate text-xs text-gray-500">{{ targetName }} · {{ $t('runSettings.members.memberCount', { count: memberCount }) }}</p>
+              <p class="mt-0.5 truncate text-xs text-gray-500">{{ targetName }}</p>
             </div>
             <button
               ref="closeRef"
@@ -66,8 +66,7 @@
             <!-- Round 10: flat sections, same row rhythm as the member settings below. -->
             <section data-test="chat-members-defaults">
               <h3 class="text-xs font-medium text-gray-500">{{ $t('runSettings.chat.defaultsTitle') }}</h3>
-              <p class="mt-0.5 text-xs text-gray-400">{{ $t('runSettings.chat.defaultsFromComposer') }}</p>
-              <dl class="mt-3 grid grid-cols-[6rem_minmax(0,1fr)] gap-x-2 gap-y-3 text-[0.8125rem] leading-5">
+              <dl class="mt-2.5 grid grid-cols-[6rem_minmax(0,1fr)] gap-x-2 gap-y-3 text-[0.8125rem] leading-5">
                 <dt class="text-gray-500">{{ $t('runSettings.row.workspace') }}</dt>
                 <dd class="flex min-w-0 items-center gap-1.5 text-gray-800" :title="presentation.workspacePath(defaults.workspace)">
                   <Icon icon="heroicons:folder" class="h-4 w-4 flex-shrink-0 text-gray-400" aria-hidden="true" />
@@ -103,10 +102,8 @@
             />
           </div>
 
-          <footer class="flex items-center gap-3 border-t border-gray-200 bg-gray-50 px-5 py-3">
-            <p class="min-w-0 flex-1 truncate text-xs text-gray-500" role="status" aria-live="polite">
-              {{ customizedCount ? $t('runSettings.chat.customizedMembers', { count: customizedCount, total: memberCount }) : $t('runSettings.chat.allMembers', { count: memberCount }) }}
-            </p>
+          <!-- Round 12: only the action; the blue dots and the line under the message box carry the count. -->
+          <footer class="flex items-center justify-end border-t border-gray-200 bg-gray-50 px-5 py-3">
             <button
               type="button"
               class="rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"

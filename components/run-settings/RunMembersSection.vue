@@ -6,7 +6,7 @@
         <p v-if="hint" class="mt-0.5 text-xs text-gray-400">{{ hint }}</p>
       </div>
       <div class="flex items-baseline gap-2 text-xs">
-        <span :class="customizedCount ? 'text-gray-700' : 'text-gray-400'" data-test="run-members-count">
+        <span v-if="!flat" :class="customizedCount ? 'text-gray-700' : 'text-gray-400'" data-test="run-members-count">
           {{ customizedCount ? $t('runSettings.members.customizedCount', { count: customizedCount }) : $t('runSettings.members.noneCustomized') }}
         </span>
         <button
