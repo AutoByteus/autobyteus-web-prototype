@@ -6,7 +6,7 @@
 - Stable package: `run-settings-ui-unification`, solution revision `SR-001`
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Awaiting User Review` (round 29, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
+- Status: `Awaiting User Review` (round 30, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -147,3 +147,4 @@
 - 2026-10-05: round 27 — UI reference fix (no design change): saved Org run settings now load (F-002). Validated: changing the Org-wide model updates every member including the members of the placed team; a placed team's workspace is editable; Save confirms.
 - 2026-10-05: round 28 — removed the "Kept from the saved run: …" line under the saved run's model (added in round 1; not in the product). Saved settings the model's menu does not show are still kept and saved, just not displayed.
 - 2026-10-05: round 29 — Save bar: "Discard" renamed "Cancel" (en) / "取消" (zh-CN).
+- 2026-10-05: round 30 — self-validation pass (see `review-round-30.md`): Agent "+" now copies model, thinking and approval like Team and Org "+"; unused copy removed; zh-CN Org chat strings added.

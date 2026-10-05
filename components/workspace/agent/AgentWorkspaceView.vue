@@ -66,7 +66,7 @@ const childPlaceholder = computed(() => {
   return config && !isHost.value ? t('chat.run.placeholderAgent', { agent: config.agentDefinitionName || '' }) : null
 })
 
-/** ＋ starts a New chat preset to this run's agent and workspace (UIS-013 R3). */
+/** ＋ starts a New chat preset to this run's agent, workspace and settings (UIS-013 R3; run-settings-ui-unification). */
 const startNewChatForRun = async () => {
   const config = target.value?.context.config
   if (!config) return
@@ -74,6 +74,12 @@ const startNewChatForRun = async () => {
     agentDefinitionId: config.agentDefinitionId,
     workspaceRootPath: config.workspaceMetadata?.workspaceRootPath || undefined,
   })
+  // run-settings-ui-unification: "+" copies the run's settings, as it does for Team and Org runs.
+  if (config.llmModelIdentifier) {
+    chatDraftStore.setModel({ runtimeKind: config.runtimeKind, llmModelIdentifier: config.llmModelIdentifier })
+    chatDraftStore.setThinkingConfig(config.llmConfig ?? null)
+  }
+  chatDraftStore.setAutoExecuteTools(config.autoExecuteTools)
   await router.push('/chat')
 }
 const openSelectedRunConfig = () => { if (target.value) center.showConfig() }
