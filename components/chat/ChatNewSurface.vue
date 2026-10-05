@@ -27,7 +27,6 @@
           <kbd class="rounded border border-gray-200 bg-gray-50 px-1 font-sans text-xs text-gray-600">@</kbd>
           {{ $t('chat.new.subtitleDefaultAfterAt') }}
         </p>
-        <p v-else-if="identity.subtitle" class="mt-2 max-w-xl text-center text-sm text-gray-500" data-test="chat-new-subtitle">{{ identity.subtitle }}</p>
       </template>
       <template v-else>
         <h1 class="text-center text-[1.75rem] font-semibold tracking-tight text-gray-900">{{ $t('chat.new.heading') }}</h1>
@@ -148,14 +147,14 @@ const org = computed(() => {
 })
 const identity = computed(() => {
   if (org.value) {
-    return { kind: 'org' as const, isDefault: false, avatarUrl: org.value.avatarUrl ?? null, name: org.value.name, kindLabel: t('runSettings.kind.orgPlain'), subtitle: '' }
+    return { kind: 'org' as const, isDefault: false, avatarUrl: org.value.avatarUrl ?? null, name: org.value.name }
   }
   if (team.value) {
-    return { kind: 'team' as const, isDefault: false, avatarUrl: team.value.avatarUrl ?? null, name: team.value.name, kindLabel: t('runSettings.kind.teamPlain'), subtitle: '' }
+    return { kind: 'team' as const, isDefault: false, avatarUrl: team.value.avatarUrl ?? null, name: team.value.name }
   }
   // Round 5: the general agent is shown the same way, so every New chat names who it talks to.
   if (agentName.value) {
-    return { kind: 'agent' as const, isDefault: isDefaultAgent.value, avatarUrl: options.agentDefinition.value?.avatarUrl || draftContext.value?.config.agentAvatarUrl || null, name: agentName.value, kindLabel: t('runSettings.kind.agent'), subtitle: '' }
+    return { kind: 'agent' as const, isDefault: isDefaultAgent.value, avatarUrl: options.agentDefinition.value?.avatarUrl || draftContext.value?.config.agentAvatarUrl || null, name: agentName.value }
   }
   return null
 })
