@@ -45,7 +45,7 @@
           ref="composerRef"
           :target="target"
           :placeholder="placeholder"
-          :skill-options="team || org ? null : options.skillOptions.value"
+          :skill-options="team ? null : options.skillOptions.value"
           :skills-all-installed="options.skillsAllInstalled.value"
           :target-options="mentionOptions"
           :mention-focused-name="mentionFocusedName"
@@ -79,10 +79,10 @@
         <!-- Round 17: no "Files are saved in …" line; the workspace control already names the
              workspace and shows its path on hover. Only the starting state is announced here. -->
         <p v-if="draft?.starting" class="mt-2.5 text-center text-xs text-gray-400" data-test="chat-new-hint">
-          {{ $t('chat.new.starting', { name: org ? org.name : team ? team.name : agentName, runtime: runtimeLabel }) }}
+          {{ $t('chat.new.starting', { name: team ? team.name : agentName, runtime: runtimeLabel }) }}
         </p>
         <!-- run-settings-ui-unification (round 2): members follow the composer unless customized here. -->
-        <ChatTargetMembers v-if="draft && (team || org) && !draft.starting" :key="draft.context.state.runId + (org?.id ?? team?.id ?? '')" class="mt-2.5" :draft="draft" @update:open="membersPanelOpen = $event" @update:width="membersPanelWidth = $event" @update:resizing="membersPanelResizing = $event" />
+        <ChatTargetMembers v-if="memberSource && !draft?.starting" :key="memberSource.key" class="mt-2.5" :source="memberSource" @update:open="membersPanelOpen = $event" @update:width="membersPanelWidth = $event" @update:resizing="membersPanelResizing = $event" />
       </div>
     </div>
   </div>
@@ -97,7 +97,7 @@ import ChatApprovalToggle from '~/components/chat/ChatApprovalToggle.vue'
 import ChatModelMenu from '~/components/chat/ChatModelMenu.vue'
 import ChatThinkingControl from '~/components/chat/ChatThinkingControl.vue'
 import ChatTargetMembers from '~/components/run-settings/ChatTargetMembers.vue'
-import { useAgentOrgDefinitionStore } from '~/stores/agentOrgDefinitionStore'
+import { chatDraftMemberSource } from '~/components/run-settings/memberSettingsSource'
 import { useChatDraftModelControls } from '~/components/chat/chatDraftModelControls'
 import { createChatDraftComposerTarget } from '~/composables/chat/chatDraftComposerTarget'
 import { useChatComposerOptions } from '~/composables/chat/useChatComposerOptions'
@@ -139,16 +139,13 @@ const membersPanelOpen = ref(false)
 // Round 16: the panel can be dragged wider; the page makes room for its current width.
 const membersPanelWidth = ref(480)
 const membersPanelResizing = ref(false)
-const orgDefinitionStore = useAgentOrgDefinitionStore()
-const org = computed(() => {
-  const current = draft.value?.target
-  if (current?.kind !== 'org') return null
-  return orgDefinitionStore.byId(current.orgDefinitionId)
-})
+// SR-003: Agent Orgs are not chat targets (an Org has no recipient); a Team's members are
+// customized through the shared members line and drawer.
+const memberSource = computed(() => draft.value && team.value ? chatDraftMemberSource(draft.value, {
+  setMemberSettings: chatDraftStore.setMemberSettings,
+  resetAllMemberSettings: chatDraftStore.resetAllMemberSettings,
+}) : null)
 const identity = computed(() => {
-  if (org.value) {
-    return { kind: 'org' as const, isDefault: false, avatarUrl: org.value.avatarUrl ?? null, name: org.value.name }
-  }
   if (team.value) {
     return { kind: 'team' as const, isDefault: false, avatarUrl: team.value.avatarUrl ?? null, name: team.value.name }
   }
@@ -169,7 +166,6 @@ const mentionOptions = computed(() => options.targetOptions.value.filter((option
 }))
 /** Who receives the message and brings the collaborator in (menu footer). */
 const mentionFocusedName = computed(() => {
-  if (org.value) return org.value.name
   if (team.value) return team.value.coordinatorMemberName || team.value.name
   return agentName.value
 })
@@ -178,7 +174,6 @@ const agentName = computed(() => options.agentDefinition.value?.name || draftCon
 const runtimeLabel = computed(() => runtimeKindToLabel(controls.runtimeKind.value))
 
 const placeholder = computed(() => {
-  if (org.value) return t('chat.new.placeholderOrg', { org: org.value.name })
   if (team.value) return t('chat.new.placeholderTeam', { team: team.value.name })
   if (!isDefaultAgent.value) return t('chat.new.placeholderAgent', { agent: agentName.value })
   return t('chat.new.placeholderDefault')

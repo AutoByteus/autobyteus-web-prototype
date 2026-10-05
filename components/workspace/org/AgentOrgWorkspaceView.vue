@@ -70,7 +70,6 @@ import { computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import { useActiveContextStore } from '~/stores/activeContextStore'
-import { useStartRunInChat } from '~/composables/runSettings/useStartRunInChat'
 import AgentWorkspaceSurface from '~/components/workspace/agent/AgentWorkspaceSurface.vue'
 import TeamWorkspaceSurface from '~/components/workspace/team/TeamWorkspaceSurface.vue'
 import WorkspaceRecoveryNotice from '~/components/workspace/common/WorkspaceRecoveryNotice.vue'
@@ -122,13 +121,15 @@ const selectRouteExecution = () => {
   } else if (address) active.selectAgentOrg(orgRunId.value, address)
 }
 watch([() => route.query.agentRunId, () => route.query.memberAddress, context], selectRouteExecution, { immediate: true })
-const startRunInChat = useStartRunInChat()
 const openNewOrgRun = () => {
   const source = context.value?.executionTree.rootOrg
   if (!source) return
-  // run-settings-ui-unification (round 8): a new Org run opens New chat prefilled from this run.
+  // run-settings-ui-unification (SR-003): "+" opens the Org launch page prefilled from this run.
   center.showChat()
-  void startRunInChat.runOrgFromRun(source.orgDefinitionId, source.orgRunId)
+  void router.push({
+    path: '/workspace',
+    query: { rootSubjectKind: 'agent_org', definitionId: source.orgDefinitionId, sourceOrgRunId: source.orgRunId, mode: 'configuration' },
+  })
 }
 const headerActionsAvailable = computed(() => Boolean(target.value && (target.value.access === 'live'
   || target.value.kind === 'agent_org_direct_agent' || target.value.kind === 'agent_org_team_member')))

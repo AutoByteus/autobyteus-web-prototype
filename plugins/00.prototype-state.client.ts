@@ -65,6 +65,8 @@ const localActions: Record<string, Set<string>> = {
   existingRunConfig: new Set(['loadAgentCanonical', 'loadTeamCanonical', 'loadAgentOrgCanonical', 'refreshModelOptions']),
   // Reads the Org run's configuration through the local GraphQL fixtures (AgentOrgRunConfig).
   agentOrgContexts: new Set(['readRunConfig']),
+  // run-settings-ui-unification (SR-003): the Org launch page launches through the source's own Org launch path.
+  orgLaunchDraft: new Set(['launch']),
   uiError: new Set(['push', 'remove', 'clear', 'toggle', 'open', 'close']),
   mobileWork: new Set(['selectContext', 'setActiveTab', 'requestRunSetup', 'consumeRunSetupIntent', 'requestFilePreview', 'consumeFilePreviewRequest', 'addDraftContextAttachment', 'removeDraftContextAttachment', 'clearDraftContextAttachments', 'consumeDraftContextAttachments', 'getPendingTeamRunAttachments', 'hasPendingTeamRunAttachments', 'addPendingTeamRunAttachment', 'moveDraftAttachmentsToPendingTeamRun', 'removePendingTeamRunAttachment', 'clearPendingTeamRunAttachments', 'consumePendingTeamRunAttachments', 'rememberFocusedTeamMember', 'getRememberedFocusedTeamMember', 'updateFocusedTeamMember', 'clearContext']),
   memoryExplorerStore: new Set(['setSelectedSourceByKey', 'setHomeTab', 'setSelectedAgentFromRoute', 'setSelectedTeamFromRoute', 'setAgentsSearch', 'setTeamsSearch', 'setAgentRunsSearch', 'setTeamRunsSearch', 'changeAgentRunsPage', 'changeTeamRunsPage', 'changeHomePage', 'resetPagesForSourceChange', 'clearSelections']),

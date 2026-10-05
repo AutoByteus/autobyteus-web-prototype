@@ -31,9 +31,6 @@ const runSettingsMessages = {
   'runSettings.status.active': '运行中',
   'runSettings.status.stopped': '已停止',
   'runSettings.existing.readOnlyNote': '此运行的设置无法更改。',
-  'runSettings.existing.stop': '停止运行',
-  'runSettings.existing.stopping': '正在停止…',
-  'runSettings.existing.stopFailed': '无法停止此运行，请重试。',
   'runSettings.existing.refreshNote': '需要刷新已保存的设置后才能更改。',
   'runSettings.existing.refresh': '刷新',
   'runSettings.save.unsavedResumes': '有未保存的更改 · 将在此运行恢复时生效',
@@ -41,6 +38,15 @@ const runSettingsMessages = {
   'runSettings.save.save': '保存',
   'runSettings.save.saving': '正在保存…',
   'runSettings.save.saved': '已保存。更改将在此运行恢复时生效。',
+  'runSettings.existing.terminating': '正在终止…',
+  'runSettings.existing.stopping': '正在停止…',
+  'runSettings.existing.terminateFailed': '无法终止此运行，请重试。',
+  'runSettings.existing.stopOrgFailed': '无法停止此组织，请重试。',
+  'runSettings.orgLaunch.run': '运行智能体组织',
+  'runSettings.orgLaunch.unavailable': '此智能体组织不可用。请选择其他智能体组织。',
+  'runSettings.orgLaunch.failed': '无法启动此智能体组织，请重试。',
+  'runSettings.orgLaunch.back': '返回智能体组织',
+  'runSettings.orgLaunch.preparing': '正在复制该运行的设置…',
 } satisfies TranslationCatalog;
 
 export default runSettingsMessages;

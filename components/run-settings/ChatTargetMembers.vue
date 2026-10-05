@@ -67,7 +67,7 @@
           </div>
           <header class="flex items-start gap-3 border-b border-gray-200 px-5 py-4">
             <span class="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600" aria-hidden="true">
-              <Icon :icon="draft.target.kind === 'org' ? 'heroicons:building-office-2' : 'heroicons:user-group'" class="h-[1.125rem] w-[1.125rem]" />
+              <Icon :icon="source.target.kind === 'org' ? 'heroicons:building-office-2' : 'heroicons:user-group'" class="h-[1.125rem] w-[1.125rem]" />
             </span>
             <div class="min-w-0 flex-1">
               <h2 class="truncate text-[0.9375rem] font-semibold leading-5 text-gray-900">{{ $t('runSettings.chat.panelTitle') }}</h2>
@@ -117,18 +117,18 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, toRef } from 'vue'
 import { Icon } from '@iconify/vue'
-import type { ChatDraft } from '~/stores/chatDraftStore'
+import type { MemberSettingsSource } from './memberSettingsSource'
 import { useAgentTeamDefinitionStore } from '~/stores/agentTeamDefinitionStore'
 import { useAgentOrgDefinitionStore } from '~/stores/agentOrgDefinitionStore'
 import RunMembersSection from './RunMembersSection.vue'
 import { useChatTargetMembers } from './useChatTargetMembers'
 
 /**
- * run-settings-ui-unification: member customization for a Team or Org New chat, reached from
+ * run-settings-ui-unification: member customization for a Team New chat or the Org launch page, reached from
  * one line under the composer and edited in a panel that slides in from the right (round 3).
  */
-const props = defineProps<{ draft: ChatDraft }>()
-const members = useChatTargetMembers(toRef(props, 'draft'))
+const props = defineProps<{ source: MemberSettingsSource }>()
+const members = useChatTargetMembers(toRef(props, 'source'))
 const teamStore = useAgentTeamDefinitionStore()
 const orgStore = useAgentOrgDefinitionStore()
 
@@ -139,7 +139,7 @@ const memberCount = computed(() => members.memberCount.value)
 const customizedCount = computed(() => members.customizedCount.value)
 
 const targetName = computed(() => {
-  const target = props.draft.target
+  const target = props.source.target
   if (target.kind === 'team') return teamStore.agentTeamDefinitions.find((team) => team.id === target.teamDefinitionId)?.name ?? ''
   if (target.kind === 'org') return orgStore.byId(target.orgDefinitionId)?.name ?? ''
   return ''

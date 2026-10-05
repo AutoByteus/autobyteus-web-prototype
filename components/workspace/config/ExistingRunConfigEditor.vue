@@ -131,7 +131,7 @@ const stopRun = async () => {
     }
   } catch (error) {
     console.warn('Failed to stop the run from its settings:', error)
-    stopError.value = t('runSettings.existing.stopFailed')
+    stopError.value = t(current.kind === 'agent_org' ? 'runSettings.existing.stopOrgFailed' : 'runSettings.existing.terminateFailed')
   } finally {
     stopping.value = false
   }

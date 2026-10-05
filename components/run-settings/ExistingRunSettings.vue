@@ -10,8 +10,8 @@
             type="button"
             class="-ml-1 inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md text-red-500 transition-colors hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 disabled:cursor-default disabled:opacity-60"
             :disabled="stopping"
-            :title="stopping ? $t('runSettings.existing.stopping') : $t('runSettings.existing.stop')"
-            :aria-label="stopping ? $t('runSettings.existing.stopping') : $t('runSettings.existing.stop')"
+            :title="stopLabel"
+            :aria-label="stopLabel"
             data-test="existing-run-stop"
             @click="emit('stop')"
           >
@@ -132,6 +132,14 @@ const props = withDefaults(defineProps<{
 const emit = defineEmits<{ (event: 'refresh'): void; (event: 'stop'): void }>()
 
 const { t } = useLocalization()
+// SR-003: the same verbs as the workspace tree's stop buttons (Agent / Team: Terminate; Org: Stop).
+const stopLabel = computed(() => {
+  if (props.kind === 'org') return props.stopping ? t('runSettings.existing.stopping') : t('workspace.agentOrg.history.stopLabel')
+  if (props.stopping) return t('runSettings.existing.terminating')
+  return props.kind === 'team'
+    ? t('workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.terminate_team')
+    : t('workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.terminate_run')
+})
 const presentation = useRunSettingsPresentation()
 
 const saved = ref<Record<string, Partial<RunSettingsValues>>>({})

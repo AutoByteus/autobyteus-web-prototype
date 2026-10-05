@@ -32,9 +32,6 @@ const runSettingsMessages = {
   'runSettings.status.active': 'Running',
   'runSettings.status.stopped': 'Stopped',
   'runSettings.existing.readOnlyNote': "This run's settings can't be changed.",
-  'runSettings.existing.stop': 'Stop run',
-  'runSettings.existing.stopping': 'Stopping…',
-  'runSettings.existing.stopFailed': "Couldn't stop this run. Try again.",
   'runSettings.existing.refreshNote': 'Saved settings need a refresh before you can change them.',
   'runSettings.existing.refresh': 'Refresh',
   'runSettings.save.unsavedResumes': 'Unsaved changes · they apply when this run resumes',
@@ -42,6 +39,15 @@ const runSettingsMessages = {
   'runSettings.save.save': 'Save',
   'runSettings.save.saving': 'Saving…',
   'runSettings.save.saved': 'Saved. Changes apply when this run resumes.',
+  'runSettings.existing.terminating': 'Terminating…',
+  'runSettings.existing.stopping': 'Stopping…',
+  'runSettings.existing.terminateFailed': "Couldn't terminate this run. Try again.",
+  'runSettings.existing.stopOrgFailed': "Couldn't stop this org. Try again.",
+  'runSettings.orgLaunch.run': 'Run Agent Org',
+  'runSettings.orgLaunch.unavailable': "This Agent Org isn't available. Choose another Agent Org.",
+  'runSettings.orgLaunch.failed': "Couldn't start this Agent Org. Try again.",
+  'runSettings.orgLaunch.back': 'Back to Agent Orgs',
+  'runSettings.orgLaunch.preparing': "Copying the run's settings…",
 } satisfies TranslationCatalog;
 
 export default runSettingsMessages;

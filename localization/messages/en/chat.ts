@@ -87,8 +87,6 @@ const chatMessages = {
   'chat.mentions.noticeFailed': 'Couldn’t add {{name}} to this run',
   'chat.mentions.noticeFailedDetail': '{{reason}} Nothing was added.',
   'chat.mentions.noticeDismiss': 'Dismiss',
-  'chat.launch.orgUnavailable': 'This org is not available. Choose another org.',
-  'chat.new.placeholderOrg': 'Message {{org}}…',
   'chat.launch.agentUnavailable': 'This agent is not available. Choose another agent.',
   'chat.launch.teamUnavailable': 'This team is not available. Choose another team.',
   'chat.launch.runtimeUnavailable': '{{runtime}} is unavailable. Choose another runtime.',

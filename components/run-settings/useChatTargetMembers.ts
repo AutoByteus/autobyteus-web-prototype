@@ -2,7 +2,8 @@ import { computed, ref, watch, type Ref } from 'vue'
 import { useAgentTeamDefinitionStore } from '~/stores/agentTeamDefinitionStore'
 import { useAgentOrgDefinitionStore } from '~/stores/agentOrgDefinitionStore'
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
-import { useChatDraftStore, type ChatDraft, type ChatDraftWorkspace, type ChatMemberSettings } from '~/stores/chatDraftStore'
+import type { ChatDraftWorkspace, ChatMemberSettings } from '~/stores/chatDraftStore'
+import type { MemberSettingsSource } from './memberSettingsSource'
 import { loadAgentOrgDefinitionReferences, type AgentOrgDefinitionReferences } from '~/services/agentOrgDefinition/agentOrgDefinitionReferences'
 import {
   customizedFromOverride,
@@ -16,29 +17,18 @@ import { allMemberKeys, countCustomizedOf, overrideWith, overrideWithout } from 
 import { useRunSettingsPresentation } from './useRunSettingsPresentation'
 
 /**
- * run-settings-ui-unification (round 2): the members of the Team or Org a New chat is addressed
- * to, with the composer's settings as their defaults and each member's own exceptions.
+ * run-settings-ui-unification: the members of a Team (New chat) or an Org (Org launch page), with
+ * the composer's or the Org card's settings as their defaults and each member's own exceptions.
  */
-export function useChatTargetMembers(draft: Ref<ChatDraft | null>) {
+export function useChatTargetMembers(source: Ref<MemberSettingsSource | null>) {
   const teamStore = useAgentTeamDefinitionStore()
   const orgStore = useAgentOrgDefinitionStore()
   const agentStore = useAgentDefinitionStore()
-  const chatDraftStore = useChatDraftStore()
   const presentation = useRunSettingsPresentation()
 
-  const defaults = computed<RunSettingsValues | null>(() => {
-    const current = draft.value
-    if (!current) return null
-    return {
-      workspace: current.workspace,
-      runtimeKind: current.context.config.runtimeKind,
-      llmModelIdentifier: current.context.config.llmModelIdentifier || '',
-      llmConfig: current.context.config.llmConfig ?? null,
-      autoExecuteTools: current.autoExecuteTools,
-    }
-  })
+  const defaults = computed<RunSettingsValues | null>(() => source.value?.defaults ?? null)
 
-  const settingsFor = (address: string): ChatMemberSettings => draft.value?.memberSettings[address] ?? {}
+  const settingsFor = (address: string): ChatMemberSettings => source.value?.memberSettings[address] ?? {}
   const apply = (base: RunSettingsValues, own: ChatMemberSettings): RunSettingsValues => ({
     workspace: own.workspace ?? base.workspace,
     runtimeKind: own.runtimeKind ?? base.runtimeKind,
@@ -74,7 +64,7 @@ export function useChatTargetMembers(draft: Ref<ChatDraft | null>) {
 
   // Org members may be owned by the Org, so they are read like the Org launch form reads them.
   const orgReferences = ref<{ orgId: string; snapshot: AgentOrgDefinitionReferences } | null>(null)
-  const org = computed(() => draft.value?.target.kind === 'org' ? orgStore.byId(draft.value.target.orgDefinitionId) ?? null : null)
+  const org = computed(() => source.value?.target.kind === 'org' ? orgStore.byId(source.value.target.orgDefinitionId) ?? null : null)
   watch(org, async (value) => {
     if (!value || orgReferences.value?.orgId === value.id) return
     try {
@@ -84,12 +74,12 @@ export function useChatTargetMembers(draft: Ref<ChatDraft | null>) {
       })
       orgReferences.value = { orgId: value.id, snapshot }
     } catch (error) {
-      console.warn('Failed to read the Org members for New chat:', error)
+      console.warn('Failed to read the Org members:', error)
     }
   }, { immediate: true })
 
   const nodes = computed<RunMemberNode[]>(() => {
-    const current = draft.value
+    const current = source.value
     const base = defaults.value
     if (!current || !base) return []
     if (current.target.kind === 'team') {
@@ -130,15 +120,15 @@ export function useChatTargetMembers(draft: Ref<ChatDraft | null>) {
   const update = (address: string, field: RunSettingField, value: unknown) => {
     const current = settingsFor(address)
     if (field === 'workspace') {
-      chatDraftStore.setMemberSettings(address, { ...current, workspace: value as ChatDraftWorkspace })
+      source.value?.setMemberSettings(address, { ...current, workspace: value as ChatDraftWorkspace })
       return
     }
-    chatDraftStore.setMemberSettings(address, overrideWith(current, field, value, presentation.defaultConfigFor))
+    source.value?.setMemberSettings(address, overrideWith(current, field, value, presentation.defaultConfigFor))
   }
   const reset = (address: string, field: RunSettingField | null) => {
-    chatDraftStore.setMemberSettings(address, overrideWithout(settingsFor(address), field))
+    source.value?.setMemberSettings(address, overrideWithout(settingsFor(address), field))
   }
-  const resetAll = () => chatDraftStore.resetAllMemberSettings()
+  const resetAll = () => source.value?.resetAllMemberSettings()
 
   return { nodes, memberCount, customizedCount, allKeys: computed(() => allMemberKeys(nodes.value)), update, reset, resetAll }
 }

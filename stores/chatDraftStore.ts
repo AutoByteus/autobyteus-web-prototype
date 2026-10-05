@@ -18,11 +18,9 @@ import { getDefaultThinkingConfig, getThinkingParamKeys } from '~/utils/llmThink
 export type ChatTarget =
   | Readonly<{ kind: 'agent'; agentDefinitionId: string }>
   | Readonly<{ kind: 'team'; teamDefinitionId: string }>
-  // run-settings-ui-unification (round 2): an Agent Org can be started from New chat.
-  | Readonly<{ kind: 'org'; orgDefinitionId: string }>
 
 /**
- * run-settings-ui-unification (round 2): what one Team/Org member or placed team sets itself
+ * run-settings-ui-unification (round 2): what one Team member (or, on the Org launch page, an Org member or placed team) sets itself
  * instead of the composer's settings. Absent fields follow the defaults.
  */
 export type ChatMemberSettings = Readonly<{
