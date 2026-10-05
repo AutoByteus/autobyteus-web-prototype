@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T04:10:06.654Z",
+  "generatedAt": "2026-10-05T04:40:57.681Z",
   "sourceBaseUrl": "http://127.0.0.1:4543",
   "mockBaseUrl": "http://127.0.0.1:4544",
   "snapshots": {
@@ -70,8 +70,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:27.643Z",
-              "updatedAt": "2026-10-05T04:07:27.643Z"
+              "createdAt": "2026-10-05T04:38:29.566Z",
+              "updatedAt": "2026-10-05T04:38:29.566Z"
             }
           ],
           "initialized": true,
@@ -2887,8 +2887,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:29.760Z",
-              "updatedAt": "2026-10-05T04:07:29.760Z"
+              "createdAt": "2026-10-05T04:38:31.710Z",
+              "updatedAt": "2026-10-05T04:38:31.710Z"
             }
           ],
           "initialized": true,
@@ -5704,8 +5704,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:31.717Z",
-              "updatedAt": "2026-10-05T04:07:31.717Z"
+              "createdAt": "2026-10-05T04:38:33.670Z",
+              "updatedAt": "2026-10-05T04:38:33.670Z"
             }
           ],
           "initialized": true,
@@ -8104,8 +8104,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:33.822Z",
-              "updatedAt": "2026-10-05T04:07:33.822Z"
+              "createdAt": "2026-10-05T04:38:35.748Z",
+              "updatedAt": "2026-10-05T04:38:35.748Z"
             }
           ],
           "initialized": true,
@@ -10799,8 +10799,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:35.884Z",
-              "updatedAt": "2026-10-05T04:07:35.884Z"
+              "createdAt": "2026-10-05T04:38:37.815Z",
+              "updatedAt": "2026-10-05T04:38:37.815Z"
             }
           ],
           "initialized": true,
@@ -13022,8 +13022,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:37.945Z",
-              "updatedAt": "2026-10-05T04:07:37.945Z"
+              "createdAt": "2026-10-05T04:38:39.955Z",
+              "updatedAt": "2026-10-05T04:38:39.955Z"
             }
           ],
           "initialized": true,
@@ -15717,8 +15717,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:40.023Z",
-              "updatedAt": "2026-10-05T04:07:40.023Z"
+              "createdAt": "2026-10-05T04:38:42.045Z",
+              "updatedAt": "2026-10-05T04:38:42.045Z"
             }
           ],
           "initialized": true,
@@ -18117,8 +18117,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:42.086Z",
-              "updatedAt": "2026-10-05T04:07:42.086Z"
+              "createdAt": "2026-10-05T04:38:44.229Z",
+              "updatedAt": "2026-10-05T04:38:44.229Z"
             }
           ],
           "initialized": true,
@@ -20517,8 +20517,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:44.146Z",
-              "updatedAt": "2026-10-05T04:07:44.146Z"
+              "createdAt": "2026-10-05T04:38:46.196Z",
+              "updatedAt": "2026-10-05T04:38:46.196Z"
             }
           ],
           "initialized": true,
@@ -22953,8 +22953,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:46.204Z",
-              "updatedAt": "2026-10-05T04:07:46.204Z"
+              "createdAt": "2026-10-05T04:38:48.323Z",
+              "updatedAt": "2026-10-05T04:38:48.323Z"
             }
           ],
           "initialized": true,
@@ -25286,8 +25286,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:48.297Z",
-              "updatedAt": "2026-10-05T04:07:48.297Z"
+              "createdAt": "2026-10-05T04:38:50.417Z",
+              "updatedAt": "2026-10-05T04:38:50.417Z"
             }
           ],
           "initialized": true,
@@ -27722,8 +27722,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:50.365Z",
-              "updatedAt": "2026-10-05T04:07:50.365Z"
+              "createdAt": "2026-10-05T04:38:52.497Z",
+              "updatedAt": "2026-10-05T04:38:52.497Z"
             }
           ],
           "initialized": true,
@@ -30122,8 +30122,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:52.361Z",
-              "updatedAt": "2026-10-05T04:07:52.361Z"
+              "createdAt": "2026-10-05T04:38:54.492Z",
+              "updatedAt": "2026-10-05T04:38:54.492Z"
             }
           ],
           "initialized": true,
@@ -32291,8 +32291,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:54.477Z",
-              "updatedAt": "2026-10-05T04:07:54.477Z"
+              "createdAt": "2026-10-05T04:38:56.566Z",
+              "updatedAt": "2026-10-05T04:38:56.566Z"
             }
           ],
           "initialized": true,
@@ -34475,8 +34475,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:56.557Z",
-              "updatedAt": "2026-10-05T04:07:56.557Z"
+              "createdAt": "2026-10-05T04:38:58.641Z",
+              "updatedAt": "2026-10-05T04:38:58.641Z"
             }
           ],
           "initialized": true,
@@ -36644,8 +36644,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:07:58.638Z",
-              "updatedAt": "2026-10-05T04:07:58.638Z"
+              "createdAt": "2026-10-05T04:39:00.703Z",
+              "updatedAt": "2026-10-05T04:39:00.703Z"
             }
           ],
           "initialized": true,
@@ -38828,8 +38828,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:00.697Z",
-              "updatedAt": "2026-10-05T04:08:00.697Z"
+              "createdAt": "2026-10-05T04:39:02.758Z",
+              "updatedAt": "2026-10-05T04:39:02.758Z"
             }
           ],
           "initialized": true,
@@ -41048,8 +41048,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:02.858Z",
-              "updatedAt": "2026-10-05T04:08:02.858Z"
+              "createdAt": "2026-10-05T04:39:05.022Z",
+              "updatedAt": "2026-10-05T04:39:05.022Z"
             }
           ],
           "initialized": true,
@@ -43573,8 +43573,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:04.993Z",
-              "updatedAt": "2026-10-05T04:08:04.993Z"
+              "createdAt": "2026-10-05T04:39:07.044Z",
+              "updatedAt": "2026-10-05T04:39:07.044Z"
             }
           ],
           "initialized": true,
@@ -45815,8 +45815,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:07.067Z",
-              "updatedAt": "2026-10-05T04:08:07.067Z"
+              "createdAt": "2026-10-05T04:39:09.145Z",
+              "updatedAt": "2026-10-05T04:39:09.145Z"
             }
           ],
           "initialized": true,
@@ -48057,8 +48057,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:09.013Z",
-              "updatedAt": "2026-10-05T04:08:09.013Z"
+              "createdAt": "2026-10-05T04:39:11.083Z",
+              "updatedAt": "2026-10-05T04:39:11.083Z"
             }
           ],
           "initialized": true,
@@ -50471,8 +50471,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:11.075Z",
-              "updatedAt": "2026-10-05T04:08:11.075Z"
+              "createdAt": "2026-10-05T04:39:13.161Z",
+              "updatedAt": "2026-10-05T04:39:13.161Z"
             }
           ],
           "initialized": true,
@@ -52884,8 +52884,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:13.145Z",
-              "updatedAt": "2026-10-05T04:08:13.145Z"
+              "createdAt": "2026-10-05T04:39:15.253Z",
+              "updatedAt": "2026-10-05T04:39:15.253Z"
             }
           ],
           "initialized": true,
@@ -55297,8 +55297,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:15.227Z",
-              "updatedAt": "2026-10-05T04:08:15.227Z"
+              "createdAt": "2026-10-05T04:39:17.332Z",
+              "updatedAt": "2026-10-05T04:39:17.332Z"
             }
           ],
           "initialized": true,
@@ -57726,8 +57726,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:17.311Z",
-              "updatedAt": "2026-10-05T04:08:17.311Z"
+              "createdAt": "2026-10-05T04:39:19.394Z",
+              "updatedAt": "2026-10-05T04:39:19.394Z"
             }
           ],
           "initialized": true,
@@ -60196,8 +60196,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:19.433Z",
-              "updatedAt": "2026-10-05T04:08:19.433Z"
+              "createdAt": "2026-10-05T04:39:21.487Z",
+              "updatedAt": "2026-10-05T04:39:21.487Z"
             }
           ],
           "initialized": true,
@@ -62686,8 +62686,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:21.518Z",
-              "updatedAt": "2026-10-05T04:08:21.518Z"
+              "createdAt": "2026-10-05T04:39:23.561Z",
+              "updatedAt": "2026-10-05T04:39:23.561Z"
             }
           ],
           "initialized": true,
@@ -65100,8 +65100,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:23.595Z",
-              "updatedAt": "2026-10-05T04:08:23.595Z"
+              "createdAt": "2026-10-05T04:39:25.647Z",
+              "updatedAt": "2026-10-05T04:39:25.647Z"
             }
           ],
           "initialized": true,
@@ -67269,8 +67269,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:25.671Z",
-              "updatedAt": "2026-10-05T04:08:25.671Z"
+              "createdAt": "2026-10-05T04:39:27.720Z",
+              "updatedAt": "2026-10-05T04:39:27.720Z"
             }
           ],
           "initialized": true,
@@ -69438,8 +69438,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:27.741Z",
-              "updatedAt": "2026-10-05T04:08:27.741Z"
+              "createdAt": "2026-10-05T04:39:29.791Z",
+              "updatedAt": "2026-10-05T04:39:29.791Z"
             }
           ],
           "initialized": true,
@@ -71607,8 +71607,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:29.807Z",
-              "updatedAt": "2026-10-05T04:08:29.807Z"
+              "createdAt": "2026-10-05T04:39:31.860Z",
+              "updatedAt": "2026-10-05T04:39:31.860Z"
             }
           ],
           "initialized": true,
@@ -73776,8 +73776,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:31.890Z",
-              "updatedAt": "2026-10-05T04:08:31.890Z"
+              "createdAt": "2026-10-05T04:39:33.930Z",
+              "updatedAt": "2026-10-05T04:39:33.930Z"
             }
           ],
           "initialized": true,
@@ -76006,8 +76006,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:33.986Z",
-              "updatedAt": "2026-10-05T04:08:33.986Z"
+              "createdAt": "2026-10-05T04:39:35.990Z",
+              "updatedAt": "2026-10-05T04:39:35.990Z"
             }
           ],
           "initialized": true,
@@ -78309,8 +78309,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:36.143Z",
-              "updatedAt": "2026-10-05T04:08:36.143Z"
+              "createdAt": "2026-10-05T04:39:38.129Z",
+              "updatedAt": "2026-10-05T04:39:38.129Z"
             }
           ],
           "initialized": true,
@@ -80771,8 +80771,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:38.247Z",
-              "updatedAt": "2026-10-05T04:08:38.247Z"
+              "createdAt": "2026-10-05T04:39:40.231Z",
+              "updatedAt": "2026-10-05T04:39:40.231Z"
             }
           ],
           "initialized": true,
@@ -83255,8 +83255,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:40.283Z",
-              "updatedAt": "2026-10-05T04:08:40.283Z"
+              "createdAt": "2026-10-05T04:39:42.251Z",
+              "updatedAt": "2026-10-05T04:39:42.251Z"
             }
           ],
           "initialized": true,
@@ -85671,8 +85671,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:42.396Z",
-              "updatedAt": "2026-10-05T04:08:42.396Z"
+              "createdAt": "2026-10-05T04:39:44.318Z",
+              "updatedAt": "2026-10-05T04:39:44.318Z"
             }
           ],
           "initialized": true,
@@ -87974,8 +87974,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:44.505Z",
-              "updatedAt": "2026-10-05T04:08:44.505Z"
+              "createdAt": "2026-10-05T04:39:46.397Z",
+              "updatedAt": "2026-10-05T04:39:46.397Z"
             }
           ],
           "initialized": true,
@@ -90430,8 +90430,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:46.800Z",
-              "updatedAt": "2026-10-05T04:08:46.800Z"
+              "createdAt": "2026-10-05T04:39:48.664Z",
+              "updatedAt": "2026-10-05T04:39:48.664Z"
             }
           ],
           "initialized": true,
@@ -93024,8 +93024,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:48.705Z",
-              "updatedAt": "2026-10-05T04:08:48.705Z"
+              "createdAt": "2026-10-05T04:39:50.558Z",
+              "updatedAt": "2026-10-05T04:39:50.558Z"
             }
           ],
           "initialized": true,
@@ -95325,8 +95325,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:50.801Z",
-              "updatedAt": "2026-10-05T04:08:50.801Z"
+              "createdAt": "2026-10-05T04:39:52.627Z",
+              "updatedAt": "2026-10-05T04:39:52.627Z"
             }
           ],
           "initialized": true,
@@ -97537,8 +97537,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:52.936Z",
-              "updatedAt": "2026-10-05T04:08:52.936Z"
+              "createdAt": "2026-10-05T04:39:54.735Z",
+              "updatedAt": "2026-10-05T04:39:54.735Z"
             }
           ],
           "initialized": true,
@@ -98140,8 +98140,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:55.032Z",
-              "updatedAt": "2026-10-05T04:08:55.032Z"
+              "createdAt": "2026-10-05T04:39:56.826Z",
+              "updatedAt": "2026-10-05T04:39:56.826Z"
             }
           ],
           "initialized": true,
@@ -99820,8 +99820,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:57.136Z",
-              "updatedAt": "2026-10-05T04:08:57.136Z"
+              "createdAt": "2026-10-05T04:39:58.894Z",
+              "updatedAt": "2026-10-05T04:39:58.894Z"
             }
           ],
           "initialized": true,
@@ -100423,8 +100423,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:08:59.240Z",
-              "updatedAt": "2026-10-05T04:08:59.240Z"
+              "createdAt": "2026-10-05T04:40:00.949Z",
+              "updatedAt": "2026-10-05T04:40:00.949Z"
             }
           ],
           "initialized": true,
@@ -101026,8 +101026,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:01.305Z",
-              "updatedAt": "2026-10-05T04:09:01.305Z"
+              "createdAt": "2026-10-05T04:40:03.045Z",
+              "updatedAt": "2026-10-05T04:40:03.045Z"
             }
           ],
           "initialized": true,
@@ -101761,8 +101761,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:03.402Z",
-              "updatedAt": "2026-10-05T04:09:03.402Z"
+              "createdAt": "2026-10-05T04:40:05.136Z",
+              "updatedAt": "2026-10-05T04:40:05.136Z"
             }
           ],
           "initialized": true,
@@ -102519,8 +102519,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:05.491Z",
-              "updatedAt": "2026-10-05T04:09:05.491Z"
+              "createdAt": "2026-10-05T04:40:07.198Z",
+              "updatedAt": "2026-10-05T04:40:07.198Z"
             }
           ],
           "initialized": true,
@@ -103169,8 +103169,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:07.589Z",
-              "updatedAt": "2026-10-05T04:09:07.589Z"
+              "createdAt": "2026-10-05T04:40:09.277Z",
+              "updatedAt": "2026-10-05T04:40:09.277Z"
             }
           ],
           "initialized": true,
@@ -103843,8 +103843,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:09.680Z",
-              "updatedAt": "2026-10-05T04:09:09.680Z"
+              "createdAt": "2026-10-05T04:40:11.352Z",
+              "updatedAt": "2026-10-05T04:40:11.352Z"
             }
           ],
           "initialized": true,
@@ -104893,8 +104893,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:11.778Z",
-              "updatedAt": "2026-10-05T04:09:11.778Z"
+              "createdAt": "2026-10-05T04:40:13.424Z",
+              "updatedAt": "2026-10-05T04:40:13.424Z"
             }
           ],
           "initialized": true,
@@ -105563,8 +105563,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:13.868Z",
-              "updatedAt": "2026-10-05T04:09:13.868Z"
+              "createdAt": "2026-10-05T04:40:15.539Z",
+              "updatedAt": "2026-10-05T04:40:15.539Z"
             }
           ],
           "initialized": true,
@@ -106271,8 +106271,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:15.963Z",
-              "updatedAt": "2026-10-05T04:09:15.963Z"
+              "createdAt": "2026-10-05T04:40:17.621Z",
+              "updatedAt": "2026-10-05T04:40:17.621Z"
             }
           ],
           "initialized": true,
@@ -106930,8 +106930,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:18.069Z",
-              "updatedAt": "2026-10-05T04:09:18.069Z"
+              "createdAt": "2026-10-05T04:40:19.692Z",
+              "updatedAt": "2026-10-05T04:40:19.692Z"
             }
           ],
           "initialized": true,
@@ -107533,8 +107533,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:20.211Z",
-              "updatedAt": "2026-10-05T04:09:20.211Z"
+              "createdAt": "2026-10-05T04:40:21.810Z",
+              "updatedAt": "2026-10-05T04:40:21.810Z"
             }
           ],
           "initialized": true,
@@ -108855,8 +108855,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:22.238Z",
-              "updatedAt": "2026-10-05T04:09:22.238Z"
+              "createdAt": "2026-10-05T04:40:23.788Z",
+              "updatedAt": "2026-10-05T04:40:23.788Z"
             }
           ],
           "initialized": true,
@@ -109978,8 +109978,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:24.372Z",
-              "updatedAt": "2026-10-05T04:09:24.372Z"
+              "createdAt": "2026-10-05T04:40:25.862Z",
+              "updatedAt": "2026-10-05T04:40:25.862Z"
             }
           ],
           "initialized": true,
@@ -111295,8 +111295,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:26.626Z",
-              "updatedAt": "2026-10-05T04:09:26.626Z"
+              "createdAt": "2026-10-05T04:40:28.085Z",
+              "updatedAt": "2026-10-05T04:40:28.085Z"
             }
           ],
           "initialized": true,
@@ -112448,8 +112448,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:28.588Z",
-              "updatedAt": "2026-10-05T04:09:28.588Z"
+              "createdAt": "2026-10-05T04:40:30.024Z",
+              "updatedAt": "2026-10-05T04:40:30.024Z"
             }
           ],
           "initialized": true,
@@ -115265,8 +115265,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:30.691Z",
-              "updatedAt": "2026-10-05T04:09:30.691Z"
+              "createdAt": "2026-10-05T04:40:32.105Z",
+              "updatedAt": "2026-10-05T04:40:32.105Z"
             }
           ],
           "initialized": true,
@@ -118082,8 +118082,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:32.993Z",
-              "updatedAt": "2026-10-05T04:09:32.993Z"
+              "createdAt": "2026-10-05T04:40:34.411Z",
+              "updatedAt": "2026-10-05T04:40:34.411Z"
             }
           ],
           "initialized": true,
@@ -120676,8 +120676,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:34.950Z",
-              "updatedAt": "2026-10-05T04:09:34.950Z"
+              "createdAt": "2026-10-05T04:40:36.328Z",
+              "updatedAt": "2026-10-05T04:40:36.328Z"
             }
           ],
           "initialized": true,
@@ -121726,8 +121726,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:37.007Z",
-              "updatedAt": "2026-10-05T04:09:37.007Z"
+              "createdAt": "2026-10-05T04:40:38.379Z",
+              "updatedAt": "2026-10-05T04:40:38.379Z"
             }
           ],
           "initialized": true,
@@ -122856,8 +122856,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:39.124Z",
-              "updatedAt": "2026-10-05T04:09:39.124Z"
+              "createdAt": "2026-10-05T04:40:40.462Z",
+              "updatedAt": "2026-10-05T04:40:40.462Z"
             }
           ],
           "initialized": true,
@@ -123948,8 +123948,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:41.321Z",
-              "updatedAt": "2026-10-05T04:09:41.321Z"
+              "createdAt": "2026-10-05T04:40:42.638Z",
+              "updatedAt": "2026-10-05T04:40:42.638Z"
             }
           ],
           "initialized": true,
@@ -124982,8 +124982,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:41.910Z",
-              "updatedAt": "2026-10-05T04:09:41.910Z"
+              "createdAt": "2026-10-05T04:40:43.232Z",
+              "updatedAt": "2026-10-05T04:40:43.232Z"
             }
           ],
           "initialized": true,
@@ -125007,83 +125007,83 @@
         "uiError": {
           "errors": [
             {
-              "id": "065c700c-634e-4def-8ef0-c1eec20b1eb1",
+              "id": "e32136b6-1178-4fd9-8dd4-49573d5750ea",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch server settings:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [\n        {\n          \"message\": \"Synthetic recoverable GraphQL failure.\",\n          \"extensions\": {\n            \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n            \"operationName\": \"GetServerSettings\"\n          }\n        }\n      ],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": null,\n      \"message\": \"Synthetic recoverable GraphQL failure.\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-10-05T04:09:41.987Z",
+              "time": "2026-10-05T04:40:43.307Z",
               "count": 1
             },
             {
-              "id": "6f360138-d7e0-472c-a7c5-d2ebed0e6a15",
+              "id": "28848acb-3132-4a6a-97f2-661942af7c48",
               "message": "Synthetic recoverable GraphQL failure.",
               "detail": "{\n  \"message\": \"Synthetic recoverable GraphQL failure.\",\n  \"operation\": \"GetServerSettings\",\n  \"extensions\": {\n    \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n    \"operationName\": \"GetServerSettings\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:41.987Z",
+              "time": "2026-10-05T04:40:43.307Z",
               "count": 1
             },
             {
-              "id": "3511c48b-5a56-4617-ba6e-7d2640a98a00",
+              "id": "95b11098-a8f3-48ed-86d4-1a1f12b94418",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch agent definitions:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [\n        {\n          \"message\": \"Synthetic recoverable GraphQL failure.\",\n          \"extensions\": {\n            \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n            \"operationName\": \"GetAgentDefinitions\"\n          }\n        }\n      ],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": null,\n      \"message\": \"Synthetic recoverable GraphQL failure.\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-10-05T04:09:41.987Z",
+              "time": "2026-10-05T04:40:43.307Z",
               "count": 1
             },
             {
-              "id": "40807e8e-745f-43cc-917d-0bc2a8cddb05",
+              "id": "fb6c4704-b8b6-4b57-849c-d9f23f0a5501",
               "message": "Synthetic recoverable GraphQL failure.",
               "detail": "{\n  \"message\": \"Synthetic recoverable GraphQL failure.\",\n  \"operation\": \"GetAgentOrgDefinitions\",\n  \"extensions\": {\n    \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n    \"operationName\": \"GetAgentOrgDefinitions\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:41.986Z",
+              "time": "2026-10-05T04:40:43.307Z",
               "count": 2
             },
             {
-              "id": "220264da-3648-4339-8125-6ceb75490438",
+              "id": "7d64d0ab-9edc-4bd4-b590-4c6903255332",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch agent team definitions:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [\n        {\n          \"message\": \"Synthetic recoverable GraphQL failure.\",\n          \"extensions\": {\n            \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n            \"operationName\": \"GetAgentTeamDefinitions\"\n          }\n        }\n      ],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": null,\n      \"message\": \"Synthetic recoverable GraphQL failure.\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-10-05T04:09:41.982Z",
+              "time": "2026-10-05T04:40:43.305Z",
               "count": 1
             },
             {
-              "id": "9aa44631-ebad-4bea-9591-2962e0333415",
+              "id": "3bc616f8-8f43-495e-abd9-a953a1a93ab4",
               "message": "Synthetic recoverable GraphQL failure.",
               "detail": "{\n  \"message\": \"Synthetic recoverable GraphQL failure.\",\n  \"operation\": \"ListWorkspaceRunHistory\",\n  \"extensions\": {\n    \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n    \"operationName\": \"ListWorkspaceRunHistory\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:41.982Z",
+              "time": "2026-10-05T04:40:43.305Z",
               "count": 3
             },
             {
-              "id": "0d8a0b85-f0f6-436f-8c2d-44d3387b0d6f",
+              "id": "934087c7-e927-469f-91d0-b4d993224ed0",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch agent definitions:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [\n        {\n          \"message\": \"Synthetic recoverable GraphQL failure.\",\n          \"extensions\": {\n            \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n            \"operationName\": \"GetAgentDefinitions\"\n          }\n        }\n      ],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": null,\n      \"message\": \"Synthetic recoverable GraphQL failure.\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-10-05T04:09:41.982Z",
+              "time": "2026-10-05T04:40:43.304Z",
               "count": 2
             },
             {
-              "id": "c612dd9e-77bf-4c4b-a26c-515d172c830d",
+              "id": "7eb72dfc-ed41-42cf-a885-91a9159dd38a",
               "message": "Synthetic recoverable GraphQL failure.",
               "detail": "{\n  \"message\": \"Synthetic recoverable GraphQL failure.\",\n  \"operation\": \"GetAgentDefinitions\",\n  \"extensions\": {\n    \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n    \"operationName\": \"GetAgentDefinitions\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:41.981Z",
+              "time": "2026-10-05T04:40:43.304Z",
               "count": 1
             },
             {
-              "id": "46d36a7a-390a-4e6e-9c97-17e1e4e321db",
+              "id": "397bf97f-c579-4f86-908d-a15978cdbddf",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch all workspace metadata:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [\n        {\n          \"message\": \"Synthetic recoverable GraphQL failure.\",\n          \"extensions\": {\n            \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n            \"operationName\": \"GetAllWorkspaces\"\n          }\n        }\n      ],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": null,\n      \"message\": \"Synthetic recoverable GraphQL failure.\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-10-05T04:09:41.979Z",
+              "time": "2026-10-05T04:40:43.302Z",
               "count": 3
             },
             {
-              "id": "35d06fd5-d9d8-4b33-9f0f-e6d4f169f0c3",
+              "id": "a89a5b7c-bebc-495b-9256-363055a70894",
               "message": "Synthetic recoverable GraphQL failure.",
               "detail": "{\n  \"message\": \"Synthetic recoverable GraphQL failure.\",\n  \"operation\": \"GetApplicationsCapability\",\n  \"extensions\": {\n    \"code\": \"PROTOTYPE_FIXTURE_ERROR\",\n    \"operationName\": \"GetApplicationsCapability\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:41.979Z",
+              "time": "2026-10-05T04:40:43.302Z",
               "count": 3
             }
           ],
@@ -126489,8 +126489,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:44.104Z",
-              "updatedAt": "2026-10-05T04:09:44.104Z"
+              "createdAt": "2026-10-05T04:40:45.372Z",
+              "updatedAt": "2026-10-05T04:40:45.372Z"
             }
           ],
           "initialized": true,
@@ -128748,8 +128748,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:46.250Z",
-              "updatedAt": "2026-10-05T04:09:46.250Z"
+              "createdAt": "2026-10-05T04:40:47.577Z",
+              "updatedAt": "2026-10-05T04:40:47.577Z"
             }
           ],
           "initialized": true,
@@ -131576,8 +131576,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:48.336Z",
-              "updatedAt": "2026-10-05T04:09:48.336Z"
+              "createdAt": "2026-10-05T04:40:49.626Z",
+              "updatedAt": "2026-10-05T04:40:49.626Z"
             }
           ],
           "initialized": true,
@@ -132431,8 +132431,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:50.505Z",
-              "updatedAt": "2026-10-05T04:09:50.505Z"
+              "createdAt": "2026-10-05T04:40:51.701Z",
+              "updatedAt": "2026-10-05T04:40:51.701Z"
             }
           ],
           "initialized": true,
@@ -134322,8 +134322,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:52.583Z",
-              "updatedAt": "2026-10-05T04:09:52.583Z"
+              "createdAt": "2026-10-05T04:40:53.799Z",
+              "updatedAt": "2026-10-05T04:40:53.799Z"
             }
           ],
           "initialized": true,
@@ -136213,8 +136213,8 @@
               },
               "capabilityProbeState": "ready",
               "isSystem": true,
-              "createdAt": "2026-10-05T04:09:54.722Z",
-              "updatedAt": "2026-10-05T04:09:54.722Z"
+              "createdAt": "2026-10-05T04:40:55.867Z",
+              "updatedAt": "2026-10-05T04:40:55.867Z"
             }
           ],
           "initialized": true,
@@ -136266,112 +136266,112 @@
         "uiError": {
           "errors": [
             {
-              "id": "fdeaeaf2-cd0a-463b-9991-1149f284958a",
+              "id": "6712608f-dce5-4eaf-911c-7f83ad1ae426",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch all workspace metadata:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": {\n        \"name\": \"ServerError\",\n        \"response\": {},\n        \"statusCode\": 403,\n        \"result\": {\n          \"errors\": [\n            {\n              \"message\": \"Synthetic permission denied.\",\n              \"extensions\": {\n                \"code\": \"FORBIDDEN\"\n              }\n            }\n          ]\n        }\n      },\n      \"message\": \"Response not successful: Received status code 403\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-10-05T04:09:54.774Z",
+              "time": "2026-10-05T04:40:55.918Z",
               "count": 1
             },
             {
-              "id": "f63558da-e759-4ab8-a963-164d190c1b9b",
+              "id": "869e8093-1892-4569-a8e1-a0f27c79caf0",
               "message": "Response not successful: Received status code 403",
-              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=e4e9600b:19:17)\n    at parseJsonBody (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=e4e9600b:120:9)\n    at http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=e4e9600b:176:48",
+              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=620cef95:19:17)\n    at parseJsonBody (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=620cef95:120:9)\n    at http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=620cef95:176:48",
               "detail": "{\n  \"name\": \"ServerError\",\n  \"response\": {},\n  \"statusCode\": 403,\n  \"result\": {\n    \"errors\": [\n      {\n        \"message\": \"Synthetic permission denied.\",\n        \"extensions\": {\n          \"code\": \"FORBIDDEN\"\n        }\n      }\n    ]\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:54.774Z",
+              "time": "2026-10-05T04:40:55.918Z",
               "count": 1
             },
             {
-              "id": "1b1853d4-845e-4fc4-a5c7-89b9628508bd",
+              "id": "4599a25a-8b36-4abe-b61e-4898b12dd513",
               "message": "Synthetic permission denied.",
               "detail": "{\n  \"message\": \"Synthetic permission denied.\",\n  \"operation\": \"GetAllWorkspaces\",\n  \"extensions\": {\n    \"code\": \"FORBIDDEN\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:54.774Z",
+              "time": "2026-10-05T04:40:55.918Z",
               "count": 1
             },
             {
-              "id": "c635bfdd-cdac-499e-adc2-b7540238fde2",
+              "id": "7aac92d6-b778-4ea6-86aa-2a72d8aaf488",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch agent team definitions:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": {\n        \"name\": \"ServerError\",\n        \"response\": {},\n        \"statusCode\": 403,\n        \"result\": {\n          \"errors\": [\n            {\n              \"message\": \"Synthetic permission denied.\",\n              \"extensions\": {\n                \"code\": \"FORBIDDEN\"\n              }\n            }\n          ]\n        }\n      },\n      \"message\": \"Response not successful: Received status code 403\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-10-05T04:09:54.772Z",
+              "time": "2026-10-05T04:40:55.918Z",
               "count": 1
             },
             {
-              "id": "158eddf8-2a1b-4827-887b-75b8fef41556",
+              "id": "0d1b0707-13a2-4781-ba6f-46e8c10150fe",
               "message": "Response not successful: Received status code 403",
-              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=e4e9600b:19:17)\n    at parseJsonBody (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=e4e9600b:120:9)\n    at http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=e4e9600b:176:48",
+              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=620cef95:19:17)\n    at parseJsonBody (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=620cef95:120:9)\n    at http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=620cef95:176:48",
               "detail": "{\n  \"name\": \"ServerError\",\n  \"response\": {},\n  \"statusCode\": 403,\n  \"result\": {\n    \"errors\": [\n      {\n        \"message\": \"Synthetic permission denied.\",\n        \"extensions\": {\n          \"code\": \"FORBIDDEN\"\n        }\n      }\n    ]\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:54.772Z",
+              "time": "2026-10-05T04:40:55.918Z",
               "count": 1
             },
             {
-              "id": "6cd2785b-81c1-4837-a30c-5cc12c93b4fa",
+              "id": "49d88df5-4e61-4f92-83ca-ad196c08ce9e",
               "message": "Synthetic permission denied.",
               "detail": "{\n  \"message\": \"Synthetic permission denied.\",\n  \"operation\": \"GetAgentTeamDefinitions\",\n  \"extensions\": {\n    \"code\": \"FORBIDDEN\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:54.772Z",
+              "time": "2026-10-05T04:40:55.917Z",
               "count": 1
             },
             {
-              "id": "c6193e22-34f9-494b-8883-382750ae34f9",
+              "id": "0d9f2399-2f9f-4791-801e-dae91195f294",
               "message": "console.error",
               "detail": "{\n  \"message\": \"console.error\",\n  \"args\": [\n    \"Failed to fetch agent definitions:\",\n    {\n      \"name\": \"ApolloError\",\n      \"graphQLErrors\": [],\n      \"protocolErrors\": [],\n      \"clientErrors\": [],\n      \"networkError\": {\n        \"name\": \"ServerError\",\n        \"response\": {},\n        \"statusCode\": 403,\n        \"result\": {\n          \"errors\": [\n            {\n              \"message\": \"Synthetic permission denied.\",\n              \"extensions\": {\n                \"code\": \"FORBIDDEN\"\n              }\n            }\n          ]\n        }\n      },\n      \"message\": \"Response not successful: Received status code 403\",\n      \"cause\": \"[Circular]\"\n    }\n  ]\n}",
               "source": "console.error",
-              "time": "2026-10-05T04:09:54.772Z",
+              "time": "2026-10-05T04:40:55.917Z",
               "count": 1
             },
             {
-              "id": "5b3a4fde-69c4-4a20-b42e-7950a03bb2ce",
+              "id": "612f67d2-84c7-4473-8cf1-94643204c5b4",
               "message": "Response not successful: Received status code 403",
-              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=e4e9600b:19:17)\n    at parseJsonBody (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=e4e9600b:120:9)\n    at http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=e4e9600b:176:48",
+              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=620cef95:19:17)\n    at parseJsonBody (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=620cef95:120:9)\n    at http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=620cef95:176:48",
               "detail": "{\n  \"name\": \"ServerError\",\n  \"response\": {},\n  \"statusCode\": 403,\n  \"result\": {\n    \"errors\": [\n      {\n        \"message\": \"Synthetic permission denied.\",\n        \"extensions\": {\n          \"code\": \"FORBIDDEN\"\n        }\n      }\n    ]\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:54.772Z",
+              "time": "2026-10-05T04:40:55.917Z",
               "count": 1
             },
             {
-              "id": "1843f2e2-be57-4fc0-a915-a8af028bcbe5",
+              "id": "efbe4051-6541-4924-999a-1a2f7c665be9",
               "message": "Synthetic permission denied.",
               "detail": "{\n  \"message\": \"Synthetic permission denied.\",\n  \"operation\": \"GetAgentDefinitions\",\n  \"extensions\": {\n    \"code\": \"FORBIDDEN\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:54.772Z",
+              "time": "2026-10-05T04:40:55.917Z",
               "count": 1
             },
             {
-              "id": "ef9afcad-e596-4cb7-84fa-a0e4fa0c07a7",
+              "id": "05b1a8f9-e6e4-4c95-acad-0604c50c8e1f",
               "message": "Response not successful: Received status code 403",
-              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=e4e9600b:19:17)\n    at parseJsonBody (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=e4e9600b:120:9)\n    at http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=e4e9600b:176:48",
+              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=620cef95:19:17)\n    at parseJsonBody (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=620cef95:120:9)\n    at http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=620cef95:176:48",
               "detail": "{\n  \"name\": \"ServerError\",\n  \"response\": {},\n  \"statusCode\": 403,\n  \"result\": {\n    \"errors\": [\n      {\n        \"message\": \"Synthetic permission denied.\",\n        \"extensions\": {\n          \"code\": \"FORBIDDEN\"\n        }\n      }\n    ]\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:54.771Z",
+              "time": "2026-10-05T04:40:55.917Z",
               "count": 1
             },
             {
-              "id": "7e2ac391-ffc9-4317-aa3e-dcefef7fee9f",
+              "id": "a325280e-494b-4aa3-9b7f-2137c4c5e2b7",
               "message": "Synthetic permission denied.",
               "detail": "{\n  \"message\": \"Synthetic permission denied.\",\n  \"operation\": \"ListCollaborationRootHistory\",\n  \"extensions\": {\n    \"code\": \"FORBIDDEN\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:54.771Z",
+              "time": "2026-10-05T04:40:55.917Z",
               "count": 1
             },
             {
-              "id": "0e3d1d31-7135-4598-aa36-92de9a9302ef",
+              "id": "9ebda3c6-36e1-4e20-a3d4-887dd1a19bf3",
               "message": "Response not successful: Received status code 403",
-              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=e4e9600b:19:17)\n    at parseJsonBody (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=e4e9600b:120:9)\n    at http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=e4e9600b:176:48",
+              "stack": "ServerError: Response not successful: Received status code 403\n    at throwServerError (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/utils/throwServerError.js?v=620cef95:19:17)\n    at parseJsonBody (http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=620cef95:120:9)\n    at http://127.0.0.1:4543/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/link/http/parseAndCheckHttpResponse.js?v=620cef95:176:48",
               "detail": "{\n  \"name\": \"ServerError\",\n  \"response\": {},\n  \"statusCode\": 403,\n  \"result\": {\n    \"errors\": [\n      {\n        \"message\": \"Synthetic permission denied.\",\n        \"extensions\": {\n          \"code\": \"FORBIDDEN\"\n        }\n      }\n    ]\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:54.771Z",
+              "time": "2026-10-05T04:40:55.916Z",
               "count": 1
             },
             {
-              "id": "6ad2160c-e116-4c36-af0c-82c6064a0419",
+              "id": "d137fbd9-e3f4-4f69-924b-85975170941a",
               "message": "Synthetic permission denied.",
               "detail": "{\n  \"message\": \"Synthetic permission denied.\",\n  \"operation\": \"ListWorkspaceRunHistory\",\n  \"extensions\": {\n    \"code\": \"FORBIDDEN\"\n  }\n}",
               "source": "apollo",
-              "time": "2026-10-05T04:09:54.771Z",
+              "time": "2026-10-05T04:40:55.916Z",
               "count": 1
             }
           ],

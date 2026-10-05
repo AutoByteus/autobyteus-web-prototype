@@ -5,7 +5,7 @@
 - Product ticket: `WEB-BASELINE-REFRESH-007`
 - Title: Refresh the current-experience baseline to the latest `origin/personal`
 - Mode: Product Experience Design — baseline refresh (UI Baseline Bootstrapper)
-- Status: `Baseline Needed` (Refresh)
+- Status: `Completed`
 - Requester: user direction 2026-10-05 ("keep it aligned now … After the baseline is up to date,
   then you can continue"); follow-up to `WEB-BASELINE-REFRESH-006`, because source
   `origin/personal` advanced while 006 ran.
@@ -33,3 +33,12 @@
 
 - 2026-10-05: opened; worktree from fetched `origin/personal`; `Baseline Needed` (Refresh) sent to
   the UI Baseline Bootstrapper.
+- 2026-10-05: Bootstrapper returned `Completed`; reviewed and accepted; `Completed`.
+
+## Acceptance Review (Product UI/UX Designer, 2026-10-05)
+
+- Source re-fetched at review: `origin/personal` still `10fb695` (baseline fully current).
+- Own checks: 5 synced Background Tasks files and ChatNewSurface byte-identical to the pin;
+  matrix 97/97; independent preview 14/14 with no errors or non-local requests.
+- No fixtures or mock data changed; DATA-001 (store-state captures) remains the user-deferred gap.
+- Decision: `Accepted`.

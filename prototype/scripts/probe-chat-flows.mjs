@@ -13,10 +13,10 @@ import sharp from 'sharp'
 const require = createRequire(import.meta.url)
 const icons = Object.fromEntries(['heroicons', 'ph', 'mdi', 'svg-spinners', 'vscode-icons', 'logos'].map(p => [p, require(`@iconify-json/${p}/icons.json`)]))
 const root = resolve(new URL('../..', import.meta.url).pathname)
-const SOURCE = process.env.SOURCE_BASE_URL || 'http://127.0.0.1:4533'
-const PROTO = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4531'
-const MOCK = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4534'
-const OUT = resolve(root, process.env.FLOW_DIR || 'evidence/WEB-BASELINE-REFRESH-004/chat-flows')
+const SOURCE = process.env.SOURCE_BASE_URL || 'http://127.0.0.1:4543'
+const PROTO = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4541'
+const MOCK = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4544'
+const OUT = resolve(root, process.env.FLOW_DIR || 'evidence/WEB-BASELINE-REFRESH-007/chat-flows')
 const CHROME = process.env.CHROMIUM_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const style = '*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}'
 
@@ -46,6 +46,27 @@ const BACKGROUND_TASKS = [
   { taskId: 'bg-task-3', kind: 'monitor', description: 'Watch the synthetic build log', status: 'failed', summary: 'Synthetic monitor exited with code 1.', startedAt: '2026-08-22T04:01:00.000Z' },
   { taskId: 'bg-task-4', kind: 'workflow', description: '', status: 'stopped', summary: null, startedAt: '2026-08-22T04:00:30.000Z' },
 ]
+// WEB-BASELINE-REFRESH-007 (10fb695): a shell task shows its exact command after the kind label
+// (monospace, truncated, click to expand); a command equal to the title is not repeated.
+const COMMAND_TASKS = [
+  { taskId: 'bg-cmd-1', kind: 'shell', description: 'Wait for the synthetic release workflow', command: 'gh run watch 42 --exit-status', status: 'running', summary: null, startedAt: '2026-08-22T04:03:00.000Z' },
+  { taskId: 'bg-cmd-2', kind: 'shell', description: 'Build the synthetic bundle', command: 'pnpm build', status: 'failed', summary: 'Synthetic build exited with code 1.', startedAt: '2026-08-22T04:02:00.000Z' },
+  { taskId: 'bg-cmd-3', kind: 'shell', description: 'Poll the synthetic release list', command: 'cd /synthetic/prototype-workspace && for i in $(seq 1 110); do gh run list --workflow release.yml --limit 1; sleep 30; done\necho finished', status: 'completed', summary: 'Polling finished after the synthetic release completed.', startedAt: '2026-08-22T04:01:00.000Z' },
+  { taskId: 'bg-cmd-4', kind: 'shell', description: 'npm run dev', command: 'npm run dev ', status: 'running', summary: null, startedAt: '2026-08-22T04:00:30.000Z' },
+]
+const seedCommandTasks = async page => {
+  const applied = await page.evaluate(tasks => {
+    const pinia = document.querySelector('#__nuxt')?.__vue_app__?.config?.globalProperties?.$pinia
+    const runId = pinia?._s.get('activeContext')?.activeAgentContext?.state?.runId
+    const store = pinia?._s.get('agentBackgroundTask')
+    if (!runId || !store) return false
+    for (const task of tasks) store.upsertTask(runId, task)
+    return true
+  }, COMMAND_TASKS)
+  if (!applied) throw new Error('background-task store or active run unavailable')
+  await page.waitForTimeout(500)
+}
+const clickCommand = index => async page => { await page.locator('[data-test="background-task-command"]').nth(index).click(); await page.waitForTimeout(400) }
 const seedTasks = async page => {
   const applied = await page.evaluate(tasks => {
     const pinia = document.querySelector('#__nuxt')?.__vue_app__?.config?.globalProperties?.$pinia
@@ -156,6 +177,12 @@ export const FLOWS = {
   'BGT-007': { title: 'Chat run: tasks arriving on the Files tab do not switch tabs (To-Do auto-switch removed)', path: '/chat', steps: [sendFirst, openActivityTab, text('Files'), seedTasks] },
   'BGT-008': { title: 'Stored team run: Activity tab Background Tasks for the focused member', path: '/workspace', steps: [openStoredTeamRun, openActivityTab, seedTasks, toggleBackgroundTasks] },
   'BGT-009': { title: 'Stored team run (zh-CN): Background Tasks list', path: '/workspace', locale: 'zh-CN', steps: [openStoredTeamRun, openActivityTab, seedTasks, toggleBackgroundTasks] },
+  'BGT-010': { title: 'Chat run: shell tasks show their command after the kind label (10fb695)', path: '/chat', steps: [sendFirst, openActivityTab, seedCommandTasks, toggleBackgroundTasks] },
+  'BGT-011': { title: 'Chat run: a long command expands on click', path: '/chat', steps: [sendFirst, openActivityTab, seedCommandTasks, toggleBackgroundTasks, clickCommand(2)] },
+  'BGT-012': { title: 'Chat run: an expanded command collapses again', path: '/chat', steps: [sendFirst, openActivityTab, seedCommandTasks, toggleBackgroundTasks, clickCommand(2), clickCommand(2)] },
+  'BGT-013': { title: 'Chat run: the command expands independently of the finished task summary', path: '/chat', steps: [sendFirst, openActivityTab, seedCommandTasks, toggleBackgroundTasks, clickCommand(1)] },
+  'BGT-014': { title: 'Stored team run (zh-CN): shell task commands', path: '/workspace', locale: 'zh-CN', steps: [openStoredTeamRun, openActivityTab, seedCommandTasks, toggleBackgroundTasks] },
+  'BGT-015': { title: 'Chat run (390x844): shell task commands', path: '/chat', viewport: { width: 390, height: 844 }, steps: [sendFirst, async page => { await page.getByRole('button', { name: /^Activity$/ }).first().click(); await page.waitForTimeout(800) }, seedCommandTasks, toggleBackgroundTasks] },
   'SKL-001': { title: 'Skills: name-issues banner expands details', path: '/skills', scenario: 'skill_name_issues', steps: [role('button', 'Show details')] },
 }
 

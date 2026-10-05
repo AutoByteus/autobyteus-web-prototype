@@ -1,14 +1,11 @@
 # AutoByteus Web Design
 
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
-commit `4dee901d6163ca7053916fa1edc295afbfd7a6da` (`origin/personal`,
-refreshed by `WEB-BASELINE-REFRESH-006`; previous primary pin
-`0a32261d681e19491264a03a652ba23d1f8b8248`). The source's managed skill sources
-(local folders and public GitHub repositories), agent-to-agent rows in the
-event-monitor browse mode, and standalone-run token usage that includes
-collaborators are now part of the baseline. See
-[ui-baseline-report.md](ui-baseline-report.md) for the refresh scope, evidence,
-and known gaps.
+commit `10fb69504f99a615e0728ffdd6c1fcab0104ff05` (`origin/personal`,
+refreshed by `WEB-BASELINE-REFRESH-007`; previous primary pin
+`4dee901d6163ca7053916fa1edc295afbfd7a6da`). Background Tasks rows now show a
+shell task's command. See [ui-baseline-report.md](ui-baseline-report.md) for
+the refresh scope, evidence, and known gaps.
 
 The repository is the cumulative accepted Product baseline. Approved
 Product tickets are integrated here and promoted to normal/default product

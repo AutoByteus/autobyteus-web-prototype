@@ -1,0 +1,341 @@
+{
+  "generatedAt": "2026-10-05T04:46:50.010Z",
+  "results": [
+    {
+      "id": "BGT-001",
+      "title": "Chat run: Activity tab shows Background Tasks (collapsed, 0 running) above Activity",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-002",
+      "title": "Chat run: expand Background Tasks, empty state",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-003",
+      "title": "Chat run: task snapshots arrive, collapsed header counts update",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-004",
+      "title": "Chat run: Background Tasks list (running, completed, failed, stopped; untitled fallback)",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-005",
+      "title": "Chat run: expand a finished task summary",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-006",
+      "title": "Chat run: collapse Background Tasks again (both sections collapsed)",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-007",
+      "title": "Chat run: tasks arriving on the Files tab do not switch tabs (To-Do auto-switch removed)",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-008",
+      "title": "Stored team run: Activity tab Background Tasks for the focused member",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-009",
+      "title": "Stored team run (zh-CN): Background Tasks list",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-010",
+      "title": "Chat run: shell tasks show their command after the kind label (10fb695)",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-011",
+      "title": "Chat run: a long command expands on click",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-012",
+      "title": "Chat run: an expanded command collapses again",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-013",
+      "title": "Chat run: the command expands independently of the finished task summary",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-014",
+      "title": "Stored team run (zh-CN): shell task commands",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BGT-015",
+      "title": "Chat run (390x844): shell task commands",
+      "pass": false,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "prototypeStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "CHT-017",
+      "title": "New chat: send opens the chat run view",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

@@ -6,7 +6,7 @@
 // observation node stopped, recording browser errors and non-local requests.
 import { chromium } from 'playwright-core'
 import { mkdir, writeFile } from 'node:fs/promises'
-const OUT = process.env.OUT || 'evidence/WEB-BASELINE-REFRESH-006/independent-preview'
+const OUT = process.env.OUT || 'evidence/WEB-BASELINE-REFRESH-007/independent-preview'
 const BASE = process.env.BASE || 'http://127.0.0.1:4542'
 const PORT = new URL(BASE).port
 await mkdir(OUT, { recursive: true })
@@ -44,5 +44,16 @@ await run('IND-011-agent-run-task-rows', '/workspace', async p => { await openWo
 // WEB-BASELINE-REFRESH-006 (4dee901)
 await run('IND-012-skill-source-import', '/skills', async p => { await p.getByRole('button', { name: 'Sources', exact: true }).click(); await p.getByRole('button', { name: 'GitHub', exact: true }).click(); await p.locator('#skill-source-input').fill('https://github.com/acme/launch-skills'); await p.getByRole('button', { name: 'Import repository', exact: true }).click(); await p.getByText('https://github.com/acme/launch-skills').waitFor({ timeout: 5000 }) })
 await run('IND-013-task-agent-token', '/workspace', async p => { await openWorkspace(p); await p.getByText('Research Assistant', { exact: true }).first().click(); await p.waitForTimeout(700); await p.getByText('Compare current navigation states', { exact: true }).first().click(); await p.waitForTimeout(700); await p.getByText('documentation writer', { exact: true }).first().click(); await p.waitForTimeout(900); await p.locator('[data-test="right-side-tab-list"]').getByText(/^Token/).first().click(); await p.getByText('Latest prompt').first().waitFor({ timeout: 5000 }) })
+// WEB-BASELINE-REFRESH-007 (10fb695)
+await run('IND-014-background-task-command', '/chat', async p => {
+  await composer(p).click(); await p.keyboard.type('Summarize the synthetic baseline.'); await p.keyboard.press('Enter'); await p.waitForTimeout(2500)
+  await p.evaluate(() => {
+    const pinia = document.querySelector('#__nuxt').__vue_app__.config.globalProperties.$pinia
+    const runId = pinia._s.get('activeContext').activeAgentContext.state.runId
+    pinia._s.get('agentBackgroundTask').upsertTask(runId, { taskId: 'bg-cmd-1', kind: 'shell', description: 'Wait for the synthetic release workflow', command: 'gh run watch 42 --exit-status', status: 'running', summary: null, startedAt: '2026-08-22T04:03:00.000Z' })
+  })
+  await p.locator('[data-test="background-tasks-header"]').click(); await p.locator('[data-test="background-task-command"]').click()
+  await p.locator('[data-test="background-task-command"][aria-expanded="true"]').waitFor({ timeout: 5000 })
+})
 await writeFile(`${OUT}/results.json`, JSON.stringify({ generatedAt: new Date().toISOString(), base: BASE, note: 'Built preview (node .output/server/index.mjs) with the pinned source and the observation node stopped.', results }, null, 2))
 await b.close()

@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-10-05T04:55:50.164Z",
+  "results": [
+    {
+      "id": "BGT-015",
+      "title": "Chat run (390x844): shell task commands",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}
