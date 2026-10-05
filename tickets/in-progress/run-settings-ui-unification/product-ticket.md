@@ -48,6 +48,11 @@
   - Added to the populated catalog in two places: the route store patch (`plugins/00.prototype-state.client.ts`)
     and the local GraphQL reads (`utils/apolloClient.ts`), which serve the Org's team-local member
     references.
+- `prototype/run-settings/launchedTeamFixture.ts` (~6 KB, hand-written, user request 2026-10-05): a Team launched
+  from New chat opens its own run, whichever Team it is. The base fixture always returned the Product Review
+  Team's tree, so other Teams failed with "Launched Team is missing '/solution_designer'". The launched run's
+  tree (`GetTeamRunResumeConfig`) and history row (`ListWorkspaceRunHistory`) are now built from the launch
+  request (members, agents, settings) and the Team definition (name, coordinator). Nothing runs.
 
 ## Findings
 
@@ -159,3 +164,4 @@
 - 2026-10-05: round 32 — user agreed to pick the New chat target from a heading switcher (not `@`); built and validated (see `review-round-32.md`); `Awaiting User Review`.
 - 2026-10-05: round 33 — user feedback: the Org launch page should look like the chat page; it now renders as a page of its own (pages/workspace.vue on the Org launch route), without the workspace tool tabs, so the member drawer opens from the right edge as in chat. `Awaiting User Review`.
 - 2026-10-05: round 34 — user proposal: the heading switcher also lists Agent Orgs; choosing one shows the Org launch page (no message; Run Agent Org); the Org page heading is the same switcher; workspace/model/approval carry across switches; Run/"+" on Agent Orgs start a fresh Org draft. Requirement impact vs SR-003 REQ-005/007 (Orgs reachable from the New chat heading, still never chatted with). `Awaiting User Review`.
+- 2026-10-05: UI reference fix (user: "the navigation should work"): launching any Team from New chat (e.g. Software Engineering Team) opens its run with the coordinator and lists it in the workspace tree; no design change.

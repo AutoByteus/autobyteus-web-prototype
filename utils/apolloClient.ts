@@ -12,6 +12,7 @@
  */
 import { operationFixture, baseState, PROJECT_MUTATIONS, SKILL_SOURCE_MUTATIONS } from '~/prototype/source-observation/fixtures.mjs'
 import { withAutobyteusOrgOperation } from '~/prototype/run-settings/autobyteusOrgFixture'
+import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/launchedTeamFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
 
@@ -50,9 +51,19 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (scenario === 'loading') await new Promise(done => setTimeout(done, 1500))
   if (scenario === 'error') return { data: null, errors: [{ message: 'Synthetic recoverable GraphQL failure.' }] }
   if (scenario === 'permission_denied') return { data: null, errors: [{ message: 'Synthetic permission denied.' }] }
-  const fixture = operationFixture(name, request.variables || {}, fixtureState())
+  const state = fixtureState()
+  const fixture = operationFixture(name, request.variables || {}, state)
   // run-settings-ui-unification: the real AutoByteus Org shape joins the populated catalog.
-  const data = scenario === 'populated' ? withAutobyteusOrgOperation(name, request.variables || {}, fixture) : fixture
+  let data = scenario === 'populated' ? withAutobyteusOrgOperation(name, request.variables || {}, fixture) : fixture
+  // run-settings-ui-unification: a Team launched from New chat opens its own run, whichever Team it is.
+  if (state.launchedTeamRun) {
+    const catalog = (operation: string, key: string) =>
+      (withAutobyteusOrgOperation(operation, {}, operationFixture(operation, {}, state))?.[key] ?? []) as any[]
+    data = withLaunchedTeam(name, request.variables || {}, data, {
+      teams: catalog('GetAgentTeamDefinitions', 'agentTeamDefinitions'),
+      agents: catalog('GetAgentDefinitions', 'agentDefinitions'),
+    })
+  }
   return { data: data ? structuredClone(data) : {} }
 }
 
@@ -68,7 +79,7 @@ const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const name = definition?.name?.value
   if (!name || !LOCAL_MUTATIONS.has(name)) return { data: {} }
   const state = fixtureState()
-  if (name === 'CreateAgentTeamRun') state.launchedTeamRun = true
+  if (name === 'CreateAgentTeamRun') { state.launchedTeamRun = true; recordTeamLaunch(request.variables || {}) }
   const data = operationFixture(name, request.variables || {}, state)
   if (data?.__projectError) return { data: null, errors: [data.__projectError] }
   return { data: data ? structuredClone(data) : {} }
