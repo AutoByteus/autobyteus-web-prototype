@@ -37,6 +37,9 @@
   name ("Daily Assistant", server-provided data, reflected in the design fixtures; web only comments,
   tests and docs) and a release version bump (`package.json`). No UI code, copy or style changed, so
   no baseline refresh is needed.
+  Re-checked at SR-005 finalization: source `origin/personal@19dee40`; its `autobyteus-web` changes
+  since `fc79fad` are tests, docs, test fixtures and a version bump (no UI code, copy or style), so no
+  baseline refresh is needed.
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`)
 - Accepted design base: `origin/personal@b8ce240`, the SR-001 result, which is built on baseline
   `b4f3ed1` (`WEB-BASELINE-REFRESH-007`).
