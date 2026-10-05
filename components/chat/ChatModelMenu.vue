@@ -9,7 +9,7 @@
       :aria-expanded="popover.open.value ? 'true' : 'false'"
       aria-haspopup="menu"
       :aria-label="$t('chat.model.triggerAria', { model: modelLabel, runtime: runtimeLabel })"
-      :title="`${modelLabel} · ${runtimeLabel}`"
+      :title="popover.open.value ? undefined : `${modelLabel} · ${runtimeLabel}`"
       @click="onToggle"
     >
       <span class="truncate whitespace-nowrap font-medium" :class="!modelLabel ? 'text-amber-700' : 'text-gray-800'">{{ modelLabel || $t('chat.model.chooseModel') }}</span>
@@ -32,13 +32,53 @@
       :style="popover.narrow.value ? undefined : { maxHeight: `${popover.maxHeight.value}px`, ...inBoundary.style.value }"
       @keydown="onMenuKeydown"
     >
-      <!-- run-settings-ui-unification: a saved run keeps its runtime; offer only that runtime's models. -->
+      <!-- run-settings-ui-unification: a saved run keeps its runtime. Round 25: the same menu as Chat
+           (search, then a section label and its models), with only that runtime and a small lock. -->
       <template v-if="runtimeLocked">
-        <p class="flex items-center gap-1.5 border-b border-gray-100 px-3 py-2 text-[0.6875rem] font-medium text-gray-400" data-test="chat-model-locked-runtime">
-          <Icon icon="heroicons:lock-closed" class="h-3 w-3" aria-hidden="true" />{{ $t('runSettings.model.lockedRuntimeHeading', { runtime: runtimeLabel }) }}
-        </p>
+        <div class="flex items-center gap-2 border-b border-gray-100 px-3 py-2">
+          <Icon icon="heroicons:magnifying-glass" class="h-3.5 w-3.5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+          <input
+            ref="searchRef"
+            v-model="query"
+            data-test="chat-model-search"
+            type="text"
+            class="w-full border-0 bg-transparent p-0 text-[0.8125rem] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0"
+            :placeholder="$t('chat.model.search')"
+            :aria-label="$t('chat.model.search')"
+            @keydown.down.prevent="focusRow(0)"
+          >
+        </div>
         <div class="max-h-[22rem] min-h-0 overflow-y-auto p-1">
+          <p
+            class="flex items-center gap-1 px-2 pb-0.5 pt-1.5 text-[0.6875rem] font-medium text-gray-400"
+            :title="$t('runSettings.model.lockedRuntimeTooltip')"
+            data-test="chat-model-locked-runtime"
+          >
+            {{ runtimeLabel }}<Icon icon="heroicons:lock-closed" class="h-3 w-3" :aria-label="$t('runSettings.model.lockedRuntimeTooltip')" />
+          </p>
+          <template v-if="query.trim()">
+            <p v-if="!searchResults.length && !searchLoading" class="px-2 py-3 text-center text-[0.8125rem] text-gray-500" data-test="chat-model-search-empty">{{ $t('chat.model.noMatch', { query: query.trim() }) }}</p>
+            <button
+              v-for="model in searchResults"
+              :key="`${model.runtimeKind}:${model.llmModelIdentifier}`"
+              type="button"
+              role="menuitemradio"
+              data-row
+              :aria-checked="isCurrent(model) ? 'true' : 'false'"
+              :data-test="`chat-model-search-option-${model.llmModelIdentifier}`"
+              :title="optionFullText(model)"
+              :aria-label="optionFullText(model)"
+              class="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[0.8125rem] hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+              @click="choose(model)"
+            >
+              <ChatModelOptionLabel :option="model" />
+              <span class="flex h-4 w-4 flex-shrink-0 items-center justify-center">
+                <Icon v-if="isCurrent(model)" icon="heroicons:check" class="h-4 w-4 text-blue-600" aria-hidden="true" />
+              </span>
+            </button>
+          </template>
           <ChatModelList
+            v-else
             :runtime-kind="runtimeKind"
             :state="catalog.catalogState(runtimeKind)"
             :groups="catalog.modelGroups(runtimeKind)"
@@ -306,7 +346,8 @@ const choose = (model: ChatModelOption) => {
 }
 
 // Search across enabled runtimes.
-const searchRuntimeKinds = computed(() => catalog.enabledRuntimeKinds.value)
+// A saved run searches only its own runtime's models.
+const searchRuntimeKinds = computed(() => props.runtimeLocked ? [props.runtimeKind] : catalog.enabledRuntimeKinds.value)
 watch(query, (value) => {
   if (value.trim()) searchRuntimeKinds.value.forEach((runtimeKind) => catalog.ensureCatalog(runtimeKind))
 })

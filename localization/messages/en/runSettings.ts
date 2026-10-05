@@ -57,7 +57,7 @@ const runSettingsMessages = {
   'runSettings.validation.memberWorkspaceRequired': 'Choose a workspace for {{name}} to run.',
   'runSettings.validation.modelUnavailable': '{{runtime}} no longer offers the model for {{name}}. Choose another model to run.',
   'runSettings.validation.modelsLoading': 'Loading models…',
-  'runSettings.model.lockedRuntimeHeading': 'Models on {{runtime}}',
+  'runSettings.model.lockedRuntimeTooltip': 'The runtime is fixed for this run',
   'runSettings.model.unavailable': 'No longer offered by {{runtime}}. Choose another model before this run resumes.',
   'runSettings.model.keptSettings': 'Kept from the saved run: {{settings}}',
   'runSettings.locked.fixed': 'Fixed for this run',
