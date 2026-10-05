@@ -219,8 +219,13 @@ export class AgentRunCollaborationContext {
     }
   }
 
-  /** The task rows under the run row: task Agents and task Teams with their members. */
-  listTaskRows(isTeamExpanded: (teamRunId: string) => boolean): AgentRunTaskTreeRow[] {
+  /**
+   * The task rows under the run row: task Agents and task Teams with their members.
+   * task-run-resources-workspace-cleanup (design): `isClosed` leaves out the runs of a Task that is
+   * DONE (an Agent, or a Team with everything under it). Their records stay in the view, so the
+   * Team tab keeps its messages with them.
+   */
+  listTaskRows(isTeamExpanded: (teamRunId: string) => boolean, isClosed: (runId: string) => boolean = () => false): AgentRunTaskTreeRow[] {
     const flat: RunHistoryTransientExecutionRow[] = []
     const statusOf = (agentRunId: string) => this.contexts.get(agentRunId)?.state.currentStatus ?? AgentStatus.Offline
     const delegatorName = (agentRunId: string | null) => {
@@ -237,6 +242,7 @@ export class AgentRunCollaborationContext {
     type Node = AgentRunCollaborationViewDto['execution_tree']['taskExecutions'][number]
       | Extract<AgentRunCollaborationViewDto['execution_tree']['taskExecutions'][number], { teamRunId: string }>['members'][number]
     const visit = (node: Node, depth: number): void => {
+      if (isClosed('agentRunId' in node ? node.agentRunId : node.teamRunId)) return
       if ('agentRunId' in node) { flat.push(agentRow(this.index.requireAgent(node.agentRunId), depth)); return }
       const team = this.index.teams.get(node.teamRunId)!
       const children = [...node.members, ...node.taskExecutions]

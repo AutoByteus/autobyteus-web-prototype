@@ -9,6 +9,8 @@ module.exports = {
     "./plugins/**/*.{js,ts}",
     "./nuxt.config.{js,ts}",
     "./app.vue",
+    // task-run-resources-workspace-cleanup: the design review panel.
+    "./prototype/task-run-cleanup/**/*.vue",
   ],
   theme: {
     extend: {

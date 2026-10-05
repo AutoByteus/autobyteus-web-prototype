@@ -1,12 +1,17 @@
 <template>
   <!-- Task Agents and task Teams brought into a standalone Agent run with `@`. -->
-  <div
-    v-if="rows.length"
+  <!-- task-run-resources-workspace-cleanup: the rows of a Task that is DONE leave the tree (DEC-001). -->
+  <TransitionGroup
+    v-if="rows.length || leaving"
+    tag="div"
+    :name="removalTransition"
     class="team-execution-tree ml-3 space-y-0.5"
     role="tree"
     :aria-label="t('workspace.history.hierarchy.tree_label', { name: label })"
     data-test="workspace-agent-run-task-tree"
     :data-run-id="runId"
+    @before-leave="leaving += 1"
+    @after-leave="leaving -= 1"
   >
     <WorkspaceTransientExecutionRow
       v-for="display in rows"
@@ -20,15 +25,16 @@
       @select="select"
       @toggle="toggle"
     />
-  </div>
+  </TransitionGroup>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import WorkspaceTransientExecutionRow from '~/components/workspace/history/WorkspaceTransientExecutionRow.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import type { RunHistoryTransientExecutionRow } from '~/stores/runHistoryTypes'
 import { useAgentRunCollaborationStore } from '~/stores/agentRunCollaborationStore'
+import { reviewOptions } from '~/prototype/task-run-cleanup/reviewOptions'
 
 const props = defineProps<{
   runId: string
@@ -50,6 +56,9 @@ onMounted(loadStored)
 watch(() => props.hasCollaboration, loadStored)
 
 const rows = computed(() => collaboration.taskRows(props.runId))
+// Rows only animate when they leave; a new row appears at once, as today.
+const removalTransition = computed(() => reviewOptions.removal === 'fade' ? 'task-row' : 'task-row-instant')
+const leaving = ref(0)
 const isExpanded = (row: RunHistoryTransientExecutionRow): boolean =>
   Boolean(row.teamRunIdForNode && collaboration.isTaskTeamExpanded(props.runId, row.teamRunIdForNode))
 const isSelected = (row: RunHistoryTransientExecutionRow): boolean =>
@@ -68,3 +77,36 @@ const select = (row: RunHistoryTransientExecutionRow): void => {
   if (!props.runSelected) emit('select-run')
 }
 </script>
+
+<style scoped>
+/* A leaving row fades and its height closes (200 ms); the rows below move up with it. */
+.task-row-leave-active {
+  overflow: hidden;
+  transition: opacity 200ms ease-out, max-height 200ms ease-out, margin-top 200ms ease-out, border-width 200ms ease-out;
+}
+.task-row-leave-from {
+  opacity: 1;
+  max-height: 2rem;
+}
+.task-row-leave-to {
+  opacity: 0;
+  max-height: 0;
+  min-height: 0;
+  margin-top: 0 !important;
+  border-width: 0;
+}
+.task-row-move {
+  transition: transform 200ms ease-out;
+}
+.task-row-enter-active,
+.task-row-instant-enter-active,
+.task-row-instant-leave-active {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .task-row-leave-active,
+  .task-row-move {
+    transition: none;
+  }
+}
+</style>

@@ -14,6 +14,7 @@ import { operationFixture, baseState, PROJECT_MUTATIONS, SKILL_SOURCE_MUTATIONS 
 import { withAutobyteusOrgOperation } from '~/prototype/run-settings/autobyteusOrgFixture'
 import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/launchedTeamFixture'
 import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/prototype/run-settings/launchedOrgFixture'
+import { withTaskManagerRun } from '~/prototype/task-run-cleanup/taskManagerRunFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
 
@@ -71,6 +72,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
       (withAutobyteusOrgOperation(operation, {}, operationFixture(operation, {}, state))?.[key] ?? []) as any[]
     return { orgs: catalog('GetAgentOrgDefinitions', 'agentOrgDefinitions'), teams: catalog('GetAgentTeamDefinitions', 'agentTeamDefinitions') }
   })
+  // task-run-resources-workspace-cleanup: a Project Task Manager run with Task runs under it.
+  data = data ? withTaskManagerRun(name, request.variables || {}, structuredClone(data), scenario) : data
   return { data: data ? structuredClone(data) : {} }
 }
 
