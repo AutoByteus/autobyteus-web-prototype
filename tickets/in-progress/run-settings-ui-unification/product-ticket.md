@@ -6,7 +6,7 @@
 - Stable package: `run-settings-ui-unification`, solution revision `SR-001`
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Awaiting User Review` (round 18, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
+- Status: `Awaiting User Review` (round 19, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -136,3 +136,4 @@
 - 2026-10-05: round 16 — member panel resizable from its left edge (remembered width); dark setting labels (see `review-round-16.md`).
 - 2026-10-05: round 17 — removed the "Files are saved in …" line under the message box (see `review-round-17.md`).
 - 2026-10-05: round 18 — review fixture: the real AutoByteus Org (3 Teams, 11 members) for realistic member settings (see `review-round-18.md`).
+- 2026-10-05: round 19 — removed the white grip on the panel's resize edge; the thin blue line on hover and the resize cursor remain.

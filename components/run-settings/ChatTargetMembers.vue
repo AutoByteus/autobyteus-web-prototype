@@ -42,7 +42,8 @@
           :style="{ width: `${width}px` }"
           data-test="chat-members-panel"
         >
-          <!-- Round 16: drag the left edge to widen or narrow the panel; the width is remembered. -->
+          <!-- Round 16: drag the left edge to widen or narrow the panel; the width is remembered.
+               Round 19: no grip; the edge shows a thin blue line on hover and the resize cursor. -->
           <div
             role="separator"
             aria-orientation="vertical"
@@ -61,11 +62,6 @@
             <span
               class="h-full w-0.5 transition-colors duration-100"
               :class="resizing ? 'bg-blue-500' : 'bg-transparent group-hover:bg-blue-400 group-focus-visible:bg-blue-500'"
-              aria-hidden="true"
-            ></span>
-            <span
-              class="absolute top-1/2 h-8 w-1.5 -translate-y-1/2 rounded-full border border-gray-300 bg-white shadow-sm transition-colors group-hover:border-blue-400"
-              :class="resizing ? 'border-blue-500' : ''"
               aria-hidden="true"
             ></span>
           </div>

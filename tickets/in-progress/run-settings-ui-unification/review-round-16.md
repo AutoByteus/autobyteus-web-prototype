@@ -6,7 +6,7 @@ left; the setting labels (Model, Thinking, Tool approval) should not be grey.
 ## Changes
 
 - The member settings panel has a resize handle on its left edge. A thin line turns blue on hover
-  or while dragging, with a small grip in the middle. The cursor is `col-resize`.
+  or while dragging. The cursor is `col-resize`. (Round 19: the grip in the middle was removed as redundant.)
   - Drag left to widen it and right to narrow it.
   - Range: 400 px up to 960 px. The panel always leaves at least 360 px for the message box.
     It re-clamps when the window resizes.
