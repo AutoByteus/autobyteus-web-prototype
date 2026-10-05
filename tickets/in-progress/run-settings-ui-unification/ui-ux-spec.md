@@ -4,14 +4,15 @@
 
 - Status: `Approved`
 - Request / ticket: `run-settings-ui-unification` (stable package; Product ticket uses the same ID)
-- Related requirements revision ID: `SR-003` (Draft requirements; this package revises the SR-001
-  result)
+- Related requirements revision ID: `SR-005` (user-approved; this package revises the SR-001 result
+  in SR-003 and adds the REQ-022 presentation in SR-005)
 - Related IDs:
   - UC-001..006;
   - SCN-001..009 (SCN-009 is unsupported);
   - BEH-001..008;
-  - REQ-001..018;
-  - AC-001..012;
+  - REQ-001..018, REQ-022;
+  - AC-001..012, AC-019;
+  - BEH-009;
   - QR-001;
   - DEC-001..004.
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design`
@@ -23,6 +24,8 @@
     asked to confirm the Org launch page and the switcher, the user replied "confimr" (rounds 31–32).
   - SR-003 final (2026-10-05, after rounds 33–38): "Anyway, I'm satisfied … I'm currently satisfied
     with the UI now … Let's finalize now … the ticket is done." (`review-round-33-38.md`)
+  - SR-005 correction (2026-10-05, round 39, other model settings / Codex Fast mode): "perfect. i
+    checked. its great" (`review-round-39.md`).
 - Final validation date: 2026-10-05
 
 ## Repository And Baseline Provenance
@@ -64,6 +67,10 @@
       Orgs. An Agent or Team starts in New chat; an Org opens the Org launch page (round 34).
   - **The right tools stay reachable on start surfaces behind one small icon** (round 35), so a
     folder path can be copied from the Terminal while choosing a workspace.
+  - **Other model settings (SR-005, REQ-022) are their own small controls next to Thinking**, e.g.
+    Codex Fast mode as a "⚡ Fast" toggle chip in the message box and a "Fast mode" row in labelled
+    settings. Fast mode is about speed and cost, not thinking, so it is not placed in the Thinking
+    menu.
   - **Member customization is secondary.** One quiet line opens a resizable right-side drawer that
     lists members only. The team-wide or org-wide settings live in the composer or the Org card.
   - **DEC-002 → member overrides cover model+runtime, thinking and tool approval.** A team placed in
@@ -81,6 +88,9 @@
   - **"Run Agent Org" in a card footer row** (rounds 31–35) and an action row under the card
     (round 36): the lone button looked odd; replaced by the round Run icon inside the card (round 38).
   - **Showing the tool strip on New chat**: rejected (round 33); one icon instead (round 35).
+  - **Fast mode as a "Default / Fast" group inside the Thinking menu, summary "Medium · Fast"**
+    (SR-005 provisional baseline): mislabelled under "Thinking", one click deeper, and awkward for a
+    model with only Fast mode. The user chose the separate chip (round 39).
   - **Keeping the old Org form** (DEC-004 option B): rejected by the user. The Org launch page is
     consistent with the rest.
   - **An inline member list**, **an editable/read-only defaults block in the drawer**, a **boxed
@@ -133,6 +143,7 @@
 | **New (rounds 32/34, requirement impact)** | The New chat and Org launch headings are one switcher for Agents, Agent Teams and Agent Orgs; settings carry across | UXJ-008, UIS-001, UIS-004 |
 | **New (round 35, requirement impact)** | New chat and the Org launch page reach the right tools through one icon; Files/Terminal follow the chosen workspace | UXJ-009, UIS-005 |
 | **Changed (round 37, requirement impact)** | The Org launch action is labelled "Run" (SR-003 said "Run Agent Org") | UIS-004 |
+| REQ-022 / AC-019 / BEH-009 | The selected model's other (non-thinking) settings, e.g. Codex Fast mode, can be set in the message box, the Org card, member rows and stopped saved runs; read-only while running; nothing extra for models without them; a model with only other settings still offers them | UXJ-010, UIS-001..004 |
 | REQ-003 | No raw addresses in user-facing copy | All copy |
 | QR-001 | Keyboard-operable with accessible names | Accessibility |
 
@@ -180,6 +191,8 @@
 - **Icons:**
   - `chevron-down` 20 px `gray-400` on the heading switcher;
   - `play-solid` 16 px white on Run; `arrow-path-solid` spinning while starting;
+  - other model settings: `bolt` (Fast mode) / `adjustments-horizontal` (any other), 14 px; the
+    solid variant when the setting is on;
   - the `panel-right` outline icon, 18 px `gray-400` (hover `gray-600` on `gray-100`), for "Show
     tools" — the same icon and corner as the panel's own close button;
   - `building-office-2` for Orgs in the switcher;
@@ -201,6 +214,7 @@
 | --- | --- | --- | --- |
 | Heading switcher | Choose what to run (New chat, Org launch page) | Closed / hover / open; search; sections Agents (Daily Assistant first), Agent teams, Agent orgs; current = check; disabled while starting | `components/chat/ChatTargetSwitcher.vue`, `composables/runSettings/useRunTargetSwitcher.ts` |
 | Org launch page | Start an Org | Default, customized, model missing, runtime unavailable, preparing ("+"), launching, failed, unavailable; Run icon button inside the card | `components/run-settings/OrgLaunchPage.vue`, `stores/orgLaunchDraftStore.ts` |
+| Other model setting control | One non-thinking model setting (e.g. Codex Fast mode) | Toggle chip: off (gray, outline icon) / on (`bg-blue-50 text-blue-700`, solid `blue-600` icon), `aria-pressed`, icon only < `sm` in the message box; menu chip for multi-value settings; row variant with own Customized/Reset; locked (value + lock) | `components/chat/ChatModelOptionControl.vue`, `components/chat/chatModelOptions.ts`, `components/run-settings/RunSettingsCard.vue` |
 | Start-surface tools | Reach Files/Terminal/… before a run | Icon (closed) / docked panel / drawer (narrow); remembered | `components/layout/WorkspaceToolShell.vue` (`start-surface`), `StartSurfaceToolsToggle.vue`, `composables/layout/useStartSurfaceTools.ts` |
 | Members line + drawer | Customize members (Team New chat, Org launch page) | Line: default / "● n of N customized · Edit · Reset"; drawer resizable 400–960 px, remembered; full width < `sm` | `components/run-settings/ChatTargetMembers.vue`, `memberSettingsSource.ts` |
 | Member row | A member or placed team | Closed / hover / opened card; Customized; "N customized" for teams; "Choose a model" (amber); nested members | `components/run-settings/RunMemberRow.vue` |
@@ -221,6 +235,7 @@
 | UXJ-006 | A saved run | Edit Config | Review, stop, change model/thinking | Saved / stopped / read-only explained | REQ-014..017, AC-009..011 |
 | UXJ-007 | Any composer | Composer focused | Bring in a collaborator with `@` | `@Name ` inserted; sent with the message | REQ-011/012, AC-007 |
 | UXJ-008 | New chat / Org launch page | Any target, before starting | Switch to another Agent, Team or Org | Agent/Team: New chat; Org: Org launch page; settings kept | New (rounds 32/34) |
+| UXJ-010 | Any model settings surface | A model with other settings selected | Set Codex Fast mode (or any other model setting) | Chip on; row value; summary "· Fast"; the run carries it | REQ-022, AC-019 |
 | UXJ-009 | New chat / Org launch page | Tools closed | Use Files/Terminal (e.g. copy a folder path) | Tools open beside the page (or as the drawer); closing returns the icon | New (round 35) |
 
 ## Journey Details
@@ -325,6 +340,34 @@
   inside the window (8 px margin).
 - Visuals: VIS-016, VIS-001.
 
+**UXJ-010 Other model settings (SR-005, REQ-022)**
+- Every config-schema parameter of the selected model that is not a thinking setting is an "other
+  model setting", labelled by its schema title. Codex Fast mode: `service_tier`, title "Fast mode",
+  one value "fast" ("Fast"); unset = Default.
+- **Message box (New chat):** one chip per setting after the Thinking chip.
+  - "Default or one value" (or a boolean): a toggle chip showing the value ("⚡ Fast"). Off: gray
+    text, outline icon. On: blue text on light blue, solid icon. Click toggles; tooltip/aria
+    "Fast mode: On" / "Fast mode: Off". Phones: icon only.
+  - Several values: a menu chip ("{value} ⌄"), menu titled by the setting: Default, then the values,
+    a check on the current one.
+- **Labelled settings (Org card, member drawer, saved runs):** a row per setting directly under
+  Thinking, labelled by the title ("Fast mode"), with the same chip.
+  - Members: "Customized" and a Reset on that row when the member's value differs from its parent's;
+    Reset sets it back to the parent's value. Thinking counts as customized only when the thinking
+    settings differ, so each resets on its own. A member whose model settings match the parent again
+    follows the parent again.
+  - Saved runs: while running, locked (icon + "Fast" or "Off" + lock); when stopped, editable; a
+    change shows the Save bar and non-customized members follow.
+  - While starting or copying settings: locked like the other rows.
+- **Member summary line:** the label of each setting that is on follows the model ("GPT-5.6 Sol ·
+  Codex · Fast · Auto-approve").
+- **Model with only other settings:** the message box shows only its chip (no Thinking chip); the card
+  keeps "Thinking: Not available for this model" and adds the row.
+- **Model without other settings:** nothing extra.
+- Changing thinking keeps the other settings and vice versa; choosing another model resets them to
+  that model's defaults (unset). "+" copy and the heading switcher carry them with the model config.
+- Visuals: VIS-020..029.
+
 **UXJ-009 Right tools on start surfaces**
 - New chat and the Org launch page show a small `panel-right` icon in the top-right corner
   (tooltip/aria "Show tools"). The right tools are closed by default.
@@ -367,6 +410,7 @@
 | TR-013 | UIS-004 ready | Run | Spinner in the button + "Starting {Org} on {runtime}…"; settings locked | The launched Org run view (listed as "New - {Org}"); or failed (red copy, values kept) | Org launch with overrides; no recipient | Choose Agent/Team |
 | TR-014 | Org run view | "+" | Navigates; "Copying the run's settings…" | UIS-004 prefilled | Reads the source run | Run |
 | TR-015 | UIS-001 / UIS-004 | Heading → choose a target | Menu closes; Agent/Team: heading/placeholder/members line change, focus to input; Org: the Org launch page | Draft retargeted / Org draft started | Member overrides reset; workspace, approval, model+thinking kept | Send / Run |
+| TR-017 | UIS-001..004 | Click an other-setting toggle (e.g. ⚡ Fast) | Chip on/off at once; row "Customized" (members); Save bar (stopped saved run) | Setting set / unset in the model config | `service_tier: "fast"` added / removed; thinking kept | Send / Run / Save |
 | TR-016 | UIS-001 / UIS-004 | Tools icon / panel close | Panel docks (or drawer opens) / icon returns | UIS-005 open / closed | `localStorage['autobyteus.chat.startToolsOpen']` | Use tools |
 
 ## State Behavior
@@ -374,26 +418,38 @@
 | Surface / State | Trigger | Required Presentation And Copy | Available Actions | Recovery Or Exit | Visual ID |
 | --- | --- | --- | --- | --- | --- |
 | UIS-001 Daily Assistant | Chat nav | "Daily Assistant ⌄" + "All your skills are available. Type / to use a skill, or @ to bring in an agent or team."; placeholder "Ask anything · / for skills · @ for an agent or team"; tools icon top right | Switch, send, @, /, tools | — | VIS-001 |
+| UIS-001 Codex model with Fast mode | Model chosen | "{model} Codex ⌄ · 💡 {effort} ⌄ · ⚡ Fast" (off: gray) | Toggle | — | VIS-020 |
+| UIS-001 Fast mode on | ⚡ Fast | Chip blue with solid bolt; aria-pressed true | Toggle off | — | VIS-021, VIS-027 (phone, icon only) |
+| UIS-001 model with only other settings | Model chosen | No Thinking chip; "⚡ Fast" only | Toggle | — | VIS-022 |
+| UIS-001 `@` menu | `@` typed | "Bring into this run @ · ↑↓ to move, Enter to choose"; "Agents", "Agent teams"; footer "{agent} gets your message and brings them into this run" | Choose, Esc | Esc | VIS-030 |
+| UIS-001 prefilled from a run "+" | "+" on an Agent run | Heading = the agent; the run's workspace, approval, model+thinking | Send | — | VIS-042 |
 | UIS-001 switcher open | Heading click | Search "Search agents, teams and orgs"; "Agents" / "Agent teams" / "Agent orgs"; check on current; empty: "Nothing matches" | Choose, Esc | Esc / outside click | VIS-016 |
 | UIS-001 Team default | Run / switch | "All {N} members use these settings · Customize members" | Customize | — | VIS-002 |
 | UIS-001 customized | Override set | "● {n} of {N} customized · Edit · Reset" | Edit, Reset | Reset | VIS-003 |
 | UIS-001 starting | Send | "Starting {name} on {runtime}…"; switcher disabled | — | — | — |
 | UIS-004 default | Org Run | Org heading switcher; card with the round Run icon (tooltip "Run"); members line | Edit, customize, Run, switch, tools | — | VIS-012 |
-| UIS-004 blocked | No model / runtime unavailable | Amber "Choose a model to start." / "{Runtime} is unavailable. Choose another runtime."; Run disabled (tooltip = reason) | Choose model | — | — |
-| UIS-004 preparing | Org "+" | Spinner + "Copying the run's settings…"; Run disabled | — | Defaults on failure | — |
-| UIS-004 launching | Run | Spinner in the button + "Starting {Org} on {runtime}…"; settings locked; Run disabled | — | — | — |
+| UIS-004 Fast mode row | Codex model with Fast mode | "Fast mode" row under Thinking with the chip | Toggle | — | VIS-023, VIS-028 (phone) |
+| UIS-004 model with only other settings | Model chosen | "Thinking: Not available for this model" + "Fast mode" row | Toggle | — | VIS-029 |
+| UIS-004 switcher open | Heading click | As UIS-001, current Org checked | Choose | Esc | VIS-035 |
+| UIS-004 tools open | Tools icon | Docked panel beside the page | Use tools | Close icon | VIS-036 |
+| UIS-004 blocked | No model / runtime unavailable | Amber "Choose a model to start." / "{Runtime} is unavailable. Choose another runtime."; Run disabled (tooltip = reason) | Choose model | — | VIS-031 |
+| UIS-004 preparing | Org "+" | Spinner + "Copying the run's settings…"; settings locked; Run disabled | — | Defaults on failure | VIS-032 |
+| UIS-004 prefilled | Org "+" read done | The run's workspace, approval, model+thinking, member overrides | Run | — | VIS-033 |
+| UIS-004 launching | Run | Spinner in the button + "Starting {Org} on {runtime}…"; settings locked; Run disabled | — | — | VIS-034 |
 | UIS-004 launched | Run succeeded | The Org run view: "New - {Org}" in the tree (live, all members idle); "Choose an Agent or Team" | Choose a member | — | VIS-018 |
 | UIS-005 open | Tools icon | Docked panel (or drawer) with the run view's tabs; the page narrows | Use tools; close | Panel close icon | VIS-017 |
 | UIS-004 failed | Launch error | Red "Couldn't start this Agent Org. Try again." (wraps) | Run again | — | VIS-013 |
 | UIS-004 unavailable | Org missing | "This Agent Org isn't available. Choose another Agent Org." + "Back to Agent Orgs" | Back | — | VIS-014 |
 | UIS-002 member customized | Change | "Customized · {model} · {runtime} · {approval}" (+ workspace for teams) | Reset icon, field Reset, Reset all | Reset | VIS-004, VIS-005 |
+| UIS-002 member other setting customized | Member toggles Fast mode | Row "Customized"; Reset on the Fast mode row only; Thinking stays inherited | Row Reset | Reset | VIS-024 |
 | UIS-002 model required | No model | "Choose a model" (amber) | Choose | — | — |
 | UIS-002 Antigravity | AGY model | Approval "Auto-approve" + lock; tooltip "Antigravity always runs with auto-approve." | — | Another runtime | — |
-| UIS-003 running | Active | "● Running" + red stop icon (tooltip per type); fixed values locked | Stop | — | VIS-006 |
-| UIS-003 stop failed | Terminate error | "Couldn't terminate this run. Try again." / "Couldn't stop this org. Try again." | Retry | — | — |
-| UIS-003 stopped editable | Stopped | "● Stopped"; Model/Thinking menus | Change, Save | Cancel | VIS-007 |
-| UIS-003 read-only | Not editable | "🔒 This run's settings can't be changed." | — | — | — |
-| UIS-003 refresh / model unavailable | Stale config / missing model | "Saved settings need a refresh before you can change them. Refresh" / "No longer offered by {runtime}. Choose another model before this run resumes." | Refresh / choose | — | — |
+| UIS-003 running | Active | "● Running" + red stop icon (tooltip per type); fixed values locked, including other model settings ("⚡ Fast 🔒") | Stop | — | VIS-006, VIS-025 |
+| UIS-003 stopping | Stop clicked | Stop icon disabled and pulsing; tooltip "Terminating…" / "Stopping…" | — | — | VIS-037 |
+| UIS-003 stop failed | Terminate error | "Couldn't terminate this run. Try again." / "Couldn't stop this org. Try again." | Retry | — | VIS-038 |
+| UIS-003 stopped editable | Stopped | "● Stopped"; Model/Thinking menus; other model settings editable | Change, Save | Cancel | VIS-007, VIS-026 |
+| UIS-003 read-only | Not editable | "🔒 This run's settings can't be changed." | — | — | VIS-039 |
+| UIS-003 refresh / model unavailable | Stale config / missing model | "Saved settings need a refresh before you can change them. Refresh" / "No longer offered by {runtime}. Choose another model before this run resumes." | Refresh / choose | — | VIS-040, VIS-041 |
 | UIS-003 model menu | Model trigger | Search; "{Runtime} 🔒" (tooltip "The runtime is fixed for this run"); models | Choose | Esc | VIS-008 |
 | UIS-003 Org | Org run | Org card + members incl. placed team (workspace editable when stopped) | Change, Save | — | VIS-009 |
 
@@ -408,6 +464,10 @@
     - sections "Agents", "Agent teams", "Agent orgs";
     - empty "Nothing matches".
   - **Start-surface tools:** "Show tools" (tooltip and aria).
+  - **Other model settings (SR-005):** row label and toggle value come from the model's schema
+    (title "Fast mode", value "fast" → "Fast"); "Default" (`chat.modelOption.default`, zh-CN "默认");
+    toggle tooltip/aria "{{setting}}: {{state}}" with "On" / "Off" (zh-CN "{{setting}}：{{state}}",
+    "开" / "关"); locked "Fast" / "Off".
   - **Org launch page:**
     - "Run" (tooltip and aria of the icon button; zh-CN "运行");
     - "Starting {{name}} on {{runtime}}…";
@@ -473,6 +533,7 @@
 | --- | --- | --- | --- |
 | Desktop wide | ≥ `lg` (1024 px) | Drawer docks right; the page pads by its width. Start-surface tools dock beside the page when the shell has room | Drag/keyboard resize |
 | Desktop narrow / tablet | `sm`–`lg` | Drawer overlays the page | Resize available |
+| Phone message box | < `sm` | Other-setting toggle chips show the icon only (name in aria/tooltip) so Send stays inside the box | Tap |
 | Desktop narrow / phone tools | The shell has no room to dock | Start-surface tools open as the drawer from the same icon | Tap / Escape |
 | Phone | < `sm` (640 px) | Drawer full width, no resize edge; menus as bottom sheets; the composer's runtime label hides; the Org card rows keep the full width (Run is pinned to the corner; approval label never wraps); the members line wraps centered; the heading switcher menu is nudged inside the window | Tap |
 
@@ -492,6 +553,9 @@
     disabled; `aria-busy` while starting.
 - **Start-surface tools:** the icon is a button named "Show tools"; the panel's own close button is
   unchanged.
+- **Other model settings:** toggles are buttons with `aria-pressed` and the name "{setting}: On/Off";
+  menu chips use `aria-haspopup="menu"` and `menuitemradio` items like Thinking; locked rows read
+  "{setting} is fixed for this run: {value}".
 - **Drawer:**
   - `role="dialog"` "Member settings"; focus moves to Close on open and returns to the line on close;
   - Escape closes an open menu first;
@@ -516,6 +580,7 @@
 | --- | --- | --- | --- |
 | Agent/Team launch from New chat | First message starts the run with settings, overrides and mentions | Existing launch and send paths run against local fixtures: `CreateAgentTeamRun` answers with a new run per launch (`prototype/run-settings/launchedTeamFixture.ts`); the prototype socket plays the Team stream (connected, all idle, each message received, idle) | Mentions on the first message is a new requirement (REQ-012) |
 | Org launch from the Org launch page | Run with root config + overrides | `orgLaunchDraftStore.launch` → the source's `agentOrgRun.launch` → local `CreateAgentOrgRun`; `prototype/run-settings/launchedOrgFixture.ts` serves each launched run (inspection, history, run config, empty member conversations) and the prototype socket plays its stream; Stop runs the source's stop against local `TerminateAgentOrgRun` | Real launch; production keeps or replaces the Org launch config store; the UI is normative |
+| Other model settings | Codex Fast mode and future settings | Hand-written Codex models in the server parameter format: GPT-5.6 Sol (reasoning effort + `service_tier` Fast mode), GPT-5.6 Instant (Fast mode only), GPT-5.6 Mini (none) | Real catalog schemas (`codex-app-server-model-normalizer.ts`); launch/save carry `service_tier` in the model config |
 | Start-surface tools | Files/Terminal for the chosen workspace | The shared right panel; the page provides the chosen workspace; demo files and terminal are synthetic | Real workspace files and terminal |
 | Org "+" prefill | Source run settings | Reads `readAgentOrgRunInspection` + `buildEditableAgentOrgRunSeed` | Real read |
 | Default model on the Org page | Initial card values | Org default → last chat model → default runtime's first model | Confirm with requirements (mirrors New chat) |
@@ -554,6 +619,34 @@ the others were recaptured after rounds 33–38. Phone is a 390 CSS-px frame.
 | VIS-018 | UXJ-003 / UIS-004 launched | 1512 | `visual-references/VIS-018-org-run-after-run-1512.png` | Where Run lands: "New - AutoByteus Org" (live) under its workspace with its teams; "Choose an Agent or Team" | Names, workspace |
 | VIS-019 | UXJ-002 / Team run after the first message | 1512 | `visual-references/VIS-019-team-run-first-message-1512.png` | The Team run with the coordinator focused, Idle, the first message shown, the run titled by it and dated "now" | Names, message |
 
+| VIS-020 | UXJ-010 / UIS-001 Codex model, Fast off | 804 (shown at 666) | `visual-references/VIS-020-new-chat-codex-fast-off-804.png` | "GPT-5.6 Sol Codex ⌄ · 💡 Medium ⌄ · ⚡ Fast" (gray) | Model names |
+| VIS-021 | UXJ-010 / UIS-001 Fast on | 804 (666) | `visual-references/VIS-021-new-chat-codex-fast-on-804.png` | ⚡ Fast blue on light blue, solid bolt | — |
+| VIS-022 | UXJ-010 / UIS-001 only other settings | 804 (666) | `visual-references/VIS-022-new-chat-fast-only-model-804.png` | No Thinking chip; only ⚡ Fast | Model name |
+| VIS-023 | UXJ-010 / UIS-004 Fast mode row | 804 (666) | `visual-references/VIS-023-org-launch-fast-mode-row-804.png` | "Fast mode" row under Thinking, chip on | Names |
+| VIS-024 | UXJ-010 / UIS-002 member customized | 804 (666) | `visual-references/VIS-024-member-fast-mode-customized-804.png` | Team "Customized"; Reset on Fast mode only; Thinking inherited; other teams "· Fast ·" | Names |
+| VIS-025 | UXJ-010 / UIS-003 running | 880 (666) | `visual-references/VIS-025-saved-run-running-fast-locked-880.png` | "Fast mode ⚡ Fast 🔒"; members "· Fast ·" | Names |
+| VIS-026 | UXJ-010 / UIS-003 stopped, changed | 880 (666) | `visual-references/VIS-026-saved-run-stopped-fast-editable-880.png` | Fast toggled off (editable); members follow; Save bar | Names |
+| VIS-027 | UXJ-010 / UIS-001 phone | 390 | `visual-references/VIS-027-new-chat-fast-on-390.png` | Icon-only ⚡ chip (on); Send inside the box | — |
+| VIS-028 | UXJ-010 / UIS-004 phone | 390 | `visual-references/VIS-028-org-launch-fast-mode-390.png` | Fast mode row fits; rows keep full width | Names |
+| VIS-029 | UXJ-010 / UIS-004 only other settings | 804 (666) | `visual-references/VIS-029-org-launch-fast-only-model-804.png` | "Thinking: Not available for this model" + "Fast mode" row | Model name |
+| VIS-030 | UXJ-007 / UIS-001 `@` menu | 804 (666) | `visual-references/VIS-030-new-chat-at-menu-804.png` | "Bring into this run" header; Agents / Agent teams; relay footer | Names |
+| VIS-031 | UXJ-003 / UIS-004 blocked | 804 (666) | `visual-references/VIS-031-org-launch-no-model-804.png` | "Choose a model" (amber) in the Model row; amber "Choose a model to start."; Run disabled | — |
+| VIS-032 | UXJ-005 / UIS-004 copying | 804 (666) | `visual-references/VIS-032-org-launch-copying-settings-804.png` | Spinner + "Copying the run's settings…"; rows locked; Run disabled | — |
+| VIS-033 | UXJ-005 / UIS-004 prefilled | 804 (666) | `visual-references/VIS-033-org-launch-prefilled-from-run-804.png` | The run's workspace, approval, model | Names |
+| VIS-034 | UXJ-003 / UIS-004 starting | 804 (666) | `visual-references/VIS-034-org-launch-starting-804.png` | Spinner in Run; rows locked; "Starting {Org} on {runtime}…" | — |
+| VIS-035 | UXJ-008 / UIS-004 switcher | 804 (666) | `visual-references/VIS-035-org-launch-switcher-open-804.png` | Same switcher; current Org checked | Names |
+| VIS-036 | UXJ-009 / UIS-004 tools open | 1512 (666) | `visual-references/VIS-036-org-launch-tools-open-1512.png` | Org page narrowed; tools docked | Terminal output |
+| VIS-037 | UXJ-006 / UIS-003 stopping | 880 (666) | `visual-references/VIS-037-saved-run-stopping-880.png` | Stop icon disabled/faded while pending | — |
+| VIS-038 | UXJ-006 / UIS-003 stop failed | 880 (666) | `visual-references/VIS-038-saved-run-stop-failed-880.png` | Red "Couldn't terminate this run. Try again." | — |
+| VIS-039 | UXJ-006 / UIS-003 read-only | 880 (666) | `visual-references/VIS-039-saved-run-read-only-880.png` | "This run's settings can't be changed."; all locked | — |
+| VIS-040 | UXJ-006 / UIS-003 refresh | 880 (666) | `visual-references/VIS-040-saved-run-refresh-required-880.png` | Amber note + "Refresh" | — |
+| VIS-041 | UXJ-006 / UIS-003 model unavailable | 880 (666) | `visual-references/VIS-041-saved-run-model-unavailable-880.png` | Amber "No longer offered by {runtime}…" under the model | — |
+| VIS-042 | UXJ-005 / UIS-001 prefilled | 804 (666) | `visual-references/VIS-042-new-chat-prefilled-from-agent-run-804.png` | New chat for the run's agent with its workspace, approval, model | Names |
+
+VIS-020..042 were captured on 2026-10-05 after the round-39 confirmation. The browser window was
+666 CSS px wide, so 804/880/1512-px frames were scaled to fit (DPR 2 kept them sharp); the frame width
+is the layout width.
+
 Illustrative everywhere: agent, team, org, model and workspace names and descriptions, member
 counts and the left navigation tree contents.
 
@@ -562,9 +655,9 @@ counts and the left navigation tree contents.
 - Runnable UI reference: the design repository root, `corepack pnpm dev --port 4520`. Reset with
   `localStorage.clear()`.
 - Ticket record: `product-ticket.md`
-- Review rounds: `review-round-1.md` … `review-round-32.md`, `review-round-33-38.md`. SR-003 is in
-  rounds 31–38; `review-evidence/round-31/`.
-- Journeys UXJ-001..009; transitions TR-001..016.
+- Review rounds: `review-round-1.md` … `review-round-32.md`, `review-round-33-38.md`,
+  `review-round-39.md`. SR-003 is in rounds 31–38; SR-005 in round 39; `review-evidence/round-31/`.
+- Journeys UXJ-001..010; transitions TR-001..017.
 - Limitations: in the automation browser, background tabs do not finish slide transitions (not a
   product issue).
 
@@ -583,6 +676,8 @@ counts and the left navigation tree contents.
   - the saved-run header with the stop icon after the badge and the DEC-003 wording;
   - no standing note lines; the Save bar copy;
   - the runtime-locked model menu;
+  - other model settings as their own controls next to Thinking (message-box chip, labelled row,
+    per-setting Customized/Reset, locked while running, member summary label);
   - `@` = collaborator only, never Orgs, current excluded.
 - **Removed surfaces that production should delete (REQ-018):**
   - the Agent/Team launch configuration forms and sub-forms (`AgentRunConfigForm`,
@@ -624,6 +719,10 @@ counts and the left navigation tree contents.
   requirement and an AC.
 - **Requirement impact (round 37):** the Org launch action label is "Run" (SR-003 said "Run Agent
   Org").
+- **Requirement impact (SR-005, round 39):** REQ-022's provisional wording places other model
+  settings in the Thinking menu with a combined summary ("Medium · Fast"). The confirmed design makes
+  each one its own control next to Thinking (message-box chip, labelled row); the Thinking summary is
+  unchanged and the member summary adds "Fast". Please align REQ-022 / AC-019 wording.
 - **Follow-up question (not in this design):** an optional Org "entry point" (one team or agent
   where Run lands and the first message goes). Discussed with the user as an idea only; it would
   change the Org model and partly reopen DEC-004.
@@ -643,8 +742,9 @@ counts and the left navigation tree contents.
 - Ticket record, ticket folder, and linked artifacts agree: `Yes`
 - Every in-scope journey is specified: `Yes`
 - Every surface and state needed to define the approved experience has an applicable final visual
-  reference: `Yes`. Secondary states (blocked, preparing, launching, read-only, refresh, model
-  unavailable, stop failure) are specified by copy above.
+  reference: `Yes`. Since SR-005 the secondary states (blocked, copying, prefilled, starting,
+  stopping, stop failure, read-only, refresh, model unavailable, `@` menu, "+" prefill) also have
+  visuals (VIS-030..042).
 - Every section covers the affected scope or is marked `Unchanged — follows baseline` or `N/A`: `Yes`
 - Recorded values come from the existing product or the approved change: `Yes`
 - UI reference, screenshots, and this specification agree: `Yes`
