@@ -6,7 +6,7 @@
 - Stable package: `run-settings-ui-unification`, solution revision `SR-001`
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Baseline Needed` — round 9 paused for `WEB-BASELINE-REFRESH-006`
+- Status: `Baseline Needed` — round 9 paused for `WEB-BASELINE-REFRESH-007`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -110,3 +110,7 @@
   progress committed as `f8615b7` (WIP) and paused; `WEB-BASELINE-REFRESH-006` (source
   `origin/personal@4dee901`) sent to the Bootstrapper from a fresh worktree on fetched
   `origin/personal@8fdf0b7`.
+- 2026-10-05: `WEB-BASELINE-REFRESH-006` accepted, integrated and pushed (design
+  `origin/personal@ab8b23d`, pin `4dee901`). Source advanced during it to `10fb695` (one frontend
+  change: Background Tasks shell command); follow-up `WEB-BASELINE-REFRESH-007` sent. Round 9
+  continues after 007 is integrated.
