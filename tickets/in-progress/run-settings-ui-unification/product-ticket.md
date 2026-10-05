@@ -157,3 +157,4 @@
 - 2026-10-05: reopened for SR-003 (Solution Designer `product-design-request-r2.md`): Orgs are not chat targets; Org launch page; Terminate/Stop wording. Design `origin/personal@b8ce240`, source unchanged (pin `10fb695` applicable). `In Progress`.
 - 2026-10-05: round 31 built and browser-validated; `Awaiting User Review` (see `review-round-31.md`).
 - 2026-10-05: round 32 — user agreed to pick the New chat target from a heading switcher (not `@`); built and validated (see `review-round-32.md`); `Awaiting User Review`.
+- 2026-10-05: round 33 — user feedback: the Org launch page should look like the chat page; it now renders as a page of its own (pages/workspace.vue on the Org launch route), without the workspace tool tabs, so the member drawer opens from the right edge as in chat. `Awaiting User Review`.

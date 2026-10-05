@@ -52,7 +52,8 @@
               data-test="org-launch-status"
             >
               <span v-if="draft.phase !== 'ready'" class="h-3 w-3 flex-shrink-0 animate-spin rounded-full border-2 border-gray-200 border-t-gray-500 motion-reduce:animate-none" aria-hidden="true"></span>
-              <span class="truncate">{{ statusText }}</span>
+              <!-- Wraps rather than truncates: a reason or error is read in full. -->
+              <span class="min-w-0 leading-snug">{{ statusText }}</span>
             </p>
             <button
               type="button"

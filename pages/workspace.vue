@@ -1,11 +1,16 @@
 <template>
-  <div class="flex flex-col h-full bg-gray-100 font-sans text-gray-800">
+  <!-- run-settings-ui-unification (round 33): the Org launch page is a page of its own like New chat,
+       without the workspace tool tabs; runs keep the workspace layout. -->
+  <div v-if="showOrgLaunch" class="flex h-full min-h-0 min-w-0 bg-white font-sans text-gray-800" data-test="org-launch-route">
+    <OrgLaunchPage />
+  </div>
+  <div v-else class="flex flex-col h-full bg-gray-100 font-sans text-gray-800">
     <WorkspaceAdaptiveLayout :show-file-content="showFileContent" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAgentSelectionStore } from '~/stores/agentSelectionStore';
 import { buildAgentRunChatRoute } from '~/services/workspace/workspaceNavigationService';
@@ -13,6 +18,7 @@ import { useServerSettingsStore } from '~/stores/serverSettings';
 import { useWorkspaceRouteSelection } from '~/composables/workspace/useWorkspaceRouteSelection';
 import { useWorkspaceFileContentVisible } from '~/composables/workspace/useWorkspaceFileContentVisible';
 import WorkspaceAdaptiveLayout from '~/components/layout/WorkspaceAdaptiveLayout.vue';
+import OrgLaunchPage from '~/components/run-settings/OrgLaunchPage.vue';
 
 const serverSettingsStore = useServerSettingsStore();
 
@@ -33,6 +39,7 @@ watch(
 );
 
 const showFileContent = useWorkspaceFileContentVisible();
+const showOrgLaunch = computed(() => route.query.rootSubjectKind === 'agent_org' && route.query.mode === 'configuration');
 
 onMounted(() => {
   console.log('Workspace.vue: Mounted. Fetching server settings and loading profiles...');

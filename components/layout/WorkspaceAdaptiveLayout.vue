@@ -1,10 +1,9 @@
 <template>
   <WorkspaceToolShell data-test="workspace-adaptive-layout">
     <div data-test="workspace-center-content-shell" class="relative flex-1 min-h-0 overflow-hidden">
-      <!-- run-settings-ui-unification: Agents and Teams start in New chat; an Agent Org (no recipient)
-           starts on the Org launch page at the product's Org launch route (SR-003). -->
-      <OrgLaunchPage v-if="showAgentOrgLaunch" />
-      <AgentOrgWorkspaceView v-else-if="showAgentOrgActive" />
+      <!-- run-settings-ui-unification: the Org launch route renders the Org launch page outside this
+           layout (pages/workspace.vue), like New chat (round 33). -->
+      <AgentOrgWorkspaceView v-if="showAgentOrgActive" />
       <RunConfigPanel v-else-if="showSelectedRunConfig" />
       <AgentWorkspaceView v-else-if="isAgentSelected" />
       <TeamWorkspaceView v-else-if="isTeamSelected" />
@@ -55,7 +54,6 @@ import AgentWorkspaceView from '~/components/workspace/agent/AgentWorkspaceView.
 import TeamWorkspaceView from '~/components/workspace/team/TeamWorkspaceView.vue';
 import RunConfigPanel from '~/components/workspace/config/RunConfigPanel.vue';
 import AgentOrgWorkspaceView from '~/components/workspace/org/AgentOrgWorkspaceView.vue';
-import OrgLaunchPage from '~/components/run-settings/OrgLaunchPage.vue';
 import WorkspaceCenterLoadingOverlay from '~/components/layout/WorkspaceCenterLoadingOverlay.vue';
 import WorkspaceToolShell from './WorkspaceToolShell.vue';
 import { useAgentSelectionStore } from '~/stores/agentSelectionStore';
@@ -80,7 +78,6 @@ const responsiveWorkspaceShellState = useResponsiveWorkspaceShellState();
 
 const isAgentSelected = computed(() => selectionStore.selectedType === 'agent');
 const isTeamSelected = computed(() => selectionStore.selectedType === 'team');
-const showAgentOrgLaunch = computed(() => route.query?.rootSubjectKind === 'agent_org' && route.query.mode === 'configuration');
 const showAgentOrgActive = computed(() => route.query?.rootSubjectKind === 'agent_org'
   && (route.query.mode === 'active' || route.query.mode === 'history')
   && Boolean(route.query.orgRunId));

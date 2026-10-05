@@ -4,14 +4,23 @@
 
 - Status: `Approved`
 - Request / ticket: `run-settings-ui-unification` (stable package; Product ticket uses the same ID)
-- Related requirements revision ID: `SR-001` (draft requirements in the Solution Designer package)
-- Related IDs: UC-001..004, SCN-001..005, BEH-001..005, REQ-001..004, QR-001, DEC-001, DEC-002
+- Related requirements revision ID: `SR-003` (Draft requirements; this package revises the SR-001
+  result)
+- Related IDs:
+  - UC-001..006;
+  - SCN-001..009 (SCN-009 is unsupported);
+  - BEH-001..008;
+  - REQ-001..018;
+  - AC-001..012;
+  - QR-001;
+  - DEC-001..004.
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design`
 - Review URL: http://127.0.0.1:4520 (`corepack pnpm dev --port 4520`)
-- Explicit user-confirmation reference:
-  - 2026-10-05: "Okay, I like this UI. It's now much cleaner right now. I'm satisfied now."
-  - Then: "self-validate further … if everything is consistent, then we can finish the tickets."
-  - The self-validation is recorded in `review-round-30.md`.
+- Explicit user-confirmation references:
+  - SR-001 result (2026-10-05): "Okay, I like this UI. It's now much cleaner right now. I'm satisfied
+    now." Self-validated in `review-round-30.md`.
+  - SR-003 revision (2026-10-05): about the heading switcher, "that's a very, very smart UI design";
+    asked to confirm the Org launch page and the switcher, the user replied "confimr" (rounds 31–32).
 - Final validation date: 2026-10-05
 
 ## Repository And Baseline Provenance
@@ -21,9 +30,10 @@
 - Pinned source revision: `origin/personal@10fb695`. Re-checked at finalization: source
   `origin/personal@02d6ddf` has no `autobyteus-web` change since the pin.
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`)
-- Accepted design base: `origin/personal@b4f3ed1` (`WEB-BASELINE-REFRESH-007`)
+- Accepted design base: `origin/personal@b8ce240`, the SR-001 result, which is built on baseline
+  `b4f3ed1` (`WEB-BASELINE-REFRESH-007`).
 - UI reference revision: ticket branch `design/run-settings-ui-unification`. The final integration
-  revision is recorded in `product-ticket.md`.
+  revision is recorded in `product-ticket.md` and the handoff.
 - Ticket folder: `tickets/done/run-settings-ui-unification/`
 - Baseline report: `ui-baseline-report.md` at the design repository root (accepted refresh 007)
 
@@ -34,434 +44,523 @@
   The Team and Org forms were "a super long list of configuration", repeating near-full forms for
   every member.
 - **Key decisions.**
-  - **DEC-001 → D: every Run opens New chat.** The composer's four controls are the run's
-    settings, and the first message starts the run. One configuration surface replaces three forms.
-  - **Member customization is secondary.** One quiet line under the composer opens a resizable
-    right-side panel that lists members only. The team-wide settings live in the composer, the one
-    place to change them.
-  - **DEC-002 → member overrides cover model+runtime, thinking and tool approval.** A team placed
-    in an Org also has a workspace.
-  - **Who you talk to is the page heading.** `@` always means "bring in a collaborator"; it never
-    switches the target.
-  - **The saved-run settings use the same language as the member panel.** No banners and no
-    explanatory sentences: lock icons show what is fixed, a status badge shows the state, and a
-    small red stop icon stops a running run.
+  - **DEC-001 → D for Agents and Teams: every Run opens New chat.** The composer's four controls are
+    the run's settings, and the first message starts the run.
+  - **DEC-004 → A: an Agent Org is not a chat target.**
+    - An Org has no coordinator or initial recipient (`autobyteus-web/docs/agent_orgs.md:56`,
+      `:192-211`).
+    - Run / "+" open a short **Org launch page** in the same visual language: the Org heading, a
+      settings card where the message box would be, the same members line and drawer, and
+      **Run Agent Org**.
+  - **Choosing who to chat with is a selection on the New chat heading, never `@`.**
+    - `@` keeps one meaning on every surface: bring a collaborator into the run, with the current
+      agent relaying.
+    - The heading switcher lists Agents and Agent Teams (no Orgs).
+  - **Member customization is secondary.** One quiet line opens a resizable right-side drawer that
+    lists members only. The team-wide or org-wide settings live in the composer or the Org card.
+  - **DEC-002 → member overrides cover model+runtime, thinking and tool approval.** A team placed in
+    an Org also has a workspace.
+  - **Saved-run settings use the same quiet language.**
+    - Lock icons, a status badge, and a small red stop icon after it.
+    - The stop label reuses the tree's verbs (DEC-003).
+    - A Save bar appears only after a change.
 - **Alternatives considered and rejected.**
-  - **A+B+C** (keep the three run panels and restyle them with chat controls): rejected in round 2.
-    It kept three surfaces, and the forms stayed long.
-  - **Inline member list under the composer** (round 2): replaced by the right-side panel in round 3
-    to keep the chat page light.
-  - **An editable or read-only "defaults" block at the top of the member panel**: removed in rounds
-    12 and 13 to avoid two places to change the same setting.
-  - **A boxed and divided member list**, **"Default" tags**, and **muted inherited values**: replaced
-    by flat two-line rows with a "Customized" label (rounds 10–16).
+  - **A+B+C** (keep the three run panels, restyled): rejected in round 2. It kept three surfaces and
+    long forms.
+  - **Org as a New chat target** (rounds 2–30): withdrawn in SR-003; an Org has no recipient.
+  - **`@` as the target picker on New chat** (before round 9): two meanings for `@`. Replaced by the
+    heading switcher (round 32).
+  - **Keeping the old Org form** (DEC-004 option B): rejected by the user. The Org launch page is
+    consistent with the rest.
+  - **An inline member list**, **an editable/read-only defaults block in the drawer**, a **boxed
+    member list with "Default" tags**: replaced by the drawer with flat two-line rows (rounds 3–16).
 
 ## Scope And Experience Goal
 
 - **User:** someone starting or adjusting runs of agents, teams and orgs.
-- **Goal:** set the four run settings the same way everywhere. Customize team members only when
-  needed. Understand and change a saved run's settings without noise.
+- **Goal:** set the four run settings the same way everywhere, switch quickly between agents and
+  teams in chat, customize members only when needed, start an Org without a message, and understand
+  or change a saved run's settings without noise.
 - **Observable success:**
-  - every Run / "+" lands in New chat with the right heading and settings;
-  - member customization takes one line and one panel;
-  - the saved-run settings page shows only settings, status, a stop icon and Save.
+  - Agent/Team Run and "+" land in New chat with the right heading and settings;
+  - Org Run and "+" land on the Org launch page;
+  - the heading switches the chat target;
+  - member customization takes one line and one drawer;
+  - the saved-run page shows only settings, status, a stop icon and Save.
 - **In scope:**
-  - New chat for General Agent, Agent, Team and Org;
-  - the member settings panel;
+  - New chat (General Agent, Agent, Team) with the heading switcher;
+  - the Org launch page;
+  - the Member settings drawer;
   - every Run and "+" entry point;
-  - `@` mentions in New chat and in running chats;
-  - saved Agent, Team and Org run settings (Edit Config).
+  - `@` in New chat and running chats;
+  - saved Agent/Team/Org run settings (Edit Config).
 - **Non-goals:**
-  - mobile paired-phone run setup (`MobileRunSetup`);
+  - mobile paired-phone run setup;
   - Applications launch profiles;
   - the chat transcript;
   - the workspace tree layout;
-  - backend behaviour.
+  - backend behaviour;
+  - starting an Org from chat or `@`-mentioning an Org (SCN-009, unsupported).
 
 ## Related Requirements And Acceptance Criteria
 
 | ID | UI/UX Obligation | Covered Journey / Surface / State |
 | --- | --- | --- |
-| UC-001 / SCN-001 / BEH-001 | Agent Run → New chat addressed to the agent; the four controls; the first message starts the run | UXJ-001, UIS-001 |
-| UC-002 / SCN-002 / BEH-002 | Team Run → New chat; optional member customization in the panel; the first message launches the Team with its overrides | UXJ-002, UXJ-004, UIS-001, UIS-002 |
-| UC-003 / SCN-003 / BEH-003 | Org Run → New chat; member panel with placed teams (workspace + model/thinking/approval) and their members | UXJ-003, UXJ-004, UIS-002 |
-| UC-004 / SCN-004 / BEH-004 | Saved run settings: fixed values locked, model/thinking editable when stopped, stop icon while running, Save bar only after a change, refresh and model-unavailable states | UXJ-006, UIS-003 |
-| SCN-005 / BEH-005 | Chat composer controls are the reference and are reused everywhere | All |
-| REQ-001 | The four decisions are presented with the same controls on every surface | UIS-001..003 |
-| REQ-002 | Member customization is compact; customized members are labelled "Customized"; inherited values are not repeated as forms | UIS-002 |
-| REQ-003 | No raw member addresses (such as `/`) in user-facing copy | All copy below |
-| REQ-004 | Lock/edit semantics preserved without banners: lock icons, a status badge, one line only where nothing else shows the state | UIS-003 |
-| QR-001 | All controls are keyboard-operable with accessible names | Accessibility section |
-| DEC-001 | Decided: D (Run opens chat) | — |
-| DEC-002 | Decided: model+runtime, thinking, approval; placed teams add workspace | UIS-002 |
+| REQ-005 / AC-001 | Agent/Team Run → New chat with the target heading and the four controls; Org Run → Org launch page with the Org heading and settings card | UXJ-001..003, UIS-001, UIS-004 |
+| REQ-006 / AC-002 | Agent/Team start only with a first message; Org starts only with Run Agent Org (no message box); no model → Send / Run disabled with "Choose a model to start." | UXJ-001..003 |
+| REQ-007 / AC-003 / DEC-004 | No Org entry point opens New chat; Org launch page = heading, settings card, members line + drawer, Run Agent Org; success → Org run view (choose an Agent/Team as today) | UXJ-003, UIS-004 |
+| REQ-008 | New chat heading = target name (avatar only when present); General Agent keeps its `/` `@` hint; the Org page heading = Org name | UIS-001, UIS-004 |
+| REQ-009 / AC-006 | Member overrides per DEC-002; "Customized"; per-field Reset, row reset, Reset all | UXJ-004, UIS-002 |
+| REQ-010 / AC-003 / AC-004 | Launch applies overrides: Team from New chat, Org from the Org launch page | TR-002, TR-013 |
+| REQ-011 / AC-007 | `@` = "Bring into this run"; Agents and Agent Teams only, never Orgs; current target excluded; never switches the target | UXJ-007 |
+| REQ-012 | The first message keeps its `@` mentions | UXJ-007 |
+| REQ-013 / AC-008 | Agent/Team "+" → New chat prefilled; Org "+" → Org launch page prefilled (workspace, approval, model+thinking, member overrides) | UXJ-005 |
+| REQ-014 / AC-009 / DEC-003 | Running saved run: red stop icon after the badge; tree wording per type; pending/failure copy | UXJ-006 |
+| REQ-015..017 | Saved-run cascade + Save bar; special-state copy; runtime-locked model menu | UXJ-006, UIS-003 |
+| REQ-018 | Superseded launch UI and copy removed | Implementation Fidelity Boundary |
+| **New (round 32, requirement impact)** | The New chat heading is a switcher for Agents and Agent Teams | UXJ-008, UIS-001 |
+| REQ-003 | No raw addresses in user-facing copy | All copy |
+| QR-001 | Keyboard-operable with accessible names | Accessibility |
 
 ## Visual Language
 
 - **Existing product language to preserve:**
-  - the chat composer (white rounded box, thin `gray-200`/`gray-300` border);
-  - its footer controls `ChatWorkspaceMenu`, `ChatApprovalToggle`, `ChatModelMenu` and
-    `ChatThinkingControl`, unchanged in look;
-  - the product's Tailwind gray/blue/indigo palette and Inter-based type.
+  - the chat composer (white rounded box, thin `gray-200`/`gray-300` border) and its controls
+    `ChatWorkspaceMenu`, `ChatApprovalToggle`, `ChatModelMenu` and `ChatThinkingControl`;
+  - Tailwind gray/blue/indigo; Inter type; heroicons.
 - **Layout:**
-  - New chat centres the target name as a page heading (`h1`, 28 px `sm`, semibold, tracking-tight),
-    with the composer below it and one members line under the composer.
-  - The member panel is a right-side drawer over the page. On `lg` and wider, the page pads itself
-    by the drawer's width so the composer stays visible.
-  - Saved-run settings stack a header (icon + name + status badge [+ stop icon]), one settings card,
-    an optional single note line, a "Members" list and a sticky Save bar.
+  - New chat and the Org launch page share one composition: the target name centered as the page
+    heading (`h1`, 28 px `sm`, semibold, tracking-tight); below it the composer (chat) or the
+    settings card (Org); one members line under it (Team/Org).
+  - On New chat the heading is a button with a chevron (the switcher).
+  - The Member settings drawer docks right. On `lg` and wider the page pads by its width.
+  - Saved-run settings: header (icon + name + status badge [+ stop icon]), settings card, optional
+    note line, "Members", sticky Save bar.
 - **Spacing and density:**
-  - setting rows are at least 36 px tall, with a 96 px label column (`w-24`);
-  - member rows have a 32 px avatar and two lines (name 14 px medium; summary 12 px);
-  - the list gap is 6 px (`space-y-1.5`);
-  - an opened member card has `px-3`, with its settings indented to the name column (`pl-[3.25rem]`).
+  - setting rows ≥ 36 px with a 96 px label column;
+  - member rows: 32 px avatar, two lines;
+  - list gap 6 px;
+  - Org card footer `px-4 py-2.5` with a hairline above it.
 - **Typography and colour:**
-  - setting labels are `gray-900`, 13 px;
-  - values use the composer's weights: model `gray-800` medium, runtime `gray-400`, approval and
-    workspace `gray-600`;
-  - member summary lines are `gray-600`;
-  - "Customized" is `blue-700` medium;
-  - the members line is `gray-400`, with blue `blue-700` links.
+  - labels `gray-900`, 13 px;
+  - values as in the composer (model `gray-800` medium, runtime `gray-400`, approval and workspace
+    `gray-600`);
+  - "Customized" `blue-700`;
+  - members line `gray-400` with `blue-700` links;
+  - Org status text: `gray-500` (info), `amber-700` (blocked), `red-600` (error), wrapping (never
+    truncated);
+  - primary buttons indigo-600 (Run Agent Org, Save, Done).
 - **Surfaces:**
-  - the settings card and an opened member are `rounded-xl` with a `gray-200` border, a white
-    background and `shadow-sm`, with no row dividers;
-  - closed member rows have no border and a `gray-50` background on hover;
-  - the drawer is white with a left `gray-200` border, a soft left shadow, a header bottom border,
-    and a `gray-50` footer with a single indigo "Done" button.
-- **Badges:**
-  - Coordinator: `rounded-full bg-gray-100 text-gray-600`, 11 px;
-  - status Running: `bg-emerald-50 text-emerald-700` with an `emerald-500` dot;
-  - status Stopped: `bg-gray-100 text-gray-600` with a `gray-400` dot.
-- **Icons (heroicons):**
-  - `user-group` for teams and `building-office-2` for orgs;
-  - initials in a 32 px `emerald-50` circle with an `emerald-100` ring for agents;
-  - `lock-closed` 12 px `gray-300`/`gray-400` for fixed values;
-  - `stop-20-solid` 16 px `red-500` for stop;
-  - `arrow-uturn-left-solid` for a member reset.
+  - settings card, Org card and opened member: `rounded-xl`, `gray-200` border, white, `shadow-sm`,
+    no row dividers;
+  - closed member rows have no border and a `gray-50` hover;
+  - menus are `rounded-lg`, `gray-200` border, white, `shadow-lg`.
+- **Badges:** Coordinator `bg-gray-100`; Running `bg-emerald-50 text-emerald-700` + dot; Stopped
+  `bg-gray-100 text-gray-600` + dot.
+- **Icons:**
+  - `chevron-down` 20 px `gray-400` on the heading switcher;
+  - `user-group` / `building-office-2`;
+  - agent initials circle `emerald-50`;
+  - `lock-closed` for fixed values;
+  - `stop-20-solid` 16 px `red-500`;
+  - `arrow-uturn-left-solid` for a member reset;
+  - `check` `blue-600` for the current item.
 - **States:**
-  - hover: `gray-50`/`gray-100` backgrounds; the stop icon gets `red-50` and `red-600`;
-  - focus: `ring-2` in `blue-500/40` (`red-500/40` for stop);
-  - disabled: opacity 60 %;
-  - an Antigravity model locks Tool approval (lock icon, no hover).
+  - hover `gray-50`/`gray-100`; the heading switcher has a `gray-50` hover and an open background;
+  - focus `ring-2 blue-500/40` (`red-500/40` for stop);
+  - disabled 50–60 % opacity;
+  - an Antigravity model locks approval with a lock icon.
 
 ### New Or Changed Components
 
 | Component | Purpose | Variants And States | UI Reference Location |
 | --- | --- | --- | --- |
-| New chat heading | Target identity | General Agent (+ `/` `@` hint), Agent (avatar only when one exists), Team, Org | `components/chat/ChatNewSurface.vue` |
-| Members line | Entry to member customization | "All N members use these settings · Customize members" / "● N of M customized · Edit · Reset" | `components/run-settings/ChatTargetMembers.vue` |
-| Member settings drawer | Customize members | Closed / open; resizable 400–960 px (≥360 px left for the page), remembered; full width < `sm` | `ChatTargetMembers.vue` |
-| Member row | One member or placed team | Closed / hover / opened card; Customized; "N customized" for teams; model required (amber "Choose a model"); nested members under "MEMBERS" | `components/run-settings/RunMemberRow.vue` |
-| Settings rows | Workspace / Model / Thinking / Tool approval | Editable (chat controls), locked (value + lock), thinking unavailable, Antigravity approval lock, per-field "Reset" for a customized field | `components/run-settings/RunSettingsCard.vue` |
-| Members list | Rows + optional heading + "Reset all" | Panel (no heading, rows bleed into padding); saved run ("Members" heading, aligned with the card) | `components/run-settings/RunMembersSection.vue` |
-| Saved-run settings | Edit Config for Agent / Team / Org runs | Running (stop icon), stopped (editable), read-only, refresh required, model unavailable, unsaved → Save bar, saved feedback | `components/run-settings/ExistingRunSettings.vue`, `RunSubjectHeader.vue` |
-| Model menu (saved run) | Change the model within the run's runtime | Search + runtime label with lock + that runtime's models | `components/chat/ChatModelMenu.vue` (`runtimeLocked`) |
-| `@` menu | Bring a collaborator into the run | Single mode: "Bring into this run", footer "{agent} gets your message and brings them into this run"; current target excluded | `components/chat/ChatTargetMenu.vue` |
+| Heading switcher | Choose who to chat with (New chat) | Closed / hover / open; search; sections Agents (General Agent first) + Agent teams; current = check; disabled while starting | `components/chat/ChatTargetSwitcher.vue` |
+| Org launch page | Start an Org | Default, customized, model missing, runtime unavailable, preparing ("+"), launching, failed, unavailable | `components/run-settings/OrgLaunchPage.vue`, `stores/orgLaunchDraftStore.ts` |
+| Members line + drawer | Customize members (Team New chat, Org launch page) | Line: default / "● n of N customized · Edit · Reset"; drawer resizable 400–960 px, remembered; full width < `sm` | `components/run-settings/ChatTargetMembers.vue`, `memberSettingsSource.ts` |
+| Member row | A member or placed team | Closed / hover / opened card; Customized; "N customized" for teams; "Choose a model" (amber); nested members | `components/run-settings/RunMemberRow.vue` |
+| Settings rows | Workspace / Model / Thinking / Tool approval | Editable, locked, thinking unavailable, Antigravity approval lock, per-field Reset | `components/run-settings/RunSettingsCard.vue` |
+| Saved-run settings | Edit Config | Running (stop), stopped, read-only, refresh required, model unavailable, unsaved → Save bar, saved | `components/run-settings/ExistingRunSettings.vue`, `RunSubjectHeader.vue` |
+| Model menu (saved run) | Change the model within the run's runtime | Search + runtime label with lock + models | `components/chat/ChatModelMenu.vue` (`runtimeLocked`) |
+| `@` menu | Bring a collaborator in | One mode; Agents + Agent teams; current excluded | `components/chat/ChatTargetMenu.vue` |
 
 ## Journey Inventory
 
 | Journey ID | User / Context | Starting State | Goal | Completion State | Related IDs |
 | --- | --- | --- | --- | --- | --- |
-| UXJ-001 | User on Agents (list or detail) | Agent defined | Start an agent run | New chat for the agent; first message starts the run | UC-001, SCN-001 |
-| UXJ-002 | User on Agent Teams | Team defined | Start a team run | New chat for the team; first message launches the team | UC-002, SCN-002 |
-| UXJ-003 | User on Agent Orgs | Org defined | Start an org run | New chat for the org; first message launches the org | UC-003, SCN-003 |
-| UXJ-004 | User in New chat (Team/Org) | Members follow the composer | Customize some members | Line shows "N of M customized"; launch uses the overrides | REQ-002, DEC-002 |
-| UXJ-005 | User on a running/stored run | Run selected | "+" start another run like this one | New chat prefilled with the run's workspace, approval, model/thinking (and member overrides for Team/Org) | UC-001..003 |
-| UXJ-006 | User on a saved run | Run selected → Edit Config | Review, stop or change model/thinking | Saved; or stopped; or read-only explained | UC-004, REQ-004 |
-| UXJ-007 | User typing in any chat | Composer focused | Bring in a collaborator with `@` | `@Name ` inserted as a single mention; it is sent with the message | SCN-005 |
+| UXJ-001 | Agents (list/detail) | Agent defined | Start an agent run | New chat for the agent; first message starts it | REQ-005/006, AC-001/002 |
+| UXJ-002 | Agent Teams | Team defined | Start a team run | New chat for the team; first message launches it | REQ-005/006, AC-001/002/004 |
+| UXJ-003 | Agent Orgs (list/detail) | Org defined | Start an Org run | Org launch page → Run Agent Org → Org run view | REQ-005..007, REQ-010, AC-001..003 |
+| UXJ-004 | New chat (Team) or Org launch page | Members follow the defaults | Customize some members | "n of N customized"; the launch uses the overrides | REQ-009/010, AC-005/006 |
+| UXJ-005 | A running/stored run | Run selected | "+" start another like it | Agent/Team: New chat prefilled; Org: Org launch page prefilled | REQ-013, AC-008 |
+| UXJ-006 | A saved run | Edit Config | Review, stop, change model/thinking | Saved / stopped / read-only explained | REQ-014..017, AC-009..011 |
+| UXJ-007 | Any composer | Composer focused | Bring in a collaborator with `@` | `@Name ` inserted; sent with the message | REQ-011/012, AC-007 |
+| UXJ-008 | New chat | Any target, before the first message | Switch to another Agent or Team | Heading, placeholder and members line follow; settings kept | New (round 32) |
 
 ## Journey Details
 
-**UXJ-001..003 Run → New chat**
-- Run on a list card or detail page opens `/chat` with a fresh draft addressed to the definition.
-- The heading is the target's name: an avatar shows beside it only when the definition has one, and
-  the General Agent keeps its `/` `@` hint.
-- The composer shows workspace, approval, model and thinking with the definition's defaults.
-  Teams and Orgs also get the members line.
-- Sending the first message starts the run through the existing launch path.
-- The result is the run's chat (Agent) or the run's workspace view (Team/Org).
-- If no model is chosen, Send stays disabled with the product's existing reason ("Choose a model to
-  start."). An unavailable Org shows "This org is not available. Choose another org."
+**UXJ-001/002 Run → New chat**
+- Run opens `/chat` with a fresh draft for the definition.
+- The heading is its name (an avatar beside it only when the definition has one). The General Agent
+  keeps its `/` `@` hint.
+- The composer shows workspace, approval, model and thinking. Teams also get the members line.
+- Sending the first message starts the run.
+- No model → Send disabled ("Choose a model to start.").
 - Visuals: VIS-001, VIS-002, VIS-010.
 
-**UXJ-004 Customize members**
-1. "Customize members" opens the drawer from the right. Focus moves to Close.
-2. Rows show each member's effective settings. A placed team shows its workspace first.
-3. Opening a row reveals its controls in a white card. Changing any control marks the row
-   "Customized" and updates the members line ("● 1 of 2 customized · Edit · Reset").
-4. Choosing an Antigravity model locks that member's approval to Auto-approve.
-5. A field's "Reset" or the row's reset icon returns the member to the team settings. "Reset all"
-   (shown only when something is customized) clears every override.
-6. Done, Close or Escape closes the drawer and returns focus to the line. Escape first closes an
-   open menu inside the drawer.
+**UXJ-003 Org launch page**
+1. Agent Orgs → Run opens `/workspace?rootSubjectKind=agent_org&definitionId=<id>&mode=configuration`.
+2. The heading is the Org name (avatar if present). The settings card shows Workspace, Model,
+   Thinking and Tool approval.
+   - Defaults: the Org's default launch config; else the last model used in chat; else the default
+     runtime's first model.
+   - Workspace defaults to the temp workspace; approval to Auto-approve.
+3. Below the card: "All N members use these settings · Customize members". The drawer lists placed
+   teams (with their workspace) and their members, and direct agents.
+4. **Run Agent Org:**
+   - the footer shows a spinner and "Starting {Org} on {runtime}…";
+   - the settings lock;
+   - on success the Org run view opens (`mode=active`), where the user chooses an exact Agent or
+     Team, as today.
+5. **Failure:** red "Couldn't start this Agent Org. Try again."; the page and values are kept; Run
+   is enabled again.
+6. **Blocked:** amber reason ("Choose a model to start." or "{Runtime} is not available. Choose
+   another runtime."); Run disabled, with the same reason as its tooltip.
+7. **Unavailable Org:** the heading + "This Agent Org isn't available. Choose another Agent Org." +
+   "Back to Agent Orgs".
+- Visuals: VIS-012..015, VIS-005.
+
+**UXJ-004 Customize members (drawer)**
+- As approved. It opens from "Customize members" / "Edit", with focus on Close.
+- Rows show effective settings. A change marks the row "Customized" and updates the line.
+- Choosing an Antigravity model locks that member's approval.
+- Field "Reset", the row reset icon, and "Reset all" restore inheritance.
+- Done, Close or Escape closes the drawer and returns focus. The drawer is resizable 400–960 px and
+  the width is remembered.
 - Visuals: VIS-003, VIS-004, VIS-005, VIS-011.
 
 **UXJ-005 "+"**
-- "+" on an Agent, Team or Org run (workspace header) opens New chat for the same definition.
-- It copies workspace, approval and model+thinking. Team and Org also copy member overrides; a
-  placed team keeps its workspace only where it differs from the Org's.
-- If copying fails, New chat still opens with the definition's defaults.
+- Agent and Team "+" open New chat with the run's workspace, approval and model+thinking. Team "+"
+  also copies member overrides.
+- Org "+" opens the Org launch page with `&sourceOrgRunId=…`. While it reads the run, the footer
+  shows "Copying the run's settings…" and Run is disabled.
+- Then the page shows the run's workspace, approval, model+thinking and member overrides. A placed
+  team keeps its workspace only where it differs from the Org's.
+- If copying fails, the definition's defaults are used.
 
 **UXJ-006 Saved run settings**
-- **Running:** the header is name · "● Running" · red stop icon (tooltip "Stop run"). Workspace,
-  model and approval are locked; thinking is shown read-only.
-  - Clicking stop disables the icon ("Stopping…" tooltip, pulsing) and calls the same terminate
-    action as the workspace tree.
-  - On success the badge turns "● Stopped", the icon disappears, and model/thinking become editable.
-  - On failure the note line reads "Couldn't stop this run. Try again." in red.
+- **Running:**
+  - header: name · "● Running" · red stop icon; fixed values are locked;
+  - stop tooltip/aria: Agent "Terminate run", Team "Terminate team", Org "Stop Agent Org";
+  - pending: "Terminating…" (Agent/Team) or "Stopping…" (Org), icon disabled and pulsing;
+  - success: "● Stopped", the icon disappears, model and thinking become editable;
+  - failure: red note "Couldn't terminate this run. Try again." (Agent/Team) or "Couldn't stop this
+    org. Try again." (Org).
 - **Stopped and editable:**
-  - The model menu lists only the run's runtime models.
-  - Changing the team- or org-wide model updates every member that is not customized, including
-    members of placed teams.
-  - Any change shows the Save bar: "Unsaved changes · they apply when this run resumes · Cancel ·
-    Save". Cancel restores the saved values. Save shows "Saving…", then "Saved. Changes apply when
-    this run resumes." (green), and the bar closes.
-- **Read-only stopped run:** "🔒 This run's settings can't be changed."
-- **Refresh required:** an amber "Saved settings need a refresh before you can change them.
-  Refresh"; model and thinking stay locked until refreshed.
-- **Model unavailable:** under Model, "No longer offered by {runtime}. Choose another model before
-  this run resumes."
-- Visuals: VIS-006, VIS-007, VIS-008, VIS-009.
+  - the model menu has a search box, the runtime label with a lock, and that runtime's models;
+  - the team- or org-wide model applies to non-customized members, including members of placed
+    teams;
+  - Save bar: "Unsaved changes · they apply when this run resumes · Cancel · Save" → "Saving…" →
+    "Saved. Changes apply when this run resumes.".
+- **Read-only:** "This run's settings can't be changed."
+- **Refresh required:** "Saved settings need a refresh before you can change them. Refresh".
+- **Model unavailable:** "No longer offered by {runtime}. Choose another model before this run
+  resumes."
+- Visuals: VIS-006..009.
 
 **UXJ-007 `@`**
-- Typing `@` opens "Bring into this run @… · ↑↓ to move, Enter to choose". It lists agents and teams
-  except the current target.
-- Enter or click inserts `@Name ` and highlights it inline as one token. The footer reads
-  "{focused agent} gets your message and brings them into this run". The focused agent is the
-  agent, the team's coordinator, or the org.
-- The first message of a new run keeps the mentions.
+- `@` opens "Bring into this run @… · ↑↓ to move, Enter to choose". It lists Agents and Agent Teams
+  only, excluding the current target.
+- Enter or click inserts `@Name ` as one inline token. The footer reads "{agent} gets your message
+  and brings them into this run" (the agent, or the team's coordinator).
+- The first message keeps its mentions.
+
+**UXJ-008 Heading switcher (New chat)**
+- Click the heading (name, avatar, chevron). A menu opens under it with focus in "Search agents and
+  teams".
+  - Sections: "Agents" (General Agent first, then shared agents), then "Agent teams".
+  - A check marks the current target; the highlight starts there.
+  - Agent Orgs are never listed.
+- ↑/↓ move, Enter chooses, Escape or an outside click closes (focus returns to the heading).
+- Choosing switches the draft at once:
+  - the heading changes;
+  - the placeholder changes ("Ask {agent} anything…", "Message {team}…", or the General Agent copy
+    and hint);
+  - the members line shows for Teams;
+  - member overrides reset when the target changes; workspace, approval and model+thinking are kept;
+  - focus moves to the message box.
+- Only before the first message; disabled while a run is starting. On a narrow screen the menu is
+  nudged inside the window (8 px margin).
+- Visuals: VIS-016, VIS-001.
 
 ## Screen And Surface Specification
 
 | Surface ID | Surface Name | Route / Entry | Purpose And Primary Action | Layout And Key Sections | Visual ID |
 | --- | --- | --- | --- | --- | --- |
-| UIS-001 | New chat | `/chat` via Run, "+", the workspace tree "+", the Chat nav | Write the first message and start the run | Heading; composer (context files, input, workspace, approval, model, thinking, send); members line (Team/Org) | VIS-001, VIS-002, VIS-003, VIS-010 |
-| UIS-002 | Member settings drawer | "Customize members" / "Edit" on the members line | Customize members | Header (icon, "Member settings", target name, close); optional "Reset all"; member rows; footer "Done"; left resize edge | VIS-004, VIS-005, VIS-011 |
-| UIS-003 | Saved-run settings | Workspace → run → "Edit Config"; Org: select a member → "Edit Config" | Review, stop, change model/thinking, save | Header with status/stop; optional note; settings card; "Members"; Save bar | VIS-006..009 |
+| UIS-001 | New chat | `/chat` via Agent/Team Run, Agent/Team "+", the workspace tree "+", the Chat nav | Write the first message and start | Heading switcher; composer; members line (Team) | VIS-001..003, VIS-010, VIS-016 |
+| UIS-002 | Member settings drawer | "Customize members" / "Edit" (New chat Team, Org launch page) | Customize members | Header; optional "Reset all"; rows; footer "Done"; left resize edge | VIS-004, VIS-005, VIS-011 |
+| UIS-003 | Saved-run settings | Workspace → run → "Edit Config" (Org: select a member → "Edit Config") | Review, stop, change model/thinking, save | Header with status/stop; optional note; settings card; "Members"; Save bar | VIS-006..009 |
+| UIS-004 | Org launch page | `/workspace?rootSubjectKind=agent_org&definitionId=…&mode=configuration[&sourceOrgRunId=…]` via Org Run / "+" | Start the Org | Heading; settings card with footer (status + Run Agent Org); members line | VIS-012..015 |
 
 ## Interaction And State Transitions
 
 | Transition ID | Surface / From State | User Action Or System Trigger | Immediate Feedback | Resulting State | Relevant Data Or Side Effect | Next Available Actions |
 | --- | --- | --- | --- | --- | --- | --- |
-| TR-001 | Agents/Teams/Orgs page | Run | Navigates | UIS-001 for the definition | New draft; target set | Edit settings, customize, send |
-| TR-002 | UIS-001 | Send (message present, ready) | Composer shows "Starting {name} on {runtime}…" | Run view | Run launched with the draft settings + member overrides + mentions | Chat |
-| TR-003 | UIS-001 (Team/Org) | Customize members / Edit | Drawer slides in (200 ms) | UIS-002 open | Page pads by the drawer width on `lg`+ | Change, reset, Done |
-| TR-004 | UIS-002 | Change a member control | Row shows "Customized"; line updates | Draft member override stored | Only fields that differ are stored | Reset, Done |
-| TR-005 | UIS-002 | Reset icon / "Reset" / "Reset all" | Label clears; line returns to "All N members use these settings" | Override removed | — | — |
-| TR-006 | UIS-002 | Drag left edge / ←→ on edge / double-click | Blue edge line; width follows | Width 400–960 px (page keeps ≥360 px), stored | `localStorage['autobyteus.chat.memberPanelWidth']` | — |
-| TR-007 | Run view | "+" | Navigates | UIS-001 prefilled from the run | Copies workspace, approval, model/thinking (+ member overrides) | Send |
-| TR-008 | UIS-003 running | Stop icon | Icon pulses, disabled | Stopped, editable | Same terminate action as the tree | Change model, Save |
-| TR-009 | UIS-003 stopped | Change model/thinking | Save bar appears | Dirty | Non-customized members follow | Cancel, Save |
+| TR-001 | Agents/Teams page | Run | Navigates | UIS-001 for the definition | New draft | Edit, switch, customize, send |
+| TR-002 | UIS-001 | Send (ready) | "Starting {name} on {runtime}…" | Run view | Launch with settings + overrides + mentions | Chat |
+| TR-003 | UIS-001 (Team) / UIS-004 | Customize members / Edit | Drawer slides in (200 ms) | UIS-002 open | Page pads on `lg`+ | Change, reset, Done |
+| TR-004 | UIS-002 | Change a member control | "Customized"; line updates | Override stored | Only differing fields | Reset, Done |
+| TR-005 | UIS-002 | Reset icon / Reset / Reset all | Label clears | Override removed | — | — |
+| TR-006 | UIS-002 | Drag edge / ←→ / double-click | Blue edge line | Width 400–960 px, stored | `localStorage['autobyteus.chat.memberPanelWidth']` | — |
+| TR-007 | Agent/Team run view | "+" | Navigates | UIS-001 prefilled | Copies workspace, approval, model/thinking (+ overrides) | Send |
+| TR-008 | UIS-003 running | Stop icon | Icon pulses, disabled; "Terminating…"/"Stopping…" | Stopped, editable | Same action as the tree | Change model, Save |
+| TR-009 | UIS-003 stopped | Change model/thinking | Save bar | Dirty | Non-customized members follow | Cancel, Save |
 | TR-010 | UIS-003 dirty | Save | "Saving…" → "Saved. Changes apply when this run resumes." | Saved | Existing save path | — |
-| TR-011 | Any composer | `@` + Enter/click | Menu opens; selection inserts `@Name ` | Mention in text | Sent with the message | Continue typing |
+| TR-011 | Any composer | `@` + Enter/click | Menu; `@Name ` inserted | Mention in text | Sent with the message | Continue |
+| TR-012 | Agent Orgs page | Run | Navigates | UIS-004 (default) | New Org draft | Edit, customize, Run |
+| TR-013 | UIS-004 ready | Run Agent Org | Spinner + "Starting {Org} on {runtime}…"; settings locked | Org run view; or failed (red copy, values kept) | Org launch with overrides; no recipient | Choose Agent/Team |
+| TR-014 | Org run view | "+" | Navigates; "Copying the run's settings…" | UIS-004 prefilled | Reads the source run | Run Agent Org |
+| TR-015 | UIS-001 | Heading → choose a target | Menu closes; heading/placeholder/members line change; focus to input | Draft retargeted | Member overrides reset; settings kept | Send |
 
 ## State Behavior
 
 | Surface / State | Trigger | Required Presentation And Copy | Available Actions | Recovery Or Exit | Visual ID |
 | --- | --- | --- | --- | --- | --- |
-| UIS-001 General Agent | Chat nav | "General Agent" + "All your skills are available. Type / to use a skill, or @ to bring in an agent or team."; placeholder "Ask anything · / for skills · @ for an agent or team" | Send, @, / | — | VIS-001 |
-| UIS-001 Team/Org default | Run | Members line "All {N} members use these settings · Customize members" | Customize | — | VIS-002 |
+| UIS-001 General Agent | Chat nav | "General Agent ⌄" + "All your skills are available. Type / to use a skill, or @ to bring in an agent or team."; placeholder "Ask anything · / for skills · @ for an agent or team" | Switch, send, @, / | — | VIS-001 |
+| UIS-001 switcher open | Heading click | Search "Search agents and teams"; "Agents" / "Agent teams"; check on current; empty: "No agents or teams match" | Choose, Esc | Esc / outside click | VIS-016 |
+| UIS-001 Team default | Run / switch | "All {N} members use these settings · Customize members" | Customize | — | VIS-002 |
 | UIS-001 customized | Override set | "● {n} of {N} customized · Edit · Reset" | Edit, Reset | Reset | VIS-003 |
-| UIS-001 starting | Send | "Starting {name} on {runtime}…" (members line hidden) | — | — | — |
-| UIS-002 member customized | Change | "Customized · {model} · {runtime} · {approval}" (+ workspace for teams) | Reset icon, per-field Reset, Reset all | Reset | VIS-004 |
-| UIS-002 team with customized members | Change inside a team | "{n} customized · …" on the team row | Open | — | — |
-| UIS-002 model required | No model | Summary "Choose a model" (amber) | Choose model | — | — |
-| UIS-002 Antigravity | Gemini/AGY model | Tool approval "Auto-approve" + lock, tooltip "Antigravity always runs with auto-approve." | — | Choose another runtime | — |
-| UIS-003 running | Active run | "● Running" + red stop icon (tooltip "Stop run"); fixed values locked | Stop | — | VIS-006 |
-| UIS-003 stopping / failed | Stop | Icon disabled + pulse; failure: "Couldn't stop this run. Try again." | Retry | — | — |
-| UIS-003 stopped editable | Stopped | "● Stopped"; Model/Thinking menus; no note line | Change, Save | Cancel | VIS-007 |
+| UIS-001 starting | Send | "Starting {name} on {runtime}…"; switcher disabled | — | — | — |
+| UIS-004 default | Org Run | Org heading; card; "Run Agent Org"; members line | Edit, customize, Run | — | VIS-012 |
+| UIS-004 blocked | No model / runtime unavailable | Amber "Choose a model to start." / "{Runtime} is unavailable. Choose another runtime."; Run disabled (tooltip = reason) | Choose model | — | — |
+| UIS-004 preparing | Org "+" | Spinner + "Copying the run's settings…"; Run disabled | — | Defaults on failure | — |
+| UIS-004 launching | Run Agent Org | Spinner + "Starting {Org} on {runtime}…"; settings locked; Run disabled | — | — | — |
+| UIS-004 failed | Launch error | Red "Couldn't start this Agent Org. Try again." (wraps) | Run again | — | VIS-013 |
+| UIS-004 unavailable | Org missing | "This Agent Org isn't available. Choose another Agent Org." + "Back to Agent Orgs" | Back | — | VIS-014 |
+| UIS-002 member customized | Change | "Customized · {model} · {runtime} · {approval}" (+ workspace for teams) | Reset icon, field Reset, Reset all | Reset | VIS-004, VIS-005 |
+| UIS-002 model required | No model | "Choose a model" (amber) | Choose | — | — |
+| UIS-002 Antigravity | AGY model | Approval "Auto-approve" + lock; tooltip "Antigravity always runs with auto-approve." | — | Another runtime | — |
+| UIS-003 running | Active | "● Running" + red stop icon (tooltip per type); fixed values locked | Stop | — | VIS-006 |
+| UIS-003 stop failed | Terminate error | "Couldn't terminate this run. Try again." / "Couldn't stop this org. Try again." | Retry | — | — |
+| UIS-003 stopped editable | Stopped | "● Stopped"; Model/Thinking menus | Change, Save | Cancel | VIS-007 |
 | UIS-003 read-only | Not editable | "🔒 This run's settings can't be changed." | — | — | — |
-| UIS-003 refresh required | Stale config | Amber "Saved settings need a refresh before you can change them. Refresh" | Refresh | Refresh | — |
-| UIS-003 model unavailable | Saved model missing | "No longer offered by {runtime}. Choose another model before this run resumes." | Choose model | — | — |
-| UIS-003 model menu | Model trigger | Search; "{Runtime} 🔒" label (tooltip "The runtime is fixed for this run"); models | Choose | Escape | VIS-008 |
+| UIS-003 refresh / model unavailable | Stale config / missing model | "Saved settings need a refresh before you can change them. Refresh" / "No longer offered by {runtime}. Choose another model before this run resumes." | Refresh / choose | — | — |
+| UIS-003 model menu | Model trigger | Search; "{Runtime} 🔒" (tooltip "The runtime is fixed for this run"); models | Choose | Esc | VIS-008 |
 | UIS-003 Org | Org run | Org card + members incl. placed team (workspace editable when stopped) | Change, Save | — | VIS-009 |
 
 ## Content, Labels, Validation, And Feedback
 
-- **Voice:** short and plain. No sentence where a control, icon or badge already shows the state.
-  Use sentence case.
-- **Exact strings (en; zh-CN in `localization/messages/zh-CN/runSettings.ts` and `chat.ts`):**
-  - members line: "All {{count}} members use these settings", "Customize members",
-    "{{count}} of {{total}} customized", "Edit", "Reset";
-  - drawer: "Member settings", "Done"; aria "Close member settings";
-  - resize edge aria: "Resize member settings. Drag, or use the arrow keys; double-click to restore
-    the width.";
-  - rows: "Workspace", "Model", "Thinking", "Tool approval", "Not available for this model";
-  - row labels: "Customized", "{{count}} customized", "Coordinator", "Members", "Reset all",
-    "Reset" (per field);
-  - saved run:
-    - status: "Running", "Stopped";
-    - stop: "Stop run", "Stopping…", "Couldn't stop this run. Try again.";
-    - notes: "This run's settings can't be changed.", "Saved settings need a refresh before you can
+- **Voice:** short and plain; no sentence where a control, icon or badge shows the state; sentence
+  case.
+- **Exact strings** (en; zh-CN in `localization/messages/zh-CN/runSettings.ts` and `chat.ts`):
+  - **Heading switcher:**
+    - aria "Choose who to chat with (now {{name}})";
+    - search "Search agents and teams";
+    - sections "Agents", "Agent teams";
+    - empty "No agents or teams match".
+  - **Org launch page:**
+    - "Run Agent Org";
+    - "Starting {{name}} on {{runtime}}…";
+    - "Couldn't start this Agent Org. Try again.";
+    - "This Agent Org isn't available. Choose another Agent Org.";
+    - "Back to Agent Orgs";
+    - "Copying the run's settings…";
+    - "Choose a model to start.";
+    - "{{runtime}} is unavailable. Choose another runtime." (existing chat copy).
+  - **Members line and drawer:**
+    - "All {{count}} members use these settings";
+    - "Customize members";
+    - "{{count}} of {{total}} customized";
+    - "Edit";
+    - "Reset";
+    - "Member settings";
+    - "Done";
+    - aria "Close member settings";
+    - resize aria "Resize member settings. Drag, or use the arrow keys; double-click to restore
+      the width.".
+  - **Rows:**
+    - "Workspace", "Model", "Thinking", "Tool approval";
+    - "Not available for this model";
+    - "Customized", "{{count}} customized", "Coordinator", "Members", "Reset all", "Reset".
+  - **Saved run:**
+    - status "Running" / "Stopped";
+    - stop: Agent "Terminate run", Team "Terminate team" (tree keys), Org "Stop Agent Org" (tree key);
+    - pending "Terminating…" / "Stopping…";
+    - failure "Couldn't terminate this run. Try again." / "Couldn't stop this org. Try again.";
+    - notes "This run's settings can't be changed.", "Saved settings need a refresh before you can
       change them.", "Refresh";
-    - Save bar: "Unsaved changes · they apply when this run resumes", "Cancel", "Save", "Saving…",
-      "Saved. Changes apply when this run resumes.";
-  - model: "The runtime is fixed for this run" (tooltip), "No longer offered by {{runtime}}. Choose
-    another model before this run resumes.";
-  - New chat: "Message {{team}}…", "Message {{org}}…", "Ask {{agent}} anything…" (product copy);
-  - `@` menu: "Bring into this run", "{{agent}} gets your message and brings them into this run".
+    - Save bar "Unsaved changes · they apply when this run resumes", "Cancel", "Save", "Saving…",
+      "Saved. Changes apply when this run resumes.".
+  - **Model:** "The runtime is fixed for this run"; "No longer offered by {{runtime}}. Choose another
+    model before this run resumes.".
+  - **New chat (product copy):** "Message {{team}}…", "Ask {{agent}} anything…".
+  - **`@`:** "Bring into this run"; "{{agent}} gets your message and brings them into this run".
 - **Removed copy** (must not appear):
-  - "Files are saved in …" (New chat and saved run);
-  - "Team defaults" / "Org defaults" titles;
-  - "All use defaults" and the per-row "Team defaults" text;
-  - "Default" tags;
-  - "Team run" / "Agent run" / "Org run" subtitles;
-  - "Kept from the saved run: …";
-  - "Stop this run to change its model or thinking.";
-  - "Changes apply when this run resumes." as a standing line;
-  - "Discard";
-  - the "Chat with …" `@` header.
+  - "Files are saved in …"; "Team defaults" / "Org defaults"; "All use defaults"; "Default" tags;
+  - "Team run" / "Agent run" / "Org run" subtitles; "Kept from the saved run: …";
+  - "Stop this run to change its model or thinking."; a standing "Changes apply when this run
+    resumes."; "Discard";
+  - "Stop run" / "Stopping…" for Agent/Team and "Couldn't stop this run. Try again." (replaced by
+    DEC-003 wording);
+  - the "Chat with …" `@` header;
+  - **Org-in-chat:** "Message {{org}}…", "This org is not available. Choose another org.", the
+    `@` footer naming an Org.
 
 ### Form And Input Validation
 
 | Field / Control | Input Type | Required | Validation Rule | Validation Trigger | Exact Message |
 | --- | --- | --- | --- | --- | --- |
-| Model (composer) | Menu | Yes | A model must be selected | Send | Product copy "Choose a model to start." (send disabled) |
-| Member model | Menu | Yes (if the member has no model) | Inherited or own model | Row render | Row summary "Choose a model" (amber) |
-| Saved-run model | Menu | Yes | Must exist on the run's runtime | Load | "No longer offered by {{runtime}}. Choose another model before this run resumes." |
+| Model (composer / Org card) | Menu | Yes | A model must be selected | Send / Run | "Choose a model to start." (button disabled) |
+| Runtime (composer / Org card) | Menu | Yes | Runtime enabled | Send / Run | "{{runtime}} is unavailable. Choose another runtime." |
+| Member model | Menu | Yes (if none) | Inherited or own | Row render | Summary "Choose a model" (amber) |
+| Saved-run model | Menu | Yes | Exists on the run's runtime | Load | "No longer offered by {{runtime}}. Choose another model before this run resumes." |
 
 ## Responsive And Platform Behavior
 
 | Viewport Or Context | Range Or Condition | Layout And Navigation Changes | Interaction Changes |
 | --- | --- | --- | --- |
-| Desktop wide | ≥ `lg` (1024 px) | The drawer docks right; the page pads by the drawer width | Drag/keyboard resize |
-| Desktop narrow / tablet | `sm`–`lg` | The drawer overlays the page (no padding) | Resize available |
-| Phone | < `sm` (640 px) | The drawer is full width; no resize edge; menus open as bottom sheets; the composer runtime label hides | Tap |
+| Desktop wide | ≥ `lg` (1024 px) | Drawer docks right; the page pads by its width | Drag/keyboard resize |
+| Desktop narrow / tablet | `sm`–`lg` | Drawer overlays the page | Resize available |
+| Phone | < `sm` (640 px) | Drawer full width, no resize edge; menus as bottom sheets; the composer's runtime label hides; the Org card narrows beside the workspace strips (values truncate with a tooltip; approval label never wraps); the heading switcher menu is nudged inside the window | Tap |
 
 ## Accessibility And Keyboard Behavior
 
 - Target: parity with the chat controls (QR-001).
-- **Focus:**
-  - opening the drawer focuses Close, and closing returns focus to the members line link;
-  - Escape closes an open menu first, then the drawer;
-  - menu focus moves into search on open.
-- **Keyboard:**
-  - every row toggle, reset and control is a button;
-  - the resize edge is a focusable `role="separator"` with `aria-valuenow`/`min`/`max`; ←/→ resize
-    by 24 px;
-  - menus use ↑/↓ and Enter;
-  - the `@` menu uses ↑/↓ and Enter.
-- **Names and roles:**
-  - the drawer is `role="dialog"` with aria-label "Member settings";
-  - each row toggle has `aria-expanded` and "Customize {name}";
-  - each reset has "Reset {name} to defaults";
-  - locked values have "{setting}: {value}. Fixed for this run";
-  - the stop button has aria-label and title "Stop run" / "Stopping…";
-  - the status note has `role="status"`, or `alert` for refresh and stop failure;
+- **Heading switcher:**
+  - a button with `aria-haspopup="listbox"`, `aria-expanded` and an aria-label naming the current
+    target;
+  - search is a combobox with `aria-activedescendant`;
+  - ↑/↓, Enter, Escape; an outside click closes;
+  - focus returns to the heading on Escape and moves to the message box after choosing.
+- **Org launch page:**
+  - the card controls are the chat controls (keyboard-operable);
+  - the status text is `role="status"`, or `role="alert"` on error, with `aria-live="polite"`;
+  - Run Agent Org is disabled with a title giving the reason.
+- **Drawer:**
+  - `role="dialog"` "Member settings"; focus moves to Close on open and returns to the line on close;
+  - Escape closes an open menu first;
+  - the resize edge is a focusable `role="separator"` with value/min/max and ←/→ in 24 px steps.
+- **Saved run:**
+  - stop button aria/title per type;
+  - status note `role="status"`, or `alert` for refresh/stop failure;
   - the Save bar text is `aria-live="polite"`.
-- **Contrast:** labels and values meet body-text contrast (`gray-900`/`gray-800`/`gray-600` on
-  white); red-500 for the stop icon; amber-700 for warnings.
+- **Contrast:** labels and values `gray-900`/`gray-800`/`gray-600` on white; stop `red-500`;
+  warnings `amber-700`; errors `red-600`.
 
 ## Motion And Transitions
 
-- Drawer: slide from the right, 200 ms ease-out in and 150 ms ease-in out. The page padding animates
-  200 ms but not during a drag.
-- Chevron rotation 150 ms; colour/border transitions on hover.
-- Reduced motion: transitions are disabled (`motion-reduce:transition-none`).
+- Drawer slides from the right: 200 ms ease-out in, 150 ms ease-in out. Page padding animates
+  200 ms (not while dragging).
+- Chevrons rotate in 150 ms. Spinners for preparing and launching.
+- Reduced motion: transitions and spin disabled (`motion-reduce:`).
 
 ## Data, Contract, And Mock Boundaries
 
 | Boundary / Data | UI Dependency | UI Reference Behavior | Production Behavior Required Or Still Unknown |
 | --- | --- | --- | --- |
-| Launch from New chat (Agent/Team/Org) | First message starts the run with settings + member overrides + mentions | Existing launch services; the Team `sendMessageToFocusedMember` stub launches the draft; the first message is not played | Org as a chat target and the first-message mentions are new requirements (see Open Decisions) |
-| Runtime catalogs | Model menus | Hand-written `prototype/run-settings/runtimeCatalogFixture.ts` (4 KB; Codex, Claude, Antigravity) | Real catalogs |
-| AutoByteus Org | Realistic member panel | Hand-written `prototype/run-settings/autobyteusOrgFixture.ts` (10 KB; structure and names from `autobyteus-agents` `origin/main@d5233c3`) | Real definitions |
-| Stop run | Saved-run header | `terminateRun` / `terminateTeamRun` scripted to succeed; the open settings update directly; the tree status is not updated in the reference | Real terminate; lifecycle update refreshes editability |
-| Save saved-run settings | Save bar | Scripted local save + confirmation | Existing save/patch services |
-| Saved Org run config | UIS-003 Org | Loads from the local `AgentOrgRunConfig` fixture | Real read |
-| Review states | Refresh required / model unavailable | `localStorage['autobyteus.design.runSettings.existingState']` | Real editability reasons |
+| Agent/Team launch from New chat | First message starts the run with settings, overrides and mentions | Existing launch services; the Team `sendMessageToFocusedMember` stub launches the draft | Mentions on the first message is a new requirement (REQ-012) |
+| Org launch from the Org launch page | Run Agent Org with root config + overrides | `orgLaunchDraftStore.launch` → the source's `agentOrgRun.launch` (allowed through the plugin); lands on `mode=active` (fixture gap F-004: empty view) | Real launch; production keeps or replaces the Org launch config store; the UI is normative |
+| Org "+" prefill | Source run settings | Reads `readAgentOrgRunInspection` + `buildEditableAgentOrgRunSeed` | Real read |
+| Default model on the Org page | Initial card values | Org default → last chat model → default runtime's first model | Confirm with requirements (mirrors New chat) |
+| Runtime catalogs | Model menus | Hand-written `prototype/run-settings/runtimeCatalogFixture.ts` (4 KB) | Real catalogs |
+| AutoByteus Org | Realistic members | Hand-written `prototype/run-settings/autobyteusOrgFixture.ts` (10 KB; names only) | Real definitions |
+| Stop run | Saved-run header | Terminate scripted to succeed; the open settings update; the tree is not updated in the reference | Real terminate; lifecycle refresh |
+| Save saved-run settings | Save bar | Scripted local save | Existing save services |
+| Review states | Design-only switches | `localStorage['autobyteus.design.runSettings.existingState']` = `refresh_required` / `model_unavailable`; `localStorage['autobyteus.design.runSettings.orgLaunchState']` = `launch_failed` / `unavailable` (reload after setting) | Real reasons |
 
 ## Final Visual Reference Inventory
 
 All captures were taken on 2026-10-05 after confirmation and final validation, in Chromium at
-DPR 2. Desktop is an 880 × 740 CSS viewport. Phone is a 390 CSS-px frame.
+DPR 2. The desktop viewport is recorded per image because the browser window width changed between
+captures. Phone is a 390 CSS-px frame.
 
-| Visual ID | Journey / Surface / State | Viewport | Image Path | Requirements-Defining Visible Details | Explicitly Illustrative Fixture Content Or Permitted Variation |
+| Visual ID | Journey / Surface / State | Viewport | Image Path | Requirements-Defining Visible Details | Illustrative / Permitted Variation |
 | --- | --- | --- | --- | --- | --- |
-| VIS-001 | UXJ-001 / UIS-001 General Agent | 880 | `visual-references/VIS-001-new-chat-general-agent-880.png` | Heading, hint, placeholder, four controls, no workspace line | Model/workspace names |
-| VIS-002 | UXJ-002 / UIS-001 Team default | 880 | `visual-references/VIS-002-new-chat-team-members-line-880.png` | Heading, members line | Team name, member count |
-| VIS-003 | UXJ-004 / UIS-001 customized | 880 | `visual-references/VIS-003-new-chat-team-members-customized-line-880.png` | "● 1 of 2 customized · Edit · Reset" | Counts |
-| VIS-004 | UXJ-004 / UIS-002 Team | 880 | `visual-references/VIS-004-member-panel-team-customized-880.png` | Drawer header/footer, Reset all, opened card, Customized label, reset icon, per-field Reset, "Ask first" amber | Member names, models |
-| VIS-005 | UXJ-004 / UIS-002 Org | 880 | `visual-references/VIS-005-member-panel-autobyteus-org-880.png` | Team rows with workspace summary, opened team card, MEMBERS label, Coordinator badge | Org/team/member names (from the AutoByteus Org fixture) |
-| VIS-006 | UXJ-006 / UIS-003 running | 880 | `visual-references/VIS-006-saved-team-running-stop-880.png` | Running badge + red stop icon right after it; no note line; locks | Names, models |
-| VIS-007 | UXJ-006 / UIS-003 stopped, unsaved | 880 | `visual-references/VIS-007-saved-team-stopped-unsaved-880.png` | Stopped badge; editable model/thinking; members follow; Save bar copy and buttons | Model names |
-| VIS-008 | UXJ-006 / UIS-003 model menu | 880 | `visual-references/VIS-008-saved-run-model-menu-locked-runtime-880.png` | Search, runtime label + lock, model rows, check | Model names/descriptions |
-| VIS-009 | UXJ-006 / UIS-003 Org | 880 | `visual-references/VIS-009-saved-org-run-settings-880.png` | Org header, card, placed team with editable workspace and members | Names |
-| VIS-010 | UXJ-002 / UIS-001 phone | 390 | `visual-references/VIS-010-new-chat-team-390.png` | Wrapped members line, composer fit | Names |
-| VIS-011 | UXJ-004 / UIS-002 phone | 390 | `visual-references/VIS-011-member-panel-team-390.png` | Full-width drawer, no resize edge, truncated summaries | Names |
+| VIS-001 | UXJ-001/008 / UIS-001 General Agent | 804 | `visual-references/VIS-001-new-chat-general-agent-804.png` | Heading with chevron, hint, placeholder, four controls, no workspace line | Names, model |
+| VIS-002 | UXJ-002 / UIS-001 Team | 804 | `visual-references/VIS-002-new-chat-team-members-line-804.png` | Team heading with chevron, members line | Names, counts |
+| VIS-003 | UXJ-004 / UIS-001 customized | 804 | `visual-references/VIS-003-new-chat-team-members-customized-line-804.png` | "● 1 of 2 customized · Edit · Reset" (focus ring on Edit = focus returned from the drawer) | Counts |
+| VIS-004 | UXJ-004 / UIS-002 Team | 880 | `visual-references/VIS-004-member-panel-team-customized-880.png` | Drawer, Reset all, opened card, Customized, reset icon, field Reset | Names, models |
+| VIS-005 | UXJ-003/004 / UIS-002 from the Org launch page | 804 | `visual-references/VIS-005-member-panel-org-launch-804.png` | Org drawer; placed team Customized with workspace + field Reset; MEMBERS; Coordinator | Org/team/member names (AutoByteus Org fixture) |
+| VIS-006 | UXJ-006 / UIS-003 running | 880 | `visual-references/VIS-006-saved-team-running-stop-880.png` | Running badge + red stop icon; no note line; locks (tooltip text per type is specified in copy) | Names |
+| VIS-007 | UXJ-006 / UIS-003 stopped, unsaved | 880 | `visual-references/VIS-007-saved-team-stopped-unsaved-880.png` | Stopped; editable; members follow; Save bar "· Cancel · Save" | Models |
+| VIS-008 | UXJ-006 / UIS-003 model menu | 880 | `visual-references/VIS-008-saved-run-model-menu-locked-runtime-880.png` | Search, runtime label + lock, models, check | Models |
+| VIS-009 | UXJ-006 / UIS-003 Org | 880 | `visual-references/VIS-009-saved-org-run-settings-880.png` | Org header, card, placed team with workspace and members | Names |
+| VIS-010 | UXJ-002 / UIS-001 phone | 390 | `visual-references/VIS-010-new-chat-team-390.png` | Heading with chevron, composer fit, members line wraps | Names |
+| VIS-011 | UXJ-004 / UIS-002 phone | 390 | `visual-references/VIS-011-member-panel-team-390.png` | Full-width drawer, no resize edge | Names |
+| VIS-012 | UXJ-003 / UIS-004 default | 804 | `visual-references/VIS-012-org-launch-page-804.png` | Org heading; settings card; hairline footer with Run Agent Org; members line | Org name, counts, model |
+| VIS-013 | UXJ-003 / UIS-004 failed | 1512 | `visual-references/VIS-013-org-launch-failed-1512.png` | Red error in footer (full text), values kept, Run enabled | — |
+| VIS-014 | UXJ-003 / UIS-004 unavailable | 1512 | `visual-references/VIS-014-org-launch-unavailable-1512.png` | Heading, message, "Back to Agent Orgs" | Org name |
+| VIS-015 | UXJ-003 / UIS-004 phone | 390 | `visual-references/VIS-015-org-launch-page-390.png` | Card fits beside the strips; approval on one line; Run button; members line wraps | Names |
+| VIS-016 | UXJ-008 / UIS-001 switcher open | 804 | `visual-references/VIS-016-new-chat-target-switcher-804.png` | Open heading state, search, sections, check on current, no Orgs | Agent/team names and descriptions |
 
 Illustrative everywhere: agent, team, org, model and workspace names and descriptions, member
 counts and the left navigation tree contents.
 
 ## Linked UI Reference Evidence
 
-- Runnable UI reference: the design repository root, `corepack pnpm dev --port 4520`. Reset
-  fixture state with `localStorage.clear()`.
+- Runnable UI reference: the design repository root, `corepack pnpm dev --port 4520`. Reset with
+  `localStorage.clear()`.
 - Ticket record: `product-ticket.md`
-- Review rounds: `review-round-1.md` … `review-round-30.md` (history, findings, validation)
-- Journeys: UXJ-001..007; transitions TR-001..011
-- Mocked boundaries and limitations: see the Data section. In the automation browser, background
-  tabs do not finish slide transitions; this is not a product issue.
+- Review rounds: `review-round-1.md` … `review-round-32.md`. SR-003 is in rounds 31–32;
+  `review-evidence/round-31/`.
+- Journeys UXJ-001..008; transitions TR-001..015.
+- Limitations: in the automation browser, background tabs do not finish slide transitions (not a
+  product issue).
 
 ## Implementation Fidelity Boundary
 
 - **Must preserve:**
-  - every Run and "+" opens New chat;
-  - the members line and drawer behaviour, layout, copy, widths and limits;
-  - the flat two-line member rows and the Customized label;
-  - the saved-run header (status badge + red stop icon after it);
+  - Agent/Team Run and "+" → New chat; Org Run and "+" → Org launch page;
+  - the heading switcher (Agents/Teams only);
+  - the members line and drawer (layout, copy, widths, limits);
+  - flat two-line member rows with "Customized";
+  - the Org page composition (heading, card + footer action, members line) and states;
+  - the saved-run header with the stop icon after the badge and the DEC-003 wording;
   - no standing note lines; the Save bar copy;
-  - the runtime-locked model menu with search;
-  - `@` always brings in a collaborator; the current target is excluded.
-- **Removed surfaces that production should delete:**
-  - the launch configuration forms (`AgentRunConfigForm`, `TeamRunConfigForm`,
-    `AgentOrgRunConfigForm` and their sub-forms);
+  - the runtime-locked model menu;
+  - `@` = collaborator only, never Orgs, current excluded.
+- **Removed surfaces that production should delete (REQ-018):**
+  - the Agent/Team launch configuration forms and sub-forms (`AgentRunConfigForm`,
+    `TeamRunConfigForm` and their sub-forms);
   - `DraftRunConfigEditor`;
-  - `AgentOrgRunConfigPanel` and the `mode=configuration` Org route;
-  - the pending-launch branch of `RunConfigPanel`;
-  - `useRunActions`;
-  - the "Chat with" `@` mode;
-  - the New chat workspace line;
+  - the old Org launch form content (`AgentOrgRunConfigForm` and the long `AgentOrgRunConfigPanel`
+    form), replaced by the Org launch page at the same route;
+  - the pending-launch branch of `RunConfigPanel`; `useRunActions`;
+  - the "Chat with" `@` mode; New chat's workspace line;
+  - any Org-in-chat code (Org chat target, Org chat launch);
   - their localization keys.
 - **Not prescriptive (UI reference internals):**
-  - `components/run-settings/*` structure;
-  - the prototype plugin stubs;
-  - the fixtures;
-  - the scripted stop and save;
-  - the Org config read path through `apolloClient`.
-- **May vary:** fixture names, counts and models; exact pixel heights of text from font rendering.
-- **Design system:** existing Tailwind tokens and heroicons; the chat controls are reused unchanged
-  except for `ChatModelMenu` (`runtimeLocked`, `placement`, `align`, `drillIn`), `ChatThinkingControl`
-  (`placement`, `align`) and `ChatWorkspaceMenu` (`placement`), plus boundary-aware positioning.
+  - `components/run-settings/*` structure, including `memberSettingsSource.ts` and
+    `orgLaunchDraftStore.ts`;
+  - prototype plugin stubs; fixtures; scripted stop/save;
+  - the Org config read through `apolloClient`.
+- **May vary:** fixture names, counts and models; text rendering heights.
+- **Design system:** existing Tailwind tokens and heroicons. Chat controls are reused with these
+  additions:
+  - `ChatModelMenu`: `runtimeLocked`, `placement`, `align`, `drillIn`;
+  - `ChatThinkingControl`: `placement`, `align`;
+  - `ChatWorkspaceMenu`: `placement`;
+  - `ChatApprovalToggle`: the label never wraps.
 
 ## Out Of Scope
 
-- The mobile paired-phone run setup.
-- Applications launch profiles.
+- Mobile paired-phone run setup; Applications launch profiles.
 - Changing tool approval or workspace on a saved run (fixed, as in the product).
-- An Org "+" deeper than copying the source run.
+- Starting an Org from chat or `@`-mentioning an Org (SCN-009, unsupported by user decision).
 
 ## Open Decisions And Risks
 
-These are requirement impacts to route to the Solution Designer:
-
-1. Run opens New chat; a first message is required to start a run (DEC-001 = D).
-2. Org as a New chat target (new launch path `launchOrgChat`).
-3. `@` always brings in a collaborator; the earlier "switch chat target" behaviour is removed.
-4. The first message of a new run keeps its `@` mentions.
-5. The member override set (DEC-002): model+runtime, thinking, approval; placed teams add workspace.
-6. "+" on Agent, Team and Org copies the run's settings (and member overrides).
-7. The saved-run Stop control and the new read-only note copy (fixing "Stopped" + "Stop this run…").
-8. The launch configuration forms and the New chat workspace line are removed.
-
-Further points:
-- **Wording:** "Stop run" here vs. the tree tooltip "Terminate run" / "Terminate team". The user did
-  not ask to align them, so the product may want one verb.
-- **Members line count:** "N of M customized" counts customized agents and placed teams against
-  M agent members. It reads correctly in practice.
-- **Pre-existing fixture gaps, unchanged:**
-  - F-001: store-state capture fixtures are about 7 MB (data-boundary correction recommended);
+- **Requirement impact (new, round 32):** the New chat heading is a target switcher (Agents and
+  Agent Teams; settings kept; member overrides reset on a target change; only before the first
+  message). It needs a requirement and an AC.
+- **Org page default model order** (Org default → last chat model → default runtime's first model):
+  mirrors New chat; confirm in requirements.
+- **Members line count:** "n of N customized" counts customized agents and placed teams against N
+  agent members.
+- **Pre-existing fixture gaps:**
+  - F-001: about 7 MB of captured store snapshots (data-boundary correction recommended separately);
   - F-003: legacy `workspace_*` scenarios;
-  - F-004: Org launch lands on an empty view in the reference.
+  - F-004: the Org run view after launch is empty in the reference.
 
 ## Final Consistency Check
 
@@ -470,8 +569,8 @@ Further points:
 - Ticket record, ticket folder, and linked artifacts agree: `Yes`
 - Every in-scope journey is specified: `Yes`
 - Every surface and state needed to define the approved experience has an applicable final visual
-  reference: `Yes`. The secondary states (refresh, model unavailable, read-only, stop failure) are
-  specified by copy above.
+  reference: `Yes`. Secondary states (blocked, preparing, launching, read-only, refresh, model
+  unavailable, stop failure) are specified by copy above.
 - Every section covers the affected scope or is marked `Unchanged — follows baseline` or `N/A`: `Yes`
 - Recorded values come from the existing product or the approved change: `Yes`
 - UI reference, screenshots, and this specification agree: `Yes`
