@@ -2,7 +2,7 @@
   <div class="flex min-h-0 flex-1 flex-col" data-test="existing-run-settings" :data-state="stateKey">
     <div class="flex-1 overflow-y-auto px-4 py-5">
       <div class="mx-auto max-w-2xl">
-        <RunSubjectHeader :kind="kind" :name="name" :subtitle="subtitle" :status="isActive ? 'active' : 'stopped'" />
+        <RunSubjectHeader :kind="kind" :name="name" :status="isActive ? 'active' : 'stopped'" />
 
         <!-- One quiet status line instead of coloured banners (REQ-004). -->
         <p
@@ -144,8 +144,6 @@ const memberLocked = computed<RunSettingFlags>(() => ({
   thinking: !canEdit.value,
 }))
 
-const subtitle = computed(() => props.kind === 'agent' ? t('runSettings.existing.agentRun')
-  : props.kind === 'team' ? t('runSettings.existing.teamRun') : t('runSettings.existing.orgRun'))
 const stateKey = computed(() => props.refreshRequired ? 'refresh-required' : props.isActive ? 'active' : 'stopped')
 
 const edit = (key: string, patch: Partial<RunSettingsValues>) => {
