@@ -6,7 +6,7 @@
 - Stable package: `run-settings-ui-unification`, solution revision `SR-001`
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Awaiting User Review` (round 30, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
+- Status: `Completed` (user-approved 2026-10-05; final round 30 on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -23,11 +23,10 @@
 - Canonical design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (branch `personal`)
 - Ticket worktree: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/run-settings-ui-unification`
 - Ticket branch: `design/run-settings-ui-unification`
-- Accepted design base: `a714bb234e0a609c7c704fb09b6562f831febce2` (`personal`)
+- Accepted design base (final): `origin/personal@b4f3ed1` (WEB-BASELINE-REFRESH-007). The ticket was opened on `a714bb2` and rebuilt after refreshes 004, 006 and 007 (see Baseline Correction below).
 - Selected frontend: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/autobyteus-web`
-- Baseline source pin: `origin/personal@e9aa4a74ca36f62303bb7f5f0efd74bf89a9ea71` (`ui-baseline-report.md`, WEB-BASELINE-REFRESH-003, accepted)
-- Baseline applicability: accepted and applicable. Every in-scope run-config component in the baseline is byte-identical to the pin.
-- Source delta to the Solution Designer's base `26b555126`: limited to the surfaces this ticket replaces (Antigravity "always auto-approve" lock, catalog Retry link, removed skill-access field, fresh launches default to auto-approve). No baseline refresh was requested: the request names `26b555126` as the code-reading base, not as a new design source authority, and the redesign supersedes those exact rows. The AGY lock is carried into the design from source `26b555126`. The auto-approve default for fresh launches stays at the baseline's behaviour. This is open for the user: a formal refresh can be requested if wanted.
+- Baseline source pin (final): `origin/personal@10fb695` (`ui-baseline-report.md`, WEB-BASELINE-REFRESH-007, accepted). At finalization (2026-10-05) the source `origin/personal` was `02d6ddf`, with no `autobyteus-web` change since the pin, so no refresh was needed.
+- Superseded note (2026-10-04 intake): the earlier base `a714bb2` / pin `e9aa4a7` and the "no refresh" decision were withdrawn after the user's correction; see Baseline Correction.
 
 ## Runtime
 
@@ -71,9 +70,15 @@
 
 ## Finalization
 
-- Integration: Pending
-- Baseline promotion: Pending
-- Cleanup: Pending
+- User approval: 2026-10-05 — "Okay, I like this UI. It's now much cleaner right now. I'm satisfied now."
+  Then: "self-validate … if everything is consistent, then we can finish." The self-validation is
+  in `review-round-30.md`.
+- Final artifacts: `ui-ux-spec.md`, `visual-references/VIS-001..011`, `review-round-1..30.md`.
+- Final validation: browser checks at 880 px and 390 px (see `review-round-30.md`);
+  `vue-tsc --noEmit` reports 0 errors; `pnpm typecheck`, `pnpm test` (14/14) and `pnpm lint` pass.
+- Integration: fast-forward of the ticket branch into `personal` (push `design/run-settings-ui-unification:personal`, then fast-forward the canonical checkout). The revision is recorded in the handoff.
+- Baseline promotion: not required separately. The ticket changes the default UI directly; the approved experience is reachable from the normal entry point (`/chat`, Agents / Agent Teams / Agent Orgs → Run, workspace → Edit Config).
+- Cleanup: after the handoff, stop the ticket's review server on 4520 and remove the ticket worktree. The ticket branch is kept under repository policy.
 
 ## Baseline Correction (2026-10-04)
 
@@ -148,3 +153,4 @@
 - 2026-10-05: round 28 — removed the "Kept from the saved run: …" line under the saved run's model (added in round 1; not in the product). Saved settings the model's menu does not show are still kept and saved, just not displayed.
 - 2026-10-05: round 29 — Save bar: "Discard" renamed "Cancel" (en) / "取消" (zh-CN).
 - 2026-10-05: round 30 — self-validation pass (see `review-round-30.md`): Agent "+" now copies model, thinking and approval like Team and Org "+"; unused copy removed; zh-CN Org chat strings added.
+- 2026-10-05: user approved; final references VIS-001..011 and `ui-ux-spec.md` written; `Completed`; ticket moved to `tickets/done/`.
