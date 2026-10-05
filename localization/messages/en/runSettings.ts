@@ -14,6 +14,7 @@ const runSettingsMessages = {
   'runSettings.chat.inheritedLabel': 'Default',
   'runSettings.chat.defaultsLabel': 'Default settings',
   'runSettings.chat.close': 'Close member settings',
+  'runSettings.chat.resizeAria': 'Resize member settings. Drag, or use the arrow keys; double-click to restore the width.',
   'runSettings.chat.defaultsFromComposer': 'From the message box. Every member starts with these.',
   'runSettings.kind.orgPlain': 'Agent org',
   'runSettings.kind.teamPlain': 'Agent team',

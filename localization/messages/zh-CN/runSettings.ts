@@ -13,6 +13,7 @@ const runSettingsMessages = {
   'runSettings.chat.inheritedLabel': '默认',
   'runSettings.chat.defaultsLabel': '默认设置',
   'runSettings.chat.close': '关闭成员设置',
+  'runSettings.chat.resizeAria': '调整成员设置面板宽度。可拖动或使用方向键；双击恢复默认宽度。',
   'runSettings.chat.defaultsFromComposer': '来自消息框，所有成员默认使用这些设置。',
   'runSettings.kind.orgPlain': '智能体组织',
   'runSettings.kind.teamPlain': '智能体团队',

@@ -1,7 +1,8 @@
 <template>
   <div
-    class="flex min-w-0 flex-1 flex-col overflow-y-auto bg-white transition-[padding] duration-200 ease-out motion-reduce:transition-none"
-    :class="membersPanelOpen ? 'lg:pr-[30rem]' : ''"
+    class="flex min-w-0 flex-1 flex-col overflow-y-auto bg-white"
+    :class="[membersPanelOpen ? 'lg:pr-[var(--members-panel-width)]' : '', membersPanelResizing ? '' : 'transition-[padding] duration-200 ease-out motion-reduce:transition-none']"
+    :style="{ '--members-panel-width': `${membersPanelWidth}px` }"
     data-test="chat-new"
   >
     <div class="flex flex-1 flex-col items-center justify-center px-4 pb-10 pt-[14vh] sm:px-6">
@@ -86,7 +87,7 @@
           </template>
         </p>
         <!-- run-settings-ui-unification (round 2): members follow the composer unless customized here. -->
-        <ChatTargetMembers v-if="draft && (team || org) && !draft.starting" :key="draft.context.state.runId + (org?.id ?? team?.id ?? '')" class="mt-1.5" :draft="draft" @update:open="membersPanelOpen = $event" />
+        <ChatTargetMembers v-if="draft && (team || org) && !draft.starting" :key="draft.context.state.runId + (org?.id ?? team?.id ?? '')" class="mt-1.5" :draft="draft" @update:open="membersPanelOpen = $event" @update:width="membersPanelWidth = $event" @update:resizing="membersPanelResizing = $event" />
       </div>
     </div>
   </div>
@@ -141,6 +142,9 @@ const team = computed(() => {
 })
 // Round 3: the member settings panel docks on the right; the composer moves left to stay visible.
 const membersPanelOpen = ref(false)
+// Round 16: the panel can be dragged wider; the page makes room for its current width.
+const membersPanelWidth = ref(480)
+const membersPanelResizing = ref(false)
 const orgDefinitionStore = useAgentOrgDefinitionStore()
 const org = computed(() => {
   const current = draft.value?.target

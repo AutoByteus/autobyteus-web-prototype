@@ -38,9 +38,37 @@
           role="dialog"
           aria-modal="false"
           :aria-label="$t('runSettings.chat.panelTitle')"
-          class="fixed inset-y-0 right-0 z-40 flex w-full max-w-[30rem] flex-col border-l border-gray-200 bg-white shadow-[-8px_0_24px_-12px_rgba(15,23,42,0.18)]"
+          class="fixed inset-y-0 right-0 z-40 flex max-w-full flex-col border-l border-gray-200 bg-white shadow-[-8px_0_24px_-12px_rgba(15,23,42,0.18)]"
+          :style="{ width: `${width}px` }"
           data-test="chat-members-panel"
         >
+          <!-- Round 16: drag the left edge to widen or narrow the panel; the width is remembered. -->
+          <div
+            role="separator"
+            aria-orientation="vertical"
+            tabindex="0"
+            :aria-label="$t('runSettings.chat.resizeAria')"
+            :aria-valuenow="width"
+            :aria-valuemin="MIN_WIDTH"
+            :aria-valuemax="maxWidth()"
+            class="group absolute inset-y-0 -left-1.5 z-10 flex w-3 cursor-col-resize touch-none justify-center focus:outline-none max-sm:hidden"
+            data-test="chat-members-resize"
+            @pointerdown="startResize"
+            @dblclick="setWidth(DEFAULT_WIDTH, true)"
+            @keydown.left.prevent="setWidth(width + 24, true)"
+            @keydown.right.prevent="setWidth(width - 24, true)"
+          >
+            <span
+              class="h-full w-0.5 transition-colors duration-100"
+              :class="resizing ? 'bg-blue-500' : 'bg-transparent group-hover:bg-blue-400 group-focus-visible:bg-blue-500'"
+              aria-hidden="true"
+            ></span>
+            <span
+              class="absolute top-1/2 h-8 w-1.5 -translate-y-1/2 rounded-full border border-gray-300 bg-white shadow-sm transition-colors group-hover:border-blue-400"
+              :class="resizing ? 'border-blue-500' : ''"
+              aria-hidden="true"
+            ></span>
+          </div>
           <header class="flex items-start gap-3 border-b border-gray-200 px-5 py-4">
             <span class="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600" aria-hidden="true">
               <Icon :icon="draft.target.kind === 'org' ? 'heroicons:building-office-2' : 'heroicons:user-group'" class="h-[1.125rem] w-[1.125rem]" />
@@ -125,7 +153,52 @@ const targetName = computed(() => {
   return ''
 })
 
-const emit = defineEmits<{ (event: 'update:open', value: boolean): void }>()
+const emit = defineEmits<{
+  (event: 'update:open', value: boolean): void
+  (event: 'update:width', value: number): void
+  (event: 'update:resizing', value: boolean): void
+}>()
+
+// Round 16: the panel's width can be dragged from its left edge and is remembered.
+const WIDTH_STORAGE_KEY = 'autobyteus.chat.memberPanelWidth'
+const DEFAULT_WIDTH = 480
+const MIN_WIDTH = 400
+/** Leave the message box at least 360px beside the panel; never wider than 960px. */
+const maxWidth = () => Math.max(MIN_WIDTH, Math.min(960, window.innerWidth - 360))
+const clampWidth = (value: number) => Math.round(Math.min(maxWidth(), Math.max(MIN_WIDTH, value)))
+const storedWidth = Number(typeof localStorage !== 'undefined' ? localStorage.getItem(WIDTH_STORAGE_KEY) : NaN)
+const width = ref(Number.isFinite(storedWidth) && storedWidth > 0 ? storedWidth : DEFAULT_WIDTH)
+const resizing = ref(false)
+const setWidth = (value: number, persist = false) => {
+  width.value = clampWidth(value)
+  emit('update:width', width.value)
+  if (persist) localStorage.setItem(WIDTH_STORAGE_KEY, String(width.value))
+}
+const startResize = (event: PointerEvent) => {
+  if (event.button !== 0) return
+  event.preventDefault()
+  resizing.value = true
+  emit('update:resizing', true)
+  const previousCursor = document.body.style.cursor
+  const previousSelect = document.body.style.userSelect
+  document.body.style.cursor = 'col-resize'
+  document.body.style.userSelect = 'none'
+  const onMove = (move: PointerEvent) => setWidth(window.innerWidth - move.clientX)
+  const onUp = () => {
+    window.removeEventListener('pointermove', onMove)
+    window.removeEventListener('pointerup', onUp)
+    window.removeEventListener('pointercancel', onUp)
+    document.body.style.cursor = previousCursor
+    document.body.style.userSelect = previousSelect
+    resizing.value = false
+    emit('update:resizing', false)
+    setWidth(width.value, true)
+  }
+  window.addEventListener('pointermove', onMove)
+  window.addEventListener('pointerup', onUp)
+  window.addEventListener('pointercancel', onUp)
+}
+const onWindowResize = () => setWidth(width.value)
 // Escape closes an open menu inside the panel first, then the panel.
 const onDocumentKey = (event: KeyboardEvent) => {
   if (event.key !== 'Escape' || !open.value) return
@@ -134,9 +207,11 @@ const onDocumentKey = (event: KeyboardEvent) => {
 }
 const toggle = async () => {
   if (open.value) { close(); return }
+  setWidth(width.value)
   open.value = true
   emit('update:open', true)
   document.addEventListener('keydown', onDocumentKey)
+  window.addEventListener('resize', onWindowResize)
   await nextTick()
   closeRef.value?.focus()
 }
@@ -144,7 +219,12 @@ const close = () => {
   open.value = false
   emit('update:open', false)
   document.removeEventListener('keydown', onDocumentKey)
+  window.removeEventListener('resize', onWindowResize)
   void nextTick(() => triggerRef.value?.focus())
 }
-onBeforeUnmount(() => { document.removeEventListener('keydown', onDocumentKey); emit('update:open', false) })
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', onDocumentKey)
+  window.removeEventListener('resize', onWindowResize)
+  emit('update:open', false)
+})
 </script>

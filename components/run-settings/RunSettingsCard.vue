@@ -12,7 +12,7 @@
       :data-state="isLocked(field) ? 'locked' : isInherited(field) ? 'inherited' : customized?.[field] ? 'customized' : 'set'"
     >
       <!-- Round 15: in the member panel, labels and values read as clearly as the message box. -->
-      <span class="flex-shrink-0 text-[0.8125rem]" :class="flat ? 'w-24 text-gray-600' : 'w-[5.25rem] text-gray-500 sm:w-[6.5rem]'">{{ fieldLabel(field) }}</span>
+      <span class="flex-shrink-0 text-[0.8125rem]" :class="flat ? 'w-24 text-gray-900' :'w-[5.25rem] text-gray-500 sm:w-[6.5rem]'">{{ fieldLabel(field) }}</span>
 
       <div class="flex min-w-0 flex-1 flex-col items-start [&>div>button]:max-w-full [&>div]:max-w-full">
         <!-- Workspace -->
