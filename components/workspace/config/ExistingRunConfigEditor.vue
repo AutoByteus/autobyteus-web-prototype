@@ -19,7 +19,10 @@
       v-else-if="existingSettings"
       :key="existingSettings.key"
       v-bind="existingSettings.props"
+      :stopping="stopping"
+      :stop-error="stopError"
       @refresh="draftStore.retryCanonicalRefresh"
+      @stop="stopRun"
     />
 
     <div v-else class="flex-1 overflow-y-auto px-4 py-4">
@@ -31,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAgentSelectionStore } from '~/stores/agentSelectionStore'
 import { useRunHistoryStore } from '~/stores/runHistoryStore'
@@ -47,6 +50,9 @@ import ExistingRunSettings from '~/components/run-settings/ExistingRunSettings.v
 import { valuesFromResolved } from '~/components/run-settings/memberNodes'
 import { toChatWorkspace } from '~/components/run-settings/runSettings'
 import { useLocalization } from '~/composables/useLocalization'
+import { useAgentRunStore } from '~/stores/agentRunStore'
+import { useAgentTeamRunStore } from '~/stores/agentTeamRunStore'
+import { useWorkspaceHistorySubjectActions } from '~/composables/useWorkspaceHistorySubjectActions'
 
 const selection = useAgentSelectionStore()
 const history = useRunHistoryStore()
@@ -97,6 +103,39 @@ watch(selectedCanonical, (payload) => {
 }, { deep: true })
 
 onBeforeUnmount(() => draftStore.clear())
+
+// run-settings-ui-unification (round 22): "Stop run" in the saved-run settings uses the same
+// terminate actions as the workspace tree's stop button. Once the run has stopped, its model and
+// thinking can change: the product learns this from the run's lifecycle update, and the UI reference
+// applies it to the open settings directly.
+const stopping = ref(false)
+const stopError = ref<string | null>(null)
+const subjectActions = useWorkspaceHistorySubjectActions()
+const stopRun = async () => {
+  const current = draft.value
+  if (!current || stopping.value) return
+  stopping.value = true
+  stopError.value = null
+  try {
+    let stopped = false
+    if (current.kind === 'agent') stopped = await useAgentRunStore().terminateRun(current.runId)
+    else if (current.kind === 'team') stopped = await useAgentTeamRunStore().terminateTeamRun(current.teamRunId)
+    else {
+      const orgRunId = (current as { orgRunId?: string }).orgRunId
+      if (orgRunId) stopped = (await subjectActions.execute({ rootSubjectKind: 'agent_org', rootRunId: orgRunId, action: 'stop' })).disposition === 'committed'
+    }
+    if (!stopped) throw new Error('Run did not stop.')
+    // A running run is not editable only because it is running (reason null); stopped, it is.
+    if (draft.value === current) {
+      draftStore.$patch({ draft: { ...current, isActive: false, editability: current.editability.reason ? current.editability : { editable: true, reason: null } } })
+    }
+  } catch (error) {
+    console.warn('Failed to stop the run from its settings:', error)
+    stopError.value = t('runSettings.existing.stopFailed')
+  } finally {
+    stopping.value = false
+  }
+}
 
 const agentConfig = computed<AgentRunConfig | null>(() => {
   const current = draft.value

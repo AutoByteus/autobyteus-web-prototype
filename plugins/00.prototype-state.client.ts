@@ -251,6 +251,8 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
   if (action.startsWith('get')) return undefined
   if (action.startsWith('fetchAllAgentDefinitions')) return store.allAgentDefinitions || store.agentDefinitions || []
   if (action.startsWith('fetchAllAgentTeamDefinitions')) return store.allAgentTeamDefinitions || store.agentTeamDefinitions || []
+  // run-settings-ui-unification (round 22): stopping a run succeeds (scripted; nothing runs).
+  if ((store.$id === 'agentRun' && action === 'terminateRun') || (store.$id === 'agentTeamRun' && action === 'terminateTeamRun')) return true
   if (action === 'fetchApplications') return store.applications || []
   if (action === 'fetchApplicationById') return store.currentApplication
   if (store.$id === 'llmProviderConfig' && action === 'fetchProvidersWithModels') {

@@ -22,6 +22,20 @@
           >
             {{ $t('runSettings.existing.refresh') }}
           </button>
+          <!-- Round 22: stop the run right where the line asks for it (same action as the
+               workspace tree's stop button). -->
+          <button
+            v-else-if="isActive"
+            type="button"
+            class="ml-1 inline-flex flex-shrink-0 items-center gap-1 rounded-md border border-gray-300 bg-white px-2 py-0.5 font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 disabled:cursor-default disabled:opacity-60"
+            :disabled="stopping"
+            data-test="existing-run-stop"
+            @click="emit('stop')"
+          >
+            <Icon icon="heroicons:stop-20-solid" class="h-3.5 w-3.5" :class="stopping ? 'animate-pulse' : ''" aria-hidden="true" />
+            {{ stopping ? $t('runSettings.existing.stopping') : $t('runSettings.existing.stop') }}
+          </button>
+          <span v-if="stopError" class="text-red-600" role="alert" data-test="existing-run-stop-error">{{ stopError }}</span>
         </p>
 
         <!-- Round 20: no "Team defaults" title and no "Files are saved in …" line; the card is the
@@ -109,8 +123,11 @@ const props = withDefaults(defineProps<{
   baseValues: RunSettingsValues
   rootAddress?: string
   members?: readonly ExistingTeamFormMemberNode[]
-}>(), { refreshRequired: false, modelUnavailable: false, rootAddress: '/', members: () => [] })
-const emit = defineEmits<{ (event: 'refresh'): void }>()
+  /** A stop request for this run is in flight. */
+  stopping?: boolean
+  stopError?: string | null
+}>(), { refreshRequired: false, modelUnavailable: false, rootAddress: '/', members: () => [], stopping: false, stopError: null })
+const emit = defineEmits<{ (event: 'refresh'): void; (event: 'stop'): void }>()
 
 const { t } = useLocalization()
 const presentation = useRunSettingsPresentation()
