@@ -21,9 +21,9 @@
         <span class="h-1.5 w-1.5 rounded-full" :class="status === 'active' ? 'bg-emerald-500' : 'bg-gray-400'" aria-hidden="true"></span>
         {{ status === 'active' ? $t('runSettings.status.active') : $t('runSettings.status.stopped') }}
       </span>
+      <!-- Round 26: run actions (stop) sit right after the status badge. -->
+      <slot />
     </div>
-    <!-- Run actions (e.g. stop), right-aligned. -->
-    <div class="ml-auto flex flex-shrink-0 items-center gap-2"><slot /></div>
   </div>
 </template>
 

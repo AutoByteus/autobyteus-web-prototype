@@ -2,13 +2,13 @@
   <div class="flex min-h-0 flex-1 flex-col" data-test="existing-run-settings" :data-state="stateKey">
     <div class="flex-1 overflow-y-auto px-4 py-5">
       <div class="mx-auto max-w-2xl">
-        <!-- Round 23/24: a running run has just a small red stop icon (the tree's stop icon, no box);
+        <!-- Round 23/24/26: a running run has just a small red stop icon right after its status (no box);
              the lock icons on the settings already show what cannot change while it runs. -->
         <RunSubjectHeader :kind="kind" :name="name" :status="isActive ? 'active' : 'stopped'">
           <button
             v-if="isActive"
             type="button"
-            class="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md text-red-500 transition-colors hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 disabled:cursor-default disabled:opacity-60"
+            class="-ml-1 inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md text-red-500 transition-colors hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 disabled:cursor-default disabled:opacity-60"
             :disabled="stopping"
             :title="stopping ? $t('runSettings.existing.stopping') : $t('runSettings.existing.stop')"
             :aria-label="stopping ? $t('runSettings.existing.stopping') : $t('runSettings.existing.stop')"
