@@ -1,18 +1,17 @@
 <template>
   <div
-    class="divide-y divide-gray-100"
-    :class="nested ? 'rounded-md border border-gray-200 bg-white' : 'rounded-lg border border-gray-200 bg-white'"
+    :class="flat ? 'space-y-0.5' : ['divide-y divide-gray-100', nested ? 'rounded-md border border-gray-200 bg-white' : 'rounded-lg border border-gray-200 bg-white']"
     :data-test="`run-settings-card${testSuffix ? `-${testSuffix}` : ''}`"
   >
     <div
       v-for="field in fields"
       :key="field"
-      class="flex min-h-[2.75rem] items-center gap-2 py-1"
-      :class="nested ? 'pl-3 pr-2' : 'px-3'"
+      class="flex items-center gap-2"
+      :class="flat ? 'min-h-[2.25rem]' : ['min-h-[2.75rem] py-1', nested ? 'pl-3 pr-2' : 'px-3']"
       :data-test="`run-setting-${field}`"
       :data-state="isLocked(field) ? 'locked' : isInherited(field) ? 'inherited' : customized?.[field] ? 'customized' : 'set'"
     >
-      <span class="w-[5.25rem] flex-shrink-0 text-[0.8125rem] text-gray-500 sm:w-[6.5rem]">{{ fieldLabel(field) }}</span>
+      <span class="flex-shrink-0 text-[0.8125rem] text-gray-500" :class="flat ? 'w-24' : 'w-[5.25rem] sm:w-[6.5rem]'">{{ fieldLabel(field) }}</span>
 
       <div class="flex min-w-0 flex-1 flex-col items-start [&>div>button]:max-w-full [&>div]:max-w-full">
         <!-- Workspace -->
@@ -102,7 +101,7 @@
       </div>
 
       <!-- Trailing: inherited marker or reset for a member's own value -->
-      <span v-if="isInherited(field) && inheritedLabel" class="flex-shrink-0 pr-1 text-[0.6875rem] text-gray-400" data-test="run-setting-inherited">{{ inheritedLabel }}</span>
+      <span v-if="isInherited(field) && inheritedLabel && !flat" class="flex-shrink-0 pr-1 text-[0.6875rem] text-gray-400" data-test="run-setting-inherited">{{ inheritedLabel }}</span>
       <button
         v-else-if="canReset(field)"
         type="button"
@@ -152,6 +151,8 @@ const props = withDefaults(defineProps<{
   /** Saved runs show what differs but offer no per-field reset. */
   resettable?: boolean
   nested?: boolean
+  /** No box, no dividers, no "Default" tags: inherited values read muted (member panel). */
+  flat?: boolean
   testSuffix?: string
 }>(), {
   fields: () => ALL_RUN_SETTING_FIELDS,
@@ -163,6 +164,7 @@ const props = withDefaults(defineProps<{
   modelNote: null,
   resettable: true,
   nested: false,
+  flat: false,
   testSuffix: '',
 })
 

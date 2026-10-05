@@ -63,10 +63,11 @@
 
           <div class="min-h-0 flex-1 overflow-y-auto px-5 py-4">
             <!-- What every member gets unless changed: the composer's settings, read-only here. -->
-            <section class="rounded-lg bg-gray-50 px-4 py-3" data-test="chat-members-defaults">
-              <h3 class="text-xs font-medium text-gray-500">{{ $t('runSettings.chat.defaultsFromComposer') }}</h3>
-              <!-- One setting per line, in the same order and words as the run settings rows. -->
-              <dl class="mt-2.5 grid grid-cols-[6.5rem_minmax(0,1fr)] gap-x-3 gap-y-2 text-[0.8125rem] leading-5">
+            <!-- Round 10: flat sections, same row rhythm as the member settings below. -->
+            <section data-test="chat-members-defaults">
+              <h3 class="text-xs font-medium text-gray-500">{{ $t('runSettings.chat.defaultsTitle') }}</h3>
+              <p class="mt-0.5 text-xs text-gray-400">{{ $t('runSettings.chat.defaultsFromComposer') }}</p>
+              <dl class="mt-3 grid grid-cols-[6rem_minmax(0,1fr)] gap-x-2 gap-y-3 text-[0.8125rem] leading-5">
                 <dt class="text-gray-500">{{ $t('runSettings.row.workspace') }}</dt>
                 <dd class="flex min-w-0 items-center gap-1.5 text-gray-800" :title="presentation.workspacePath(defaults.workspace)">
                   <Icon icon="heroicons:folder" class="h-4 w-4 flex-shrink-0 text-gray-400" aria-hidden="true" />
@@ -91,7 +92,8 @@
             </section>
 
             <RunMembersSection
-              class="!mt-5"
+              class="!mt-7"
+              flat
               :nodes="members.nodes.value"
               :inherited-label="$t('runSettings.chat.inheritedLabel')"
               :defaults-label="$t('runSettings.chat.defaultsLabel')"

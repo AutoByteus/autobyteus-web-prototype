@@ -1,6 +1,6 @@
 <template>
   <div :data-test="`run-member-${node.key}`" :data-customized="isCustomized ? 'true' : 'false'">
-    <div class="flex min-h-[2.75rem] items-center gap-1 pl-3 pr-2" :class="expanded ? 'bg-gray-50/70' : 'hover:bg-gray-50/70'">
+    <div class="flex items-center gap-1" :class="flat ? 'min-h-[3rem]' : ['min-h-[2.75rem] pl-3 pr-2', expanded ? 'bg-gray-50/70' : 'hover:bg-gray-50/70']">
       <button
         type="button"
         class="flex min-w-0 flex-1 items-center gap-2.5 rounded-md py-1.5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
@@ -65,9 +65,10 @@
       </button>
     </div>
 
-    <div v-if="expanded" class="bg-gray-50/70 pb-3 pl-[2.875rem] pr-3" data-test="run-member-detail">
+    <div v-if="expanded" :class="flat ? 'pb-3 pl-[2.125rem]' : 'bg-gray-50/70 pb-3 pl-[2.875rem] pr-3'" data-test="run-member-detail">
       <RunSettingsCard
         nested
+        :flat="flat"
         :values="node.values"
         :fields="node.fields"
         :customized="node.customized"
@@ -85,7 +86,7 @@
 
       <template v-if="node.children?.length">
         <p class="mb-1.5 mt-3 text-[0.6875rem] font-medium text-gray-400">{{ $t('runSettings.members.teamMembers', { team: node.name }) }}</p>
-        <div class="divide-y divide-gray-100 rounded-md border border-gray-200 bg-white [&>*:first-child>div:first-child]:rounded-t-md [&>*:last-child>div:first-child]:rounded-b-md">
+        <div :class="flat ? 'divide-y divide-gray-100 border-t border-gray-100' : 'divide-y divide-gray-100 rounded-md border border-gray-200 bg-white [&>*:first-child>div:first-child]:rounded-t-md [&>*:last-child>div:first-child]:rounded-b-md'">
           <RunMemberRow
             v-for="child in node.children"
             :key="child.key"
@@ -96,6 +97,7 @@
             :locked="locked"
             :runtime-locked="runtimeLocked"
             :read-only="readOnly"
+            :flat="flat"
             @toggle="emit('toggle', $event)"
             @update="(key, field, value) => emit('update', key, field, value)"
             @reset="(key, field) => emit('reset', key, field)"
@@ -124,7 +126,8 @@ const props = withDefaults(defineProps<{
   locked?: RunSettingFlags
   runtimeLocked?: boolean
   readOnly?: boolean
-}>(), { locked: () => ({}), runtimeLocked: false, readOnly: false })
+  flat?: boolean
+}>(), { locked: () => ({}), runtimeLocked: false, readOnly: false, flat: false })
 
 const emit = defineEmits<{
   (event: 'toggle', key: string): void

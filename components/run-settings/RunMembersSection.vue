@@ -21,7 +21,7 @@
       </div>
     </div>
     <!-- No overflow clipping: member menus open outside the list. -->
-    <div class="divide-y divide-gray-100 rounded-lg border border-gray-200 bg-white [&>*:first-child>div:first-child]:rounded-t-lg [&>*:last-child>div:last-child]:rounded-b-lg [&>*:last-child>div:first-child]:rounded-b-lg">
+    <div :class="flat ? 'divide-y divide-gray-100 border-y border-gray-100' : 'divide-y divide-gray-100 rounded-lg border border-gray-200 bg-white [&>*:first-child>div:first-child]:rounded-t-lg [&>*:last-child>div:last-child]:rounded-b-lg [&>*:last-child>div:first-child]:rounded-b-lg'">
       <RunMemberRow
         v-for="node in nodes"
         :key="node.key"
@@ -32,6 +32,7 @@
         :locked="locked"
         :runtime-locked="runtimeLocked"
         :read-only="readOnly"
+        :flat="flat"
         @toggle="toggle"
         @update="(key, field, value) => emit('update', key, field, value)"
         @reset="(key, field) => emit('reset', key, field)"
@@ -56,7 +57,9 @@ const props = withDefaults(defineProps<{
   locked?: RunSettingFlags
   runtimeLocked?: boolean
   readOnly?: boolean
-}>(), { title: '', hint: '', locked: () => ({}), runtimeLocked: false, readOnly: false })
+  /** Plain list with hairline dividers (member panel). */
+  flat?: boolean
+}>(), { title: '', hint: '', locked: () => ({}), runtimeLocked: false, readOnly: false, flat: false })
 
 const emit = defineEmits<{
   (event: 'update', key: string, field: RunSettingField, value: unknown): void
