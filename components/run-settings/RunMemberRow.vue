@@ -1,5 +1,121 @@
 <template>
-  <div :data-test="`run-member-${node.key}`" :data-customized="isCustomized ? 'true' : 'false'">
+  <!-- Round 14 (member panel): two-line rows, a Customized label, and one soft surface for an
+       opened member. The boxed variant below is the saved-run view. -->
+  <div
+    v-if="flat"
+    :data-test="`run-member-${node.key}`"
+    :data-customized="isCustomized ? 'true' : 'false'"
+    class="rounded-lg transition-colors"
+    :class="expanded ? 'bg-gray-50' : ''"
+  >
+    <div
+      class="group flex items-center gap-1 rounded-lg pr-1 transition-colors"
+      :class="expanded ? '' : 'hover:bg-gray-100/70'"
+    >
+      <button
+        type="button"
+        class="flex min-w-0 flex-1 items-center gap-3 rounded-lg px-2 py-2 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+        :aria-expanded="expanded ? 'true' : 'false'"
+        :aria-label="$t('runSettings.members.toggleAria', { name: node.name })"
+        :title="node.detail || node.name"
+        data-test="run-member-toggle"
+        @click="emit('toggle', node.key)"
+      >
+        <span
+          v-if="node.kind === 'team'"
+          class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600"
+          aria-hidden="true"
+        >
+          <Icon icon="heroicons:user-group" class="h-4 w-4" />
+        </span>
+        <span
+          v-else
+          class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-emerald-50 text-[0.6875rem] font-semibold text-emerald-800 ring-1 ring-inset ring-emerald-100"
+          aria-hidden="true"
+        >{{ initialsFor(node.name) }}</span>
+        <span class="min-w-0 flex-1">
+          <span class="flex min-w-0 items-center gap-2">
+            <span class="truncate text-sm font-medium text-gray-900">{{ node.name }}</span>
+            <span v-if="node.isCoordinator" class="flex-shrink-0 rounded-full bg-gray-100 px-1.5 py-px text-[0.6875rem] font-medium text-gray-600">{{ $t('runSettings.members.coordinator') }}</span>
+          </span>
+          <span class="mt-0.5 flex min-w-0 items-center gap-1 text-xs" data-test="run-member-summary">
+            <template v-if="missingModel">
+              <span class="truncate font-medium text-amber-700">{{ $t('chat.model.chooseModel') }}</span>
+            </template>
+            <template v-else>
+              <span v-if="isCustomized" class="flex-shrink-0 font-medium text-blue-700">{{ $t('runSettings.members.customizedLabel') }}</span>
+              <span v-if="isCustomized" class="flex-shrink-0 text-gray-300" aria-hidden="true">·</span>
+              <span v-else-if="childCustomizedCount" class="flex-shrink-0 font-medium text-blue-700">{{ $t('runSettings.members.customizedCount', { count: childCustomizedCount }) }}</span>
+              <span v-if="!isCustomized && childCustomizedCount" class="flex-shrink-0 text-gray-300" aria-hidden="true">·</span>
+              <span class="truncate text-gray-500">{{ effectiveSummary }}</span>
+            </template>
+          </span>
+        </span>
+      </button>
+      <button
+        v-if="isCustomized && !readOnly"
+        type="button"
+        class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-gray-400 hover:bg-white hover:text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+        :aria-label="$t('runSettings.members.resetMemberAria', { name: node.name })"
+        :title="$t('runSettings.members.resetMemberAria', { name: node.name })"
+        data-test="run-member-reset"
+        @click="emit('reset', node.key, null)"
+      >
+        <Icon icon="heroicons:arrow-uturn-left-solid" class="h-3.5 w-3.5" aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        tabindex="-1"
+        aria-hidden="true"
+        class="inline-flex h-8 w-7 flex-shrink-0 items-center justify-center text-gray-400"
+        @click="emit('toggle', node.key)"
+      >
+        <Icon icon="heroicons:chevron-down" class="h-4 w-4 transition-transform duration-150 motion-reduce:transition-none" :class="expanded ? 'rotate-180' : ''" />
+      </button>
+    </div>
+
+    <!-- One surface: the opened member's settings sit under its name, on the same light block. -->
+    <div v-if="expanded" class="pb-3 pl-[3.25rem] pr-3" data-test="run-member-detail">
+      <RunSettingsCard
+        nested
+        flat
+        :values="node.values"
+        :fields="node.fields"
+        :customized="node.customized"
+        :inherited-label="inheritedLabel"
+        :locked="locked"
+        :runtime-locked="runtimeLocked"
+        :resettable="!readOnly"
+        :test-suffix="node.key"
+        @update:workspace="emit('update', node.key, 'workspace', $event)"
+        @update:model="emit('update', node.key, 'model', $event)"
+        @update:thinking="emit('update', node.key, 'thinking', $event)"
+        @update:approval="emit('update', node.key, 'approval', $event)"
+        @reset="emit('reset', node.key, $event)"
+      />
+      <template v-if="node.children?.length">
+        <p class="mb-1 mt-3 text-[0.6875rem] font-medium uppercase tracking-wide text-gray-400">{{ $t('runSettings.members.title') }}</p>
+        <div class="-ml-2 space-y-0.5">
+          <RunMemberRow
+            v-for="child in node.children"
+            :key="child.key"
+            :node="child"
+            :expanded-keys="expandedKeys"
+            :inherited-label="$t('runSettings.inherited.team')"
+            :defaults-label="$t('runSettings.members.usesTeamDefaults')"
+            :locked="locked"
+            :runtime-locked="runtimeLocked"
+            :read-only="readOnly"
+            flat
+            @toggle="emit('toggle', $event)"
+            @update="(key, field, value) => emit('update', key, field, value)"
+            @reset="(key, field) => emit('reset', key, field)"
+          />
+        </div>
+      </template>
+    </div>
+  </div>
+  <div v-else :data-test="`run-member-${node.key}`" :data-customized="isCustomized ? 'true' : 'false'">
     <div class="flex items-center gap-1" :class="flat ? 'min-h-[3rem]' : ['min-h-[2.75rem] pl-3 pr-2', expanded ? 'bg-gray-50/70' : 'hover:bg-gray-50/70']">
       <button
         type="button"
@@ -52,7 +168,7 @@
         data-test="run-member-reset"
         @click="emit('reset', node.key, null)"
       >
-        <Icon icon="heroicons:arrow-uturn-left" class="h-3.5 w-3.5" aria-hidden="true" />
+        <Icon icon="heroicons:arrow-uturn-left-solid" class="h-3.5 w-3.5" aria-hidden="true" />
       </button>
       <button
         type="button"
@@ -113,7 +229,7 @@ import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import { initialsFor } from '~/components/chat/chatComposerMenus'
 import RunSettingsCard from './RunSettingsCard.vue'
-import { countCustomized, hasCustomization, type RunMemberNode, type RunSettingField, type RunSettingFlags } from './runSettings'
+import { countCustomized, hasCustomization, isApprovalLockedForRuntime, type RunMemberNode, type RunSettingField, type RunSettingFlags } from './runSettings'
 import { useRunSettingsPresentation } from './useRunSettingsPresentation'
 
 defineOptions({ name: 'RunMemberRow' })
@@ -140,5 +256,14 @@ const expanded = computed(() => props.expandedKeys.has(props.node.key))
 const isCustomized = computed(() => hasCustomization(props.node.customized))
 const summary = computed(() => presentation.customizedSummary(props.node.values, props.node.customized, props.node.fields))
 const childCustomizedCount = computed(() => countCustomized(props.node.children ?? []))
+/** What this member runs with, in one line: workspace (teams), model · runtime, approval. */
+const effectiveSummary = computed(() => {
+  const values = props.node.values
+  const parts: string[] = []
+  if (props.node.fields.includes('workspace')) parts.push(presentation.workspaceName(values.workspace))
+  if (values.llmModelIdentifier) parts.push(`${presentation.modelLabel(values)} · ${presentation.runtimeShortLabel(values.runtimeKind)}`)
+  parts.push(presentation.approvalLabel(values.autoExecuteTools || isApprovalLockedForRuntime(values.runtimeKind)))
+  return parts.filter(Boolean).join(' · ')
+})
 const missingModel = computed(() => props.node.fields.includes('model') && !props.node.values.llmModelIdentifier)
 </script>

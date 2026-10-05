@@ -6,7 +6,7 @@
 - Stable package: `run-settings-ui-unification`, solution revision `SR-001`
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Awaiting User Review` (round 13, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
+- Status: `Awaiting User Review` (round 14, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -121,3 +121,4 @@
 - 2026-10-05: round 11 — menus stay inside the member panel; no sideways shift (see `review-round-11.md`).
 - 2026-10-05: round 12 — redundant text removed from the member panel (see `review-round-12.md`).
 - 2026-10-05: round 13 — member panel shows members only; defaults stay in the message box (see `review-round-13.md`).
+- 2026-10-05: round 14 — clearer member rows: two-line summary, Customized label, one surface when opened (see `review-round-14.md`).

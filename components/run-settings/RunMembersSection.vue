@@ -21,7 +21,7 @@
       </div>
     </div>
     <!-- No overflow clipping: member menus open outside the list. -->
-    <div :class="flat ? 'divide-y divide-gray-100 border-b border-gray-100' : 'divide-y divide-gray-100 rounded-lg border border-gray-200 bg-white [&>*:first-child>div:first-child]:rounded-t-lg [&>*:last-child>div:last-child]:rounded-b-lg [&>*:last-child>div:first-child]:rounded-b-lg'">
+    <div :class="flat ? '-mx-2 space-y-0.5' : 'divide-y divide-gray-100 rounded-lg border border-gray-200 bg-white [&>*:first-child>div:first-child]:rounded-t-lg [&>*:last-child>div:last-child]:rounded-b-lg [&>*:last-child>div:first-child]:rounded-b-lg'">
       <RunMemberRow
         v-for="node in nodes"
         :key="node.key"

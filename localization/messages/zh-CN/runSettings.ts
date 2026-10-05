@@ -17,6 +17,7 @@ const runSettingsMessages = {
   'runSettings.kind.orgPlain': '智能体组织',
   'runSettings.kind.teamPlain': '智能体团队',
   'runSettings.chat.defaultsTitle': '默认设置',
+  'runSettings.members.customizedLabel': '已自定义',
   'runSettings.kind.agent': '智能体',
   'runSettings.kind.team': '智能体团队 · {{count}} 名成员',
   'runSettings.kind.org': '智能体组织 · {{count}} 个智能体',

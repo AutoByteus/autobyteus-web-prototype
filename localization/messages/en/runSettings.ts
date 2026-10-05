@@ -18,6 +18,7 @@ const runSettingsMessages = {
   'runSettings.kind.orgPlain': 'Agent org',
   'runSettings.kind.teamPlain': 'Agent team',
   'runSettings.chat.defaultsTitle': 'Defaults',
+  'runSettings.members.customizedLabel': 'Customized',
   'runSettings.kind.agent': 'Agent',
   'runSettings.kind.team': 'Agent team · {{count}} members',
   'runSettings.kind.org': 'Agent org · {{count}} agents',
