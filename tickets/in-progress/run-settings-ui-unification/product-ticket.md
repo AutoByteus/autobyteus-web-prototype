@@ -6,7 +6,7 @@
 - Stable package: `run-settings-ui-unification`, solution revision `SR-001`
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Awaiting User Review` (round 8, on the refreshed baseline)
+- Status: `Baseline Needed` — round 9 paused for `WEB-BASELINE-REFRESH-006`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -105,3 +105,8 @@
   ticket"): the consistent `@` behaviour is a new design change owned by this ticket. The
   Bootstrapper stopped with no commits; its partial working-tree changes were discarded and the
   refresh worktree/branch removed. Baseline remains pin `0a32261` (design `origin/personal@8fdf0b7`).
+- 2026-10-05: the user re-confirmed the refresh ("There are new changes in the baseline … keep it
+  aligned now … After the baseline is up to date, then you can continue"). Round 9 work in
+  progress committed as `f8615b7` (WIP) and paused; `WEB-BASELINE-REFRESH-006` (source
+  `origin/personal@4dee901`) sent to the Bootstrapper from a fresh worktree on fetched
+  `origin/personal@8fdf0b7`.
