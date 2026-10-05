@@ -26,6 +26,7 @@
 - Accepted design base (final): `origin/personal@b4f3ed1` (WEB-BASELINE-REFRESH-007). The ticket was opened on `a714bb2` and rebuilt after refreshes 004, 006 and 007 (see Baseline Correction below).
 - Selected frontend: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/autobyteus-web`
 - Baseline source pin (final): `origin/personal@10fb695` (`ui-baseline-report.md`, WEB-BASELINE-REFRESH-007, accepted). At finalization (2026-10-05) the source `origin/personal` was `02d6ddf`, with no `autobyteus-web` change since the pin, so no refresh was needed.
+- SR-003 finalization (2026-10-05): design `origin/personal` = `b8ce240` (unchanged since the SR-001 integration). Source `origin/personal` = `fc79fad`; `autobyteus-web` changes since the pin: `edeb5db9a` default agent display name "Daily Assistant" (server data; web comments/tests/docs only; mirrored in the design fixtures) and `7e32f2664` version bump. No UI change, so no baseline refresh.
 - Superseded note (2026-10-04 intake): the earlier base `a714bb2` / pin `e9aa4a7` and the "no refresh" decision were withdrawn after the user's correction; see Baseline Correction.
 
 ## Runtime

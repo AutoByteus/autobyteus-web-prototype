@@ -29,8 +29,11 @@
 
 - Source repository: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`
 - Selected frontend: `autobyteus-web`
-- Pinned source revision: `origin/personal@10fb695`. Re-checked at finalization: source
-  `origin/personal@02d6ddf` has no `autobyteus-web` change since the pin.
+- Pinned source revision: `origin/personal@10fb695`. Re-checked at SR-003 finalization: source
+  `origin/personal@fc79fad`. Its `autobyteus-web` changes since the pin are the default agent's display
+  name ("Daily Assistant", server-provided data, reflected in the design fixtures; web only comments,
+  tests and docs) and a release version bump (`package.json`). No UI code, copy or style changed, so
+  no baseline refresh is needed.
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`)
 - Accepted design base: `origin/personal@b8ce240`, the SR-001 result, which is built on baseline
   `b4f3ed1` (`WEB-BASELINE-REFRESH-007`).
