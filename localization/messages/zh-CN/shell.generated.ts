@@ -13,6 +13,7 @@ const messages = {
   'shell.components.app.AppUpdateNotice.restarting_to_install_update_this_window': '重新启动以安装更新。该窗口将自动关闭。',
   'shell.components.layout.LeftSidebarStrip.item_label': '项目.标签',
   'shell.components.layout.LeftSidebarStrip.settings': '设置',
+  'shell.startTools.show': '显示工具',
   'shell.components.layout.RightSideTabs.toggle_sidebar': '切换侧边栏',
   'shell.components.layout.RightSidebarStrip.tab_label': '选项卡标签',
   'shell.components.layout.WorkspaceDesktopLayout.select_or_run_an_agent_team': '选择或运行一个智能体/团队以开始。',

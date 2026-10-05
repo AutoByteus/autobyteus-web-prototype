@@ -1,6 +1,14 @@
 <template>
   <div class="flex h-full min-h-0 min-w-0 bg-white font-sans text-gray-800" data-test="chat-page">
-    <ChatNewSurface v-if="!routeRunId" />
+    <!-- run-settings-ui-unification: the right tools stay reachable on New chat behind one small icon
+         (for example, the Terminal to find a folder path for the workspace). -->
+    <div v-if="!routeRunId" class="flex h-full min-h-0 w-full flex-col" data-test="chat-new-frame">
+      <WorkspaceToolShell start-surface>
+        <div class="flex h-full min-h-0 min-w-0">
+          <ChatNewSurface />
+        </div>
+      </WorkspaceToolShell>
+    </div>
     <div
       v-else-if="openState === 'missing'"
       class="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center"
@@ -25,10 +33,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, provide, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ChatNewSurface from '~/components/chat/ChatNewSurface.vue'
 import WorkspaceAdaptiveLayout from '~/components/layout/WorkspaceAdaptiveLayout.vue'
+import WorkspaceToolShell from '~/components/layout/WorkspaceToolShell.vue'
+import { START_SURFACE_WORKSPACE, startSurfaceWorkspaceOf } from '~/composables/layout/useStartSurfaceTools'
 import { useWorkspaceFileContentVisible } from '~/composables/workspace/useWorkspaceFileContentVisible'
 import { useChatRouteRunSync } from '~/composables/chat/useChatRouteRunSync'
 import { useAgentContextsStore } from '~/stores/agentContextsStore'
@@ -49,6 +59,8 @@ const agentContextsStore = useAgentContextsStore()
 const selectionStore = useAgentSelectionStore()
 const chatDraftStore = useChatDraftStore()
 const showFileContent = useWorkspaceFileContentVisible()
+// On New chat, Files and Terminal use the workspace chosen in the settings line.
+provide(START_SURFACE_WORKSPACE, computed(() => (routeRunId.value ? null : startSurfaceWorkspaceOf(chatDraftStore.draft?.workspace))))
 
 const routeRunId = computed(() => {
   const value = route.query.id
