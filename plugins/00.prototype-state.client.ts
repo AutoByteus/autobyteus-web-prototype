@@ -684,7 +684,26 @@ export default defineNuxtPlugin({
         super(); this.url = String(url)
         queueMicrotask(() => { const event = new Event('open'); this.onopen?.(event); this.dispatchEvent(event) })
       }
-      send(_data: string | ArrayBufferLike | Blob | ArrayBufferView): void {}
+      send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void {
+        // run-settings-ui-unification (round 9): a send that brings an `@` collaborator in waits for
+        // the run to accept it. The scripted outcome: the run accepts it (no reply is played).
+        if (typeof data !== 'string') return
+        let message: { type?: string; payload?: { message_id?: string; dedupe_key?: string; mentions?: unknown[] } }
+        try { message = JSON.parse(data) } catch { return }
+        if (message.type !== 'SEND_MESSAGE' || !message.payload?.mentions?.length) return
+        const runId = decodeURIComponent(this.url.split('/').filter(Boolean).pop() || '')
+        const ack = {
+          type: 'AGENT_COMMAND_ACK',
+          payload: {
+            command_type: 'SEND_MESSAGE', run_id: runId, message_id: message.payload.message_id ?? '',
+            dedupe_key: message.payload.dedupe_key ?? '', state: 'accepted', accepted: true, duplicate: false,
+          },
+        }
+        setTimeout(() => {
+          const event = new MessageEvent('message', { data: JSON.stringify(ack) })
+          this.onmessage?.(event); this.dispatchEvent(event)
+        }, 150)
+      }
       close(): void {
         this.readyState = PrototypeWebSocket.CLOSED
         const event = new CloseEvent('close', { code: 1000, reason: 'prototype' })

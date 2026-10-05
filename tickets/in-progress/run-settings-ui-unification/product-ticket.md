@@ -6,7 +6,7 @@
 - Stable package: `run-settings-ui-unification`, solution revision `SR-001`
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Baseline Needed` — round 9 paused for `WEB-BASELINE-REFRESH-007`
+- Status: `Awaiting User Review` (round 9, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -114,3 +114,6 @@
   `origin/personal@ab8b23d`, pin `4dee901`). Source advanced during it to `10fb695` (one frontend
   change: Background Tasks shell command); follow-up `WEB-BASELINE-REFRESH-007` sent. Round 9
   continues after 007 is integrated.
+- 2026-10-05: `WEB-BASELINE-REFRESH-007` accepted, integrated and pushed (design
+  `origin/personal@b4f3ed1`, pin `10fb695`, source unchanged at review). Ticket rebased cleanly onto
+  it; round 9 (`@` always brings a collaborator in) completed and validated (see `review-round-9.md`).
