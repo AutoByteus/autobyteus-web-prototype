@@ -29,7 +29,7 @@
       :class="popover.narrow.value
         ? 'fixed inset-x-2 bottom-2 max-h-[80vh]'
         : [align === 'left' ? 'absolute left-0' : 'absolute right-0', 'w-[19rem] max-w-[calc(100vw-1rem)]', popover.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5']"
-      :style="popover.narrow.value ? undefined : { maxHeight: `${popover.maxHeight.value}px` }"
+      :style="popover.narrow.value ? undefined : { maxHeight: `${popover.maxHeight.value}px`, ...inBoundary.style.value }"
       @keydown="onMenuKeydown"
     >
       <!-- run-settings-ui-unification: a saved run keeps its runtime; offer only that runtime's models. -->
@@ -188,6 +188,7 @@ import ChatModelList from '~/components/chat/ChatModelList.vue'
 import ChatModelOptionLabel from '~/components/chat/ChatModelOptionLabel.vue'
 import { chatModelOptionFullText as optionFullText } from '~/components/chat/chatModelOptionText'
 import { useAnchoredPopover } from '~/composables/popover/useAnchoredPopover'
+import { useMenuInBoundary } from '~/composables/popover/useMenuInBoundary'
 import { useChatModelCatalog, type ChatModelOption } from '~/composables/chat/useChatModelCatalog'
 import type { ChatModelSelection } from '~/stores/chatDraftStore'
 import { runtimeKindToLabel } from '~/types/agent/AgentRunConfig'
@@ -224,6 +225,8 @@ const triggerRef = ref<HTMLElement | null>(null)
 const menuRef = ref<HTMLElement | null>(null)
 const searchRef = ref<HTMLInputElement | null>(null)
 const popover = useAnchoredPopover(rootRef, triggerRef, 360, { placement: props.placement })
+// run-settings-ui-unification (round 11): the open menu stays inside the panel or window it is in.
+const inBoundary = useMenuInBoundary(menuRef, computed(() => popover.open.value), computed(() => !popover.narrow.value))
 const query = ref('')
 const submenuRuntime = ref<string | null>(null)
 const flyoutSide = ref<'left' | 'right'>('right')

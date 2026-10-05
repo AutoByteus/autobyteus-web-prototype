@@ -61,7 +61,7 @@
             </button>
           </header>
 
-          <div class="min-h-0 flex-1 overflow-y-auto px-5 py-4">
+          <div class="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-5 py-4">
             <!-- What every member gets unless changed: the composer's settings, read-only here. -->
             <!-- Round 10: flat sections, same row rhythm as the member settings below. -->
             <section data-test="chat-members-defaults">

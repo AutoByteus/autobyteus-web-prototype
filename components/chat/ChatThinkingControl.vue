@@ -34,7 +34,7 @@
       :class="popover.narrow.value
         ? 'fixed inset-x-2 bottom-2'
         : [align === 'left' ? 'absolute left-0' : 'absolute right-0', 'w-44 overflow-y-auto', popover.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5']"
-      :style="popover.narrow.value ? undefined : { maxHeight: `${popover.maxHeight.value}px` }"
+      :style="popover.narrow.value ? undefined : { maxHeight: `${popover.maxHeight.value}px`, ...inBoundary.style.value }"
       @keydown="onKeydown"
     >
       <template v-if="menu.mode === 'merged'">
@@ -92,6 +92,7 @@
 import { computed, nextTick, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useAnchoredPopover } from '~/composables/popover/useAnchoredPopover'
+import { useMenuInBoundary } from '~/composables/popover/useMenuInBoundary'
 import { useLocalization } from '~/composables/useLocalization'
 import { buildChatThinkingMenu, type ChatThinkingParameter } from '~/components/chat/chatThinkingMenu'
 import type { UiModelConfigSchema } from '~/utils/llmConfigSchema'
@@ -115,6 +116,8 @@ const rootRef = ref<HTMLElement | null>(null)
 const triggerRef = ref<HTMLElement | null>(null)
 const menuRef = ref<HTMLElement | null>(null)
 const popover = useAnchoredPopover(rootRef, triggerRef, 240, { placement: props.placement })
+// run-settings-ui-unification (round 11): the open menu stays inside the panel or window it is in.
+const inBoundary = useMenuInBoundary(menuRef, computed(() => popover.open.value), computed(() => !popover.narrow.value))
 
 const menu = computed(() => buildChatThinkingMenu(props.schema, props.llmConfig, (key) => t(key)))
 const groups = computed<ChatThinkingParameter[]>(() => {
