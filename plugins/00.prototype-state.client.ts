@@ -8,7 +8,9 @@ import { defineNuxtPlugin } from '#app'
 import { installHostScenario } from '~/prototype/shared/install-host-scenario.js'
 import { applyExperienceScenario } from '~/prototype/shared/apply-experience-scenario.js'
 import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, taskContextUpload } from '~/prototype/source-observation/fixtures.mjs'
-import { localFixtureState } from '~/utils/apolloClient'
+import { getApolloClient, localFixtureState } from '~/utils/apolloClient'
+import { GetAgentOrgRunInspection } from '~/graphql/queries/runHistoryQueries'
+import { CREATED_ORG_RUN_ID } from '~/prototype/run-settings/launchedOrgFixture'
 import { RUN_SETTINGS_RUNTIME_AVAILABILITIES, RUN_SETTINGS_RUNTIME_CATALOGS } from '~/prototype/run-settings/runtimeCatalogFixture'
 import { withAutobyteusOrgDefinitions } from '~/prototype/run-settings/autobyteusOrgFixture'
 
@@ -65,6 +67,8 @@ const localActions: Record<string, Set<string>> = {
   existingRunConfig: new Set(['loadAgentCanonical', 'loadTeamCanonical', 'loadAgentOrgCanonical', 'refreshModelOptions']),
   // Reads the Org run's configuration through the local GraphQL fixtures (AgentOrgRunConfig).
   agentOrgContexts: new Set(['readRunConfig']),
+  // run-settings-ui-unification (SR-003): Run Agent Org launches through the source store (local CreateAgentOrgRun).
+  agentOrgRun: new Set(['launch']),
   // run-settings-ui-unification (SR-003): the Org launch page launches through the source's own Org launch path.
   orgLaunchDraft: new Set(['launch']),
   uiError: new Set(['push', 'remove', 'clear', 'toggle', 'open', 'close']),
@@ -579,6 +583,13 @@ export default defineNuxtPlugin({
           if (name === 'sendUserInputAndSubscribe') after(() => { liveRunSession = true })
         })
       }
+      // run-settings-ui-unification (SR-003): a launched Org run is live client state too, so route
+      // changes inside it (choosing a member) keep it in the sidebar.
+      if (store.$id === 'agentOrgRun') {
+        store.$onAction(({ name, after }) => {
+          if (name === 'launch') after(() => { liveRunSession = true })
+        })
+      }
       if (navigationOverlayStores.has(store.$id)) {
         store.$onAction(({ name, after }) => {
           if (safe.has(name)) after(() => stateOverlays.set(store.$id, clone(store.$state)))
@@ -697,6 +708,24 @@ export default defineNuxtPlugin({
       constructor(url: string | URL) {
         super(); this.url = String(url)
         queueMicrotask(() => { const event = new Event('open'); this.onopen?.(event); this.dispatchEvent(event) })
+        // run-settings-ui-unification (SR-003): the Org run started by "Run Agent Org" is live. Its
+        // stream answers with CONNECTED and the same view the inspection read returns (nothing runs).
+        const runId = decodeURIComponent(this.url.split('?')[0]!.split('/').filter(Boolean).pop() || '')
+        if (runId === CREATED_ORG_RUN_ID) void this.playLaunchedOrgStream(runId)
+      }
+      private async playLaunchedOrgStream(runId: string): Promise<void> {
+        const result = await getApolloClient().query({ query: GetAgentOrgRunInspection, variables: { orgRunId: runId } })
+        const view = (result.data as Record<string, unknown> | null)?.getAgentOrgRunInspection
+        if (!view) return
+        const frames = [
+          { type: 'CONNECTED', payload: { root_subject_kind: 'agent_org', root_run_id: runId, session_id: 'prototype-org-session' } },
+          { type: 'ROOT_EXECUTION_VIEW_SNAPSHOT', payload: view },
+        ]
+        for (const frame of frames) {
+          if (this.readyState !== PrototypeWebSocket.OPEN) return
+          const event = new MessageEvent('message', { data: JSON.stringify(frame) })
+          this.onmessage?.(event); this.dispatchEvent(event)
+        }
       }
       send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void {
         // run-settings-ui-unification (round 9): a send that brings an `@` collaborator in waits for

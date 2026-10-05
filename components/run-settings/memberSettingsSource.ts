@@ -16,7 +16,8 @@ export type MemberSettingsSource = {
   /** The settings every member uses unless customized (the composer or the Org settings card). */
   defaults: RunSettingsValues
   memberSettings: Readonly<Record<string, ChatMemberSettings>>
-  setMemberSettings: (address: string, settings: ChatMemberSettings) => void
+  /** null or an empty object returns the member to the defaults. */
+  setMemberSettings: (address: string, settings: ChatMemberSettings | null) => void
   resetAllMemberSettings: () => void
 }
 

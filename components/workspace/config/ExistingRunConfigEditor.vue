@@ -127,7 +127,7 @@ const stopRun = async () => {
     if (!stopped) throw new Error('Run did not stop.')
     // A running run is not editable only because it is running (reason null); stopped, it is.
     if (draft.value === current) {
-      draftStore.$patch({ draft: { ...current, isActive: false, editability: current.editability.reason ? current.editability : { editable: true, reason: null } } })
+      draftStore.draft = { ...current, isActive: false, editability: current.editability.reason ? current.editability : { editable: true, reason: null } }
     }
   } catch (error) {
     console.warn('Failed to stop the run from its settings:', error)

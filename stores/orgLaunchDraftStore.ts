@@ -165,10 +165,11 @@ export const useOrgLaunchDraftStore = defineStore('orgLaunchDraft', () => {
     if (!draft.value) return
     Object.assign(draft.value, patch, { error: null })
   }
-  const setMemberSettings = (address: string, settings: ChatMemberSettings) => {
+  /** Replace one member's own settings; null or an empty object returns it to the Org's settings. */
+  const setMemberSettings = (address: string, settings: ChatMemberSettings | null) => {
     if (!draft.value) return
     const next = { ...draft.value.memberSettings }
-    if (Object.keys(settings).length) next[address] = settings
+    if (settings && Object.keys(settings).length) next[address] = settings
     else delete next[address]
     draft.value.memberSettings = next
   }
