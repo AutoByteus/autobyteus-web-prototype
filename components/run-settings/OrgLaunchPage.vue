@@ -35,11 +35,10 @@
       </div>
 
       <div v-else-if="draft" class="mt-8 w-full max-w-3xl">
-        <!-- Round 38: like the chat message box: the settings, with Run as a round icon button in the
-             lower-right corner where Send sits; the members line centered under the card, as on New chat. -->
-        <div class="flex items-end gap-3 rounded-xl border border-gray-200 bg-white py-2 pl-4 pr-3 shadow-sm" data-test="org-launch-card">
+        <!-- Round 38: like the chat message box: the settings, with Run as a round icon button pinned to
+             the lower-right corner where Send sits (rows above keep the full width); the members line centered under the card, as on New chat. -->
+        <div class="relative rounded-xl border border-gray-200 bg-white px-4 py-2 shadow-sm" data-test="org-launch-card">
           <RunSettingsCard
-            class="min-w-0 flex-1"
             :values="values"
             :locked="locked"
             test-suffix="org-launch"
@@ -50,7 +49,7 @@
           />
           <button
             type="button"
-            class="mb-1.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm transition-all duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:cursor-not-allowed disabled:opacity-50"
+            class="absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm transition-all duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:cursor-not-allowed disabled:opacity-50"
             :disabled="!canRun"
             :title="blockedReason || $t('runSettings.orgLaunch.run')"
             :aria-label="blockedReason || $t('runSettings.orgLaunch.run')"

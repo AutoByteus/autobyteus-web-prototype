@@ -79,6 +79,7 @@ const chatMessages = {
   'chat.switch.aria': 'Choose what to run (now {{name}})',
   'chat.switch.orgs': 'Agent orgs',
   'chat.switch.search': 'Search agents, teams and orgs',
+  'chat.switch.noMatch': 'Nothing matches',
   'chat.targets.noMatch': 'No agents or teams match',
   'chat.targets.teamDescription': '{{count}} members · coordinator {{coordinator}}',
   'chat.mentions.placeholderMention': 'Ask anything · @ for an agent or team',

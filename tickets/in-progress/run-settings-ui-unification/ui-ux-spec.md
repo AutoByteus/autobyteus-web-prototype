@@ -21,6 +21,8 @@
     now." Self-validated in `review-round-30.md`.
   - SR-003 revision (2026-10-05): about the heading switcher, "that's a very, very smart UI design";
     asked to confirm the Org launch page and the switcher, the user replied "confimr" (rounds 31–32).
+  - SR-003 final (2026-10-05, after rounds 33–38): "Anyway, I'm satisfied … I'm currently satisfied
+    with the UI now … Let's finalize now … the ticket is done." (`review-round-33-38.md`)
 - Final validation date: 2026-10-05
 
 ## Repository And Baseline Provenance
@@ -50,12 +52,15 @@
     - An Org has no coordinator or initial recipient (`autobyteus-web/docs/agent_orgs.md:56`,
       `:192-211`).
     - Run / "+" open a short **Org launch page** in the same visual language: the Org heading, a
-      settings card where the message box would be, the same members line and drawer, and
-      **Run Agent Org**.
-  - **Choosing who to chat with is a selection on the New chat heading, never `@`.**
+      settings card where the message box would be, with **Run** as a round play-icon button in its
+      lower-right corner (where Send sits in chat), and the same members line and drawer.
+  - **Choosing what to run is a selection on the heading, never `@`.**
     - `@` keeps one meaning on every surface: bring a collaborator into the run, with the current
-      agent relaying.
-    - The heading switcher lists Agents and Agent Teams (no Orgs).
+      agent relaying. It never lists Orgs.
+    - The heading switcher on New chat and on the Org launch page lists Agents, Agent Teams and Agent
+      Orgs. An Agent or Team starts in New chat; an Org opens the Org launch page (round 34).
+  - **The right tools stay reachable on start surfaces behind one small icon** (round 35), so a
+    folder path can be copied from the Terminal while choosing a workspace.
   - **Member customization is secondary.** One quiet line opens a resizable right-side drawer that
     lists members only. The team-wide or org-wide settings live in the composer or the Org card.
   - **DEC-002 → member overrides cover model+runtime, thinking and tool approval.** A team placed in
@@ -70,6 +75,9 @@
   - **Org as a New chat target** (rounds 2–30): withdrawn in SR-003; an Org has no recipient.
   - **`@` as the target picker on New chat** (before round 9): two meanings for `@`. Replaced by the
     heading switcher (round 32).
+  - **"Run Agent Org" in a card footer row** (rounds 31–35) and an action row under the card
+    (round 36): the lone button looked odd; replaced by the round Run icon inside the card (round 38).
+  - **Showing the tool strip on New chat**: rejected (round 33); one icon instead (round 35).
   - **Keeping the old Org form** (DEC-004 option B): rejected by the user. The Org launch page is
     consistent with the rest.
   - **An inline member list**, **an editable/read-only defaults block in the drawer**, a **boxed
@@ -88,8 +96,9 @@
   - member customization takes one line and one drawer;
   - the saved-run page shows only settings, status, a stop icon and Save.
 - **In scope:**
-  - New chat (General Agent, Agent, Team) with the heading switcher;
+  - New chat (Daily Assistant, Agent, Team) with the heading switcher;
   - the Org launch page;
+  - the right-tools icon on New chat and the Org launch page;
   - the Member settings drawer;
   - every Run and "+" entry point;
   - `@` in New chat and running chats;
@@ -107,9 +116,9 @@
 | ID | UI/UX Obligation | Covered Journey / Surface / State |
 | --- | --- | --- |
 | REQ-005 / AC-001 | Agent/Team Run → New chat with the target heading and the four controls; Org Run → Org launch page with the Org heading and settings card | UXJ-001..003, UIS-001, UIS-004 |
-| REQ-006 / AC-002 | Agent/Team start only with a first message; Org starts only with Run Agent Org (no message box); no model → Send / Run disabled with "Choose a model to start." | UXJ-001..003 |
-| REQ-007 / AC-003 / DEC-004 | No Org entry point opens New chat; Org launch page = heading, settings card, members line + drawer, Run Agent Org; success → Org run view (choose an Agent/Team as today) | UXJ-003, UIS-004 |
-| REQ-008 | New chat heading = target name (avatar only when present); General Agent keeps its `/` `@` hint; the Org page heading = Org name | UIS-001, UIS-004 |
+| REQ-006 / AC-002 | Agent/Team start only with a first message; Org starts only with Run (no message box); no model → Send / Run disabled with "Choose a model to start." | UXJ-001..003 |
+| REQ-007 / AC-003 / DEC-004 | No Org entry point opens New chat (choosing an Org in the heading opens the Org launch page); Org launch page = heading switcher, settings card with Run, members line + drawer; success → the launched Org run view (choose an Agent/Team as today) | UXJ-003, UIS-004 |
+| REQ-008 | New chat heading = target name (avatar only when present); the Daily Assistant (default agent) keeps its `/` `@` hint; the Org page heading = Org name | UIS-001, UIS-004 |
 | REQ-009 / AC-006 | Member overrides per DEC-002; "Customized"; per-field Reset, row reset, Reset all | UXJ-004, UIS-002 |
 | REQ-010 / AC-003 / AC-004 | Launch applies overrides: Team from New chat, Org from the Org launch page | TR-002, TR-013 |
 | REQ-011 / AC-007 | `@` = "Bring into this run"; Agents and Agent Teams only, never Orgs; current target excluded; never switches the target | UXJ-007 |
@@ -118,7 +127,9 @@
 | REQ-014 / AC-009 / DEC-003 | Running saved run: red stop icon after the badge; tree wording per type; pending/failure copy | UXJ-006 |
 | REQ-015..017 | Saved-run cascade + Save bar; special-state copy; runtime-locked model menu | UXJ-006, UIS-003 |
 | REQ-018 | Superseded launch UI and copy removed | Implementation Fidelity Boundary |
-| **New (round 32, requirement impact)** | The New chat heading is a switcher for Agents and Agent Teams | UXJ-008, UIS-001 |
+| **New (rounds 32/34, requirement impact)** | The New chat and Org launch headings are one switcher for Agents, Agent Teams and Agent Orgs; settings carry across | UXJ-008, UIS-001, UIS-004 |
+| **New (round 35, requirement impact)** | New chat and the Org launch page reach the right tools through one icon; Files/Terminal follow the chosen workspace | UXJ-009, UIS-005 |
+| **Changed (round 37, requirement impact)** | The Org launch action is labelled "Run" (SR-003 said "Run Agent Org") | UIS-004 |
 | REQ-003 | No raw addresses in user-facing copy | All copy |
 | QR-001 | Keyboard-operable with accessible names | Accessibility |
 
@@ -131,8 +142,12 @@
 - **Layout:**
   - New chat and the Org launch page share one composition: the target name centered as the page
     heading (`h1`, 28 px `sm`, semibold, tracking-tight); below it the composer (chat) or the
-    settings card (Org); one members line under it (Team/Org).
-  - On New chat the heading is a button with a chevron (the switcher).
+    settings card (Org); one members line centered under it (Team/Org).
+  - On both pages the heading is a button with a chevron (the switcher).
+  - Both pages sit outside the workspace tool shell's strip: the right tools appear only after the
+    small icon in the top-right corner is used.
+  - The Org card's Run button is pinned 12 px from the card's bottom-right corner; the rows above
+    use the full card width.
   - The Member settings drawer docks right. On `lg` and wider the page pads by its width.
   - Saved-run settings: header (icon + name + status badge [+ stop icon]), settings card, optional
     note line, "Members", sticky Save bar.
@@ -140,16 +155,18 @@
   - setting rows ≥ 36 px with a 96 px label column;
   - member rows: 32 px avatar, two lines;
   - list gap 6 px;
-  - Org card footer `px-4 py-2.5` with a hairline above it.
+  - Org card `px-4 py-2`; Org status line 10 px under the card; members line 10 px under that.
 - **Typography and colour:**
   - labels `gray-900`, 13 px;
   - values as in the composer (model `gray-800` medium, runtime `gray-400`, approval and workspace
     `gray-600`);
   - "Customized" `blue-700`;
   - members line `gray-400` with `blue-700` links;
-  - Org status text: `gray-500` (info), `amber-700` (blocked), `red-600` (error), wrapping (never
-    truncated);
-  - primary buttons indigo-600 (Run Agent Org, Save, Done).
+  - Org status text (centered under the card): `gray-500` (info), `amber-700` (blocked), `red-600`
+    (error), wrapping (never truncated);
+  - Run: a 32 px round `blue-600` button (hover `blue-700`) with a white 16 px play icon, exactly the
+    composer's Send button style;
+  - primary text buttons indigo-600 (Save, Done).
 - **Surfaces:**
   - settings card, Org card and opened member: `rounded-xl`, `gray-200` border, white, `shadow-sm`,
     no row dividers;
@@ -159,6 +176,10 @@
   `bg-gray-100 text-gray-600` + dot.
 - **Icons:**
   - `chevron-down` 20 px `gray-400` on the heading switcher;
+  - `play-solid` 16 px white on Run; `arrow-path-solid` spinning while starting;
+  - the `panel-right` outline icon, 18 px `gray-400` (hover `gray-600` on `gray-100`), for "Show
+    tools" — the same icon and corner as the panel's own close button;
+  - `building-office-2` for Orgs in the switcher;
   - `user-group` / `building-office-2`;
   - agent initials circle `emerald-50`;
   - `lock-closed` for fixed values;
@@ -175,8 +196,9 @@
 
 | Component | Purpose | Variants And States | UI Reference Location |
 | --- | --- | --- | --- |
-| Heading switcher | Choose who to chat with (New chat) | Closed / hover / open; search; sections Agents (General Agent first) + Agent teams; current = check; disabled while starting | `components/chat/ChatTargetSwitcher.vue` |
-| Org launch page | Start an Org | Default, customized, model missing, runtime unavailable, preparing ("+"), launching, failed, unavailable | `components/run-settings/OrgLaunchPage.vue`, `stores/orgLaunchDraftStore.ts` |
+| Heading switcher | Choose what to run (New chat, Org launch page) | Closed / hover / open; search; sections Agents (Daily Assistant first), Agent teams, Agent orgs; current = check; disabled while starting | `components/chat/ChatTargetSwitcher.vue`, `composables/runSettings/useRunTargetSwitcher.ts` |
+| Org launch page | Start an Org | Default, customized, model missing, runtime unavailable, preparing ("+"), launching, failed, unavailable; Run icon button inside the card | `components/run-settings/OrgLaunchPage.vue`, `stores/orgLaunchDraftStore.ts` |
+| Start-surface tools | Reach Files/Terminal/… before a run | Icon (closed) / docked panel / drawer (narrow); remembered | `components/layout/WorkspaceToolShell.vue` (`start-surface`), `StartSurfaceToolsToggle.vue`, `composables/layout/useStartSurfaceTools.ts` |
 | Members line + drawer | Customize members (Team New chat, Org launch page) | Line: default / "● n of N customized · Edit · Reset"; drawer resizable 400–960 px, remembered; full width < `sm` | `components/run-settings/ChatTargetMembers.vue`, `memberSettingsSource.ts` |
 | Member row | A member or placed team | Closed / hover / opened card; Customized; "N customized" for teams; "Choose a model" (amber); nested members | `components/run-settings/RunMemberRow.vue` |
 | Settings rows | Workspace / Model / Thinking / Tool approval | Editable, locked, thinking unavailable, Antigravity approval lock, per-field Reset | `components/run-settings/RunSettingsCard.vue` |
@@ -190,45 +212,50 @@
 | --- | --- | --- | --- | --- | --- |
 | UXJ-001 | Agents (list/detail) | Agent defined | Start an agent run | New chat for the agent; first message starts it | REQ-005/006, AC-001/002 |
 | UXJ-002 | Agent Teams | Team defined | Start a team run | New chat for the team; first message launches it | REQ-005/006, AC-001/002/004 |
-| UXJ-003 | Agent Orgs (list/detail) | Org defined | Start an Org run | Org launch page → Run Agent Org → Org run view | REQ-005..007, REQ-010, AC-001..003 |
+| UXJ-003 | Agent Orgs (list/detail), or an Org chosen in the heading | Org defined | Start an Org run | Org launch page → Run → the launched Org run view | REQ-005..007, REQ-010, AC-001..003 |
 | UXJ-004 | New chat (Team) or Org launch page | Members follow the defaults | Customize some members | "n of N customized"; the launch uses the overrides | REQ-009/010, AC-005/006 |
 | UXJ-005 | A running/stored run | Run selected | "+" start another like it | Agent/Team: New chat prefilled; Org: Org launch page prefilled | REQ-013, AC-008 |
 | UXJ-006 | A saved run | Edit Config | Review, stop, change model/thinking | Saved / stopped / read-only explained | REQ-014..017, AC-009..011 |
 | UXJ-007 | Any composer | Composer focused | Bring in a collaborator with `@` | `@Name ` inserted; sent with the message | REQ-011/012, AC-007 |
-| UXJ-008 | New chat | Any target, before the first message | Switch to another Agent or Team | Heading, placeholder and members line follow; settings kept | New (round 32) |
+| UXJ-008 | New chat / Org launch page | Any target, before starting | Switch to another Agent, Team or Org | Agent/Team: New chat; Org: Org launch page; settings kept | New (rounds 32/34) |
+| UXJ-009 | New chat / Org launch page | Tools closed | Use Files/Terminal (e.g. copy a folder path) | Tools open beside the page (or as the drawer); closing returns the icon | New (round 35) |
 
 ## Journey Details
 
 **UXJ-001/002 Run → New chat**
 - Run opens `/chat` with a fresh draft for the definition.
-- The heading is its name (an avatar beside it only when the definition has one). The General Agent
+- The heading is its name (an avatar beside it only when the definition has one). The Daily Assistant
   keeps its `/` `@` hint.
 - The composer shows workspace, approval, model and thinking. Teams also get the members line.
-- Sending the first message starts the run.
+- Sending the first message starts the run and opens it; the message shows in the conversation
+  (for a Team, in its coordinator's), and the run is listed in the workspace tree.
 - No model → Send disabled ("Choose a model to start.").
-- Visuals: VIS-001, VIS-002, VIS-010.
+- Visuals: VIS-001, VIS-002, VIS-010, VIS-019.
 
 **UXJ-003 Org launch page**
-1. Agent Orgs → Run opens `/workspace?rootSubjectKind=agent_org&definitionId=<id>&mode=configuration`.
-2. The heading is the Org name (avatar if present). The settings card shows Workspace, Model,
-   Thinking and Tool approval.
+1. Agent Orgs → Run opens `/workspace?rootSubjectKind=agent_org&definitionId=<id>&mode=configuration`
+   with a fresh draft. Choosing an Org in the heading switcher opens the same page, carrying the
+   workspace, model+thinking and approval.
+2. The heading is the Org name (avatar if present) and is the heading switcher. The settings card
+   shows Workspace, Model, Thinking and Tool approval, with Run in its lower-right corner.
    - Defaults: the Org's default launch config; else the last model used in chat; else the default
      runtime's first model.
    - Workspace defaults to the temp workspace; approval to Auto-approve.
-3. Below the card: "All N members use these settings · Customize members". The drawer lists placed
-   teams (with their workspace) and their members, and direct agents.
-4. **Run Agent Org:**
-   - the footer shows a spinner and "Starting {Org} on {runtime}…";
+3. Below the card, centered: "All N members use these settings · Customize members". The drawer
+   lists placed teams (with their workspace) and their members, and direct agents.
+4. **Run** (round play icon; tooltip "Run"):
+   - the icon becomes a spinner; "Starting {Org} on {runtime}…" shows under the card;
    - the settings lock;
-   - on success the Org run view opens (`mode=active`), where the user chooses an exact Agent or
-     Team, as today.
+   - on success the launched Org run view opens (`mode=active`): the run is listed under its
+     workspace as "New - {Org}" with its teams and agents, and the user chooses an exact Agent or
+     Team, as today (VIS-018).
 5. **Failure:** red "Couldn't start this Agent Org. Try again."; the page and values are kept; Run
    is enabled again.
-6. **Blocked:** amber reason ("Choose a model to start." or "{Runtime} is not available. Choose
-   another runtime."); Run disabled, with the same reason as its tooltip.
+6. **Blocked:** amber reason under the card ("Choose a model to start." or "{Runtime} is unavailable.
+   Choose another runtime."); Run disabled, with the same reason as its tooltip and accessible name.
 7. **Unavailable Org:** the heading + "This Agent Org isn't available. Choose another Agent Org." +
    "Back to Agent Orgs".
-- Visuals: VIS-012..015, VIS-005.
+- Visuals: VIS-012..015, VIS-005, VIS-018.
 
 **UXJ-004 Customize members (drawer)**
 - As approved. It opens from "Customize members" / "Edit", with focus on Close.
@@ -242,8 +269,8 @@
 **UXJ-005 "+"**
 - Agent and Team "+" open New chat with the run's workspace, approval and model+thinking. Team "+"
   also copies member overrides.
-- Org "+" opens the Org launch page with `&sourceOrgRunId=…`. While it reads the run, the footer
-  shows "Copying the run's settings…" and Run is disabled.
+- Org "+" opens the Org launch page with `&sourceOrgRunId=…`. While it reads the run, "Copying the
+  run's settings…" shows under the card and Run is disabled.
 - Then the page shows the run's workspace, approval, model+thinking and member overrides. A placed
   team keeps its workspace only where it differs from the Org's.
 - If copying fails, the definition's defaults are used.
@@ -275,32 +302,48 @@
   and brings them into this run" (the agent, or the team's coordinator).
 - The first message keeps its mentions.
 
-**UXJ-008 Heading switcher (New chat)**
-- Click the heading (name, avatar, chevron). A menu opens under it with focus in "Search agents and
-  teams".
-  - Sections: "Agents" (General Agent first, then shared agents), then "Agent teams".
-  - A check marks the current target; the highlight starts there.
-  - Agent Orgs are never listed.
+**UXJ-008 Heading switcher (New chat and the Org launch page)**
+- Click the heading (name, avatar, chevron). A menu opens under it with focus in "Search agents,
+  teams and orgs".
+  - Sections: "Agents" (Daily Assistant first, then shared agents), "Agent teams", "Agent orgs"
+    (Orgs with the building icon).
+  - A check marks the current target; the highlight starts there. Empty search: "Nothing matches".
 - ↑/↓ move, Enter chooses, Escape or an outside click closes (focus returns to the heading).
-- Choosing switches the draft at once:
+- Choosing an Agent or Team (on New chat) switches the draft at once:
   - the heading changes;
-  - the placeholder changes ("Ask {agent} anything…", "Message {team}…", or the General Agent copy
+  - the placeholder changes ("Ask {agent} anything…", "Message {team}…", or the Daily Assistant copy
     and hint);
   - the members line shows for Teams;
   - member overrides reset when the target changes; workspace, approval and model+thinking are kept;
   - focus moves to the message box.
-- Only before the first message; disabled while a run is starting. On a narrow screen the menu is
-  nudged inside the window (8 px margin).
+- Choosing an Org (from New chat) opens the Org launch page with the same workspace, approval and
+  model+thinking. Choosing an Agent or Team on the Org launch page opens New chat with them.
+- Only before starting; disabled while a run is starting. On a narrow screen the menu is nudged
+  inside the window (8 px margin).
 - Visuals: VIS-016, VIS-001.
+
+**UXJ-009 Right tools on start surfaces**
+- New chat and the Org launch page show a small `panel-right` icon in the top-right corner
+  (tooltip/aria "Show tools"). The right tools are closed by default.
+- Click: the right tools (Files, Terminal, Activity, Token, Artifacts, …) open docked beside the
+  page when there is room, and the page narrows; otherwise they open as the drawer.
+- Closing (the panel's own icon, or closing the drawer) brings the icon back. No icon strip is shown
+  on these pages.
+- The open/closed choice is remembered, holds across Agent/Team/Org switches, and a run started from
+  the page keeps the panel open.
+- Files and Terminal use the workspace chosen on the page; a typed folder that is not yet a known
+  workspace has no files to show.
+- Visuals: VIS-017 (open), VIS-001 (icon).
 
 ## Screen And Surface Specification
 
 | Surface ID | Surface Name | Route / Entry | Purpose And Primary Action | Layout And Key Sections | Visual ID |
 | --- | --- | --- | --- | --- | --- |
-| UIS-001 | New chat | `/chat` via Agent/Team Run, Agent/Team "+", the workspace tree "+", the Chat nav | Write the first message and start | Heading switcher; composer; members line (Team) | VIS-001..003, VIS-010, VIS-016 |
+| UIS-001 | New chat | `/chat` via Agent/Team Run, Agent/Team "+", the workspace tree "+", the Chat nav, the switcher | Write the first message and start | Heading switcher; composer; members line (Team); tools icon | VIS-001..003, VIS-010, VIS-016, VIS-019 |
 | UIS-002 | Member settings drawer | "Customize members" / "Edit" (New chat Team, Org launch page) | Customize members | Header; optional "Reset all"; rows; footer "Done"; left resize edge | VIS-004, VIS-005, VIS-011 |
 | UIS-003 | Saved-run settings | Workspace → run → "Edit Config" (Org: select a member → "Edit Config") | Review, stop, change model/thinking, save | Header with status/stop; optional note; settings card; "Members"; Save bar | VIS-006..009 |
-| UIS-004 | Org launch page | `/workspace?rootSubjectKind=agent_org&definitionId=…&mode=configuration[&sourceOrgRunId=…]` via Org Run / "+" | Start the Org | Heading; settings card with footer (status + Run Agent Org); members line | VIS-012..015 |
+| UIS-004 | Org launch page | `/workspace?rootSubjectKind=agent_org&definitionId=…&mode=configuration[&sourceOrgRunId=…]` via Org Run / "+" / the switcher | Start the Org | Heading switcher; settings card with the Run icon button in its corner; status line; members line; tools icon | VIS-012..015, VIS-018 |
+| UIS-005 | Start-surface tools | The icon on UIS-001 / UIS-004 | Use Files/Terminal before a run | Docked right panel (or drawer) with the run view's tabs | VIS-017 |
 
 ## Interaction And State Transitions
 
@@ -318,23 +361,26 @@
 | TR-010 | UIS-003 dirty | Save | "Saving…" → "Saved. Changes apply when this run resumes." | Saved | Existing save path | — |
 | TR-011 | Any composer | `@` + Enter/click | Menu; `@Name ` inserted | Mention in text | Sent with the message | Continue |
 | TR-012 | Agent Orgs page | Run | Navigates | UIS-004 (default) | New Org draft | Edit, customize, Run |
-| TR-013 | UIS-004 ready | Run Agent Org | Spinner + "Starting {Org} on {runtime}…"; settings locked | Org run view; or failed (red copy, values kept) | Org launch with overrides; no recipient | Choose Agent/Team |
-| TR-014 | Org run view | "+" | Navigates; "Copying the run's settings…" | UIS-004 prefilled | Reads the source run | Run Agent Org |
-| TR-015 | UIS-001 | Heading → choose a target | Menu closes; heading/placeholder/members line change; focus to input | Draft retargeted | Member overrides reset; settings kept | Send |
+| TR-013 | UIS-004 ready | Run | Spinner in the button + "Starting {Org} on {runtime}…"; settings locked | The launched Org run view (listed as "New - {Org}"); or failed (red copy, values kept) | Org launch with overrides; no recipient | Choose Agent/Team |
+| TR-014 | Org run view | "+" | Navigates; "Copying the run's settings…" | UIS-004 prefilled | Reads the source run | Run |
+| TR-015 | UIS-001 / UIS-004 | Heading → choose a target | Menu closes; Agent/Team: heading/placeholder/members line change, focus to input; Org: the Org launch page | Draft retargeted / Org draft started | Member overrides reset; workspace, approval, model+thinking kept | Send / Run |
+| TR-016 | UIS-001 / UIS-004 | Tools icon / panel close | Panel docks (or drawer opens) / icon returns | UIS-005 open / closed | `localStorage['autobyteus.chat.startToolsOpen']` | Use tools |
 
 ## State Behavior
 
 | Surface / State | Trigger | Required Presentation And Copy | Available Actions | Recovery Or Exit | Visual ID |
 | --- | --- | --- | --- | --- | --- |
-| UIS-001 General Agent | Chat nav | "General Agent ⌄" + "All your skills are available. Type / to use a skill, or @ to bring in an agent or team."; placeholder "Ask anything · / for skills · @ for an agent or team" | Switch, send, @, / | — | VIS-001 |
-| UIS-001 switcher open | Heading click | Search "Search agents and teams"; "Agents" / "Agent teams"; check on current; empty: "No agents or teams match" | Choose, Esc | Esc / outside click | VIS-016 |
+| UIS-001 Daily Assistant | Chat nav | "Daily Assistant ⌄" + "All your skills are available. Type / to use a skill, or @ to bring in an agent or team."; placeholder "Ask anything · / for skills · @ for an agent or team"; tools icon top right | Switch, send, @, /, tools | — | VIS-001 |
+| UIS-001 switcher open | Heading click | Search "Search agents, teams and orgs"; "Agents" / "Agent teams" / "Agent orgs"; check on current; empty: "Nothing matches" | Choose, Esc | Esc / outside click | VIS-016 |
 | UIS-001 Team default | Run / switch | "All {N} members use these settings · Customize members" | Customize | — | VIS-002 |
 | UIS-001 customized | Override set | "● {n} of {N} customized · Edit · Reset" | Edit, Reset | Reset | VIS-003 |
 | UIS-001 starting | Send | "Starting {name} on {runtime}…"; switcher disabled | — | — | — |
-| UIS-004 default | Org Run | Org heading; card; "Run Agent Org"; members line | Edit, customize, Run | — | VIS-012 |
+| UIS-004 default | Org Run | Org heading switcher; card with the round Run icon (tooltip "Run"); members line | Edit, customize, Run, switch, tools | — | VIS-012 |
 | UIS-004 blocked | No model / runtime unavailable | Amber "Choose a model to start." / "{Runtime} is unavailable. Choose another runtime."; Run disabled (tooltip = reason) | Choose model | — | — |
 | UIS-004 preparing | Org "+" | Spinner + "Copying the run's settings…"; Run disabled | — | Defaults on failure | — |
-| UIS-004 launching | Run Agent Org | Spinner + "Starting {Org} on {runtime}…"; settings locked; Run disabled | — | — | — |
+| UIS-004 launching | Run | Spinner in the button + "Starting {Org} on {runtime}…"; settings locked; Run disabled | — | — | — |
+| UIS-004 launched | Run succeeded | The Org run view: "New - {Org}" in the tree (live, all members idle); "Choose an Agent or Team" | Choose a member | — | VIS-018 |
+| UIS-005 open | Tools icon | Docked panel (or drawer) with the run view's tabs; the page narrows | Use tools; close | Panel close icon | VIS-017 |
 | UIS-004 failed | Launch error | Red "Couldn't start this Agent Org. Try again." (wraps) | Run again | — | VIS-013 |
 | UIS-004 unavailable | Org missing | "This Agent Org isn't available. Choose another Agent Org." + "Back to Agent Orgs" | Back | — | VIS-014 |
 | UIS-002 member customized | Change | "Customized · {model} · {runtime} · {approval}" (+ workspace for teams) | Reset icon, field Reset, Reset all | Reset | VIS-004, VIS-005 |
@@ -354,12 +400,13 @@
   case.
 - **Exact strings** (en; zh-CN in `localization/messages/zh-CN/runSettings.ts` and `chat.ts`):
   - **Heading switcher:**
-    - aria "Choose who to chat with (now {{name}})";
-    - search "Search agents and teams";
-    - sections "Agents", "Agent teams";
-    - empty "No agents or teams match".
+    - aria "Choose what to run (now {{name}})";
+    - search "Search agents, teams and orgs";
+    - sections "Agents", "Agent teams", "Agent orgs";
+    - empty "Nothing matches".
+  - **Start-surface tools:** "Show tools" (tooltip and aria).
   - **Org launch page:**
-    - "Run Agent Org";
+    - "Run" (tooltip and aria of the icon button; zh-CN "运行");
     - "Starting {{name}} on {{runtime}}…";
     - "Couldn't start this Agent Org. Try again.";
     - "This Agent Org isn't available. Choose another Agent Org.";
@@ -394,7 +441,8 @@
   - **Model:** "The runtime is fixed for this run"; "No longer offered by {{runtime}}. Choose another
     model before this run resumes.".
   - **New chat (product copy):** "Message {{team}}…", "Ask {{agent}} anything…".
-  - **`@`:** "Bring into this run"; "{{agent}} gets your message and brings them into this run".
+  - **`@`:** "Bring into this run"; "{{agent}} gets your message and brings them into this run";
+    empty "No agents or teams match".
 - **Removed copy** (must not appear):
   - "Files are saved in …"; "Team defaults" / "Org defaults"; "All use defaults"; "Default" tags;
   - "Team run" / "Agent run" / "Org run" subtitles; "Kept from the saved run: …";
@@ -403,6 +451,7 @@
   - "Stop run" / "Stopping…" for Agent/Team and "Couldn't stop this run. Try again." (replaced by
     DEC-003 wording);
   - the "Chat with …" `@` header;
+  - "Run Agent Org" (now "Run");
   - **Org-in-chat:** "Message {{org}}…", "This org is not available. Choose another org.", the
     `@` footer naming an Org.
 
@@ -419,9 +468,10 @@
 
 | Viewport Or Context | Range Or Condition | Layout And Navigation Changes | Interaction Changes |
 | --- | --- | --- | --- |
-| Desktop wide | ≥ `lg` (1024 px) | Drawer docks right; the page pads by its width | Drag/keyboard resize |
+| Desktop wide | ≥ `lg` (1024 px) | Drawer docks right; the page pads by its width. Start-surface tools dock beside the page when the shell has room | Drag/keyboard resize |
 | Desktop narrow / tablet | `sm`–`lg` | Drawer overlays the page | Resize available |
-| Phone | < `sm` (640 px) | Drawer full width, no resize edge; menus as bottom sheets; the composer's runtime label hides; the Org card narrows beside the workspace strips (values truncate with a tooltip; approval label never wraps); the heading switcher menu is nudged inside the window | Tap |
+| Desktop narrow / phone tools | The shell has no room to dock | Start-surface tools open as the drawer from the same icon | Tap / Escape |
+| Phone | < `sm` (640 px) | Drawer full width, no resize edge; menus as bottom sheets; the composer's runtime label hides; the Org card rows keep the full width (Run is pinned to the corner; approval label never wraps); the members line wraps centered; the heading switcher menu is nudged inside the window | Tap |
 
 ## Accessibility And Keyboard Behavior
 
@@ -435,7 +485,10 @@
 - **Org launch page:**
   - the card controls are the chat controls (keyboard-operable);
   - the status text is `role="status"`, or `role="alert"` on error, with `aria-live="polite"`;
-  - Run Agent Org is disabled with a title giving the reason.
+  - Run is an icon button whose accessible name and title are "Run", or the blocking reason when
+    disabled; `aria-busy` while starting.
+- **Start-surface tools:** the icon is a button named "Show tools"; the panel's own close button is
+  unchanged.
 - **Drawer:**
   - `role="dialog"` "Member settings"; focus moves to Close on open and returns to the line on close;
   - Escape closes an open menu first;
@@ -458,40 +511,45 @@
 
 | Boundary / Data | UI Dependency | UI Reference Behavior | Production Behavior Required Or Still Unknown |
 | --- | --- | --- | --- |
-| Agent/Team launch from New chat | First message starts the run with settings, overrides and mentions | Existing launch services; the Team `sendMessageToFocusedMember` stub launches the draft | Mentions on the first message is a new requirement (REQ-012) |
-| Org launch from the Org launch page | Run Agent Org with root config + overrides | `orgLaunchDraftStore.launch` → the source's `agentOrgRun.launch` (allowed through the plugin); lands on `mode=active` (fixture gap F-004: empty view) | Real launch; production keeps or replaces the Org launch config store; the UI is normative |
+| Agent/Team launch from New chat | First message starts the run with settings, overrides and mentions | Existing launch and send paths run against local fixtures: `CreateAgentTeamRun` answers with a new run per launch (`prototype/run-settings/launchedTeamFixture.ts`); the prototype socket plays the Team stream (connected, all idle, each message received, idle) | Mentions on the first message is a new requirement (REQ-012) |
+| Org launch from the Org launch page | Run with root config + overrides | `orgLaunchDraftStore.launch` → the source's `agentOrgRun.launch` → local `CreateAgentOrgRun`; `prototype/run-settings/launchedOrgFixture.ts` serves each launched run (inspection, history, run config, empty member conversations) and the prototype socket plays its stream; Stop runs the source's stop against local `TerminateAgentOrgRun` | Real launch; production keeps or replaces the Org launch config store; the UI is normative |
+| Start-surface tools | Files/Terminal for the chosen workspace | The shared right panel; the page provides the chosen workspace; demo files and terminal are synthetic | Real workspace files and terminal |
 | Org "+" prefill | Source run settings | Reads `readAgentOrgRunInspection` + `buildEditableAgentOrgRunSeed` | Real read |
 | Default model on the Org page | Initial card values | Org default → last chat model → default runtime's first model | Confirm with requirements (mirrors New chat) |
 | Runtime catalogs | Model menus | Hand-written `prototype/run-settings/runtimeCatalogFixture.ts` (4 KB) | Real catalogs |
 | AutoByteus Org | Realistic members | Hand-written `prototype/run-settings/autobyteusOrgFixture.ts` (10 KB; names only) | Real definitions |
 | Stop run | Saved-run header | Terminate scripted to succeed; the open settings update; the tree is not updated in the reference | Real terminate; lifecycle refresh |
 | Save saved-run settings | Save bar | Scripted local save | Existing save services |
-| Review states | Design-only switches | `localStorage['autobyteus.design.runSettings.existingState']` = `refresh_required` / `model_unavailable`; `localStorage['autobyteus.design.runSettings.orgLaunchState']` = `launch_failed` / `unavailable` (reload after setting) | Real reasons |
+| Review states | Design-only switches | `localStorage['autobyteus.design.runSettings.existingState']` = `refresh_required` / `model_unavailable`; `localStorage['autobyteus.design.runSettings.orgLaunchState']` = `launch_failed` / `unavailable` (reload after setting; remove afterwards) | Real reasons |
 
 ## Final Visual Reference Inventory
 
 All captures were taken on 2026-10-05 after confirmation and final validation, in Chromium at
-DPR 2. The desktop viewport is recorded per image because the browser window width changed between
-captures. Phone is a 390 CSS-px frame.
+DPR 2. Each image is a frame of the recorded CSS width (1512-px captures are scaled 0.6 in the
+frame). VIS-004, VIS-006..009 and VIS-011 are from the SR-001/round-31 captures and still match;
+the others were recaptured after rounds 33–38. Phone is a 390 CSS-px frame.
 
 | Visual ID | Journey / Surface / State | Viewport | Image Path | Requirements-Defining Visible Details | Illustrative / Permitted Variation |
 | --- | --- | --- | --- | --- | --- |
-| VIS-001 | UXJ-001/008 / UIS-001 General Agent | 804 | `visual-references/VIS-001-new-chat-general-agent-804.png` | Heading with chevron, hint, placeholder, four controls, no workspace line | Names, model |
-| VIS-002 | UXJ-002 / UIS-001 Team | 804 | `visual-references/VIS-002-new-chat-team-members-line-804.png` | Team heading with chevron, members line | Names, counts |
-| VIS-003 | UXJ-004 / UIS-001 customized | 804 | `visual-references/VIS-003-new-chat-team-members-customized-line-804.png` | "● 1 of 2 customized · Edit · Reset" (focus ring on Edit = focus returned from the drawer) | Counts |
+| VIS-001 | UXJ-001/008/009 / UIS-001 Daily Assistant | 804 | `visual-references/VIS-001-new-chat-daily-assistant-804.png` | Heading with chevron, hint, placeholder, four controls, no workspace line, tools icon top right (closed) | Names, model |
+| VIS-002 | UXJ-002 / UIS-001 Team | 804 | `visual-references/VIS-002-new-chat-team-members-line-804.png` | Team heading with chevron, members line, tools icon | Names, counts |
+| VIS-003 | UXJ-004 / UIS-001 customized | 804 | `visual-references/VIS-003-new-chat-team-members-customized-line-804.png` | "● 1 of 2 customized · Edit · Reset" after the drawer closed (focus on Edit) | Counts |
 | VIS-004 | UXJ-004 / UIS-002 Team | 880 | `visual-references/VIS-004-member-panel-team-customized-880.png` | Drawer, Reset all, opened card, Customized, reset icon, field Reset | Names, models |
 | VIS-005 | UXJ-003/004 / UIS-002 from the Org launch page | 804 | `visual-references/VIS-005-member-panel-org-launch-804.png` | Org drawer; placed team Customized with workspace + field Reset; MEMBERS; Coordinator | Org/team/member names (AutoByteus Org fixture) |
 | VIS-006 | UXJ-006 / UIS-003 running | 880 | `visual-references/VIS-006-saved-team-running-stop-880.png` | Running badge + red stop icon; no note line; locks (tooltip text per type is specified in copy) | Names |
 | VIS-007 | UXJ-006 / UIS-003 stopped, unsaved | 880 | `visual-references/VIS-007-saved-team-stopped-unsaved-880.png` | Stopped; editable; members follow; Save bar "· Cancel · Save" | Models |
 | VIS-008 | UXJ-006 / UIS-003 model menu | 880 | `visual-references/VIS-008-saved-run-model-menu-locked-runtime-880.png` | Search, runtime label + lock, models, check | Models |
 | VIS-009 | UXJ-006 / UIS-003 Org | 880 | `visual-references/VIS-009-saved-org-run-settings-880.png` | Org header, card, placed team with workspace and members | Names |
-| VIS-010 | UXJ-002 / UIS-001 phone | 390 | `visual-references/VIS-010-new-chat-team-390.png` | Heading with chevron, composer fit, members line wraps | Names |
+| VIS-010 | UXJ-002 / UIS-001 phone | 390 | `visual-references/VIS-010-new-chat-team-390.png` | Heading with chevron, composer fit, members line wraps, tools icon | Names |
 | VIS-011 | UXJ-004 / UIS-002 phone | 390 | `visual-references/VIS-011-member-panel-team-390.png` | Full-width drawer, no resize edge | Names |
-| VIS-012 | UXJ-003 / UIS-004 default | 804 | `visual-references/VIS-012-org-launch-page-804.png` | Org heading; settings card; hairline footer with Run Agent Org; members line | Org name, counts, model |
-| VIS-013 | UXJ-003 / UIS-004 failed | 1512 | `visual-references/VIS-013-org-launch-failed-1512.png` | Red error in footer (full text), values kept, Run enabled | — |
+| VIS-012 | UXJ-003 / UIS-004 default | 804 | `visual-references/VIS-012-org-launch-page-804.png` | Org heading switcher; settings card with the round Run icon in its lower-right corner; members line centered; tools icon | Org name, counts, model |
+| VIS-013 | UXJ-003 / UIS-004 failed | 1512 | `visual-references/VIS-013-org-launch-failed-1512.png` | Red error centered under the card (full text), values kept, Run enabled | — |
 | VIS-014 | UXJ-003 / UIS-004 unavailable | 1512 | `visual-references/VIS-014-org-launch-unavailable-1512.png` | Heading, message, "Back to Agent Orgs" | Org name |
-| VIS-015 | UXJ-003 / UIS-004 phone | 390 | `visual-references/VIS-015-org-launch-page-390.png` | Card fits beside the strips; approval on one line; Run button; members line wraps | Names |
-| VIS-016 | UXJ-008 / UIS-001 switcher open | 804 | `visual-references/VIS-016-new-chat-target-switcher-804.png` | Open heading state, search, sections, check on current, no Orgs | Agent/team names and descriptions |
+| VIS-015 | UXJ-003 / UIS-004 phone | 390 | `visual-references/VIS-015-org-launch-page-390.png` | Rows keep the full width ("Temp workspace" not truncated); Run pinned to the corner; approval on one line; members line wraps centered | Names |
+| VIS-016 | UXJ-008 / UIS-001 switcher open | 804 | `visual-references/VIS-016-new-chat-target-switcher-804.png` | Open heading state, search "Search agents, teams and orgs", sections incl. "Agent orgs" with the building icon (list scrolled to the end) | Agent/team/org names and descriptions |
+| VIS-017 | UXJ-009 / UIS-005 open | 1512 | `visual-references/VIS-017-new-chat-tools-open-1512.png` | New chat narrowed with the right tools docked (Files, Terminal, Activity, Token, Artifacts, close icon) | Terminal output |
+| VIS-018 | UXJ-003 / UIS-004 launched | 1512 | `visual-references/VIS-018-org-run-after-run-1512.png` | Where Run lands: "New - AutoByteus Org" (live) under its workspace with its teams; "Choose an Agent or Team" | Names, workspace |
+| VIS-019 | UXJ-002 / Team run after the first message | 1512 | `visual-references/VIS-019-team-run-first-message-1512.png` | The Team run with the coordinator focused, Idle, the first message shown, the run titled by it and dated "now" | Names, message |
 
 Illustrative everywhere: agent, team, org, model and workspace names and descriptions, member
 counts and the left navigation tree contents.
@@ -501,9 +559,9 @@ counts and the left navigation tree contents.
 - Runnable UI reference: the design repository root, `corepack pnpm dev --port 4520`. Reset with
   `localStorage.clear()`.
 - Ticket record: `product-ticket.md`
-- Review rounds: `review-round-1.md` … `review-round-32.md`. SR-003 is in rounds 31–32;
-  `review-evidence/round-31/`.
-- Journeys UXJ-001..008; transitions TR-001..015.
+- Review rounds: `review-round-1.md` … `review-round-32.md`, `review-round-33-38.md`. SR-003 is in
+  rounds 31–38; `review-evidence/round-31/`.
+- Journeys UXJ-001..009; transitions TR-001..016.
 - Limitations: in the automation browser, background tabs do not finish slide transitions (not a
   product issue).
 
@@ -511,10 +569,14 @@ counts and the left navigation tree contents.
 
 - **Must preserve:**
   - Agent/Team Run and "+" → New chat; Org Run and "+" → Org launch page;
-  - the heading switcher (Agents/Teams only);
+  - the heading switcher on New chat and the Org launch page (Agents, Agent Teams, Agent Orgs;
+    settings carried);
+  - the start-surface tools icon (closed by default, docked or drawer, no strip, remembered, chosen
+    workspace);
   - the members line and drawer (layout, copy, widths, limits);
   - flat two-line member rows with "Customized";
-  - the Org page composition (heading, card + footer action, members line) and states;
+  - the Org page composition (heading switcher, card with the round Run icon in its corner, status
+    line, members line) and states;
   - the saved-run header with the stop icon after the badge and the DEC-003 wording;
   - no standing note lines; the Save bar copy;
   - the runtime-locked model menu;
@@ -532,7 +594,8 @@ counts and the left navigation tree contents.
 - **Not prescriptive (UI reference internals):**
   - `components/run-settings/*` structure, including `memberSettingsSource.ts` and
     `orgLaunchDraftStore.ts`;
-  - prototype plugin stubs; fixtures; scripted stop/save;
+  - prototype plugin stubs; fixtures (`launchedTeamFixture.ts`, `launchedOrgFixture.ts`, the scripted
+    prototype socket streams); scripted stop/save;
   - the Org config read through `apolloClient`.
 - **May vary:** fixture names, counts and models; text rendering heights.
 - **Design system:** existing Tailwind tokens and heroicons. Chat controls are reused with these
@@ -550,9 +613,17 @@ counts and the left navigation tree contents.
 
 ## Open Decisions And Risks
 
-- **Requirement impact (new, round 32):** the New chat heading is a target switcher (Agents and
-  Agent Teams; settings kept; member overrides reset on a target change; only before the first
-  message). It needs a requirement and an AC.
+- **Requirement impact (rounds 32/34):** the New chat and Org launch headings are one switcher for
+  Agents, Agent Teams and Agent Orgs (settings carried; member overrides reset on a target change;
+  only before starting). Orgs are reachable from New chat's heading but are still never chatted
+  with. It needs a requirement and an AC.
+- **Requirement impact (round 35):** start-surface tools behind one icon (UXJ-009). It needs a
+  requirement and an AC.
+- **Requirement impact (round 37):** the Org launch action label is "Run" (SR-003 said "Run Agent
+  Org").
+- **Follow-up question (not in this design):** an optional Org "entry point" (one team or agent
+  where Run lands and the first message goes). Discussed with the user as an idea only; it would
+  change the Org model and partly reopen DEC-004.
 - **Org page default model order** (Org default → last chat model → default runtime's first model):
   mirrors New chat; confirm in requirements.
 - **Members line count:** "n of N customized" counts customized agents and placed teams against N
@@ -560,7 +631,7 @@ counts and the left navigation tree contents.
 - **Pre-existing fixture gaps:**
   - F-001: about 7 MB of captured store snapshots (data-boundary correction recommended separately);
   - F-003: legacy `workspace_*` scenarios;
-  - F-004: the Org run view after launch is empty in the reference.
+  - F-004 (resolved): Run now opens the launched Org run in the reference.
 
 ## Final Consistency Check
 

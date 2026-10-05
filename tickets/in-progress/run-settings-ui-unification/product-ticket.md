@@ -3,10 +3,10 @@
 ## Identity And Scope
 
 - Product ticket: `run-settings-ui-unification` (same as the stable package identifier; no second ID)
-- Stable package: `run-settings-ui-unification`, solution revision `SR-001`
+- Stable package: `run-settings-ui-unification`, solution revisions `SR-001` (completed at `b8ce240`) and `SR-003` (this revision)
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Awaiting User Review` (SR-003 revision, rounds 31–32: Org launch page; heading switcher; reopened from `Completed` at `b8ce240`)
+- Status: `Completed` (SR-003 revision, rounds 31–38, user-confirmed 2026-10-05; reopened from `Completed` at `b8ce240`)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -34,6 +34,8 @@
 - Temp/evidence scratch: `/tmp/autobyteus-design-run-settings-ui-unification`
 - Fixture state: browser-local; reset with `localStorage.clear()`
 - Design-only state switch for saved runs: `localStorage['autobyteus.design.runSettings.existingState'] = 'refresh_required' | 'model_unavailable'`
+- Design-only state switch for the Org launch page: `localStorage['autobyteus.design.runSettings.orgLaunchState'] = 'launch_failed' | 'unavailable'` (reload after setting; remove afterwards)
+- Start-surface tools preference: `localStorage['autobyteus.chat.startToolsOpen']`
 
 ## Mock Data Added
 
@@ -48,11 +50,18 @@
   - Added to the populated catalog in two places: the route store patch (`plugins/00.prototype-state.client.ts`)
     and the local GraphQL reads (`utils/apolloClient.ts`), which serve the Org's team-local member
     references.
-- `prototype/run-settings/launchedTeamFixture.ts` (~6 KB, hand-written, user request 2026-10-05): a Team launched
+- `prototype/run-settings/launchedTeamFixture.ts` (~9 KB, hand-written, user request 2026-10-05): a Team launched
   from New chat opens its own run, whichever Team it is. The base fixture always returned the Product Review
   Team's tree, so other Teams failed with "Launched Team is missing '/solution_designer'". The launched run's
   tree (`GetTeamRunResumeConfig`) and history row (`ListWorkspaceRunHistory`) are now built from the launch
   request (members, agents, settings) and the Team definition (name, coordinator). Nothing runs.
+  Each launch is its own run (the first keeps the base fixture's id); new members have empty conversations.
+- `prototype/run-settings/launchedOrgFixture.ts` (~9 KB, hand-written, user request 2026-10-05): Run on the Org
+  launch page opens the launched Org run, whichever Org it is (a run per launch; inspection, history row, run
+  config, empty member conversations, all agents idle; Stop marks it stopped). Built from the launch request and
+  the Org/Team definitions. Nothing runs.
+- `plugins/00.prototype-state.client.ts`: the prototype socket plays the launched Team/Org streams (connected,
+  snapshot, each sent message received, idle); `heroicons:play-solid` added to the offline icon bundle.
 
 ## Findings
 
@@ -168,4 +177,6 @@
 - 2026-10-05: UI reference fix (user: Run Agent Org "jumped to this place. Weird."): Run Agent Org now opens the launched Org run (live, all members idle, listed under its workspace as "New - <Org>"); choosing a Team focuses its coordinator; the run's settings show "Running". Also fixed: resetting one member on the Org page (null settings) and a stop-patch type error. No design change.
 - 2026-10-05: UI reference self-test of every launch path (user: "you should have correct UI UX"). Fixed in the mock layer only: Org launches with a thinking setting failed to load (live page values copied); each Org and Team launch is its own run (a second launch no longer fails or replaces the first); a Team launched from New chat shows its first and follow-up messages, members Idle, dated "now", empty new conversations; Stop Agent Org from settings keeps settings open; "+" on an Org run keeps team-local member overrides; run ids end in a short id. Mock agent renamed General Agent → Daily Assistant. No design change.
 - 2026-10-05: round 35 — user request (Docker: copy a folder path from the Terminal while choosing a workspace): New chat and the Org launch page keep the right tools behind one small panel icon (top right, the panel's own icon). Closed by default; opens docked beside the page when there is room, else as the drawer; closing returns the icon (no strip); the choice is remembered and a run started from there keeps the panel; Files and Terminal use the workspace chosen on the page. Run views unchanged. `Awaiting User Review`.
+- 2026-10-05: rounds 36–38 — the Org launch action: label "Run" (round 37, user decision; zh-CN "运行"); Run is a round blue play-icon button inside the card's lower-right corner like Send, pinned so the rows keep full width; the members line centered under the card as on New chat; status/errors centered between them. Requirement impact vs SR-003 ("Run Agent Org"). See `review-round-33-38.md`.
+- 2026-10-05: user confirmation — "I'm currently satisfied with the UI now … Let's finalize now … the ticket is done." Final validation; visual references recaptured (VIS-001/002/003/005/010/012–016) and added (VIS-017 tools open, VIS-018 where Run lands, VIS-019 Team first message); switcher empty search "Nothing matches". `Design Completed` pending integration.
 - 2026-10-05: rounds 36–38 — user: the lone "Run Agent Org" button on its own card footer looked odd. Decisions: the label is "Run" (zh-CN "运行"), matching the Run buttons on the cards and "a run" in the app (not "Launch"; the heading already names the Org); then Run moved inside the card as a round blue play-icon button in the lower-right corner, like Send in the chat box (tooltip "Run"; spinner while starting); the members line sits centered under the card as on New chat; status/errors show centered above it. Requirement impact vs SR-003 (label "Run Agent Org"). `Awaiting User Review`.

@@ -52,7 +52,7 @@
       </div>
       <ul :id="listId" role="listbox" :aria-label="$t('chat.switch.aria', { name })" class="max-h-72 min-h-0 overflow-y-auto p-1">
         <li v-if="!filtered.length" class="px-2 py-3 text-center text-[0.8125rem] text-gray-500" data-test="chat-target-switcher-empty">
-          {{ $t('chat.targets.noMatch') }}
+          {{ $t('chat.switch.noMatch') }}
         </li>
         <template v-for="(option, index) in filtered" :key="option.key">
           <li v-if="index === 0 || filtered[index - 1]!.kind !== option.kind" role="presentation" class="px-2 pb-0.5 pt-1.5 text-[0.6875rem] font-medium text-gray-400">

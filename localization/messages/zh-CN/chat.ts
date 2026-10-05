@@ -78,6 +78,7 @@ const chatMessages = {
   'chat.switch.aria': '选择要运行的对象（当前：{{name}}）',
   'chat.switch.orgs': '智能体组织',
   'chat.switch.search': '搜索智能体、团队和组织',
+  'chat.switch.noMatch': '没有匹配项',
   'chat.targets.noMatch': '没有匹配的智能体或团队',
   'chat.targets.teamDescription': '{{count}} 名成员 · 协调者 {{coordinator}}',
   'chat.mentions.placeholderMention': '随便问 · @ 选择智能体或团队',
