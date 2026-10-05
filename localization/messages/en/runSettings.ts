@@ -43,7 +43,7 @@ const runSettingsMessages = {
   'runSettings.existing.stopping': 'Stopping…',
   'runSettings.existing.terminateFailed': "Couldn't terminate this run. Try again.",
   'runSettings.existing.stopOrgFailed': "Couldn't stop this org. Try again.",
-  'runSettings.orgLaunch.run': 'Run Agent Org',
+  'runSettings.orgLaunch.run': 'Run',
   'runSettings.orgLaunch.unavailable': "This Agent Org isn't available. Choose another Agent Org.",
   'runSettings.orgLaunch.failed': "Couldn't start this Agent Org. Try again.",
   'runSettings.orgLaunch.back': 'Back to Agent Orgs',

@@ -41,7 +41,7 @@ export const orgLaunchRoute = (orgDefinitionId: string, sourceOrgRunId?: string 
 /**
  * run-settings-ui-unification (round 34): the heading of New chat and of the Org launch page is one
  * "what to run" switcher. Agents and Agent Teams start in New chat (first message); an Agent Org has
- * no recipient, so choosing one shows the Org launch page (Run Agent Org). `@` is unaffected: it
+ * no recipient, so choosing one shows the Org launch page (Run). `@` is unaffected: it
  * brings Agents and Agent Teams in as collaborators only.
  */
 export function useRunTargetSwitcher() {

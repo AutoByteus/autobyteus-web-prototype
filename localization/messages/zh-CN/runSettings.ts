@@ -42,7 +42,7 @@ const runSettingsMessages = {
   'runSettings.existing.stopping': '正在停止…',
   'runSettings.existing.terminateFailed': '无法终止此运行，请重试。',
   'runSettings.existing.stopOrgFailed': '无法停止此组织，请重试。',
-  'runSettings.orgLaunch.run': '运行智能体组织',
+  'runSettings.orgLaunch.run': '运行',
   'runSettings.orgLaunch.unavailable': '此智能体组织不可用。请选择其他智能体组织。',
   'runSettings.orgLaunch.failed': '无法启动此智能体组织，请重试。',
   'runSettings.orgLaunch.back': '返回智能体组织',

@@ -34,7 +34,7 @@ const designState = (): string | null => (typeof window === 'undefined' ? null :
 /**
  * run-settings-ui-unification (SR-003): the Org launch page's draft. An Org is not a chat target
  * (it has no recipient), so it starts from this page: the four run settings, member overrides and
- * "Run Agent Org". "+" on an Org run prefills it from that run.
+ * "Run". "+" on an Org run prefills it from that run.
  */
 export type OrgLaunchDraft = {
   key: string
@@ -188,7 +188,7 @@ export const useOrgLaunchDraftStore = defineStore('orgLaunchDraft', () => {
     return { ready: true }
   }
 
-  /** Run Agent Org: the Org's settings as root configuration, each customized member as an override. */
+  /** Run: the Org's settings as root configuration, each customized member as an override. */
   const launch = async (navigate: (route: RouteLocationRaw) => Promise<unknown>): Promise<void> => {
     const current = draft.value
     if (!current || current.phase !== 'ready' || !readiness(current).ready) return

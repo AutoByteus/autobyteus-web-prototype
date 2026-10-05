@@ -7,7 +7,7 @@
     :data-state="stateKey"
   >
     <!-- SR-003: an Agent Org has no recipient, so it starts here instead of from chat: the same heading,
-         a settings card where the message box would be, the same members line, and "Run Agent Org". -->
+         a settings card where the message box would be, the same members line, and Run (round 38: a round play-icon button in the card, as Send in chat). -->
     <div class="flex flex-1 flex-col items-center justify-center px-4 pb-10 pt-[14vh] sm:px-6">
       <!-- Round 34: the same "what to run" switcher as New chat; choosing an Agent or Team goes to New chat. -->
       <div class="relative -top-6 flex max-w-full items-center justify-center sm:-top-10" data-test="org-launch-target">
@@ -35,43 +35,47 @@
       </div>
 
       <div v-else-if="draft" class="mt-8 w-full max-w-3xl">
-        <!-- The settings card: the message box's four controls, labelled, with the run action in its footer. -->
-        <div class="rounded-xl border border-gray-200 bg-white shadow-sm" data-test="org-launch-card">
-          <div class="px-4 py-2">
-            <RunSettingsCard
-              :values="values"
-              :locked="locked"
-              test-suffix="org-launch"
-              @update:workspace="store.update({ workspace: $event })"
-              @update:model="selectModel"
-              @update:thinking="store.update({ llmConfig: $event })"
-              @update:approval="store.update({ autoExecuteTools: $event })"
-            />
-          </div>
-          <div class="flex items-center gap-3 border-t border-gray-100 px-4 py-2.5">
-            <p
-              class="flex min-w-0 flex-1 items-center gap-1.5 text-xs"
-              :class="draft.error ? 'text-red-600' : blockedReason ? 'text-amber-700' : 'text-gray-500'"
-              :role="draft.error ? 'alert' : 'status'"
-              aria-live="polite"
-              data-test="org-launch-status"
-            >
-              <span v-if="draft.phase !== 'ready'" class="h-3 w-3 flex-shrink-0 animate-spin rounded-full border-2 border-gray-200 border-t-gray-500 motion-reduce:animate-none" aria-hidden="true"></span>
-              <!-- Wraps rather than truncates: a reason or error is read in full. -->
-              <span class="min-w-0 leading-snug">{{ statusText }}</span>
-            </p>
-            <button
-              type="button"
-              class="inline-flex flex-shrink-0 items-center rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              :disabled="!canRun"
-              :title="blockedReason || undefined"
-              data-test="org-launch-run"
-              @click="run"
-            >
-              {{ $t('runSettings.orgLaunch.run') }}
-            </button>
-          </div>
+        <!-- Round 38: like the chat message box: the settings, with Run as a round icon button in the
+             lower-right corner where Send sits; the members line centered under the card, as on New chat. -->
+        <div class="flex items-end gap-3 rounded-xl border border-gray-200 bg-white py-2 pl-4 pr-3 shadow-sm" data-test="org-launch-card">
+          <RunSettingsCard
+            class="min-w-0 flex-1"
+            :values="values"
+            :locked="locked"
+            test-suffix="org-launch"
+            @update:workspace="store.update({ workspace: $event })"
+            @update:model="selectModel"
+            @update:thinking="store.update({ llmConfig: $event })"
+            @update:approval="store.update({ autoExecuteTools: $event })"
+          />
+          <button
+            type="button"
+            class="mb-1.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm transition-all duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:cursor-not-allowed disabled:opacity-50"
+            :disabled="!canRun"
+            :title="blockedReason || $t('runSettings.orgLaunch.run')"
+            :aria-label="blockedReason || $t('runSettings.orgLaunch.run')"
+            :aria-busy="draft.phase === 'launching' ? 'true' : undefined"
+            data-test="org-launch-run"
+            @click="run"
+          >
+            <Icon v-if="draft.phase === 'launching'" icon="heroicons:arrow-path-solid" class="h-4 w-4 animate-spin motion-reduce:animate-none" aria-hidden="true" />
+            <!-- The play glyph sits a hair right of center to look centered. -->
+            <Icon v-else icon="heroicons:play-solid" class="ml-0.5 h-4 w-4" aria-hidden="true" />
+          </button>
         </div>
+
+        <p
+          v-if="statusText"
+          class="mt-2.5 flex items-center justify-center gap-1.5 text-center text-xs"
+          :class="draft.error ? 'text-red-600' : blockedReason ? 'text-amber-700' : 'text-gray-500'"
+          :role="draft.error ? 'alert' : 'status'"
+          aria-live="polite"
+          data-test="org-launch-status"
+        >
+          <span v-if="draft.phase === 'preparing'" class="h-3 w-3 flex-shrink-0 animate-spin rounded-full border-2 border-gray-200 border-t-gray-500 motion-reduce:animate-none" aria-hidden="true"></span>
+          <!-- Wraps rather than truncates: a reason or error is read in full. -->
+          <span class="min-w-0 leading-snug">{{ statusText }}</span>
+        </p>
 
         <ChatTargetMembers
           v-if="memberSource && draft.phase !== 'launching'"
@@ -89,6 +93,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
+import { Icon } from '@iconify/vue'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import { useAgentOrgDefinitionStore } from '~/stores/agentOrgDefinitionStore'
