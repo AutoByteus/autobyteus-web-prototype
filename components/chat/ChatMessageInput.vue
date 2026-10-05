@@ -54,7 +54,6 @@
         :query="triggerQuery"
         :targets="filteredTargets"
         :highlight="highlight"
-        variant="run"
         :focused-name="mentionFocusedName"
         @highlight="highlight = $event"
         @choose="chooseTarget"

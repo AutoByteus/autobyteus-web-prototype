@@ -88,7 +88,6 @@
           :style="mentionMenu.popover.narrow.value ? undefined : { maxHeight: `${mentionMenu.popover.maxHeight.value}px` }"
         >
           <ChatTargetMenu
-            variant="run"
             :list-id="mentionMenuListId"
             :query="mentionMenu.query.value"
             :targets="mentionMenu.filtered.value"
