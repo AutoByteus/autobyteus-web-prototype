@@ -6,7 +6,7 @@
 - Stable package: `run-settings-ui-unification`, solution revision `SR-001`
 - Title: One clean run-settings experience for Agent, Team and Org runs (new launch and saved run)
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline)
-- Status: `Awaiting User Review` (round 26, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
+- Status: `Awaiting User Review` (round 27, on baseline `origin/personal@b4f3ed1`, pin `10fb695`)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`) for the user, 2026-10-04
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/run-settings-ui-unification/tickets/in-progress/run-settings-ui-unification/product-design-request.md`
 - Requirements context (Draft, not approved): `requirements-doc.md`, `investigation-notes.md` in the same folder
@@ -53,7 +53,7 @@
 ## Findings
 
 - F-001 (pre-existing, not caused by this ticket): `prototype/fixtures/runtime-state.json` (2.7 MB) and `source-state-snapshots.json` (4.4 MB) are store-state snapshots captured from the source app running against the synthetic observation node. The domain values are synthetic, but the size and the capture mechanism do not meet the current data-boundary rule. Recommend a separate baseline data-boundary correction ticket. This ticket adds none.
-- F-002 (pre-existing): the saved Org run settings stay on "Loading run configuration…" in the baseline fixture. The new saved-run view for Org uses the same component as Team. It is shown with the Team saved run and is not reachable for Org in the review build.
+- F-002 (pre-existing, resolved in round 27): the saved Org run settings stayed on "Loading run configuration…" in the baseline fixture because the prototype stubbed `existingRunConfig.loadAgentOrgCanonical` and `agentOrgContexts.readRunConfig`; both now run against the local `AgentOrgRunConfig` fixture.
 - F-003 (pre-existing): the legacy `workspace_*` scenarios error in the baseline. Saved runs are reviewed through the populated workspace tree instead.
 - F-004 (pre-existing): Org Run in the review build lands on "No agent or team run selected", the same as the baseline.
 
@@ -144,3 +144,4 @@
 - 2026-10-05: round 24 — the stop control is a small borderless red stop icon (28 px hit area, `text-red-500`, light red background on hover).
 - 2026-10-05: round 25 — saved-run model menu matches the Chat model menu: same search box (searching only the run's runtime), the runtime as a section label with a small lock (tooltip "The runtime is fixed for this run"), then its models; the trigger tooltip no longer shows over an open menu.
 - 2026-10-05: round 26 — the stop icon sits right after the Running badge instead of at the far right of the header.
+- 2026-10-05: round 27 — UI reference fix (no design change): saved Org run settings now load (F-002). Validated: changing the Org-wide model updates every member including the members of the placed team; a placed team's workspace is editable; Save confirms.

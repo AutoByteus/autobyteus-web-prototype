@@ -61,7 +61,10 @@ const localActions: Record<string, Set<string>> = {
   contextFileUpload: new Set(['finalizeDraftAttachments']),
   // Run settings (Edit Config) for an agent or Team run read the resume config
   // and model options through the source's own code and the local adapter.
-  existingRunConfig: new Set(['loadAgentCanonical', 'loadTeamCanonical', 'refreshModelOptions']),
+  // run-settings-ui-unification (round 27): saved Org run settings load like Agent and Team ones.
+  existingRunConfig: new Set(['loadAgentCanonical', 'loadTeamCanonical', 'loadAgentOrgCanonical', 'refreshModelOptions']),
+  // Reads the Org run's configuration through the local GraphQL fixtures (AgentOrgRunConfig).
+  agentOrgContexts: new Set(['readRunConfig']),
   uiError: new Set(['push', 'remove', 'clear', 'toggle', 'open', 'close']),
   mobileWork: new Set(['selectContext', 'setActiveTab', 'requestRunSetup', 'consumeRunSetupIntent', 'requestFilePreview', 'consumeFilePreviewRequest', 'addDraftContextAttachment', 'removeDraftContextAttachment', 'clearDraftContextAttachments', 'consumeDraftContextAttachments', 'getPendingTeamRunAttachments', 'hasPendingTeamRunAttachments', 'addPendingTeamRunAttachment', 'moveDraftAttachmentsToPendingTeamRun', 'removePendingTeamRunAttachment', 'clearPendingTeamRunAttachments', 'consumePendingTeamRunAttachments', 'rememberFocusedTeamMember', 'getRememberedFocusedTeamMember', 'updateFocusedTeamMember', 'clearContext']),
   memoryExplorerStore: new Set(['setSelectedSourceByKey', 'setHomeTab', 'setSelectedAgentFromRoute', 'setSelectedTeamFromRoute', 'setAgentsSearch', 'setTeamsSearch', 'setAgentRunsSearch', 'setTeamRunsSearch', 'changeAgentRunsPage', 'changeTeamRunsPage', 'changeHomePage', 'resetPagesForSourceChange', 'clearSelections']),
