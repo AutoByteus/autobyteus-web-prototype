@@ -61,37 +61,12 @@
             </button>
           </header>
 
-          <div class="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-5 py-4">
+          <div class="min-h-0 flex-1 overflow-y-auto overflow-x-hidden px-5 py-2">
             <!-- What every member gets unless changed: the composer's settings, read-only here. -->
-            <!-- Round 10: flat sections, same row rhythm as the member settings below. -->
-            <section data-test="chat-members-defaults">
-              <h3 class="text-xs font-medium text-gray-500">{{ $t('runSettings.chat.defaultsTitle') }}</h3>
-              <dl class="mt-2.5 grid grid-cols-[6rem_minmax(0,1fr)] gap-x-2 gap-y-3 text-[0.8125rem] leading-5">
-                <dt class="text-gray-500">{{ $t('runSettings.row.workspace') }}</dt>
-                <dd class="flex min-w-0 items-center gap-1.5 text-gray-800" :title="presentation.workspacePath(defaults.workspace)">
-                  <Icon icon="heroicons:folder" class="h-4 w-4 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                  <span class="truncate">{{ presentation.workspaceName(defaults.workspace) }}</span>
-                </dd>
-                <dt class="text-gray-500">{{ $t('runSettings.row.model') }}</dt>
-                <dd class="flex min-w-0 items-baseline gap-1.5">
-                  <span class="truncate font-medium text-gray-800">{{ presentation.modelLabel(defaults) || $t('chat.model.chooseModel') }}</span>
-                  <span class="flex-shrink-0 text-gray-400">{{ presentation.runtimeShortLabel(defaults.runtimeKind) }}</span>
-                </dd>
-                <dt class="text-gray-500">{{ $t('runSettings.row.thinking') }}</dt>
-                <dd class="flex min-w-0 items-center gap-1.5" :class="defaultsThinking ? 'text-gray-800' : 'text-gray-400'">
-                  <Icon v-if="defaultsThinking" icon="heroicons:light-bulb" class="h-4 w-4 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                  <span class="truncate">{{ defaultsThinking || $t('runSettings.thinking.unavailable') }}</span>
-                </dd>
-                <dt class="text-gray-500">{{ $t('runSettings.row.tools') }}</dt>
-                <dd class="flex min-w-0 items-center gap-1.5 text-gray-800">
-                  <Icon :icon="defaults.autoExecuteTools ? 'heroicons:shield-check' : 'heroicons:shield-exclamation'" class="h-4 w-4 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                  <span class="truncate">{{ presentation.approvalLabel(defaults.autoExecuteTools) }}</span>
-                </dd>
-              </dl>
-            </section>
-
+            <!-- Round 13: members only. The defaults are the message box beside the panel (one place to
+                 change them); an opened member shows what it inherits, muted. -->
             <RunMembersSection
-              class="!mt-7"
+              class="!mt-0"
               flat
               :nodes="members.nodes.value"
               :inherited-label="$t('runSettings.chat.inheritedLabel')"
@@ -127,8 +102,6 @@ import { useAgentTeamDefinitionStore } from '~/stores/agentTeamDefinitionStore'
 import { useAgentOrgDefinitionStore } from '~/stores/agentOrgDefinitionStore'
 import RunMembersSection from './RunMembersSection.vue'
 import { useChatTargetMembers } from './useChatTargetMembers'
-import { useRunSettingsPresentation } from './useRunSettingsPresentation'
-import type { RunSettingsValues } from './runSettings'
 
 /**
  * run-settings-ui-unification: member customization for a Team or Org New chat, reached from
@@ -136,7 +109,6 @@ import type { RunSettingsValues } from './runSettings'
  */
 const props = defineProps<{ draft: ChatDraft }>()
 const members = useChatTargetMembers(toRef(props, 'draft'))
-const presentation = useRunSettingsPresentation()
 const teamStore = useAgentTeamDefinitionStore()
 const orgStore = useAgentOrgDefinitionStore()
 
@@ -151,17 +123,6 @@ const targetName = computed(() => {
   if (target.kind === 'team') return teamStore.agentTeamDefinitions.find((team) => team.id === target.teamDefinitionId)?.name ?? ''
   if (target.kind === 'org') return orgStore.byId(target.orgDefinitionId)?.name ?? ''
   return ''
-})
-const defaults = computed<RunSettingsValues>(() => ({
-  workspace: props.draft.workspace,
-  runtimeKind: props.draft.context.config.runtimeKind,
-  llmModelIdentifier: props.draft.context.config.llmModelIdentifier || '',
-  llmConfig: props.draft.context.config.llmConfig ?? null,
-  autoExecuteTools: props.draft.autoExecuteTools,
-}))
-const defaultsThinking = computed(() => {
-  const menu = presentation.thinkingMenu(defaults.value)
-  return menu.mode === 'hidden' ? '' : menu.summary
 })
 
 const emit = defineEmits<{ (event: 'update:open', value: boolean): void }>()

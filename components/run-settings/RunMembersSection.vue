@@ -1,11 +1,11 @@
 <template>
   <section class="mt-6" data-test="run-members">
-    <div class="mb-2 flex items-baseline justify-between gap-3">
-      <div class="min-w-0">
+    <div v-if="!flat || (customizedCount && !readOnly)" class="mb-2 flex items-baseline justify-between gap-3">
+      <div v-if="!flat" class="min-w-0">
         <h3 class="text-xs font-medium text-gray-500">{{ title || $t('runSettings.members.title') }}</h3>
         <p v-if="hint" class="mt-0.5 text-xs text-gray-400">{{ hint }}</p>
       </div>
-      <div class="flex items-baseline gap-2 text-xs">
+      <div class="ml-auto flex items-baseline gap-2 text-xs">
         <span v-if="!flat" :class="customizedCount ? 'text-gray-700' : 'text-gray-400'" data-test="run-members-count">
           {{ customizedCount ? $t('runSettings.members.customizedCount', { count: customizedCount }) : $t('runSettings.members.noneCustomized') }}
         </span>
@@ -21,7 +21,7 @@
       </div>
     </div>
     <!-- No overflow clipping: member menus open outside the list. -->
-    <div :class="flat ? 'divide-y divide-gray-100 border-y border-gray-100' : 'divide-y divide-gray-100 rounded-lg border border-gray-200 bg-white [&>*:first-child>div:first-child]:rounded-t-lg [&>*:last-child>div:last-child]:rounded-b-lg [&>*:last-child>div:first-child]:rounded-b-lg'">
+    <div :class="flat ? 'divide-y divide-gray-100 border-b border-gray-100' : 'divide-y divide-gray-100 rounded-lg border border-gray-200 bg-white [&>*:first-child>div:first-child]:rounded-t-lg [&>*:last-child>div:last-child]:rounded-b-lg [&>*:last-child>div:first-child]:rounded-b-lg'">
       <RunMemberRow
         v-for="node in nodes"
         :key="node.key"
