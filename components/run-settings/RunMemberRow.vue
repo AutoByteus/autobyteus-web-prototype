@@ -1,16 +1,17 @@
 <template>
-  <!-- Round 14 (member panel): two-line rows, a Customized label, and one soft surface for an
-       opened member. The boxed variant below is the saved-run view. -->
+  <!-- Round 14 (member panel): two-line rows and a Customized label. Round 15: an opened member is
+       a white card with a thin border, like the message box; closed rows stay borderless.
+       The boxed variant below is the saved-run view. -->
   <div
     v-if="flat"
     :data-test="`run-member-${node.key}`"
     :data-customized="isCustomized ? 'true' : 'false'"
-    class="rounded-lg transition-colors"
-    :class="expanded ? 'bg-gray-50' : ''"
+    class="rounded-xl border transition-[border-color,box-shadow]"
+    :class="expanded ? 'border-gray-200 bg-white shadow-sm' : 'border-transparent'"
   >
     <div
-      class="group flex items-center gap-1 rounded-lg pr-1 transition-colors"
-      :class="expanded ? '' : 'hover:bg-gray-100/70'"
+      class="group flex items-center gap-1 rounded-xl pr-1 transition-colors"
+      :class="expanded ? '' : 'hover:bg-gray-50'"
     >
       <button
         type="button"
@@ -47,7 +48,7 @@
               <span v-if="isCustomized" class="flex-shrink-0 text-gray-300" aria-hidden="true">·</span>
               <span v-else-if="childCustomizedCount" class="flex-shrink-0 font-medium text-blue-700">{{ $t('runSettings.members.customizedCount', { count: childCustomizedCount }) }}</span>
               <span v-if="!isCustomized && childCustomizedCount" class="flex-shrink-0 text-gray-300" aria-hidden="true">·</span>
-              <span class="truncate text-gray-500">{{ effectiveSummary }}</span>
+              <span class="truncate text-gray-600">{{ effectiveSummary }}</span>
             </template>
           </span>
         </span>
@@ -55,7 +56,7 @@
       <button
         v-if="isCustomized && !readOnly"
         type="button"
-        class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-gray-400 hover:bg-white hover:text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+        class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
         :aria-label="$t('runSettings.members.resetMemberAria', { name: node.name })"
         :title="$t('runSettings.members.resetMemberAria', { name: node.name })"
         data-test="run-member-reset"
@@ -74,8 +75,8 @@
       </button>
     </div>
 
-    <!-- One surface: the opened member's settings sit under its name, on the same light block. -->
-    <div v-if="expanded" class="pb-3 pl-[3.25rem] pr-3" data-test="run-member-detail">
+    <!-- The opened member's settings sit under its name, inside the same card, after a hairline. -->
+    <div v-if="expanded" class="border-t border-gray-100 pb-2.5 pl-[3.25rem] pr-3 pt-1.5" data-test="run-member-detail">
       <RunSettingsCard
         nested
         flat

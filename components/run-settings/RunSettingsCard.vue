@@ -11,7 +11,8 @@
       :data-test="`run-setting-${field}`"
       :data-state="isLocked(field) ? 'locked' : isInherited(field) ? 'inherited' : customized?.[field] ? 'customized' : 'set'"
     >
-      <span class="flex-shrink-0 text-[0.8125rem] text-gray-500" :class="flat ? 'w-24' : 'w-[5.25rem] sm:w-[6.5rem]'">{{ fieldLabel(field) }}</span>
+      <!-- Round 15: in the member panel, labels and values read as clearly as the message box. -->
+      <span class="flex-shrink-0 text-[0.8125rem]" :class="flat ? 'w-24 text-gray-600' : 'w-[5.25rem] text-gray-500 sm:w-[6.5rem]'">{{ fieldLabel(field) }}</span>
 
       <div class="flex min-w-0 flex-1 flex-col items-start [&>div>button]:max-w-full [&>div]:max-w-full">
         <!-- Workspace -->
@@ -25,7 +26,7 @@
             v-else-if="values.workspace"
             :workspace="values.workspace"
             placement="auto"
-            :muted="isInherited('workspace')"
+            :muted="!flat && isInherited('workspace')"
             @select="emit('update:workspace', $event)"
           />
           <button
@@ -54,7 +55,7 @@
             :align="nested ? 'right' : 'left'"
             :runtime-locked="runtimeLocked"
             :drill-in="nested"
-            :muted="isInherited('model')"
+            :muted="!flat && isInherited('model')"
             @select="emit('update:model', $event)"
           />
           <p v-if="modelNote" class="px-2 pb-1 text-xs leading-5 text-gray-500" data-test="run-setting-model-note">{{ modelNote }}</p>
@@ -65,7 +66,7 @@
 
         <!-- Thinking -->
         <template v-else-if="field === 'thinking'">
-          <span v-if="thinkingHidden" class="px-2 py-1 text-[0.8125rem] leading-5 text-gray-400" data-test="run-setting-thinking-unavailable">
+          <span v-if="thinkingHidden" class="px-2 py-1 text-[0.8125rem] leading-5" :class="flat ? 'text-gray-500' : 'text-gray-400'" data-test="run-setting-thinking-unavailable">
             {{ values.llmModelIdentifier ? $t('runSettings.thinking.unavailable') : '—' }}
           </span>
           <span v-else-if="isLocked('thinking')" class="inline-flex items-center gap-1 px-2 py-1 text-[0.8125rem] leading-5 text-gray-600" :aria-label="lockedAria(field, thinkingSummary)" data-test="run-setting-locked">
@@ -94,7 +95,7 @@
             v-else
             :model-value="approvalRuntimeLocked || values.autoExecuteTools"
             :locked="approvalRuntimeLocked"
-            :muted="isInherited('approval')"
+            :muted="!flat && isInherited('approval')"
             @update:model-value="emit('update:approval', $event)"
           />
         </template>
