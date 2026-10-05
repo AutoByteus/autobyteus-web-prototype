@@ -3,12 +3,11 @@
     class="space-y-0.5"
     :data-test="`run-settings-card${testSuffix ? `-${testSuffix}` : ''}`"
   >
+    <template v-for="field in fields" :key="field">
     <div
-      v-for="field in fields"
-      :key="field"
       class="flex min-h-[2.25rem] items-center gap-2"
       :data-test="`run-setting-${field}`"
-      :data-state="isLocked(field) ? 'locked' : isInherited(field) ? 'inherited' : customized?.[field] ? 'customized' : 'set'"
+      :data-state="isLocked(field) ? 'locked' : isInherited(field) ? 'inherited' : isCustomized(field) ? 'customized' : 'set'"
     >
       <!-- Rounds 15/16/20: labels and values read as clearly as the message box; no row dividers. -->
       <span class="w-24 flex-shrink-0 text-[0.8125rem] text-gray-900">{{ fieldLabel(field) }}</span>
@@ -103,11 +102,48 @@
         class="flex-shrink-0 rounded px-1.5 py-0.5 text-xs font-medium text-blue-600 hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
         :aria-label="$t('runSettings.inherited.resetAria', { setting: fieldLabel(field) })"
         data-test="run-setting-reset"
-        @click="emit('reset', field)"
+        @click="resetField(field)"
       >
         {{ $t('runSettings.inherited.reset') }}
       </button>
     </div>
+
+    <!-- SR-005 (REQ-022): the model's other settings (e.g. Codex Fast mode), one row each under Thinking,
+         with the same control as the message box. Locked with the thinking rules (running saved run). -->
+    <div
+      v-for="option in (field === 'thinking' ? modelOptions : [])"
+      :key="option.key"
+      class="flex min-h-[2.25rem] items-center gap-2"
+      :data-test="`run-setting-option-${option.key}`"
+      :data-state="isLocked('thinking') ? 'locked' : optionCustomized(option.key) ? 'customized' : customized ? 'inherited' : 'set'"
+    >
+      <span class="w-24 flex-shrink-0 text-[0.8125rem] text-gray-900">{{ option.title }}</span>
+      <div class="flex min-w-0 flex-1 flex-col items-start">
+        <span v-if="isLocked('thinking')" class="inline-flex items-center gap-1 px-2 py-1 text-[0.8125rem] leading-5 text-gray-600" :aria-label="t('runSettings.locked.fixedAria', { setting: option.title, value: lockedOptionText(option) })" data-test="run-setting-locked">
+          <Icon :icon="option.set ? `${option.icon}-solid` : option.icon" class="h-3.5 w-3.5" :class="option.set ? 'text-gray-500' : 'text-gray-300'" aria-hidden="true" />
+          <span>{{ lockedOptionText(option) }}</span>
+          <Icon icon="heroicons:lock-closed" class="ml-0.5 h-3 w-3 text-gray-300" aria-hidden="true" />
+        </span>
+        <ChatModelOptionControl
+          v-else
+          :option="option"
+          placement="auto"
+          :align="nested ? 'right' : 'left'"
+          @update="emit('update:thinking', applyModelOption(values.llmConfig, option.key, $event))"
+        />
+      </div>
+      <button
+        v-if="resettable && optionCustomized(option.key)"
+        type="button"
+        class="flex-shrink-0 rounded px-1.5 py-0.5 text-xs font-medium text-blue-600 hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+        :aria-label="$t('runSettings.inherited.resetAria', { setting: option.title })"
+        :data-test="`run-setting-option-reset-${option.key}`"
+        @click="emit('update:thinking', applyModelOption(values.llmConfig, option.key, inheritedLlmConfig?.[option.key]))"
+      >
+        {{ $t('runSettings.inherited.reset') }}
+      </button>
+    </div>
+    </template>
   </div>
 </template>
 
@@ -117,6 +153,8 @@ import { Icon } from '@iconify/vue'
 import ChatWorkspaceMenu from '~/components/chat/ChatWorkspaceMenu.vue'
 import ChatModelMenu from '~/components/chat/ChatModelMenu.vue'
 import ChatThinkingControl from '~/components/chat/ChatThinkingControl.vue'
+import ChatModelOptionControl from '~/components/chat/ChatModelOptionControl.vue'
+import { applyModelOption, buildModelOptions, withoutModelOptions, type ModelOption } from '~/components/chat/chatModelOptions'
 import ChatApprovalToggle from '~/components/chat/ChatApprovalToggle.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import type { ChatDraftWorkspace } from '~/stores/chatDraftStore'
@@ -144,6 +182,11 @@ const props = withDefaults(defineProps<{
   resettable?: boolean
   nested?: boolean
   testSuffix?: string
+  /**
+   * SR-005: the parent's model config for a member (undefined elsewhere), so thinking and each other
+   * model setting are marked "Customized" and reset on their own.
+   */
+  inheritedLlmConfig?: Record<string, unknown> | null
 }>(), {
   fields: () => ALL_RUN_SETTING_FIELDS,
   customized: null,
@@ -153,6 +196,7 @@ const props = withDefaults(defineProps<{
   resettable: true,
   nested: false,
   testSuffix: '',
+  inheritedLlmConfig: undefined,
 })
 
 const emit = defineEmits<{
@@ -177,10 +221,28 @@ const fieldLabel = (field: RunSettingField) => ({
 })[field]
 
 const isLocked = (field: RunSettingField) => Boolean(props.locked[field])
-const isInherited = (field: RunSettingField) => Boolean(props.customized) && !props.customized?.[field] && !isLocked(field)
+const modelOptions = computed<ModelOption[]>(() => buildModelOptions(thinkingSchema.value, props.values.llmConfig, t('chat.modelOption.default')))
+const sameJson = (a: unknown, b: unknown) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null)
+/** With the parent's config known, Thinking counts as customized only when the thinking settings differ. */
+const thinkingDiffers = computed(() => props.inheritedLlmConfig === undefined
+  || !sameJson(withoutModelOptions(thinkingSchema.value, props.values.llmConfig), withoutModelOptions(thinkingSchema.value, props.inheritedLlmConfig)))
+const isCustomized = (field: RunSettingField) => Boolean(props.customized?.[field]) && (field !== 'thinking' || thinkingDiffers.value)
+const optionCustomized = (key: string) => Boolean(props.customized?.thinking) && props.inheritedLlmConfig !== undefined && !isLocked('thinking')
+  && !sameJson(props.values.llmConfig?.[key], props.inheritedLlmConfig?.[key])
+const lockedOptionText = (option: ModelOption) => option.kind === 'toggle'
+  ? (option.set ? option.onLabel : t('chat.modelOption.off'))
+  : option.valueLabel
+/** Thinking's Reset keeps a member's own other settings (e.g. Fast mode); each has its own Reset. */
+const resetField = (field: RunSettingField) => {
+  if (field !== 'thinking' || props.inheritedLlmConfig === undefined) { emit('reset', field); return }
+  let next = withoutModelOptions(thinkingSchema.value, props.inheritedLlmConfig)
+  for (const option of modelOptions.value) next = applyModelOption(next, option.key, props.values.llmConfig?.[option.key])
+  emit('update:thinking', next)
+}
+const isInherited = (field: RunSettingField) => Boolean(props.customized) && !isCustomized(field) && !isLocked(field)
   && !(field === 'thinking' && thinkingHidden.value) && !(field === 'approval' && approvalRuntimeLocked.value)
 /** A runtime that always auto-approves makes the approval value fixed, not a customization. */
-const canReset = (field: RunSettingField) => props.resettable && Boolean(props.customized?.[field]) && !isLocked(field)
+const canReset = (field: RunSettingField) => props.resettable && isCustomized(field) && !isLocked(field)
   && !(field === 'approval' && approvalRuntimeLocked.value)
 const lockedAria = (field: RunSettingField, value: string) => t('runSettings.locked.fixedAria', { setting: fieldLabel(field), value })
 

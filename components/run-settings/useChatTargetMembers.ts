@@ -13,7 +13,7 @@ import {
   type RunSettingField,
   type RunSettingsValues,
 } from './runSettings'
-import { allMemberKeys, countCustomizedOf, overrideWith, overrideWithout } from './memberNodes'
+import { allMemberKeys, countCustomizedOf, findMemberNode, overrideWith, overrideWithout } from './memberNodes'
 import { useRunSettingsPresentation } from './useRunSettingsPresentation'
 
 /**
@@ -59,6 +59,7 @@ export function useChatTargetMembers(source: Ref<MemberSettingsSource | null>) {
       customized: { ...flagsFor(own, values), workspace: false },
       fields: MEMBER_RUN_SETTING_FIELDS,
       detail: address,
+      inheritedLlmConfig: base.llmConfig ?? null,
     }
   }
 
@@ -108,6 +109,7 @@ export function useChatTargetMembers(source: Ref<MemberSettingsSource | null>) {
           children: (team?.nodes ?? []).map((node) => agentNode(`${address}/${node.memberName}`, node.memberName, teamValues,
             node.memberName === team?.coordinatorMemberName)),
           detail: address,
+          inheritedLlmConfig: base.llmConfig ?? null,
         }
       })
     }
@@ -121,6 +123,12 @@ export function useChatTargetMembers(source: Ref<MemberSettingsSource | null>) {
     const current = settingsFor(address)
     if (field === 'workspace') {
       source.value?.setMemberSettings(address, { ...current, workspace: value as ChatDraftWorkspace })
+      return
+    }
+    // SR-005: a member whose model settings match its parent's again follows the parent again.
+    const node = field === 'thinking' && !current.llmModelIdentifier ? findMemberNode(nodes.value, address) : null
+    if (node && JSON.stringify(value ?? null) === JSON.stringify(node.inheritedLlmConfig ?? null)) {
+      source.value?.setMemberSettings(address, overrideWithout(current, 'thinking'))
       return
     }
     source.value?.setMemberSettings(address, overrideWith(current, field, value, presentation.defaultConfigFor))

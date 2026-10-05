@@ -42,6 +42,8 @@ export interface RunMemberNode {
   children?: readonly RunMemberNode[]
   /** Address or path, shown only as a tooltip. */
   detail?: string
+  /** SR-005: the parent's model config, so thinking and each other model setting reset on their own. */
+  inheritedLlmConfig?: Record<string, unknown> | null
 }
 
 /** Runtimes that always auto-approve tools (source `origin/personal@26b555126`). */

@@ -14,6 +14,20 @@ const effortSchema = (levels: string[], fallback: string) => ({
   },
 })
 
+/**
+ * SR-005: Codex models in the server's parameter format, as `codex-app-server-model-normalizer.ts`
+ * emits them: reasoning effort and, for models that support it, Fast mode (`service_tier`, one value
+ * "fast"; unset = Default). Values are illustrative.
+ */
+const codexEffort = (levels: string[], fallback: string) => ({
+  name: 'reasoning_effort', type: 'enum', required: false, default_value: fallback, enum_values: levels,
+  description: 'Controls reasoning depth for Codex turn/start.',
+})
+const codexFast = {
+  name: 'service_tier', label: 'Fast mode', type: 'enum', required: false, enum_values: ['fast'],
+  description: 'Enable Codex Fast mode for this model. Default leaves Codex service tier unchanged.',
+}
+
 const model = (runtime: string, providerId: string, providerName: string, identifier: string, name: string, configSchema: object) => ({
   __typename: 'ModelDetail',
   modelIdentifier: identifier,
@@ -67,8 +81,10 @@ export const RUN_SETTINGS_RUNTIME_AVAILABILITIES = [
 
 export const RUN_SETTINGS_RUNTIME_CATALOGS: Record<string, ReturnType<typeof catalog>> = {
   codex_app_server: catalog('codex_app_server', 'openai', 'OpenAI', [
-    model('codex_app_server', 'openai', 'OpenAI', 'gpt-5.6-sol', 'GPT-5.6 Sol', effortSchema(['low', 'medium', 'high'], 'medium')),
+    model('codex_app_server', 'openai', 'OpenAI', 'gpt-5.6-sol', 'GPT-5.6 Sol', { parameters: [codexEffort(['low', 'medium', 'high', 'xhigh'], 'medium'), codexFast] }),
     model('codex_app_server', 'openai', 'OpenAI', 'gpt-5.6-mini', 'GPT-5.6 Mini', {}),
+    // SR-005: a model with only other settings (Fast mode, no thinking).
+    model('codex_app_server', 'openai', 'OpenAI', 'gpt-5.6-instant', 'GPT-5.6 Instant', { parameters: [codexFast] }),
   ]),
   claude_agent_sdk: catalog('claude_agent_sdk', 'anthropic', 'Anthropic', [
     model('claude_agent_sdk', 'anthropic', 'Anthropic', 'claude-sonnet-4.5', 'Claude Sonnet 4.5', effortSchema(['low', 'medium', 'high'], 'medium')),

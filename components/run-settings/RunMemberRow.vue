@@ -81,6 +81,7 @@
         :values="node.values"
         :fields="node.fields"
         :customized="node.customized"
+        :inherited-llm-config="node.inheritedLlmConfig"
         :locked="locked"
         :runtime-locked="runtimeLocked"
         :resettable="!readOnly"
@@ -113,6 +114,7 @@
 </template>
 
 <script setup lang="ts">
+import { buildModelOptions, setModelOptionLabels } from '~/components/chat/chatModelOptions'
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import { initialsFor } from '~/components/chat/chatComposerMenus'
@@ -146,6 +148,8 @@ const effectiveSummary = computed(() => {
   const parts: string[] = []
   if (props.node.fields.includes('workspace')) parts.push(presentation.workspaceName(values.workspace))
   if (values.llmModelIdentifier) parts.push(`${presentation.modelLabel(values)} · ${presentation.runtimeShortLabel(values.runtimeKind)}`)
+  // SR-005: other model settings that are on (e.g. "Fast") follow the model.
+  parts.push(...setModelOptionLabels(buildModelOptions(presentation.thinkingSchema(values), values.llmConfig, '')))
   parts.push(presentation.approvalLabel(values.autoExecuteTools || isApprovalLockedForRuntime(values.runtimeKind)))
   return parts.filter(Boolean).join(' · ')
 })

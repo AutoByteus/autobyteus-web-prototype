@@ -79,6 +79,7 @@ export const buildExistingMemberNodes = (
       customized,
       fields: MEMBER_RUN_SETTING_FIELDS,
       detail: node.address,
+      inheritedLlmConfig: parent.llmConfig ?? null,
     }
   }
   return {
@@ -90,6 +91,7 @@ export const buildExistingMemberNodes = (
     fields: TEAM_PLACEMENT_RUN_SETTING_FIELDS,
     children: buildExistingMemberNodes(node.children, edits, values, base),
     detail: node.address,
+    inheritedLlmConfig: parent.llmConfig ?? null,
   }
 })
 

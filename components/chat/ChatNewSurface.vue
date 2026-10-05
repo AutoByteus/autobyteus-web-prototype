@@ -74,6 +74,14 @@
               :llm-config="controls.llmConfig.value"
               @update="controls.selectThinking"
             />
+            <!-- SR-005 (REQ-022): the model's other settings (e.g. Codex Fast mode), one chip each. -->
+            <ChatModelOptionControl
+              v-for="option in modelOptions"
+              :key="option.key"
+              :option="option"
+              compact-on-phone
+              @update="controls.selectThinking(applyModelOption(controls.llmConfig.value, option.key, $event))"
+            />
           </template>
         </ChatComposer>
 
@@ -97,6 +105,8 @@ import ChatWorkspaceMenu from '~/components/chat/ChatWorkspaceMenu.vue'
 import ChatApprovalToggle from '~/components/chat/ChatApprovalToggle.vue'
 import ChatModelMenu from '~/components/chat/ChatModelMenu.vue'
 import ChatThinkingControl from '~/components/chat/ChatThinkingControl.vue'
+import ChatModelOptionControl from '~/components/chat/ChatModelOptionControl.vue'
+import { applyModelOption, buildModelOptions } from '~/components/chat/chatModelOptions'
 import ChatTargetMembers from '~/components/run-settings/ChatTargetMembers.vue'
 import ChatTargetSwitcher from '~/components/chat/ChatTargetSwitcher.vue'
 import { useRunTargetSwitcher, type RunTargetOption } from '~/composables/runSettings/useRunTargetSwitcher'
@@ -131,6 +141,7 @@ const target = computed(() => (draft.value
 const agentDefinitionId = computed(() => (draft.value?.target.kind === 'agent' ? draft.value.target.agentDefinitionId : null))
 const options = useChatComposerOptions(agentDefinitionId)
 const controls = useChatDraftModelControls()
+const modelOptions = computed(() => buildModelOptions(controls.thinkingSchema.value, controls.llmConfig.value, t('chat.modelOption.default')))
 
 const team = computed(() => {
   const current = draft.value?.target
