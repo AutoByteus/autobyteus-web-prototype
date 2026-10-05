@@ -13,7 +13,7 @@
 import { operationFixture, baseState, PROJECT_MUTATIONS, SKILL_SOURCE_MUTATIONS } from '~/prototype/source-observation/fixtures.mjs'
 import { withAutobyteusOrgOperation } from '~/prototype/run-settings/autobyteusOrgFixture'
 import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/launchedTeamFixture'
-import { recordOrgLaunch, withLaunchedOrg } from '~/prototype/run-settings/launchedOrgFixture'
+import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/prototype/run-settings/launchedOrgFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
 
@@ -79,16 +79,18 @@ const resolveLocally = async (request: OperationRequest = {}) => {
 // PrepareAgentRun backs the Chat first send (57df63f); CreateWorkspace and the
 // Project/Task mutations back the Projects pages (0a32261); the skill-source
 // mutations back the Skill Sources dialog (4dee901).
-const LOCAL_MUTATIONS = new Set(['CreateAgentTeamRun', 'CreateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
+const LOCAL_MUTATIONS = new Set(['CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
 
 const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const definition = request.mutation?.definitions?.find((entry: any) => entry.kind === 'OperationDefinition')
   const name = definition?.name?.value
   if (!name || !LOCAL_MUTATIONS.has(name)) return { data: {} }
   const state = fixtureState()
-  if (name === 'CreateAgentTeamRun') { state.launchedTeamRun = true; recordTeamLaunch(request.variables || {}) }
   if (name === 'CreateAgentOrgRun') return { data: recordOrgLaunch(request.variables || {}) }
-  const data = operationFixture(name, request.variables || {}, state)
+  if (name === 'TerminateAgentOrgRun') return { data: recordOrgTermination(request.variables || {}) }
+  let data = operationFixture(name, request.variables || {}, state)
+  // run-settings-ui-unification: each Team launch is its own run (launchedTeamFixture.ts).
+  if (name === 'CreateAgentTeamRun') { state.launchedTeamRun = true; data = recordTeamLaunch(request.variables || {}, data) }
   if (data?.__projectError) return { data: null, errors: [data.__projectError] }
   return { data: data ? structuredClone(data) : {} }
 }

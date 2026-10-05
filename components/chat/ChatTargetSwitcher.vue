@@ -97,7 +97,7 @@ import type { RunTargetOption } from '~/composables/runSettings/useRunTargetSwit
 const props = withDefaults(defineProps<{
   name: string
   avatarUrl?: string | null
-  /** Agents (General Agent first), Agent Teams and Agent Orgs. */
+  /** Agents (Daily Assistant first), Agent Teams and Agent Orgs. */
   options: readonly RunTargetOption[]
   /** `agent:<id>` / `team:<id>` / `org:<id>` of the current target. */
   currentKey: string

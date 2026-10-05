@@ -173,7 +173,7 @@ const mentionFocusedName = computed(() => {
   return agentName.value
 })
 const isDefaultAgent = computed(() => agentDefinitionId.value === DEFAULT_CHAT_AGENT_DEFINITION_ID)
-// Round 32/34: the heading switcher lists Agents (General Agent first), Agent Teams and Agent Orgs.
+// Round 32/34: the heading switcher lists Agents (Daily Assistant first), Agent Teams and Agent Orgs.
 const runTargets = useRunTargetSwitcher()
 const switcherOptions = runTargets.options
 const currentTargetKey = computed(() => {

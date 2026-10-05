@@ -10,7 +10,9 @@ import { applyExperienceScenario } from '~/prototype/shared/apply-experience-sce
 import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, taskContextUpload } from '~/prototype/source-observation/fixtures.mjs'
 import { getApolloClient, localFixtureState } from '~/utils/apolloClient'
 import { GetAgentOrgRunInspection } from '~/graphql/queries/runHistoryQueries'
-import { CREATED_ORG_RUN_ID } from '~/prototype/run-settings/launchedOrgFixture'
+import { isLaunchedOrgRunId } from '~/prototype/run-settings/launchedOrgFixture'
+import { isLaunchedTeamRunId } from '~/prototype/run-settings/launchedTeamFixture'
+import { GetTeamRunResumeConfig } from '~/graphql/queries/runHistoryQueries'
 import { RUN_SETTINGS_RUNTIME_AVAILABILITIES, RUN_SETTINGS_RUNTIME_CATALOGS } from '~/prototype/run-settings/runtimeCatalogFixture'
 import { withAutobyteusOrgDefinitions } from '~/prototype/run-settings/autobyteusOrgFixture'
 
@@ -29,7 +31,9 @@ const sourceLoadedStores = new Set(['projects', 'projectTasks', 'skillSources', 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),
   appLayout: new Set(['toggleMobileMenu', 'closeMobileMenu', 'openMobileMenu', 'setHostShellPresentation', 'resetHostShellPresentation']),
-  activeContext: new Set(['addContextFilePath', 'removeContextFilePath', 'clearContextFilePaths']),
+  // run-settings-ui-unification (SR-003): `send` routes to the run's own send action, which stays
+  // stubbed for stored runs; a Team launched here answers locally, so follow-up messages show.
+  activeContext: new Set(['addContextFilePath', 'removeContextFilePath', 'clearContextFilePaths', 'send']),
   agentRunConfig: new Set(['setTemplate', 'setAgentConfig', 'updateAgentConfig', 'setWorkspaceLoading', 'setWorkspaceLoaded', 'setWorkspaceError', 'clearWorkspaceState', 'collapsePanel', 'expandPanel', 'togglePanel', 'markFirstMessageSent', 'clearConfig']),
   agentSelection: new Set(['beginSelectionIntent', 'invalidateSelectionIntent', 'setRunSelection', 'setTeamDraftSelection', 'clearRunSelection', 'promoteTeamDraftLaunch', 'selectRunWithoutShellNavigation', 'selectTeamDraftWithoutShellNavigation', 'clearSelectionWithoutShellNavigation', 'selectRun', 'selectTeamDraft', 'clearSelection']),
   // Background Tasks (Activity tab) are live-only in the source: each stream
@@ -66,9 +70,10 @@ const localActions: Record<string, Set<string>> = {
   // run-settings-ui-unification (round 27): saved Org run settings load like Agent and Team ones.
   existingRunConfig: new Set(['loadAgentCanonical', 'loadTeamCanonical', 'loadAgentOrgCanonical', 'refreshModelOptions']),
   // Reads the Org run's configuration through the local GraphQL fixtures (AgentOrgRunConfig).
-  agentOrgContexts: new Set(['readRunConfig']),
+  // run-settings-ui-unification (SR-003): Stop Agent Org runs the source's stop (local TerminateAgentOrgRun).
+  agentOrgContexts: new Set(['readRunConfig', 'stopAndInspect']),
   // run-settings-ui-unification (SR-003): Run Agent Org launches through the source store (local CreateAgentOrgRun).
-  agentOrgRun: new Set(['launch']),
+  agentOrgRun: new Set(['launch', 'terminate']),
   // run-settings-ui-unification (SR-003): the Org launch page launches through the source's own Org launch path.
   orgLaunchDraft: new Set(['launch']),
   uiError: new Set(['push', 'remove', 'clear', 'toggle', 'open', 'close']),
@@ -475,7 +480,9 @@ export default defineNuxtPlugin({
     // run-owning stores, so the run stays in the Workspaces tree and can be
     // reopened after navigating elsewhere.
     let liveRunSession = false
-    const liveRunStores = new Set(['agentContexts', 'agentSelection', 'runHistory', 'chatDraft', 'workspace', 'agentRun'])
+    // run-settings-ui-unification (SR-003): the open center panel (conversation or settings) is live too;
+    // stopping a launched Org from its settings changes the route and must not close them.
+    const liveRunStores = new Set(['agentContexts', 'agentSelection', 'runHistory', 'chatDraft', 'workspace', 'agentRun', 'workspaceCenterView'])
     const patchStore = (store: any): void => {
       if (!collectionKinds.has(store.$id)) {
         collectionKinds.set(store.$id, new Map(Object.entries(store.$state)
@@ -620,11 +627,15 @@ export default defineNuxtPlugin({
           if (context() === 'paired' && store.$id === 'runHistory' && actionName === 'fetchTree') {
             throw new Error('Synthetic mobile recent-history refresh failed')
           }
-          // run-settings-ui-unification (round 2): a Team started from New chat launches its
-          // draft through the source's own launch path; the first message itself is not played.
-          if (store.$id === 'agentTeamRun' && actionName === 'sendMessageToFocusedMember') {
-            const teamDraft = pinia._s.get('teamRunConfig')?.selectedDraft
-            if (teamDraft && !pinia._s.get('agentTeamContexts')?.activeTeamContext) return store.launchDraft(teamDraft)
+          // run-settings-ui-unification (SR-003): a Team started from New chat, and messages to that
+          // launched Team, run the source's own send path: the launch is answered locally and the
+          // local PrototypeWebSocket plays the Team stream, so the first message shows in the run.
+          if (store.$id === 'agentTeamRun' && (actionName === 'sendMessageToFocusedMember' || actionName === 'ensureTeamStreamConnected')) {
+            const teams = pinia._s.get('agentTeamContexts')
+            const active = teams?.activeTeamContext
+            const launching = actionName === 'sendMessageToFocusedMember' && pinia._s.get('teamRunConfig')?.selectedDraft && !active
+            const launchedTeam = isLaunchedTeamRunId(actionName === 'ensureTeamStreamConnected' ? args[0] : active?.view?.getRootTeamRunId?.())
+            if (launching || launchedTeam) return originalAction.apply(store, args)
           }
           const result = actionResult(store, actionName, args)
           if ((store.$id === 'agentDefinition' || store.$id === 'agentTeamDefinition' || store.$id === 'toolManagement') && result) {
@@ -711,7 +722,36 @@ export default defineNuxtPlugin({
         // run-settings-ui-unification (SR-003): the Org run started by "Run Agent Org" is live. Its
         // stream answers with CONNECTED and the same view the inspection read returns (nothing runs).
         const runId = decodeURIComponent(this.url.split('?')[0]!.split('/').filter(Boolean).pop() || '')
-        if (runId === CREATED_ORG_RUN_ID) void this.playLaunchedOrgStream(runId)
+        if (isLaunchedOrgRunId(runId)) void this.playLaunchedOrgStream(runId)
+        // The Team launched from New chat is live the same way: CONNECTED, then its view with every
+        // agent idle; each sent message is received (nothing replies).
+        if (isLaunchedTeamRunId(runId) && this.url.includes('/ws/agent-team')) {
+          this.launchedTeamRunId = runId
+          void this.playLaunchedTeamStream(runId)
+        }
+      }
+      private launchedTeamRunId: string | null = null
+      private teamChangeSequence = 1
+      private emit(frame: unknown): void {
+        if (this.readyState !== PrototypeWebSocket.OPEN) return
+        const event = new MessageEvent('message', { data: JSON.stringify(frame) })
+        this.onmessage?.(event); this.dispatchEvent(event)
+      }
+      private async playLaunchedTeamStream(runId: string): Promise<void> {
+        const result = await getApolloClient().query({ query: GetTeamRunResumeConfig, variables: { teamRunId: runId } })
+        const tree = (result.data as Record<string, any> | null)?.getTeamRunResumeConfig?.executionTree
+        if (!tree?.root_team) return
+        const statuses = (members: Array<Record<string, any>>): Array<Record<string, unknown>> => members.flatMap((member) =>
+          Array.isArray(member.members)
+            ? statuses(member.members)
+            : member.agent_run_id
+              ? [{ agent_run_id: member.agent_run_id, member_address: member.address, status: 'idle', trigger: null, tool_name: null, error_message: null, error_details: null, recoverableBlock: null }]
+              : [])
+        this.emit({ type: 'CONNECTED', payload: { session_id: 'prototype-team-session', root_team_run_id: runId } })
+        this.emit({ type: 'TEAM_EXECUTION_VIEW_SNAPSHOT', payload: {
+          root_team_run_id: runId, base_change_sequence: 1, execution_tree: tree, messages: [],
+          agent_statuses: statuses(tree.root_team.members ?? []), agent_input_states: [],
+        } })
       }
       private async playLaunchedOrgStream(runId: string): Promise<void> {
         const result = await getApolloClient().query({ query: GetAgentOrgRunInspection, variables: { orgRunId: runId } })
@@ -731,8 +771,24 @@ export default defineNuxtPlugin({
         // run-settings-ui-unification (round 9): a send that brings an `@` collaborator in waits for
         // the run to accept it. The scripted outcome: the run accepts it (no reply is played).
         if (typeof data !== 'string') return
-        let message: { type?: string; payload?: { message_id?: string; dedupe_key?: string; mentions?: unknown[] } }
+        let message: { type?: string; payload?: { message_id?: string; dedupe_key?: string; mentions?: unknown[]; agent_run_id?: string; content?: string; context_file_paths?: string[] } }
         try { message = JSON.parse(data) } catch { return }
+        if (this.launchedTeamRunId && message.type === 'SEND_MESSAGE' && message.payload) {
+          const payload = message.payload
+          setTimeout(() => this.emit({ type: 'MEMBER_INPUT_MESSAGE', payload: {
+            change_sequence: ++this.teamChangeSequence, recipient_agent_run_id: payload.agent_run_id ?? '',
+            message_id: payload.message_id ?? '', dedupe_key: payload.dedupe_key ?? '', content: payload.content ?? '',
+            input_origin: 'user_message', received_at: new Date().toISOString(),
+            context_file_paths: (payload.context_file_paths ?? []).map((path) => ({ path, type: null })),
+            sender_agent_run_id: null, parent_communication_message_id: null,
+          } }), 150)
+          // Nothing replies: the agent reports idle, so the composer is ready for the next message.
+          setTimeout(() => this.emit({ type: 'AGENT_STATUS', payload: {
+            change_sequence: ++this.teamChangeSequence, agent_run_id: payload.agent_run_id ?? '',
+            status: 'idle', trigger: null, tool_name: null, error_message: null, error_details: null, recoverableBlock: null,
+          } }), 300)
+          return
+        }
         if (message.type !== 'SEND_MESSAGE' || !message.payload?.mentions?.length) return
         const runId = decodeURIComponent(this.url.split('/').filter(Boolean).pop() || '')
         const ack = {

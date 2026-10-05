@@ -1,13 +1,15 @@
 /**
  * run-settings-ui-unification: a Team launched from New chat opens its own run in the UI reference,
- * whichever Team it is. The base fixture's CreateAgentTeamRun always returned the Product Review
- * Team's tree, so any other Team (e.g. the AutoByteus Org's Software Engineering Team) failed with
- * "Launched Team is missing '/<coordinator>'". This builds the launched run's tree and history row from
- * the launch request itself (members, agents, settings) and the Team definition (name, coordinator).
- * Nothing runs; the run view, tree and settings simply reflect what was launched.
+ * whichever Team it is, as many times as it is launched. The base fixture's CreateAgentTeamRun always
+ * returned one run with the Product Review Team's tree, so any other Team failed with "Launched Team
+ * is missing '/<coordinator>'", and a second launch failed with "TeamRun … is already registered".
+ * Each launch now gets its own run id; its tree and history row are built from the launch request
+ * (members, agents, settings) and the Team definition (name, coordinator). The first launch keeps the
+ * base fixture's ids. Nothing runs; the run view, tree and settings reflect what was launched.
  */
 
-const CREATED_TEAM_RUN_ID = 'team-run-created-fixture'
+/** The base fixture's id for a created TeamRun: the first launch in a browser context. */
+const BASE_CREATED_TEAM_RUN_ID = 'team-run-created-fixture'
 
 type LaunchRecord = {
   runtimeKind: string
@@ -23,13 +25,30 @@ type TeamLaunchInput = {
 }
 type TeamDefinition = { id: string; name: string; coordinatorMemberName?: string | null }
 type AgentDefinition = { id: string; name: string }
+type LaunchedTeamRun = { teamRunId: string; input: TeamLaunchInput; launchedAt: string }
 
-let launched: TeamLaunchInput | null = null
+/** Launched runs, newest first (one browser context, reset on reload). */
+const launchedRuns: LaunchedTeamRun[] = []
 
-/** CreateAgentTeamRun: remember what was launched (one browser context, reset on reload). */
-export const recordTeamLaunch = (variables: Record<string, unknown>): void => {
+/** Run ids end in a short id the UI shows (last 4 characters), like real run ids. */
+const shortId = (seed: string): string => {
+  let hash = 2166136261
+  for (const char of seed) hash = Math.imul(hash ^ char.charCodeAt(0), 16777619)
+  return (hash >>> 0).toString(16).padStart(8, '0').slice(-4)
+}
+
+export const isLaunchedTeamRunId = (teamRunId: unknown): boolean =>
+  typeof teamRunId === 'string' && launchedRuns.some((run) => run.teamRunId === teamRunId)
+
+/** CreateAgentTeamRun: remember what was launched and answer with a new run id. */
+export const recordTeamLaunch = (variables: Record<string, unknown>, data: Record<string, any> | null): Record<string, any> | null => {
   const input = (variables as { input?: TeamLaunchInput }).input
-  if (input?.teamDefinitionId && Array.isArray(input.memberConfigs)) launched = input
+  if (!input?.teamDefinitionId || !Array.isArray(input.memberConfigs)) return data
+  const sequence = launchedRuns.length + 1
+  const teamRunId = sequence === 1 ? BASE_CREATED_TEAM_RUN_ID : `team-run-launched-${sequence}-${shortId(`${input.teamDefinitionId}#${sequence}`)}`
+  // The request holds live (reactive) page values; keep a plain copy.
+  launchedRuns.unshift({ teamRunId, input: JSON.parse(JSON.stringify(input)) as TeamLaunchInput, launchedAt: new Date().toISOString() })
+  return { ...data, createAgentTeamRun: { ...(data?.createAgentTeamRun ?? { __typename: 'CreateAgentTeamRunResult', success: true, message: null, status: 'IDLE' }), teamRunId } }
 }
 
 const launchConfiguration = (record: LaunchRecord | undefined) => ({
@@ -40,22 +59,24 @@ const launchConfiguration = (record: LaunchRecord | undefined) => ({
   workspace_root_path: record?.workspaceRootPath ?? null,
 })
 const memberName = (address: string) => address.split('/').filter(Boolean).pop() ?? address
-const memberRunId = (address: string) => `team-member-${memberName(address)}-created`
+const memberRunId = (run: LaunchedTeamRun, address: string) => run.teamRunId === BASE_CREATED_TEAM_RUN_ID
+  ? `team-member-${memberName(address)}-created`
+  : `team-member-${memberName(address)}-${shortId(`${run.teamRunId}#${address}`)}`
 
-const rootTeam = (input: TeamLaunchInput, team: TeamDefinition | null) => ({
+const rootTeam = (run: LaunchedTeamRun, team: TeamDefinition | null) => ({
   address: '/',
-  team_definition_id: input.teamDefinitionId,
-  team_definition_name: team?.name ?? input.teamDefinitionId,
-  team_run_id: CREATED_TEAM_RUN_ID,
-  coordinator_address: `/${team?.coordinatorMemberName ?? memberName(input.memberConfigs[0]?.memberAddress ?? '')}`,
-  default_launch_configuration: launchConfiguration(input.teamConfigs.find((scope) => scope.teamAddress === '/') ?? input.memberConfigs[0]),
-  members: input.memberConfigs.map((member) => ({
+  team_definition_id: run.input.teamDefinitionId,
+  team_definition_name: team?.name ?? run.input.teamDefinitionId,
+  team_run_id: run.teamRunId,
+  coordinator_address: `/${team?.coordinatorMemberName ?? memberName(run.input.memberConfigs[0]?.memberAddress ?? '')}`,
+  default_launch_configuration: launchConfiguration(run.input.teamConfigs.find((scope) => scope.teamAddress === '/') ?? run.input.memberConfigs[0]),
+  members: run.input.memberConfigs.map((member) => ({
     kind: 'configured_agent',
     address: member.memberAddress,
     agent_definition_id: member.agentDefinitionId,
     role: null,
     description: null,
-    agent_run_id: memberRunId(member.memberAddress),
+    agent_run_id: memberRunId(run, member.memberAddress),
     platform_agent_run_id: null,
     launch_configuration: launchConfiguration(member),
   })),
@@ -64,7 +85,7 @@ const rootTeam = (input: TeamLaunchInput, team: TeamDefinition | null) => ({
 })
 
 /**
- * Reads that describe the launched run: its resume config (tree) and its history row. The caller
+ * Reads that describe the launched runs: their resume configs (trees) and history rows. The caller
  * supplies the Team and Agent catalogs (base fixture + the AutoByteus Org fixture).
  */
 export const withLaunchedTeam = (
@@ -73,14 +94,36 @@ export const withLaunchedTeam = (
   data: Record<string, any> | null,
   catalogs: { teams: readonly TeamDefinition[]; agents: readonly AgentDefinition[] },
 ): Record<string, any> | null => {
-  const input = launched
-  if (!input || !data) return data
-  const team = catalogs.teams.find((entry) => entry.id === input.teamDefinitionId) ?? null
-  const tree = rootTeam(input, team)
+  if (!launchedRuns.length || !data) return data
+  const teamOf = (run: LaunchedTeamRun) => catalogs.teams.find((entry) => entry.id === run.input.teamDefinitionId) ?? null
 
-  if (operationName === 'GetTeamRunResumeConfig' && variables.teamRunId === CREATED_TEAM_RUN_ID) {
+  if (operationName === 'GetTeamRunResumeConfig') {
+    const run = launchedRuns.find((entry) => entry.teamRunId === variables.teamRunId)
+    if (!run) return data
     const current = data.getTeamRunResumeConfig ?? {}
-    return { ...data, getTeamRunResumeConfig: { ...current, executionTree: { ...(current.executionTree ?? {}), root_team: tree } } }
+    return {
+      ...data,
+      getTeamRunResumeConfig: {
+        ...current,
+        teamRunId: run.teamRunId,
+        isActive: true,
+        modelConfigEditability: { editable: false, reason: null },
+        executionTree: {
+          ...(current.executionTree ?? {}),
+          created_at: run.launchedAt,
+          archived_at: null,
+          application_binding: null,
+          handoffs: [],
+          root_team: rootTeam(run, teamOf(run)),
+        },
+      },
+    }
+  }
+
+  // A launched member has no conversation yet.
+  if (operationName === 'GetTeamMemberRunProjection' && launchedRuns.some((run) =>
+    run.input.memberConfigs.some((member) => memberRunId(run, member.memberAddress) === variables.agentRunId))) {
+    return { ...data, getTeamMemberRunProjection: { ...(data.getTeamMemberRunProjection ?? {}), summary: '', conversation: [], activities: [] } }
   }
 
   if (operationName === 'ListWorkspaceRunHistory' && Array.isArray(data.listWorkspaceRunHistory)) {
@@ -88,43 +131,52 @@ export const withLaunchedTeam = (
     let template: Record<string, any> | null = null
     for (const group of groups) {
       for (const teamGroup of group.teamDefinitions ?? []) {
-        const index = (teamGroup.runs ?? []).findIndex((run: { teamRunId?: string }) => run.teamRunId === CREATED_TEAM_RUN_ID)
+        const index = (teamGroup.runs ?? []).findIndex((run: { teamRunId?: string }) => run.teamRunId === BASE_CREATED_TEAM_RUN_ID)
         if (index >= 0) { template = teamGroup.runs[index]; teamGroup.runs.splice(index, 1) }
       }
       group.teamDefinitions = (group.teamDefinitions ?? []).filter((teamGroup: { runs?: unknown[] }) => teamGroup.runs?.length)
     }
     if (!template) return data
-    const workspaceRootPath = input.teamConfigs.find((scope) => scope.teamAddress === '/')?.workspaceRootPath ?? null
-    let target = groups.find((group) => group.workspaceRootPath === workspaceRootPath)
-    if (!target && workspaceRootPath) {
-      target = { workspaceRootPath, workspaceName: memberName(workspaceRootPath), agentDefinitions: [], teamDefinitions: [] }
-      groups.push(target)
-    }
-    target ??= groups[0]
-    if (!target) return data
     const agentName = (id: string) => catalogs.agents.find((agent) => agent.id === id)?.name ?? memberName(id)
-    const historyItem = {
-      ...template,
-      teamDefinitionId: input.teamDefinitionId,
-      teamDefinitionName: team?.name ?? input.teamDefinitionId,
-      coordinatorAddress: tree.coordinator_address,
-      rootTeam: tree,
-      workspaceRootPath: workspaceRootPath ?? template.workspaceRootPath,
-      members: input.memberConfigs.map((member) => ({
-        memberName: memberName(member.memberAddress),
-        displayName: agentName(member.agentDefinitionId),
-        memberAddress: member.memberAddress,
-        agentRunId: memberRunId(member.memberAddress),
-        agentDefinitionId: member.agentDefinitionId,
-        agentName: agentName(member.agentDefinitionId),
-        status: 'IDLE',
-        runtimeKind: member.runtimeKind,
-        workspaceRootPath: member.workspaceRootPath,
-      })),
+    // Oldest first, so each newer run is placed above the previous one.
+    for (const run of [...launchedRuns].reverse()) {
+      const team = teamOf(run)
+      const tree = rootTeam(run, team)
+      const workspaceRootPath = run.input.teamConfigs.find((scope) => scope.teamAddress === '/')?.workspaceRootPath ?? null
+      let target = groups.find((group) => group.workspaceRootPath === workspaceRootPath)
+      if (!target && workspaceRootPath) {
+        target = { workspaceRootPath, workspaceName: memberName(workspaceRootPath), agentDefinitions: [], teamDefinitions: [] }
+        groups.push(target)
+      }
+      target ??= groups[0]
+      if (!target) continue
+      const historyItem = {
+        ...template,
+        teamRunId: run.teamRunId,
+        // Started just now, not at the fixture's fixed date.
+        createdAt: run.launchedAt,
+        lastUpdatedAt: run.launchedAt,
+        teamDefinitionId: run.input.teamDefinitionId,
+        teamDefinitionName: team?.name ?? run.input.teamDefinitionId,
+        coordinatorAddress: tree.coordinator_address,
+        rootTeam: tree,
+        workspaceRootPath: workspaceRootPath ?? template.workspaceRootPath,
+        members: run.input.memberConfigs.map((member) => ({
+          memberName: memberName(member.memberAddress),
+          displayName: agentName(member.agentDefinitionId),
+          memberAddress: member.memberAddress,
+          agentRunId: memberRunId(run, member.memberAddress),
+          agentDefinitionId: member.agentDefinitionId,
+          agentName: agentName(member.agentDefinitionId),
+          status: 'IDLE',
+          runtimeKind: member.runtimeKind,
+          workspaceRootPath: member.workspaceRootPath,
+        })),
+      }
+      const existing = (target.teamDefinitions ?? []).find((teamGroup: { teamDefinitionId?: string }) => teamGroup.teamDefinitionId === run.input.teamDefinitionId)
+      if (existing) existing.runs = [historyItem, ...(existing.runs ?? [])]
+      else target.teamDefinitions = [...(target.teamDefinitions ?? []), { teamDefinitionId: run.input.teamDefinitionId, teamDefinitionName: team?.name ?? run.input.teamDefinitionId, runs: [historyItem] }]
     }
-    const existing = (target.teamDefinitions ?? []).find((teamGroup: { teamDefinitionId?: string }) => teamGroup.teamDefinitionId === input.teamDefinitionId)
-    if (existing) existing.runs = [historyItem, ...(existing.runs ?? [])]
-    else target.teamDefinitions = [...(target.teamDefinitions ?? []), { teamDefinitionId: input.teamDefinitionId, teamDefinitionName: team?.name ?? input.teamDefinitionId, runs: [historyItem] }]
     return { ...data, listWorkspaceRunHistory: groups }
   }
   return data

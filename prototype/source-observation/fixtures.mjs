@@ -82,8 +82,8 @@ const secondAgent = {
 const dailyAssistant = {
   ...agent,
   id: 'autobyteus-daily-assistant',
-  name: 'General Agent',
-  role: 'General Agent',
+  name: 'Daily Assistant',
+  role: 'Daily Assistant',
   description: 'General-purpose assistant for everyday tasks, with access to all installed skills.',
   instructions: 'You are Daily Assistant, a general-purpose assistant.',
   toolNames: ['run_bash', 'read_url', 'search_web'],

@@ -157,7 +157,7 @@ export const FLOWS = {
   'CHT-025': { title: 'Chat run: right tool shell Files tab', path: '/chat', steps: [sendFirst, text('Files')] },
   'CHT-026': { title: 'Chat run: collapse the right tool shell', path: '/chat', steps: [sendFirst, role('button', 'Toggle Sidebar')] },
   'CHT-027': { title: 'Chat run: reopen the chat from the Workspaces tree after leaving', path: '/chat', steps: [sendFirst, text('Agents'), text('Summarize the synthetic baseline.')], settleMs: 1500 },
-  'CHT-028': { title: 'Workspaces tree: + on the General Agent row after a chat opens a New chat preset to it', path: '/chat', steps: [sendFirst, role('button', 'New run with this agent')] },
+  'CHT-028': { title: 'Workspaces tree: + on the Daily Assistant row after a chat opens a New chat preset to it', path: '/chat', steps: [sendFirst, role('button', 'New run with this agent')] },
   'CHT-029': { title: 'Chat run: / skill menu in the run composer', path: '/chat', steps: [sendFirst, async page => { await page.locator('textarea.composer-text').last().click(); await page.keyboard.type('/'); await page.waitForTimeout(700) }] },
   'CHT-032': { title: 'Chat run: @ opens the live-run mention menu (0a32261)', path: '/chat', steps: [sendFirst, async page => { await page.locator('textarea.composer-text').last().click(); await page.keyboard.type('@'); await page.waitForTimeout(800) }] },
   'CHT-033': { title: 'Chat run: a reply with an @ mention shows the inline mention chip (0a32261)', path: '/chat', steps: [sendFirst, runComposer, typeKeys('@Doc'), press('Enter'), typeKeys('please review.'), press('Enter')], settleMs: 1500 },
