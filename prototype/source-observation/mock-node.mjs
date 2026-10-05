@@ -17,6 +17,7 @@ function applyScenario(name) {
   state.requestDelayMs = name === 'loading' ? 1500 : 0
   state.launchedTeamRun = false
   state.projectData = null
+  state.skillSourceData = null
   state.taskContextFiles = {}
 }
 

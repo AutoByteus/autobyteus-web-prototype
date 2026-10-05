@@ -1,0 +1,353 @@
+{
+  "generatedAt": "2026-10-05T03:45:08.146Z",
+  "source": "http://127.0.0.1:4543",
+  "prototype": "http://127.0.0.1:4541",
+  "mock": "http://127.0.0.1:4544",
+  "results": [
+    {
+      "id": "MEN-001",
+      "title": "Stored Team run composer shows the @ placeholder",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-002",
+      "title": "Stored Team run: @ opens the live-run mention menu",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-003",
+      "title": "Stored Team run: @ query filters the menu",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-004",
+      "title": "Stored Team run: choosing a candidate leaves one inline highlighted mention",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-005",
+      "title": "Stored Team run: Team candidate chosen with the mouse",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-006",
+      "title": "Stored Team run: Escape closes the @ menu",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-007",
+      "title": "Stored Org run member: @ opens the live-run mention menu",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace?rootSubjectKind=agent_org&definitionId=org-product-launch&orgRunId=org-run-001&mode=history&memberAddress=/analyst",
+        "/workspace?rootSubjectKind=agent_org&definitionId=org-product-launch&orgRunId=org-run-001&mode=history&memberAddress=/analyst"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-010",
+      "title": "Stored Team run: @ query without a match shows the empty hint",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-008",
+      "title": "Stored Team run writer: \"From <Sender>:\" delivery block",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-009",
+      "title": "Stored Team run writer: delivery details expanded",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "AGR-001",
+      "title": "Stored Agent run: opening it lists its task Agent and task Team",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "AGR-002",
+      "title": "Stored Agent run: open the task Agent conversation",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "AGR-003",
+      "title": "Stored Agent run: task Team row opens its coordinator",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "AGR-004",
+      "title": "Stored Agent run: the run row returns to the host conversation",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "AGR-005",
+      "title": "Stored Agent run: Team tab lists the task Agent message",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

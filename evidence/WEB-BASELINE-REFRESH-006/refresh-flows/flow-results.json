@@ -1,0 +1,560 @@
+{
+  "generatedAt": "2026-10-05T04:16:31.853Z",
+  "source": "http://127.0.0.1:4543",
+  "prototype": "http://127.0.0.1:4541",
+  "mock": "http://127.0.0.1:4544",
+  "results": [
+    {
+      "id": "SKS-001",
+      "title": "Skills: Sources opens the dialog (default, up to date, check failed)",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-002",
+      "title": "Skill sources: scrolled to the update-available row, local folder and the add form",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-003",
+      "title": "Skill sources: GitHub mode of the add form",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-004",
+      "title": "Skill sources: import a public GitHub repository",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-005",
+      "title": "Skill sources: an invalid repository URL is rejected",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-006",
+      "title": "Skill sources: add a local folder",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-007",
+      "title": "Skill sources: Check again on a GitHub source",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-008",
+      "title": "Skill sources: Update opens the whole-source confirmation",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-009",
+      "title": "Skill sources: confirm update (up to date, success notice)",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-010",
+      "title": "Skill sources: Remove a GitHub source opens the delete confirmation",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-011",
+      "title": "Skill sources: confirm GitHub source removal",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-012",
+      "title": "Skill sources: Remove a local folder opens the unlink confirmation",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-013",
+      "title": "Skill sources: update failed and incomplete removal states",
+      "scenario": "skill_source_issues",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-014",
+      "title": "Skill sources: Retry removal",
+      "scenario": "skill_source_issues",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-015",
+      "title": "Skill sources: Done closes the dialog",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-016",
+      "title": "Skill sources (narrow)",
+      "scenario": "populated",
+      "viewport": "narrow",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BRW-001",
+      "title": "Task Agent conversation (scrollable, earlier events available)",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BRW-002",
+      "title": "Task Agent: scrolling up loads earlier events from the host package, with \"From <Sender>:\" rows",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BRW-003",
+      "title": "Task Agent browse: back to the latest",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TOK-001",
+      "title": "Stored Agent run: Token tab shows the run roll-up",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TOK-002",
+      "title": "Task Agent: Token tab",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TOK-004",
+      "title": "Stored Team run member: Token tab",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TOK-005",
+      "title": "Stored Org run member: Token tab",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace?rootSubjectKind=agent_org&definitionId=org-product-launch&orgRunId=org-run-001&mode=history&memberAddress=/analyst",
+        "/workspace?rootSubjectKind=agent_org&definitionId=org-product-launch&orgRunId=org-run-001&mode=history&memberAddress=/analyst"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TOK-003",
+      "title": "Chat run: Token tab",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

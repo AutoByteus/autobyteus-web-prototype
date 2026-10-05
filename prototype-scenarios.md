@@ -57,6 +57,7 @@ control, CSV preparation/download path, or replacement export workflow.
 | `permission_denied` | `/mobile`, `paired` | Denied/offline mobile recovery guidance |
 | `skill_name_issues` | `/skills` | Skills page duplicate-name banner (D-19): one conflict and one ignored runtime-default copy, with Show/Hide details |
 | `agy_runtime` | `/chat` | The Antigravity runtime is also available; choosing it shows the locked (always-on) auto-approve control (`WEB-BASELINE-REFRESH-004`) |
+| `skill_source_issues` | `/skills` → Sources | One GitHub skill source whose update failed and one with an incomplete removal (Retry removal) (`WEB-BASELINE-REFRESH-006`) |
 
 The populated fixture also contains, since `WEB-BASELINE-REFRESH-002`, the
 built-in General Agent (named Daily Assistant before `WEB-BASELINE-REFRESH-004`;
@@ -77,6 +78,16 @@ Since `WEB-BASELINE-REFRESH-004` (source `0a32261`):
   candidates (`Documentation Writer`, `Product Review Team`).
 - The stored Team run's `writer` conversation opens with one agent-to-agent
   delivery from `researcher`, rendered as the "From <Sender>:" block.
+
+Since `WEB-BASELINE-REFRESH-006` (source `4dee901`):
+
+- The Skill Sources dialog lists a default folder, a local folder and three
+  synthetic GitHub repositories (up to date, update available, check failed).
+  Import, Check again, Update and Remove update an in-memory copy; a reload or
+  scenario change restores it.
+- The task Agent `documentation writer` of the stored Agent run has earlier
+  events: scrolling up past the top of its conversation loads them in browse
+  mode, including one "From Research Assistant:" row.
 
 ## Electron Host Scenarios
 

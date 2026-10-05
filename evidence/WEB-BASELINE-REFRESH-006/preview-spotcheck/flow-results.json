@@ -1,0 +1,100 @@
+{
+  "generatedAt": "2026-10-05T04:27:14.278Z",
+  "source": "http://127.0.0.1:4543",
+  "prototype": "http://127.0.0.1:4542",
+  "mock": "http://127.0.0.1:4544",
+  "results": [
+    {
+      "id": "SKS-001",
+      "title": "Skills: Sources opens the dialog (default, up to date, check failed)",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 4,
+        "max": 1,
+        "low": 4
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKS-009",
+      "title": "Skill sources: confirm update (up to date, success notice)",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 4,
+        "max": 1,
+        "low": 4
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BRW-002",
+      "title": "Task Agent: scrolling up loads earlier events from the host package, with \"From <Sender>:\" rows",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "B-compositing-rounding",
+      "pixels": {
+        "changed": 906,
+        "max": 1,
+        "low": 906
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TOK-001",
+      "title": "Stored Agent run: Token tab shows the run roll-up",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "B-compositing-rounding",
+      "pixels": {
+        "changed": 968,
+        "max": 1,
+        "low": 968
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

@@ -6,8 +6,8 @@
 // observation node stopped, recording browser errors and non-local requests.
 import { chromium } from 'playwright-core'
 import { mkdir, writeFile } from 'node:fs/promises'
-const OUT = process.env.OUT || 'evidence/WEB-BASELINE-REFRESH-004/independent-preview'
-const BASE = process.env.BASE || 'http://127.0.0.1:4532'
+const OUT = process.env.OUT || 'evidence/WEB-BASELINE-REFRESH-006/independent-preview'
+const BASE = process.env.BASE || 'http://127.0.0.1:4542'
 const PORT = new URL(BASE).port
 await mkdir(OUT, { recursive: true })
 const b = await chromium.launch({ headless: true, executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' })
@@ -41,5 +41,8 @@ await run('IND-008-project-create', '/projects/new', async p => { await p.locato
 await run('IND-009-task-create', '/projects/project-prototype-launch/tasks/new', async p => { await p.getByTestId('task-page-description-input').fill('Draft the synthetic release notes.'); await p.getByTestId('task-page-save').click(); await p.getByText('Draft the synthetic release notes.').first().waitFor({ timeout: 5000 }) })
 await run('IND-010-team-run-mention-menu', '/workspace', async p => { await openTeamRun(p); await p.locator('textarea.composer-text').last().click(); await p.keyboard.type('@'); await p.locator('[data-test="run-mention-menu"]').waitFor({ timeout: 5000 }) })
 await run('IND-011-agent-run-task-rows', '/workspace', async p => { await openWorkspace(p); await p.getByText('Research Assistant', { exact: true }).first().click(); await p.waitForTimeout(700); await p.getByText('Compare current navigation states', { exact: true }).first().click(); await p.locator('[data-test="workspace-agent-run-task-tree"]').waitFor({ timeout: 5000 }) })
+// WEB-BASELINE-REFRESH-006 (4dee901)
+await run('IND-012-skill-source-import', '/skills', async p => { await p.getByRole('button', { name: 'Sources', exact: true }).click(); await p.getByRole('button', { name: 'GitHub', exact: true }).click(); await p.locator('#skill-source-input').fill('https://github.com/acme/launch-skills'); await p.getByRole('button', { name: 'Import repository', exact: true }).click(); await p.getByText('https://github.com/acme/launch-skills').waitFor({ timeout: 5000 }) })
+await run('IND-013-task-agent-token', '/workspace', async p => { await openWorkspace(p); await p.getByText('Research Assistant', { exact: true }).first().click(); await p.waitForTimeout(700); await p.getByText('Compare current navigation states', { exact: true }).first().click(); await p.waitForTimeout(700); await p.getByText('documentation writer', { exact: true }).first().click(); await p.waitForTimeout(900); await p.locator('[data-test="right-side-tab-list"]').getByText(/^Token/).first().click(); await p.getByText('Latest prompt').first().waitFor({ timeout: 5000 }) })
 await writeFile(`${OUT}/results.json`, JSON.stringify({ generatedAt: new Date().toISOString(), base: BASE, note: 'Built preview (node .output/server/index.mjs) with the pinned source and the observation node stopped.', results }, null, 2))
 await b.close()

@@ -17,8 +17,10 @@ const DEFAULT_CONTEXT = 'desktop'
 const navigationOverlayStores = new Set(['agentRunConfig', 'agentSelection', 'teamRunConfig'])
 // Projects and Tasks (0a32261) run the source's own stores unchanged: reads and
 // saves are answered by utils/apolloClient.ts from the local fixtures, and
-// their client cache is never reset by route snapshots.
-const sourceLoadedStores = new Set(['projects', 'projectTasks'])
+// their client cache is never reset by route snapshots. Skill sources and the
+// Token tab's run meter (4dee901) run the same way, so every run kind reads its
+// usage summary exactly as the source does against the same fixtures.
+const sourceLoadedStores = new Set(['projects', 'projectTasks', 'skillSources', 'tokenUsageMeter'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),
@@ -289,9 +291,6 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
     fileState.tree = root
     fileState.nodeIdToNode = { root, 'node-docs': docs, 'node-evidence': evidence, 'node-requirements': requirements }
     return undefined
-  }
-  if (store.$id === 'tokenUsageMeter' && /^fetch(?:AgentRun|TeamRun|TeamMember)Summary$/.test(action)) {
-    throw new Error('Synthetic token-summary hydration is unavailable for this controlled run.')
   }
   if (action === 'fetchAllSkills') return store.skills || []
   if (action === 'fetchSkill') {

@@ -22,6 +22,7 @@ export const scenarioCatalog = Object.freeze({
   token_mixed_currency: 'Token Statistics contains exact rows in currencies that cannot be combined.',
   token_local: 'Token Statistics contains only local usage with no API bill.',
   agy_runtime: 'Populated data where the Antigravity runtime is also available (its auto-approve control is locked on).',
+  skill_source_issues: 'Populated data where one GitHub skill source failed to update and another has an incomplete removal.',
   skill_name_issues: 'Populated data where the skill catalog reports one duplicate-name conflict and one ignored runtime default copy (D-19 banner).',
 })
 
@@ -221,11 +222,35 @@ const agentRootCollaboration = {
 const agentRootMemberProjection = (variables) => ({
   agentRunId: variables.agentRunId, memberAddress: variables.memberAddress, summary: run.summary, lastActivityAt: fixedNow,
   conversation: [
-    { kind: 'inter_agent_message', role: 'user', content: `You received a message from sender name: research assistant, sender id: ${run.runId}\nmessage:\nPlease draft the navigation notes.`, senderAgentRunId: run.runId, senderAddress: '/research_assistant', ts: '2026-08-22T04:01:30.000Z' },
-    { kind: 'message', role: 'assistant', content: 'The navigation notes are drafted.', ts: '2026-08-22T04:02:30.000Z' },
+    { kind: 'inter_agent_message', role: 'user', content: `You received a message from sender name: research assistant, sender address: /research_assistant, sender id: ${run.runId}\nmessage:\nPlease draft the navigation notes.`, senderAgentRunId: run.runId, senderAddress: '/research_assistant', ts: '2026-08-22T04:01:30.000Z' },
+    // Long enough to scroll, so scrolling up past the top loads the earlier events (browse mode).
+    { kind: 'message', role: 'assistant', content: `The navigation notes are drafted.\n\n${Array.from({ length: 24 }, (_, index) => `- Navigation state ${index + 1}: matched in the synthetic review.`).join('\n')}`, ts: '2026-08-22T04:02:30.000Z' },
   ],
-  activities: [], hasEarlierActiveTraceEvents: false,
+  // 4dee901: a collaborator's earlier events are read from the host's package.
+  activities: [], hasEarlierActiveTraceEvents: true,
 })
+// WEB-BASELINE-REFRESH-006 (4dee901): the earlier events of a task Agent, with one
+// agent-to-agent delivery ("From <Sender>:" in browse mode) and the reply to it.
+const agentRootMemberEarlierPage = (variables) => {
+  const id = variables.agentRunId
+  const delivery = (eventId, body, ms) => ({ eventId, turnGroupId: `${eventId}-turn`, occurredAtMs: Date.parse(ms), visuals: [
+    { __typename: 'EventMonitorInterAgentVisual', kind: 'inter_agent', visualId: `${eventId}:inter-agent:0`, eventId, kindOrdinal: 0, senderAgentRunId: run.runId, senderAddress: null, attachments: [],
+      text: `You received a message from sender name: research assistant, sender address: /research_assistant, sender id: ${run.runId}\nmessage:\n${body}` },
+  ] })
+  const reply = (eventId, turnGroupId, content, ms) => ({ eventId, turnGroupId, occurredAtMs: Date.parse(ms), visuals: [
+    { __typename: 'EventMonitorAssistantTextVisual', kind: 'assistant_text', visualId: `${eventId}:assistant-text:0`, eventId, kindOrdinal: 0, content },
+  ] })
+  // The first page holds the two earlier events followed by the current window.
+  return {
+    beforeCursor: null, hasEarlier: false, loadedEarlierCount: 2, activeGeneration: '1', cursorStatus: 'VALID',
+    events: [
+      delivery(`${id}-earlier-1`, 'List the navigation states to compare.', '2026-08-22T03:58:00.000Z'),
+      reply(`${id}-earlier-2`, `${id}-earlier-1-turn`, 'The four navigation states are listed in the synthetic notes.', '2026-08-22T03:59:00.000Z'),
+      delivery(`${id}-current-1`, 'Please draft the navigation notes.', '2026-08-22T04:01:30.000Z'),
+      reply(`${id}-current-2`, `${id}-current-1-turn`, 'The navigation notes are drafted.', '2026-08-22T04:02:30.000Z'),
+    ],
+  }
+}
 
 const launchConfiguration = (workspaceRootPath = '/synthetic/prototype-workspace') => ({
   runtime_kind: 'autobyteus', llm_model_identifier: 'mock/gpt-prototype', llm_config: { temperature: 0.2 },
@@ -472,6 +497,60 @@ export function taskContextUpload(state, file) {
   state.taskContextFiles[record.storedFilename] = record
   return record
 }
+// WEB-BASELINE-REFRESH-006 (4dee901): managed skill sources (default, local
+// folder, public GitHub repositories). Import, check, update and remove update
+// this small in-memory copy owned by the caller's `state`; reset with the scenario.
+const githubSource = (sourceId, owner, slug, skillCount, status, installed, latest, lastError = null) => ({
+  __typename: 'SkillSource', sourceId, sourceKind: 'GITHUB_REPOSITORY', path: `/synthetic/managed-skills/${slug}`, skillCount, isDefault: false,
+  github: { repositoryUrl: `https://github.com/${owner}/${slug}`, defaultBranch: 'main', installedRevision: installed, latestRevision: latest, latestCheckedAt: latest ? fixedNow : null, status, lastError },
+})
+const baseSkillSources = (scenario) => [
+  { __typename: 'SkillSource', sourceId: 'default', sourceKind: 'DEFAULT', path: '/synthetic/skills', skillCount: 1, isDefault: true, github: null },
+  { __typename: 'SkillSource', sourceId: 'local-team-skills', sourceKind: 'LOCAL_PATH', path: '/synthetic/team-skills', skillCount: 2, isDefault: false, github: null },
+  githubSource('github-docs-skills', 'synthetic-org', 'docs-skills', 3, 'UP_TO_DATE', '1f2e3d4c5b6a79880716', '1f2e3d4c5b6a79880716'),
+  githubSource('github-review-skills', 'synthetic-org', 'review-skills', 2, 'UPDATE_AVAILABLE', '9a8b7c6d5e4f30211203', 'c0ffee1234abcd567890'),
+  scenario === 'skill_source_issues'
+    ? githubSource('github-legacy-skills', 'synthetic-org', 'legacy-skills', 1, 'UPDATE_FAILED', '5e5e5e5e5e5e5e5e5e5e', '6f6f6f6f6f6f6f6f6f6f', 'Synthetic update failed: the repository archive could not be read.')
+    : githubSource('github-legacy-skills', 'synthetic-org', 'legacy-skills', 1, 'CHECK_FAILED', '5e5e5e5e5e5e5e5e5e5e', null, 'Synthetic check failed: the repository could not be reached.'),
+  ...(scenario === 'skill_source_issues' ? [githubSource('github-old-skills', 'synthetic-org', 'old-skills', 0, 'REMOVING', '7a7a7a7a7a7a7a7a7a7a', null, 'Synthetic removal was interrupted.')] : []),
+]
+export const skillSourceData = (state) => {
+  if (!state.skillSourceData) state.skillSourceData = { sources: state.scenario === 'empty' ? [] : baseSkillSources(state.scenario), seq: 0 }
+  return state.skillSourceData
+}
+const skillSourceResult = (data, warnings = []) => ({ sources: structuredClone(data.sources), warnings })
+export function skillSourceMutationFixture(operationName, variables = {}, state) {
+  const data = skillSourceData(state)
+  const find = id => data.sources.find(item => item.sourceId === id)
+  switch (operationName) {
+    case 'AddSkillSource':
+      data.sources.push({ __typename: 'SkillSource', sourceId: `local-added-${++data.seq}`, sourceKind: 'LOCAL_PATH', path: String(variables.path), skillCount: 0, isDefault: false, github: null })
+      return { addSkillSource: structuredClone(data.sources) }
+    case 'RemoveSkillSource':
+      data.sources = data.sources.filter(item => item.path !== variables.path)
+      return { removeSkillSource: structuredClone(data.sources) }
+    case 'ImportGitHubSkillSource': {
+      const match = /^https:\/\/github\.com\/([\w.-]+)\/([\w.-]+?)(?:\.git)?\/?$/.exec(String(variables.repositoryUrl || '').trim())
+      if (!match) return projectError('Enter a public GitHub repository root URL, for example https://github.com/owner/repository.', 'INVALID_GITHUB_REPOSITORY_URL')
+      data.sources.push(githubSource(`github-imported-${++data.seq}`, match[1], match[2], 1, 'UP_TO_DATE', 'ab12cd34ef56ab78cd90', 'ab12cd34ef56ab78cd90'))
+      return { importGitHubSkillSource: skillSourceResult(data) }
+    }
+    case 'CheckGitHubSkillSourceUpdates':
+      // Scripted: every check reports each source's fixed synthetic status again.
+      return { checkGitHubSkillSourceUpdates: skillSourceResult(data) }
+    case 'UpdateGitHubSkillSource': {
+      const source = find(variables.sourceId)
+      if (source?.github) Object.assign(source.github, { installedRevision: source.github.latestRevision || source.github.installedRevision, status: 'UP_TO_DATE', lastError: null })
+      return { updateGitHubSkillSource: skillSourceResult(data) }
+    }
+    case 'RemoveGitHubSkillSource':
+      data.sources = data.sources.filter(item => item.sourceId !== variables.sourceId)
+      return { removeGitHubSkillSource: skillSourceResult(data) }
+    default:
+      return null
+  }
+}
+export const SKILL_SOURCE_MUTATIONS = new Set(['AddSkillSource', 'RemoveSkillSource', 'ImportGitHubSkillSource', 'CheckGitHubSkillSourceUpdates', 'UpdateGitHubSkillSource', 'RemoveGitHubSkillSource'])
 export const PROJECT_MUTATIONS = new Set(['CreateProject', 'UpdateProject', 'DeleteProject', 'AddProjectWorkspace', 'UpdateProjectWorkspace', 'RemoveProjectWorkspace', 'CreateProjectTask', 'UpdateProjectTask', 'DeleteProjectTask'])
 
 // History row for the deterministic TeamRun created by CreateAgentTeamRun.
@@ -639,7 +718,7 @@ export const storedConversation = (request, reply) => [
 ]
 
 const writerDeliveryConversation = [
-  { kind: 'inter_agent_message', role: 'user', content: 'You received a message from sender name: researcher, sender id: team-member-researcher-001\nmessage:\nPlease document the synthetic review findings.', senderAgentRunId: 'team-member-researcher-001', senderAddress: '/researcher', ts: '2026-08-22T04:01:30.000Z' },
+  { kind: 'inter_agent_message', role: 'user', content: 'You received a message from sender name: researcher, sender address: /researcher, sender id: team-member-researcher-001\nmessage:\nPlease document the synthetic review findings.', senderAgentRunId: 'team-member-researcher-001', senderAddress: '/researcher', ts: '2026-08-22T04:01:30.000Z' },
   { kind: 'message', role: 'assistant', content: 'The findings are documented in the synthetic review notes.', ts: '2026-08-22T04:02:30.000Z' },
 ]
 
@@ -661,6 +740,7 @@ export function fixtureContext(state) {
 
 export function operationFixture(operationName, variables = {}, state) {
   if (PROJECT_MUTATIONS.has(operationName)) return projectMutationFixture(operationName, variables, state)
+  if (SKILL_SOURCE_MUTATIONS.has(operationName)) return skillSourceMutationFixture(operationName, variables, state)
   const c = fixtureContext(state)
   const tokenRunStatistics = createTokenUsageRunStatistics(state.scenario)
   const teamLaunchScenario = state.scenario === 'team_launch'
@@ -753,10 +833,8 @@ export function operationFixture(operationName, variables = {}, state) {
     GetSkill: { skill: c.skills.find(item => item.name === variables.name) || null },
     GetSkillFileTree: { skillFileTree: JSON.stringify([{ name: 'SKILL.md', path: 'SKILL.md', isDirectory: false }, { name: 'references', path: 'references', isDirectory: true, children: [{ name: 'fixture.md', path: 'references/fixture.md', isDirectory: false }] }]) },
     GetSkillFileContent: { skillFileContent: variables.path === 'SKILL.md' ? skill.content : '# Fixture reference\nSynthetic evidence only.' },
-    GetSkillSources: { skillSources: c.empty ? [] : [{ path: '/synthetic/skills', skillCount: 1, isDefault: true }] },
-    AddSkillSource: { addSkillSource: { path: variables.path, skillCount: 0, isDefault: false } },
-    RemoveSkillSource: { removeSkillSource: { path: variables.path, skillCount: 0, isDefault: false } },
-    ReloadSkillCatalog: { reloadSkillCatalog: { skills: c.skills, skillSources: c.empty ? [] : [{ path: '/synthetic/skills', skillCount: 1, isDefault: true }] } },
+    GetSkillSources: { skillSources: structuredClone(skillSourceData(state).sources), skillSourceRegistryError: null },
+    ReloadSkillCatalog: { reloadSkillCatalog: { skills: c.skills, skillSources: structuredClone(skillSourceData(state).sources), skillSourceRegistryError: null } },
     CreateSkill: { createSkill: { ...skill, ...(variables.input || {}) } },
     UpdateSkill: { updateSkill: { ...skill, ...(variables.input || {}) } },
     DeleteSkill: { deleteSkill: success },
@@ -797,6 +875,7 @@ export function operationFixture(operationName, variables = {}, state) {
       { kind: 'agent_team', definitionId: team.id, name: team.name, description: team.description, memberCount: team.nodes?.length ?? 2, coordinatorName: team.coordinatorMemberName || 'researcher' },
     ] } },
     GetAgentRunCollaboration: { agentRunCollaboration: variables.runId === run.runId && !c.empty ? agentRootCollaboration : null },
+    GetAgentRunCollaborationMemberEventMonitorActiveTracePage: { agentRunCollaborationMemberEventMonitorActiveTracePage: variables.hostRunId === run.runId ? agentRootMemberEarlierPage(variables) : null },
     GetAgentRunCollaborationMemberProjection: { agentRunCollaborationMemberProjection: variables.hostRunId === run.runId ? agentRootMemberProjection(variables) : null },
     GetWorkingContextCompactionStrategies: { getWorkingContextCompactionStrategies: [{ id: 'default', name: 'Default' }] },
     ListWorkspaceRunHistory: { listWorkspaceRunHistory: c.empty || teamLaunchScenario ? [] : [{ workspaceRootPath: workspace.workspaceRootPath, workspaceName: workspace.displayName, agentDefinitions: [{ agentDefinitionId: agent.id, agentName: agent.name, runs: [run] }], teamDefinitions: [{ teamDefinitionId: team.id, teamDefinitionName: team.name, runs: state.launchedTeamRun ? [launchedTeamRunHistoryItem, teamRun] : [teamRun] }] }] },
@@ -870,7 +949,9 @@ export function operationFixture(operationName, variables = {}, state) {
     GetAgentRunMemoryView: { getAgentRunMemoryView: runMemoryView }, GetTeamMemberRunMemoryView: { getTeamMemberRunMemoryView: runMemoryView },
     GetAgentOrgMemberRunMemoryView: { getAgentOrgMemberRunMemoryView: runMemoryView },
     GetAgentOrgMemberTokenUsageSummary: { getAgentOrgMemberTokenUsageSummary: teamMemberTokenSummary },
-    GetAgentRunTokenUsageSummary: { getAgentRunTokenUsageSummary: agentTokenSummary }, GetTeamRunTokenUsageSummary: { getTeamRunTokenUsageSummary: teamTokenSummary }, GetTeamMemberTokenUsageSummary: { getTeamMemberTokenUsageSummary: teamMemberTokenSummary },
+    GetAgentRunTokenUsageSummary: { getAgentRunTokenUsageSummary: agentTokenSummary },
+    // 4dee901: a standalone run's usage including its collaborators and task copies.
+    GetStandaloneRunTokenUsageSummary: { getStandaloneRunTokenUsageSummary: agentTokenSummary }, GetTeamRunTokenUsageSummary: { getTeamRunTokenUsageSummary: teamTokenSummary }, GetTeamMemberTokenUsageSummary: { getTeamMemberTokenUsageSummary: teamMemberTokenSummary },
     GetTokenUsageAnalytics: { tokenUsageAnalytics: createTokenUsageAnalyticsResult(variables.input || {}, state.scenario) },
     GetTokenUsageTaskStatisticsInPeriod: { tokenUsageTaskStatisticsInPeriod: { rows: tokenRunStatistics.taskRows } },
     GetUsageStatisticsInPeriod: { usageStatisticsInPeriod: tokenRunStatistics.modelRows },

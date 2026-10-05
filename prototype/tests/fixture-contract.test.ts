@@ -15,7 +15,7 @@ const snapshots = runtimeFixture.snapshots as Record<string, {
 
 describe('deterministic prototype fixture contract', () => {
   it('is pinned to the selected source and covers every recorded scenario', () => {
-    expect(runtimeFixture.sourceCommit).toBe('0a32261d681e19491264a03a652ba23d1f8b8248')
+    expect(runtimeFixture.sourceCommit).toBe('4dee901d6163ca7053916fa1edc295afbfd7a6da')
     expect(Object.keys(snapshots)).toHaveLength(72)
     expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'projects_disabled', 'loading', 'error', 'permission_denied', 'skill_name_issues', 'agy_runtime']))
   })
@@ -51,6 +51,19 @@ describe('deterministic prototype fixture contract', () => {
     expect(task).toMatchObject({ status: 'TODO', contextFiles: [] })
     expect(operationFixture('GetProjects', {}, state).projects.find((item: { projectId: string }) => item.projectId === 'project-prototype-launch')).toMatchObject({ taskCount: 4, openTaskCount: 3 })
     expect(operationFixture('GetProjects', {}, baseState()).projects).toHaveLength(1)
+  })
+
+  it('keeps skill-source operations in one resettable in-memory copy (4dee901)', () => {
+    const state = baseState()
+    expect(operationFixture('GetSkillSources', {}, state).skillSources.map((source: { sourceKind: string }) => source.sourceKind))
+      .toEqual(['DEFAULT', 'LOCAL_PATH', 'GITHUB_REPOSITORY', 'GITHUB_REPOSITORY', 'GITHUB_REPOSITORY'])
+    const imported = operationFixture('ImportGitHubSkillSource', { repositoryUrl: 'https://github.com/acme/launch-skills' }, state)
+    expect(imported.importGitHubSkillSource.sources.at(-1).github).toMatchObject({ repositoryUrl: 'https://github.com/acme/launch-skills', status: 'UP_TO_DATE' })
+    expect(operationFixture('ImportGitHubSkillSource', { repositoryUrl: 'not a repository' }, state).__projectError.extensions.code).toBe('INVALID_GITHUB_REPOSITORY_URL')
+    const updated = operationFixture('UpdateGitHubSkillSource', { sourceId: 'github-review-skills' }, state)
+    expect(updated.updateGitHubSkillSource.sources.find((source: { sourceId: string }) => source.sourceId === 'github-review-skills').github.status).toBe('UP_TO_DATE')
+    expect(operationFixture('GetSkillSources', {}, { ...baseState(), scenario: 'skill_source_issues' }).skillSources.map((source: { github: { status: string } | null }) => source.github?.status ?? null))
+      .toEqual([null, null, 'UP_TO_DATE', 'UPDATE_AVAILABLE', 'UPDATE_FAILED', 'REMOVING'])
   })
 
   it('uses the captured source loading frame with unresolved capabilities', () => {

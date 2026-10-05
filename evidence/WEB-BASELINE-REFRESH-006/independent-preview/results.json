@@ -1,0 +1,111 @@
+{
+  "generatedAt": "2026-10-05T04:28:40.182Z",
+  "base": "http://127.0.0.1:4542",
+  "note": "Built preview (node .output/server/index.mjs) with the pinned source and the observation node stopped.",
+  "results": [
+    {
+      "id": "IND-001-chat",
+      "path": "/",
+      "route": "/chat",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-002-chat-thinking-menu",
+      "path": "/chat",
+      "route": "/chat",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-003-chat-send",
+      "path": "/chat",
+      "route": "/chat?id=run-prepared-fixture",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-004-workspace-team-run",
+      "path": "/workspace",
+      "route": "/workspace",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-005-skills-banner",
+      "path": "/skills",
+      "route": "/skills",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-006-agents",
+      "path": "/agents?view=list",
+      "route": "/agents?view=list",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-007-chat-background-tasks-empty",
+      "path": "/chat",
+      "route": "/chat?id=run-prepared-fixture",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-008-project-create",
+      "path": "/projects/new",
+      "route": "/projects/project-created-1?notice=created&tab=workspaces",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-009-task-create",
+      "path": "/projects/project-prototype-launch/tasks/new",
+      "route": "/projects/project-prototype-launch?notice=task-created",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-010-team-run-mention-menu",
+      "path": "/workspace",
+      "route": "/workspace",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-011-agent-run-task-rows",
+      "path": "/workspace",
+      "route": "/chat?id=run-research-001",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-012-skill-source-import",
+      "path": "/skills",
+      "route": "/skills",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-013-task-agent-token",
+      "path": "/workspace",
+      "route": "/chat?id=run-research-001",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    }
+  ]
+}

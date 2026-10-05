@@ -69,3 +69,16 @@ the source's own Projects stores and composer code unchanged:
   are not simulated, exactly as in the source against the synthetic node. The
   earlier scripted local run (`prototype/run-mentions/`) was removed because it
   patched source files that the shipped version replaced.
+
+## Skill sources, browse pages and run token usage (WEB-BASELINE-REFRESH-006)
+
+- The source's own `skillSources` store runs unchanged; `utils/apolloClient.ts`
+  answers the skill-source query and the import/check/update/remove mutations
+  from one in-memory fixture copy per browser context. No repository is
+  downloaded, checked or written.
+- A task Agent's earlier event-monitor page is a small synthetic fixture
+  (`GetAgentRunCollaborationMemberEventMonitorActiveTracePage`).
+- The Token tab's run meter (`tokenUsageMeter`) now runs the source's own store
+  for every run kind against the same synthetic usage summaries. The earlier
+  prototype rule that made per-run summaries fail was removed because it no
+  longer matched the source.

@@ -10,7 +10,7 @@
  * source without an Apollo client, schema, or network boundary. Mutations and
  * subscriptions stay inert.
  */
-import { operationFixture, baseState, PROJECT_MUTATIONS } from '~/prototype/source-observation/fixtures.mjs'
+import { operationFixture, baseState, PROJECT_MUTATIONS, SKILL_SOURCE_MUTATIONS } from '~/prototype/source-observation/fixtures.mjs'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
 
@@ -34,6 +34,7 @@ const fixtureState = (): Record<string, any> => {
   if (scenario !== localStateScenario) {
     localStateScenario = scenario
     localFixtureState.projectData = null
+    localFixtureState.skillSourceData = null
     localFixtureState.taskContextFiles = {}
   }
   localFixtureState.scenario = scenario
@@ -55,8 +56,9 @@ const resolveLocally = async (request: OperationRequest = {}) => {
 // Mutations whose results the retained source flows await. They return
 // deterministic synthetic results; nothing is started or persisted.
 // PrepareAgentRun backs the Chat first send (57df63f); CreateWorkspace and the
-// Project/Task mutations back the Projects pages (0a32261).
-const LOCAL_MUTATIONS = new Set(['CreateAgentTeamRun', 'PrepareAgentRun', 'CreateWorkspace', ...PROJECT_MUTATIONS])
+// Project/Task mutations back the Projects pages (0a32261); the skill-source
+// mutations back the Skill Sources dialog (4dee901).
+const LOCAL_MUTATIONS = new Set(['CreateAgentTeamRun', 'PrepareAgentRun', 'CreateWorkspace', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
 
 const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const definition = request.mutation?.definitions?.find((entry: any) => entry.kind === 'OperationDefinition')
