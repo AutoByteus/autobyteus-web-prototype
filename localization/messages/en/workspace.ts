@@ -329,8 +329,6 @@ const messages = {
   "workspace.history.hierarchy.identity": "{{role}} · {{name}} · {{address}}",
   "workspace.history.hierarchy.tree_item": "{{role}}, {{name}}, level {{level}}, {{status}}, {{address}}",
   "workspace.history.hierarchy.expand": "Expand {{name}}",
-  "workspace.history.task_closed.notice": "This Task is done. Its runs have stopped and are no longer listed.",
-  "workspace.history.task_closed.back": "Back to {{name}}",
   "workspace.history.hierarchy.collapse": "Collapse {{name}}",
   "workspace.history.hierarchy.status.running": "running",
   "workspace.history.hierarchy.status.initializing": "initializing",

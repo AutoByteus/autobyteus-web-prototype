@@ -1,5 +1,7 @@
 # Review Round 1 — task-run-resources-workspace-cleanup
 
+> **Superseded (2026-10-06).** The user rejected the floating "Design review · simulation" panel and its A/B switches as not real UI/UX. Both were removed in round 2. DONE now comes from the Project Task Manager's own chat, and the cleaner delegated rows are the approved design. See `ui-ux-spec.md` and `product-ticket.md`. This file is kept as history only.
+
 Review URL: <http://127.0.0.1:4530/workspace?prototypeReview=task-run-cleanup>
 (ticket worktree, `corepack pnpm dev --port 4530`)
 

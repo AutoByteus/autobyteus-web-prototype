@@ -22,9 +22,8 @@ import {
   buildAgentCollaborationMemberFinalContextFileOwner,
 } from '~/utils/contextFiles/contextFileOwner'
 import { mentionsPresentInText, toCollaboratorMentionDtos } from '~/utils/collaborators/collaboratorMentionText'
-// task-run-resources-workspace-cleanup (design): Task closure facts and the review alternatives.
+// task-run-resources-workspace-cleanup (design): the Task closure facts (DONE) of Task runs.
 import { closure, isClosedTaskRun } from '~/prototype/task-run-cleanup/taskManagerRunFixture'
-import { reviewOptions } from '~/prototype/task-run-cleanup/reviewOptions'
 
 /**
  * The client side of standalone runs' collaboration roots: the task children brought in with
@@ -220,18 +219,11 @@ export const useAgentRunCollaborationStore = defineStore('agentRunCollaboration'
       (runId) => isClosedTaskRun(hostRunId, runId),
     ) ?? []
 
-  /** The selected child's Task became DONE while its conversation is open. */
-  const isSelectedChildClosed = (hostRunId: string): boolean => {
-    const agentRunId = selection[hostRunId]
-    return Boolean(agentRunId && isClosedTaskRun(hostRunId, agentRunId))
-  }
-
-  // task-run-resources-workspace-cleanup (design, DEC-005 proposal): when the open conversation's
-  // Task becomes DONE, the view returns to the run's own agent (the Manager).
+  // task-run-resources-workspace-cleanup (design, DEC-005): when the open conversation's Task
+  // becomes DONE, the view returns to the run's own agent (the Manager).
   watch(() => closure.revision, () => {
-    if (reviewOptions.openConversation !== 'manager') return
-    for (const hostRunId of Object.keys(selection)) {
-      if (isSelectedChildClosed(hostRunId)) selection[hostRunId] = null
+    for (const [hostRunId, agentRunId] of Object.entries(selection)) {
+      if (agentRunId && isClosedTaskRun(hostRunId, agentRunId)) selection[hostRunId] = null
     }
   })
 
@@ -293,8 +285,7 @@ export const useAgentRunCollaborationStore = defineStore('agentRunCollaboration'
       // A child is not a top-level run package: its pages come from the host's collaboration package.
       browse: Object.freeze({ kind: 'standaloneMember' as const, hostRunId, memberAddress: child.address, agentRunId: child.agentRunId }),
       // A child is always addressable: a message wakes it (and its host) through the stream.
-      // task-run-resources-workspace-cleanup (design, DEC-005 alternative): a closed child is read-only.
-      access: isClosedTaskRun(hostRunId, child.agentRunId) ? 'read_only' as const : 'live' as const,
+      access: 'live' as const,
       interaction: Object.freeze({
         send: (content: string, files: readonly ContextFilePath[]) => submit(hostRunId, child.agentRunId, context, content, files),
         interrupt: async () => { await service()?.interrupt(child.agentRunId) },
@@ -323,6 +314,6 @@ export const useAgentRunCollaborationStore = defineStore('agentRunCollaboration'
 
   return {
     contexts, errors, contextFor, syncHost, inspect, attach, release, beginHostTermination,
-    selectChild, selectedChild, isSelectedChildClosed, isTaskTeamExpanded, toggleTaskTeam, taskRows, hostMessagesView, childTargetFor, submit,
+    selectChild, selectedChild, isTaskTeamExpanded, toggleTaskTeam, taskRows, hostMessagesView, childTargetFor, submit,
   }
 })

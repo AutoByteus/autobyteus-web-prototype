@@ -328,8 +328,6 @@ const messages = {
   "workspace.history.hierarchy.identity": "{{role}} · {{name}} · {{address}}",
   "workspace.history.hierarchy.tree_item": "{{role}}，{{name}}，第 {{level}} 级，{{status}}，{{address}}",
   "workspace.history.hierarchy.expand": "展开{{name}}",
-  "workspace.history.task_closed.notice": "此任务已完成。它的运行已停止，不再列出。",
-  "workspace.history.task_closed.back": "返回{{name}}",
   "workspace.history.hierarchy.collapse": "折叠{{name}}",
   "workspace.history.hierarchy.status.running": "运行中",
   "workspace.history.hierarchy.status.initializing": "正在初始化",

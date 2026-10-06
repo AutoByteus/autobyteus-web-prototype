@@ -4,13 +4,13 @@
   <TransitionGroup
     v-if="rows.length || leaving"
     tag="div"
-    :name="removalTransition"
+    name="task-row"
     class="team-execution-tree ml-3 space-y-0.5"
     role="tree"
     :aria-label="t('workspace.history.hierarchy.tree_label', { name: label })"
     data-test="workspace-agent-run-task-tree"
     :data-run-id="runId"
-    @before-leave="leaving += 1"
+    @before-leave="onBeforeLeave"
     @after-leave="leaving -= 1"
   >
     <WorkspaceTransientExecutionRow
@@ -34,7 +34,6 @@ import WorkspaceTransientExecutionRow from '~/components/workspace/history/Works
 import { useLocalization } from '~/composables/useLocalization'
 import type { RunHistoryTransientExecutionRow } from '~/stores/runHistoryTypes'
 import { useAgentRunCollaborationStore } from '~/stores/agentRunCollaborationStore'
-import { reviewOptions } from '~/prototype/task-run-cleanup/reviewOptions'
 
 const props = defineProps<{
   runId: string
@@ -57,8 +56,19 @@ watch(() => props.hasCollaboration, loadStored)
 
 const rows = computed(() => collaboration.taskRows(props.runId))
 // Rows only animate when they leave; a new row appears at once, as today.
-const removalTransition = computed(() => reviewOptions.removal === 'fade' ? 'task-row' : 'task-row-instant')
 const leaving = ref(0)
+/** A leaving row leaves the accessibility tree at once; if it had focus, focus moves to the run row. */
+const onBeforeLeave = (el: Element): void => {
+  leaving.value += 1
+  const row = el as HTMLElement
+  const hadFocus = row.contains(document.activeElement)
+  row.setAttribute('aria-hidden', 'true')
+  row.inert = true
+  if (hadFocus) {
+    const runRow = row.closest('[data-test="workspace-agent-run-task-tree"]')?.previousElementSibling
+    if (runRow instanceof HTMLElement) runRow.focus()
+  }
+}
 const isExpanded = (row: RunHistoryTransientExecutionRow): boolean =>
   Boolean(row.teamRunIdForNode && collaboration.isTaskTeamExpanded(props.runId, row.teamRunIdForNode))
 const isSelected = (row: RunHistoryTransientExecutionRow): boolean =>
@@ -98,9 +108,7 @@ const select = (row: RunHistoryTransientExecutionRow): void => {
 .task-row-move {
   transition: transform 200ms ease-out;
 }
-.task-row-enter-active,
-.task-row-instant-enter-active,
-.task-row-instant-leave-active {
+.task-row-enter-active {
   transition: none;
 }
 @media (prefers-reduced-motion: reduce) {

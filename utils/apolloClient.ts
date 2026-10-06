@@ -10,11 +10,11 @@
  * source without an Apollo client, schema, or network boundary. Mutations and
  * subscriptions stay inert.
  */
-import { operationFixture, baseState, PROJECT_MUTATIONS, SKILL_SOURCE_MUTATIONS } from '~/prototype/source-observation/fixtures.mjs'
+import { operationFixture, baseState, projectData, PROJECT_MUTATIONS, SKILL_SOURCE_MUTATIONS } from '~/prototype/source-observation/fixtures.mjs'
 import { withAutobyteusOrgOperation } from '~/prototype/run-settings/autobyteusOrgFixture'
 import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/launchedTeamFixture'
 import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/prototype/run-settings/launchedOrgFixture'
-import { withTaskManagerRun } from '~/prototype/task-run-cleanup/taskManagerRunFixture'
+import { syncProjectTasks, withTaskManagerRun } from '~/prototype/task-run-cleanup/taskManagerRunFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
 
@@ -54,6 +54,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (scenario === 'error') return { data: null, errors: [{ message: 'Synthetic recoverable GraphQL failure.' }] }
   if (scenario === 'permission_denied') return { data: null, errors: [{ message: 'Synthetic permission denied.' }] }
   const state = fixtureState()
+  // task-run-resources-workspace-cleanup: the Manager's two Tasks are in the project too.
+  if (scenario === 'populated') syncProjectTasks(projectData(state))
   const fixture = operationFixture(name, request.variables || {}, state)
   // run-settings-ui-unification: the real AutoByteus Org shape joins the populated catalog.
   let data = scenario === 'populated' ? withAutobyteusOrgOperation(name, request.variables || {}, fixture) : fixture
@@ -89,6 +91,7 @@ const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const name = definition?.name?.value
   if (!name || !LOCAL_MUTATIONS.has(name)) return { data: {} }
   const state = fixtureState()
+  if (localScenario() === 'populated') syncProjectTasks(projectData(state))
   if (name === 'CreateAgentOrgRun') return { data: recordOrgLaunch(request.variables || {}) }
   if (name === 'TerminateAgentOrgRun') return { data: recordOrgTermination(request.variables || {}) }
   let data = operationFixture(name, request.variables || {}, state)

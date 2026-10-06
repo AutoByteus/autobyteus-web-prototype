@@ -25,21 +25,6 @@
       v-if="recoveryNotice"
       :message="recoveryNotice"
     />
-    <!-- task-run-resources-workspace-cleanup (DEC-005 alternative): this Task is DONE while its run is open. -->
-    <div
-      v-if="closedNotice"
-      role="status"
-      class="mx-3 mt-3 flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm leading-5 text-slate-700 sm:mx-4"
-      data-test="task-closed-notice"
-    >
-      <Icon icon="heroicons:check-circle-20-solid" class="h-4 w-4 flex-shrink-0 text-emerald-600" aria-hidden="true" />
-      <span class="min-w-0 flex-1">{{ closedNotice.message }}</span>
-      <button
-        type="button"
-        class="flex-shrink-0 rounded-md px-2 py-1 font-medium text-blue-700 hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-        @click="$emit('closed-action')"
-      >{{ closedNotice.action }}</button>
-    </div>
     <div class="min-h-0 flex-1">
       <AgentEventMonitor
         :read-only="target.access === 'read_only' && !('root' in target && (target.context.submissionPending || target.kind === 'agent_org_direct_agent'))"
@@ -65,7 +50,6 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { Icon } from '@iconify/vue'
 import type { ActiveAgentWorkspaceTarget } from '~/types/workspace/activeAgentWorkspaceTarget'
 import AgentEventMonitor from '~/components/workspace/agent/AgentEventMonitor.vue'
 import AgentStatusDisplay from '~/components/workspace/agent/AgentStatusDisplay.vue'
@@ -85,10 +69,8 @@ const props = withDefaults(defineProps<{
   skillTagging?: SkillTaggingCapability | null
   /** Composer placeholder for a target without skill tags. */
   composerPlaceholder?: string | null
-  /** task-run-resources-workspace-cleanup (DEC-005 alternative): the open run's Task is DONE. */
-  closedNotice?: { message: string; action: string } | null
-}>(), { showHeaderActions: false, recoveryNotice: null, skillTagging: null, composerPlaceholder: null, closedNotice: null })
-defineEmits<{ (event: 'new-agent'): void; (event: 'edit-config'): void; (event: 'closed-action'): void }>()
+}>(), { showHeaderActions: false, recoveryNotice: null, skillTagging: null, composerPlaceholder: null })
+defineEmits<{ (event: 'new-agent'): void; (event: 'edit-config'): void }>()
 
 const definitions = useAgentDefinitionStore()
 const avatarFailed = ref(false)

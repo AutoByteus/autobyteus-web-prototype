@@ -5,8 +5,6 @@
     :show-header-actions="true"
     :skill-tagging="skillTagging"
     :composer-placeholder="childPlaceholder"
-    :closed-notice="closedNotice"
-    @closed-action="backToHost"
     @new-agent="startNewChatForRun"
     @edit-config="openSelectedRunConfig"
   />
@@ -28,8 +26,6 @@ import { useAgentRunCollaborationSync } from '~/composables/agentCollaboration/u
 import type { SkillTaggingCapability } from '~/composables/agentInput/useSkillTagMenu'
 import { DEFAULT_CHAT_AGENT_DEFINITION_ID } from '~/utils/chat/chatDefaults'
 import { useLocalization } from '~/composables/useLocalization'
-import { useAgentRunCollaborationStore } from '~/stores/agentRunCollaborationStore'
-import { useAgentContextsStore } from '~/stores/agentContextsStore'
 
 /**
  * The standalone agent run view (the chat run view, D-17): the product run header with ⚙ and ＋,
@@ -69,20 +65,6 @@ const childPlaceholder = computed(() => {
   const config = target.value?.context.config
   return config && !isHost.value ? t('chat.run.placeholderAgent', { agent: config.agentDefinitionName || '' }) : null
 })
-
-// task-run-resources-workspace-cleanup (DEC-005 alternative): the open run's Task became DONE.
-const collaboration = useAgentRunCollaborationStore()
-const agentContexts = useAgentContextsStore()
-const hostRunId = computed(() => target.value && 'host' in target.value ? target.value.host.hostRunId : null)
-const closedNotice = computed(() => {
-  if (!hostRunId.value || !collaboration.isSelectedChildClosed(hostRunId.value)) return null
-  const hostName = agentContexts.getRun(hostRunId.value)?.config.agentDefinitionName || 'the run'
-  return {
-    message: t('workspace.history.task_closed.notice'),
-    action: t('workspace.history.task_closed.back', { name: hostName }),
-  }
-})
-const backToHost = () => { if (hostRunId.value) collaboration.selectChild(hostRunId.value, null) }
 
 /** ＋ starts a New chat preset to this run's agent, workspace and settings (UIS-013 R3; run-settings-ui-unification). */
 const startNewChatForRun = async () => {
