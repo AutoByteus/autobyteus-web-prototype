@@ -8,7 +8,7 @@
 - Title: Reconnect a run to an agent — UI/UX redesign.
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline: conversation,
   composer, run settings, Workspaces tree).
-- Status: `Awaiting User Review` (round 1).
+- Status: `Awaiting User Review` (round 2).
 - Requester: Solution Designer (`/solution_designer`, run
   `solution_designer_3082838c83f24535972a43836b65e1c7`) for the user, 2026-10-07.
   - User: "I want to work on the UI first. Please delegate task to Product Team to work on UI" /
@@ -65,3 +65,8 @@
   Settings, busy/failure, empty search, narrow 390 px, regression on the Research Assistant run).
   Review notes `review-round-1.md`. Review URL `http://127.0.0.1:3291/workspace`.
   `Awaiting User Review`.
+- 2026-10-07: feedback round 1: "too much texts? and the UI could be cleaner". `In Progress` →
+  round 2: every surface is one short line with the action on the right (composer notice, error
+  card, success line); the dialog header is one line; explanations removed; button "Reconnect";
+  Settings member line "editor: agent no longer exists" (id in tooltip); resolved card is a grey
+  one-line note. `Awaiting User Review`.

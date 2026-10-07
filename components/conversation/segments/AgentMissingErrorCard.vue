@@ -1,45 +1,34 @@
 <template>
-  <!-- agent-definition-reconnect-ui: the AGENT_DEFINITION_MISSING error. It names the missing agent,
-       says what happened and offers Reconnect; it stays in the conversation (DEC-013). Once the run
-       is reconnected it turns grey and says which agent the run uses now. -->
+  <!-- agent-definition-reconnect-ui (round 2): one row — what happened and Reconnect. It stays in the
+       conversation (DEC-013); after a reconnect it turns grey and names the agent used now. -->
   <div
     v-if="!resolvedAgent"
-    class="my-3 flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3"
+    class="my-3 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 py-1.5 pl-3 pr-1.5 text-sm text-red-800"
     role="alert"
     data-test="agent-missing-error-card"
   >
-    <Icon icon="heroicons:exclamation-circle-20-solid" class="mt-0.5 h-5 w-5 flex-shrink-0 text-red-500" aria-hidden="true" />
-    <div class="min-w-0 flex-1">
-      <p class="text-sm font-semibold text-red-900">{{ $t('reconnect.card.title', { id: definitionId }) }}</p>
-      <p class="mt-1 text-sm leading-5 text-red-800">{{ $t('reconnect.card.detail') }}</p>
-      <button
-        v-if="missing"
-        type="button"
-        class="mt-3 inline-flex items-center gap-1.5 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
-        :aria-label="$t('reconnect.actionAria', { name: missing.name })"
-        data-test="agent-missing-error-reconnect"
-        @click="dialogOpen = true"
-      >
-        <Icon icon="heroicons:link-20-solid" class="h-4 w-4 text-gray-500" aria-hidden="true" />
-        {{ $t('reconnect.action') }}
-      </button>
-    </div>
+    <Icon icon="heroicons:exclamation-circle-20-solid" class="h-4 w-4 flex-shrink-0 text-red-500" aria-hidden="true" />
+    <p class="min-w-0 flex-1 truncate" :title="$t('reconnect.card.title', { id: definitionId })">{{ $t('reconnect.card.title', { id: definitionId }) }}</p>
+    <button
+      v-if="missing"
+      type="button"
+      class="flex-shrink-0 rounded-md px-2 py-1 text-sm font-medium text-red-800 hover:bg-red-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      :aria-label="$t('reconnect.actionAria', { name: missing.name })"
+      data-test="agent-missing-error-reconnect"
+      @click="dialogOpen = true"
+    >
+      {{ $t('reconnect.action') }}
+    </button>
     <ReconnectAgentDialog :open="dialogOpen" :missing="missing" @close="dialogOpen = false" />
   </div>
-  <div
+  <p
     v-else
-    class="my-3 flex items-start gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3"
+    class="my-3 flex items-center gap-2 text-sm text-gray-500"
     data-test="agent-missing-error-card-resolved"
   >
-    <Icon icon="heroicons:exclamation-circle-20-solid" class="mt-0.5 h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-    <div class="min-w-0 flex-1">
-      <p class="text-sm font-semibold text-gray-700">{{ $t('reconnect.card.title', { id: definitionId }) }}</p>
-      <p class="mt-1 flex items-center gap-1.5 text-sm text-gray-600">
-        <Icon icon="heroicons:check-circle-20-solid" class="h-4 w-4 flex-shrink-0 text-emerald-500" aria-hidden="true" />
-        <span>{{ $t('reconnect.card.resolved', { agent: resolvedAgent.name }) }}</span>
-      </p>
-    </div>
-  </div>
+    <Icon icon="heroicons:check-circle-20-solid" class="h-4 w-4 flex-shrink-0 text-gray-400" aria-hidden="true" />
+    <span class="min-w-0 truncate">{{ $t('reconnect.card.resolved', { id: definitionId, agent: resolvedAgent.name }) }}</span>
+  </p>
 </template>
 
 <script setup lang="ts">

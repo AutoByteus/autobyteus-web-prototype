@@ -20,18 +20,11 @@
       >
         <header class="border-b border-slate-100 px-6 pb-4 pt-5">
           <h2 :id="titleId" class="text-lg font-semibold text-slate-900">{{ $t('reconnect.dialog.title') }}</h2>
-          <p :id="contextId" class="mt-1 text-sm leading-5 text-slate-600" data-test="reconnect-dialog-context">
-            <template v-if="missing.memberKind === 'standalone'">
-              {{ $t('reconnect.dialog.contextRun') }} <span class="font-medium text-slate-800">“{{ missing.missingDefinitionId }}”</span>{{ $t('reconnect.dialog.contextGone') }}
-            </template>
-            <template v-else>
-              <span class="font-medium text-slate-800">{{ missing.name }}</span> {{ $t('reconnect.dialog.contextIn', { team: missing.teamName ?? '' }) }}
-              <span class="font-medium text-slate-800">“{{ missing.missingDefinitionId }}”</span>{{ $t('reconnect.dialog.contextGone') }}
-            </template>
-          </p>
-          <p class="mt-1.5 flex items-start gap-1.5 text-xs leading-4 text-slate-500">
-            <Icon icon="heroicons:shield-check" class="mt-px h-3.5 w-3.5 flex-shrink-0 text-slate-400" aria-hidden="true" />
-            <span>{{ $t('reconnect.dialog.keeps') }}</span>
+          <!-- Round 2: one short line — what is replaced; history and session are kept. -->
+          <p :id="contextId" class="mt-1 truncate text-sm text-slate-500" data-test="reconnect-dialog-context">
+            {{ missing.memberKind === 'standalone'
+              ? $t('reconnect.dialog.context', { id: missing.missingDefinitionId })
+              : $t('reconnect.dialog.contextMember', { name: missing.name, id: missing.missingDefinitionId }) }}
           </p>
         </header>
 
