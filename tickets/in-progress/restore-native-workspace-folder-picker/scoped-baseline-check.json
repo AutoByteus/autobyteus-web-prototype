@@ -1,0 +1,25 @@
+{
+  "kind": "Scoped static re-evaluation; not browser or native-dialog validation",
+  "skill_revision": "9fd129728968a702fbbc6fc20b0cd0d4db2ece5b",
+  "source_pin": "88fad73cbd20201642acdcfe75e69b1897ec135c",
+  "design_base": "8cd41f886459630909e827d7df1b67910618aaac",
+  "checks": {
+    "workspace_menu_markup_equal_after_equivalent_class_expression_normalization": true,
+    "workspace_menu_state_and_handlers_from_inBoundary_onward_equal": true,
+    "anchored_popover_identical": true,
+    "en_workspace_copy_equal": {
+      "equal": true,
+      "key_count": 14
+    },
+    "zh-CN_workspace_copy_equal": {
+      "equal": true,
+      "key_count": 14
+    },
+    "workspace_filter_equal": true
+  },
+  "limitations": [
+    "No fresh render/interaction validation",
+    "Outer callers differ in architecture; no byte-identity requirement",
+    "Unrelated Chat delegation copy differs; no whole-app parity claim"
+  ]
+}

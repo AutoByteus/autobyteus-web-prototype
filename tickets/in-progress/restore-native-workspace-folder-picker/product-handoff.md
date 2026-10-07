@@ -1,3 +1,5 @@
+> **Current decision (2026-10-07):** Updated-skill re-evaluation withdraws the broad refresh and captured-fixture blocker. Reuse the accepted reference for scoped design. See `baseline-reevaluation.md`; older conclusions below are historical.
+
 > **Superseding correction (2026-10-07):** Earlier source-staleness inference withdrawn; refresh on hold pending evidence review. See `baseline-conclusion-correction.md`. The fixture-boundary issue is separate from UI currency.
 
 # Product handoff — restore-native-workspace-folder-picker

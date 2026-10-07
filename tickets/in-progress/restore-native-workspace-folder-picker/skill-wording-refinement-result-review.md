@@ -36,3 +36,6 @@ Canonical `autobyteus-agents` remains at the base with unrelated dirty work. The
 Ask the user whether to authorize the Agent Package Creator to integrate/activate this guidance through its own repository workflow, protecting unrelated work. Any follow-up to this delegated copy must use the exact AgentRun above. The creator requested separate integration authorization; none is inferred from receiving its local result.
 
 Folder-picker design remains unapproved; no UI/fixture/source/requirements changes or full fixture/parity certification are supplied by this text update. The held Bootstrapper is not automatically resumed.
+
+## Superseding merge/activation receipt
+PR #33 is merged at `9fd129728968a702fbbc6fc20b0cd0d4db2ece5b` (2026-10-07T13:32:03Z), confirmed via GitHub API. Local canonical HEAD and origin/main both equal that revision and active skill symlinks resolve there. The merged text received additional plain-language refinement; Product reread its active rules at user request. Earlier local-only/integration-pending statements are historical. No task_id was supplied in the delegation receipt, so no Task DONE call can be made from it. No UI/source/fixture change or automatic Bootstrapper resumption follows from the merge.

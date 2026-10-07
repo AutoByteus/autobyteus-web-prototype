@@ -4,7 +4,7 @@
 - Ticket / package: `restore-native-workspace-folder-picker` (unchanged; no second task ID).
 - Title: Restore native workspace folder selection in the existing shared menu.
 - Mode: **Product Experience Design**; an existing Chat/run-settings surface, not an abstract visualizer.
-- Status: **In Progress** — reassessing baseline applicability; earlier refresh instruction on hold. See baseline-conclusion-correction.md.
+- Status: **In Progress** — re-evaluation complete under updated skills; reuse existing accepted reference for scoped design. See baseline-reevaluation.md. Earlier broad refresh/fixture rewrite withdrawn.
 - Date: 2026-10-07.
 - Requester: `/solution_designer`, AgentRun `solution_designer_8993f6a03d49417985e8805609b803ce`.
 - Product execution: `product_ui_ux_designer_f1b47b534b5e4da49ef50e43e23fbef3`.
@@ -26,18 +26,18 @@
 - Local and remote default revisions at intake: `8cd41f886459630909e827d7df1b67910618aaac`; no local-only commits; canonical checkout clean.
 - Active ticket worktree: /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker
 - Branch: `design/restore-native-workspace-folder-picker`; created from freshly fetched `origin/personal`.
-- Worktree ownership: this Product execution; Bootstrapper receives write authority for baseline source/evidence only. No other ticket worktree reused.
+- Worktree ownership: this Product execution. Earlier Bootstrapper assignment is held/withdrawn; no resumed write work requested. No other ticket worktree reused.
 - Selected source frontend (read-only): /Users/normy/autobyteus_org/autobyteus-worktrees/restore-native-workspace-folder-picker/autobyteus-web
 - Explicit source pin: `88fad73cbd20201642acdcfe75e69b1897ec135c` (request's isolated source HEAD confirmed).
 - Historical accepted design baseline: `b4f3ed12c8402458391917d08945977ab80ea167`, source `10fb69504f99a615e0728ffdd6c1fcab0104ff05`, plus subsequent integrated approved Product changes at `8cd41f886459630909e827d7df1b67910618aaac`.
-- Applicable current-experience acceptance: **not yet accepted** for this request. The root baseline report is stale relative to selected source; inherited captured fixtures violate the current boundary.
+- Applicable baseline: reuse accepted historical baseline plus later approved Product artifacts. Scoped workspace menu comparison supports reuse; captured synthetic-state method is permitted by updated guidance. No fresh whole-app parity claim. See baseline-reevaluation.md.
 - Baseline report: /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/ui-baseline-report.md
-- Product acceptance: historical only; no acceptance of a refreshed candidate yet.
+- Product acceptance: existing accepted reference retained; no refresh candidate required by the prior report-age/file-size arguments.
 - Ticket revision: see Git history for the intake checkpoint; no future-state source revision.
-- Integration: Pending; do not integrate unaccepted baseline or claim UI completion.
-- Default-entry-point validation: Not run this stage; baseline prerequisite unresolved.
+- Integration: Pending future user-approved design; current ticket changes are evidence only.
+- Default-entry-point validation: Not freshly run during source/provenance re-evaluation; affected browser journeys belong to the next focused design stage.
 - Runtime: ports 4581–4584 available at intake (not bound/reserved by an OS lock); intended reference dev/preview/source-observation/stub respectively. Recheck before use. No process started. Scratch ownership: `/tmp/autobyteus-design-restore-native-workspace-folder-picker`; no shared state. Future state must be synthetic/resettable; no user app/data.
-- Cleanup: Pending; preserve this worktree for baseline handoff. No owned server to stop.
+- Cleanup: Pending; preserve this worktree for scoped Product design. No owned server to stop.
 - Ticket folder: /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/tickets/in-progress/restore-native-workspace-folder-picker
 
 ## Delivery And Validation
@@ -50,10 +50,10 @@
 - Mock boundaries: eventual browser reference simulates native selection/cancel/failure and backend lifecycle; cannot prove actual OS picker, Electron bridge, filesystem or production save/launch.
 
 ## Outcome And Handoff
-- Outcome: Earlier **Baseline Needed (Refresh)** conclusion under correction; no evidence yet that current UI itself is stale. Captured-data boundary remains a separate unresolved issue.
+- Outcome: **In Progress**; previous broad refresh/fixture rewrite withdrawn. Updated rules and scoped static evidence support reuse, not wholesale rebuilding.
 - Completed: intake, source/repository identity, preserved-boundary recording, isolated worktree, baseline acceptance audit.
 - Remaining decisions: placement/discovery, manual versus browse hierarchy, apply step, feedback/cancel/retry/focus; all remain open for user review after a credible baseline.
-- Next action: Bootstrapper returns an independently runnable source-current baseline with small hand-written synthetic state. Product then reviews/accepts and integrates the baseline before making the focused proposal.
-- Matching rule: Baseline Needed → `/product_team/ui_baseline_bootstrapper`; send fixed payload only, no requirements/ticket package.
+- Next action: focused folder-selection UI proposal and browser validation in this existing reference, followed by explicit user review; no new Bootstrapper work warranted by the previous claims.
+- Routing: previous Baseline Needed request withdrawn. Re-evaluation is returned to the user; no new baseline handoff.
 - Return on eventual user-reviewed package or blocker: assigning Solution Designer run above, with absolute `product-handoff.md` path; canonical requirements reconciliation remains theirs.
 - Original dispatch confirmed: ui_baseline_bootstrapper_9f22a91a249f48f7bf87803f910b026c. Hold/correction requested after user challenge; see baseline-conclusion-correction.md.
