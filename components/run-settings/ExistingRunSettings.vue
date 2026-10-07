@@ -58,6 +58,7 @@
               {{ note.address
                 ? $t('reconnect.settings.reconnectedMember', { name: note.name, agent: note.agentName })
                 : $t('reconnect.settings.reconnectedRun', { agent: note.agentName }) }}
+              <span v-if="note.runCount > 1" class="text-emerald-700"> · {{ $t('reconnect.done.runs', { count: note.runCount }) }}</span>
               <span v-if="note.instructionsFromNewSession" class="text-emerald-700">{{ $t('reconnect.settings.instructions', { runtime: note.runtime }) }}</span>
             </span>
           </p>
@@ -210,6 +211,7 @@ const reconnectedNotes = computed(() => reconnectedIds.value
       name: subject.memberKind === 'collaborator' ? subject.address!.slice(1).replace(/_/g, ' ') : subject.address?.slice(1) ?? '',
       agentName: to.name,
       instructionsFromNewSession: notice?.instructionsFromNewSession ?? false,
+      runCount: notice?.runCount ?? 1,
       runtime: notice?.runtime ?? '',
     }
   })

@@ -21,7 +21,6 @@ const reconnectMessages = {
   'reconnect.dialog.cancel': 'Cancel',
   'reconnect.dialog.confirm': 'Reconnect',
   'reconnect.dialog.reconnecting': 'Reconnecting…',
-  'reconnect.dialog.busy': '{{name}} is running. Stop it, then reconnect.',
   'reconnect.dialog.failed': 'Couldn’t reconnect: {{reason}}',
   'reconnect.settings.missingRun': 'Agent {{id}} no longer exists',
   'reconnect.settings.missingMember': '{{name}}: agent no longer exists',
@@ -33,6 +32,11 @@ const reconnectMessages = {
   'reconnect.done.instructionsTitle': '{{runtime}} keeps this session’s instructions. Tools and skills apply now.',
   'reconnect.dialog.context': 'Replaces {{id}}. History and session are kept.',
   'reconnect.dialog.contextMember': '{{name}} · replaces {{id}}. History and session are kept.',
+  'reconnect.dialog.agentRunActive': '{{name}} is running. Stop it, then reconnect.',
+  'reconnect.dialog.rebindPending': 'Reconnect is still finishing. Try again.',
+  'reconnect.dialog.runActive': 'This run is in use by another workflow. Stop it, then reconnect.',
+  'reconnect.dialog.definitionNotFound': '{{agent}} no longer exists. Choose another agent.',
+  'reconnect.done.runs': '{{count}} runs',
 } as const satisfies TranslationCatalog;
 
 export default reconnectMessages;

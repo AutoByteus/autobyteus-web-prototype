@@ -7,11 +7,13 @@ import { AgentStatus } from '~/types/agent/AgentStatus'
 import {
   SUBJECTS, TEAM_NAME, definitionIdOf, reconnectNotices, reconnectState, reconnectedTo, runtimeLabel, subjectFor, type ReconnectSubject,
 } from '~/prototype/agent-reconnect/agentReconnectFixture'
-import { reconnectAgentRunOnServer, type ReconnectResult } from '~/prototype/agent-reconnect/reconnectSimulation'
+import { agentDefinitionLookup, reconnectAgentRunOnServer, type ReconnectResult } from '~/prototype/agent-reconnect/reconnectSimulation'
 
 /**
  * agent-definition-reconnect-ui (design): which runs point at an agent that no longer exists, and
- * Reconnect. A run's agent is missing when the agent id in its record is not in the agent catalog.
+ * Reconnect. A run's agent is missing when the agent id in its record is not in the agent catalog
+ * AND the exact `agentDefinition(id)` lookup finds nothing (L1: Org-owned and Application-owned
+ * agents are not in the catalog by design).
  * In the UI reference the run records are the example fixtures; the server call is scripted.
  */
 export type MissingAgent = {
@@ -35,13 +37,15 @@ export type ReconnectedNotice = {
   /** Antigravity / Grok: the new instructions apply from a new session (DEC-010). */
   instructionsFromNewSession: boolean
   runtime: string
+  /** How many agent runs the reconnect changed (the run and the copies that inherit its agent). */
+  runCount: number
 }
 
 const notices = reconnectNotices as Record<string, ReconnectedNotice>
 
 const lowerWords = (name: string) => name.trim().toLowerCase().replace(/[_-]+/g, ' ').replace(/\s+/g, ' ')
 const rowName = (subject: ReconnectSubject) => subject.address
-  ? (subject.memberKind === 'collaborator' ? lowerWords(subject.address.slice(1)) : subject.address.slice(1))
+  ? (subject.memberKind === 'configured_member' ? subject.address.slice(1) : lowerWords(subject.address.slice(1)))
   : 'Tutorial Video Producer'
 
 export const useAgentReconnect = () => {
@@ -51,7 +55,7 @@ export const useAgentReconnect = () => {
   const history = useRunHistoryStore()
 
   const catalogLoaded = computed(() => (definitions.agentDefinitions?.length ?? 0) > 0)
-  const exists = (definitionId: string) => Boolean(definitions.getAgentDefinitionById(definitionId))
+  const exists = (definitionId: string) => Boolean(definitions.getAgentDefinitionById(definitionId)) || agentDefinitionLookup(definitionId)
 
   const missingForRun = (agentRunId: string | null | undefined): MissingAgent | null => {
     void reconnectState.revision
@@ -70,9 +74,13 @@ export const useAgentReconnect = () => {
     }
   }
 
-  /** Every agent run of a root (standalone run or team run) whose agent is missing. */
+  /**
+   * Every record of a root (standalone run or team run) whose agent is missing (Settings, L9):
+   * configured members, collaborators and catalog-started copies. Sourceless copies follow their
+   * placement and are not listed separately.
+   */
   const missingInRoot = (rootRunId: string | null | undefined): MissingAgent[] =>
-    SUBJECTS.filter((subject) => subject.rootRunId === rootRunId)
+    SUBJECTS.filter((subject) => subject.rootRunId === rootRunId && !subject.inheritsFrom)
       .map((subject) => missingForRun(subject.agentRunId))
       .filter((entry): entry is MissingAgent => entry !== null)
 
@@ -96,21 +104,25 @@ export const useAgentReconnect = () => {
   const reconnect = async (missing: MissingAgent, definition: { id: string; name: string }): Promise<ReconnectResult> => {
     const result = await reconnectAgentRunOnServer(missing.agentRunId, definition)
     if (!result.success) return result
-    const subject = subjectFor(missing.agentRunId)!
-    for (const context of openContextsOf(missing.agentRunId)) {
-      context.config.agentDefinitionId = definition.id
-      // Standalone runs show the agent's name; a collaborator row uses the row rule (DEC-012);
-      // configured members keep their address name (DEC-011).
-      if (subject.memberKind === 'standalone') context.config.agentDefinitionName = definition.name
-      else if (subject.memberKind === 'collaborator') context.config.agentDefinitionName = lowerWords(definition.name)
-      if (context.state.currentStatus === AgentStatus.Error) context.state.currentStatus = AgentStatus.Offline
-    }
-    const affected = result.affectedRuns.find((run) => run.agentRunId === missing.agentRunId)
-    notices[missing.agentRunId] = {
-      agentRunId: missing.agentRunId,
-      agentName: definition.name,
-      instructionsFromNewSession: affected?.instructionsTakeEffect === 'NEW_SESSION',
-      runtime: runtimeLabel(affected?.runtimeKind ?? ''),
+    // Every run the server changed (the run and the copies inheriting its agent, L3) follows the record.
+    for (const run of result.affectedRuns) {
+      const subject = subjectFor(run.agentRunId)
+      if (!subject) continue
+      for (const context of openContextsOf(run.agentRunId)) {
+        context.config.agentDefinitionId = definition.id
+        // Standalone runs show the agent's name; collaborators and their copies use the row rule
+        // (DEC-012); configured members keep their address name (DEC-011).
+        if (subject.memberKind === 'standalone') context.config.agentDefinitionName = definition.name
+        else if (subject.memberKind !== 'configured_member') context.config.agentDefinitionName = lowerWords(definition.name)
+        if (context.state.currentStatus === AgentStatus.Error) context.state.currentStatus = AgentStatus.Offline
+      }
+      notices[run.agentRunId] = {
+        agentRunId: run.agentRunId,
+        agentName: definition.name,
+        instructionsFromNewSession: run.instructionsTakeEffect === 'NEW_SESSION',
+        runtime: runtimeLabel(run.runtimeKind),
+        runCount: result.affectedRuns.length,
+      }
     }
     void history.refreshTreeQuietly?.()
     return result
@@ -130,7 +142,7 @@ export const useAgentReconnect = () => {
   const collaboratorRowName = (agentRunId: string | null | undefined): string | null => {
     const subject = subjectFor(agentRunId)
     const to = agentRunId ? reconnectedAgent(agentRunId) : null
-    if (!subject || subject.memberKind !== 'collaborator' || !to) return null
+    if (!subject || (subject.memberKind !== 'collaborator' && subject.memberKind !== 'inherited_copy') || !to) return null
     const name = lowerWords(to.name)
     return name === lowerWords(subject.address!.slice(1)) ? null : name
   }

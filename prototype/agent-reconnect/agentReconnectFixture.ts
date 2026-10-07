@@ -23,6 +23,9 @@ export const TEAM_NAME = 'Video Team'
 export const LEAD_RUN_ID = 'team-video-lead-0001'
 export const EDITOR_RUN_ID = 'team-video-editor-0001'
 export const COLLAB_RUN_ID = 'team-video-tvp-0001'
+/** A delegated copy of the collaborator (delegate_task to its address); no own source, so it
+ * inherits the collaborator's agent and is reconnected with it (L3). */
+export const COPY_RUN_ID = 'team-video-tvp-copy-0001'
 
 const createdAt = '2026-10-05T09:12:00.000Z'
 const updatedAt = '2026-10-05T09:40:00.000Z'
@@ -42,7 +45,9 @@ export type ReconnectSubject = {
   rootRunId: string
   /** Team member / collaborator address; null for a standalone run. */
   address: string | null
-  memberKind: 'standalone' | 'configured_member' | 'collaborator'
+  memberKind: 'standalone' | 'configured_member' | 'collaborator' | 'inherited_copy'
+  /** A sourceless delegated copy follows this run's agent (it has no record of its own). */
+  inheritsFrom?: string
   /** The stored reference (the id of the folder that is gone). */
   missingDefinitionId: string
   runtimeKind: RuntimeKind
@@ -53,6 +58,7 @@ export const SUBJECTS: readonly ReconnectSubject[] = [
   { agentRunId: STANDALONE_RUN_ID, rootKind: 'AGENT', rootRunId: STANDALONE_RUN_ID, address: null, memberKind: 'standalone', missingDefinitionId: 'tutorial-video-producer', runtimeKind: 'claude_agent_sdk', model: 'claude-sonnet-4.5' },
   { agentRunId: EDITOR_RUN_ID, rootKind: 'AGENT_TEAM', rootRunId: TEAM_RUN_ID, address: '/editor', memberKind: 'configured_member', missingDefinitionId: 'video-editor', runtimeKind: 'antigravity_cli', model: 'gemini-3-pro' },
   { agentRunId: COLLAB_RUN_ID, rootKind: 'AGENT_TEAM', rootRunId: TEAM_RUN_ID, address: '/tutorial_video_producer', memberKind: 'collaborator', missingDefinitionId: 'tutorial-video-producer', runtimeKind: 'claude_agent_sdk', model: 'claude-sonnet-4.5' },
+  { agentRunId: COPY_RUN_ID, rootKind: 'AGENT_TEAM', rootRunId: TEAM_RUN_ID, address: '/tutorial_video_producer', memberKind: 'inherited_copy', inheritsFrom: COLLAB_RUN_ID, missingDefinitionId: 'tutorial-video-producer', runtimeKind: 'claude_agent_sdk', model: 'claude-sonnet-4.5' },
 ]
 export const subjectFor = (agentRunId: string | null | undefined): ReconnectSubject | null =>
   SUBJECTS.find((subject) => subject.agentRunId === agentRunId) ?? null
@@ -89,6 +95,12 @@ export const CATALOG_AGENTS: readonly CatalogAgent[] = [
   { id: 'tutorial-recorder', name: 'Tutorial Recorder', role: 'Records step-by-step screen tutorials.' },
   { id: 'team-local-agent:team-video:color-grader', name: 'Color Grader', role: 'Grades footage for the Video Team.', ownershipScope: 'TEAM_LOCAL', ownerTeamName: TEAM_NAME, ownerTeamId: TEAM_DEFINITION_ID },
 ]
+
+/**
+ * L1: agents that exist but are not listed in the agent catalog by design (Org-owned and
+ * Application-owned). The exact `agentDefinition(id)` lookup finds them, so they are not "missing".
+ */
+export const OWNED_OUTSIDE_CATALOG: ReadonlySet<string> = new Set(['application-owned-agent:launch-studio:clip-renderer'])
 
 export const catalogDefinition = (template: Record<string, any>, entry: CatalogAgent) => ({
   ...template,
@@ -130,8 +142,13 @@ type State = {
 export const reconnectState = reactive<State & { revision: number }>({ reconnected: {}, added: {}, revision: 0 })
 export const changed = () => { reconnectState.revision += 1 }
 
-export const reconnectedTo = (agentRunId: string): ReconnectedTo | null => reconnectState.reconnected[agentRunId] ?? null
-export const definitionIdOf = (subject: ReconnectSubject): string => reconnectedTo(subject.agentRunId)?.id ?? subject.missingDefinitionId
+export const reconnectedTo = (agentRunId: string): ReconnectedTo | null => {
+  const subject = subjectFor(agentRunId)
+  return reconnectState.reconnected[subject ? ownerOf(subject).agentRunId : agentRunId] ?? null
+}
+/** The record that owns the run's agent reference: the run itself, or the placement a copy inherits from. */
+export const ownerOf = (subject: ReconnectSubject): ReconnectSubject => (subject.inheritsFrom ? subjectFor(subject.inheritsFrom) : null) ?? subject
+export const definitionIdOf = (subject: ReconnectSubject): string => reconnectedTo(ownerOf(subject).agentRunId)?.id ?? subject.missingDefinitionId
 
 export const recordReconnect = (agentRunId: string, to: { id: string; name: string }) => {
   reconnectState.reconnected[agentRunId] = { ...to, at: Date.now() }
@@ -146,7 +163,7 @@ export const addEntries = (agentRunId: string, entries: Array<Record<string, unk
 
 /** UI feedback shown once after a reconnect (browser memory only). */
 export const reconnectNotices = reactive<Record<string, {
-  agentRunId: string; agentName: string; instructionsFromNewSession: boolean; runtime: string
+  agentRunId: string; agentName: string; instructionsFromNewSession: boolean; runtime: string; runCount: number
 }>>({})
 
 // --- Conversations ------------------------------------------------------------------------
@@ -164,6 +181,10 @@ const storedTranscripts: Record<string, Array<Record<string, unknown>>> = {
   [EDITOR_RUN_ID]: [
     { kind: 'inter_agent_message', role: 'user', content: `You received a message from sender name: video lead, sender address: /video_lead, sender id: ${LEAD_RUN_ID}\nmessage:\nCut the 60-second version from the recorded screens.`, senderAgentRunId: LEAD_RUN_ID, senderAddress: '/video_lead', ts: seconds('2026-10-05T09:30:00.000Z') },
     { kind: 'message', role: 'assistant', content: 'First cut is at 64 seconds. I will trim the demo section.', ts: seconds('2026-10-05T09:36:00.000Z') },
+  ],
+  [COPY_RUN_ID]: [
+    { kind: 'inter_agent_message', role: 'user', content: `You received a message from sender name: video lead, sender address: /video_lead, sender id: ${LEAD_RUN_ID}\nmessage:\nWrite the on-screen captions for shots 1–3.`, senderAgentRunId: LEAD_RUN_ID, senderAddress: '/video_lead', ts: seconds('2026-10-05T09:26:00.000Z') },
+    { kind: 'message', role: 'assistant', content: 'Captions for shots 1–3 are drafted.', ts: seconds('2026-10-05T09:27:00.000Z') },
   ],
   [COLLAB_RUN_ID]: [
     { kind: 'inter_agent_message', role: 'user', content: `You received a message from sender name: video lead, sender address: /video_lead, sender id: ${LEAD_RUN_ID}\nmessage:\nDraft the storyboard for the v2 launch video.`, senderAgentRunId: LEAD_RUN_ID, senderAddress: '/video_lead', ts: seconds('2026-10-05T09:24:00.000Z') },
@@ -184,6 +205,7 @@ export const continuedReply = (agentRunId: string, text: string): string => {
   }
   if (agentRunId === EDITOR_RUN_ID) return 'Picking up the 64-second cut. I trimmed the demo section: the cut is now 60 seconds.'
   if (agentRunId === COLLAB_RUN_ID) return 'Continuing from the six-shot storyboard. I tightened shot 4 so the demo fits in 30 seconds.'
+  if (agentRunId === COPY_RUN_ID) return 'Continuing the captions: shots 4–6 are drafted too.'
   return 'Done.'
 }
 
@@ -214,7 +236,10 @@ export const teamRootExecution = () => ({
   collaborators: [
     { kind: 'agent', address: '/tutorial_video_producer', agent_definition_id: definitionIdOf(collaborator), agent_run_id: COLLAB_RUN_ID, platform_agent_run_id: null, launch_configuration: launch(collaborator), added_at: '2026-10-05T09:20:00.000Z', added_via_agent_run_id: LEAD_RUN_ID },
   ],
-  task_executions: [],
+  task_executions: [
+    // The video lead delegated a task to the collaborator: a sourceless copy that inherits its agent.
+    { kind: 'task_agent', address: '/tutorial_video_producer', agent_run_id: COPY_RUN_ID, platform_agent_run_id: null, delegator_agent_run_id: LEAD_RUN_ID, started_at: '2026-10-05T09:26:00.000Z' },
+  ],
 })
 
 const teamExecutionTree = () => ({ created_at: createdAt, archived_at: null, application_binding: null, handoffs: [], root_team: teamRootExecution() })
@@ -300,7 +325,7 @@ export const withAgentReconnect = (name: string, variables: Record<string, any>,
         ? { getTeamRunExecutionCheckpoint: { rootTeamRunId: TEAM_RUN_ID, changeSequence: 1, hasOpenExecutionWork: false } }
         : data
     case 'GetTeamMemberRunProjection':
-      return [LEAD_RUN_ID, EDITOR_RUN_ID, COLLAB_RUN_ID].includes(variables.agentRunId)
+      return [LEAD_RUN_ID, EDITOR_RUN_ID, COLLAB_RUN_ID, COPY_RUN_ID].includes(variables.agentRunId)
         ? { getTeamMemberRunProjection: { agentRunId: variables.agentRunId, summary: 'Produce the v2 launch video', lastActivityAt: updatedAt, conversation: storedProjection(variables.agentRunId), activities: [], hasEarlierActiveTraceEvents: false } }
         : data
     default:

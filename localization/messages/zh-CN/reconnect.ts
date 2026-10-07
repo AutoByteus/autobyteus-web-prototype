@@ -20,7 +20,6 @@ const reconnectMessages = {
   'reconnect.dialog.cancel': '取消',
   'reconnect.dialog.confirm': '重新连接',
   'reconnect.dialog.reconnecting': '正在重新连接…',
-  'reconnect.dialog.busy': '{{name}} 正在运行。请先停止它，再重新连接。',
   'reconnect.dialog.failed': '无法重新连接：{{reason}}',
   'reconnect.settings.missingRun': '智能体 {{id}} 已不存在',
   'reconnect.settings.missingMember': '{{name}}：智能体已不存在',
@@ -32,6 +31,11 @@ const reconnectMessages = {
   'reconnect.done.instructionsTitle': '{{runtime}} 保留本会话的指令。工具和技能立即生效。',
   'reconnect.dialog.context': '替换 {{id}}。历史和会话保持不变。',
   'reconnect.dialog.contextMember': '{{name}} · 替换 {{id}}。历史和会话保持不变。',
+  'reconnect.dialog.agentRunActive': '{{name}} 正在运行。请先停止它，再重新连接。',
+  'reconnect.dialog.rebindPending': '重新连接仍在完成中，请再试一次。',
+  'reconnect.dialog.runActive': '此运行正被另一个工作流使用。请先停止它，再重新连接。',
+  'reconnect.dialog.definitionNotFound': '{{agent}} 已不存在，请选择其他智能体。',
+  'reconnect.done.runs': '{{count}} 个运行',
 } as const satisfies TranslationCatalog;
 
 export default reconnectMessages;

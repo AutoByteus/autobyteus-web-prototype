@@ -168,8 +168,12 @@ type Row = { id: string; name: string; folder: string; teamName: string | null; 
 
 const words = (value: string) => value.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean)
 
+/** Agents the server reported gone while the dialog was open (DEFINITION_NOT_FOUND → list refreshed). */
+const goneIds = ref<string[]>([])
+
 /** Every agent in the catalog, by name. */
 const agents = computed(() => [...(definitions.agentDefinitions ?? [])]
+  .filter((definition: any) => !goneIds.value.includes(String(definition.id)))
   .map((definition: any) => ({
     id: String(definition.id),
     name: String(definition.name),
@@ -216,6 +220,7 @@ watch(() => props.open, (open) => {
   selectedId.value = null
   failure.value = null
   saving.value = false
+  goneIds.value = []
   void nextTick(() => searchRef.value?.focus())
 }, { immediate: true })
 watch(query, () => { failure.value = null })
@@ -249,8 +254,15 @@ const confirm = async () => {
     emit('close')
     return
   }
-  failure.value = result.reason === 'busy'
-    ? t('reconnect.dialog.busy', { name: missing.name })
-    : t('reconnect.dialog.failed', { reason: result.message })
+  // L5: one message per server rejection; the dialog stays open with the selection.
+  if (result.code === 'AGENT_RUN_ACTIVE') failure.value = t('reconnect.dialog.agentRunActive', { name: missing.name })
+  else if (result.code === 'AGENT_DEFINITION_REBIND_PENDING') failure.value = t('reconnect.dialog.rebindPending')
+  else if (result.code === 'RUN_ACTIVE') failure.value = t('reconnect.dialog.runActive')
+  else if (result.code === 'DEFINITION_NOT_FOUND') {
+    // The picked agent was removed meanwhile: the list is refreshed without it.
+    goneIds.value = [...goneIds.value, agent.id]
+    selectedId.value = null
+    failure.value = t('reconnect.dialog.definitionNotFound', { agent: agent.name })
+  } else failure.value = t('reconnect.dialog.failed', { reason: result.message })
 }
 </script>

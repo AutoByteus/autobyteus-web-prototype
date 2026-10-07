@@ -8,7 +8,7 @@
 - Title: Reconnect a run to an agent — UI/UX redesign.
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline: conversation,
   composer, run settings, Workspaces tree).
-- Status: `Awaiting User Review` (round 5 visuals accepted by the user; logic review requested from the Solution Designer).
+- Status: `In Progress` (finalizing after Solution Designer logic review).
 - Requester: Solution Designer (`/solution_designer`, run
   `solution_designer_3082838c83f24535972a43836b65e1c7`) for the user, 2026-10-07.
   - User: "I want to work on the UI first. Please delegate task to Product Team to work on UI" /
@@ -81,3 +81,10 @@
 - 2026-10-07: user: "i am fine with the UI" / "But i am not sure whether solution designer thinks the
   logic is correct or not". Logic review sent to the Solution Designer (`logic-review-request.md`,
   L1–L10). Finalization waits for that answer.
+- 2026-10-07: Solution Designer logic review (`product-logic-review-response.md` in the request folder):
+  L1 corrected (missing = not in catalog AND exact `agentDefinition(id)` lookup finds nothing);
+  L5 corrected (one message each for AGENT_RUN_ACTIVE, AGENT_DEFINITION_REBIND_PENDING, RUN_ACTIVE,
+  DEFINITION_NOT_FOUND → list refreshed); L3 (one reconnect also changes sourceless delegated copies;
+  count shown when > 1 — example adds a delegated copy of the collaborator); L10 out of scope; grey
+  "reconnected to" line is live-only. L2, L4, L6–L9 confirmed. Round 6 applied and validated (no
+  visual change to the accepted look besides "· 2 runs").

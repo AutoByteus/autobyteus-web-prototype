@@ -11,6 +11,8 @@
       <Icon icon="heroicons:check-circle-20-solid" class="h-4 w-4 flex-shrink-0 text-emerald-500" aria-hidden="true" />
       <p class="min-w-0 flex-1 truncate">
         {{ $t('reconnect.done.title', { agent: notice.agentName }) }}
+        <!-- L3: one reconnect can change several runs (the run and the copies that inherit its agent). -->
+        <span v-if="notice.runCount > 1" class="text-emerald-700" data-test="agent-reconnected-run-count"> · {{ $t('reconnect.done.runs', { count: notice.runCount }) }}</span>
         <span
           v-if="notice.instructionsFromNewSession"
           class="text-emerald-700"

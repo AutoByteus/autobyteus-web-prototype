@@ -8,8 +8,10 @@
  *   now or only from a new session (Antigravity / Grok keep a resumed session's instructions).
  * - After a reconnect, a message continues the same conversation with a scripted reply.
  *
- * Optional hidden seed for the busy and failure states (no visible control):
- *   localStorage.setItem('autobyteus.design.agentReconnect.failNext', 'busy' | 'error')
+ * Optional hidden seed for the server's rejections (no visible control), consumed by the next
+ * Reconnect:
+ *   localStorage.setItem('autobyteus.design.agentReconnect.failNext',
+ *     'AGENT_RUN_ACTIVE' | 'AGENT_DEFINITION_REBIND_PENDING' | 'RUN_ACTIVE' | 'DEFINITION_NOT_FOUND' | 'ERROR')
  */
 import { useAgentContextsStore } from '~/stores/agentContextsStore'
 import { useAgentRunStore } from '~/stores/agentRunStore'
@@ -18,39 +20,48 @@ import { useActiveContextStore } from '~/stores/activeContextStore'
 import { AgentStatus } from '~/types/agent/AgentStatus'
 import { buildConversationFromProjection } from '~/services/runHydration/runProjectionConversation'
 import {
-  KEEPS_SESSION_INSTRUCTIONS, addEntries, continuedReply, recordReconnect, reconnectedTo, subjectFor, transcriptOf,
-  type ReconnectSubject,
+  KEEPS_SESSION_INSTRUCTIONS, OWNED_OUTSIDE_CATALOG, SUBJECTS, addEntries, continuedReply, ownerOf, recordReconnect,
+  reconnectedTo, subjectFor, transcriptOf, type ReconnectSubject,
 } from './agentReconnectFixture'
 
 export const AGENT_DEFINITION_MISSING = 'AGENT_DEFINITION_MISSING'
 const FAIL_KEY = 'autobyteus.design.agentReconnect.failNext'
 
+export type ReconnectRejection = 'AGENT_RUN_ACTIVE' | 'AGENT_DEFINITION_REBIND_PENDING' | 'RUN_ACTIVE' | 'DEFINITION_NOT_FOUND' | 'ERROR'
 export type ReconnectResult =
   | { success: true; affectedRuns: Array<{ agentRunId: string; runtimeKind: string; instructionsTakeEffect: 'NEXT_MESSAGE' | 'NEW_SESSION' }> }
-  | { success: false; reason: 'busy' | 'error'; message: string }
+  | { success: false; code: ReconnectRejection; message: string }
+
+const REJECTIONS: ReadonlySet<string> = new Set(['AGENT_RUN_ACTIVE', 'AGENT_DEFINITION_REBIND_PENDING', 'RUN_ACTIVE', 'DEFINITION_NOT_FOUND', 'ERROR'])
+
+/** L1: the exact `agentDefinition(id)` lookup — finds agents that are not listed in the catalog. */
+export const agentDefinitionLookup = (definitionId: string): boolean => OWNED_OUTSIDE_CATALOG.has(definitionId)
 
 const pause = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-/** The server's reconnect: only the agent reference of the run record changes. */
+/**
+ * The server's reconnect: only the agent reference of the record that owns it changes (the run, or
+ * the placement a sourceless copy inherits from). Every copy inheriting it is affected too (L3).
+ */
 export const reconnectAgentRunOnServer = async (agentRunId: string, definition: { id: string; name: string }): Promise<ReconnectResult> => {
   await pause(450)
   const subject = subjectFor(agentRunId)
-  if (!subject) return { success: false, reason: 'error', message: 'Run not found.' }
+  if (!subject) return { success: false, code: 'ERROR', message: 'Run not found.' }
   const fail = localStorage.getItem(FAIL_KEY)
-  if (fail === 'busy' || fail === 'error') {
+  if (fail && REJECTIONS.has(fail)) {
     localStorage.removeItem(FAIL_KEY)
-    return fail === 'busy'
-      ? { success: false, reason: 'busy', message: 'The agent is running.' }
-      : { success: false, reason: 'error', message: 'The run record could not be saved.' }
+    return { success: false, code: fail as ReconnectRejection, message: fail === 'ERROR' ? 'The run record could not be saved.' : fail }
   }
-  recordReconnect(agentRunId, definition)
+  const owner = ownerOf(subject)
+  recordReconnect(owner.agentRunId, definition)
+  const affected = SUBJECTS.filter((entry) => entry === owner || entry.inheritsFrom === owner.agentRunId)
   return {
     success: true,
-    affectedRuns: [{
-      agentRunId,
-      runtimeKind: subject.runtimeKind,
-      instructionsTakeEffect: KEEPS_SESSION_INSTRUCTIONS.has(subject.runtimeKind) ? 'NEW_SESSION' : 'NEXT_MESSAGE',
-    }],
+    affectedRuns: affected.map((entry) => ({
+      agentRunId: entry.agentRunId,
+      runtimeKind: entry.runtimeKind,
+      instructionsTakeEffect: KEEPS_SESSION_INSTRUCTIONS.has(entry.runtimeKind) ? 'NEW_SESSION' as const : 'NEXT_MESSAGE' as const,
+    })),
   }
 }
 

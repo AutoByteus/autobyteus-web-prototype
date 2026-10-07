@@ -21,18 +21,26 @@
     </button>
     <ReconnectAgentDialog :open="dialogOpen" :missing="missing" @close="dialogOpen = false" />
   </div>
+  <!-- Live-only feedback (not stored): right after a reconnect in this view the card names the new
+       agent; reopened later, the error is plain grey history without an action. -->
   <p
     v-else
     class="my-3 flex items-center gap-2 text-[0.8125rem] text-gray-500"
     data-test="agent-missing-error-card-resolved"
   >
-    <Icon icon="heroicons:check-circle-20-solid" class="h-4 w-4 flex-shrink-0 text-gray-400" aria-hidden="true" />
-    <span class="min-w-0 truncate">{{ $t('reconnect.card.resolved', { id: definitionId, agent: resolvedAgent.name }) }}</span>
+    <Icon
+      :icon="reconnectedHere ? 'heroicons:check-circle-20-solid' : 'heroicons:exclamation-circle-20-solid'"
+      class="h-4 w-4 flex-shrink-0 text-gray-400"
+      aria-hidden="true"
+    />
+    <span class="min-w-0 truncate">{{ reconnectedHere
+      ? $t('reconnect.card.resolved', { id: definitionId, agent: resolvedAgent.name })
+      : $t('reconnect.card.title', { id: definitionId }) }}</span>
   </p>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { Icon } from '@iconify/vue'
 import type { ErrorSegment } from '~/types/segments'
 import { useActiveContextStore } from '~/stores/activeContextStore'
@@ -48,5 +56,11 @@ const runId = computed(() => active.activeWorkspaceTarget?.context.state.runId ?
 const missing = computed(() => api.missingForRun(runId.value))
 /** The id named by the error ("Agent definition 'x' no longer exists."). */
 const definitionId = computed(() => /'([^']+)'/.exec(props.segment.message)?.[1] ?? missing.value?.missingDefinitionId ?? '')
-const resolvedAgent = computed(() => (missing.value ? null : api.reconnectedAgent(runId.value)))
+/** The error no longer applies: the run's agent exists again (reconnected). */
+const resolved = computed(() => !missing.value)
+const resolvedAgent = computed(() => (missing.value ? null : (api.reconnectedAgent(runId.value) ?? { name: '' })))
+/** Live only: the reconnect happened while this card was on screen. */
+const sawMissing = ref(Boolean(missing.value))
+watch(missing, (value) => { if (value) sawMissing.value = true })
+const reconnectedHere = computed(() => resolved.value && sawMissing.value)
 </script>

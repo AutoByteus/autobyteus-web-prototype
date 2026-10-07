@@ -1,0 +1,17 @@
+await page.getByText('prototype-workspace').first().click()
+await page.waitForTimeout(800)
+await page.locator('[data-agent-definition-id="tutorial-video-producer"]').first().click()
+await page.waitForTimeout(400)
+await page.getByText('Turn the v2 launch notes').first().click()
+await page.waitForTimeout(1500)
+await page.locator('[data-test="agent-missing-reconnect"]').click()
+for (const code of ['AGENT_RUN_ACTIVE', 'AGENT_DEFINITION_REBIND_PENDING', 'RUN_ACTIVE', 'DEFINITION_NOT_FOUND']) {
+  await page.evaluate((c) => localStorage.setItem('autobyteus.design.agentReconnect.failNext', c), code)
+  await page.locator('[data-test="reconnect-option-product-video-producer"]').click()
+  await page.locator('[data-test="reconnect-dialog-confirm"]').click()
+  await page.waitForTimeout(900)
+  const msg = await page.locator('[data-test="reconnect-dialog-error"]').innerText()
+  const still = await page.locator('[data-test="reconnect-option-product-video-producer"]').count()
+  console.log(code, '→', msg, '| PVP listed:', still)
+  await page.screenshot({ path: `/tmp/adr/j6-${code}.png` })
+}
