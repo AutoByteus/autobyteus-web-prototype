@@ -160,6 +160,16 @@ const projectMessages = {
   'projects.components.projects.ProjectTaskBoard.noTasks': 'No tasks',
   'projects.components.projects.ProjectTaskBoard.noMatch': 'No tasks match your search.',
   'projects.components.projects.ProjectTaskBoard.clearSearch': 'Clear search',
+  // project-manager-ux (design)
+  'projects.worker.status.running': 'Running',
+  'projects.worker.status.idle': 'Idle',
+  'projects.worker.status.failed': "Couldn't start",
+  'projects.worker.status.stopped': 'Stopped',
+  'projects.worker.open': 'Open {{name}}',
+  'projects.worker.listLabel': 'Assigned to',
+  'projects.ui.workers': 'Assigned to',
+  'projects.ui.noWorkers': 'Not assigned to an agent or team yet.',
+  'projects.ui.workersHelp': 'When the Task is Done, this agent or team stops.',
 } satisfies TranslationCatalog;
 
 export default projectMessages;

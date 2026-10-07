@@ -135,9 +135,14 @@ const closedIds = (): Set<string> => {
   return ids
 }
 
+// project-manager-ux: other Manager runs (Website Refresh) register their own closure facts.
+const otherClosedRuns: Array<(hostRunId: string, runId: string) => boolean> = []
+export const registerClosedRuns = (isClosed: (hostRunId: string, runId: string) => boolean) => { otherClosedRuns.push(isClosed) }
+
 /** Read by the Workspaces tree; reactive. */
 export const isClosedTaskRun = (hostRunId: string, runId: string): boolean => {
   void closure.revision
+  if (otherClosedRuns.some((isClosed) => isClosed(hostRunId, runId))) return true
   return hostRunId === MANAGER_RUN_ID && closedIds().has(runId)
 }
 

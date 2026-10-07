@@ -56,6 +56,24 @@ export const useProjectTaskStore = defineStore('projectTasks', () => {
     useProjectStore().setTaskCounts(id, sorted.length, sorted.filter((t) => t.status !== 'DONE').length)
     return sorted
   }
+  /**
+   * project-manager-ux (design): a live Task push (an agent created, moved or assigned a Task).
+   * The list updates without Refresh; a Task that is new or changed its status is marked
+   * `liveChanges[taskId] = 'arrived' | 'moved'` for 2.4 s so the board can show it.
+   */
+  const liveChanges = ref<Record<string, 'arrived' | 'moved'>>({})
+  const receiveLiveTasks = (id: string, tasks: ProjectTask[]) => {
+    const previous = getList(id)
+    if (!previous?.hasLoaded) return
+    for (const task of tasks) {
+      const before = previous.tasks.find((item) => item.taskId === task.taskId)
+      const change = !before ? 'arrived' : before.status !== task.status ? 'moved' : null
+      if (!change) continue
+      liveChanges.value = {...liveChanges.value, [task.taskId]: change}
+      setTimeout(() => { const {[task.taskId]: _done, ...rest} = liveChanges.value; liveChanges.value = rest }, 2400)
+    }
+    publish(id, tasks)
+  }
   const read = async (id: string, refresh: boolean): Promise<ProjectTask[]> => {
     const state = getList(id) ?? empty()
     const owner = epoch(id)
@@ -117,5 +135,5 @@ export const useProjectTaskStore = defineStore('projectTasks', () => {
     {projectId, taskId, description, ...(contextChanges ? {contextChanges} : {})}, 'updateProjectTask', (tasks, result) => [...tasks.filter((t) => t.taskId !== taskId), result], eligible)
   const deleteTask = (projectId: string, taskId: string, eligible?: () => boolean) => mutate<boolean>(projectId, DeleteProjectTask, {projectId, taskId}, 'deleteProjectTask', (tasks) => tasks.filter((t) => t.taskId !== taskId), eligible)
   watch(() => node.bindingRevision, invalidate, {flush: 'sync'})
-  return {listsByProjectId, searchByProjectId, getList, setSearch, invalidate, forget, releaseRead, fetchTasks, refreshTasks, createTask, updateTask, deleteTask}
+  return {liveChanges, receiveLiveTasks, listsByProjectId, searchByProjectId, getList, setSearch, invalidate, forget, releaseRead, fetchTasks, refreshTasks, createTask, updateTask, deleteTask}
 })

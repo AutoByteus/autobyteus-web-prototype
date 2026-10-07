@@ -160,6 +160,16 @@ const projectMessages = {
   'projects.components.projects.ProjectTaskBoard.noTasks': '暂无任务',
   'projects.components.projects.ProjectTaskBoard.noMatch': '没有与搜索匹配的任务。',
   'projects.components.projects.ProjectTaskBoard.clearSearch': '清除搜索',
+  // project-manager-ux (design)
+  'projects.worker.status.running': '运行中',
+  'projects.worker.status.idle': '空闲',
+  'projects.worker.status.failed': '无法启动',
+  'projects.worker.status.stopped': '已停止',
+  'projects.worker.open': '打开 {{name}}',
+  'projects.worker.listLabel': '分配给',
+  'projects.ui.workers': '分配给',
+  'projects.ui.noWorkers': '还没有分配给智能体或团队。',
+  'projects.ui.workersHelp': '任务完成后，这个智能体或团队会停止。',
 } satisfies TranslationCatalog;
 
 export default projectMessages;

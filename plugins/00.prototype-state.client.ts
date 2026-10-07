@@ -651,13 +651,24 @@ export default defineNuxtPlugin({
     // applied when stores are created, but not re-applied on navigation into
     // a chat run, so a just-sent chat or an opened stored run is not reset.
     const isChatRunRoute = (): boolean => window.location.pathname === '/chat' && new URLSearchParams(window.location.search).has('id')
+    // project-manager-ux: the left panel is part of the app frame, so moving to the Projects pages
+    // keeps its runs and what is open, as in the product. Its stores are not reset to a page's
+    // captured snapshot after the first page.
+    const leftPanelStores = new Set(['runHistory', 'agentContexts', 'agentSelection', 'workspace', 'agentRunCollaboration'])
+    let firstSnapshotApplied = false
     const applyCurrentSnapshot = (): void => {
       const [key] = findSnapshot()
       if (isChatRunRoute()) {
         document.documentElement.dataset.prototypeSnapshot = key
+        firstSnapshotApplied = true
         return
       }
-      for (const store of pinia._s.values()) patchStore(store)
+      const keepLeftPanel = firstSnapshotApplied && window.location.pathname.startsWith('/projects')
+      for (const store of pinia._s.values()) {
+        if (keepLeftPanel && leftPanelStores.has(store.$id)) continue
+        patchStore(store)
+      }
+      firstSnapshotApplied = true
       document.documentElement.dataset.prototypeSnapshot = key
       if (localStorage.getItem('autobyteus.prototype.deferExperienceScenario') !== '1') {
         queueMicrotask(() => {

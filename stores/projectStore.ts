@@ -224,6 +224,11 @@ export const useProjectStore = defineStore('projects', () => {
   const removeWorkspace = (projectId: string, workspaceId: string): Promise<Project> =>
     mutateProject(RemoveProjectWorkspace, { input: { projectId, workspaceId } }, 'removeProjectWorkspace')
 
+  /** project-manager-ux (design): a live push of a Project an agent created or changed. */
+  const receiveLiveProject = (project: Project): void => {
+    if (hasFetched.value || projects.value.length) projects.value = upsertProject(projects.value, project)
+  }
+
   watch(
     () => windowNodeContextStore.bindingRevision,
     () => invalidate(),
@@ -236,6 +241,7 @@ export const useProjectStore = defineStore('projects', () => {
     error,
     hasFetched,
     getProjectById,
+    receiveLiveProject,
     invalidate,
     fetchProjects,
     fetchProject,

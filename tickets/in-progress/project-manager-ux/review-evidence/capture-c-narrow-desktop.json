@@ -1,0 +1,15 @@
+{
+ "viewport": {
+  "width": 1024,
+  "height": 768
+ },
+ "steps": [
+  {
+   "goto": "/projects/project-prototype-launch",
+   "wait": 4000
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-010-board-assigned-roots-desktop-1024x768.png"
+  }
+ ]
+}

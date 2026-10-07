@@ -30,6 +30,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import WorkspaceTransientExecutionRow from '~/components/workspace/history/WorkspaceTransientExecutionRow.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import type { RunHistoryTransientExecutionRow } from '~/stores/runHistoryTypes'
@@ -46,6 +47,7 @@ const props = defineProps<{
 const emit = defineEmits<{ (event: 'select-run'): void }>()
 const { t } = useLocalization()
 const collaboration = useAgentRunCollaborationStore()
+const route = useRoute()
 
 // The stored view is read without restoring the run; a live run is kept current by its stream.
 const loadStored = () => {
@@ -84,7 +86,10 @@ const select = (row: RunHistoryTransientExecutionRow): void => {
   if (!context) return
   const agentRunId = row.agentRunId ?? (row.teamRunIdForNode ? context.index.coordinatorOf(row.teamRunIdForNode).agentRunId : null)
   collaboration.selectChild(props.runId, agentRunId)
-  if (!props.runSelected) emit('select-run')
+  // project-manager-ux: from another page (Projects, a Task) the run may still be selected; the
+  // click still opens its conversation with this child shown.
+  const onRunView = route.path === '/workspace' || (route.path === '/chat' && route.query.id === props.runId)
+  if (!props.runSelected || !onRunView) emit('select-run')
 }
 </script>
 

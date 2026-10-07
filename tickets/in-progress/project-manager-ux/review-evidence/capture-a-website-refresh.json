@@ -1,0 +1,124 @@
+{
+ "reducedMotion": "reduce",
+ "steps": [
+  {
+   "goto": "/workspace",
+   "wait": 3500
+  },
+  {
+   "text": "prototype-workspace",
+   "wait": 2000
+  },
+  {
+   "click": "[data-agent-definition-id=project-task-manager] + button",
+   "wait": 2500
+  },
+  {
+   "click": "textarea",
+   "wait": 200
+  },
+  {
+   "eval": "(async()=>{const ta=document.querySelector('textarea');ta.value=\"We need to refresh the marketing site for the v2 launch.\";ta.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(r=>setTimeout(r,300));return 1})()"
+  },
+  {
+   "press": "Enter",
+   "wait": 1800
+  },
+  {
+   "text": "Projects",
+   "exact": true,
+   "wait": 600
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-001-projects-list-project-created-live-desktop-1440x900.png"
+  },
+  {
+   "text": "Website Refresh",
+   "wait": 1500
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-002-board-tasks-arriving-live-desktop-1440x900.png"
+  },
+  {
+   "sleep": 5000
+  },
+  {
+   "text": "We need to refresh the marke",
+   "wait": 2500
+  },
+  {
+   "click": "textarea",
+   "wait": 200
+  },
+  {
+   "eval": "(async()=>{const ta=document.querySelector('textarea');ta.value=\"yes\";ta.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(r=>setTimeout(r,300));return 1})()"
+  },
+  {
+   "press": "Enter",
+   "wait": 7000
+  },
+  {
+   "click": "textarea",
+   "wait": 200
+  },
+  {
+   "eval": "(async()=>{const ta=document.querySelector('textarea');ta.value=\"yes\";ta.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(r=>setTimeout(r,300));return 1})()"
+  },
+  {
+   "press": "Enter",
+   "wait": 7000
+  },
+  {
+   "click": "textarea",
+   "wait": 200
+  },
+  {
+   "eval": "(async()=>{const ta=document.querySelector('textarea');ta.value=\"build it anyway\";ta.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(r=>setTimeout(r,300));return 1})()"
+  },
+  {
+   "press": "Enter",
+   "wait": 7000
+  },
+  {
+   "click": "textarea",
+   "wait": 200
+  },
+  {
+   "eval": "(async()=>{const ta=document.querySelector('textarea');ta.value=\"the audit is done\";ta.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(r=>setTimeout(r,300));return 1})()"
+  },
+  {
+   "press": "Enter",
+   "wait": 7000
+  },
+  {
+   "text": "Projects",
+   "exact": true,
+   "wait": 1500
+  },
+  {
+   "text": "Website Refresh",
+   "wait": 2500
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-004-board-running-failed-stopped-desktop-1440x900.png"
+  },
+  {
+   "text": "Build the new homepage",
+   "wait": 2500
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-007-task-assigned-couldnt-start-desktop-1440x900.png"
+  },
+  {
+   "text": "Back to tasks",
+   "wait": 2000
+  },
+  {
+   "text": "Audit the current site pages",
+   "wait": 2500
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-008-task-done-stopped-desktop-1440x900.png"
+  }
+ ]
+}

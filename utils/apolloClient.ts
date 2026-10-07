@@ -15,6 +15,7 @@ import { withAutobyteusOrgOperation } from '~/prototype/run-settings/autobyteusO
 import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/launchedTeamFixture'
 import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/prototype/run-settings/launchedOrgFixture'
 import { syncProjectTasks, withTaskManagerRun } from '~/prototype/task-run-cleanup/taskManagerRunFixture'
+import { registerProjectDataSource, syncRefreshProject, withProjectManager } from '~/prototype/project-manager/projectManagerFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
 
@@ -55,7 +56,7 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (scenario === 'permission_denied') return { data: null, errors: [{ message: 'Synthetic permission denied.' }] }
   const state = fixtureState()
   // task-run-resources-workspace-cleanup: the Manager's two Tasks are in the project too.
-  if (scenario === 'populated') syncProjectTasks(projectData(state))
+  if (scenario === 'populated') { syncProjectTasks(projectData(state)); syncRefreshProject(projectData(state)) }
   const fixture = operationFixture(name, request.variables || {}, state)
   // run-settings-ui-unification: the real AutoByteus Org shape joins the populated catalog.
   let data = scenario === 'populated' ? withAutobyteusOrgOperation(name, request.variables || {}, fixture) : fixture
@@ -76,6 +77,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   })
   // task-run-resources-workspace-cleanup: a Project Task Manager run with Task runs under it.
   data = data ? withTaskManagerRun(name, request.variables || {}, structuredClone(data), scenario) : data
+  // project-manager-ux: Website Refresh, its Manager conversation, and the workers of every Task.
+  data = data ? withProjectManager(name, request.variables || {}, data, scenario) : data
   return { data: data ? structuredClone(data) : {} }
 }
 
@@ -91,7 +94,7 @@ const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const name = definition?.name?.value
   if (!name || !LOCAL_MUTATIONS.has(name)) return { data: {} }
   const state = fixtureState()
-  if (localScenario() === 'populated') syncProjectTasks(projectData(state))
+  if (localScenario() === 'populated') { syncProjectTasks(projectData(state)); syncRefreshProject(projectData(state)) }
   if (name === 'CreateAgentOrgRun') return { data: recordOrgLaunch(request.variables || {}) }
   if (name === 'TerminateAgentOrgRun') return { data: recordOrgTermination(request.variables || {}) }
   let data = operationFixture(name, request.variables || {}, state)
@@ -100,6 +103,13 @@ const resolveMutationLocally = async (request: OperationRequest = {}) => {
   if (data?.__projectError) return { data: null, errors: [data.__projectError] }
   return { data: data ? structuredClone(data) : {} }
 }
+
+// project-manager-ux: the live Task push reads the same in-memory project data.
+registerProjectDataSource(() => {
+  const state = fixtureState()
+  if (localScenario() === 'populated') { syncProjectTasks(projectData(state)); syncRefreshProject(projectData(state)) }
+  return projectData(state)
+})
 
 export const getApolloClient = (_clientId = 'default') => ({
   query: resolveLocally,

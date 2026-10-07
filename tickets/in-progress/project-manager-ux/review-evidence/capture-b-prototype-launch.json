@@ -1,0 +1,65 @@
+{
+ "steps": [
+  {
+   "goto": "/workspace",
+   "wait": 3500
+  },
+  {
+   "text": "prototype-workspace",
+   "wait": 2000
+  },
+  {
+   "text": "Project Task Manager",
+   "wait": 1200
+  },
+  {
+   "text": "Plan the v2 docs release",
+   "wait": 2500
+  },
+  {
+   "text": "Projects",
+   "exact": true,
+   "wait": 1500
+  },
+  {
+   "text": "Prototype Launch",
+   "wait": 2500
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-003-board-assigned-roots-left-panel-kept-desktop-1440x900.png"
+  },
+  {
+   "text": "Review docs site",
+   "wait": 2500
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-005-task-assigned-team-running-desktop-1440x900.png"
+  },
+  {
+   "text": "Back to tasks",
+   "wait": 2000
+  },
+  {
+   "text": "Outline the launch checklist.",
+   "wait": 2500
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-006-task-not-assigned-desktop-1440x900.png"
+  },
+  {
+   "text": "Back to tasks",
+   "wait": 2000
+  },
+  {
+   "text": "Review docs site",
+   "wait": 2500
+  },
+  {
+   "click": "[data-testid=project-task-worker-running]",
+   "wait": 3500
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-009-team-opens-coordinator-desktop-1440x900.png"
+  }
+ ]
+}

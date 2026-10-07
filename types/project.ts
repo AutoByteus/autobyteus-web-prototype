@@ -31,7 +31,26 @@ export interface ProjectTaskContextFile { storedFilename: string; displayName: s
 export interface ProjectTaskContextDraft { draftId: string; storedFilenames: string[] }
 export interface ProjectTaskContextChanges { draftId?: string; addStoredFilenames?: string[]; removeStoredFilenames?: string[] }
 export interface ProjectWorkspaceInput { workspaceId: string; description: string }
+/**
+ * project-manager-ux (design): the root a Task was handed to, the one agent or team the Project
+ * Task Manager delegated it to (from the Task's run resources). Runs a worker started by itself
+ * are not listed. `openRunId` is the run the user opens (a team opens its coordinator);
+ * `hostRunId` is the Manager conversation that started it. A DONE Task's root is `stopped`; a
+ * root that could not start is `failed` with its `error`.
+ */
+export interface ProjectTaskWorker {
+  kind: 'agent' | 'team'
+  name: string
+  hostRunId: string
+  agentRunId: string | null
+  teamRunId: string | null
+  openRunId: string | null
+  status: 'running' | 'idle' | 'failed' | 'stopped'
+  error: string | null
+}
 export interface ProjectTask {
+  /** project-manager-ux (design): the Task's root (at most one: the latest delegation), read with the Task. */
+  workers?: ProjectTaskWorker[]
   contextFiles: ProjectTaskContextFile[]
   taskId: string
   projectId: string
