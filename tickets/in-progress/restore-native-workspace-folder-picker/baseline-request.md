@@ -1,3 +1,5 @@
+> **Superseding correction (2026-10-07):** Earlier source-staleness inference withdrawn; refresh on hold pending evidence review. See `baseline-conclusion-correction.md`. The fixture-boundary issue is separate from UI currency.
+
 Outcome: Baseline Needed
 Mode: Refresh
 Selected frontend: /Users/normy/autobyteus_org/autobyteus-worktrees/restore-native-workspace-folder-picker/autobyteus-web

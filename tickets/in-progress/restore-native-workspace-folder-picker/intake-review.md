@@ -1,3 +1,5 @@
+> **Superseding correction (2026-10-07):** Earlier source-staleness inference withdrawn; refresh on hold pending evidence review. See `baseline-conclusion-correction.md`. The fixture-boundary issue is separate from UI currency.
+
 # Intake and baseline acceptance review
 
 Package `restore-native-workspace-folder-picker`; R2 Draft / SR-004. 2026-10-07.

@@ -4,7 +4,7 @@
 - Ticket / package: `restore-native-workspace-folder-picker` (unchanged; no second task ID).
 - Title: Restore native workspace folder selection in the existing shared menu.
 - Mode: **Product Experience Design**; an existing Chat/run-settings surface, not an abstract visualizer.
-- Status: **Baseline Needed** — refresh and data-boundary recovery before future-state work.
+- Status: **In Progress** — reassessing baseline applicability; earlier refresh instruction on hold. See baseline-conclusion-correction.md.
 - Date: 2026-10-07.
 - Requester: `/solution_designer`, AgentRun `solution_designer_8993f6a03d49417985e8805609b803ce`.
 - Product execution: `product_ui_ux_designer_f1b47b534b5e4da49ef50e43e23fbef3`.
@@ -50,10 +50,10 @@
 - Mock boundaries: eventual browser reference simulates native selection/cancel/failure and backend lifecycle; cannot prove actual OS picker, Electron bridge, filesystem or production save/launch.
 
 ## Outcome And Handoff
-- Outcome: **Baseline Needed (Refresh)**.
+- Outcome: Earlier **Baseline Needed (Refresh)** conclusion under correction; no evidence yet that current UI itself is stale. Captured-data boundary remains a separate unresolved issue.
 - Completed: intake, source/repository identity, preserved-boundary recording, isolated worktree, baseline acceptance audit.
 - Remaining decisions: placement/discovery, manual versus browse hierarchy, apply step, feedback/cancel/retry/focus; all remain open for user review after a credible baseline.
 - Next action: Bootstrapper returns an independently runnable source-current baseline with small hand-written synthetic state. Product then reviews/accepts and integrates the baseline before making the focused proposal.
 - Matching rule: Baseline Needed → `/product_team/ui_baseline_bootstrapper`; send fixed payload only, no requirements/ticket package.
 - Return on eventual user-reviewed package or blocker: assigning Solution Designer run above, with absolute `product-handoff.md` path; canonical requirements reconciliation remains theirs.
-- Dispatch receipt: pending send; retained in subsequent ticket receipt.
+- Original dispatch confirmed: ui_baseline_bootstrapper_9f22a91a249f48f7bf87803f910b026c. Hold/correction requested after user challenge; see baseline-conclusion-correction.md.

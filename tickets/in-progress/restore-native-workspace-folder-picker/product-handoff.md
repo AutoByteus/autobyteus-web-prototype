@@ -1,3 +1,5 @@
+> **Superseding correction (2026-10-07):** Earlier source-staleness inference withdrawn; refresh on hold pending evidence review. See `baseline-conclusion-correction.md`. The fixture-boundary issue is separate from UI currency.
+
 # Product handoff — restore-native-workspace-folder-picker
 
 **Interim result: Baseline Needed. Not Design Completed; no approval or implementation authorization.**
