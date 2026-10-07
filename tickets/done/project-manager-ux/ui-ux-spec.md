@@ -24,7 +24,7 @@
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (branch `personal`)
 - UI reference revision: ticket branch `design/project-manager-ux`, accepted base `a38bd6e`; final
   commit recorded in `product-ticket.md`
-- Ticket folder: `tickets/done/project-manager-ux/` (in progress: `tickets/in-progress/project-manager-ux/`)
+- Ticket folder: `tickets/done/project-manager-ux/`
 - Baseline report path: `/Users/normy/autobyteus_org/autobyteus-web-design/ui-baseline-report.md`
 
 ## Problem And Design Rationale

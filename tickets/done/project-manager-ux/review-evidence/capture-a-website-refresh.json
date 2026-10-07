@@ -30,14 +30,14 @@
    "wait": 600
   },
   {
-   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-001-projects-list-project-created-live-desktop-1440x900.png"
+   "shot": "tickets/done/project-manager-ux/visual-references/VIS-001-projects-list-project-created-live-desktop-1440x900.png"
   },
   {
    "text": "Website Refresh",
    "wait": 1500
   },
   {
-   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-002-board-tasks-arriving-live-desktop-1440x900.png"
+   "shot": "tickets/done/project-manager-ux/visual-references/VIS-002-board-tasks-arriving-live-desktop-1440x900.png"
   },
   {
    "sleep": 5000
@@ -100,14 +100,14 @@
    "wait": 2500
   },
   {
-   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-004-board-running-failed-stopped-desktop-1440x900.png"
+   "shot": "tickets/done/project-manager-ux/visual-references/VIS-004-board-running-failed-stopped-desktop-1440x900.png"
   },
   {
    "text": "Build the new homepage",
    "wait": 2500
   },
   {
-   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-007-task-assigned-couldnt-start-desktop-1440x900.png"
+   "shot": "tickets/done/project-manager-ux/visual-references/VIS-007-task-assigned-couldnt-start-desktop-1440x900.png"
   },
   {
    "text": "Back to tasks",
@@ -118,7 +118,7 @@
    "wait": 2500
   },
   {
-   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-008-task-done-stopped-desktop-1440x900.png"
+   "shot": "tickets/done/project-manager-ux/visual-references/VIS-008-task-done-stopped-desktop-1440x900.png"
   }
  ]
 }
