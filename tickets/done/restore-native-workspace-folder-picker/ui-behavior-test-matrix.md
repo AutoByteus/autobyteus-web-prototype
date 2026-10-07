@@ -1,3 +1,5 @@
+> **Historical review evidence:** UI approved in UCONF-001. Current authority: [ui-ux-spec.md](ui-ux-spec.md), [user-confirmation.md](user-confirmation.md) and [final-validation.md](final-validation.md). Earlier pending-approval wording below records that stage.
+
 # Folder-selection behavior evidence — round 1
 
 Package `restore-native-workspace-folder-picker`; R2 Draft / SR-004, **not approved**.

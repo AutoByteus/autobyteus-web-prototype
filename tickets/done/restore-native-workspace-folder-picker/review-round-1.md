@@ -1,3 +1,5 @@
+> **Historical review evidence:** UI approved in UCONF-001. Current authority: [ui-ux-spec.md](ui-ux-spec.md), [user-confirmation.md](user-confirmation.md) and [final-validation.md](final-validation.md). Earlier pending-approval wording below records that stage.
+
 # Folder selection — review round 1
 
 **Awaiting User Review — unapproved proposal, not an implementation-ready specification.**

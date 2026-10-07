@@ -1,0 +1,105 @@
+{
+  "package": "restore-native-workspace-folder-picker",
+  "approval": "UCONF-001",
+  "uiRevision": "a677e01558b2b9d48253950bc2b8db821358625a",
+  "locale": "en",
+  "sourcePin": "88fad73cbd20201642acdcfe75e69b1897ec135c",
+  "screenshots": [
+    {
+      "id": "VIS-001",
+      "file": "VIS-001-workspace-menu-desktop.jpg",
+      "width": 1512,
+      "height": 862,
+      "sha256": "2c0a3773c00f5c155c3502294568358d44c66b9c033261c170b739a858ce4b11",
+      "capturedAt": "2026-10-07T16:50:36.917827+00:00"
+    },
+    {
+      "id": "VIS-002",
+      "file": "VIS-002-selected-path-desktop.jpg",
+      "width": 1512,
+      "height": 862,
+      "sha256": "0a9d6c892fe85880db370bb04d7bc261911d89be8918e7b76bf4893876b94682",
+      "capturedAt": "2026-10-07T16:50:30.458044+00:00"
+    },
+    {
+      "id": "VIS-003",
+      "file": "VIS-003-applied-workspace-desktop.jpg",
+      "width": 1512,
+      "height": 862,
+      "sha256": "aa06340c4efc65032fb7680fd65664eff8a1ff3e559b3672f677991e9cdcb852",
+      "capturedAt": "2026-10-07T16:50:36.474520+00:00"
+    },
+    {
+      "id": "VIS-004",
+      "file": "VIS-004-invalid-path-desktop.jpg",
+      "width": 1512,
+      "height": 862,
+      "sha256": "4d7d6ad04bbab0e89233bdf36b6e2ded500efa6e2819a82d509d0d23296e4988",
+      "capturedAt": "2026-10-07T16:50:45.952882+00:00"
+    },
+    {
+      "id": "VIS-005",
+      "file": "VIS-005-team-folder-entry-desktop.jpg",
+      "width": 1512,
+      "height": 862,
+      "sha256": "aa951a931ed79a2eb25511e3a5d82efaee3a3b7bc274b064bda44cf5af23034e",
+      "capturedAt": "2026-10-07T16:51:05.059056+00:00"
+    },
+    {
+      "id": "VIS-006",
+      "file": "VIS-006-org-selected-path-desktop.jpg",
+      "width": 1512,
+      "height": 862,
+      "sha256": "0fb857bf3836881eb609c62ab1e8ab745738088bef2686198b160f48253701f7",
+      "capturedAt": "2026-10-07T16:52:02.400101+00:00"
+    },
+    {
+      "id": "VIS-007",
+      "file": "VIS-007-placed-team-folder-desktop.jpg",
+      "width": 1512,
+      "height": 862,
+      "sha256": "7db778de52f7d04b2bf2100a917456fd472739e52dce587ed2c35670c890bda9",
+      "capturedAt": "2026-10-07T16:52:11.414918+00:00"
+    },
+    {
+      "id": "VIS-008",
+      "file": "VIS-008-saved-root-locked-desktop.jpg",
+      "width": 1512,
+      "height": 862,
+      "sha256": "36f10d9bb21d87aa687282e8b959c42d88f58a958b3a63876f97ff3926f9f794",
+      "capturedAt": "2026-10-07T16:52:29.886759+00:00"
+    },
+    {
+      "id": "VIS-009",
+      "file": "VIS-009-picker-error-desktop.jpg",
+      "width": 1512,
+      "height": 862,
+      "sha256": "51486ede8eee0de3174ef0a28a18467ba7bb6ce0c81436da65a5570b9be2cc40",
+      "capturedAt": "2026-10-07T16:59:11.860688+00:00"
+    },
+    {
+      "id": "VIS-010",
+      "file": "VIS-010-remote-manual-path-desktop.jpg",
+      "width": 1512,
+      "height": 862,
+      "sha256": "798067f857c1edc6cccb8d8f865a1da78226ce6830d063e8e12aebdb2f9f3804",
+      "capturedAt": "2026-10-07T16:59:31.241186+00:00"
+    },
+    {
+      "id": "VIS-011",
+      "file": "VIS-011-mobile-manual-path-390x844.jpg",
+      "width": 390,
+      "height": 844,
+      "sha256": "81859f10e63309d1064a886122251a038273da2422fa5ae61e6740a890ed2893",
+      "capturedAt": "2026-10-07T16:59:43.275347+00:00"
+    },
+    {
+      "id": "VIS-012",
+      "file": "VIS-012-local-narrow-entry-390x844.jpg",
+      "width": 390,
+      "height": 844,
+      "sha256": "d1c10dbc11e5793ddfca28490614b24c49f359d6d8961f08dcae26c4f570adc5",
+      "capturedAt": "2026-10-07T16:59:54.068606+00:00"
+    }
+  ]
+}

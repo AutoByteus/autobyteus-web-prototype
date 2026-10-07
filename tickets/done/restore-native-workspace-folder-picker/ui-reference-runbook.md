@@ -1,3 +1,5 @@
+> **Completed-stage run location:** use `/Users/normy/autobyteus_org/autobyteus-web-design` and the normal `/chat` route. Historical review server/worktree information below is not a promise of an always-live URL. See [integration-record.md](integration-record.md) for final process/cleanup state.
+
 # Folder-selection UI reference — runbook
 
 Package `restore-native-workspace-folder-picker`; review round 1; UI revision `a677e01558b2b9d48253950bc2b8db821358625a`.
@@ -14,7 +16,7 @@ Provenance, requirements links and approval state: [product-ticket.md](product-t
 
 ## Start/restart
 ```bash
-cd /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker
+cd /Users/normy/autobyteus_org/autobyteus-web-design
 corepack pnpm install --ignore-workspace --frozen-lockfile
 corepack pnpm dev --port 4581
 ```
