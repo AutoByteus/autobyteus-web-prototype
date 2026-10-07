@@ -8,7 +8,7 @@
 - Title: Reconnect a run to an agent — UI/UX redesign.
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline: conversation,
   composer, run settings, Workspaces tree).
-- Status: `In Progress` (finalizing after Solution Designer logic review).
+- Status: `Completed` (user confirmation 2026-10-07: "i am fine with the UI"; Solution Designer logic review applied).
 - Requester: Solution Designer (`/solution_designer`, run
   `solution_designer_3082838c83f24535972a43836b65e1c7`) for the user, 2026-10-07.
   - User: "I want to work on the UI first. Please delegate task to Product Team to work on UI" /
@@ -88,3 +88,21 @@
   count shown when > 1 — example adds a delegated copy of the collaborator); L10 out of scope; grey
   "reconnected to" line is live-only. L2, L4, L6–L9 confirmed. Round 6 applied and validated (no
   visual change to the accepted look besides "· 2 runs").
+- 2026-10-07: after confirmation, missing-agent text wraps instead of truncating in narrow windows
+  (no desktop change). Final validation through `/workspace` (desktop 1440×900 and 390×844):
+  standalone, team member (Settings, Antigravity note), collaborator + delegated copy (· 2 runs),
+  four rejections, live-only grey line, regression on the Research Assistant run. Scoped vue-tsc
+  clean; `pnpm lint` and `pnpm test` (14/14) pass. Final references VIS-001–VIS-018 and
+  `ui-ux-spec.md`. `Completed`.
+
+## Canonical Result
+
+- `ui-ux-spec.md` and `visual-references/VIS-001`–`VIS-018` (this folder).
+- Supporting: `review-round-1.md`, `logic-review-request.md`, `review-evidence/`.
+
+## Finalization
+
+- Integration: fast-forward push of `design/agent-definition-reconnect-ui` to `origin/personal`, then a
+  fast-forward of the canonical checkout. Revisions are in the handoff.
+- Cleanup: stop the review server on 3291 and remove the ticket worktree after integration; the
+  branch is kept under repository policy.

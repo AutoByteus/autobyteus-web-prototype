@@ -31,7 +31,7 @@
             :data-test="`existing-run-agent-missing-${agent.agentRunId}`"
           >
             <Icon icon="heroicons:exclamation-triangle-20-solid" class="h-4 w-4 flex-shrink-0 text-amber-500" aria-hidden="true" />
-            <span class="min-w-0 flex-1 truncate" :title="$t('reconnect.tree.missing', { id: agent.missingDefinitionId })">
+            <span class="min-w-0 flex-1 break-words" :title="$t('reconnect.tree.missing', { id: agent.missingDefinitionId })">
               {{ agent.address
                 ? $t('reconnect.settings.missingMember', { name: agent.name, id: agent.missingDefinitionId })
                 : $t('reconnect.settings.missingRun', { id: agent.missingDefinitionId }) }}

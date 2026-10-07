@@ -1,7 +1,7 @@
 import type { TranslationCatalog } from '../../runtime/types';
 
 // agent-definition-reconnect-ui: Reconnect a run whose agent folder was renamed or removed.
-// The English strings are normative UI copy (tickets/in-progress/agent-definition-reconnect-ui/ui-ux-spec.md).
+// The English strings are normative UI copy (tickets/done/agent-definition-reconnect-ui/ui-ux-spec.md).
 const reconnectMessages = {
   'reconnect.action': 'Reconnect',
   'reconnect.actionAria': 'Reconnect {{name}} to an agent',

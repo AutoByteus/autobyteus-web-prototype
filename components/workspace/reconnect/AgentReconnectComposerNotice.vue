@@ -38,7 +38,7 @@
       data-test="agent-missing-notice"
     >
       <Icon icon="heroicons:exclamation-triangle-20-solid" class="h-4 w-4 flex-shrink-0 text-amber-500" aria-hidden="true" />
-      <p class="min-w-0 flex-1 truncate" :title="$t('reconnect.notice.title', { id: missing.missingDefinitionId })">
+      <p class="min-w-0 flex-1 break-words" :title="$t('reconnect.notice.title', { id: missing.missingDefinitionId })">
         {{ $t('reconnect.notice.title', { id: missing.missingDefinitionId }) }}
       </p>
       <button

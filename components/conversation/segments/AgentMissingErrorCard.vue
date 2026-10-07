@@ -8,7 +8,7 @@
     data-test="agent-missing-error-card"
   >
     <Icon icon="heroicons:exclamation-circle-20-solid" class="h-4 w-4 flex-shrink-0 text-red-500" aria-hidden="true" />
-    <p class="min-w-0 flex-1 truncate" :title="$t('reconnect.card.title', { id: definitionId })">{{ $t('reconnect.card.title', { id: definitionId }) }}</p>
+    <p class="min-w-0 flex-1 break-words" :title="$t('reconnect.card.title', { id: definitionId })">{{ $t('reconnect.card.title', { id: definitionId }) }}</p>
     <button
       v-if="missing"
       type="button"
