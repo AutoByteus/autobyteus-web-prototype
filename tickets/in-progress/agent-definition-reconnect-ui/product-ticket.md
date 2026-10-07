@@ -8,7 +8,7 @@
 - Title: Reconnect a run to an agent — UI/UX redesign.
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline: conversation,
   composer, run settings, Workspaces tree).
-- Status: `Awaiting User Review` (round 5).
+- Status: `Awaiting User Review` (round 5 visuals accepted by the user; logic review requested from the Solution Designer).
 - Requester: Solution Designer (`/solution_designer`, run
   `solution_designer_3082838c83f24535972a43836b65e1c7`) for the user, 2026-10-07.
   - User: "I want to work on the UI first. Please delegate task to Product Team to work on UI" /
@@ -78,3 +78,6 @@
   on emerald-50; Reconnect on the right). `Awaiting User Review`.
 - 2026-10-07: feedback "maybe only a little bit smaller font". Round 5: all Reconnect bars and the
   error card use 13px (`text-[0.8125rem]`, the product menus' size). `Awaiting User Review`.
+- 2026-10-07: user: "i am fine with the UI" / "But i am not sure whether solution designer thinks the
+  logic is correct or not". Logic review sent to the Solution Designer (`logic-review-request.md`,
+  L1–L10). Finalization waits for that answer.
