@@ -1,0 +1,17 @@
+/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/node_modules/.pnpm/vue-tsc@3.3.11_typescript@5.9.3/node_modules/vue-tsc/index.js:68
+                throw err;
+                ^
+
+RangeError: Maximum call stack size exceeded
+    at getJSDocParameterTags (/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/tsc.js:11619:31)
+    at isJSDocOptionalParameter (/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/tsc.js:19250:67)
+    at isOptionalDeclaration (/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/tsc.js:19258:45)
+    at getTypeOfParameter (/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/tsc.js:77991:56)
+    at tryGetTypeAtPosition (/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/tsc.js:78112:14)
+    at getTypeAtPosition (/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/tsc.js:78107:12)
+    at getSignatureApplicabilityError (/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/tsc.js:76101:27)
+    at chooseOverload (/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/tsc.js:76653:13)
+    at resolveCall (/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/tsc.js:76500:16)
+    at resolveCallExpression (/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/node_modules/.pnpm/typescript@5.9.3/node_modules/typescript/lib/tsc.js:76928:12)
+
+Node.js v22.23.1

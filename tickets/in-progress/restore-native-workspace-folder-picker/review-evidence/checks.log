@@ -1,0 +1,49 @@
+
+> autobyteus-web-design@0.1.0 typecheck /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker
+> nuxt prepare && vue-tsc --noEmit -p tsconfig.prototype.json
+
+
+ WARN  Duplicated imports "getters", the one from "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/stores/agentTeamContextsStore.ts" has been ignored and "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/stores/serverStore.ts" is used
+
+
+ WARN  Duplicated imports "getters", the one from "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/stores/agentSelectionStore.ts" has been ignored and "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/stores/serverStore.ts" is used
+
+│
+◆  Types generated in .nuxt.
+
+> autobyteus-web-design@0.1.0 test /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker
+> vitest run
+
+
+ RUN  v3.2.7 /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker
+
+ ✓ prototype/tests/host-scenario.test.ts (3 tests) 5ms
+ ✓ prototype/tests/token-statistics-refresh-fixture.test.ts (4 tests) 8ms
+ ✓ prototype/tests/fixture-contract.test.ts (7 tests) 16ms
+
+ Test Files  3 passed (3)
+      Tests  14 passed (14)
+   Start at  18:15:46
+   Duration  491ms (transform 174ms, setup 0ms, collect 305ms, tests 29ms, environment 0ms, prepare 194ms)
+
+
+> autobyteus-web-design@0.1.0 lint /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker
+> eslint prototype/scripts prototype/shared prototype/source-observation plugins/00.prototype-state.client.ts plugins/10.prototype-host-bootstrap.client.ts prototype/tests
+
+
+> autobyteus-web-design@0.1.0 validate:boundaries /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker
+> node prototype/scripts/validate-boundaries.mjs
+
+PASS No Electron/native runtime dependency
+PASS No copied production electron root
+PASS No copied production src-electron root
+PASS No copied production server root
+PASS No copied production backend root
+PASS No copied production docker root
+PASS No copied production packaging root
+PASS Browser external request boundary is explicit
+PASS WebSocket boundary is local and scripted
+PASS Scenario state is resettable
+PASS Source evidence contains no page-capture errors
+PASS Source evidence uses controlled loopback mock
+PASS Prototype has independently runnable Nuxt entry points
