@@ -6,21 +6,21 @@
    "wait": 3500
   },
   {
-   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-011-projects-header-temp-tasks-desktop-1440x900.png"
+   "shot": "tickets/done/project-manager-ux/visual-references/VIS-011-projects-header-temp-tasks-desktop-1440x900.png"
   },
   {
    "click": "[data-testid=adhoc-tasks-link]",
    "wait": 3000
   },
   {
-   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-012-temp-tasks-board-open-done-desktop-1440x900.png"
+   "shot": "tickets/done/project-manager-ux/visual-references/VIS-012-temp-tasks-board-open-done-desktop-1440x900.png"
   },
   {
    "click": "[data-testid=adhoc-task-lane-show-all]",
    "wait": 800
   },
   {
-   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-013-temp-tasks-done-show-all-desktop-1440x900.png",
+   "shot": "tickets/done/project-manager-ux/visual-references/VIS-013-temp-tasks-done-show-all-desktop-1440x900.png",
    "full": true
   },
   {
@@ -28,7 +28,7 @@
    "wait": 2500
   },
   {
-   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-014-temp-task-open-running-desktop-1440x900.png"
+   "shot": "tickets/done/project-manager-ux/visual-references/VIS-014-temp-task-open-running-desktop-1440x900.png"
   },
   {
    "text": "Back to tasks",
@@ -39,7 +39,7 @@
    "wait": 2500
   },
   {
-   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-015-temp-task-couldnt-start-desktop-1440x900.png"
+   "shot": "tickets/done/project-manager-ux/visual-references/VIS-015-temp-task-couldnt-start-desktop-1440x900.png"
   },
   {
    "text": "Back to tasks",
@@ -50,7 +50,7 @@
    "wait": 2500
   },
   {
-   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-016-temp-task-done-stopped-desktop-1440x900.png"
+   "shot": "tickets/done/project-manager-ux/visual-references/VIS-016-temp-task-done-stopped-desktop-1440x900.png"
   },
   {
    "goto": "/workspace",
@@ -89,7 +89,7 @@
    "wait": 1400
   },
   {
-   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-017-temp-task-reopened-live-desktop-1440x900.png"
+   "shot": "tickets/done/project-manager-ux/visual-references/VIS-017-temp-task-reopened-live-desktop-1440x900.png"
   }
  ]
 }
