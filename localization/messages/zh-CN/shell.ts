@@ -8,8 +8,6 @@ const shellMessages = {
   'shell.components.AppLeftPanel.draft_marker': '草稿',
   'shell.components.AppLeftPanel.discard_draft': '丢弃草稿',
   'shell.components.AppLeftPanel.draft_empty': '空草稿',
-  'shell.components.AppLeftPanel.draft_count_one': '1 份草稿',
-  'shell.components.AppLeftPanel.draft_count': '{{count}} 份草稿',
   'shell.navigation.agents': '智能体',
   'shell.navigation.agentTeams': '智能体团队',
   'shell.navigation.agentOrgs': '智能体组织',

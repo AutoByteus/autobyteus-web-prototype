@@ -8,8 +8,6 @@ const shellMessages = {
   'shell.components.AppLeftPanel.draft_marker': 'Draft',
   'shell.components.AppLeftPanel.discard_draft': 'Discard draft',
   'shell.components.AppLeftPanel.draft_empty': 'Empty draft',
-  'shell.components.AppLeftPanel.draft_count_one': '1 draft',
-  'shell.components.AppLeftPanel.draft_count': '{{count}} drafts',
   'shell.navigation.agents': 'Agents',
   'shell.navigation.agentTeams': 'Agent Teams',
   'shell.navigation.agentOrgs': 'Agent Orgs',
