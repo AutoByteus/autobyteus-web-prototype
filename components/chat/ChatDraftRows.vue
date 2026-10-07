@@ -17,43 +17,28 @@
         class="chat-draft-row group relative"
         :data-draft-id="row.id"
       >
+        <!-- Round 2 (user): one line, the preview only. The position under Chat says "draft";
+             the target stays in the tooltip and the accessible name. -->
         <button
           type="button"
           data-test="chat-draft-row"
-          class="flex w-full min-w-0 flex-col rounded-md py-1.5 pl-9 pr-9 text-left transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500"
+          class="flex w-full min-w-0 items-center gap-1 rounded-md py-1.5 pl-9 pr-9 text-left text-[13px] leading-5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500"
           :class="row.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-100'"
           :aria-current="row.selected ? 'page' : undefined"
-          :title="row.title"
+          :aria-label="row.accessibleName"
+          :title="row.tooltip"
           @click="emit('open', row.id)"
         >
-          <span class="flex w-full min-w-0 items-center gap-1 text-[13px] leading-5" data-test="chat-draft-preview">
-            <template v-if="row.preview">
-              <span class="truncate">{{ row.preview }}</span>
-            </template>
-            <template v-else-if="!row.fileCount">
-              <span class="truncate italic text-gray-400">{{ $t('shell.components.AppLeftPanel.draft_empty') }}</span>
-            </template>
-            <template v-else>
-              <Icon icon="heroicons:paper-clip" class="h-3.5 w-3.5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-              <span class="truncate text-gray-500">{{ filesLabel(row.fileCount) }}</span>
-            </template>
-          </span>
-          <span class="flex w-full min-w-0 items-center gap-1 text-xs leading-4 text-gray-500" data-test="chat-draft-meta">
-            <span class="flex-shrink-0 font-medium text-amber-700" data-test="chat-draft-marker">{{ $t('shell.components.AppLeftPanel.draft_marker') }}</span>
-            <span class="flex-shrink-0 text-gray-300" aria-hidden="true">·</span>
-            <Icon
-              :icon="row.targetKind === 'team' ? 'heroicons:user-group' : 'heroicons:user'"
-              class="h-3 w-3 flex-shrink-0 text-gray-400"
-              aria-hidden="true"
-            />
-            <span class="min-w-0 truncate" data-test="chat-draft-target">{{ row.targetName }}</span>
-            <template v-if="row.preview && row.fileCount">
-              <span class="flex-shrink-0 text-gray-300" aria-hidden="true">·</span>
-              <span class="inline-flex flex-shrink-0 items-center gap-0.5" data-test="chat-draft-files" :aria-label="filesLabel(row.fileCount)">
-                <Icon icon="heroicons:paper-clip" class="h-3 w-3 text-gray-400" aria-hidden="true" />{{ row.fileCount }}
-              </span>
-            </template>
-          </span>
+          <template v-if="row.preview">
+            <span class="truncate" data-test="chat-draft-preview">{{ row.preview }}</span>
+          </template>
+          <template v-else-if="!row.fileCount">
+            <span class="truncate italic text-gray-400" data-test="chat-draft-preview">{{ $t('shell.components.AppLeftPanel.draft_empty') }}</span>
+          </template>
+          <template v-else>
+            <Icon icon="heroicons:paper-clip" class="h-3.5 w-3.5 flex-shrink-0 text-gray-400" aria-hidden="true" />
+            <span class="truncate text-gray-500" data-test="chat-draft-preview">{{ filesLabel(row.fileCount) }}</span>
+          </template>
         </button>
 
         <button
@@ -135,10 +120,10 @@ const rows = computed(() => {
       id: entry.id,
       preview,
       fileCount,
-      targetKind: entry.target.kind,
-      targetName: targetName(entry),
       selected: props.onNewChat && entry.id === chatDraftStore.activeDraftId,
       title: preview || (fileCount ? filesLabel(fileCount) : t('shell.components.AppLeftPanel.draft_empty')),
+      tooltip: `${preview || (fileCount ? filesLabel(fileCount) : t('shell.components.AppLeftPanel.draft_empty'))}\n${targetName(entry)}`,
+      accessibleName: `${t('shell.components.AppLeftPanel.draft_marker')}: ${preview || (fileCount ? filesLabel(fileCount) : t('shell.components.AppLeftPanel.draft_empty'))} — ${targetName(entry)}`,
     }
   })
 })
@@ -168,7 +153,7 @@ const discard = async (id: string) => {
 .chat-draft-row-leave-active {
   transition: opacity 150ms ease-out, max-height 150ms ease-out;
   overflow: hidden;
-  max-height: 3rem;
+  max-height: 2.25rem;
 }
 
 .chat-draft-row-enter-from,

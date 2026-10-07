@@ -6,7 +6,7 @@
 - Stable package: `chat-new-draft-kept-on-navigation`, solution revision `SR-002`.
 - Title: Unsent New chats are kept as Draft rows directly under the Chat row.
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline: left panel and New chat).
-- Status: `Awaiting User Review` (round 1).
+- Status: `Awaiting User Review` (round 2).
 - Requester: Solution Designer (`/solution_designer`) for the user, 2026-10-07.
   - User: "could you delegate a task to Product Team to work on the UI first?"
 - Request package:
@@ -16,7 +16,23 @@
 - In-scope IDs: BEH-001, BEH-002, BEH-004, BEH-006, BEH-007; REQ-001–008; AC-001–007;
   SCN-001–004; open DEC-002, DEC-004, DEC-005.
 
-## Proposed Design (round 1, not approved)
+## Round 2 Change (user feedback, 2026-10-07)
+
+- User: "I think here we can make it cleaner. We don't need to show the word, draft, and we don't need
+  to show the name like Daily Assistant or other. Just the one line would be enough ... because people
+  will click it anyway."
+- D-02 is replaced: a Draft row is **one line**, the preview only (13px/20px, `gray-700`; selected
+  `gray-900`), row height 32px. No "Draft" word, no target icon or name, no file count beside text.
+  - No text → the chosen `/` skills; attachments only → paperclip + "1 file" / "N files" (`gray-500`);
+    cleared while open → "Empty draft" (italic `gray-400`).
+  - The tooltip shows the preview and, on a second line, the target name. The accessible name is
+    "Draft: <preview> — <target>", so screen readers still hear both.
+- Requirement impact (for Solution Designer): REQ-002 currently requires each row to show a "Draft"
+  marker and the target. The user's feedback removes both from the visible row; REQ-002 should read
+  "a one-line preview of the text (or the chosen skills / attachment count when there is no text)".
+- The collapsed-strip badge (D-12) keeps its amber colour; nothing else changed.
+
+## Proposed Design (round 1, not approved; D-02 superseded by round 2)
 
 - D-01 Placement: Draft rows sit directly under the Chat row, inside the primary nav section, before
   Agents. A 1px `gray-200` rail at the Chat icon's centre (x = 20px) groups them under Chat.
@@ -135,3 +151,6 @@
 - 2026-10-07: opened from the Solution Designer request (SR-002). Worktree created from
   `origin/personal@eb60aba`. Baseline applicable. `In Progress`.
 - 2026-10-07: round 1 built and validated; review URL sent to the user. `Awaiting User Review`.
+- 2026-10-07: user feedback: one-line rows, no "Draft" word, no target name. `In Progress`.
+- 2026-10-07: round 2 built and validated (four drafts, Team/Agent/attachment-only/long, re-entry from a
+  run, selected state). `Awaiting User Review`.
