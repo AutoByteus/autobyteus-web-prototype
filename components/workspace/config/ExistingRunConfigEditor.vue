@@ -232,6 +232,7 @@ const existingSettings = computed(() => {
         ...common,
         kind: 'agent' as const,
         name: agentDefinition.value?.name ?? config.agentDefinitionName,
+        rootRunId: current.runId,
         baseValues: {
           workspace: toChatWorkspace(agentWorkspaceSelection.value.existingWorkspaceId, current.metadata.workspaceRootPath),
           runtimeKind: config.runtimeKind,
@@ -253,6 +254,7 @@ const existingSettings = computed(() => {
         baseValues: valuesFromResolved(model.root.effectiveConfig),
         rootAddress: model.root.address,
         members: model.members,
+        rootRunId: current.kind === 'team' ? current.teamRunId : null,
       },
     }
   }

@@ -43,6 +43,9 @@
               <span class="truncate font-medium text-amber-700">{{ $t('chat.model.chooseModel') }}</span>
             </template>
             <template v-else>
+              <!-- agent-definition-reconnect-ui: like "Customized ·", a short amber prefix. -->
+              <span v-if="agentMissing" class="flex-shrink-0 font-medium text-amber-700" data-test="run-member-agent-missing">{{ $t('reconnect.member.missing') }}</span>
+              <span v-if="agentMissing" class="flex-shrink-0 text-gray-300" aria-hidden="true">·</span>
               <span v-if="isCustomized" class="flex-shrink-0 font-medium text-blue-700">{{ $t('runSettings.members.customizedLabel') }}</span>
               <span v-if="isCustomized" class="flex-shrink-0 text-gray-300" aria-hidden="true">·</span>
               <span v-else-if="childCustomizedCount" class="flex-shrink-0 font-medium text-blue-700">{{ $t('runSettings.members.customizedCount', { count: childCustomizedCount }) }}</span>
@@ -115,11 +118,11 @@
 
 <script setup lang="ts">
 import { buildModelOptions, setModelOptionLabels } from '~/components/chat/chatModelOptions'
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 import { Icon } from '@iconify/vue'
 import { initialsFor } from '~/components/chat/chatComposerMenus'
 import RunSettingsCard from './RunSettingsCard.vue'
-import { countCustomized, hasCustomization, isApprovalLockedForRuntime, type RunMemberNode, type RunSettingField, type RunSettingFlags } from './runSettings'
+import { MISSING_MEMBER_ADDRESSES, countCustomized, hasCustomization, isApprovalLockedForRuntime, type RunMemberNode, type RunSettingField, type RunSettingFlags } from './runSettings'
 import { useRunSettingsPresentation } from './useRunSettingsPresentation'
 
 defineOptions({ name: 'RunMemberRow' })
@@ -139,6 +142,8 @@ const emit = defineEmits<{
 }>()
 
 const presentation = useRunSettingsPresentation()
+const missingAddresses = inject(MISSING_MEMBER_ADDRESSES, null)
+const agentMissing = computed(() => Boolean(missingAddresses?.value.has(props.node.key)))
 const expanded = computed(() => props.expandedKeys.has(props.node.key))
 const isCustomized = computed(() => hasCustomization(props.node.customized))
 const childCustomizedCount = computed(() => countCustomized(props.node.children ?? []))

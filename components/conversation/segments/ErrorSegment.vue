@@ -1,5 +1,7 @@
 <template>
-  <div class="error-segment my-4 p-4 border-l-4 rounded-r-lg bg-red-50 border-red-500 text-red-800 dark:bg-gray-800 dark:border-red-600 dark:text-red-300">
+  <!-- agent-definition-reconnect-ui: a missing agent has its own card with Reconnect. -->
+  <AgentMissingErrorCard v-if="segment.code === 'AGENT_DEFINITION_MISSING'" :segment="segment" />
+  <div v-else class="error-segment my-4 p-4 border-l-4 rounded-r-lg bg-red-50 border-red-500 text-red-800 dark:bg-gray-800 dark:border-red-600 dark:text-red-300">
     <div class="flex items-start">
       <div class="flex-shrink-0">
         <svg class="h-6 w-6 text-red-500 dark:text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
@@ -20,6 +22,7 @@
 
 <script setup lang="ts">
 import type { ErrorSegment } from '~/types/segments';
+import AgentMissingErrorCard from './AgentMissingErrorCard.vue';
 
 defineProps<{
   segment: ErrorSegment;

@@ -28,6 +28,7 @@ import toolsLocalMessages from './tools';
 import generatedWorkspaceMessages from './workspace.generated';
 import workspaceMessages from './workspace';
 import runSettingsMessages from './runSettings';
+import reconnectMessages from './reconnect';
 import type { TranslationCatalog } from '../../runtime/types';
 
 const enMessages: TranslationCatalog = {
@@ -61,6 +62,7 @@ const enMessages: TranslationCatalog = {
   ...generatedWorkspaceMessages,
   ...workspaceMessages,
   ...runSettingsMessages,
+  ...reconnectMessages,
 };
 
 export default enMessages;

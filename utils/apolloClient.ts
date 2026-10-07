@@ -16,6 +16,7 @@ import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/lau
 import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/prototype/run-settings/launchedOrgFixture'
 import { syncProjectTasks, withTaskManagerRun } from '~/prototype/task-run-cleanup/taskManagerRunFixture'
 import { registerProjectDataSource, syncRefreshProject, withProjectManager } from '~/prototype/project-manager/projectManagerFixture'
+import { withAgentReconnect } from '~/prototype/agent-reconnect/agentReconnectFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
 
@@ -79,6 +80,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   data = data ? withTaskManagerRun(name, request.variables || {}, structuredClone(data), scenario) : data
   // project-manager-ux: Website Refresh, its Manager conversation, and the workers of every Task.
   data = data ? withProjectManager(name, request.variables || {}, data, scenario) : data
+  // agent-definition-reconnect-ui: runs whose agent folder was renamed, and the Video Team run.
+  data = data ? withAgentReconnect(name, request.variables || {}, data, scenario) : data
   return { data: data ? structuredClone(data) : {} }
 }
 

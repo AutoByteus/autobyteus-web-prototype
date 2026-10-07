@@ -19,6 +19,50 @@
           </button>
         </RunSubjectHeader>
 
+        <!-- agent-definition-reconnect-ui: one line per agent of this run that no longer exists, in the
+             same note style as "needs a refresh"; after a reconnect, the outcome for that agent. -->
+        <div v-if="missingAgents.length || reconnectedNotes.length" class="-mt-2 mb-4 space-y-1" data-test="existing-run-reconnect-notes">
+          <p
+            v-for="agent in missingAgents"
+            :key="agent.agentRunId"
+            class="flex items-center gap-1.5 text-xs text-amber-700"
+            role="alert"
+            :data-test="`existing-run-agent-missing-${agent.agentRunId}`"
+          >
+            <Icon icon="heroicons:exclamation-triangle" class="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
+            <span class="min-w-0">
+              {{ agent.address
+                ? $t('reconnect.settings.missingMember', { name: agent.name, id: agent.missingDefinitionId })
+                : $t('reconnect.settings.missingRun', { id: agent.missingDefinitionId }) }}
+            </span>
+            <button
+              type="button"
+              class="flex-shrink-0 rounded px-1 font-medium text-blue-600 hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+              :aria-label="$t('reconnect.actionAria', { name: agent.name })"
+              :data-test="`existing-run-reconnect-${agent.agentRunId}`"
+              @click="reconnectTarget = agent"
+            >
+              {{ $t('reconnect.action') }}
+            </button>
+          </p>
+          <p
+            v-for="note in reconnectedNotes"
+            :key="note.agentRunId"
+            class="flex items-start gap-1.5 text-xs text-emerald-700"
+            role="status"
+            :data-test="`existing-run-reconnected-${note.agentRunId}`"
+          >
+            <Icon icon="heroicons:check-circle" class="mt-px h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
+            <span class="min-w-0">
+              {{ note.address
+                ? $t('reconnect.settings.reconnectedMember', { name: note.name, agent: note.agentName })
+                : $t('reconnect.settings.reconnectedRun', { agent: note.agentName }) }}
+              <span v-if="note.instructionsFromNewSession" class="text-gray-500">{{ $t('reconnect.settings.instructions', { runtime: note.runtime }) }}</span>
+            </span>
+          </p>
+        </div>
+        <ReconnectAgentDialog :open="reconnectTarget !== null" :missing="reconnectTarget" @close="onReconnectClosed" />
+
         <!-- Only what the settings themselves cannot show: a needed refresh, a run whose settings
              cannot change, or a failed stop. -->
         <p
@@ -99,7 +143,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeUnmount, provide, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import type { ExistingTeamFormMemberNode } from '~/types/agent/ExistingTeamRunFormModel'
 import { useLocalization } from '~/composables/useLocalization'
@@ -109,6 +153,10 @@ import RunMembersSection from './RunMembersSection.vue'
 import { buildExistingMemberNodes } from './memberNodes'
 import type { RunModelChoice, RunSettingField, RunSettingFlags, RunSettingsValues } from './runSettings'
 import { useRunSettingsPresentation } from './useRunSettingsPresentation'
+import ReconnectAgentDialog from '~/components/workspace/reconnect/ReconnectAgentDialog.vue'
+import { useAgentReconnect, type MissingAgent } from '~/composables/agentReconnect/useAgentReconnect'
+import { subjectFor } from '~/prototype/agent-reconnect/agentReconnectFixture'
+import { MISSING_MEMBER_ADDRESSES } from './runSettings'
 
 /**
  * Saved-run settings (SCN-004). Runtime, workspace and tool approval are fixed for the run and
@@ -128,7 +176,9 @@ const props = withDefaults(defineProps<{
   /** A stop request for this run is in flight. */
   stopping?: boolean
   stopError?: string | null
-}>(), { refreshRequired: false, modelUnavailable: false, rootAddress: '/', members: () => [], stopping: false, stopError: null })
+  /** agent-definition-reconnect-ui: the standalone run or team run these settings belong to. */
+  rootRunId?: string | null
+}>(), { refreshRequired: false, modelUnavailable: false, rootAddress: '/', members: () => [], stopping: false, stopError: null, rootRunId: null })
 const emit = defineEmits<{ (event: 'refresh'): void; (event: 'stop'): void }>()
 
 const { t } = useLocalization()
@@ -141,6 +191,37 @@ const stopLabel = computed(() => {
     : t('workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.terminate_run')
 })
 const presentation = useRunSettingsPresentation()
+
+// agent-definition-reconnect-ui: agents of this run that no longer exist, and reconnect outcomes.
+const reconnect = useAgentReconnect()
+const missingAgents = computed(() => reconnect.missingInRoot(props.rootRunId))
+const reconnectTarget = ref<MissingAgent | null>(null)
+const reconnectedIds = ref<string[]>([])
+const reconnectedNotes = computed(() => reconnectedIds.value
+  .map((agentRunId) => {
+    const notice = reconnect.noticeFor(agentRunId)
+    const to = reconnect.reconnectedAgent(agentRunId)
+    const subject = subjectFor(agentRunId)
+    if (!to || !subject) return null
+    return {
+      agentRunId,
+      address: subject.address,
+      name: subject.memberKind === 'collaborator' ? subject.address!.slice(1).replace(/_/g, ' ') : subject.address?.slice(1) ?? '',
+      agentName: to.name,
+      instructionsFromNewSession: notice?.instructionsFromNewSession ?? false,
+      runtime: notice?.runtime ?? '',
+    }
+  })
+  .filter((note): note is NonNullable<typeof note> => note !== null))
+const onReconnectClosed = () => {
+  const target = reconnectTarget.value
+  reconnectTarget.value = null
+  if (target && reconnect.reconnectedAgent(target.agentRunId) && !reconnectedIds.value.includes(target.agentRunId)) {
+    reconnectedIds.value = [...reconnectedIds.value, target.agentRunId]
+  }
+}
+/** Member rows of agents that no longer exist say so (RunMemberRow). */
+provide(MISSING_MEMBER_ADDRESSES, computed(() => new Set(missingAgents.value.map((agent) => agent.address).filter(Boolean) as string[])))
 
 const saved = ref<Record<string, Partial<RunSettingsValues>>>({})
 const edits = ref<Record<string, Partial<RunSettingsValues>>>({})

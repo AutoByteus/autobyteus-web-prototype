@@ -87,3 +87,6 @@ export const customizedFromOverride = (override: Readonly<{
   approval: Boolean(override && override.autoExecuteTools !== undefined),
   workspace: Boolean(override && override.workspace !== undefined),
 })
+
+/** agent-definition-reconnect-ui: addresses of members whose agent no longer exists (provided by saved-run settings). */
+export const MISSING_MEMBER_ADDRESSES: import('vue').InjectionKey<import('vue').ComputedRef<ReadonlySet<string>>> = Symbol('missingMemberAddresses')

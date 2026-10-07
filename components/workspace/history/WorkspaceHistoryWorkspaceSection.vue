@@ -88,9 +88,20 @@
             </span>
             <span class="truncate font-medium">{{ agentNode.agentName }}</span>
             <span class="ml-1 text-xs text-gray-400">({{ agentNode.runs.length }})</span>
+            <!-- agent-definition-reconnect-ui: the agent of these runs no longer exists. -->
+            <Icon
+              v-if="reconnect.isDefinitionMissing(agentNode.agentDefinitionId)"
+              icon="heroicons:exclamation-triangle-20-solid"
+              class="ml-1.5 h-3.5 w-3.5 flex-shrink-0 text-amber-500"
+              role="img"
+              :aria-label="$t('reconnect.tree.missing', { id: agentNode.agentDefinitionId })"
+              data-test="workspace-agent-missing"
+            />
           </button>
 
+          <!-- agent-definition-reconnect-ui: no new run with an agent that no longer exists. -->
           <button
+            v-if="!reconnect.isDefinitionMissing(agentNode.agentDefinitionId)"
             type="button"
             class="ml-2 inline-flex h-5 w-5 items-center justify-center rounded text-gray-400 transition-colors hover:bg-indigo-50 hover:text-indigo-600"
             :title="$t('workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.new_run_with_this_agent')"
@@ -356,6 +367,7 @@ import type {
 import type { WorkspaceHistoryWorkspaceNode } from '~/stores/runHistoryTypes';
 import { NO_WORKSPACE_HISTORY_ROOT } from '~/utils/runTreeProjection';
 import { useLocalization } from '~/composables/useLocalization';
+import { useAgentReconnect } from '~/composables/agentReconnect/useAgentReconnect';
 
 const props = defineProps<{
   workspaceNode: WorkspaceHistoryWorkspaceNode;
@@ -366,6 +378,7 @@ const props = defineProps<{
   actions: WorkspaceHistorySectionActions;
 }>();
 const { t } = useLocalization();
+const reconnect = useAgentReconnect();
 const collaboration = useAgentRunCollaborationStore();
 /** The run row shows the run's own agent again (not a task child under it). */
 const selectAgentRun = (run: Parameters<typeof props.actions.onSelectRun>[0]) => {

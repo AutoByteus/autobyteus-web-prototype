@@ -86,7 +86,18 @@
       </span>
       <!-- No visible "Started by" line; the starter stays in the accessible label. -->
       <span class="min-w-0 flex-1" :class="{ 'font-semibold': row.memberKind === 'agent_team' }">
-        <span class="block truncate">{{ row.displayName }}</span>
+        <span class="flex min-w-0 items-center">
+          <span class="truncate">{{ displayName }}</span>
+          <!-- agent-definition-reconnect-ui: this collaborator's agent no longer exists. -->
+          <Icon
+            v-if="missingAgent"
+            icon="heroicons:exclamation-triangle-20-solid"
+            class="ml-1.5 h-3.5 w-3.5 flex-shrink-0 text-amber-500"
+            role="img"
+            :aria-label="t('reconnect.tree.missing', { id: missingAgent.missingDefinitionId })"
+            data-test="workspace-member-agent-missing"
+          />
+        </span>
         <span
           v-if="inspectionAttempt?.state === 'loading'"
           class="mt-0.5 block text-[0.6875rem] font-medium text-indigo-700"
@@ -115,6 +126,7 @@
 </template>
 
 <script setup lang="ts">
+import { useAgentReconnect } from '~/composables/agentReconnect/useAgentReconnect';
 import { computed } from 'vue';
 import { Icon } from '@iconify/vue';
 import StatusDot from '~/components/workspace/common/StatusDot.vue';
@@ -158,7 +170,12 @@ const statusLabel = computed(() => t(`workspace.history.hierarchy.status.${statu
 const startedByLabel = computed(() => props.row.delegatedBy
   ? t('workspace.members.started_by', { name: props.row.delegatedBy })
   : '');
-const initials = computed(() => props.row.displayName.split(/\s+/).filter(Boolean).slice(0, 2)
+// agent-definition-reconnect-ui: a missing agent is marked; after a reconnect the row reads the
+// agent's name in the row style, e.g. "product video producer" (DEC-012).
+const reconnect = useAgentReconnect();
+const missingAgent = computed(() => props.row.memberKind === 'agent_team' ? null : reconnect.missingForRun(props.row.agentRunId));
+const displayName = computed(() => reconnect.collaboratorRowName(props.row.agentRunId) || props.row.displayName);
+const initials = computed(() => displayName.value.split(/\s+/).filter(Boolean).slice(0, 2)
   .map((part) => part[0]?.toUpperCase() ?? '').join('') || 'AI');
 const inspectionAttempt = computed(() => props.row.agentRunId
   ? runHistoryStore.getTeamMemberInspectionAttempt(props.row.teamRunId, props.row.agentRunId)
@@ -166,13 +183,13 @@ const inspectionAttempt = computed(() => props.row.agentRunId
 
 const identityLabel = computed(() => t('workspace.history.hierarchy.identity', {
   role: roleLabel.value,
-  name: props.row.displayName,
+  name: displayName.value,
   address: props.row.memberAddress,
 }));
 
 const accessibleLabel = computed(() => t('workspace.history.hierarchy.tree_item', {
   role: roleLabel.value,
-  name: props.row.displayName,
+  name: displayName.value,
   address: props.row.memberAddress,
   level: props.row.depth + 1,
   status: startedByLabel.value ? `${statusLabel.value}, ${startedByLabel.value}` : statusLabel.value,
@@ -182,7 +199,7 @@ const disclosureLabel = computed(() => t(
   props.expanded
     ? 'workspace.history.hierarchy.collapse'
     : 'workspace.history.hierarchy.expand',
-  { name: props.row.displayName },
+  { name: displayName.value },
 ));
 
 const rowStyle = computed(() => ({

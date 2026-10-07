@@ -31,6 +31,8 @@
         {{ filePreviewStatus }}
       </p>
       <slot name="composerContext" />
+      <!-- agent-definition-reconnect-ui: the run's agent no longer exists → Reconnect; then "Reconnected". -->
+      <AgentReconnectComposerNotice />
       <!-- A collaborator that could not be brought into this run (REQ-008); hidden otherwise. -->
       <CollaboratorAddFailureNotice />
       <slot name="composer">
@@ -45,6 +47,7 @@ import { computed, ref, toRef } from 'vue';
 import type { Conversation } from '~/types/conversation';
 import AgentUserInputForm from '~/components/agentInput/AgentUserInputForm.vue';
 import CollaboratorAddFailureNotice from '~/components/agentInput/CollaboratorAddFailureNotice.vue';
+import AgentReconnectComposerNotice from '~/components/workspace/reconnect/AgentReconnectComposerNotice.vue';
 import type { SkillTaggingCapability } from '~/composables/agentInput/useSkillTagMenu';
 import AgentConversationFeed from '~/components/workspace/agent/AgentConversationFeed.vue';
 import { useAgentActivityStore } from '~/stores/agentActivityStore';

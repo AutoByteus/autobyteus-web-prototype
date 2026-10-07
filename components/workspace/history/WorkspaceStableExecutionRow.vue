@@ -89,9 +89,20 @@
             class="h-full w-full object-cover"
             @error="avatars.onTeamMemberAvatarError(row.row)"
           >
-          <span v-else>{{ avatars.getTeamMemberInitials(row.row) }}</span>
+          <span v-else>{{ reconnectedName ? initialsFor(reconnectedName) : avatars.getTeamMemberInitials(row.row) }}</span>
         </span>
-        <span class="min-w-0 flex-1 truncate">{{ displayName }}</span>
+        <span class="min-w-0 truncate">{{ displayName }}</span>
+        <!-- agent-definition-reconnect-ui: this member's agent no longer exists. -->
+        <Icon
+          v-if="missingAgent"
+          icon="heroicons:exclamation-triangle-20-solid"
+          class="ml-1.5 h-3.5 w-3.5 flex-shrink-0 text-amber-500"
+          :aria-label="$t('reconnect.tree.missing', { id: missingAgent.missingDefinitionId })"
+          role="img"
+          data-test="workspace-member-agent-missing"
+        >
+        </Icon>
+        <span class="flex-1" aria-hidden="true" />
       </div>
 
       <span
@@ -124,6 +135,8 @@
 </template>
 
 <script setup lang="ts">
+import { useAgentReconnect } from '~/composables/agentReconnect/useAgentReconnect';
+import { initialsFor } from '~/components/chat/chatComposerMenus';
 import { computed } from 'vue';
 import { Icon } from '@iconify/vue';
 import TeamAggregateStatusDot from '~/components/workspace/history/TeamAggregateStatusDot.vue';
@@ -158,8 +171,13 @@ const inspectionAttempt = computed(() => props.row.agentRunId
   ? runHistoryStore.getTeamMemberInspectionAttempt(props.row.teamRunId, props.row.agentRunId)
   : null);
 
-const displayName = computed(() =>
-  props.row.displayName || props.avatars.getTeamMemberDisplayName(props.row.row));
+// agent-definition-reconnect-ui: a missing agent is marked; a reconnected collaborator's row reads
+// its agent's name in the row style (DEC-012).
+const reconnect = useAgentReconnect();
+const missingAgent = computed(() => props.row.memberKind === 'agent' ? reconnect.missingForRun(props.row.agentRunId) : null);
+const reconnectedName = computed(() => reconnect.collaboratorRowName(props.row.agentRunId));
+const displayName = computed(() => reconnectedName.value
+  || props.row.displayName || props.avatars.getTeamMemberDisplayName(props.row.row));
 
 const roleLabel = computed(() => t(
   props.row.memberKind === 'agent_team'
