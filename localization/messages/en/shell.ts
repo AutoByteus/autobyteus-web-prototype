@@ -6,8 +6,6 @@ const shellMessages = {
   'shell.components.AppLeftPanel.new_chat': 'New chat',
   'shell.components.AppLeftPanel.drafts': 'Drafts',
   'shell.components.AppLeftPanel.draft_marker': 'Draft',
-  'shell.components.AppLeftPanel.draft_file_one': '1 file',
-  'shell.components.AppLeftPanel.draft_files': '{{count}} files',
   'shell.components.AppLeftPanel.discard_draft': 'Discard draft',
   'shell.components.AppLeftPanel.draft_empty': 'Empty draft',
   'shell.components.AppLeftPanel.draft_count_one': '1 draft',

@@ -5,11 +5,10 @@
   -->
   <ul
     v-if="rows.length"
-    class="chat-draft-rows relative mt-0.5 space-y-px"
+    class="chat-draft-rows mt-0.5 space-y-px"
     data-test="chat-draft-rows"
     :aria-label="$t('shell.components.AppLeftPanel.drafts')"
   >
-    <span class="pointer-events-none absolute bottom-1 left-5 top-1 w-px bg-gray-200" aria-hidden="true"></span>
     <TransitionGroup name="chat-draft-row">
       <li
         v-for="row in rows"
@@ -29,16 +28,9 @@
           :title="row.tooltip"
           @click="emit('open', row.id)"
         >
-          <template v-if="row.preview">
-            <span class="truncate" data-test="chat-draft-preview">{{ row.preview }}</span>
-          </template>
-          <template v-else-if="!row.fileCount">
-            <span class="truncate italic text-gray-400" data-test="chat-draft-preview">{{ $t('shell.components.AppLeftPanel.draft_empty') }}</span>
-          </template>
-          <template v-else>
-            <Icon icon="heroicons:paper-clip" class="h-3.5 w-3.5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-            <span class="truncate text-gray-500" data-test="chat-draft-preview">{{ filesLabel(row.fileCount) }}</span>
-          </template>
+          <!-- Round 3 (user): a draft is its text; the row shows only that text. -->
+          <span v-if="row.preview" class="truncate" data-test="chat-draft-preview">{{ row.preview }}</span>
+          <span v-else class="truncate italic text-gray-400" data-test="chat-draft-preview">{{ $t('shell.components.AppLeftPanel.draft_empty') }}</span>
         </button>
 
         <button
@@ -89,17 +81,8 @@ const targetName = (draft: ChatDraft): string => {
     || draft.target.agentDefinitionId
 }
 
-/** One line: the typed text, else the chosen `/` skills; attachments only → no text preview. */
-const previewOf = (draft: ChatDraft): string => {
-  const text = draft.context.requirement.replace(/\s+/g, ' ').trim()
-  if (text) return text
-  if (draft.context.requestedSkillNames.length) return draft.context.requestedSkillNames.map((name) => `/${name}`).join(' ')
-  return ''
-}
-
-const filesLabel = (count: number): string => (count === 1
-  ? t('shell.components.AppLeftPanel.draft_file_one')
-  : t('shell.components.AppLeftPanel.draft_files', { count }))
+/** One line: the typed text (round 3: only text makes a draft). */
+const previewOf = (draft: ChatDraft): string => draft.context.requirement.replace(/\s+/g, ' ').trim()
 
 /**
  * Kept drafts with content, newest first. The open draft stays listed while it is open even if its
@@ -115,15 +98,14 @@ const rows = computed(() => {
   for (const entry of chatDraftStore.keptDrafts) wasListed.add(entry.id)
   return listed.map((entry) => {
     const preview = previewOf(entry)
-    const fileCount = entry.context.contextFilePaths.length
+    const label = preview || t('shell.components.AppLeftPanel.draft_empty')
     return {
       id: entry.id,
       preview,
-      fileCount,
       selected: props.onNewChat && entry.id === chatDraftStore.activeDraftId,
-      title: preview || (fileCount ? filesLabel(fileCount) : t('shell.components.AppLeftPanel.draft_empty')),
-      tooltip: `${preview || (fileCount ? filesLabel(fileCount) : t('shell.components.AppLeftPanel.draft_empty'))}\n${targetName(entry)}`,
-      accessibleName: `${t('shell.components.AppLeftPanel.draft_marker')}: ${preview || (fileCount ? filesLabel(fileCount) : t('shell.components.AppLeftPanel.draft_empty'))} — ${targetName(entry)}`,
+      title: label,
+      tooltip: `${label}\n${targetName(entry)}`,
+      accessibleName: `${t('shell.components.AppLeftPanel.draft_marker')}: ${label} — ${targetName(entry)}`,
     }
   })
 })

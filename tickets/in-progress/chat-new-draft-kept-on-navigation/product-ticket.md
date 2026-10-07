@@ -6,7 +6,7 @@
 - Stable package: `chat-new-draft-kept-on-navigation`, solution revision `SR-002`.
 - Title: Unsent New chats are kept as Draft rows directly under the Chat row.
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline: left panel and New chat).
-- Status: `Awaiting User Review` (round 2).
+- Status: `Awaiting User Review` (round 3).
 - Requester: Solution Designer (`/solution_designer`) for the user, 2026-10-07.
   - User: "could you delegate a task to Product Team to work on the UI first?"
 - Request package:
@@ -15,6 +15,25 @@
   Status `Ready for Approval` (SR-002); not approved yet.
 - In-scope IDs: BEH-001, BEH-002, BEH-004, BEH-006, BEH-007; REQ-001–008; AC-001–007;
   SCN-001–004; open DEC-002, DEC-004, DEC-005.
+
+## Round 3 Change (user feedback, 2026-10-07)
+
+- User: "the two files is not even needed ... normally people just first write ... Only when there
+  are text, then you save draft. Then that would be nice and easier." Then: "please make the UI as
+  clean as possible. I think we don't need this vertical line."
+- D-04 is replaced: a New chat becomes a Draft only when it has **typed text**. Attachments, `/`
+  skills, target, model and workspace alone make no row. A New chat without text is not kept when
+  another one starts (its attachments go with it). A lone `/command` being typed (skill menu open)
+  is not text yet.
+- D-02 (round 2) simplified: the row shows only the text preview. The "N files" and `/skill`
+  previews are removed. An open draft whose text is cleared reads "Empty draft" until left, then
+  goes (REQ-008, now "text cleared").
+- D-01 changed: no vertical rail; the rows are grouped only by their indent under the Chat label.
+- Requirement impact (for Solution Designer):
+  - REQ-001 / DEC-004: "a New chat becomes a Draft once it has typed text"; attachments, skills
+    and mentions without text do not.
+  - REQ-002: "one-line preview of the text", no marker, no target, no attachment count.
+  - REQ-008: "a draft whose text is fully cleared stops being listed once the user leaves it".
 
 ## Round 2 Change (user feedback, 2026-10-07)
 
@@ -154,3 +173,10 @@
 - 2026-10-07: user feedback: one-line rows, no "Draft" word, no target name. `In Progress`.
 - 2026-10-07: round 2 built and validated (four drafts, Team/Agent/attachment-only/long, re-entry from a
   run, selected state). `Awaiting User Review`.
+- 2026-10-07: user feedback: only text makes a draft; no files label; no vertical line. `In Progress`.
+- 2026-10-07: round 3 built and validated:
+  - attachment-only and skill-only New chats add no row and are not kept;
+  - text + image Team draft re-entered intact from a run;
+  - cleared text → "Empty draft" while open;
+  - `vue-tsc`, lint and tests 14/14 pass.
+  `Awaiting User Review`.

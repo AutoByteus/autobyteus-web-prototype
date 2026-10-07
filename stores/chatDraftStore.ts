@@ -77,15 +77,14 @@ export const explicitChatModelConfig = (
 }
 
 /**
- * chat-new-draft-kept-on-navigation (REQ-001): a New chat is a Draft once it has user content —
- * text, an attachment, a `/` skill or an `@` mention. Target, model and workspace alone do not count.
+ * chat-new-draft-kept-on-navigation (REQ-001, round 3): a New chat is a Draft once it has typed text.
+ * Attachments, `/` skills, target, model and workspace alone do not make a draft; such a New chat is
+ * not kept when another one starts.
  */
 export const chatDraftHasContent = (draft: ChatDraft): boolean => {
-  const context = draft.context
-  return context.requirement.trim().length > 0
-    || context.contextFilePaths.length > 0
-    || context.requestedSkillNames.length > 0
-    || context.requestedMentions.length > 0
+  const text = draft.context.requirement.trim()
+  // A lone `/command` being typed opens the skill menu; it is not yet the user's text.
+  return text.length > 0 && !/^\/\S*$/.test(text)
 }
 
 let chatDraftSequence = 0

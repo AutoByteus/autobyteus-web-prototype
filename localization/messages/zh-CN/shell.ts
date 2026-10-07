@@ -6,8 +6,6 @@ const shellMessages = {
   'shell.components.AppLeftPanel.new_chat': '新对话',
   'shell.components.AppLeftPanel.drafts': '草稿',
   'shell.components.AppLeftPanel.draft_marker': '草稿',
-  'shell.components.AppLeftPanel.draft_file_one': '1 个文件',
-  'shell.components.AppLeftPanel.draft_files': '{{count}} 个文件',
   'shell.components.AppLeftPanel.discard_draft': '丢弃草稿',
   'shell.components.AppLeftPanel.draft_empty': '空草稿',
   'shell.components.AppLeftPanel.draft_count_one': '1 份草稿',
