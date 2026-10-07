@@ -5,7 +5,7 @@
 - Product ticket: `project-manager-ux`. This is the stable package identifier; there is no second ID.
 - Title: The Projects board follows the Project Task Manager live, and each Task links to its assigned agent or team.
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline).
-- Status: `Completed` (user confirmation 2026-10-07: "Perfect, I'm satisfied. I'm satisfied now. It's confirmed").
+- Status: `Completed` (round 1 2026-10-07 "Perfect, I'm satisfied ... It's confirmed"; round 2 "Temp tasks" 2026-10-07 "Perfect, I think this is what I want ... it seems good now", consistency check passed, "Good job. Yes. Yes").
 - Requester: Solution Designer (`/solution_designer`, run `solution_designer_69105bca29404516b69ac95a79d0dbd6`) for the user, 2026-10-06.
   - User: "dedicate a task to @Product Team so i could discuss with product team to work on the UI. after the UI is done. then we come back to work."
 - Request package:
@@ -146,3 +146,46 @@
   fast-forward of the canonical checkout. Revisions are in the handoff.
 - Baseline promotion: not required separately; the approved experience is the default UI.
 - Cleanup: review server stopped and ticket worktree removed after the handoff; branch kept.
+
+## Round 2 (SR-003): Tasks with no Project
+
+- Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/project-manager-ux/tickets/in-progress/project-manager-ux/product-design-request-r2.md`
+  (Solution Designer, 2026-10-07). User: "is it possible to also show ad hoc tasks on the projects page ...
+  we need to have a proper way of showing this."
+- Reopened 2026-10-07: same ticket and branch `design/project-manager-ux`, fast-forwarded to
+  `origin/personal@5e93a70` (includes chat-new-draft-kept-on-navigation); ticket folder moved back to
+  `tickets/in-progress/`. Worktree recreated at the same path. `In Progress`.
+- Questions: card name; Open/Done lanes vs three columns; Done lane growth; reopened Task look.
+- 2026-10-07: round 2 build shown in the user's browser (`/projects`): card first on the Projects page,
+  board with Open/Done lanes (Done: 10 most recent + "Show all (N)"), rows with root line and "From",
+  read-only Task page, reopen through the Prototype Launch Manager ("take the screenshots again").
+  `Awaiting User Review`.
+- 2026-10-07: user feedback: "Tasks without a project ... feels a little bit weird"; suggested "Temp
+  tasks". Renamed: card/board/crumb "Temp tasks" (zh-CN "临时任务"); card text "Tasks that agents hand
+  out in a chat. They go away with that chat." `Awaiting User Review`.
+- 2026-10-07: user feedback: Temp tasks "on the same line as the projects ... feels weird, because
+  it's not a real project"; move it to the right of the big Projects title. Done: the card is removed
+  from the grid; a secondary header link "Temp tasks · 3 open" sits left of "New project"
+  (`AdHocTasksLink.vue`). `Awaiting User Review`.
+- 2026-10-07: user asked why Temp tasks have Open/Done. Explained from source: `linkAdHocTask`
+  (`autobyteus-server-ts/src/projects/services/project-task-service.ts`) creates the Task as TODO and
+  links the worker at once; nothing sets IN_PROGRESS automatically. Options: A keep Open/Done; B ask
+  Solution Designer for server IN_PROGRESS on handoff, then three columns. User decision: A (keep
+  Open/Done for now). B recorded as a possible later change for Solution Designer.
+- 2026-10-07: user feedback: why does a Temp task have "From"? It should be like a normal Task; the
+  root already comes from delegate_task. Removed the "From" line (board and Task page), its data
+  (`from`), navigation and copy. Rejected: P-REQ-013 "From <conversation>". A Temp task row and page
+  now match a Project Task (text + root line; Description, Reference files, Assigned to).
+- 2026-10-07: user: "Perfect, I think this is what I want ... it seems good now". Final consistency
+  check passed with no change (round-1 files identical, copy complete, typecheck/lint/test 14/14).
+  User: "Good job. Yes. Yes". VIS-011–018 captured; `ui-ux-spec.md` Round 2 section written. `Completed`.
+
+### Round 2 artifacts
+
+- New: `components/projects/AdHocTasksLink.vue`, `AdHocTaskBoard.vue`, `AdHocTaskDetail.vue`,
+  `pages/projects/no-project/index.vue`, `pages/projects/no-project/tasks/[taskId].vue`,
+  `prototype/project-manager/adHocTasksFixture.ts` (hand-written, ~9 KB).
+- Changed: `components/projects/ProjectsList.vue` (header button), `types/project.ts` (`referenceFiles`),
+  `prototype/project-manager/projectManagerFixture.ts`, `plugins/96.project-manager.client.ts`,
+  `prototype/task-run-cleanup/taskManagerRunFixture.ts` (extra executions, status hook),
+  localization `projects.ts` (en, zh-CN).

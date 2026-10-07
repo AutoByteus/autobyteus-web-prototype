@@ -2,15 +2,19 @@
 
 ## Status And User Confirmation
 
-- Status: `Approved`
+- Status: `Approved` (round 1, SR-002, 2026-10-07; round 2 "Temp tasks", SR-003, 2026-10-07; see the Round 2 section)
 - Request / ticket: `project-manager-ux` (Product ticket and stable package identifier; no second ID)
 - Related requirements revision ID: `SR-001` (requirements `Draft`, not yet approved)
 - Related IDs: BEH-002, BEH-003, BEH-004, BEH-005; REQ-002 (changed, see Open Decisions), REQ-003, REQ-004;
   UC-002, UC-003; SCN-002, SCN-003; DEC-001–DEC-005 (answered below)
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design`
 - Review URL (during review): `http://127.0.0.1:4560/workspace`
-- Explicit user-confirmation reference: 2026-10-07, user: "Perfect, I'm satisfied. I'm satisfied now. It's
-  confirmed", after the consistency round and the left-panel click fix.
+- Explicit user-confirmation reference:
+  - Round 1, 2026-10-07: "Perfect, I'm satisfied. I'm satisfied now. It's confirmed", after the
+    consistency round and the left-panel click fix.
+  - Round 2, 2026-10-07: "Perfect, I think this is what I want ... it seems good now". The user's
+    standing rule was "if it's consistent ... it's finished"; the final consistency check passed with
+    no change. After that: "Good job. Yes. Yes".
 - Final validation date: 2026-10-07
 
 ## Repository And Baseline Provenance
@@ -366,3 +370,171 @@ VIS-002 was captured with reduced motion so the highlight is static. Capture ste
 - Every visible detail is requirements-defining unless an explicit illustrative or permitted-variation entry says otherwise: `Yes`
 - Mocked boundaries and unresolved production behavior are explicit: `Yes`
 - Design repository artifact and visual-reference paths agree with this specification: `Yes`
+
+---
+
+# Round 2 (SR-003): Temp tasks (Tasks with no Project)
+
+## Status, Request And Provenance
+
+- Request: Solution Designer, `product-design-request-r2.md` (SR-003). The user asked: "is it possible
+  to also show ad hoc tasks on the projects page ... we need to have a proper way of showing this."
+- Accepted design base: `origin/personal@5e93a70`; source pin unchanged (`10fb695`).
+- The round-1 surfaces are unchanged: `ProjectTaskRow.vue`, `ProjectTaskWorkers.vue`,
+  `ProjectTaskDetail.vue` and `ProjectTaskBoard.vue` are identical to round 1 (`eb60aba`).
+- Facts used:
+  - `delegate_task` without `task_id` creates the Task as TODO and links the worker at once
+    (`project-task-service.ts` `linkAdHocTask`). Nothing sets IN_PROGRESS.
+  - The Task belongs to the delegating conversation and is deleted with it.
+  - It has the same per-Task run record (root) as a Project Task.
+  - Only agents change it.
+  - Since v1.4.96-beta.1 the assigning agent can reopen a Done Task and message the same worker.
+
+## Problem And Design Rationale
+
+- The user wants these Tasks visible "in a proper way", like other Tasks.
+- **User decisions (2026-10-07):**
+  1. **Name: "Temp tasks"** (zh-CN "临时任务"). "Tasks without a project ... feels a little bit weird."
+     The name describes what they are (they go away with their chat) and matches "Temp Workspace".
+  2. **Placement: not among the Project cards.** A secondary button in the Projects page header, to
+     the right of the big "Projects" title and left of "New project". "It's not a real project."
+  3. **Board: two lanes, Open (TODO + IN_PROGRESS) and Done.** Agents leave running work at TODO;
+     the root line shows what is happening. Option B (the server sets IN_PROGRESS on handoff, then
+     three columns) is left to the Solution Designer as a possible later change.
+  4. **Rows and Task page are the same as a Project Task:** the Task text and the round-1 root line;
+     Description, Reference files and "Assigned to". The suggested "From <conversation>" line was
+     built and **rejected**: the root comes from `delegate_task` as for any Task, and opening it already
+     lands in the delegating conversation.
+  5. **Done lane:** the 10 most recent, then "Show all (N)" / "Show fewer". Search shows every match.
+  6. **Reopen:** the Task moves Done → Open with the round-1 moved highlight, and its root shows its
+     live status again. No "Reopened" label.
+  7. **Read only:** no New task, Edit, Delete or upload.
+- **Rejected:**
+  - the card in the Project grid;
+  - the names "Tasks without a project", "Quick tasks" and "Direct tasks";
+  - the "From" line and its Task page section;
+  - three columns for now.
+
+## Surfaces
+
+| Surface ID | Surface | Route / Entry | Layout And Key Sections | Visual ID |
+| --- | --- | --- | --- | --- |
+| UIS-005 | Temp tasks button | Projects page header | White secondary button: queue-list icon, "Temp tasks", grey pill "N open" (hidden at 0). Order: Temp tasks, then New project | VIS-011 |
+| UIS-006 | Temp tasks board | `/projects/no-project` (route name illustrative) | Back link "Projects"; h1 "Temp tasks"; help line; search and Refresh (no New task); two lanes Open / Done in the Project board style (lanes stack below a 752 px container) | VIS-012, VIS-013, VIS-017, VIS-018 |
+| UIS-007 | Temp task page | `/projects/no-project/tasks/:taskId` | Back link "Back to tasks", crumb "Temp tasks"; "Task details" + badge "Open" (blue) / "Done" (emerald); Description (+ "Reference files (N)" as monospace paths); "Assigned to" (round-1 rules); the line "Only agents change this Task." | VIS-014, VIS-015, VIS-016 |
+
+## Visual Language (changes only)
+
+- **Header button:**
+  - `rounded-md border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 shadow-sm`,
+    `hover:bg-slate-50`, focus ring blue-500 with offset 2;
+  - icon `heroicons:queue-list`, 16 px, slate-500;
+  - pill `rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600`.
+- **Lanes:** identical to Project board columns (`rounded-xl border-slate-200`, heading `min-h-12`,
+  `bg-slate-50/60`, label and count). Labels "Open" / "Done".
+- **"Show all (N)" button:** full width, `min-h-11`, `border-t border-slate-100`,
+  `text-sm font-medium text-blue-700`, `hover:bg-slate-50`, chevron-down that rotates when expanded.
+- **Rows:** the round-1 Task row unchanged (text, preview line, root line, live highlight).
+- **Reference files:** `heroicons:document-text` 16 px slate-400 + path in `font-mono` 13 px slate-700,
+  truncated, full path as tooltip.
+- **Read-only line:** `text-xs text-slate-400`, under the last section.
+
+## Interaction And State Transitions
+
+| Transition ID | From State | Trigger | Feedback | Result |
+| --- | --- | --- | --- | --- |
+| TR-009 | Projects page | Click "Temp tasks" | Navigation | Temp tasks board |
+| TR-010 | Board | An agent hands out work with a plain description | New row at the top of Open with the arrived highlight; pill count +1 | Open lane |
+| TR-011 | Board | The agent sets the Task DONE | Row moves to the top of Done with the moved highlight; root Stopped | Done lane |
+| TR-012 | Board | The assigning agent reopens a Done Task | Row moves to the top of Open with the moved highlight; root shows its live status; the run is back in the left panel | Open lane (VIS-017) |
+| TR-013 | Done lane > 10 | "Show all (N)" / "Show fewer" | Lane grows / returns to 10; `aria-expanded` | — |
+| TR-014 | Board | Type in search | Both lanes filter; Done shows every match and no Show all button | — |
+| TR-015 | Row / page | Click the root (Running/Idle) | As round 1 (TR-005) | Worker conversation |
+
+## State Behavior
+
+| Surface / State | Presentation And Copy | Visual ID |
+| --- | --- | --- |
+| Button, open > 0 | "Temp tasks" + "N open" pill | VIS-011 |
+| Button, open = 0 | "Temp tasks", no pill | — |
+| Board, no Temp tasks | Both lanes "No tasks" | — |
+| Board, loading / error / no match | As the Project board (same copy) | — |
+| Row, root Running / Idle / Couldn't start / Stopped | Round-1 root line | VIS-012 |
+| Task page, Open | Badge "Open"; "Assigned to" with the help line | VIS-014 |
+| Task page, Couldn't start | Badge "Open"; red status and reason; no help line | VIS-015 |
+| Task page, Done | Badge "Done"; root Stopped; no help line | VIS-016 |
+| Task page, not found | "Task not found" copy and "Back to tasks" (as the Project Task page) | — |
+
+## Content (exact, en / zh-CN)
+
+- "Temp tasks" / "临时任务"
+- "{{count}} open" / "{{count}} 个进行中"
+- Board help: "Agents create these when they hand work to another agent or team in a chat. Each one
+  belongs to that chat and goes away with it. Only agents change them." /
+  "智能体在聊天中把工作交给其他智能体或团队时会创建这些任务。每个任务属于那个聊天，并随它一起删除。只有智能体会修改它们。"
+- Lanes: "Open" / "进行中", "Done" / "已完成"
+- "Show all ({{count}})" / "显示全部（{{count}}）"; "Show fewer" / "收起"
+- "Reference files" / "参考文件"
+- "Only agents change this Task." / "只有智能体会修改这个任务。"
+- Reused from the Projects pages: search, Refresh, "No tasks", "Task details", "Description",
+  "Assigned to", root statuses, "Back to tasks", "Projects".
+
+## Responsive, Accessibility, Motion
+
+- **Responsive:**
+  - ≥ 752 px board container: two lanes side by side;
+  - below that, the lanes stack (VIS-018);
+  - header: below `sm` the buttons wrap under the title (existing header behavior).
+- **Accessibility:**
+  - the header button is a link named "Temp tasks, N open";
+  - the lanes are `section`s labelled by their headings;
+  - "Show all" is a button with `aria-expanded`;
+  - root rules as round 1.
+- **Motion:** round-1 arrived/moved highlight (2.4 s; static under reduced motion). Nothing new.
+
+## Data, Contract, And Mock Boundaries
+
+| Boundary | UI Reference | Production |
+| --- | --- | --- |
+| Temp task list | Hand-written (`prototype/project-manager/adHocTasksFixture.ts`), read through the Project Task store under the id `no-project` | A read of the Tasks with no Project (text, status, reference files, timestamps), each with its root as in round 1 (REQ-004). The route and list id are not prescribed. |
+| Live push | `receiveLiveTasks('no-project', …)` from a local watcher | The same live push as round 1, covering Tasks with no Project (create, status, reopen) |
+| Reopen | The Prototype Launch Manager's scripted turn "take the screenshots again" (`plugins/96.project-manager.client.ts`); the run comes back in the tree | Existing since v1.4.96-beta.1; the UI only follows status and root |
+| Open count | Counted on the client | Any source; must follow live |
+| Deletion with the chat | Not simulated | A deleted chat's Temp tasks leave the board (live) |
+
+## Final Visual References (round 2)
+
+All screenshots were captured after the user confirmed the design, through the normal entries.
+1440×900 except VIS-018 (1024×768). VIS-017 was captured with reduced motion, so the highlight is
+static. Capture steps are in `review-evidence/capture-r2-*.json`.
+
+| Visual ID | State | Image Path | Requirements-Defining | Illustrative |
+| --- | --- | --- | --- | --- |
+| VIS-011 | Projects header with Temp tasks button | `visual-references/VIS-011-projects-header-temp-tasks-desktop-1440x900.png` | Button placement, style, pill; no Temp tasks card in the grid | Counts, Project names |
+| VIS-012 | Board, Open / Done, Done capped at 10 | `visual-references/VIS-012-temp-tasks-board-open-done-desktop-1440x900.png` | Lanes, rows identical to Project rows, no New task, help line | Task texts, names, counts |
+| VIS-013 | Done expanded ("Show fewer") | `visual-references/VIS-013-temp-tasks-done-show-all-desktop-1440x900.png` (full page) | Show all / Show fewer button | Contents |
+| VIS-014 | Task page, Open, Running, reference file | `visual-references/VIS-014-temp-task-open-running-desktop-1440x900.png` | Badge "Open", Reference files, Assigned to, read-only line; no Edit/Delete | Path, names |
+| VIS-015 | Task page, Couldn't start | `visual-references/VIS-015-temp-task-couldnt-start-desktop-1440x900.png` | Red status and reason; no help line | Reason text |
+| VIS-016 | Task page, Done, Stopped | `visual-references/VIS-016-temp-task-done-stopped-desktop-1440x900.png` | Badge "Done", Stopped root | Texts |
+| VIS-017 | Reopened Task arriving in Open, live | `visual-references/VIS-017-temp-task-reopened-live-desktop-1440x900.png` | Moved highlight, Running root, Done count −1, run back in the left panel | Texts |
+| VIS-018 | Board, narrow desktop | `visual-references/VIS-018-temp-tasks-board-desktop-1024x768.png` | Stacked lanes | Contents |
+
+## Requirement Impact (for Solution Designer)
+
+- **P-REQ-011, changed:** the entry is a "Temp tasks" header button beside "New project", with the open
+  count. It is not a card.
+- **P-REQ-012, confirmed:** Open (not DONE) and Done lanes; rows show the root line (REQ-004); Done is
+  capped at the 10 most recent, with Show all / Show fewer; search covers all.
+- **P-REQ-013 ("From"), rejected by the user.**
+- **Confirmed:** the read-only Task page (Description, Reference files, Assigned to); reopened Tasks
+  move back to Open live; Temp tasks follow the round-1 live push and highlight.
+- **Possible later change (option B, not requested now):** the server sets IN_PROGRESS when a Task
+  with no Project is handed to its worker; Temp tasks would then use the three Project columns.
+
+## Final Consistency Check (round 2)
+
+- User confirmation recorded: `Yes`
+- Round-1 surfaces unchanged: `Yes`
+- UI reference, screenshots and this section agree: `Yes`
+- en and zh-CN copy complete; no unused keys: `Yes`
+- typecheck, lint and test (14/14) pass: `Yes`

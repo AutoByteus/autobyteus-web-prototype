@@ -5,6 +5,9 @@
         <h1 class="text-3xl font-semibold text-slate-900">{{ t('projects.components.projects.ProjectsList.title') }}</h1>
         <p class="mt-1 text-sm text-slate-600">{{ t('projects.components.projects.ProjectsList.description') }}</p>
       </div>
+      <!-- project-manager-ux round 2: Temp tasks beside New project, outside the Project grid. -->
+      <div class="flex flex-shrink-0 items-center gap-2 self-start">
+      <AdHocTasksLink />
       <NuxtLink
         to="/projects/new"
         class="inline-flex flex-shrink-0 items-center gap-2 self-start whitespace-nowrap rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -13,6 +16,7 @@
         <Icon icon="heroicons:plus" class="h-4 w-4" aria-hidden="true" />
         {{ t('projects.components.projects.ProjectsList.newProject') }}
       </NuxtLink>
+      </div>
     </header>
 
     <div v-if="projects.length > 0" class="mb-5 max-w-md">
@@ -99,6 +103,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { Icon } from '@iconify/vue'
 import ProjectCard from '~/components/projects/ProjectCard.vue'
+import AdHocTasksLink from '~/components/projects/AdHocTasksLink.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useProjectStore } from '~/stores/projectStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'

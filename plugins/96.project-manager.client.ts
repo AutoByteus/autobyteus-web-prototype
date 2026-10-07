@@ -9,7 +9,8 @@ import { useRunHistoryStore } from '~/stores/runHistoryStore'
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
 import { buildConversationFromProjection } from '~/services/runHydration/runProjectionConversation'
 import { AgentStatus } from '~/types/agent/AgentStatus'
-import { closure } from '~/prototype/task-run-cleanup/taskManagerRunFixture'
+import { closure, MANAGER_RUN_ID, managerConversation, recordUserMessage } from '~/prototype/task-run-cleanup/taskManagerRunFixture'
+import { adHoc, adHocTasks, isScreenshotsMessage, NO_PROJECT_ID, screenshotsTurn } from '~/prototype/project-manager/adHocTasksFixture'
 import {
   LAUNCH_PROJECT_ID, MANAGER_DEFINITION_ID, REFRESH_PROJECT_ID, REFRESH_RUN_ID,
   applyStep, liveTasksOf, recordRefreshUserMessage, refresh, refreshProject,
@@ -75,7 +76,9 @@ export default defineNuxtPlugin(() => {
   }, { immediate: true })
 
   // Live push: the Projects list, the board and the Task page follow every agent change.
-  watch(() => [refresh.revision, closure.revision], () => {
+  watch(() => [refresh.revision, closure.revision, adHoc.revision], () => {
+    // project-manager-ux round 2: Tasks with no Project follow live too.
+    if (tasks.getList(NO_PROJECT_ID)?.hasLoaded) tasks.receiveLiveTasks(NO_PROJECT_ID, adHocTasks() as any)
     if (refresh.projectCreated) {
       const open = refresh.tasks.filter((task) => task.status !== 'DONE').length
       projects.receiveLiveProject({ ...structuredClone(refreshProject), taskCount: refresh.tasks.length, openTaskCount: open } as any)
@@ -90,6 +93,15 @@ export default defineNuxtPlugin(() => {
     if (!context) return
     context.state.conversation = buildConversationFromProjection(REFRESH_RUN_ID, refreshConversation() as any, {
       agentDefinitionId: MANAGER_DEFINITION_ID,
+      agentName: context.config.agentDefinitionName || 'Project Task Manager',
+      llmModelIdentifier: context.config.llmModelIdentifier,
+    })
+  }
+  const renderManager = () => {
+    const context = contexts.getRun(MANAGER_RUN_ID)
+    if (!context) return
+    context.state.conversation = buildConversationFromProjection(MANAGER_RUN_ID, managerConversation() as any, {
+      agentDefinitionId: context.config.agentDefinitionId,
       agentName: context.config.agentDefinitionName || 'Project Task Manager',
       llmModelIdentifier: context.config.llmModelIdentifier,
     })
@@ -140,6 +152,24 @@ export default defineNuxtPlugin(() => {
       render()
       await history.fetchTree().catch(() => undefined)
       void playTurn(text)
+      return
+    }
+
+    // project-manager-ux round 2: the Prototype Launch Manager reopens (or closes) a Task with no
+    // Project and messages the same worker; its run comes back in the tree.
+    if (context && runId === MANAGER_RUN_ID && isScreenshotsMessage(context.requirement)) {
+      const text = context.requirement.trim()
+      context.requirement = ''
+      context.contextFilePaths = []
+      recordUserMessage(text)
+      renderManager()
+      context.state.currentStatus = AgentStatus.Running
+      await pause(900)
+      closure.transcript.push(...screenshotsTurn(text))
+      renderManager()
+      context.state.currentStatus = AgentStatus.Idle
+      collaboration.syncHost(MANAGER_RUN_ID, false)
+      collaboration.syncHost(MANAGER_RUN_ID, true)
       return
     }
 

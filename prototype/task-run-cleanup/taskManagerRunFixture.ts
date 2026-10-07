@@ -121,8 +121,12 @@ const allTaskExecutions = () => {
       if (task.id === 'task-release-notes' && index === 0) nodes.push(descriptionOnly)
     })
   }
+  // project-manager-ux (round 2): runs the Manager started for Tasks with no Project.
+  for (const extra of extraExecutions) nodes.push(...extra())
   return nodes
 }
+const extraExecutions: Array<() => any[]> = []
+export const registerExtraExecutions = (nodes: () => any[]) => { extraExecutions.push(nodes) }
 
 /** The ids of runs whose Task is DONE (the Task-side closure facts). */
 const closedIds = (): Set<string> => {
@@ -255,7 +259,7 @@ const statuses = (executions: any[]) => {
   const result: any[] = []
   const visit = (node: any) => {
     if ('agentRunId' in node) {
-      const status = closed.has(node.agentRunId) ? 'offline' : node.agentRunId.endsWith('-writer') || node.agentRunId.endsWith('-reviewer') ? 'running' : 'idle'
+      const status = closed.has(node.agentRunId) || otherClosedRuns.some((isClosed) => isClosed(MANAGER_RUN_ID, node.agentRunId)) ? 'offline' : node.agentRunId.endsWith('-writer') || node.agentRunId.endsWith('-reviewer') || node.agentRunId === 'run-ptm-shots' ? 'running' : 'idle'
       result.push({ member_address: node.address, agent_run_id: node.agentRunId, status, trigger: null, tool_name: null, error_message: null, error_details: null, recoverableBlock: null })
       return
     }

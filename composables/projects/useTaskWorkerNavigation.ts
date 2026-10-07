@@ -31,3 +31,4 @@ export const openTaskWorker = async (worker: ProjectTaskWorker): Promise<void> =
     setTimeout(() => { stop(); resolve() }, 4000)
   })
 }
+

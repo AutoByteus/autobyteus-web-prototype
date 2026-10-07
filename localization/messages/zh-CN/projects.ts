@@ -170,6 +170,16 @@ const projectMessages = {
   'projects.ui.workers': '分配给',
   'projects.ui.noWorkers': '还没有分配给智能体或团队。',
   'projects.ui.workersHelp': '任务完成后，这个智能体或团队会停止。',
+  // project-manager-ux round 2 (design)
+  'projects.adHoc.title': '临时任务',
+  'projects.adHoc.openShort': '{{count}} 个进行中',
+  'projects.adHoc.boardHelp': '智能体在聊天中把工作交给其他智能体或团队时会创建这些任务。每个任务属于那个聊天，并随它一起删除。只有智能体会修改它们。',
+  'projects.adHoc.lane.open': '进行中',
+  'projects.adHoc.lane.done': '已完成',
+  'projects.adHoc.showAll': '显示全部（{{count}}）',
+  'projects.adHoc.showFewer': '收起',
+  'projects.adHoc.referenceFiles': '参考文件',
+  'projects.adHoc.readOnly': '只有智能体会修改这个任务。',
 } satisfies TranslationCatalog;
 
 export default projectMessages;

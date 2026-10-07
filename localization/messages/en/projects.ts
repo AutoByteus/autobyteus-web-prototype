@@ -170,6 +170,16 @@ const projectMessages = {
   'projects.ui.workers': 'Assigned to',
   'projects.ui.noWorkers': 'Not assigned to an agent or team yet.',
   'projects.ui.workersHelp': 'When the Task is Done, this agent or team stops.',
+  // project-manager-ux round 2 (design)
+  'projects.adHoc.title': 'Temp tasks',
+  'projects.adHoc.openShort': '{{count}} open',
+  'projects.adHoc.boardHelp': 'Agents create these when they hand work to another agent or team in a chat. Each one belongs to that chat and goes away with it. Only agents change them.',
+  'projects.adHoc.lane.open': 'Open',
+  'projects.adHoc.lane.done': 'Done',
+  'projects.adHoc.showAll': 'Show all ({{count}})',
+  'projects.adHoc.showFewer': 'Show fewer',
+  'projects.adHoc.referenceFiles': 'Reference files',
+  'projects.adHoc.readOnly': 'Only agents change this Task.',
 } satisfies TranslationCatalog;
 
 export default projectMessages;

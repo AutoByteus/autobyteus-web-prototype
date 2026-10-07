@@ -49,6 +49,8 @@ export interface ProjectTaskWorker {
   error: string | null
 }
 export interface ProjectTask {
+  /** project-manager-ux round 2 (design): a Task with no Project's reference file paths. */
+  referenceFiles?: string[]
   /** project-manager-ux (design): the Task's root (at most one: the latest delegation), read with the Task. */
   workers?: ProjectTaskWorker[]
   contextFiles: ProjectTaskContextFile[]

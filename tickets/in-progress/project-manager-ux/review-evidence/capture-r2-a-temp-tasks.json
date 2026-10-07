@@ -1,0 +1,95 @@
+{
+ "reducedMotion": "reduce",
+ "steps": [
+  {
+   "goto": "/projects",
+   "wait": 3500
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-011-projects-header-temp-tasks-desktop-1440x900.png"
+  },
+  {
+   "click": "[data-testid=adhoc-tasks-link]",
+   "wait": 3000
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-012-temp-tasks-board-open-done-desktop-1440x900.png"
+  },
+  {
+   "click": "[data-testid=adhoc-task-lane-show-all]",
+   "wait": 800
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-013-temp-tasks-done-show-all-desktop-1440x900.png",
+   "full": true
+  },
+  {
+   "text": "Collect the changelog links for v2.",
+   "wait": 2500
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-014-temp-task-open-running-desktop-1440x900.png"
+  },
+  {
+   "text": "Back to tasks",
+   "wait": 2000
+  },
+  {
+   "text": "Translate the release notes into German.",
+   "wait": 2500
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-015-temp-task-couldnt-start-desktop-1440x900.png"
+  },
+  {
+   "text": "Back to tasks",
+   "wait": 2000
+  },
+  {
+   "text": "Take screenshots of the old docs pages.",
+   "wait": 2500
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-016-temp-task-done-stopped-desktop-1440x900.png"
+  },
+  {
+   "goto": "/workspace",
+   "wait": 3500
+  },
+  {
+   "text": "prototype-workspace",
+   "wait": 1500
+  },
+  {
+   "text": "Project Task Manager",
+   "wait": 1200
+  },
+  {
+   "text": "Plan the v2 docs release",
+   "wait": 2500
+  },
+  {
+   "click": "textarea",
+   "wait": 200
+  },
+  {
+   "eval": "(async()=>{const ta=document.querySelector('textarea');ta.value=\"take the screenshots again\";ta.dispatchEvent(new Event('input',{bubbles:true}));await new Promise(r=>setTimeout(r,300));return 1})()"
+  },
+  {
+   "press": "Enter",
+   "wait": 150
+  },
+  {
+   "text": "Projects",
+   "exact": true,
+   "wait": 250
+  },
+  {
+   "click": "[data-testid=adhoc-tasks-link]",
+   "wait": 1400
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-017-temp-task-reopened-live-desktop-1440x900.png"
+  }
+ ]
+}

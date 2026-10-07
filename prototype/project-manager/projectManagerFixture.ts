@@ -17,6 +17,7 @@ import { reactive } from 'vue'
 import { exposedFixtures, storedConversation } from '~/prototype/source-observation/fixtures.mjs'
 import { closure, MANAGER_RUN_ID, MANAGER_DEFINITION_ID, registerClosedRuns } from '~/prototype/task-run-cleanup/taskManagerRunFixture'
 import type { ProjectTaskWorker } from '~/types/project'
+import { adHocTasks, NO_PROJECT_ID, resetAdHocTasks } from '~/prototype/project-manager/adHocTasksFixture'
 
 const { run: baseRun, workspace, model } = exposedFixtures as Record<string, any>
 
@@ -72,6 +73,7 @@ const changed = () => { refresh.revision += 1; persist() }
 export const resetProjectManager = () => {
   localStorage.removeItem(STORAGE_KEY)
   localStorage.removeItem('autobyteus.design.taskRunCleanup.state.v2')
+  resetAdHocTasks()
   location.reload()
 }
 ;(window as any).__resetProjectManager = resetProjectManager
@@ -385,6 +387,8 @@ export const withProjectManager = (name: string, variables: Record<string, any>,
       return data
     }
     case 'GetProjectTasks':
+      // project-manager-ux round 2: the Tasks with no Project are read like a Project's Tasks here.
+      if (variables.projectId === NO_PROJECT_ID) return { ...data, projectTasks: adHocTasks() }
       return { ...data, projectTasks: (data.projectTasks ?? []).map(withWorkers) }
     case 'GetAgentRunCollaboration':
       return variables.runId === REFRESH_RUN_ID ? { agentRunCollaboration: refreshCollaborationView() } : data

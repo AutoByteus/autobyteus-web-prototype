@@ -1,0 +1,15 @@
+{
+ "viewport": {
+  "width": 1024,
+  "height": 768
+ },
+ "steps": [
+  {
+   "goto": "/projects/no-project",
+   "wait": 4000
+  },
+  {
+   "shot": "tickets/in-progress/project-manager-ux/visual-references/VIS-018-temp-tasks-board-desktop-1024x768.png"
+  }
+ ]
+}
