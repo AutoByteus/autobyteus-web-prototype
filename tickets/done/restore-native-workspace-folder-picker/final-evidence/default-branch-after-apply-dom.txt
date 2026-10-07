@@ -1,0 +1,50 @@
+- navigation "Agents & teams":
+  - navigation "Primary navigation":
+    - list:
+      - button "Chat":
+        - generic: Chat
+      - button "New chat":
+      - button "Collapse left panel":
+      - button "Agents":
+        - generic: Agents
+      - button "Agent Teams":
+        - generic: Agent Teams
+      - button "Agent Orgs":
+        - generic: Agent Orgs
+      - button "Projects":
+        - generic: Projects
+      - button "Applications":
+        - generic: Applications
+      - button "Skills":
+        - generic: Skills
+      - button "Memory":
+        - generic: Memory
+      - button "Nodes":
+        - generic: Nodes
+  - heading "Workspaces" [level=3]
+  - button "Add workspace":
+  - button "prototype-workspace":
+    - generic: prototype-workspace
+  - button "Remove from Workspaces":
+  - button "Temp Workspace":
+    - generic: Temp Workspace
+  - button "Settings":
+    - generic: Settings
+- main:
+  - button "Choose what to run (now Daily Assistant)":
+    - heading "Daily Assistant" [level=1]
+  - paragraph: All your skills are available. Type / to use a skill, or @ to bring in an agent or team.
+  - button "Context Files (0) (drag, paste, or upload)" [expanded]:
+    - generic: Context Files (0)
+    - generic: (drag, paste, or upload)
+  - button "Upload files":
+  - combobox "Ask anything · / for skills · @ for an agent or team"
+  - 'button "Workspace: client-portal. Change workspace" [active]':
+    - generic: client-portal
+  - button "Auto-approve tools is on. Tools run without asking. Turn off to ask first." [pressed]:
+    - generic: Auto-approve
+  - 'button "Model: mock/gpt-prototype on AutoByteus. Change model"':
+    - generic: mock/gpt-prototype
+    - generic: AutoByteus
+  - button "Send message" [disabled]:
+  - button "Show tools":

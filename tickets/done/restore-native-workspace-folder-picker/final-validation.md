@@ -22,3 +22,5 @@ The unchanged code's round-1 matrix supplies empty-return, ordinary-browser gati
 
 ## Integration validation
 Default-branch normal-entry check and repository/cleanup receipts are in [integration-record.md](integration-record.md); final handoff must not claim integration until those checks succeed. UI source no-diff, final screenshot hashes/dimensions, relative links, requirement/approval references and known limitations were checked before integration.
+
+Post-integration canonical default verification passed: normal `/chat`, field Escape, native-return simulation without apply, then explicit Use folder; see integration-record.md and its screenshot/DOM evidence.

@@ -1,6 +1,6 @@
 # Product handoff — restore-native-workspace-folder-picker
 
-**Approved UI/UX; final integration in progress.** Source solution SR-004 / R2 Draft; Product Experience Design. Final Design Completed classification requires the successful [integration record](integration-record.md).
+**Outcome: Design Completed.** Approved UCONF-001; Product Experience Design. Source solution SR-004 / R2 Draft remains for Solution Designer reconciliation. See successful [integration record](integration-record.md).
 
 ## Approved result
 Existing workspace menu → Open another folder… → manual field with **Browse…** beside it on eligible local Electron → native directory choice fills field → **Use folder** applies through the existing owner. Non-destructive cancel/empty; inline failure, retry/manual fallback. Manual-only remote/browser/mobile. Existing saved-root locks and currently editable placed-Team policy unchanged.
@@ -29,3 +29,6 @@ All five scoped scenarios are specified with state/journey mapping. Final browse
 Production helper currently conflates caught picker failures with null cancellation. Approved UX distinguishes them: cancellation is silent; invocation failure gets the inline retry/manual-fallback message. This is a UX obligation, not a prescribed production adapter/architecture.
 
 Return to assigning Solution Designer run `solution_designer_8993f6a03d49417985e8805609b803ce` for canonical requirements reconciliation (REQ-001..004, BEH-001..004, SCN-001..005, AC-001..007) and their normal downstream workflow. UI approval does not independently approve R2 requirements, architecture or production readiness. No open UI design decision remains; technical integration/platform validation belongs downstream. Assigning task `ad_hoc_task_45079b88-f602-4945-a4a3-57627cd9762e` may be closed by its owner only after the completed-design handoff.
+
+## Finalization result
+Approved package integrated to remote and canonical `personal` at `10d10419a1dd804204e52512044d4e0b8909f5dd`; normal-entry browser check passed on the canonical checkout. This evidence/status-only closure commit is published identically, with its exact final revision supplied in the delivery message. No UI code changed after approval. Processes stopped; isolated authoring worktree removed only after final publication/clean-state verification, with actual result in the completion receipt. Use the canonical paths above, not historical worktree URLs.
