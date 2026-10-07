@@ -136,8 +136,8 @@ export const launchAgentChat = async (
     })
   }
   await deps.navigate(buildAgentRunChatRoute(runId))
-  // The context now belongs to agentContextsStore; the New chat page gets a fresh draft.
-  chatDraftStore.startNewChat()
+  // The context now belongs to agentContextsStore: its Draft row goes, and New chat starts fresh (REQ-006).
+  chatDraftStore.finishSentDraft(draft)
   return { runId }
 }
 
@@ -230,6 +230,7 @@ export const launchTeamChat = async (
     })
   }
   await deps.navigate('/workspace')
-  chatDraftStore.startNewChat()
+  // REQ-006: the sent draft's row goes; a failed send returned above with the draft kept.
+  chatDraftStore.finishSentDraft(draft)
   return { teamRunId }
 }

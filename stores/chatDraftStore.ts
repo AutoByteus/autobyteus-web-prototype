@@ -37,6 +37,10 @@ export type ChatDraftWorkspace =
   | Readonly<{ kind: 'folder'; rootPath: string }>
 
 export interface ChatDraft {
+  /** chat-new-draft-kept-on-navigation: stable draft identity (the context's temp run id can change on send). */
+  id: string
+  /** When the New chat was started; Draft rows are listed newest first by this time. */
+  createdAt: number
   /** The unregistered `temp-*` context: text, tags, attachments, runtime, model and thinking. */
   context: AgentContext
   target: ChatTarget
@@ -70,6 +74,18 @@ export const explicitChatModelConfig = (
     Object.assign(next, getDefaultThinkingConfig(schema))
   }
   return Object.keys(next).length > 0 ? next : preset
+}
+
+/**
+ * chat-new-draft-kept-on-navigation (REQ-001): a New chat is a Draft once it has user content —
+ * text, an attachment, a `/` skill or an `@` mention. Target, model and workspace alone do not count.
+ */
+export const chatDraftHasContent = (draft: ChatDraft): boolean => {
+  const context = draft.context
+  return context.requirement.trim().length > 0
+    || context.contextFilePaths.length > 0
+    || context.requestedSkillNames.length > 0
+    || context.requestedMentions.length > 0
 }
 
 let chatDraftSequence = 0
@@ -106,8 +122,11 @@ const buildDraftContext = (agent: { id: string; name: string; avatarUrl?: string
  * workspace and approval. It never sends or routes; `chatLaunchService` does.
  */
 export const useChatDraftStore = defineStore('chatDraft', () => {
-  // Deeply reactive: the composer edits the draft context's text, tags and attachments in place.
-  const draft = ref<ChatDraft | null>(null)
+  // chat-new-draft-kept-on-navigation: every New chat is kept until it is sent or discarded.
+  // Deeply reactive: the composer edits the open draft's text, tags and attachments in place.
+  const drafts = ref<ChatDraft[]>([])
+  const activeDraftId = ref<string | null>(null)
+  const draft = computed<ChatDraft | null>(() => drafts.value.find((entry) => entry.id === activeDraftId.value) ?? null)
   // Bumped whenever the model is chosen explicitly, so a late default resolution never overrides it.
   let modelChoiceGeneration = 0
 
@@ -132,11 +151,22 @@ export const useChatDraftStore = defineStore('chatDraft', () => {
     return { kind: 'existing', workspaceId: useWorkspaceStore().tempWorkspaceId ?? TEMP_WORKSPACE_ID }
   }
 
+  /** Leaving a draft: one without content is not kept (REQ-001, REQ-008). */
+  const leaveActiveDraft = () => {
+    const current = draft.value
+    if (current && !current.starting && !chatDraftHasContent(current)) {
+      drafts.value = drafts.value.filter((entry) => entry.id !== current.id)
+    }
+    activeDraftId.value = null
+  }
+
   /**
-   * Reset the draft with defaults (Daily Assistant, temp workspace, Auto-approve, last-used model),
-   * or with a preset agent and workspace (tree `+`). Discarding a draft deletes nothing server-side.
+   * Open a fresh New chat with defaults (Daily Assistant, temp workspace, Auto-approve, last-used model),
+   * or with a preset agent and workspace (tree `+`). An earlier draft with content is kept as a
+   * Draft row (REQ-004, REQ-005); nothing is ever discarded by starting a new chat.
    */
   const startNewChat = (preset: { agentDefinitionId?: string; workspaceRootPath?: string } = {}): ChatDraft => {
+    leaveActiveDraft()
     const agentDefinitionId = preset.agentDefinitionId ?? DEFAULT_CHAT_AGENT_DEFINITION_ID
     const context = buildDraftContext(agentIdentity(agentDefinitionId))
     const lastModel = readChatLastModel()
@@ -145,6 +175,8 @@ export const useChatDraftStore = defineStore('chatDraft', () => {
       context.config.llmModelIdentifier = lastModel.llmModelIdentifier
     }
     const next: ChatDraft = {
+      id: context.state.runId,
+      createdAt: Date.now(),
       context,
       target: { kind: 'agent', agentDefinitionId },
       workspace: resolveInitialWorkspace(preset.workspaceRootPath),
@@ -152,12 +184,44 @@ export const useChatDraftStore = defineStore('chatDraft', () => {
       memberSettings: {},
       starting: false,
     }
-    draft.value = next
+    drafts.value = [...drafts.value, next]
+    activeDraftId.value = next.id
     modelChoiceGeneration += 1
     const reactiveDraft = draft.value!
     void resolveDefaultModel(reactiveDraft, modelChoiceGeneration)
     return reactiveDraft
   }
+
+  /** Re-enter a kept draft exactly as it was left (REQ-003). */
+  const openDraft = (id: string): ChatDraft | null => {
+    if (activeDraftId.value === id) return draft.value
+    if (!drafts.value.some((entry) => entry.id === id)) return null
+    leaveActiveDraft()
+    activeDraftId.value = id
+    return draft.value
+  }
+
+  /** Delete a draft (REQ-007). Discarding the open draft leaves a fresh New chat behind it. */
+  const discardDraft = (id: string) => {
+    const wasActive = activeDraftId.value === id
+    drafts.value = drafts.value.filter((entry) => entry.id !== id)
+    if (wasActive) {
+      activeDraftId.value = null
+      startNewChat()
+    }
+  }
+
+  /** A sent draft belongs to its run now (REQ-006): its row goes, and New chat starts fresh. */
+  const finishSentDraft = (sent: ChatDraft) => {
+    drafts.value = drafts.value.filter((entry) => entry.id !== sent.id)
+    if (activeDraftId.value === sent.id) activeDraftId.value = null
+    startNewChat()
+  }
+
+  /** Kept drafts with content, newest first (REQ-002). */
+  const keptDrafts = computed(() => drafts.value
+    .filter((entry) => chatDraftHasContent(entry))
+    .sort((a, b) => b.createdAt - a.createdAt))
 
   const ensureDraft = (): ChatDraft => draft.value ?? startNewChat()
 
@@ -298,9 +362,15 @@ export const useChatDraftStore = defineStore('chatDraft', () => {
   }
 
   return {
-    draft: computed(() => draft.value),
+    draft,
+    drafts: computed(() => drafts.value),
+    keptDrafts,
+    activeDraftId: computed(() => activeDraftId.value),
     startNewChat,
     ensureDraft,
+    openDraft,
+    discardDraft,
+    finishSentDraft,
     setTarget,
     setMemberSettings,
     resetAllMemberSettings,

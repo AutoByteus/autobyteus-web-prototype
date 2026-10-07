@@ -1,3 +1,4 @@
+import { createUploadedContextAttachment, inferContextAttachmentType } from '~/utils/contextFiles/contextAttachmentModel'
 import runtimeFixture from '~/prototype/fixtures/runtime-state.json'
 import type { Pinia, PiniaPluginContext } from 'pinia'
 import type { Router } from 'vue-router'
@@ -64,7 +65,8 @@ const localActions: Record<string, Set<string>> = {
   // mutation is answered locally (utils/apolloClient.ts) and the stream is the
   // local PrototypeWebSocket, so the chat run view opens exactly as in the source.
   agentRun: new Set(['sendUserInputAndSubscribe', 'ensureAgentStreamConnected']),
-  contextFileUpload: new Set(['finalizeDraftAttachments']),
+  // chat-new-draft-kept-on-navigation: uploads and their finalization are scripted locally (actionResult).
+  contextFileUpload: new Set<string>(),
   // Run settings (Edit Config) for an agent or Team run read the resume config
   // and model options through the source's own code and the local adapter.
   // run-settings-ui-unification (round 27): saved Org run settings load like Agent and Team ones.
@@ -261,6 +263,23 @@ const runSettingsRuntimeState = () => ({
   hasFetched: true,
 })
 const actionResult = (store: any, action: string, args: any[] = []): any => {
+  // chat-new-draft-kept-on-navigation: a New chat attachment "uploads" locally (scripted). The draft
+  // keeps a browser-local preview of the chosen file; nothing leaves the browser.
+  if (store.$id === 'contextFileUpload' && action === 'finalizeDraftAttachments') {
+    return (args[0]?.attachments || []).map((attachment: any) => (attachment?.kind === 'uploaded' ? { ...attachment, phase: 'final' } : attachment))
+  }
+  if (store.$id === 'contextFileUpload' && action === 'uploadAttachment') {
+    const file = args[0]?.file as File | undefined
+    const name = file?.name || 'attachment'
+    const storedFilename = `prototype-${Date.now()}-${name}`
+    return createUploadedContextAttachment({
+      storedFilename,
+      locator: file ? URL.createObjectURL(file) : `blob:${storedFilename}`,
+      displayName: name,
+      phase: 'draft',
+      type: file ? inferContextAttachmentType(file) : 'Text',
+    })
+  }
   if (action.startsWith('is')) return false
   if (action.startsWith('get')) return undefined
   if (action.startsWith('fetchAllAgentDefinitions')) return store.allAgentDefinitions || store.agentDefinitions || []

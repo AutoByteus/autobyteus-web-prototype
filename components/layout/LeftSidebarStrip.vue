@@ -15,8 +15,8 @@
         class="group relative rounded-md p-2 transition-colors hover:bg-gray-100"
         :class="isPrimaryNavActive(item.key) ? 'bg-gray-100 text-gray-900' : ''"
         :data-nav-key="item.key"
-        :title="t(item.labelKey)"
-        :aria-label="t(item.labelKey)"
+        :title="navLabel(item)"
+        :aria-label="navLabel(item)"
         @click="handlePrimaryClick(item.key, $event)"
       >
         <svg
@@ -40,8 +40,16 @@
         </svg>
         <Icon v-else :icon="item.icon" class="h-5 w-5" />
 
+        <!-- chat-new-draft-kept-on-navigation: kept drafts are counted on the collapsed Chat icon. -->
+        <span
+          v-if="item.key === 'chat' && draftCount > 0"
+          data-test="strip-chat-draft-count"
+          class="absolute -right-1 -top-1 inline-flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-semibold leading-none text-white ring-2 ring-white"
+          aria-hidden="true"
+        >{{ draftCount > 9 ? '9+' : draftCount }}</span>
+
         <div class="absolute left-full ml-2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 invisible transition-all group-hover:opacity-100 group-hover:visible z-50">
-          {{ t(item.labelKey) }}
+          {{ navLabel(item) }}
         </div>
       </button>
     </div>
@@ -72,7 +80,8 @@ import { computed, onMounted } from 'vue';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
 import { useAppLayoutStore } from '~/stores/appLayoutStore';
 import { rememberDrawerTrigger } from '~/composables/useAccessibleDrawer';
-import { useShellPrimaryNavigation, type ShellPrimaryNavKey } from '~/composables/useShellPrimaryNavigation';
+import { useShellPrimaryNavigation, type ShellPrimaryNavItem, type ShellPrimaryNavKey } from '~/composables/useShellPrimaryNavigation';
+import { useChatDraftStore } from '~/stores/chatDraftStore';
 import { isFeatureAvailableInRuntime } from '~/utils/mobileFeatureGates';
 import type { StripBehavior, StripActivation } from '~/utils/layout/responsiveLayoutPolicy';
 
@@ -85,6 +94,15 @@ const {
 } = useShellPrimaryNavigation();
 
 const route = useRoute();
+const chatDraftStore = useChatDraftStore();
+const draftCount = computed(() => chatDraftStore.keptDrafts.length);
+const navLabel = (item: ShellPrimaryNavItem): string => {
+  if (item.key !== 'chat' || draftCount.value === 0) return t(item.labelKey);
+  const drafts = draftCount.value === 1
+    ? t('shell.components.AppLeftPanel.draft_count_one')
+    : t('shell.components.AppLeftPanel.draft_count', { count: draftCount.value });
+  return `${t(item.labelKey)} · ${drafts}`;
+};
 const router = useRouter();
 const appLayoutStore = useAppLayoutStore();
 
