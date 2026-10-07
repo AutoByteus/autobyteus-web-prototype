@@ -21,24 +21,24 @@
 
         <!-- agent-definition-reconnect-ui: one line per agent of this run that no longer exists, in the
              same note style as "needs a refresh"; after a reconnect, the outcome for that agent. -->
-        <!-- Round 3: readable size (14px) and dark text; the amber / green icon carries the state. -->
-        <div v-if="missingAgents.length || reconnectedNotes.length" class="-mt-1 mb-4 space-y-1.5" data-test="existing-run-reconnect-notes">
+        <!-- Round 4: the same one-line amber / green bars as above the message box (14px, coloured). -->
+        <div v-if="missingAgents.length || reconnectedNotes.length" class="-mt-1 mb-4 space-y-2" data-test="existing-run-reconnect-notes">
           <p
             v-for="agent in missingAgents"
             :key="agent.agentRunId"
-            class="flex items-center gap-2 text-sm text-gray-800"
+            class="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 py-1.5 pl-3 pr-1.5 text-sm text-amber-900"
             role="alert"
             :data-test="`existing-run-agent-missing-${agent.agentRunId}`"
           >
             <Icon icon="heroicons:exclamation-triangle-20-solid" class="h-4 w-4 flex-shrink-0 text-amber-500" aria-hidden="true" />
-            <span class="min-w-0" :title="$t('reconnect.tree.missing', { id: agent.missingDefinitionId })">
+            <span class="min-w-0 flex-1 truncate" :title="$t('reconnect.tree.missing', { id: agent.missingDefinitionId })">
               {{ agent.address
                 ? $t('reconnect.settings.missingMember', { name: agent.name, id: agent.missingDefinitionId })
                 : $t('reconnect.settings.missingRun', { id: agent.missingDefinitionId }) }}
             </span>
             <button
               type="button"
-              class="flex-shrink-0 rounded px-1.5 py-0.5 font-medium text-blue-600 hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+              class="flex-shrink-0 rounded-md px-2 py-1 font-medium text-amber-900 hover:bg-amber-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               :aria-label="$t('reconnect.actionAria', { name: agent.name })"
               :data-test="`existing-run-reconnect-${agent.agentRunId}`"
               @click="reconnectTarget = agent"
@@ -49,7 +49,7 @@
           <p
             v-for="note in reconnectedNotes"
             :key="note.agentRunId"
-            class="flex items-center gap-2 text-sm text-gray-800"
+            class="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm text-emerald-900"
             role="status"
             :data-test="`existing-run-reconnected-${note.agentRunId}`"
           >
@@ -58,7 +58,7 @@
               {{ note.address
                 ? $t('reconnect.settings.reconnectedMember', { name: note.name, agent: note.agentName })
                 : $t('reconnect.settings.reconnectedRun', { agent: note.agentName }) }}
-              <span v-if="note.instructionsFromNewSession" class="text-gray-500">{{ $t('reconnect.settings.instructions', { runtime: note.runtime }) }}</span>
+              <span v-if="note.instructionsFromNewSession" class="text-emerald-700">{{ $t('reconnect.settings.instructions', { runtime: note.runtime }) }}</span>
             </span>
           </p>
         </div>
