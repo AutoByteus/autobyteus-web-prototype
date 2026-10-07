@@ -110,22 +110,28 @@
 
       <form v-if="adding" class="space-y-2 border-t border-gray-100 px-3 py-2.5" data-test="chat-workspace-folder-form" @submit.prevent="confirmFolder">
         <label for="chat-workspace-path" class="text-xs font-medium text-gray-600">{{ $t('chat.workspace.folderPath') }}</label>
+        <div class="flex items-start gap-2">
         <input
           id="chat-workspace-path"
           ref="pathRef"
           v-model="path"
           type="text"
-          class="w-full rounded-md border px-3 py-1.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
+          class="min-w-0 flex-1 rounded-md border px-3 py-1.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/40"
           :class="error ? 'border-red-300' : 'border-gray-200'"
           :aria-invalid="error ? 'true' : undefined"
-          aria-describedby="chat-workspace-path-error"
+          :aria-describedby="error ? 'chat-workspace-path-error' : pickerError ? 'chat-workspace-picker-error' : 'chat-workspace-path-hint'"
           :placeholder="$t('chat.workspace.folderPlaceholder')"
-          @keydown.esc.stop.prevent="adding = false"
+          @input="error = ''; pickerError = false"
+          @keydown.esc.stop.prevent="cancelFolder"
         >
+        <button v-if="pickerEligible" ref="browseRef" type="button" data-test="chat-workspace-browse" class="flex-shrink-0 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 disabled:cursor-wait disabled:opacity-60" :disabled="picking" :aria-busy="picking ? 'true' : undefined" @click="browseFolder">{{ picking ? t('chat.workspace.openingPicker') : t('chat.workspace.browse') }}</button>
+        </div>
+        <p v-if="pickerError" id="chat-workspace-picker-error" class="text-xs leading-4 text-red-600" role="alert" data-test="chat-workspace-picker-error">{{ t('chat.workspace.pickerError') }}</p>
+        <p v-else id="chat-workspace-path-hint" class="text-xs leading-4 text-gray-500">{{ pickerEligible ? t('chat.workspace.localPathHint') : t('chat.workspace.serverPathHint') }}</p>
         <p v-if="error" id="chat-workspace-path-error" class="text-xs text-red-600" data-test="chat-workspace-path-error">{{ error }}</p>
         <div class="flex justify-end gap-2">
-          <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50" @click="adding = false">{{ $t('chat.workspace.cancel') }}</button>
-          <button type="submit" class="rounded-md border border-blue-200 bg-white px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-50">{{ $t('chat.workspace.useFolder') }}</button>
+          <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50" @click="cancelFolder">{{ $t('chat.workspace.cancel') }}</button>
+          <button type="submit" :disabled="picking" class="rounded-md border border-blue-200 bg-white px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-50 disabled:opacity-50">{{ $t('chat.workspace.useFolder') }}</button>
         </div>
       </form>
       <footer v-else class="border-t border-gray-100 p-1">
@@ -134,15 +140,20 @@
         </button>
       </footer>
     </div>
+    <FolderDialogReference v-if="showChooser" :current-path="path" @result="receiveFolder" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useAnchoredPopover } from '~/composables/popover/useAnchoredPopover'
 import { useMenuInBoundary } from '~/composables/popover/useMenuInBoundary'
 import { useWorkspaceStore } from '~/stores/workspace'
+import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
+import { canUseLocalFolderPicker } from '~/utils/mobileFeatureGates'
+import FolderDialogReference from '~/prototype/folder-selection/FolderDialogReference.vue'
+import { folderPickerFixture, consumeFolderPickerOutcome } from '~/prototype/folder-selection/hostFixture'
 import type { ChatDraftWorkspace } from '~/stores/chatDraftStore'
 import { isAbsoluteFolderPath } from '~/utils/chat/chatDefaults'
 import { useLocalization } from '~/composables/useLocalization'
@@ -171,6 +182,47 @@ const adding = ref(false)
 const path = ref('')
 const error = ref('')
 const query = ref('')
+const nodeContext = useWindowNodeContextStore()
+// Design-only host simulation. No Electron bridge or filesystem is accessed here.
+// Test context is seeded before load, never through extra product/review controls.
+const hostContext = typeof window === 'undefined' ? 'browser' : (localStorage.getItem('autobyteus.design.folderPicker.context') || folderPickerFixture.context)
+const pickerEligible = computed(() => canUseLocalFolderPicker({
+  isEmbeddedWindow: nodeContext.isEmbeddedWindow && hostContext !== 'remote-electron',
+  hasElectronFolderDialog: hostContext !== 'browser',
+  ...(hostContext === 'mobile' ? { mobileRuntime: true } : {}),
+}))
+const browseRef = ref<HTMLButtonElement | null>(null)
+const picking = ref(false)
+const pickerError = ref(false)
+const showChooser = ref(false)
+let mounted = true
+onBeforeUnmount(() => { mounted = false })
+const cancelFolder = () => { adding.value = false; triggerRef.value?.focus() }
+const receiveFolder = async (chosen: string | null) => {
+  showChooser.value = false
+  picking.value = false
+  if (!mounted) return
+  if (chosen) { path.value = chosen; error.value = ''; pickerError.value = false }
+  await nextTick()
+  if (chosen) pathRef.value?.focus()
+  else browseRef.value?.focus()
+}
+const browseFolder = async () => {
+  if (!pickerEligible.value || picking.value) return
+  picking.value = true
+  pickerError.value = false
+  // Error/no-result are one-shot scripted host outcomes, consumed by the real Browse action.
+  const outcome = sessionStorage.getItem('autobyteus.design.folderPicker.nextOutcome') || consumeFolderPickerOutcome()
+  sessionStorage.removeItem('autobyteus.design.folderPicker.nextOutcome')
+  await new Promise(resolve => setTimeout(resolve, 180))
+  if (!mounted || !popover.open.value || !adding.value) { picking.value = false; return }
+  if (outcome === 'error') {
+    picking.value = false; pickerError.value = true
+    await nextTick(); browseRef.value?.focus()
+  } else if (outcome === 'empty') await receiveFolder(null)
+  else showChooser.value = true
+}
+
 
 const tempWorkspace = computed(() => workspaceStore.tempWorkspace)
 const userWorkspaces = computed(() => workspaceStore.allWorkspaces
@@ -229,11 +281,13 @@ const startFolder = async () => {
   adding.value = true
   path.value = ''
   error.value = ''
+  pickerError.value = false
   await nextTick()
   pathRef.value?.focus()
 }
 
 const confirmFolder = () => {
+  if (picking.value) return
   const rootPath = path.value.trim()
   if (!isAbsoluteFolderPath(rootPath)) {
     error.value = t('chat.workspace.absolutePathRequired')
