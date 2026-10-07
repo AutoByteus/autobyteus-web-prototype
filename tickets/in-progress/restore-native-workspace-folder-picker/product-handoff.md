@@ -1,25 +1,39 @@
-> **Current decision (2026-10-07):** Updated-skill re-evaluation withdraws the broad refresh and captured-fixture blocker. Reuse the accepted reference for scoped design. See `baseline-reevaluation.md`; older conclusions below are historical.
+# Product-owned handoff — restore-native-workspace-folder-picker
 
-> **Superseding correction (2026-10-07):** Earlier source-staleness inference withdrawn; refresh on hold pending evidence review. See `baseline-conclusion-correction.md`. The fixture-boundary issue is separate from UI currency.
+**Outcome: Awaiting User Review. UI proposal ready; NOT Design Completed.**
+Date 2026-10-07; source solution SR-004 / R2 Draft. This replaces the historical Baseline Needed interim result; broad refresh/fixture rewrite was withdrawn. Reason and evidence: [baseline-reevaluation.md](baseline-reevaluation.md).
 
-# Product handoff — restore-native-workspace-folder-picker
+## Reviewable result
+- Review URL: **http://127.0.0.1:4581/chat**.
+- Recommended design: existing workspace menu → Open another folder… → manual field with local-desktop Browse beside it → chooser fills field → Use folder applies through the existing owner. Cancel/empty preserve state; inline picker error allows Browse retry/manual entry. Remote/browser/mobile have manual server-path entry only. Existing locks and launch/save lifecycle retained.
+- User-confirmation reference: **None**. User asked to continue, not to approve a particular interaction. Product review remains open; this is not implementation authorization.
+- Final ticket UI/UX spec / normative final screenshots: not produced before approval. All current images are non-normative review evidence.
 
-**Interim result: Baseline Needed. Not Design Completed; no approval or implementation authorization.**
+## Durable artifacts (absolute)
+- Ticket: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/tickets/in-progress/restore-native-workspace-folder-picker/product-ticket.md`
+- Recommendation/alternatives/findings/review images: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/tickets/in-progress/restore-native-workspace-folder-picker/review-round-1.md`
+- Scenario/state coverage and test limitations: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/tickets/in-progress/restore-native-workspace-folder-picker/ui-behavior-test-matrix.md`
+- Running/scenario/reset/mock-boundary instructions: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/tickets/in-progress/restore-native-workspace-folder-picker/ui-reference-runbook.md`
+- Review screenshots/logs: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/tickets/in-progress/restore-native-workspace-folder-picker/review-evidence/`
+- Scoped baseline reuse evidence: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/tickets/in-progress/restore-native-workspace-folder-picker/baseline-reevaluation.md`
+- Applicable historical baseline report: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/ui-baseline-report.md`
 
-- Package `restore-native-workspace-folder-picker`; source solution SR-004 / R2 Draft.
-- Canonical design root: /Users/normy/autobyteus_org/autobyteus-web-design
-- Active worktree/UI-reference root: /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker
-- Branch: `design/restore-native-workspace-folder-picker`; fetched base `8cd41f886459630909e827d7df1b67910618aaac`.
-- Selected source: /Users/normy/autobyteus_org/autobyteus-worktrees/restore-native-workspace-folder-picker/autobyteus-web @ `88fad73cbd20201642acdcfe75e69b1897ec135c`.
-- Ticket: /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/tickets/in-progress/restore-native-workspace-folder-picker/product-ticket.md
-- Evidence/decision: /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/tickets/in-progress/restore-native-workspace-folder-picker/intake-review.md
-- Baseline request: /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/tickets/in-progress/restore-native-workspace-folder-picker/baseline-request.md
-- Historical report being refreshed: /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker/ui-baseline-report.md
+## Source / design provenance
+- Source (read-only): `/Users/normy/autobyteus_org/autobyteus-worktrees/restore-native-workspace-folder-picker/autobyteus-web` @ `88fad73cbd20201642acdcfe75e69b1897ec135c`.
+- Canonical design repository: `/Users/normy/autobyteus_org/autobyteus-web-design`.
+- Active runnable reference: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/restore-native-workspace-folder-picker`.
+- Branch `design/restore-native-workspace-folder-picker`; accepted base `8cd41f886459630909e827d7df1b67910618aaac`.
+- Review UI source revision **`a677e01558b2b9d48253950bc2b8db821358625a`**; subsequent evidence-only checkpoint contains this handoff.
+- Integration pending explicit review approval; no production edits, push, default integration, ticket closure or worktree removal. Owned preview retained on port4581 (PID41883, session78855).
 
-The existing baseline needs source-current reconciliation and replacement of inherited captured state fixtures before Product can accept it under current rules. The independent Bootstrapper stage is being requested, not folder-picker implementation. Product-owned worktree is preserved; integration pending; no live review server yet.
+## Coverage / boundaries
+Agent/Team setup, Org root and placed-Team overrides were exercised through normal UI, including existing saved-root locks and an already-editable saved-Org Team. Select/apply, cancel/Escape, empty, failure/retry, manual validation, known-path reuse, search, context gating, keyboard and narrow layout were checked. Build and configured checks passed; extra full-root typecheck crashed with TypeScript stack overflow (unresolved static-check limitation). English browser review completed; Chinese strings added but locale layout not independently reviewed. Details, including an inherited synthetic saved-Org duplicate-row state, are retained rather than hidden.
 
-UI proposal, scenario execution, final spec, source/revision pin for an approved UI, normative screenshots and user confirmation are **pending**. Planned scenario coverage and preserved boundaries are recorded in intake-review.md. No prior approval of run-settings, source baseline or this delegation approves the proposed restoration interaction.
+Chooser chrome, directories, state and host context are synthetic. No native OS dialog, filesystem, Electron bridge, backend, durable save, actual run/launch, permissions or real mobile keyboard has been proven. Production native validation belongs downstream after approval.
 
-Next: accept the refreshed baseline, then design and browser-validate one focused recommendation in the existing shell; present normal-entry review URL and obtain explicit user confirmation. On completion, replace this interim result with the final durable UI/UX package for the assigning Solution Designer run `solution_designer_8993f6a03d49417985e8805609b803ce` to reconcile canonical requirements. Do not mark assigning Task DONE while baseline/design/user review is pending.
+Source helper `useNativeFolderDialog.ts` collapses exceptions and cancel to null. If the proposed inline failure feedback is approved, cancellation versus invocation failure must be distinguishable for that UX. Product is not prescribing production architecture.
 
-Routing at this stage: configured Baseline Needed rule, fixed payload only to `/product_team/ui_baseline_bootstrapper`. This document is retained for resumption, not dispatched as an implementation-ready package or as a duplicate handoff.
+## Next expected action
+Product asks the user to review/confirm the recommendation and continues revisions as needed. On explicit approval Product will produce the final spec and normative references, finalize its repository and return the approved package. Solution Designer then reconciles canonical requirements; until then R2 remains Draft and the assigning task stays open. Do not treat this interim status as a requirements approval, blanket parity certification, Bootstrapper resumption or implementation request.
+
+Assigning Solution Designer run: `solution_designer_8993f6a03d49417985e8805609b803ce`. Stable package unchanged.
