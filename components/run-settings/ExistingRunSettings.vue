@@ -26,7 +26,7 @@
           <p
             v-for="agent in missingAgents"
             :key="agent.agentRunId"
-            class="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 py-1.5 pl-3 pr-1.5 text-sm text-amber-900"
+            class="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 py-1.5 pl-3 pr-1.5 text-[0.8125rem] text-amber-900"
             role="alert"
             :data-test="`existing-run-agent-missing-${agent.agentRunId}`"
           >
@@ -49,7 +49,7 @@
           <p
             v-for="note in reconnectedNotes"
             :key="note.agentRunId"
-            class="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm text-emerald-900"
+            class="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[0.8125rem] text-emerald-900"
             role="status"
             :data-test="`existing-run-reconnected-${note.agentRunId}`"
           >

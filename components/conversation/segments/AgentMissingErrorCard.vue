@@ -3,7 +3,7 @@
        conversation (DEC-013); after a reconnect it turns grey and names the agent used now. -->
   <div
     v-if="!resolvedAgent"
-    class="my-3 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 py-1.5 pl-3 pr-1.5 text-sm text-red-800"
+    class="my-3 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 py-1.5 pl-3 pr-1.5 text-[0.8125rem] text-red-800"
     role="alert"
     data-test="agent-missing-error-card"
   >
@@ -12,7 +12,7 @@
     <button
       v-if="missing"
       type="button"
-      class="flex-shrink-0 rounded-md px-2 py-1 text-sm font-medium text-red-800 hover:bg-red-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      class="flex-shrink-0 rounded-md px-2 py-1 text-[0.8125rem] font-medium text-red-800 hover:bg-red-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
       :aria-label="$t('reconnect.actionAria', { name: missing.name })"
       data-test="agent-missing-error-reconnect"
       @click="dialogOpen = true"
@@ -23,7 +23,7 @@
   </div>
   <p
     v-else
-    class="my-3 flex items-center gap-2 text-sm text-gray-500"
+    class="my-3 flex items-center gap-2 text-[0.8125rem] text-gray-500"
     data-test="agent-missing-error-card-resolved"
   >
     <Icon icon="heroicons:check-circle-20-solid" class="h-4 w-4 flex-shrink-0 text-gray-400" aria-hidden="true" />

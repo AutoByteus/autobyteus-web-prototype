@@ -4,7 +4,7 @@
   <div v-if="notice || (missing && !errorCardIsLast)" class="mb-2" data-test="agent-reconnect-composer-notice">
     <div
       v-if="notice"
-      class="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 py-1.5 pl-3 pr-1.5 text-sm text-emerald-900"
+      class="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 py-1.5 pl-3 pr-1.5 text-[0.8125rem] text-emerald-900"
       role="status"
       data-test="agent-reconnected-notice"
     >
@@ -31,7 +31,7 @@
 
     <div
       v-else-if="missing"
-      class="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 py-1.5 pl-3 pr-1.5 text-sm text-amber-900"
+      class="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 py-1.5 pl-3 pr-1.5 text-[0.8125rem] text-amber-900"
       role="status"
       data-test="agent-missing-notice"
     >
@@ -41,7 +41,7 @@
       </p>
       <button
         type="button"
-        class="flex-shrink-0 rounded-md px-2 py-1 text-sm font-medium text-amber-900 hover:bg-amber-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        class="flex-shrink-0 rounded-md px-2 py-1 text-[0.8125rem] font-medium text-amber-900 hover:bg-amber-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         :aria-label="$t('reconnect.actionAria', { name: missing.name })"
         data-test="agent-missing-reconnect"
         @click="dialogOpen = true"

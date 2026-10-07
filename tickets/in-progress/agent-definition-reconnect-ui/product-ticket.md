@@ -8,7 +8,7 @@
 - Title: Reconnect a run to an agent — UI/UX redesign.
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web baseline: conversation,
   composer, run settings, Workspaces tree).
-- Status: `Awaiting User Review` (round 4).
+- Status: `Awaiting User Review` (round 5).
 - Requester: Solution Designer (`/solution_designer`, run
   `solution_designer_3082838c83f24535972a43836b65e1c7`) for the user, 2026-10-07.
   - User: "I want to work on the UI first. Please delegate task to Product Team to work on UI" /
@@ -76,3 +76,5 @@
 - 2026-10-07: feedback "color?" on the grey Settings line. `In Progress` → round 4: Settings uses the
   same one-line amber / green bars as the message-box notice (14px, amber-900 on amber-50; emerald-900
   on emerald-50; Reconnect on the right). `Awaiting User Review`.
+- 2026-10-07: feedback "maybe only a little bit smaller font". Round 5: all Reconnect bars and the
+  error card use 13px (`text-[0.8125rem]`, the product menus' size). `Awaiting User Review`.
