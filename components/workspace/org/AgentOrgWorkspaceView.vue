@@ -68,10 +68,9 @@
 <script setup lang="ts">
 import { computed, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useRunStart } from '~/composables/runSettings/useRunStart'
 import { Icon } from '@iconify/vue'
 import { useActiveContextStore } from '~/stores/activeContextStore'
-import { useOrgLaunchDraftStore } from '~/stores/orgLaunchDraftStore'
-import { orgLaunchRoute } from '~/composables/runSettings/useRunTargetSwitcher'
 import AgentWorkspaceSurface from '~/components/workspace/agent/AgentWorkspaceSurface.vue'
 import TeamWorkspaceSurface from '~/components/workspace/team/TeamWorkspaceSurface.vue'
 import WorkspaceRecoveryNotice from '~/components/workspace/common/WorkspaceRecoveryNotice.vue'
@@ -82,6 +81,7 @@ const route = useRoute()
 const router = useRouter()
 const active = useActiveContextStore()
 const center = useWorkspaceCenterViewStore()
+const runStart = useRunStart()
 const { t } = useLocalization()
 const orgRunId = computed(() => String(route.query.orgRunId || ''))
 const isHistorical = computed(() => route.query.mode === 'history')
@@ -123,13 +123,12 @@ const selectRouteExecution = () => {
   } else if (address) active.selectAgentOrg(orgRunId.value, address)
 }
 watch([() => route.query.agentRunId, () => route.query.memberAddress, context], selectRouteExecution, { immediate: true })
+/** ＋ opens the Org launch page prefilled from this run (REQ-013). */
 const openNewOrgRun = () => {
   const source = context.value?.executionTree.rootOrg
   if (!source) return
-  // run-settings-ui-unification (SR-003): "+" opens the Org launch page prefilled from this run.
   center.showChat()
-  useOrgLaunchDraftStore().start(source.orgDefinitionId, source.orgRunId)
-  void router.push(orgLaunchRoute(source.orgDefinitionId, source.orgRunId))
+  void runStart.copyOrgRun(source.orgRunId, source.orgDefinitionId)
 }
 const headerActionsAvailable = computed(() => Boolean(target.value && (target.value.access === 'live'
   || target.value.kind === 'agent_org_direct_agent' || target.value.kind === 'agent_org_team_member')))

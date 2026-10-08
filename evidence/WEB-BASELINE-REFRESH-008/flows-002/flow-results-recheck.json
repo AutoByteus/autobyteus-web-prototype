@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-10-08T14:28:07.656Z",
+  "results": [
+    {
+      "id": "FLW-013",
+      "title": "Team catalog Run opens New chat preset to the Team, ready to launch (the launch outcome is scripted; see team-launch-outcome/)",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat",
+        "/chat"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "FLW-014",
+      "title": "Agent catalog Run (Research Assistant) opens New chat preset to the agent",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat",
+        "/chat"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

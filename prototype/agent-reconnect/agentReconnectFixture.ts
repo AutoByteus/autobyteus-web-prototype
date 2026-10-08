@@ -338,7 +338,7 @@ export const withAgentReconnect = (name: string, variables: Record<string, any>,
       return variables.runId === STANDALONE_RUN_ID ? { agentRunCollaboration: null } : data
     case 'GetTeamRunResumeConfig':
       return variables.teamRunId === TEAM_RUN_ID
-        ? { getTeamRunResumeConfig: { teamRunId: TEAM_RUN_ID, isActive: false, executionTree: teamExecutionTree(), modelConfigEditability: { editable: true, reason: null } } }
+        ? { getTeamRunResumeConfig: { teamRunId: TEAM_RUN_ID, isActive: false, executionTree: teamExecutionTree(), closedTaskExecutions: [], modelConfigEditability: { editable: true, reason: null } } }
         : data
     case 'GetTeamRunExecutionCheckpoint':
       return variables.teamRunId === TEAM_RUN_ID || variables.rootTeamRunId === TEAM_RUN_ID

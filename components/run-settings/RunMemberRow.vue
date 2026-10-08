@@ -1,23 +1,18 @@
 <template>
-  <!-- Round 14: two-line rows and a Customized label. Round 15: an opened member is a white card
-       with a thin border, like the message box; closed rows stay borderless. Round 20: the same
-       rows in the member panel and the saved-run settings. -->
+  <!-- A member or placed team: a flat two-line row; opened, a white card with its settings. -->
   <div
     :data-test="`run-member-${node.key}`"
-    :data-customized="isCustomized ? 'true' : 'false'"
+    :data-customized="customized ? 'true' : 'false'"
     class="rounded-xl border transition-[border-color,box-shadow]"
     :class="expanded ? 'border-gray-200 bg-white shadow-sm' : 'border-transparent'"
   >
-    <div
-      class="group flex items-center gap-1 rounded-xl pr-1 transition-colors"
-      :class="expanded ? '' : 'hover:bg-gray-50'"
-    >
+    <div class="group flex items-center gap-1 rounded-xl pr-1 transition-colors" :class="expanded ? '' : 'hover:bg-gray-50'">
       <button
         type="button"
         class="flex min-w-0 flex-1 items-center gap-3 rounded-lg px-2 py-2 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
         :aria-expanded="expanded ? 'true' : 'false'"
         :aria-label="$t('runSettings.members.toggleAria', { name: node.name })"
-        :title="node.detail || node.name"
+        :title="node.name"
         data-test="run-member-toggle"
         @click="emit('toggle', node.key)"
       >
@@ -39,30 +34,27 @@
             <span v-if="node.isCoordinator" class="flex-shrink-0 rounded-full bg-gray-100 px-1.5 py-px text-[0.6875rem] font-medium text-gray-600">{{ $t('runSettings.members.coordinator') }}</span>
           </span>
           <span class="mt-0.5 flex min-w-0 items-center gap-1 text-xs" data-test="run-member-summary">
-            <template v-if="missingModel">
-              <span class="truncate font-medium text-amber-700">{{ $t('chat.model.chooseModel') }}</span>
-            </template>
+            <span v-if="node.modelRequired" class="truncate font-medium text-amber-700">{{ $t('chat.model.chooseModel') }}</span>
             <template v-else>
               <!-- agent-definition-reconnect-ui: like "Customized ·", a short amber prefix. -->
               <span v-if="agentMissing" class="flex-shrink-0 font-medium text-amber-700" data-test="run-member-agent-missing">{{ $t('reconnect.member.missing') }}</span>
               <span v-if="agentMissing" class="flex-shrink-0 text-gray-300" aria-hidden="true">·</span>
-              <span v-if="isCustomized" class="flex-shrink-0 font-medium text-blue-700">{{ $t('runSettings.members.customizedLabel') }}</span>
-              <span v-if="isCustomized" class="flex-shrink-0 text-gray-300" aria-hidden="true">·</span>
+              <span v-if="customized" class="flex-shrink-0 font-medium text-blue-700">{{ $t('runSettings.members.customizedLabel') }}</span>
               <span v-else-if="childCustomizedCount" class="flex-shrink-0 font-medium text-blue-700">{{ $t('runSettings.members.customizedCount', { count: childCustomizedCount }) }}</span>
-              <span v-if="!isCustomized && childCustomizedCount" class="flex-shrink-0 text-gray-300" aria-hidden="true">·</span>
-              <span class="truncate text-gray-600">{{ effectiveSummary }}</span>
+              <span v-if="customized || childCustomizedCount" class="flex-shrink-0 text-gray-300" aria-hidden="true">·</span>
+              <span class="truncate text-gray-600">{{ summary }}</span>
             </template>
           </span>
         </span>
       </button>
       <button
-        v-if="isCustomized && !readOnly"
+        v-if="customized && !readOnly"
         type="button"
         class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
         :aria-label="$t('runSettings.members.resetMemberAria', { name: node.name })"
         :title="$t('runSettings.members.resetMemberAria', { name: node.name })"
         data-test="run-member-reset"
-        @click="emit('reset', node.key, null)"
+        @click="emit('reset', node.key, { field: 'all' })"
       >
         <Icon icon="heroicons:arrow-uturn-left-solid" class="h-3.5 w-3.5" aria-hidden="true" />
       </button>
@@ -77,25 +69,21 @@
       </button>
     </div>
 
-    <!-- The opened member's settings sit under its name, inside the same card, after a hairline. -->
     <div v-if="expanded" class="border-t border-gray-100 pb-2.5 pl-[3.25rem] pr-3 pt-1.5" data-test="run-member-detail">
       <RunSettingsCard
         nested
         :values="node.values"
         :fields="node.fields"
-        :customized="node.customized"
-        :inherited-llm-config="node.inheritedLlmConfig"
+        :member="node"
         :locked="locked"
         :runtime-locked="runtimeLocked"
+        :locked-models="lockedModelsFor?.(node.key) ?? null"
         :resettable="!readOnly"
         :test-suffix="node.key"
-        @update:workspace="emit('update', node.key, 'workspace', $event)"
-        @update:model="emit('update', node.key, 'model', $event)"
-        @update:thinking="emit('update', node.key, 'thinking', $event)"
-        @update:approval="emit('update', node.key, 'approval', $event)"
+        @change="emit('change', node.key, $event)"
         @reset="emit('reset', node.key, $event)"
       />
-      <template v-if="node.children?.length">
+      <template v-if="node.children.length">
         <p class="mb-1 mt-3 text-[0.6875rem] font-medium uppercase tracking-wide text-gray-400">{{ $t('runSettings.members.title') }}</p>
         <div class="-ml-2 space-y-0.5">
           <RunMemberRow
@@ -105,10 +93,11 @@
             :expanded-keys="expandedKeys"
             :locked="locked"
             :runtime-locked="runtimeLocked"
+            :locked-models-for="lockedModelsFor"
             :read-only="readOnly"
             @toggle="emit('toggle', $event)"
-            @update="(key, field, value) => emit('update', key, field, value)"
-            @reset="(key, field) => emit('reset', key, field)"
+            @change="(key, change) => emit('change', key, change)"
+            @reset="(key, reset) => emit('reset', key, reset)"
           />
         </div>
       </template>
@@ -117,12 +106,15 @@
 </template>
 
 <script setup lang="ts">
-import { buildModelOptions, setModelOptionLabels } from '~/components/chat/chatModelOptions'
 import { computed, inject } from 'vue'
+import { MISSING_MEMBER_ADDRESSES } from '~/composables/agentReconnect/useAgentReconnect'
 import { Icon } from '@iconify/vue'
 import { initialsFor } from '~/components/chat/chatComposerMenus'
+import { setModelOptionLabels } from '~/utils/runSettings/modelOptions'
+import type { ChatModelOption } from '~/composables/chat/useChatModelCatalog'
+import type { RunMemberSettingChange, RunMemberSettingReset, RunSettingFlags } from '~/types/runSettings/RunSettings'
+import { countCustomizedMembers, isRunMemberCustomized, type RunMemberNode } from '~/utils/runSettings/runMemberTree'
 import RunSettingsCard from './RunSettingsCard.vue'
-import { MISSING_MEMBER_ADDRESSES, countCustomized, hasCustomization, isApprovalLockedForRuntime, type RunMemberNode, type RunSettingField, type RunSettingFlags } from './runSettings'
 import { useRunSettingsPresentation } from './useRunSettingsPresentation'
 
 defineOptions({ name: 'RunMemberRow' })
@@ -132,31 +124,32 @@ const props = withDefaults(defineProps<{
   expandedKeys: ReadonlySet<string>
   locked?: RunSettingFlags
   runtimeLocked?: boolean
+  /** Saved runs: the models each scope may switch to. */
+  lockedModelsFor?: ((key: string) => readonly ChatModelOption[] | null) | null
+  /** Saved runs show what a member sets itself but offer no reset. */
   readOnly?: boolean
-}>(), { locked: () => ({}), runtimeLocked: false, readOnly: false })
+}>(), { locked: () => ({}), runtimeLocked: false, lockedModelsFor: null, readOnly: false })
 
 const emit = defineEmits<{
   (event: 'toggle', key: string): void
-  (event: 'update', key: string, field: RunSettingField, value: unknown): void
-  (event: 'reset', key: string, field: RunSettingField | null): void
+  (event: 'change', key: string, change: RunMemberSettingChange): void
+  (event: 'reset', key: string, reset: RunMemberSettingReset): void
 }>()
 
 const presentation = useRunSettingsPresentation()
 const missingAddresses = inject(MISSING_MEMBER_ADDRESSES, null)
 const agentMissing = computed(() => Boolean(missingAddresses?.value.has(props.node.key)))
 const expanded = computed(() => props.expandedKeys.has(props.node.key))
-const isCustomized = computed(() => hasCustomization(props.node.customized))
-const childCustomizedCount = computed(() => countCustomized(props.node.children ?? []))
-/** What this member runs with, in one line: workspace (teams), model · runtime, approval. */
-const effectiveSummary = computed(() => {
+const customized = computed(() => isRunMemberCustomized(props.node))
+const childCustomizedCount = computed(() => countCustomizedMembers(props.node.children))
+/** What this member runs with, in one line: workspace (teams), model · runtime, other settings on, approval. */
+const summary = computed(() => {
   const values = props.node.values
   const parts: string[] = []
   if (props.node.fields.includes('workspace')) parts.push(presentation.workspaceName(values.workspace))
   if (values.llmModelIdentifier) parts.push(`${presentation.modelLabel(values)} · ${presentation.runtimeShortLabel(values.runtimeKind)}`)
-  // SR-005: other model settings that are on (e.g. "Fast") follow the model.
-  parts.push(...setModelOptionLabels(buildModelOptions(presentation.thinkingSchema(values), values.llmConfig, '')))
-  parts.push(presentation.approvalLabel(values.autoExecuteTools || isApprovalLockedForRuntime(values.runtimeKind)))
+  parts.push(...setModelOptionLabels(presentation.modelOptions(values)))
+  parts.push(presentation.approvalLabel(values))
   return parts.filter(Boolean).join(' · ')
 })
-const missingModel = computed(() => props.node.fields.includes('model') && !props.node.values.llmModelIdentifier)
 </script>

@@ -19,6 +19,8 @@ const routes = [
   // WEB-BASELINE-REFRESH-004 (0a32261): Project and Task authoring pages.
   '/projects/new', '/projects/project-prototype-launch/edit', '/projects/project-prototype-launch/tasks/new',
   '/projects/project-prototype-launch/tasks/task-outline', '/projects/project-prototype-launch/tasks/task-outline/edit',
+  // WEB-BASELINE-REFRESH-008 (4d469b0): a Task page with its root, and the Temp tasks pages.
+  '/projects/project-prototype-launch/tasks/task-review', '/projects/temp-tasks', '/projects/temp-tasks/tasks/temp-task-links',
   '/workspace', '/tools', '/media',
   ...['api-keys', 'token-usage', 'display', 'language', 'local-tools', 'mcp-servers', 'application-packages', 'agent-packages', 'server-settings&mode=quick', 'server-settings&mode=advanced', 'server-settings&mode=migrations', 'extensions', 'updates'].map(section => `/settings?section=${section}`),
 ]
@@ -30,9 +32,6 @@ scenarios.push(
   { path: '/memory', scenario: 'empty', locale: 'en' },
   { path: '/skills', scenario: 'empty', locale: 'en' },
   { path: '/applications', scenario: 'apps_disabled', locale: 'en' },
-  { path: '/projects', scenario: 'projects_disabled', locale: 'en' },
-  { path: '/workspace', scenario: 'projects_disabled', locale: 'en' },
-  { path: '/settings?section=server-settings&mode=quick', scenario: 'projects_disabled', locale: 'en' },
   { path: '/projects', scenario: 'empty', locale: 'en' },
   { path: '/agent-orgs?view=org-list', scenario: 'empty', locale: 'en' },
   { path: '/agents?view=list', scenario: 'loading', locale: 'en', waitMs: 220 },

@@ -1,0 +1,69 @@
+{
+  "generatedAt": "2026-10-08T13:05:26.978Z",
+  "sourceBaseUrl": "http://127.0.0.1:4622",
+  "prototypeBaseUrl": "http://127.0.0.1:4620",
+  "mockBaseUrl": "http://127.0.0.1:4623",
+  "chromiumPath": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "normalizedStyle": "*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}",
+  "rows": [
+    {
+      "row": {
+        "id": "WBR-R008-DEN",
+        "kind": "route",
+        "path": "/agent-teams?view=team-create",
+        "scenario": "populated",
+        "suffix": "DEN",
+        "viewport": "desktop",
+        "locale": "en"
+      },
+      "source": {
+        "target": "source",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-008/evidence/WEB-BASELINE-REFRESH-008/matrix/source/WBR-R008-DEN.png",
+        "screenshotSha256": "c3d6715219fad9e6d061c93b9466a4b02aa25d8ddbea08a042a90f6b513e6d6e",
+        "bodyText": "Chat\nAgents\nAgent Teams\nAgent Orgs\nProjects\nApplications\nSkills\nMemory\nNodes\nWorkspaces\nprototype-workspace\nTemp Workspace\nSettings\nCreate Agent Team\n\nDrag from library to canvas, then assign a coordinator.\n\nUse Template\nBasics\nAT\nUpload Avatar\n\nPNG/JPG, square recommended\n\nTeam Name\n\nMember names auto-fill from dragged item names.\n\nTeam Description\nCategory\nInstructions\nAgent Library\n\nAGENTS\n\n⋮⋮\nResearch Assistant\nAGENT\n⋮⋮\nDocumentation Writer\nAGENT\n⋮⋮\nDaily Assistant\nAGENT\n\nDrag Agents into the Team canvas. Teams cannot contain Teams.\n\nTeam Canvas\nAT\nUntitled Team\n\nDragged from Library → Canvas\n\nDrop Agents here to add them to this Team\nMember Details\n\nSelect a member in Team Canvas to edit details.\n\nHandoffs\nAdd handoff\n\nNo handoffs yet\n\nAdd the first handoff\nLLM config\n\nOptional runtime, model, and LLM settings.\n\nRuntime\nChoose when launching\nAutoByteus\nCodex App Server\nClaude Agent SDK\nModel\nSelect a model\n○ Team Name required\n○ At least 1 member required\n○ Coordinator required\nCancel\nCreate Team",
+        "bodyTextSha256": "024633369bd9e95b878cbb869e33665de375cd77c6fa864584ecda02ee9d9821",
+        "route": "/agent-teams?view=team-create",
+        "lang": "",
+        "controlsSha256": "fad763f54c3bb6cbbecd39a16e7561f6e092054ccc67ad5624e697f158ea2556",
+        "geometrySha256": "1905022919bf60748e1794ad98d3149ce8104116c04f0c7d082ccc48263655e8",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "prototype": {
+        "target": "prototype",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-008/evidence/WEB-BASELINE-REFRESH-008/matrix/prototype/WBR-R008-DEN.png",
+        "screenshotSha256": "c3d6715219fad9e6d061c93b9466a4b02aa25d8ddbea08a042a90f6b513e6d6e",
+        "bodyText": "Chat\nAgents\nAgent Teams\nAgent Orgs\nProjects\nApplications\nSkills\nMemory\nNodes\nWorkspaces\nprototype-workspace\nTemp Workspace\nSettings\nCreate Agent Team\n\nDrag from library to canvas, then assign a coordinator.\n\nUse Template\nBasics\nAT\nUpload Avatar\n\nPNG/JPG, square recommended\n\nTeam Name\n\nMember names auto-fill from dragged item names.\n\nTeam Description\nCategory\nInstructions\nAgent Library\n\nAGENTS\n\n⋮⋮\nResearch Assistant\nAGENT\n⋮⋮\nDocumentation Writer\nAGENT\n⋮⋮\nDaily Assistant\nAGENT\n\nDrag Agents into the Team canvas. Teams cannot contain Teams.\n\nTeam Canvas\nAT\nUntitled Team\n\nDragged from Library → Canvas\n\nDrop Agents here to add them to this Team\nMember Details\n\nSelect a member in Team Canvas to edit details.\n\nHandoffs\nAdd handoff\n\nNo handoffs yet\n\nAdd the first handoff\nLLM config\n\nOptional runtime, model, and LLM settings.\n\nRuntime\nChoose when launching\nAutoByteus\nCodex App Server\nClaude Agent SDK\nModel\nSelect a model\n○ Team Name required\n○ At least 1 member required\n○ Coordinator required\nCancel\nCreate Team",
+        "bodyTextSha256": "024633369bd9e95b878cbb869e33665de375cd77c6fa864584ecda02ee9d9821",
+        "route": "/agent-teams?view=team-create",
+        "lang": "",
+        "controlsSha256": "fad763f54c3bb6cbbecd39a16e7561f6e092054ccc67ad5624e697f158ea2556",
+        "geometrySha256": "1905022919bf60748e1794ad98d3149ce8104116c04f0c7d082ccc48263655e8",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "comparison": {
+        "routeEqual": true,
+        "bodyTextEqual": true,
+        "controlsEqual": true,
+        "geometryEqual": true,
+        "screenshotEqual": true,
+        "pixels": {
+          "dimensionsEqual": true,
+          "changedPixels": 0,
+          "totalPixels": 1296000,
+          "changedPixelRatio": 0,
+          "maximumChannelDelta": 0,
+          "changedBox": null,
+          "diffPath": null,
+          "lowDeltaPixels": 0,
+          "noiseClass": "A-edge-antialiasing"
+        },
+        "prototypeBrowserErrors": 0,
+        "prototypeExternalRequests": 0,
+        "pass": true
+      },
+      "geometryDelta": []
+    }
+  ]
+}

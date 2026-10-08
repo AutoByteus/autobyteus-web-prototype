@@ -2,6 +2,7 @@ import {
   teamRunExecutionTreeDtoSchema,
   type TeamRunExecutionTreeDto,
 } from '@autobyteus/team-stream-contracts';
+import { closedTaskExecutionsDtoSchema } from '@autobyteus/collaboration-stream-contracts';
 import { getApolloClient } from '~/utils/apolloClient';
 import {
   GetTeamMemberRunProjection,
@@ -12,7 +13,7 @@ import type { AgentContext } from '~/types/agent/AgentContext';
 import type { AgentTeamContext } from '~/types/agent/AgentTeamContext';
 import type { AgentTeamAddress } from '~/types/agent/AgentTeamAddress';
 import type { WorkspaceMetadata } from '~/types/workspace/WorkspaceMetadata';
-import { useAgentActivityStore, type ActivityProjectionReplacement } from '~/stores/agentActivityStore';
+import { useAgentActivityStore } from '~/stores/agentActivityStore';
 import type {
   GetTeamRunExecutionCheckpointQueryData,
   TeamMemberRunProjectionPayload,
@@ -24,6 +25,11 @@ import { createWorkspaceMetadata } from '~/utils/workspaceMetadata';
 import { buildConversationFromProjection } from './runProjectionConversation';
 import { buildActivitiesFromProjection } from './runProjectionActivityHydration';
 import { fetchTeamCommunicationForTeam } from './teamCommunicationHydrationService';
+import {
+  fetchMemberRunState,
+  type MemberRunState,
+  type MemberRunStateCommit,
+} from './memberRunStateHydration';
 import { createTeamExecutionViewState } from '~/services/teamExecution/teamExecutionViewState';
 import {
   createTeamAgentContext,
@@ -51,7 +57,7 @@ export interface TeamRunHydrationCandidate {
   resumeConfig: TeamRunResumeConfigPayload;
   hydratedContext: AgentTeamContext;
   projectionByAgentRunId: Map<string, TeamMemberRunProjectionPayload | null>;
-  activityReplacements: readonly ActivityProjectionReplacement[];
+  memberRunStates: readonly MemberRunStateCommit[];
 }
 
 export interface TeamRunRecoveryHydrationCandidate extends Omit<TeamRunHydrationCandidate, 'projectionByAgentRunId'> {
@@ -64,6 +70,7 @@ interface ResumeGraphqlData {
     teamRunId: string;
     isActive: boolean;
     executionTree: unknown;
+    closedTaskExecutions: unknown;
     modelConfigEditability: RunModelConfigEditability;
   } | null;
 }
@@ -96,14 +103,25 @@ export const fetchExactTeamMemberProjection = async (
   return projection;
 };
 
-const fetchBestEffortProjection = async (
+type TeamMemberRunState = MemberRunState<TeamMemberRunProjectionPayload>;
+
+const fetchExactTeamMemberRunState = (
   teamRunId: string,
   agentRunId: string,
-): Promise<TeamMemberRunProjectionPayload | null> => {
+): Promise<TeamMemberRunState> => fetchMemberRunState({
+  runId: agentRunId,
+  fetchProjection: () => fetchExactTeamMemberProjection(teamRunId, agentRunId),
+});
+
+/** A member whose projection or artifacts cannot be loaded is left unhydrated (null) as a whole. */
+const fetchBestEffortTeamMemberRunState = async (
+  teamRunId: string,
+  agentRunId: string,
+): Promise<TeamMemberRunState | null> => {
   try {
-    return await fetchExactTeamMemberProjection(teamRunId, agentRunId);
+    return await fetchExactTeamMemberRunState(teamRunId, agentRunId);
   } catch (error) {
-    console.warn(`[teamRunContextHydration] Failed to fetch AgentRun projection '${agentRunId}'.`, error);
+    console.warn(`[teamRunContextHydration] Failed to fetch AgentRun state '${agentRunId}'.`, error);
     return null;
   }
 };
@@ -169,26 +187,28 @@ const stageProjection = (input: {
   agentRunId: string;
   address: AgentTeamAddress;
   context: AgentContext;
-  projection: TeamMemberRunProjectionPayload | null;
+  state: TeamMemberRunState | null;
   expectedActivityRevision: number;
-}): ActivityProjectionReplacement | null => {
-  if (!input.projection) return null;
+}): MemberRunStateCommit | null => {
+  if (!input.state) return null;
+  const { projection } = input.state;
   const configured = teamAgentSourceAt(input.tree, input.address);
   if (!configured) throw new Error(`AgentRun '${input.agentRunId}' has no configured or collaborator placement.`);
   input.context.state.conversation = buildConversationFromProjection(
     input.agentRunId,
-    input.projection.conversation ?? [],
+    projection.conversation ?? [],
     {
       agentDefinitionId: configured.agent_definition_id,
       agentName: input.address.split('/').at(-1) ?? input.address,
       llmModelIdentifier: configured.launch_configuration.llm_model_identifier,
     },
   );
-  input.context.state.hasEarlierActiveTraceEvents = input.projection.hasEarlierActiveTraceEvents === true;
+  input.context.state.hasEarlierActiveTraceEvents = projection.hasEarlierActiveTraceEvents === true;
   return Object.freeze({
     runId: input.agentRunId,
-    expectedRevision: input.expectedActivityRevision,
-    activities: buildActivitiesFromProjection(input.projection.activities ?? []),
+    expectedActivityRevision: input.expectedActivityRevision,
+    activities: buildActivitiesFromProjection(projection.activities ?? []),
+    fileChanges: input.state.fileChanges,
   });
 };
 
@@ -227,6 +247,7 @@ const hydrateCurrentTeamRunContext = async (
   const raw = response.data?.getTeamRunResumeConfig;
   if (!raw) throw new Error(`Team resume config payload missing for '${input.teamRunId}'.`);
   const tree = teamRunExecutionTreeDtoSchema.parse(raw.executionTree);
+  const closedTaskExecutions = closedTaskExecutionsDtoSchema.parse(raw.closedTaskExecutions);
   if (raw.teamRunId !== input.teamRunId || tree.root_team.team_run_id !== input.teamRunId) {
     throw new Error(`Team execution tree root identity mismatch for '${input.teamRunId}'.`);
   }
@@ -253,14 +274,19 @@ const hydrateCurrentTeamRunContext = async (
     agent.agentRunId,
     activityStore.getActivityContentRevision(agent.agentRunId),
   ]));
-  const projectionByAgentRunId = new Map<string, TeamMemberRunProjectionPayload | null>();
+  const stateByAgentRunId = new Map<string, TeamMemberRunState | null>();
   await Promise.all(locations.map(async (agent) => {
-    const projection = projectionPolicy === 'exact' || agent.agentRunId === initialFocusedAgentRunId
-      ? await fetchExactTeamMemberProjection(input.teamRunId, agent.agentRunId)
-      : await fetchBestEffortProjection(input.teamRunId, agent.agentRunId);
-    projectionByAgentRunId.set(agent.agentRunId, projection);
+    const state = projectionPolicy === 'exact' || agent.agentRunId === initialFocusedAgentRunId
+      ? await fetchExactTeamMemberRunState(input.teamRunId, agent.agentRunId)
+      : await fetchBestEffortTeamMemberRunState(input.teamRunId, agent.agentRunId);
+    stateByAgentRunId.set(agent.agentRunId, state);
   }));
-  const activityReplacements: ActivityProjectionReplacement[] = [];
+  // A member whose state could not be loaded keeps a null projection: it is not marked authoritative,
+  // so selecting it later hydrates it on demand.
+  const projectionByAgentRunId = new Map<string, TeamMemberRunProjectionPayload | null>(
+    [...stateByAgentRunId].map(([agentRunId, state]) => [agentRunId, state?.projection ?? null]),
+  );
+  const memberRunStates: MemberRunStateCommit[] = [];
   const contexts = locations.map((agent) => {
     const context = createTeamAgentContext({
       tree,
@@ -269,21 +295,22 @@ const hydrateCurrentTeamRunContext = async (
       workspaceMetadata: workspaces.get(agent.memberAddress) ?? null,
     });
     if (!context) throw new Error(`No exact Agent context could be built for '${agent.agentRunId}'.`);
-    const replacement = stageProjection({
+    const memberRunState = stageProjection({
       tree,
       agentRunId: agent.agentRunId,
       address: agent.memberAddress,
       context,
-      projection: projectionByAgentRunId.get(agent.agentRunId) ?? null,
+      state: stateByAgentRunId.get(agent.agentRunId) ?? null,
       expectedActivityRevision: expectedActivityRevisionByRunId.get(agent.agentRunId)!,
     });
-    if (replacement) activityReplacements.push(replacement);
+    if (memberRunState) memberRunStates.push(memberRunState);
     return Object.freeze({ agentRunId: agent.agentRunId, memberAddress: agent.memberAddress, agentContext: context });
   });
   const view = createTeamExecutionViewState({
     rootTeamRunId: input.teamRunId,
     rootActive: raw.isActive,
     executionTree: tree,
+    closedTaskExecutions,
     messages,
     configuration: createTeamConfigurationView({ tree, workspaceMetadataByAddress: workspaces }),
     initialFocusedAgentRunId,
@@ -307,7 +334,7 @@ const hydrateCurrentTeamRunContext = async (
       modelConfigEditability: raw.modelConfigEditability,
     },
     projectionByAgentRunId,
-    activityReplacements: Object.freeze(activityReplacements),
+    memberRunStates: Object.freeze(memberRunStates),
     hydratedContext: Object.freeze({ view }),
   };
 };

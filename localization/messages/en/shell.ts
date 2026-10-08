@@ -5,7 +5,7 @@ const shellMessages = {
   'shell.navigation.chat': 'Chat',
   'shell.components.AppLeftPanel.new_chat': 'New chat',
   'shell.components.AppLeftPanel.drafts': 'Drafts',
-  'shell.components.AppLeftPanel.draft_marker': 'Draft',
+  'shell.components.AppLeftPanel.draft': 'Draft',
   'shell.components.AppLeftPanel.discard_draft': 'Discard draft',
   'shell.components.AppLeftPanel.draft_empty': 'Empty draft',
   'shell.navigation.agents': 'Agents',
@@ -18,6 +18,7 @@ const shellMessages = {
   'shell.navigation.projects': 'Projects',
   'shell.navigation.workspaces': 'Workspaces',
   'shell.navigation.settings': 'Settings',
+  'shell.rightTabs.projects': 'Projects',
   'shell.rightTabs.files': 'Files',
   'shell.rightTabs.team': 'Team',
   'shell.rightTabs.org': 'Org',
@@ -168,6 +169,7 @@ const shellMessages = {
   'shell.components.app.AppUpdateNotice.version.unknown': 'unknown',
   'shell.components.app.AppUpdateNotice.version.currentToNew': 'Current {{current}} → New {{next}}',
   'shell.components.app.AppUpdateNotice.version.currentOnly': 'Current {{current}}',
+  'shell.startTools.show': 'Show tools',
 } satisfies TranslationCatalog;
 
 export default shellMessages;

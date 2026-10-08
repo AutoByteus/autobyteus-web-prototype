@@ -1,7 +1,6 @@
 import { computed, type ComputedRef } from 'vue';
 import { useRoute, type RouteLocationRaw } from 'vue-router';
 import { useApplicationsCapabilityStore } from '~/stores/applicationsCapabilityStore';
-import { useProjectsCapabilityStore } from '~/stores/projectsCapabilityStore';
 import { isFeatureAvailableInRuntime } from '~/utils/mobileFeatureGates';
 
 export type ShellPrimaryNavKey =
@@ -90,7 +89,6 @@ export function useShellPrimaryNavigation(): {
 } {
   const route = useRoute();
   const applicationsCapabilityStore = useApplicationsCapabilityStore();
-  const projectsCapabilityStore = useProjectsCapabilityStore();
 
   // An open run: an Agent run in chat (`/chat?id=…`) or a Team/Org run in the workspace view.
   const isRunOpen = computed(() => route.path.startsWith('/workspace')
@@ -105,7 +103,7 @@ export function useShellPrimaryNavigation(): {
         return isFeatureAvailableInRuntime('desktopSettings');
       }
       if (item.key === 'projects') {
-        return projectsCapabilityStore.isEnabled && isFeatureAvailableInRuntime('projects');
+        return isFeatureAvailableInRuntime('projects');
       }
       return true;
     });
@@ -121,7 +119,6 @@ export function useShellPrimaryNavigation(): {
     isRunOpen,
     ensurePrimaryNavigationReady: () => Promise.allSettled([
       applicationsCapabilityStore.ensureResolved(),
-      projectsCapabilityStore.ensureResolved(),
     ]),
   };
 }

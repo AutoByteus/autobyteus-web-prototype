@@ -1,6 +1,6 @@
 <template>
-  <!-- run-settings-ui-unification (round 33): the Org launch page is a page of its own like New chat;
-       its tools stay behind one small icon, as on New chat. Runs keep the workspace layout. -->
+  <!-- The Org launch page (DEC-005: the existing configuration route) is a start surface like New
+       chat: outside the run views' tool strip, its tools behind one icon. Runs keep the workspace layout. -->
   <div v-if="showOrgLaunch" class="flex h-full min-h-0 min-w-0 flex-col bg-white font-sans text-gray-800" data-test="org-launch-route">
     <WorkspaceToolShell start-surface>
       <div class="flex h-full min-h-0 min-w-0">
@@ -22,10 +22,10 @@ import { useServerSettingsStore } from '~/stores/serverSettings';
 import { useWorkspaceRouteSelection } from '~/composables/workspace/useWorkspaceRouteSelection';
 import { useWorkspaceFileContentVisible } from '~/composables/workspace/useWorkspaceFileContentVisible';
 import WorkspaceAdaptiveLayout from '~/components/layout/WorkspaceAdaptiveLayout.vue';
-import OrgLaunchPage from '~/components/run-settings/OrgLaunchPage.vue';
 import WorkspaceToolShell from '~/components/layout/WorkspaceToolShell.vue';
+import OrgLaunchPage from '~/components/run-settings/OrgLaunchPage.vue';
 import { START_SURFACE_WORKSPACE, startSurfaceWorkspaceOf } from '~/composables/layout/useStartSurfaceTools';
-import { useOrgLaunchDraftStore } from '~/stores/orgLaunchDraftStore';
+import { useAgentOrgLaunchDraftStore } from '~/stores/agentOrgLaunchDraftStore';
 
 const serverSettingsStore = useServerSettingsStore();
 
@@ -47,9 +47,9 @@ watch(
 
 const showFileContent = useWorkspaceFileContentVisible();
 const showOrgLaunch = computed(() => route.query.rootSubjectKind === 'agent_org' && route.query.mode === 'configuration');
-const orgLaunchDrafts = useOrgLaunchDraftStore();
-// On the Org launch page, Files and Terminal use the workspace chosen in its settings.
-provide(START_SURFACE_WORKSPACE, computed(() => (showOrgLaunch.value ? startSurfaceWorkspaceOf(orgLaunchDrafts.draft?.workspace) : null)));
+const orgLaunchDrafts = useAgentOrgLaunchDraftStore();
+// On the Org launch page, Files and Terminal use the workspace chosen on its card.
+provide(START_SURFACE_WORKSPACE, computed(() => (showOrgLaunch.value ? startSurfaceWorkspaceOf(orgLaunchDrafts.draft?.root.workspace) : null)));
 
 onMounted(() => {
   console.log('Workspace.vue: Mounted. Fetching server settings and loading profiles...');

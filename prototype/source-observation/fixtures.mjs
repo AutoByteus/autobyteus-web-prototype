@@ -14,7 +14,6 @@ export const scenarioCatalog = Object.freeze({
   loading: 'Successful responses are delayed by 1.5 seconds so loading surfaces remain observable.',
   team_launch: 'Populated catalogs with an empty history and a deterministic newly launched Team execution.',
   apps_disabled: 'Connected populated data with Applications capability disabled.',
-  projects_disabled: 'Connected populated data with the Projects capability at its initialized-disabled default.',
   bootstrap_error: 'Node health returns 503 and the Electron bridge can report startup failure.',
   token_empty: 'Token Statistics has full coverage but no tracked usage for the selected range.',
   token_partial: 'Token Statistics has tracked usage with partial history coverage and partial pricing.',
@@ -31,7 +30,6 @@ export const baseState = () => ({
   requestDelayMs: 0,
   applicationsEnabled: true,
   managedGatewayEnabled: true,
-  projectsEnabled: true,
   operationFailures: {},
 })
 
@@ -210,8 +208,24 @@ const agentRootCollaboration = {
           ],
           handoffs: [], defaultLaunchConfiguration: agentRootLaunch, taskExecutions: [], addedAt: fixedNow, addedViaAgentRunId: run.runId },
       ],
-      taskExecutions: [],
+      // WEB-BASELINE-REFRESH-008 (1cd1a3a): the run's Task workers. The writer works on the
+      // "Review" Task; the Task team finished the "Publish" Task (DONE closes it, so the
+      // Workspaces listing leaves it out); the reviewer works on a Task with no Project.
+      taskExecutions: [
+        { address: '/documentation_writer', agentRunId: 'worker-writer-001', platformAgentRunId: null, delegatorAgentRunId: run.runId, startedAt: fixedNow, source: { kind: 'agent', agentDefinitionId: 'agent-writer', launchConfiguration: agentRootLaunch } },
+        { address: '/release_team', teamRunId: 'worker-team-publish-001', delegatorAgentRunId: run.runId, startedAt: fixedNow,
+          source: { kind: 'agent_team', teamDefinitionId: 'team-product', coordinatorAddress: '/release_team/researcher',
+            members: [{ address: '/release_team/researcher', agentDefinitionId: 'agent-researcher' }, { address: '/release_team/writer', agentDefinitionId: 'agent-writer' }],
+            handoffs: [], defaultLaunchConfiguration: agentRootLaunch },
+          members: [
+            { address: '/release_team/researcher', agentRunId: 'worker-team-publish-researcher-001', platformAgentRunId: null },
+            { address: '/release_team/writer', agentRunId: 'worker-team-publish-writer-001', platformAgentRunId: null },
+          ],
+          taskExecutions: [] },
+        { address: '/research_assistant', agentRunId: 'worker-temp-researcher-001', platformAgentRunId: null, delegatorAgentRunId: run.runId, startedAt: fixedNow, source: { kind: 'agent', agentDefinitionId: 'agent-researcher', launchConfiguration: agentRootLaunch } },
+      ],
     },
+    closed_task_executions: [{ teamRunId: 'worker-team-publish-001' }],
     communication_messages: { schemaVersion: 1, subjectKind: 'agent', hostRunId: run.runId, messages: [
       { messageId: 'collab-message-001', senderAgentRunId: 'collab-writer-001', receiverAgentRunId: run.runId, content: 'The navigation notes are drafted.', messageType: 'direct_message', referenceFiles: [], createdAt: fixedNow },
     ] },
@@ -374,22 +388,37 @@ const project = {
   description: 'Synthetic project linking the prototype workspace and its launch tasks.',
   createdAt: fixedNow,
   updatedAt: fixedNow,
-  workspaces: [{ __typename: 'ProjectWorkspace', workspaceId: 'workspace-prototype', workspaceRootPath: '/synthetic/prototype-workspace', displayName: 'Prototype Workspace', description: 'Primary synthetic workspace for launch review.', addedAt: fixedNow, availability: 'AVAILABLE' }],
-  taskCount: 3,
-  openTaskCount: 2,
+  workspaces: [{ __typename: 'ProjectWorkspace', workspaceRootPath: '/synthetic/prototype-workspace', displayName: 'prototype-workspace', description: 'Primary synthetic workspace for launch review.', availability: 'AVAILABLE' }],
+  taskCount: 4,
+  openTaskCount: 3,
 }
 
+// WEB-BASELINE-REFRESH-008 (4d469b0): a Task's root is the agent or team it was handed to,
+// hosted by a run, with that worker's own live status (or Couldn't start / closed by DONE).
+const taskRoot = (fields) => ({ __typename: 'TaskRoot', kind: 'agent', recipientAddress: null, teamRunId: null, hostRoot: { __typename: 'TaskRootHost', kind: 'agent', runId: run.runId }, start: 'started', startError: null, closed: false, status: 'idle', ...fields })
+
 const projectTasks = [
-  { __typename: 'ProjectTask', taskId: 'task-outline', projectId: project.projectId, description: 'Outline the launch checklist.', status: 'TODO', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [] },
-  { __typename: 'ProjectTask', taskId: 'task-review', projectId: project.projectId, description: 'Review the synthetic navigation baseline.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [] },
-  { __typename: 'ProjectTask', taskId: 'task-publish', projectId: project.projectId, description: 'Publish the deterministic evidence summary.', status: 'DONE', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [] },
+  { __typename: 'ProjectTask', taskId: 'task-outline', projectId: project.projectId, description: 'Outline the launch checklist.', status: 'TODO', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [], root: null },
+  { __typename: 'ProjectTask', taskId: 'task-review', projectId: project.projectId, description: 'Review the synthetic navigation baseline.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+    root: taskRoot({ recipientAddress: '/documentation_writer', ingressAgentRunId: 'worker-writer-001', status: 'running' }) },
+  { __typename: 'ProjectTask', taskId: 'task-translate', projectId: project.projectId, description: 'Translate the release summary.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+    root: taskRoot({ recipientAddress: '/translator', ingressAgentRunId: 'worker-translator-001', start: 'failed', startError: { __typename: 'TaskRootStartError', code: 'AGENT_DEFINITION_NOT_FOUND', message: 'No agent is available at /translator.' }, status: 'offline' }) },
+  { __typename: 'ProjectTask', taskId: 'task-publish', projectId: project.projectId, description: 'Publish the deterministic evidence summary.', status: 'DONE', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+    root: taskRoot({ kind: 'team', recipientAddress: '/release_team', ingressAgentRunId: 'worker-team-publish-researcher-001', teamRunId: 'worker-team-publish-001', closed: true, status: 'offline' }) },
+]
+
+// WEB-BASELINE-REFRESH-008 (4d469b0): Tasks with no Project ("Temp tasks"), created by an
+// agent's described delegation; read only.
+const tasksWithoutProject = [
+  { __typename: 'TaskWithoutProject', taskId: 'temp-task-links', description: 'Collect the changelog links for the synthetic release.', status: 'IN_PROGRESS', referenceFiles: ['/synthetic/prototype-workspace/docs/evidence.md'], createdAt: fixedNow, updatedAt: fixedNow,
+    root: taskRoot({ recipientAddress: '/research_assistant', ingressAgentRunId: 'worker-temp-researcher-001', status: 'idle' }) },
+  { __typename: 'TaskWithoutProject', taskId: 'temp-task-check', description: 'Check the synthetic glossary for duplicates.', status: 'TODO', referenceFiles: [], createdAt: fixedNow, updatedAt: fixedNow, root: null },
 ]
 
 // WEB-BASELINE-REFRESH-004 (0a32261): Projects and Tasks are authored on pages.
 // Saves, deletes and workspace links update this small in-memory copy, owned by
 // the caller's `state` (the observation node or one browser context), so both
 // sides show the same scripted outcome. Reset with the scenario.
-const projectWorkspaceChoice = id => [workspace, ...createdWorkspaces].find(item => item.workspaceId === id)
 const createdWorkspaces = []
 export const createdWorkspaceFor = (rootPath) => {
   const root = String(rootPath || '').trim()
@@ -402,7 +431,7 @@ export const createdWorkspaceFor = (rootPath) => {
 }
 export const projectData = (state) => {
   if (!state.projectData) {
-    state.projectData = { projects: [structuredClone(project)], tasks: structuredClone(projectTasks), seq: 0 }
+    state.projectData = { projects: [structuredClone(project)], tasks: structuredClone(projectTasks), tasksWithoutProject: structuredClone(tasksWithoutProject), seq: 0 }
   }
   return state.projectData
 }
@@ -411,19 +440,20 @@ const withCounts = (data, item) => {
   const tasks = data.tasks.filter(task => task.projectId === item.projectId)
   return { ...item, taskCount: tasks.length, openTaskCount: tasks.filter(task => task.status !== 'DONE').length }
 }
-const projectLinks = (links = [], previous = []) => links.map(link => {
-  const kept = previous.find(item => item.workspaceId === link.workspaceId)
-  const choice = projectWorkspaceChoice(link.workspaceId)
+// 9dad89b: a link is an absolute folder path; its name is the folder name, and it is
+// AVAILABLE while a workspace is registered at that path.
+const projectLinks = (links = []) => links.map(link => {
+  const path = String(link.workspaceRootPath || '').trim().replace(/\/+$/, '') || '/'
   return {
     __typename: 'ProjectWorkspace',
-    workspaceId: link.workspaceId,
-    workspaceRootPath: kept?.workspaceRootPath || choice?.workspaceRootPath || `/synthetic/${link.workspaceId}`,
-    displayName: kept?.displayName || choice?.displayName || link.workspaceId,
-    description: link.description || '',
-    addedAt: kept?.addedAt || fixedNow,
-    availability: 'AVAILABLE',
+    workspaceRootPath: path,
+    displayName: path.split('/').filter(Boolean).at(-1) || path,
+    description: (link.description || '').trim(),
+    availability: [workspace, ...createdWorkspaces].some(item => item.workspaceRootPath === path) ? 'AVAILABLE' : 'UNREGISTERED',
   }
 })
+const invalidWorkspacePath = (links = []) => links.some(link => !String(link.workspaceRootPath || '').trim().startsWith('/'))
+const workspacePathError = () => projectError('Workspace path must be an absolute folder path on this node (without NUL characters).', 'WORKSPACE_PATH_INVALID')
 const contextFilesFrom = (state, names = []) => names.map(name => state.taskContextFiles?.[name]).filter(Boolean)
 export function projectMutationFixture(operationName, variables = {}, state) {
   const data = projectData(state)
@@ -434,6 +464,7 @@ export function projectMutationFixture(operationName, variables = {}, state) {
     case 'CreateProject': {
       if (!String(input.name || '').trim()) return projectError('Project name is required.', 'PROJECT_NAME_REQUIRED')
       if (named(input.name)) return projectError('A Project with this name already exists.', 'PROJECT_NAME_TAKEN')
+      if (invalidWorkspacePath(input.workspaces)) return workspacePathError()
       const created = { __typename: 'Project', projectId: `project-created-${++data.seq}`, name: input.name.trim(), description: input.description || '', createdAt: fixedNow, updatedAt: fixedNow, workspaces: projectLinks(input.workspaces) }
       data.projects.push(created)
       return { createProject: withCounts(data, created) }
@@ -442,7 +473,8 @@ export function projectMutationFixture(operationName, variables = {}, state) {
       const current = find(input.projectId)
       if (!current) return projectError('Project not found.', 'PROJECT_NOT_FOUND')
       if (named(input.name)) return projectError('A Project with this name already exists.', 'PROJECT_NAME_TAKEN')
-      Object.assign(current, { name: input.name.trim(), description: input.description || '', updatedAt: fixedNow, ...(input.workspaces ? { workspaces: projectLinks(input.workspaces, current.workspaces) } : {}) })
+      if (input.workspaces && invalidWorkspacePath(input.workspaces)) return workspacePathError()
+      Object.assign(current, { name: input.name.trim(), description: input.description || '', updatedAt: fixedNow, ...(input.workspaces ? { workspaces: projectLinks(input.workspaces) } : {}) })
       return { updateProject: withCounts(data, current) }
     }
     case 'DeleteProject': {
@@ -455,8 +487,8 @@ export function projectMutationFixture(operationName, variables = {}, state) {
     case 'RemoveProjectWorkspace': {
       const current = find(input.projectId)
       if (!current) return projectError('Project not found.', 'PROJECT_NOT_FOUND')
-      const others = current.workspaces.filter(item => item.workspaceId !== input.workspaceId)
-      const existing = current.workspaces.find(item => item.workspaceId === input.workspaceId)
+      const others = current.workspaces.filter(item => item.workspaceRootPath !== input.workspaceRootPath)
+      const existing = current.workspaces.find(item => item.workspaceRootPath === input.workspaceRootPath)
       current.workspaces = operationName === 'RemoveProjectWorkspace' ? others
         : operationName === 'AddProjectWorkspace' ? [...current.workspaces, ...projectLinks([input])]
           : current.workspaces.map(item => item === existing ? { ...item, description: input.description || '' } : item)
@@ -465,7 +497,7 @@ export function projectMutationFixture(operationName, variables = {}, state) {
     }
     case 'CreateProjectTask': {
       if (!String(input.description || '').trim()) return projectError('Task description is required.', 'TASK_DESCRIPTION_REQUIRED')
-      const task = { __typename: 'ProjectTask', taskId: `task-created-${++data.seq}`, projectId: input.projectId, description: input.description.trim(), status: 'TODO', createdAt: fixedNow, updatedAt: `2026-08-22T05:${String(data.seq).padStart(2, '0')}:00.000Z`, contextFiles: contextFilesFrom(state, input.contextDraft?.storedFilenames) }
+      const task = { __typename: 'ProjectTask', taskId: `task-created-${++data.seq}`, projectId: input.projectId, description: input.description.trim(), status: 'TODO', createdAt: fixedNow, updatedAt: `2026-08-22T05:${String(data.seq).padStart(2, '0')}:00.000Z`, contextFiles: contextFilesFrom(state, input.contextDraft?.storedFilenames), root: null }
       data.tasks.push(task)
       return { createProjectTask: task }
     }
@@ -626,6 +658,44 @@ const providerCatalogSnapshot = {
   audioModels: [], imageModels: [], videoModels: [],
 }
 
+// WEB-BASELINE-REFRESH-008 (d45fe62 run settings): two more synthetic runtimes, so the
+// shipped run settings show model + runtime choice across runtimes, thinking effort, and
+// "other model settings" (Codex Fast mode, SR-005). Values are invented and illustrative
+// (carried from the accepted run-settings review fixture); no inference request is made.
+const extraRuntimeModel = (runtime, providerId, providerName, identifier, name, configSchema) => ({
+  ...model, modelIdentifier: identifier, name, value: identifier, canonicalName: identifier,
+  description: 'Synthetic run-settings model; no inference request is made.',
+  providerId, providerName, runtime, configSchema,
+  maxContextTokens: 200000, activeContextTokens: 100000, maxInputTokens: 190000, maxOutputTokens: 16000,
+})
+const codexEffort = (levels, fallback) => ({ name: 'reasoning_effort', type: 'enum', required: false, default_value: fallback, enum_values: levels, description: 'Controls reasoning depth for Codex turn/start.' })
+const codexFast = { name: 'service_tier', label: 'Fast mode', type: 'enum', required: false, enum_values: ['fast'], description: 'Enable Codex Fast mode for this model. Default leaves Codex service tier unchanged.' }
+const extraRuntimeSnapshot = (runtimeKind, providerId, providerName, models) => ({
+  __typename: 'ProviderModelCatalogSnapshotObject',
+  runtimeKind,
+  ownerProvider: { __typename: 'CatalogProviderObject', id: providerId, name: providerName, providerType: 'mock', isCustom: false, baseUrl: 'mock://local', catalogMode: 'STATIC' },
+  sources: [{ __typename: 'ModelSourceStatusObject', modelKind: 'LLM', state: 'READY', modelCount: models.length, successfulUnitCount: 1, failedUnitCount: 0, safeMessage: null }],
+  llmModels: models.map(item => ({ __typename: 'ModelDetail', ...item })),
+  audioModels: [], imageModels: [], videoModels: [],
+})
+const extraRuntimeSnapshots = {
+  codex_app_server: extraRuntimeSnapshot('codex_app_server', 'openai', 'OpenAI', [
+    extraRuntimeModel('codex_app_server', 'openai', 'OpenAI', 'gpt-5.6-sol', 'GPT-5.6 Sol', { parameters: [codexEffort(['low', 'medium', 'high', 'xhigh'], 'medium'), codexFast] }),
+    extraRuntimeModel('codex_app_server', 'openai', 'OpenAI', 'gpt-5.6-mini', 'GPT-5.6 Mini', {}),
+    extraRuntimeModel('codex_app_server', 'openai', 'OpenAI', 'gpt-5.6-instant', 'GPT-5.6 Instant', { parameters: [codexFast] }),
+  ]),
+  claude_agent_sdk: extraRuntimeSnapshot('claude_agent_sdk', 'anthropic', 'Anthropic', [
+    extraRuntimeModel('claude_agent_sdk', 'anthropic', 'Anthropic', 'claude-sonnet-4.5', 'Claude Sonnet 4.5', {
+      type: 'object',
+      properties: {
+        thinking_enabled: { type: 'boolean', title: 'Thinking', default: false },
+        reasoning_effort: { type: 'string', title: 'Effort', enum: ['low', 'medium', 'high'], default: 'medium' },
+      },
+    }),
+  ]),
+}
+const extraRuntimeKinds = (scenario) => scenario === 'empty' ? [] : Object.keys(extraRuntimeSnapshots)
+
 const tool = {
   __typename: 'ToolDefinitionDetail',
   name: 'read_file',
@@ -732,10 +802,9 @@ export function fixtureContext(state) {
   const skills = empty ? [] : [skill]
   const tools = empty ? [] : [tool]
   const orgs = empty ? [] : [org]
-  const projectsEnabled = state.scenario === 'projects_disabled' ? false : state.projectsEnabled !== false
   const data = projectData(state)
   const projects = empty ? [] : data.projects.map(item => withCounts(data, item))
-  return { empty, appsEnabled, agents, teams, applications, workspaces, skills, tools, orgs, projectsEnabled, projects }
+  return { empty, appsEnabled, agents, teams, applications, workspaces, skills, tools, orgs, projects }
 }
 
 export function operationFixture(operationName, variables = {}, state) {
@@ -797,9 +866,9 @@ export function operationFixture(operationName, variables = {}, state) {
     GetAgentOrgEndpointCatalog: { agentOrgEndpointCatalog: { __typename: 'DefinitionEndpointCatalog', from: orgEndpoints, to: orgEndpoints } },
     GetAgentOrgReferencedAgent: { agentDefinition: [agent, secondAgent].find(item => item.id === variables.id) || null },
     GetAgentOrgReferencedTeam: { agentTeamDefinition: variables.id === team.id ? team : null },
-    ListCollaborationRootHistory: { listCollaborationRootHistory: c.empty || teamLaunchScenario ? [] : [{ __typename: 'AgentOrgRootHistoryObject', root_subject_kind: 'agent_org', root_run_id: orgRunId, created_at: fixedNow, archived_at: null, is_active: false, summary: 'Coordinate the synthetic launch review', org: orgExecutionTree }] },
+    ListCollaborationRootHistory: { listCollaborationRootHistory: c.empty || teamLaunchScenario ? [] : [{ __typename: 'AgentOrgRootHistoryObject', root_subject_kind: 'agent_org', root_run_id: orgRunId, created_at: fixedNow, archived_at: null, is_active: false, summary: 'Coordinate the synthetic launch review', org: orgExecutionTree, closed_task_executions: [] }] },
     // 0a32261: one Org root's history row, re-read after the Org run is opened.
-    GetAgentOrgRootHistory: { getAgentOrgRootHistory: variables.orgRunId === orgRunId && !c.empty ? { __typename: 'AgentOrgRootHistoryObject', root_subject_kind: 'agent_org', root_run_id: orgRunId, created_at: fixedNow, archived_at: null, is_active: false, summary: 'Coordinate the synthetic launch review', org: orgExecutionTree } : null },
+    GetAgentOrgRootHistory: { getAgentOrgRootHistory: variables.orgRunId === orgRunId && !c.empty ? { __typename: 'AgentOrgRootHistoryObject', root_subject_kind: 'agent_org', root_run_id: orgRunId, created_at: fixedNow, archived_at: null, is_active: false, summary: 'Coordinate the synthetic launch review', org: orgExecutionTree, closed_task_executions: [] } : null },
     AgentOrgRunConfig: { getAgentOrgRunConfig: { orgRunId, executionTree: orgExecutionTree, isActive: false, editability: { editable: true, reason: null } } },
     GetAgentOrgExecutionCheckpoint: { getAgentOrgExecutionCheckpoint: { orgRunId, changeSequence: 1, hasOpenExecutionWork: false } },
     GetAgentOrgMemberRunProjection: { getAgentOrgMemberRunProjection: { agentRunId: variables.agentRunId || 'org-member-analyst-001', memberAddress: variables.memberAddress || '/analyst', summary: 'Coordinate the synthetic launch review', lastActivityAt: fixedNow, conversation: storedConversation('Coordinate the synthetic launch review.', 'The launch review is coordinated with the review team.'), activities: [], hasEarlierActiveTraceEvents: false } },
@@ -808,11 +877,10 @@ export function operationFixture(operationName, variables = {}, state) {
     TeamRunModelOptions: { teamRunModelOptions: [{ scopeKind: 'team', scopeAddress: '/', ...runModelOptions }] },
     AgentOrgRunModelOptions: { agentOrgRunModelOptions: [{ scopeKind: 'org', scopeAddress: '/', ...runModelOptions }] },
     RuntimeCurrentModelDescriptors: { runtimeCurrentModelDescriptors: (variables.identifiers || []).map(identifier => ({ identifier, model: identifier === model.modelIdentifier ? { modelIdentifier: model.modelIdentifier, name: model.name, canonicalName: model.canonicalName, providerName: provider.name, providerType: provider.providerType, description: model.description, configSchema: {} } : null })) },
-    GetProjectsCapability: { projectsCapability: { __typename: 'ProjectsCapability', enabled: c.projectsEnabled, settingKey: 'ENABLE_PROJECTS', source: c.projectsEnabled ? 'SERVER_SETTING' : 'INITIALIZED_DISABLED' } },
-    SetProjectsEnabled: { setProjectsEnabled: { __typename: 'ProjectsCapability', enabled: Boolean(variables.enabled), settingKey: 'ENABLE_PROJECTS', source: 'SERVER_SETTING' } },
     GetProjects: { projects: c.projects },
     GetProject: { project: c.projects.find(item => item.projectId === variables.projectId) || null },
     GetProjectTasks: { projectTasks: c.empty ? [] : projectData(state).tasks.filter(task => task.projectId === variables.projectId) },
+    GetTasksWithoutProject: { tasksWithoutProject: c.empty ? [] : projectData(state).tasksWithoutProject },
     ListAgentOrgsWithMemory: { listAgentOrgsWithMemory: paged(c.empty ? [] : [{ orgDefinitionId: org.id, orgDefinitionName: org.name, orgRunCount: 1, memberMemoryCount: 3, latestMemoryAt: fixedNow, memory: memoryFlags }]) },
     ListAgentOrgRunsWithMemory: { listAgentOrgRunsWithMemory: paged(c.empty ? [] : [{ orgRunId, orgDefinitionId: org.id, orgDefinitionName: org.name, summary: 'Coordinate the synthetic launch review', workspaceRootPath: workspace.workspaceRootPath, createdAt: fixedNow, lastUpdatedAt: fixedNow, memory: memoryFlags, memberTargets: orgMemoryTargets }]) },
     GetAgentTeamDefinitions: { agentTeamDefinitions: c.teams },
@@ -852,7 +920,8 @@ export function operationFixture(operationName, variables = {}, state) {
     GetProviderSettings: { providerSettings: c.empty ? [] : [{ provider, llmModels: [model, thinkingModel], audioModels: [], imageModels: [], videoModels: [] }] },
     GetAvailableLLMProvidersWithModels: { availableLlmProvidersWithModels: c.empty ? [] : [{ provider, models: [model, thinkingModel] }], availableAudioProvidersWithModels: [], availableImageProvidersWithModels: [], availableVideoProvidersWithModels: [] },
     GetProviderCredentialSettings: { providerCredentialSettings: c.empty ? [] : [{ provider: providerCatalogSnapshot.ownerProvider, apiKeyConfigured: true }] },
-    GetProviderModelCatalogSnapshots: { providerModelCatalogSnapshots: c.empty ? [] : [providerCatalogSnapshot] },
+    GetProviderModelCatalogSnapshots: { providerModelCatalogSnapshots: c.empty ? []
+      : extraRuntimeSnapshots[variables.runtimeKind] ? [extraRuntimeSnapshots[variables.runtimeKind]] : [providerCatalogSnapshot] },
     EnsureProviderModelCatalog: { ensureProviderModelCatalog: providerCatalogSnapshot },
     ReloadProviderModelCatalog: { reloadProviderModelCatalog: providerCatalogSnapshot },
     GetGeminiSetupConfig: { getGeminiSetupConfig: { activeMode: null, aiStudioConfigured: false, vertexExpressConfigured: false, vertexProject: { project: '', location: '' } } },
@@ -867,8 +936,8 @@ export function operationFixture(operationName, variables = {}, state) {
     UseGeminiMode: { useGeminiMode: { activeMode: variables.mode, aiStudioConfigured: true, vertexExpressConfigured: true, vertexProject: { project: 'prototype-project', location: 'us-central1' } } },
     GetRuntimeAvailabilities: { runtimeAvailabilities: [{ __typename: 'RuntimeAvailabilityObject', runtimeKind: 'autobyteus', enabled: true, reason: null }] },
     // 0a32261: runtime availability is read per runtime kind.
-    GetRuntimeAvailabilityKinds: { runtimeAvailabilityKinds: state.scenario === 'agy_runtime' ? ['autobyteus', 'antigravity_cli'] : ['autobyteus'] },
-    GetRuntimeAvailability: { runtimeAvailability: { __typename: 'RuntimeAvailabilityObject', runtimeKind: variables.runtimeKind, enabled: variables.runtimeKind === 'autobyteus' || (state.scenario === 'agy_runtime' && variables.runtimeKind === 'antigravity_cli'), reason: null } },
+    GetRuntimeAvailabilityKinds: { runtimeAvailabilityKinds: ['autobyteus', ...extraRuntimeKinds(state.scenario), ...(state.scenario === 'agy_runtime' ? ['antigravity_cli'] : [])] },
+    GetRuntimeAvailability: { runtimeAvailability: { __typename: 'RuntimeAvailabilityObject', runtimeKind: variables.runtimeKind, enabled: variables.runtimeKind === 'autobyteus' || extraRuntimeKinds(state.scenario).includes(variables.runtimeKind) || (state.scenario === 'agy_runtime' && variables.runtimeKind === 'antigravity_cli'), reason: null } },
     // 0a32261: the live-run `@` menu offers shared Agents and Teams that are not in the run.
     GetCollaboratorMentionCandidates: { collaboratorMentionCandidates: { availability: 'AVAILABLE', candidates: c.empty ? [] : [
       { kind: 'agent', definitionId: secondAgent.id, name: secondAgent.name, description: secondAgent.description, memberCount: null, coordinatorName: null },
@@ -878,19 +947,20 @@ export function operationFixture(operationName, variables = {}, state) {
     GetAgentRunCollaborationMemberEventMonitorActiveTracePage: { agentRunCollaborationMemberEventMonitorActiveTracePage: variables.hostRunId === run.runId ? agentRootMemberEarlierPage(variables) : null },
     GetAgentRunCollaborationMemberProjection: { agentRunCollaborationMemberProjection: variables.hostRunId === run.runId ? agentRootMemberProjection(variables) : null },
     GetWorkingContextCompactionStrategies: { getWorkingContextCompactionStrategies: [{ id: 'default', name: 'Default' }] },
-    ListWorkspaceRunHistory: { listWorkspaceRunHistory: c.empty || teamLaunchScenario ? [] : [{ workspaceRootPath: workspace.workspaceRootPath, workspaceName: workspace.displayName, agentDefinitions: [{ agentDefinitionId: agent.id, agentName: agent.name, runs: [run] }], teamDefinitions: [{ teamDefinitionId: team.id, teamDefinitionName: team.name, runs: state.launchedTeamRun ? [launchedTeamRunHistoryItem, teamRun] : [teamRun] }] }] },
-    GetWorkspaceRunHistory: { workspaceRunHistory: c.empty ? null : { workspaceRootPath: workspace.workspaceRootPath, workspaceName: workspace.displayName, agentDefinitions: teamLaunchScenario ? [] : [{ agentDefinitionId: agent.id, agentName: agent.name, runs: [run] }], teamDefinitions: teamLaunchScenario ? [] : [{ teamDefinitionId: team.id, teamDefinitionName: team.name, runs: [teamRun] }] } },
+    ListWorkspaceRunHistory: { listWorkspaceRunHistory: c.empty || teamLaunchScenario ? [] : [{ workspaceRootPath: workspace.workspaceRootPath, workspaceName: workspace.displayName, agentDefinitions: state.archivedAgentGroup ? [] : [{ agentDefinitionId: agent.id, agentName: agent.name, runs: [run] }], teamDefinitions: [{ teamDefinitionId: team.id, teamDefinitionName: team.name, runs: state.launchedTeamRun ? [launchedTeamRunHistoryItem, teamRun] : [teamRun] }] }] },
+    GetWorkspaceRunHistory: { workspaceRunHistory: c.empty ? null : { workspaceRootPath: workspace.workspaceRootPath, workspaceName: workspace.displayName, agentDefinitions: teamLaunchScenario || state.archivedAgentGroup ? [] : [{ agentDefinitionId: agent.id, agentName: agent.name, runs: [run] }], teamDefinitions: teamLaunchScenario ? [] : [{ teamDefinitionId: team.id, teamDefinitionName: team.name, runs: [teamRun] }] } },
     GetRunProjection: { getRunProjection: { runId: run.runId, summary: run.summary, lastActivityAt: fixedNow, conversation: storedConversation('Compare current navigation states.', 'The navigation states match the synthetic baseline.'), activities: [], hasEarlierActiveTraceEvents: false } },
     GetRunFileChanges: { getRunFileChanges: [{ id: 'file-change-1', runId: run.runId, path: 'README.md', type: 'modified', status: 'ready', sourceTool: 'write_file', sourceInvocationId: 'tool-1', content: '# Fixture', createdAt: fixedNow, updatedAt: fixedNow }] },
     GetRunEventMonitorActiveTracePage: { getRunEventMonitorActiveTracePage: { beforeCursor: null, hasEarlier: false, loadedEarlierCount: 0, activeGeneration: 0, cursorStatus: 'IDLE', events: [] } },
     GetTeamMemberEventMonitorActiveTracePage: { getTeamMemberEventMonitorActiveTracePage: { beforeCursor: null, hasEarlier: false, loadedEarlierCount: 0, activeGeneration: 0, cursorStatus: 'IDLE', events: [] } },
     GetTeamRunResumeConfig: { getTeamRunResumeConfig: variables.teamRunId === createdTeamRunId
-      ? { teamRunId: createdTeamRunId, isActive: true, executionTree: createdTeamExecutionTree, modelConfigEditability: { editable: false, reason: null } }
-      : { teamRunId: teamRun.teamRunId, isActive: false, executionTree: storedTeamExecutionTree, modelConfigEditability: { editable: true, reason: null } } },
+      ? { teamRunId: createdTeamRunId, isActive: true, executionTree: createdTeamExecutionTree, closedTaskExecutions: [], modelConfigEditability: { editable: false, reason: null } }
+      : { teamRunId: teamRun.teamRunId, isActive: false, executionTree: storedTeamExecutionTree, closedTaskExecutions: [], modelConfigEditability: { editable: true, reason: null } } },
     GetAgentOrgRunInspection: { getAgentOrgRunInspection: {
       root_subject_kind: 'agent_org', root_run_id: orgRunId,
       root_org: {
         base_change_sequence: 1, is_active: false, execution_tree: orgExecutionTree,
+        closed_task_executions: [],
         communication_messages: { schemaVersion: 1, subjectKind: 'agent_org', orgRunId, messages: [] },
         // A stored (inactive) root reports no live AgentRun statuses.
         agent_statuses: [],
@@ -908,6 +978,11 @@ export function operationFixture(operationName, variables = {}, state) {
       ? { runId: 'run-prepared-fixture', isActive: true, metadataConfig: { agentDefinitionId: dailyAssistant.id, workspaceRootPath: tempWorkspace.workspaceRootPath, llmModelIdentifier: model.modelIdentifier, llmConfig: {}, autoExecuteTools: true, runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: false, llmConfig: false, autoExecuteTools: false, workspaceRootPath: false, runtimeKind: false }, modelConfigEditability: { editable: false, reason: null } }
       : { runId: run.runId, isActive: false, metadataConfig: { agentDefinitionId: agent.id, workspaceRootPath: workspace.workspaceRootPath, llmModelIdentifier: model.modelIdentifier, llmConfig: {}, autoExecuteTools: false, runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: true, llmConfig: true, autoExecuteTools: true, workspaceRootPath: true, runtimeKind: true }, modelConfigEditability: { editable: false, reason: null } } },
     DeleteStoredRun: { deleteStoredRun: success }, ArchiveStoredRun: { archiveStoredRun: success }, DeleteStoredTeamRun: { deleteStoredTeamRun: success }, ArchiveStoredTeamRun: { archiveStoredTeamRun: success },
+    // 9faa6bc: "Archive all" on an agent group header archives that agent's saved runs in the workspace.
+    // The archived runs leave this caller's in-memory history (reset with the scenario).
+    ArchiveStoredAgentRunGroup: operationName === 'ArchiveStoredAgentRunGroup' && variables.agentDefinitionId === agent.id && !state.archivedAgentGroup
+      ? (state.archivedAgentGroup = true, { archiveStoredAgentRunGroup: { archivedRunIds: [run.runId], activeRunIds: [], failedRunIds: [] } })
+      : { archiveStoredAgentRunGroup: { archivedRunIds: [], activeRunIds: [], failedRunIds: [] } },
     CreateAgentRun: { createAgentRun: { agentRunId: 'run-created-fixture', runId: 'run-created-fixture', status: 'IDLE' } },
     PrepareAgentRun: { prepareAgentRun: { ...success, runId: 'run-prepared-fixture', activationState: 'PREPARED', preparedExpiresAt: null } },
     CancelPreparedAgentRun: { cancelPreparedAgentRun: success }, TerminateAgentRun: { terminateAgentRun: success }, RestoreAgentRun: { restoreAgentRun: { ...run, status: 'IDLE' } }, ApproveToolInvocation: { approveToolInvocation: success },

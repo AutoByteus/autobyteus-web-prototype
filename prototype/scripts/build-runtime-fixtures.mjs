@@ -5,7 +5,7 @@ import { resolve } from 'node:path'
 const root = resolve(new URL('../..', import.meta.url).pathname)
 const sourcePath = resolve(root, 'prototype/fixtures/source-state-snapshots.json')
 const outputPath = resolve(root, 'prototype/fixtures/runtime-state.json')
-const sourceCommit = '10fb69504f99a615e0728ffdd6c1fcab0104ff05'
+const sourceCommit = '1cd1a3abc126df820e334c023621d0fb82de5b7b'
 const source = JSON.parse(await readFile(sourcePath, 'utf8'))
 
 const snapshots = Object.fromEntries(Object.entries(source.snapshots).map(([key, value]) => [key, {
@@ -29,7 +29,6 @@ if (loading.bootstrapPending || !Object.keys(loading.state || {}).length) {
   loading.state = structuredClone(populated.state)
   loading.bootstrapPending = false
   loading.state.applicationsCapability = { capability: null, status: 'loading', error: null }
-  loading.state.projectsCapability = { capability: null, status: 'loading', error: null }
 }
 loading.primaryNavHeight = loading.primaryNavHeight || populated.primaryNavHeight
 

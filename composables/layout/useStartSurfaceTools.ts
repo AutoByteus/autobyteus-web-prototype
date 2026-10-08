@@ -1,17 +1,16 @@
 import { computed, ref, watch, type ComputedRef, type InjectionKey } from 'vue'
 import { useRightPanel } from '~/composables/useRightPanel'
-import { useWorkspaceStore } from '~/stores/workspace'
-import { workspaceMetadataFromWorkspaceInfo } from '~/utils/workspaceMetadata'
-import type { ChatDraftWorkspace } from '~/stores/chatDraftStore'
+import { knownRunWorkspaceOf } from '~/services/workspace/runWorkspaceChoice'
+import type { RunWorkspaceChoice } from '~/types/runSettings/RunWorkspaceChoice'
 import type { WorkspaceMetadata } from '~/types/workspace/WorkspaceMetadata'
 
 /**
- * run-settings-ui-unification: the start surfaces (New chat, the Org launch page) keep the right
- * tools (Files, Terminal, …) out of the way, behind one small icon. Closed until the user opens
- * them; the choice is remembered. Opening also opens the run view's panel, so a run started from
- * here keeps it.
+ * REQ-020: the start surfaces (New chat, the Org launch page) keep the right tools (Files,
+ * Terminal, …) behind one small icon. Closed until opened; the choice is remembered, holds across
+ * switches, and opening also opens the shared panel, so a run started from the page keeps it.
  */
 const STORAGE_KEY = 'autobyteus.chat.startToolsOpen'
+
 const readStored = (): boolean => {
   try { return localStorage.getItem(STORAGE_KEY) === '1' } catch { return false }
 }
@@ -30,22 +29,14 @@ export function useStartSurfaceTools() {
     writeStored(true)
     setRightPanelVisible(true)
   }
-  return { toolsOpen, openTools }
+  const closeTools = () => writeStored(false)
+  return { toolsOpen, openTools, closeTools }
 }
 
-/** The workspace Files and Terminal use on a start surface: the one chosen in its settings. */
-export type StartSurfaceWorkspace = { workspaceId: string | null; workspaceMetadata: WorkspaceMetadata | null }
+/** The workspace Files and Terminal use on a start surface: the one chosen there. */
+export type StartSurfaceWorkspace = Readonly<{ workspaceId: string | null; workspaceMetadata: WorkspaceMetadata | null }>
 export const START_SURFACE_WORKSPACE: InjectionKey<ComputedRef<StartSurfaceWorkspace | null>> = Symbol('startSurfaceWorkspace')
 
-/** A typed folder that is not a known workspace yet has no files to show. */
-export const startSurfaceWorkspaceOf = (workspace: ChatDraftWorkspace | null | undefined): StartSurfaceWorkspace => {
-  const store = useWorkspaceStore()
-  const known = (id: string): StartSurfaceWorkspace => {
-    const info = store.workspaces[id]
-    return { workspaceId: id, workspaceMetadata: store.workspaceMetadataById[id] ?? (info ? workspaceMetadataFromWorkspaceInfo(info) : null) }
-  }
-  if (!workspace) return { workspaceId: null, workspaceMetadata: null }
-  if (workspace.kind === 'existing') return known(workspace.workspaceId)
-  const match = Object.entries(store.workspaces).find(([, info]) => (info as { absolutePath?: string }).absolutePath === workspace.rootPath)
-  return match ? known(match[0]) : { workspaceId: null, workspaceMetadata: null }
-}
+/** Read-only: a typed folder that is not a known workspace yet has no files to show. */
+export const startSurfaceWorkspaceOf = (choice: RunWorkspaceChoice | null | undefined): StartSurfaceWorkspace =>
+  knownRunWorkspaceOf(choice)

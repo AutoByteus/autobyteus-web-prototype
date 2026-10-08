@@ -13,10 +13,10 @@ import sharp from 'sharp'
 const require = createRequire(import.meta.url)
 const icons = Object.fromEntries(['heroicons', 'ph', 'mdi', 'svg-spinners', 'vscode-icons', 'logos'].map(p => [p, require(`@iconify-json/${p}/icons.json`)]))
 const root = resolve(new URL('../..', import.meta.url).pathname)
-const SOURCE = process.env.SOURCE_BASE_URL || 'http://127.0.0.1:4543'
-const PROTO = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4541'
-const MOCK = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4544'
-const OUT = resolve(root, process.env.FLOW_DIR || 'evidence/WEB-BASELINE-REFRESH-007/chat-flows')
+const SOURCE = process.env.SOURCE_BASE_URL || 'http://127.0.0.1:4622'
+const PROTO = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4620'
+const MOCK = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4623'
+const OUT = resolve(root, process.env.FLOW_DIR || 'evidence/WEB-BASELINE-REFRESH-008/chat-flows')
 const CHROME = process.env.CHROMIUM_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const style = '*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}'
 
@@ -214,6 +214,8 @@ async function run(base, target, id) {
     localStorage.setItem('autobyteus.localization.preference-mode', locale)
     localStorage.setItem('autobyteus.prototype.scenario', scenario)
     localStorage.setItem('autobyteus.prototype.context', 'desktop')
+    // WEB-BASELINE-REFRESH-008: design-only data (no source equivalent) is off for comparisons.
+    localStorage.setItem('autobyteus.prototype.designOnlyLayers', 'off')
   }, { scenario: flow.scenario || 'populated', locale: flow.locale || 'en' })
   const page = await ctx.newPage()
   page.setDefaultTimeout(10000)

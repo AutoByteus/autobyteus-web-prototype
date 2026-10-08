@@ -1,0 +1,1089 @@
+{
+  "generatedAt": "2026-10-08T15:19:57.649Z",
+  "source": "http://127.0.0.1:4622",
+  "prototype": "http://127.0.0.1:4620",
+  "mock": "http://127.0.0.1:4623",
+  "results": [
+    {
+      "id": "PRJ-001",
+      "title": "Projects list: New project opens the create page",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/new",
+        "/projects/new"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-002",
+      "title": "Create project: empty name is rejected",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/new",
+        "/projects/new"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-003",
+      "title": "Create project: Add workspace adds an existing-workspace row",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/new",
+        "/projects/new"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-004",
+      "title": "Create project: unchosen workspace row is rejected",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/new",
+        "/projects/new"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-005",
+      "title": "Create project: New folder row with empty path is rejected",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/new",
+        "/projects/new"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-006",
+      "title": "Create project with an existing workspace opens it with the created notice",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-created-1?notice=created&tab=workspaces",
+        "/projects/project-created-1?notice=created&tab=workspaces"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-007",
+      "title": "Create project with a taken name shows the name error",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/new",
+        "/projects/new"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-008",
+      "title": "Create project with a new folder workspace",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-created-1?notice=created&tab=workspaces",
+        "/projects/project-created-1?notice=created&tab=workspaces"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-009",
+      "title": "Project detail: Edit opens the edit page",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/edit",
+        "/projects/project-prototype-launch/edit"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-010",
+      "title": "Edit project: Save changes returns with the saved notice",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch?notice=saved",
+        "/projects/project-prototype-launch?notice=saved"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-011",
+      "title": "Project detail: Workspaces tab",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch?tab=workspaces",
+        "/projects/project-prototype-launch?tab=workspaces"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-012",
+      "title": "Project detail: Delete opens the confirmation",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch",
+        "/projects/project-prototype-launch"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-013",
+      "title": "Project detail: confirm delete returns to the (empty) list",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects",
+        "/projects"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-014",
+      "title": "Project detail: task search with no match",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch",
+        "/projects/project-prototype-launch"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRJ-015",
+      "title": "Projects list: search with no match",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects",
+        "/projects"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSK-001",
+      "title": "Project detail: New task opens the task page",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/new",
+        "/projects/project-prototype-launch/tasks/new"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSK-002",
+      "title": "New task: empty description is rejected",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/new",
+        "/projects/project-prototype-launch/tasks/new"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSK-003",
+      "title": "New task: create returns to the board with the created notice",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 3,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch?notice=task-created",
+        "/projects/project-prototype-launch?notice=task-created"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSK-004",
+      "title": "New task: attach a context file",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/new",
+        "/projects/project-prototype-launch/tasks/new"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSK-005",
+      "title": "New task with a context file shows the file count on the board",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 3,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch?notice=task-created",
+        "/projects/project-prototype-launch?notice=task-created"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSK-006",
+      "title": "Board: open a task",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/task-outline",
+        "/projects/project-prototype-launch/tasks/task-outline"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSK-007",
+      "title": "Task detail: Edit task opens the edit page",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/task-outline/edit",
+        "/projects/project-prototype-launch/tasks/task-outline/edit"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSK-008",
+      "title": "Edit task: save returns to the task",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/task-outline?notice=saved",
+        "/projects/project-prototype-launch/tasks/task-outline?notice=saved"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSK-009",
+      "title": "Task detail: Delete task opens the confirmation",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/task-outline",
+        "/projects/project-prototype-launch/tasks/task-outline"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSK-010",
+      "title": "Task detail: confirm delete returns to the board with the deleted notice",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 3,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch?notice=task-deleted",
+        "/projects/project-prototype-launch?notice=task-deleted"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSK-011",
+      "title": "New task (narrow)",
+      "scenario": "populated",
+      "viewport": "narrow",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/new",
+        "/projects/project-prototype-launch/tasks/new"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSK-012",
+      "title": "Unknown task shows Task not found",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/task-missing",
+        "/projects/project-prototype-launch/tasks/task-missing"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-001",
+      "title": "Stored Team run composer shows the @ placeholder",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 8,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-002",
+      "title": "Stored Team run: @ opens the live-run mention menu",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 8,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-003",
+      "title": "Stored Team run: @ query filters the menu",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 8,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-004",
+      "title": "Stored Team run: choosing a candidate leaves one inline highlighted mention",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 8,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-005",
+      "title": "Stored Team run: Team candidate chosen with the mouse",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-006",
+      "title": "Stored Team run: Escape closes the @ menu",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 8,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-007",
+      "title": "Stored Org run member: @ opens the live-run mention menu",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace?rootSubjectKind=agent_org&definitionId=org-product-launch&orgRunId=org-run-001&mode=history&memberAddress=/analyst",
+        "/workspace?rootSubjectKind=agent_org&definitionId=org-product-launch&orgRunId=org-run-001&mode=history&memberAddress=/analyst"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-010",
+      "title": "Stored Team run: @ query without a match shows the empty hint",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 8,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-008",
+      "title": "Stored Team run writer: \"From <Sender>:\" delivery block",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 7,
+        "low": 1
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MEN-009",
+      "title": "Stored Team run writer: delivery details expanded",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 7,
+        "low": 1
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "AGR-001",
+      "title": "Stored Agent run: opening it lists its task Agent and task Team",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 7,
+        "low": 1
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "AGR-002",
+      "title": "Stored Agent run: open the task Agent conversation",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 7,
+        "low": 1
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "AGR-003",
+      "title": "Stored Agent run: task Team row opens its coordinator",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 1,
+        "max": 1,
+        "low": 1
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "AGR-004",
+      "title": "Stored Agent run: the run row returns to the host conversation",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 7,
+        "low": 1
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "AGR-005",
+      "title": "Stored Agent run: Team tab lists the task Agent message",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 7,
+        "low": 1
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "CFG-001",
+      "title": "New chat: Antigravity runtime shows the locked auto-approve control",
+      "scenario": "agy_runtime",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat",
+        "/chat"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "CFG-002",
+      "title": "Agent catalog Run: launch form (fresh launch auto-approve, no skill access)",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat",
+        "/chat"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "CFG-003",
+      "title": "Team catalog Run: launch form and member overrides",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat",
+        "/chat"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "CFG-004",
+      "title": "Stored Team run: run settings (Edit Config)",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 8,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "CFG-005",
+      "title": "Server settings (advanced): compaction model settings",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=advanced",
+        "/settings?section=server-settings&mode=advanced"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

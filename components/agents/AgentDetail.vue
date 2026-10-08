@@ -102,10 +102,8 @@ import { ref, computed, onMounted, toRefs, watch } from 'vue';
 import { useAgentDefinitionStore, type AgentDefinition } from '~/stores/agentDefinitionStore';
 import AgentDeleteConfirmDialog from '~/components/agents/AgentDeleteConfirmDialog.vue';
 import AgentDefinitionDetailSections from '~/components/agents/AgentDefinitionDetailSections.vue';
-import { useAgentRunConfigStore } from '~/stores/agentRunConfigStore';
-import { useAgentSelectionStore } from '~/stores/agentSelectionStore';
+import { useRunStart } from '~/composables/runSettings/useRunStart';
 import { useLocalization } from '~/composables/useLocalization';
-import { useStartRunInChat } from '~/composables/runSettings/useStartRunInChat';
 import { formatApplicationOwnershipLabel } from '~/utils/definitionOwnership';
 
 const props = defineProps<{
@@ -117,8 +115,7 @@ const { agentDefinitionId, returnToTeamId } = toRefs(props);
 const emit = defineEmits(['navigate']);
 
 const agentDefinitionStore = useAgentDefinitionStore();
-const runConfigStore = useAgentRunConfigStore();
-const selectionStore = useAgentSelectionStore();
+const runStart = useRunStart();
 const { t: $t } = useLocalization();
 const agentDef = computed<AgentDefinition | null>(() => agentDefinitionStore.getAgentDefinitionById(agentDefinitionId.value) ?? null);
 const loading = ref(false);
@@ -187,10 +184,9 @@ onMounted(async () => {
   }
 });
 
-// run-settings-ui-unification (round 2): Run opens New chat addressed to the agent.
-const { runAgent: startAgentInChat } = useStartRunInChat();
+// Run opens New chat addressed to the agent (REQ-005).
 const selectAgentToRun = (agentDef: AgentDefinition) => {
-  void startAgentInChat(agentDef.id);
+  void runStart.runAgent(agentDef.id);
 };
 
 const handleDelete = (id: string) => {

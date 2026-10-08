@@ -1,56 +1,46 @@
 <template>
-  <!-- project-manager-ux: who works on a Task. A running or idle worker opens its run; a worker
-       that could not start shows why; a Done Task's workers are stopped and cannot be opened. -->
-  <ul
-    v-if="workers.length"
-    class="space-y-0.5"
-    :class="density === 'row' ? 'mt-2' : ''"
-    :aria-label="t('projects.worker.listLabel')"
-    data-testid="project-task-workers"
-  >
-    <li v-for="worker in workers" :key="worker.openRunId ?? worker.name">
+  <!-- project-manager-ux: the Task's root, the one agent or team it was handed to, with the worker's
+       own status (the left panel's dot and word). It opens the worker when that worker is listed in
+       the left panel; otherwise it has no chevron and is not focusable. -->
+  <ul class="space-y-0.5" :class="density === 'row' ? 'mt-2' : ''" :aria-label="t('projects.root.listLabel')" data-testid="project-task-root">
+    <li>
       <component
-        :is="openable(worker) ? 'button' : 'div'"
-        :type="openable(worker) ? 'button' : undefined"
-        class="group/worker flex w-full min-w-0 items-center gap-1.5 rounded-md text-left"
+        :is="presentation.openable ? 'button' : 'div'"
+        :type="presentation.openable ? 'button' : undefined"
+        class="group/root flex w-full min-w-0 items-center gap-1.5 rounded-md text-left"
         :class="[
-          density === 'detail' ? 'min-h-10 px-3 py-2 text-sm' : 'min-h-7 px-1.5 py-1 text-xs',
-          openable(worker) ? 'hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500' : '',
-          density === 'row' ? '-mx-1.5' : '',
+          density === 'detail' ? 'min-h-10 px-3 py-2 text-sm' : '-mx-1.5 min-h-7 px-1.5 py-1 text-xs',
+          presentation.openable ? 'hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500' : '',
         ]"
-        :aria-label="openable(worker) ? t('projects.worker.open', { name: worker.name }) : undefined"
-        :title="worker.error ?? undefined"
-        :data-testid="`project-task-worker-${worker.status}`"
-        @click.stop.prevent="openable(worker) && open(worker)"
+        :aria-label="presentation.openable ? t('projects.root.open', { name: displayName }) : undefined"
+        :title="presentation.error ?? undefined"
+        :data-testid="`project-task-root-${presentation.state}`"
+        :data-openable="presentation.openable ? 'true' : 'false'"
+        @click.stop.prevent="presentation.openable && navigation.open(root)"
       >
         <span
-          v-if="worker.kind === 'team'"
+          v-if="root.kind === 'team'"
           class="inline-flex flex-shrink-0 items-center justify-center text-slate-500"
           :class="density === 'detail' ? 'h-5 w-5' : 'h-4 w-4'"
           aria-hidden="true"
-        ><Icon icon="heroicons:bolt-20-solid" :class="density === 'detail' ? 'h-4 w-4' : 'h-3.5 w-3.5'" /></span>
+        ><Icon icon="heroicons:user-group-20-solid" :class="density === 'detail' ? 'h-4 w-4' : 'h-3.5 w-3.5'" /></span>
         <span
           v-else
           class="inline-flex flex-shrink-0 items-center justify-center rounded-full bg-gray-200 font-semibold text-gray-600"
           :class="density === 'detail' ? 'h-5 w-5 text-[0.5625rem]' : 'h-4 w-4 text-[0.5rem]'"
           aria-hidden="true"
-        >{{ initials(worker.name) }}</span>
-        <span class="min-w-0 truncate" :class="[worker.kind === 'team' ? 'font-semibold' : 'font-medium', worker.status === 'stopped' ? 'text-slate-400' : 'text-slate-700']">{{ worker.name }}</span>
-        <span class="ml-auto inline-flex flex-shrink-0 items-center gap-1.5 pl-2" :class="worker.status === 'failed' ? 'font-medium text-red-600' : 'text-slate-500'">
-          <Icon v-if="worker.status === 'failed'" icon="heroicons:exclamation-circle-20-solid" class="h-3.5 w-3.5" aria-hidden="true" />
-          <StatusDot v-else :status="DOT[worker.status]" />
-          {{ t(`projects.worker.status.${worker.status}`) }}
+        >{{ initials }}</span>
+        <span class="min-w-0 truncate" :class="[root.kind === 'team' ? 'font-semibold' : 'font-medium', presentation.muted ? 'text-slate-400' : 'text-slate-700']" data-testid="project-task-root-name">{{ displayName }}</span>
+        <span class="ml-auto inline-flex flex-shrink-0 items-center gap-1.5 pl-2" :class="presentation.state === 'failed' ? 'font-medium text-red-600' : 'text-slate-500'" data-testid="project-task-root-status">
+          <Icon v-if="presentation.state === 'failed'" icon="heroicons:exclamation-circle-20-solid" class="h-3.5 w-3.5" aria-hidden="true" />
+          <StatusDot v-else :status="presentation.state as AgentStatus" />
+          {{ t(TASK_ROOT_STATE_LABEL_KEYS[presentation.state]) }}
         </span>
-        <Icon
-          v-if="openable(worker)"
-          icon="heroicons:chevron-right-20-solid"
-          class="h-3.5 w-3.5 flex-shrink-0 text-slate-300 group-hover/worker:text-slate-500"
-          aria-hidden="true"
-        />
-        <!-- A row that cannot be opened keeps the chevron's space, so every status lines up. -->
+        <Icon v-if="presentation.openable" icon="heroicons:chevron-right-20-solid" class="h-3.5 w-3.5 flex-shrink-0 text-slate-300 group-hover/root:text-slate-500" aria-hidden="true" />
+        <!-- A root that cannot be opened keeps the chevron's space, so every status lines up. -->
         <span v-else class="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
       </component>
-      <p v-if="worker.status === 'failed' && worker.error && density !== 'row'" class="px-1.5 pb-1 text-xs leading-5 text-red-600" :class="density === 'detail' ? 'px-3' : 'pl-7'">{{ worker.error }}</p>
+      <p v-if="density === 'detail' && presentation.error" class="px-3 pb-1 text-xs leading-5 text-red-600" data-testid="project-task-root-error">{{ presentation.error }}</p>
     </li>
   </ul>
 </template>
@@ -60,22 +50,22 @@ import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import StatusDot from '~/components/workspace/common/StatusDot.vue'
 import { useLocalization } from '~/composables/useLocalization'
-import { openTaskWorker } from '~/composables/projects/useTaskWorkerNavigation'
-import { AgentStatus } from '~/types/agent/AgentStatus'
-import type { ProjectTaskWorker } from '~/types/project'
+import { useTaskRootNavigation } from '~/composables/projects/useTaskRootNavigation'
+import { useRunHistoryStore } from '~/stores/runHistoryStore'
+import type { AgentStatus } from '~/types/agent/AgentStatus'
+import type { TaskRootView } from '~/types/project'
+import { TASK_ROOT_KIND_LABEL_KEYS, TASK_ROOT_STATE_LABEL_KEYS, isTaskRootHostListed, presentTaskRoot } from '~/utils/projects/taskRootPresentation'
 
 const props = withDefaults(defineProps<{
-  workers?: ProjectTaskWorker[]
-  /** `row`: on a board row; `card`: in the Tasks tool; `detail`: on the Task page. */
-  density?: 'row' | 'card' | 'detail'
-}>(), { workers: () => [], density: 'card' })
+  root: TaskRootView
+  /** `row`: inside a board row; `detail`: the Task page's "Assigned to" section. */
+  density?: 'row' | 'detail'
+}>(), { density: 'row' })
 
 const { t } = useLocalization()
-const DOT: Record<ProjectTaskWorker['status'], AgentStatus> = {
-  running: AgentStatus.Running, idle: AgentStatus.Idle, failed: AgentStatus.Error, stopped: AgentStatus.Offline,
-}
-const workers = computed(() => props.workers)
-const openable = (worker: ProjectTaskWorker) => Boolean(worker.openRunId) && (worker.status === 'running' || worker.status === 'idle')
-const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase() ?? '').join('') || 'AI'
-const open = (worker: ProjectTaskWorker) => { void openTaskWorker(worker) }
+const history = useRunHistoryStore()
+const navigation = useTaskRootNavigation()
+const presentation = computed(() => presentTaskRoot(props.root, isTaskRootHostListed(history, props.root.hostRoot)))
+const displayName = computed(() => presentation.value.name ?? t(TASK_ROOT_KIND_LABEL_KEYS[props.root.kind]))
+const initials = computed(() => displayName.value.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]?.toUpperCase() ?? '').join('') || 'AI')
 </script>

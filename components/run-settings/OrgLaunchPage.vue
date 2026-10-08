@@ -1,29 +1,26 @@
 <template>
   <div
     class="flex h-full min-w-0 flex-1 flex-col overflow-y-auto bg-white"
-    :class="[membersPanelOpen ? 'lg:pr-[var(--members-panel-width)]' : '', membersPanelResizing ? '' : 'transition-[padding] duration-200 ease-out motion-reduce:transition-none']"
-    :style="{ '--members-panel-width': `${membersPanelWidth}px` }"
+    :class="[membersLayout.open ? 'lg:pr-[var(--members-panel-width)]' : '', membersLayout.resizing ? '' : 'transition-[padding] duration-200 ease-out motion-reduce:transition-none']"
+    :style="{ '--members-panel-width': `${membersLayout.width}px` }"
     data-test="org-launch-page"
     :data-state="stateKey"
   >
-    <!-- SR-003: an Agent Org has no recipient, so it starts here instead of from chat: the same heading,
-         a settings card where the message box would be, the same members line, and Run (round 38: a round play-icon button in the card, as Send in chat). -->
+    <!-- UIS-004: an Agent Org has no recipient, so it starts here: the same heading, a settings card
+         where the message box would be with Run in its corner, a status line and the members line. -->
     <div class="flex flex-1 flex-col items-center justify-center px-4 pb-10 pt-[14vh] sm:px-6">
-      <!-- Round 34: the same "what to run" switcher as New chat; choosing an Agent or Team goes to New chat. -->
       <div class="relative -top-6 flex max-w-full items-center justify-center sm:-top-10" data-test="org-launch-target">
-        <ChatTargetSwitcher
+        <RunTargetSwitcher
           :name="org?.name ?? ''"
           :avatar-url="org?.avatarUrl ?? null"
-          :options="runTargets.options.value"
           :current-key="`org:${definitionId}`"
           :disabled="draft?.phase === 'launching'"
           @choose="chooseTarget"
         />
       </div>
 
-      <!-- Unavailable: nothing to configure. -->
       <div v-if="unavailable" class="mt-8 flex max-w-md flex-col items-center gap-3 text-center" data-test="org-launch-unavailable">
-        <p class="text-sm text-gray-600">{{ $t('runSettings.orgLaunch.unavailable') }}</p>
+        <p class="text-sm text-gray-600" role="alert">{{ $t('runSettings.orgLaunch.unavailable') }}</p>
         <button
           type="button"
           class="rounded-md px-2 py-1 text-sm font-medium text-blue-700 hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
@@ -35,24 +32,19 @@
       </div>
 
       <div v-else-if="draft" class="mt-8 w-full max-w-3xl">
-        <!-- Round 38: like the chat message box: the settings, with Run as a round icon button pinned to
-             the lower-right corner where Send sits (rows above keep the full width); the members line centered under the card, as on New chat. -->
         <div class="relative rounded-xl border border-gray-200 bg-white px-4 py-2 shadow-sm" data-test="org-launch-card">
           <RunSettingsCard
-            :values="values"
+            :values="draft.root"
             :locked="locked"
             test-suffix="org-launch"
-            @update:workspace="store.update({ workspace: $event })"
-            @update:model="selectModel"
-            @update:thinking="store.update({ llmConfig: $event })"
-            @update:approval="store.update({ autoExecuteTools: $event })"
+            @change="changeRoot"
           />
           <button
             type="button"
             class="absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm transition-all duration-200 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:cursor-not-allowed disabled:opacity-50"
             :disabled="!canRun"
-            :title="blockedReason || $t('runSettings.orgLaunch.run')"
-            :aria-label="blockedReason || $t('runSettings.orgLaunch.run')"
+            :title="runLabel"
+            :aria-label="runLabel"
             :aria-busy="draft.phase === 'launching' ? 'true' : undefined"
             data-test="org-launch-run"
             @click="run"
@@ -76,14 +68,17 @@
           <span class="min-w-0 leading-snug">{{ statusText }}</span>
         </p>
 
-        <ChatTargetMembers
-          v-if="memberSource && draft.phase !== 'launching'"
-          :key="memberSource.key"
+        <RunMembersLine
+          v-if="draft.phase === 'ready' && memberNodes.length"
+          :key="draft.key"
           class="mt-2.5"
-          :source="memberSource"
-          @update:open="membersPanelOpen = $event"
-          @update:width="membersPanelWidth = $event"
-          @update:resizing="membersPanelResizing = $event"
+          subject-kind="org"
+          :subject-name="org?.name ?? ''"
+          :nodes="memberNodes"
+          @change="store.changeMember"
+          @reset="store.resetMember"
+          @reset-all="store.resetAllMembers"
+          @layout="membersLayout = $event"
         />
       </div>
     </div>
@@ -91,124 +86,85 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { Icon } from '@iconify/vue'
-import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
-import { useAgentOrgDefinitionStore } from '~/stores/agentOrgDefinitionStore'
-import { useOrgLaunchDraftStore } from '~/stores/orgLaunchDraftStore'
-import { useWorkspaceStore } from '~/stores/workspace'
 import { useLocalization } from '~/composables/useLocalization'
+import { useRunStart } from '~/composables/runSettings/useRunStart'
+import { useAgentOrgLaunchDraftStore } from '~/stores/agentOrgLaunchDraftStore'
+import { useWorkspaceStore } from '~/stores/workspace'
 import { runtimeKindToLabel } from '~/types/agent/AgentRunConfig'
-import ChatTargetMembers from './ChatTargetMembers.vue'
-import ChatTargetSwitcher from '~/components/chat/ChatTargetSwitcher.vue'
-import { useRunTargetSwitcher, type RunTargetOption } from '~/composables/runSettings/useRunTargetSwitcher'
+import type { RunMemberSettingChange, RunSettingFlags } from '~/types/runSettings/RunSettings'
+import RunMembersLine from './RunMembersLine.vue'
 import RunSettingsCard from './RunSettingsCard.vue'
-import type { MemberSettingsSource } from './memberSettingsSource'
-import type { RunModelChoice, RunSettingFlags, RunSettingsValues } from './runSettings'
-import { useRunSettingsPresentation } from './useRunSettingsPresentation'
+import RunTargetSwitcher, { type RunTargetChoice } from './RunTargetSwitcher.vue'
 
 /**
- * run-settings-ui-unification (SR-003): the Org launch page, at the product's Org launch route
- * (`/workspace?rootSubjectKind=agent_org&definitionId=…&mode=configuration[&sourceOrgRunId=…]`).
+ * The Org launch page at the existing route
+ * `/workspace?rootSubjectKind=agent_org&definitionId=…&mode=configuration[&sourceOrgRunId=…]` (DEC-005).
+ * It renders the Org launch draft and emits intents; the draft store owns the launch.
  */
 const route = useRoute()
 const router = useRouter()
 const { t } = useLocalization()
-const orgStore = useAgentOrgDefinitionStore()
+const store = useAgentOrgLaunchDraftStore()
 const workspaceStore = useWorkspaceStore()
-const store = useOrgLaunchDraftStore()
-const { draft } = storeToRefs(store)
-const presentation = useRunSettingsPresentation()
+const runStart = useRunStart()
 
 const definitionId = computed(() => String(route.query.definitionId || ''))
 const sourceOrgRunId = computed(() => String(route.query.sourceOrgRunId || '') || null)
-const org = computed(() => orgStore.byId(definitionId.value) ?? null)
-const definitionsLoaded = ref(false)
+const draft = computed(() => store.draft)
+const org = computed(() => store.org)
+const memberNodes = computed(() => store.memberNodes)
 
-// A new route intent (Run, or "+" from a run) starts a fresh draft.
-watch([definitionId, sourceOrgRunId, org], ([id, source, value]) => {
-  if (!id || !value) return
-  const current = draft.value
-  if (current && current.orgDefinitionId === id && current.sourceOrgRunId === source) return
-  store.start(id, source)
+// Run/"+" started the draft before navigating; a reload starts it from the route.
+watch([definitionId, sourceOrgRunId], ([id, source]) => {
+  if (id) store.ensureForRoute({ orgDefinitionId: id, sourceOrgRunId: source })
 }, { immediate: true })
+if (!workspaceStore.workspacesFetched) void workspaceStore.fetchAllWorkspaces().catch(() => undefined)
 
-onMounted(async () => {
-  if (!workspaceStore.workspacesFetched) void workspaceStore.fetchAllWorkspaces().catch(() => undefined)
-  await orgStore.fetchAll().catch(() => undefined)
-  definitionsLoaded.value = true
-})
-
-const unavailable = computed(() => (definitionsLoaded.value && !org.value) || Boolean(draft.value && !store.isOrgAvailable(draft.value)))
-
-const values = computed<RunSettingsValues>(() => ({
-  workspace: draft.value?.workspace ?? null,
-  runtimeKind: draft.value?.runtimeKind ?? 'autobyteus',
-  llmModelIdentifier: draft.value?.llmModelIdentifier ?? '',
-  llmConfig: draft.value?.llmConfig ?? null,
-  autoExecuteTools: draft.value?.autoExecuteTools ?? true,
-}))
-/** While the Org starts, its settings are held as they are. */
+const unavailable = computed(() => Boolean(draft.value?.unavailable))
+/** While the run's settings are copied or the Org starts, its settings are held as they are. */
 const locked = computed<RunSettingFlags>(() => {
   const busy = draft.value?.phase !== 'ready'
   return { workspace: busy, model: busy, thinking: busy, approval: busy }
 })
-const selectModel = (choice: RunModelChoice) => store.update({
-  runtimeKind: choice.runtimeKind,
-  llmModelIdentifier: choice.llmModelIdentifier,
-  // Choosing a model applies its default thinking, as in Chat. Antigravity's auto-approve lock is
-  // shown by the card and applied at launch.
-  llmConfig: presentation.defaultConfigFor(choice),
-})
-
 const blockedReason = computed(() => {
   const current = draft.value
   if (!current || current.phase !== 'ready') return ''
-  const readiness = store.readiness(current)
+  const readiness = store.readiness
   return readiness.ready ? '' : readiness.reason
 })
-const canRun = computed(() => Boolean(draft.value && draft.value.phase === 'ready' && !blockedReason.value))
+const canRun = computed(() => Boolean(draft.value?.phase === 'ready' && store.readiness.ready))
+const runLabel = computed(() => blockedReason.value || t('runSettings.orgLaunch.run'))
 const statusText = computed(() => {
   const current = draft.value
   if (!current) return ''
-  if (current.phase === 'preparing') return t('runSettings.orgLaunch.preparing')
-  if (current.phase === 'launching') return t('chat.new.starting', { name: org.value?.name ?? '', runtime: runtimeKindToLabel(current.runtimeKind) })
+  if (current.phase === 'preparing') return current.sourceOrgRunId ? t('runSettings.orgLaunch.preparing') : ''
+  if (current.phase === 'launching') {
+    return t('chat.new.starting', { name: org.value?.name ?? '', runtime: runtimeKindToLabel(current.root.runtimeKind) })
+  }
   return current.error || blockedReason.value
 })
 const stateKey = computed(() => {
-  if (unavailable.value) return 'unavailable'
   const current = draft.value
+  if (unavailable.value) return 'unavailable'
   if (!current) return 'loading'
   if (current.phase !== 'ready') return current.phase
   if (current.error) return 'failed'
   if (blockedReason.value) return 'blocked'
-  return Object.keys(current.memberSettings).length ? 'customized' : 'default'
+  return 'ready'
 })
 
-const run = () => { void store.launch((target) => router.push(target)) }
-
-const runTargets = useRunTargetSwitcher()
-const chooseTarget = (option: RunTargetOption) => {
-  const carried = { ...values.value }
-  if (option.kind === 'org') void runTargets.openOrg(option.id, carried)
-  else void runTargets.openChat(option, carried)
+const changeRoot = (change: RunMemberSettingChange) => {
+  if (change.field === 'workspace') store.setWorkspace(change.choice)
+  else if (change.field === 'model') store.setModel(change.choice)
+  else if (change.field === 'thinking') store.setModelConfig(change.llmConfig)
+  else store.setAutoExecuteTools(change.value)
 }
+const run = () => { void store.launch((target) => router.push(target)) }
+const chooseTarget = (choice: RunTargetChoice) => { void runStart.switchTarget(choice, 'org') }
 
-// The members line and drawer: the same ones Team New chat uses, with this card as the defaults.
-const membersPanelOpen = ref(false)
-const membersPanelWidth = ref(480)
-const membersPanelResizing = ref(false)
-const memberSource = computed<MemberSettingsSource | null>(() => {
-  const current = draft.value
-  if (!current) return null
-  return {
-    key: current.key,
-    target: { kind: 'org', orgDefinitionId: current.orgDefinitionId },
-    defaults: values.value,
-    memberSettings: current.memberSettings,
-    setMemberSettings: store.setMemberSettings,
-    resetAllMemberSettings: store.resetAllMemberSettings,
-  }
-})
+// The member settings drawer docks on the right; on wide screens the page makes room for it.
+const membersLayout = ref({ open: false, width: 0, resizing: false })
 </script>

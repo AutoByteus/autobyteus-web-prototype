@@ -1,7 +1,7 @@
 import type { TranslationCatalog } from '../../runtime/types';
 
-// run-settings-ui-unification: run settings for new and saved Agent, Team and Org runs.
-// The English strings are normative UI copy (tickets/in-progress/run-settings-ui-unification/ui-ux-spec.md).
+// Run settings for new and saved Agent, Team and Org runs (New chat, the Org launch page, the
+// Member settings drawer and saved-run settings). The copy follows the run-settings UI/UX spec.
 const runSettingsMessages = {
   'runSettings.chat.allMembers': 'All {{count}} members use these settings',
   'runSettings.chat.customizedMembers': '{{count}} of {{total}} customized',

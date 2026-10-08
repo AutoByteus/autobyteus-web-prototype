@@ -24,7 +24,6 @@
     @keydown.enter="activateRow"
     @keydown.space.prevent="activateRow"
   >
-    <!-- task-run-resources-workspace-cleanup: a delegated row reads like every other tree row (no dashed box or tint). -->
     <WorkspaceHierarchyBranches
       :depth="row.depth"
       :continuing-ancestor-depths="continuingAncestorDepths"
@@ -69,13 +68,13 @@
         />
       </span>
       <span class="mr-1.5 inline-flex h-5 flex-shrink-0 items-center" aria-hidden="true">
-        <!-- task-run-resources-workspace-cleanup: a Task Team is marked by the bolt alone, in the tree's slate. -->
+        <!-- Teams share the people-group identity, in the tree's slate. -->
         <span
           v-if="row.memberKind === 'agent_team'"
           class="inline-flex h-4 w-4 items-center justify-center text-slate-500"
           data-team-icon="temporary-task-team"
         >
-          <Icon icon="heroicons:bolt-20-solid" class="h-4 w-4" />
+          <Icon icon="heroicons:user-group-20-solid" class="h-4 w-4" />
         </span>
         <!-- A task Agent shows the same solid status dot and initials as a member. -->
         <span

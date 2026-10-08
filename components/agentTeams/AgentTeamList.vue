@@ -118,7 +118,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { useAgentTeamDefinitionStore, type AgentTeamDefinition } from '~/stores/agentTeamDefinitionStore';
 import AgentTeamCard from '~/components/agentTeams/AgentTeamCard.vue';
-import { useStartRunInChat } from '~/composables/runSettings/useStartRunInChat'
+import { useRunStart } from '~/composables/runSettings/useRunStart';
 import { useServerSettingsStore } from '~/stores/serverSettings';
 import {
   FEATURED_CATALOG_ITEMS_SETTING_KEY,
@@ -129,7 +129,7 @@ import {
 const emit = defineEmits(['navigate']);
 
 const store = useAgentTeamDefinitionStore();
-const router = useRouter();
+const runStart = useRunStart();
 const serverSettingsStore = useServerSettingsStore();
 
 const teamDefinitions = computed(() => store.rootAgentTeamDefinitions);
@@ -200,10 +200,9 @@ const viewDetails = (teamDefinitionId: string) => {
   emit('navigate', { view: 'team-detail', id: teamDefinitionId });
 };
 
-// run-settings-ui-unification (round 2): Run opens New chat addressed to the team.
-const { runTeam: startTeamInChat } = useStartRunInChat();
 const handleRunTeam = (teamDef: AgentTeamDefinition) => {
-  void startTeamInChat(teamDef.id);
+  // Run opens New chat addressed to the team (REQ-005).
+  void runStart.runTeam(teamDef.id);
 };
 
 </script>

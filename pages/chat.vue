@@ -1,7 +1,6 @@
 <template>
   <div class="flex h-full min-h-0 min-w-0 bg-white font-sans text-gray-800" data-test="chat-page">
-    <!-- run-settings-ui-unification: the right tools stay reachable on New chat behind one small icon
-         (for example, the Terminal to find a folder path for the workspace). -->
+    <!-- New chat sits outside the run views' tool strip; its tools open from one icon (REQ-020). -->
     <div v-if="!routeRunId" class="flex h-full min-h-0 w-full flex-col" data-test="chat-new-frame">
       <WorkspaceToolShell start-surface>
         <div class="flex h-full min-h-0 min-w-0">
@@ -59,14 +58,14 @@ const agentContextsStore = useAgentContextsStore()
 const selectionStore = useAgentSelectionStore()
 const chatDraftStore = useChatDraftStore()
 const showFileContent = useWorkspaceFileContentVisible()
-// On New chat, Files and Terminal use the workspace chosen in the settings line.
-provide(START_SURFACE_WORKSPACE, computed(() => (routeRunId.value ? null : startSurfaceWorkspaceOf(chatDraftStore.draft?.workspace))))
 
 const routeRunId = computed(() => {
   const value = route.query.id
   const id = Array.isArray(value) ? value[0] : value
   return typeof id === 'string' && id.trim() ? id.trim() : null
 })
+// On New chat, Files and Terminal use the workspace chosen in the composer.
+provide(START_SURFACE_WORKSPACE, computed(() => (routeRunId.value ? null : startSurfaceWorkspaceOf(chatDraftStore.draft?.workspace))))
 const displayedContext = computed(() => (routeRunId.value ? agentContextsStore.getRun(routeRunId.value) ?? null : null))
 const openState = ref<'idle' | 'opening' | 'missing'>('idle')
 let openGeneration = 0

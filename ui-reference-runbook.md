@@ -1,5 +1,25 @@
 # UI Reference Runbook
 
+## WEB-BASELINE-REFRESH-008 (source pin `1cd1a3a`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 3210
+```
+
+- Projects tab: `/workspace` → right panel **Projects** (first tab); the picker
+  switches between a Project and Temp tasks; a card opens its Task in the tab.
+- Task roots: `/projects/project-prototype-launch` (running, couldn't start,
+  closed team) and `/projects/temp-tasks`.
+- Run settings: `/chat` → the heading switcher (Agent, Team, Org launch page);
+  model menu → Codex App Server → GPT-5.6 Sol shows thinking effort and **Fast**.
+- Reconnect (design-only): `/workspace` → prototype-workspace → Tutorial Video
+  Producer / Video Team runs.
+- Reset: reload the page (in-memory fixtures); scenarios use the existing
+  `autobyteus.prototype.scenario` key. Comparison runs set
+  `autobyteus.prototype.designOnlyLayers=off`.
+
+
 ## Promoted Default Product Baseline
 
 Start the cumulative accepted prototype:

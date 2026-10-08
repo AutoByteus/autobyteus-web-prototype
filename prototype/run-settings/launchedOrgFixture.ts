@@ -131,6 +131,8 @@ const historyRow = (run: LaunchedOrgRun, catalogs: OrgCatalogs) => ({
   __typename: 'AgentOrgRootHistoryObject', root_subject_kind: 'agent_org', root_run_id: run.orgRunId,
   created_at: run.createdAt, archived_at: null, is_active: !run.stopped, summary: '',
   org: executionTree(run, catalogs),
+  // 1cd1a3a: Task executions closed by DONE (none for a launched Org).
+  closed_task_executions: [],
 })
 
 /** Reads that describe the launched Org runs. The caller supplies the Org and Team catalogs. */
@@ -157,7 +159,7 @@ export const withLaunchedOrg = (
         getAgentOrgRunInspection: {
           root_subject_kind: 'agent_org', root_run_id: run.orgRunId,
           root_org: {
-            base_change_sequence: 1, is_active: !run.stopped, execution_tree: tree,
+            base_change_sequence: 1, is_active: !run.stopped, execution_tree: tree, closed_task_executions: [],
             communication_messages: { schemaVersion: 1, subjectKind: 'agent_org', orgRunId: run.orgRunId, messages: [] },
             // A stopped (inactive) root reports no live AgentRun statuses.
             agent_statuses: run.stopped ? [] : idleStatuses(tree.rootOrg.members as Array<Record<string, any>>),

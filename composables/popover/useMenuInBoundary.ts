@@ -3,7 +3,7 @@ import { computed, nextTick, ref, watch, type Ref } from 'vue'
 const EDGE_MARGIN_PX = 8
 
 /**
- * run-settings-ui-unification (round 11): keeps an absolutely positioned menu inside the box that
+ * Keeps an absolutely positioned menu inside the box that
  * would clip it — the nearest scrolling ancestor (e.g. the member settings panel) or the window.
  * When the menu would cross an edge it is shifted back in, and narrowed when it is wider than
  * that box. It never moves the content around it.

@@ -2,20 +2,19 @@
   <div class="flex min-h-0 flex-1 flex-col" data-test="existing-run-settings" :data-state="stateKey">
     <div class="flex-1 overflow-y-auto px-4 py-5">
       <div class="mx-auto max-w-2xl">
-        <!-- Round 23/24/26: a running run has just a small red stop icon right after its status (no box);
-             the lock icons on the settings already show what cannot change while it runs. -->
         <RunSubjectHeader :kind="kind" :name="name" :status="isActive ? 'active' : 'stopped'">
+          <!-- REQ-014: a running run has a small red stop icon right after its status. -->
           <button
             v-if="isActive"
             type="button"
             class="-ml-1 inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md text-red-500 transition-colors hover:bg-red-50 hover:text-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 disabled:cursor-default disabled:opacity-60"
-            :disabled="stopping"
-            :title="stopLabel"
-            :aria-label="stopLabel"
+            :disabled="stop.pending"
+            :title="stop.label"
+            :aria-label="stop.label"
             data-test="existing-run-stop"
             @click="emit('stop')"
           >
-            <Icon icon="heroicons:stop-20-solid" class="h-4 w-4" :class="stopping ? 'animate-pulse' : ''" aria-hidden="true" />
+            <Icon icon="heroicons:stop-20-solid" class="h-4 w-4" :class="stop.pending ? 'animate-pulse motion-reduce:animate-none' : ''" aria-hidden="true" />
           </button>
         </RunSubjectHeader>
 
@@ -65,19 +64,19 @@
         </div>
         <ReconnectAgentDialog :open="reconnectTarget !== null" :missing="reconnectTarget" @close="onReconnectClosed" />
 
-        <!-- Only what the settings themselves cannot show: a needed refresh, a run whose settings
-             cannot change, or a failed stop. -->
+        <!-- Only what the settings cannot show themselves: a needed refresh, a run whose settings
+             cannot change, a failed stop or save. -->
         <p
-          v-if="refreshRequired || stopError || (lockedForModel && !isActive)"
+          v-if="note"
           class="-mt-2 mb-4 flex items-center gap-1.5 text-xs"
-          :class="refreshRequired ? 'text-amber-700' : stopError ? 'text-red-600' : 'text-gray-500'"
-          :role="refreshRequired || stopError ? 'alert' : 'status'"
+          :class="note.tone === 'warning' ? 'text-amber-700' : note.tone === 'error' ? 'text-red-600' : 'text-gray-500'"
+          :role="note.tone === 'info' ? 'status' : 'alert'"
           data-test="existing-run-note"
         >
-          <Icon :icon="refreshRequired || stopError ? 'heroicons:exclamation-triangle' : 'heroicons:lock-closed'" class="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
-          <span>{{ refreshRequired ? $t('runSettings.existing.refreshNote') : stopError ? stopError : $t('runSettings.existing.readOnlyNote') }}</span>
+          <Icon :icon="note.tone === 'info' ? 'heroicons:lock-closed' : 'heroicons:exclamation-triangle'" class="h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />
+          <span>{{ note.text }}</span>
           <button
-            v-if="refreshRequired"
+            v-if="note.refresh"
             type="button"
             class="rounded px-1 font-medium text-blue-600 hover:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
             data-test="existing-run-refresh"
@@ -87,55 +86,52 @@
           </button>
         </p>
 
-        <!-- Round 20: no "Team defaults" title and no "Files are saved in …" line; the card is the
-             run's settings and the locked workspace shows its path on hover. -->
-        <!-- Round 20: the same white card as an opened member, without row dividers. -->
         <div class="rounded-xl border border-gray-200 bg-white px-4 py-2 shadow-sm" data-test="existing-run-root-card">
           <RunSettingsCard
-            :values="rootValues"
+            :values="root"
             :locked="rootLocked"
             runtime-locked
-            :model-unavailable="modelUnavailable"
+            :locked-models="rootLockedModels"
+            :model-unavailable="rootModelUnavailable"
             test-suffix="root"
-            @update:model="edit(rootAddress, { runtimeKind: $event.runtimeKind, llmModelIdentifier: $event.llmModelIdentifier, llmConfig: presentation.defaultConfigFor($event) })"
-            @update:thinking="edit(rootAddress, { llmConfig: $event })"
+            @change="emit('change-root', $event)"
           />
         </div>
 
-        <!-- Round 20: the same member rows as the member panel in New chat. -->
         <RunMembersSection
-          v-if="memberNodes.length"
+          v-if="members.length"
           :title="$t('runSettings.members.title')"
-          :nodes="memberNodes"
+          :nodes="members"
           :locked="memberLocked"
           runtime-locked
+          :locked-models-for="lockedModelsFor"
           read-only
-          @update="updateMember"
+          @change="(key, change) => emit('change-member', key, change)"
         />
       </div>
     </div>
 
-    <!-- Save appears only when something changed. -->
-    <div v-if="dirty || feedback" class="flex items-center gap-3 border-t border-gray-200 bg-gray-50 px-4 py-3" data-test="existing-run-save-bar">
-      <p class="min-w-0 flex-1 truncate text-xs" :class="feedback ? 'text-emerald-700' : 'text-gray-600'" role="status" aria-live="polite">
-        {{ feedback || $t('runSettings.save.unsavedResumes') }}
+    <!-- The Save bar appears only after a change (REQ-015). -->
+    <div v-if="dirty || saving || saved" class="flex items-center gap-3 border-t border-gray-200 bg-gray-50 px-4 py-3" data-test="existing-run-save-bar">
+      <p class="min-w-0 flex-1 truncate text-xs" :class="saved && !dirty ? 'text-emerald-700' : 'text-gray-600'" role="status" aria-live="polite">
+        {{ saved && !dirty && !saving ? $t('runSettings.save.saved') : $t('runSettings.save.unsavedResumes') }}
       </p>
-      <template v-if="dirty">
+      <template v-if="dirty || saving">
         <button
           type="button"
           class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
           :disabled="saving"
-          data-test="existing-run-discard"
-          @click="discard"
+          data-test="existing-run-cancel"
+          @click="emit('cancel')"
         >
           {{ $t('runSettings.save.cancel') }}
         </button>
         <button
           type="button"
           class="rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
-          :disabled="saving"
+          :disabled="saving || !canSave"
           data-test="save-existing-model-config"
-          @click="save"
+          @click="emit('save')"
         >
           {{ saving ? $t('runSettings.save.saving') : $t('runSettings.save.save') }}
         </button>
@@ -145,54 +141,57 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, provide, ref } from 'vue'
+import { computed, provide, ref } from 'vue'
 import { Icon } from '@iconify/vue'
-import type { ExistingTeamFormMemberNode } from '~/types/agent/ExistingTeamRunFormModel'
 import { useLocalization } from '~/composables/useLocalization'
-import RunSubjectHeader from './RunSubjectHeader.vue'
-import RunSettingsCard from './RunSettingsCard.vue'
+import type { ChatModelOption } from '~/composables/chat/useChatModelCatalog'
+import type { RunMemberSettingChange, RunSettingFlags, RunSettingsValues } from '~/types/runSettings/RunSettings'
+import type { RunMemberNode } from '~/utils/runSettings/runMemberTree'
 import RunMembersSection from './RunMembersSection.vue'
-import { buildExistingMemberNodes } from './memberNodes'
-import type { RunModelChoice, RunSettingField, RunSettingFlags, RunSettingsValues } from './runSettings'
-import { useRunSettingsPresentation } from './useRunSettingsPresentation'
+import RunSettingsCard from './RunSettingsCard.vue'
+import RunSubjectHeader from './RunSubjectHeader.vue'
 import ReconnectAgentDialog from '~/components/workspace/reconnect/ReconnectAgentDialog.vue'
-import { useAgentReconnect, type MissingAgent } from '~/composables/agentReconnect/useAgentReconnect'
+import { MISSING_MEMBER_ADDRESSES, useAgentReconnect, type MissingAgent } from '~/composables/agentReconnect/useAgentReconnect'
 import { subjectFor } from '~/prototype/agent-reconnect/agentReconnectFixture'
-import { MISSING_MEMBER_ADDRESSES } from './runSettings'
 
 /**
- * Saved-run settings (SCN-004). Runtime, workspace and tool approval are fixed for the run and
- * read as plain values with a lock; model and thinking change only while the run is stopped.
- * Save is scripted in the UI reference: it keeps the change locally and confirms it.
+ * UIS-003: a saved run's settings. Runtime, workspace and tool approval are fixed (a lock); model,
+ * thinking and other model settings change only while the run is stopped; a placed team's
+ * workspace changes when stopped. The container maps `existingRunConfigStore` into these props.
  */
 const props = withDefaults(defineProps<{
   kind: 'agent' | 'team' | 'org'
   name: string
   isActive: boolean
-  editable: boolean
-  refreshRequired?: boolean
-  modelUnavailable?: boolean
-  baseValues: RunSettingsValues
-  rootAddress?: string
-  members?: readonly ExistingTeamFormMemberNode[]
-  /** A stop request for this run is in flight. */
-  stopping?: boolean
-  stopError?: string | null
+  /** Model and thinking can change now (stopped, editable, nothing in flight). */
+  canEdit: boolean
+  state: 'editable' | 'read_only' | 'refresh_required'
+  stop: Readonly<{ label: string; pending: boolean; error: string | null }>
+  root: RunSettingsValues
+  rootLockedModels?: readonly ChatModelOption[] | null
+  rootModelUnavailable?: boolean
+  members?: readonly RunMemberNode[]
+  lockedModelsFor?: ((key: string) => readonly ChatModelOption[] | null) | null
+  dirty: boolean
+  canSave: boolean
+  saving: boolean
+  saved: boolean
+  /** A failed save, surfaced as is. */
+  saveError?: string | null
   /** agent-definition-reconnect-ui: the standalone run or team run these settings belong to. */
   rootRunId?: string | null
-}>(), { refreshRequired: false, modelUnavailable: false, rootAddress: '/', members: () => [], stopping: false, stopError: null, rootRunId: null })
-const emit = defineEmits<{ (event: 'refresh'): void; (event: 'stop'): void }>()
+}>(), { rootLockedModels: null, rootModelUnavailable: false, members: () => [], lockedModelsFor: null, saveError: null, rootRunId: null })
+
+const emit = defineEmits<{
+  (event: 'stop'): void
+  (event: 'refresh'): void
+  (event: 'change-root', change: RunMemberSettingChange): void
+  (event: 'change-member', key: string, change: RunMemberSettingChange): void
+  (event: 'cancel'): void
+  (event: 'save'): void
+}>()
 
 const { t } = useLocalization()
-// SR-003: the same verbs as the workspace tree's stop buttons (Agent / Team: Terminate; Org: Stop).
-const stopLabel = computed(() => {
-  if (props.kind === 'org') return props.stopping ? t('runSettings.existing.stopping') : t('workspace.agentOrg.history.stopLabel')
-  if (props.stopping) return t('runSettings.existing.terminating')
-  return props.kind === 'team'
-    ? t('workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.terminate_team')
-    : t('workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.terminate_run')
-})
-const presentation = useRunSettingsPresentation()
 
 // agent-definition-reconnect-ui: agents of this run that no longer exist, and reconnect outcomes.
 const reconnect = useAgentReconnect()
@@ -226,63 +225,25 @@ const onReconnectClosed = () => {
 /** Member rows of agents that no longer exist say so (RunMemberRow). */
 provide(MISSING_MEMBER_ADDRESSES, computed(() => new Set(missingAgents.value.map((agent) => agent.address).filter(Boolean) as string[])))
 
-const saved = ref<Record<string, Partial<RunSettingsValues>>>({})
-const edits = ref<Record<string, Partial<RunSettingsValues>>>({})
-const saving = ref(false)
-const feedback = ref('')
-let feedbackTimer: ReturnType<typeof setTimeout> | null = null
-onBeforeUnmount(() => { if (feedbackTimer) clearTimeout(feedbackTimer) })
-
-const overlay = computed(() => {
-  const merged: Record<string, Partial<RunSettingsValues>> = {}
-  for (const source of [saved.value, edits.value]) {
-    for (const [key, value] of Object.entries(source)) merged[key] = { ...merged[key], ...value }
-  }
-  return merged
-})
-const rootValues = computed<RunSettingsValues>(() => ({ ...props.baseValues, ...overlay.value[props.rootAddress] }))
-const memberNodes = computed(() => buildExistingMemberNodes(props.members, overlay.value, rootValues.value, props.baseValues))
-const dirty = computed(() => Object.keys(edits.value).length > 0)
-const canEdit = computed(() => props.editable && !props.isActive && !props.refreshRequired && !saving.value)
-/** As today: a run whose model settings cannot change asks to be stopped first. */
-const lockedForModel = computed(() => !props.editable || props.isActive)
-
-const rootLocked = computed<RunSettingFlags>(() => ({ workspace: true, approval: true, model: !canEdit.value, thinking: !canEdit.value }))
+const rootLocked = computed<RunSettingFlags>(() => ({ workspace: true, approval: true, model: !props.canEdit, thinking: !props.canEdit }))
 const memberLocked = computed<RunSettingFlags>(() => ({
-  workspace: !(props.kind === 'org' && canEdit.value),
+  workspace: !(props.kind === 'org' && props.canEdit),
   approval: true,
-  model: !canEdit.value,
-  thinking: !canEdit.value,
+  model: !props.canEdit,
+  thinking: !props.canEdit,
 }))
 
-const stateKey = computed(() => props.refreshRequired ? 'refresh-required' : props.isActive ? 'active' : 'stopped')
+const note = computed(() => {
+  if (props.state === 'refresh_required') return { tone: 'warning', text: t('runSettings.existing.refreshNote'), refresh: true }
+  if (props.stop.error) return { tone: 'error', text: props.stop.error, refresh: false }
+  if (props.saveError) return { tone: 'error', text: props.saveError, refresh: false }
+  if (props.state === 'read_only' && !props.isActive) return { tone: 'info', text: t('runSettings.existing.readOnlyNote'), refresh: false }
+  return null
+})
 
-const edit = (key: string, patch: Partial<RunSettingsValues>) => {
-  feedback.value = ''
-  edits.value = { ...edits.value, [key]: { ...edits.value[key], ...patch } }
-}
-
-const updateMember = (key: string, field: RunSettingField, value: unknown) => {
-  if (field === 'model') {
-    const choice = value as RunModelChoice
-    edit(key, { runtimeKind: choice.runtimeKind, llmModelIdentifier: choice.llmModelIdentifier, llmConfig: presentation.defaultConfigFor(choice) })
-  } else if (field === 'thinking') edit(key, { llmConfig: value as Record<string, unknown> | null })
-  else if (field === 'workspace') edit(key, { workspace: value as RunSettingsValues['workspace'] })
-}
-
-
-const discard = () => { edits.value = {} }
-const save = () => {
-  saving.value = true
-  setTimeout(() => {
-    const merged = { ...saved.value }
-    for (const [key, value] of Object.entries(edits.value)) merged[key] = { ...merged[key], ...value }
-    saved.value = merged
-    edits.value = {}
-    saving.value = false
-    feedback.value = t('runSettings.save.saved')
-    if (feedbackTimer) clearTimeout(feedbackTimer)
-    feedbackTimer = setTimeout(() => { feedback.value = '' }, 3000)
-  }, 600)
-}
+const stateKey = computed(() => {
+  if (props.state === 'refresh_required') return 'refresh-required'
+  if (props.isActive) return props.stop.pending ? 'stopping' : 'active'
+  return props.state === 'read_only' ? 'read-only' : 'stopped'
+})
 </script>

@@ -98,6 +98,17 @@
     />
 
     <ConfirmationModal
+      :show="showGroupArchiveConfirmation"
+      :title="$t('workspace.history.groupArchive.confirmTitle')"
+      :message="groupArchiveConfirmationMessage"
+      :confirm-button-text="$t('workspace.history.groupArchive.confirmButton')"
+      variant="primary"
+      typography-size="large"
+      @confirm="confirmGroupArchive"
+      @cancel="closeGroupArchiveConfirmation"
+    />
+
+    <ConfirmationModal
       :show="showRemoveWorkspaceConfirmation"
       :title="$t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.remove_workspace_title')"
       :message="removeWorkspaceConfirmationMessage"
@@ -142,10 +153,12 @@ import { useRevealSelectedTreeRow } from '~/components/workspace/history/useReve
 import { useWorkspaceHistoryWorkspaceCreation } from '~/composables/useWorkspaceHistoryWorkspaceCreation';
 import { useWorkspaceHistoryWorkspaceRemoval } from '~/composables/useWorkspaceHistoryWorkspaceRemoval';
 import { useWorkspaceHistoryMutations } from '~/composables/useWorkspaceHistoryMutations';
+import { useWorkspaceHistoryGroupArchive } from '~/composables/useWorkspaceHistoryGroupArchive';
 import { useWorkspaceHistorySubjectActions } from '~/composables/useWorkspaceHistorySubjectActions';
 import { useLocalization } from '~/composables/useLocalization';
-import { useChatDraftStore } from '~/stores/chatDraftStore';
+import { useRunStart } from '~/composables/runSettings/useRunStart';
 import type { RunTreeWorkspaceNode } from '~/utils/runTreeProjection';
+import { escapeHtml } from '~/utils/escapeHtml';
 
 const emit = defineEmits<{
   (e: 'run-selected', payload: { type: 'agent'; runId: string }): void;
@@ -159,6 +172,7 @@ const agentOrgRunStore = useAgentOrgRunStore();
 const agentOrgContextsStore = useAgentOrgContextsStore();
 const route = useRoute() as ReturnType<typeof useRoute> | undefined;
 const router = useRouter();
+const runStart = useRunStart();
 const workspaceStore = useWorkspaceStore();
 const selectionStore = useAgentSelectionStore();
 const agentRunStore = useAgentRunStore();
@@ -236,6 +250,12 @@ const {
   },
 });
 
+/** Leaves the Agent Org route when the open Org run was archived or deleted. */
+const leaveRemovedAgentOrgRoute = async (orgRunId: string): Promise<void> => {
+  if (route?.query.rootSubjectKind !== 'agent_org' || String(route.query.orgRunId || '').trim() !== orgRunId) return;
+  await router.replace({ path: '/workspace' });
+};
+
 const {
   terminatingRunIds,
   deletingRunIds,
@@ -271,12 +291,27 @@ const {
   archiveRun: (runId: string) => runHistoryStore.archiveRun(runId),
   archiveTeamRun: (teamRunId: string) => runHistoryStore.archiveTeamRun(teamRunId),
   archiveAgentOrgRun: (orgRunId: string) => runHistoryStore.archiveAgentOrgRun(orgRunId),
-  onAgentOrgMutationSuccess: async (orgRunId: string) => {
-    if (route?.query.rootSubjectKind !== 'agent_org' || String(route.query.orgRunId || '').trim() !== orgRunId) return;
-    await router.replace({ path: '/workspace' });
-  },
+  onAgentOrgMutationSuccess: (orgRunId: string) => leaveRemovedAgentOrgRoute(orgRunId),
   addToast: addWorkspaceToast,
   stopPendingTeamIds,
+});
+
+const {
+  isGroupArchiving,
+  showGroupArchiveConfirmation,
+  groupArchiveConfirmationMessage,
+  onArchiveAgentGroup,
+  onArchiveTeamGroup,
+  onArchiveAgentOrgGroup,
+  closeGroupArchiveConfirmation,
+  confirmGroupArchive,
+} = useWorkspaceHistoryGroupArchive({
+  archiveAgentRunGroup: (workspaceRootPath, agentDefinitionId) =>
+    runHistoryStore.archiveAgentRunGroup(workspaceRootPath, agentDefinitionId),
+  archiveTeamRuns: (teamRunIds) => runHistoryStore.archiveTeamRuns(teamRunIds),
+  archiveAgentOrgRuns: (orgRunIds) => runHistoryStore.archiveAgentOrgRuns(orgRunIds),
+  onAgentOrgArchived: leaveRemovedAgentOrgRoute,
+  addToast: addWorkspaceToast,
 });
 
 const {
@@ -315,8 +350,7 @@ const {
     emit('run-selected', { type: 'team', runId: payload.runId });
   },
   startPresetChat: async (preset) => {
-    useChatDraftStore().startNewChat(preset);
-    await router.push('/chat');
+    await runStart.newChatInWorkspace(preset);
   },
   presentTeamStreamRecoveryFeedback: (feedback) => {
     const key = feedback === 'wait'
@@ -338,13 +372,6 @@ const onToggleWorkspace = async (workspaceNode: RunTreeWorkspaceNode): Promise<v
     }
   }
 };
-
-const escapeHtml = (value: string): string => value
-  .replace(/&/g, '&amp;')
-  .replace(/</g, '&lt;')
-  .replace(/>/g, '&gt;')
-  .replace(/"/g, '&quot;')
-  .replace(/'/g, '&#39;');
 
 const removeWorkspaceConfirmationMessage = computed(() => {
   const workspace = pendingWorkspace.value;
@@ -410,6 +437,7 @@ const sectionState: WorkspaceHistorySectionState = {
   isAgentOrgArchiving: (rootRunId: string) => Boolean(archivingAgentOrgIds.value[rootRunId]),
   agentOrgTerminationError: (rootRunId: string) => agentOrgRunStore.terminationErrors[rootRunId] ?? agentOrgContextsStore.errorFor(rootRunId),
   agentOrgContextFor: (rootRunId: string) => agentOrgContextsStore.contextFor(rootRunId),
+  isGroupArchiving,
 };
 
 
@@ -453,6 +481,9 @@ const sectionActions: WorkspaceHistorySectionActions = {
   }),
   onArchiveAgentOrg,
   onDeleteAgentOrg,
+  onArchiveAgentGroup,
+  onArchiveTeamGroup,
+  onArchiveAgentOrgGroup,
   onTerminateAgentOrg: (run) => executeSubjectAction({
     rootSubjectKind: 'agent_org', rootRunId: run.rootRunId, action: 'stop',
   }).catch(() => undefined),

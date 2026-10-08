@@ -9,9 +9,9 @@ import sharp from 'sharp'
 const require = createRequire(import.meta.url)
 const icons = Object.fromEntries(['heroicons', 'ph', 'mdi', 'svg-spinners', 'vscode-icons', 'logos'].map(p => [p, require(`@iconify-json/${p}/icons.json`)]))
 const root = resolve(new URL('../..', import.meta.url).pathname)
-const SOURCE = process.env.SOURCE_BASE_URL || 'http://127.0.0.1:4291'
-const PROTO = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4199'
-const MOCK = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4391'
+const SOURCE = process.env.SOURCE_BASE_URL || 'http://127.0.0.1:4622'
+const PROTO = process.env.PROTOTYPE_BASE_URL || 'http://127.0.0.1:4620'
+const MOCK = process.env.MOCK_BASE_URL || 'http://127.0.0.1:4623'
 const OUT = resolve(root, process.env.FLOW_DIR || 'evidence/WEB-BASELINE-REFRESH-002/flows')
 const CHROME = process.env.CHROMIUM_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const style = '*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}'
@@ -46,8 +46,10 @@ export const FLOWS = {
   // WEB-BASELINE-REFRESH-002 (57df63f): the temp workspace is preselected in
   // launch forms, and Daily Assistant (no default model) is listed first, so
   // the Agent launch uses Research Assistant's Run.
-  'FLW-013': { title: 'Team catalog Run -> Run Team (temp workspace preselected) launches and projects the new Team', path: '/agent-teams?view=team-list', steps: [clickRole('button', 'Run'), clickRole('button', 'Run Team')], settleMs: 6500 },
-  'FLW-014': { title: 'Agent catalog Run (Research Assistant) -> Run Agent launches a new agent run', path: '/agents?view=list', steps: [async page => { await page.getByRole('button', { name: 'Run', exact: true }).nth(2).click(); await page.waitForTimeout(900) }, clickRole('button', 'Run Agent')] },
+  // WEB-BASELINE-REFRESH-008 (d45fe62): catalog Run opens New chat preset to the definition (the
+  // separate launch forms were removed); the first message launches the run.
+  'FLW-013': { title: 'Team catalog Run opens New chat preset to the Team, ready to launch (the launch outcome is scripted; see team-launch-outcome/)', path: '/agent-teams?view=team-list', steps: [clickRole('button', 'Run'), async page => { await page.locator('textarea').first().click(); await page.keyboard.type('Review the synthetic launch notes.'); await page.waitForTimeout(600) }] },
+  'FLW-014': { title: 'Agent catalog Run (Research Assistant) opens New chat preset to the agent', path: '/agents?view=list', steps: [async page => { await page.getByRole('button', { name: 'Run', exact: true }).nth(2).click(); await page.waitForTimeout(900) }] },
   'FLW-015': { title: 'Stored Agent Org run: open analyst member conversation', path: '/workspace', steps: [expandWorkspace, click('Product Launch Org'), click('Coordinate the synthetic launch review'), click('analyst')] },
 }
 
@@ -79,6 +81,7 @@ async function run(base, target, id) {
     localStorage.setItem('autobyteus.localization.preference-mode', 'en')
     localStorage.setItem('autobyteus.prototype.scenario', 'populated')
     localStorage.setItem('autobyteus.prototype.context', 'desktop')
+    localStorage.setItem('autobyteus.prototype.designOnlyLayers', 'off')
   })
   const page = await ctx.newPage()
   const errors = []

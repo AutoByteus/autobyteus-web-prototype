@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-10-08T14:25:43.727Z",
+  "source": "http://127.0.0.1:4622",
+  "prototype": "http://127.0.0.1:4620",
+  "mock": "http://127.0.0.1:4623",
+  "results": [
+    {
+      "id": "PRJ-006",
+      "title": "Create project with an existing workspace opens it with the created notice",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-created-1?notice=created&tab=workspaces",
+        "/projects/project-created-1?notice=created&tab=workspaces"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

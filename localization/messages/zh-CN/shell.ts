@@ -5,7 +5,7 @@ const shellMessages = {
   'shell.navigation.chat': '对话',
   'shell.components.AppLeftPanel.new_chat': '新对话',
   'shell.components.AppLeftPanel.drafts': '草稿',
-  'shell.components.AppLeftPanel.draft_marker': '草稿',
+  'shell.components.AppLeftPanel.draft': '草稿',
   'shell.components.AppLeftPanel.discard_draft': '丢弃草稿',
   'shell.components.AppLeftPanel.draft_empty': '空草稿',
   'shell.navigation.agents': '智能体',
@@ -18,6 +18,7 @@ const shellMessages = {
   'shell.navigation.projects': '项目',
   'shell.navigation.workspaces': '工作区',
   'shell.navigation.settings': '设置',
+  'shell.rightTabs.projects': '项目',
   'shell.rightTabs.files': '文件',
   'shell.rightTabs.team': '团队',
   'shell.rightTabs.org': '组织',
@@ -152,6 +153,7 @@ const shellMessages = {
   'shell.components.app.AppUpdateNotice.version.unknown': '未知',
   'shell.components.app.AppUpdateNotice.version.currentToNew': '当前 {{current}} → 新版 {{next}}',
   'shell.components.app.AppUpdateNotice.version.currentOnly': '当前 {{current}}',
+  'shell.startTools.show': '显示工具',
 } satisfies TranslationCatalog;
 
 export default shellMessages;

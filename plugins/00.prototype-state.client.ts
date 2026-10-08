@@ -14,8 +14,6 @@ import { GetAgentOrgRunInspection } from '~/graphql/queries/runHistoryQueries'
 import { isLaunchedOrgRunId } from '~/prototype/run-settings/launchedOrgFixture'
 import { isLaunchedTeamRunId } from '~/prototype/run-settings/launchedTeamFixture'
 import { GetTeamRunResumeConfig } from '~/graphql/queries/runHistoryQueries'
-import { RUN_SETTINGS_RUNTIME_AVAILABILITIES, RUN_SETTINGS_RUNTIME_CATALOGS } from '~/prototype/run-settings/runtimeCatalogFixture'
-import { withAutobyteusOrgDefinitions } from '~/prototype/run-settings/autobyteusOrgFixture'
 
 const SCENARIO_KEY = 'autobyteus.prototype.scenario'
 const CONTEXT_KEY = 'autobyteus.prototype.context'
@@ -76,8 +74,8 @@ const localActions: Record<string, Set<string>> = {
   agentOrgContexts: new Set(['readRunConfig', 'stopAndInspect']),
   // run-settings-ui-unification (SR-003): Run Agent Org launches through the source store (local CreateAgentOrgRun).
   agentOrgRun: new Set(['launch', 'terminate']),
-  // run-settings-ui-unification (SR-003): the Org launch page launches through the source's own Org launch path.
-  orgLaunchDraft: new Set(['launch']),
+  // run-settings-ui-unification / 1cd1a3a: the Org launch page launches through the source's own Org launch path.
+  agentOrgLaunchDraft: new Set(['launch']),
   uiError: new Set(['push', 'remove', 'clear', 'toggle', 'open', 'close']),
   mobileWork: new Set(['selectContext', 'setActiveTab', 'requestRunSetup', 'consumeRunSetupIntent', 'requestFilePreview', 'consumeFilePreviewRequest', 'addDraftContextAttachment', 'removeDraftContextAttachment', 'clearDraftContextAttachments', 'consumeDraftContextAttachments', 'getPendingTeamRunAttachments', 'hasPendingTeamRunAttachments', 'addPendingTeamRunAttachment', 'moveDraftAttachmentsToPendingTeamRun', 'removePendingTeamRunAttachment', 'clearPendingTeamRunAttachments', 'consumePendingTeamRunAttachments', 'rememberFocusedTeamMember', 'getRememberedFocusedTeamMember', 'updateFocusedTeamMember', 'clearContext']),
   memoryExplorerStore: new Set(['setSelectedSourceByKey', 'setHomeTab', 'setSelectedAgentFromRoute', 'setSelectedTeamFromRoute', 'setAgentsSearch', 'setTeamsSearch', 'setAgentRunsSearch', 'setTeamRunsSearch', 'changeAgentRunsPage', 'changeTeamRunsPage', 'changeHomePage', 'resetPagesForSourceChange', 'clearSelections']),
@@ -134,6 +132,9 @@ const localActions: Record<string, Set<string>> = {
     'reconcileActiveRunIds', 'applyAgentOrgActivity', 'markTeamAsActive', 'markTeamAsInactive',
     'reconcileActiveTeamRunIds', 'refreshAgentResumeConfig', 'refreshTeamResumeConfig',
     'refreshTreeQuietly',
+    // WEB-BASELINE-REFRESH-008 (39d0e99): adding a folder from the Workspaces header creates it
+    // through the source's own action (workspace.createWorkspace, answered locally).
+    'createWorkspace',
   ]),
   // Projects (0a32261): a new-workspace row creates its workspace through the
   // source's own action; utils/apolloClient.ts answers CreateWorkspace locally.
@@ -229,7 +230,9 @@ const findSnapshot = (): [string, RuntimeSnapshot] => {
   const pathname = window.location.pathname
   const hasCapturedPath = Object.values(snapshots).some(value => canonicalPath(value.item.path) === path)
   const projectReviewPath = hasCapturedPath || !pathname.startsWith('/projects/') ? null
-    : pathname.replace(/^\/projects\/[^/]+/, '/projects/project-prototype-launch').replace(/\/tasks\/(?!new$)[^/]+/, '/tasks/task-outline')
+    // A Temp task page (4d469b0) uses the captured Temp task page.
+    : pathname.startsWith('/projects/temp-tasks/tasks/') ? '/projects/temp-tasks/tasks/temp-task-links'
+      : pathname.replace(/^\/projects\/[^/]+/, '/projects/project-prototype-launch').replace(/\/tasks\/(?!new$)[^/]+/, '/tasks/task-outline')
   const aliasedPath = projectReviewPath || defaultRouteAliases[path] || path
   const wantedScenario = scenario()
   const wantedContext = context()
@@ -256,12 +259,6 @@ const findSnapshot = (): [string, RuntimeSnapshot] => {
   return ['populated|desktop|/', snapshots['populated|desktop|/']]
 }
 
-// run-settings-ui-unification: review runtimes are verified-ready (the source checks per-kind request status).
-const runSettingsRuntimeState = () => ({
-  availabilities: clone(RUN_SETTINGS_RUNTIME_AVAILABILITIES),
-  requestsByKind: Object.fromEntries(RUN_SETTINGS_RUNTIME_AVAILABILITIES.map((row, index) => [row.runtimeKind, { status: 'ready', error: null, sequence: index + 1 }])),
-  hasFetched: true,
-})
 const actionResult = (store: any, action: string, args: any[] = []): any => {
   // chat-new-draft-kept-on-navigation: a New chat attachment "uploads" locally (scripted). The draft
   // keeps a browser-local preview of the chosen file; nothing leaves the browser.
@@ -293,10 +290,6 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
     // route snapshot never loaded it, reuse the deterministic ready catalog
     // captured from the pinned source without touching credential state.
     const runtime = String(args[0] || 'autobyteus')
-    // run-settings-ui-unification: hand-written review runtimes (see runtimeCatalogFixture.ts).
-    if (RUN_SETTINGS_RUNTIME_CATALOGS[runtime] && store.catalogByRuntimeKind?.[runtime]?.state !== 'ready') {
-      store.$patch({ catalogByRuntimeKind: { ...store.catalogByRuntimeKind, [runtime]: clone(RUN_SETTINGS_RUNTIME_CATALOGS[runtime]) } })
-    }
     if (store.catalogByRuntimeKind?.[runtime]?.state !== 'ready') {
       const reference = readyStoreState('llmProviderConfig', state => state.catalogByRuntimeKind?.[runtime]?.state === 'ready')
       if (reference) store.$patch({ catalogByRuntimeKind: { ...store.catalogByRuntimeKind, [runtime]: clone(reference.catalogByRuntimeKind[runtime]) } })
@@ -310,11 +303,7 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
     }
     return store.providerCredentialSettings || []
   }
-  if (action === 'fetchRuntimeAvailabilities') {
-    // run-settings-ui-unification: the review runtimes are always available.
-    store.$patch(runSettingsRuntimeState())
-    return store.availabilities
-  }
+  if (action === 'fetchRuntimeAvailabilities') return store.availabilities || []
   if (store.$id === 'workspace' && action === 'ensureWorkspaceMetadata') {
     const workspaceId = args[0]?.workspaceId || args[0]?.id
     return workspaceId ? store.workspaces?.[workspaceId] : undefined
@@ -517,7 +506,14 @@ export default defineNuxtPlugin({
         .map(key => [key, store[key]] as const)
         .filter(([, value]) => value instanceof Map)
       const isRichExperience = scenario().startsWith('workspace_') || scenario().startsWith('mobile_')
+      // WEB-BASELINE-REFRESH-008: on the desktop, the Workspaces history is loaded only when the
+      // source loads it (the left panel's own fetchTree, answered by utils/apolloClient.ts), never
+      // from a route snapshot. A narrow window that has not shown the left panel has no history,
+      // so a Task root it hosts is not openable there, exactly as in the source (4d469b0).
+      const historyLoadedBySource = store.$id === 'runHistory' && context() === 'desktop' && !isRichExperience
+        && scenario() !== 'team_launch' && !agentOrgRuntimeRoute()
       if (state
+        && !historyLoadedBySource
         // Projects and Tasks (0a32261) load and save through the source's own
         // stores against the local fixtures, so their client cache survives
         // navigation exactly as in the source.
@@ -545,17 +541,6 @@ export default defineNuxtPlugin({
         }
       }
       for (const [key, value] of liveMaps) store[key] = value
-      // run-settings-ui-unification: the hand-written review runtimes (runtimeCatalogFixture.ts)
-      // stay available on every route; route snapshots carry only the captured runtime list.
-      if (store.$id === 'runtimeAvailability') {
-        store.$patch(runSettingsRuntimeState())
-      }
-      // run-settings-ui-unification: the real AutoByteus Org shape (autobyteusOrgFixture.ts) joins the
-      // populated catalog, so member settings can be reviewed at a realistic size.
-      if (scenario() === DEFAULT_SCENARIO) {
-        const additions = withAutobyteusOrgDefinitions(store.$id, store.$state)
-        if (additions) store.$patch(additions)
-      }
       if (store.$id === 'workspace') {
         for (const key of ['fileSystemConnections', 'fileExplorerLiveConsumers', 'fileExplorerSnapshotRefreshes', 'workspaceMetadataRegistrationTasks']) {
           if (!(store[key] instanceof Map)) store[key] = new Map()
@@ -655,6 +640,14 @@ export default defineNuxtPlugin({
             const launching = actionName === 'sendMessageToFocusedMember' && pinia._s.get('teamRunConfig')?.selectedDraft && !active
             const launchedTeam = isLaunchedTeamRunId(actionName === 'ensureTeamStreamConnected' ? args[0] : active?.view?.getRootTeamRunId?.())
             if (launching || launchedTeam) return originalAction.apply(store, args)
+          }
+          // WEB-BASELINE-REFRESH-008: a runtime's model catalog that no captured route loaded (the
+          // source reads it lazily, for example Codex in the model menu) is read through the
+          // source's own action; utils/apolloClient.ts answers it from the local fixtures.
+          if (store.$id === 'llmProviderConfig' && actionName === 'fetchProvidersWithModels') {
+            const runtime = String(args[0] || 'autobyteus')
+            const captured = readyStoreState('llmProviderConfig', state => state.catalogByRuntimeKind?.[runtime]?.state === 'ready')
+            if (store.catalogByRuntimeKind?.[runtime]?.state !== 'ready' && !captured) return originalAction.apply(store, args)
           }
           const result = actionResult(store, actionName, args)
           if ((store.$id === 'agentDefinition' || store.$id === 'agentTeamDefinition' || store.$id === 'toolManagement') && result) {
@@ -779,7 +772,7 @@ export default defineNuxtPlugin({
               : [])
         this.emit({ type: 'CONNECTED', payload: { session_id: 'prototype-team-session', root_team_run_id: runId } })
         this.emit({ type: 'TEAM_EXECUTION_VIEW_SNAPSHOT', payload: {
-          root_team_run_id: runId, base_change_sequence: 1, execution_tree: tree, messages: [],
+          root_team_run_id: runId, base_change_sequence: 1, execution_tree: tree, closed_task_executions: [], messages: [],
           agent_statuses: statuses(tree.root_team.members ?? []), agent_input_states: [],
         } })
       }

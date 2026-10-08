@@ -48,11 +48,13 @@ export class AgentRunCollaborationStreamingService {
   constructor(private readonly options: Readonly<{
     hostRunId: string
     isCurrent(): boolean
-    publish(context: AgentRunCollaborationContext, commitActivities: () => void): void
+    publish(context: AgentRunCollaborationContext, commit: () => void): void
     onInactive(): void
     reportError(message: string): void
     /** A collaborator was added in place (its new Team opens once). */
     onCollaboratorAdded?(context: AgentRunCollaborationContext): void
+    /** Task executions were closed in place (Task DONE); a selected one leaves with its rows. */
+    onTaskExecutionsClosed?(context: AgentRunCollaborationContext): void
   }>) {}
 
   connect(): void {
@@ -184,7 +186,7 @@ export class AgentRunCollaborationStreamingService {
       })
       if (this.socket !== socket || !this.options.isCurrent()) return
       const candidate = shallowReactive(staged.context)
-      this.options.publish(candidate, staged.commitActivities)
+      this.options.publish(candidate, staged.commit)
       this.context = candidate
       this.phase = 'ready'
       this.recoveryAttempts = 0
@@ -205,6 +207,8 @@ export class AgentRunCollaborationStreamingService {
         this.connect()
       } else if (message.payload.event.kind === 'collaborator_added') {
         this.options.onCollaboratorAdded?.(this.context)
+      } else if (message.payload.event.kind === 'task_executions_closed') {
+        this.options.onTaskExecutionsClosed?.(this.context)
       }
       return
     }

@@ -1,6 +1,6 @@
 <template>
-  <!-- `@` brings a shared Agent or Team into the run, in New chat and in a live run alike. Who you chat
-       with is chosen from the New chat heading (ChatTargetSwitcher). -->
+  <!-- `@` brings a shared Agent or Team into the run, in New chat and in a running chat alike.
+       What to run is chosen from the New chat heading (RunTargetSwitcher), never here. -->
   <div
     data-test="run-mention-menu"
     class="flex min-h-0 w-[23rem] max-w-[calc(100vw-1rem)] flex-col rounded-lg border border-gray-200 bg-white text-left shadow-lg"
@@ -14,11 +14,7 @@
       :aria-label="$t('chat.mentions.listAria')"
       class="max-h-64 min-h-0 overflow-y-auto p-1"
     >
-      <li
-        v-if="!targets.length"
-        class="px-2 py-3 text-center"
-        data-test="run-mention-menu-empty"
-      >
+      <li v-if="!targets.length" class="px-2 py-3 text-center" data-test="run-mention-menu-empty">
         <span class="block text-[0.8125rem] text-gray-500">{{ $t('chat.targets.noMatch') }}</span>
         <span class="mt-0.5 block text-xs text-gray-400">{{ $t('chat.mentions.noMatchHint') }}</span>
       </li>

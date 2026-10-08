@@ -143,7 +143,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAgentDefinitionStore, type AgentDefinition } from '~/stores/agentDefinitionStore';
 import AgentCard from '~/components/agents/AgentCard.vue';
-import { useStartRunInChat } from '~/composables/runSettings/useStartRunInChat'
+import { useRunStart } from '~/composables/runSettings/useRunStart';
 import { useServerSettingsStore } from '~/stores/serverSettings';
 import { useToasts } from '~/composables/useToasts';
 import {
@@ -157,6 +157,7 @@ import { normalizeDefinitionOwnershipScope } from '~/utils/definitionOwnership';
 const emit = defineEmits(['navigate']);
 
 const agentDefinitionStore = useAgentDefinitionStore();
+const runStart = useRunStart();
 const { addToast } = useToasts();
 const { deleteResult } = storeToRefs(agentDefinitionStore);
 const serverSettingsStore = useServerSettingsStore();
@@ -271,10 +272,9 @@ const viewDetails = (agentDefinitionId: string) => {
   emit('navigate', { view: 'detail', id: agentDefinitionId });
 };
 
-// run-settings-ui-unification (round 2): Run opens New chat addressed to the agent.
-const { runAgent: startAgentInChat } = useStartRunInChat();
+// Run opens New chat addressed to the agent (REQ-005).
 const runAgent = (agentDef: AgentDefinition) => {
-  void startAgentInChat(agentDef.id);
+  void runStart.runAgent(agentDef.id);
 };
 
 </script>

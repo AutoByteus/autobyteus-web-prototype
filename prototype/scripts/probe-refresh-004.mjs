@@ -65,7 +65,7 @@ export const FLOWS = {
   'PRJ-003': { title: 'Create project: Add workspace adds an existing-workspace row', path: '/projects/new', steps: [tid('project-add-workspace-inline')] },
   'PRJ-004': { title: 'Create project: unchosen workspace row is rejected', path: '/projects/new', steps: [fillSel('#project-editor-name', 'Launch Review'), tid('project-add-workspace-inline'), tid('project-form-submit')] },
   'PRJ-005': { title: 'Create project: New folder row with empty path is rejected', path: '/projects/new', steps: [fillSel('#project-editor-name', 'Launch Review'), tid('project-add-workspace-inline'), tid('workspace-mode-new-0'), tid('project-form-submit')] },
-  'PRJ-006': { title: 'Create project with an existing workspace opens it with the created notice', path: '/projects/new', steps: [fillSel('#project-editor-name', 'Launch Review'), fillSel('#project-editor-description', 'Synthetic review project.'), tid('project-add-workspace-inline'), selectTid('workspace-select-0', 'workspace-prototype'), tid('project-form-submit'), wait(800)] },
+  'PRJ-006': { title: 'Create project with an existing workspace opens it with the created notice', path: '/projects/new', steps: [fillSel('#project-editor-name', 'Launch Review'), fillSel('#project-editor-description', 'Synthetic review project.'), tid('project-add-workspace-inline'), selectTid('workspace-select-0', '/synthetic/prototype-workspace'), tid('project-form-submit'), wait(800)] },
   'PRJ-007': { title: 'Create project with a taken name shows the name error', path: '/projects/new', steps: [fillSel('#project-editor-name', 'Prototype Launch'), tid('project-form-submit')] },
   'PRJ-008': { title: 'Create project with a new folder workspace', path: '/projects/new', steps: [fillSel('#project-editor-name', 'Folder Review'), tid('project-add-workspace-inline'), tid('workspace-mode-new-0'), fillTid('workspace-path-0', '/synthetic/folder-review'), tid('project-form-submit'), wait(800)] },
   'PRJ-009': { title: 'Project detail: Edit opens the edit page', path: PROJECT, steps: [tid('project-edit-button')] },
@@ -148,6 +148,7 @@ async function run(base, target, id) {
     localStorage.setItem('autobyteus.localization.preference-mode', 'en')
     localStorage.setItem('autobyteus.prototype.scenario', scenario)
     localStorage.setItem('autobyteus.prototype.context', 'desktop')
+    localStorage.setItem('autobyteus.prototype.designOnlyLayers', 'off')
   }, { scenario })
   const page = await ctx.newPage()
   const errors = []

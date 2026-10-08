@@ -170,6 +170,7 @@ import AgentOrgAvatar from './AgentOrgAvatar.vue'
 import AgentOrgAvatarEditor from './AgentOrgAvatarEditor.vue'
 import ConfirmationModal from '~/components/common/ConfirmationModal.vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useRunStart } from '~/composables/runSettings/useRunStart'
 import HandoffManager from '~/components/collaboration/handoffs/HandoffManager.vue'
 import { buildTeamLocalAgentDefinitionId } from '~/utils/teamLocalDefinitionId'
 import { loadAgentOrgDefinitionReferences, type AgentOrgDefinitionReferences } from '~/services/agentOrgDefinition/agentOrgDefinitionReferences'
@@ -179,8 +180,6 @@ import {
   type AgentOrgEndpointCatalogItem,
 } from '~/services/agentOrgDefinition/agentOrgEndpointCatalog'
 import { useLocalization } from '~/composables/useLocalization'
-import { useOrgLaunchDraftStore } from '~/stores/orgLaunchDraftStore'
-import { orgLaunchRoute } from '~/composables/runSettings/useRunTargetSwitcher'
 import { useAgentDefinitionStore, type AgentDefinition } from '~/stores/agentDefinitionStore'
 import { useAgentTeamDefinitionStore } from '~/stores/agentTeamDefinitionStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
@@ -205,6 +204,7 @@ type TeamView = { id: string; name: string; description: string; coordinatorId: 
 
 const route = useRoute()
 const router = useRouter()
+const runStart = useRunStart()
 const { t } = useLocalization()
 const orgStore = useAgentOrgDefinitionStore()
 const agentStore = useAgentDefinitionStore()
@@ -456,13 +456,8 @@ const confirmDelete = async () => {
   } finally { deletePending.value = false }
 }
 const openTeam = (id: string) => router.push({ path: '/agent-teams', query: { view: 'team-detail', id, returnToOrg: selectedOrg.value.id } })
-// run-settings-ui-unification (SR-003): an Agent Org starts on the Org launch page, not in chat; Run
-// always starts a fresh Org draft (as Run does for Agents and Teams).
-const orgLaunchDrafts = useOrgLaunchDraftStore()
-const openLaunch = (id: string) => {
-  orgLaunchDrafts.start(id)
-  return router.push(orgLaunchRoute(id))
-}
+// Run opens the Org launch page with a fresh draft (REQ-005/007).
+const openLaunch = (id: string) => runStart.runOrg(id)
 const reloadOrgs = async (): Promise<void> => { reloading.value = true; try { await orgStore.fetchAll(true) } finally { reloading.value = false } }
 const openMemberPicker = (): void => { memberPickerTab.value = 'agents'; memberSearch.value = ''; memberPickerOpen.value = true }
 const closeMemberPicker = (): void => { memberPickerOpen.value = false; memberSearch.value = '' }

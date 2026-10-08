@@ -13,7 +13,6 @@ const messages = {
   'shell.components.app.AppUpdateNotice.restarting_to_install_update_this_window': 'Restarting to install update. This window will close automatically.',
   'shell.components.layout.LeftSidebarStrip.item_label': 'item.label',
   'shell.components.layout.LeftSidebarStrip.settings': 'Settings',
-  'shell.startTools.show': 'Show tools',
   'shell.components.layout.RightSideTabs.toggle_sidebar': 'Toggle Sidebar',
   'shell.components.layout.RightSidebarStrip.tab_label': 'tab.label',
   'shell.components.layout.WorkspaceDesktopLayout.select_or_run_an_agent_team': 'Select or run an agent/team to begin.',

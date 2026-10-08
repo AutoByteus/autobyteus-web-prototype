@@ -19,6 +19,7 @@ function applyScenario(name) {
   state.projectData = null
   state.skillSourceData = null
   state.taskContextFiles = {}
+  state.archivedAgentGroup = false
 }
 
 applyScenario(process.env.PROTOTYPE_SCENARIO || 'populated')
@@ -85,6 +86,13 @@ const server = http.createServer(async (req, res) => {
     if (state.scenario === 'permission_denied') return send(res, 403, { errors: [{ message: 'Synthetic permission denied.', extensions: { code: 'FORBIDDEN' } }] })
     if (state.scenario === 'error' || state.operationFailures[operationName]) {
       return send(res, 200, { data: null, errors: [{ message: state.operationFailures[operationName] || 'Synthetic recoverable GraphQL failure.', extensions: { code: 'PROTOTYPE_FIXTURE_ERROR', operationName } }] })
+    }
+    // WEB-BASELINE-REFRESH-008: the source lists runtimes in the order their availability
+    // checks answer (parallel requests). Answer them in inventory order so observation is
+    // deterministic (autobyteus, codex_app_server, claude_agent_sdk, antigravity_cli).
+    if (operationName === 'GetRuntimeAvailability') {
+      const order = ['autobyteus', 'codex_app_server', 'claude_agent_sdk', 'antigravity_cli'].indexOf(payload.variables?.runtimeKind)
+      await new Promise(resolve => setTimeout(resolve, 40 * Math.max(0, order)))
     }
     const fixture = operationFixture(operationName, payload.variables || {}, state)
     if (fixture?.__projectError) return send(res, 200, { data: null, errors: [fixture.__projectError] })
