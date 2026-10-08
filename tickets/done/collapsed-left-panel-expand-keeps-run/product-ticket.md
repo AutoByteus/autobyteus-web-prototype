@@ -8,7 +8,7 @@
 - Status: `Completed`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`, AgentRun `solution_designer_6856168b4a8d4175a6896c5eac1b26e2`) for the user, 2026-10-08.
   - User: "delegate a task to @Product Team to work on the UI first thanks"
-- Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/collapsed-left-panel-expand-keeps-run/tickets/in-progress/collapsed-left-panel-expand-keeps-run/product-design-request.md`
+- Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/collapsed-left-panel-expand-keeps-run/tickets/done/collapsed-left-panel-expand-keeps-run/product-design-request.md`
 - Related requirements revision: `requirements-doc.md` SR-001, status `Ready for Approval` (not approved).
 - Related IDs: REQ-001–007; AC-001–010; BEH-001–005, BEH-007; SCN-001–005; DEC-001–004; U-001, U-002.
 - Critical journey: SCN-001. With the panel collapsed, a Task worker is open. The user clicks Expand left panel. The panel docks, the same worker stays open, and its row is selected and visible in the tree.
