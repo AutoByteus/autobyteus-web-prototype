@@ -5,7 +5,7 @@
 - Ticket / request ID: `collapsed-left-panel-expand-keeps-run`. This is the stable package identifier; there is no second ID.
 - Title: Expand the collapsed left panel without leaving the open run, and see that run in the Workspaces tree.
 - Mode: `Product Experience Design`. It evolves the accepted AutoByteus Web baseline: left strip, docked panel, drawer and Workspaces tree.
-- Status: `Baseline Needed`. The design is confirmed; final validation and references are paused for `WEB-BASELINE-REFRESH-008`.
+- Status: `Completed`
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`, AgentRun `solution_designer_6856168b4a8d4175a6896c5eac1b26e2`) for the user, 2026-10-08.
   - User: "delegate a task to @Product Team to work on the UI first thanks"
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/collapsed-left-panel-expand-keeps-run/tickets/in-progress/collapsed-left-panel-expand-keeps-run/product-design-request.md`
@@ -200,3 +200,33 @@ Probes in `review-evidence/round-1/*.mjs` (Playwright, Chromium, against `http:/
 - Icon decision (2026-10-08): the user said "I guess tree is a good one", in agreement with the recommendation of candidate C, `ph:tree-view` (Phosphor, already bundled; same set as Memory).
   - DC-014 `LeftSidebarStrip.vue`: the Workspaces glyph becomes `ph:tree-view`.
   - Evidence: `review-evidence/round-2/R2-09-strip-tree-icon-hover-2x.png`.
+- Tree icon confirmed again: "i am fine with the tree icon you chosed earlier ... the tree icon is good. I confirm by the way."
+
+## Baseline Refresh And Final Validation (2026-10-08)
+
+- `WEB-BASELINE-REFRESH-008` was returned `Completed` by the Bootstrapper, then reviewed and accepted. It was integrated into `personal` as `9232842`; the new source pin is `1cd1a3abc`.
+- Merged `origin/personal` into this ticket branch (`86f6c67`). The only conflict was the `AppLeftPanel.vue` vue import line, resolved to `computed, nextTick, onMounted`.
+- After the merge, the Vite dependency cache had to be cleared (stale vendored `@autobyteus/collaboration-stream-contracts`). This is local dev state only.
+- Final validation (`review-evidence/final/final.mjs`, log `final.log`), Chromium, port 4610, normal entry points, 0 page errors:
+  - SCN-001 (1440×900): `/chat?id=run-research-001` → collapse → right **Projects** tab → In Progress "documentation writer".
+    - The worker opens; Workspaces is lit and Chat is not.
+    - Workspaces: URL unchanged, header unchanged, Projects tab still selected.
+    - "documentation writer" is selected, visible and focused; the docked Chat row is not lit.
+  - SCN-002: Video Team › post_production › colorist → collapse → Workspaces: URL unchanged; colorist selected, visible and focused.
+  - SCN-003 (1440×620, keyboard): Org writer → collapse; focus is on Workspaces; Enter: tree scrolled 247 px, row focused; URL unchanged.
+  - SCN-005 (760×900): `open-drawer`, Workspaces lit; Enter opens the drawer with the run selected; Escape returns focus to Workspaces.
+  - SCN-004: the Agents icon goes to `/agents?view=list` and docks.
+  - New chat: Chat lit. AC-009: draft text kept, nothing selected.
+  - Strip at 481/500/540/541 px tall: no overflow; the divider is hidden at ≤540.
+  - 390×844: the strip renders with no errors.
+  - `vue-tsc --noEmit -p tsconfig.prototype.json`: exit 0.
+- Final references: `visual-references/VIS-001`–`VIS-008`, captured after confirmation.
+- UI/UX specification: `ui-ux-spec.md`.
+
+## Final Decisions For Solution Designer
+
+- DEC-001: **D**. A Workspaces icon (Phosphor tree glyph) in the collapsed strip after the page icons and a light divider. It is lit while a run is open and opens the panel on that run without navigating. User-confirmed.
+- Chat highlight: lit only on New chat (strip and docked Chat row). Part of the confirmed design.
+- DEC-002: **a**. Page icons are unchanged. This is part of the confirmed design; the user did not ask to change it.
+- DEC-003, DEC-004: out of scope as proposed. The user raised neither.
+- Requirement impact: REQ-001/AC-010 and REQ-007/AC-006/AC-007 amended; new Workspaces highlight rule. See `ui-ux-spec.md`.
