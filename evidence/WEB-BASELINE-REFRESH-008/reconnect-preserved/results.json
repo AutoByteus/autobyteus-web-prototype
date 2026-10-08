@@ -1,0 +1,55 @@
+{
+  "generatedAt": "2026-10-08T14:35:49.548Z",
+  "base": "http://127.0.0.1:4620",
+  "results": [
+    {
+      "script": "j1.js",
+      "stepError": null,
+      "errors": [],
+      "external": [],
+      "pass": true
+    },
+    {
+      "script": "j2.js",
+      "stepError": null,
+      "errors": [],
+      "external": [],
+      "pass": true
+    },
+    {
+      "script": "j4.js",
+      "stepError": null,
+      "errors": [],
+      "external": [],
+      "pass": true
+    },
+    {
+      "script": "j5.js",
+      "stepError": null,
+      "errors": [],
+      "external": [],
+      "pass": true
+    },
+    {
+      "script": "j6.js",
+      "stepError": null,
+      "errors": [],
+      "external": [],
+      "pass": true
+    },
+    {
+      "script": "j7.js",
+      "stepError": null,
+      "errors": [],
+      "external": [],
+      "pass": true
+    },
+    {
+      "script": "narrow.js",
+      "stepError": null,
+      "errors": [],
+      "external": [],
+      "pass": true
+    }
+  ]
+}

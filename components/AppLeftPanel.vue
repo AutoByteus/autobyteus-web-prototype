@@ -82,13 +82,8 @@
                 </button>
               </div>
 
-              <!-- chat-new-draft-kept-on-navigation: Draft rows sit directly under the Chat row. -->
-              <ChatDraftRows
-                v-if="item.key === 'chat'"
-                :ref="setDraftRowsRef"
-                :on-new-chat="isOnNewChat"
-                @open="openDraft"
-              />
+              <!-- Kept New chats with typed text, directly under the Chat row (REQ-002). -->
+              <ChatDraftRows v-if="item.key === 'chat'" @open="openChatDraft" />
             </li>
           </ul>
         </nav>
@@ -130,7 +125,7 @@
 
 <script setup lang="ts">
 import { useAgentSelectionStore } from '~/stores/agentSelectionStore';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
 import WorkspaceAgentRunsTreePanel from '~/components/workspace/history/WorkspaceAgentRunsTreePanel.vue';
@@ -142,7 +137,8 @@ import {
   type ShellPrimaryNavKey,
 } from '~/composables/useShellPrimaryNavigation';
 import { isFeatureAvailableInRuntime } from '~/utils/mobileFeatureGates';
-import { useChatDraftStore } from '~/stores/chatDraftStore';
+import { useRunStart } from '~/composables/runSettings/useRunStart';
+import { useChatDraftRows } from '~/composables/chat/useChatDraftRows';
 import ChatDraftRows from '~/components/chat/ChatDraftRows.vue';
 import { useAppLayoutStore } from '~/stores/appLayoutStore';
 import { resolveSelectionRoute, type RunSelectionRouteInput } from '~/services/workspace/workspaceNavigationService';
@@ -165,18 +161,12 @@ const {
   initPrimarySectionResize,
 } = useAppLeftPanelSectionResize();
 
-// The New chat surface: `/chat` without a run id.
-const isOnNewChat = computed(() => route.path === '/chat' && !route.query.id);
-const draftRowsRef = ref<{ selectedRowShown: boolean } | null>(null);
-// A function ref: the rows render inside the primary nav v-for.
-const setDraftRowsRef = (instance: unknown): void => {
-  draftRowsRef.value = (instance as { selectedRowShown: boolean } | null) ?? null;
-};
-// While a Draft row is open, it (not the Chat row) is the selected row (REQ-003).
-const isNavRowActive = (key: ShellPrimaryNavKey): boolean => {
-  if (key === 'chat' && draftRowsRef.value?.selectedRowShown) return false;
-  return isPrimaryNavActive(key);
-};
+const runStart = useRunStart();
+const { rowSelected } = useChatDraftRows();
+
+// While a Draft row is selected, it (not the Chat row) is the selected row (REQ-003).
+const isNavRowActive = (key: ShellPrimaryNavKey): boolean =>
+  isPrimaryNavActive(key) && !(key === 'chat' && rowSelected.value);
 
 const isSettingsActive = computed(() => route.path.startsWith('/settings'));
 const showSettingsNavigation = computed(() => isFeatureAvailableInRuntime('desktopSettings'));
@@ -189,29 +179,41 @@ const pushRoute = async (target: RouteLocationRaw): Promise<void> => {
   }
 };
 
+// New chat starts only through the start intent (DI-001): a fresh draft, then /chat.
+const openNewChat = async (): Promise<void> => {
+  try {
+    await runStart.newChat();
+  } catch (error) {
+    console.error('AppLeftPanel navigation error:', error);
+  }
+};
+
 const navigateToPrimary = async (key: ShellPrimaryNavKey): Promise<void> => {
   useAgentSelectionStore().beginSelectionIntent();
-  // Chat always opens a fresh New chat; a draft with content stays as a Draft row (REQ-004).
-  if (key === 'chat') useChatDraftStore().startNewChat();
+  // Chat always opens a fresh New chat; drafts with typed text stay listed (REQ-004).
+  if (key === 'chat') {
+    await openNewChat();
+    return;
+  }
   await pushRoute(resolvePrimaryRoute(key));
 };
 
-// The pencil on the Chat item always opens a fresh New chat; drafts with content are kept (REQ-004).
+// The pencil on the Chat item always opens a fresh New chat.
 const startNewChat = async (): Promise<void> => {
   useAgentSelectionStore().beginSelectionIntent();
-  useChatDraftStore().startNewChat();
-  await pushRoute('/chat');
+  await openNewChat();
 };
 
-// A Draft row re-enters that draft exactly as it was left (REQ-003).
-const openDraft = async (id: string): Promise<void> => {
+// A Draft row re-enters its draft (REQ-003). Already on /chat there is no route change to close
+// the narrow drawer, so it is closed here.
+const openChatDraft = async (draftId: string): Promise<void> => {
   useAgentSelectionStore().beginSelectionIntent();
-  useChatDraftStore().openDraft(id);
-  if (isOnNewChat.value) {
-    useAppLayoutStore().closeMobileMenu();
-    return;
+  try {
+    await runStart.openChatDraft(draftId);
+  } catch (error) {
+    console.error('AppLeftPanel navigation error:', error);
   }
-  await pushRoute('/chat');
+  useAppLayoutStore().closeMobileMenu();
 };
 
 const navigateToSettings = async (): Promise<void> => {

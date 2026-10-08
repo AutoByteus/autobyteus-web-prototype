@@ -12,22 +12,14 @@
         </header>
         <p v-if="notice" class="mb-5 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800" role="status" data-testid="task-page-save-notice">{{ notice }}</p>
         <section v-if="confirmingDelete" class="mb-4 rounded-lg border border-red-200 bg-red-50 p-4" aria-labelledby="task-delete-heading" data-testid="task-page-delete-confirmation" @keydown.esc.prevent="cancelDelete">
-          <h2 id="task-delete-heading" class="font-semibold text-red-900">{{ t('projects.components.projects.ProjectTaskEditor.deleteTitle') }}</h2><p class="mt-2 break-words text-sm leading-6 text-red-800">{{ t('projects.components.projects.ProjectTaskEditor.deleteMessage', {summary: taskSummary(task.description)}) }}</p>
+          <h2 id="task-delete-heading" class="font-semibold text-red-900">{{ t('projects.components.projects.ProjectTaskEditor.deleteTitle') }}</h2><p class="mt-2 break-words text-sm leading-6 text-red-800">{{ t('projects.components.projects.ProjectTaskEditor.deleteMessage', {summary: taskSummaryLabel(task.description)}) }}</p>
           <p v-if="deleteError" role="alert" class="mt-3 text-sm text-red-700">{{ deleteError }}</p>
           <div class="mt-4 flex flex-wrap justify-end gap-3"><button ref="deleteCancel" type="button" :disabled="busy" :class="secondaryButton" data-testid="task-page-delete-cancel" @click="cancelDelete">{{ t('projects.common.cancel') }}</button><button type="button" :disabled="busy" class="inline-flex min-h-11 items-center justify-center rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 disabled:opacity-60" data-testid="task-page-delete-confirm" @click="remove">{{ t(busy ? 'projects.components.projects.ProjectTaskEditor.deleting' : 'projects.ui.deleteTask') }}</button></div>
         </section>
         <section class="overflow-hidden rounded-xl border border-slate-200 bg-white" aria-labelledby="task-description-heading" data-testid="task-page-reading-surface">
           <div class="p-5 sm:p-6"><h2 id="task-description-heading" class="text-xs font-medium text-slate-500">{{ t('projects.ui.description') }}</h2><p class="mt-3 max-w-[80ch] whitespace-pre-wrap break-words text-base leading-7 text-slate-800" data-testid="task-page-description">{{ task.description }}</p><section v-if="task.contextFiles?.length" class="mt-6 border-t border-slate-100 pt-5" aria-labelledby="task-context-files-heading" data-testid="task-page-context-files"><h2 id="task-context-files-heading" class="mb-3 text-sm font-medium text-slate-600">{{ t('projects.ui.contextFiles') }} ({{ task.contextFiles.length }})</h2><TaskContextFiles :files="task.contextFiles" :client="client" :saved-filenames="task.contextFiles.map((f) => f.storedFilename)" /></section></div>
         </section>
-        <!-- project-manager-ux: who works on the Task; each running worker opens its run. -->
-        <section class="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-white" aria-labelledby="task-workers-heading" data-testid="task-page-workers">
-          <div class="p-5 sm:p-6">
-            <h2 id="task-workers-heading" class="text-xs font-medium text-slate-500">{{ t('projects.ui.workers') }}</h2>
-            <ProjectTaskWorkers v-if="task.workers?.length" class="-mx-3 mt-2" density="detail" :workers="task.workers" />
-            <p v-else class="mt-3 text-sm text-slate-500" data-testid="task-page-no-workers">{{ t('projects.ui.noWorkers') }}</p>
-            <p v-if="task.workers?.some((worker) => worker.status === 'running' || worker.status === 'idle')" class="mt-3 text-xs leading-5 text-slate-400">{{ t('projects.ui.workersHelp') }}</p>
-          </div>
-        </section>
+        <TaskRootSection :root="task.root ?? null" />
       </template>
     </div>
   </div>
@@ -42,11 +34,13 @@ import { useProjectNotice } from '~/composables/projects/useProjectNotice'
 import { useProjectTaskStore } from '~/stores/projectTaskStore'
 import { createProjectTaskContextClient } from '~/services/projects/projectTaskContextClient'
 import { TASK_STATUS_LABEL_KEYS } from '~/utils/projects/taskStatusLabelKey'
-import { taskSummary } from '~/utils/projects/taskSummary'
+import { taskSummaryLabel } from '~/utils/projects/taskSummary'
 import TaskContextFiles from './TaskContextFiles.vue'
-import ProjectTaskWorkers from './ProjectTaskWorkers.vue'
+import TaskRootSection from './TaskRootSection.vue'
+import { useProjectChangeFeed } from '~/composables/projects/useProjectChangeFeed'
 const props = defineProps<{projectId: string; taskId: string}>()
 const {t} = useLocalization(), router = useRouter(), store = useProjectTaskStore()
+useProjectChangeFeed()
 const {project, task, loading, error: loadError, heading, current, load} = useProjectTaskPage(props.projectId, props.taskId)
 const client = createProjectTaskContextClient(props.projectId, props.taskId, current)
 const boardTarget = `/projects/${props.projectId}`, detailTarget = `${boardTarget}/tasks/${props.taskId}`

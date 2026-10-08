@@ -28,9 +28,8 @@ import { useWorkspaceCenterViewStore } from '~/stores/workspaceCenterViewStore'
 import ExistingRunConfigEditor from './ExistingRunConfigEditor.vue'
 
 /**
- * run-settings-ui-unification (round 20): the settings of a selected saved run. Every new run
- * starts in New chat (Run, "+", the workspace tree), so the launch configuration forms, the
- * temporary-draft editor and their Run button are removed from this panel.
+ * The panel chrome around a selected saved run's settings (Edit Config). New runs start in New chat
+ * and on the Org launch page, never here.
  */
 const selectionStore = useAgentSelectionStore()
 const existingRunConfigStore = useExistingRunConfigStore()

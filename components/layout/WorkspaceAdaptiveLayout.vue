@@ -1,8 +1,6 @@
 <template>
   <WorkspaceToolShell data-test="workspace-adaptive-layout">
     <div data-test="workspace-center-content-shell" class="relative flex-1 min-h-0 overflow-hidden">
-      <!-- run-settings-ui-unification: the Org launch route renders the Org launch page outside this
-           layout (pages/workspace.vue), like New chat (round 33). -->
       <AgentOrgWorkspaceView v-if="showAgentOrgActive" />
       <RunConfigPanel v-else-if="showSelectedRunConfig" />
       <AgentWorkspaceView v-else-if="isAgentSelected" />

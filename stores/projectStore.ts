@@ -12,7 +12,7 @@ import {
   UpdateProject,
   UpdateProjectWorkspace,
 } from '~/graphql/mutations/projectMutations'
-import type { Project, ProjectWorkspaceInput } from '~/types/project'
+import type { Project, ProjectChangeMessage, ProjectWorkspaceInput } from '~/types/project'
 import {
   ProjectRequestError,
   throwProjectGraphqlErrors as throwGraphqlErrors,
@@ -215,18 +215,33 @@ export const useProjectStore = defineStore('projects', () => {
     return result
   }
 
-  const addWorkspace = (projectId: string, workspaceId: string, description: string): Promise<Project> =>
-    mutateProject(AddProjectWorkspace, { input: { projectId, workspaceId, description } }, 'addProjectWorkspace')
+  const addWorkspace = (projectId: string, workspaceRootPath: string, description: string): Promise<Project> =>
+    mutateProject(AddProjectWorkspace, { input: { projectId, workspaceRootPath, description } }, 'addProjectWorkspace')
 
-  const updateWorkspace = (projectId: string, workspaceId: string, description: string): Promise<Project> =>
-    mutateProject(UpdateProjectWorkspace, { input: { projectId, workspaceId, description } }, 'updateProjectWorkspace')
+  const updateWorkspace = (projectId: string, workspaceRootPath: string, description: string): Promise<Project> =>
+    mutateProject(UpdateProjectWorkspace, { input: { projectId, workspaceRootPath, description } }, 'updateProjectWorkspace')
 
-  const removeWorkspace = (projectId: string, workspaceId: string): Promise<Project> =>
-    mutateProject(RemoveProjectWorkspace, { input: { projectId, workspaceId } }, 'removeProjectWorkspace')
+  const removeWorkspace = (projectId: string, workspaceRootPath: string): Promise<Project> =>
+    mutateProject(RemoveProjectWorkspace, { input: { projectId, workspaceRootPath } }, 'removeProjectWorkspace')
 
-  /** project-manager-ux (design): a live push of a Project an agent created or changed. */
-  const receiveLiveProject = (project: Project): void => {
-    if (hasFetched.value || projects.value.length) projects.value = upsertProject(projects.value, project)
+  /**
+   * One `/ws/projects` Project change: the server view (with its counts) replaces the cached one;
+   * a removed Project leaves. `connected` (first connection or reconnect) re-reads a fetched list.
+   */
+  const applyChange = (message: ProjectChangeMessage): void => {
+    if (message.type === 'connected') {
+      if (hasFetched.value) void fetchProjects(true).catch(() => undefined)
+      return
+    }
+    if (message.type === 'project_upserted') {
+      const { project } = message
+      if (!hasFetched.value && !getProjectById(project.projectId)) return
+      counts.set(project.projectId, { generation: ++countGeneration, taskCount: project.taskCount, openTaskCount: project.openTaskCount })
+      projects.value = upsertProject(projects.value, project)
+    } else if (message.type === 'project_removed') {
+      counts.delete(message.projectId)
+      projects.value = projects.value.filter((project) => project.projectId !== message.projectId)
+    }
   }
 
   watch(
@@ -241,11 +256,11 @@ export const useProjectStore = defineStore('projects', () => {
     error,
     hasFetched,
     getProjectById,
-    receiveLiveProject,
     invalidate,
     fetchProjects,
     fetchProject,
     setTaskCounts,
+    applyChange,
     createProject,
     updateProject,
     deleteProject,

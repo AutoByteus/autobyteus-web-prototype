@@ -26,6 +26,9 @@
 
     <!-- Tab Content -->
     <div data-test="right-side-tab-content-shell" class="flex-1 min-h-0 overflow-hidden relative">
+      <div v-if="effectiveActiveTab === 'projects'" class="h-full min-h-0" data-test="right-side-projects-panel">
+        <ProjectsPanel />
+      </div>
       <div
         v-if="shouldMountFilesPanel"
         v-show="isFilesTabActive"
@@ -76,8 +79,8 @@
 
 <script setup lang="ts">
 import { computed, inject, ref, watch } from 'vue';
-import { START_SURFACE_WORKSPACE } from '~/composables/layout/useStartSurfaceTools';
 import { useActiveContextStore } from '~/stores/activeContextStore';
+import { START_SURFACE_WORKSPACE } from '~/composables/layout/useStartSurfaceTools';
 import { useRightPanel } from '~/composables/useRightPanel';
 import { useRightPanelOpenFileAutoSwitch } from '~/composables/useRightPanelOpenFileAutoSwitch';
 import { useRightSideTabs } from '~/composables/useRightSideTabs';
@@ -90,6 +93,7 @@ import ArtifactsTab from '~/components/workspace/agent/ArtifactsTab.vue';
 import ProgressPanel from '~/components/progress/ProgressPanel.vue';
 import BrowserPanel from '~/components/workspace/tools/BrowserPanel.vue';
 import TokenUsageMeterPanel from '~/components/workspace/usage/TokenUsageMeterPanel.vue';
+import ProjectsPanel from '~/components/projects/panel/ProjectsPanel.vue';
 
 const props = withDefaults(defineProps<{
   mode?: 'desktop' | 'drawer' | 'mobile-tools'
@@ -102,8 +106,8 @@ const activeContextStore = useActiveContextStore();
 const { activeTab, visibleTabs: baseVisibleTabs, setActiveTab, selectTabExplicitly, useContextualDefaultTab } = useRightSideTabs();
 const { toggleRightPanel } = useRightPanel();
 
-// run-settings-ui-unification: on a start surface (New chat, Org launch) Files and Terminal use the
-// workspace chosen there, not the last selected run's.
+// REQ-020: on a start surface (New chat, the Org launch page) Files and Terminal use the workspace
+// chosen there, not the last selected run's.
 const startSurfaceWorkspace = inject(START_SURFACE_WORKSPACE, null);
 const activeWorkspaceId = computed(() => {
   if (startSurfaceWorkspace?.value) return startSurfaceWorkspace.value.workspaceId;
@@ -113,9 +117,9 @@ const activeWorkspaceId = computed(() => {
     || target.kind === 'agent_org_task_agent' || target.kind === 'agent_org_task_team_member')) return id || null;
   return id ?? undefined;
 });
-const activeWorkspaceMetadata = computed(() => startSurfaceWorkspace?.value
+const activeWorkspaceMetadata = computed(() => (startSurfaceWorkspace?.value
   ? startSurfaceWorkspace.value.workspaceMetadata
-  : activeContextStore.activeWorkspaceTarget?.context.config.workspaceMetadata ?? null);
+  : activeContextStore.activeWorkspaceTarget?.context.config.workspaceMetadata ?? null));
 const activeMessagesView = computed(() => {
   const target = activeContextStore.activeWorkspaceTarget;
   return target && 'collaborationMessages' in target ? target.collaborationMessages : null;

@@ -82,3 +82,28 @@ the source's own Projects stores and composer code unchanged:
   for every run kind against the same synthetic usage summaries. The earlier
   prototype rule that made per-run summaries fail was removed because it no
   longer matched the source.
+
+## Projects tab, Task roots, run settings and Reconnect (WEB-BASELINE-REFRESH-008)
+
+Source `1cd1a3a` shipped the designs that earlier Product tickets had simulated
+(run settings, Task-run cleanup, Project Manager live board and Temp tasks,
+New chat Draft rows, native folder picker). Their design-era simulation layers
+were retired; the source's own stores and components run unchanged:
+
+- `prototype/source-observation/fixtures.mjs` (shared by the observation node and
+  `utils/apolloClient.ts`) now answers path-only Project workspaces, Task roots
+  (`root`: running, couldn't start, closed by DONE), `tasksWithoutProject`,
+  `closed_task_executions`, "Archive all" (the archived runs leave this browser
+  context's history until reload), and two more synthetic runtimes (Codex with
+  thinking effort and Fast mode, Claude Agent SDK).
+- The `/ws/projects` change feed opens on the local `PrototypeWebSocket` and
+  stays silent: nothing changes Projects or Tasks behind the user's back.
+- On the desktop the Workspaces history is loaded by the source's own
+  `fetchTree` against the local fixtures, never from a route snapshot.
+- A Team or Org started from New chat or the Org launch page opens its run
+  through the retained scripted launch (`prototype/run-settings/`); nothing runs.
+- The accepted design-only Reconnect change keeps its own fixture and simulation
+  (`prototype/agent-reconnect/`, `plugins/97.agent-reconnect.client.ts`). The
+  `autobyteus.prototype.designOnlyLayers=off` local-storage key, set only by the
+  source-comparison scripts, turns its data off
+  (`prototype/shared/design-only-layers.ts`).

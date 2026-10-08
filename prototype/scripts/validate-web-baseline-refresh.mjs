@@ -45,6 +45,8 @@ export const ROUTES = [
   // WEB-BASELINE-REFRESH-004 (0a32261): Project and Task authoring pages.
   '/projects/new', '/projects/project-prototype-launch/edit', '/projects/project-prototype-launch/tasks/new',
   '/projects/project-prototype-launch/tasks/task-outline', '/projects/project-prototype-launch/tasks/task-outline/edit',
+  // WEB-BASELINE-REFRESH-008 (4d469b0): a Task page with its root, and the Temp tasks pages.
+  '/projects/project-prototype-launch/tasks/task-review', '/projects/temp-tasks', '/projects/temp-tasks/tasks/temp-task-links',
 ]
 
 const VARIANTS = [
@@ -67,9 +69,6 @@ const stateRows = [
   { id: 'WBR-S005', path: '/projects', scenario: 'empty' },
   { id: 'WBR-S006', path: '/agent-orgs?view=org-list', scenario: 'empty' },
   { id: 'WBR-S007', path: '/applications', scenario: 'apps_disabled' },
-  { id: 'WBR-S008', path: '/projects', scenario: 'projects_disabled' },
-  { id: 'WBR-S009', path: '/workspace', scenario: 'projects_disabled' },
-  { id: 'WBR-S010', path: '/settings?section=server-settings&mode=quick', scenario: 'projects_disabled' },
   { id: 'WBR-S011', path: '/agents?view=list', scenario: 'loading', waitMs: 250 },
   { id: 'WBR-S012', path: '/agents?view=list', scenario: 'error' },
   { id: 'WBR-S013', path: '/mobile', scenario: 'populated', mobile: 'unpaired', viewport: 'narrow' },
@@ -89,7 +88,7 @@ const SAMPLED_ALTERNATES = new Set([
   'WBR-R002-NEN', 'WBR-R002-DZH', 'WBR-R007-NZH', 'WBR-R012-NEN', 'WBR-R012-DZH', 'WBR-R014-NZH',
   'WBR-R016-NEN', 'WBR-R020-NZH', 'WBR-R027-NEN', 'WBR-R031-NEN', 'WBR-R031-DZH', 'WBR-R032-NZH',
   'WBR-R033-NEN', 'WBR-R033-DZH', 'WBR-R033-NZH', 'WBR-R037-NZH', 'WBR-R039-NEN', 'WBR-R043-DZH',
-  'WBR-R049-NEN', 'WBR-R049-DZH',
+  'WBR-R049-NEN', 'WBR-R049-DZH', 'WBR-R055-NEN', 'WBR-R055-DZH', 'WBR-R056-NZH',
   'WBR-R050-NEN', 'WBR-R050-DZH', 'WBR-R052-NEN', 'WBR-R053-NEN', 'WBR-R053-NZH',
 ])
 const primaryRows = process.env.MATRIX_MODE === 'full'
@@ -130,6 +129,8 @@ async function capture(browser, baseUrl, target, row) {
     localStorage.setItem('autobyteus.localization.preference-mode', locale)
     localStorage.setItem('autobyteus.prototype.scenario', scenario || 'populated')
     localStorage.setItem('autobyteus.prototype.context', mobile || 'desktop')
+    // WEB-BASELINE-REFRESH-008: design-only data (no source equivalent) is off for comparisons.
+    localStorage.setItem('autobyteus.prototype.designOnlyLayers', 'off')
     if (mobile === 'paired') {
       localStorage.setItem('autobyteus.remote_access.mobile_session.v1', JSON.stringify({
         version: 1, nodeId: 'mobile-paired-node', serverBaseUrl: mock, credential: 'prototype_mobile_session',

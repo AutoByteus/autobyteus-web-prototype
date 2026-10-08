@@ -1,17 +1,17 @@
 <template>
-  <!-- Task Agents and task Teams brought into a standalone Agent run with `@`. -->
-  <!-- task-run-resources-workspace-cleanup: the rows of a Task that is DONE leave the tree (DEC-001). -->
+  <!-- Task Agents and task Teams brought into a standalone Agent run with `@`. Rows of a DONE Task leave with motion. -->
   <TransitionGroup
-    v-if="rows.length || leaving"
+    v-if="rendered"
     tag="div"
-    name="task-row"
+    name="tree-row"
     class="team-execution-tree ml-3 space-y-0.5"
     role="tree"
     :aria-label="t('workspace.history.hierarchy.tree_label', { name: label })"
     data-test="workspace-agent-run-task-tree"
     :data-run-id="runId"
     @before-leave="onBeforeLeave"
-    @after-leave="leaving -= 1"
+    @after-leave="onRowLeaveSettled"
+    @leave-cancelled="onRowLeaveSettled"
   >
     <WorkspaceTransientExecutionRow
       v-for="display in rows"
@@ -30,8 +30,8 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import WorkspaceTransientExecutionRow from '~/components/workspace/history/WorkspaceTransientExecutionRow.vue'
+import { useLeavingTreeRows } from '~/components/workspace/history/useLeavingTreeRows'
 import { useLocalization } from '~/composables/useLocalization'
 import type { RunHistoryTransientExecutionRow } from '~/stores/runHistoryTypes'
 import { useAgentRunCollaborationStore } from '~/stores/agentRunCollaborationStore'
@@ -47,7 +47,6 @@ const props = defineProps<{
 const emit = defineEmits<{ (event: 'select-run'): void }>()
 const { t } = useLocalization()
 const collaboration = useAgentRunCollaborationStore()
-const route = useRoute()
 
 // The stored view is read without restoring the run; a live run is kept current by its stream.
 const loadStored = () => {
@@ -57,19 +56,16 @@ onMounted(loadStored)
 watch(() => props.hasCollaboration, loadStored)
 
 const rows = computed(() => collaboration.taskRows(props.runId))
-// Rows only animate when they leave; a new row appears at once, as today.
-const leaving = ref(0)
-/** A leaving row leaves the accessibility tree at once; if it had focus, focus moves to the run row. */
-const onBeforeLeave = (el: Element): void => {
-  leaving.value += 1
-  const row = el as HTMLElement
-  const hadFocus = row.contains(document.activeElement)
-  row.setAttribute('aria-hidden', 'true')
-  row.inert = true
-  if (hadFocus) {
-    const runRow = row.closest('[data-test="workspace-agent-run-task-tree"]')?.previousElementSibling
-    if (runRow instanceof HTMLElement) runRow.focus()
-  }
+// The run row directly precedes this tree.
+const { leaving, onBeforeLeave, onLeaveSettled } = useLeavingTreeRows(
+  (tree) => tree.previousElementSibling instanceof HTMLElement ? tree.previousElementSibling : null)
+// The tree stays mounted while its last rows leave (their leave hooks need the group); once they
+// have settled, the empty list is not rendered.
+const rendered = ref(false)
+watch(() => rows.value.length > 0, (hasRows) => { if (hasRows) rendered.value = true }, { immediate: true })
+const onRowLeaveSettled = (): void => {
+  onLeaveSettled()
+  if (leaving.value === 0 && rows.value.length === 0) rendered.value = false
 }
 const isExpanded = (row: RunHistoryTransientExecutionRow): boolean =>
   Boolean(row.teamRunIdForNode && collaboration.isTaskTeamExpanded(props.runId, row.teamRunIdForNode))
@@ -80,46 +76,18 @@ const toggle = (row: RunHistoryTransientExecutionRow): void => {
   if (row.teamRunIdForNode) collaboration.toggleTaskTeam(props.runId, row.teamRunIdForNode)
 }
 
-/** Opens the task Agent's conversation; a task Team row opens its coordinator. */
+/**
+ * Opens the task Agent's conversation; a task Team row opens its coordinator. The run is always
+ * (re)opened as well, so a click opens the conversation from any page, also when this run is
+ * already the selected run (F-006); re-selecting the current run only navigates.
+ */
 const select = (row: RunHistoryTransientExecutionRow): void => {
   const context = collaboration.contextFor(props.runId)
   if (!context) return
   const agentRunId = row.agentRunId ?? (row.teamRunIdForNode ? context.index.coordinatorOf(row.teamRunIdForNode).agentRunId : null)
   collaboration.selectChild(props.runId, agentRunId)
-  // project-manager-ux: from another page (Projects, a Task) the run may still be selected; the
-  // click still opens its conversation with this child shown.
-  const onRunView = route.path === '/workspace' || (route.path === '/chat' && route.query.id === props.runId)
-  if (!props.runSelected || !onRunView) emit('select-run')
+  emit('select-run')
 }
 </script>
 
-<style scoped>
-/* A leaving row fades and its height closes (200 ms); the rows below move up with it. */
-.task-row-leave-active {
-  overflow: hidden;
-  transition: opacity 200ms ease-out, max-height 200ms ease-out, margin-top 200ms ease-out, border-width 200ms ease-out;
-}
-.task-row-leave-from {
-  opacity: 1;
-  max-height: 2rem;
-}
-.task-row-leave-to {
-  opacity: 0;
-  max-height: 0;
-  min-height: 0;
-  margin-top: 0 !important;
-  border-width: 0;
-}
-.task-row-move {
-  transition: transform 200ms ease-out;
-}
-.task-row-enter-active {
-  transition: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .task-row-leave-active,
-  .task-row-move {
-    transition: none;
-  }
-}
-</style>
+<style scoped src="./treeRowLeave.css"></style>

@@ -29,6 +29,8 @@ export type MentionedCollaborator = Readonly<{
     name: string;
     kind: CollaboratorMentionKind;
     address: string;
+    /** Already in the run (a configured member or a collaborator); saved notes parse as `false`. */
+    inRun: boolean;
 }>;
 export type ParsedCollaboratorMentionNote = Readonly<{
     /** The user's own text before the note; empty for a mention-only message. */
@@ -36,17 +38,19 @@ export type ParsedCollaboratorMentionNote = Readonly<{
     collaborators: readonly MentionedCollaborator[];
 }>;
 /**
- * The one owner of the mention-note wording (server compose, web parse):
+ * The one owner of the mention-note wording (server compose, web parse). The note tells the
+ * focused agent to delegate the work to each mentioned address. An entry already in the run is
+ * marked so, and the guidance then also offers messaging that instance directly:
  *
- *   compose("Please ask @Product Team", [{ name: "Product Team", kind: "agent_team", address: "/product_team" }])
- *   === "Please ask @Product Team\n\n[Mentioned collaborators]\n- Product Team (Agent Team) at /product_team\nMessage a collaborator with send_message_to …"
+ *   compose("Please ask @Product Team", [{ name: "Product Team", kind: "agent_team", address: "/product_team", inRun: false }])
+ *   === "Please ask @Product Team\n\n[Mentioned collaborators]\n- Product Team (Agent Team) at /product_team\nDelegate the work with delegate_task …"
  */
 export declare const composeCollaboratorMentionNote: (text: string, collaborators: readonly MentionedCollaborator[]) => string;
 /** Recognizes only a note at the very end of the content, in exactly the composed form. */
 export declare const parseCollaboratorMentionNote: (content: string) => ParsedCollaboratorMentionNote | null;
 /**
- * The code every transport uses when a mentioned collaborator cannot be added on send: nothing
- * is added and the message is not posted. Transports carry the collaborator's name with it.
+ * The code every transport uses when a mentioned definition cannot be resolved on send (it is
+ * not eligible in the run): the message is not posted. Transports carry its name with it.
  */
 export declare const COLLABORATOR_ADD_FAILED = "COLLABORATOR_ADD_FAILED";
 export declare const collaboratorMentionNote: Readonly<{

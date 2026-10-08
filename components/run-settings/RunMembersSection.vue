@@ -1,6 +1,6 @@
 <template>
-  <section class="mt-6" data-test="run-members">
-    <!-- Round 20: an optional heading and "Reset all" (only when something is customized). -->
+  <section :class="title ? 'mt-6' : ''" data-test="run-members">
+    <!-- An optional heading (saved runs) and "Reset all" (only when something is customized). -->
     <div v-if="title || (customizedCount && !readOnly)" class="mb-2 flex items-baseline justify-between gap-3">
       <h3 v-if="title" class="min-w-0 text-xs font-medium text-gray-500">{{ title }}</h3>
       <button
@@ -13,8 +13,8 @@
         {{ $t('runSettings.members.resetAll') }}
       </button>
     </div>
-    <!-- No overflow clipping: member menus open outside the list. Without a heading (member panel)
-         rows bleed into the panel padding; with one (saved run) they align with the card above. -->
+    <!-- No overflow clipping: member menus open outside the list. Without a heading (the drawer)
+         rows bleed into the drawer padding; with one (saved run) they align with the card above. -->
     <div :class="title ? 'space-y-1.5' : '-mx-2 space-y-1.5'">
       <RunMemberRow
         v-for="node in nodes"
@@ -23,10 +23,11 @@
         :expanded-keys="expandedKeys"
         :locked="locked"
         :runtime-locked="runtimeLocked"
+        :locked-models-for="lockedModelsFor"
         :read-only="readOnly"
         @toggle="toggle"
-        @update="(key, field, value) => emit('update', key, field, value)"
-        @reset="(key, field) => emit('reset', key, field)"
+        @change="(key, change) => emit('change', key, change)"
+        @reset="(key, reset) => emit('reset', key, reset)"
       />
     </div>
   </section>
@@ -34,20 +35,23 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import type { ChatModelOption } from '~/composables/chat/useChatModelCatalog'
+import type { RunMemberSettingChange, RunMemberSettingReset, RunSettingFlags } from '~/types/runSettings/RunSettings'
+import { countCustomizedMembers, type RunMemberNode } from '~/utils/runSettings/runMemberTree'
 import RunMemberRow from './RunMemberRow.vue'
-import { countCustomized, type RunMemberNode, type RunSettingField, type RunSettingFlags } from './runSettings'
 
 const props = withDefaults(defineProps<{
   nodes: readonly RunMemberNode[]
   title?: string
   locked?: RunSettingFlags
   runtimeLocked?: boolean
+  lockedModelsFor?: ((key: string) => readonly ChatModelOption[] | null) | null
   readOnly?: boolean
-}>(), { title: '', locked: () => ({}), runtimeLocked: false, readOnly: false })
+}>(), { title: '', locked: () => ({}), runtimeLocked: false, lockedModelsFor: null, readOnly: false })
 
 const emit = defineEmits<{
-  (event: 'update', key: string, field: RunSettingField, value: unknown): void
-  (event: 'reset', key: string, field: RunSettingField | null): void
+  (event: 'change', key: string, change: RunMemberSettingChange): void
+  (event: 'reset', key: string, reset: RunMemberSettingReset): void
   (event: 'reset-all'): void
 }>()
 
@@ -58,5 +62,5 @@ const toggle = (key: string) => {
   else next.add(key)
   expandedKeys.value = next
 }
-const customizedCount = computed(() => countCustomized(props.nodes))
+const customizedCount = computed(() => countCustomizedMembers(props.nodes))
 </script>

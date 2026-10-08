@@ -5,6 +5,7 @@ import { useAgentTeamDefinitionStore } from '~/stores/agentTeamDefinitionStore'
 import { useActiveContextStore } from '~/stores/activeContextStore'
 import { CATALOG_AGENTS, TEAM_DEFINITION_ID, catalogDefinition, reconnectState, subjectFor, teamDefinition } from '~/prototype/agent-reconnect/agentReconnectFixture'
 import { installReconnectSimulation, renderExampleRun } from '~/prototype/agent-reconnect/reconnectSimulation'
+import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
 
 /**
  * agent-definition-reconnect-ui (design): everything beneath the UI for runs whose agent folder was
@@ -18,6 +19,8 @@ import { installReconnectSimulation, renderExampleRun } from '~/prototype/agent-
  *   message continues the same conversation with a scripted reply.
  */
 export default defineNuxtPlugin(() => {
+  // Comparison runs against the pinned source turn the design-only data off (design-only-layers.ts).
+  if (!designOnlyLayersEnabled()) return
   const definitions = useAgentDefinitionStore()
   watch(() => definitions.agentDefinitions, (list) => {
     if (!list?.length || list.some((item: any) => item.id === CATALOG_AGENTS[0]!.id)) return

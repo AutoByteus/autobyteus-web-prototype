@@ -126,6 +126,7 @@ async function run(base, target, id) {
     localStorage.setItem('autobyteus.localization.preference-mode', 'en')
     localStorage.setItem('autobyteus.prototype.scenario', scenario)
     localStorage.setItem('autobyteus.prototype.context', 'desktop')
+    localStorage.setItem('autobyteus.prototype.designOnlyLayers', 'off')
   }, { scenario })
   const page = await ctx.newPage()
   const errors = []

@@ -1,11 +1,15 @@
 # AutoByteus Web Design
 
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
-commit `10fb69504f99a615e0728ffdd6c1fcab0104ff05` (`origin/personal`,
-refreshed by `WEB-BASELINE-REFRESH-007`; previous primary pin
-`4dee901d6163ca7053916fa1edc295afbfd7a6da`). Background Tasks rows now show a
-shell task's command. See [ui-baseline-report.md](ui-baseline-report.md) for
-the refresh scope, evidence, and known gaps.
+commit `1cd1a3abc126df820e334c023621d0fb82de5b7b` (`origin/personal`,
+v1.4.99-beta.1, refreshed by `WEB-BASELINE-REFRESH-008`; previous pin
+`10fb69504f99a615e0728ffdd6c1fcab0104ff05`). The refresh brings in the right
+panel's Projects tab, Task roots and Temp tasks, path-only Project workspaces,
+unified run settings, New chat Draft rows, Workspaces "Archive all" and the
+restored native folder picker. The accepted design-only Reconnect change
+(`agent-definition-reconnect-ui`) is preserved. See
+[ui-baseline-report.md](ui-baseline-report.md) for the refresh scope,
+evidence, and known gaps.
 
 The repository is the cumulative accepted Product baseline. Approved
 Product tickets are integrated here and promoted to normal/default product

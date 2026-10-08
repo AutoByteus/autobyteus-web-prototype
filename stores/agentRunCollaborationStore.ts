@@ -22,8 +22,6 @@ import {
   buildAgentCollaborationMemberFinalContextFileOwner,
 } from '~/utils/contextFiles/contextFileOwner'
 import { mentionsPresentInText, toCollaboratorMentionDtos } from '~/utils/collaborators/collaboratorMentionText'
-// task-run-resources-workspace-cleanup (design): the Task closure facts (DONE) of Task runs.
-import { closure, isClosedTaskRun } from '~/prototype/task-run-cleanup/taskManagerRunFixture'
 
 /**
  * The client side of standalone runs' collaboration roots: the task children brought in with
@@ -66,16 +64,21 @@ export const useAgentRunCollaborationStore = defineStore('agentRunCollaboration'
     expandedTeams[hostRunId] = Object.freeze(opened)
   }
 
-  const publish = (hostRunId: string, context: AgentRunCollaborationContext, commitActivities: () => void) => {
+  const publish = (hostRunId: string, context: AgentRunCollaborationContext, commit: () => void) => {
     const previous = contexts.value[hostRunId]
     const adopt = previous ? context.prepareLocalContextAdoption(previous) : () => undefined
-    commitActivities()
+    commit()
     adopt()
     setContext(hostRunId, context)
     errors[hostRunId] = null
     openNewTaskTeams(hostRunId, context)
+    returnToHostWhenUnlisted(hostRunId, context)
+  }
+
+  /** A selected child that left the listing (absent, or its Task is DONE) returns the view to the run's own agent. */
+  const returnToHostWhenUnlisted = (hostRunId: string, context: AgentRunCollaborationContext) => {
     const selected = selection[hostRunId]
-    if (selected && !context.getChild(selected)) selection[hostRunId] = null
+    if (selected && !context.isListed(selected)) selection[hostRunId] = null
   }
 
   const attach = (hostRunId: string): AgentRunCollaborationStreamingService => {
@@ -95,6 +98,7 @@ export const useAgentRunCollaborationStore = defineStore('agentRunCollaboration'
       onInactive: () => { if (isCurrent()) services.delete(hostRunId) },
       reportError: (message) => { if (isCurrent()) errors[hostRunId] = message },
       onCollaboratorAdded: (context) => { if (isCurrent()) openNewTaskTeams(hostRunId, context) },
+      onTaskExecutionsClosed: (context) => { if (isCurrent()) returnToHostWhenUnlisted(hostRunId, context) },
     })
     services.set(hostRunId, service)
     service.connect()
@@ -123,7 +127,7 @@ export const useAgentRunCollaborationStore = defineStore('agentRunCollaboration'
         if (!isCurrent()) return
         if (!view) { setContext(hostRunId, null); return }
         const staged = await stageAgentRunCollaborationContext({ hostRunId, view, isCurrent, activityRevisions })
-        if (isCurrent()) publish(hostRunId, staged.context, staged.commitActivities)
+        if (isCurrent()) publish(hostRunId, staged.context, staged.commit)
       } catch (cause) {
         if (isCurrent()) errors[hostRunId] = cause instanceof Error ? cause.message : String(cause)
       }
@@ -200,8 +204,7 @@ export const useAgentRunCollaborationStore = defineStore('agentRunCollaboration'
   const contextFor = (hostRunId: string): AgentRunCollaborationContext | null => contexts.value[hostRunId] ?? null
 
   const selectChild = (hostRunId: string, agentRunId: string | null) => {
-    selection[hostRunId] = agentRunId && contextFor(hostRunId)?.getChild(agentRunId)
-      && !isClosedTaskRun(hostRunId, agentRunId) ? agentRunId : null
+    selection[hostRunId] = agentRunId && contextFor(hostRunId)?.isListed(agentRunId) ? agentRunId : null
   }
   const selectedChild = (hostRunId: string): string | null => selection[hostRunId] ?? null
 
@@ -214,18 +217,7 @@ export const useAgentRunCollaborationStore = defineStore('agentRunCollaboration'
   }
 
   const taskRows = (hostRunId: string): AgentRunTaskTreeRow[] =>
-    contextFor(hostRunId)?.listTaskRows(
-      (teamRunId) => isTaskTeamExpanded(hostRunId, teamRunId),
-      (runId) => isClosedTaskRun(hostRunId, runId),
-    ) ?? []
-
-  // task-run-resources-workspace-cleanup (design, DEC-005): when the open conversation's Task
-  // becomes DONE, the view returns to the run's own agent (the Manager).
-  watch(() => closure.revision, () => {
-    for (const [hostRunId, agentRunId] of Object.entries(selection)) {
-      if (agentRunId && isClosedTaskRun(hostRunId, agentRunId)) selection[hostRunId] = null
-    }
-  })
+    contextFor(hostRunId)?.listTaskRows((teamRunId) => isTaskTeamExpanded(hostRunId, teamRunId)) ?? []
 
   /** The host's Team tab: messages with its children, once it has any. */
   const hostMessagesView = (hostRunId: string): CollaborationMessagesContextView | null => {
@@ -281,6 +273,7 @@ export const useAgentRunCollaborationStore = defineStore('agentRunCollaboration'
       host: Object.freeze({ hostRunId }),
       address: child.address,
       context,
+      workspaceRootPath: child.source.launchConfiguration.workspaceRootPath,
       collaborationMessages: collaboration.messagesView(child.agentRunId),
       // A child is not a top-level run package: its pages come from the host's collaboration package.
       browse: Object.freeze({ kind: 'standaloneMember' as const, hostRunId, memberAddress: child.address, agentRunId: child.agentRunId }),

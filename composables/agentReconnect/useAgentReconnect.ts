@@ -149,3 +149,6 @@ export const useAgentReconnect = () => {
 
   return { missingForRun, missingInRoot, isDefinitionMissing, reconnect, noticeFor, dismissNotice, reconnectedAgent, collaboratorRowName }
 }
+
+/** agent-definition-reconnect-ui: addresses of members whose agent no longer exists (provided by saved-run settings). */
+export const MISSING_MEMBER_ADDRESSES: import('vue').InjectionKey<import('vue').ComputedRef<ReadonlySet<string>>> = Symbol('missingMemberAddresses')

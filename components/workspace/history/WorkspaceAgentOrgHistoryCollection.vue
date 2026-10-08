@@ -4,9 +4,10 @@
       {{ t('workspace.agentOrg.history.collectionLabel') }}
     </div>
     <div v-for="group in groups" :key="group.stableKey" class="rounded-md">
+      <div class="group/org-header flex items-center rounded-md px-2 py-1 text-sm text-gray-700 transition-colors hover:bg-gray-50">
       <button
         type="button"
-        class="flex w-full items-center rounded-md px-2 py-1 text-left text-sm text-gray-700 transition-colors hover:bg-gray-50"
+        class="flex min-w-0 flex-1 items-center text-left"
         :data-test="`agent-org-definition-${group.definitionId}`"
         :aria-expanded="isDefinitionExpanded(group.definitionId)"
         @click="toggleDefinition(group.definitionId)"
@@ -21,6 +22,19 @@
         <span class="truncate font-medium">{{ group.name }}</span>
         <span class="ml-1 text-xs text-gray-400">({{ group.runs.length }})</span>
       </button>
+      <button
+        v-if="actions.onArchiveAgentOrgGroup"
+        type="button"
+        :data-test="`agent-org-group-archive-${group.definitionId}`"
+        class="ml-2 inline-flex h-5 w-5 flex-none items-center justify-center rounded text-gray-400 transition-[opacity,color,background-color] duration-150 hover:bg-amber-50 hover:text-amber-600 focus:opacity-100 md:opacity-0 md:group-hover/org-header:opacity-100 md:group-focus-within/org-header:opacity-100 disabled:cursor-not-allowed disabled:opacity-50"
+        :title="t('workspace.history.groupArchive.archiveAll')"
+        :aria-label="t('workspace.history.groupArchive.archiveAll')"
+        :disabled="props.state.isGroupArchiving?.(agentOrgGroupArchiveKey(workspaceId, group.definitionId)) ?? false"
+        @click.stop="actions.onArchiveAgentOrgGroup(workspaceId, group)"
+      >
+        <Icon icon="heroicons:archive-box-20-solid" class="h-3.5 w-3.5" />
+      </button>
+      </div>
 
       <div v-if="isDefinitionExpanded(group.definitionId)" class="ml-3 mt-0.5 space-y-0.5">
         <div v-for="run in group.runs" :key="run.stableKey" class="rounded-md">
@@ -90,7 +104,8 @@
             {{ terminationError(run.rootRunId) }}
           </p>
 
-          <div v-if="isRunExpanded(run.rootRunId)" :id="hierarchyId(run.rootRunId)" :data-test="`agent-org-run-children-${run.rootRunId}`" class="team-execution-tree ml-3 space-y-0.5" role="tree" :aria-label="t('workspace.agentOrg.history.executionHierarchy', { name: group.name })">
+          <!-- Rows of a DONE Task leave with motion. -->
+          <TransitionGroup v-if="isRunExpanded(run.rootRunId)" :id="hierarchyId(run.rootRunId)" tag="div" name="tree-row" :data-test="`agent-org-run-children-${run.rootRunId}`" class="team-execution-tree ml-3 space-y-0.5" role="tree" :aria-label="t('workspace.agentOrg.history.executionHierarchy', { name: group.name })" @before-leave="onBeforeLeave" @after-leave="onLeaveSettled" @leave-cancelled="onLeaveSettled">
             <template v-for="display in rowsFor(run)" :key="display.row.key">
               <button
                 v-if="display.row.kind === 'agent'"
@@ -132,7 +147,7 @@
                 <Icon icon="heroicons:user-group-20-solid" class="mr-1.5 h-4 w-4 text-gray-500" />
                 <span class="truncate font-semibold">{{ label(display.row.address) }}</span>
               </button>
-              <button type="button" v-else-if="display.row.kind === 'task_agent'" @click="actions.onInspectAgentOrgExecution?.(run, display.row.agentRunId, display.row.address)" :aria-selected="isMemberSelected(run.rootRunId, display.row.address, display.row.agentRunId)" class="org-execution-row relative flex min-h-7 w-full items-center rounded-md text-left text-sm" :class="isMemberSelected(run.rootRunId, display.row.address, display.row.agentRunId) ? 'is-selected text-indigo-900' : 'text-gray-600 hover:bg-gray-50'" :title="`${display.row.address} · ${display.row.agentRunId}`" :style="rowStyle(display.row.depth)" :aria-label="agentRowLabel(display.row)" :aria-level="display.row.depth + 1" :data-test="`agent-org-task-agent-row-${display.row.agentRunId}`" :data-agent-run-id="display.row.agentRunId" :data-status="display.row.status" role="treeitem">
+              <button type="button" v-else-if="display.row.kind === 'task_agent'" @click="actions.onInspectAgentOrgExecution?.(run, display.row.agentRunId, display.row.address)" :aria-selected="isMemberSelected(run.rootRunId, display.row.address, display.row.agentRunId)" class="org-execution-row relative flex min-h-7 w-full items-center rounded-md text-left text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" :class="isMemberSelected(run.rootRunId, display.row.address, display.row.agentRunId) ? 'is-selected text-indigo-900' : 'text-gray-600 hover:bg-gray-50'" :title="`${display.row.address} · ${display.row.agentRunId}`" :style="rowStyle(display.row.depth)" :aria-label="agentRowLabel(display.row)" :aria-level="display.row.depth + 1" :data-test="`agent-org-task-agent-row-${display.row.agentRunId}`" :data-agent-run-id="display.row.agentRunId" :data-status="display.row.status" role="treeitem">
                 <WorkspaceHierarchyBranches :depth="display.row.depth" :continuing-ancestor-depths="display.continuingAncestorDepths" :has-following-sibling="display.hasFollowingSibling" />
                 <span class="ml-2 mr-1 h-3.5 w-3.5 flex-none" aria-hidden="true" />
                 <!-- A task Agent shows the same solid status dot and initials as a member; no visible
@@ -141,15 +156,16 @@
                 <span class="mr-1.5 inline-flex h-4 w-4 flex-none items-center justify-center rounded-full bg-gray-200 text-[0.5625rem] font-semibold text-gray-600" data-test="agent-org-task-agent-avatar">{{ initials(display.row.address) }}</span>
                 <span class="truncate">{{ label(display.row.address) }}</span>
               </button>
-              <button type="button" v-else @click="selectTaskTeam(run, display.row)" class="org-execution-row relative flex min-h-7 w-full items-center rounded-md text-left text-sm text-gray-600 hover:bg-gray-50" :title="`${display.row.address} · ${display.row.teamRunId}`" :aria-label="taskTeamRowLabel(display.row)" :aria-expanded="display.row.hasChildren ? display.row.expanded : undefined" :style="rowStyle(display.row.depth)" :aria-level="display.row.depth + 1" :data-test="`agent-org-task-team-row-${display.row.teamRunId}`" role="treeitem">
+              <button type="button" v-else @click="selectTaskTeam(run, display.row)" class="org-execution-row relative flex min-h-7 w-full items-center rounded-md text-left text-sm text-gray-600 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500" :title="`${display.row.address} · ${display.row.teamRunId}`" :aria-label="taskTeamRowLabel(display.row)" :aria-expanded="display.row.hasChildren ? display.row.expanded : undefined" :style="rowStyle(display.row.depth)" :aria-level="display.row.depth + 1" :data-test="`agent-org-task-team-row-${display.row.teamRunId}`" role="treeitem">
                 <WorkspaceHierarchyBranches :depth="display.row.depth" :continuing-ancestor-depths="display.continuingAncestorDepths" :has-following-sibling="display.hasFollowingSibling" />
                 <Icon v-if="display.row.hasChildren" icon="heroicons:chevron-down-20-solid" class="ml-2 mr-1 h-3.5 w-3.5 flex-none text-gray-400" :class="display.row.expanded ? '' : '-rotate-90'" :data-test="`agent-org-task-team-disclosure-${display.row.teamRunId}`" aria-hidden="true" />
                 <span v-else class="ml-2 mr-1 h-3.5 w-3.5 flex-none" aria-hidden="true" />
-                <Icon icon="heroicons:user-group-20-solid" class="mr-1.5 h-3.5 w-3.5 flex-none text-indigo-600" />
-                <span class="truncate">{{ label(display.row.address) }}</span>
+                <!-- Teams share the people-group identity, in the tree's slate. -->
+                <Icon icon="heroicons:user-group-20-solid" class="mr-1.5 h-4 w-4 flex-none text-slate-500" data-team-icon="temporary-task-team" />
+                <span class="truncate font-semibold">{{ label(display.row.address) }}</span>
               </button>
             </template>
-          </div>
+          </TransitionGroup>
         </div>
       </div>
     </div>
@@ -164,8 +180,10 @@ import TeamAggregateStatusDot from './TeamAggregateStatusDot.vue'
 import WorkspaceHierarchyBranches from './WorkspaceHierarchyBranches.vue'
 import type { WorkspaceHistoryAvatarBindings, WorkspaceHistorySectionActions, WorkspaceHistorySectionState } from './workspaceHistorySectionContracts'
 import { useLocalization } from '~/composables/useLocalization'
+import { agentOrgGroupArchiveKey } from '~/composables/useWorkspaceHistoryGroupArchive'
 import type { AgentOrgHistoryDefinitionGroup, AgentOrgRunHistoryItem } from '~/stores/runHistoryTypes'
 import type { AgentStatus } from '~/types/agent/AgentStatus'
+import { useLeavingTreeRows } from './useLeavingTreeRows'
 import { projectAgentOrgHistoryRows, type AgentOrgHistoryAgentRow, type AgentOrgHistoryDelegator, type AgentOrgHistoryTaskAgentRow, type AgentOrgHistoryTaskTeamRow, type AgentOrgHistoryTeamRow } from '~/utils/agentOrgHistoryRows'
 
 const props = defineProps<{
@@ -176,6 +194,9 @@ const props = defineProps<{
   actions: WorkspaceHistorySectionActions
 }>()
 const { t } = useLocalization()
+// The Org run's open button sits in the row above this tree.
+const { onBeforeLeave, onLeaveSettled } = useLeavingTreeRows(
+  (tree) => tree.parentElement?.querySelector<HTMLElement>('[data-test^="agent-org-run-open-"]') ?? null)
 const hierarchyId = (rootRunId: string) => `org-hierarchy-${encodeURIComponent(props.workspaceId)}-${encodeURIComponent(rootRunId)}`
 const isDefinitionExpanded = (definitionId: string) => props.state.isAgentOrgDefinitionExpanded?.(props.workspaceId, definitionId) ?? false
 const toggleDefinition = (definitionId: string) => props.state.toggleAgentOrgDefinition?.(props.workspaceId, definitionId)
@@ -229,6 +250,7 @@ const selectTaskTeam = (run: AgentOrgRunHistoryItem, row: AgentOrgHistoryTaskTea
 }
 </script>
 
+<style scoped src="./treeRowLeave.css"></style>
 <style scoped>
 .org-execution-row { isolation: isolate; }
 .org-execution-row > :not(.hierarchy-branches) { position: relative; z-index: 2; }

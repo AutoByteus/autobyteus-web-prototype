@@ -414,6 +414,11 @@ export declare const AgentOrgRootExecutionViewDtoSchema: z.ZodObject<{
                 }>, unknown>>>;
             }, z.core.$strict>;
         }, z.core.$strict>;
+        closed_task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+            agentRunId: z.ZodString;
+        }, z.core.$strict>, z.ZodObject<{
+            teamRunId: z.ZodString;
+        }, z.core.$strict>]>>;
         communication_messages: z.ZodObject<{
             schemaVersion: z.ZodLiteral<1>;
             subjectKind: z.ZodLiteral<"agent_org">;
@@ -749,6 +754,11 @@ export declare const AgentRootExecutionViewDtoSchema: z.ZodObject<{
                 source?: import("./agent-org-execution-dtos.js").TaskTeamExecutionSourceDto;
             }>, unknown>>>;
         }, z.core.$strict>;
+        closed_task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+            agentRunId: z.ZodString;
+        }, z.core.$strict>, z.ZodObject<{
+            teamRunId: z.ZodString;
+        }, z.core.$strict>]>>;
         communication_messages: z.ZodObject<{
             schemaVersion: z.ZodLiteral<1>;
             subjectKind: z.ZodLiteral<"agent">;
@@ -1259,6 +1269,11 @@ export declare const RootExecutionViewDtoSchema: z.ZodDiscriminatedUnion<[z.ZodO
                 }>, unknown>>>;
             }, z.core.$strict>;
         }, z.core.$strict>;
+        closed_task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+            agentRunId: z.ZodString;
+        }, z.core.$strict>, z.ZodObject<{
+            teamRunId: z.ZodString;
+        }, z.core.$strict>]>>;
         communication_messages: z.ZodObject<{
             schemaVersion: z.ZodLiteral<1>;
             subjectKind: z.ZodLiteral<"agent_org">;
@@ -1593,6 +1608,11 @@ export declare const RootExecutionViewDtoSchema: z.ZodDiscriminatedUnion<[z.ZodO
                 source?: import("./agent-org-execution-dtos.js").TaskTeamExecutionSourceDto;
             }>, unknown>>>;
         }, z.core.$strict>;
+        closed_task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+            agentRunId: z.ZodString;
+        }, z.core.$strict>, z.ZodObject<{
+            teamRunId: z.ZodString;
+        }, z.core.$strict>]>>;
         communication_messages: z.ZodObject<{
             schemaVersion: z.ZodLiteral<1>;
             subjectKind: z.ZodLiteral<"agent">;
@@ -1947,6 +1967,20 @@ export declare const RootExecutionEventDtoSchema: z.ZodDiscriminatedUnion<[z.Zod
             addedAt: z.ZodString;
             addedViaAgentRunId: z.ZodString;
         }, z.core.$strict>], "kind">;
+    }, z.core.$strict>, z.ZodObject<{
+        kind: z.ZodLiteral<"task_executions_closed">;
+        task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+            agentRunId: z.ZodString;
+        }, z.core.$strict>, z.ZodObject<{
+            teamRunId: z.ZodString;
+        }, z.core.$strict>]>>;
+    }, z.core.$strict>, z.ZodObject<{
+        kind: z.ZodLiteral<"task_executions_reopened">;
+        task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+            agentRunId: z.ZodString;
+        }, z.core.$strict>, z.ZodObject<{
+            teamRunId: z.ZodString;
+        }, z.core.$strict>]>>;
     }, z.core.$strict>], "kind">;
 }, z.core.$strict>, z.ZodObject<{
     root_subject_kind: z.ZodLiteral<"agent">;
@@ -2201,6 +2235,20 @@ export declare const RootExecutionEventDtoSchema: z.ZodDiscriminatedUnion<[z.Zod
             addedAt: z.ZodString;
             addedViaAgentRunId: z.ZodString;
         }, z.core.$strict>], "kind">;
+    }, z.core.$strict>, z.ZodObject<{
+        kind: z.ZodLiteral<"task_executions_closed">;
+        task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+            agentRunId: z.ZodString;
+        }, z.core.$strict>, z.ZodObject<{
+            teamRunId: z.ZodString;
+        }, z.core.$strict>]>>;
+    }, z.core.$strict>, z.ZodObject<{
+        kind: z.ZodLiteral<"task_executions_reopened">;
+        task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+            agentRunId: z.ZodString;
+        }, z.core.$strict>, z.ZodObject<{
+            teamRunId: z.ZodString;
+        }, z.core.$strict>]>>;
     }, z.core.$strict>], "kind">;
 }, z.core.$strict>], "root_subject_kind">;
 export declare const CollaborationStreamServerMessageSchema: z.ZodDiscriminatedUnion<[z.ZodObject<{
@@ -2630,6 +2678,11 @@ export declare const CollaborationStreamServerMessageSchema: z.ZodDiscriminatedU
                     }>, unknown>>>;
                 }, z.core.$strict>;
             }, z.core.$strict>;
+            closed_task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+                agentRunId: z.ZodString;
+            }, z.core.$strict>, z.ZodObject<{
+                teamRunId: z.ZodString;
+            }, z.core.$strict>]>>;
             communication_messages: z.ZodObject<{
                 schemaVersion: z.ZodLiteral<1>;
                 subjectKind: z.ZodLiteral<"agent_org">;
@@ -2964,6 +3017,11 @@ export declare const CollaborationStreamServerMessageSchema: z.ZodDiscriminatedU
                     source?: import("./agent-org-execution-dtos.js").TaskTeamExecutionSourceDto;
                 }>, unknown>>>;
             }, z.core.$strict>;
+            closed_task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+                agentRunId: z.ZodString;
+            }, z.core.$strict>, z.ZodObject<{
+                teamRunId: z.ZodString;
+            }, z.core.$strict>]>>;
             communication_messages: z.ZodObject<{
                 schemaVersion: z.ZodLiteral<1>;
                 subjectKind: z.ZodLiteral<"agent">;
@@ -3320,6 +3378,20 @@ export declare const CollaborationStreamServerMessageSchema: z.ZodDiscriminatedU
                 addedAt: z.ZodString;
                 addedViaAgentRunId: z.ZodString;
             }, z.core.$strict>], "kind">;
+        }, z.core.$strict>, z.ZodObject<{
+            kind: z.ZodLiteral<"task_executions_closed">;
+            task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+                agentRunId: z.ZodString;
+            }, z.core.$strict>, z.ZodObject<{
+                teamRunId: z.ZodString;
+            }, z.core.$strict>]>>;
+        }, z.core.$strict>, z.ZodObject<{
+            kind: z.ZodLiteral<"task_executions_reopened">;
+            task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+                agentRunId: z.ZodString;
+            }, z.core.$strict>, z.ZodObject<{
+                teamRunId: z.ZodString;
+            }, z.core.$strict>]>>;
         }, z.core.$strict>], "kind">;
     }, z.core.$strict>, z.ZodObject<{
         root_subject_kind: z.ZodLiteral<"agent">;
@@ -3574,6 +3646,20 @@ export declare const CollaborationStreamServerMessageSchema: z.ZodDiscriminatedU
                 addedAt: z.ZodString;
                 addedViaAgentRunId: z.ZodString;
             }, z.core.$strict>], "kind">;
+        }, z.core.$strict>, z.ZodObject<{
+            kind: z.ZodLiteral<"task_executions_closed">;
+            task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+                agentRunId: z.ZodString;
+            }, z.core.$strict>, z.ZodObject<{
+                teamRunId: z.ZodString;
+            }, z.core.$strict>]>>;
+        }, z.core.$strict>, z.ZodObject<{
+            kind: z.ZodLiteral<"task_executions_reopened">;
+            task_executions: z.ZodArray<z.ZodUnion<readonly [z.ZodObject<{
+                agentRunId: z.ZodString;
+            }, z.core.$strict>, z.ZodObject<{
+                teamRunId: z.ZodString;
+            }, z.core.$strict>]>>;
         }, z.core.$strict>], "kind">;
     }, z.core.$strict>], "root_subject_kind">;
 }, z.core.$strict>, z.ZodObject<{

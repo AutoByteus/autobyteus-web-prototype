@@ -4,6 +4,7 @@ import type { RunProjectionConversationEntry } from '~/services/runHydration/run
 import type { RunProjectionActivityEntry } from '~/services/runHydration/runProjectionActivityHydration';
 import type { TeamRunExecutionTreeDto } from '@autobyteus/team-stream-contracts';
 import type { AgentOrgExecutionTree } from '~/types/collaboration/agentOrgExecution';
+import type { TaskExecutionReference } from '~/utils/collaboration/taskExecutionClosure';
 import type { RunTreeWorkspaceNode } from '~/utils/runTreeProjection';
 
 export type RunKnownStatus = 'ACTIVE' | 'IDLE' | 'ERROR' | 'TERMINATED';
@@ -45,6 +46,8 @@ export interface AgentOrgRunHistoryItem {
   isActive: boolean;
   summary: string;
   executionTree: AgentOrgExecutionTree;
+  /** Task executions of `executionTree` whose Task is DONE; the rows leave them out before the Org context hydrates. */
+  closedTaskExecutions: readonly TaskExecutionReference[];
 }
 
 export interface AgentOrgHistoryDefinitionGroup {
@@ -293,4 +296,19 @@ export interface ArchiveStoredAgentOrgRunMutationData {
     message: string;
     orgRunId: string | null;
   };
+}
+
+/** Result of archiving the runs of one sidebar group. */
+export interface RunGroupArchiveOutcome {
+  archivedRunIds: string[];
+  failedRunIds: string[];
+}
+
+/** Standalone agent group result; non-empty `activeRunIds` means the server archived nothing. */
+export interface AgentRunGroupArchiveOutcome extends RunGroupArchiveOutcome {
+  activeRunIds: string[];
+}
+
+export interface ArchiveStoredAgentRunGroupMutationData {
+  archiveStoredAgentRunGroup: AgentRunGroupArchiveOutcome;
 }

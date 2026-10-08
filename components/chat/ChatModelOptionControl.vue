@@ -1,6 +1,6 @@
 <template>
-  <!-- run-settings-ui-unification (SR-005): one "other model setting" (e.g. Codex Fast mode) as its own
-       small control next to Thinking. "Default or one value" is a toggle chip; otherwise a menu. -->
+  <!-- One other model setting (e.g. Codex Fast mode) as its own control next to Thinking (REQ-022).
+       "Default or one value" is a toggle chip; otherwise a menu chip. -->
   <button
     v-if="option.kind === 'toggle'"
     type="button"
@@ -15,7 +15,7 @@
   >
     <Icon :icon="option.set ? `${option.icon}-solid` : option.icon" class="h-3.5 w-3.5" :class="option.set ? 'text-blue-600' : 'text-gray-400'" aria-hidden="true" />
     <!-- Phones: the icon alone (the name stays in the accessible label and tooltip), so Send keeps its place. -->
-    <span class="whitespace-nowrap" :class="compactOnPhone ? 'hidden sm:inline' : ''">{{ option.onLabel }}</span>
+    <span class="whitespace-nowrap" :class="compactOnPhone ? 'max-sm:hidden' : ''">{{ option.onLabel }}</span>
   </button>
 
   <div v-else ref="rootRef" class="relative">
@@ -45,6 +45,9 @@
       :class="popover.narrow.value
         ? 'fixed inset-x-2 bottom-2'
         : [align === 'left' ? 'absolute left-0' : 'absolute right-0', 'w-44', popover.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5']"
+      :style="popover.narrow.value ? undefined : inBoundary.style.value"
+      :data-test="`chat-model-option-menu-${option.key}`"
+      @keydown="onKeydown"
     >
       <p class="px-2 pb-0.5 pt-1 text-[0.6875rem] font-medium text-gray-400">{{ option.title }}</p>
       <button
@@ -53,6 +56,7 @@
         type="button"
         role="menuitemradio"
         :aria-checked="choice.checked ? 'true' : 'false'"
+        :data-test="`chat-model-option-${option.key}-${choice.id}`"
         class="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-[0.8125rem] text-gray-900 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
         @click="choose(choice.value)"
       >
@@ -64,11 +68,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useAnchoredPopover } from '~/composables/popover/useAnchoredPopover'
+import { useMenuInBoundary } from '~/composables/popover/useMenuInBoundary'
 import { useLocalization } from '~/composables/useLocalization'
-import type { ModelOption } from '~/components/chat/chatModelOptions'
+import type { ModelOption } from '~/utils/runSettings/modelOptions'
 
 const props = withDefaults(defineProps<{
   option: ModelOption
@@ -84,15 +89,28 @@ const rootRef = ref<HTMLElement | null>(null)
 const triggerRef = ref<HTMLElement | null>(null)
 const menuRef = ref<HTMLElement | null>(null)
 const popover = useAnchoredPopover(rootRef, triggerRef, 160, { placement: props.placement })
+const inBoundary = useMenuInBoundary(menuRef, computed(() => popover.open.value), computed(() => !popover.narrow.value))
 
 const toggleTitle = computed(() => t('chat.modelOption.toggleTitle', {
   setting: props.option.title,
   state: props.option.set ? t('chat.modelOption.on') : t('chat.modelOption.off'),
 }))
 
-const toggleMenu = () => { void popover.toggle() }
+const toggleMenu = async () => {
+  await popover.toggle()
+  if (!popover.open.value) return
+  await nextTick()
+  menuRef.value?.querySelector<HTMLElement>('[aria-checked="true"]')?.focus()
+}
 const choose = (value: unknown) => {
   emit('update', value)
   popover.close(true)
+}
+const onKeydown = (event: KeyboardEvent) => {
+  if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return
+  const items = Array.from(menuRef.value?.querySelectorAll<HTMLElement>('[role="menuitemradio"]') ?? [])
+  const index = items.indexOf(document.activeElement as HTMLElement)
+  event.preventDefault()
+  items[event.key === 'ArrowDown' ? Math.min(items.length - 1, index + 1) : Math.max(0, index - 1)]?.focus()
 }
 </script>

@@ -15,9 +15,9 @@ const snapshots = runtimeFixture.snapshots as Record<string, {
 
 describe('deterministic prototype fixture contract', () => {
   it('is pinned to the selected source and covers every recorded scenario', () => {
-    expect(runtimeFixture.sourceCommit).toBe('10fb69504f99a615e0728ffdd6c1fcab0104ff05')
+    expect(runtimeFixture.sourceCommit).toBe('1cd1a3abc126df820e334c023621d0fb82de5b7b')
     expect(Object.keys(snapshots)).toHaveLength(72)
-    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'projects_disabled', 'loading', 'error', 'permission_denied', 'skill_name_issues', 'agy_runtime']))
+    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'loading', 'error', 'permission_denied', 'skill_name_issues', 'agy_runtime']))
   })
 
   it('uses synthetic domain records and local-only node addresses', () => {
@@ -42,15 +42,27 @@ describe('deterministic prototype fixture contract', () => {
     expect(Object.keys(snapshots)).toContain('skill_name_issues|desktop|/skills')
   })
 
-  it('keeps Project and Task saves in one resettable in-memory copy (0a32261)', () => {
+  it('keeps Project and Task saves in one resettable in-memory copy (0a32261, 9dad89b)', () => {
     const state = baseState()
-    const created = operationFixture('CreateProject', { input: { name: 'Launch Review', description: '', workspaces: [{ workspaceId: 'workspace-prototype', description: 'Primary' }] } }, state)
+    const created = operationFixture('CreateProject', { input: { name: 'Launch Review', description: '', workspaces: [{ workspaceRootPath: '/synthetic/prototype-workspace', description: 'Primary' }, { workspaceRootPath: '/synthetic/elsewhere', description: '' }] } }, state)
     expect(created.createProject).toMatchObject({ name: 'Launch Review', taskCount: 0, openTaskCount: 0 })
+    expect(created.createProject.workspaces.map((link: { displayName: string, availability: string }) => [link.displayName, link.availability]))
+      .toEqual([['prototype-workspace', 'AVAILABLE'], ['elsewhere', 'UNREGISTERED']])
+    expect(operationFixture('CreateProject', { input: { name: 'Relative', description: '', workspaces: [{ workspaceRootPath: 'relative/path', description: '' }] } }, state).__projectError.extensions.code).toBe('WORKSPACE_PATH_INVALID')
     expect(operationFixture('CreateProject', { input: { name: 'prototype launch', description: '' } }, state).__projectError.extensions.code).toBe('PROJECT_NAME_TAKEN')
     const task = operationFixture('CreateProjectTask', { input: { projectId: 'project-prototype-launch', description: 'Draft notes.' } }, state).createProjectTask
-    expect(task).toMatchObject({ status: 'TODO', contextFiles: [] })
-    expect(operationFixture('GetProjects', {}, state).projects.find((item: { projectId: string }) => item.projectId === 'project-prototype-launch')).toMatchObject({ taskCount: 4, openTaskCount: 3 })
+    expect(task).toMatchObject({ status: 'TODO', contextFiles: [], root: null })
+    expect(operationFixture('GetProjects', {}, state).projects.find((item: { projectId: string }) => item.projectId === 'project-prototype-launch')).toMatchObject({ taskCount: 5, openTaskCount: 4 })
     expect(operationFixture('GetProjects', {}, baseState()).projects).toHaveLength(1)
+  })
+
+  it('covers every Task root state and the Temp tasks (4d469b0)', () => {
+    const tasks = operationFixture('GetProjectTasks', { projectId: 'project-prototype-launch' }, baseState()).projectTasks
+    expect(tasks.map((task: { root: null | { start: string, closed: boolean, status: string } }) => task.root && [task.root.start, task.root.closed, task.root.status]))
+      .toEqual([null, ['started', false, 'running'], ['failed', false, 'offline'], ['started', true, 'offline']])
+    expect(operationFixture('GetTasksWithoutProject', {}, baseState()).tasksWithoutProject.map((task: { taskId: string }) => task.taskId))
+      .toEqual(['temp-task-links', 'temp-task-check'])
+    expect(operationFixture('GetTasksWithoutProject', {}, { ...baseState(), scenario: 'empty' }).tasksWithoutProject).toEqual([])
   })
 
   it('keeps skill-source operations in one resettable in-memory copy (4dee901)', () => {
@@ -70,7 +82,6 @@ describe('deterministic prototype fixture contract', () => {
     const loading = snapshots['loading|desktop|/agents?view=list']
     expect(loading.state.server.status).toBe('running')
     expect(loading.state.applicationsCapability).toEqual({ capability: null, status: 'loading', error: null })
-    expect(loading.state.projectsCapability).toEqual({ capability: null, status: 'loading', error: null })
     expect(loading.state.agentDefinition.agentDefinitions).toHaveLength(0)
   })
 

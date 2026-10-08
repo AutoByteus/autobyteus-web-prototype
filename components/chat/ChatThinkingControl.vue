@@ -105,7 +105,7 @@ import type { UiModelConfigSchema } from '~/utils/llmConfigSchema'
 const props = withDefaults(defineProps<{
   schema: UiModelConfigSchema | null
   llmConfig: Record<string, unknown> | null
-  /** run-settings-ui-unification: run panels open menus where they fit and align them to the chip. */
+  /** Run-settings rows open menus where they fit and align them to the chip. */
   placement?: 'above' | 'auto'
   align?: 'left' | 'right'
 }>(), { placement: 'above', align: 'right' })
@@ -116,7 +116,6 @@ const rootRef = ref<HTMLElement | null>(null)
 const triggerRef = ref<HTMLElement | null>(null)
 const menuRef = ref<HTMLElement | null>(null)
 const popover = useAnchoredPopover(rootRef, triggerRef, 240, { placement: props.placement })
-// run-settings-ui-unification (round 11): the open menu stays inside the panel or window it is in.
 const inBoundary = useMenuInBoundary(menuRef, computed(() => popover.open.value), computed(() => !popover.narrow.value))
 
 const menu = computed(() => buildChatThinkingMenu(props.schema, props.llmConfig, (key) => t(key)))

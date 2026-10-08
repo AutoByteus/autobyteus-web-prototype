@@ -12,7 +12,7 @@
         :style="centerPaneStyle"
       >
         <slot />
-        <!-- run-settings-ui-unification: on a start surface the tools stay behind this one icon. -->
+        <!-- REQ-020: on a start surface the tools stay behind this one icon until opened. -->
         <StartSurfaceToolsToggle v-if="startSurface && !toolsShown" @open="openStartTools" />
       </div>
 
@@ -55,10 +55,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue';
 import { useRightPanel } from '~/composables/useRightPanel';
 import { useRightSideTabs } from '~/composables/useRightSideTabs';
 import { useResponsiveWorkspaceShellState } from '~/composables/layout/useResponsiveWorkspaceShell';
+import { WORKSPACE_TOOL_REVEAL_KEY, type WorkspaceToolReveal } from '~/composables/layout/useWorkspaceToolReveal';
 import RightSideTabs from './RightSideTabs.vue';
 import RightSidebarStrip from './RightSidebarStrip.vue';
 import WorkspaceRightToolDrawer from './WorkspaceRightToolDrawer.vue';
@@ -69,15 +70,12 @@ import { LEFT_PANEL_RESIZE_HANDLE_WIDTH_PX } from '~/utils/layout/responsiveLayo
 /**
  * The right tool shell (dock, strip, drawer, resize) around a center slot.
  * It owns no center-view selection; the caller renders the center content.
- */
-
-/**
- * run-settings-ui-unification: a start surface (New chat, Org launch) shows no tools until the user
- * opens them with the small icon: docked when there is room, otherwise as the drawer. No strip.
- * Run views omit `startSurface`.
+ * A start surface (New chat, the Org launch page) shows no strip: its tools open from one icon,
+ * docked when there is room, otherwise as the drawer (REQ-020).
  */
 const props = defineProps<{ startSurface?: boolean }>();
 const startTools = useStartSurfaceTools();
+
 const { t } = useLocalization();
 const {
   isRightPanelVisible,
@@ -85,9 +83,21 @@ const {
   setRightPanelVisible,
   setRightPanelWorkspaceWidth,
 } = useRightPanel();
-const { activeTab } = useRightSideTabs();
+const { activeTab, selectTabExplicitly } = useRightSideTabs();
 const responsiveWorkspaceShellState = useResponsiveWorkspaceShellState();
 const isRightDrawerOpen = ref(false);
+let isLive = true;
+const revealTool: WorkspaceToolReveal = async (tab) => {
+  if (!isLive) return false;
+  // Explicit intent must precede the first tab-host mount and its contextual default.
+  selectTabExplicitly(tab);
+  setRightPanelVisible(true);
+  // Read the live policy AFTER changing preference: a hidden wide panel can redock.
+  isRightDrawerOpen.value = responsiveWorkspaceShellState.value.rightPanel.presentation !== 'docked';
+  await nextTick();
+  return isLive;
+};
+provide(WORKSPACE_TOOL_REVEAL_KEY, revealTool);
 const workspaceFlowRef = ref<HTMLElement | null>(null);
 let workspaceFlowResizeObserver: ResizeObserver | null = null;
 
@@ -120,6 +130,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  isLive = false;
   workspaceFlowResizeObserver?.disconnect();
   workspaceFlowResizeObserver = null;
   setRightPanelWorkspaceWidth(null);
@@ -164,6 +175,7 @@ const rightDrawerBackdropStyle = computed(() => ({
 }));
 
 const closeRightDrawer = (): void => {
+  if (props.startSurface && isRightDrawerOpen.value) startTools.closeTools();
   isRightDrawerOpen.value = false;
 };
 

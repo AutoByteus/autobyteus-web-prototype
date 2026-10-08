@@ -1,6 +1,6 @@
 import type { TranslationCatalog } from '../../runtime/types';
 
-// run-settings-ui-unification: 新建与已保存的智能体、团队和组织运行的运行设置。
+// 新建与已保存的智能体、团队和组织运行的运行设置。
 const runSettingsMessages = {
   'runSettings.chat.allMembers': '全部 {{count}} 名成员使用这些设置',
   'runSettings.chat.customizedMembers': '{{total}} 名中已自定义 {{count}} 名',
