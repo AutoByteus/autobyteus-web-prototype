@@ -230,3 +230,11 @@ Probes in `review-evidence/round-1/*.mjs` (Playwright, Chromium, against `http:/
 - DEC-002: **a**. Page icons are unchanged. This is part of the confirmed design; the user did not ask to change it.
 - DEC-003, DEC-004: out of scope as proposed. The user raised neither.
 - Requirement impact: REQ-001/AC-010 and REQ-007/AC-006/AC-007 amended; new Workspaces highlight rule. See `ui-ux-spec.md`.
+
+## Finalization
+
+- Design revision: validated commit `6478eec`; ticket closed in `744152a`. Outside `tickets/`, the default branch's app code is byte-identical to the validated commit.
+- Integration: `Completed`. The ticket branch fast-forwarded `origin/personal` (`9232842` → `744152a`, plus this record). The canonical checkout `/Users/normy/autobyteus_org/autobyteus-web-design` was fast-forwarded.
+- Default-entry-point validation after integration: canonical checkout on port 4611, `/chat?id=run-research-001` → collapse → Projects tab → "documentation writer" → Workspaces. URL unchanged; "documentation writer" selected; 0 page errors. The server was stopped.
+- Cleanup: review server on port 4610 stopped. Ticket worktree removed after this record was pushed. Branch `design/collapsed-left-panel-expand-keeps-run` kept locally, as for earlier tickets.
+- Handoff: `get_handoff_rules` has no rule for `Design Completed` (only `Baseline Needed`). The result goes back to the requester, Solution Designer AgentRun `solution_designer_6856168b4a8d4175a6896c5eac1b26e2`.
