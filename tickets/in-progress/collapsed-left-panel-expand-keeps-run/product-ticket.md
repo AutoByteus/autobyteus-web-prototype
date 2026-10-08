@@ -5,7 +5,7 @@
 - Ticket / request ID: `collapsed-left-panel-expand-keeps-run`. This is the stable package identifier; there is no second ID.
 - Title: Expand the collapsed left panel without leaving the open run, and see that run in the Workspaces tree.
 - Mode: `Product Experience Design`. It evolves the accepted AutoByteus Web baseline: left strip, docked panel, drawer and Workspaces tree.
-- Status: `Awaiting User Review` (round 2)
+- Status: `Baseline Needed`. The design is confirmed; final validation and references are paused for `WEB-BASELINE-REFRESH-008`.
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`, AgentRun `solution_designer_6856168b4a8d4175a6896c5eac1b26e2`) for the user, 2026-10-08.
   - User: "delegate a task to @Product Team to work on the UI first thanks"
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/collapsed-left-panel-expand-keeps-run/tickets/in-progress/collapsed-left-panel-expand-keeps-run/product-design-request.md`
@@ -184,3 +184,16 @@ Probes in `review-evidence/round-1/*.mjs` (Playwright, Chromium, against `http:/
 - Remaining product decisions: user confirmation of DEC-001 D (Workspaces icon, Chat highlight) and DEC-002 a; DEC-003/DEC-004 proposed out of scope.
 - Next expected action: user review of the running UI reference, then revise or confirm.
 - Handoff outcome from `get_handoff_rules`: pending (interim `Awaiting User Review`).
+
+## User Confirmation And Pause (2026-10-08)
+
+- User confirmation of the round-2 design: "Okay, I think this design is okay. I think this design is okay with a separate icon. Do it, because this will solve our navigation problem."
+- Still open, pending the user's choice: the Workspaces icon glyph. Candidates are in `review-evidence/round-2/R2-08-workspaces-icon-candidates-2x.png`; the current glyph is `heroicons:rectangle-stack`.
+- The user flagged the outdated baseline: "I think the UI is not up to date ... there's no projects tab on the right side ... the real application has the projects tab on the left side of files."
+  - This is the gap already recorded under Repository And Baseline.
+  - Opened `WEB-BASELINE-REFRESH-008`: worktree `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-008`, refresh to `origin/personal@1cd1a3abc`.
+  - `Baseline Needed` (Refresh) was sent to the UI Baseline Bootstrapper.
+- After the refresh is accepted and integrated:
+  1. Merge `origin/personal` into this ticket branch.
+  2. Revalidate SCN-001 from the real right-panel Projects tab, and SCN-002/003 from Team- and Org-hosted Task cards.
+  3. Capture the final VIS references, write `ui-ux-spec.md`, and finalize.
