@@ -61,7 +61,7 @@
         :aria-current="isRunOpen ? 'location' : undefined"
         @click="handleWorkspacesClick($event)"
       >
-        <Icon icon="heroicons:rectangle-stack" class="h-5 w-5" />
+        <Icon icon="ph:tree-view" class="h-5 w-5" />
 
         <div class="absolute left-full ml-2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 invisible transition-all group-hover:opacity-100 group-hover:visible z-50">
           {{ t('shell.navigation.workspaces') }}

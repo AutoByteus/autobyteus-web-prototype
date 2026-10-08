@@ -64,7 +64,7 @@
 - Round 2 design (DEC-001 option D):
   - **Workspaces icon:**
     - Placed in the collapsed strip after the page icons, behind a 24 × 1 px `gray-100` (#e6e6e6) divider, mirroring the docked panel's Workspaces section below the page list.
-    - Glyph `heroicons:rectangle-stack` at 20 px; standard strip button and tooltip "Workspaces" / "工作区".
+    - Glyph `ph:tree-view` at 20 px (chosen by the user; was `heroicons:rectangle-stack`); standard strip button and tooltip "Workspaces" / "工作区".
     - Lit (`bg-gray-100 text-gray-900`, `aria-current="location"`) whenever a run is open: `/chat?id=…` or `/workspace` (Team/Org).
     - Click: shows the panel (docked, or the drawer) with the open run revealed: selected, ancestors open, scrolled into view. It never navigates.
     - With no run open it just shows the panel.
@@ -197,3 +197,6 @@ Probes in `review-evidence/round-1/*.mjs` (Playwright, Chromium, against `http:/
   1. Merge `origin/personal` into this ticket branch.
   2. Revalidate SCN-001 from the real right-panel Projects tab, and SCN-002/003 from Team- and Org-hosted Task cards.
   3. Capture the final VIS references, write `ui-ux-spec.md`, and finalize.
+- Icon decision (2026-10-08): the user said "I guess tree is a good one", in agreement with the recommendation of candidate C, `ph:tree-view` (Phosphor, already bundled; same set as Memory).
+  - DC-014 `LeftSidebarStrip.vue`: the Workspaces glyph becomes `ph:tree-view`.
+  - Evidence: `review-evidence/round-2/R2-09-strip-tree-icon-hover-2x.png`.
