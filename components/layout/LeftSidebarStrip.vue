@@ -7,7 +7,42 @@
     :data-strip-activation="props.stripActivation"
     :class="stripClasses"
   >
-    <div class="flex flex-col space-y-2">
+    <!-- collapsed-left-panel-expand-keeps-run: on short windows the icons sit closer so Settings still fits. -->
+    <div class="flex flex-col space-y-2 [@media(max-height:540px)]:space-y-1">
+      <!-- collapsed-left-panel-expand-keeps-run: expands the panel only; never navigates (DEC-001 A). -->
+      <!-- data-nav-key lets a closed drawer return focus here, as for the other strip items. -->
+      <button
+        type="button"
+        data-test="workspace-left-strip-expand"
+        data-nav-key="expand-left-panel"
+        class="group relative rounded-md p-2 transition-colors hover:bg-gray-100"
+        :title="$t('shell.components.layout.LeftSidebarStrip.expand_left_panel')"
+        :aria-label="$t('shell.components.layout.LeftSidebarStrip.expand_left_panel')"
+        aria-expanded="false"
+        @click="handleExpandClick($event)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="h-5 w-5"
+          aria-hidden="true"
+        >
+          <rect width="18" height="18" x="3" y="3" rx="2" />
+          <path d="M9 3v18" />
+        </svg>
+
+        <div class="absolute left-full ml-2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 invisible transition-all group-hover:opacity-100 group-hover:visible z-50">
+          {{ $t('shell.components.layout.LeftSidebarStrip.expand_left_panel') }}
+        </div>
+      </button>
+
+      <div class="mx-auto h-px w-6 bg-gray-200 [@media(max-height:540px)]:hidden" aria-hidden="true" data-test="workspace-left-strip-expand-divider"></div>
+
       <button
         v-for="item in primaryNavItems"
         :key="item.key"
@@ -68,7 +103,7 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
-import { computed, onMounted } from 'vue';
+import { computed, nextTick, onMounted } from 'vue';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
 import { useAppLayoutStore } from '~/stores/appLayoutStore';
 import { rememberDrawerTrigger } from '~/composables/useAccessibleDrawer';
@@ -129,6 +164,18 @@ const pushRoute = async (target: RouteLocationRaw): Promise<void> => {
   } catch (error) {
     console.error('LeftSidebarStrip navigation error:', error);
   }
+};
+
+// collapsed-left-panel-expand-keeps-run: shows the panel (docked, or the drawer when there is no room)
+// and changes nothing else: no route, run, draft or right-panel change. When the panel docks, the
+// strip unmounts, so focus moves to the panel's Collapse left panel control.
+const handleExpandClick = (event: MouseEvent): void => {
+  const docks = props.stripActivation === 'redock-panel';
+  activateStrip(event);
+  if (!docks) return;
+  void nextTick(() => {
+    document.querySelector<HTMLElement>('[data-test="app-left-panel-collapse"]')?.focus({ preventScroll: true });
+  });
 };
 
 const handlePrimaryClick = async (key: ShellPrimaryNavKey, event: MouseEvent): Promise<void> => {

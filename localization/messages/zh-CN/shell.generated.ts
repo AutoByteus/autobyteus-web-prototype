@@ -11,6 +11,7 @@ const messages = {
   'shell.components.app.AppUpdateNotice.install_and_amp_restart': '安装&amp;重新启动',
   'shell.components.app.AppUpdateNotice.release_notes': '发行说明',
   'shell.components.app.AppUpdateNotice.restarting_to_install_update_this_window': '重新启动以安装更新。该窗口将自动关闭。',
+  'shell.components.layout.LeftSidebarStrip.expand_left_panel': '展开左侧面板',
   'shell.components.layout.LeftSidebarStrip.item_label': '项目.标签',
   'shell.components.layout.LeftSidebarStrip.settings': '设置',
   'shell.startTools.show': '显示工具',
