@@ -11,7 +11,6 @@ const messages = {
   'shell.components.app.AppUpdateNotice.install_and_amp_restart': 'Install &amp; Restart',
   'shell.components.app.AppUpdateNotice.release_notes': 'Release notes',
   'shell.components.app.AppUpdateNotice.restarting_to_install_update_this_window': 'Restarting to install update. This window will close automatically.',
-  'shell.components.layout.LeftSidebarStrip.expand_left_panel': 'Expand left panel',
   'shell.components.layout.LeftSidebarStrip.item_label': 'item.label',
   'shell.components.layout.LeftSidebarStrip.settings': 'Settings',
   'shell.startTools.show': 'Show tools',

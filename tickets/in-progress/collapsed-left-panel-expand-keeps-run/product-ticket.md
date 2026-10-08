@@ -5,7 +5,7 @@
 - Ticket / request ID: `collapsed-left-panel-expand-keeps-run`. This is the stable package identifier; there is no second ID.
 - Title: Expand the collapsed left panel without leaving the open run, and see that run in the Workspaces tree.
 - Mode: `Product Experience Design`. It evolves the accepted AutoByteus Web baseline: left strip, docked panel, drawer and Workspaces tree.
-- Status: `Awaiting User Review` (round 1)
+- Status: `Awaiting User Review` (round 2)
 - Requester: Solution Designer (`/software_engineering_team/solution_designer`, AgentRun `solution_designer_6856168b4a8d4175a6896c5eac1b26e2`) for the user, 2026-10-08.
   - User: "delegate a task to @Product Team to work on the UI first thanks"
 - Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/collapsed-left-panel-expand-keeps-run/tickets/in-progress/collapsed-left-panel-expand-keeps-run/product-design-request.md`
@@ -45,6 +45,53 @@
   - in the drawer, Escape or the backdrop returns focus to Expand left panel
 - Short windows (481–540 px tall, where the strip still shows): the divider hides and the icon gap goes from 8 px to 4 px, so Settings stays visible.
 - Strings: en "Expand left panel"; zh-CN "展开左侧面板".
+
+## Round 1 Feedback And Round 2 (current proposal)
+
+- Round 1 feedback from the user: "This is not really a dedicated one ... it looks really strange. Do we have other options? ... What do you think the root problem is? ... Maybe we have some navigation problems in general."
+- Root cause, verified in the source:
+  - The collapsed strip keeps only the page icons. The Workspaces tree (where the open run is) has no strip icon.
+  - `isShellPrimaryRouteActive('chat')` is true on any `/chat` path, including `/chat?id=<run>`, but clicking Chat opens New chat. The lit icon takes the user away from the run.
+  - Team and Org runs (`/workspace`) light no strip icon.
+  - Left-strip icons are pages; right-strip icons are panel tabs.
+- User suggestion considered: auto-open the left panel when a run is opened from a Task card. Advised against as the main fix:
+  - it overrides an explicit collapse
+  - it is inconsistent across entry points
+  - it covers the content in the narrow drawer
+  - it leaves the Chat trap
+- User decision: "Yeah, put a separate icon on so that I can experience it." The user also said: "I'm not sure whether this is good or not."
+- Requirement Impact: sent to Solution Designer (AgentRun `solution_designer_6856168b4a8d4175a6896c5eac1b26e2`, delivered 2026-10-08) as exploratory and pending the user's decision.
+- Round 2 design (DEC-001 option D):
+  - **Workspaces icon:**
+    - Placed in the collapsed strip after the page icons, behind a 24 × 1 px `gray-200` divider, mirroring the docked panel's Workspaces section below the page list.
+    - Glyph `heroicons:rectangle-stack` at 20 px; standard strip button and tooltip "Workspaces" / "工作区".
+    - Lit (`bg-gray-100 text-gray-900`, `aria-current="location"`) whenever a run is open: `/chat?id=…` or `/workspace` (Team/Org).
+    - Click: shows the panel (docked, or the drawer) with the open run revealed: selected, ancestors open, scrolled into view. It never navigates.
+    - With no run open it just shows the panel.
+  - **Chat:** lit only on New chat (`/chat` with no id), in the strip and the docked Chat row. Its click is unchanged (always New chat).
+  - **Removed:** the round 1 Expand left panel toggle, its divider and its string.
+  - **Unchanged:** the page icons (DEC-002 a) and the docked panel's collapse button.
+  - **Focus:**
+    - collapse moves focus to the Workspaces icon
+    - Workspaces (docked) moves focus to the Workspaces section, then onto the open run's row once it is revealed (a focus ring shows only after keyboard use)
+    - the drawer returns focus to Workspaces on Escape or backdrop
+  - **Short windows (≤540 px tall):** the divider hides and the gap goes from 8 px to 4 px.
+- Round 2 changes:
+  - DC-008 `LeftSidebarStrip.vue`: toggle replaced by the Workspaces icon (`handleWorkspacesClick`).
+  - DC-009 `useShellPrimaryNavigation.ts`: `isRunOpen`; Chat is active only when no run is open.
+  - DC-010 strings: `shell.navigation.workspaces`; `expand_left_panel` removed.
+  - DC-011 `AppLeftPanel.vue`: focus after collapse goes to Workspaces.
+  - DC-012 `useRevealSelectedTreeRow.ts`: focus the revealed row when opened from Workspaces.
+- Round 2 validation (`review-evidence/round-2/r2.mjs`, Chromium):
+  - SCN-001 (1440×900): Workspaces lit while collapsed. Click: URL `/chat?id=run-ptm-0001` unchanged; reviewer selected, visible and focused; docked Chat row not lit.
+  - SCN-002: colorist in nested post_production revealed, visible and focused; `/workspace` unchanged.
+  - SCN-003 (1440×620, keyboard): writer revealed, tree scrolled 239 px, focused; URL unchanged.
+  - SCN-005 (760×900): Workspaces lit; Enter opens the drawer with the host run selected; Escape returns focus to Workspaces.
+  - SCN-004: Agents icon goes to `/agents?view=list` and docks.
+  - New chat: Chat lit, Workspaces not.
+  - AC-009: draft text kept; nothing selected.
+  - Strip at 481/540/541 px tall: no overflow.
+  - `vue-tsc`: 0 errors.
 
 ## Alternatives (described, not built)
 
@@ -132,7 +179,7 @@ Probes in `review-evidence/round-1/*.mjs` (Playwright, Chromium, against `http:/
 
 ## Outcome And Handoff
 
-- Interim review aids (not normative): `review-evidence/round-1/R1-01…R1-07*.png`.
-- Remaining product decisions: user confirmation of DEC-001 A and DEC-002 a; DEC-003/DEC-004 proposed out of scope.
+- Interim review aids (not normative): `review-evidence/round-1/` (superseded) and `review-evidence/round-2/`.
+- Remaining product decisions: user confirmation of DEC-001 D (Workspaces icon, Chat highlight) and DEC-002 a; DEC-003/DEC-004 proposed out of scope.
 - Next expected action: user review of the running UI reference, then revise or confirm.
 - Handoff outcome from `get_handoff_rules`: pending (interim `Awaiting User Review`).

@@ -160,11 +160,11 @@ const route = useRoute();
 const router = useRouter();
 const { toggleLeftPanel } = useLeftPanel();
 // collapsed-left-panel-expand-keeps-run: the collapse control unmounts with the panel, so focus
-// moves to its counterpart, the strip's Expand left panel control.
+// moves to the strip's Workspaces icon, which opens the panel again.
 const collapseLeftPanel = (): void => {
   toggleLeftPanel();
   void nextTick(() => {
-    document.querySelector<HTMLElement>('[data-test="workspace-left-strip-expand"]')?.focus({ preventScroll: true });
+    document.querySelector<HTMLElement>('[data-test="workspace-left-strip-workspaces"]')?.focus({ preventScroll: true });
   });
 };
 const {

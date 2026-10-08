@@ -9,7 +9,8 @@ const SELECTED_ROW_SELECTOR = '[aria-current="true"], [aria-selected="true"]';
  * collapsed-left-panel-expand-keeps-run (design): when the left panel appears (docked expand, drawer
  * open, app start) and a run is open, its row is scrolled into view once its ancestors have opened.
  * A row that is already fully visible does not move; otherwise it is centred so its siblings show.
- * The first user scroll, wheel or press in the tree cancels the pending reveal.
+ * The first user scroll, wheel or press in the tree cancels the pending reveal. When the panel was
+ * opened from the strip's Workspaces icon, keyboard focus lands on that row.
  */
 export const useRevealSelectedTreeRow = (container: Ref<HTMLElement | null>): void => {
   let observer: MutationObserver | null = null;
@@ -45,6 +46,10 @@ export const useRevealSelectedTreeRow = (container: Ref<HTMLElement | null>): vo
     const rect = row.getBoundingClientRect();
     if (rect.top < box.top || rect.bottom > box.bottom) {
       el.scrollTop += (rect.top - box.top) - (box.height - rect.height) / 2;
+    }
+    // Opened from the strip's Workspaces icon (focus is on the Workspaces section): focus the run's row.
+    if (document.activeElement?.matches('[data-test="app-left-panel-run-history"]')) {
+      row.focus({ preventScroll: true });
     }
     // Keeps watching until the deadline: rows that load later above it may push it out again.
   };
