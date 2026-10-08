@@ -49,7 +49,7 @@
       <!-- collapsed-left-panel-expand-keeps-run (round 2): the Workspaces tree's place in the strip, after
            the pages as in the panel. Lit while a run is open; opens the panel on that run, never navigates.
            data-nav-key lets a closed drawer return focus here, as for the other strip items. -->
-      <div class="mx-auto h-px w-6 bg-gray-200 [@media(max-height:540px)]:hidden" aria-hidden="true" data-test="workspace-left-strip-workspaces-divider"></div>
+      <div class="mx-auto h-px w-6 bg-gray-100 [@media(max-height:540px)]:hidden" aria-hidden="true" data-test="workspace-left-strip-workspaces-divider"></div>
       <button
         type="button"
         data-test="workspace-left-strip-workspaces"

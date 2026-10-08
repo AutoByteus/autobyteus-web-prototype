@@ -63,7 +63,7 @@
 - Requirement Impact: sent to Solution Designer (AgentRun `solution_designer_6856168b4a8d4175a6896c5eac1b26e2`, delivered 2026-10-08) as exploratory and pending the user's decision.
 - Round 2 design (DEC-001 option D):
   - **Workspaces icon:**
-    - Placed in the collapsed strip after the page icons, behind a 24 × 1 px `gray-200` divider, mirroring the docked panel's Workspaces section below the page list.
+    - Placed in the collapsed strip after the page icons, behind a 24 × 1 px `gray-100` (#e6e6e6) divider, mirroring the docked panel's Workspaces section below the page list.
     - Glyph `heroicons:rectangle-stack` at 20 px; standard strip button and tooltip "Workspaces" / "工作区".
     - Lit (`bg-gray-100 text-gray-900`, `aria-current="location"`) whenever a run is open: `/chat?id=…` or `/workspace` (Team/Org).
     - Click: shows the panel (docked, or the drawer) with the open run revealed: selected, ancestors open, scrolled into view. It never navigates.
@@ -82,6 +82,7 @@
   - DC-010 strings: `shell.navigation.workspaces`; `expand_left_panel` removed.
   - DC-011 `AppLeftPanel.vue`: focus after collapse goes to Workspaces.
   - DC-012 `useRevealSelectedTreeRow.ts`: focus the revealed row when opened from Workspaces.
+  - DC-013 `LeftSidebarStrip.vue`: divider lightened from `gray-200` (#cccccc) to `gray-100` (#e6e6e6), the strip's own hover/active fill. User: "The separator looks nice. Maybe we make the separator looks a little bit lighter." Evidence: `review-evidence/round-2/R2-07-strip-lighter-divider-2x.png`.
 - Round 2 validation (`review-evidence/round-2/r2.mjs`, Chromium):
   - SCN-001 (1440×900): Workspaces lit while collapsed. Click: URL `/chat?id=run-ptm-0001` unchanged; reviewer selected, visible and focused; docked Chat row not lit.
   - SCN-002: colorist in nested post_production revealed, visible and focused; `/workspace` unchanged.
