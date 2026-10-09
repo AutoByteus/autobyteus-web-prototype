@@ -57,7 +57,7 @@
       </div>
     </form>
 
-    <div ref="treeScrollRef" class="min-h-0 flex-1 overflow-y-auto px-1 pb-2" data-test="workspace-history-tree-scroll">
+    <div class="min-h-0 flex-1 overflow-y-auto px-1 pb-2">
       <div v-if="runHistoryStore.loading" class="px-3 py-4 text-xs text-gray-500">{{ $t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.loading_task_history') }}</div>
 
       <div v-if="runHistoryStore.historyFamilyErrors?.workspace" class="px-3 py-2 text-xs text-red-600">
@@ -149,7 +149,6 @@ import { pickFolderPath } from '~/composables/useNativeFolderDialog';
 import { useRunHistoryAvatarState } from '~/composables/useRunHistoryAvatarState';
 import { useWorkspaceHistorySelectionActions } from '~/composables/useWorkspaceHistorySelectionActions';
 import { useWorkspaceHistoryTreeState } from '~/composables/useWorkspaceHistoryTreeState';
-import { useRevealSelectedTreeRow } from '~/components/workspace/history/useRevealSelectedTreeRow';
 import { useWorkspaceHistoryWorkspaceCreation } from '~/composables/useWorkspaceHistoryWorkspaceCreation';
 import { useWorkspaceHistoryWorkspaceRemoval } from '~/composables/useWorkspaceHistoryWorkspaceRemoval';
 import { useWorkspaceHistoryMutations } from '~/composables/useWorkspaceHistoryMutations';
@@ -204,9 +203,6 @@ const treeState = useWorkspaceHistoryTreeState({
   selectionStore,
   selectedAgentOrg,
 });
-// collapsed-left-panel-expand-keeps-run: the open run's row is scrolled into view when the panel appears.
-const treeScrollRef = ref<HTMLElement | null>(null);
-useRevealSelectedTreeRow(treeScrollRef);
 const { workspaceNodes, workspaceTeams, workspaceTeamHistoryGroups } = treeState;
 const { execute: executeSubjectAction } = useWorkspaceHistorySubjectActions();
 const {

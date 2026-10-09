@@ -325,11 +325,6 @@ export const useWorkspaceHistoryTreeState = (params: {
     setWorkspaceExpanded(ancestry.workspaceId, true);
     setTeamDefinitionExpanded(ancestry.workspaceId, ancestry.teamDefinitionGroupKey, true);
     setTeamExpanded(teamRunId, true);
-    // collapsed-left-panel-expand-keeps-run: the focused member's sub-team rows open too, however the
-    // member was opened (Task card, Team tab, tree), so its row is shown (REQ-003, U-002).
-    const focusedAgentRunId = params.runHistoryStore.getTeamNodes()
-      .find((team) => team.teamRunId === teamRunId)?.focusedAgentRunId;
-    if (focusedAgentRunId) expandTeamMemberAncestors(ancestry.workspaceId, teamRunId, focusedAgentRunId);
     return true;
   };
 
