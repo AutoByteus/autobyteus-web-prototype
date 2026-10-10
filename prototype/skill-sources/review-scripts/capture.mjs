@@ -65,7 +65,6 @@ const shots = [
     await o.page.waitForTimeout(200); return o } },
   { id: 'R05', name: 'add-github-trust-hint', run: async () => {
     const o = await open({})
-    await o.page.getByRole('button', { name: 'GitHub', exact: true }).click()
     await o.page.locator('#skill-source-input').fill('https://github.com/acme-labs/writing-skills')
     return o } },
   { id: 'R06', name: 'add-local-browse-filled', run: async () => {
@@ -75,17 +74,17 @@ const shots = [
   { id: 'R07', name: 'add-local-working', run: async () => {
     const o = await open({})
     await o.page.locator('#skill-source-input').fill('/Users/alex/Projects/prompt-kits/skills')
-    await o.page.getByRole('button', { name: 'Add Folder' }).click()
+    await o.page.getByRole('button', { name: 'Add', exact: true }).click()
     await o.page.waitForTimeout(200); return o } },
   { id: 'R08', name: 'add-local-success', run: async () => {
     const o = await open({})
     await o.page.locator('#skill-source-input').fill('/Users/alex/Projects/prompt-kits/skills')
-    await o.page.getByRole('button', { name: 'Add Folder' }).click()
+    await o.page.getByRole('button', { name: 'Add', exact: true }).click()
     await o.page.waitForSelector('.success-alert'); await settle(o.page); return o } },
   { id: 'R09', name: 'add-local-error-kept-input', run: async () => {
     const o = await open({})
     await o.page.locator('#skill-source-input').fill('/Users/alex/Projects/missing-folder')
-    await o.page.getByRole('button', { name: 'Add Folder' }).click()
+    await o.page.getByRole('button', { name: 'Add', exact: true }).click()
     await o.page.waitForSelector('.error-alert'); await settle(o.page); return o } },
   { id: 'R10', name: 'remove-confirmation-local', run: async () => {
     const o = await open({})
@@ -108,14 +107,13 @@ const shots = [
   { id: 'R14', name: 'registry-error', run: async () => open({ scenario: 'skill_sources_registry_error' }) },
   { id: 'R15', name: 'import-warning', run: async () => {
     const o = await open({})
-    await o.page.getByRole('button', { name: 'GitHub', exact: true }).click()
     await o.page.locator('#skill-source-input').fill('https://github.com/acme-labs/notes-with-warnings')
-    await o.page.getByRole('button', { name: 'Import repository' }).click()
+    await o.page.getByRole('button', { name: 'Add', exact: true }).click()
     await o.page.waitForSelector('.warning-alert', { timeout: 10_000 }); await settle(o.page); return o } },
   { id: 'R16', name: 'duplicate-name-conflict', run: async () => {
     const o = await open({})
     await o.page.locator('#skill-source-input').fill('/Users/alex/Downloads/duplicate-skills')
-    await o.page.getByRole('button', { name: 'Add Folder' }).click()
+    await o.page.getByRole('button', { name: 'Add', exact: true }).click()
     await o.page.getByTestId('skill-name-conflict-dialog').waitFor({ timeout: 10_000 }); await o.page.waitForTimeout(300); return o } },
   { id: 'R17', name: 'keyboard-focus-remove', run: async () => {
     const o = await open({})

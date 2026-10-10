@@ -105,6 +105,10 @@ const skillMessages = {
   "skills.sources.checkNamed": "Check {{name}} again",
   "skills.sources.removeNamed": "Remove {{name}}",
   "skills.sources.browse": "Browse…",
+  "skills.sources.addSource": "Add skill source",
+  "skills.sources.add": "Add",
+  "skills.sources.inputPlaceholder": "Folder path or GitHub repository URL",
+  "skills.sources.inputHint": "A folder on this computer that contains skills, or a public GitHub repository URL.",
 } satisfies TranslationCatalog;
 
 export default skillMessages;

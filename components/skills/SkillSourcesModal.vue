@@ -42,32 +42,25 @@
         </div>
 
         <form @submit.prevent="handleAdd">
-          <div class="mb-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
-            <label for="skill-source-input" class="text-[13px] font-medium text-slate-700">{{ t(mode === 'github' ? 'skills.sources.repositoryUrl' : 'skills.components.skills.SkillSourcesModal.add_new_source_folder') }}</label>
-            <div class="input-modes inline-flex shrink-0 rounded-lg bg-slate-100 p-0.5" role="group" :aria-label="t('skills.sources.sourceType')">
-              <button v-for="option in modeOptions" :key="option.value" type="button" class="mode-btn" :aria-pressed="mode === option.value"
-                :disabled="busy" @click="mode = option.value">
-                <Icon :icon="option.icon" class="h-3.5 w-3.5" aria-hidden="true" />{{ t(option.label) }}
-              </button>
-            </div>
-          </div>
+          <label for="skill-source-input" class="mb-2 block text-[13px] font-medium text-slate-700">{{ t('skills.sources.addSource') }}</label>
           <div class="input-group flex gap-2">
             <input id="skill-source-input" ref="inputRef" v-model="newPath" :disabled="busy" type="text" autocomplete="off" spellcheck="false"
+              aria-describedby="skill-source-hint"
               class="h-9 min-w-0 flex-1 rounded-lg border border-slate-300 bg-white px-3 font-mono text-[13px] text-slate-900 placeholder:font-sans placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:bg-slate-50 disabled:text-slate-400"
-              :placeholder="mode === 'github' ? 'https://github.com/owner/repository' : t('skills.components.skills.SkillSourcesModal.absolute_path_to_skills_folder')" />
-            <button v-if="mode === 'local' && pickerEligible" type="button" class="browse btn-secondary-sm" :disabled="busy || picking" @click="browse">
+              :placeholder="t('skills.sources.inputPlaceholder')" />
+            <button v-if="pickerEligible" type="button" class="browse btn-secondary-sm" :disabled="busy || picking" @click="browse">
               {{ t('skills.sources.browse') }}
             </button>
             <button class="btn-add btn-primary-sm" type="submit" :disabled="!newPath.trim() || busy">
               <Icon v-if="scanning" icon="svg-spinners:ring-resize" class="h-4 w-4" aria-hidden="true" />
               <Icon v-else icon="heroicons:plus" class="h-4 w-4" aria-hidden="true" />
-              {{ scanning ? t('skills.sources.working') : t(mode === 'github' ? 'skills.sources.import' : 'skills.components.skills.SkillSourcesModal.add_folder') }}
+              {{ scanning ? t('skills.sources.working') : t('skills.sources.add') }}
             </button>
           </div>
         </form>
-        <p class="hint mt-2 flex items-start gap-1.5 text-xs leading-5 text-slate-500">
-          <Icon v-if="mode === 'github'" icon="heroicons:shield-exclamation" class="mt-0.5 h-4 w-4 shrink-0 text-amber-500" aria-hidden="true" />
-          <span>{{ t(mode === 'github' ? 'skills.sources.trust' : 'skills.components.skills.SkillSourcesModal.enter_the_absolute_path_to_a') }}</span>
+        <p id="skill-source-hint" class="hint mt-2 flex items-start gap-1.5 text-xs leading-5 text-slate-500" aria-live="polite">
+          <Icon v-if="isRepositoryUrl" icon="heroicons:shield-exclamation" class="mt-0.5 h-4 w-4 shrink-0 text-amber-500" aria-hidden="true" />
+          <span>{{ t(isRepositoryUrl ? 'skills.sources.trust' : 'skills.sources.inputHint') }}</span>
         </p>
       </div>
 
@@ -121,7 +114,6 @@ const skillNames = useSkillNamesStore()
 const nodeContext = useWindowNodeContextStore()
 const { skillSources, loading, error, registryError, warnings, pending } = storeToRefs(store)
 const newPath = ref('')
-const mode = ref<'local' | 'github'>('local')
 const successMessage = ref('')
 const scanning = ref(false)
 const confirming = ref(false)
@@ -135,10 +127,9 @@ const sources = computed(() => [...skillSources.value].sort((a, b) =>
 const confirmationMessage = computed(() => t(confirmation.value?.action === 'update'
   ? 'skills.sources.updateWarning' : confirmation.value?.source.github
     ? 'skills.sources.removeWarning' : 'skills.sources.unlinkWarning'))
-const modeOptions = [
-  { value: 'local', label: 'skills.sources.local', icon: 'heroicons:folder' },
-  { value: 'github', label: 'skills.sources.github', icon: 'mdi:github' },
-] as const
+// One input for both kinds: a web address is imported as a GitHub repository (the import validates it and
+// rejects non-GitHub or non-root URLs with its existing message); anything else is added as a local folder.
+const isRepositoryUrl = computed(() => /^\s*(https?:\/\/|www\.|github\.com\/)/i.test(newPath.value))
 // DEC-002 (proposed): the native folder picker, only where the workspace folder picker is offered.
 const pickerEligible = computed(() => canUseLocalFolderPicker({
   isEmbeddedWindow: nodeContext.isEmbeddedWindow,
@@ -195,7 +186,7 @@ async function handleAdd() {
   scanning.value = true
   successMessage.value = ''
   try {
-    await skillNames.runWithSkillNameChecks(() => mode.value === 'github'
+    await skillNames.runWithSkillNameChecks(() => isRepositoryUrl.value
       ? store.githubOperation('import', undefined, newPath.value.trim())
       : store.addSkillSource(newPath.value.trim()))
     newPath.value = ''
@@ -230,11 +221,6 @@ async function confirmAction() {
 <style scoped>
 .alert-bar { display: flex; align-items: flex-start; gap: .5rem; border-width: 1px; border-radius: .5rem; padding: .375rem .75rem; font-size: .8125rem; line-height: 1.25rem; overflow-wrap: anywhere; }
 .alert-icon { margin-top: .125rem; height: 1rem; width: 1rem; flex-shrink: 0; }
-.mode-btn { display: inline-flex; align-items: center; gap: .375rem; height: 1.75rem; padding: 0 .625rem; border-radius: .375rem; font-size: .8125rem; font-weight: 500; color: #475569; transition: background-color .15s, color .15s; }
-.mode-btn:hover:not(:disabled) { color: #0f172a; }
-.mode-btn[aria-pressed="true"] { background: #fff; color: #0f172a; box-shadow: 0 1px 2px rgb(15 23 42 / .08), 0 0 0 1px rgb(15 23 42 / .06); }
-.mode-btn:disabled { cursor: not-allowed; opacity: .5; }
-.mode-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px #3b82f6; }
 .btn-primary-sm { display: inline-flex; height: 2.25rem; flex-shrink: 0; align-items: center; gap: .375rem; border-radius: .5rem; background: #3b82f6; padding: 0 .875rem; font-size: .875rem; font-weight: 500; color: #fff; white-space: nowrap; transition: background-color .15s; }
 .btn-primary-sm:hover:not(:disabled) { background: #2563eb; }
 .btn-primary-sm:disabled { cursor: not-allowed; opacity: .5; }

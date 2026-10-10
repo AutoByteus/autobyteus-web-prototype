@@ -24,7 +24,7 @@
     </div>
 
     <div class="col-start-1 col-end-4 sm:col-start-2 sm:col-end-5 mt-0.5 flex min-w-0 items-center gap-1 text-xs leading-[18px] text-slate-500">
-      <span v-if="!source.isDefault" class="shrink-0">{{ kindLabel }}<span class="sep">·</span></span>
+      <span class="sr-only">{{ kindLabel }}</span>
       <span class="source-path min-w-0 truncate font-mono text-[11.5px]" :title="location">{{ location }}</span>
       <button type="button" class="copy-path -my-1 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         :title="copied ? t('skills.sources.copied') : copyLabel" :aria-label="copied ? t('skills.sources.copied') : copyLabel" @click="copyLocation">
@@ -136,7 +136,6 @@ onBeforeUnmount(() => clearTimeout(copiedTimer))
 }
 .row-chip:disabled { cursor: not-allowed; opacity: .5; }
 .row-chip:focus-visible { outline: none; box-shadow: 0 0 0 2px #3b82f6; }
-.sep { padding: 0 .375rem; color: #cbd5e1; }
 .text-link { border-radius: .25rem; font-weight: 500; color: #64748b; transition: color .15s; }
 .text-link:hover:not(:disabled) { color: #1e293b; text-decoration: underline; text-underline-offset: 2px; }
 .text-link:disabled { cursor: not-allowed; opacity: .5; }

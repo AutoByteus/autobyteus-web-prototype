@@ -114,7 +114,7 @@ await check('V07', 'Removal incomplete: Retry removal opens the confirmation; no
 await check('V08', 'Add local folder: success refreshes list and clears input', async () => {
   const { ctx, page } = await open()
   await page.locator('#skill-source-input').fill('/Users/alex/Projects/prompt-kits')
-  await page.getByRole('button', { name: 'Add Folder' }).click()
+  await page.getByRole('button', { name: 'Add', exact: true }).click()
   await page.locator('.success-alert').waitFor(); await settle(page)
   const value = await page.locator('#skill-source-input').inputValue()
   const added = await page.locator('.source-name', { hasText: 'prompt-kits' }).count()
@@ -123,7 +123,7 @@ await check('V08', 'Add local folder: success refreshes list and clears input', 
 await check('V09', 'Add local folder: error keeps the typed path', async () => {
   const { ctx, page } = await open()
   await page.locator('#skill-source-input').fill('/Users/alex/missing-dir')
-  await page.getByRole('button', { name: 'Add Folder' }).click()
+  await page.getByRole('button', { name: 'Add', exact: true }).click()
   await page.locator('.error-alert').waitFor()
   const value = await page.locator('#skill-source-input').inputValue()
   await ctx.close(); expect(value === '/Users/alex/missing-dir', 'input cleared'); return value
@@ -131,27 +131,33 @@ await check('V09', 'Add local folder: error keeps the typed path', async () => {
 await check('V10', 'Duplicate skill name opens the existing conflict dialog; path kept', async () => {
   const { ctx, page } = await open()
   await page.locator('#skill-source-input').fill('/Users/alex/duplicate-skills')
-  await page.getByRole('button', { name: 'Add Folder' }).click()
+  await page.getByRole('button', { name: 'Add', exact: true }).click()
   await page.getByTestId('skill-name-conflict-dialog').waitFor()
   await page.getByRole('button', { name: 'OK' }).click()
   const value = await page.locator('#skill-source-input').inputValue()
   const open_ = await dialogOpen(page)
   await ctx.close(); expect(value === '/Users/alex/duplicate-skills' && open_, 'state lost'); return value
 })
-await check('V11', 'GitHub mode: trust hint, import, invalid URL error keeps URL', async () => {
+await check('V11', 'One input: a GitHub URL shows the trust hint and is imported; a non-GitHub URL gets the import error and is kept', async () => {
   const { ctx, page } = await open()
-  await page.getByRole('button', { name: 'GitHub', exact: true }).click()
-  await page.getByText('Import only sources you trust').waitFor()
-  const browse = await page.getByRole('button', { name: 'Browse…' }).count()
+  const modeButtons = await page.locator('.input-modes').count()
+  const hintBefore = await page.locator('.hint').innerText()
   await page.locator('#skill-source-input').fill('https://gitlab.com/x/y')
-  await page.getByRole('button', { name: 'Import repository' }).click()
+  const trustForUrl = await page.getByText('Import only sources you trust').count()
+  await page.getByRole('button', { name: 'Add', exact: true }).click()
   await page.locator('.error-alert').waitFor(); await settle(page)
+  const err = await page.locator('.error-alert').innerText()
   const kept = await page.locator('#skill-source-input').inputValue()
   await page.locator('#skill-source-input').fill('https://github.com/acme-labs/new-skills')
-  await page.getByRole('button', { name: 'Import repository' }).click()
+  await page.getByRole('button', { name: 'Add', exact: true }).click()
   await page.locator('.success-alert').waitFor(); await settle(page)
   const added = await page.locator('.source-name', { hasText: 'acme-labs/new-skills' }).count()
-  await ctx.close(); expect(browse === 0 && kept === 'https://gitlab.com/x/y' && added === 1, JSON.stringify({ browse, kept, added })); return 'ok'
+  const hintAfter = await page.locator('.hint').innerText()
+  await ctx.close()
+  expect(modeButtons === 0, 'mode switch still shown')
+  expect(/public GitHub repository URL/.test(hintBefore) && trustForUrl === 1, JSON.stringify({ hintBefore, trustForUrl }))
+  expect(/GitHub repository root URL/.test(err) && kept === 'https://gitlab.com/x/y' && added === 1 && !/trust/.test(hintAfter), JSON.stringify({ err, kept, added, hintAfter }))
+  return { hintBefore, err, added }
 })
 await check('V12', 'Browse… (DEC-002) only in the local embedded desktop app; fills the path', async () => {
   const a = await open()
@@ -219,9 +225,8 @@ await check('V17', 'Registry error and import warning alerts', async () => {
   const a = await open({ scenario: 'skill_sources_registry_error' })
   const reg = await a.page.locator('.error-alert').innerText(); await a.ctx.close()
   const b = await open()
-  await b.page.getByRole('button', { name: 'GitHub', exact: true }).click()
   await b.page.locator('#skill-source-input').fill('https://github.com/acme-labs/notes-with-warnings')
-  await b.page.getByRole('button', { name: 'Import repository' }).click()
+  await b.page.getByRole('button', { name: 'Add', exact: true }).click()
   await b.page.locator('.warning-alert').waitFor()
   const warn = await b.page.locator('.warning-alert').innerText(); await b.ctx.close()
   return { reg, warn }
@@ -252,6 +257,19 @@ await check('V19', 'Round 2: Update confirmation shows branch and installed → 
   expect(/^main 9a8b7c6d5e c0ffee1234$/.test(change), change)
   expect(removing === 'Removal incomplete', removing)
   return { change, removing }
+})
+
+await check('V20', 'Round 3: no visible kind word on rows (icon + URL/path say it); kind kept for screen readers', async () => {
+  const { ctx, page } = await open()
+  const rows = await page.$$eval('.source-row', els => els.map(e => {
+    const line = e.querySelector('.source-path').parentElement
+    const visible = [...line.childNodes].filter(n => !(n.classList && n.classList.contains('sr-only'))).map(n => n.textContent).join('').trim()
+    return { id: e.dataset.testid, visible, srKind: line.querySelector('.sr-only')?.textContent.trim() }
+  }))
+  await ctx.close()
+  expect(rows.every(r => !/^(GitHub|Local folder)\b/.test(r.visible)), JSON.stringify(rows))
+  expect(rows.every(r => ['GitHub', 'Local folder'].includes(r.srKind)), JSON.stringify(rows))
+  return rows.map(r => `${r.srKind}: ${r.visible}`)
 })
 
 await browser.close()

@@ -105,6 +105,10 @@ const skillMessages = {
   "skills.sources.checkNamed": "再次检查 {{name}}",
   "skills.sources.removeNamed": "移除 {{name}}",
   "skills.sources.browse": "浏览…",
+  "skills.sources.addSource": "添加技能来源",
+  "skills.sources.add": "添加",
+  "skills.sources.inputPlaceholder": "文件夹路径或 GitHub 仓库地址",
+  "skills.sources.inputHint": "本机上包含技能的文件夹，或公开的 GitHub 仓库地址。",
 } satisfies TranslationCatalog;
 
 export default skillMessages;
