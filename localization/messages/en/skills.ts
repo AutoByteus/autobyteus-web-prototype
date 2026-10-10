@@ -91,6 +91,7 @@ const skillMessages = {
   "skills.sources.status.CHECK_FAILED": "Check failed — installed skills retained",
   "skills.sources.status.UPDATE_FAILED": "Update failed — previous version retained",
   "skills.sources.status.REMOVING": "Removal incomplete — retry removal",
+  "skills.sources.status.REMOVING_SHORT": "Removal incomplete",
   "skills.sources.status.CHECK": "Checking…",
   "skills.sources.status.UPDATE": "Updating…",
   "skills.sources.status.REMOVE": "Removing…",

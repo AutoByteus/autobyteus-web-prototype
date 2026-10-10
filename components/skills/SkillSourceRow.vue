@@ -1,5 +1,5 @@
 <template>
-  <li class="source-row grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-2 px-4 py-2.5 sm:grid-cols-[2rem_minmax(0,1fr)_4.5rem_4.25rem] sm:gap-x-3 sm:px-6 transition-colors hover:bg-slate-50/70"
+  <li class="source-row grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-x-2 px-4 py-2.5 sm:grid-cols-[2rem_minmax(0,1fr)_4.5rem_2rem] sm:gap-x-3 sm:px-6 transition-colors hover:bg-slate-50/70"
     :aria-busy="!!pending" :data-source-kind="source.sourceKind" :data-testid="`skill-source-row-${source.sourceId}`">
     <span class="row-span-2 mt-0.5 hidden h-8 w-8 items-center justify-center self-start rounded-lg sm:flex"
       :class="source.isDefault ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-600'" aria-hidden="true">
@@ -16,11 +16,7 @@
       {{ countLabel }}
     </span>
 
-    <div class="actions -my-1.5 flex justify-end gap-1">
-      <button v-if="source.github && !isRemoving" type="button" class="check icon-btn" :disabled="disabled"
-        :title="t('skills.sources.check')" :aria-label="t('skills.sources.checkNamed', { name })" @click="$emit('check')">
-        <Icon icon="heroicons:arrow-path" class="h-4 w-4" aria-hidden="true" />
-      </button>
+    <div class="actions -my-1.5 flex justify-end">
       <button v-if="!source.isDefault && !isRemoving" type="button" class="remove icon-btn icon-btn-danger" :disabled="disabled"
         :title="t('skills.components.skills.SkillSourcesModal.remove_source')" :aria-label="t('skills.sources.removeNamed', { name })" @click="$emit('remove')">
         <Icon icon="heroicons:trash" class="h-4 w-4" aria-hidden="true" />
@@ -38,10 +34,10 @@
 
     <template v-if="source.github">
       <div class="github-state col-start-1 col-end-4 sm:col-start-2 sm:col-end-5 mt-1.5 flex min-h-6 min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs">
-        <span class="status inline-flex items-center gap-1.5 font-medium" :class="statusTone.text" role="status">
+        <span class="status inline-flex items-center gap-1.5 font-medium" :class="statusTone.text" role="status" :title="versionDetails">
           <Icon v-if="pending" icon="svg-spinners:ring-resize" class="h-3 w-3 text-slate-400" />
           <span v-else class="h-1.5 w-1.5 rounded-full" :class="statusTone.dot" aria-hidden="true"></span>
-          {{ t('skills.sources.status.' + (pending ? pending.toUpperCase() : source.github.status)) }}
+          {{ statusLabel }}
         </span>
         <button v-if="canUpdate" type="button" class="update row-chip border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100" :disabled="disabled" @click="$emit('update')">
           <Icon icon="heroicons:arrow-up-circle" class="h-3.5 w-3.5" aria-hidden="true" />{{ t('skills.sources.update') }}
@@ -49,10 +45,12 @@
         <button v-if="isRemoving" type="button" class="retry-removal row-chip border-red-200 bg-white text-red-700 hover:bg-red-50" :disabled="disabled" @click="$emit('remove')">
           <Icon icon="heroicons:arrow-path" class="h-3.5 w-3.5" aria-hidden="true" />{{ t('skills.sources.retryRemoval') }}
         </button>
+        <template v-if="canCheck">
+          <span class="text-slate-300" aria-hidden="true">·</span>
+          <button type="button" class="check text-link" :disabled="disabled"
+            :aria-label="t('skills.sources.checkNamed', { name })" @click="$emit('check')">{{ t('skills.sources.check') }}</button>
+        </template>
       </div>
-      <p class="metadata col-start-1 col-end-4 sm:col-start-2 sm:col-end-5 mt-0.5 min-w-0 text-xs leading-5 text-slate-500">
-        <span class="whitespace-nowrap" :title="source.github.installedRevision">{{ t('skills.sources.installed') }} <span class="font-mono text-[11.5px] text-slate-600">{{ source.github.installedRevision.slice(0, 10) }}</span> · {{ source.github.defaultBranch }}</span><template v-if="source.github.latestRevision"><span class="sep-inline">&nbsp;·</span> <span class="whitespace-nowrap" :title="source.github.latestRevision">{{ t('skills.sources.latest') }} <span class="font-mono text-[11.5px] text-slate-600">{{ source.github.latestRevision.slice(0, 10) }}</span></span></template><template v-if="source.github.latestCheckedAt"><span class="sep-inline">&nbsp;·</span> <span class="whitespace-nowrap">{{ t('skills.sources.checked') }} {{ checkedLabel }}</span></template>
-      </p>
       <p v-if="source.github.lastError" class="source-error col-start-1 col-end-4 sm:col-start-2 sm:col-end-5 mt-1 flex items-start gap-1.5 break-words text-xs leading-5 text-red-700">
         <Icon icon="heroicons:exclamation-circle-20-solid" class="mt-[3px] h-3.5 w-3.5 shrink-0 text-red-500" aria-hidden="true" />
         <span class="min-w-0">{{ source.github.lastError }}</span>
@@ -77,12 +75,27 @@ const kindLabel = computed(() => t(props.source.github ? 'skills.sources.github'
 const copyLabel = computed(() => t(props.source.github ? 'skills.sources.copyUrl' : 'skills.sources.copyPath'))
 const isRemoving = computed(() => props.source.github?.status === 'REMOVING')
 const canUpdate = computed(() => !!props.source.github && ['UPDATE_AVAILABLE', 'UPDATE_FAILED'].includes(props.source.github.status))
+// The Retry removal button already says what to do, so the status only names the problem.
+const statusLabel = computed(() => props.pending ? t('skills.sources.status.' + props.pending.toUpperCase())
+  : isRemoving.value ? t('skills.sources.status.REMOVING_SHORT') : t('skills.sources.status.' + props.source.github!.status))
+// Check again only where a new check can tell the user something: not while an update is offered or a removal is pending.
+const canCheck = computed(() => !!props.source.github && ['UP_TO_DATE', 'NOT_CHECKED', 'CHECK_FAILED'].includes(props.source.github.status))
 const countLabel = computed(() => props.source.skillCount === 0 ? t('skills.sources.noSkills')
   : props.source.skillCount === 1 ? t('skills.sources.oneSkill')
     : t('skills.components.skills.SkillSourcesModal.skills_count', { count: props.source.skillCount }))
 
 const checkedLabel = computed(() => props.source.github?.latestCheckedAt
   ? new Date(props.source.github.latestCheckedAt).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' }) : '')
+
+// Version details are kept off the row and shown on hover over the status.
+const versionDetails = computed(() => {
+  const github = props.source.github
+  if (!github) return undefined
+  const lines = [`${t('skills.sources.installed')} ${github.installedRevision.slice(0, 10)} · ${github.defaultBranch}`]
+  if (github.latestRevision) lines.push(`${t('skills.sources.latest')} ${github.latestRevision.slice(0, 10)}`)
+  if (github.latestCheckedAt) lines.push(`${t('skills.sources.checked')} ${checkedLabel.value}`)
+  return lines.join('\n')
+})
 
 const statusTone = computed(() => {
   if (props.pending) return { text: 'text-slate-500', dot: '' }
@@ -114,7 +127,6 @@ onBeforeUnmount(() => clearTimeout(copiedTimer))
   display: inline-flex; height: 2rem; width: 2rem; align-items: center; justify-content: center;
   border-radius: 0.375rem; color: #94a3b8; transition: background-color .15s, color .15s;
 }
-.icon-btn:hover:not(:disabled) { background: #f1f5f9; color: #334155; }
 .icon-btn-danger:hover:not(:disabled) { background: #fef2f2; color: #dc2626; }
 .icon-btn:disabled { cursor: not-allowed; opacity: .4; }
 .icon-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px #3b82f6; }
@@ -125,5 +137,8 @@ onBeforeUnmount(() => clearTimeout(copiedTimer))
 .row-chip:disabled { cursor: not-allowed; opacity: .5; }
 .row-chip:focus-visible { outline: none; box-shadow: 0 0 0 2px #3b82f6; }
 .sep { padding: 0 .375rem; color: #cbd5e1; }
-.sep-inline { padding-right: .25rem; color: #cbd5e1; }
+.text-link { border-radius: .25rem; font-weight: 500; color: #64748b; transition: color .15s; }
+.text-link:hover:not(:disabled) { color: #1e293b; text-decoration: underline; text-underline-offset: 2px; }
+.text-link:disabled { cursor: not-allowed; opacity: .5; }
+.text-link:focus-visible { outline: none; box-shadow: 0 0 0 2px #3b82f6; }
 </style>

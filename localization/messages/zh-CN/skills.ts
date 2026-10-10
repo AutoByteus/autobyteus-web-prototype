@@ -91,6 +91,7 @@ const skillMessages = {
   "skills.sources.status.CHECK_FAILED": "检查失败 — 已安装技能保留",
   "skills.sources.status.UPDATE_FAILED": "更新失败 — 保留上一版本",
   "skills.sources.status.REMOVING": "移除未完成 — 请重试",
+  "skills.sources.status.REMOVING_SHORT": "移除未完成",
   "skills.sources.status.CHECK": "检查中…",
   "skills.sources.status.UPDATE": "更新中…",
   "skills.sources.status.REMOVE": "移除中…",

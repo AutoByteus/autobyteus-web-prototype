@@ -226,6 +226,33 @@ await check('V17', 'Registry error and import warning alerts', async () => {
   const warn = await b.page.locator('.warning-alert').innerText(); await b.ctx.close()
   return { reg, warn }
 })
+await check('V18', 'Round 2: no version line on rows; Check again only for Up to date / Not checked / Check failed; details in the status tooltip', async () => {
+  const { ctx, page } = await open()
+  const metadata = await page.locator('.source-row .metadata').count()
+  const has = async id => (await row(page, id).locator('.check').count()) === 1
+  const shown = { upToDate: await has('github-docs-skills'), checkFailed: await has('github-legacy-skills'), updateAvailable: await has('github-review-skills') }
+  const tooltip = await row(page, 'github-review-skills').locator('.status').getAttribute('title')
+  await ctx.close()
+  const b = await open({ scenario: 'skill_sources_many' })
+  const notChecked = (await row(b.page, 'github-design-skills').locator('.check').count()) === 1
+  await b.ctx.close()
+  expect(metadata === 0, 'metadata line still shown')
+  expect(shown.upToDate && shown.checkFailed && notChecked && !shown.updateAvailable, JSON.stringify({ ...shown, notChecked }))
+  expect(/Installed 9a8b7c6d5e · main/.test(tooltip) && /Latest c0ffee1234/.test(tooltip) && /Checked /.test(tooltip), tooltip)
+  return { ...shown, notChecked, tooltip }
+})
+await check('V19', 'Round 2: Update confirmation shows branch and installed → latest; Removal incomplete names only the problem', async () => {
+  const { ctx, page } = await open()
+  await row(page, 'github-review-skills').locator('.update').click()
+  const change = (await page.locator('.version-change').innerText()).replace(/\s+/g, ' ').trim()
+  await ctx.close()
+  const b = await open({ scenario: 'skill_source_issues' })
+  const removing = (await row(b.page, 'github-old-skills').locator('.status').innerText()).trim()
+  await b.ctx.close()
+  expect(/^main 9a8b7c6d5e c0ffee1234$/.test(change), change)
+  expect(removing === 'Removal incomplete', removing)
+  return { change, removing }
+})
 
 await browser.close()
 const summary = { baseUrl, passed: checks.filter(c => c.pass).length, failed: checks.filter(c => !c.pass).length, browserErrors: errors, externalRequests: external, checks }

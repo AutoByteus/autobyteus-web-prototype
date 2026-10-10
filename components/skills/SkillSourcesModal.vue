@@ -88,6 +88,12 @@
         <span class="min-w-0">
           <span class="block truncate text-sm font-medium text-slate-900">{{ skillSourceDisplayName(confirmation.source) }}</span>
           <span class="mt-0.5 block break-all font-mono text-[11.5px] leading-4 text-slate-500">{{ confirmation.source.github?.repositoryUrl ?? confirmation.source.path }}</span>
+          <span v-if="confirmation.action === 'update' && confirmation.source.github?.latestRevision" class="version-change mt-1.5 flex flex-wrap items-center gap-x-1.5 text-xs leading-5 text-slate-600">
+            <span>{{ confirmation.source.github.defaultBranch }}</span>
+            <span class="font-mono text-[11.5px]" :title="confirmation.source.github.installedRevision">{{ confirmation.source.github.installedRevision.slice(0, 10) }}</span>
+            <Icon icon="heroicons:arrow-right-20-solid" class="h-3.5 w-3.5 text-slate-400" :aria-label="t('skills.sources.latest')" />
+            <span class="font-mono text-[11.5px] font-medium text-slate-900" :title="confirmation.source.github.latestRevision">{{ confirmation.source.github.latestRevision.slice(0, 10) }}</span>
+          </span>
         </span>
       </div>
     </ConfirmationModal>
