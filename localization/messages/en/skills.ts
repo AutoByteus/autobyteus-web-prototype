@@ -72,6 +72,7 @@ const skillMessages = {
   "skills.sources.working": "Working…",
   "skills.sources.trust": "Import only sources you trust. Public repository roots and the default branch only. Updates replace the whole managed copy; use a local folder to maintain your own edits.",
   "skills.sources.check": "Check again",
+  "skills.sources.tryAgain": "Try again",
   "skills.sources.update": "Update",
   "skills.sources.remove": "Remove",
   "skills.sources.retryRemoval": "Retry removal",

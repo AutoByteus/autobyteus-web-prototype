@@ -96,10 +96,10 @@ await check('V05', 'Update: confirmation, Updating… busy state, then Up to dat
   await ctx.close()
   expect(disabled, 'actions not disabled while busy'); expect(/Up to date/.test(status), status); return status
 })
-await check('V06', 'Check again shows Checking… and disables actions', async () => {
+await check('V06', 'Try again (failed check) shows Checking… and disables actions', async () => {
   const { ctx, page } = await open()
-  await row(page, 'github-docs-skills').locator('.check').click()
-  await row(page, 'github-docs-skills').getByText('Checking…').waitFor()
+  await row(page, 'github-legacy-skills').locator('.check').click()
+  await row(page, 'github-legacy-skills').getByText('Checking…').waitFor()
   const addDisabled = await page.locator('#skill-source-input').isDisabled()
   await settle(page); await ctx.close()
   expect(addDisabled, 'add form not disabled'); return 'ok'
@@ -231,7 +231,7 @@ await check('V17', 'Registry error and import warning alerts', async () => {
   const warn = await b.page.locator('.warning-alert').innerText(); await b.ctx.close()
   return { reg, warn }
 })
-await check('V18', 'Round 2: no version line on rows; Check again only for Up to date / Not checked / Check failed; details in the status tooltip', async () => {
+await check('V18', 'Round 2/4: no version line on rows; a manual check (Try again) only after Check failed; details in the status tooltip', async () => {
   const { ctx, page } = await open()
   const metadata = await page.locator('.source-row .metadata').count()
   const has = async id => (await row(page, id).locator('.check').count()) === 1
@@ -242,7 +242,7 @@ await check('V18', 'Round 2: no version line on rows; Check again only for Up to
   const notChecked = (await row(b.page, 'github-design-skills').locator('.check').count()) === 1
   await b.ctx.close()
   expect(metadata === 0, 'metadata line still shown')
-  expect(shown.upToDate && shown.checkFailed && notChecked && !shown.updateAvailable, JSON.stringify({ ...shown, notChecked }))
+  expect(!shown.upToDate && shown.checkFailed && !notChecked && !shown.updateAvailable, JSON.stringify({ ...shown, notChecked }))
   expect(/Installed 9a8b7c6d5e · main/.test(tooltip) && /Latest c0ffee1234/.test(tooltip) && /Checked /.test(tooltip), tooltip)
   return { ...shown, notChecked, tooltip }
 })

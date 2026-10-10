@@ -72,6 +72,7 @@ const skillMessages = {
   "skills.sources.working": "处理中…",
   "skills.sources.trust": "请仅导入您信任的来源。仅支持公开仓库根 URL 和默认分支。更新会替换整个托管副本；如需保留自己的修改，请使用本地文件夹。",
   "skills.sources.check": "再次检查",
+  "skills.sources.tryAgain": "重试",
   "skills.sources.update": "更新",
   "skills.sources.remove": "移除",
   "skills.sources.retryRemoval": "重试移除",

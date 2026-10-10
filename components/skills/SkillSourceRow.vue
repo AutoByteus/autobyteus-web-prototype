@@ -48,7 +48,7 @@
         <template v-if="canCheck">
           <span class="text-slate-300" aria-hidden="true">·</span>
           <button type="button" class="check text-link" :disabled="disabled"
-            :aria-label="t('skills.sources.checkNamed', { name })" @click="$emit('check')">{{ t('skills.sources.check') }}</button>
+            :aria-label="t('skills.sources.checkNamed', { name })" @click="$emit('check')">{{ t('skills.sources.tryAgain') }}</button>
         </template>
       </div>
       <p v-if="source.github.lastError" class="source-error col-start-1 col-end-4 sm:col-start-2 sm:col-end-5 mt-1 flex items-start gap-1.5 break-words text-xs leading-5 text-red-700">
@@ -78,8 +78,8 @@ const canUpdate = computed(() => !!props.source.github && ['UPDATE_AVAILABLE', '
 // The Retry removal button already says what to do, so the status only names the problem.
 const statusLabel = computed(() => props.pending ? t('skills.sources.status.' + props.pending.toUpperCase())
   : isRemoving.value ? t('skills.sources.status.REMOVING_SHORT') : t('skills.sources.status.' + props.source.github!.status))
-// Check again only where a new check can tell the user something: not while an update is offered or a removal is pending.
-const canCheck = computed(() => !!props.source.github && ['UP_TO_DATE', 'NOT_CHECKED', 'CHECK_FAILED'].includes(props.source.github.status))
+// Sources are checked every time the dialog opens, so a manual check is offered only after a failed check.
+const canCheck = computed(() => props.source.github?.status === 'CHECK_FAILED')
 const countLabel = computed(() => props.source.skillCount === 0 ? t('skills.sources.noSkills')
   : props.source.skillCount === 1 ? t('skills.sources.oneSkill')
     : t('skills.components.skills.SkillSourcesModal.skills_count', { count: props.source.skillCount }))
