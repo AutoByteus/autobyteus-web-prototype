@@ -23,11 +23,11 @@
 - Accepted baseline revision (fetched `origin/personal`, design base): `8740ada0d0e43a434ea8e331aa366b67df83bb3b`
 - Baseline report: `/Users/normy/autobyteus_org/autobyteus-web-design/ui-baseline-report.md` (WEB-BASELINE-REFRESH-008; skill-source flows 24/24 pass)
 - Product acceptance result and date: existing accepted baseline reused, 2026-10-10
-- Design revision for this ticket: round-1 to round-4 commits on `design/skill-sources-dialog-redesign` (see `git log`)
-- Default-entry-point validation after integration: Pending
-- Integration target and result: `personal` — Pending
+- Design revision for this ticket: rounds `e6d71fc`, `74537a3`, `7e666fb`, `4bee880`; validated final commit `6810fc8`
+- Default-entry-point validation after integration: canonical checkout on port 4732, `/skills` → **Sources**: `validate.mjs` 20/20, 0 browser errors, 0 non-local requests (2026-10-10). Server stopped.
+- Integration target and result: `personal` — `Completed`. Fast-forward `6fdf576` → `6810fc8`, plus this record. Canonical checkout fast-forwarded.
 - Runtime isolation: dev server `corepack pnpm dev --port 4731 --host 127.0.0.1` (this ticket only), log `/tmp/skill-sources-dialog-redesign-dev.log`; capture/validation output `/tmp/ssdr/`; fixture state is in-memory per browser tab (reload resets).
-- Cleanup result: Pending
+- Cleanup result: dev servers on 4731 (ticket) and 4732 (canonical check) stopped. Ticket worktree removed after this record was pushed. Branch `design/skill-sources-dialog-redesign` kept locally, as for earlier tickets.
 - Ticket folder: `tickets/done/skill-sources-dialog-redesign/`
 
 ## Delivery And Validation
@@ -63,3 +63,5 @@
 - Icon-bundle fix found during final validation: after the merge, the UI reference fetched `ph.json` from `api.iconify.design`. The strip's `ph:tree-view` icon, restored from `collapsed-left-panel-expand-keeps-run`, was missing from `prototype/fixtures/icon-collections.json`; it was already missing at `7a8e634`. `node prototype/scripts/build-icon-collections.mjs` added it (1 icon). The UI reference is network-independent again.
 - Final validation (merged branch, port 4731): `validate.mjs` 20/20; `capture.mjs` 23/23; 0 browser errors; 0 non-local requests; `pnpm typecheck` exit 0; `pnpm lint` exit 0; `pnpm test` 15/15. Evidence: [review-evidence/final/](review-evidence/final/).
 - Final references: VIS-001–VIS-023 copied from the post-approval capture (R01–R23).
+- Integration: `origin/personal` and the canonical `personal` at `6810fc8` before this record; default-entry validation 20/20 (above).
+- Handoff: `get_handoff_rules` has no rule for `Design Completed` (only `Baseline Needed`). The result goes back to the requester, Solution Designer AgentRun `solution_designer_d2d3585653ca415d8e218f580a890588`, and to `/project_task_manager` for Project Task `project_task_957c30cd-001d-4766-9bbe-47ee71700ef1`.
