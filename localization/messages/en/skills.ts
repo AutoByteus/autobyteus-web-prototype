@@ -94,6 +94,16 @@ const skillMessages = {
   "skills.sources.status.CHECK": "Checking…",
   "skills.sources.status.UPDATE": "Updating…",
   "skills.sources.status.REMOVE": "Removing…",
+  "skills.sources.listLabel": "Skill sources",
+  "skills.sources.noSkills": "No skills",
+  "skills.sources.noSkillsHint": "No skills found here. A source needs a SKILL.md at its root or skill folders that each contain one.",
+  "skills.sources.oneSkill": "1 skill",
+  "skills.sources.copyPath": "Copy path",
+  "skills.sources.copyUrl": "Copy URL",
+  "skills.sources.copied": "Copied",
+  "skills.sources.checkNamed": "Check {{name}} again",
+  "skills.sources.removeNamed": "Remove {{name}}",
+  "skills.sources.browse": "Browse…",
 } satisfies TranslationCatalog;
 
 export default skillMessages;

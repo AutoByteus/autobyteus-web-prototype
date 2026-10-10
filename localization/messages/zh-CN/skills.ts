@@ -94,6 +94,16 @@ const skillMessages = {
   "skills.sources.status.CHECK": "检查中…",
   "skills.sources.status.UPDATE": "更新中…",
   "skills.sources.status.REMOVE": "移除中…",
+  "skills.sources.listLabel": "技能来源",
+  "skills.sources.noSkills": "无技能",
+  "skills.sources.noSkillsHint": "此处未找到技能。来源的根目录需要包含 SKILL.md，或包含各自带有 SKILL.md 的技能文件夹。",
+  "skills.sources.oneSkill": "1 个技能",
+  "skills.sources.copyPath": "复制路径",
+  "skills.sources.copyUrl": "复制 URL",
+  "skills.sources.copied": "已复制",
+  "skills.sources.checkNamed": "再次检查 {{name}}",
+  "skills.sources.removeNamed": "移除 {{name}}",
+  "skills.sources.browse": "浏览…",
 } satisfies TranslationCatalog;
 
 export default skillMessages;

@@ -1,0 +1,186 @@
+{
+  "baseUrl": "http://127.0.0.1:4731",
+  "passed": 17,
+  "failed": 0,
+  "browserErrors": [],
+  "externalRequests": [],
+  "checks": [
+    {
+      "id": "V01",
+      "description": "Order: Default first, then by path; counts and kinds shown",
+      "pass": true,
+      "detail": [
+        {
+          "kind": "DEFAULT",
+          "name": "server-data/skills",
+          "count": "No skills",
+          "path": "/Users/alex/.autobyteus/server-data/skills"
+        },
+        {
+          "kind": "GITHUB_REPOSITORY",
+          "name": "acme-labs/docs-skills",
+          "count": "3 skills",
+          "path": "https://github.com/acme-labs/docs-skills"
+        },
+        {
+          "kind": "GITHUB_REPOSITORY",
+          "name": "old-team/legacy-skills",
+          "count": "1 skill",
+          "path": "https://github.com/old-team/legacy-skills"
+        },
+        {
+          "kind": "GITHUB_REPOSITORY",
+          "name": "acme-labs/code-review-skills",
+          "count": "12 skills",
+          "path": "https://github.com/acme-labs/code-review-skills"
+        },
+        {
+          "kind": "LOCAL_PATH",
+          "name": ".codex/skills",
+          "count": "No skills",
+          "path": "/Users/alex/.codex/skills"
+        },
+        {
+          "kind": "LOCAL_PATH",
+          "name": "skills-library",
+          "count": "56 skills",
+          "path": "/Users/alex/Projects/acme-research-platform/shared/agent-tooling/skills-library"
+        },
+        {
+          "kind": "LOCAL_PATH",
+          "name": "team-skills",
+          "count": "7 skills",
+          "path": "/Users/alex/Projects/team-skills"
+        }
+      ]
+    },
+    {
+      "id": "V02",
+      "description": "Default has no Remove; every other row has Remove (or Retry removal)",
+      "pass": true,
+      "detail": {
+        "default": 0,
+        "others": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "V03",
+      "description": "Remove: cancel keeps the source; confirm unlinks and shows success",
+      "pass": true,
+      "detail": "Skill source removed. Skills list refreshed."
+    },
+    {
+      "id": "V04",
+      "description": "GitHub remove uses the delete-copy message",
+      "pass": true,
+      "detail": "removeWarning shown"
+    },
+    {
+      "id": "V05",
+      "description": "Update: confirmation, Updating… busy state, then Up to date",
+      "pass": true,
+      "detail": "Up to date"
+    },
+    {
+      "id": "V06",
+      "description": "Check again shows Checking… and disables actions",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "V07",
+      "description": "Removal incomplete: Retry removal opens the confirmation; no Check again",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "V08",
+      "description": "Add local folder: success refreshes list and clears input",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "V09",
+      "description": "Add local folder: error keeps the typed path",
+      "pass": true,
+      "detail": "/Users/alex/missing-dir"
+    },
+    {
+      "id": "V10",
+      "description": "Duplicate skill name opens the existing conflict dialog; path kept",
+      "pass": true,
+      "detail": "/Users/alex/duplicate-skills"
+    },
+    {
+      "id": "V11",
+      "description": "GitHub mode: trust hint, import, invalid URL error keeps URL",
+      "pass": true,
+      "detail": "ok"
+    },
+    {
+      "id": "V12",
+      "description": "Browse… (DEC-002) only in the local embedded desktop app; fills the path",
+      "pass": true,
+      "detail": {
+        "value": "/synthetic/selected-folder",
+        "browserCount": 0,
+        "remoteCount": 0
+      }
+    },
+    {
+      "id": "V13",
+      "description": "Close paths: ×, Done, overlay click, Esc; Esc ignored while confirming",
+      "pass": true,
+      "detail": {
+        "x": true,
+        "done": true,
+        "overlay": true,
+        "esc": true,
+        "escWhileConfirming_dialogStillOpen": true
+      }
+    },
+    {
+      "id": "V14",
+      "description": "Keyboard: focus starts in the dialog, Tab stays inside, icon buttons have names",
+      "pass": true,
+      "detail": [
+        "Copy path",
+        "Check acme-labs/docs-skills again",
+        "Remove acme-labs/docs-skills",
+        "Copy URL"
+      ]
+    },
+    {
+      "id": "V15",
+      "description": "Copy path writes the full path; tooltip carries the full path",
+      "pass": true,
+      "detail": "/Users/alex/Projects/acme-research-platform/shared/agent-tooling/skills-library"
+    },
+    {
+      "id": "V16",
+      "description": "Many sources: only the list scrolls; header, add area, footer stay visible",
+      "pass": true,
+      "detail": {
+        "scrollHeight": 1145,
+        "clientHeight": 509
+      }
+    },
+    {
+      "id": "V17",
+      "description": "Registry error and import warning alerts",
+      "pass": true,
+      "detail": {
+        "reg": "GitHub skill sources unavailable: Error: /Users/alex/.autobyteus/server-data/skill-sources/github/registry.json is not valid JSON.",
+        "warn": "Skipped notes-with-warnings/drafts/outline-helper: SKILL.md has no name field."
+      }
+    }
+  ]
+}

@@ -15,6 +15,7 @@ import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/lau
 import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/prototype/run-settings/launchedOrgFixture'
 import { withAgentReconnect } from '~/prototype/agent-reconnect/agentReconnectFixture'
 import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
+import { designSkillSourceData, designRegistryError, designSkillSourceMutation } from '~/prototype/skill-sources/skillSourcesDesignFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
 
@@ -41,6 +42,8 @@ const fixtureState = (): Record<string, any> => {
     localFixtureState.skillSourceData = null
     localFixtureState.taskContextFiles = {}
     localFixtureState.archivedAgentGroup = false
+    // skill-sources-dialog-redesign (design-only): representative skill sources for the redesigned dialog.
+    if (designOnlyLayersEnabled()) localFixtureState.skillSourceData = designSkillSourceData(scenario)
   }
   localFixtureState.scenario = scenario
   return localFixtureState
@@ -73,6 +76,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   })
   // agent-definition-reconnect-ui (design-only): runs whose agent folder was renamed, and the Video Team run.
   if (designOnlyLayersEnabled()) data = data ? withAgentReconnect(name, request.variables || {}, structuredClone(data), scenario) : data
+  // skill-sources-dialog-redesign (design-only): the registry-error scenario.
+  if (designOnlyLayersEnabled() && name === 'GetSkillSources' && data) data = { ...data, skillSourceRegistryError: designRegistryError(scenario) ?? data.skillSourceRegistryError }
   return { data: data ? structuredClone(data) : {} }
 }
 
@@ -90,6 +95,11 @@ const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const state = fixtureState()
   if (name === 'CreateAgentOrgRun') return { data: recordOrgLaunch(request.variables || {}) }
   if (name === 'TerminateAgentOrgRun') return { data: recordOrgTermination(request.variables || {}) }
+  // skill-sources-dialog-redesign (design-only): timed, scripted skill-source outcomes.
+  if (designOnlyLayersEnabled()) {
+    const scripted = await designSkillSourceMutation(name, request.variables || {}, state)
+    if (scripted) return scripted
+  }
   let data = operationFixture(name, request.variables || {}, state)
   // run-settings-ui-unification: each Team launch is its own run (launchedTeamFixture.ts).
   if (name === 'CreateAgentTeamRun') { state.launchedTeamRun = true; data = recordTeamLaunch(request.variables || {}, data) }

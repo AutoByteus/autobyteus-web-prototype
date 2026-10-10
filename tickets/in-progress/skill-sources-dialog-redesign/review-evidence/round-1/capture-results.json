@@ -1,0 +1,168 @@
+{
+  "baseUrl": "http://127.0.0.1:4731",
+  "results": [
+    {
+      "id": "R01",
+      "name": "populated-mixed-list",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R01-populated-mixed-list.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R02",
+      "name": "opening-checking-github",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R02-opening-checking-github.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R03",
+      "name": "github-issues-update-failed-removal-incomplete",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R03-github-issues-update-failed-removal-incomplete.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R04",
+      "name": "many-sources-scrolled",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R04-many-sources-scrolled.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R05",
+      "name": "add-github-trust-hint",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R05-add-github-trust-hint.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R06",
+      "name": "add-local-browse-filled",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R06-add-local-browse-filled.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R07",
+      "name": "add-local-working",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R07-add-local-working.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R08",
+      "name": "add-local-success",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R08-add-local-success.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R09",
+      "name": "add-local-error-kept-input",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R09-add-local-error-kept-input.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R10",
+      "name": "remove-confirmation-local",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R10-remove-confirmation-local.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R11",
+      "name": "remove-confirmation-github",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R11-remove-confirmation-github.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R12",
+      "name": "update-confirmation",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R12-update-confirmation.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R13",
+      "name": "updating-busy",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R13-updating-busy.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R14",
+      "name": "registry-error",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R14-registry-error.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R15",
+      "name": "import-warning",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R15-import-warning.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R16",
+      "name": "duplicate-name-conflict",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R16-duplicate-name-conflict.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R17",
+      "name": "keyboard-focus-remove",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R17-keyboard-focus-remove.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R18",
+      "name": "hover-row-tooltip-target",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R18-hover-row-tooltip-target.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R19",
+      "name": "narrow-mobile",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R19-narrow-mobile.png",
+      "viewport": "390x844",
+      "ok": true
+    },
+    {
+      "id": "R20",
+      "name": "narrow-mobile-add",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R20-narrow-mobile-add.png",
+      "viewport": "390x844",
+      "ok": true
+    },
+    {
+      "id": "R21",
+      "name": "zh-cn",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R21-zh-cn.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R22",
+      "name": "browser-context-no-browse",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R22-browser-context-no-browse.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R23",
+      "name": "small-window-1024x700",
+      "file": "tickets/in-progress/skill-sources-dialog-redesign/review-evidence/round-1/R23-small-window-1024x700.png",
+      "viewport": "1024x700",
+      "ok": true
+    }
+  ],
+  "browserErrors": [],
+  "externalRequests": []
+}
