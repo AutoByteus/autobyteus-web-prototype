@@ -26,6 +26,11 @@ export const COLLAB_RUN_ID = 'team-video-tvp-0001'
 /** A delegated copy of the collaborator (delegate_task to its address); no own source, so it
  * inherits the collaborator's agent and is reconnected with it (L3). */
 export const COPY_RUN_ID = 'team-video-tvp-copy-0001'
+/** collapsed-left-panel-expand-keeps-run (design): a nested sub-team, so a member two levels down
+ * can be opened and revealed in the tree. Illustrative. */
+export const POST_TEAM_RUN_ID = 'team-video-post-0001'
+export const COLORIST_RUN_ID = 'team-video-colorist-0001'
+export const SOUND_RUN_ID = 'team-video-sound-0001'
 
 const createdAt = '2026-10-05T09:12:00.000Z'
 const updatedAt = '2026-10-05T09:40:00.000Z'
@@ -182,6 +187,10 @@ const storedTranscripts: Record<string, Array<Record<string, unknown>>> = {
     { kind: 'inter_agent_message', role: 'user', content: `You received a message from sender name: video lead, sender address: /video_lead, sender id: ${LEAD_RUN_ID}\nmessage:\nCut the 60-second version from the recorded screens.`, senderAgentRunId: LEAD_RUN_ID, senderAddress: '/video_lead', ts: seconds('2026-10-05T09:30:00.000Z') },
     { kind: 'message', role: 'assistant', content: 'First cut is at 64 seconds. I will trim the demo section.', ts: seconds('2026-10-05T09:36:00.000Z') },
   ],
+  [COLORIST_RUN_ID]: [
+    { kind: 'inter_agent_message', role: 'user', content: `You received a message from sender name: video lead, sender address: /video_lead, sender id: ${LEAD_RUN_ID}\nmessage:\nGrade the recorded screens to match the brand colors.`, senderAgentRunId: LEAD_RUN_ID, senderAddress: '/video_lead', ts: seconds('2026-10-05T09:31:00.000Z') },
+    { kind: 'message', role: 'assistant', content: 'Graded shots 1–3. The sound designer has the timing for the music cues.', ts: seconds('2026-10-05T09:38:00.000Z') },
+  ],
   [COPY_RUN_ID]: [
     { kind: 'inter_agent_message', role: 'user', content: `You received a message from sender name: video lead, sender address: /video_lead, sender id: ${LEAD_RUN_ID}\nmessage:\nWrite the on-screen captions for shots 1–3.`, senderAgentRunId: LEAD_RUN_ID, senderAddress: '/video_lead', ts: seconds('2026-10-05T09:26:00.000Z') },
     { kind: 'message', role: 'assistant', content: 'Captions for shots 1–3 are drafted.', ts: seconds('2026-10-05T09:27:00.000Z') },
@@ -232,6 +241,15 @@ export const teamRootExecution = () => ({
   members: [
     { kind: 'configured_agent', address: '/video_lead', agent_definition_id: 'video-lead', role: null, description: null, agent_run_id: LEAD_RUN_ID, platform_agent_run_id: null, launch_configuration: launch(leadLaunch) },
     { kind: 'configured_agent', address: '/editor', agent_definition_id: definitionIdOf(editor), role: null, description: null, agent_run_id: EDITOR_RUN_ID, platform_agent_run_id: null, launch_configuration: launch(editor) },
+    {
+      kind: 'configured_team', address: '/post_production', team_definition_id: 'team-post-production', role: null, description: null,
+      team_run_id: POST_TEAM_RUN_ID, coordinator_address: '/post_production/colorist', default_launch_configuration: launch(leadLaunch),
+      members: [
+        { kind: 'configured_agent', address: '/post_production/colorist', agent_definition_id: 'colorist', role: null, description: null, agent_run_id: COLORIST_RUN_ID, platform_agent_run_id: null, launch_configuration: launch(leadLaunch) },
+        { kind: 'configured_agent', address: '/post_production/sound_designer', agent_definition_id: 'sound-designer', role: null, description: null, agent_run_id: SOUND_RUN_ID, platform_agent_run_id: null, launch_configuration: launch(leadLaunch) },
+      ],
+      task_executions: [],
+    },
   ],
   collaborators: [
     { kind: 'agent', address: '/tutorial_video_producer', agent_definition_id: definitionIdOf(collaborator), agent_run_id: COLLAB_RUN_ID, platform_agent_run_id: null, launch_configuration: launch(collaborator), added_at: '2026-10-05T09:20:00.000Z', added_via_agent_run_id: LEAD_RUN_ID },
@@ -272,6 +290,8 @@ const teamHistoryRun = (base: Record<string, any>) => ({
   members: [
     { memberName: 'video_lead', displayName: 'Video Lead', memberAddress: '/video_lead', agentRunId: LEAD_RUN_ID, agentDefinitionId: 'video-lead', agentName: 'Video Lead', status: 'IDLE', runtimeKind: leadLaunch.runtimeKind, workspaceRootPath: workspace.workspaceRootPath },
     { memberName: 'editor', displayName: agentNameOf(definitionIdOf(editor), 'editor'), memberAddress: '/editor', agentRunId: EDITOR_RUN_ID, agentDefinitionId: definitionIdOf(editor), agentName: agentNameOf(definitionIdOf(editor), 'editor'), status: 'IDLE', runtimeKind: editor.runtimeKind, workspaceRootPath: workspace.workspaceRootPath },
+    { memberName: 'colorist', displayName: 'colorist', memberAddress: '/post_production/colorist', agentRunId: COLORIST_RUN_ID, agentDefinitionId: 'colorist', agentName: 'Colorist', status: 'IDLE', runtimeKind: leadLaunch.runtimeKind, workspaceRootPath: workspace.workspaceRootPath },
+    { memberName: 'sound_designer', displayName: 'sound_designer', memberAddress: '/post_production/sound_designer', agentRunId: SOUND_RUN_ID, agentDefinitionId: 'sound-designer', agentName: 'Sound Designer', status: 'IDLE', runtimeKind: leadLaunch.runtimeKind, workspaceRootPath: workspace.workspaceRootPath },
   ],
 })
 
@@ -325,7 +345,7 @@ export const withAgentReconnect = (name: string, variables: Record<string, any>,
         ? { getTeamRunExecutionCheckpoint: { rootTeamRunId: TEAM_RUN_ID, changeSequence: 1, hasOpenExecutionWork: false } }
         : data
     case 'GetTeamMemberRunProjection':
-      return [LEAD_RUN_ID, EDITOR_RUN_ID, COLLAB_RUN_ID, COPY_RUN_ID].includes(variables.agentRunId)
+      return [LEAD_RUN_ID, EDITOR_RUN_ID, COLLAB_RUN_ID, COPY_RUN_ID, COLORIST_RUN_ID, SOUND_RUN_ID].includes(variables.agentRunId)
         ? { getTeamMemberRunProjection: { agentRunId: variables.agentRunId, summary: 'Produce the v2 launch video', lastActivityAt: updatedAt, conversation: storedProjection(variables.agentRunId), activities: [], hasEarlierActiveTraceEvents: false } }
         : data
     default:
