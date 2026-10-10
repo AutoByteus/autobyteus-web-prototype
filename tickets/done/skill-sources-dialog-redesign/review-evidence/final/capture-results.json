@@ -1,0 +1,168 @@
+{
+  "baseUrl": "http://127.0.0.1:4731",
+  "results": [
+    {
+      "id": "R01",
+      "name": "populated-mixed-list",
+      "file": "/tmp/ssdr/final/R01-populated-mixed-list.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R02",
+      "name": "opening-checking-github",
+      "file": "/tmp/ssdr/final/R02-opening-checking-github.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R03",
+      "name": "github-issues-update-failed-removal-incomplete",
+      "file": "/tmp/ssdr/final/R03-github-issues-update-failed-removal-incomplete.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R04",
+      "name": "many-sources-scrolled",
+      "file": "/tmp/ssdr/final/R04-many-sources-scrolled.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R05",
+      "name": "add-github-trust-hint",
+      "file": "/tmp/ssdr/final/R05-add-github-trust-hint.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R06",
+      "name": "add-local-browse-filled",
+      "file": "/tmp/ssdr/final/R06-add-local-browse-filled.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R07",
+      "name": "add-local-working",
+      "file": "/tmp/ssdr/final/R07-add-local-working.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R08",
+      "name": "add-local-success",
+      "file": "/tmp/ssdr/final/R08-add-local-success.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R09",
+      "name": "add-local-error-kept-input",
+      "file": "/tmp/ssdr/final/R09-add-local-error-kept-input.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R10",
+      "name": "remove-confirmation-local",
+      "file": "/tmp/ssdr/final/R10-remove-confirmation-local.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R11",
+      "name": "remove-confirmation-github",
+      "file": "/tmp/ssdr/final/R11-remove-confirmation-github.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R12",
+      "name": "update-confirmation",
+      "file": "/tmp/ssdr/final/R12-update-confirmation.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R13",
+      "name": "updating-busy",
+      "file": "/tmp/ssdr/final/R13-updating-busy.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R14",
+      "name": "registry-error",
+      "file": "/tmp/ssdr/final/R14-registry-error.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R15",
+      "name": "import-warning",
+      "file": "/tmp/ssdr/final/R15-import-warning.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R16",
+      "name": "duplicate-name-conflict",
+      "file": "/tmp/ssdr/final/R16-duplicate-name-conflict.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R17",
+      "name": "keyboard-focus-remove",
+      "file": "/tmp/ssdr/final/R17-keyboard-focus-remove.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R18",
+      "name": "hover-row-tooltip-target",
+      "file": "/tmp/ssdr/final/R18-hover-row-tooltip-target.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R19",
+      "name": "narrow-mobile",
+      "file": "/tmp/ssdr/final/R19-narrow-mobile.png",
+      "viewport": "390x844",
+      "ok": true
+    },
+    {
+      "id": "R20",
+      "name": "narrow-mobile-add",
+      "file": "/tmp/ssdr/final/R20-narrow-mobile-add.png",
+      "viewport": "390x844",
+      "ok": true
+    },
+    {
+      "id": "R21",
+      "name": "zh-cn",
+      "file": "/tmp/ssdr/final/R21-zh-cn.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R22",
+      "name": "browser-context-no-browse",
+      "file": "/tmp/ssdr/final/R22-browser-context-no-browse.png",
+      "viewport": "1440x900",
+      "ok": true
+    },
+    {
+      "id": "R23",
+      "name": "small-window-1024x700",
+      "file": "/tmp/ssdr/final/R23-small-window-1024x700.png",
+      "viewport": "1024x700",
+      "ok": true
+    }
+  ],
+  "browserErrors": [],
+  "externalRequests": []
+}
