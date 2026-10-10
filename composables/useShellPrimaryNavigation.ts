@@ -84,10 +84,15 @@ export function useShellPrimaryNavigation(): {
   primaryNavItems: ComputedRef<readonly ShellPrimaryNavItem[]>;
   resolvePrimaryRoute: (key: ShellPrimaryNavKey) => RouteLocationRaw;
   isPrimaryNavActive: (key: ShellPrimaryNavKey) => boolean;
+  isRunOpen: ComputedRef<boolean>;
   ensurePrimaryNavigationReady: () => Promise<unknown>;
 } {
   const route = useRoute();
   const applicationsCapabilityStore = useApplicationsCapabilityStore();
+
+  // An open run: an Agent run in chat (`/chat?id=…`) or a Team/Org run in the workspace view.
+  const isRunOpen = computed(() => route.path.startsWith('/workspace')
+    || (route.path.startsWith('/chat') && Boolean(String(route.query.id ?? '').trim())));
 
   const primaryNavItems = computed(() => {
     return allShellPrimaryNavItems.filter((item) => {
@@ -107,7 +112,11 @@ export function useShellPrimaryNavigation(): {
   return {
     primaryNavItems,
     resolvePrimaryRoute: resolveShellPrimaryRoute,
-    isPrimaryNavActive: (key: ShellPrimaryNavKey) => isShellPrimaryRouteActive(key, route.path),
+    // collapsed-left-panel-expand-keeps-run (round 2): Chat is lit only on New chat (`/chat` with no
+    // run id), because clicking it opens New chat. An open run lights the strip's Workspaces icon.
+    isPrimaryNavActive: (key: ShellPrimaryNavKey) => isShellPrimaryRouteActive(key, route.path)
+      && !(key === 'chat' && isRunOpen.value),
+    isRunOpen,
     ensurePrimaryNavigationReady: () => Promise.allSettled([
       applicationsCapabilityStore.ensureResolved(),
     ]),
