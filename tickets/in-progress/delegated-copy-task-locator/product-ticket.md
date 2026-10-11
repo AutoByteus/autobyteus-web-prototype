@@ -201,6 +201,24 @@ One recommended design. Alternatives are described in words, not built.
   - The row button locates "Members of a delegated team…" (R2-02).
   - Research Assistant run: the `@` collaborators have no icon; the two Task workers do (R2-03).
 
+## Round 2 Feedback And Round 3 (current proposal)
+
+- User feedback on round 2 (2026-10-11), with a screenshot of the documentation writer header and its
+  chip:
+
+  > Let's remove the one on the top as well. because since there's icon, I can click and navigate
+  > directly.
+
+- Round 3:
+  - DEC-003 (header Task chip) is **withdrawn**. `AgentWorkspaceSurface.vue` is back to the accepted
+    baseline (`a55ced2`), and the string `workspace.history.copyTask.chipLabel` is removed.
+  - The only entry point is the always-shown row icon (DEC-002 as changed in round 2), followed by the
+    locate behaviour (DEC-004 to DEC-008).
+- Round 3 validation (`review-evidence/round-3/r4.mjs`):
+  - The documentation writer copy's header has no chip (R3-01).
+  - Its row icon locates "Review the synthetic navigation baseline." in Prototype Launch, highlighted
+    (R3-02).
+
 ## Delivery And Validation
 
 - UI/UX specification: pending

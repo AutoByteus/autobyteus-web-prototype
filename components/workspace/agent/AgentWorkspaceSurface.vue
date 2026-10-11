@@ -12,23 +12,8 @@
           />
           <span v-else class="text-[0.625rem] font-semibold tracking-wide text-slate-600">{{ initials }}</span>
         </div>
-        <h4 class="truncate text-base font-medium text-gray-800" :class="copyTask ? 'flex-shrink-0' : ''" :title="headerFullTitle" data-test="agent-workspace-title">{{ headerTitle }}</h4>
-        <AgentStatusDisplay class="flex-shrink-0" :status="target.context.state.currentStatus" />
-        <!-- delegated-copy-task-locator: a delegated copy (or a member of a team copy) names its current
-             Task; it shows the Task in the Projects tab. -->
-        <button
-          v-if="copyTask"
-          type="button"
-          class="inline-flex min-w-0 items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-600 transition-colors hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-          data-test="agent-workspace-copy-task"
-          :data-task-id="copyTask.task.taskId"
-          :title="locateLabel"
-          :aria-label="chipLabel"
-          @click="locateTask"
-        >
-          <Icon icon="heroicons:clipboard-document-list-20-solid" class="h-3.5 w-3.5 flex-shrink-0 text-slate-400" aria-hidden="true" />
-          <span class="truncate">{{ taskLabel }}</span>
-        </button>
+        <h4 class="truncate text-base font-medium text-gray-800" :title="headerFullTitle" data-test="agent-workspace-title">{{ headerTitle }}</h4>
+        <AgentStatusDisplay :status="target.context.state.currentStatus" />
       </div>
       <WorkspaceHeaderActions
         v-if="showHeaderActions"
@@ -66,12 +51,6 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import { Icon } from '@iconify/vue'
-import { useDelegatedCopyTask, type CopyRef } from '~/composables/projects/useDelegatedCopyTask'
-import { useAgentRunCollaborationStore } from '~/stores/agentRunCollaborationStore'
-import { useTaskLocatorStore } from '~/stores/taskLocatorStore'
-import { taskSummaryLabel } from '~/utils/projects/taskSummary'
-import { useLocalization } from '~/composables/useLocalization'
 import type { ActiveAgentWorkspaceTarget } from '~/types/workspace/activeAgentWorkspaceTarget'
 import AgentEventMonitor from '~/components/workspace/agent/AgentEventMonitor.vue'
 import AgentStatusDisplay from '~/components/workspace/agent/AgentStatusDisplay.vue'
@@ -134,25 +113,4 @@ const skillTarget = computed<SkillImprovementComposerCtaTarget | null>(() =>
     : null)
 
 watch(avatarUrl, () => { avatarFailed.value = false })
-
-// delegated-copy-task-locator (design): the Task of the copy on screen. A task Agent is its own copy;
-// a member of a task Team shares the team copy's Task.
-const { t } = useLocalization()
-const collaboration = useAgentRunCollaborationStore()
-const copyRef = computed<CopyRef | null>(() => {
-  const target = props.target
-  const runId = target.context.state.runId
-  if (target.kind === 'agent_run_task_agent') return { agentRunId: runId }
-  if (target.kind === 'agent_run_task_team_member') {
-    const teamRunId = collaboration.contextFor(target.host.hostRunId)?.index.agents.get(runId)?.teamRunId
-    return teamRunId ? { teamRunId } : null
-  }
-  return null
-})
-const copyTask = useDelegatedCopyTask(copyRef)
-const taskLabel = computed(() => copyTask.value ? taskSummaryLabel(copyTask.value.task.description) : '')
-const locateLabel = computed(() => t('workspace.history.copyTask.locate', { title: taskLabel.value }))
-const chipLabel = computed(() => t('workspace.history.copyTask.chipLabel', { title: taskLabel.value }))
-const taskLocator = useTaskLocatorStore()
-const locateTask = () => { if (copyTask.value) taskLocator.locate(copyTask.value) }
 </script>

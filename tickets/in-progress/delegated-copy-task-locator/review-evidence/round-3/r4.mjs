@@ -1,0 +1,13 @@
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/delegated-copy-task-locator/node_modules/playwright-core/index.mjs';
+const B='http://127.0.0.1:4641', O='./';
+const browser = await chromium.launch();
+const p = await browser.newPage({ viewport:{width:1440,height:900}, deviceScaleFactor:2 });
+p.on('pageerror', e => console.log('PAGEERR', e.message));
+await p.goto(B+'/chat?id=run-research-001'); await p.waitForTimeout(6000);
+await p.locator('[data-agent-run-id="worker-writer-001"]').click(); await p.waitForTimeout(2500);
+console.log('chip count', await p.locator('[data-test="agent-workspace-copy-task"]').count());
+await p.screenshot({ path: O+'r4-01-header-no-chip-2x.png', clip:{x:322,y:0,width:668,height:60} });
+await p.locator('[data-agent-run-id="worker-writer-001"] [data-test="workspace-copy-task-locate"]').click(); await p.waitForTimeout(1000);
+console.log('located', await p.evaluate(()=>document.querySelector('[data-located]')?.dataset.testid));
+await p.screenshot({ path: O+'r4-02-row-locate-1440x900.png' });
+await browser.close();
