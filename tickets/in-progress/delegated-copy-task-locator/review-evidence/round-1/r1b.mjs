@@ -1,0 +1,14 @@
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/delegated-copy-task-locator/node_modules/playwright-core/index.mjs';
+const B='http://127.0.0.1:4641', O='./';
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport:{width:1440,height:900}, deviceScaleFactor:2 });
+page.on('pageerror', e => console.log('PAGEERR', e.message));
+await page.goto(B+'/chat?id=run-ptm-0001'); await page.waitForTimeout(7000);
+const teams = page.locator('[data-transient-kind="task_team"]');
+await teams.nth(0).hover(); await page.waitForTimeout(400);
+await page.screenshot({ path: O+'r1b-01-tree-2x.png', clip:{x:0,y:410,width:320,height:440} });
+await page.locator('[data-transient-kind="task_team_child"]').nth(0).click(); await page.waitForTimeout(2500);
+await page.mouse.move(700,500);
+await page.screenshot({ path: O+'r1b-02-header-2x.png', clip:{x:322,y:0,width:668,height:60} });
+await page.screenshot({ path: O+'r1b-03-tree-selected-2x.png', clip:{x:0,y:410,width:320,height:440} });
+await browser.close();

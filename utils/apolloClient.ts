@@ -15,6 +15,7 @@ import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/lau
 import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/prototype/run-settings/launchedOrgFixture'
 import { withAgentReconnect } from '~/prototype/agent-reconnect/agentReconnectFixture'
 import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
+import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { designSkillSourceData, designRegistryError, designSkillSourceMutation } from '~/prototype/skill-sources/skillSourcesDesignFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
@@ -46,6 +47,8 @@ const fixtureState = (): Record<string, any> => {
     if (designOnlyLayersEnabled()) localFixtureState.skillSourceData = designSkillSourceData(scenario)
   }
   localFixtureState.scenario = scenario
+  // delegated-copy-task-locator (design-only): the Project Task Manager run's Tasks.
+  if (designOnlyLayersEnabled()) seedDelegatedCopyTasks(localFixtureState, scenario)
   return localFixtureState
 }
 
@@ -76,6 +79,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   })
   // agent-definition-reconnect-ui (design-only): runs whose agent folder was renamed, and the Video Team run.
   if (designOnlyLayersEnabled()) data = data ? withAgentReconnect(name, request.variables || {}, structuredClone(data), scenario) : data
+  // delegated-copy-task-locator (design-only): a Project Task Manager run with look-alike delegated copies.
+  if (designOnlyLayersEnabled()) data = data ? withDelegatedCopyTasks(name, request.variables || {}, structuredClone(data), scenario) : data
   // skill-sources-dialog-redesign (design-only): the registry-error scenario.
   if (designOnlyLayersEnabled() && name === 'GetSkillSources' && data) data = { ...data, skillSourceRegistryError: designRegistryError(scenario) ?? data.skillSourceRegistryError }
   return { data: data ? structuredClone(data) : {} }

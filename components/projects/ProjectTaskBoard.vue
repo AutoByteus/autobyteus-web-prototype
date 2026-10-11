@@ -33,6 +33,7 @@ import ProjectTaskRow from './ProjectTaskRow.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useProjectTaskStore } from '~/stores/projectTaskStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
+import { useTaskLocatorStore } from '~/stores/taskLocatorStore'
 import type { ProjectTask, ProjectTaskStatus } from '~/types/project'
 import { BOARD_OPEN_LANES, TASK_STATUS_LABEL_KEYS } from '~/utils/projects/taskStatusPresentation'
 /**
@@ -70,6 +71,18 @@ onMounted(() => load(true))
 onBeforeUnmount(() => store.releaseRead(props.projectId))
 watch(() => props.projectId, (id, previous) => {store.releaseRead(previous); load(true)})
 watch(() => node.bindingRevision, () => load(true)) // Preserve the existing watcher; not an interactive switching journey.
+// delegated-copy-task-locator (design): "Show Task in Projects" makes the Task visible on the tab's board:
+// a search that hides it is cleared, and a Cancelled Task shows the Cancelled lane.
+const locator = useTaskLocatorStore()
+watch([() => locator.request, () => list.value?.hasLoaded], ([request]) => {
+  if (!props.compact || !request || request.choice.kind !== 'project' || request.choice.projectId !== props.projectId || !list.value?.hasLoaded) return
+  if (!locator.take(`board:${props.projectId}`, request)) return
+  const task = tasks.value.find((item) => item.taskId === request.taskId)
+  if (!task) return
+  if (task.status === 'CANCELLED') showCancelled.value = true
+  const query = searchQuery.value.trim().toLocaleLowerCase()
+  if (query && !task.description.toLocaleLowerCase().includes(query)) searchQuery.value = ''
+}, { immediate: true })
 </script>
 <style scoped>
 .project-task-board { container-type: inline-size; container-name: project-task-board; }

@@ -66,6 +66,7 @@ import { useLocalization } from '~/composables/useLocalization'
 import { useProjectChangeFeed } from '~/composables/projects/useProjectChangeFeed'
 import { TEMP_TASKS_LIST_ID, useProjectTaskStore } from '~/stores/projectTaskStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
+import { useTaskLocatorStore } from '~/stores/taskLocatorStore'
 import type { TaskWithoutProject } from '~/types/project'
 import { TEMP_LANES_OPEN, TEMP_LANE_LABEL_KEYS, tempTaskLaneOf, type TempLane } from '~/utils/projects/taskStatusPresentation'
 
@@ -106,6 +107,20 @@ const clearSearch = () => { searchQuery.value = ''; document.getElementById(sear
 onMounted(load)
 onBeforeUnmount(() => store.releaseRead(TEMP_TASKS_LIST_ID))
 watch(() => node.bindingRevision, load)
+// delegated-copy-task-locator (design): "Show Task in Projects" makes the Task visible on the tab's board:
+// a search that hides it is cleared, a Cancelled Task shows the Cancelled lane, and a Done Task past
+// the first ten shows all Done Tasks.
+const locator = useTaskLocatorStore()
+watch([() => locator.request, () => list.value?.hasLoaded], ([request]) => {
+  if (!props.compact || !request || request.choice.kind !== 'temp' || !list.value?.hasLoaded) return
+  if (!locator.take('board:temp', request)) return
+  const task = tasks.value.find((item) => item.taskId === request.taskId)
+  if (!task) return
+  if (task.status === 'CANCELLED') showCancelled.value = true
+  const query = searchQuery.value.trim().toLocaleLowerCase()
+  if (query && !task.description.toLocaleLowerCase().includes(query)) searchQuery.value = ''
+  if (task.status === 'DONE' && !lanes.value.done.slice(0, DONE_LIMIT).some((item) => item.taskId === task.taskId)) showAllDone.value = true
+}, { immediate: true })
 </script>
 
 <style scoped>

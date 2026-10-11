@@ -66,6 +66,7 @@ import WorkspaceRightToolDrawer from './WorkspaceRightToolDrawer.vue';
 import StartSurfaceToolsToggle from './StartSurfaceToolsToggle.vue';
 import { useStartSurfaceTools } from '~/composables/layout/useStartSurfaceTools';
 import { LEFT_PANEL_RESIZE_HANDLE_WIDTH_PX } from '~/utils/layout/responsiveLayoutPolicy';
+import { useTaskLocatorStore } from '~/stores/taskLocatorStore';
 
 /**
  * The right tool shell (dock, strip, drawer, resize) around a center slot.
@@ -98,6 +99,12 @@ const revealTool: WorkspaceToolReveal = async (tab) => {
   return isLive;
 };
 provide(WORKSPACE_TOOL_REVEAL_KEY, revealTool);
+// delegated-copy-task-locator (design): "Show Task in Projects" reveals the Projects tab, docked or in
+// the drawer, the same way the right strip's icons reveal a tool.
+const taskLocator = useTaskLocatorStore();
+watch(() => taskLocator.request, (request) => {
+  if (taskLocator.take('tool-shell', request)) void revealTool('projects');
+});
 const workspaceFlowRef = ref<HTMLElement | null>(null);
 let workspaceFlowResizeObserver: ResizeObserver | null = null;
 

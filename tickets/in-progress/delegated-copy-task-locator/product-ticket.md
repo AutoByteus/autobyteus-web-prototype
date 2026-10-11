@@ -8,7 +8,7 @@
 - Title: Navigate from a delegated agent/team copy back to its Task.
 - Mode: `Product Experience Design`. It evolves the accepted AutoByteus Web baseline: the Workspaces
   tree's Task-worker rows, the worker's run header, and the right panel's Projects tab.
-- Status: `In Progress`
+- Status: `Awaiting User Review`
 - Requester: Project Task Manager (`/project_task_manager`, AgentRun
   `project_task_manager_7c8dce0c4a8b44f88e776a83809dee03`) for the user, 2026-10-11. The user decided on
   2026-10-11 that the Product Team designs the UI first. A separate implementation Task follows approval.
@@ -75,17 +75,111 @@
 - Design revision for this ticket: pending
 - Default-entry-point validation after integration: pending
 - Integration target and result: `personal`, `Pending`
-- Runtime isolation record: Product dev server port `4641` (stopped before the Bootstrapper handoff);
-  scripts and captures under `/tmp/dctl/`; Bootstrapper picks its own ports. Fixture state is in-memory
-  (reset by reload).
+- Runtime isolation record: Product dev server `corepack pnpm dev --port 4641 --host 127.0.0.1` (owned by
+  this ticket, running for review); scripts and captures under `/tmp/dctl/` (copies kept in
+  `review-evidence/`). Fixture state is in-memory (reset by reload).
 - Cleanup result or blocker: `Pending`
 - Ticket folder: `tickets/in-progress/delegated-copy-task-locator/`
+
+## Proposed Design (round 1)
+
+One recommended design. Alternatives are described in words, not built.
+
+- **DEC-001 Task line on copy rows.**
+  - A task Agent or task Team row whose copy has a Task shows the Task summary (first line, the
+    card's one-line label) as a second line under the name.
+  - Style: 11 px (`text-[0.6875rem]`), `leading-4`, regular weight, `gray-500` (`indigo-700` when the
+    row is selected), truncated with an ellipsis.
+  - Member rows of a team copy, `@` collaborator rows and copies with no known Task keep one line.
+  - The branch elbow and the team disclosure stay on the name line.
+  - This answers "which Task is this copy on?" at a glance and tells look-alike copies apart (23.png).
+- **DEC-002 Row-end locate button (icon button, not a link).**
+  - Placement: at the end of the copy row's name line.
+  - Style: the tree's row-action button (20 × 20 px, 14 px `heroicons:clipboard-document-list-20-solid`,
+    `gray-400`; hover `indigo-50` fill and `indigo-600` icon).
+  - Revealed on row hover and keyboard focus (always shown below `md`), like the tree's archive and
+    delete actions.
+  - Tooltip and accessible name: "Show Task in Projects: <Task>". The row's accessible name ends with
+    ", Task: <Task>".
+  - Clicking it locates the Task (DEC-004). It does not open the copy or change the center view.
+- **DEC-003 Task chip in the copy's run header.**
+  - Shown when a task Agent, or any member of a task Team, is on screen: a chip after the status names the
+    copy's current Task. Members show their team copy's Task.
+  - Style: `border-slate-200`, white, `rounded-md`, `px-2 py-1`, 12 px medium `slate-600`, with the same
+    14 px Task icon in `slate-400`; hover `slate-50` / `slate-300` border. It truncates; the name does not.
+  - Click: locate (DEC-004). Accessible name "Task: <Task>. Show it in Projects".
+  - It also covers a collapsed left panel (`collapsed-left-panel-expand-keeps-run`).
+- **DEC-004 Locate = board + highlight, not Task detail.**
+  - The right panel is revealed on **Projects** the same way the right strip reveals a tool: docked, or
+    the drawer in narrow windows; a collapsed panel reopens.
+  - The picker chooses the Task's Project, or **Temp tasks** for a Task with no Project. The choice is
+    remembered like a manual pick.
+  - A Task open inside the tab returns to the board.
+  - The card scrolls to the centre (smooth; instant with reduced motion) and takes keyboard focus, so
+    Enter opens it.
+  - The card shows the board's live-change highlight (indigo-50 wash with a 2 px indigo-500 left bar,
+    fading over 2.4 s); this matches the tree's selected-row colours.
+  - Why the board: the lane shows the status and the neighbouring Tasks, and the detail is one Enter or
+    click away.
+- **DEC-005 Hidden by filters.**
+  - A search that hides the Task is cleared.
+  - A Cancelled Task turns on "Cancelled (N)" and is located in the Cancelled lane.
+  - A Done Temp task past the first ten turns on "Show all".
+  - Other filters stay as they are.
+- **DEC-006 Done / Cancelled.** In the product, a copy's row leaves the tree once its Task is Done or
+  Cancelled (`isListed`), and a closed copy cannot be opened from its card. So the row button and header
+  chip almost always point at an open Task. DEC-005 covers a Task that closes just before the click.
+- **DEC-007 Follow-up Tasks.**
+  - A copy given a follow-up Task shows and locates its **current** Task: the open one updated last,
+    else the one updated last.
+  - Earlier Tasks are not listed. Their cards on the board still show the copy as their worker.
+  - History in the tooltip or a menu was considered and not built: it adds a menu to a tree row, and the
+    board already shows it.
+- **DEC-008 No Project (Temp tasks).** Same behaviour; the picker switches to **Temp tasks**.
+- Alternatives considered (not built):
+  - a text link on the row;
+  - opening the Task detail instead of the board;
+  - showing the button always (noisy across many rows);
+  - Task labels only on look-alike rows (inconsistent);
+  - a Task column on the right of the row (too narrow at 320 px).
+- Round 1 changes:
+  - DC-001 `WorkspaceTransientExecutionRow.vue`: the Task line, the locate button, the name-line elbow
+    and disclosure, and the accessible name.
+  - DC-002 `AgentWorkspaceSurface.vue`: the header Task chip.
+  - DC-003 `stores/taskLocatorStore.ts` (new), `composables/projects/useDelegatedCopyTask.ts` (new): the
+    copy → current Task lookup and the locate request.
+  - DC-004 `WorkspaceToolShell.vue`: locate reveals the Projects tab.
+  - DC-004 `ProjectsPanel.vue`: shows the board.
+  - DC-004 `ProjectTaskBoard.vue`, `TempTaskBoard.vue`: clear the hiding search, show Cancelled, show all
+    Done.
+  - DC-004 `ProjectTaskRow.vue`: scroll, focus and the located highlight.
+  - DC-005 en / zh-CN strings `workspace.history.copyTask.*`.
+  - DC-006 icon bundle: `clipboard-document-list-20-solid` / `-16-solid`.
+  - DC-007 design-only fixture: `prototype/delegated-copy-tasks/delegatedCopyTasksFixture.ts`,
+    `plugins/98.delegated-copy-tasks.client.ts`, `utils/apolloClient.ts` hook. It adds:
+    - the "Project Task Manager" run `run-ptm-0001` with five copies;
+    - the "Desktop App" Project with their Tasks, one Prototype Launch Task and one Temp task;
+    - copy 3's Done Task and its follow-up Task.
+    All of it is invented.
+- Round 1 validation (Chromium, `review-evidence/round-1/r1*.mjs`, `r2*.mjs`):
+  - Header chip on solution designer of copy 2 → Desktop App, "Members of a delegated team…" located
+    and focused (R1-04).
+  - Row button on agent package creator 1 → picker switches to Prototype Launch, Task located (R1-05).
+  - Row button on agent package creator 2 → Temp tasks, Task located (R1-06).
+  - Right panel collapsed → reopened on Projects; copy 3's follow-up Task "Image context files…"
+    located (R1-07a/b).
+  - Search "release" hides the Task → cleared, Task located (R1-08a/b).
+  - A Task open in the tab → back to the board, Task located.
+  - Keyboard: Tab from the row focuses the button (visible, focus ring) → Enter locates → focus is on
+    the card → Enter opens the Task (R1-09).
+  - 900 × 800: the right drawer opens on Desktop App with the Task located (R1-10).
+  - `typecheck`, `lint`, `test` (15/15) and `validate:boundaries` pass.
 
 ## Delivery And Validation
 
 - UI/UX specification: pending
-- Runnable UI reference entry point: `/chat?id=run-research-001` and `/workspace` (Workspaces tree), right
-  panel **Projects**
+- Runnable UI reference entry point: `http://127.0.0.1:4641/workspace` → prototype-workspace → Project Task
+  Manager → "Dispatch the approved desktop app Tasks" (same as `/chat?id=run-ptm-0001`); right panel **Projects**
 - Visual-reference directory: pending
 - Supporting artifact paths: pending
 - Validation commands and results: pending
@@ -96,7 +190,7 @@
 
 - Completed behavior and evidence: none yet
 - Remaining product decisions: all decision questions above
-- Next expected action: Product UI/UX Designer builds round 1 of the design on the accepted refresh.
+- Next expected action: user reviews round 1 at the review URL and gives feedback or approval.
 - Handoff outcome from `get_handoff_rules`: `Baseline Needed`
 - Matched recipient address, when a rule applies: `/product_team/ui_baseline_bootstrapper`
 - Return context when no matching rule applies: n/a
