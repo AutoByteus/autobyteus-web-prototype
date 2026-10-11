@@ -175,6 +175,32 @@ One recommended design. Alternatives are described in words, not built.
   - 900 × 800: the right drawer opens on Desktop App with the Task located (R1-10).
   - `typecheck`, `lint`, `test` (15/15) and `validate:boundaries` pass.
 
+## Round 1 Feedback And Round 2 (current proposal)
+
+- User feedback on round 1 (2026-10-11), with a screenshot of the Research Assistant run:
+
+  > To be honest, I wouldn't put the task description under the individual agent itself, because you put
+  > task itself on an individual agent, but you don't have a way to put it under the task team. I would
+  > still just start with only the icon, you know. I would start with the icon.
+
+- Round 2:
+  - DEC-001 is **withdrawn**. Copy rows have no Task line; every row is one line again.
+  - DEC-002 is changed: the locate icon is **always shown** at the end of a task Agent or task Team row
+    whose copy has a Task, because it is now the only cue that a row works on a Task. Rows without a
+    Task (`@` collaborators, team members, unknown Task) have no icon.
+  - The style is unchanged: 20 × 20 px, 14 px `clipboard-document-list-20-solid`, `gray-400`, hover
+    `indigo-50` / `indigo-600`.
+  - The tooltip ("Show Task in Projects: <Task>") and the row's accessible name (", Task: <Task>") still
+    carry the Task title.
+- Round 2 changes:
+  - DC-008 `WorkspaceTransientExecutionRow.vue`: removed the Task line, the name-line elbow/disclosure
+    override and the hover-only reveal.
+  - DEC-003 (header chip) and DEC-004 to DEC-008 are unchanged.
+- Round 2 validation (`review-evidence/round-2/r3.mjs`):
+  - PTM run: an icon on all five copies, none on members (R2-01).
+  - The row button locates "Members of a delegated team…" (R2-02).
+  - Research Assistant run: the `@` collaborators have no icon; the two Task workers do (R2-03).
+
 ## Delivery And Validation
 
 - UI/UX specification: pending

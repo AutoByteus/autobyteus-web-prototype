@@ -1,6 +1,6 @@
 <template>
   <div
-    class="transient-execution-row group/copy-row relative flex min-h-7 w-full cursor-pointer items-center rounded-md text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+    class="transient-execution-row relative flex min-h-7 w-full cursor-pointer items-center rounded-md text-sm transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
     :class="rowClasses"
     :style="rowStyle"
     data-test="workspace-team-transient-execution-row"
@@ -34,7 +34,6 @@
       v-if="hasChildren"
       type="button"
       class="ml-2 mr-1 inline-flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-      :class="taskLabel ? 'mt-[0.4375rem] self-start' : ''"
       data-test="workspace-team-transient-disclosure"
       :data-team-run-id="row.teamRunId"
       :data-member-address="row.memberAddress"
@@ -98,13 +97,6 @@
             data-test="workspace-member-agent-missing"
           />
         </span>
-        <!-- delegated-copy-task-locator: the Task this copy works on, so look-alike copies can be told apart. -->
-        <span
-          v-if="taskLabel"
-          class="mt-0.5 block truncate text-[0.6875rem] font-normal leading-4"
-          :class="isSelected ? 'text-indigo-700' : 'text-gray-500'"
-          data-test="workspace-copy-task-label"
-        >{{ taskLabel }}</span>
         <span
           v-if="inspectionAttempt?.state === 'loading'"
           class="mt-0.5 block text-[0.6875rem] font-medium text-indigo-700"
@@ -124,11 +116,12 @@
           >{{ t('workspace.task_monitor.retry') }}</button>
         </span>
       </span>
-      <!-- delegated-copy-task-locator: Show Task in Projects (revealed on hover and focus, like the tree's other row actions). -->
+      <!-- delegated-copy-task-locator (round 2): Show Task in Projects. Always shown on a copy that has a Task,
+           so Task copies stand apart from `@` collaborators; the Task title is in its tooltip. -->
       <button
         v-if="copyTask"
         type="button"
-        class="ml-1 inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-[opacity,color,background-color] duration-150 hover:bg-indigo-50 hover:text-indigo-600 focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 md:opacity-0 md:group-hover/copy-row:opacity-100 md:group-focus-within/copy-row:opacity-100"
+        class="ml-1 inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-colors duration-150 hover:bg-indigo-50 hover:text-indigo-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
         data-test="workspace-copy-task-locate"
         :data-task-id="copyTask.task.taskId"
         :title="locateLabel"
@@ -249,8 +242,6 @@ const rowStyle = computed(() => ({
 const rowClasses = computed(() => ({
   'is-selected text-indigo-900': props.isSelected,
   'text-gray-600 hover:bg-gray-50': !props.isSelected,
-  // delegated-copy-task-locator: with a Task line, the branch elbow and disclosure stay on the name line.
-  'has-task-label': Boolean(taskLabel.value),
 }));
 
 const activateRow = (): void => {
@@ -273,16 +264,6 @@ const activateRow = (): void => {
   border-radius: 0;
   background-color: #eef2ff;
   box-shadow: inset 2px 0 #6366f1;
-}
-
-/* delegated-copy-task-locator: the name line's centre is 0.875rem below the row top (py-1 + half of h-5);
-   the branch box starts 0.2rem above the row. */
-.transient-execution-row.has-task-label :deep(.hierarchy-current-branch::after) {
-  top: 1.075rem;
-}
-
-.transient-execution-row.has-task-label :deep(.hierarchy-current-branch:not(.continues-to-sibling)::before) {
-  height: calc(1.075rem + 0.5px);
 }
 
 .transient-execution-row:focus-visible > .hierarchy-identity-tooltip {

@@ -1,0 +1,14 @@
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/delegated-copy-task-locator/node_modules/playwright-core/index.mjs';
+const B='http://127.0.0.1:4641', O='./';
+const browser = await chromium.launch();
+const p = await browser.newPage({ viewport:{width:1440,height:900}, deviceScaleFactor:2 });
+p.on('pageerror', e => console.log('PAGEERR', e.message));
+await p.goto(B+'/chat?id=run-ptm-0001'); await p.waitForTimeout(7000); await p.mouse.move(700,500);
+await p.screenshot({ path: O+'r3-01-ptm-tree-2x.png', clip:{x:0,y:410,width:320,height:440} });
+await p.locator('[data-test="workspace-copy-task-locate"]').nth(2).hover(); await p.waitForTimeout(1200);
+await p.screenshot({ path: O+'r3-02-hover-2x.png', clip:{x:0,y:410,width:320,height:440} });
+await p.locator('[data-test="workspace-copy-task-locate"]').nth(2).click(); await p.waitForTimeout(1000);
+console.log(await p.evaluate(()=>document.querySelector('[data-located]')?.dataset.testid));
+await p.goto(B+'/chat?id=run-research-001'); await p.waitForTimeout(6000); await p.mouse.move(700,500);
+await p.screenshot({ path: O+'r3-03-research-tree-2x.png', clip:{x:0,y:410,width:320,height:260} });
+await browser.close();
