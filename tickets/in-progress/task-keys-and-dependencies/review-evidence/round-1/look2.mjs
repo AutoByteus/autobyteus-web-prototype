@@ -1,0 +1,15 @@
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/task-keys-and-dependencies/node_modules/playwright-core/index.mjs';
+const B='http://127.0.0.1:4651', O='/tmp/tkd/shots/';
+const browser = await chromium.launch();
+const p = await browser.newPage({ viewport:{width:1440,height:900}, deviceScaleFactor: 2 });
+p.on('pageerror', e => console.log('PAGEERR', e.message));
+await p.goto(B+'/projects/project-desktop-app/tasks/tk-keys-build'); await p.waitForTimeout(5000);
+await p.screenshot({ path: O+'07-detail-blocked-2x.png', clip:{x:340,y:60,width:1010,height:470} });
+await p.goto(B+'/projects/project-desktop-app/tasks/dct-image-context'); await p.waitForTimeout(3000);
+await p.screenshot({ path: O+'08-detail-followup-done-2x.png', clip:{x:340,y:60,width:1010,height:560} });
+await p.goto(B+'/chat?id=run-ptm-0001'); await p.waitForTimeout(5000); await p.mouse.move(700,500);
+await p.screenshot({ path: O+'09-tree-2x.png', clip:{x:0,y:410,width:320,height:440} });
+await p.getByText('Projects', {exact:true}).last().click(); await p.waitForTimeout(1500);
+await p.click('[data-testid="project-task-row-tk-agent-loop"] [data-testid="project-task-row-link"]'); await p.waitForTimeout(1200);
+await p.screenshot({ path: O+'10-panel-detail-2x.png', clip:{x:990,y:50,width:450,height:700} });
+await browser.close();

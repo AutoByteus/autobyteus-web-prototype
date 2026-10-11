@@ -1,0 +1,23 @@
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/task-keys-and-dependencies/node_modules/playwright-core/index.mjs';
+const B='http://127.0.0.1:4651', O='/tmp/tkd/shots/';
+const browser = await chromium.launch();
+const p = await browser.newPage({ viewport:{width:1440,height:900} });
+p.on('pageerror', e => console.log('PAGEERR', e.message));
+p.on('console', m => { if (m.type()==='error') console.log('CONSOLE', m.text().slice(0,200)); });
+for (let i=0;i<40;i++){ try { const r = await fetch(B+'/workspace'); if (r.ok) break; } catch {} await new Promise(r=>setTimeout(r,2000)); }
+await p.goto(B+'/projects/project-desktop-app'); await p.waitForTimeout(8000);
+await p.goto(B+'/projects/project-desktop-app'); await p.waitForTimeout(4000);
+await p.screenshot({ path: O+'01-board.png', fullPage: true });
+await p.goto(B+'/projects/project-desktop-app/tasks/tk-keys-build'); await p.waitForTimeout(3000);
+await p.screenshot({ path: O+'02-detail-blocked.png', fullPage: true });
+await p.goto(B+'/projects/project-desktop-app/tasks/tk-locator-design'); await p.waitForTimeout(3000);
+await p.screenshot({ path: O+'03-detail-done-required-by.png', fullPage: true });
+await p.goto(B+'/projects/project-desktop-app/tasks/tk-agent-loop/edit'); await p.waitForTimeout(3000);
+await p.click('[data-testid="task-dependency-input"]'); await p.waitForTimeout(500);
+await p.screenshot({ path: O+'04-edit-picker.png', fullPage: true });
+await p.goto(B+'/chat?id=run-ptm-0001'); await p.waitForTimeout(5000);
+await p.getByText('Projects', {exact:true}).last().click(); await p.waitForTimeout(2000);
+await p.screenshot({ path: O+'05-panel.png' });
+await p.goto(B+'/projects/project-onboarding-redesign'); await p.waitForTimeout(3000);
+await p.screenshot({ path: O+'06-long-keys.png' });
+await browser.close();

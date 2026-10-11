@@ -59,6 +59,14 @@ export interface ProjectTask {
   createdAt: string
   updatedAt: string
   root: TaskRootView | null
+  /**
+   * task-keys-and-dependencies (design): the readable key, `<project name in lower case>-<number>`
+   * (e.g. `autobyteus-42`). Numbered per Project in creation order; it never changes, even when the
+   * Project is renamed. The long `taskId` stays underneath.
+   */
+  taskKey?: string
+  /** task-keys-and-dependencies (design): Tasks of the same Project this Task depends on (informs only). */
+  dependsOnTaskIds?: string[]
 }
 
 /** A Task with no Project ("Temp task"): created by an agent's described delegation; read only. */

@@ -1,0 +1,10 @@
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/task-keys-and-dependencies/node_modules/playwright-core/index.mjs';
+const B='http://127.0.0.1:4651', O='/tmp/tkd/shots/';
+const browser = await chromium.launch();
+const p = await browser.newPage({ viewport:{width:1440,height:900}, deviceScaleFactor:2 });
+await p.goto(B+'/projects/project-onboarding-redesign'); await p.waitForTimeout(5000);
+await p.screenshot({ path: O+'11-long-keys-2x.png', clip:{x:340,y:250,width:1080,height:170} });
+console.log(await p.locator('[data-testid="task-key"]').evaluateAll(els=>els.map(e=>[e.dataset.key, e.innerText])));
+await p.click('[data-testid="project-task-row-ob-checklist"] [data-testid="project-task-row-link"]'); await p.waitForTimeout(2500);
+await p.screenshot({ path: O+'12-long-key-detail-2x.png', clip:{x:340,y:60,width:1010,height:460} });
+await browser.close();

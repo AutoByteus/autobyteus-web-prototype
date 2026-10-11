@@ -112,7 +112,7 @@
           @click.stop="locateTask"
           @keydown.enter.stop
           @keydown.space.stop
-        >{{ taskLabel }}</button>
+        ><span v-if="taskKey" class="mr-1 font-medium" data-test="workspace-copy-task-key">{{ taskKey }}</span>{{ taskLabel }}</button>
         <span
           v-if="inspectionAttempt?.state === 'loading'"
           class="mt-0.5 block text-[0.6875rem] font-medium text-indigo-700"
@@ -213,7 +213,9 @@ const copyRef = computed<CopyRef | null>(() => {
 });
 const copyTask = useDelegatedCopyTask(copyRef);
 const taskLabel = computed(() => copyTask.value ? taskSummaryLabel(copyTask.value.task.description) : '');
-const locateLabel = computed(() => t('workspace.history.copyTask.locate', { title: taskLabel.value }));
+// task-keys-and-dependencies: the Task key leads the summary (e.g. "autobyteus-36 Agent loop refactor…").
+const taskKey = computed(() => copyTask.value && 'taskKey' in copyTask.value.task ? copyTask.value.task.taskKey ?? '' : '');
+const locateLabel = computed(() => t('workspace.history.copyTask.locate', { title: taskKey.value ? `${taskKey.value} ${taskLabel.value}` : taskLabel.value }));
 const taskLocator = useTaskLocatorStore();
 const locateTask = (): void => { if (copyTask.value) taskLocator.locate(copyTask.value); };
 
@@ -225,7 +227,7 @@ const accessibleLabel = computed(() => {
     level: props.row.depth + 1,
     status: startedByLabel.value ? `${statusLabel.value}, ${startedByLabel.value}` : statusLabel.value,
   });
-  return taskLabel.value ? `${label}, ${t('workspace.history.copyTask.accessible', { title: taskLabel.value })}` : label;
+  return taskLabel.value ? `${label}, ${t('workspace.history.copyTask.accessible', { title: taskKey.value ? `${taskKey.value} ${taskLabel.value}` : taskLabel.value })}` : label;
 });
 
 const disclosureLabel = computed(() => t(

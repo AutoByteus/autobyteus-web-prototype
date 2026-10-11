@@ -91,8 +91,8 @@ const projectTask = (taskId: string, projectId: string, description: string, sta
 })
 
 const desktopProject = {
-  __typename: 'Project', projectId: DESKTOP_PROJECT_ID, name: 'Desktop App',
-  description: 'Synthetic project for the desktop app release work.',
+  __typename: 'Project', projectId: DESKTOP_PROJECT_ID, name: 'AutoByteus',
+  description: 'Synthetic project for the AutoByteus app release work.',
   createdAt, updatedAt,
   workspaces: [{ __typename: 'ProjectWorkspace', workspaceRootPath: workspace.workspaceRootPath, displayName: workspace.displayName ?? 'prototype-workspace', description: '', availability: 'AVAILABLE' }],
 }

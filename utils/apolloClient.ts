@@ -16,6 +16,7 @@ import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/protot
 import { withAgentReconnect } from '~/prototype/agent-reconnect/agentReconnectFixture'
 import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
+import { applyTaskKeyMutation, seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
 import { designSkillSourceData, designRegistryError, designSkillSourceMutation } from '~/prototype/skill-sources/skillSourcesDesignFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
@@ -49,6 +50,8 @@ const fixtureState = (): Record<string, any> => {
   localFixtureState.scenario = scenario
   // delegated-copy-task-locator (design-only): the Project Task Manager run's Tasks.
   if (designOnlyLayersEnabled()) seedDelegatedCopyTasks(localFixtureState, scenario)
+  // task-keys-and-dependencies (design-only): Task keys and "depends on" for the example Projects.
+  if (designOnlyLayersEnabled()) seedTaskKeys(localFixtureState, scenario)
   return localFixtureState
 }
 
@@ -108,6 +111,8 @@ const resolveMutationLocally = async (request: OperationRequest = {}) => {
   let data = operationFixture(name, request.variables || {}, state)
   // run-settings-ui-unification: each Team launch is its own run (launchedTeamFixture.ts).
   if (name === 'CreateAgentTeamRun') { state.launchedTeamRun = true; data = recordTeamLaunch(request.variables || {}, data) }
+  // task-keys-and-dependencies (design-only): a new Task's key and the chosen "Depends on".
+  if (designOnlyLayersEnabled()) applyTaskKeyMutation(name, request.variables || {}, data, state)
   if (data?.__projectError) return { data: null, errors: [data.__projectError] }
   return { data: data ? structuredClone(data) : {} }
 }

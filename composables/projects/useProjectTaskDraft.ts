@@ -10,6 +10,8 @@ export function useProjectTaskDraft(projectId: string, saved?: ProjectTask) {
   const client = createProjectTaskContextClient(projectId, saved?.taskId, () => alive)
   const text = ref(saved?.description ?? '')
   const files = ref<ProjectTaskContextFile[]>([...(saved?.contextFiles ?? [])])
+  // task-keys-and-dependencies (design): the Tasks this one depends on (same Project).
+  const dependsOn = ref<string[]>([...(saved?.dependsOnTaskIds ?? [])])
   const added = new Set<string>(), removed = new Set<string>()
   const draftId = ref<string>()
   let beginPromise: Promise<string> | null = null
@@ -62,8 +64,8 @@ export function useProjectTaskDraft(projectId: string, saved?: ProjectTask) {
       const changes = added.size || removed.size ? {
         ...(draftId.value ? {draftId: draftId.value} : {}), addStoredFilenames: additions, removeStoredFilenames: [...removed],
       } : undefined
-      const result = saved ? await store.updateTask(projectId, saved.taskId, text.value.trim(), changes, current)
-        : await store.createTask(projectId, text.value.trim(), draftId.value ? {draftId: draftId.value, storedFilenames: additions} : undefined, current)
+      const result = saved ? await store.updateTask(projectId, saved.taskId, text.value.trim(), changes, current, [...dependsOn.value])
+        : await store.createTask(projectId, text.value.trim(), draftId.value ? {draftId: draftId.value, storedFilenames: additions} : undefined, current, [...dependsOn.value])
       // Save may already be committed on a captured endpoint; only the live draft may navigate.
       return current() ? result : null
     } catch (e) { if (current()) error.value = e instanceof Error ? e.message : 'Task save failed.'; return null }
@@ -75,5 +77,5 @@ export function useProjectTaskDraft(projectId: string, saved?: ProjectTask) {
     if (draftId.value) void client.discard(draftId.value).catch(() => undefined)
   }
   onBeforeUnmount(dispose)
-  return {text, files, draftId, pending, saving, error, blocked, target, current, addFiles, removeFile, save, dispose, client}
+  return {text, files, dependsOn, draftId, pending, saving, error, blocked, target, current, addFiles, removeFile, save, dispose, client}
 }

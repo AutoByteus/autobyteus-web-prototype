@@ -18,8 +18,12 @@
       data-testid="project-task-row-link"
       @click="activation === 'select' && emit('select', task.taskId)"
     >
+      <!-- task-keys-and-dependencies: the Task key, quiet, above the summary. -->
+      <span v-if="taskKey" class="mb-0.5 flex text-xs font-medium leading-5 text-slate-500" data-testid="project-task-row-key"><TaskKey :task-key="taskKey" /></span>
       <span class="line-clamp-2 break-words text-sm font-medium leading-6 text-slate-800" data-testid="project-task-row-text">{{ summary }}</span>
       <span v-if="preview" class="mt-1 line-clamp-2 break-words text-xs leading-5 text-slate-500" data-testid="project-task-row-preview">{{ preview }}</span>
+      <!-- task-keys-and-dependencies: "Blocked by <key>" / "Dependency cancelled: <key>" (open Tasks only). -->
+      <span v-if="'dependsOnTaskIds' in task && task.dependsOnTaskIds?.length" class="mt-2 flex" data-testid="project-task-row-dependency"><TaskDependencyBadge :task="task" :tasks="projectTasks" /></span>
       <span v-if="fileCount" class="mt-2 inline-flex items-center gap-1 text-xs text-slate-500" data-testid="task-row-file-count"><Icon icon="heroicons:paper-clip" class="h-3.5 w-3.5" aria-hidden="true" />{{ t(fileCount === 1 ? 'projects.ui.fileCountOne' : 'projects.ui.fileCount', {count: fileCount}) }}</span>
     </component>
     <ProjectTaskWorkers v-if="task.root" class="relative z-10" density="row" :root="task.root" />
@@ -31,6 +35,8 @@ import { computed, nextTick, ref, resolveComponent, watch } from 'vue'
 import { Icon } from '@iconify/vue'
 import type { ProjectTask, TaskWithoutProject } from '~/types/project'
 import ProjectTaskWorkers from './ProjectTaskWorkers.vue'
+import TaskDependencyBadge from './TaskDependencyBadge.vue'
+import TaskKey from './TaskKey.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useProjectTaskStore } from '~/stores/projectTaskStore'
 import { useTaskLocatorStore } from '~/stores/taskLocatorStore'
@@ -56,6 +62,9 @@ const taskRoute = computed(() => 'projectId' in props.task
   : `/projects/temp-tasks/tasks/${props.task.taskId}`)
 const fileCount = computed(() => 'contextFiles' in props.task ? props.task.contextFiles?.length ?? 0 : 0)
 const live = computed(() => store.liveChanges[props.task.taskId] ?? null)
+// task-keys-and-dependencies: a Project Task's key and its Project's Tasks (for the dependency badge).
+const taskKey = computed(() => 'taskKey' in props.task ? props.task.taskKey ?? '' : '')
+const projectTasks = computed<ProjectTask[]>(() => 'projectId' in props.task ? store.getList(props.task.projectId)?.tasks ?? [] : [])
 
 // delegated-copy-task-locator (design): "Show Task in Projects" scrolls this card into view in the
 // Projects tab, focuses it (Enter opens the Task) and highlights it like a live change (2.4 s).
