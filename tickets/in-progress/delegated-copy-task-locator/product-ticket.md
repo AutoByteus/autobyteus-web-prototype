@@ -8,7 +8,7 @@
 - Title: Navigate from a delegated agent/team copy back to its Task.
 - Mode: `Product Experience Design`. It evolves the accepted AutoByteus Web baseline: the Workspaces
   tree's Task-worker rows, the worker's run header, and the right panel's Projects tab.
-- Status: `Awaiting User Review`
+- Status: `Completed`
 - Requester: Project Task Manager (`/project_task_manager`, AgentRun
   `project_task_manager_7c8dce0c4a8b44f88e776a83809dee03`) for the user, 2026-10-11. The user decided on
   2026-10-11 that the Product Team designs the UI first. A separate implementation Task follows approval.
@@ -254,22 +254,61 @@ One recommended design. Alternatives are described in words, not built.
   targets in one row (the name opens the copy, the summary opens the Task); the hover underline makes the
   second target clear.
 
+## Approval And Final Design
+
+- User decision (2026-10-11), after comparing the variants:
+
+  > I also think summary is better. I like the summary version. I also think we use summary. Let's do it
+
+- Final design = variant B:
+  - **DEC-001 final:** the Task summary line under task Agent and task Team rows, and the summary is the
+    link to the Task.
+  - **Withdrawn:** DEC-002 (row icon) and DEC-003 (header chip).
+  - **Unchanged:** DEC-004 to DEC-008.
+- Finalization changes:
+  - DC-009: variant A and the review scaffolding removed; `nuxt.config.ts` and the icon bundle are back at
+    `a55ced2`.
+  - DC-010 `ProjectTaskRow.vue` / `taskLocatorStore.ts`:
+    - only the latest located card is highlighted;
+    - a card re-created by a board reload within 3 s still scrolls, focuses and highlights.
+    These fixed an overlap and an intermittent miss found in final validation. Neither is a visible
+    change to the approved design.
+
 ## Delivery And Validation
 
-- UI/UX specification: pending
+- UI/UX specification: `ui-ux-spec.md` (Approved)
 - Runnable UI reference entry point: `http://127.0.0.1:4641/workspace` → prototype-workspace → Project Task
   Manager → "Dispatch the approved desktop app Tasks" (same as `/chat?id=run-ptm-0001`); right panel **Projects**
-- Visual-reference directory: pending
-- Supporting artifact paths: pending
-- Validation commands and results: pending
-- User-confirmation reference: pending
-- Mocked boundaries and known limitations: pending
+- Visual-reference directory: `visual-references/` (VIS-001 to VIS-014, captured after approval)
+- Supporting artifact paths:
+  - `review-evidence/round-1` to `round-4`;
+  - `visual-references/final-validation.mjs` and `final-validation-results.json`;
+  - design-only fixture `prototype/delegated-copy-tasks/` and `plugins/98.delegated-copy-tasks.client.ts`.
+- Validation commands and results (2026-10-11):
+  - `node visual-references/final-validation.mjs` against `corepack pnpm dev --port 4641`: 13/13 pass on
+    three consecutive runs;
+  - `corepack pnpm typecheck` passes;
+  - `corepack pnpm lint` passes;
+  - `corepack pnpm test`: 15/15;
+  - `corepack pnpm validate:boundaries`: 13/13 PASS.
+- User-confirmation reference: the 2026-10-11 quote under Approval And Final Design.
+- Mocked boundaries and known limitations:
+  - the copy → Task lookup is a browser-side scan of the Task lists (production should use the server
+    assignment data);
+  - all example data is invented and design-only (turned off with `autobyteus.prototype.designOnlyLayers=off`);
+  - the Cancelled case (VIS-010) is triggered beneath the UI.
 
 ## Outcome And Handoff
 
-- Completed behavior and evidence: none yet
-- Remaining product decisions: all decision questions above
-- Next expected action: user reviews round 1 at the review URL and gives feedback or approval.
-- Handoff outcome from `get_handoff_rules`: `Baseline Needed`
-- Matched recipient address, when a rule applies: `/product_team/ui_baseline_bootstrapper`
-- Return context when no matching rule applies: n/a
+- Completed behavior and evidence: `ui-ux-spec.md` with VIS-001 to VIS-014.
+- Remaining product decisions:
+  - Org-run Task workers (same treatment recommended, not designed here);
+  - the production data source for copy → Task (an engineering decision).
+- Next expected action: `/project_task_manager` creates the Software Engineering implementation Task against `ui-ux-spec.md`.
+- Handoff outcome from `get_handoff_rules`:
+  - earlier: `Baseline Needed` → `/product_team/ui_baseline_bootstrapper` (delivered; refresh accepted);
+  - final: `Design Completed` (no rule matches; returned to the requester).
+- Matched recipient address, when a rule applies: none for `Design Completed`.
+- Return context when no matching rule applies: `/project_task_manager` (AgentRun
+  `project_task_manager_7c8dce0c4a8b44f88e776a83809dee03`), who delegated the Task and asked for the approved
+  package.

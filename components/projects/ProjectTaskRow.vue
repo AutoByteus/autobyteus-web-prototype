@@ -64,14 +64,19 @@ const rowRef = ref<HTMLElement | null>(null)
 const linkRef = ref<any>(null)
 const located = ref(false)
 let locatedTimer: ReturnType<typeof setTimeout> | null = null
+let handledSeq = 0
 watch(() => locator.request, async (request) => {
-  if (props.activation !== 'select' || !request || request.taskId !== props.task.taskId) return
-  if (!locator.take(`row:${props.task.taskId}`, request)) return
+  if (props.activation !== 'select' || !request) return
+  // Only the latest located Task is highlighted.
+  if (request.taskId !== props.task.taskId) { located.value = false; return }
+  if (handledSeq === request.seq || !locator.isFresh(request)) return
+  handledSeq = request.seq
   // Let the panel (or drawer) open and the board settle before scrolling.
   await nextTick()
   await new Promise((resolve) => setTimeout(resolve, 180))
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-  rowRef.value?.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' })
+  if (!rowRef.value?.isConnected) return
+  rowRef.value.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' })
   const link = (linkRef.value?.$el ?? linkRef.value) as HTMLElement | null
   link?.focus({ preventScroll: true })
   located.value = false
