@@ -1,0 +1,68 @@
+{
+  "sourcePin": "ff227eb72ef08dca4188451141789d0e6d3af356",
+  "previousPin": "1cd1a3abc126df820e334c023621d0fb82de5b7b",
+  "files": [
+    {
+      "path": "components/projects/CancelledTasksToggle.vue",
+      "identicalToFf227eb": true
+    },
+    {
+      "path": "components/projects/ProjectTaskBoard.vue",
+      "identicalToFf227eb": true
+    },
+    {
+      "path": "components/projects/TempTaskBoard.vue",
+      "identicalToFf227eb": true
+    },
+    {
+      "path": "components/projects/ProjectTaskDetail.vue",
+      "identicalToFf227eb": true
+    },
+    {
+      "path": "components/projects/TempTaskDetail.vue",
+      "identicalToFf227eb": true
+    },
+    {
+      "path": "components/projects/TempTasksLink.vue",
+      "identicalToFf227eb": true
+    },
+    {
+      "path": "components/projects/ProjectCard.vue",
+      "identicalToFf227eb": true
+    },
+    {
+      "path": "components/projects/panel/ProjectsPanelTaskDetail.vue",
+      "identicalToFf227eb": true
+    },
+    {
+      "path": "utils/projects/taskStatusPresentation.ts",
+      "identicalToFf227eb": true
+    },
+    {
+      "path": "types/project.ts",
+      "identicalToFf227eb": true
+    },
+    {
+      "path": "stores/projectTaskStore.ts",
+      "identicalToFf227eb": true
+    },
+    {
+      "path": "localization/messages/en/projects.ts",
+      "identicalToFf227eb": true
+    },
+    {
+      "path": "localization/messages/zh-CN/projects.ts",
+      "identicalToFf227eb": true
+    }
+  ],
+  "removed": {
+    "path": "utils/projects/taskStatusLabelKey.ts",
+    "absentInBaseline": true,
+    "absentInFf227eb": true
+  },
+  "generatedGraphql": {
+    "diffFrom1cd1a3a": "2142a2143\n>   Cancelled = 'CANCELLED',",
+    "note": "Only the ProjectTaskStatus.Cancelled enum member is taken from ff227eb; the collaborator mention-candidate argument (focusedAgentRunId) stays at 1cd1a3a with the mention surfaces."
+  },
+  "allIdentical": true
+}

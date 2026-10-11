@@ -52,16 +52,17 @@ describe('deterministic prototype fixture contract', () => {
     expect(operationFixture('CreateProject', { input: { name: 'prototype launch', description: '' } }, state).__projectError.extensions.code).toBe('PROJECT_NAME_TAKEN')
     const task = operationFixture('CreateProjectTask', { input: { projectId: 'project-prototype-launch', description: 'Draft notes.' } }, state).createProjectTask
     expect(task).toMatchObject({ status: 'TODO', contextFiles: [], root: null })
-    expect(operationFixture('GetProjects', {}, state).projects.find((item: { projectId: string }) => item.projectId === 'project-prototype-launch')).toMatchObject({ taskCount: 5, openTaskCount: 4 })
+    expect(operationFixture('GetProjects', {}, state).projects.find((item: { projectId: string }) => item.projectId === 'project-prototype-launch')).toMatchObject({ taskCount: 6, openTaskCount: 4 })
     expect(operationFixture('GetProjects', {}, baseState()).projects).toHaveLength(1)
   })
 
   it('covers every Task root state and the Temp tasks (4d469b0)', () => {
     const tasks = operationFixture('GetProjectTasks', { projectId: 'project-prototype-launch' }, baseState()).projectTasks
     expect(tasks.map((task: { root: null | { start: string, closed: boolean, status: string } }) => task.root && [task.root.start, task.root.closed, task.root.status]))
-      .toEqual([null, ['started', false, 'running'], ['failed', false, 'offline'], ['started', true, 'offline']])
+      .toEqual([null, ['started', false, 'running'], ['failed', false, 'offline'], ['started', true, 'offline'], ['started', true, 'offline']])
+    expect(tasks.map((task: { status: string }) => task.status)).toEqual(['TODO', 'IN_PROGRESS', 'IN_PROGRESS', 'DONE', 'CANCELLED'])
     expect(operationFixture('GetTasksWithoutProject', {}, baseState()).tasksWithoutProject.map((task: { taskId: string }) => task.taskId))
-      .toEqual(['temp-task-links', 'temp-task-check'])
+      .toEqual(['temp-task-links', 'temp-task-check', 'temp-task-faq'])
     expect(operationFixture('GetTasksWithoutProject', {}, { ...baseState(), scenario: 'empty' }).tasksWithoutProject).toEqual([])
   })
 

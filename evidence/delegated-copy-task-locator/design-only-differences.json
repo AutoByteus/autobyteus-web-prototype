@@ -1,0 +1,10 @@
+{
+  "note": "Regression flows whose only screenshot difference is an accepted design-only change with no source equivalent. Visible text and routes are identical in every row.",
+  "rows": [
+    { "id": "regression-008/PRJ-006", "difference": "Docked Chat row not lit on an open run", "designTicket": "collapsed-left-panel-expand-keeps-run (Chat lit only on New chat)", "diffBox": [8, 12, 311, 47], "pixelsOutsideChatRow": 0 },
+    { "id": "regression-008/PRJ-012", "difference": "Docked Chat row not lit on an open run", "designTicket": "collapsed-left-panel-expand-keeps-run", "diffBox": [8, 12, 311, 549], "pixelsOutsideChatRow": 2, "outsideNote": "2 anti-aliased pixels at y=548-549" },
+    { "id": "regression-008/PRJ-013", "difference": "Docked Chat row not lit on an open run", "designTicket": "collapsed-left-panel-expand-keeps-run", "diffBox": [8, 12, 311, 549], "pixelsOutsideChatRow": 2, "outsideNote": "2 anti-aliased pixels at y=548-549" },
+    { "id": "regression-004/TSK-011", "difference": "Narrow strip shows the Workspaces tree icon and divider after Nodes", "designTicket": "collapsed-left-panel-expand-keeps-run (DEC-001 D)", "diffBox": [13, 412, 36, 447], "pixels": 145 },
+    { "id": "cancelled-status/CAN-070, CAN-071", "difference": "Same narrow strip icon; hidden on the baseline side for the screenshot only (DESIGN_ONLY_HIDE)", "designTicket": "collapsed-left-panel-expand-keeps-run", "diffBox": [13, 412, 36, 447], "pixels": 145 }
+  ]
+}

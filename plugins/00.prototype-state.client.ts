@@ -247,6 +247,14 @@ const findSnapshot = (): [string, RuntimeSnapshot] => {
     && (value.item.mobile || 'desktop') === wantedContext
     && canonicalPath(value.actualPath) === path)
   if (scenarioRedirectEntry) return scenarioRedirectEntry
+  // delegated-copy-task-locator: a Projects sub-page in a non-default scenario (for example the
+  // empty Temp tasks board) takes the shell of that scenario's captured Projects page; its
+  // Projects and Task stores are loaded by the source code, never from the snapshot.
+  const projectsScenarioEntry = pathname.startsWith('/projects/') ? entries.find(([, value]) =>
+    value.item.scenario === wantedScenario
+    && (value.item.mobile || 'desktop') === wantedContext
+    && canonicalPath(value.item.path) === '/projects') : undefined
+  if (projectsScenarioEntry) return projectsScenarioEntry
   const populatedEntry = entries.find(([, value]) =>
     value.item.scenario === DEFAULT_SCENARIO
     && (value.item.mobile || 'desktop') === wantedContext

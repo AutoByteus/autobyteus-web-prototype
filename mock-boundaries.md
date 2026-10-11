@@ -107,3 +107,22 @@ were retired; the source's own stores and components run unchanged:
   `autobyteus.prototype.designOnlyLayers=off` local-storage key, set only by the
   source-comparison scripts, turns its data off
   (`prototype/shared/design-only-layers.ts`).
+
+## Cancelled Task status (delegated-copy-task-locator, mixed pin)
+
+The Projects Task-status surfaces follow `origin/personal@ff227eb`; everything
+else stays at `1cd1a3a`. The source's own boards, Task pages, right-panel Task
+view and `taskStatusPresentation.ts` run unchanged:
+
+- `fixtures.mjs` adds one CANCELLED Project Task (`task-retire`, closed agent
+  root) and one CANCELLED Temp task (`temp-task-faq`). Both are invented. Open
+  counts leave Done and Cancelled out, as the source does.
+- The "Cancelled (N)" toggle is local component state in the source code. It
+  starts off on every visit. Deleting the only Cancelled Project Task (an
+  in-memory change, reset on reload) shows a board with no toggle; the empty
+  scenario shows the same for Temp tasks.
+- A Projects sub-page in a non-default scenario takes that scenario's captured
+  `/projects` shell (`plugins/00.prototype-state.client.ts`); the Projects and
+  Task stores still load through the source code.
+- Status changes stay agent-only, so the board changes status only through the
+  silent change feed. The UI offers no control that sets status.

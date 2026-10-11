@@ -8,7 +8,7 @@
 - Title: Navigate from a delegated agent/team copy back to its Task.
 - Mode: `Product Experience Design`. It evolves the accepted AutoByteus Web baseline: the Workspaces
   tree's Task-worker rows, the worker's run header, and the right panel's Projects tab.
-- Status: `Baseline Needed`
+- Status: `In Progress`
 - Requester: Project Task Manager (`/project_task_manager`, AgentRun
   `project_task_manager_7c8dce0c4a8b44f88e776a83809dee03`) for the user, 2026-10-11. The user decided on
   2026-10-11 that the Product Team designs the UI first. A separate implementation Task follows approval.
@@ -63,7 +63,15 @@
     `projects` en/zh-CN messages.
   - The baseline has no Cancelled status, toggle or lane. The request's "CANCELLED / hidden Cancelled lane"
     decision depends on it, so a focused refresh of these surfaces is needed before future-state work.
-- Product acceptance result and date: pending (focused refresh requested 2026-10-11)
+- Product acceptance result and date: focused Refresh **accepted** 2026-10-11. Bootstrapper run
+  `ui_baseline_bootstrapper_baaff6a19bd74d8b95fe08f18364661a`, report `ui-baseline-report.md`, evidence
+  `evidence/delegated-copy-task-locator/`. Product review:
+  - the 13 named files are byte-identical to `ff227eb` (`cmp`);
+  - the new fixtures `task-retire` and `temp-task-faq` are invented;
+  - the browser shows the toggle and Cancelled lane (page and right-panel tab).
+  Mixed pin: Projects Task-status surfaces at `ff227eb`, everything else at `1cd1a3a`. Source observation
+  passed on to engineering: `ring-slate-300` is never generated (tailwind does not scan `utils/`), so
+  the Cancelled pill shows the default ring in the source and in the baseline.
 - Design revision for this ticket: pending
 - Default-entry-point validation after integration: pending
 - Integration target and result: `personal`, `Pending`
@@ -88,8 +96,7 @@
 
 - Completed behavior and evidence: none yet
 - Remaining product decisions: all decision questions above
-- Next expected action: UI Baseline Bootstrapper completes the focused Refresh (Cancelled Task status) in
-  this worktree; the Product UI/UX Designer reviews and accepts it, then starts the design.
+- Next expected action: Product UI/UX Designer builds round 1 of the design on the accepted refresh.
 - Handoff outcome from `get_handoff_rules`: `Baseline Needed`
 - Matched recipient address, when a rule applies: `/product_team/ui_baseline_bootstrapper`
 - Return context when no matching rule applies: n/a

@@ -389,7 +389,7 @@ const project = {
   createdAt: fixedNow,
   updatedAt: fixedNow,
   workspaces: [{ __typename: 'ProjectWorkspace', workspaceRootPath: '/synthetic/prototype-workspace', displayName: 'prototype-workspace', description: 'Primary synthetic workspace for launch review.', availability: 'AVAILABLE' }],
-  taskCount: 4,
+  taskCount: 5,
   openTaskCount: 3,
 }
 
@@ -405,6 +405,10 @@ const projectTasks = [
     root: taskRoot({ recipientAddress: '/translator', ingressAgentRunId: 'worker-translator-001', start: 'failed', startError: { __typename: 'TaskRootStartError', code: 'AGENT_DEFINITION_NOT_FOUND', message: 'No agent is available at /translator.' }, status: 'offline' }) },
   { __typename: 'ProjectTask', taskId: 'task-publish', projectId: project.projectId, description: 'Publish the deterministic evidence summary.', status: 'DONE', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
     root: taskRoot({ kind: 'team', recipientAddress: '/release_team', ingressAgentRunId: 'worker-team-publish-researcher-001', teamRunId: 'worker-team-publish-001', closed: true, status: 'offline' }) },
+  // delegated-copy-task-locator refresh (17e4299, 814e41a, 7f7b2c8): a Task dropped as not needed
+  // (CANCELLED) is hidden until the board's "Cancelled (N)" toggle shows its lane.
+  { __typename: 'ProjectTask', taskId: 'task-retire', projectId: project.projectId, description: 'Retire the unused synthetic welcome banner.', status: 'CANCELLED', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+    root: taskRoot({ recipientAddress: '/documentation_writer', ingressAgentRunId: 'worker-writer-002', closed: true, status: 'offline' }) },
 ]
 
 // WEB-BASELINE-REFRESH-008 (4d469b0): Tasks with no Project ("Temp tasks"), created by an
@@ -413,6 +417,8 @@ const tasksWithoutProject = [
   { __typename: 'TaskWithoutProject', taskId: 'temp-task-links', description: 'Collect the changelog links for the synthetic release.', status: 'IN_PROGRESS', referenceFiles: ['/synthetic/prototype-workspace/docs/evidence.md'], createdAt: fixedNow, updatedAt: fixedNow,
     root: taskRoot({ recipientAddress: '/research_assistant', ingressAgentRunId: 'worker-temp-researcher-001', status: 'idle' }) },
   { __typename: 'TaskWithoutProject', taskId: 'temp-task-check', description: 'Check the synthetic glossary for duplicates.', status: 'TODO', referenceFiles: [], createdAt: fixedNow, updatedAt: fixedNow, root: null },
+  // delegated-copy-task-locator refresh: a Temp task dropped as not needed (CANCELLED).
+  { __typename: 'TaskWithoutProject', taskId: 'temp-task-faq', description: 'Draft a synthetic FAQ for the paused pilot.', status: 'CANCELLED', referenceFiles: [], createdAt: fixedNow, updatedAt: fixedNow, root: null },
 ]
 
 // WEB-BASELINE-REFRESH-004 (0a32261): Projects and Tasks are authored on pages.
@@ -438,7 +444,7 @@ export const projectData = (state) => {
 const projectError = (message, code) => ({ __projectError: { message, extensions: { code } } })
 const withCounts = (data, item) => {
   const tasks = data.tasks.filter(task => task.projectId === item.projectId)
-  return { ...item, taskCount: tasks.length, openTaskCount: tasks.filter(task => task.status !== 'DONE').length }
+  return { ...item, taskCount: tasks.length, openTaskCount: tasks.filter(task => task.status === 'TODO' || task.status === 'IN_PROGRESS').length }
 }
 // 9dad89b: a link is an absolute folder path; its name is the folder name, and it is
 // AVAILABLE while a workspace is registered at that path.
