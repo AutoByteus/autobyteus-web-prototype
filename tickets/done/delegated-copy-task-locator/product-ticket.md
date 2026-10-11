@@ -78,7 +78,7 @@
 - Runtime isolation record: Product dev server `corepack pnpm dev --port 4641 --host 127.0.0.1` (owned by
   this ticket, running for review); scripts and captures under `/tmp/dctl/` (copies kept in
   `review-evidence/`). Fixture state is in-memory (reset by reload).
-- Cleanup result or blocker: `Completed`. Review servers on ports 4641, 4642 and 4643 were stopped; the ticket worktree is removed after this record is pushed; the branch `design/delegated-copy-task-locator` is kept (repository practice).
+- Cleanup result or blocker: `Completed`. Review servers on ports 4641, 4642 and 4643 were stopped; the ticket worktree is removed after this record is pushed; the local branch `design/delegated-copy-task-locator` was deleted after integration at the requester's request (2026-10-11); no remote ticket branch was ever pushed.
 - Ticket folder: `tickets/done/delegated-copy-task-locator/`
 
 ## Proposed Design (round 1)
