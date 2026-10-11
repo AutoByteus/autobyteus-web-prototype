@@ -72,13 +72,13 @@
   Mixed pin: Projects Task-status surfaces at `ff227eb`, everything else at `1cd1a3a`. Source observation
   passed on to engineering: `ring-slate-300` is never generated (tailwind does not scan `utils/`), so
   the Cancelled pill shows the default ring in the source and in the baseline.
-- Design revision for this ticket: pending
-- Default-entry-point validation after integration: pending
-- Integration target and result: `personal`, `Pending`
+- Design revision for this ticket: `004d290` (final design); `18fa0ae` (ticket closed, integrated)
+- Default-entry-point validation after integration: `Completed`. On the canonical checkout at `personal@18fa0ae`, `corepack pnpm dev --port 4643` → `node visual-references/final-validation.mjs` (BASE 4643) passed 13/13 through `/chat?id=run-ptm-0001` and `/chat?id=run-research-001` (normal entry, no preview state).
+- Integration target and result: `personal`, `Completed`. Fast-forward push `dd89b84..18fa0ae`; the canonical checkout was fast-forwarded; local `personal` = `origin/personal` = `18fa0ae` before this record commit (the record commit follows the same push-then-update sequence).
 - Runtime isolation record: Product dev server `corepack pnpm dev --port 4641 --host 127.0.0.1` (owned by
   this ticket, running for review); scripts and captures under `/tmp/dctl/` (copies kept in
   `review-evidence/`). Fixture state is in-memory (reset by reload).
-- Cleanup result or blocker: `Pending`
+- Cleanup result or blocker: `Completed`. Review servers on ports 4641, 4642 and 4643 were stopped; the ticket worktree is removed after this record is pushed; the branch `design/delegated-copy-task-locator` is kept (repository practice).
 - Ticket folder: `tickets/done/delegated-copy-task-locator/`
 
 ## Proposed Design (round 1)
