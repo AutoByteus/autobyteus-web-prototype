@@ -219,6 +219,41 @@ One recommended design. Alternatives are described in words, not built.
   - Its row icon locates "Review the synthetic navigation baseline." in Prototype Launch, highlighted
     (R3-02).
 
+## Round 3 Question And Round 4 (two variants for comparison)
+
+- User question (2026-10-11): why does only the individual agent get the Task link; was the task team
+  forgotten? Answer: team copies with a Task do get it (the "software engineering team" rows of the PTM
+  run). "product review team" in the Research Assistant run is an `@` collaborator with no Task.
+- User request (2026-10-11):
+
+  > Can we try two variants? ... one is the task icon ... Another one is a task summary under the
+  > dedicated agent or dedicated agent team. What is your opinion? ... if there is a short summary like
+  > the earlier one, and I can click the summary to navigate.
+
+- Two review servers run the same worktree; the variant is a server setting, not a page control:
+  - **Variant A** (`http://127.0.0.1:4641`): the round-3 design, an always-shown row icon.
+  - **Variant B** (`http://127.0.0.1:4642`): no icon. A task Agent or task Team row with a Task shows the
+    Task summary as a second line.
+    - Style: 11 px, `gray-500`; on hover, an `indigo-700` underline. The line truncates; the elbow and
+      disclosure stay on the name line.
+    - Clicking the summary locates the Task (DEC-004); clicking elsewhere on the row opens the copy as before.
+    - Tooltip and accessible name: "Show Task in Projects: <Task>".
+- Review-only scaffolding, removed when the user chooses:
+  - `nuxt.config.ts` `buildDir` (`DESIGN_BUILD_DIR`), `runtimeConfig.public.copyTaskVariant`
+    (`NUXT_PUBLIC_COPY_TASK_VARIANT`) and the ignore of `.nuxt-variant-*`;
+  - the `variant` branch in `WorkspaceTransientExecutionRow.vue`.
+- Commands:
+  - A: `DESIGN_BUILD_DIR=.nuxt-variant-a NUXT_PUBLIC_COPY_TASK_VARIANT=icon corepack pnpm exec nuxt dev --port 4641 --host 127.0.0.1`
+  - B: `DESIGN_BUILD_DIR=.nuxt-variant-b NUXT_PUBLIC_COPY_TASK_VARIANT=summary corepack pnpm exec nuxt dev --port 4642 --host 127.0.0.1`
+- Round 4 validation (`review-evidence/round-4/r5.mjs`):
+  - A: 5 icons, no summaries (R4-A).
+  - B: 5 summaries, no icons (R4-B). The hover underline shows (R4-B-hover). Clicking copy 2's summary
+    locates "Members of a delegated team…" and the center keeps the PTM run (R4-B-located).
+- Designer's recommendation: B. It answers the original problem (identical rows, 23.png) without hovering,
+  and it covers team copies and agent copies alike. Its cost is one extra line per copy, and two click
+  targets in one row (the name opens the copy, the summary opens the Task); the hover underline makes the
+  second target clear.
+
 ## Delivery And Validation
 
 - UI/UX specification: pending

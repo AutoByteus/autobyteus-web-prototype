@@ -37,6 +37,7 @@
       data-test="workspace-team-transient-disclosure"
       :data-team-run-id="row.teamRunId"
       :data-member-address="row.memberAddress"
+      :class="hasSummaryLine ? 'mt-[0.4375rem] self-start' : ''"
       :aria-expanded="expanded"
       :aria-label="disclosureLabel"
       :title="disclosureLabel"
@@ -97,6 +98,21 @@
             data-test="workspace-member-agent-missing"
           />
         </span>
+        <!-- delegated-copy-task-locator, variant B: the copy's Task summary under its name; clicking it
+             shows the Task in Projects (the rest of the row still opens the copy). -->
+        <button
+          v-if="variant === 'summary' && copyTask"
+          type="button"
+          class="copy-task-summary -mx-1 mt-0.5 block max-w-full truncate rounded px-1 text-left text-[0.6875rem] font-normal leading-4 underline-offset-2 transition-colors hover:text-indigo-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          :class="isSelected ? 'text-indigo-700' : 'text-gray-500'"
+          data-test="workspace-copy-task-summary"
+          :data-task-id="copyTask.task.taskId"
+          :title="locateLabel"
+          :aria-label="locateLabel"
+          @click.stop="locateTask"
+          @keydown.enter.stop
+          @keydown.space.stop
+        >{{ taskLabel }}</button>
         <span
           v-if="inspectionAttempt?.state === 'loading'"
           class="mt-0.5 block text-[0.6875rem] font-medium text-indigo-700"
@@ -119,7 +135,7 @@
       <!-- delegated-copy-task-locator (round 2): Show Task in Projects. Always shown on a copy that has a Task,
            so Task copies stand apart from `@` collaborators; the Task title is in its tooltip. -->
       <button
-        v-if="copyTask"
+        v-if="variant === 'icon' && copyTask"
         type="button"
         class="ml-1 inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-colors duration-150 hover:bg-indigo-50 hover:text-indigo-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
         data-test="workspace-copy-task-locate"
@@ -215,6 +231,9 @@ const copyTask = useDelegatedCopyTask(copyRef);
 const taskLabel = computed(() => copyTask.value ? taskSummaryLabel(copyTask.value.task.description) : '');
 const locateLabel = computed(() => t('workspace.history.copyTask.locate', { title: taskLabel.value }));
 const taskLocator = useTaskLocatorStore();
+// Review only: which variant this review server shows (nuxt.config `copyTaskVariant`).
+const variant = useRuntimeConfig().public.copyTaskVariant === 'summary' ? 'summary' : 'icon';
+const hasSummaryLine = computed(() => variant === 'summary' && Boolean(copyTask.value));
 const locateTask = (): void => { if (copyTask.value) taskLocator.locate(copyTask.value); };
 
 const accessibleLabel = computed(() => {
@@ -242,6 +261,8 @@ const rowStyle = computed(() => ({
 const rowClasses = computed(() => ({
   'is-selected text-indigo-900': props.isSelected,
   'text-gray-600 hover:bg-gray-50': !props.isSelected,
+  // Variant B: with a summary line, the branch elbow and disclosure stay on the name line.
+  'has-task-label': hasSummaryLine.value,
 }));
 
 const activateRow = (): void => {
@@ -264,6 +285,16 @@ const activateRow = (): void => {
   border-radius: 0;
   background-color: #eef2ff;
   box-shadow: inset 2px 0 #6366f1;
+}
+
+/* Variant B: the name line's centre is 0.875rem below the row top (py-1 + half of h-5); the branch box
+   starts 0.2rem above the row. */
+.transient-execution-row.has-task-label :deep(.hierarchy-current-branch::after) {
+  top: 1.075rem;
+}
+
+.transient-execution-row.has-task-label :deep(.hierarchy-current-branch:not(.continues-to-sibling)::before) {
+  height: calc(1.075rem + 0.5px);
 }
 
 .transient-execution-row:focus-visible > .hierarchy-identity-tooltip {
