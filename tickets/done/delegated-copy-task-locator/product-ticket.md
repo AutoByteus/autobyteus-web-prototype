@@ -79,7 +79,7 @@
   this ticket, running for review); scripts and captures under `/tmp/dctl/` (copies kept in
   `review-evidence/`). Fixture state is in-memory (reset by reload).
 - Cleanup result or blocker: `Pending`
-- Ticket folder: `tickets/in-progress/delegated-copy-task-locator/`
+- Ticket folder: `tickets/done/delegated-copy-task-locator/`
 
 ## Proposed Design (round 1)
 
