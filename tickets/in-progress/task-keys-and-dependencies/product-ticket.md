@@ -10,7 +10,7 @@
   - the Task detail (page and tab);
   - the New / Edit task page;
   - the Workspaces-tree Task summary approved in `delegated-copy-task-locator`.
-- Status: `Baseline Needed` (paused for `WEB-BASELINE-REFRESH-009`; round 1 stays reviewable on port 4651)
+- Status: `Awaiting User Review` (round 1, reconciled onto the refreshed baseline)
 - Requester: Project Task Manager (`/project_task_manager`, AgentRun
   `project_task_manager_7c8dce0c4a8b44f88e776a83809dee03`) for the user, 2026-10-11.
 - Related requirements revision: none (design first; a separate implementation Task follows approval).
@@ -150,6 +150,29 @@ One recommended design.
   - a new Task gets `autobyteus-41`;
   - copy → clipboard "autobyteus-36" and "Copied".
   - `typecheck` passes.
+
+## Baseline Refresh And Reconciliation (2026-10-13)
+
+- `WEB-BASELINE-REFRESH-009` was accepted and integrated: `personal@b31a5b1`, a single pin
+  `autobyteus-web@73f743211c`. The source now implements the delegated-copy Task summary
+  (`TaskWorkerTaskSummary.vue`, server-provided `TaskWorkerTask` via `GetTaskWorkerTasks`) and the
+  Projects-tab locate steps.
+- Merged into this branch (`faf2119`):
+  - the tree row and the icon bundle take the refreshed baseline;
+  - the round-1 design is kept on the source's components.
+- Changed by the reconciliation (DEC-008 is unchanged in appearance):
+  - DC-009: `TaskWorkerTaskSummary.vue` shows the key before the summary.
+  - DC-009: `TaskWorkerTask.taskKey` is added (`types/project.ts`, the `GetTaskWorkerTasks` query,
+    `taskWorkerTaskStore.ts`).
+  - DC-009: the design-only `withTaskKeys` adds the key to the fixture answers.
+  - The design-only `WorkspaceTransientExecutionRow.vue` change is dropped; the source row is used.
+- Local note: after the refresh, the worktree needed `pnpm install --force` and cleared `.nuxt` and Vite
+  caches, because the vendored contract packages had changed.
+- Validation on the refreshed base:
+  - `r1.mjs` passes 13/13;
+  - the tree shows "autobyteus-29 Token Meter accura…" and "prototype-launch-6 Package the…";
+  - the Temp task has no key;
+  - typecheck and the tests pass.
 
 ## Delivery And Validation
 
