@@ -23,6 +23,10 @@ export const scenarioCatalog = Object.freeze({
   agy_runtime: 'Populated data where the Antigravity runtime is also available (its auto-approve control is locked on).',
   skill_source_issues: 'Populated data where one GitHub skill source failed to update and another has an incomplete removal.',
   skill_name_issues: 'Populated data where the skill catalog reports one duplicate-name conflict and one ignored runtime default copy (D-19 banner).',
+  // WEB-BASELINE-REFRESH-009 (f7fcf90, bd4c637, 3cc1713): agent package definitions that could not be read.
+  // WEB-BASELINE-REFRESH-009 (87b246c): the Antigravity CLI is installed but signed out.
+  agy_signed_out: 'Populated data where the Antigravity runtime is listed but unavailable because its CLI is not signed in.',
+  definition_issues: 'Populated data where some agent package definitions could not be read: card load-issue badges, list problem notices and package auto-refresh states.',
 })
 
 export const baseState = () => ({
@@ -72,6 +76,9 @@ const secondAgent = {
   description: 'A second deterministic synthetic agent.',
   toolNames: ['read_file', 'write_file'],
   skillNames: ['prototype-writing'],
+  // WEB-BASELINE-REFRESH-009 (035b208): a default that names a model the node does not offer, so a
+  // fresh Team start leaves this member following the Team, with a note.
+  defaultLaunchConfig: { llmModelIdentifier: 'mock/gpt-retired', runtimeKind: 'autobyteus', llmConfig: null },
 }
 
 // WEB-BASELINE-REFRESH-002: the built-in agent that backs a New chat at
@@ -200,19 +207,21 @@ const agentRootCollaboration = {
       subjectKind: 'agent', createdAt: fixedNow,
       host: { address: '/research_assistant', agentRunId: run.runId, agentDefinitionId: agent.id },
       collaborators: [
-        { kind: 'agent', address: '/documentation_writer', agentDefinitionId: 'agent-writer', agentRunId: 'collab-writer-001', platformAgentRunId: null, launchConfiguration: agentRootLaunch, addedAt: fixedNow, addedViaAgentRunId: run.runId },
+        { kind: 'agent', address: '/documentation_writer', agentDefinitionId: 'agent-writer', agentRunId: 'collab-writer-001', platformAgentRunId: null, launchConfiguration: agentRootLaunch, launchSource: { origin: 'agent_default', fallbacks: [] }, addedAt: fixedNow, addedViaAgentRunId: run.runId },
         { kind: 'agent_team', address: '/product_review_team', teamDefinitionId: 'team-product', teamRunId: 'collab-team-001', coordinatorAddress: '/product_review_team/researcher',
           members: [
             { address: '/product_review_team/researcher', agentDefinitionId: 'agent-researcher', agentRunId: 'collab-team-researcher-001', platformAgentRunId: null },
-            { address: '/product_review_team/writer', agentDefinitionId: 'agent-writer', agentRunId: 'collab-team-writer-001', platformAgentRunId: null },
+            { address: '/product_review_team/writer', agentDefinitionId: 'agent-writer', agentRunId: 'collab-team-writer-001', platformAgentRunId: null, launchConfiguration: agentRootLaunch, launchSource: { origin: 'agent_default', fallbacks: [] } },
           ],
-          handoffs: [], defaultLaunchConfiguration: agentRootLaunch, taskExecutions: [], addedAt: fixedNow, addedViaAgentRunId: run.runId },
+          handoffs: [], defaultLaunchConfiguration: agentRootLaunch, defaultLaunchSource: { origin: 'team_default', fallbacks: [] }, taskExecutions: [], addedAt: fixedNow, addedViaAgentRunId: run.runId },
       ],
       // WEB-BASELINE-REFRESH-008 (1cd1a3a): the run's Task workers. The writer works on the
       // "Review" Task; the Task team finished the "Publish" Task (DONE closes it, so the
       // Workspaces listing leaves it out); the reviewer works on a Task with no Project.
       taskExecutions: [
-        { address: '/documentation_writer', agentRunId: 'worker-writer-001', platformAgentRunId: null, delegatorAgentRunId: run.runId, startedAt: fixedNow, source: { kind: 'agent', agentDefinitionId: 'agent-writer', launchConfiguration: agentRootLaunch } },
+        { address: '/documentation_writer', agentRunId: 'worker-writer-001', platformAgentRunId: null, delegatorAgentRunId: run.runId, startedAt: fixedNow, source: { kind: 'agent', agentDefinitionId: 'agent-writer', launchConfiguration: agentRootLaunch,
+          // WEB-BASELINE-REFRESH-009 (035b208): the agent's own default was skipped, so the copy inherited the run's settings.
+          launchSource: { origin: 'inherited', fallbacks: [{ layer: 'agent_default', runtimeKind: 'autobyteus', llmModelIdentifier: 'mock/gpt-retired', reason: 'model_unavailable', detail: 'the model is not offered on this node' }] } } },
         { address: '/release_team', teamRunId: 'worker-team-publish-001', delegatorAgentRunId: run.runId, startedAt: fixedNow,
           source: { kind: 'agent_team', teamDefinitionId: 'team-product', coordinatorAddress: '/release_team/researcher',
             members: [{ address: '/release_team/researcher', agentDefinitionId: 'agent-researcher' }, { address: '/release_team/writer', agentDefinitionId: 'agent-writer' }],
@@ -798,16 +807,65 @@ const writerDeliveryConversation = [
   { kind: 'message', role: 'assistant', content: 'The findings are documented in the synthetic review notes.', ts: '2026-08-22T04:02:30.000Z' },
 ]
 
+// WEB-BASELINE-REFRESH-009 (f7fcf90, bd4c637, 3cc1713): invented load issues and definition problems
+// for the definition_issues scenario. Every value is synthetic.
+const packageRoot = '/synthetic/agents'
+const fieldNotesRoot = '/synthetic/field-notes-pack'
+const issue = (fields) => ({ code: 'DEFINITION_PARSE_FAILED', reason: 'The front matter is not valid YAML (line 4).', packageRoot, ...fields })
+const definitionIssues = {
+  agents: {
+    'agent-researcher': issue({ definitionPath: `${packageRoot}/agents/research-assistant/agent.md` }),
+    'agent-writer': issue({ code: 'DEFINITION_SOURCE_UNAVAILABLE', reason: `The package folder ${fieldNotesRoot} could not be found.`, definitionPath: `${fieldNotesRoot}/agents/documentation-writer/agent.md`, packageRoot: fieldNotesRoot }),
+  },
+  teams: {
+    'team-product': [
+      { kind: 'AGENT_TEAM', definitionId: 'team-product', name: 'Product Review Team', ...issue({ reason: 'The handoffs list is not a list.', definitionPath: `${packageRoot}/agent-teams/product-review-team/team.md` }), usingLastGood: true },
+      { kind: 'AGENT', definitionId: 'release-checker', name: null, ...issue({ reason: 'The agent has no instructions.', definitionPath: `${packageRoot}/agent-teams/product-review-team/agents/release-checker/agent.md` }), usingLastGood: false },
+    ],
+  },
+  orgs: {
+    'org-product-launch': [
+      { kind: 'AGENT', definitionId: 'launch-scribe', name: 'Launch Scribe', ...issue({ reason: 'The tool list names an unknown tool: post_to_wiki.', definitionPath: `${packageRoot}/agent-orgs/product-launch-org/agents/launch-scribe/agent.md` }), usingLastGood: true },
+    ],
+  },
+  problems: {
+    AGENT: [
+      { kind: 'AGENT', definitionId: 'agent-researcher', ...issue({ definitionPath: `${packageRoot}/agents/research-assistant/agent.md` }), usingLastGood: true, dependencyChain: [] },
+      { kind: 'AGENT', definitionId: 'pricing-analyst', ...issue({ reason: 'The agent has no name.', definitionPath: `${packageRoot}/agents/pricing-analyst/agent.md` }), usingLastGood: false, dependencyChain: [] },
+    ],
+    AGENT_TEAM: [
+      { kind: 'AGENT_TEAM', definitionId: 'launch-squad', ...issue({ code: 'DEPENDENCY_UNAVAILABLE', reason: 'A member agent is not available.', definitionPath: `${packageRoot}/agent-teams/launch-squad/team.md` }), usingLastGood: false, dependencyChain: ['launch-squad', 'pricing-analyst'] },
+    ],
+    AGENT_ORG: [
+      { kind: 'AGENT_ORG', definitionId: 'regional-launch-org', ...issue({ code: 'DUPLICATE_DEFINITION_ID', reason: 'The ID regional-launch-org exists in more than one package.', definitionPath: `${packageRoot}/agent-orgs/regional-launch-org/org.md` }), usingLastGood: false, dependencyChain: [] },
+    ],
+  },
+}
+const withDefinitionIssues = (state, kind, items) => {
+  const issues = state.scenario === 'definition_issues'
+  if (kind === 'agents') return items.map(item => ({ ...item, loadIssue: issues ? definitionIssues.agents[item.id] ?? null : null }))
+  return items.map(item => ({ ...item, loadIssues: issues ? definitionIssues[kind][item.id] ?? [] : [] }))
+}
+// WEB-BASELINE-REFRESH-009 (6bd2b69): a Task worker's current Task is the open Task it is the root of
+// (the latest one when none is open); a worker that is no Task's root answers null.
+const currentTaskOf = (state, matches) => {
+  const data = projectData(state)
+  const tasks = [...data.tasks, ...data.tasksWithoutProject].filter(task => task.root && matches(task.root))
+  const open = tasks.filter(task => task.status === 'TODO' || task.status === 'IN_PROGRESS')
+  const task = [...(open.length ? open : tasks)].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))[0]
+  return task ? { __typename: 'TaskWorkerTaskRef', taskId: task.taskId, projectId: task.projectId ?? null, description: task.description, status: task.status } : null
+}
+
 export function fixtureContext(state) {
   const empty = state.scenario === 'empty'
   const appsEnabled = state.scenario === 'apps_disabled' ? false : state.applicationsEnabled
-  const agents = empty ? [] : [agent, secondAgent, dailyAssistant]
-  const teams = empty ? [] : [team]
+  const agents = empty ? [] : withDefinitionIssues(state, 'agents', [agent, secondAgent, dailyAssistant])
+  const teams = empty ? [] : withDefinitionIssues(state, 'teams', [team])
   const applications = empty ? [] : [application]
   const workspaces = empty ? [] : [workspace, tempWorkspace]
   const skills = empty ? [] : [skill]
   const tools = empty ? [] : [tool]
-  const orgs = empty ? [] : [org]
+  const orgs = empty ? [] : withDefinitionIssues(state, 'orgs', [org])
   const data = projectData(state)
   const projects = empty ? [] : data.projects.map(item => withCounts(data, item))
   return { empty, appsEnabled, agents, teams, applications, workspaces, skills, tools, orgs, projects }
@@ -824,7 +882,15 @@ export function operationFixture(operationName, variables = {}, state) {
   const teamInput = variables.input || team
   const configuredMcp = { __typename: 'StdioMcpServerConfig', serverId: 'prototype-files', transportType: 'STDIO', enabled: true, toolNamePrefix: 'prototype', command: 'mock-adapter', args: [], env: {}, cwd: '/synthetic' }
   const applicationPackage = { __typename: 'ApplicationPackage', packageId: 'prototype-app-package', displayName: 'Prototype Applications', sourceKind: 'BUILT_IN', sourceSummary: 'Deterministic synthetic bundle', rootPath: '/synthetic/applications', source: 'fixture', managedInstallPath: null, bundledSourceRootPath: '/synthetic/applications', applicationCount: 1, isPlatformOwned: true, isRemovable: false }
-  const agentPackage = { __typename: 'AgentPackage', packageId: 'package-prototype', displayName: 'Prototype Agents', path: '/synthetic/agents', sourceKind: 'BUILT_IN', source: 'fixture', sharedAgentCount: 2, teamLocalAgentCount: 0, agentTeamCount: 1, applicationCount: 1, isDefault: true, isRemovable: false, updateInfo: { status: 'UP_TO_DATE', canCheck: true, canUpdate: false, canReload: true, message: 'Fixture is current.', installedRevision: 'fixture-1', latestRevision: 'fixture-1', checkedAt: fixedNow, lastError: null } }
+  const agentPackage = { __typename: 'AgentPackage', packageId: 'package-prototype', displayName: 'Prototype Agents', path: '/synthetic/agents', sourceKind: 'BUILT_IN', source: 'fixture', sharedAgentCount: 2, teamLocalAgentCount: 0, agentTeamCount: 1, applicationCount: 1, isDefault: true, isRemovable: false, updateInfo: { status: 'UP_TO_DATE', canCheck: true, canUpdate: false, canReload: true, message: 'Fixture is current.', installedRevision: 'fixture-1', latestRevision: 'fixture-1', checkedAt: fixedNow, lastError: null },
+    // WEB-BASELINE-REFRESH-009 (f7fcf90): the package's auto-refresh state.
+    autoRefresh: state.scenario === 'definition_issues'
+      ? { __typename: 'AgentPackageAutoRefresh', state: 'UNAVAILABLE', message: 'The agent-teams folder could not be read.' }
+      : { __typename: 'AgentPackageAutoRefresh', state: 'WATCHING', message: null } }
+  // definition_issues: a second, local package whose folder is gone.
+  const fieldNotesPackage = { ...agentPackage, packageId: 'package-field-notes', displayName: 'Field Notes Agents', path: fieldNotesRoot, sourceKind: 'LOCAL_PATH', source: fieldNotesRoot, sharedAgentCount: 1, agentTeamCount: 0, applicationCount: 0, isDefault: false, isRemovable: true,
+    updateInfo: { ...agentPackage.updateInfo, canCheck: false, message: null, installedRevision: null, latestRevision: null },
+    autoRefresh: { __typename: 'AgentPackageAutoRefresh', state: 'FOLDER_MISSING', message: null } }
   const runMemoryView = { runId: variables.runId || variables.agentRunId || run.runId, workingContext: [{ role: 'user', content: 'Review the synthetic baseline.', reasoning: null, toolPayload: null, ts: fixedNow }, { role: 'assistant', content: 'The deterministic fixture is ready.', reasoning: 'Fixture reasoning', toolPayload: null, ts: fixedNow }], episodic: '# Episode\nValidated current-state navigation.', semantic: '# Facts\nAll data in this view is synthetic.', rawTraceFiles: [{ fileName: 'segment-0001.jsonl', kind: 'active', recordCount: 1, segmentIndex: 1, firstTimestamp: fixedNow, lastTimestamp: fixedNow }], selectedRawTraceFileName: 'segment-0001.jsonl', rawTraces: [{ scope: 'agent', id: 'trace-1', traceType: 'message', sourceEvent: 'fixture', content: 'Deterministic trace entry', toolName: null, toolCallId: null, toolArgs: null, toolResult: null, toolError: null, media: null, turnId: 'turn-1', seq: 1, ts: fixedNow }] }
   const agentTokenSummary = createTokenUsageSummary({ runId: variables.runId || run.runId })
   const teamTokenSummary = createTokenUsageSummary({
@@ -887,6 +953,14 @@ export function operationFixture(operationName, variables = {}, state) {
     GetProject: { project: c.projects.find(item => item.projectId === variables.projectId) || null },
     GetProjectTasks: { projectTasks: c.empty ? [] : projectData(state).tasks.filter(task => task.projectId === variables.projectId) },
     GetTasksWithoutProject: { tasksWithoutProject: c.empty ? [] : projectData(state).tasksWithoutProject },
+    // WEB-BASELINE-REFRESH-009 (6bd2b69): the current Task of each Task worker the Workspaces tree lists.
+    GetTaskWorkerTasks: { taskWorkerTasks: [
+      ...(variables.agentRunIds || []).map(id => ({ __typename: 'TaskWorkerTask', workerKind: 'agent', workerRunId: id, task: c.empty ? null : currentTaskOf(state, root => root.kind === 'agent' && root.ingressAgentRunId === id) })),
+      ...(variables.teamRunIds || []).map(id => ({ __typename: 'TaskWorkerTask', workerKind: 'team', workerRunId: id, task: c.empty ? null : currentTaskOf(state, root => root.kind === 'team' && root.teamRunId === id) })),
+    ] },
+    // WEB-BASELINE-REFRESH-009 (f7fcf90): definitions of one kind that cannot be used, or use their last working version.
+    GetDefinitionProblems: { definitionProblems: state.scenario === 'definition_issues' ? definitionIssues.problems[variables.kind] ?? [] : [] },
+    ReloadAgentPackageDefinitions: { reloadAgentPackageDefinitions: true },
     ListAgentOrgsWithMemory: { listAgentOrgsWithMemory: paged(c.empty ? [] : [{ orgDefinitionId: org.id, orgDefinitionName: org.name, orgRunCount: 1, memberMemoryCount: 3, latestMemoryAt: fixedNow, memory: memoryFlags }]) },
     ListAgentOrgRunsWithMemory: { listAgentOrgRunsWithMemory: paged(c.empty ? [] : [{ orgRunId, orgDefinitionId: org.id, orgDefinitionName: org.name, summary: 'Coordinate the synthetic launch review', workspaceRootPath: workspace.workspaceRootPath, createdAt: fixedNow, lastUpdatedAt: fixedNow, memory: memoryFlags, memberTargets: orgMemoryTargets }]) },
     GetAgentTeamDefinitions: { agentTeamDefinitions: c.teams },
@@ -942,8 +1016,10 @@ export function operationFixture(operationName, variables = {}, state) {
     UseGeminiMode: { useGeminiMode: { activeMode: variables.mode, aiStudioConfigured: true, vertexExpressConfigured: true, vertexProject: { project: 'prototype-project', location: 'us-central1' } } },
     GetRuntimeAvailabilities: { runtimeAvailabilities: [{ __typename: 'RuntimeAvailabilityObject', runtimeKind: 'autobyteus', enabled: true, reason: null }] },
     // 0a32261: runtime availability is read per runtime kind.
-    GetRuntimeAvailabilityKinds: { runtimeAvailabilityKinds: ['autobyteus', ...extraRuntimeKinds(state.scenario), ...(state.scenario === 'agy_runtime' ? ['antigravity_cli'] : [])] },
-    GetRuntimeAvailability: { runtimeAvailability: { __typename: 'RuntimeAvailabilityObject', runtimeKind: variables.runtimeKind, enabled: variables.runtimeKind === 'autobyteus' || extraRuntimeKinds(state.scenario).includes(variables.runtimeKind) || (state.scenario === 'agy_runtime' && variables.runtimeKind === 'antigravity_cli'), reason: null } },
+    GetRuntimeAvailabilityKinds: { runtimeAvailabilityKinds: ['autobyteus', ...extraRuntimeKinds(state.scenario), ...(['agy_runtime', 'agy_signed_out'].includes(state.scenario) ? ['antigravity_cli'] : [])] },
+    GetRuntimeAvailability: { runtimeAvailability: { __typename: 'RuntimeAvailabilityObject', runtimeKind: variables.runtimeKind, enabled: variables.runtimeKind === 'autobyteus' || extraRuntimeKinds(state.scenario).includes(variables.runtimeKind) || (state.scenario === 'agy_runtime' && variables.runtimeKind === 'antigravity_cli'),
+      // 87b246c: the server's recovery text for a signed-out CLI (synthetic wording of the same kind).
+      reason: state.scenario === 'agy_signed_out' && variables.runtimeKind === 'antigravity_cli' ? "Antigravity CLI is not signed in. Run `agy` in this node's terminal and complete sign-in, then try again." : null } },
     // 0a32261: the live-run `@` menu offers shared Agents and Teams that are not in the run.
     GetCollaboratorMentionCandidates: { collaboratorMentionCandidates: { availability: 'AVAILABLE', candidates: c.empty ? [] : [
       { kind: 'agent', definitionId: secondAgent.id, name: secondAgent.name, description: secondAgent.description, memberCount: null, coordinatorName: null },
@@ -993,8 +1069,8 @@ export function operationFixture(operationName, variables = {}, state) {
     PrepareAgentRun: { prepareAgentRun: { ...success, runId: 'run-prepared-fixture', activationState: 'PREPARED', preparedExpiresAt: null } },
     CancelPreparedAgentRun: { cancelPreparedAgentRun: success }, TerminateAgentRun: { terminateAgentRun: success }, RestoreAgentRun: { restoreAgentRun: { ...run, status: 'IDLE' } }, ApproveToolInvocation: { approveToolInvocation: success },
     CreateAgentTeamRun: { createAgentTeamRun: { __typename: 'CreateAgentTeamRunResult', ...success, teamRunId: createdTeamRunId, status: 'IDLE' } }, TerminateAgentTeamRun: { terminateAgentTeamRun: success }, RestoreAgentTeamRun: { restoreAgentTeamRun: { ...teamRun, status: 'IDLE' } },
-    CreateAgentDefinition: { createAgentDefinition: { ...agent, ...agentInput, id: agentInput.id || 'agent-created-fixture' } }, UpdateAgentDefinition: { updateAgentDefinition: { ...agent, ...agentInput } }, DeleteAgentDefinition: { deleteAgentDefinition: success }, RefreshAgentDefinitionCatalog: { refreshAgentDefinitionCatalog: c.agents },
-    CreateAgentTeamDefinition: { createAgentTeamDefinition: { ...team, ...teamInput, id: teamInput.id || 'team-created-fixture' } }, UpdateAgentTeamDefinition: { updateAgentTeamDefinition: { ...team, ...teamInput } }, DeleteAgentTeamDefinition: { deleteAgentTeamDefinition: success }, RefreshAgentTeamDefinitionCatalog: { refreshAgentTeamDefinitionCatalog: c.teams },
+    CreateAgentDefinition: { createAgentDefinition: { ...agent, ...agentInput, id: agentInput.id || 'agent-created-fixture' } }, UpdateAgentDefinition: { updateAgentDefinition: { ...agent, ...agentInput } }, DeleteAgentDefinition: { deleteAgentDefinition: success },
+    CreateAgentTeamDefinition: { createAgentTeamDefinition: { ...team, ...teamInput, id: teamInput.id || 'team-created-fixture' } }, UpdateAgentTeamDefinition: { updateAgentTeamDefinition: { ...team, ...teamInput } }, DeleteAgentTeamDefinition: { deleteAgentTeamDefinition: success },
     GetServerSettings: {
       getServerSettings: [
         { __typename: 'ServerSetting', key: 'LOG_LEVEL', value: 'INFO', description: 'Synthetic log verbosity.', isEditable: true, isDeletable: true },
@@ -1038,7 +1114,7 @@ export function operationFixture(operationName, variables = {}, state) {
     GetUsageStatisticsInPeriod: { usageStatisticsInPeriod: tokenRunStatistics.modelRows },
     GetSkillImprovementCapability: { skillImprovementCapability: { supported: true, enabled: true, reason: null } }, GetAgentRunSkillImprovementEligibility: { agentRunSkillImprovementEligibility: { eligible: true, reason: null } }, GetTeamMemberSkillImprovementEligibility: { teamMemberSkillImprovementEligibility: { eligible: true, reason: null } }, GetSkillImprovementRunRecord: { skillImprovementRunRecord: null },
     SetSkillImprovementEnabled: { setSkillImprovementEnabled: { supported: true, enabled: Boolean(variables.enabled), reason: null } }, StartAgentRunSkillImprovement: { startAgentRunSkillImprovement: { improvementRunId: 'improvement-fixture', improverRunId: 'run-improver-fixture', record: { improvementRunId: 'improvement-fixture', status: 'RUNNING', createdAt: fixedNow } } }, StartTeamMemberSkillImprovement: { startTeamMemberSkillImprovement: { improvementRunId: 'improvement-fixture', improverRunId: 'run-improver-fixture', record: { improvementRunId: 'improvement-fixture', status: 'RUNNING', createdAt: fixedNow } } },
-    GetAgentPackages: { agentPackages: c.empty ? [] : [agentPackage] }, ImportAgentPackage: { importAgentPackage: agentPackage }, RemoveAgentPackage: { removeAgentPackage: agentPackage }, ReloadAgentPackage: { reloadAgentPackage: agentPackage }, CheckAgentPackageUpdates: { checkAgentPackageUpdates: [agentPackage] }, UpdateAgentPackage: { updateAgentPackage: agentPackage },
+    GetAgentPackages: { agentPackages: c.empty ? [] : state.scenario === 'definition_issues' ? [agentPackage, fieldNotesPackage] : [agentPackage] }, ImportAgentPackage: { importAgentPackage: agentPackage }, RemoveAgentPackage: { removeAgentPackage: agentPackage }, ReloadAgentPackage: { reloadAgentPackage: agentPackage }, CheckAgentPackageUpdates: { checkAgentPackageUpdates: [agentPackage] }, UpdateAgentPackage: { updateAgentPackage: agentPackage },
     GetApplicationPackages: { applicationPackages: c.empty ? [] : [applicationPackage] }, GetApplicationPackageDetails: { applicationPackageDetails: { ...applicationPackage, __typename: 'ApplicationPackageDetails' } }, ImportApplicationPackage: { importApplicationPackage: [applicationPackage] }, RemoveApplicationPackage: { removeApplicationPackage: [applicationPackage] },
     GetFileContent: { fileContent: '# Prototype Workspace\n\nThis content is synthetic.' }, SearchFiles: { searchFiles: JSON.stringify([{ path: 'README.md', name: 'README.md', isDirectory: false }]) }, GetFolderChildren: { folderChildren: JSON.stringify(folderChildren) },
     WriteFileContent: { writeFileContent: true }, DeleteFileOrFolder: { deleteFileOrFolder: true }, MoveFileOrFolder: { moveFileOrFolder: true }, RenameFileOrFolder: { renameFileOrFolder: true }, CreateFileOrFolder: { createFileOrFolder: true },

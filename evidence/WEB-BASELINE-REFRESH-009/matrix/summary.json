@@ -1,0 +1,175 @@
+{
+  "generatedAt": "2026-10-13T05:46:55.349Z",
+  "total": 105,
+  "passed": 103,
+  "exactPixelRows": 79,
+  "noiseOnlyRows": [
+    {
+      "id": "WBR-R001-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 1,
+      "maximumChannelDelta": 2
+    },
+    {
+      "id": "WBR-R012-DZH",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 42,
+      "maximumChannelDelta": 12
+    },
+    {
+      "id": "WBR-R013-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 11,
+      "maximumChannelDelta": 11
+    },
+    {
+      "id": "WBR-R015-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 44,
+      "maximumChannelDelta": 14
+    },
+    {
+      "id": "WBR-R020-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 5,
+      "maximumChannelDelta": 9
+    },
+    {
+      "id": "WBR-R021-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 5,
+      "maximumChannelDelta": 9
+    },
+    {
+      "id": "WBR-R022-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 5,
+      "maximumChannelDelta": 9
+    },
+    {
+      "id": "WBR-R026-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 5,
+      "maximumChannelDelta": 9
+    },
+    {
+      "id": "WBR-R031-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 8,
+      "maximumChannelDelta": 55
+    },
+    {
+      "id": "WBR-R031-DZH",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 6,
+      "maximumChannelDelta": 18
+    },
+    {
+      "id": "WBR-R036-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 8,
+      "maximumChannelDelta": 9
+    },
+    {
+      "id": "WBR-R037-NZH",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 16,
+      "maximumChannelDelta": 9
+    },
+    {
+      "id": "WBR-R038-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 8,
+      "maximumChannelDelta": 9
+    },
+    {
+      "id": "WBR-R040-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 1,
+      "maximumChannelDelta": 4
+    },
+    {
+      "id": "WBR-R041-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 16,
+      "maximumChannelDelta": 14
+    },
+    {
+      "id": "WBR-R044-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 2,
+      "maximumChannelDelta": 2
+    },
+    {
+      "id": "WBR-R048-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 8,
+      "maximumChannelDelta": 1
+    },
+    {
+      "id": "WBR-R049-DEN",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 1,
+      "maximumChannelDelta": 2
+    },
+    {
+      "id": "WBR-R049-DZH",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 1,
+      "maximumChannelDelta": 2
+    },
+    {
+      "id": "WBR-S003",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 5,
+      "maximumChannelDelta": 9
+    },
+    {
+      "id": "WBR-S004",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 2,
+      "maximumChannelDelta": 2
+    },
+    {
+      "id": "WBR-S006",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 60,
+      "maximumChannelDelta": 45
+    },
+    {
+      "id": "WBR-S018",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 1,
+      "maximumChannelDelta": 2
+    },
+    {
+      "id": "WBR-S019",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 7,
+      "maximumChannelDelta": 4
+    },
+    {
+      "id": "WBR-S020",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 3,
+      "maximumChannelDelta": 2
+    },
+    {
+      "id": "WBR-S023",
+      "noiseClass": "A-edge-antialiasing",
+      "changedPixels": 1,
+      "maximumChannelDelta": 2
+    }
+  ],
+  "failed": [
+    "WBR-S012",
+    "WBR-S015"
+  ],
+  "sourceBrowserErrorRows": [
+    "WBR-S012",
+    "WBR-S016"
+  ],
+  "prototypeBrowserErrorRows": [
+    "WBR-S012"
+  ]
+}

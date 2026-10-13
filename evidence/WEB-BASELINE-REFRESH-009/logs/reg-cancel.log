@@ -1,0 +1,42 @@
+PASS CAN-001 Project board: "Cancelled (1)" toggle off; three lanes; the Cancelled Task hidden text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-002 Project board: toggle on shows the Cancelled lane last (four columns) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-003 Project board: toggle off again hides the lane text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-004 Project board: toggle hover text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-005 Project board: keyboard focus on the toggle and Space turns it on text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-006 Project board: search matching only a hidden Cancelled Task shows No match text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-007 Project board: the same search with the toggle on shows it in the Cancelled lane text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-008 Project board: a Cancelled card opens its Task page with the Cancelled pill text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-009 Project board: every visit starts hidden (toggle on, open a Task, back to tasks) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-010 Task page: Cancelled pill and closed agent root text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-011 Task page: To Do pill text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-012 Task page: In Progress pill text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-013 Task page: Done pill text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-014 No Cancelled Tasks: delete the only Cancelled Task; the board has no toggle text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-020 Projects: card open-task count and Temp tasks count leave Cancelled out text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-030 Temp tasks: "Cancelled (1)" toggle off; Open and Done lanes text=true probe=true px=1 max=2   srcErr=0 protoErr=0
+PASS CAN-031 Temp tasks: toggle on shows the Cancelled lane last (three columns) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-032 Temp tasks: search matching only the hidden Cancelled task shows No match text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-033 Temp tasks: the same search with the toggle on text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-034 Temp task page: Cancelled pill text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-035 Temp task page: Open pill text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-036 No Cancelled Tasks: empty Temp tasks board has no toggle text=true probe=true px=2 max=7   srcErr=0 protoErr=0
+PASS CAN-040 Projects tab: compact board with the toggle off text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-041 Projects tab: toggle on stacks the Cancelled lane last text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-042 Projects tab: a Cancelled Project Task opens in the tab with the Cancelled pill text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-043 Projects tab: a To Do Project Task pill in the tab text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-044 Projects tab: an In Progress Project Task pill in the tab text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-045 Projects tab: a Done Project Task pill in the tab text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-046 Projects tab: Temp tasks with the toggle off text=true probe=true px=1 max=17   srcErr=0 protoErr=0
+PASS CAN-047 Projects tab: Temp tasks with the toggle on text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-048 Projects tab: a Cancelled Temp task in the tab text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-049 Projects tab: an Open Temp task pill in the tab text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-050 Projects tab: Temp search matching only the hidden Cancelled task text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-060 Project board (zh-CN): toggle on text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-061 Temp tasks (zh-CN): toggle off, then the Cancelled task page text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CAN-062 Project board (zh-CN): toggle off text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+FAIL CAN-070 Project board (390x844): toggle on, single column text=true probe=true px=145 max=127   srcErr=0 protoErr=0
+  source-only: []
+  proto-only : []
+FAIL CAN-071 Temp tasks (390x844): toggle on, single column text=true probe=true px=145 max=127   srcErr=0 protoErr=0
+  source-only: []
+  proto-only : []

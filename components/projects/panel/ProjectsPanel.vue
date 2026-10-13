@@ -46,8 +46,8 @@ const view = ref<PanelView>({ kind: 'board' })
 const openTask = (taskId: string) => { view.value = { kind: 'task', taskId } }
 // Another Project (or Temp tasks) shows its board.
 watch(() => JSON.stringify(panel.choice), () => { view.value = { kind: 'board' } })
-onMounted(() => panel.load())
-// delegated-copy-task-locator (design): "Show Task in Projects" shows the chosen board (leaving an open Task).
+// "Show Task in Projects" shows the chosen board, leaving an open Task.
 const locator = useTaskLocatorStore()
-watch(() => locator.request, (request) => { if (locator.take('projects-panel', request)) view.value = { kind: 'board' } }, { immediate: true })
+watch(() => locator.request?.seq, (seq) => { if (seq !== undefined) view.value = { kind: 'board' } })
+onMounted(() => panel.load())
 </script>

@@ -57,7 +57,8 @@ const showCancelled = ref(false)
 watch(cancelledCount, (count) => { if (count === 0) showCancelled.value = false })
 const shownLanes = computed<readonly ProjectTaskStatus[]>(() => showCancelled.value ? [...BOARD_OPEN_LANES, 'CANCELLED'] : BOARD_OPEN_LANES)
 const visibleTasks = computed(() => showCancelled.value ? tasks.value : tasks.value.filter((task) => task.status !== 'CANCELLED'))
-const matchingTasks = computed(() => visibleTasks.value.filter((task) => !searchQuery.value.trim() || task.description.toLocaleLowerCase().includes(searchQuery.value.trim().toLocaleLowerCase())))
+const matchesSearch = (task: ProjectTask) => !searchQuery.value.trim() || task.description.toLocaleLowerCase().includes(searchQuery.value.trim().toLocaleLowerCase())
+const matchingTasks = computed(() => visibleTasks.value.filter(matchesSearch))
 const columns = computed(() => {
   const grouped: Record<ProjectTaskStatus, ProjectTask[]> = {TODO: [], IN_PROGRESS: [], DONE: [], CANCELLED: []}
   for (const task of matchingTasks.value) grouped[task.status].push(task)
@@ -67,22 +68,24 @@ const isNoMatch = computed(() => visibleTasks.value.length > 0 && matchingTasks.
 const load = (force = false) => { void store.fetchTasks(props.projectId, force).catch(() => undefined) }
 const refresh = () => { void store.refreshTasks(props.projectId).catch(() => undefined) }
 const clearSearch = () => {searchQuery.value = ''; document.getElementById(searchId)?.focus()}
-onMounted(() => load(true))
+const mountReadStarted = ref(false)
+onMounted(() => { load(true); mountReadStarted.value = true })
 onBeforeUnmount(() => store.releaseRead(props.projectId))
 watch(() => props.projectId, (id, previous) => {store.releaseRead(previous); load(true)})
 watch(() => node.bindingRevision, () => load(true)) // Preserve the existing watcher; not an interactive switching journey.
-// delegated-copy-task-locator (design): "Show Task in Projects" makes the Task visible on the tab's board:
-// a search that hides it is cleared, and a Cancelled Task shows the Cancelled lane.
+// "Show Task in Projects" (compact only): once Projects is revealed on this Project, make the Task visible
+// (Cancelled lane, a hiding search cleared) and hand it to its card. It decides only on a settled list:
+// never before its own mount read started nor while a read is in flight. A Task absent from it is left
+// alone (the request expires).
 const locator = useTaskLocatorStore()
-watch([() => locator.request, () => list.value?.hasLoaded], ([request]) => {
-  if (!props.compact || !request || request.choice.kind !== 'project' || request.choice.projectId !== props.projectId || !list.value?.hasLoaded) return
-  if (!locator.take(`board:${props.projectId}`, request)) return
-  const task = tasks.value.find((item) => item.taskId === request.taskId)
-  if (!task) return
+const settled = computed(() => mountReadStarted.value && Boolean(list.value?.hasLoaded) && !list.value?.initialPending && !list.value?.refreshPending)
+watch(() => props.compact && settled.value && locator.request?.step === 'revealed' && locator.request.task.projectId === props.projectId ? locator.request : null, (request) => {
+  const task = request && tasks.value.find((item) => item.taskId === request.task.taskId)
+  if (!request || !task) return
   if (task.status === 'CANCELLED') showCancelled.value = true
-  const query = searchQuery.value.trim().toLocaleLowerCase()
-  if (query && !task.description.toLocaleLowerCase().includes(query)) searchQuery.value = ''
-}, { immediate: true })
+  if (!matchesSearch(task)) searchQuery.value = ''
+  locator.markVisible(request.seq)
+}, {immediate: true})
 </script>
 <style scoped>
 .project-task-board { container-type: inline-size; container-name: project-task-board; }

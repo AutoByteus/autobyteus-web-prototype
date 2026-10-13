@@ -15,9 +15,9 @@ const snapshots = runtimeFixture.snapshots as Record<string, {
 
 describe('deterministic prototype fixture contract', () => {
   it('is pinned to the selected source and covers every recorded scenario', () => {
-    expect(runtimeFixture.sourceCommit).toBe('1cd1a3abc126df820e334c023621d0fb82de5b7b')
-    expect(Object.keys(snapshots)).toHaveLength(72)
-    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'loading', 'error', 'permission_denied', 'skill_name_issues', 'agy_runtime']))
+    expect(runtimeFixture.sourceCommit).toBe('73f743211c8b86c704acb33f216154e42b7a67b8')
+    expect(Object.keys(snapshots)).toHaveLength(77)
+    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'loading', 'error', 'permission_denied', 'skill_name_issues', 'agy_runtime', 'agy_signed_out', 'definition_issues']))
   })
 
   it('uses synthetic domain records and local-only node addresses', () => {
@@ -64,6 +64,19 @@ describe('deterministic prototype fixture contract', () => {
     expect(operationFixture('GetTasksWithoutProject', {}, baseState()).tasksWithoutProject.map((task: { taskId: string }) => task.taskId))
       .toEqual(['temp-task-links', 'temp-task-check', 'temp-task-faq'])
     expect(operationFixture('GetTasksWithoutProject', {}, { ...baseState(), scenario: 'empty' }).tasksWithoutProject).toEqual([])
+  })
+
+  it('answers Task workers, definition problems and runtime reasons (73f7432)', () => {
+    const workers = operationFixture('GetTaskWorkerTasks', { agentRunIds: ['worker-writer-001', 'worker-temp-researcher-001', 'collab-writer-001'], teamRunIds: ['worker-team-publish-001'] }, baseState()).taskWorkerTasks
+    expect(workers.map((answer: { workerRunId: string, task: null | { taskId: string, projectId: string | null } }) => [answer.workerRunId, answer.task?.taskId ?? null, answer.task?.projectId ?? null]))
+      .toEqual([['worker-writer-001', 'task-review', 'project-prototype-launch'], ['worker-temp-researcher-001', 'temp-task-links', null], ['collab-writer-001', null, null], ['worker-team-publish-001', 'task-publish', 'project-prototype-launch']])
+    expect(operationFixture('GetDefinitionProblems', { kind: 'AGENT' }, baseState()).definitionProblems).toEqual([])
+    const issues = { ...baseState(), scenario: 'definition_issues' }
+    expect(operationFixture('GetDefinitionProblems', { kind: 'AGENT_TEAM' }, issues).definitionProblems[0].dependencyChain).toEqual(['launch-squad', 'pricing-analyst'])
+    expect(operationFixture('GetAgentDefinitions', {}, issues).agentDefinitions.map((item: { loadIssue: null | { code: string } }) => item.loadIssue?.code ?? null))
+      .toEqual(['DEFINITION_PARSE_FAILED', 'DEFINITION_SOURCE_UNAVAILABLE', null])
+    expect(operationFixture('GetAgentPackages', {}, issues).agentPackages.map((item: { autoRefresh: { state: string } }) => item.autoRefresh.state)).toEqual(['UNAVAILABLE', 'FOLDER_MISSING'])
+    expect(operationFixture('GetRuntimeAvailability', { runtimeKind: 'antigravity_cli' }, { ...baseState(), scenario: 'agy_signed_out' }).runtimeAvailability).toMatchObject({ enabled: false, reason: expect.stringContaining('not signed in') })
   })
 
   it('keeps skill-source operations in one resettable in-memory copy (4dee901)', () => {

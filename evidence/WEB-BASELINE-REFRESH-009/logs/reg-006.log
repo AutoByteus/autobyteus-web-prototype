@@ -1,0 +1,8 @@
+PASS BRW-001 Task Agent conversation (scrollable, earlier events available) text=true route=/chat?id=run-research-001 px=0 max=0   srcErr=0 protoErr=0
+PASS BRW-002 Task Agent: scrolling up loads earlier events from the host package, with "From <Sender>:" rows text=true route=/chat?id=run-research-001 px=0 max=0   srcErr=0 protoErr=0
+PASS BRW-003 Task Agent browse: back to the latest text=true route=/chat?id=run-research-001 px=0 max=0   srcErr=0 protoErr=0
+PASS TOK-001 Stored Agent run: Token tab shows the run roll-up text=true route=/chat?id=run-research-001 px=0 max=0   srcErr=0 protoErr=0
+PASS TOK-002 Task Agent: Token tab text=true route=/chat?id=run-research-001 px=0 max=0   srcErr=0 protoErr=0
+PASS TOK-004 Stored Team run member: Token tab text=true route=/workspace px=2 max=8   srcErr=0 protoErr=0
+PASS TOK-005 Stored Org run member: Token tab text=true route=/workspace?rootSubjectKind=agent_org&definitionId=org-product-launch&orgRunId=org-run-001&mode=history&memberAddress=/analyst px=0 max=0   srcErr=0 protoErr=0
+PASS TOK-003 Chat run: Token tab text=true route=/chat?id=run-prepared-fixture px=0 max=0   srcErr=0 protoErr=0

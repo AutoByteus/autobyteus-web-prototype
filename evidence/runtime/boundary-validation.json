@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-11T05:12:53.356Z",
-  "root": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/delegated-copy-task-locator",
+  "generatedAt": "2026-10-13T06:00:05.236Z",
+  "root": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-009",
   "checks": [
     {
       "name": "No Electron/native runtime dependency",

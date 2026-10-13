@@ -1,13 +1,17 @@
 # AutoByteus Web Design
 
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
-commit `1cd1a3abc126df820e334c023621d0fb82de5b7b` (`origin/personal`,
-v1.4.99-beta.1, refreshed by `WEB-BASELINE-REFRESH-008`; previous pin
-`10fb69504f99a615e0728ffdd6c1fcab0104ff05`). The refresh brings in the right
-panel's Projects tab, Task roots and Temp tasks, path-only Project workspaces,
-unified run settings, New chat Draft rows, Workspaces "Archive all" and the
-restored native folder picker. The accepted design-only Reconnect change
-(`agent-definition-reconnect-ui`) is preserved. See
+commit `73f743211c8b86c704acb33f216154e42b7a67b8` (`origin/personal`,
+v1.5.3-beta.1, refreshed by `WEB-BASELINE-REFRESH-009`; previous pin mixed:
+Projects Task-status surfaces at `ff227eb72ef08dca4188451141789d0e6d3af356`,
+everything else at `1cd1a3abc126df820e334c023621d0fb82de5b7b`). The refresh
+brings in the source's delegated-copy Task summaries and Task locate, the
+collapsed left strip's Workspaces icon, the redesigned skill sources dialog
+(three earlier design-only changes that the source now implements), agent
+package definition load issues and live refresh, member launch defaults and the
+delegated launch list, token meter compaction marks, the removal of the remote
+AutoByteus LLM provider, and the rest of the range. The accepted design-only
+Reconnect change (`agent-definition-reconnect-ui`) is preserved. See
 [ui-baseline-report.md](ui-baseline-report.md) for the refresh scope,
 evidence, and known gaps.
 

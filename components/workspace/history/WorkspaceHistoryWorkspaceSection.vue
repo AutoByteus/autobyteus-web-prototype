@@ -203,6 +203,7 @@
             :run-selected="state.selectedRunId === run.runId"
             :has-collaboration="run.hasCollaboration === true"
             @select-run="actions.onSelectRun(run)"
+            @open-run="selectAgentRun(run)"
           />
           </template>
         </div>
@@ -349,6 +350,7 @@
                 :format-relative-time="formatRelativeTime"
                 @select="(row: import('~/stores/runHistoryTypes').RunHistoryTeamExecutionRow) => selectTeamDisplayRow(team, row)"
                 @toggle="(row: import('~/stores/runHistoryTypes').RunHistoryTeamExecutionRow) => toggleTeamDisplayRow(team, row)"
+                @open-run="actions.onOpenTeamRun(team, workspaceNode.workspaceId)"
               />
             </div>
           </div>

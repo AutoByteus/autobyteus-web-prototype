@@ -108,3 +108,13 @@ export const applyTaskKeyMutation = (name: string, variables: Record<string, any
   ensureTaskKeys(data)
   if (stored) Object.assign(saved, { taskKey: stored.taskKey, dependsOnTaskIds: stored.dependsOnTaskIds })
 }
+
+/** The Task worker query (the Workspaces tree's Task summaries) also carries each Task's key. */
+export const withTaskKeys = (name: string, data: any, state: Record<string, any>): any => {
+  if (name !== 'GetTaskWorkerTasks' || !data?.taskWorkerTasks) return data
+  const tasks = projectData(state).tasks
+  for (const answer of data.taskWorkerTasks) {
+    if (answer.task) answer.task.taskKey = tasks.find((item: any) => item.taskId === answer.task.taskId)?.taskKey ?? null
+  }
+  return data
+}

@@ -25,7 +25,9 @@ const navigationOverlayStores = new Set(['agentRunConfig', 'agentSelection', 'te
 // their client cache is never reset by route snapshots. Skill sources and the
 // Token tab's run meter (4dee901) run the same way, so every run kind reads its
 // usage summary exactly as the source does against the same fixtures.
-const sourceLoadedStores = new Set(['projects', 'projectTasks', 'skillSources', 'tokenUsageMeter'])
+// WEB-BASELINE-REFRESH-009: Task workers' Tasks and the Task locate request (6bd2b69), and the
+// definition problems notices (f7fcf90), run the same way.
+const sourceLoadedStores = new Set(['projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),
@@ -445,7 +447,9 @@ export default defineNuxtPlugin({
     // or after the bound-node capabilities resolve depending on the entry route.
     // Reproduce the exact initial split recorded from the pinned source for the
     // selected snapshot (capability-gated routes resolve first).
-    if (!localStorage.getItem('autobyteus.app-left-panel.primary-nav-height')) {
+    // WEB-BASELINE-REFRESH-009: only where the left panel is docked (md and wider), as captured; a
+    // narrow window mounts the panel when its drawer opens and measures it then, as the source does.
+    if (!localStorage.getItem('autobyteus.app-left-panel.primary-nav-height') && window.matchMedia('(min-width: 768px)').matches) {
       const [, initialSnapshot] = findSnapshot()
       localStorage.setItem('autobyteus.app-left-panel.primary-nav-height', initialSnapshot?.primaryNavHeight || '300')
     }
@@ -657,6 +661,10 @@ export default defineNuxtPlugin({
             const captured = readyStoreState('llmProviderConfig', state => state.catalogByRuntimeKind?.[runtime]?.state === 'ready')
             if (store.catalogByRuntimeKind?.[runtime]?.state !== 'ready' && !captured) return originalAction.apply(store, args)
           }
+          // WEB-BASELINE-REFRESH-009: a replaced backend action answers after a short network-like delay
+          // (longer than a rendering frame, as any node response is), so the source's busy state renders
+          // first: "Reloading..." with a disabled Reload button, which moves focus as in the source.
+          await new Promise(resolve => window.setTimeout(resolve, 40))
           const result = actionResult(store, actionName, args)
           if ((store.$id === 'agentDefinition' || store.$id === 'agentTeamDefinition' || store.$id === 'toolManagement') && result) {
             stateOverlays.set(store.$id, clone(store.$state))

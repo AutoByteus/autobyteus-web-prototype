@@ -1,5 +1,25 @@
 # UI Reference Runbook
 
+## WEB-BASELINE-REFRESH-009 (source pin `73f7432`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4620
+```
+
+- Task summaries: `/workspace` → prototype-workspace → Research Assistant; a Task
+  worker row's grey summary line shows its Task in the right panel's Projects tab.
+- Collapsed left panel: open a run, collapse the left panel; the strip's
+  Workspaces icon is lit and reopens the panel on the run.
+- Skill sources: `/skills` → **Sources** (one input for a folder or a GitHub URL).
+- Definition issues: scenario `definition_issues` (`autobyteus.prototype.scenario`)
+  on `/agents?view=list`, `/agent-teams?view=team-list`, `/agent-orgs?view=org-list`
+  and `/settings?section=agent-packages`.
+- Member defaults: `/chat` → heading switcher → Product Review Team → members.
+- Delegated launches: open the Research Assistant run → **Edit Config**.
+- Signed-out Antigravity: scenario `agy_signed_out`, `/chat` → model menu.
+- Reset: reload the page. Comparison runs set `autobyteus.prototype.designOnlyLayers=off`.
+
 ## WEB-BASELINE-REFRESH-008 (source pin `1cd1a3a`)
 
 ```bash

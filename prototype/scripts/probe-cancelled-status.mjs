@@ -30,7 +30,6 @@ const sel = (selector, index = 0) => async page => { await page.locator(selector
 const hover = selector => async page => { await page.locator(selector).first().hover(); await page.waitForTimeout(400) }
 const rightTab = name => async page => { await page.locator('[data-test="right-side-tab-list"]').getByText(name, { exact: true }).first().click(); await page.waitForTimeout(900) }
 const pick = (selector, value) => async page => { await page.locator(selector).first().selectOption(value); await page.waitForTimeout(800) }
-const DESIGN_ONLY_HIDE = '[data-test="workspace-left-strip-workspaces"],[data-test="workspace-left-strip-workspaces-divider"]{visibility:hidden!important}'
 const PROJECT = '/projects/project-prototype-launch'
 const toggle = (scope = 'project-tasks') => sel(`[data-testid="${scope}-cancelled-toggle"]`)
 const panelTab = rightTab('Projects')
@@ -153,10 +152,7 @@ async function run(base, target, id) {
   }
   await page.waitForTimeout(flow.settleMs ?? 800)
   await page.addStyleTag({ content: style }); await page.waitForTimeout(60)
-  // The narrow strip's Workspaces icon is the accepted design-only change of
-  // collapsed-left-panel-expand-keeps-run (no source equivalent): hidden on the baseline side
-  // only for the screenshot; it sits after every source strip item, so nothing else moves.
-  if (target === 'prototype') { await page.addStyleTag({ content: DESIGN_ONLY_HIDE }); await page.waitForTimeout(60) }
+  // WEB-BASELINE-REFRESH-009: the narrow strip's Workspaces icon is now the source's own (1639cba); nothing is hidden.
   const probe = await probeElements(page)
   const file = resolve(OUT, target, `${id}.png`)
   await page.screenshot({ path: file })

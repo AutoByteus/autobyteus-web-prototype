@@ -1,0 +1,276 @@
+{
+  "generatedAt": "2026-10-13T05:51:03.252Z",
+  "sourceBaseUrl": "http://127.0.0.1:4622",
+  "prototypeBaseUrl": "http://127.0.0.1:4621",
+  "mockBaseUrl": "http://127.0.0.1:4623",
+  "chromiumPath": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "normalizedStyle": "*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}",
+  "rows": [
+    {
+      "row": {
+        "kind": "state",
+        "viewport": "narrow",
+        "locale": "en",
+        "id": "WBR-S013",
+        "path": "/mobile",
+        "scenario": "populated",
+        "mobile": "unpaired"
+      },
+      "source": {
+        "target": "source",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-009/evidence/WEB-BASELINE-REFRESH-009/matrix-s015-built-preview/source/WBR-S013.png",
+        "screenshotSha256": "5ce3e3d6b4816a80687361b252937e919c97d7abc46b5da139a0516926c66a9f",
+        "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nConnect this phone\n\nScan the Phone Access QR from desktop settings. The normal QR journey is one tap.\n\nScan the QR code from Desktop > Nodes > Phone Setup > Phone Access.\n\nNo server URL, port, or token setup is needed in the normal flow.\n\nPaste pairing link\nTHIS DEVICE NAME\nPair this phone\nTroubleshoot connection",
+        "bodyTextSha256": "079c1010aa86118f561a10da2b434a459c6edafbd09ccdd0d8a65cc6853ecaff",
+        "route": "/mobile",
+        "lang": "",
+        "controlsSha256": "9df50e281f61ecede66c0061c7eb75880e3ba466c8928180dd925b5be2258434",
+        "geometrySha256": "d5a2ddc31ecf0538f88db7c6574dca67adc2e2d3247c76bb7bfe808ab477be9a",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "prototype": {
+        "target": "prototype",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-009/evidence/WEB-BASELINE-REFRESH-009/matrix-s015-built-preview/prototype/WBR-S013.png",
+        "screenshotSha256": "e77804a0b9df44382f48d35a9497de516b30072d4c5526374514620f4e7aeb73",
+        "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nConnect this phone\n\nScan the Phone Access QR from desktop settings. The normal QR journey is one tap.\n\nScan the QR code from Desktop > Nodes > Phone Setup > Phone Access.\n\nNo server URL, port, or token setup is needed in the normal flow.\n\nPaste pairing link\nTHIS DEVICE NAME\nPair this phone\nTroubleshoot connection",
+        "bodyTextSha256": "079c1010aa86118f561a10da2b434a459c6edafbd09ccdd0d8a65cc6853ecaff",
+        "route": "/mobile",
+        "lang": "",
+        "controlsSha256": "9df50e281f61ecede66c0061c7eb75880e3ba466c8928180dd925b5be2258434",
+        "geometrySha256": "d5a2ddc31ecf0538f88db7c6574dca67adc2e2d3247c76bb7bfe808ab477be9a",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "comparison": {
+        "routeEqual": true,
+        "bodyTextEqual": true,
+        "controlsEqual": true,
+        "geometryEqual": true,
+        "screenshotEqual": false,
+        "pixels": {
+          "dimensionsEqual": true,
+          "changedPixels": 9464,
+          "totalPixels": 329160,
+          "changedPixelRatio": 0.028751974723538704,
+          "maximumChannelDelta": 2,
+          "changedBox": [
+            9,
+            158,
+            380,
+            743
+          ],
+          "diffPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-009/evidence/WEB-BASELINE-REFRESH-009/matrix-s015-built-preview/diff/WBR-S013.png",
+          "lowDeltaPixels": 9464,
+          "noiseClass": "B-compositing-rounding"
+        },
+        "prototypeBrowserErrors": 0,
+        "prototypeExternalRequests": 0,
+        "pass": true
+      },
+      "geometryDelta": []
+    },
+    {
+      "row": {
+        "kind": "state",
+        "viewport": "narrow",
+        "locale": "en",
+        "id": "WBR-S014",
+        "path": "/mobile",
+        "scenario": "populated",
+        "mobile": "paired"
+      },
+      "source": {
+        "target": "source",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-009/evidence/WEB-BASELINE-REFRESH-009/matrix-s015-built-preview/source/WBR-S014.png",
+        "screenshotSha256": "c5384d223e29a4018a5753aaa95c9855a0d4b697a6b0d6a00ca97c4120256e2b",
+        "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\nPrototype Node\n\nhttp://127.0.0.1:4623\n\nConnected\nRecent work\nSwitch work\nResearch Assistant\nCompare current navigation states\nIdle · prototype-workspace\nProduct Review Team\nReview the current prototype baseline\nInactive · prototype-workspace\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
+        "bodyTextSha256": "492a7ef369a6a7dbb69d8c0d7bb472b5586e1ca7d2d8def4419f7d789b11cd5f",
+        "route": "/mobile",
+        "lang": "",
+        "controlsSha256": "299eabb22c9020b72e756d7fdd81feb94e8b139cb768f6984740d00ab96b6ede",
+        "geometrySha256": "9818db4cf224eb2ef7c68b104f2a8acdeb1fb0353c769a7dc87c18b6fc472e00",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "prototype": {
+        "target": "prototype",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-009/evidence/WEB-BASELINE-REFRESH-009/matrix-s015-built-preview/prototype/WBR-S014.png",
+        "screenshotSha256": "b5e8f0700bfc3ef31e449763619c9109b32a151c6260837d3937ec66c63a14ee",
+        "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\nPrototype Node\n\nhttp://127.0.0.1:4623\n\nConnected\nRecent work\nSwitch work\nResearch Assistant\nCompare current navigation states\nIdle · prototype-workspace\nProduct Review Team\nReview the current prototype baseline\nInactive · prototype-workspace\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
+        "bodyTextSha256": "492a7ef369a6a7dbb69d8c0d7bb472b5586e1ca7d2d8def4419f7d789b11cd5f",
+        "route": "/mobile",
+        "lang": "",
+        "controlsSha256": "299eabb22c9020b72e756d7fdd81feb94e8b139cb768f6984740d00ab96b6ede",
+        "geometrySha256": "9818db4cf224eb2ef7c68b104f2a8acdeb1fb0353c769a7dc87c18b6fc472e00",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "comparison": {
+        "routeEqual": true,
+        "bodyTextEqual": true,
+        "controlsEqual": true,
+        "geometryEqual": true,
+        "screenshotEqual": false,
+        "pixels": {
+          "dimensionsEqual": true,
+          "changedPixels": 7058,
+          "totalPixels": 329160,
+          "changedPixelRatio": 0.021442459594118363,
+          "maximumChannelDelta": 2,
+          "changedBox": [
+            9,
+            24,
+            380,
+            769
+          ],
+          "diffPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-009/evidence/WEB-BASELINE-REFRESH-009/matrix-s015-built-preview/diff/WBR-S014.png",
+          "lowDeltaPixels": 7058,
+          "noiseClass": "B-compositing-rounding"
+        },
+        "prototypeBrowserErrors": 0,
+        "prototypeExternalRequests": 0,
+        "pass": true
+      },
+      "geometryDelta": []
+    },
+    {
+      "row": {
+        "kind": "state",
+        "viewport": "narrow",
+        "locale": "en",
+        "id": "WBR-S015",
+        "path": "/mobile?unsupported=desktopSettings",
+        "scenario": "populated",
+        "mobile": "paired"
+      },
+      "source": {
+        "target": "source",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-009/evidence/WEB-BASELINE-REFRESH-009/matrix-s015-built-preview/source/WBR-S015.png",
+        "screenshotSha256": "5eba1acf7565100ac98e4f60ee81d37dbae0e311fe811ba707c65c5570cb965a",
+        "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\nPrototype Node\n\nhttp://127.0.0.1:4623\n\nConnected\n\nUnsupported on phone\n\nDesktop settings are managed from the desktop app. Phone Access exposes only phone connection controls.\n\nRecent work\nSwitch work\nResearch Assistant\nCompare current navigation states\nIdle · prototype-workspace\nProduct Review Team\nReview the current prototype baseline\nInactive · prototype-workspace\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
+        "bodyTextSha256": "91fc3af00adc554d2794c7c2e44e0a37b6c8e0b268801410e8c567b80d3ad03e",
+        "route": "/mobile?unsupported=desktopSettings",
+        "lang": "",
+        "controlsSha256": "299eabb22c9020b72e756d7fdd81feb94e8b139cb768f6984740d00ab96b6ede",
+        "geometrySha256": "8ca10b29b709e86c2148b167616bb4e97c4bda9a90806077fdc986d2024cdfaf",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "prototype": {
+        "target": "prototype",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-009/evidence/WEB-BASELINE-REFRESH-009/matrix-s015-built-preview/prototype/WBR-S015.png",
+        "screenshotSha256": "99de8110b11ce16cd2a5803a895423da33363425ef09b8923e2d53e736e7a5de",
+        "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\nPrototype Node\n\nhttp://127.0.0.1:4623\n\nConnected\n\nUnsupported on phone\n\nDesktop settings are managed from the desktop app. Phone Access exposes only phone connection controls.\n\nRecent work\nSwitch work\nResearch Assistant\nCompare current navigation states\nIdle · prototype-workspace\nProduct Review Team\nReview the current prototype baseline\nInactive · prototype-workspace\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
+        "bodyTextSha256": "91fc3af00adc554d2794c7c2e44e0a37b6c8e0b268801410e8c567b80d3ad03e",
+        "route": "/mobile?unsupported=desktopSettings",
+        "lang": "",
+        "controlsSha256": "299eabb22c9020b72e756d7fdd81feb94e8b139cb768f6984740d00ab96b6ede",
+        "geometrySha256": "8ca10b29b709e86c2148b167616bb4e97c4bda9a90806077fdc986d2024cdfaf",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "comparison": {
+        "routeEqual": true,
+        "bodyTextEqual": true,
+        "controlsEqual": true,
+        "geometryEqual": true,
+        "screenshotEqual": false,
+        "pixels": {
+          "dimensionsEqual": true,
+          "changedPixels": 7766,
+          "totalPixels": 329160,
+          "changedPixelRatio": 0.02359338923319966,
+          "maximumChannelDelta": 2,
+          "changedBox": [
+            9,
+            24,
+            380,
+            808
+          ],
+          "diffPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-009/evidence/WEB-BASELINE-REFRESH-009/matrix-s015-built-preview/diff/WBR-S015.png",
+          "lowDeltaPixels": 7766,
+          "noiseClass": "B-compositing-rounding"
+        },
+        "prototypeBrowserErrors": 0,
+        "prototypeExternalRequests": 0,
+        "pass": true
+      },
+      "geometryDelta": []
+    },
+    {
+      "row": {
+        "kind": "state",
+        "viewport": "narrow",
+        "locale": "en",
+        "id": "WBR-S016",
+        "path": "/mobile",
+        "scenario": "permission_denied",
+        "mobile": "paired"
+      },
+      "source": {
+        "target": "source",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-009/evidence/WEB-BASELINE-REFRESH-009/matrix-s015-built-preview/source/WBR-S016.png",
+        "screenshotSha256": "cdc50e1529185b75e992bb78eaf7bcb0ef3f0629a7676a8d62d2c598c5abe136",
+        "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\n127.0.0.1:4623\n\nhttp://127.0.0.1:4623\n\nOffline\n\nCannot reach AutoByteus desktop\n\nYour phone cannot reach the desktop node over the current private network.\n\nCheck that AutoByteus is running and your LAN, VPN, or tailnet is connected.\n\nRecent work\nSwitch work\nNo recent runs yet. Choose an agent, team, or workspace to start.\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
+        "bodyTextSha256": "9138c482c1d1b6c4d7ab50eb7a9b3019675cc64a9ece2b791accce08079aa29f",
+        "route": "/mobile",
+        "lang": "",
+        "controlsSha256": "6dcc0ad5fda286f79f99eae41f7342aecdd91a61a4316a36f74d6821473005d1",
+        "geometrySha256": "c9d7df5e3520894e8d676ba020f92a7889e7a2b2f42173997f0aa57502cba528",
+        "browserErrors": [
+          "console: Failed to load resource: the server responded with a status of 403 (Forbidden)",
+          "console: Failed to load resource: the server responded with a status of 403 (Forbidden)",
+          "console: Failed to load resource: the server responded with a status of 403 (Forbidden)",
+          "console: Failed to load resource: the server responded with a status of 403 (Forbidden)",
+          "console: Failed to load resource: the server responded with a status of 403 (Forbidden)",
+          "console: Failed to load resource: the server responded with a status of 403 (Forbidden)",
+          "console: Failed to fetch agent definitions: ApolloError: Response not successful: Received status code 403\n    at new ApolloError (http://127.0.0.1:4622/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/errors/index.js?v=af",
+          "console: Failed to fetch agent team definitions: ApolloError: Response not successful: Received status code 403\n    at new ApolloError (http://127.0.0.1:4622/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/errors/index.js",
+          "console: Failed to fetch all workspace metadata: ApolloError: Response not successful: Received status code 403\n    at new ApolloError (http://127.0.0.1:4622/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10.0.1_g_0d5b6d5e3456a68de3f99be644684151/node_modules/@apollo/client/errors/index.js"
+        ],
+        "externalRequests": []
+      },
+      "prototype": {
+        "target": "prototype",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-009/evidence/WEB-BASELINE-REFRESH-009/matrix-s015-built-preview/prototype/WBR-S016.png",
+        "screenshotSha256": "b3500ba3dfd4822c26cdb9ced028bb73b5de44da2cc1f4af62a6e7377b7eabc6",
+        "bodyText": "AUTOBYTEUS REMOTE ACCESS\n\nAutoByteus\nRefresh\n\n127.0.0.1:4623\n\nhttp://127.0.0.1:4623\n\nOffline\n\nCannot reach AutoByteus desktop\n\nYour phone cannot reach the desktop node over the current private network.\n\nCheck that AutoByteus is running and your LAN, VPN, or tailnet is connected.\n\nRecent work\nSwitch work\nNo recent runs yet. Choose an agent, team, or workspace to start.\n\nChoose work\n\nRecent, Agents, Teams, Workspaces\n\nFiles\n\nBrowse current workspace\n\nTroubleshoot\n\nConnection diagnostics\n\nUnpair\n\nRemove this phone",
+        "bodyTextSha256": "9138c482c1d1b6c4d7ab50eb7a9b3019675cc64a9ece2b791accce08079aa29f",
+        "route": "/mobile",
+        "lang": "",
+        "controlsSha256": "6dcc0ad5fda286f79f99eae41f7342aecdd91a61a4316a36f74d6821473005d1",
+        "geometrySha256": "c9d7df5e3520894e8d676ba020f92a7889e7a2b2f42173997f0aa57502cba528",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "comparison": {
+        "routeEqual": true,
+        "bodyTextEqual": true,
+        "controlsEqual": true,
+        "geometryEqual": true,
+        "screenshotEqual": false,
+        "pixels": {
+          "dimensionsEqual": true,
+          "changedPixels": 8197,
+          "totalPixels": 329160,
+          "changedPixelRatio": 0.024902782841171468,
+          "maximumChannelDelta": 2,
+          "changedBox": [
+            9,
+            24,
+            380,
+            741
+          ],
+          "diffPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-009/evidence/WEB-BASELINE-REFRESH-009/matrix-s015-built-preview/diff/WBR-S016.png",
+          "lowDeltaPixels": 8197,
+          "noiseClass": "B-compositing-rounding"
+        },
+        "prototypeBrowserErrors": 0,
+        "prototypeExternalRequests": 0,
+        "pass": true
+      },
+      "geometryDelta": []
+    }
+  ]
+}
