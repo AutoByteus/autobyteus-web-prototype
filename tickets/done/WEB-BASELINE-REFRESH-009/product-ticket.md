@@ -56,7 +56,7 @@
 - Runtime isolation record: the Bootstrapper picks free ports. Ports 4651 (`task-keys-and-dependencies`
   review) and 3210 are not to be used.
 - Cleanup result or blocker: `Pending`
-- Ticket folder: `tickets/in-progress/WEB-BASELINE-REFRESH-009/`
+- Ticket folder: `tickets/done/WEB-BASELINE-REFRESH-009/`
 
 ## Outcome And Handoff
 
