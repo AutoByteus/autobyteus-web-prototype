@@ -52,10 +52,10 @@
   - The Bootstrapper's evidence: flows 56/56; regressions pass; matrix 103/105 (two rows without a visible
     difference, explained); built preview 32/32; typecheck, lint, test 16/16, boundaries 13/13, build.
   - The pin is now single: `73f743211c8b86c704acb33f216154e42b7a67b8`.
-- Integration target and result: `personal`, `Pending`
+- Integration target and result: `personal`, `Completed`. Fast-forward `5f5cdf8..0174b79`; the canonical checkout was fast-forwarded; local = origin. The default entry was checked before integration on the same tree (the PTM run and the tree's Task summaries).
 - Runtime isolation record: the Bootstrapper picks free ports. Ports 4651 (`task-keys-and-dependencies`
   review) and 3210 are not to be used.
-- Cleanup result or blocker: `Pending`
+- Cleanup result or blocker: `Completed`. The check server on port 4652 was stopped; the ticket worktree and its local branch are removed after this record.
 - Ticket folder: `tickets/done/WEB-BASELINE-REFRESH-009/`
 
 ## Outcome And Handoff
