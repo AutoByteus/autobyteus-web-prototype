@@ -10,7 +10,7 @@
   - the Task detail (page and tab);
   - the New / Edit task page;
   - the Workspaces-tree Task summary approved in `delegated-copy-task-locator`.
-- Status: `Awaiting User Review`
+- Status: `Baseline Needed` (paused for `WEB-BASELINE-REFRESH-009`; round 1 stays reviewable on port 4651)
 - Requester: Project Task Manager (`/project_task_manager`, AgentRun
   `project_task_manager_7c8dce0c4a8b44f88e776a83809dee03`) for the user, 2026-10-11.
 - Related requirements revision: none (design first; a separate implementation Task follows approval).
@@ -169,7 +169,14 @@ One recommended design.
 
 - Completed behavior and evidence: round 1 ready for review
 - Remaining product decisions: DEC-005 (editing in the app); key wording and placement on review
-- Next expected action: user reviews round 1
+- Next expected action:
+  1. The Bootstrapper refreshes the baseline to `autobyteus-web@73f7432` (`WEB-BASELINE-REFRESH-009`,
+     requested 2026-10-13 after the user said "I guess the baseline maybe need to be updated").
+  2. Product accepts and integrates the refresh.
+  3. This branch is reconciled onto it. The source now implements the Task summary on copy rows
+     (`TaskWorkerTaskSummary.vue`) and the Projects-tab locate steps, which this design extends.
+  4. Round 1 is rebuilt on the source's components and reviewed again.
+  Meanwhile the user can look at round 1 as it is.
 - Handoff outcome from `get_handoff_rules`: pending
 - Matched recipient address, when a rule applies: pending
 - Return context when no matching rule applies: `/project_task_manager`
