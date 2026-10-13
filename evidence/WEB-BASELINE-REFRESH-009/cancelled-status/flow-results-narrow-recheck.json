@@ -1,0 +1,337 @@
+{
+  "generatedAt": "2026-10-13T05:47:32.406Z",
+  "results": [
+    {
+      "id": "CAN-070",
+      "title": "Project board (390x844): toggle on, single column",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "toggles": [
+          {
+            "testid": "project-tasks-cancelled-toggle",
+            "ariaPressed": "true",
+            "title": "Hide cancelled tasks",
+            "text": "Cancelled (1)",
+            "rect": [
+              128.4,
+              312,
+              134.6,
+              44
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(248, 250, 252)",
+              "color": "rgb(51, 65, 85)",
+              "border-top-color": "rgb(203, 213, 225)",
+              "border-top-width": "1px",
+              "border-radius": "8px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "padding-right": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "min-height": "44px",
+              "gap": "6px",
+              "margin-left": "62.3906px",
+              "grid-template-columns": "none",
+              "outline-style": "solid"
+            }
+          }
+        ],
+        "refresh": [
+          {
+            "testid": "project-tasks-refresh",
+            "ariaPressed": null,
+            "title": null,
+            "text": "Refresh",
+            "rect": [
+              275,
+              312,
+              99,
+              44
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(51, 65, 85)",
+              "border-top-color": "rgb(203, 213, 225)",
+              "border-top-width": "1px",
+              "border-radius": "8px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "padding-right": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "min-height": "44px",
+              "gap": "6px",
+              "margin-left": "0px",
+              "grid-template-columns": "none",
+              "outline-style": "none"
+            }
+          }
+        ],
+        "grids": [
+          {
+            "testid": "project-task-columns",
+            "ariaPressed": null,
+            "title": null,
+            "text": "To Do\n1\nOutline the launch checklist.\nIn Progress\n2\nReview the synthetic navigat",
+            "rect": [
+              66,
+              436,
+              308,
+              701
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "padding-right": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "min-height": "0px",
+              "gap": "16px",
+              "margin-left": "0px",
+              "grid-template-columns": "308px",
+              "outline-style": "none"
+            }
+          }
+        ],
+        "lanes": [
+          {
+            "testid": "project-task-column-TODO",
+            "text": "To Do\n1\nOutline the launch checklist.",
+            "rect": [
+              66,
+              436,
+              308,
+              102
+            ]
+          },
+          {
+            "testid": "project-task-column-IN_PROGRESS",
+            "text": "In Progress\n2\nReview the synthetic navigation baseline.\nDW\ndocumentation writer\n",
+            "rect": [
+              66,
+              554,
+              308,
+              227
+            ]
+          },
+          {
+            "testid": "project-task-column-DONE",
+            "text": "Done\n1\nPublish the deterministic evidence summary.\nrelease team\nOffline",
+            "rect": [
+              66,
+              797,
+              308,
+              162
+            ]
+          },
+          {
+            "testid": "project-task-column-CANCELLED",
+            "text": "Cancelled\n1\nRetire the unused synthetic welcome banner.\nDW\ndocumentation writer\n",
+            "rect": [
+              66,
+              975,
+              308,
+              162
+            ]
+          }
+        ],
+        "pills": [],
+        "noMatch": [],
+        "focused": "project-tasks-cancelled-toggle"
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch",
+        "/projects/project-prototype-launch"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "CAN-071",
+      "title": "Temp tasks (390x844): toggle on, single column",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "toggles": [
+          {
+            "testid": "temp-tasks-cancelled-toggle",
+            "ariaPressed": "true",
+            "title": "Hide cancelled tasks",
+            "text": "Cancelled (1)",
+            "rect": [
+              128.4,
+              252,
+              134.6,
+              44
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(248, 250, 252)",
+              "color": "rgb(51, 65, 85)",
+              "border-top-color": "rgb(203, 213, 225)",
+              "border-top-width": "1px",
+              "border-radius": "8px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "padding-right": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "min-height": "44px",
+              "gap": "6px",
+              "margin-left": "62.3906px",
+              "grid-template-columns": "none",
+              "outline-style": "solid"
+            }
+          }
+        ],
+        "refresh": [
+          {
+            "testid": "temp-tasks-refresh",
+            "ariaPressed": null,
+            "title": null,
+            "text": "Refresh",
+            "rect": [
+              275,
+              252,
+              99,
+              44
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(51, 65, 85)",
+              "border-top-color": "rgb(203, 213, 225)",
+              "border-top-width": "1px",
+              "border-radius": "8px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "padding-right": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "min-height": "44px",
+              "gap": "6px",
+              "margin-left": "0px",
+              "grid-template-columns": "none",
+              "outline-style": "none"
+            }
+          }
+        ],
+        "grids": [
+          {
+            "testid": "temp-task-lanes",
+            "ariaPressed": null,
+            "title": null,
+            "text": "Open\n2\nCheck the synthetic glossary for duplicates.\nCollect the changelog links ",
+            "rect": [
+              66,
+              320,
+              308,
+              519
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "padding-right": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "min-height": "0px",
+              "gap": "16px",
+              "margin-left": "0px",
+              "grid-template-columns": "308px",
+              "outline-style": "none"
+            }
+          }
+        ],
+        "lanes": [
+          {
+            "testid": "temp-task-lane-open",
+            "text": "Open\n2\nCheck the synthetic glossary for duplicates.\nCollect the changelog links ",
+            "rect": [
+              66,
+              320,
+              308,
+              239
+            ]
+          },
+          {
+            "testid": "temp-task-lane-done",
+            "text": "Done\n0\n\nNo tasks",
+            "rect": [
+              66,
+              575,
+              308,
+              122
+            ]
+          },
+          {
+            "testid": "temp-task-lane-cancelled",
+            "text": "Cancelled\n1\nDraft a synthetic FAQ for the paused pilot.",
+            "rect": [
+              66,
+              713,
+              308,
+              126
+            ]
+          }
+        ],
+        "pills": [],
+        "noMatch": [],
+        "focused": "temp-tasks-cancelled-toggle"
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/temp-tasks",
+        "/projects/temp-tasks"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

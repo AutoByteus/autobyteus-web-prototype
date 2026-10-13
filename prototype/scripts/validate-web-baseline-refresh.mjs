@@ -78,6 +78,13 @@ const stateRows = [
   { id: 'WBR-S017', path: '/skills', scenario: 'skill_name_issues' },
   // WEB-BASELINE-REFRESH-004: Antigravity runtime available (locked auto-approve).
   { id: 'WBR-S018', path: '/chat', scenario: 'agy_runtime' },
+  // WEB-BASELINE-REFRESH-009 (f7fcf90, bd4c637): load-issue badges, problem notices, package auto-refresh states.
+  { id: 'WBR-S019', path: '/agents?view=list', scenario: 'definition_issues' },
+  { id: 'WBR-S020', path: '/agent-teams?view=team-list', scenario: 'definition_issues' },
+  { id: 'WBR-S021', path: '/agent-orgs?view=org-list', scenario: 'definition_issues' },
+  { id: 'WBR-S022', path: '/settings?section=agent-packages', scenario: 'definition_issues' },
+  // WEB-BASELINE-REFRESH-009 (87b246c): the Antigravity CLI listed but signed out.
+  { id: 'WBR-S023', path: '/chat', scenario: 'agy_signed_out' },
 ].map(row => ({ kind: 'state', viewport: 'desktop', locale: 'en', ...row }))
 
 // Proportionate coverage: every route in the primary configuration (desktop,

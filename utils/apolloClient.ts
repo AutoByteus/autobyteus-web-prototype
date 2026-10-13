@@ -52,9 +52,15 @@ const fixtureState = (): Record<string, any> => {
   return localFixtureState
 }
 
+// WEB-BASELINE-REFRESH-009: a local answer arrives on a later task, as a network response does, so the
+// source's busy states (a disabled Reload button, a disabled add input) render before the answer and
+// focus moves exactly as in the source (3fb98d2, f7fcf90).
+const nextTask = () => new Promise<void>(done => setTimeout(done, 0))
+
 const resolveLocally = async (request: OperationRequest = {}) => {
   const name = queryOperationNameOf(request.query)
   if (!name) return { data: {} }
+  await nextTask()
   // Mirror the observation node's deterministic failure/latency scenarios.
   const scenario = localScenario()
   if (scenario === 'loading') await new Promise(done => setTimeout(done, 1500))
@@ -90,13 +96,15 @@ const resolveLocally = async (request: OperationRequest = {}) => {
 // deterministic synthetic results; nothing is started or persisted.
 // PrepareAgentRun backs the Chat first send (57df63f); CreateWorkspace and the
 // Project/Task mutations back the Projects pages (0a32261); the skill-source
-// mutations back the Skill Sources dialog (4dee901).
-const LOCAL_MUTATIONS = new Set(['ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
+// mutations back the Skill Sources dialog (4dee901); ReloadAgentPackageDefinitions backs the
+// Agents, Teams and Orgs Reload buttons (f7fcf90).
+const LOCAL_MUTATIONS = new Set(['ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
 
 const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const definition = request.mutation?.definitions?.find((entry: any) => entry.kind === 'OperationDefinition')
   const name = definition?.name?.value
   if (!name || !LOCAL_MUTATIONS.has(name)) return { data: {} }
+  await nextTask()
   const state = fixtureState()
   if (name === 'CreateAgentOrgRun') return { data: recordOrgLaunch(request.variables || {}) }
   if (name === 'TerminateAgentOrgRun') return { data: recordOrgTermination(request.variables || {}) }

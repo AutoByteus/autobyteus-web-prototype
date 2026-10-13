@@ -3,12 +3,14 @@
 // Background Tasks rows, and by -004 with Projects pages, the live-run `@` menu and Agent-run task
 // rows, and by -008 with the Projects tab, Task roots, Temp tasks, run settings, Draft rows, group
 // archive and the preserved Reconnect design, and by delegated-copy-task-locator with the Cancelled
-// Task status lanes): exercises the built preview
+// Task status lanes, and by WEB-BASELINE-REFRESH-009 with Task summaries, definition issues,
+// Reload, the skill sources dialog, runtime reasons, member defaults, delegated launches and the
+// token meter): exercises the built preview
 // (PORT=<port> node .output/server/index.mjs; BASE/OUT override the defaults) with the pinned source and the
 // observation node stopped, recording browser errors and non-local requests.
 import { chromium } from 'playwright-core'
 import { mkdir, writeFile } from 'node:fs/promises'
-const OUT = process.env.OUT || 'evidence/WEB-BASELINE-REFRESH-008/independent-preview'
+const OUT = process.env.OUT || 'evidence/WEB-BASELINE-REFRESH-009/independent-preview'
 const BASE = process.env.BASE || 'http://127.0.0.1:4621'
 const PORT = new URL(BASE).port
 await mkdir(OUT, { recursive: true })
@@ -71,5 +73,16 @@ await run('IND-022-reconnect-preserved', '/workspace', async p => { await p.getB
 // delegated-copy-task-locator (ff227eb, Projects Task-status surfaces): the Cancelled toggle and lanes
 await run('IND-023-project-cancelled-lane', '/projects/project-prototype-launch', async p => { await p.getByTestId('project-tasks-cancelled-toggle').click(); await p.getByTestId('project-task-column-CANCELLED').waitFor({ timeout: 5000 }); await p.getByText('Retire the unused synthetic welcome banner.').first().click(); await p.getByTestId('task-page-status').getByText('Cancelled', { exact: true }).waitFor({ timeout: 5000 }) })
 await run('IND-024-temp-cancelled-lane', '/workspace', async p => { await rightTab(p, 'Projects'); await p.getByTestId('projects-panel-picker-select').selectOption('temp'); await p.getByTestId('temp-tasks-cancelled-toggle').click(); await p.getByTestId('temp-task-lane-cancelled').waitFor({ timeout: 5000 }); await p.getByText('Draft a synthetic FAQ for the paused pilot.').first().click(); await p.getByTestId('projects-panel-task-status').getByText('Cancelled', { exact: true }).waitFor({ timeout: 5000 }) })
+// WEB-BASELINE-REFRESH-009 (73f7432)
+const withScenario = name => async p => { await p.evaluate(value => { localStorage.setItem('autobyteus.prototype.scenario', value) }, name); await p.reload(); await p.waitForTimeout(2500) }
+const openTree = async p => { await openWorkspace(p); await p.getByText('Research Assistant', { exact: true }).first().click(); await p.waitForTimeout(1500) }
+await run('IND-025-task-summary-locate', '/workspace', async p => { await openTree(p); await p.locator('[data-test="workspace-task-worker-task-summary"]', { hasText: 'Review the synthetic navigation baseline.' }).first().click(); await p.waitForFunction(() => document.activeElement?.closest('[data-testid="project-task-row-task-review"]'), null, { timeout: 5000 }) })
+await run('IND-026-definition-issues', '/agents?view=list', async p => { await withScenario('definition_issues')(p); await p.locator('[data-testid="definition-load-issue"] > summary').first().click(); await p.getByTestId('definition-problems-notice').waitFor({ timeout: 5000 }) })
+await run('IND-027-reload-agents', '/agents?view=list', async p => { await p.getByRole('button', { name: /^Reload$/ }).click(); await p.getByRole('button', { name: /^Reload$/ }).waitFor({ timeout: 5000 }) })
+await run('IND-028-skill-source-add', '/skills', async p => { await p.getByRole('button', { name: 'Sources', exact: true }).click(); await p.locator('#skill-source-input').fill('/synthetic/more-skills'); await p.locator('[data-testid="skill-sources-dialog"] button[type="submit"]').click(); await p.getByText('/synthetic/more-skills').first().waitFor({ timeout: 5000 }) })
+await run('IND-029-agy-signed-out', '/chat', async p => { await withScenario('agy_signed_out')(p); await p.getByRole('button', { name: /^Model: / }).click(); await p.locator('[data-test="chat-runtime-antigravity_cli"] [data-test="chat-runtime-reason"]').waitFor({ timeout: 5000 }) })
+await run('IND-030-team-member-defaults', '/agent-teams?view=team-list', async p => { await p.getByRole('button', { name: 'Run', exact: true }).first().click(); await p.waitForTimeout(1200); await p.locator('[data-test="run-members-open"]').click(); await p.locator('[data-test="run-member-launch-note"]').first().waitFor({ timeout: 5000 }) })
+await run('IND-031-delegated-launches', '/workspace', async p => { await openTree(p); await p.getByText('Compare current navigation states', { exact: false }).first().click(); await p.waitForTimeout(1500); await p.getByRole('button', { name: 'Edit Config' }).click(); await p.locator('[data-test="run-delegated-launches"]').waitFor({ timeout: 5000 }) })
+await run('IND-032-token-compaction-marker', '/chat', async p => { await composer(p).click(); await p.keyboard.type('Summarize the synthetic baseline.'); await p.keyboard.press('Enter'); await p.waitForTimeout(2500); await p.locator('[data-test="right-side-tab-list"]').getByText(/^Token/).first().click(); await p.locator('[data-test="context-compaction-marker"]').waitFor({ timeout: 5000 }) })
 await writeFile(`${OUT}/results.json`, JSON.stringify({ generatedAt: new Date().toISOString(), base: BASE, note: 'Built preview (node .output/server/index.mjs) with the pinned source and the observation node stopped.', results }, null, 2))
 await b.close()

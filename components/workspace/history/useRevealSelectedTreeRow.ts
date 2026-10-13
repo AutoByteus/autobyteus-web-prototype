@@ -1,74 +1,84 @@
-import { onBeforeUnmount, onMounted, type Ref } from 'vue';
+import { onBeforeUnmount, onMounted, watch, type Ref } from 'vue';
 
-/** How long the panel waits for the open run's row to render after it appears. */
-const REVEAL_WAIT_MS = 3000;
-/** The open run's row: agent, task child, Team member (incl. sub-team) or Org row. Deepest wins. */
+/** How long after the panel appears its open run's row may still be brought into view. */
+export const REVEAL_WINDOW_MS = 3000;
+/** Selected rows (Agent run, task child, Team member incl. sub-team, Org row); the last one is the deepest. */
 const SELECTED_ROW_SELECTOR = '[aria-current="true"], [aria-selected="true"]';
+/** The panel's Workspaces section, focused when the panel was opened from the strip's Workspaces icon. */
+const RUN_HISTORY_SECTION_SELECTOR = '[data-test="app-left-panel-run-history"]';
+const USER_TAKEOVER_EVENTS = ['wheel', 'pointerdown', 'keydown'] as const;
 
 /**
- * collapsed-left-panel-expand-keeps-run (design): when the left panel appears (docked expand, drawer
- * open, app start) and a run is open, its row is scrolled into view once its ancestors have opened.
- * A row that is already fully visible does not move; otherwise it is centred so its siblings show.
- * The first user scroll, wheel or press in the tree cancels the pending reveal. When the panel was
- * opened from the strip's Workspaces icon, keyboard focus lands on that row.
+ * When the tree panel appears (docked expand, drawer open, app start), brings the open run's row
+ * into view as its rows load: a row that is fully visible does not move; otherwise it is centred,
+ * instantly. If focus is on the Workspaces section, it moves onto the row. The window closes at the
+ * first wheel, press or key in the tree, after REVEAL_WINDOW_MS, or when the panel unmounts.
+ * It only scrolls and focuses; expansion and selection belong to the tree state.
+ *
+ * `runShown` is the shell's "a run is shown in the center" signal (`isWorkspacesActive`). Off a run
+ * (New chat, other pages) a row can still carry an earlier selection; it is then neither scrolled to
+ * nor focused, and focus stays on the Workspaces section (REQ-006, REQ-009).
  */
-export const useRevealSelectedTreeRow = (container: Ref<HTMLElement | null>): void => {
+export const useRevealSelectedTreeRow = (
+  container: Ref<HTMLElement | null>,
+  runShown: Readonly<Ref<boolean>>,
+): void => {
   let observer: MutationObserver | null = null;
   let deadline: ReturnType<typeof setTimeout> | null = null;
   let frame = 0;
+  let listeningOn: HTMLElement | null = null;
 
-  const stop = (): void => {
+  const close = (): void => {
     observer?.disconnect();
     observer = null;
     if (deadline !== null) clearTimeout(deadline);
     deadline = null;
     if (frame) cancelAnimationFrame(frame);
     frame = 0;
-    const el = container.value;
-    if (!el) return;
-    el.removeEventListener('wheel', stop);
-    el.removeEventListener('pointerdown', stop);
-    el.removeEventListener('keydown', stop);
+    USER_TAKEOVER_EVENTS.forEach((type) => listeningOn?.removeEventListener(type, close));
+    listeningOn = null;
   };
 
-  const selectedRow = (el: HTMLElement): HTMLElement | null => {
-    const rows = el.querySelectorAll<HTMLElement>(SELECTED_ROW_SELECTOR);
-    return rows.length ? rows[rows.length - 1] : null;
-  };
-
-  const tryReveal = (): void => {
+  const reveal = (): void => {
     frame = 0;
-    const el = container.value;
-    if (!el) return;
-    const row = selectedRow(el);
-    if (!row) return;
-    const box = el.getBoundingClientRect();
+    if (!runShown.value) return;
+    const scroller = container.value;
+    const rows = scroller?.querySelectorAll<HTMLElement>(SELECTED_ROW_SELECTOR);
+    const row = rows?.length ? rows[rows.length - 1] : null;
+    if (!scroller || !row) return;
+    const box = scroller.getBoundingClientRect();
     const rect = row.getBoundingClientRect();
     if (rect.top < box.top || rect.bottom > box.bottom) {
-      el.scrollTop += (rect.top - box.top) - (box.height - rect.height) / 2;
+      scroller.scrollTop += (rect.top - box.top) - (box.height - rect.height) / 2;
     }
-    // Opened from the strip's Workspaces icon (focus is on the Workspaces section): focus the run's row.
-    if (document.activeElement?.matches('[data-test="app-left-panel-run-history"]')) {
+    if (document.activeElement?.matches(RUN_HISTORY_SECTION_SELECTOR)) {
       row.focus({ preventScroll: true });
     }
-    // Keeps watching until the deadline: rows that load later above it may push it out again.
+    // The window stays open: rows that load later above this one can push it out again.
   };
 
   const schedule = (): void => {
-    if (!frame) frame = requestAnimationFrame(tryReveal);
+    if (!frame) frame = requestAnimationFrame(reveal);
   };
 
+  // A run that becomes shown during the window (e.g. its context registers) is revealed then.
+  watch(runShown, (shown) => { if (shown && observer) schedule(); });
+
   onMounted(() => {
-    const el = container.value;
-    if (!el) return;
-    el.addEventListener('wheel', stop, { passive: true });
-    el.addEventListener('pointerdown', stop);
-    el.addEventListener('keydown', stop);
+    const scroller = container.value;
+    if (!scroller) return;
+    listeningOn = scroller;
+    USER_TAKEOVER_EVENTS.forEach((type) => scroller.addEventListener(type, close, { passive: true }));
     observer = new MutationObserver(schedule);
-    observer.observe(el, { subtree: true, childList: true, attributes: true, attributeFilter: ['aria-current', 'aria-selected'] });
-    deadline = setTimeout(stop, REVEAL_WAIT_MS);
+    observer.observe(scroller, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ['aria-current', 'aria-selected'],
+    });
+    deadline = setTimeout(close, REVEAL_WINDOW_MS);
     schedule();
   });
 
-  onBeforeUnmount(stop);
+  onBeforeUnmount(close);
 };

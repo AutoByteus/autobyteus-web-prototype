@@ -126,3 +126,40 @@ view and `taskStatusPresentation.ts` run unchanged:
   Task stores still load through the source code.
 - Status changes stay agent-only, so the board changes status only through the
   silent change feed. The UI offers no control that sets status.
+
+## Whole-frontend refresh to `73f7432` (WEB-BASELINE-REFRESH-009)
+
+The mixed pin ends: every surface follows `origin/personal@73f7432`. The source
+shipped three accepted design-only changes (delegated-copy Task locator,
+collapsed-left-panel Workspaces strip icon, skill sources dialog). Their source
+versions now run unchanged; the design-only code was removed. New server data is
+answered from invented fixtures:
+
+- `GetTaskWorkerTasks`: a Task worker's current Task is the open Task it is the
+  root of (the latest one when none is open), computed from the in-memory
+  Project and Temp task copy. The Workspaces tree's Task summaries and "Show Task
+  in Projects" run the source's `taskWorkerTaskStore` and `taskLocatorStore`.
+- `GetDefinitionProblems`, `loadIssue` / `loadIssues` and
+  `AgentPackage.autoRefresh`: empty in the default scenarios; the
+  `definition_issues` scenario has invented parse errors, a missing package
+  folder, a Team member with no working version and unusable definitions with a
+  dependency chain. `ReloadAgentPackageDefinitions` answers `true`.
+- The `/ws/agent-package-definitions` feed opens on the local
+  `PrototypeWebSocket` and stays silent, like `/ws/projects`.
+- Member launch defaults: the Documentation Writer's default names a model the
+  node does not offer, so a fresh Team start shows its "can't be used" note.
+- Delegated launches: the stored Agent run's collaborators and Task workers carry
+  launch sources (Agent default, Team default, Inherited with a skipped default,
+  and Source not recorded).
+- Token meter summaries report an auto-compaction threshold. The "Compacted —
+  updates on the next model call" note is live-session state; no scripted
+  compaction plays in the baseline (comparison scripts apply it through the
+  source's own store on both sides).
+- `agy_signed_out`: the Antigravity CLI is listed but unavailable with a
+  sign-in reason.
+
+Design-only layers kept (off with `autobyteus.prototype.designOnlyLayers=off`):
+Reconnect (`prototype/agent-reconnect/`), the delegated-copy example data
+(`prototype/delegated-copy-tasks/`, `plugins/98.delegated-copy-tasks.client.ts`;
+its Tasks now answer `GetTaskWorkerTasks` through the same rule), and the skill
+sources example data (`prototype/skill-sources/`).

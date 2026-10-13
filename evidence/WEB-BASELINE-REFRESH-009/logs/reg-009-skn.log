@@ -1,0 +1,8 @@
+PASS SKN-008 Skill sources: Try again on a source whose check failed text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-009 Skill sources: Update opens the whole-source confirmation text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-010 Skill sources: confirm the update (up to date, success notice) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-011 Skill sources: Remove a GitHub source opens the delete confirmation text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-012 Skill sources: confirm removing a GitHub source text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-013 Skill sources: Remove a local folder opens the unlink confirmation text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-014 Skill sources: Retry removal text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-015 Skill sources: Done closes the dialog text=true probe=true px=0 max=0   srcErr=0 protoErr=0

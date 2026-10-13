@@ -56,6 +56,9 @@ export const createTokenUsageSummary = ({
   latestPromptTokens: 1200,
   effectiveContextWindowTokens: 128000,
   contextWindowUsagePercent: 0.9375,
+  // WEB-BASELINE-REFRESH-009 (9e8e5bf, d6a89cb): the runtime's auto-compaction threshold and the summary revision.
+  contextCompactionThresholdTokens: 102400,
+  revision: 1,
   latestModelProvider: 'mock',
   latestModelIdentifier: 'gpt-prototype',
   latestRuntimeKind: 'autobyteus',

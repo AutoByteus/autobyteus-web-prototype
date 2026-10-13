@@ -1,0 +1,539 @@
+{
+  "generatedAt": "2026-10-13T04:32:50.208Z",
+  "results": [
+    {
+      "id": "DEF-006",
+      "title": "Agents: Reload reloads every agent package",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agents?view=list",
+        "/agents?view=list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "DEF-007",
+      "title": "Teams: Reload",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agent-teams?view=team-list",
+        "/agent-teams?view=team-list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSL-008",
+      "title": "Workspaces tree (390x844): Task summaries in the drawer",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"workspace-left-strip-workspaces\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "workspace-left-strip-workspaces",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Workspaces",
+            "title": "Workspaces",
+            "text": "",
+            "rect": [
+              6.5,
+              421,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-test=\"workspace-left-navigation-strip\"] button": [
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Chat",
+            "title": "Chat",
+            "text": "",
+            "rect": [
+              6.5,
+              16,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Agents",
+            "title": "Agents",
+            "text": "",
+            "rect": [
+              6.5,
+              60,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Agent Teams",
+            "title": "Agent Teams",
+            "text": "",
+            "rect": [
+              6.5,
+              104,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Agent Orgs",
+            "title": "Agent Orgs",
+            "text": "",
+            "rect": [
+              6.5,
+              148,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Projects",
+            "title": "Projects",
+            "text": "",
+            "rect": [
+              6.5,
+              192,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Applications",
+            "title": "Applications",
+            "text": "",
+            "rect": [
+              6.5,
+              236,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Skills",
+            "title": "Skills",
+            "text": "",
+            "rect": [
+              6.5,
+              280,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Memory",
+            "title": "Memory",
+            "text": "",
+            "rect": [
+              6.5,
+              324,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Nodes",
+            "title": "Nodes",
+            "text": "",
+            "rect": [
+              6.5,
+              368,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "workspace-left-strip-workspaces",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Workspaces",
+            "title": "Workspaces",
+            "text": "",
+            "rect": [
+              6.5,
+              421,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Settings",
+            "title": "Settings",
+            "text": "",
+            "rect": [
+              6.5,
+              792,
+              36,
+              36
+            ],
+            "style": {
+              "display": "inline-block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "prototypeStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

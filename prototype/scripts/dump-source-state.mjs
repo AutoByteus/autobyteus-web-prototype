@@ -37,7 +37,15 @@ scenarios.push(
   { path: '/agents?view=list', scenario: 'loading', locale: 'en', waitMs: 220 },
   { path: '/agents?view=list', scenario: 'error', locale: 'en' },
   { path: '/skills', scenario: 'skill_name_issues', locale: 'en' },
+  // WEB-BASELINE-REFRESH-009 (f7fcf90, bd4c637): card load-issue badges, list problem notices and
+  // package auto-refresh states.
+  { path: '/agents?view=list', scenario: 'definition_issues', locale: 'en' },
+  { path: '/agent-teams?view=team-list', scenario: 'definition_issues', locale: 'en' },
+  { path: '/agent-orgs?view=org-list', scenario: 'definition_issues', locale: 'en' },
+  { path: '/settings?section=agent-packages', scenario: 'definition_issues', locale: 'en' },
   { path: '/chat', scenario: 'agy_runtime', locale: 'en' },
+  // WEB-BASELINE-REFRESH-009 (87b246c): a signed-out Antigravity CLI in the model menu.
+  { path: '/chat', scenario: 'agy_signed_out', locale: 'en' },
   { path: '/mobile', scenario: 'populated', locale: 'en', mobile: 'unpaired' },
   { path: '/mobile', scenario: 'populated', locale: 'en', mobile: 'paired' },
   { path: '/mobile?unsupported=desktopSettings', scenario: 'populated', locale: 'en', mobile: 'paired' },

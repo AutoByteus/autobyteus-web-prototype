@@ -1,6 +1,7 @@
 <template>
   <!-- The row opens the Task (a stretched link); the Task's root sits beneath the text and opens the
-       worker. A Task that just arrived or moved live is highlighted for 2.4 s (project-manager-ux). -->
+       worker. A Task that just arrived or moved live, or was located from the Workspaces tree, is
+       highlighted for 2.4 s (project-manager-ux, delegated-copy-task-locator). -->
   <div
     ref="rowRef"
     class="project-task-row relative px-4 py-3.5 transition-colors hover:bg-slate-50"
@@ -57,41 +58,30 @@ const taskRoute = computed(() => 'projectId' in props.task
 const fileCount = computed(() => 'contextFiles' in props.task ? props.task.contextFiles?.length ?? 0 : 0)
 const live = computed(() => store.liveChanges[props.task.taskId] ?? null)
 
-// delegated-copy-task-locator (design): "Show Task in Projects" scrolls this card into view in the
-// Projects tab, focuses it (Enter opens the Task) and highlights it like a live change (2.4 s).
+// "Show Task in Projects" (the tab's `select` cards): once the board made this Task visible, the card
+// scrolls to the centre (instant with reduced motion), takes focus (Enter opens the Task) and completes
+// the request, which highlights only this card for 2.4 s.
 const locator = useTaskLocatorStore()
 const rowRef = ref<HTMLElement | null>(null)
-const linkRef = ref<any>(null)
-const located = ref(false)
-let locatedTimer: ReturnType<typeof setTimeout> | null = null
-let handledSeq = 0
-watch(() => locator.request, async (request) => {
-  if (props.activation !== 'select' || !request) return
-  // Only the latest located Task is highlighted.
-  if (request.taskId !== props.task.taskId) { located.value = false; return }
-  if (handledSeq === request.seq || !locator.isFresh(request)) return
-  handledSeq = request.seq
-  // Let the panel (or drawer) open and the board settle before scrolling.
+const linkRef = ref<HTMLElement | null>(null)
+const located = computed(() => props.activation === 'select' && locator.located?.taskId === props.task.taskId)
+watch(() => props.activation === 'select' && locator.request?.step === 'visible' && locator.request.task.taskId === props.task.taskId ? locator.request.seq : null, async (seq) => {
+  if (seq === null) return
+  // Let the revealed panel or drawer and the board lay out first.
   await nextTick()
-  await new Promise((resolve) => setTimeout(resolve, 180))
+  await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
+  const row = rowRef.value
+  if (!row?.isConnected || locator.request?.seq !== seq) return
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-  if (!rowRef.value?.isConnected) return
-  rowRef.value.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' })
-  const link = (linkRef.value?.$el ?? linkRef.value) as HTMLElement | null
-  link?.focus({ preventScroll: true })
-  located.value = false
-  await nextTick()
-  located.value = true
-  if (locatedTimer) clearTimeout(locatedTimer)
-  locatedTimer = setTimeout(() => { located.value = false }, 2400)
+  row.scrollIntoView({ block: 'center', behavior: reduceMotion ? 'auto' : 'smooth' })
+  linkRef.value?.focus({ preventScroll: true })
+  locator.complete(seq)
 }, { immediate: true })
 </script>
 
 <style scoped>
 /* A Task an agent just wrote (or moved) shows a soft indigo wash and left bar that fade over 2.4 s. */
-.project-task-row.is-live-moved { animation: task-live 2400ms ease-out both; }
-/* delegated-copy-task-locator: a located Task shows the same wash and bar as a moved one. */
-.project-task-row.is-located { animation: task-live 2400ms ease-out both; }
+.project-task-row.is-live-moved, .project-task-row.is-located { animation: task-live 2400ms ease-out both; }
 .project-task-row.is-live-arrived { animation: task-arrive 2400ms ease-out both; }
 @keyframes task-live {
   0%, 35% { background-color: #eef2ff; box-shadow: inset 2px 0 #6366f1; }

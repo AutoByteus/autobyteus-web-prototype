@@ -39,11 +39,12 @@
           <span v-else class="h-1.5 w-1.5 rounded-full" :class="statusTone.dot" aria-hidden="true"></span>
           {{ statusLabel }}
         </span>
+        <!-- Text-only chips (user decision 2026-10-10): the label is clear without an icon. -->
         <button v-if="canUpdate" type="button" class="update row-chip border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100" :disabled="disabled" @click="$emit('update')">
-          <Icon icon="heroicons:arrow-up-circle" class="h-3.5 w-3.5" aria-hidden="true" />{{ t('skills.sources.update') }}
+          {{ t('skills.sources.update') }}
         </button>
         <button v-if="isRemoving" type="button" class="retry-removal row-chip border-red-200 bg-white text-red-700 hover:bg-red-50" :disabled="disabled" @click="$emit('remove')">
-          <Icon icon="heroicons:arrow-path" class="h-3.5 w-3.5" aria-hidden="true" />{{ t('skills.sources.retryRemoval') }}
+          {{ t('skills.sources.retryRemoval') }}
         </button>
         <template v-if="canCheck">
           <span class="text-slate-300" aria-hidden="true">·</span>
@@ -131,7 +132,7 @@ onBeforeUnmount(() => clearTimeout(copiedTimer))
 .icon-btn:disabled { cursor: not-allowed; opacity: .4; }
 .icon-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px #3b82f6; }
 .row-chip {
-  display: inline-flex; height: 1.5rem; vertical-align: middle; align-items: center; gap: .25rem; border-width: 1px; border-radius: .375rem;
+  display: inline-flex; height: 1.5rem; vertical-align: middle; align-items: center; border-width: 1px; border-radius: .375rem;
   padding: 0 .5rem; font-size: .75rem; font-weight: 500; transition: background-color .15s;
 }
 .row-chip:disabled { cursor: not-allowed; opacity: .5; }

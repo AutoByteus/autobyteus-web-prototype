@@ -102,7 +102,7 @@
         class="min-h-0 flex-1 border-b border-gray-200 bg-white outline-none"
       >
         <div class="h-full">
-          <WorkspaceAgentRunsTreePanel @run-selected="onRunningRunSelected" />
+          <WorkspaceAgentRunsTreePanel :run-shown="isWorkspacesActive" @run-selected="onRunningRunSelected" />
         </div>
       </section>
     </div>
@@ -149,14 +149,15 @@ const {
   primaryNavItems,
   resolvePrimaryRoute,
   isPrimaryNavActive,
+  isWorkspacesActive,
   ensurePrimaryNavigationReady,
 } = useShellPrimaryNavigation();
 
 const route = useRoute();
 const router = useRouter();
 const { toggleLeftPanel } = useLeftPanel();
-// collapsed-left-panel-expand-keeps-run: the collapse control unmounts with the panel, so focus
-// moves to the strip's Workspaces icon, which opens the panel again.
+// The collapse control unmounts with the panel, so focus moves to the strip's Workspaces icon,
+// which opens the panel again (REQ-009).
 const collapseLeftPanel = (): void => {
   toggleLeftPanel();
   void nextTick(() => {

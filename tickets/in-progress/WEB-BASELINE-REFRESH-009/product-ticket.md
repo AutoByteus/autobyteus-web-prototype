@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `WEB-BASELINE-REFRESH-009` (baseline ticket)
 - Title: Refresh the AutoByteus Web baseline to `origin/personal@73f743211c`
-- Status: `Baseline Needed`
+- Status: `Completed`
 - Requester: the user, 2026-10-13, while reviewing `task-keys-and-dependencies`:
 
   > I guess the baseline maybe need to be updated
@@ -40,7 +40,18 @@
 - Source: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`, `autobyteus-web`; selected authority
   `origin/personal@73f743211c` (full SHA in the Bootstrapper request)
 - Baseline report: `ui-baseline-report.md` (to be updated by the Bootstrapper)
-- Product acceptance result and date: pending
+- Product acceptance result and date: **accepted** 2026-10-13. Bootstrapper run
+  `ui_baseline_bootstrapper_baaff6a19bd74d8b95fe08f18364661a`, report `ui-baseline-report.md`, evidence
+  `evidence/WEB-BASELINE-REFRESH-009/`. Product review:
+  - Of the UI files under components, stores, composables, utils, localization, pages and types, only 11
+    differ from `73f7432`: Reconnect (10) and `utils/apolloClient.ts`. The tree-row difference is Reconnect
+    only.
+  - The design-only `useDelegatedCopyTask.ts` is removed (source wins).
+  - The new fixture data (definition issues, launch sources) is invented.
+  - In the browser, the example PTM run shows the source's Task summaries.
+  - The Bootstrapper's evidence: flows 56/56; regressions pass; matrix 103/105 (two rows without a visible
+    difference, explained); built preview 32/32; typecheck, lint, test 16/16, boundaries 13/13, build.
+  - The pin is now single: `73f743211c8b86c704acb33f216154e42b7a67b8`.
 - Integration target and result: `personal`, `Pending`
 - Runtime isolation record: the Bootstrapper picks free ports. Ports 4651 (`task-keys-and-dependencies`
   review) and 3210 are not to be used.
@@ -49,6 +60,5 @@
 
 ## Outcome And Handoff
 
-- Next expected action: UI Baseline Bootstrapper refreshes in this worktree; the Product UI/UX Designer
-  reviews and accepts the result.
-- Handoff outcome: `Baseline Needed` → `/product_team/ui_baseline_bootstrapper`
+- Next expected action: reconcile `task-keys-and-dependencies` onto the refreshed `personal`.
+- Handoff outcome: `Baseline Needed` → `/product_team/ui_baseline_bootstrapper` (delivered, Completed, accepted).

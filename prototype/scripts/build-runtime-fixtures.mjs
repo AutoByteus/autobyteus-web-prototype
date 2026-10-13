@@ -5,7 +5,7 @@ import { resolve } from 'node:path'
 const root = resolve(new URL('../..', import.meta.url).pathname)
 const sourcePath = resolve(root, 'prototype/fixtures/source-state-snapshots.json')
 const outputPath = resolve(root, 'prototype/fixtures/runtime-state.json')
-const sourceCommit = '1cd1a3abc126df820e334c023621d0fb82de5b7b'
+const sourceCommit = '73f743211c8b86c704acb33f216154e42b7a67b8'
 const source = JSON.parse(await readFile(sourcePath, 'utf8'))
 
 const snapshots = Object.fromEntries(Object.entries(source.snapshots).map(([key, value]) => [key, {

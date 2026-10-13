@@ -7,7 +7,7 @@
     :data-strip-activation="props.stripActivation"
     :class="stripClasses"
   >
-    <!-- collapsed-left-panel-expand-keeps-run: on short windows the icons sit closer so Settings still fits. -->
+    <!-- On short windows the icons sit closer so Settings still fits (REQ-010). -->
     <div class="flex flex-col space-y-2 [@media(max-height:540px)]:space-y-1">
       <button
         v-for="item in primaryNavItems"
@@ -46,19 +46,22 @@
         </div>
       </button>
 
-      <!-- collapsed-left-panel-expand-keeps-run (round 2): the Workspaces tree's place in the strip, after
-           the pages as in the panel. Lit while a run is open; opens the panel on that run, never navigates.
-           data-nav-key lets a closed drawer return focus here, as for the other strip items. -->
-      <div class="mx-auto h-px w-6 bg-gray-100 [@media(max-height:540px)]:hidden" aria-hidden="true" data-test="workspace-left-strip-workspaces-divider"></div>
+      <!-- The Workspaces tree's place in the strip, after the pages as in the panel. Lit while a run is
+           shown; opens the panel on that run and never navigates (REQ-001, REQ-002, REQ-008). -->
+      <div
+        class="mx-auto h-px w-6 bg-gray-100 [@media(max-height:540px)]:hidden"
+        aria-hidden="true"
+        data-test="workspace-left-strip-workspaces-divider"
+      ></div>
       <button
         type="button"
         data-test="workspace-left-strip-workspaces"
         data-nav-key="workspaces"
         class="group relative rounded-md p-2 transition-colors hover:bg-gray-100"
-        :class="isRunOpen ? 'bg-gray-100 text-gray-900' : ''"
+        :class="isWorkspacesActive ? 'bg-gray-100 text-gray-900' : ''"
         :title="t('shell.navigation.workspaces')"
         :aria-label="t('shell.navigation.workspaces')"
-        :aria-current="isRunOpen ? 'location' : undefined"
+        :aria-current="isWorkspacesActive ? 'location' : undefined"
         @click="handleWorkspacesClick($event)"
       >
         <Icon icon="ph:tree-view" class="h-5 w-5" />
@@ -104,7 +107,7 @@ const {
   primaryNavItems,
   resolvePrimaryRoute,
   isPrimaryNavActive,
-  isRunOpen,
+  isWorkspacesActive,
   ensurePrimaryNavigationReady,
 } = useShellPrimaryNavigation();
 
@@ -155,10 +158,9 @@ const pushRoute = async (target: RouteLocationRaw): Promise<void> => {
   }
 };
 
-// collapsed-left-panel-expand-keeps-run (round 2): shows the panel (docked, or the drawer when there is
-// no room) and changes nothing else: no route, run, draft or right-panel change. The tree reveals the
-// open run. When the panel docks, the strip unmounts, so focus moves to the panel's Workspaces section;
-// the tree then moves it onto the open run's row.
+// Shows the panel (docked, or the drawer when there is no room) and changes nothing else: no route,
+// run, draft or right-panel change. Docking unmounts the strip, so focus moves to the panel's
+// Workspaces section; the tree then moves it onto the open run's row.
 const handleWorkspacesClick = (event: MouseEvent): void => {
   const docks = props.stripActivation === 'redock-panel';
   activateStrip(event);

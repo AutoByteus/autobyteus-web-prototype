@@ -1,0 +1,1899 @@
+{
+  "generatedAt": "2026-10-13T05:23:31.405Z",
+  "results": [
+    {
+      "id": "SKN-008",
+      "title": "Skill sources: Try again on a source whose check failed",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid=\"skill-sources-dialog\"]": [
+          {
+            "tag": "SECTION",
+            "test": "skill-sources-dialog",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Manage Skill Sources\nsynthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills\nsynthetic-org/docs-skills\n3 skills\n",
+            "rect": [
+              360,
+              113.8,
+              720,
+              672.5
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"skill-source-row-\"]": [
+          {
+            "tag": "LI",
+            "test": "skill-source-row-default",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills",
+            "rect": [
+              360,
+              182.8,
+              720,
+              60
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-docs-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/docs-skills\n3 skills\nGitHub\nhttps://github.com/synthetic-org/docs-skills\nUp to date",
+            "rect": [
+              360,
+              242.8,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-legacy-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/legacy-skills\n1 skill\nGitHub\nhttps://github.com/synthetic-org/legacy-skills\nCheck failed — installed skill",
+            "rect": [
+              360,
+              333.8,
+              720,
+              115
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(248, 250, 252, 0.7)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/review-skills\n2 skills\nGitHub\nhttps://github.com/synthetic-org/review-skills\nUpdate available\nUpdate",
+            "rect": [
+              360,
+              448.8,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-local-team-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "team-skills\n2 skills\nLocal folder\n/synthetic/team-skills",
+            "rect": [
+              360,
+              539.8,
+              720,
+              61
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BUTTON",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKN-009",
+      "title": "Skill sources: Update opens the whole-source confirmation",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid=\"skill-sources-dialog\"]": [
+          {
+            "tag": "SECTION",
+            "test": "skill-sources-dialog",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Manage Skill Sources\nsynthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills\nsynthetic-org/docs-skills\n3 skills\n",
+            "rect": [
+              360,
+              113.8,
+              720,
+              672.5
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"skill-source-row-\"]": [
+          {
+            "tag": "LI",
+            "test": "skill-source-row-default",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills",
+            "rect": [
+              360,
+              182.8,
+              720,
+              60
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-docs-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/docs-skills\n3 skills\nGitHub\nhttps://github.com/synthetic-org/docs-skills\nUp to date",
+            "rect": [
+              360,
+              242.8,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-legacy-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/legacy-skills\n1 skill\nGitHub\nhttps://github.com/synthetic-org/legacy-skills\nCheck failed — installed skill",
+            "rect": [
+              360,
+              333.8,
+              720,
+              115
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/review-skills\n2 skills\nGitHub\nhttps://github.com/synthetic-org/review-skills\nUpdate available\nUpdate",
+            "rect": [
+              360,
+              448.8,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-local-team-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "team-skills\n2 skills\nLocal folder\n/synthetic/team-skills",
+            "rect": [
+              360,
+              539.8,
+              720,
+              61
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKN-010",
+      "title": "Skill sources: confirm the update (up to date, success notice)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid=\"skill-sources-dialog\"]": [
+          {
+            "tag": "SECTION",
+            "test": "skill-sources-dialog",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Manage Skill Sources\nsynthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills\nsynthetic-org/docs-skills\n3 skills\n",
+            "rect": [
+              360,
+              90.8,
+              720,
+              718.5
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"skill-source-row-\"]": [
+          {
+            "tag": "LI",
+            "test": "skill-source-row-default",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills",
+            "rect": [
+              360,
+              159.8,
+              720,
+              60
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-docs-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/docs-skills\n3 skills\nGitHub\nhttps://github.com/synthetic-org/docs-skills\nUp to date",
+            "rect": [
+              360,
+              219.8,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-legacy-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/legacy-skills\n1 skill\nGitHub\nhttps://github.com/synthetic-org/legacy-skills\nCheck failed — installed skill",
+            "rect": [
+              360,
+              310.8,
+              720,
+              115
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/review-skills\n2 skills\nGitHub\nhttps://github.com/synthetic-org/review-skills\nUp to date",
+            "rect": [
+              360,
+              425.8,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-local-team-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "team-skills\n2 skills\nLocal folder\n/synthetic/team-skills",
+            "rect": [
+              360,
+              516.8,
+              720,
+              61
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(248, 250, 252, 0.7)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "skill-source-input",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKN-011",
+      "title": "Skill sources: Remove a GitHub source opens the delete confirmation",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid=\"skill-sources-dialog\"]": [
+          {
+            "tag": "SECTION",
+            "test": "skill-sources-dialog",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Manage Skill Sources\nsynthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills\nsynthetic-org/docs-skills\n3 skills\n",
+            "rect": [
+              360,
+              113.8,
+              720,
+              672.5
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"skill-source-row-\"]": [
+          {
+            "tag": "LI",
+            "test": "skill-source-row-default",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills",
+            "rect": [
+              360,
+              182.8,
+              720,
+              60
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-docs-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/docs-skills\n3 skills\nGitHub\nhttps://github.com/synthetic-org/docs-skills\nUp to date",
+            "rect": [
+              360,
+              242.8,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-legacy-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/legacy-skills\n1 skill\nGitHub\nhttps://github.com/synthetic-org/legacy-skills\nCheck failed — installed skill",
+            "rect": [
+              360,
+              333.8,
+              720,
+              115
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/review-skills\n2 skills\nGitHub\nhttps://github.com/synthetic-org/review-skills\nUpdate available\nUpdate",
+            "rect": [
+              360,
+              448.8,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-local-team-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "team-skills\n2 skills\nLocal folder\n/synthetic/team-skills",
+            "rect": [
+              360,
+              539.8,
+              720,
+              61
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKN-012",
+      "title": "Skill sources: confirm removing a GitHub source",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid=\"skill-sources-dialog\"]": [
+          {
+            "tag": "SECTION",
+            "test": "skill-sources-dialog",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Manage Skill Sources\nsynthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills\nsynthetic-org/legacy-skills\n1 skill",
+            "rect": [
+              360,
+              136.3,
+              720,
+              627.5
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"skill-source-row-\"]": [
+          {
+            "tag": "LI",
+            "test": "skill-source-row-default",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills",
+            "rect": [
+              360,
+              205.3,
+              720,
+              60
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-legacy-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/legacy-skills\n1 skill\nGitHub\nhttps://github.com/synthetic-org/legacy-skills\nCheck failed — installed skill",
+            "rect": [
+              360,
+              265.3,
+              720,
+              115
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/review-skills\n2 skills\nGitHub\nhttps://github.com/synthetic-org/review-skills\nUpdate available\nUpdate",
+            "rect": [
+              360,
+              380.3,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-local-team-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "team-skills\n2 skills\nLocal folder\n/synthetic/team-skills",
+            "rect": [
+              360,
+              471.3,
+              720,
+              61
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "skill-source-input",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKN-013",
+      "title": "Skill sources: Remove a local folder opens the unlink confirmation",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid=\"skill-sources-dialog\"]": [
+          {
+            "tag": "SECTION",
+            "test": "skill-sources-dialog",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Manage Skill Sources\nsynthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills\nsynthetic-org/docs-skills\n3 skills\n",
+            "rect": [
+              360,
+              113.8,
+              720,
+              672.5
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"skill-source-row-\"]": [
+          {
+            "tag": "LI",
+            "test": "skill-source-row-default",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills",
+            "rect": [
+              360,
+              182.8,
+              720,
+              60
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-docs-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/docs-skills\n3 skills\nGitHub\nhttps://github.com/synthetic-org/docs-skills\nUp to date",
+            "rect": [
+              360,
+              242.8,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-legacy-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/legacy-skills\n1 skill\nGitHub\nhttps://github.com/synthetic-org/legacy-skills\nCheck failed — installed skill",
+            "rect": [
+              360,
+              333.8,
+              720,
+              115
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/review-skills\n2 skills\nGitHub\nhttps://github.com/synthetic-org/review-skills\nUpdate available\nUpdate",
+            "rect": [
+              360,
+              448.8,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-local-team-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "team-skills\n2 skills\nLocal folder\n/synthetic/team-skills",
+            "rect": [
+              360,
+              539.8,
+              720,
+              61
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKN-014",
+      "title": "Skill sources: Retry removal",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid=\"skill-sources-dialog\"]": [
+          {
+            "tag": "SECTION",
+            "test": "skill-sources-dialog",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Manage Skill Sources\nsynthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills\nsynthetic-org/docs-skills\n3 skills\n",
+            "rect": [
+              360,
+              66,
+              720,
+              768
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"skill-source-row-\"]": [
+          {
+            "tag": "LI",
+            "test": "skill-source-row-default",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills",
+            "rect": [
+              360,
+              135,
+              720,
+              60
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-docs-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/docs-skills\n3 skills\nGitHub\nhttps://github.com/synthetic-org/docs-skills\nUp to date",
+            "rect": [
+              360,
+              195,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-legacy-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/legacy-skills\n1 skill\nGitHub\nhttps://github.com/synthetic-org/legacy-skills\nUpdate failed — previous versi",
+            "rect": [
+              360,
+              286,
+              720,
+              115
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-old-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/old-skills\nNo skills\nGitHub\nhttps://github.com/synthetic-org/old-skills\nRemoval incomplete\nRetry removal\n\n",
+            "rect": [
+              360,
+              401,
+              720,
+              115
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/review-skills\n2 skills\nGitHub\nhttps://github.com/synthetic-org/review-skills\nUpdate available\nUpdate",
+            "rect": [
+              360,
+              516,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-local-team-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "team-skills\n2 skills\nLocal folder\n/synthetic/team-skills",
+            "rect": [
+              360,
+              607,
+              720,
+              61
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKN-015",
+      "title": "Skill sources: Done closes the dialog",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BUTTON",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

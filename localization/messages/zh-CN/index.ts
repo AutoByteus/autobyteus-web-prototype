@@ -29,6 +29,7 @@ import generatedWorkspaceMessages from './workspace.generated';
 import workspaceMessages from './workspace';
 import runSettingsMessages from './runSettings';
 import reconnectMessages from './reconnect';
+import agentPackageDefinitionsMessages from './agentPackageDefinitions';
 import type { TranslationCatalog } from '../../runtime/types';
 
 const zhCnMessages: TranslationCatalog = {
@@ -63,6 +64,7 @@ const zhCnMessages: TranslationCatalog = {
   ...workspaceMessages,
   ...runSettingsMessages,
   ...reconnectMessages,
+  ...agentPackageDefinitionsMessages,
 };
 
 export default zhCnMessages;

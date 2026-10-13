@@ -1,0 +1,2801 @@
+{
+  "generatedAt": "2026-10-13T04:28:43.246Z",
+  "results": [
+    {
+      "id": "TSL-001",
+      "title": "Workspaces tree: Task-worker rows show their Task summary",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"workspace-task-worker-task-summary\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "title": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "text": "Review the synthetic navigation baseline.",
+            "rect": [
+              108,
+              623,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "title": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "text": "Collect the changelog links for the synthetic release.",
+            "rect": [
+              108,
+              671,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "workspace-agent-row",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSL-002",
+      "title": "Task summary: shows the Project Task in the Projects tab, highlighted",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"workspace-task-worker-task-summary\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "title": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "text": "Review the synthetic navigation baseline.",
+            "rect": [
+              108,
+              623,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(67, 56, 202)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "underline",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "title": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "text": "Collect the changelog links for the synthetic release.",
+            "rect": [
+              108,
+              671,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"project-task-row-task-\"]": [
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-outline",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Outline the launch checklist.",
+            "rect": [
+              1003,
+              296,
+              424,
+              52
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-review",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Review the synthetic navigation baseline.\nDW\ndocumentation writer\nRunning",
+            "rect": [
+              1003,
+              414,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(238, 242, 255)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "rgb(99, 102, 241) 2px 0px 0px 0px inset",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-translate",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Translate the release summary.\nT\ntranslator\nCouldn't start",
+            "rect": [
+              1003,
+              503,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-publish",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Publish the deterministic evidence summary.\nrelease team\nOffline",
+            "rect": [
+              1003,
+              657,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "project-task-row-link",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 6,
+        "max": 4,
+        "low": 4
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSL-003",
+      "title": "Task summary: shows the Temp task on the Temp tasks board, highlighted",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"workspace-task-worker-task-summary\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "title": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "text": "Review the synthetic navigation baseline.",
+            "rect": [
+              108,
+              623,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "title": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "text": "Collect the changelog links for the synthetic release.",
+            "rect": [
+              108,
+              671,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(67, 56, 202)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "underline",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"project-task-row-temp-\"]": [
+          {
+            "tag": "DIV",
+            "test": "project-task-row-temp-task-check",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check the synthetic glossary for duplicates.",
+            "rect": [
+              1003,
+              296,
+              424,
+              52
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-temp-task-links",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Collect the changelog links for the synthetic release.\nRA\nresearch assistant\nIdle",
+            "rect": [
+              1003,
+              349,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(238, 242, 255)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "rgb(99, 102, 241) 2px 0px 0px 0px inset",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "project-task-row-link",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 4,
+        "max": 4,
+        "low": 2
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSL-004",
+      "title": "Task summary: the highlight ends after 2.4 s",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"workspace-task-worker-task-summary\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "title": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "text": "Review the synthetic navigation baseline.",
+            "rect": [
+              108,
+              623,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(67, 56, 202)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "underline",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "title": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "text": "Collect the changelog links for the synthetic release.",
+            "rect": [
+              108,
+              671,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"project-task-row-task-\"]": [
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-outline",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Outline the launch checklist.",
+            "rect": [
+              1003,
+              296,
+              424,
+              52
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-review",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Review the synthetic navigation baseline.\nDW\ndocumentation writer\nRunning",
+            "rect": [
+              1003,
+              414,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-translate",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Translate the release summary.\nT\ntranslator\nCouldn't start",
+            "rect": [
+              1003,
+              503,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-publish",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Publish the deterministic evidence summary.\nrelease team\nOffline",
+            "rect": [
+              1003,
+              657,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "project-task-row-link",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSL-005",
+      "title": "Task summary: Enter locates the Task and does not open the row",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"workspace-task-worker-task-summary\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "title": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "text": "Review the synthetic navigation baseline.",
+            "rect": [
+              108,
+              623,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "title": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "text": "Collect the changelog links for the synthetic release.",
+            "rect": [
+              108,
+              671,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"project-task-row-task-\"]": [
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-outline",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Outline the launch checklist.",
+            "rect": [
+              1003,
+              296,
+              424,
+              52
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-review",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Review the synthetic navigation baseline.\nDW\ndocumentation writer\nRunning",
+            "rect": [
+              1003,
+              414,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(238, 242, 255)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "rgb(99, 102, 241) 2px 0px 0px 0px inset",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-translate",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Translate the release summary.\nT\ntranslator\nCouldn't start",
+            "rect": [
+              1003,
+              503,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-publish",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Publish the deterministic evidence summary.\nrelease team\nOffline",
+            "rect": [
+              1003,
+              657,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "project-task-row-link",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 1,
+        "low": 2
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSL-006",
+      "title": "Task summary on a page without the right panel opens the run, then locates",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"workspace-task-worker-task-summary\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "title": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "text": "Review the synthetic navigation baseline.",
+            "rect": [
+              108,
+              623,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(67, 56, 202)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "underline",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "title": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "text": "Collect the changelog links for the synthetic release.",
+            "rect": [
+              108,
+              671,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"project-task-row-task-\"]": [
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-outline",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Outline the launch checklist.",
+            "rect": [
+              1003,
+              296,
+              424,
+              52
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-review",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Review the synthetic navigation baseline.\nDW\ndocumentation writer\nRunning",
+            "rect": [
+              1003,
+              414,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-translate",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Translate the release summary.\nT\ntranslator\nCouldn't start",
+            "rect": [
+              1003,
+              503,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-publish",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Publish the deterministic evidence summary.\nrelease team\nOffline",
+            "rect": [
+              1003,
+              657,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "project-task-row-link",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TSL-008",
+      "title": "Workspaces tree (390x844): Task summaries in the drawer",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"workspace-left-strip-workspaces\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "workspace-left-strip-workspaces",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Workspaces",
+            "title": "Workspaces",
+            "text": "",
+            "rect": [
+              6.5,
+              421,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-test=\"workspace-left-navigation-strip\"] button": [
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Chat",
+            "title": "Chat",
+            "text": "",
+            "rect": [
+              6.5,
+              16,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Agents",
+            "title": "Agents",
+            "text": "",
+            "rect": [
+              6.5,
+              60,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Agent Teams",
+            "title": "Agent Teams",
+            "text": "",
+            "rect": [
+              6.5,
+              104,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Agent Orgs",
+            "title": "Agent Orgs",
+            "text": "",
+            "rect": [
+              6.5,
+              148,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Projects",
+            "title": "Projects",
+            "text": "",
+            "rect": [
+              6.5,
+              192,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Applications",
+            "title": "Applications",
+            "text": "",
+            "rect": [
+              6.5,
+              236,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Skills",
+            "title": "Skills",
+            "text": "",
+            "rect": [
+              6.5,
+              280,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Memory",
+            "title": "Memory",
+            "text": "",
+            "rect": [
+              6.5,
+              324,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Nodes",
+            "title": "Nodes",
+            "text": "",
+            "rect": [
+              6.5,
+              368,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "workspace-left-strip-workspaces",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Workspaces",
+            "title": "Workspaces",
+            "text": "",
+            "rect": [
+              6.5,
+              421,
+              36,
+              36
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Settings",
+            "title": "Settings",
+            "text": "",
+            "rect": [
+              6.5,
+              792,
+              36,
+              36
+            ],
+            "style": {
+              "display": "inline-block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "8px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "prototypeStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKN-002",
+      "title": "Skill sources: add a local folder",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid=\"skill-sources-dialog\"]": [
+          {
+            "tag": "SECTION",
+            "test": "skill-sources-dialog",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Manage Skill Sources\nsynthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills\nsynthetic-org/docs-skills\n3 skills\n",
+            "rect": [
+              360,
+              66,
+              720,
+              768
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"skill-source-row-\"]": [
+          {
+            "tag": "LI",
+            "test": "skill-source-row-default",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills",
+            "rect": [
+              360,
+              135,
+              720,
+              60
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-docs-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/docs-skills\n3 skills\nGitHub\nhttps://github.com/synthetic-org/docs-skills\nUp to date",
+            "rect": [
+              360,
+              195,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-legacy-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/legacy-skills\n1 skill\nGitHub\nhttps://github.com/synthetic-org/legacy-skills\nCheck failed — installed skill",
+            "rect": [
+              360,
+              286,
+              720,
+              115
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/review-skills\n2 skills\nGitHub\nhttps://github.com/synthetic-org/review-skills\nUpdate available\nUpdate",
+            "rect": [
+              360,
+              401,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-local-added-1",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "more-skills\nNo skills\nLocal folder\n/synthetic/more-skills",
+            "rect": [
+              360,
+              492,
+              720,
+              61
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-local-team-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "team-skills\n2 skills\nLocal folder\n/synthetic/team-skills",
+            "rect": [
+              360,
+              553,
+              720,
+              61
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "skill-source-input",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKN-003",
+      "title": "Skill sources: import a GitHub repository URL from the same input",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid=\"skill-sources-dialog\"]": [
+          {
+            "tag": "SECTION",
+            "test": "skill-sources-dialog",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Manage Skill Sources\nsynthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills\nsynthetic-org/docs-skills\n3 skills\n",
+            "rect": [
+              360,
+              66,
+              720,
+              768
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"skill-source-row-\"]": [
+          {
+            "tag": "LI",
+            "test": "skill-source-row-default",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic/skills\nDefault\n1 skill\nLocal folder\n/synthetic/skills",
+            "rect": [
+              360,
+              135,
+              720,
+              60
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-docs-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/docs-skills\n3 skills\nGitHub\nhttps://github.com/synthetic-org/docs-skills\nUp to date",
+            "rect": [
+              360,
+              195,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-imported-1",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "acme/launch-skills\n1 skill\nGitHub\nhttps://github.com/acme/launch-skills\nUp to date",
+            "rect": [
+              360,
+              286,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-legacy-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/legacy-skills\n1 skill\nGitHub\nhttps://github.com/synthetic-org/legacy-skills\nCheck failed — installed skill",
+            "rect": [
+              360,
+              377,
+              720,
+              115
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-org/review-skills\n2 skills\nGitHub\nhttps://github.com/synthetic-org/review-skills\nUpdate available\nUpdate",
+            "rect": [
+              360,
+              492,
+              720,
+              91
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "skill-source-row-local-team-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "team-skills\n2 skills\nLocal folder\n/synthetic/team-skills",
+            "rect": [
+              360,
+              583,
+              720,
+              61
+            ],
+            "style": {
+              "display": "grid",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "skill-source-input",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "DEF-006",
+      "title": "Agents: Reload reloads every agent package",
+      "pass": false,
+      "probeEqual": false,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "prototypeProbe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BUTTON",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agents?view=list",
+        "/agents?view=list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "DEF-007",
+      "title": "Teams: Reload",
+      "pass": false,
+      "probeEqual": false,
+      "probe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "prototypeProbe": {
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "BUTTON",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agent-teams?view=team-list",
+        "/agent-teams?view=team-list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "ZH-001",
+      "title": "zh-CN: Workspaces tree Task summaries and locate",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"workspace-task-worker-task-summary\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "在项目中显示任务：Review the synthetic navigation baseline.",
+            "title": "在项目中显示任务：Review the synthetic navigation baseline.",
+            "text": "Review the synthetic navigation baseline.",
+            "rect": [
+              108,
+              623,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(67, 56, 202)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "underline",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "在项目中显示任务：Collect the changelog links for the synthetic release.",
+            "title": "在项目中显示任务：Collect the changelog links for the synthetic release.",
+            "text": "Collect the changelog links for the synthetic release.",
+            "rect": [
+              108,
+              671,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"project-task-row-task-\"]": [
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-outline",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Outline the launch checklist.",
+            "rect": [
+              1003,
+              296,
+              424,
+              52
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-review",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Review the synthetic navigation baseline.\nDW\ndocumentation writer\n运行中",
+            "rect": [
+              1003,
+              414,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(238, 242, 255)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "rgb(99, 102, 241) 2px 0px 0px 0px inset",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-translate",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Translate the release summary.\nT\ntranslator\n无法启动",
+            "rect": [
+              1003,
+              503,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-publish",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Publish the deterministic evidence summary.\nrelease team\n离线",
+            "rect": [
+              1003,
+              657,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "对话",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "project-task-row-link",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 4,
+        "max": 4,
+        "low": 2
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}
