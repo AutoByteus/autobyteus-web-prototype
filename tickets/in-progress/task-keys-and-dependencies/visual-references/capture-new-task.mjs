@@ -1,0 +1,15 @@
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/task-keys-and-dependencies/node_modules/playwright-core/index.mjs';
+const B='http://127.0.0.1:4651', O='./';
+const browser = await chromium.launch(); const p = await browser.newPage({ viewport:{width:1440,height:900}, deviceScaleFactor:2 });
+await p.goto(B+'/projects/project-desktop-app'); await p.waitForTimeout(5000);
+await p.click('[data-testid="project-tasks-new-button"]'); await p.waitForTimeout(2500);
+await p.fill('#task-page-description', 'Follow-up: show Task keys in agent tool output');
+await p.click('[data-testid="task-dependency-input"]'); await p.keyboard.type('39'); await p.keyboard.press('Enter');
+await p.screenshot({ path: O+'VIS-009a-new-task-depends-on-chosen-2x.png', clip:{x:460,y:520,width:850,height:220} });
+await p.click('[data-testid="task-page-save"]'); await p.waitForTimeout(2500);
+const card = p.locator('[data-testid="task-key"][data-key="autobyteus-41"]').locator('xpath=ancestor::*[starts-with(@data-testid,"project-task-row-")][not(@data-testid="project-task-row-link")][not(@data-testid="project-task-row-key")][1]');
+await card.scrollIntoViewIfNeeded(); await p.mouse.move(5,890); await p.waitForTimeout(300);
+const b = await card.boundingBox();
+await p.screenshot({ path: O+'VIS-009b-new-task-gets-next-key-2x.png', clip:{x:b.x-8,y:b.y-8,width:b.width+16,height:b.height+16} });
+console.log(await card.innerText());
+await browser.close();

@@ -10,7 +10,7 @@
   - the Task detail (page and tab);
   - the New / Edit task page;
   - the Workspaces-tree Task summary approved in `delegated-copy-task-locator`.
-- Status: `Awaiting User Review` (round 1, reconciled onto the refreshed baseline)
+- Status: `Completed`
 - Requester: Project Task Manager (`/project_task_manager`, AgentRun
   `project_task_manager_7c8dce0c4a8b44f88e776a83809dee03`) for the user, 2026-10-11.
 - Related requirements revision: none (design first; a separate implementation Task follows approval).
@@ -174,32 +174,51 @@ One recommended design.
   - the Temp task has no key;
   - typecheck and the tests pass.
 
+## Approval (2026-10-17)
+
+- The user reviewed round 1 on the refreshed baseline.
+- On the wording, the user said:
+
+  > so the word we use is blocked by
+
+  The answer: the card says "Blocked by"; the page says "Depends on" and "Required by".
+- On the model, the user said:
+
+  > so basically we only have depends on, but translated to different wording
+
+  Confirmed: one stored "depends on", shown in different words.
+- Approval:
+
+  > sounds good. i like the UI. its approved
+
+- The open questions are settled by approving the design as shown:
+  - DEC-005 is kept: the "Depends on" field stays on New / Edit task.
+  - Cards whose dependencies are all Done show no dependency line.
+  - "Blocked by" stays; "Waiting for" was offered and not chosen.
+- Final validation (2026-10-17) on `corepack pnpm dev --port 4651` (ticket branch at `eb7d0a1`):
+  - `visual-references/final-validation.mjs` passes 13/13;
+  - VIS-001 to VIS-015 were captured after approval;
+  - earlier on the same tree: typecheck 0 errors, lint 0 errors, tests 16/16.
+
 ## Delivery And Validation
 
-- UI/UX specification: pending
+- UI/UX specification: `ui-ux-spec.md` (Approved)
 - Runnable UI reference entry point:
   - `http://127.0.0.1:4651/projects/project-desktop-app` (the AutoByteus board);
   - `/projects/project-onboarding-redesign` (long keys);
   - `/chat?id=run-ptm-0001` (tree and right-panel tab).
-- Visual-reference directory: pending
-- Supporting artifact paths: `review-evidence/round-1/`
+- Visual-reference directory: `visual-references/` (VIS-001 to VIS-015, plus scripts)
+- Supporting artifact paths: `review-evidence/round-1/`, `visual-references/*.mjs`
 - Validation commands and results: see Round 1 validation
-- User-confirmation reference: pending
+- User-confirmation reference: the 2026-10-17 quotes under Approval.
 - Mocked boundaries and known limitations: key assignment and dependency storage are scripted in the
   browser fixture; production assigns keys on the server.
 
 ## Outcome And Handoff
 
-- Completed behavior and evidence: round 1 ready for review
-- Remaining product decisions: DEC-005 (editing in the app); key wording and placement on review
-- Next expected action:
-  1. The Bootstrapper refreshes the baseline to `autobyteus-web@73f7432` (`WEB-BASELINE-REFRESH-009`,
-     requested 2026-10-13 after the user said "I guess the baseline maybe need to be updated").
-  2. Product accepts and integrates the refresh.
-  3. This branch is reconciled onto it. The source now implements the Task summary on copy rows
-     (`TaskWorkerTaskSummary.vue`) and the Projects-tab locate steps, which this design extends.
-  4. Round 1 is rebuilt on the source's components and reviewed again.
-  Meanwhile the user can look at round 1 as it is.
-- Handoff outcome from `get_handoff_rules`: pending
-- Matched recipient address, when a rule applies: pending
+- Completed behavior and evidence: `ui-ux-spec.md` with VIS-001 to VIS-015; 13/13 checks.
+- Remaining product decisions: none for the UI. Engineering decides prefix uniqueness after a rename, non-Latin names and dependents of a deleted Task.
+- Next expected action: `/project_task_manager` creates the implementation Task against `ui-ux-spec.md`.
+- Handoff outcome from `get_handoff_rules`: `Design Completed`; no rule matches, so it is returned to the requester.
+- Matched recipient address, when a rule applies: none.
 - Return context when no matching rule applies: `/project_task_manager`
