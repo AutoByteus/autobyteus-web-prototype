@@ -19,8 +19,6 @@
       data-testid="project-task-row-link"
       @click="activation === 'select' && emit('select', task.taskId)"
     >
-      <!-- task-keys-and-dependencies: the Task key, quiet, above the summary. -->
-      <span v-if="taskKey" class="mb-0.5 flex text-xs font-medium leading-5 text-slate-500" data-testid="project-task-row-key"><TaskKey :task-key="taskKey" /></span>
       <span class="line-clamp-2 break-words text-sm font-medium leading-6 text-slate-800" data-testid="project-task-row-text">{{ summary }}</span>
       <span v-if="preview" class="mt-1 line-clamp-2 break-words text-xs leading-5 text-slate-500" data-testid="project-task-row-preview">{{ preview }}</span>
       <!-- task-keys-and-dependencies: "Blocked by <key>" / "Dependency cancelled: <key>" (open Tasks only). -->
@@ -37,7 +35,6 @@ import { Icon } from '@iconify/vue'
 import type { ProjectTask, TaskWithoutProject } from '~/types/project'
 import ProjectTaskWorkers from './ProjectTaskWorkers.vue'
 import TaskDependencyBadge from './TaskDependencyBadge.vue'
-import TaskKey from './TaskKey.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useProjectTaskStore } from '~/stores/projectTaskStore'
 import { useTaskLocatorStore } from '~/stores/taskLocatorStore'
@@ -63,8 +60,8 @@ const taskRoute = computed(() => 'projectId' in props.task
   : `/projects/temp-tasks/tasks/${props.task.taskId}`)
 const fileCount = computed(() => 'contextFiles' in props.task ? props.task.contextFiles?.length ?? 0 : 0)
 const live = computed(() => store.liveChanges[props.task.taskId] ?? null)
-// task-keys-and-dependencies: a Project Task's key and its Project's Tasks (for the dependency badge).
-const taskKey = computed(() => 'taskKey' in props.task ? props.task.taskKey ?? '' : '')
+// task-keys-and-dependencies: the Project's Tasks, for the dependency badge. (No key line on cards since
+// the user's 2026-10-17 direction, task-keys-off-lists.)
 const projectTasks = computed<ProjectTask[]>(() => 'projectId' in props.task ? store.getList(props.task.projectId)?.tasks ?? [] : [])
 
 // "Show Task in Projects" (the tab's `select` cards): once the board made this Task visible, the card

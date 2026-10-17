@@ -89,8 +89,6 @@ export interface TaskWorkerTask {
   projectId: string | null
   description: string
   status: ProjectTaskStatus
-  /** task-keys-and-dependencies (design): the Task's key; null for a Temp task. */
-  taskKey?: string | null
 }
 
 /** Where a Task lives in the change feed. */

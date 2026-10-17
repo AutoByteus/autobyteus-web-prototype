@@ -1,12 +1,12 @@
-import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/task-keys-and-dependencies/node_modules/playwright-core/index.mjs';
-const B=process.env.BASE||'http://127.0.0.1:4651', O=process.env.OUT||'./';
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/task-keys-off-lists/node_modules/playwright-core/index.mjs';
+const B=process.env.BASE||'http://127.0.0.1:4661', O=process.env.OUT||'./';
 const browser = await chromium.launch(); const log=(...a)=>console.log(...a); const res=[];
 const check=(id,ok,d)=>{res.push({id,ok,d}); log(ok?'PASS':'FAIL',id,JSON.stringify(d));};
 const ctx = await browser.newContext({ viewport:{width:1440,height:900}, permissions:['clipboard-read','clipboard-write'] });
 const p = await ctx.newPage(); p.on('pageerror', e => log('PAGEERR', e.message));
 const badge = (id) => p.locator(`[data-testid="project-task-row-${id}"] [data-testid^="task-dependency-badge-"]`);
 await p.goto(B+'/projects/project-desktop-app'); await p.waitForTimeout(5000);
-check('KEY-001 every Project Task card shows its key', await p.locator('[data-testid="project-task-row-key"]').count() === await p.locator('[data-testid^="project-task-row-"][data-testid$="-key"], [data-testid="project-task-row-link"]').count() - 0 || true, await p.locator('[data-testid="project-task-row-key"]').allInnerTexts());
+check('KEY-001 (revised 2026-10-17) board cards show no key line; badges keep the key', await p.locator('[data-testid="project-task-row-key"]').count()===0 && await p.locator('[data-testid="project-task-row-tk-agent-loop"]').innerText().then(t=>!/^autobyteus-/.test(t.trim())), await p.locator('[data-testid="project-task-row-tk-agent-loop"]').innerText().then(t=>t.split('\n')[0]));
 check('DEP-001 one open blocker', (await badge('tk-agent-loop').innerText()).replace(/\s+/g,' ').trim()==='Blocked by autobyteus-35', await badge('tk-agent-loop').innerText());
 check('DEP-002 several blockers: first by key, +N; title lists all', (await badge('tk-keys-build').innerText()).replace(/\s+/g,' ').trim()==='Blocked by autobyteus-38 +1' && (await badge('tk-keys-build').getAttribute('title')).includes('autobyteus-39 (In Progress)'), await badge('tk-keys-build').getAttribute('title'));
 check('DEP-003 only Done dependencies: no badge', await badge('tk-locator-build').count()===0 && await badge('dct-image-context').count()===0, null);
@@ -38,13 +38,19 @@ await p.click('[data-testid="project-tasks-new-button"]'); await p.waitForTimeou
 await p.fill('#task-page-description', 'Follow-up: show Task keys in agent tool output'); 
 await p.click('[data-testid="task-dependency-input"]'); await p.keyboard.type('39'); await p.keyboard.press('Enter');
 await p.click('[data-testid="task-page-save"]'); await p.waitForTimeout(2500);
-const newKey = await p.locator('[data-testid="project-task-row-key"]').allInnerTexts();
-check('KEY-002 a new Task gets the next number (autobyteus-41) and its dependency', newKey.includes('autobyteus-41'), newKey.slice(0,3));
+const newCard = p.locator('[data-testid^="project-task-row-task-created-"]').first();
+const newBadge = (await newCard.locator('[data-testid^="task-dependency-badge-"]').innerText()).replace(/\s+/g,' ').trim();
+await newCard.locator('[data-testid="project-task-row-link"]').click(); await p.waitForTimeout(2000);
+const chip = await p.locator('[data-testid="task-key-chip"] [data-testid="task-key"]').getAttribute('data-key');
+check('KEY-002 a new Task gets the next number (autobyteus-41, on its Task page) and its dependency', chip==='autobyteus-41' && newBadge==='Blocked by autobyteus-39', { chip, newBadge });
 // copy
 await p.goto(B+'/projects/project-desktop-app/tasks/tk-agent-loop'); await p.waitForTimeout(2500);
 await p.click('[data-testid="task-key-copy"]'); await p.waitForTimeout(200);
 const clip = await p.evaluate(()=>navigator.clipboard.readText().catch(()=>null));
 check('KEY-003 copy key: clipboard and "Copied"', clip==='autobyteus-36' && await p.locator('[data-testid="task-key-copied"]').count()===1, clip);
 await p.screenshot({ path: O+'r1-copied.png', clip:{x:340,y:60,width:700,height:70} });
+await p.goto(B+'/chat?id=run-ptm-0001'); await p.waitForTimeout(6000);
+const sums = await p.locator('[data-test="workspace-task-worker-task-summary"]').evaluateAll(els=>els.map(e=>[e.innerText, e.getAttribute('aria-label')]));
+check('TREE-001 (revised 2026-10-17) tree Task summary has no key; tooltip "Show Task in Projects: <summary>"', sums.length===5 && sums.every(([t,a])=>!/^(autobyteus|prototype-launch)-\d/.test(t) && a==='Show Task in Projects: '+t), sums.slice(0,2));
 await browser.close();
 log(res.filter(r=>r.ok).length+'/'+res.length);

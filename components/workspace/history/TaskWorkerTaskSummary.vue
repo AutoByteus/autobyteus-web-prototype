@@ -12,7 +12,7 @@
     @click.stop="emit('locate')"
     @keydown.enter.stop
     @keydown.space.stop
-  ><!-- task-keys-and-dependencies: the Task key leads the summary ("autobyteus-29 Token Meter accuracy…"). --><span v-if="task.taskKey" class="mr-1 font-medium" data-test="workspace-task-worker-task-key">{{ task.taskKey }}</span>{{ label }}</button>
+  >{{ label }}</button>
 </template>
 
 <script setup lang="ts">
@@ -25,5 +25,5 @@ const props = withDefaults(defineProps<{ task: TaskWorkerTask; selected?: boolea
 const emit = defineEmits<{ (e: 'locate'): void }>();
 const { t } = useLocalization();
 const label = computed(() => taskSummaryLabel(props.task.description));
-const locateLabel = computed(() => t('workspace.history.copyTask.locate', { title: props.task.taskKey ? `${props.task.taskKey} ${label.value}` : label.value }));
+const locateLabel = computed(() => t('workspace.history.copyTask.locate', { title: label.value }));
 </script>

@@ -2,7 +2,8 @@
 
 ## Status And User Confirmation
 
-- Status: `Approved`
+- Status: `Approved` (revised 2026-10-17: keys removed from board cards and the Workspaces tree; see
+  Revision History)
 - Request / ticket: Product ticket `task-keys-and-dependencies`; Project Task
   `project_task_21c58d74-129a-454e-ae56-cffec4274aaf` (requested by `/project_task_manager`), step 1 of Task
   relationships.
@@ -19,7 +20,7 @@
   The user approved the design as shown. That settles the two open questions:
   - the "Depends on" field stays on New / Edit task (DEC-005);
   - a card whose dependencies are all Done shows no dependency line.
-- Final validation date: 2026-10-17
+- Final validation date: 2026-10-17 (original approval); revision validated 2026-10-17 (`task-keys-off-lists`)
 
 ## Repository And Baseline Provenance
 
@@ -28,15 +29,26 @@
   - the Projects board (Projects page and the right panel's Projects tab);
   - the Task page and the tab's Task view;
   - the New / Edit task page;
-  - the Workspaces tree's Task summary on delegated-copy rows.
+  - the Workspaces tree's Task summary on delegated-copy rows (no key there since 2026-10-17).
 - Pinned source commit or revision: `73f743211c8b86c704acb33f216154e42b7a67b8` (single pin, from
   `WEB-BASELINE-REFRESH-009`)
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design`
   (`https://github.com/AutoByteus/autobyteus-web-prototype.git`, default branch `personal`)
 - UI reference revision or commit: recorded in `product-ticket.md` at finalization (branch
-  `design/task-keys-and-dependencies`; accepted base `b31a5b1`).
+  `design/task-keys-and-dependencies`; accepted base `b31a5b1`). The revision is ticket `task-keys-off-lists`
+  (Project Task autobyteus-133), branch `design/task-keys-off-lists` from base `1ebf4c6`.
 - Ticket folder: `tickets/done/task-keys-and-dependencies/`
 - Baseline report path: `ui-baseline-report.md` (repository root)
+
+## Revision History
+
+| Date | Change | Decided by | Reference |
+| --- | --- | --- | --- |
+| 2026-10-17 | Approved: keys on board cards, the Task page, the tab's Task view, dependency lists, the badge, the picker and the Workspaces tree's Task summary | The user ("sounds good. i like the UI. its approved") | Ticket `task-keys-and-dependencies` |
+| 2026-10-17 | **Keys removed from board cards (DEC-001) and from the Workspaces tree's Task summary (DEC-008).** The tree summary returns to its look before keys. Every other key surface stays. | The user, after trying beta v1.5.5-beta.3: "we don't need to show that on the UI… it's only used to link"; for the tree: "remove the task key from displaying on the left side as well… show it like previous". Relayed through `/project_task_manager`; recorded by autobyteus-132's Solution Designer (`requirements-doc.md` SR-001, REQ-001 to REQ-004, DEC-001 to DEC-004). | Ticket `task-keys-off-lists`, Project Task autobyteus-133 |
+
+The original card and tree keys were an approved design that the user replaced after using it. They were
+not a defect. The superseded screenshots are kept in `visual-references/superseded-2026-10-17/`.
 
 ## Problem And Design Rationale
 
@@ -56,7 +68,9 @@
     - "Dependency cancelled: <key>" when the only remaining issue is a cancelled dependency.
   - It informs and never prevents work.
 - Key UX decisions:
-  - **Card key:** a quiet line above the title. It is easy to scan and does not compete with the title.
+  - **Keys only where they link or refer** (revised 2026-10-17): the Task page and tab view, dependency
+    lists, the badge and the picker. Board cards and the tree show none, because on lists the key was
+    redundant noise. The original "quiet line above the title" on cards is superseded.
   - **Badge:** only on open cards, and only for something that needs attention. Several blockers show as
     one badge with "+N"; hovering lists them all.
   - **Task page:**
@@ -65,7 +79,8 @@
     - "Required by" lists the reverse.
   - **Editing:** users set dependencies on New / Edit task with a same-Project search that prevents loops.
     Agents set the same field through tools.
-  - **Tree:** the Task summary on delegated-copy rows leads with the key.
+  - **Tree:** the Task summary on delegated-copy rows shows the summary only (revised 2026-10-17; the
+    original leading key is superseded).
 - Alternatives considered and rejected:
   - the key inline before the title, or in the card footer;
   - a badge listing every blocker;
@@ -74,6 +89,9 @@
   - read-only dependencies (the user approved in-app editing);
   - a grey "Depends on" line on cards with only Done dependencies (offered; the user approved without it);
   - `temp-N` keys for Temp tasks.
+  - Removing keys from the picker as well (2026-10-17): kept, because its search is "by key or text".
+  - Adding Task summaries to the badge tooltip (2026-10-17): not asked for; mentioned to the user as an
+    option by the Solution Designer.
 
 ## Scope And Experience Goal
 
@@ -81,12 +99,12 @@
 - Context: desktop app; the Projects pages, the right panel's Projects tab and the Workspaces tree.
 - Goal: refer to a Task by a short key, and see what a Task waits for and what waits for it.
 - Observable success:
-  - every Project Task shows its key;
+  - every Project Task shows its key on its Task page (and wherever it is linked or referred to);
   - an open Task with an unfinished dependency says "Blocked by <key>" on its card;
   - the Task page lists dependencies and dependents with links;
   - a user can set dependencies when creating or editing a Task.
 - In scope:
-  - keys on cards, the Task page, the tab's Task view and the tree's Task summary;
+  - keys on the Task page and the tab's Task view (cards and the tree show none, since 2026-10-17);
   - the badge;
   - the Depends on / Required by lists;
   - the Depends on field;
@@ -103,15 +121,15 @@
 
 | ID | UI/UX Obligation | Covered Journey / Surface / State |
 | --- | --- | --- |
-| DEC-001 | Every Project Task card shows its key above the summary | UXJ-001, VIS-001, VIS-002*, VIS-010, VIS-015 |
+| DEC-001 (revised 2026-10-17) | Project Task cards show **no** key line; the card starts with the summary. Superseded: "every card shows its key above the summary". | UXJ-001, VIS-001, VIS-002*, VIS-009b, VIS-010, VIS-015 |
 | DEC-002 | The Task page and the tab's Task view show the key chip with copy | UXJ-002, VIS-003–006, VIS-011 |
 | DEC-003 | The badge on open cards: Blocked by (+N) / Dependency cancelled / none | UXJ-001, VIS-002a–d |
 | DEC-004 | Depends on (all, Done included) and Required by (derived), each linked | UXJ-002, VIS-003–005, VIS-011 |
 | DEC-005 | The "Depends on (optional)" field on New / Edit task; same Project only; no loops | UXJ-003, VIS-007a/b, VIS-008, VIS-009a |
 | DEC-006 | No cross-Project dependencies | UXJ-003 (the search offers only this Project) |
 | DEC-007 | Long keys stay readable; the number is always visible | UXJ-005, VIS-013, VIS-014 |
-| DEC-008 | The tree's Task summary leads with the key | UXJ-004, VIS-012 |
-| DEC-009 | Temp tasks have no key and no dependencies | VIS-012 (the Temp task row has no key) |
+| DEC-008 (revised 2026-10-17) | The tree's Task summary shows the summary only, as before keys; tooltip and accessible name "Show Task in Projects: <summary>". Superseded: "leads with the key". | UXJ-004, VIS-012 |
+| DEC-009 | Temp tasks have no key and no dependencies | VIS-007b (the picker lists Project Tasks only) |
 
 ## Visual Language
 
@@ -121,13 +139,12 @@
   - the editor form;
   - the approved tree Task summary.
 - Layout and hierarchy:
-  - **Card:** key (secondary) → summary (primary) → preview → badge → file count → worker line.
+  - **Card:** summary → preview → badge → file count → worker line. No key line (revised 2026-10-17).
   - **Task page header:** "Task details" · status pill · key chip, with the actions on the right.
   - **Task page body:** Description → Dependencies card ("Depends on", then "Required by") → Assigned to.
   - **Tab Task view:** the key chip and status sit at the right of the Description label; the
     Dependencies card follows the description.
 - Dimensions and spacing:
-  - card key line: 20 px high, 2 px below;
   - badge: 20 px high, 2 px × 8 px padding, 4 px icon gap, 8 px above;
   - key chip: 30 px high, padding 2 px 2 px 2 px 8 px, copy button 24 px;
   - dependency row: 32 px high, padding 6 px × 8 px, 8 px gaps, at most `80ch` wide;
@@ -135,14 +152,12 @@
   - editor field: a 1 px slate-100 divider and 20 px above; selected rows 36 px; search input 44 px; the
     list shows at most 8 options and is up to 288 px tall.
 - Typography (product sans):
-  - card key: 12 / 20 px, 500;
   - badge: 12 / 16 px, 500;
   - key chip: 14 / 20 px, 500;
   - dependency row: key 14 px, 500, slate-800; summary 14 px, 400, slate-600, truncated;
   - group labels ("Depends on", "Required by"): 12 / 16 px, 500, slate-500;
   - editor help: 12 / 20 px, slate-500.
 - Colours:
-  - card key: `#64748b`;
   - **Blocked** badge: background `#fffbeb`, text `#92400e`, 1 px inset ring `#fde68a`, link icon
     `#d97706`;
   - **Dependency cancelled** badge: background `#ffffff`, text `#475569`, ring `#cbd5e1`, x-circle icon
@@ -169,23 +184,23 @@
 | Dependency badge | Derived card badge | blocked, blocked +N, cancelled, none | `TaskDependencyBadge.vue`, `utils/projects/taskDependencies.ts` |
 | Dependencies card | Depends on / Required by | rows, None, "Only informs…" note when blocked; page (links) / tab (opens in the tab) | `TaskDependenciesSection.vue` |
 | Depends on field | Set dependencies | empty, chosen rows, list open, no match, loop option disabled, saving (disabled) | `TaskDependencyPicker.vue` in `ProjectTaskDraftEditor.vue` |
-| Task card | Key line and badge | — | `ProjectTaskRow.vue` |
-| Tree Task summary | The key leads the summary | — | `components/workspace/history/TaskWorkerTaskSummary.vue` |
+| Task card | The badge (no key line since 2026-10-17) | — | `ProjectTaskRow.vue` |
+| Tree Task summary | Unchanged from the source (no key since 2026-10-17) | — | `components/workspace/history/TaskWorkerTaskSummary.vue` |
 
 ## Journey Inventory
 
 | Journey ID | User / Context | Starting State | Goal | Completion State | Related IDs |
 | --- | --- | --- | --- | --- | --- |
-| UXJ-001 | User on a board | Project with Tasks and dependencies | See keys and what is blocked | Keys on every card; badges on blocked / cancelled-dependency open cards | DEC-001, DEC-003; KEY-001, DEP-001–004 |
+| UXJ-001 | User on a board | Project with Tasks and dependencies | See what is blocked | No key lines; badges on blocked / cancelled-dependency open cards | DEC-001, DEC-003; KEY-001, DEP-001–004 |
 | UXJ-002 | User opens a Task | Board | See and copy the key; see dependencies both ways | Chip; Depends on (all) and Required by, linked | DEC-002, DEC-004; KEY-003, DEP-009 |
 | UXJ-003 | User creates or edits a Task | Task page / board | Set what it depends on | Saved; the card badge and both Tasks' lists update | DEC-005, DEC-006; DEP-005–008, DEP-010, KEY-002 |
-| UXJ-004 | User in the Workspaces tree | Delegated copies listed | See which Task (by key) a copy works on | The summary shows "<key> <summary>" | DEC-008 |
-| UXJ-005 | Project with a long name | Board / Task page | Read the keys | Whole keys where they fit; middle-shortened with the number where not | DEC-007 |
+| UXJ-004 | User in the Workspaces tree | Delegated copies listed | See which Task a copy works on | The summary shows "<summary>" (no key) | DEC-008; TREE-001 |
+| UXJ-005 | Project with a long name | Badge / Task page | Read the keys | Whole keys where they fit; middle-shortened with the number where not | DEC-007 |
 
 ## Journey Details
 
 - **UXJ-001 Board.**
-  - Every Project Task card shows its key above the summary (VIS-001).
+  - Cards show no key line (revised 2026-10-17; VIS-001). Keys appear on cards only inside the badge.
   - On To Do and In Progress cards with dependencies:
     - any dependency To Do or In Progress → amber "Blocked by <first open key>", plus "+N" for the other open
       ones (VIS-002a/b). The first is the lowest key number.
@@ -219,14 +234,15 @@
   - Chosen Tasks are rows (key, summary, status) with a remove ×.
   - Save stores the choice. The board badge, this Task's "Depends on" and the other Task's "Required by"
     update.
-  - A new Task gets the Project's next number (VIS-009a/b: `autobyteus-41`, Blocked by `autobyteus-39`).
-- **UXJ-004 Tree.**
-  - A delegated copy's Task summary reads "<key> <summary>": the key in medium weight, then a space
-    (VIS-012).
-  - Its tooltip and accessible name read "Show Task in Projects: <key> <summary>".
-  - A Temp task's summary has no key.
+  - A new Task gets the Project's next number: its card says "Blocked by autobyteus-39" (VIS-009b) and its
+    Task page shows `autobyteus-41` (VIS-009c).
+- **UXJ-004 Tree** (revised 2026-10-17).
+  - A delegated copy's Task summary shows the summary only, exactly as the approved
+    `delegated-copy-task-locator` design and the source show it (VIS-012).
+  - Its tooltip and accessible name read "Show Task in Projects: <summary>".
+  - Superseded: "<key> <summary>" with the key in medium weight.
 - **UXJ-005 Long keys.**
-  - A key is shown whole wherever it fits (card key line, chip, dependency rows: VIS-013, VIS-014).
+  - A key is shown whole wherever it fits (chip and dependency rows: VIS-014).
   - Where it does not fit, the Project part is shortened in the middle with "…" and the number stays
     ("customer-onboarding-experie…-12"). The full key is in the tooltip.
 - Failure and recovery:
@@ -239,12 +255,12 @@
 
 | Surface ID | Surface Name | Route / Entry | Purpose And Primary Action | Layout And Key Sections | Visual ID |
 | --- | --- | --- | --- | --- | --- |
-| UIS-001 | Project board (page) | `/projects/:id` | Scan Tasks; open one | Cards: key, summary, preview, badge, files, worker | VIS-001, VIS-002*, VIS-015 |
+| UIS-001 | Project board (page) | `/projects/:id` | Scan Tasks; open one | Cards: summary, preview, badge, files, worker (no key line) | VIS-001, VIS-002*, VIS-015 |
 | UIS-002 | Project board (right-panel tab) | Projects tab | Same, beside a run | As UIS-001 (compact) | VIS-010 |
 | UIS-003 | Task page | `/projects/:id/tasks/:taskId` | Read; copy the key; follow links | Header (status, key chip, actions); Description; Dependencies; Assigned to | VIS-003–006, VIS-014 |
 | UIS-004 | Task view (tab) | Card in the Projects tab | Same, compact | Description card (key chip + status), Dependencies, Assigned to | VIS-011 |
 | UIS-005 | New / Edit task | `/projects/:id/tasks/new`, `…/:taskId/edit` | Set Depends on | Description; Depends on field | VIS-007a/b, VIS-008, VIS-009a |
-| UIS-006 | Workspaces tree | Left panel | Identify copies by Task key | Copy row + "<key> <summary>" | VIS-012 |
+| UIS-006 | Workspaces tree | Left panel | Identify a copy's Task | Copy row + "<summary>" (no key) | VIS-012 |
 
 ## Interaction And State Transitions
 
@@ -273,7 +289,7 @@
 | Task page, empty list | — | "None" | Edit task | — | VIS-003 (Required by), VIS-005 (Depends on) |
 | Editor, no match | Query without results | "No other Tasks in this Project match." | Change the query | — | — |
 | Editor, loop | Option depends on this Task | Greyed out, "Depends on this Task" | — | — | VIS-008 |
-| Temp task | Task with no Project | No key, no badge, no Dependencies card | — | — | VIS-012 |
+| Temp task | Task with no Project | No key, no badge, no Dependencies card | — | — | — |
 
 ## Content, Labels, Validation, And Feedback
 
@@ -316,10 +332,10 @@
 
 | Viewport Or Context | Range Or Condition | Layout And Navigation Changes | Interaction Changes |
 | --- | --- | --- | --- |
-| Board (page) | Board container ≥ 752 px | 3 lanes (4 with Cancelled); the key line and badge inside cards | — |
-| Board narrow / right-panel tab | Container < 752 px | One column; the badge wraps under the preview (VIS-015, VIS-010) | — |
+| Board (page) | Board container ≥ 752 px | 3 lanes (4 with Cancelled); the badge inside cards (no key line) | — |
+| Board narrow / right-panel tab | Container < 752 px | One column; the badge sits under the preview (VIS-015, VIS-010) | — |
 | Task view in the tab | Panel width | The key chip shrinks (middle-shortened) before the status pill | — |
-| Long keys | The key does not fit | Middle-shortened Project part; number kept | Full key in the tooltip |
+| Long keys | The key does not fit (badge, narrow chip) | Middle-shortened Project part; number kept (VIS-013) | Full key in the tooltip |
 
 ## Accessibility And Keyboard Behavior
 
@@ -334,9 +350,8 @@
   - options are `option`; a loop option has `aria-disabled`;
   - the copy button: "Copy Task key <key>"; "Copied" is announced as `role=status`;
   - the Dependencies card is labelled "Dependencies";
-  - the tree summary's name includes the key.
-- Contrast: the badge text `#92400e` on `#fffbeb` and `#475569` on white; the key `#64748b` on white
-  (secondary text, as the product's other secondary card text).
+  - the tree summary's name is "Show Task in Projects: <summary>" (no key, since 2026-10-17).
+- Contrast: the badge text `#92400e` on `#fffbeb` and `#475569` on white.
 
 ## Motion And Transitions
 
@@ -350,7 +365,7 @@
 | `ProjectTask.taskKey` | Cards, chip, rows, search | Assigned in the browser fixture at seed / create; never changed | The server assigns it at creation (and backfills existing Tasks in creation order); it never changes on rename; it is returned with Project Tasks and change-feed upserts |
 | `ProjectTask.dependsOnTaskIds` | Badge, lists, editor | Stored by the fixture on save | Stored on the later Task; same Project only; the server rejects self, cross-Project and loops; returned with the Task; agents set it through tools |
 | Derived: Blocked by / Required by / Dependency cancelled | Card and page | Computed in the browser from the Project's Task list | Same derivation (client or server); never stored |
-| `TaskWorkerTask.taskKey` | Tree summary | Added to `GetTaskWorkerTasks` answers by the design-only layer | Add `taskKey` to the Task worker answer |
+| `TaskWorkerTask.taskKey` | — | Removed 2026-10-17 (its only use was the tree key) | Not needed; autobyteus-132 removes it end to end (REQ-004) |
 | Example data | Review | The "AutoByteus" Project (renamed from the earlier example "Desktop App"), dependency Tasks and the long-name Project are invented (`prototype/task-keys/`) | — |
 
 ## Final Visual Reference Inventory
@@ -361,11 +376,11 @@ colours and rules are normative.
 
 | Visual ID | Journey / Surface / State | Viewport | Image Path | Requirements-Defining Visible Details |
 | --- | --- | --- | --- | --- |
-| VIS-001 | UXJ-001 board | 1440×900 | `visual-references/VIS-001-board-keys-and-dependency-badges-1440x900.png` | Key on every card; badges only on open blocked / cancelled-dependency cards |
-| VIS-002a | Several blockers | 2× | `visual-references/VIS-002a-card-blocked-by-several-2x.png` | "Blocked by autobyteus-38 +1", amber |
-| VIS-002b | One blocker | 2× | `visual-references/VIS-002b-card-blocked-by-one-2x.png` | "Blocked by autobyteus-35" |
-| VIS-002c | Cancelled dependency | 2× | `visual-references/VIS-002c-card-dependency-cancelled-2x.png` | Grey "Dependency cancelled: autobyteus-31" |
-| VIS-002d | All dependencies Done | 2× | `visual-references/VIS-002d-card-dependencies-done-no-badge-2x.png` | No badge |
+| VIS-001 | UXJ-001 board (revised 2026-10-17) | 1440×900 | `visual-references/VIS-001-board-dependency-badges-1440x900.png` | No key lines; badges only on open blocked / cancelled-dependency cards |
+| VIS-002a | Several blockers (revised) | 2× | `visual-references/VIS-002a-card-blocked-by-several-2x.png` | "Blocked by autobyteus-38 +1", amber |
+| VIS-002b | One blocker (revised) | 2× | `visual-references/VIS-002b-card-blocked-by-one-2x.png` | "Blocked by autobyteus-35" |
+| VIS-002c | Cancelled dependency (revised) | 2× | `visual-references/VIS-002c-card-dependency-cancelled-2x.png` | Grey "Dependency cancelled: autobyteus-31" |
+| VIS-002d | All dependencies Done (revised) | 2× | `visual-references/VIS-002d-card-dependencies-done-no-badge-2x.png` | No badge and no key line |
 | VIS-003 | Task page, blocked | 1440×900 | `visual-references/VIS-003-detail-depends-on-blocked-1440x900.png` | Key chip; Depends on rows (key, pill, summary); informs note; Required by "None" |
 | VIS-004 | Follow-up | 1440×900 | `visual-references/VIS-004-detail-depends-on-done-follow-up-1440x900.png` | "autobyteus-28 · Done ✓ · …" listed |
 | VIS-005 | Required by | 1440×900 | `visual-references/VIS-005-detail-required-by-1440x900.png` | Depends on "None"; Required by autobyteus-38 |
@@ -374,13 +389,18 @@ colours and rules are normative.
 | VIS-007b | Search open | 1440×900 full page | `visual-references/VIS-007b-edit-depends-on-search-open-1440x900.png` | Options: key, summary, status; newest first |
 | VIS-008 | Loop prevented | 1440×900 full page | `visual-references/VIS-008-edit-depends-on-loop-not-allowed-1440x900.png` | Greyed option "Depends on this Task" |
 | VIS-009a | New task, chosen | 2× | `visual-references/VIS-009a-new-task-depends-on-chosen-2x.png` | Chosen row with remove |
-| VIS-009b | New task saved | 2× | `visual-references/VIS-009b-new-task-gets-next-key-2x.png` | Next key `autobyteus-41`; Blocked by autobyteus-39 |
-| VIS-010 | Right-panel board | 1440×900 | `visual-references/VIS-010-right-panel-board-keys-badges-1440x900.png` | Keys and badges in the compact board |
+| VIS-009b | New task saved, card (revised) | 2× | `visual-references/VIS-009b-new-task-card-blocked-by-2x.png` | Card without key line; "Blocked by autobyteus-39" |
+| VIS-009c | New task saved, Task page (added 2026-10-17) | 2× | `visual-references/VIS-009c-new-task-page-next-key-2x.png` | Next key `autobyteus-41` in the chip |
+| VIS-010 | Right-panel board (revised) | 1440×900 | `visual-references/VIS-010-right-panel-board-badges-1440x900.png` | Badges, no key lines, in the compact board |
 | VIS-011 | Right-panel Task view | 1440×900 | `visual-references/VIS-011-right-panel-task-key-and-dependencies-1440x900.png` | Key chip beside status; Dependencies card |
-| VIS-012 | Tree | 2× | `visual-references/VIS-012-tree-task-summary-with-key-2x.png` | "<key> <summary>" on copy rows; Temp task without key |
-| VIS-013 | Long keys, board | 2× | `visual-references/VIS-013-long-keys-board-2x.png` | Whole key on cards; the badge middle-shortened with "-12" kept |
+| VIS-012 | Tree (revised) | 2× | `visual-references/VIS-012-tree-task-summary-2x.png` | "<summary>" on copy rows, no key |
+| VIS-013 | Long key in the badge (revised) | 2× | `visual-references/VIS-013-long-key-badge-board-2x.png` | The badge middle-shortened with "-12" kept; no key lines |
 | VIS-014 | Long key, Task page | 2× | `visual-references/VIS-014-long-key-detail-2x.png` | Whole key in the chip and rows |
-| VIS-015 | Narrow board | 760×900 | `visual-references/VIS-015-board-narrow-760x900.png` | One column; keys and badges |
+| VIS-015 | Narrow board (revised) | 760×900 | `visual-references/VIS-015-board-narrow-760x900.png` | One column; badges, no key lines |
+
+Superseded references (the approved 2026-10-17 design before the user's revision; for history only, not
+normative): `visual-references/superseded-2026-10-17/` (VIS-001, VIS-002a–d, VIS-009b, VIS-010, VIS-012,
+VIS-013, VIS-015 as first approved).
 
 ## Linked UI Reference Evidence
 
@@ -391,7 +411,8 @@ colours and rules are normative.
   Reloading resets the in-memory example data.
 - Ticket record: `product-ticket.md`.
 - Validation:
-  - `visual-references/final-validation.mjs`: 13/13 (KEY-001 to KEY-003, DEP-001 to DEP-010);
+  - `visual-references/final-validation.mjs`: 14/14 since the revision (KEY-001 revised to "no card key
+    line"; KEY-002 checks the new key on the Task page; TREE-001 added: no key in the tree summary);
   - capture scripts `capture-references.mjs` and `capture-new-task.mjs`;
   - `review-evidence/round-1/`.
 - Mocked boundaries: see the table above.
@@ -400,7 +421,8 @@ colours and rules are normative.
 
 - Must preserve:
   - the key format and its immutability;
-  - where keys appear and their styles;
+  - where keys appear (Task page / tab view chip, dependency rows, badge and tooltip, picker; **not** board
+    cards or the tree) and their styles;
   - the badge rules (open cards only; open blockers first, then cancelled, then nothing) with exact wording
     and colours;
   - the "+N" and the hover list;
@@ -408,7 +430,7 @@ colours and rules are normative.
   - row content and order (key, status, summary), with links;
   - the editor field's behaviour (same Project, no self, no loops, keyboard, list closing);
   - the copy feedback;
-  - the tree summary's key;
+  - the tree summary without a key;
   - all strings.
 - Does not prescribe:
   - `taskKeysFixture.ts`, client-side derivation, or the GraphQL field names (`taskKey`, `dependsOnTaskIds`

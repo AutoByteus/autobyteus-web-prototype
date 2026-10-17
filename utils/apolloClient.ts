@@ -16,7 +16,7 @@ import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/protot
 import { withAgentReconnect } from '~/prototype/agent-reconnect/agentReconnectFixture'
 import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
-import { applyTaskKeyMutation, seedTaskKeys, withTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
+import { applyTaskKeyMutation, seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
 import { designSkillSourceData, designRegistryError, designSkillSourceMutation } from '~/prototype/skill-sources/skillSourcesDesignFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
@@ -90,8 +90,6 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (designOnlyLayersEnabled()) data = data ? withAgentReconnect(name, request.variables || {}, structuredClone(data), scenario) : data
   // delegated-copy-task-locator (design-only): a Project Task Manager run with look-alike delegated copies.
   if (designOnlyLayersEnabled()) data = data ? withDelegatedCopyTasks(name, request.variables || {}, structuredClone(data), scenario) : data
-  // task-keys-and-dependencies (design-only): Task worker answers carry the Task key.
-  if (designOnlyLayersEnabled() && data) data = withTaskKeys(name, structuredClone(data), state)
   // skill-sources-dialog-redesign (design-only): the registry-error scenario.
   if (designOnlyLayersEnabled() && name === 'GetSkillSources' && data) data = { ...data, skillSourceRegistryError: designRegistryError(scenario) ?? data.skillSourceRegistryError }
   return { data: data ? structuredClone(data) : {} }

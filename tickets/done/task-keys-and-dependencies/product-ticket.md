@@ -222,3 +222,23 @@ One recommended design.
 - Handoff outcome from `get_handoff_rules`: `Design Completed`; no rule matches, so it is returned to the requester.
 - Matched recipient address, when a rule applies: none.
 - Return context when no matching rule applies: `/project_task_manager`
+
+## Revision 2026-10-17 — keys off board cards and the tree (ticket `task-keys-off-lists`)
+
+- The user's direction, after trying beta v1.5.5-beta.3, relayed through `/project_task_manager` as Project
+  Task autobyteus-133:
+  - "we don't need to show that on the UI… it's only used to link";
+  - "remove the task key from displaying on the left side as well… show it like previous".
+- Recorded by autobyteus-132's Solution Designer: `requirements-doc.md` SR-001, REQ-001 to REQ-004.
+- Superseded:
+  - DEC-001 (key line on cards) → cards show no key line;
+  - DEC-008 (key leading the tree summary) → the summary only, as before.
+- Kept, unchanged:
+  - the key chip on the Task page and the tab's Task view;
+  - the Depends on / Required by rows;
+  - the badge and its tooltip;
+  - the picker (search by key or text).
+- The originally approved design is history, not a mistake. Its screenshots are in
+  `visual-references/superseded-2026-10-17/`; the spec carries a Revision History.
+- The details of the revision (UI reference changes, re-validation, new references) are in
+  `tickets/done/task-keys-off-lists/product-ticket.md`.
