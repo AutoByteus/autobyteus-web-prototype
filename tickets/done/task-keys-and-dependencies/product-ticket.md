@@ -60,14 +60,14 @@
   current for this scope, so no Bootstrapper request was made.
 - Accepted baseline revision: `5f5cdf881b30689f103b418530c0bd1a22b1ed5a` (`origin/personal`)
 - Baseline report: `ui-baseline-report.md`
-- Design revision for this ticket: pending
-- Default-entry-point validation after integration: pending
-- Integration target and result: `personal`, `Pending`
+- Design revision for this ticket: `1ff2edf` (final design); `bcaa278` (ticket closed, integrated)
+- Default-entry-point validation after integration: `Completed`. On the canonical checkout at `personal@bcaa278` (after `pnpm install --force` and clearing the caches), `corepack pnpm dev --port 4653` with `final-validation.mjs` (BASE 4653) passed 13/13 through `/projects/project-desktop-app`.
+- Integration target and result: `personal`, `Completed`. Fast-forward push `b31a5b1..bcaa278`; the canonical checkout was fast-forwarded; local = origin. This record commit follows the same sequence.
 - Runtime isolation record:
   - `corepack pnpm dev --port 4651 --host 127.0.0.1` (this ticket);
   - scripts and captures in `/tmp/tkd/` (copies in `review-evidence/`);
   - in-memory fixtures, reset by reload.
-- Cleanup result or blocker: `Pending`
+- Cleanup result or blocker: `Completed`. Review servers on ports 4651 and 4653 were stopped; the ticket worktree and local branch are removed after this record (no remote ticket branch was pushed).
 - Ticket folder: `tickets/done/task-keys-and-dependencies/`
 
 ## Proposed Design (round 1)
