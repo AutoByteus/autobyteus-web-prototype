@@ -68,7 +68,7 @@
   - scripts and captures in `/tmp/tkd/` (copies in `review-evidence/`);
   - in-memory fixtures, reset by reload.
 - Cleanup result or blocker: `Pending`
-- Ticket folder: `tickets/in-progress/task-keys-and-dependencies/`
+- Ticket folder: `tickets/done/task-keys-and-dependencies/`
 
 ## Proposed Design (round 1)
 
