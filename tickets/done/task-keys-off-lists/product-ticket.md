@@ -18,6 +18,7 @@
 ## Design & Repository Context
 
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`)
+- Ticket folder: `tickets/done/task-keys-off-lists/`
 - Ticket worktree / branch: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/task-keys-off-lists`,
   `design/task-keys-off-lists` (base `1ebf4c6`)
 - Source pin of the baseline: `autobyteus-web@73f743211c`.
@@ -54,9 +55,14 @@
     - TREE-001: the tree summary has no key, and its name is "Show Task in Projects: <summary>".
   - typecheck 0 errors; tests 16/16.
 - User-confirmation reference: the user's own direction above (the decision itself, relayed by the PM).
-- Default-entry-point validation after integration: see Outcome.
+- Default-entry-point validation after integration: `Completed`. On the canonical checkout at
+  `personal@1796bbb`, `corepack pnpm dev --port 4663` with `final-validation.mjs` (BASE 4663) passed 14/14.
+- Integration: `Completed`. Fast-forward `1ebf4c6..1796bbb` (design commit `17ad7e3`); the canonical
+  checkout was fast-forwarded; local = origin. This record commit follows the same sequence.
+- Cleanup: `Completed`. Servers on ports 4661 and 4663 were stopped; the worktree and local branch are
+  removed after this record (no remote ticket branch was pushed).
 
 ## Outcome And Handoff
 
-- Next expected action: integrate into `personal`, clean up, report to `/project_task_manager`.
+- Next expected action: `/project_task_manager` closes autobyteus-133. A baseline refresh is recommended after autobyteus-132 ships (see the follow-up note).
 - Handoff: no `get_handoff_rules` rule matches a completed record update; it is returned to the requester.
