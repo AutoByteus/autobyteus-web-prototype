@@ -66,7 +66,7 @@
 - Integration target and result: `personal`, `Pending`
 - Runtime isolation: the Bootstrapper picks free ports other than 3210.
 - Cleanup result or blocker: `Pending`
-- Ticket folder: `tickets/in-progress/WEB-BASELINE-REFRESH-010/`
+- Ticket folder: `tickets/done/WEB-BASELINE-REFRESH-010/`
 
 ## Outcome And Handoff
 
