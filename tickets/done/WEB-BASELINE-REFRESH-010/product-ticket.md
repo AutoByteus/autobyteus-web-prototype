@@ -63,9 +63,14 @@
      - Reconnect (design-only, not shipped) keeps its approved references. Its review scripts pass 7/7.
        The surrounding product changes in its captures are illustrative.
 - The single pin is now `2f211340ee36b81cef74a74b2e042b5102c269d3`.
-- Integration target and result: `personal`, `Pending`
+- Integration target and result: `personal`, `Completed`. Fast-forward `d96a14f..0212d6d`; the canonical
+  checkout was fast-forwarded (and reinstalled with `pnpm install --force` for the vendored contracts);
+  local = origin.
+- Default-entry-point validation after integration: on the canonical checkout at `0212d6d`
+  (`corepack pnpm dev --port 4673`), the approved checks pass: delegated-copy-task-locator 13/13 and
+  task-keys-and-dependencies 14/14.
 - Runtime isolation: the Bootstrapper picks free ports other than 3210.
-- Cleanup result or blocker: `Pending`
+- Cleanup result or blocker: `Completed`. Servers on ports 4671 and 4673 were stopped; the worktree and local branch are removed after this record (no remote ticket branch).
 - Ticket folder: `tickets/done/WEB-BASELINE-REFRESH-010/`
 
 ## Outcome And Handoff
