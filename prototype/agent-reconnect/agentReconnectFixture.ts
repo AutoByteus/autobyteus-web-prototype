@@ -4,8 +4,8 @@
  * Hand-written and illustrative. Nothing runs and nothing is read from disk:
  * - a stopped standalone run of `tutorial-video-producer` (Claude) in prototype-workspace;
  * - a stopped "Video Team" run whose configured member `/editor` used `video-editor` (Antigravity)
- *   and whose collaborator `/tutorial_video_producer` (added with `@`) used `tutorial-video-producer`
- *   (Claude);
+ *   and whose delegated copies at `/tutorial_video_producer` (formerly a collaborator added with `@`;
+ *   the source has no collaborators since 2f21134) used `tutorial-video-producer` (Claude);
  * - an agent catalog of about forty agents (shared and team-local), without the two missing ids.
  *
  * Reconnect is scripted beneath the UI: the run record's agent reference changes, nothing else.
@@ -241,22 +241,16 @@ export const teamRootExecution = () => ({
   members: [
     { kind: 'configured_agent', address: '/video_lead', agent_definition_id: 'video-lead', role: null, description: null, agent_run_id: LEAD_RUN_ID, platform_agent_run_id: null, launch_configuration: launch(leadLaunch) },
     { kind: 'configured_agent', address: '/editor', agent_definition_id: definitionIdOf(editor), role: null, description: null, agent_run_id: EDITOR_RUN_ID, platform_agent_run_id: null, launch_configuration: launch(editor) },
-    {
-      kind: 'configured_team', address: '/post_production', team_definition_id: 'team-post-production', role: null, description: null,
-      team_run_id: POST_TEAM_RUN_ID, coordinator_address: '/post_production/colorist', default_launch_configuration: launch(leadLaunch),
-      members: [
-        { kind: 'configured_agent', address: '/post_production/colorist', agent_definition_id: 'colorist', role: null, description: null, agent_run_id: COLORIST_RUN_ID, platform_agent_run_id: null, launch_configuration: launch(leadLaunch) },
-        { kind: 'configured_agent', address: '/post_production/sound_designer', agent_definition_id: 'sound-designer', role: null, description: null, agent_run_id: SOUND_RUN_ID, platform_agent_run_id: null, launch_configuration: launch(leadLaunch) },
-      ],
-      task_executions: [],
-    },
+    // WEB-BASELINE-REFRESH-010: Teams are flat in the source (065430d); the former /post_production sub-team is gone.
   ],
-  collaborators: [
-    { kind: 'agent', address: '/tutorial_video_producer', agent_definition_id: definitionIdOf(collaborator), agent_run_id: COLLAB_RUN_ID, platform_agent_run_id: null, launch_configuration: launch(collaborator), added_at: '2026-10-05T09:20:00.000Z', added_via_agent_run_id: LEAD_RUN_ID },
-  ],
+  // WEB-BASELINE-REFRESH-010: the source (2f21134) has no collaborators; a run's only children are its
+  // delegated copies. The former collaborator `/tutorial_video_producer` is now a delegated copy of
+  // `tutorial-video-producer`, and so is the second copy at that address.
   task_executions: [
-    // The video lead delegated a task to the collaborator: a sourceless copy that inherits its agent.
-    { kind: 'task_agent', address: '/tutorial_video_producer', agent_run_id: COPY_RUN_ID, platform_agent_run_id: null, delegator_agent_run_id: LEAD_RUN_ID, started_at: '2026-10-05T09:26:00.000Z' },
+    { kind: 'task_agent', address: '/tutorial_video_producer', agent_run_id: COLLAB_RUN_ID, platform_agent_run_id: null, delegator_agent_run_id: LEAD_RUN_ID, started_at: '2026-10-05T09:20:00.000Z',
+      source: { kind: 'agent', agent_definition_id: definitionIdOf(collaborator), launch_configuration: launch(collaborator) } },
+    { kind: 'task_agent', address: '/tutorial_video_producer', agent_run_id: COPY_RUN_ID, platform_agent_run_id: null, delegator_agent_run_id: LEAD_RUN_ID, started_at: '2026-10-05T09:26:00.000Z',
+      source: { kind: 'agent', agent_definition_id: definitionIdOf(collaborator), launch_configuration: launch(collaborator) } },
   ],
 })
 
@@ -290,8 +284,6 @@ const teamHistoryRun = (base: Record<string, any>) => ({
   members: [
     { memberName: 'video_lead', displayName: 'Video Lead', memberAddress: '/video_lead', agentRunId: LEAD_RUN_ID, agentDefinitionId: 'video-lead', agentName: 'Video Lead', status: 'IDLE', runtimeKind: leadLaunch.runtimeKind, workspaceRootPath: workspace.workspaceRootPath },
     { memberName: 'editor', displayName: agentNameOf(definitionIdOf(editor), 'editor'), memberAddress: '/editor', agentRunId: EDITOR_RUN_ID, agentDefinitionId: definitionIdOf(editor), agentName: agentNameOf(definitionIdOf(editor), 'editor'), status: 'IDLE', runtimeKind: editor.runtimeKind, workspaceRootPath: workspace.workspaceRootPath },
-    { memberName: 'colorist', displayName: 'colorist', memberAddress: '/post_production/colorist', agentRunId: COLORIST_RUN_ID, agentDefinitionId: 'colorist', agentName: 'Colorist', status: 'IDLE', runtimeKind: leadLaunch.runtimeKind, workspaceRootPath: workspace.workspaceRootPath },
-    { memberName: 'sound_designer', displayName: 'sound_designer', memberAddress: '/post_production/sound_designer', agentRunId: SOUND_RUN_ID, agentDefinitionId: 'sound-designer', agentName: 'Sound Designer', status: 'IDLE', runtimeKind: leadLaunch.runtimeKind, workspaceRootPath: workspace.workspaceRootPath },
   ],
 })
 

@@ -1,13 +1,13 @@
 <template>
-  <!-- task-keys-and-dependencies: "Depends on" on the New task / Edit task page. Only Tasks of this Project;
-       a Task that (in)directly depends on this one cannot be chosen (no loops). It informs and never stops work. -->
+  <!-- "Depends on" on the New task / Edit task page. Only Tasks of this Project; a Task that (in)directly
+       depends on this one cannot be chosen (no loops). It informs and never stops work. -->
   <div class="mt-6 border-t border-slate-100 pt-5" data-testid="task-dependency-picker">
     <label :for="inputId" class="block text-sm font-medium text-slate-700">{{ t('projects.deps.dependsOn') }} <span class="font-normal text-slate-400">{{ t('projects.ui.optional') }}</span></label>
     <p :id="helpId" class="mt-1 text-xs leading-5 text-slate-500">{{ t('projects.deps.editorHelp', { project: projectName }) }}</p>
 
     <ul v-if="selected.length" class="mt-3 space-y-1.5" data-testid="task-dependency-selected">
       <li v-for="item in selected" :key="item.taskId" class="flex min-w-0 items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 py-1.5 pl-3 pr-1.5 text-sm" :data-testid="`task-dependency-selected-${item.taskId}`">
-        <span class="max-w-[45%] flex-shrink-0 font-medium text-slate-700"><TaskKey :task-key="item.taskKey ?? ''" /></span>
+        <span class="max-w-[45%] flex-shrink-0 font-medium text-slate-700"><TaskKey :task-key="item.taskKey" /></span>
         <span class="min-w-0 flex-1 truncate text-slate-600">{{ taskSummaryLabel(item.description) }}</span>
         <span class="flex-shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset" :class="taskStatusPillClass(item.status)">{{ t(TASK_STATUS_LABEL_KEYS[item.status]) }}</span>
         <button
@@ -68,7 +68,7 @@
           @mousedown.prevent="choose(item)"
           @mousemove="active = index"
         >
-          <span class="max-w-[40%] flex-shrink-0 font-medium" :class="item.cycle ? '' : 'text-slate-700'"><TaskKey :task-key="item.task.taskKey ?? ''" /></span>
+          <span class="max-w-[40%] flex-shrink-0 font-medium" :class="item.cycle ? '' : 'text-slate-700'"><TaskKey :task-key="item.task.taskKey" /></span>
           <span class="min-w-0 flex-1 truncate" :class="item.cycle ? '' : 'text-slate-600'">{{ taskSummaryLabel(item.task.description) }}</span>
           <span v-if="item.cycle" class="flex-shrink-0 text-xs">{{ t('projects.deps.cycle') }}</span>
           <span v-else class="flex-shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset" :class="taskStatusPillClass(item.task.status)">{{ t(TASK_STATUS_LABEL_KEYS[item.task.status]) }}</span>
@@ -109,7 +109,7 @@ const options = computed(() => {
   const words = query.value.trim().toLocaleLowerCase()
   return tasks.value
     .filter((item) => item.taskId !== props.taskId && !model.value.includes(item.taskId))
-    .filter((item) => !words || `${item.taskKey ?? ''} ${item.description}`.toLocaleLowerCase().includes(words))
+    .filter((item) => !words || `${item.taskKey} ${item.description}`.toLocaleLowerCase().includes(words))
     .sort((a, b) => taskKeyNumber(b) - taskKeyNumber(a))
     .slice(0, 8)
     .map((task) => ({ task, cycle: cycle.value.has(task.taskId) }))

@@ -80,7 +80,6 @@ const rootTeam = (run: LaunchedTeamRun, team: TeamDefinition | null) => ({
     platform_agent_run_id: null,
     launch_configuration: launchConfiguration(member),
   })),
-  collaborators: [],
   task_executions: [],
 })
 

@@ -26,7 +26,7 @@ check('DCE-001 copies show their current Task', texts.length === 5 && texts.some
 await page.screenshot({ path: `${OUT}/DCE-001-tree.png` })
 await summaries.filter({ hasText: 'Image context files' }).first().click(); await page.waitForTimeout(700)
 const located = await page.evaluate(() => ({ board: document.querySelector('[data-testid="projects-panel-picker-select"]')?.selectedOptions?.[0]?.textContent?.trim(), focused: document.activeElement?.closest('[data-testid^="project-task-row-"]:not([data-testid="project-task-row-link"])')?.getAttribute('data-testid') }))
-check('DCE-002 a summary shows its Task on its Project board', located.board === 'Desktop App' && located.focused === 'project-task-row-dct-image-context', located)
+check('DCE-002 a summary shows its Task on its Project board (AutoByteus, renamed by task-keys-and-dependencies)', located.board === 'AutoByteus' && located.focused === 'project-task-row-dct-image-context', located)
 await page.screenshot({ path: `${OUT}/DCE-002-located.png` })
 await summaries.filter({ hasText: 'Draft an onboarding agent package' }).first().click(); await page.waitForTimeout(700)
 const temp = await page.evaluate(() => ({ board: document.querySelector('[data-testid="projects-panel-picker-select"]')?.selectedOptions?.[0]?.textContent?.trim(), focused: document.activeElement?.closest('[data-testid^="project-task-row-"]:not([data-testid="project-task-row-link"])')?.getAttribute('data-testid') }))

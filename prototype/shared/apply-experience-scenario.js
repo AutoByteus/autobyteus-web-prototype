@@ -487,7 +487,7 @@ export function applyExperienceScenario(input = {}) {
         hasAgentRun: id => configuredEntries.some(entry => entry.agentRunId === id),
         getAgentContext: id => configuredEntries.find(entry => entry.agentRunId === id)?.agentContext || null,
         getMemberAddress: id => configuredEntries.find(entry => entry.agentRunId === id)?.memberAddress || null,
-        getExecutionTree: () => ({ root_team: { team_run_id: rootTeamRunId, members: [], collaborators: [], task_executions: [] } }),
+        getExecutionTree: () => ({ root_team: { team_run_id: rootTeamRunId, members: [], task_executions: [] } }),
         focusAgent(id) {
           if (!configuredEntries.some(entry => entry.agentRunId === id)) return { disposition: 'rejected' }
           this._focusedAgentRunId = id
@@ -746,13 +746,12 @@ export function applyExperienceScenario(input = {}) {
             { kind: 'configured_agent', address: reviewerAddress, agent_definition_id: reviewerDefinitionId, role: null, description: null, agent_run_id: reviewerRunId, platform_agent_run_id: null, launch_configuration: launchConfiguration },
             { kind: 'configured_agent', address: writerAddress, agent_definition_id: writerDefinitionId, role: null, description: null, agent_run_id: writerRunId, platform_agent_run_id: null, launch_configuration: launchConfiguration },
           ],
-        collaborators: [],
         task_executions: [],
       },
     }
     const executionTree = launchedFromCatalog
       ? launchExecutionTree
-      : { root_team: { team_run_id: rootTeamRunId, members: [], collaborators: [], task_executions: [] } }
+      : { root_team: { team_run_id: rootTeamRunId, members: [], task_executions: [] } }
     const view = {
       _focusedAgentRunId: reviewerRunId,
       getRootTeamRunId: () => rootTeamRunId, getTeamDefinitionName: () => teamDefinitionName, getFocusedAgentContext() { return entries.find(item => item.agentRunId === this._focusedAgentRunId)?.agentContext || null },

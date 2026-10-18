@@ -1,5 +1,22 @@
 # UI Reference Runbook
 
+## WEB-BASELINE-REFRESH-010 (source pin `2f21134`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4620
+```
+
+- Task keys and "Depends on": `/projects/project-prototype-launch` (badges), a Task page
+  (`/projects/project-prototype-launch/tasks/prototype-launch-3`), Edit task (picker).
+- Delegated copies: `/workspace` → prototype-workspace → Research Assistant → its run →
+  **Edit Config** → Delegated copies (stopped: change a copy's model and Save).
+- Live runs: scenario `live_runs` (`autobyteus.prototype.scenario`): Team status dots, a
+  running copy's red Stop in the tree and in Settings.
+- Skill update notice: open the Research Assistant run. TPS card: New chat → send →
+  Token tab (a value appears only with a live model call). NFS guide: Nodes → NFS Guide.
+- Reset: reload the page. Comparison runs set `autobyteus.prototype.designOnlyLayers=off`.
+
 ## WEB-BASELINE-REFRESH-009 (source pin `73f7432`)
 
 ```bash

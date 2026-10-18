@@ -16,7 +16,6 @@
         v-if="displayRow.row.kind === 'stable_member'"
         :row="displayRow.row"
         :avatars="avatars"
-        :aggregate-status="teamBranchStatus(displayRow.row)"
         :age="formatRelativeTime(team.lastActivityAt)"
         :is-selected="isSelected(displayRow.row)"
         :has-children="displayRow.hasChildren"
@@ -29,12 +28,14 @@
       <WorkspaceTransientExecutionRow
         v-else
         :row="displayRow.row"
+        :team-status="teamStatusOf(displayRow.row)"
         :is-selected="isSelected(displayRow.row)"
         :has-children="displayRow.hasChildren"
         :expanded="isRowExpanded(displayRow.row.rowKey)"
         :continuing-ancestor-depths="displayRow.continuingAncestorDepths"
         :has-following-sibling="displayRow.hasFollowingSibling"
         :task="taskOf(displayRow.row)"
+        :stop-root="{ rootKind: 'AGENT_TEAM', rootRunId: team.teamRunId }"
         @select="$emit('select', $event)"
         @toggle="$emit('toggle', $event)"
         @locate-task="(task: TaskWorkerTask) => locate(task, () => emit('open-run'))"
@@ -48,8 +49,8 @@ import { computed } from 'vue';
 import WorkspaceStableExecutionRow from '~/components/workspace/history/WorkspaceStableExecutionRow.vue';
 import WorkspaceTransientExecutionRow from '~/components/workspace/history/WorkspaceTransientExecutionRow.vue';
 import { useLeavingTreeRows } from '~/components/workspace/history/useLeavingTreeRows';
-import { aggregateTeamBranchAgentStatus } from '~/components/workspace/history/workspaceHistoryTeamBranchStatus';
-import { AgentStatus } from '~/types/agent/AgentStatus';
+import { teamBranchStatus } from '~/components/workspace/history/workspaceHistoryTeamBranchStatus';
+import type { TeamStatus } from '~/utils/workspaceTeamAggregateStatus';
 import { useLocalization } from '~/composables/useLocalization';
 import { useTaskWorkerTasks } from '~/composables/projects/useTaskWorkerTasks';
 import type { TaskWorkerTask } from '~/types/project';
@@ -129,10 +130,9 @@ const isSelected = (row: RunHistoryTeamExecutionRow): boolean =>
   && row.agentRunId !== null
   && row.agentRunId === props.team.focusedAgentRunId;
 
-const teamBranchStatus = (row: RunHistoryStableExecutionRow): AgentStatus =>
-  row.memberKind === 'agent_team'
-    ? aggregateTeamBranchAgentStatus(props.team.executionRows, row)
-    : AgentStatus.Offline;
+/** Derived from the current rows on every render, so member status patches and collapse stay current. */
+const teamStatusOf = (row: RunHistoryTeamExecutionRow): TeamStatus =>
+  teamBranchStatus(props.team.executionRows, row, props.team.isActive);
 
 const activateStableRow = (row: RunHistoryStableExecutionRow): void => {
   if (row.hasChildren) emit('toggle', row);

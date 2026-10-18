@@ -1,0 +1,101 @@
+{
+  "generatedAt": "2026-10-18T04:52:11.180Z",
+  "results": [
+    {
+      "id": "NFS-002",
+      "title": "Nodes: NFS guide (390x844)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"nfs-guide-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "nfs-guide-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "SHARED NETWORK WORKSPACES\n\nAutoByteus NFS\n\nWork on the same project folder from different computers. AutoByteus NFS runs",
+            "rect": [
+              74,
+              183,
+              292,
+              2116
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "20px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "[data-testid=\"nfs-copy-feedback\"]": [
+          {
+            "tag": "P",
+            "test": "nfs-copy-feedback",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              112,
+              1097,
+              216,
+              0
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(4, 120, 87)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "focused": "node-manager-tab-nfsGuide",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=manage",
+        "/nodes?tab=manage"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

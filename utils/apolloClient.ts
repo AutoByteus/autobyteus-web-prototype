@@ -10,13 +10,13 @@
  * source without an Apollo client, schema, or network boundary. Mutations and
  * subscriptions stay inert.
  */
-import { operationFixture, baseState, PROJECT_MUTATIONS, SKILL_SOURCE_MUTATIONS } from '~/prototype/source-observation/fixtures.mjs'
+import { operationFixture, baseState, DELEGATED_MUTATIONS, PROJECT_MUTATIONS, SKILL_SOURCE_MUTATIONS } from '~/prototype/source-observation/fixtures.mjs'
 import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/launchedTeamFixture'
 import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/prototype/run-settings/launchedOrgFixture'
 import { withAgentReconnect } from '~/prototype/agent-reconnect/agentReconnectFixture'
 import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
-import { applyTaskKeyMutation, seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
+import { seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
 import { designSkillSourceData, designRegistryError, designSkillSourceMutation } from '~/prototype/skill-sources/skillSourcesDesignFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
@@ -44,6 +44,7 @@ const fixtureState = (): Record<string, any> => {
     localFixtureState.skillSourceData = null
     localFixtureState.taskContextFiles = {}
     localFixtureState.archivedAgentGroup = false
+    localFixtureState.delegatedSelections = null
     // skill-sources-dialog-redesign (design-only): representative skill sources for the redesigned dialog.
     if (designOnlyLayersEnabled()) localFixtureState.skillSourceData = designSkillSourceData(scenario)
   }
@@ -101,13 +102,15 @@ const resolveLocally = async (request: OperationRequest = {}) => {
 // Project/Task mutations back the Projects pages (0a32261); the skill-source
 // mutations back the Skill Sources dialog (4dee901); ReloadAgentPackageDefinitions backs the
 // Agents, Teams and Orgs Reload buttons (f7fcf90).
-const LOCAL_MUTATIONS = new Set(['ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
+const LOCAL_MUTATIONS = new Set([...DELEGATED_MUTATIONS, 'ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
 
 const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const definition = request.mutation?.definitions?.find((entry: any) => entry.kind === 'OperationDefinition')
   const name = definition?.name?.value
   if (!name || !LOCAL_MUTATIONS.has(name)) return { data: {} }
-  await nextTask()
+  // WEB-BASELINE-REFRESH-010: a mutation answers after a network-like delay (longer than a rendering frame),
+  // like the replaced store actions, so a control disabled while it waits loses focus as in the source.
+  await new Promise<void>(done => setTimeout(done, 40))
   const state = fixtureState()
   if (name === 'CreateAgentOrgRun') return { data: recordOrgLaunch(request.variables || {}) }
   if (name === 'TerminateAgentOrgRun') return { data: recordOrgTermination(request.variables || {}) }
@@ -119,8 +122,6 @@ const resolveMutationLocally = async (request: OperationRequest = {}) => {
   let data = operationFixture(name, request.variables || {}, state)
   // run-settings-ui-unification: each Team launch is its own run (launchedTeamFixture.ts).
   if (name === 'CreateAgentTeamRun') { state.launchedTeamRun = true; data = recordTeamLaunch(request.variables || {}, data) }
-  // task-keys-and-dependencies (design-only): a new Task's key and the chosen "Depends on".
-  if (designOnlyLayersEnabled()) applyTaskKeyMutation(name, request.variables || {}, data, state)
   if (data?.__projectError) return { data: null, errors: [data.__projectError] }
   return { data: data ? structuredClone(data) : {} }
 }

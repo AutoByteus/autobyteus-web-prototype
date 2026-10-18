@@ -1,5 +1,5 @@
 <template>
-  <!-- task-keys-and-dependencies: the Task key on a Task's detail, with a copy button. -->
+  <!-- The Task key on a Task's detail, with a copy button. -->
   <span class="inline-flex min-w-0 max-w-full items-center gap-0.5 rounded-md border border-slate-200 bg-white py-0.5 pl-2 pr-0.5 text-sm font-medium text-slate-700" data-testid="task-key-chip">
     <TaskKey :task-key="taskKey" />
     <button
@@ -27,9 +27,9 @@ const props = defineProps<{ taskKey: string }>()
 const { t } = useLocalization()
 const copied = ref(false)
 let timer: ReturnType<typeof setTimeout> | null = null
-/** Copies the key and shows "Copied" for 1.5 s. */
+/** Copies the key and shows "Copied" for 1.5 s; a failed write is reported like the app's other copy buttons and the key stays selectable. */
 const copy = async () => {
-  try { await navigator.clipboard?.writeText(props.taskKey) } catch { /* the key stays visible and selectable */ }
+  try { await navigator.clipboard.writeText(props.taskKey) } catch (error) { console.error('Failed to copy text: ', error) }
   copied.value = true
   if (timer) clearTimeout(timer)
   timer = setTimeout(() => { copied.value = false }, 1500)

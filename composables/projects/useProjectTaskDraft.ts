@@ -3,6 +3,7 @@ import { createProjectTaskContextClient } from '~/services/projects/projectTaskC
 import { useProjectTaskStore } from '~/stores/projectTaskStore'
 import { useVoiceInputStore } from '~/stores/voiceInputStore'
 import { mergeTranscriptWithDraft } from '~/utils/voiceInputCapture'
+import { dependenciesOf } from '~/utils/projects/taskDependencies'
 import type { ProjectTask, ProjectTaskContextFile } from '~/types/project'
 import type { VoiceTranscriptTarget } from '~/types/voiceInput'
 export function useProjectTaskDraft(projectId: string, saved?: ProjectTask) {
@@ -10,8 +11,8 @@ export function useProjectTaskDraft(projectId: string, saved?: ProjectTask) {
   const client = createProjectTaskContextClient(projectId, saved?.taskId, () => alive)
   const text = ref(saved?.description ?? '')
   const files = ref<ProjectTaskContextFile[]>([...(saved?.contextFiles ?? [])])
-  // task-keys-and-dependencies (design): the Tasks this one depends on (same Project).
-  const dependsOn = ref<string[]>([...(saved?.dependsOnTaskIds ?? [])])
+  // "Depends on" (same Project), starting from the dependencies that still exist, so a deleted one is never resubmitted.
+  const dependsOn = ref<string[]>(saved ? dependenciesOf(saved, useProjectTaskStore().getList(projectId)?.tasks ?? []).map((t) => t.taskId) : [])
   const added = new Set<string>(), removed = new Set<string>()
   const draftId = ref<string>()
   let beginPromise: Promise<string> | null = null

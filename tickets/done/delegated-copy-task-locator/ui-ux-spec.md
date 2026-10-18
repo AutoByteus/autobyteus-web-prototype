@@ -20,6 +20,21 @@
 
 - Final validation date: 2026-10-11
 
+## Revision 2026-10-18 — shipped product (baseline refresh)
+
+- This design shipped in the source (`TaskWorkerTaskSummary.vue`, `taskWorkerTaskStore.ts`,
+  `taskLocatorStore.ts`). `WEB-BASELINE-REFRESH-010` (autobyteus-web `2f21134`, v1.5.6-beta.1, Project Task
+  autobyteus-134) runs the shipped components.
+- The approved behaviour is unchanged. Every final reference was recaptured from the shipped components;
+  the 2026-10-11 captures are in `visual-references/superseded-2026-10-18/`.
+- Changes visible in the recaptures come from the product, not this design:
+  - delegated Teams start collapsed, and Team rows show the status dot;
+  - the example Project is named "AutoByteus" (illustrative; renamed by `task-keys-and-dependencies`);
+  - `@` collaborators no longer exist (source `5dd930d`). SCN-011 and VIS-014 now show the remaining rule:
+    a delegated copy without a known Task has no summary, while Task workers do.
+- `final-validation.mjs` passes 13/13 on the shipped components. It now imports Playwright from the
+  canonical checkout, and the source's selectors and `locate` signature apply.
+
 ## Repository And Baseline Provenance
 
 - Source repository: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`
@@ -305,7 +320,7 @@ before the click; it has no user control.
 | VIS-011b | TR-003 after | 1440×900 | `visual-references/VIS-011b-right-panel-reopened-task-located-1440x900.png` | Panel reopened on Projects; card located | — |
 | VIS-012 | UXJ-004 focus | 2× crop | `visual-references/VIS-012-task-summary-keyboard-focus-closeup-2x.png` | Focus ring around the summary | Text |
 | VIS-013 | Narrow drawer | 900×800 | `visual-references/VIS-013-narrow-window-drawer-task-located-900x800.png` | Right drawer on Projects; card located | — |
-| VIS-014 | Collaborators vs Task workers | 2× crop | `visual-references/VIS-014-collaborators-without-summary-task-workers-with-closeup-2x.png` | `@` collaborators one line; Task workers with summary | Names, texts |
+| VIS-014 | Copy without a known Task vs Task workers (revised 2026-10-18; collaborators removed by the product) | 2× crop | `visual-references/VIS-014-collaborators-without-summary-task-workers-with-closeup-2x.png` | `@` collaborators one line; Task workers with summary | Names, texts |
 
 ## Linked UI Reference Evidence
 

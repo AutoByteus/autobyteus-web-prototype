@@ -72,7 +72,9 @@ export const FLOWS = {
   'TSL-003': { title: 'Task summary: shows the Temp task on the Temp tasks board, highlighted', path: '/workspace', steps: [openTree, summary('Collect the changelog links')], settleMs: 300 },
   'TSL-004': { title: 'Task summary: the highlight ends after 2.4 s', path: '/workspace', steps: [openTree, summary('Review the synthetic navigation baseline.'), wait(3000)] },
   'TSL-005': { title: 'Task summary: Enter locates the Task and does not open the row', path: '/workspace', steps: [openTree, focusSummary('Review the synthetic navigation baseline.'), key('Enter')], settleMs: 300 },
-  'TSL-006': { title: 'Task summary on a page without the right panel opens the run, then locates', path: '/agents?view=list', steps: [openTree, summary('Review the synthetic navigation baseline.'), wait(1500)], settleMs: 300 },
+  // WEB-BASELINE-REFRESH-010: compared after the 2.4 s highlight (TSL-002 compares the highlight itself); opening the
+  // run first makes the moment of locating latency-dependent on both sides.
+  'TSL-006': { title: 'Task summary on a page without the right panel opens the run, then locates (after the highlight)', path: '/agents?view=list', steps: [openTree, summary('Review the synthetic navigation baseline.'), wait(3800)], settleMs: 300 },
   'TSL-007': { title: 'Task summary while the run is open in Chat', path: '/workspace', steps: [openStoredAgentRun, summary('Collect the changelog links')], settleMs: 300 },
   'TSL-008': { title: 'Workspaces drawer (390x844): Task summaries', path: '/workspace', viewport: { width: 390, height: 844 }, steps: [sel('[data-test="workspace-left-strip-workspaces"]'), openTree] },
   'TSL-009': { title: 'Workspaces drawer (390x844): a summary closes the drawer and shows the Task, highlight ended', path: '/workspace', viewport: { width: 390, height: 844 }, steps: [sel('[data-test="workspace-left-strip-workspaces"]'), openTree, summary('Review the synthetic navigation baseline.'), wait(3000)] },

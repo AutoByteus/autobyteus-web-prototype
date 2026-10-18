@@ -1,0 +1,249 @@
+[
+ {
+  "file": "VIS-001-board-dependency-badges-1440x900.png",
+  "result": "differs",
+  "changedPixels": 2655,
+  "maxDelta": 178,
+  "box": [
+   8,
+   22,
+   1407,
+   896
+  ]
+ },
+ {
+  "file": "VIS-002a-card-blocked-by-several-2x.png",
+  "result": "differs",
+  "changedPixels": 278,
+  "maxDelta": 74,
+  "box": [
+   48,
+   108,
+   457,
+   147
+  ]
+ },
+ {
+  "file": "VIS-002b-card-blocked-by-one-2x.png",
+  "result": "differs",
+  "changedPixels": 300,
+  "maxDelta": 74,
+  "box": [
+   48,
+   204,
+   421,
+   243
+  ]
+ },
+ {
+  "file": "VIS-002c-card-dependency-cancelled-2x.png",
+  "result": "differs",
+  "changedPixels": 223,
+  "maxDelta": 41,
+  "box": [
+   48,
+   108,
+   561,
+   147
+  ]
+ },
+ {
+  "file": "VIS-002d-card-dependencies-done-no-badge-2x.png",
+  "result": "identical",
+  "changedPixels": 0,
+  "maxDelta": 0,
+  "box": null
+ },
+ {
+  "file": "VIS-003-detail-depends-on-blocked-1440x900.png",
+  "result": "differs",
+  "changedPixels": 1914,
+  "maxDelta": 178,
+  "box": [
+   8,
+   22,
+   1330,
+   880
+  ]
+ },
+ {
+  "file": "VIS-004-detail-depends-on-done-follow-up-1440x900.png",
+  "result": "differs",
+  "changedPixels": 2052,
+  "maxDelta": 178,
+  "box": [
+   8,
+   22,
+   1330,
+   880
+  ]
+ },
+ {
+  "file": "VIS-005-detail-required-by-1440x900.png",
+  "result": "differs",
+  "changedPixels": 1879,
+  "maxDelta": 178,
+  "box": [
+   8,
+   22,
+   1330,
+   880
+  ]
+ },
+ {
+  "file": "VIS-006-key-chip-copied-2x.png",
+  "result": "differs",
+  "changedPixels": 177,
+  "maxDelta": 112,
+  "box": [
+   282,
+   18,
+   771,
+   77
+  ]
+ },
+ {
+  "file": "VIS-007a-edit-depends-on-field-1440x900.png",
+  "result": "differs",
+  "changedPixels": 1809,
+  "maxDelta": 178,
+  "box": [
+   8,
+   22,
+   1289,
+   880
+  ]
+ },
+ {
+  "file": "VIS-007b-edit-depends-on-search-open-1440x900.png",
+  "result": "differs",
+  "changedPixels": 2245,
+  "maxDelta": 178,
+  "box": [
+   8,
+   22,
+   1289,
+   888
+  ]
+ },
+ {
+  "file": "VIS-008-edit-depends-on-loop-not-allowed-1440x900.png",
+  "result": "differs",
+  "changedPixels": 1708,
+  "maxDelta": 178,
+  "box": [
+   8,
+   22,
+   1289,
+   880
+  ]
+ },
+ {
+  "file": "VIS-009a-new-task-depends-on-chosen-2x.png",
+  "result": "differs",
+  "changedPixels": 627,
+  "maxDelta": 37,
+  "box": [
+   30,
+   181,
+   1659,
+   425
+  ]
+ },
+ {
+  "file": "VIS-009b-new-task-card-blocked-by-2x.png",
+  "result": "differs",
+  "changedPixels": 278,
+  "maxDelta": 74,
+  "box": [
+   48,
+   156,
+   421,
+   195
+  ]
+ },
+ {
+  "file": "VIS-009c-new-task-page-next-key-2x.png",
+  "result": "differs",
+  "changedPixels": 204,
+  "maxDelta": 48,
+  "box": [
+   282,
+   18,
+   677,
+   77
+  ]
+ },
+ {
+  "file": "VIS-010-right-panel-board-badges-1440x900.png",
+  "result": "differs",
+  "changedPixels": 29760,
+  "maxDelta": 244,
+  "box": [
+   16,
+   14,
+   1427,
+   883
+  ]
+ },
+ {
+  "file": "VIS-011-right-panel-task-key-and-dependencies-1440x900.png",
+  "result": "differs",
+  "changedPixels": 29571,
+  "maxDelta": 244,
+  "box": [
+   16,
+   14,
+   1427,
+   883
+  ]
+ },
+ {
+  "file": "VIS-012-tree-task-summary-2x.png",
+  "result": "differs",
+  "changedPixels": 87919,
+  "maxDelta": 244,
+  "box": [
+   40,
+   18,
+   605,
+   873
+  ]
+ },
+ {
+  "file": "VIS-013-long-key-badge-board-2x.png",
+  "result": "differs",
+  "changedPixels": 424,
+  "maxDelta": 69,
+  "box": [
+   30,
+   16,
+   2135,
+   275
+  ]
+ },
+ {
+  "file": "VIS-014-long-key-detail-2x.png",
+  "result": "differs",
+  "changedPixels": 952,
+  "maxDelta": 125,
+  "box": [
+   30,
+   24,
+   1981,
+   829
+  ]
+ },
+ {
+  "file": "VIS-015-board-narrow-760x900.png",
+  "result": "differs",
+  "changedPixels": 2486,
+  "maxDelta": 84,
+  "box": [
+   8,
+   24,
+   735,
+   874
+  ]
+ }
+]

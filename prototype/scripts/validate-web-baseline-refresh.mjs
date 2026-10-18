@@ -47,6 +47,8 @@ export const ROUTES = [
   '/projects/project-prototype-launch/tasks/task-outline', '/projects/project-prototype-launch/tasks/task-outline/edit',
   // WEB-BASELINE-REFRESH-008 (4d469b0): a Task page with its root, and the Temp tasks pages.
   '/projects/project-prototype-launch/tasks/task-review', '/projects/temp-tasks', '/projects/temp-tasks/tasks/temp-task-links',
+  // WEB-BASELINE-REFRESH-010 (2f21134): a Task page and its edit page by key.
+  '/projects/project-prototype-launch/tasks/prototype-launch-3', '/projects/project-prototype-launch/tasks/prototype-launch-2/edit',
 ]
 
 const VARIANTS = [
@@ -85,6 +87,8 @@ const stateRows = [
   { id: 'WBR-S022', path: '/settings?section=agent-packages', scenario: 'definition_issues' },
   // WEB-BASELINE-REFRESH-009 (87b246c): the Antigravity CLI listed but signed out.
   { id: 'WBR-S023', path: '/chat', scenario: 'agy_signed_out' },
+  // WEB-BASELINE-REFRESH-010 (d1a66fe, 3126536): live stored runs (Team status, running copy).
+  { id: 'WBR-S024', path: '/workspace', scenario: 'live_runs' },
 ].map(row => ({ kind: 'state', viewport: 'desktop', locale: 'en', ...row }))
 
 // Proportionate coverage: every route in the primary configuration (desktop,

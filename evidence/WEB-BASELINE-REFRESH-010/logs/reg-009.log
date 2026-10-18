@@ -1,0 +1,58 @@
+PASS TSL-001 Workspaces tree: Task-worker rows show their Task summary text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TSL-002 Task summary: shows the Project Task in the Projects tab, highlighted text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TSL-003 Task summary: shows the Temp task on the Temp tasks board, highlighted text=true probe=true px=2 max=2   srcErr=0 protoErr=0
+PASS TSL-004 Task summary: the highlight ends after 2.4 s text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TSL-005 Task summary: Enter locates the Task and does not open the row text=true probe=true px=2 max=2   srcErr=0 protoErr=0
+FAIL TSL-006 Task summary on a page without the right panel opens the run, then locates text=true probe=false px=39947 max=156   srcErr=0 protoErr=0
+  source-only: []
+  proto-only : []
+PASS TSL-007 Task summary while the run is open in Chat text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TSL-008 Workspaces drawer (390x844): Task summaries text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TSL-009 Workspaces drawer (390x844): a summary closes the drawer and shows the Task, highlight ended text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CLP-001 Open run, left panel collapsed: the strip lights Workspaces text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CLP-002 Strip Workspaces icon opens the panel on the open run text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CLP-003 New chat, left panel collapsed: the strip lights Chat text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CLP-004 Strip hover tooltip on Workspaces text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-001 Skills: Sources opens the dialog text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-002 Skill sources: add a local folder text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-003 Skill sources: import a GitHub repository URL from the same input text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-004 Skill sources: an invalid repository URL is rejected text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-005 Skill sources: Tab keeps focus inside the dialog text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-006 Skill sources: Update failed and Removal incomplete rows text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-007 Skill sources: Escape closes the dialog text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-008 Skill sources: Try again on a source whose check failed text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-009 Skill sources: Update opens the whole-source confirmation text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-010 Skill sources: confirm the update (up to date, success notice) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-011 Skill sources: Remove a GitHub source opens the delete confirmation text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-012 Skill sources: confirm removing a GitHub source text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-013 Skill sources: Remove a local folder opens the unlink confirmation text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-014 Skill sources: Retry removal text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKN-015 Skill sources: Done closes the dialog text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS DEF-001 Agents: expand a card load-issue badge text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS DEF-002 Agents: expand the "Package folder unavailable" badge text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS DEF-003 Agents: expand the problems notice text=true probe=true px=6 max=4   srcErr=0 protoErr=0
+PASS DEF-004 Teams: expand the card badge (members could not be loaded) and the notice text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS DEF-005 Orgs: expand the card badge and the notice text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS DEF-006 Agents: Reload reloads every agent package text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS DEF-007 Teams: Reload text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS DEF-008 Agent Packages: auto-refresh state tooltip text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS RSN-001 New chat Team: members seeded from their agent defaults (one cannot be used) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS RSN-002 New chat Team: expand the member whose default cannot be used text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS RSN-006 Team catalog Run: members seeded from agent defaults; one default cannot be used text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS RSN-007 Team catalog Run: expand the member whose default cannot be used text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS RSN-008 Org Run: Org launch page with seeded member rows text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS RSN-003 Org launch page: members seeded from their defaults text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS RSN-004 Stored Agent run settings: collaborators and delegated copies text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS RSN-005 Stored Team run settings (no delegated launches) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKN-001 Chat run Token tab: auto-compaction marker and label text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKN-002 Chat run Token tab: "Compacted — updates on the next model call" text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKN-003 Stored Agent run Token tab text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS ARC-001 Archive all while a run of the group is open text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHS-001 New chat: send is unavailable without text text=true probe=true px=1 max=2   srcErr=0 protoErr=0
+PASS AGY-001 Model menu: a signed-out Antigravity CLI is Unavailable with its reason text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS AGY-002 Model menu: hovering the unavailable runtime text=true probe=true px=2 max=2   srcErr=0 protoErr=0
+PASS ZH-001 zh-CN: Workspaces tree Task summaries and locate text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS ZH-002 zh-CN: Agents with load issues text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS ZH-003 zh-CN: Team members drawer with seeded rows text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS NAR-001 390x844: Skill sources dialog text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS NAR-002 390x844: Agents with load issues text=true probe=true px=0 max=0   srcErr=0 protoErr=0

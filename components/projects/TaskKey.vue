@@ -1,6 +1,6 @@
 <template>
-  <!-- task-keys-and-dependencies: a Task key, as one piece of text (it copies cleanly). Only when it does not fit
-       is the Project part shortened, so the number always stays visible (e.g. "customer-onboarding…-12"). -->
+  <!-- A Task key as one piece of text (it copies cleanly). Only when it does not fit is the Project part
+       shortened in the middle, so the number always stays visible (e.g. "customer-onboarding…-12"). -->
   <span ref="root" class="inline-flex min-w-0 max-w-full items-baseline whitespace-nowrap" :title="taskKey" data-testid="task-key" :data-key="taskKey">
     <span v-if="!overflowing" ref="whole" class="min-w-0 overflow-hidden">{{ taskKey }}</span>
     <template v-else><span class="min-w-0 truncate">{{ prefix }}</span><span class="flex-shrink-0">{{ suffix }}</span></template>

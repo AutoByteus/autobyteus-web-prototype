@@ -115,7 +115,6 @@ const executionTree = (run: LaunchedOrgRun, catalogs: OrgCatalogs) => {
       orgRunId: run.orgRunId,
       defaultLaunchConfiguration: run.input.rootConfiguration,
       members: (org?.members ?? []).map((member) => buildMember(run, catalogs, member, `/${member.memberName}`, run.input.rootConfiguration)),
-      collaborators: [],
       taskExecutions: [],
     },
   }

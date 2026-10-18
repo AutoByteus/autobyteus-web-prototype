@@ -1,0 +1,45 @@
+PASS TKY-001 Board: no keys on cards; Blocked by (+1) and Dependency cancelled badges text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-002 Board: a dependency badge tooltip lists every dependency text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-003 Task page by long ID is replaced by the key URL; chip, Depends on, informs note text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-004 Task page: a Done dependency (✓) and Required by text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-005 Task page: copy the key text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-006 Task page: a dependency row opens that Task text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-007 Key URL in another letter case opens the Task text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-008 Edit task: the picker lists Tasks, a dependent one greyed "Depends on this Task" text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-009 Edit task: picker search by key or text text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-010 Edit task: picker with no match text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-011 Edit task: Enter adds the first option; focus stays in the search text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-012 Edit task: remove a chosen dependency text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-013 Edit task: Save stores the new dependencies text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+FAIL TKY-014 New task: picker, then Create text=true probe=false px=318997 max=249   srcErr=0 protoErr=0
+  source-only: []
+  proto-only : []
+PASS TKY-015 Projects tab: Task view with the key chip and dependencies text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-016 Projects tab: a dependency opens inside the tab text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-017 Temp task page: no key, no dependencies text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-018 Task page (390x844) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-019 Task page (zh-CN) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-020 Board (zh-CN): badges text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS DLG-001 Stored run Settings: Delegated copies, collapsed text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS DLG-002 Delegated copies: open an agent copy (editable while stopped; skipped default) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS DLG-003 Delegated copies: open a Team copy (settings, members, coordinator) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS DLG-004 Delegated copies: the model menu of a stopped copy text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS DLG-005 Delegated copies: choose another model; the Save bar shows text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS DLG-006 Delegated copies: Save; the row shows the chosen model text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS LIV-001 Workspaces tree: Team status dots (busy Team run, copy Team in error) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS LIV-002 Workspaces tree: the running copy's red Stop, hovered text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS LIV-003 Live run Settings: running copy has Stop and a locked model text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS LIV-004 Live run Settings: Stop a running copy text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS LIV-005 Workspaces tree: Stop a copy from its row text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS LIV-006 Live Team run opened: Team status busy text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS LIV-007 Team status tooltip text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS LIV-008 Stored (not live) Team status: offline text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKU-001 Stored run conversation: "Skill updated" notice text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TPS-001 Token tab: TPS card without a measured call text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TPS-002 Token tab: TPS card with a generation reading text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TPS-003 Token tab: TPS help expanded text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TPS-004 Token tab: TPS end-to-end reading text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS NFS-001 Nodes: NFS guide tab text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS NFS-002 Nodes: NFS guide (390x844) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS NAR-001 390x844: Workspaces drawer with live Team status text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS ZH-001 zh-CN: delegated copies in Settings text=true probe=true px=0 max=0   srcErr=0 protoErr=0

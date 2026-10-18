@@ -46,6 +46,7 @@
 | --- | --- | --- | --- |
 | 2026-10-17 | Approved: keys on board cards, the Task page, the tab's Task view, dependency lists, the badge, the picker and the Workspaces tree's Task summary | The user ("sounds good. i like the UI. its approved") | Ticket `task-keys-and-dependencies` |
 | 2026-10-17 | **Keys removed from board cards (DEC-001) and from the Workspaces tree's Task summary (DEC-008).** The tree summary returns to its look before keys. Every other key surface stays. | The user, after trying beta v1.5.5-beta.3: "we don't need to show that on the UI… it's only used to link"; for the tree: "remove the task key from displaying on the left side as well… show it like previous". Relayed through `/project_task_manager`; recorded by autobyteus-132's Solution Designer (`requirements-doc.md` SR-001, REQ-001 to REQ-004, DEC-001 to DEC-004). | Ticket `task-keys-off-lists`, Project Task autobyteus-133 |
+| 2026-10-18 | Baseline refresh to the shipped source (`WEB-BASELINE-REFRESH-010`, autobyteus-web `2f21134`, v1.5.6-beta.1). The UI reference now runs the shipped key and dependency components. The design is unchanged. VIS-010–012 are recaptured because their surroundings changed in the product: delegated Teams start collapsed, and Team rows show a status dot. The previous captures are in `visual-references/superseded-2026-10-18/`. `final-validation.mjs` passes 14/14 on the shipped components. | Shipped product (autobyteus-132 and later) | Project Task autobyteus-134 |
 
 The original card and tree keys were an approved design that the user replaced after using it. They were
 not a defect. The superseded screenshots are kept in `visual-references/superseded-2026-10-17/`.
@@ -391,9 +392,9 @@ colours and rules are normative.
 | VIS-009a | New task, chosen | 2× | `visual-references/VIS-009a-new-task-depends-on-chosen-2x.png` | Chosen row with remove |
 | VIS-009b | New task saved, card (revised) | 2× | `visual-references/VIS-009b-new-task-card-blocked-by-2x.png` | Card without key line; "Blocked by autobyteus-39" |
 | VIS-009c | New task saved, Task page (added 2026-10-17) | 2× | `visual-references/VIS-009c-new-task-page-next-key-2x.png` | Next key `autobyteus-41` in the chip |
-| VIS-010 | Right-panel board (revised) | 1440×900 | `visual-references/VIS-010-right-panel-board-badges-1440x900.png` | Badges, no key lines, in the compact board |
-| VIS-011 | Right-panel Task view | 1440×900 | `visual-references/VIS-011-right-panel-task-key-and-dependencies-1440x900.png` | Key chip beside status; Dependencies card |
-| VIS-012 | Tree (revised) | 2× | `visual-references/VIS-012-tree-task-summary-2x.png` | "<summary>" on copy rows, no key |
+| VIS-010 | Right-panel board (revised; recaptured 2026-10-18) | 1440×900 | `visual-references/VIS-010-right-panel-board-badges-1440x900.png` | Badges, no key lines, in the compact board |
+| VIS-011 | Right-panel Task view (recaptured 2026-10-18) | 1440×900 | `visual-references/VIS-011-right-panel-task-key-and-dependencies-1440x900.png` | Key chip beside status; Dependencies card |
+| VIS-012 | Tree (revised; recaptured 2026-10-18: delegated Teams collapsed, Team status dots) | 2× | `visual-references/VIS-012-tree-task-summary-2x.png` | "<summary>" on copy rows, no key |
 | VIS-013 | Long key in the badge (revised) | 2× | `visual-references/VIS-013-long-key-badge-board-2x.png` | The badge middle-shortened with "-12" kept; no key lines |
 | VIS-014 | Long key, Task page | 2× | `visual-references/VIS-014-long-key-detail-2x.png` | Whole key in the chip and rows |
 | VIS-015 | Narrow board (revised) | 760×900 | `visual-references/VIS-015-board-narrow-760x900.png` | One column; badges, no key lines |

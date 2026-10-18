@@ -1,0 +1,87 @@
+{
+ "sourcePin": "2f211340ee36b81cef74a74b2e042b5102c269d3",
+ "identicalUiFiles": 1034,
+ "differingFiles": [
+  {
+   "path": "components/conversation/segments/ErrorSegment.vue",
+   "reason": "agent-definition-reconnect-ui (design-only, preserved)"
+  },
+  {
+   "path": "components/run-settings/ExistingRunSettings.vue",
+   "reason": "agent-definition-reconnect-ui re-applied onto 2f21134 (rootRunId prop + reconnect notes)"
+  },
+  {
+   "path": "components/run-settings/RunMemberRow.vue",
+   "reason": "agent-definition-reconnect-ui re-applied onto 2f21134 (\"Agent missing \u00b7\" prefix)"
+  },
+  {
+   "path": "components/workspace/agent/AgentEventMonitor.vue",
+   "reason": "agent-definition-reconnect-ui re-applied onto 2f21134 (composer notice)"
+  },
+  {
+   "path": "components/workspace/config/ExistingRunConfigEditor.vue",
+   "reason": "agent-definition-reconnect-ui re-applied onto 2f21134 (root-run-id)"
+  },
+  {
+   "path": "components/workspace/history/WorkspaceHistoryWorkspaceSection.vue",
+   "reason": "agent-definition-reconnect-ui re-applied onto 2f21134 (missing-agent mark, no new run)"
+  },
+  {
+   "path": "components/workspace/history/WorkspaceStableExecutionRow.vue",
+   "reason": "agent-definition-reconnect-ui re-applied onto 2f21134; the source's row structure renders when no agent is missing"
+  },
+  {
+   "path": "components/workspace/history/WorkspaceTransientExecutionRow.vue",
+   "reason": "agent-definition-reconnect-ui re-applied onto 2f21134; the source's row structure renders when no agent is missing"
+  },
+  {
+   "path": "localization/messages/en/index.ts",
+   "reason": "agent-definition-reconnect-ui (registers the reconnect messages)"
+  },
+  {
+   "path": "localization/messages/zh-CN/index.ts",
+   "reason": "agent-definition-reconnect-ui (registers the reconnect messages)"
+  },
+  {
+   "path": "nuxt.config.ts",
+   "reason": "design-owned (local GraphQL/WebSocket endpoints, offline assets)"
+  },
+  {
+   "path": "package.json",
+   "reason": "design-owned (file: contract dependencies, baseline scripts)"
+  },
+  {
+   "path": "tsconfig.json",
+   "reason": "design-owned"
+  },
+  {
+   "path": "utils/apolloClient.ts",
+   "reason": "design-owned local answer adapter"
+  }
+ ],
+ "sourceFilesNotInBaseline": [
+  "Dockerfile",
+  "LICENSE",
+  "codegen.ts",
+  "dist-scripts/build.js",
+  "docker-compose.dev.yml",
+  "docker-compose.prod.yml",
+  "docker-compose.yml",
+  "modules/devhandler-compat.ts",
+  "modules/electron/index.ts",
+  "modules/electron/package.json",
+  "nuxt.electron.config.ts",
+  "plugins/06.appFontSize.client.ts",
+  "plugins/10.serverStore.client.ts",
+  "plugins/15.appUpdater.client.ts",
+  "plugins/20.windowNodeBootstrap.client.ts",
+  "plugins/21.mobileRemoteAccessBootstrap.client.ts",
+  "plugins/25.browserShell.client.ts",
+  "plugins/30.apollo.client.ts",
+  "plugins/apolloErrorLink.client.ts",
+  "plugins/uiErrorCapture.client.ts",
+  "vitest.config.mts"
+ ],
+ "sourceFilesNotInBaselineNote": "Source infrastructure the baseline replaces (Electron/Docker/build files and the source plugins replaced by plugins/00 and 10). None of them changed in 73f7432..2f21134.",
+ "vendoredContracts": "src and dist of the contract packages synced to 2f21134 (application-sdk-contracts src unchanged; its built dist is the vendored one); package.json file: dependency lines kept."
+}

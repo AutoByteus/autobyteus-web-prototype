@@ -46,6 +46,8 @@ scenarios.push(
   { path: '/chat', scenario: 'agy_runtime', locale: 'en' },
   // WEB-BASELINE-REFRESH-009 (87b246c): a signed-out Antigravity CLI in the model menu.
   { path: '/chat', scenario: 'agy_signed_out', locale: 'en' },
+  // WEB-BASELINE-REFRESH-010: live stored runs.
+  { path: '/workspace', scenario: 'live_runs', locale: 'en' },
   { path: '/mobile', scenario: 'populated', locale: 'en', mobile: 'unpaired' },
   { path: '/mobile', scenario: 'populated', locale: 'en', mobile: 'paired' },
   { path: '/mobile?unsupported=desktopSettings', scenario: 'populated', locale: 'en', mobile: 'paired' },

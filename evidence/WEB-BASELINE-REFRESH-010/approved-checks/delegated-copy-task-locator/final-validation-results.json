@@ -1,0 +1,164 @@
+[
+  {
+    "id": "SCN-001 five copies show their Task summary; members none",
+    "ok": true,
+    "detail": [
+      "Token Meter accuracy: the context fill reads 97% right after compaction",
+      "Package the release-notes agent for the agent store",
+      "Members of a delegated team can't reach the agent package creator",
+      "Draft an onboarding agent package for the pilot customers",
+      "Image context files don't reach the model on the first turn"
+    ]
+  },
+  {
+    "id": "SCN-007 row name still opens the copy (not the Task)",
+    "ok": true,
+    "detail": {
+      "located": null,
+      "focused": null,
+      "picker": null,
+      "search": null,
+      "cancelledPressed": null,
+      "center": "solution designer"
+    }
+  },
+  {
+    "id": "SCN-002 summary locates the Task in its Project; center unchanged",
+    "ok": false,
+    "detail": {
+      "located": "project-task-row-dct-member-reach",
+      "focused": "project-task-row-dct-member-reach",
+      "picker": "AutoByteus",
+      "search": "",
+      "cancelledPressed": "false",
+      "center": "Dispatch the approved desktop app Tasks."
+    }
+  },
+  {
+    "id": "SCN-003 another Project: picker switches to Prototype Launch",
+    "ok": true,
+    "detail": {
+      "located": "project-task-row-dct-release-agent",
+      "focused": "project-task-row-dct-release-agent",
+      "picker": "Prototype Launch",
+      "search": "",
+      "cancelledPressed": "false",
+      "center": "Dispatch the approved desktop app Tasks."
+    }
+  },
+  {
+    "id": "SCN-004 no Project: picker switches to Temp tasks",
+    "ok": true,
+    "detail": {
+      "located": "project-task-row-dct-temp-onboarding",
+      "focused": "project-task-row-dct-temp-onboarding",
+      "picker": "Temp tasks",
+      "search": "",
+      "cancelledPressed": "false",
+      "center": "Dispatch the approved desktop app Tasks."
+    }
+  },
+  {
+    "id": "SCN-005 follow-up copy locates its current Task",
+    "ok": true,
+    "detail": {
+      "located": "project-task-row-dct-image-context",
+      "focused": "project-task-row-dct-image-context",
+      "picker": "AutoByteus",
+      "search": "",
+      "cancelledPressed": "false",
+      "center": "Dispatch the approved desktop app Tasks."
+    }
+  },
+  {
+    "id": "SCN-006c a Task open in the tab returns to the board",
+    "ok": true,
+    "detail": {
+      "located": "project-task-row-dct-token-meter",
+      "focused": "project-task-row-dct-token-meter",
+      "picker": "AutoByteus",
+      "search": "",
+      "cancelledPressed": "false",
+      "center": "Dispatch the approved desktop app Tasks."
+    }
+  },
+  {
+    "id": "SCN-006a a hiding search is cleared",
+    "ok": true,
+    "detail": {
+      "located": "project-task-row-dct-token-meter",
+      "focused": "project-task-row-dct-token-meter",
+      "picker": "AutoByteus",
+      "search": "",
+      "cancelledPressed": "false",
+      "center": "Dispatch the approved desktop app Tasks."
+    }
+  },
+  {
+    "id": "SCN-006b (defensive) a Cancelled Task turns on the Cancelled lane",
+    "ok": true,
+    "detail": {
+      "located": "project-task-row-dct-cancelled-tooltip",
+      "focused": "project-task-row-dct-cancelled-tooltip",
+      "picker": "AutoByteus",
+      "search": "",
+      "cancelledPressed": "true",
+      "center": "Dispatch the approved desktop app Tasks."
+    }
+  },
+  {
+    "id": "SCN-008 a collapsed right panel reopens on Projects",
+    "ok": false,
+    "detail": {
+      "located": "project-task-row-dct-image-context",
+      "focused": "project-task-row-dct-image-context",
+      "picker": "AutoByteus",
+      "search": "",
+      "cancelledPressed": "false",
+      "center": "Dispatch the approved desktop app Tasks."
+    }
+  },
+  {
+    "id": "SCN-009 keyboard: Tab to summary, Enter locates and focuses the card, Enter opens it",
+    "ok": true,
+    "detail": {
+      "f": "workspace-task-worker-task-summary",
+      "located": "project-task-row-dct-release-agent",
+      "focused": "project-task-row-dct-release-agent",
+      "picker": "Prototype Launch",
+      "search": "",
+      "cancelledPressed": "false",
+      "center": "Dispatch the approved desktop app Tasks."
+    }
+  },
+  {
+    "id": "SCN-010 narrow window: the drawer opens on Projects",
+    "ok": true,
+    "detail": {
+      "located": "project-task-row-dct-token-meter",
+      "focused": "project-task-row-dct-token-meter",
+      "picker": "AutoByteus",
+      "search": "",
+      "cancelledPressed": "false",
+      "center": "Dispatch the approved desktop app Tasks."
+    }
+  },
+  {
+    "id": "SCN-011 `@` collaborators have no summary; Task workers do",
+    "ok": false,
+    "detail": [
+      [
+        "worker-writer-001",
+        true
+      ],
+      [
+        "/product_review_team",
+        false
+      ],
+      [
+        "worker-temp-researcher-001",
+        true
+      ]
+    ]
+  }
+]

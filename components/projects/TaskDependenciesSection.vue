@@ -1,6 +1,6 @@
 <template>
-  <!-- task-keys-and-dependencies: a Project Task's "Depends on" (stored; every dependency, Done ones too) and
-       "Required by" (derived: the Tasks that depend on this one). Each row opens that Task. -->
+  <!-- A Project Task's "Depends on" (stored; every dependency, Done ones too) and "Required by" (derived: the
+       Tasks that depend on this one). Each row opens that Task. -->
   <section class="overflow-hidden rounded-xl border border-slate-200 bg-white" :class="compact ? '' : 'mt-4'" :aria-labelledby="headingId" data-testid="task-dependencies">
     <div :class="compact ? 'p-4' : 'p-5 sm:p-6'">
       <h2 :id="headingId" class="sr-only">{{ t('projects.deps.heading') }}</h2>
@@ -11,12 +11,12 @@
           <li v-for="item in group.tasks" :key="item.taskId">
             <component
               :is="compact ? 'button' : NuxtLink"
-              v-bind="compact ? { type: 'button' } : { to: `/projects/${item.projectId}/tasks/${item.taskId}` }"
+              v-bind="compact ? { type: 'button' } : { to: taskPagePath(item.projectId, item) }"
               class="flex w-full min-w-0 items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               :data-testid="`task-dependency-${item.taskId}`"
               @click="compact && emit('open-task', item.taskId)"
             >
-              <span class="max-w-[45%] flex-shrink-0 font-medium text-slate-800"><TaskKey :task-key="item.taskKey ?? ''" /></span>
+              <span class="max-w-[45%] flex-shrink-0 font-medium text-slate-800"><TaskKey :task-key="item.taskKey" /></span>
               <span class="inline-flex flex-shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset" :class="taskStatusPillClass(item.status)" data-testid="task-dependency-status">
                 {{ t(TASK_STATUS_LABEL_KEYS[item.status]) }}<Icon v-if="item.status === 'DONE'" icon="heroicons:check-20-solid" class="h-3.5 w-3.5" aria-hidden="true" />
               </span>
@@ -39,6 +39,7 @@ import { dependenciesOf, dependencyBadgeOf, requiredByOf } from '~/utils/project
 import { TASK_STATUS_LABEL_KEYS, taskStatusPillClass } from '~/utils/projects/taskStatusPresentation'
 import { taskSummaryLabel } from '~/utils/projects/taskSummary'
 import TaskKey from './TaskKey.vue'
+import { taskPagePath } from '~/utils/projects/taskPagePath'
 
 /** `compact` (the right panel's Projects tab): a row opens that Task inside the tab instead of routing. */
 const props = withDefaults(defineProps<{ task: ProjectTask; tasks: readonly ProjectTask[]; compact?: boolean }>(), { compact: false })

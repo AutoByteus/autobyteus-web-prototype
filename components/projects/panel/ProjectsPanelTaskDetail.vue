@@ -26,7 +26,7 @@
           <div class="flex items-center justify-between gap-2">
             <h2 id="projects-panel-task-description" class="text-xs font-medium text-slate-500">{{ t('projects.ui.description') }}</h2>
             <span class="flex min-w-0 items-center gap-2">
-              <TaskKeyChip v-if="projectTask?.taskKey" :task-key="projectTask.taskKey" />
+              <TaskKeyChip v-if="projectTask" :task-key="projectTask.taskKey" />
               <span class="flex-shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset" :class="statusPillClass" data-testid="projects-panel-task-status">{{ statusLabel }}</span>
             </span>
           </div>
@@ -61,6 +61,7 @@ import TaskKeyChip from '~/components/projects/TaskKeyChip.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { createProjectTaskContextClient } from '~/services/projects/projectTaskContextClient'
 import { useProjectTaskStore } from '~/stores/projectTaskStore'
+import { taskPagePath } from '~/utils/projects/taskPagePath'
 import type { ProjectsPanelChoice } from '~/stores/projectsPanelStore'
 import type { ProjectTask, TaskWithoutProject } from '~/types/project'
 import { TASK_STATUS_LABEL_KEYS, TEMP_LANE_LABEL_KEYS, taskStatusPillClass, tempLanePillClass, tempTaskLaneOf } from '~/utils/projects/taskStatusPresentation'
@@ -74,14 +75,14 @@ const list = computed(() => props.choice.kind === 'project' ? store.getList(prop
 const listLoaded = computed(() => Boolean(list.value?.hasLoaded))
 const task = computed<ProjectTask | TaskWithoutProject | null>(() => (list.value?.tasks as Array<ProjectTask | TaskWithoutProject> | undefined)
   ?.find((item) => item.taskId === props.taskId) ?? null)
-// task-keys-and-dependencies: a Project Task's key and dependencies (Temp tasks have neither).
-const projectTask = computed<ProjectTask | null>(() => task.value && 'projectId' in task.value ? task.value : null)
+// A Project Task's key and dependencies (Temp tasks have neither).
+const projectTask = computed<ProjectTask | null>(() => task.value && 'taskKey' in task.value ? task.value : null)
 const projectTasks = computed<ProjectTask[]>(() => props.choice.kind === 'project' ? (list.value?.tasks as ProjectTask[] | undefined) ?? [] : [])
 const contextFiles = computed(() => task.value && 'contextFiles' in task.value ? task.value.contextFiles ?? [] : [])
 const referenceFiles = computed(() => task.value && 'referenceFiles' in task.value ? task.value.referenceFiles : [])
 const client = computed(() => props.choice.kind === 'project' ? createProjectTaskContextClient(props.choice.projectId, props.taskId) : null)
 const pageRoute = computed(() => props.choice.kind === 'project'
-  ? `/projects/${props.choice.projectId}/tasks/${props.taskId}`
+  ? projectTask.value ? taskPagePath(props.choice.projectId, projectTask.value) : `/projects/${props.choice.projectId}/tasks/${props.taskId}`
   : `/projects/temp-tasks/tasks/${props.taskId}`)
 // A Project Task shows its status; a Temp task Open, Done or Cancelled.
 const statusLabel = computed(() => {

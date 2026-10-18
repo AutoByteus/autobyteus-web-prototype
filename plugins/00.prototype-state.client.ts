@@ -10,6 +10,7 @@ import { installHostScenario } from '~/prototype/shared/install-host-scenario.js
 import { applyExperienceScenario } from '~/prototype/shared/apply-experience-scenario.js'
 import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, taskContextUpload } from '~/prototype/source-observation/fixtures.mjs'
 import { getApolloClient, localFixtureState } from '~/utils/apolloClient'
+import { liveStreamFrames } from '~/prototype/source-observation/live-streams.mjs'
 import { GetAgentOrgRunInspection } from '~/graphql/queries/runHistoryQueries'
 import { isLaunchedOrgRunId } from '~/prototype/run-settings/launchedOrgFixture'
 import { isLaunchedTeamRunId } from '~/prototype/run-settings/launchedTeamFixture'
@@ -27,7 +28,8 @@ const navigationOverlayStores = new Set(['agentRunConfig', 'agentSelection', 'te
 // usage summary exactly as the source does against the same fixtures.
 // WEB-BASELINE-REFRESH-009: Task workers' Tasks and the Task locate request (6bd2b69), and the
 // definition problems notices (f7fcf90), run the same way.
-const sourceLoadedStores = new Set(['projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems'])
+// WEB-BASELINE-REFRESH-010 (3126536): a run's delegated copies' model options, Save and Stop, too.
+const sourceLoadedStores = new Set(['projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),
@@ -70,7 +72,9 @@ const localActions: Record<string, Set<string>> = {
   // Run settings (Edit Config) for an agent or Team run read the resume config
   // and model options through the source's own code and the local adapter.
   // run-settings-ui-unification (round 27): saved Org run settings load like Agent and Team ones.
-  existingRunConfig: new Set(['loadAgentCanonical', 'loadTeamCanonical', 'loadAgentOrgCanonical', 'refreshModelOptions']),
+  // WEB-BASELINE-REFRESH-010 (3126536): the Agent canonical read with its delegated copies, and the
+  // reconciliation reads after a Save, run the same way.
+  existingRunConfig: new Set(['loadAgentCanonical', 'loadTeamCanonical', 'loadAgentOrgCanonical', 'refreshModelOptions', 'readAgentCanonical', 'reloadCanonical', 'retryCanonicalRefresh', 'reconcileAgentFailure', 'reconcileTeamFailure', 'reconcileAgentOrgFailure']),
   // Reads the Org run's configuration through the local GraphQL fixtures (AgentOrgRunConfig).
   // run-settings-ui-unification (SR-003): Stop Agent Org runs the source's stop (local TerminateAgentOrgRun).
   agentOrgContexts: new Set(['readRunConfig', 'stopAndInspect']),
@@ -762,6 +766,10 @@ export default defineNuxtPlugin({
         // stream answers with CONNECTED and the same view the inspection read returns (nothing runs).
         const runId = decodeURIComponent(this.url.split('?')[0]!.split('/').filter(Boolean).pop() || '')
         if (isLaunchedOrgRunId(runId)) void this.playLaunchedOrgStream(runId)
+        // WEB-BASELINE-REFRESH-010: a live stored run's stream (live_runs scenario) answers with the same
+        // frames the observation node plays (prototype/source-observation/live-streams.mjs).
+        const liveFrames = liveStreamFrames(localFixtureState, this.url)
+        if (liveFrames) setTimeout(() => { for (const frame of liveFrames) this.emit(frame) }, 20)
         // The Team launched from New chat is live the same way: CONNECTED, then its view with every
         // agent idle; each sent message is received (nothing replies).
         if (isLaunchedTeamRunId(runId) && this.url.includes('/ws/agent-team')) {

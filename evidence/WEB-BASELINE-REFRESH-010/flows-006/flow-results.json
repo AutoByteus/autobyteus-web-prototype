@@ -1,0 +1,192 @@
+{
+  "generatedAt": "2026-10-18T06:14:56.637Z",
+  "source": "http://127.0.0.1:4622",
+  "prototype": "http://127.0.0.1:4620",
+  "mock": "http://127.0.0.1:4623",
+  "results": [
+    {
+      "id": "BRW-001",
+      "title": "Task Agent conversation (scrollable, earlier events available)",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BRW-002",
+      "title": "Task Agent: scrolling up loads earlier events from the host package, with \"From <Sender>:\" rows",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "BRW-003",
+      "title": "Task Agent browse: back to the latest",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TOK-001",
+      "title": "Stored Agent run: Token tab shows the run roll-up",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TOK-002",
+      "title": "Task Agent: Token tab",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TOK-004",
+      "title": "Stored Team run member: Token tab",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TOK-005",
+      "title": "Stored Org run member: Token tab",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace?rootSubjectKind=agent_org&definitionId=org-product-launch&orgRunId=org-run-001&mode=history&memberAddress=/analyst",
+        "/workspace?rootSubjectKind=agent_org&definitionId=org-product-launch&orgRunId=org-run-001&mode=history&memberAddress=/analyst"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "TOK-003",
+      "title": "Chat run: Token tab",
+      "scenario": "populated",
+      "viewport": "desktop",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-prepared-fixture",
+        "/chat?id=run-prepared-fixture"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

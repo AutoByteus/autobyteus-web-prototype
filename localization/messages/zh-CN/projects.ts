@@ -13,7 +13,6 @@ const projectMessages = {
   'projects.ui.name': '名称',
   'projects.ui.required': '（必填）',
   'projects.ui.optional': '（选填）',
-  // task-keys-and-dependencies (design)
   'projects.key.copy': '复制编号',
   'projects.key.copyLabel': '复制任务编号 {{key}}',
   'projects.key.copied': '已复制',
@@ -32,7 +31,6 @@ const projectMessages = {
   'projects.deps.remove': '移除 {{key}}',
   'projects.deps.cycle': '依赖于此任务',
   'projects.deps.noMatch': '此项目中没有其他匹配的任务。',
-  'projects.deps.optionLabel': '{{key}}：{{summary}}（{{status}}）',
   'projects.ui.namePlaceholder': '例如：客户门户',
   'projects.ui.description': '描述',
   'projects.ui.projectDescriptionPlaceholder': '这个项目是关于什么的？',

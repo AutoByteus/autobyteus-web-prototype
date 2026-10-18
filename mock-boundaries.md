@@ -163,3 +163,46 @@ Reconnect (`prototype/agent-reconnect/`), the delegated-copy example data
 (`prototype/delegated-copy-tasks/`, `plugins/98.delegated-copy-tasks.client.ts`;
 its Tasks now answer `GetTaskWorkerTasks` through the same rule), and the skill
 sources example data (`prototype/skill-sources/`).
+
+## Refresh to `2f21134` (WEB-BASELINE-REFRESH-010)
+
+The source shipped the accepted design-only Task keys and "depends on"
+(`task-keys-and-dependencies`, `task-keys-off-lists`); their source versions
+run unchanged. New and changed server data is answered from invented fixtures:
+
+- Project Tasks carry `taskKey` (`prototype-launch-N`, numbered per Project in
+  creation order; a new Task gets the next number) and `dependsOnTaskIds`
+  (Blocked by with "+1", Dependency cancelled, and only-Done dependencies are all
+  present on the Prototype Launch board). Saves store the chosen dependencies;
+  a deleted Task leaves its dependents' lists. The key rule lives in
+  `fixtures.mjs`; the task-keys example layer reuses it.
+- Collaborators are gone from every execution tree (the source removed them):
+  the stored run's former collaborator Team is an open delegated copy Team with
+  launch sources; Teams are flat (no Team inside a Team).
+- Delegated copies: `DelegatedLaunchModelOptions` answers the stored run's copies;
+  `UpdateDelegatedLaunchSelections` records the user's choice in this context's
+  memory (reset with the scenario) and later reads carry it as
+  `userLaunchSelection`; `StopDelegatedExecution` answers "already stopped" for the
+  stored run and "stopped" in `live_runs`. The stored Agent run's own settings are
+  editable, so a stopped copy's model can be changed.
+- `live_runs` scenario: the stored Research Assistant run and the stored Product
+  Review Team run are live. Their streams (`/ws/agent-collaboration/…`,
+  `/ws/agent-team/…`) answer with one synthetic snapshot each, played by the
+  observation node and by the baseline's local WebSocket from the same module
+  (`prototype/source-observation/live-streams.mjs`): a running copy, a copy Team
+  with an agent in error, and a busy Team run. Nothing changes after the
+  snapshot; a Stop does not make the copy offline (no stream event follows).
+- The stored run's conversation ends with a platform skill update notice
+  (replayed history).
+- The TPS value is live-session state (each model call's measured TPS on the
+  stream); the baseline plays no model calls, so the card shows "—" until one is
+  reported. Comparisons apply a report through the source's own store.
+- Local mutations answer after 40 ms and replaced store actions after 40 ms
+  (longer than a rendering frame), so a control disabled while it waits loses
+  focus exactly as in the source.
+
+Design-only layers kept (off with `autobyteus.prototype.designOnlyLayers=off`):
+Reconnect (its former collaborator `/tutorial_video_producer` is now two delegated
+copies of the same agent; its `/post_production` sub-team was removed because
+Teams are flat), the delegated-copy example data, the task-keys example data
+(AutoByteus and Customer Onboarding Projects) and the skill sources example data.

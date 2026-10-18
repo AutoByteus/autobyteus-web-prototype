@@ -1,0 +1,1 @@
+PASS TSL-006 Task summary on a page without the right panel opens the run, then locates (after the highlight) text=true probe=true px=0 max=0   srcErr=0 protoErr=0

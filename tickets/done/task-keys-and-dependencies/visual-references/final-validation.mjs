@@ -1,6 +1,6 @@
-import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/task-keys-off-lists/node_modules/playwright-core/index.mjs';
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design/node_modules/playwright-core/index.mjs';
 const B=process.env.BASE||'http://127.0.0.1:4661', O=process.env.OUT||'./';
-const browser = await chromium.launch(); const log=(...a)=>console.log(...a); const res=[];
+const browser = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {}); const log=(...a)=>console.log(...a); const res=[];
 const check=(id,ok,d)=>{res.push({id,ok,d}); log(ok?'PASS':'FAIL',id,JSON.stringify(d));};
 const ctx = await browser.newContext({ viewport:{width:1440,height:900}, permissions:['clipboard-read','clipboard-write'] });
 const p = await ctx.newPage(); p.on('pageerror', e => log('PAGEERR', e.message));

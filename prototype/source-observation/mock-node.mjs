@@ -2,6 +2,7 @@
 import http from 'node:http'
 import { URL } from 'node:url'
 import { WebSocketServer } from 'ws'
+import { liveStreamFrames } from './live-streams.mjs'
 import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, baseState, operationFixture, scenarioCatalog, syntheticApplicationHtml, taskContextUpload } from './fixtures.mjs'
 import { createSchemaFiller } from './schema-filler.mjs'
 
@@ -20,6 +21,7 @@ function applyScenario(name) {
   state.skillSourceData = null
   state.taskContextFiles = {}
   state.archivedAgentGroup = false
+  state.delegatedSelections = null
 }
 
 applyScenario(process.env.PROTOTYPE_SCENARIO || 'populated')
@@ -169,6 +171,9 @@ server.on('upgrade', (req, socket, head) => {
 })
 wss.on('connection', (ws, req) => {
   const pathname = new URL(req.url || '/', `http://${req.headers.host || `${host}:${port}`}`).pathname
+  // WEB-BASELINE-REFRESH-010: a live stored run's stream (live_runs scenario) answers with its view.
+  const liveFrames = liveStreamFrames(state, pathname)
+  if (liveFrames) setTimeout(() => { for (const frame of liveFrames) ws.send(JSON.stringify(frame)) }, 20)
   if (pathname.startsWith('/ws/file-explorer/')) {
     ws.send(JSON.stringify({ type: 'CONNECTED', payload: { session_id: `fixture-${pathname.split('/').pop() || 'workspace'}` } }))
   }

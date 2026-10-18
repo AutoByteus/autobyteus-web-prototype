@@ -1,0 +1,261 @@
+{
+  "generatedAt": "2026-10-18T05:45:49.125Z",
+  "results": [
+    {
+      "id": "TSL-006",
+      "title": "Task summary on a page without the right panel opens the run, then locates (after the highlight)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"workspace-task-worker-task-summary\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "title": "Show Task in Projects: Review the synthetic navigation baseline.",
+            "text": "Review the synthetic navigation baseline.",
+            "rect": [
+              108,
+              503,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(67, 56, 202)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "underline",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "workspace-task-worker-task-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "title": "Show Task in Projects: Collect the changelog links for the synthetic release.",
+            "text": "Collect the changelog links for the synthetic release.",
+            "rect": [
+              108,
+              581,
+              196,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "4px",
+              "font-size": "11px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-testid^=\"project-task-row-task-\"]": [
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-outline",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Outline the launch checklist.\nDependency cancelled:\nprototype-launch-5",
+            "rect": [
+              1003,
+              296,
+              424,
+              80
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-review",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Review the synthetic navigation baseline.\nDW\ndocumentation writer\nRunning",
+            "rect": [
+              1003,
+              442,
+              424,
+              96
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-translate",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Translate the release summary.\nBlocked by\nprototype-launch-1\n+1\nT\ntranslator\nCouldn't start",
+            "rect": [
+              1003,
+              539,
+              424,
+              116
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-publish",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Publish the deterministic evidence summary.\nrelease team\nOffline",
+            "rect": [
+              1003,
+              721,
+              424,
+              88
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "[data-test=\"app-left-panel-chat\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "app-left-panel-chat",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Chat",
+            "rect": [
+              8,
+              12,
+              304,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1"
+            }
+          }
+        ],
+        "focused": "project-task-row-link",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

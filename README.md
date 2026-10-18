@@ -1,17 +1,15 @@
 # AutoByteus Web Design
 
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
-commit `73f743211c8b86c704acb33f216154e42b7a67b8` (`origin/personal`,
-v1.5.3-beta.1, refreshed by `WEB-BASELINE-REFRESH-009`; previous pin mixed:
-Projects Task-status surfaces at `ff227eb72ef08dca4188451141789d0e6d3af356`,
-everything else at `1cd1a3abc126df820e334c023621d0fb82de5b7b`). The refresh
-brings in the source's delegated-copy Task summaries and Task locate, the
-collapsed left strip's Workspaces icon, the redesigned skill sources dialog
-(three earlier design-only changes that the source now implements), agent
-package definition load issues and live refresh, member launch defaults and the
-delegated launch list, token meter compaction marks, the removal of the remote
-AutoByteus LLM provider, and the rest of the range. The accepted design-only
-Reconnect change (`agent-definition-reconnect-ui`) is preserved. See
+commit `2f211340ee36b81cef74a74b2e042b5102c269d3` (`origin/personal`,
+v1.5.6-beta.1, refreshed by `WEB-BASELINE-REFRESH-010`; previous pin
+`73f743211c8b86c704acb33f216154e42b7a67b8`). The refresh brings in the source's
+Task keys and "depends on" (two earlier design-only changes that the source now
+implements), delegated copies in a run's Settings with Stop and model change,
+the universal Team status dot, the removal of collaborators and of Teams inside
+Teams, the skill update notice, the Token Meter's per-call TPS card, the NFS
+guide and the rest of the range. The accepted design-only Reconnect change
+(`agent-definition-reconnect-ui`) is preserved. See
 [ui-baseline-report.md](ui-baseline-report.md) for the refresh scope,
 evidence, and known gaps.
 

@@ -10,18 +10,18 @@
  *   - a follow-up whose dependency is already Done;
  *   - a Task whose only dependency was cancelled;
  * - "Customer Onboarding Experience Redesign" shows long keys.
+ * Keys, "depends on" and saving them follow the base fixtures (WEB-BASELINE-REFRESH-010, the source's shape).
  * Turned off with the other design-only layers (`autobyteus.prototype.designOnlyLayers=off`).
  */
-import { projectData } from '~/prototype/source-observation/fixtures.mjs'
+import { ensureTaskKeys, projectData, taskKeyPrefix } from '~/prototype/source-observation/fixtures.mjs'
 
 const AUTOBYTEUS = 'project-desktop-app'
 const ONBOARDING = 'project-onboarding-redesign'
 const createdAt = '2026-10-09T07:30:00.000Z'
 const at = (minutes: number) => new Date(Date.parse('2026-10-11T07:00:00.000Z') + minutes * 60_000).toISOString()
 
-/** The key prefix: the Project name in lower case, words joined by "-", other characters dropped. */
-export const taskKeyPrefix = (projectName: string): string =>
-  projectName.toLocaleLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'project'
+// WEB-BASELINE-REFRESH-010: the key rule now lives with the base fixtures (the source ships Task keys).
+export { taskKeyPrefix }
 
 const task = (taskId: string, projectId: string, description: string, status: string, minutes: number, dependsOnTaskIds: string[] = []) => ({
   __typename: 'ProjectTask', taskId, projectId, description, status, createdAt, updatedAt: at(minutes), contextFiles: [], root: null, dependsOnTaskIds,
@@ -57,23 +57,6 @@ const newTasks = () => [
   task('ob-checklist', ONBOARDING, 'Draft the welcome checklist copy', 'TODO', 5, ['ob-journey']),
 ]
 
-/** Gives every Project Task without a key the Project's next number, in creation order. Keys never change. */
-export const ensureTaskKeys = (data: any): void => {
-  data.taskKeySeq ??= {}
-  for (const project of data.projects) {
-    const tasks = data.tasks.filter((item: any) => item.projectId === project.projectId)
-    const numberOf = (item: any) => Number(String(item.taskKey ?? '').split('-').at(-1)) || 0
-    let seq = Math.max(data.taskKeySeq[project.projectId] ?? 0, ...tasks.map(numberOf))
-    for (const item of tasks) {
-      item.dependsOnTaskIds ??= []
-      if (item.taskKey) continue
-      seq += 1
-      item.taskKey = `${taskKeyPrefix(project.name)}-${seq}`
-    }
-    data.taskKeySeq[project.projectId] = seq
-  }
-}
-
 /** Seeds the example Projects, Tasks, numbers and dependencies once per scenario, then keys the rest. */
 export const seedTaskKeys = (state: Record<string, any>, scenario: string): void => {
   if (scenario !== 'populated') return
@@ -92,20 +75,3 @@ export const seedTaskKeys = (state: Record<string, any>, scenario: string): void
   }
   ensureTaskKeys(data)
 }
-
-/**
- * Saving a Task in the UI reference: a new Task gets the Project's next key, and "Depends on" is stored as
- * chosen. (The Task editor offers only Tasks of the same Project and never a cycle.)
- */
-export const applyTaskKeyMutation = (name: string, variables: Record<string, any>, result: any, state: Record<string, any>): void => {
-  if (name !== 'CreateProjectTask' && name !== 'UpdateProjectTask') return
-  const saved = result?.createProjectTask ?? result?.updateProjectTask
-  if (!saved) return
-  const data = projectData(state)
-  const stored = data.tasks.find((item: any) => item.taskId === saved.taskId)
-  const ids = variables.input?.dependsOnTaskIds
-  if (stored && Array.isArray(ids)) stored.dependsOnTaskIds = ids.filter((id: string) => id !== stored.taskId)
-  ensureTaskKeys(data)
-  if (stored) Object.assign(saved, { taskKey: stored.taskKey, dependsOnTaskIds: stored.dependsOnTaskIds })
-}
-

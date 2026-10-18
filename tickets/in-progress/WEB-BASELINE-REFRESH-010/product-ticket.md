@@ -5,7 +5,7 @@
 - Ticket / request ID: `WEB-BASELINE-REFRESH-010` (baseline ticket). Supplied request identifier: Project
   Task `autobyteus-134`.
 - Title: Refresh the AutoByteus Web baseline to `origin/personal@2f211340ee` (v1.5.6-beta.1)
-- Status: `Baseline Needed`
+- Status: `Completed`
 - Requester: `/project_task_manager` (AgentRun `project_task_manager_7c8dce0c4a8b44f88e776a83809dee03`),
   2026-10-18.
   - User go-ahead: "remember… we also need to update the UI/UX project for the baseline now."
@@ -35,7 +35,34 @@
 - Accepted design base: `d96a14f` (`origin/personal`, 2026-10-18)
 - Source: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`, `autobyteus-web`; selected authority
   `origin/personal@2f211340ee36b81cef74a74b2e042b5102c269d3`
-- Product acceptance result and date: pending
+- Product acceptance result and date: **accepted** 2026-10-18. Bootstrapper run
+  `ui_baseline_bootstrapper_baaff6a19bd74d8b95fe08f18364661a`; report `ui-baseline-report.md`; evidence
+  `evidence/WEB-BASELINE-REFRESH-010/`.
+- Product review:
+  - Only 11 UI files under components, stores, composables, utils, localization, pages and types differ
+    from `2f21134`: Reconnect (10) and `utils/apolloClient.ts`.
+  - The design-only key and locator code is gone; the shipped components run.
+  - The new `live-streams.mjs` frames are built from the synthetic fixtures.
+  - typecheck 0 errors, lint 0 errors, tests 17/17, boundaries 13/13.
+  - The Bootstrapper's evidence: new flows 44/44; regressions pass; matrix 106/108 (two rows without a
+    visible difference, explained); built preview 39/39; build.
+- Decisions on the Bootstrapper's questions (Product, 2026-10-18):
+  1. Reconnect's collaborator case, re-homed on two delegated copies of `/tutorial_video_producer`: **kept**.
+     The source has no collaborators. The design-only Reconnect intent ("a copy follows its agent") is
+     preserved.
+  2. Reconnect's `/post_production` sub-team: **removal accepted** (Teams are flat in the source).
+  3. Approved references affected by source changes:
+     - `task-keys-and-dependencies`: VIS-010–012 recaptured;
+     - `delegated-copy-task-locator`: all VIS recaptured;
+     - in both, the old captures moved to `superseded-2026-10-18/`, with revision notes in the specs. The
+       designs are unchanged; the surroundings changed in the product.
+     - The approved check scripts now import Playwright from the canonical checkout:
+       - task keys 14/14;
+       - Task locator 13/13 (Project name "AutoByteus", illustrative; SCN-011 revised for the removed
+         collaborators).
+     - Reconnect (design-only, not shipped) keeps its approved references. Its review scripts pass 7/7.
+       The surrounding product changes in its captures are illustrative.
+- The single pin is now `2f211340ee36b81cef74a74b2e042b5102c269d3`.
 - Integration target and result: `personal`, `Pending`
 - Runtime isolation: the Bootstrapper picks free ports other than 3210.
 - Cleanup result or blocker: `Pending`
@@ -43,5 +70,5 @@
 
 ## Outcome And Handoff
 
-- Next expected action: UI Baseline Bootstrapper refreshes in this worktree; Product reviews and accepts.
-- Handoff outcome: `Baseline Needed` → `/product_team/ui_baseline_bootstrapper`
+- Next expected action: integrate into `personal`; report to `/project_task_manager`.
+- Handoff outcome: `Baseline Needed` → `/product_team/ui_baseline_bootstrapper` (delivered, Completed, accepted); then returned to the requester.

@@ -45,12 +45,37 @@ type TeamLaunchDto = Readonly<{
     default_launch_source?: LaunchConfigurationSourceDto;
 }>;
 /**
- * The launch a collaborator-Team or catalog-Team-copy member runs with: its own, else its Team's.
+ * The launch a catalog-Team-copy member runs with: its own, else its Team's.
  * Every reader of such a member's launch uses this, never the Team's value directly.
  */
 export declare const teamMemberLaunchConfiguration: (team: Pick<TeamLaunchDto, "default_launch_configuration">, member: MemberLaunchDto) => AgentLaunchConfigurationDto;
 /** The recorded source of such a member's launch: its own, else its Team's; null when not recorded. */
 export declare const teamMemberLaunchSource: (team: Pick<TeamLaunchDto, "default_launch_source">, member: MemberLaunchDto) => LaunchConfigurationSourceDto | null;
+/**
+ * The user's model choice for one delegated copy: it replaces only the
+ * model and its settings. Absent when the user made no choice (every older record).
+ */
+export type UserLaunchSelectionDto = Readonly<{
+    llm_model_identifier: string;
+    llm_config: Readonly<Record<string, import("./schema-helpers.js").JsonValue>> | null;
+    selected_at: string;
+}>;
+/**
+ * The single launch rule of a copy agent (mirrors the server's
+ * `effectiveCopyAgentLaunch`): its own choice, else (when it follows its Team) the Team's choice,
+ * else its started launch. `selected` tells which choice applied.
+ */
+export declare const teamCopyAgentLaunch: (input: Readonly<{
+    started: AgentLaunchConfigurationDto;
+    followsTeam?: boolean;
+    teamSelection?: UserLaunchSelectionDto | null;
+    agentSelection?: UserLaunchSelectionDto | null;
+}>) => Readonly<{
+    launch: AgentLaunchConfigurationDto;
+    selected: "agent" | "team" | null;
+}>;
+/** A recorded Team member follows its Team's launch (and choice) iff it records no own launch. */
+export declare const teamMemberFollowsTeam: (member: MemberLaunchDto) => boolean;
 /** The definition snapshot of a task copy started from the catalog (absent for every other copy). */
 export type TaskAgentExecutionSourceDto = Readonly<{
     kind: "agent";
@@ -81,84 +106,31 @@ export type TaskAgentExecutionDto = Readonly<{
     delegator_agent_run_id: string | null;
     started_at: string;
     source?: TaskAgentExecutionSourceDto;
+    user_launch_selection?: UserLaunchSelectionDto;
 }>;
 export type TaskTeamAgentExecutionDto = Readonly<{
     kind: "task_team_agent";
     address: string;
     agent_run_id: string;
     platform_agent_run_id: string | null;
+    user_launch_selection?: UserLaunchSelectionDto;
 }>;
-export type TaskTeamNestedTeamExecutionDto = Readonly<{
-    kind: "task_team_member";
-    address: string;
-    team_run_id: string;
-    members: readonly TaskTeamMemberExecutionDto[];
-    task_executions: readonly TaskExecutionDto[];
-}>;
-export type TaskTeamMemberExecutionDto = TaskTeamAgentExecutionDto | TaskTeamNestedTeamExecutionDto;
 /** A delegated child Team; `delegator_agent_run_id` is the AgentRun that started it (null when not recorded). */
 export type TaskTeamExecutionDto = Readonly<{
     kind: "task_team";
     address: string;
     team_run_id: string;
-    members: readonly TaskTeamMemberExecutionDto[];
+    members: readonly TaskTeamAgentExecutionDto[];
     task_executions: readonly TaskExecutionDto[];
     delegator_agent_run_id: string | null;
     started_at: string;
     source?: TaskTeamExecutionSourceDto;
+    user_team_launch_selection?: UserLaunchSelectionDto;
 }>;
 export type TaskExecutionDto = TaskAgentExecutionDto | TaskTeamExecutionDto;
-export type ConfiguredTeamExecutionDto = Readonly<{
-    kind: "configured_team";
-    address: string;
-    team_definition_id: string;
-    role: string | null;
-    description: string | null;
-    team_run_id: string;
-    coordinator_address: string;
-    default_launch_configuration: AgentLaunchConfigurationDto;
-    members: readonly ConfiguredMemberExecutionDto[];
-    task_executions: readonly TaskExecutionDto[];
-}>;
-export type ConfiguredMemberExecutionDto = ConfiguredAgentExecutionDto | ConfiguredTeamExecutionDto;
-/**
- * One collaborator of the run: one instance of a shared Agent or Agent Team definition brought in.
- * Its run IDs and resolved launches are recorded in the entry; it starts on its first message.
- */
-export type CollaboratorEntryDto = Readonly<{
-    kind: "agent";
-    address: string;
-    agent_definition_id: string;
-    agent_run_id: string;
-    platform_agent_run_id: string | null;
-    launch_configuration: AgentLaunchConfigurationDto;
-    launch_source?: LaunchConfigurationSourceDto;
-    added_at: string;
-    added_via_agent_run_id: string;
-}> | Readonly<{
-    kind: "agent_team";
-    address: string;
-    team_definition_id: string;
-    team_run_id: string;
-    coordinator_address: string;
-    members: readonly (Readonly<{
-        address: string;
-        agent_definition_id: string;
-        agent_run_id: string;
-        platform_agent_run_id: string | null;
-    }> & MemberLaunchDto)[];
-    handoffs: readonly Readonly<{
-        from: string;
-        to: string;
-        rules: readonly string[];
-    }>[];
-    task_executions: readonly TaskExecutionDto[];
-    added_at: string;
-    added_via_agent_run_id: string;
-}> & TeamLaunchDto;
+export declare const userLaunchSelectionDtoSchema: z.ZodType<UserLaunchSelectionDto>;
 export declare const taskAgentExecutionDtoSchema: z.ZodType<TaskAgentExecutionDto>;
 export declare const taskTeamExecutionDtoSchema: z.ZodType<TaskTeamExecutionDto>;
-export declare const collaboratorEntryDtoSchema: z.ZodType<CollaboratorEntryDto>;
 export type TeamRunExecutionTreeDto = Readonly<{
     created_at: string;
     archived_at: string | null;
@@ -178,8 +150,7 @@ export type TeamRunExecutionTreeDto = Readonly<{
         team_run_id: string;
         coordinator_address: string;
         default_launch_configuration: AgentLaunchConfigurationDto;
-        members: readonly ConfiguredMemberExecutionDto[];
-        collaborators: readonly CollaboratorEntryDto[];
+        members: readonly ConfiguredAgentExecutionDto[];
         task_executions: readonly TaskExecutionDto[];
     }>;
 }>;

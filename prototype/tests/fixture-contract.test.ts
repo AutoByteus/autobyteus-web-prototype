@@ -15,9 +15,9 @@ const snapshots = runtimeFixture.snapshots as Record<string, {
 
 describe('deterministic prototype fixture contract', () => {
   it('is pinned to the selected source and covers every recorded scenario', () => {
-    expect(runtimeFixture.sourceCommit).toBe('73f743211c8b86c704acb33f216154e42b7a67b8')
-    expect(Object.keys(snapshots)).toHaveLength(77)
-    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'loading', 'error', 'permission_denied', 'skill_name_issues', 'agy_runtime', 'agy_signed_out', 'definition_issues']))
+    expect(runtimeFixture.sourceCommit).toBe('2f211340ee36b81cef74a74b2e042b5102c269d3')
+    expect(Object.keys(snapshots)).toHaveLength(78)
+    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'loading', 'error', 'permission_denied', 'skill_name_issues', 'agy_runtime', 'agy_signed_out', 'definition_issues', 'live_runs']))
   })
 
   it('uses synthetic domain records and local-only node addresses', () => {
@@ -77,6 +77,22 @@ describe('deterministic prototype fixture contract', () => {
       .toEqual(['DEFINITION_PARSE_FAILED', 'DEFINITION_SOURCE_UNAVAILABLE', null])
     expect(operationFixture('GetAgentPackages', {}, issues).agentPackages.map((item: { autoRefresh: { state: string } }) => item.autoRefresh.state)).toEqual(['UNAVAILABLE', 'FOLDER_MISSING'])
     expect(operationFixture('GetRuntimeAvailability', { runtimeKind: 'antigravity_cli' }, { ...baseState(), scenario: 'agy_signed_out' }).runtimeAvailability).toMatchObject({ enabled: false, reason: expect.stringContaining('not signed in') })
+  })
+
+  it('keys Project Tasks, stores "depends on" and records delegated copy choices (2f21134)', () => {
+    const state = baseState()
+    const tasks = operationFixture('GetProjectTasks', { projectId: 'project-prototype-launch' }, state).projectTasks
+    expect(tasks.map((task: { taskKey: string }) => task.taskKey)).toEqual(['prototype-launch-1', 'prototype-launch-2', 'prototype-launch-3', 'prototype-launch-4', 'prototype-launch-5'])
+    const created = operationFixture('CreateProjectTask', { input: { projectId: 'project-prototype-launch', description: 'Draft notes.', dependsOnTaskIds: ['task-review'] } }, state).createProjectTask
+    expect(created).toMatchObject({ taskKey: 'prototype-launch-6', dependsOnTaskIds: ['task-review'] })
+    operationFixture('DeleteProjectTask', { input: { projectId: 'project-prototype-launch', taskId: 'task-review' } }, state)
+    expect(operationFixture('GetProjectTasks', { projectId: 'project-prototype-launch' }, state).projectTasks.find((task: { taskId: string }) => task.taskId === created.taskId).dependsOnTaskIds).toEqual([])
+    const copies = { ...baseState() }
+    expect(operationFixture('DelegatedLaunchModelOptions', { rootKind: 'AGENT', rootRunId: 'run-research-001' }, copies).delegatedLaunchModelOptions).toHaveLength(5)
+    operationFixture('UpdateDelegatedLaunchSelections', { input: { rootKind: 'AGENT', rootRunId: 'run-research-001', changes: [{ agentRunId: 'worker-writer-001', selection: { llmModelIdentifier: 'mock/reasoning-prototype', llmConfig: null } }] } }, copies)
+    const tree = operationFixture('GetAgentRunCollaboration', { runId: 'run-research-001' }, copies).agentRunCollaboration.root_agent.execution_tree
+    expect(tree.collaborators).toBeUndefined()
+    expect(tree.taskExecutions.find((task: { agentRunId?: string }) => task.agentRunId === 'worker-writer-001').userLaunchSelection.llmModelIdentifier).toBe('mock/reasoning-prototype')
   })
 
   it('keeps skill-source operations in one resettable in-memory copy (4dee901)', () => {

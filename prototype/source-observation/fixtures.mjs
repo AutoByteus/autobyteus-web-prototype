@@ -26,6 +26,8 @@ export const scenarioCatalog = Object.freeze({
   // WEB-BASELINE-REFRESH-009 (f7fcf90, bd4c637, 3cc1713): agent package definitions that could not be read.
   // WEB-BASELINE-REFRESH-009 (87b246c): the Antigravity CLI is installed but signed out.
   agy_signed_out: 'Populated data where the Antigravity runtime is listed but unavailable because its CLI is not signed in.',
+  // WEB-BASELINE-REFRESH-010 (d1a66fe, 3126536, 14f9b3c): stored runs that are live, with agent statuses.
+  live_runs: 'Populated data where the stored Research Assistant run and the stored Product Review Team run are live: a delegated copy is running, a copy Team has an agent in error, and the Team run is busy.',
   definition_issues: 'Populated data where some agent package definitions could not be read: card load-issue badges, list problem notices and package auto-refresh states.',
 })
 
@@ -197,7 +199,7 @@ const run = {
 }
 
 // WEB-BASELINE-REFRESH-004 (0a32261): the stored Agent-root collaboration view of
-// `run`: one task Agent and one task Team (two members) added with `@`.
+// `run`: its delegated copies (task Agents and task Teams).
 const agentRootLaunch = { runtimeKind: 'autobyteus', llmModelIdentifier: 'mock/gpt-prototype', llmConfig: { temperature: 0.2 }, autoExecuteTools: false, workspaceRootPath: '/synthetic/prototype-workspace' }
 const agentRootCollaboration = {
   root_subject_kind: 'agent', root_run_id: run.runId,
@@ -206,15 +208,6 @@ const agentRootCollaboration = {
     execution_tree: {
       subjectKind: 'agent', createdAt: fixedNow,
       host: { address: '/research_assistant', agentRunId: run.runId, agentDefinitionId: agent.id },
-      collaborators: [
-        { kind: 'agent', address: '/documentation_writer', agentDefinitionId: 'agent-writer', agentRunId: 'collab-writer-001', platformAgentRunId: null, launchConfiguration: agentRootLaunch, launchSource: { origin: 'agent_default', fallbacks: [] }, addedAt: fixedNow, addedViaAgentRunId: run.runId },
-        { kind: 'agent_team', address: '/product_review_team', teamDefinitionId: 'team-product', teamRunId: 'collab-team-001', coordinatorAddress: '/product_review_team/researcher',
-          members: [
-            { address: '/product_review_team/researcher', agentDefinitionId: 'agent-researcher', agentRunId: 'collab-team-researcher-001', platformAgentRunId: null },
-            { address: '/product_review_team/writer', agentDefinitionId: 'agent-writer', agentRunId: 'collab-team-writer-001', platformAgentRunId: null, launchConfiguration: agentRootLaunch, launchSource: { origin: 'agent_default', fallbacks: [] } },
-          ],
-          handoffs: [], defaultLaunchConfiguration: agentRootLaunch, defaultLaunchSource: { origin: 'team_default', fallbacks: [] }, taskExecutions: [], addedAt: fixedNow, addedViaAgentRunId: run.runId },
-      ],
       // WEB-BASELINE-REFRESH-008 (1cd1a3a): the run's Task workers. The writer works on the
       // "Review" Task; the Task team finished the "Publish" Task (DONE closes it, so the
       // Workspaces listing leaves it out); the reviewer works on a Task with no Project.
@@ -231,12 +224,23 @@ const agentRootCollaboration = {
             { address: '/release_team/writer', agentRunId: 'worker-team-publish-writer-001', platformAgentRunId: null },
           ],
           taskExecutions: [] },
+        // WEB-BASELINE-REFRESH-009/-010: an open copy Team with its own launch sources (2f21134 has no
+        // collaborators; delegated copies are the run's only children).
+        { address: '/product_review_team', teamRunId: 'worker-team-review-001', delegatorAgentRunId: run.runId, startedAt: fixedNow,
+          source: { kind: 'agent_team', teamDefinitionId: 'team-product', coordinatorAddress: '/product_review_team/researcher',
+            members: [{ address: '/product_review_team/researcher', agentDefinitionId: 'agent-researcher' }, { address: '/product_review_team/writer', agentDefinitionId: 'agent-writer', launchConfiguration: agentRootLaunch, launchSource: { origin: 'agent_default', fallbacks: [] } }],
+            handoffs: [], defaultLaunchConfiguration: agentRootLaunch, defaultLaunchSource: { origin: 'team_default', fallbacks: [] } },
+          members: [
+            { address: '/product_review_team/researcher', agentRunId: 'worker-team-review-researcher-001', platformAgentRunId: null },
+            { address: '/product_review_team/writer', agentRunId: 'worker-team-review-writer-001', platformAgentRunId: null },
+          ],
+          taskExecutions: [] },
         { address: '/research_assistant', agentRunId: 'worker-temp-researcher-001', platformAgentRunId: null, delegatorAgentRunId: run.runId, startedAt: fixedNow, source: { kind: 'agent', agentDefinitionId: 'agent-researcher', launchConfiguration: agentRootLaunch } },
       ],
     },
     closed_task_executions: [{ teamRunId: 'worker-team-publish-001' }],
     communication_messages: { schemaVersion: 1, subjectKind: 'agent', hostRunId: run.runId, messages: [
-      { messageId: 'collab-message-001', senderAgentRunId: 'collab-writer-001', receiverAgentRunId: run.runId, content: 'The navigation notes are drafted.', messageType: 'direct_message', referenceFiles: [], createdAt: fixedNow },
+      { messageId: 'collab-message-001', senderAgentRunId: 'worker-writer-001', receiverAgentRunId: run.runId, content: 'The navigation notes are drafted.', messageType: 'direct_message', referenceFiles: [], createdAt: fixedNow },
     ] },
     agent_statuses: [],
     agent_input_states: [],
@@ -291,7 +295,6 @@ const teamRootExecution = (teamRunId, memberRunIds) => ({
     { kind: 'configured_agent', address: '/researcher', agent_definition_id: 'agent-researcher', role: null, description: null, agent_run_id: memberRunIds[0], platform_agent_run_id: null, launch_configuration: launchConfiguration() },
     { kind: 'configured_agent', address: '/writer', agent_definition_id: 'agent-writer', role: null, description: null, agent_run_id: memberRunIds[1], platform_agent_run_id: null, launch_configuration: launchConfiguration() },
   ],
-  collaborators: [],
   task_executions: [],
 })
 
@@ -380,7 +383,6 @@ const orgExecutionTree = {
         taskExecutions: [],
       },
     ],
-    collaborators: [],
     taskExecutions: [],
   },
 }
@@ -407,16 +409,16 @@ const project = {
 const taskRoot = (fields) => ({ __typename: 'TaskRoot', kind: 'agent', recipientAddress: null, teamRunId: null, hostRoot: { __typename: 'TaskRootHost', kind: 'agent', runId: run.runId }, start: 'started', startError: null, closed: false, status: 'idle', ...fields })
 
 const projectTasks = [
-  { __typename: 'ProjectTask', taskId: 'task-outline', projectId: project.projectId, description: 'Outline the launch checklist.', status: 'TODO', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [], root: null },
-  { __typename: 'ProjectTask', taskId: 'task-review', projectId: project.projectId, description: 'Review the synthetic navigation baseline.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+  { __typename: 'ProjectTask', taskId: 'task-outline', taskKey: 'prototype-launch-1', dependsOnTaskIds: ['task-retire'], projectId: project.projectId, description: 'Outline the launch checklist.', status: 'TODO', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [], root: null },
+  { __typename: 'ProjectTask', taskId: 'task-review', taskKey: 'prototype-launch-2', dependsOnTaskIds: ['task-publish'], projectId: project.projectId, description: 'Review the synthetic navigation baseline.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
     root: taskRoot({ recipientAddress: '/documentation_writer', ingressAgentRunId: 'worker-writer-001', status: 'running' }) },
-  { __typename: 'ProjectTask', taskId: 'task-translate', projectId: project.projectId, description: 'Translate the release summary.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+  { __typename: 'ProjectTask', taskId: 'task-translate', taskKey: 'prototype-launch-3', dependsOnTaskIds: ['task-review', 'task-outline'], projectId: project.projectId, description: 'Translate the release summary.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
     root: taskRoot({ recipientAddress: '/translator', ingressAgentRunId: 'worker-translator-001', start: 'failed', startError: { __typename: 'TaskRootStartError', code: 'AGENT_DEFINITION_NOT_FOUND', message: 'No agent is available at /translator.' }, status: 'offline' }) },
-  { __typename: 'ProjectTask', taskId: 'task-publish', projectId: project.projectId, description: 'Publish the deterministic evidence summary.', status: 'DONE', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+  { __typename: 'ProjectTask', taskId: 'task-publish', taskKey: 'prototype-launch-4', dependsOnTaskIds: [], projectId: project.projectId, description: 'Publish the deterministic evidence summary.', status: 'DONE', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
     root: taskRoot({ kind: 'team', recipientAddress: '/release_team', ingressAgentRunId: 'worker-team-publish-researcher-001', teamRunId: 'worker-team-publish-001', closed: true, status: 'offline' }) },
   // delegated-copy-task-locator refresh (17e4299, 814e41a, 7f7b2c8): a Task dropped as not needed
   // (CANCELLED) is hidden until the board's "Cancelled (N)" toggle shows its lane.
-  { __typename: 'ProjectTask', taskId: 'task-retire', projectId: project.projectId, description: 'Retire the unused synthetic welcome banner.', status: 'CANCELLED', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+  { __typename: 'ProjectTask', taskId: 'task-retire', taskKey: 'prototype-launch-5', dependsOnTaskIds: [], projectId: project.projectId, description: 'Retire the unused synthetic welcome banner.', status: 'CANCELLED', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
     root: taskRoot({ recipientAddress: '/documentation_writer', ingressAgentRunId: 'worker-writer-002', closed: true, status: 'offline' }) },
 ]
 
@@ -444,10 +446,31 @@ export const createdWorkspaceFor = (rootPath) => {
   createdWorkspaces.push(created)
   return created
 }
+// WEB-BASELINE-REFRESH-010 (2f21134): every Project Task has a permanent key `<prefix>-<number>`, numbered per
+// Project in creation order; a new Task gets the Project's next number. The prefix rule is invented
+// (Project name in lower case, words joined by "-").
+export const taskKeyPrefix = (projectName) =>
+  String(projectName).toLocaleLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'project'
+export const ensureTaskKeys = (data) => {
+  data.taskKeySeq ??= {}
+  for (const item of data.projects) {
+    const tasks = data.tasks.filter(task => task.projectId === item.projectId)
+    const numberOf = task => Number(String(task.taskKey ?? '').split('-').at(-1)) || 0
+    let seq = Math.max(data.taskKeySeq[item.projectId] ?? 0, ...tasks.map(numberOf))
+    for (const task of tasks) {
+      task.dependsOnTaskIds ??= []
+      if (task.taskKey) continue
+      seq += 1
+      task.taskKey = `${taskKeyPrefix(item.name)}-${seq}`
+    }
+    data.taskKeySeq[item.projectId] = seq
+  }
+}
 export const projectData = (state) => {
   if (!state.projectData) {
     state.projectData = { projects: [structuredClone(project)], tasks: structuredClone(projectTasks), tasksWithoutProject: structuredClone(tasksWithoutProject), seq: 0 }
   }
+  ensureTaskKeys(state.projectData)
   return state.projectData
 }
 const projectError = (message, code) => ({ __projectError: { message, extensions: { code } } })
@@ -512,8 +535,10 @@ export function projectMutationFixture(operationName, variables = {}, state) {
     }
     case 'CreateProjectTask': {
       if (!String(input.description || '').trim()) return projectError('Task description is required.', 'TASK_DESCRIPTION_REQUIRED')
-      const task = { __typename: 'ProjectTask', taskId: `task-created-${++data.seq}`, projectId: input.projectId, description: input.description.trim(), status: 'TODO', createdAt: fixedNow, updatedAt: `2026-08-22T05:${String(data.seq).padStart(2, '0')}:00.000Z`, contextFiles: contextFilesFrom(state, input.contextDraft?.storedFilenames), root: null }
+      const task = { __typename: 'ProjectTask', taskId: `task-created-${++data.seq}`, projectId: input.projectId, description: input.description.trim(), status: 'TODO', createdAt: fixedNow, updatedAt: `2026-08-22T05:${String(data.seq).padStart(2, '0')}:00.000Z`, contextFiles: contextFilesFrom(state, input.contextDraft?.storedFilenames), root: null,
+        dependsOnTaskIds: Array.isArray(input.dependsOnTaskIds) ? [...input.dependsOnTaskIds] : [] }
       data.tasks.push(task)
+      ensureTaskKeys(data)
       return { createProjectTask: task }
     }
     case 'UpdateProjectTask': {
@@ -523,10 +548,12 @@ export function projectMutationFixture(operationName, variables = {}, state) {
       task.description = input.description.trim()
       task.updatedAt = `2026-08-22T05:${String(++data.seq).padStart(2, '0')}:00.000Z`
       task.contextFiles = [...task.contextFiles.filter(file => !(changes.removeStoredFilenames || []).includes(file.storedFilename)), ...contextFilesFrom(state, changes.addStoredFilenames)]
+      if (Array.isArray(input.dependsOnTaskIds)) task.dependsOnTaskIds = input.dependsOnTaskIds.filter(id => id !== task.taskId)
       return { updateProjectTask: task }
     }
     case 'DeleteProjectTask': {
       data.tasks = data.tasks.filter(item => !(item.projectId === input.projectId && item.taskId === input.taskId))
+      for (const item of data.tasks) item.dependsOnTaskIds = (item.dependsOnTaskIds || []).filter(id => id !== input.taskId)
       return { deleteProjectTask: true }
     }
     default:
@@ -598,6 +625,8 @@ export function skillSourceMutationFixture(operationName, variables = {}, state)
   }
 }
 export const SKILL_SOURCE_MUTATIONS = new Set(['AddSkillSource', 'RemoveSkillSource', 'ImportGitHubSkillSource', 'CheckGitHubSkillSourceUpdates', 'UpdateGitHubSkillSource', 'RemoveGitHubSkillSource'])
+// WEB-BASELINE-REFRESH-010 (3126536): Stop and model change of a run's delegated copies.
+export const DELEGATED_MUTATIONS = new Set(['StopDelegatedExecution', 'UpdateDelegatedLaunchSelections'])
 export const PROJECT_MUTATIONS = new Set(['CreateProject', 'UpdateProject', 'DeleteProject', 'AddProjectWorkspace', 'UpdateProjectWorkspace', 'RemoveProjectWorkspace', 'CreateProjectTask', 'UpdateProjectTask', 'DeleteProjectTask'])
 
 // History row for the deterministic TeamRun created by CreateAgentTeamRun.
@@ -871,7 +900,69 @@ export function fixtureContext(state) {
   return { empty, appsEnabled, agents, teams, applications, workspaces, skills, tools, orgs, projects }
 }
 
+// The user's model choices for delegated copies, by `agent:<runId>` / `team:<runId>`; reset with the scenario.
+const delegatedSelections = (state) => (state.delegatedSelections ??= {})
+const withDelegatedSelections = (state, collaboration) => {
+  const selections = delegatedSelections(state)
+  if (!Object.keys(selections).length) return collaboration
+  const next = structuredClone(collaboration)
+  for (const task of next.root_agent.execution_tree.taskExecutions) {
+    if (task.agentRunId && selections[`agent:${task.agentRunId}`]) task.userLaunchSelection = selections[`agent:${task.agentRunId}`]
+    if (task.teamRunId && selections[`team:${task.teamRunId}`]) task.userTeamLaunchSelection = selections[`team:${task.teamRunId}`]
+    for (const member of task.members || []) if (selections[`agent:${member.agentRunId}`]) member.userLaunchSelection = selections[`agent:${member.agentRunId}`]
+  }
+  return next
+}
+export function delegatedMutationFixture(operationName, variables = {}, state) {
+  const input = variables.input || {}
+  if (operationName === 'StopDelegatedExecution') {
+    // Scripted outcome: the stored run is not running, so its copies are already stopped.
+    return { stopDelegatedExecution: { __typename: 'StopDelegatedExecutionResult', success: true, outcome: 'ALREADY_STOPPED', message: 'This copy is already stopped.', notStoppedUnattributed: 0 } }
+  }
+  const selections = delegatedSelections(state)
+  for (const change of input.changes || []) {
+    const key = change.agentRunId ? `agent:${change.agentRunId}` : `team:${change.teamRunId}`
+    selections[key] = { llmModelIdentifier: change.selection.llmModelIdentifier, llmConfig: change.selection.llmConfig ?? null, selectedAt: fixedNow }
+  }
+  return { updateDelegatedLaunchSelections: { __typename: 'UpdateDelegatedLaunchSelectionsResult', success: true, outcome: 'SAVED', message: 'Saved. A stopped copy uses its new model on its next message.', fieldErrors: [] } }
+}
+
+// WEB-BASELINE-REFRESH-010: the `live_runs` scenario. The two stored runs are active; their streams
+// (live-streams.mjs) answer with these views. Statuses are invented; nothing runs.
+const status = (agentRunId, memberAddress, value, extra = {}) => ({ member_address: memberAddress, agent_run_id: agentRunId, status: value, trigger: null, tool_name: null, error_message: null, error_details: null, recoverableBlock: null, ...extra })
+export const LIVE_AGENT_STATUSES = [
+  status('worker-writer-001', '/documentation_writer', 'running'),
+  status('worker-team-review-researcher-001', '/product_review_team/researcher', 'idle'),
+  status('worker-team-review-writer-001', '/product_review_team/writer', 'error', { error_message: 'The synthetic model call failed.' }),
+  status('worker-temp-researcher-001', '/research_assistant', 'offline'),
+]
+export const LIVE_TEAM_STATUSES = [
+  { agent_run_id: 'team-member-researcher-001', member_address: '/researcher', status: 'running', trigger: null, tool_name: null, error_message: null, error_details: null, recoverableBlock: null },
+  { agent_run_id: 'team-member-writer-001', member_address: '/writer', status: 'idle', trigger: null, tool_name: null, error_message: null, error_details: null, recoverableBlock: null },
+]
+const LIVE_RUN_IDS = new Set(['run-research-001'])
+const LIVE_TEAM_RUN_IDS = new Set(['team-run-001'])
+function liveRunsOverlay(operationName, variables, result) {
+  if (!result) return result
+  const next = structuredClone(result)
+  const liveHistory = (entry) => {
+    for (const group of entry?.agentDefinitions || []) for (const item of group.runs || []) if (LIVE_RUN_IDS.has(item.runId)) Object.assign(item, { isActive: true, shouldConnectStream: true, status: 'IDLE', statusSource: 'live' })
+    for (const group of entry?.teamDefinitions || []) for (const item of group.runs || []) if (LIVE_TEAM_RUN_IDS.has(item.teamRunId)) {
+      Object.assign(item, { isActive: true, shouldConnectStream: true, status: 'RUNNING' })
+      for (const member of item.members || []) member.status = member.agentRunId === 'team-member-researcher-001' ? 'RUNNING' : 'IDLE'
+    }
+  }
+  if (operationName === 'ListWorkspaceRunHistory') for (const entry of next.listWorkspaceRunHistory || []) liveHistory(entry)
+  if (operationName === 'GetWorkspaceRunHistory') liveHistory(next.workspaceRunHistory)
+  if (operationName === 'GetAgentRunResumeConfig' && LIVE_RUN_IDS.has(next.getAgentRunResumeConfig?.runId)) next.getAgentRunResumeConfig.isActive = true
+  if (operationName === 'GetTeamRunResumeConfig' && LIVE_TEAM_RUN_IDS.has(next.getTeamRunResumeConfig?.teamRunId)) next.getTeamRunResumeConfig.isActive = true
+  if (operationName === 'GetAgentRunCollaboration' && next.agentRunCollaboration) Object.assign(next.agentRunCollaboration.root_agent, { is_active: true, agent_statuses: structuredClone(LIVE_AGENT_STATUSES) })
+  if (operationName === 'StopDelegatedExecution') next.stopDelegatedExecution = { __typename: 'StopDelegatedExecutionResult', success: true, outcome: 'STOPPED', message: 'Stopped. Its next message resumes it.', notStoppedUnattributed: 0 }
+  return next
+}
+
 export function operationFixture(operationName, variables = {}, state) {
+  if (DELEGATED_MUTATIONS.has(operationName)) return delegatedMutationFixture(operationName, variables, state)
   if (PROJECT_MUTATIONS.has(operationName)) return projectMutationFixture(operationName, variables, state)
   if (SKILL_SOURCE_MUTATIONS.has(operationName)) return skillSourceMutationFixture(operationName, variables, state)
   const c = fixtureContext(state)
@@ -1025,13 +1116,27 @@ export function operationFixture(operationName, variables = {}, state) {
       { kind: 'agent', definitionId: secondAgent.id, name: secondAgent.name, description: secondAgent.description, memberCount: null, coordinatorName: null },
       { kind: 'agent_team', definitionId: team.id, name: team.name, description: team.description, memberCount: team.nodes?.length ?? 2, coordinatorName: team.coordinatorMemberName || 'researcher' },
     ] } },
-    GetAgentRunCollaboration: { agentRunCollaboration: variables.runId === run.runId && !c.empty ? agentRootCollaboration : null },
+    GetAgentRunCollaboration: { agentRunCollaboration: variables.runId === run.runId && !c.empty ? withDelegatedSelections(state, agentRootCollaboration) : null },
+    // 3126536: model options of every editable delegated copy (agent and Team level) of the stored run.
+    DelegatedLaunchModelOptions: { delegatedLaunchModelOptions: variables.rootRunId === run.runId && !c.empty ? (() => {
+      const thinkingRunModel = { ...runModel, llmModelIdentifier: thinkingModel.modelIdentifier, displayName: thinkingModel.name, canonicalName: thinkingModel.canonicalName, description: thinkingModel.description, recommended: false }
+      const selections = delegatedSelections(state)
+      const row = (scope, id) => {
+        const current = selections[`${scope}:${id}`]?.llmModelIdentifier ?? model.modelIdentifier
+        return { __typename: 'DelegatedLaunchModelOptionsObject', scope, agentRunId: scope === 'agent' ? id : null, teamRunId: scope === 'team' ? id : null,
+          currentModelIdentifier: current, unavailableReason: null, currentModel: current === thinkingModel.modelIdentifier ? thinkingRunModel : runModel, replacements: [runModel, thinkingRunModel] }
+      }
+      return [row('agent', 'worker-writer-001'), row('agent', 'worker-temp-researcher-001'), row('team', 'worker-team-review-001'),
+        row('agent', 'worker-team-review-researcher-001'), row('agent', 'worker-team-review-writer-001')]
+    })() : [] },
     GetAgentRunCollaborationMemberEventMonitorActiveTracePage: { agentRunCollaborationMemberEventMonitorActiveTracePage: variables.hostRunId === run.runId ? agentRootMemberEarlierPage(variables) : null },
     GetAgentRunCollaborationMemberProjection: { agentRunCollaborationMemberProjection: variables.hostRunId === run.runId ? agentRootMemberProjection(variables) : null },
     GetWorkingContextCompactionStrategies: { getWorkingContextCompactionStrategies: [{ id: 'default', name: 'Default' }] },
     ListWorkspaceRunHistory: { listWorkspaceRunHistory: c.empty || teamLaunchScenario ? [] : [{ workspaceRootPath: workspace.workspaceRootPath, workspaceName: workspace.displayName, agentDefinitions: state.archivedAgentGroup ? [] : [{ agentDefinitionId: agent.id, agentName: agent.name, runs: [run] }], teamDefinitions: [{ teamDefinitionId: team.id, teamDefinitionName: team.name, runs: state.launchedTeamRun ? [launchedTeamRunHistoryItem, teamRun] : [teamRun] }] }] },
     GetWorkspaceRunHistory: { workspaceRunHistory: c.empty ? null : { workspaceRootPath: workspace.workspaceRootPath, workspaceName: workspace.displayName, agentDefinitions: teamLaunchScenario || state.archivedAgentGroup ? [] : [{ agentDefinitionId: agent.id, agentName: agent.name, runs: [run] }], teamDefinitions: teamLaunchScenario ? [] : [{ teamDefinitionId: team.id, teamDefinitionName: team.name, runs: [teamRun] }] } },
-    GetRunProjection: { getRunProjection: { runId: run.runId, summary: run.summary, lastActivityAt: fixedNow, conversation: storedConversation('Compare current navigation states.', 'The navigation states match the synthetic baseline.'), activities: [], hasEarlierActiveTraceEvents: false } },
+    GetRunProjection: { getRunProjection: { runId: run.runId, summary: run.summary, lastActivityAt: fixedNow, conversation: [...storedConversation('Compare current navigation states.', 'The navigation states match the synthetic baseline.'),
+      // 28fdf1d: the platform's skill update notice, replayed from history (labelled "Skill updated").
+      { kind: 'system_task_notification', role: 'user', senderId: 'system', content: '[Platform notice — skill updated]\nThe following skills you use changed on disk since you last read them:\n- prototype-research (/synthetic/skills/prototype-research/SKILL.md): SKILL.md', ts: '2026-08-22T04:03:00.000Z' }], activities: [], hasEarlierActiveTraceEvents: false } },
     GetRunFileChanges: { getRunFileChanges: [{ id: 'file-change-1', runId: run.runId, path: 'README.md', type: 'modified', status: 'ready', sourceTool: 'write_file', sourceInvocationId: 'tool-1', content: '# Fixture', createdAt: fixedNow, updatedAt: fixedNow }] },
     GetRunEventMonitorActiveTracePage: { getRunEventMonitorActiveTracePage: { beforeCursor: null, hasEarlier: false, loadedEarlierCount: 0, activeGeneration: 0, cursorStatus: 'IDLE', events: [] } },
     GetTeamMemberEventMonitorActiveTracePage: { getTeamMemberEventMonitorActiveTracePage: { beforeCursor: null, hasEarlier: false, loadedEarlierCount: 0, activeGeneration: 0, cursorStatus: 'IDLE', events: [] } },
@@ -1058,7 +1163,7 @@ export function operationFixture(operationName, variables = {}, state) {
     GetAgentRunResumeConfig: { getAgentRunResumeConfig: variables.runId === 'run-prepared-fixture'
       // The Chat first send (57df63f): Daily Assistant in the temp workspace.
       ? { runId: 'run-prepared-fixture', isActive: true, metadataConfig: { agentDefinitionId: dailyAssistant.id, workspaceRootPath: tempWorkspace.workspaceRootPath, llmModelIdentifier: model.modelIdentifier, llmConfig: {}, autoExecuteTools: true, runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: false, llmConfig: false, autoExecuteTools: false, workspaceRootPath: false, runtimeKind: false }, modelConfigEditability: { editable: false, reason: null } }
-      : { runId: run.runId, isActive: false, metadataConfig: { agentDefinitionId: agent.id, workspaceRootPath: workspace.workspaceRootPath, llmModelIdentifier: model.modelIdentifier, llmConfig: {}, autoExecuteTools: false, runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: true, llmConfig: true, autoExecuteTools: true, workspaceRootPath: true, runtimeKind: true }, modelConfigEditability: { editable: false, reason: null } } },
+      : { runId: run.runId, isActive: false, metadataConfig: { agentDefinitionId: agent.id, workspaceRootPath: workspace.workspaceRootPath, llmModelIdentifier: model.modelIdentifier, llmConfig: {}, autoExecuteTools: false, runtimeKind: 'autobyteus', runtimeReference: null }, editableFields: { llmModelIdentifier: true, llmConfig: true, autoExecuteTools: true, workspaceRootPath: true, runtimeKind: true }, modelConfigEditability: { editable: true, reason: null } } },
     DeleteStoredRun: { deleteStoredRun: success }, ArchiveStoredRun: { archiveStoredRun: success }, DeleteStoredTeamRun: { deleteStoredTeamRun: success }, ArchiveStoredTeamRun: { archiveStoredTeamRun: success },
     // 9faa6bc: "Archive all" on an agent group header archives that agent's saved runs in the workspace.
     // The archived runs leave this caller's in-memory history (reset with the scenario).
@@ -1120,7 +1225,8 @@ export function operationFixture(operationName, variables = {}, state) {
     WriteFileContent: { writeFileContent: true }, DeleteFileOrFolder: { deleteFileOrFolder: true }, MoveFileOrFolder: { moveFileOrFolder: true }, RenameFileOrFolder: { renameFileOrFolder: true }, CreateFileOrFolder: { createFileOrFolder: true },
   }
 
-  return fixtures[operationName] || null
+  const result = fixtures[operationName] || null
+  return state.scenario === 'live_runs' ? liveRunsOverlay(operationName, variables, result) : result
 }
 
 const draftingAgentRef = { source: 'bundle', kind: 'AGENT', localId: 'drafting-agent' }

@@ -66,7 +66,6 @@ const collaboration = () => ({
     execution_tree: {
       subjectKind: 'agent', createdAt,
       host: { address: '/project_task_manager', agentRunId: PTM_RUN_ID, agentDefinitionId: PTM_DEFINITION_ID },
-      collaborators: [],
       taskExecutions: COPIES.map(taskExecution),
     },
     closed_task_executions: [],

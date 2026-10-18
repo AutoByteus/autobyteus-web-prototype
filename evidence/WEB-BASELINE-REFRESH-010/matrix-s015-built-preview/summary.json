@@ -1,0 +1,37 @@
+{
+  "generatedAt": "2026-10-18T06:29:48.156Z",
+  "total": 4,
+  "passed": 4,
+  "exactPixelRows": 0,
+  "noiseOnlyRows": [
+    {
+      "id": "WBR-S013",
+      "noiseClass": "B-compositing-rounding",
+      "changedPixels": 9464,
+      "maximumChannelDelta": 2
+    },
+    {
+      "id": "WBR-S014",
+      "noiseClass": "B-compositing-rounding",
+      "changedPixels": 7058,
+      "maximumChannelDelta": 2
+    },
+    {
+      "id": "WBR-S015",
+      "noiseClass": "B-compositing-rounding",
+      "changedPixels": 7766,
+      "maximumChannelDelta": 2
+    },
+    {
+      "id": "WBR-S016",
+      "noiseClass": "B-compositing-rounding",
+      "changedPixels": 8197,
+      "maximumChannelDelta": 2
+    }
+  ],
+  "failed": [],
+  "sourceBrowserErrorRows": [
+    "WBR-S016"
+  ],
+  "prototypeBrowserErrorRows": []
+}

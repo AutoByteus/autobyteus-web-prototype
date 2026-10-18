@@ -1,0 +1,47 @@
+PASS PRJ-001 Projects list: New project opens the create page text=true route=/projects/new px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-002 Create project: empty name is rejected text=true route=/projects/new px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-003 Create project: Add workspace adds an existing-workspace row text=true route=/projects/new px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-004 Create project: unchosen workspace row is rejected text=true route=/projects/new px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-005 Create project: New folder row with empty path is rejected text=true route=/projects/new px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-006 Create project with an existing workspace opens it with the created notice text=true route=/projects/project-created-1?notice=created&tab=workspaces px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-007 Create project with a taken name shows the name error text=true route=/projects/new px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-008 Create project with a new folder workspace text=true route=/projects/project-created-1?notice=created&tab=workspaces px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-009 Project detail: Edit opens the edit page text=true route=/projects/project-prototype-launch/edit px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-010 Edit project: Save changes returns with the saved notice text=true route=/projects/project-prototype-launch?notice=saved px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-011 Project detail: Workspaces tab text=true route=/projects/project-prototype-launch?tab=workspaces px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-012 Project detail: Delete opens the confirmation text=true route=/projects/project-prototype-launch px=3 max=2   srcErr=0 protoErr=0
+PASS PRJ-013 Project detail: confirm delete returns to the (empty) list text=true route=/projects px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-014 Project detail: task search with no match text=true route=/projects/project-prototype-launch px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-015 Projects list: search with no match text=true route=/projects px=0 max=0   srcErr=0 protoErr=0
+PASS TSK-001 Project detail: New task opens the task page text=true route=/projects/project-prototype-launch/tasks/new px=0 max=0   srcErr=0 protoErr=0
+PASS TSK-002 New task: empty description is rejected text=true route=/projects/project-prototype-launch/tasks/new px=0 max=0   srcErr=0 protoErr=0
+PASS TSK-003 New task: create returns to the board with the created notice text=true route=/projects/project-prototype-launch?notice=task-created px=0 max=0   srcErr=0 protoErr=0
+PASS TSK-004 New task: attach a context file text=true route=/projects/project-prototype-launch/tasks/new px=0 max=0   srcErr=0 protoErr=0
+PASS TSK-005 New task with a context file shows the file count on the board text=true route=/projects/project-prototype-launch?notice=task-created px=0 max=0   srcErr=0 protoErr=0
+PASS TSK-006 Board: open a task text=true route=/projects/project-prototype-launch/tasks/prototype-launch-1 px=0 max=0   srcErr=0 protoErr=0
+PASS TSK-007 Task detail: Edit task opens the edit page text=true route=/projects/project-prototype-launch/tasks/prototype-launch-1/edit px=0 max=0   srcErr=0 protoErr=0
+PASS TSK-008 Edit task: save returns to the task text=true route=/projects/project-prototype-launch/tasks/prototype-launch-1?notice=saved px=0 max=0   srcErr=0 protoErr=0
+PASS TSK-009 Task detail: Delete task opens the confirmation text=true route=/projects/project-prototype-launch/tasks/prototype-launch-1 px=0 max=0   srcErr=0 protoErr=0
+PASS TSK-010 Task detail: confirm delete returns to the board with the deleted notice text=true route=/projects/project-prototype-launch?notice=task-deleted px=0 max=0   srcErr=0 protoErr=0
+PASS TSK-011 New task (narrow) text=true route=/projects/project-prototype-launch/tasks/new px=0 max=0   srcErr=0 protoErr=0
+PASS TSK-012 Unknown task shows Task not found text=true route=/projects/project-prototype-launch/tasks/task-missing px=0 max=0   srcErr=0 protoErr=0
+PASS MEN-001 Stored Team run composer shows the @ placeholder text=true route=/workspace px=0 max=0   srcErr=0 protoErr=0
+PASS MEN-002 Stored Team run: @ opens the live-run mention menu text=true route=/workspace px=0 max=0   srcErr=0 protoErr=0
+PASS MEN-003 Stored Team run: @ query filters the menu text=true route=/workspace px=0 max=0   srcErr=0 protoErr=0
+PASS MEN-004 Stored Team run: choosing a candidate leaves one inline highlighted mention text=true route=/workspace px=0 max=0   srcErr=0 protoErr=0
+PASS MEN-005 Stored Team run: Team candidate chosen with the mouse text=true route=/workspace px=0 max=0   srcErr=0 protoErr=0
+PASS MEN-006 Stored Team run: Escape closes the @ menu text=true route=/workspace px=0 max=0   srcErr=0 protoErr=0
+PASS MEN-007 Stored Org run member: @ opens the live-run mention menu text=true route=/workspace?rootSubjectKind=agent_org&definitionId=org-product-launch&orgRunId=org-run-001&mode=history&memberAddress=/analyst px=0 max=0   srcErr=0 protoErr=0
+PASS MEN-010 Stored Team run: @ query without a match shows the empty hint text=true route=/workspace px=0 max=0   srcErr=0 protoErr=0
+PASS MEN-008 Stored Team run writer: "From <Sender>:" delivery block text=true route=/workspace px=0 max=0   srcErr=0 protoErr=0
+PASS MEN-009 Stored Team run writer: delivery details expanded text=true route=/workspace px=0 max=0   srcErr=0 protoErr=0
+PASS AGR-001 Stored Agent run: opening it lists its task Agent and task Team text=true route=/chat?id=run-research-001 px=0 max=0   srcErr=0 protoErr=0
+PASS AGR-002 Stored Agent run: open the task Agent conversation text=true route=/chat?id=run-research-001 px=0 max=0   srcErr=0 protoErr=0
+PASS AGR-003 Stored Agent run: task Team row opens its coordinator text=true route=/chat?id=run-research-001 px=0 max=0   srcErr=0 protoErr=0
+PASS AGR-004 Stored Agent run: the run row returns to the host conversation text=true route=/chat?id=run-research-001 px=0 max=0   srcErr=0 protoErr=0
+PASS AGR-005 Stored Agent run: Team tab lists the task Agent message text=true route=/chat?id=run-research-001 px=0 max=0   srcErr=0 protoErr=0
+PASS CFG-001 New chat: Antigravity runtime shows the locked auto-approve control text=true route=/chat px=0 max=0   srcErr=0 protoErr=0
+PASS CFG-002 Agent catalog Run: launch form (fresh launch auto-approve, no skill access) text=true route=/chat px=0 max=0   srcErr=0 protoErr=0
+PASS CFG-003 Team catalog Run: launch form and member overrides text=true route=/chat px=0 max=0   srcErr=0 protoErr=0
+PASS CFG-004 Stored Team run: run settings (Edit Config) text=true route=/workspace px=0 max=0   srcErr=0 protoErr=0
+PASS CFG-005 Server settings (advanced): compaction model settings text=true route=/settings?section=server-settings&mode=advanced px=0 max=0   srcErr=0 protoErr=0

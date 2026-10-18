@@ -19,9 +19,7 @@ import { dispatchAgentStreamMessage } from '~/services/agentStreaming/agentStrea
 import { applyOfflineOrTerminalCleanup } from '~/services/runStatus/agentRuntimeStatusState'
 import { projectAgentOrgReference } from '~/services/agentOrgExecution/agentOrgReferenceProjection'
 import { createChildContext } from './agentRunCollaborationChildContextFactory'
-import { collaboratorExecutionNodes } from '~/services/collaborators/agentSourceSelectors'
 import { useRunHistoryStore } from '~/stores/runHistoryStore'
-import { collaboratorCandidatesService } from '~/services/collaborators/collaboratorCandidatesService'
 import { AgentRunCollaborationIndex, type AgentRootChildAgent } from './agentRunCollaborationIndex'
 import {
   agentRunKey,
@@ -31,6 +29,7 @@ import {
   removeReopenedTaskExecutions,
   type CollaborationTreeNode,
 } from '~/utils/collaboration/taskExecutionClosure'
+import { resolveTeamStatus, type TeamStatus } from '~/utils/workspaceTeamAggregateStatus'
 
 export type AgentRunCollaborationPhase = 'live' | 'historical' | 'reopen_required'
 export type AgentRunCollaborationEventApplication = 'applied' | 'checkpoint_required'
@@ -40,6 +39,8 @@ type Message = AgentRunCollaborationViewDto['communication_messages']['messages'
 
 export type AgentRunTaskTreeRow = Readonly<{
   row: RunHistoryTransientExecutionRow
+  /** A Team row's status, counted from every listed agent under it (collapsed too); null for an agent row. */
+  teamStatus: TeamStatus | null
   continuingAncestorDepths: number[]
   hasFollowingSibling: boolean
 }>
@@ -48,7 +49,7 @@ const nameAt = memberDisplayName
 
 /**
  * The client view of one standalone run's collaboration root: its task children (with one
- * AgentContext each), their collaborators and messages. The host stays on its own Agent stream.
+ * AgentContext each), their messages. The host stays on its own Agent stream.
  */
 export class AgentRunCollaborationContext {
   readonly hostRunId: string
@@ -158,17 +159,13 @@ export class AgentRunCollaborationContext {
       }
       this.view = { ...this.view,
         closed_task_executions: removeReopenedTaskExecutions(this.view.closed_task_executions, event.task_executions) }
-    } else if (event.kind === 'collaborator_added') {
-      // One hosted instance per entry: its executions get contexts now, Offline. Applied in
-      // place (no reload) so a pending send that added it keeps its acknowledgement.
-      const tree = this.view.execution_tree
-      if (tree.collaborators.some((entry) => entry.address === event.collaborator.address)) {
-        this.requireReopen(`Collaborator address '${event.collaborator.address}' is already in use.`)
+    } else if (event.kind === 'delegated_launch_selections_changed') {
+      // A Save on the live run (DS-001): reload so the records and the member contexts show the choice.
+      if (event.selections.some((entry) => 'agentRunId' in entry ? !this.index.agents.has(entry.agentRunId) : !this.index.teams.has(entry.teamRunId))) {
+        this.requireReopen('A saved model choice names no child of this run.')
         throw new Error(this.error!)
       }
-      this.commitTree({ ...tree, collaborators: [...tree.collaborators, event.collaborator] })
-      this.addContextsForNewChildren()
-      collaboratorCandidatesService.invalidate('agent', this.hostRunId)
+      return 'checkpoint_required'
     } else {
       this.assertMessagesCorrelated([event.message])
       this.view = { ...this.view, communication_messages: {
@@ -255,7 +252,7 @@ export class AgentRunCollaborationContext {
   /** The task rows under the run row: task Agents and task Teams with their members, without closed ones. */
   listTaskRows(isTeamExpanded: (teamRunId: string) => boolean): AgentRunTaskTreeRow[] {
     const hidden = this.closedSubtrees()
-    const flat: RunHistoryTransientExecutionRow[] = []
+    const flat: { row: RunHistoryTransientExecutionRow; teamStatus: TeamStatus | null }[] = []
     const statusOf = (agentRunId: string) => this.contexts.get(agentRunId)?.state.currentStatus ?? AgentStatus.Offline
     const delegatorName = (agentRunId: string | null) => {
       if (!agentRunId) return null
@@ -268,32 +265,47 @@ export class AgentRunCollaborationContext {
       agentRunId: agent.agentRunId, teamRunIdForNode: null, memberKind: 'agent', displayName: nameAt(agent.address),
       currentStatus: statusOf(agent.agentRunId), delegatedBy: delegatorName(agent.delegatorAgentRunId), depth, hasChildren: false,
     })
-    type Node = AgentRunCollaborationViewDto['execution_tree']['taskExecutions'][number]
-      | Extract<AgentRunCollaborationViewDto['execution_tree']['taskExecutions'][number], { teamRunId: string }>['members'][number]
-    const visit = (node: Node, depth: number): void => {
-      if (hidden.has(collaborationTreeWalk.keyOf(node))) return
-      if ('agentRunId' in node) { flat.push(agentRow(this.index.requireAgent(node.agentRunId), depth)); return }
-      const team = this.index.teams.get(node.teamRunId)!
-      const children = [...node.members, ...node.taskExecutions]
-        .filter((child) => !hidden.has(collaborationTreeWalk.keyOf(child)))
-      flat.push({
-        kind: 'transient_execution', transientKind: 'task_team', rowKey: `team:${node.teamRunId}`, teamRunId: this.hostRunId,
-        memberAddress: node.address, agentRunId: null, teamRunIdForNode: node.teamRunId, memberKind: 'agent_team',
-        displayName: nameAt(node.address), currentStatus: null, delegatedBy: delegatorName(team.delegatorAgentRunId),
-        depth, hasChildren: children.length > 0,
-      })
-      if (isTeamExpanded(node.teamRunId)) children.forEach((child) => visit(child, depth + 1))
+    type TaskExecution = AgentRunCollaborationViewDto['execution_tree']['taskExecutions'][number]
+    const listed = (node: CollaborationTreeNode) => !hidden.has(collaborationTreeWalk.keyOf(node))
+    const visitAgent = (agentRunId: string, depth: number, shown: boolean): AgentStatus[] => {
+      if (shown) flat.push({ row: agentRow(this.index.requireAgent(agentRunId), depth), teamStatus: null })
+      return [statusOf(agentRunId)]
     }
-    this.rootExecutionNodes().forEach((task) => visit(task as Node, 0))
+    // Every listed node is walked, so a collapsed Team still counts its agents; only shown rows are emitted.
+    // Returns the statuses of the listed agents in the task's subtree. Teams are flat: a task Team's members
+    // are Agents; the Teams under it are the copies its members delegated (its own task executions).
+    const visit = (task: TaskExecution, depth: number, shown: boolean): AgentStatus[] => {
+      if (!listed(task)) return []
+      if ('agentRunId' in task) return visitAgent(task.agentRunId, depth, shown)
+      const team = this.index.teams.get(task.teamRunId)!
+      const members = task.members.filter(listed)
+      const tasks = task.taskExecutions.filter(listed)
+      const entry: { row: RunHistoryTransientExecutionRow; teamStatus: TeamStatus | null } = { row: {
+        kind: 'transient_execution', transientKind: 'task_team', rowKey: `team:${task.teamRunId}`, teamRunId: this.hostRunId,
+        memberAddress: task.address, agentRunId: null, teamRunIdForNode: task.teamRunId, memberKind: 'agent_team',
+        displayName: nameAt(task.address), currentStatus: null, delegatedBy: delegatorName(team.delegatorAgentRunId),
+        depth, hasChildren: members.length + tasks.length > 0,
+      }, teamStatus: null }
+      if (shown) flat.push(entry)
+      const childrenShown = shown && isTeamExpanded(task.teamRunId)
+      const statuses = [
+        ...members.flatMap((member) => visitAgent(member.agentRunId, depth + 1, childrenShown)),
+        ...tasks.flatMap((child) => visit(child, depth + 1, childrenShown)),
+      ]
+      entry.teamStatus = resolveTeamStatus(statuses, this.isActive)
+      return statuses
+    }
+    this.rootExecutionNodes().forEach((task) => visit(task, 0, true))
     const hasSibling = (index: number, depth: number): boolean => {
       for (let next = index + 1; next < flat.length; next += 1) {
-        if (flat[next]!.depth < depth) return false
-        if (flat[next]!.depth === depth) return true
+        if (flat[next]!.row.depth < depth) return false
+        if (flat[next]!.row.depth === depth) return true
       }
       return false
     }
-    return flat.map((row, index) => Object.freeze({
+    return flat.map(({ row, teamStatus }, index) => Object.freeze({
       row,
+      teamStatus,
       continuingAncestorDepths: Array.from({ length: row.depth }, (_, depth) => depth).filter((depth) => hasSibling(index, depth)),
       hasFollowingSibling: hasSibling(index, row.depth),
     }))
@@ -348,9 +360,9 @@ export class AgentRunCollaborationContext {
     }
   }
 
-  /** Collaborators (hosted by the root) first, then extra copies and other delegated children. */
+  /** The root's delegated children. */
   private rootExecutionNodes() {
-    return [...collaboratorExecutionNodes(this.view.execution_tree.collaborators), ...this.view.execution_tree.taskExecutions]
+    return this.view.execution_tree.taskExecutions
   }
 
   private closedSubtrees() {

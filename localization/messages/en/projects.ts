@@ -13,7 +13,6 @@ const projectMessages = {
   'projects.ui.name': 'Name',
   'projects.ui.required': '(required)',
   'projects.ui.optional': '(optional)',
-  // task-keys-and-dependencies (design)
   'projects.key.copy': 'Copy key',
   'projects.key.copyLabel': 'Copy Task key {{key}}',
   'projects.key.copied': 'Copied',
@@ -32,7 +31,6 @@ const projectMessages = {
   'projects.deps.remove': 'Remove {{key}}',
   'projects.deps.cycle': 'Depends on this Task',
   'projects.deps.noMatch': 'No other Tasks in this Project match.',
-  'projects.deps.optionLabel': '{{key}}: {{summary}} ({{status}})',
   'projects.ui.namePlaceholder': 'e.g. Customer portal',
   'projects.ui.description': 'Description',
   'projects.ui.projectDescriptionPlaceholder': 'What is this project about?',

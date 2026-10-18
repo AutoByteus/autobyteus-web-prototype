@@ -68,6 +68,11 @@
           data-test="workspace-transient-status-dot"
           :status="row.currentStatus"
         />
+        <TeamAggregateStatusDot
+          v-else
+          class="mr-1.5"
+          :status="teamStatus"
+        />
       </span>
       <span class="mr-1.5 inline-flex h-5 flex-shrink-0 items-center" aria-hidden="true">
         <!-- Teams share the people-group identity, in the tree's slate. -->
@@ -120,6 +125,14 @@
         </span>
       </span>
     </div>
+    <!-- SR-007: a running copy has the same stop icon as a running run. -->
+    <DelegatedStopButton
+      v-if="stopRoot && stopReference"
+      class="mr-1 self-center"
+      :root="stopRoot"
+      :reference="stopReference"
+      :name="row.displayName"
+    />
     <span
       class="hierarchy-identity-tooltip pointer-events-none absolute left-2 right-2 top-full z-50 hidden break-words rounded-md bg-slate-900 px-2 py-1.5 text-left text-[0.6875rem] font-medium leading-4 text-white shadow-lg"
       role="tooltip"
@@ -132,17 +145,23 @@ import { useAgentReconnect } from '~/composables/agentReconnect/useAgentReconnec
 import { computed } from 'vue';
 import { Icon } from '@iconify/vue';
 import StatusDot from '~/components/workspace/common/StatusDot.vue';
+import TeamAggregateStatusDot from '~/components/workspace/history/TeamAggregateStatusDot.vue';
 import WorkspaceHierarchyBranches from '~/components/workspace/history/WorkspaceHierarchyBranches.vue';
 import TaskWorkerTaskSummary from '~/components/workspace/history/TaskWorkerTaskSummary.vue';
+import DelegatedStopButton from '~/components/workspace/history/DelegatedStopButton.vue';
+import type { DelegatedReference, DelegatedRoot } from '~/services/runConfigEditing/delegatedLaunchSelectionClient';
 import { useLocalization } from '~/composables/useLocalization';
 import { AgentStatus } from '~/types/agent/AgentStatus';
 import type { RunHistoryTransientExecutionRow } from '~/stores/runHistoryTypes';
 import type { TaskWorkerTask } from '~/types/project';
 import { taskSummaryLabel } from '~/utils/projects/taskSummary';
 import { useRunHistoryStore } from '~/stores/runHistoryStore';
+import type { TeamStatus } from '~/utils/workspaceTeamAggregateStatus';
 
 const props = withDefaults(defineProps<{
   row: RunHistoryTransientExecutionRow;
+  /** The Team status of a Team row; agent rows show their own status. */
+  teamStatus?: TeamStatus;
   isSelected?: boolean;
   hasChildren?: boolean;
   expanded?: boolean;
@@ -150,7 +169,11 @@ const props = withDefaults(defineProps<{
   hasFollowingSibling?: boolean;
   /** The Task worker's current Task: shown as a summary line under the name (delegated-copy-task-locator). */
   task?: TaskWorkerTask | null;
+  /** The run this copy belongs to, when its rows offer the per-copy stop icon (SR-007). */
+  stopRoot?: DelegatedRoot | null;
 }>(), {
+  teamStatus: AgentStatus.Offline,
+  stopRoot: null,
   isSelected: false,
   hasChildren: false,
   expanded: false,
@@ -174,7 +197,9 @@ const roleLabel = computed(() => t(
     : 'workspace.history.hierarchy.role.temporary_task_agent',
 ));
 
-const status = computed(() => props.row.currentStatus || AgentStatus.Offline);
+const status = computed(() => props.row.memberKind === 'agent_team'
+  ? props.teamStatus
+  : props.row.currentStatus || AgentStatus.Offline);
 const statusLabel = computed(() => t(`workspace.history.hierarchy.status.${status.value}`));
 const startedByLabel = computed(() => props.row.delegatedBy
   ? t('workspace.members.started_by', { name: props.row.delegatedBy })
@@ -224,6 +249,13 @@ const rowClasses = computed(() => ({
   'is-selected text-indigo-900': props.isSelected,
   'text-gray-600 hover:bg-gray-50': !props.isSelected,
 }));
+
+/** A copy itself (an Agent or a whole Team), never one member of a Team copy. */
+const stopReference = computed<DelegatedReference | null>(() => {
+  if (props.row.transientKind === 'task_agent' && props.row.agentRunId) return { agentRunId: props.row.agentRunId };
+  if (props.row.transientKind === 'task_team' && props.row.teamRunIdForNode) return { teamRunId: props.row.teamRunIdForNode };
+  return null;
+});
 
 const activateRow = (): void => {
   if (props.hasChildren) emit('toggle', props.row);

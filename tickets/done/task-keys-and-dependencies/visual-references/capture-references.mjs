@@ -1,6 +1,6 @@
-import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/task-keys-off-lists/node_modules/playwright-core/index.mjs';
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design/node_modules/playwright-core/index.mjs';
 const B=process.env.BASE||'http://127.0.0.1:4661', O=process.env.OUT||'./';
-const browser = await chromium.launch(); const log=(...a)=>console.log(...a);
+const browser = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {}); const log=(...a)=>console.log(...a);
 const page = async (w=1440,h=900,s=1) => { const ctx = await browser.newContext({ viewport:{width:w,height:h}, deviceScaleFactor:s, permissions:['clipboard-read','clipboard-write'] }); const p = await ctx.newPage(); p.on('pageerror', e => log('PAGEERR', e.message)); return p; };
 const rest = async (p) => { await p.mouse.move(5,890); await p.evaluate(()=>document.activeElement?.blur()); await p.waitForTimeout(300); };
 const box = async (p, sel) => { const b = await p.locator(sel).first().boundingBox(); return { x: Math.max(0,b.x-8), y: Math.max(0,b.y-8), width: b.width+16, height: b.height+16 }; };

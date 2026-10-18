@@ -182,7 +182,7 @@ export const useProjectTaskStore = defineStore('projectTasks', () => {
     } catch (cause) { throw toProjectRequestError(cause) }
     finally { owner.write++; if (current()) releaseRead(id) }
   }
-  // task-keys-and-dependencies (design): "Depends on" is saved with the Task (same-Project Task IDs).
+  // "Depends on" is saved with the Task (same-Project Task IDs); on update a supplied list replaces the stored one.
   const createTask = (projectId: string, description: string, contextDraft?: ProjectTaskContextDraft, eligible?: () => boolean, dependsOnTaskIds?: string[]) => mutate<ProjectTask>(projectId, CreateProjectTask,
     {projectId, description, ...(contextDraft ? {contextDraft} : {}), ...(dependsOnTaskIds ? {dependsOnTaskIds} : {})}, 'createProjectTask', (tasks, result) => [...tasks.filter((t) => t.taskId !== result.taskId), result], eligible)
   const updateTask = (projectId: string, taskId: string, description: string, contextChanges?: ProjectTaskContextChanges, eligible?: () => boolean, dependsOnTaskIds?: string[]) => mutate<ProjectTask>(projectId, UpdateProjectTask,

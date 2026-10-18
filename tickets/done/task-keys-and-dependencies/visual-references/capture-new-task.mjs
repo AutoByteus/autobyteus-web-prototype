@@ -1,6 +1,6 @@
-import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/task-keys-off-lists/node_modules/playwright-core/index.mjs';
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design/node_modules/playwright-core/index.mjs';
 const B='http://127.0.0.1:4661', O='./';
-const browser = await chromium.launch(); const p = await browser.newPage({ viewport:{width:1440,height:900}, deviceScaleFactor:2 });
+const browser = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {}); const p = await browser.newPage({ viewport:{width:1440,height:900}, deviceScaleFactor:2 });
 await p.goto(B+'/projects/project-desktop-app'); await p.waitForTimeout(5000);
 await p.click('[data-testid="project-tasks-new-button"]'); await p.waitForTimeout(2500);
 await p.fill('#task-page-description', 'Follow-up: show Task keys in agent tool output');

@@ -1,0 +1,194 @@
+[
+ {
+  "file": "VIS-001-ptm-run-copies-with-task-summaries-desktop-1440x900.png",
+  "result": "differs",
+  "changedPixels": 28827,
+  "maxDelta": 244,
+  "box": [
+   16,
+   14,
+   1420,
+   883
+  ]
+ },
+ {
+  "file": "VIS-002-copy-rows-task-summary-closeup-2x.png",
+  "result": "differs",
+  "changedPixels": 88589,
+  "maxDelta": 244,
+  "box": [
+   40,
+   18,
+   615,
+   873
+  ]
+ },
+ {
+  "file": "VIS-003-task-summary-hover-closeup-2x.png",
+  "result": "differs",
+  "changedPixels": 166966,
+  "maxDelta": 244,
+  "box": [
+   40,
+   18,
+   631,
+   873
+  ]
+ },
+ {
+  "file": "VIS-004-copy-open-row-summary-unchanged-closeup-2x.png",
+  "result": "differs",
+  "changedPixels": 112747,
+  "maxDelta": 244,
+  "box": [
+   40,
+   18,
+   631,
+   873
+  ]
+ },
+ {
+  "file": "VIS-005-summary-click-task-located-desktop-app-1440x900.png",
+  "result": "differs",
+  "changedPixels": 167073,
+  "maxDelta": 244,
+  "box": [
+   16,
+   14,
+   1427,
+   887
+  ]
+ },
+ {
+  "file": "VIS-006-task-located-other-project-prototype-launch-1440x900.png",
+  "result": "differs",
+  "changedPixels": 146352,
+  "maxDelta": 249,
+  "box": [
+   16,
+   14,
+   1427,
+   899
+  ]
+ },
+ {
+  "file": "VIS-007-task-located-temp-tasks-1440x900.png",
+  "result": "differs",
+  "changedPixels": 64504,
+  "maxDelta": 244,
+  "box": [
+   16,
+   14,
+   1427,
+   883
+  ]
+ },
+ {
+  "file": "VIS-008-follow-up-copy-current-task-located-1440x900.png",
+  "result": "differs",
+  "changedPixels": 188861,
+  "maxDelta": 244,
+  "box": [
+   16,
+   14,
+   1427,
+   899
+  ]
+ },
+ {
+  "file": "VIS-009a-panel-search-hides-task-1440x900.png",
+  "result": "differs",
+  "changedPixels": 108047,
+  "maxDelta": 244,
+  "box": [
+   16,
+   14,
+   1429,
+   883
+  ]
+ },
+ {
+  "file": "VIS-009b-search-cleared-task-located-1440x900.png",
+  "result": "differs",
+  "changedPixels": 207458,
+  "maxDelta": 244,
+  "box": [
+   16,
+   14,
+   1427,
+   899
+  ]
+ },
+ {
+  "file": "VIS-010-cancelled-task-located-cancelled-lane-1440x900.png",
+  "result": "differs",
+  "changedPixels": 161128,
+  "maxDelta": 244,
+  "box": [
+   16,
+   14,
+   1427,
+   887
+  ]
+ },
+ {
+  "file": "VIS-011a-right-panel-collapsed-1440x900.png",
+  "result": "differs",
+  "changedPixels": 29665,
+  "maxDelta": 244,
+  "box": [
+   16,
+   14,
+   1433,
+   883
+  ]
+ },
+ {
+  "file": "VIS-011b-right-panel-reopened-task-located-1440x900.png",
+  "result": "differs",
+  "changedPixels": 188861,
+  "maxDelta": 244,
+  "box": [
+   16,
+   14,
+   1427,
+   899
+  ]
+ },
+ {
+  "file": "VIS-012-task-summary-keyboard-focus-closeup-2x.png",
+  "result": "differs",
+  "changedPixels": 27491,
+  "maxDelta": 156,
+  "box": [
+   98,
+   0,
+   611,
+   199
+  ]
+ },
+ {
+  "file": "VIS-013-narrow-window-drawer-task-located-900x800.png",
+  "result": "differs",
+  "changedPixels": 194737,
+  "maxDelta": 240,
+  "box": [
+   16,
+   0,
+   895,
+   799
+  ]
+ },
+ {
+  "file": "VIS-014-collaborators-without-summary-task-workers-with-closeup-2x.png",
+  "result": "differs",
+  "changedPixels": 35407,
+  "maxDelta": 244,
+  "box": [
+   40,
+   18,
+   605,
+   577
+  ]
+ }
+]

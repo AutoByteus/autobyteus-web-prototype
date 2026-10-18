@@ -1,0 +1,3 @@
+PASS TKY-013 Edit task: Save stores the new dependencies (after the 3 s notice) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-014 New task: picker, then Create (after the 3 s notice) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS TKY-021 New task: Create shows "Task created." on the board text=true probe=true px=0 max=0   srcErr=0 protoErr=0

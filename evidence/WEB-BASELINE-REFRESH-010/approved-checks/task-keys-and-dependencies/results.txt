@@ -1,0 +1,15 @@
+PASS KEY-001 (revised 2026-10-17) board cards show no key line; badges keep the key "Agent loop refactor: one turn pipeline for every runtime"
+PASS DEP-001 one open blocker "Blocked by\nautobyteus-35"
+PASS DEP-002 several blockers: first by key, +N; title lists all "Depends on: autobyteus-38 (To Do), autobyteus-39 (In Progress)"
+PASS DEP-003 only Done dependencies: no badge null
+PASS DEP-004 cancelled dependency badge null
+PASS DEP-005 a Task that depends on this one cannot be chosen (no loop) "autobyteus-36\nAgent loop refactor: one turn pipeline for every runtime\nDepends on this Task"
+PASS DEP-006 keyboard: type and Enter adds a dependency null
+PASS DEP-007 saved: detail lists it "http://127.0.0.1:4620/projects/project-desktop-app/tasks/autobyteus-33?notice=saved"
+PASS DEP-008 board badge appears after save null
+PASS DEP-009 inverse: Required by lists both dependents "Required by\nautobyteus-33\nTo Do\nWork Journal: a readable, runtime-independent record of each run\nautobyteus-36\nTo Do\nAgent loop refactor: one turn pipeline for every runtime"
+PASS DEP-010 removed: badge gone null
+PASS KEY-002 a new Task gets the next number (autobyteus-41, on its Task page) and its dependency {"chip":"autobyteus-41","newBadge":"Blocked by autobyteus-39"}
+PASS KEY-003 copy key: clipboard and "Copied" "autobyteus-36"
+PASS TREE-001 (revised 2026-10-17) tree Task summary has no key; tooltip "Show Task in Projects: <summary>" [["Token Meter accuracy: the context fill reads 97% right after compaction","Show Task in Projects: Token Meter accuracy: the context fill reads 97% right after compaction"],["Package the release-notes agent for the agent store","Show Task in Projects: Package the release-notes agent for the agent store"]]
+14/14
