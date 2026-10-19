@@ -464,7 +464,7 @@ const settingsMessages = {
   "settings.search.notice.downloaded": "Downloaded and verified. Ready to use.",
   "settings.search.removeConfirm.text": "Remove {{name}}? This frees {{size}} MB. You can download it again later.",
   "settings.search.reasons.checksum": "The model files failed verification.",
-  "settings.search.reasons.offline": "Couldn’t reach the model host. Check this node’s network connection.",
+  "settings.search.reasons.offline": "Couldn’t reach huggingface.co. Check this node’s network connection.",
   "settings.search.projects.title": "Project indexes",
   "settings.search.projects.subtitle": "Using {{model}}.",
   "settings.search.projects.help": "Projects that aren’t Ready search by exact matches only.",
@@ -498,11 +498,13 @@ const settingsMessages = {
   "settings.search.switch.when": "Indexing starts when a Project is searched, or right away with Index all Projects.",
   "settings.search.switch.kept": "Only the active model’s index is kept, so switching back later means indexing again.",
   "settings.search.switch.costDownload": "Download",
-  "settings.search.switch.costDownloadNeeded": "{{size}} MB, not downloaded yet",
+  "settings.search.switch.costDownloadNeeded": "{{size}} MB from Hugging Face, not downloaded yet",
   "settings.search.switch.costDownloadDone": "Already downloaded",
   "settings.search.switch.confirm": "Use this model",
   "settings.search.switch.cancel": "Cancel",
   "settings.search.models.footnote": "One model is active at a time. Downloaded models stay on disk until you remove them.",
+  "settings.search.facts.source": "Source",
+  "settings.search.facts.sourceName": "Hugging Face",
 } satisfies TranslationCatalog;
 
 export default settingsMessages;

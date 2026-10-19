@@ -464,7 +464,7 @@ const settingsMessages = {
   "settings.search.notice.downloaded": "已下载并校验，可以使用。",
   "settings.search.removeConfirm.text": "移除 {{name}}？这将释放 {{size}} MB，之后可以重新下载。",
   "settings.search.reasons.checksum": "模型文件校验失败。",
-  "settings.search.reasons.offline": "无法连接模型下载站点。请检查此节点的网络连接。",
+  "settings.search.reasons.offline": "无法连接 huggingface.co。请检查此节点的网络连接。",
   "settings.search.projects.title": "项目索引",
   "settings.search.projects.subtitle": "使用 {{model}}。",
   "settings.search.projects.help": "未就绪的项目仅支持精确匹配。",
@@ -498,11 +498,13 @@ const settingsMessages = {
   "settings.search.switch.when": "搜索某个项目时会开始建立索引，也可以立即使用“为所有项目建立索引”。",
   "settings.search.switch.kept": "只保留当前模型的索引，因此以后切换回来时需要重新建立索引。",
   "settings.search.switch.costDownload": "下载",
-  "settings.search.switch.costDownloadNeeded": "{{size}} MB，尚未下载",
+  "settings.search.switch.costDownloadNeeded": "尚未下载，需从 Hugging Face 下载 {{size}} MB",
   "settings.search.switch.costDownloadDone": "已下载",
   "settings.search.switch.confirm": "使用此模型",
   "settings.search.switch.cancel": "取消",
   "settings.search.models.footnote": "同一时间只启用一个模型。已下载的模型会保留在磁盘上，直到你将其移除。",
+  "settings.search.facts.source": "来源",
+  "settings.search.facts.sourceName": "Hugging Face",
 } satisfies TranslationCatalog;
 
 export default settingsMessages;
