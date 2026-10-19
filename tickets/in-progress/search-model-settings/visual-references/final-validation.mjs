@@ -37,8 +37,8 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
   ok('SRCH-002a', (await p.locator('[data-testid^="search-model-"][data-state]').count()) === 3);
   ok('SRCH-002b', (await state(p, G)) === 'active-ready' && await has(p, 'search-pill-active') && await has(p, 'search-pill-ready'));
   const f = await text(p, `${M}-facts`);
-  ok('SRCH-002c', ['100+ languages', '346 MB', '~4 s per Task', 'Up to 1.5 GB RAM', 'Apache-2.0'].every((x) => f.includes(x)), f);
-  ok('SRCH-002d', (await text(p, `${L}-facts`)).includes('Fastest') && (await text(p, `${G}-facts`)).includes('~0.5 s per Task'));
+  ok('SRCH-002c', ['100+ languages', '346 MB download', 'Indexes ~4 s per Task', 'Up to 1.5 GB RAM', 'Apache-2.0'].every((x) => f.includes(x)), f);
+  ok('SRCH-002d', (await text(p, `${L}-facts`)).includes('Fastest indexing') && (await text(p, `${G}-facts`)).includes('Indexes ~0.5 s per Task') && !(await text(p, `${G}-facts`)).includes('Up to'));
   ok('SRCH-002e', (await state(p, L)) === 'downloaded' && (await state(p, M)) === 'not_downloaded');
   ok('SRCH-002f', (await text(p, 'search-disk-total')) === 'On disk: 78 MB');
   ok('SRCH-002g', !(await has(p, `${G}-remove`)) && !(await has(p, `${G}-use`)), 'the Active model has no Remove and no Use');
@@ -88,7 +88,7 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
   ok('SRCH-006f', (await state(p, G)) === 'active-ready', 'Cancel changes nothing');
   await t(p, `${M}-use`).click(); await t(p, 'search-switch-confirm').click(); await tick(p, 2000);
   ok('SRCH-006g', (await state(p, M)) === 'active-preparing' && (await state(p, G)) === 'downloaded' && (await text(p, `${M}-preparing`)).includes('Downloading the model'));
-  ok('SRCH-006h', (await text(p, 'search-projects-subtitle')) === 'Index state for Google EmbeddingGemma 2' && (await state(p, 'search-project-desktop-app')) === 'not_indexed');
+  ok('SRCH-006h', (await text(p, 'search-projects-subtitle')) === 'Using Google EmbeddingGemma 2.' && (await state(p, 'search-project-desktop-app')) === 'not_indexed');
   ok('SRCH-006i', await p.evaluate(() => document.activeElement?.getAttribute('data-testid')) === M, 'focus lands on the new Active row');
   await tick(p, 30000);
   ok('SRCH-006j', (await state(p, M)) === 'active-ready' && await has(p, `${G}-remove`) && !(await has(p, `${M}-remove`)));
@@ -177,7 +177,7 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
 { // SRCH-014 zh-CN
   const p = await open('', 'zh-CN');
   const c = await text(p, 'settings-search-panel');
-  ok('SRCH-014a', c.includes('嵌入让语义搜索') && c.includes('嵌入模型') && c.includes('项目索引') && c.includes('为所有项目建立索引') && c.includes('就绪 · 170 个任务'));
+  ok('SRCH-014a', c.includes('嵌入模型') && c.includes('适用于此窗口所连接的节点') && c.includes('项目索引') && c.includes('为所有项目建立索引') && c.includes('就绪 · 170 个任务'));
   await t(p, `${M}-use`).click(); await tick(p, 50);
   const d = await text(p, 'search-switch-dialog');
   ok('SRCH-014b', d.includes('使用 Google EmbeddingGemma 2？') && d.includes('所有项目都需要用此模型重新建立索引。') && d.includes('346 MB，尚未下载') && d.includes('约 4 秒/任务'));

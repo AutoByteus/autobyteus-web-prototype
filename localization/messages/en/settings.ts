@@ -427,11 +427,10 @@ const settingsMessages = {
   "settings.components.settings.NfsGuideCard.outageDetail": "If storage or the network goes offline, file operations, previews and unrelated work may stall. Restore connectivity before retrying; there is no offline copy or local fallback.",
   "settings.components.settings.NfsGuideCard.limitations": "Mac Docker storage hosting and Windows are not supported. On Mac, use native storage hosting; Docker agent clients are supported. The Docker Guide’s local-only shared folder remains separate.",
   // search-model-settings (design-only): Settings -> Search
-  "settings.search.description": "Embeddings let meaning search find Tasks by what they mean, not only by the words they contain. These settings apply to the node this window is connected to.",
   "settings.search.loadError": "Couldn’t load the search status.",
   "settings.search.retry": "Retry",
   "settings.search.models.title": "Embedding model",
-  "settings.search.models.description": "The model that turns Tasks into embeddings for meaning search. One model is active at a time; downloaded models stay on disk until you remove them.",
+  "settings.search.models.description": "Turns Tasks into embeddings so meaning search can find them by what they mean. Applies to the node this window is connected to.",
   "settings.search.models.disk": "On disk: {{size}}",
   "settings.search.models.listLabel": "Embedding models",
   "settings.search.models.defaultTag": "Default",
@@ -477,8 +476,8 @@ const settingsMessages = {
   "settings.search.reasons.checksum": "The model files failed verification.",
   "settings.search.reasons.offline": "Couldn’t reach the model host. Check this node’s network connection.",
   "settings.search.projects.title": "Project indexes",
-  "settings.search.projects.subtitle": "Index state for {{model}}",
-  "settings.search.projects.help": "Projects marked Ready support meaning search. Other Projects use exact matches only until they are indexed.",
+  "settings.search.projects.subtitle": "Using {{model}}.",
+  "settings.search.projects.help": "Projects that aren’t Ready search by exact matches only.",
   "settings.search.projects.indexAll": "Index all Projects",
   "settings.search.projects.indexAllDone": "Every Project is up to date.",
   "settings.search.projects.filterLabel": "Show Projects",
@@ -516,6 +515,11 @@ const settingsMessages = {
   "settings.search.switch.costMemory": "Memory",
   "settings.search.switch.confirm": "Use this model",
   "settings.search.switch.cancel": "Cancel",
+  "settings.search.models.footnote": "One model is active at a time. Downloaded models stay on disk until you remove them.",
+  "settings.search.facts.sizeDownload": "{{mb}} MB download",
+  "settings.search.facts.speedLine.granite-small-english-r2": "Indexes ~0.5 s per Task",
+  "settings.search.facts.speedLine.leaf-ir": "Fastest indexing",
+  "settings.search.facts.speedLine.embeddinggemma-2": "Indexes ~4 s per Task",
 } satisfies TranslationCatalog;
 
 export default settingsMessages;

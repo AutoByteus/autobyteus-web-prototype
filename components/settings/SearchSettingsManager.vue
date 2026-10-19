@@ -1,6 +1,5 @@
 <template>
   <div class="flex w-full flex-col gap-5" data-testid="settings-search-panel">
-    <p class="max-w-3xl px-1 text-sm leading-6 text-gray-600" data-testid="search-intro">{{ t('settings.search.description') }}</p>
 
     <div v-if="state.loadStatus === 'loading'" class="flex flex-col gap-5" data-testid="search-loading" aria-busy="true">
       <div class="rounded-3xl border border-slate-200 bg-white px-6 py-5 shadow-sm">

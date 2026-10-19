@@ -4,6 +4,12 @@ Review URL: <http://127.0.0.1:4691/settings?section=server-settings&mode=embeddi
 
 **Revision 2 (2026-10-19, the user's direction):** the section is a sub-section of **Server Settings** named **Embedding** (not a top-level "Search"), and the wording is technical: "Embedding model". This resolves DEC-005 in favour of "under Server Settings".
 
+**Revision 3 (2026-10-19, "make the UI cleaner"):** a visual design review of the first candidate found too many boxes, pills and coloured buttons. Changes: one bordered list
+per card instead of a box per row; status as one plain line (dot and words) instead of pills; the five catalog facts as one quiet line per model instead of a labelled five-column grid
+repeated three times; progress as a thin bar and one text line (no tinted box); failures and outcomes as plain text lines; buttons grey outlines, Remove and Rebuild as text buttons, and
+**Index all Projects** the only filled blue button on the page; filter chips became plain text tabs; the loose intro paragraph moved into the card description; the "one model at a time" note
+became a footnote; Projects of an unavailable model show quiet grey "Unavailable".
+
 ## The design in one paragraph
 
 Server Settings gets a fourth sub-section, **Embedding**, between *Basics* and *Advanced* (Basics · Embedding · Advanced · Migrations). It uses the Server Settings page's own look (slate page,

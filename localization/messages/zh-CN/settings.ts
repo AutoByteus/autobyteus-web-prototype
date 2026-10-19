@@ -427,11 +427,10 @@ const settingsMessages = {
   "settings.components.settings.NfsGuideCard.outageDetail": "如果存储或网络离线，文件操作、预览以及其他无关工作都可能停滞。请恢复连接后重试；不提供离线副本或本地回退。",
   "settings.components.settings.NfsGuideCard.limitations": "不支持在 Mac Docker 中托管存储，也不支持 Windows。Mac 请使用原生存储托管；支持 Docker 智能体客户端。Docker 指南中的仅限本机共享文件夹仍是独立功能。",
   // search-model-settings (design-only): Settings -> Search
-  "settings.search.description": "嵌入让语义搜索能按含义而不仅仅是字词来查找任务。这些设置适用于此窗口所连接的节点。",
   "settings.search.loadError": "无法加载搜索状态。",
   "settings.search.retry": "重试",
   "settings.search.models.title": "嵌入模型",
-  "settings.search.models.description": "将任务转换为嵌入向量、用于语义搜索的模型。同一时间只启用一个模型；已下载的模型会保留在磁盘上，直到你将其移除。",
+  "settings.search.models.description": "将任务转换为嵌入向量，使语义搜索能按含义找到它们。适用于此窗口所连接的节点。",
   "settings.search.models.disk": "磁盘占用：{{size}}",
   "settings.search.models.listLabel": "嵌入模型",
   "settings.search.models.defaultTag": "默认",
@@ -477,8 +476,8 @@ const settingsMessages = {
   "settings.search.reasons.checksum": "模型文件校验失败。",
   "settings.search.reasons.offline": "无法连接模型下载站点。请检查此节点的网络连接。",
   "settings.search.projects.title": "项目索引",
-  "settings.search.projects.subtitle": "{{model}} 的索引状态",
-  "settings.search.projects.help": "标记为“就绪”的项目支持语义搜索；其他项目在建立索引之前仅支持精确匹配。",
+  "settings.search.projects.subtitle": "使用 {{model}}。",
+  "settings.search.projects.help": "未就绪的项目仅支持精确匹配。",
   "settings.search.projects.indexAll": "为所有项目建立索引",
   "settings.search.projects.indexAllDone": "所有项目都已是最新。",
   "settings.search.projects.filterLabel": "显示项目",
@@ -516,6 +515,11 @@ const settingsMessages = {
   "settings.search.switch.costMemory": "内存",
   "settings.search.switch.confirm": "使用此模型",
   "settings.search.switch.cancel": "取消",
+  "settings.search.models.footnote": "同一时间只启用一个模型。已下载的模型会保留在磁盘上，直到你将其移除。",
+  "settings.search.facts.sizeDownload": "{{mb}} MB 下载",
+  "settings.search.facts.speedLine.granite-small-english-r2": "索引约 0.5 秒/任务",
+  "settings.search.facts.speedLine.leaf-ir": "索引最快",
+  "settings.search.facts.speedLine.embeddinggemma-2": "索引约 4 秒/任务",
 } satisfies TranslationCatalog;
 
 export default settingsMessages;
