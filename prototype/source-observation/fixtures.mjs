@@ -459,6 +459,7 @@ export const ensureTaskKeys = (data) => {
     let seq = Math.max(data.taskKeySeq[item.projectId] ?? 0, ...tasks.map(numberOf))
     for (const task of tasks) {
       task.dependsOnTaskIds ??= []
+      task.partOfTaskId ??= null
       if (task.taskKey) continue
       seq += 1
       task.taskKey = `${taskKeyPrefix(item.name)}-${seq}`
@@ -536,7 +537,7 @@ export function projectMutationFixture(operationName, variables = {}, state) {
     case 'CreateProjectTask': {
       if (!String(input.description || '').trim()) return projectError('Task description is required.', 'TASK_DESCRIPTION_REQUIRED')
       const task = { __typename: 'ProjectTask', taskId: `task-created-${++data.seq}`, projectId: input.projectId, description: input.description.trim(), status: 'TODO', createdAt: fixedNow, updatedAt: `2026-08-22T05:${String(data.seq).padStart(2, '0')}:00.000Z`, contextFiles: contextFilesFrom(state, input.contextDraft?.storedFilenames), root: null,
-        dependsOnTaskIds: Array.isArray(input.dependsOnTaskIds) ? [...input.dependsOnTaskIds] : [] }
+        dependsOnTaskIds: Array.isArray(input.dependsOnTaskIds) ? [...input.dependsOnTaskIds] : [], partOfTaskId: input.partOfTaskId || null }
       data.tasks.push(task)
       ensureTaskKeys(data)
       return { createProjectTask: task }
@@ -549,11 +550,15 @@ export function projectMutationFixture(operationName, variables = {}, state) {
       task.updatedAt = `2026-08-22T05:${String(++data.seq).padStart(2, '0')}:00.000Z`
       task.contextFiles = [...task.contextFiles.filter(file => !(changes.removeStoredFilenames || []).includes(file.storedFilename)), ...contextFilesFrom(state, changes.addStoredFilenames)]
       if (Array.isArray(input.dependsOnTaskIds)) task.dependsOnTaskIds = input.dependsOnTaskIds.filter(id => id !== task.taskId)
+      // task-part-of: a supplied parent replaces it, null clears it, omitted keeps it (the server's one-level rules are not modelled).
+      if (input.partOfTaskId !== undefined) task.partOfTaskId = input.partOfTaskId && input.partOfTaskId !== task.taskId ? input.partOfTaskId : null
       return { updateProjectTask: task }
     }
     case 'DeleteProjectTask': {
       data.tasks = data.tasks.filter(item => !(item.projectId === input.projectId && item.taskId === input.taskId))
       for (const item of data.tasks) item.dependsOnTaskIds = (item.dependsOnTaskIds || []).filter(id => id !== input.taskId)
+      // task-part-of: the parts of a deleted parent stay, without a parent (their last-change time is not bumped).
+      for (const item of data.tasks) if (item.partOfTaskId === input.taskId) item.partOfTaskId = null
       return { deleteProjectTask: true }
     }
     default:

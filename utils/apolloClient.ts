@@ -17,6 +17,7 @@ import { withAgentReconnect } from '~/prototype/agent-reconnect/agentReconnectFi
 import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
+import { seedTaskParts } from '~/prototype/task-part-of/taskPartOfFixture'
 import { designSkillSourceData, designRegistryError, designSkillSourceMutation } from '~/prototype/skill-sources/skillSourcesDesignFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
@@ -52,7 +53,7 @@ const fixtureState = (): Record<string, any> => {
   // delegated-copy-task-locator (design-only): the Project Task Manager run's Tasks.
   if (designOnlyLayersEnabled()) seedDelegatedCopyTasks(localFixtureState, scenario)
   // task-keys-and-dependencies (design-only): Task keys and "depends on" for the example Projects.
-  if (designOnlyLayersEnabled()) seedTaskKeys(localFixtureState, scenario)
+  if (designOnlyLayersEnabled()) { seedTaskKeys(localFixtureState, scenario); seedTaskParts(localFixtureState, scenario) }
   return localFixtureState
 }
 
