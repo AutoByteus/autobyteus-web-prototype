@@ -42,7 +42,7 @@
 
             <!-- the catalog facts: one quiet line (labels live in the aria text) -->
             <p class="mt-1.5 flex flex-wrap gap-x-3 text-sm text-gray-500 sm:gap-x-0" :data-testid="`search-model-${model.id}-facts`">
-              <span v-for="(fact, i) in facts(model)" :key="fact.id" class="whitespace-nowrap"><span v-if="i > 0" class="mx-1.5 hidden text-gray-300 sm:inline" aria-hidden="true">·</span><span class="sr-only">{{ fact.label }}: </span><a v-if="fact.href" :href="fact.href" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-300 underline-offset-2 hover:text-gray-800 hover:decoration-gray-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" :title="model.repo" :data-testid="`search-model-${model.id}-source`">{{ fact.value }}</a><template v-else>{{ fact.value }}</template></span>
+              <span v-for="(fact, i) in facts(model)" :key="fact.id" class="whitespace-nowrap"><span v-if="i > 0" class="mx-1.5 hidden text-gray-300 sm:inline" aria-hidden="true">·</span><span class="sr-only">{{ fact.label }}: </span>{{ fact.value }}</span>
             </p>
 
             <!-- progress: a bar and one line, no box -->
@@ -103,7 +103,7 @@
         </div>
       </li>
     </ul>
-    <p class="mt-3 text-xs text-gray-500">{{ t('settings.search.models.footnote') }}</p>
+    <p class="mt-3 text-xs text-gray-500" data-testid="search-models-footnote">{{ t('settings.search.models.footnote') }} {{ t('settings.search.models.sourceBefore') }}<a href="https://huggingface.co" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-300 underline-offset-2 hover:text-gray-800 hover:decoration-gray-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" data-testid="search-source-link">Hugging Face</a>{{ t('settings.search.models.sourceAfter') }}</p>
   </section>
 </template>
 
@@ -125,9 +125,8 @@ const mb = (value: number) => t('settings.search.facts.size', { mb: value })
 const percent = (model: CatalogModel) => Math.round((runtime(model).downloadedMb / model.sizeMb) * 100)
 // Two facts at most: the language label (optional, from the catalog) and the download size (always known).
 const facts = (model: CatalogModel) => [
-  { id: 'languages', label: t('settings.search.facts.languages'), value: t(`settings.search.facts.languagesValue.${model.id}`), href: undefined as string | undefined },
-  { id: 'size', label: t('settings.search.facts.download'), value: t('settings.search.facts.size', { mb: model.sizeMb }), href: undefined as string | undefined },
-  { id: 'source', label: t('settings.search.facts.source'), value: t('settings.search.facts.sourceName'), href: `https://huggingface.co/${model.repo}` },
+  { id: 'languages', label: t('settings.search.facts.languages'), value: t(`settings.search.facts.languagesValue.${model.id}`) },
+  { id: 'size', label: t('settings.search.facts.download'), value: t('settings.search.facts.size', { mb: model.sizeMb }) },
 ]
 const rowState = (model: CatalogModel) => (isActive(model) ? `active-${state.readiness.kind}` : runtime(model).file)
 

@@ -498,13 +498,13 @@ const settingsMessages = {
   "settings.search.switch.when": "搜索某个项目时会开始建立索引，也可以立即使用“为所有项目建立索引”。",
   "settings.search.switch.kept": "只保留当前模型的索引，因此以后切换回来时需要重新建立索引。",
   "settings.search.switch.costDownload": "下载",
-  "settings.search.switch.costDownloadNeeded": "尚未下载，需从 Hugging Face 下载 {{size}} MB",
+  "settings.search.switch.costDownloadNeeded": "{{size}} MB，尚未下载",
   "settings.search.switch.costDownloadDone": "已下载",
   "settings.search.switch.confirm": "使用此模型",
   "settings.search.switch.cancel": "取消",
   "settings.search.models.footnote": "同一时间只启用一个模型。已下载的模型会保留在磁盘上，直到你将其移除。",
-  "settings.search.facts.source": "来源",
-  "settings.search.facts.sourceName": "Hugging Face",
+  "settings.search.models.sourceBefore": "模型从 ",
+  "settings.search.models.sourceAfter": " 下载。",
 } satisfies TranslationCatalog;
 
 export default settingsMessages;

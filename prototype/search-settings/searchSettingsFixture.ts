@@ -13,14 +13,13 @@ export interface CatalogModel {
   id: ModelId
   name: string
   sizeMb: number // the one fact every model has: the sum of its files
-  repo: string // the pinned Hugging Face repository the server downloads from (catalog `source.repo`)
 }
 
 // Name and size only (size = total file bytes). The language label is the one optional catalog fact the UI shows.
 export const CATALOG: CatalogModel[] = [
-  { id: 'granite-small-english-r2', name: 'IBM Granite Embedding Small English R2', sizeMb: 55, repo: 'onnx-community/granite-embedding-small-english-r2-ONNX' },
-  { id: 'leaf-ir', name: 'MongoDB LEAF-IR', sizeMb: 23, repo: 'MongoDB/mdbr-leaf-ir' },
-  { id: 'embeddinggemma-2', name: 'Google EmbeddingGemma 2', sizeMb: 346, repo: 'onnx-community/embeddinggemma-2-ONNX' },
+  { id: 'granite-small-english-r2', name: 'IBM Granite Embedding Small English R2', sizeMb: 55 },
+  { id: 'leaf-ir', name: 'MongoDB LEAF-IR', sizeMb: 23 },
+  { id: 'embeddinggemma-2', name: 'Google EmbeddingGemma 2', sizeMb: 346 },
 ]
 
 export interface ModelRuntime {

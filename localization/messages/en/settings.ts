@@ -498,13 +498,13 @@ const settingsMessages = {
   "settings.search.switch.when": "Indexing starts when a Project is searched, or right away with Index all Projects.",
   "settings.search.switch.kept": "Only the active model’s index is kept, so switching back later means indexing again.",
   "settings.search.switch.costDownload": "Download",
-  "settings.search.switch.costDownloadNeeded": "{{size}} MB from Hugging Face, not downloaded yet",
+  "settings.search.switch.costDownloadNeeded": "{{size}} MB, not downloaded yet",
   "settings.search.switch.costDownloadDone": "Already downloaded",
   "settings.search.switch.confirm": "Use this model",
   "settings.search.switch.cancel": "Cancel",
   "settings.search.models.footnote": "One model is active at a time. Downloaded models stay on disk until you remove them.",
-  "settings.search.facts.source": "Source",
-  "settings.search.facts.sourceName": "Hugging Face",
+  "settings.search.models.sourceBefore": "Models are downloaded from ",
+  "settings.search.models.sourceAfter": ".",
 } satisfies TranslationCatalog;
 
 export default settingsMessages;

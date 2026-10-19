@@ -17,10 +17,9 @@ it is optional in the UI, so a model without a label simply shows its size. The 
 **Requirement impact for the Solution Designer:** this narrows REQ-001 (licence, indexing speed and memory no longer shown) and the cost in REQ-004 / DEC-008 (the dialog no longer
 shows time per Task). It also removes the need for structured speed and memory values in the catalog (old F-1, F-3).
 
-**Revision 5 (2026-10-19, "where does the model come from?"):** the catalog pins every model to a Hugging Face repository (`source.repo` and a revision, checked by size and SHA-256), and the
-server downloads from `huggingface.co`. Each row now ends with a **Hugging Face** link to the model's repository (the repository id shows as the link's tooltip), the switch dialog says
-"346 MB from Hugging Face", and a failed download names `huggingface.co`. Three models, two of them from `onnx-community` conversions rather than the vendor's own repository, so the link is the
-honest provenance. This is the third and last fact per row: language · size · source.
+**Revision 5 (2026-10-19, "where does the model come from?"):** every catalog model is pinned to a Hugging Face repository and the server downloads from `huggingface.co`. Since that is the only
+source, it is said **once**, in the card's footnote ("Models are downloaded from Hugging Face", with a link to huggingface.co), not on every row. A failed download names the host
+("Couldn't reach huggingface.co…"). Rows stay at language · size.
 
 ## The design in one paragraph
 
@@ -65,7 +64,7 @@ Scenarios (seed the start state only; set `localStorage['autobyteus.prototype.sc
 
 ## Findings for the requirements / architecture (not decided here)
 
-- **F-1 What the UI needs from the catalog:** per model its id, name, total download size in bytes, the source repository (`source.repo`, used for the Hugging Face link) and (optionally) a short language label (the catalog has `languages: ["en"]` / `["multilingual"]`, so the UI maps these to "English" / "100+ languages"). The reference localises the language label by
+- **F-1 What the UI needs from the catalog:** per model its id, name, total download size in bytes, and (optionally) a short language label (the catalog has `languages: ["en"]` / `["multilingual"]`, so the UI maps these to "English" / "100+ languages"). The reference localises the language label by
   model id, so zh-CN works; if the server supplies it only in English, either keep a client table by model id or omit the label.
 - **F-2 Status shape.** Per Project: state, Tasks indexed, Tasks to index, changed count, and "waiting". Per model: file state, downloaded bytes, readiness and a failure reason.
 - **F-3 Default model:** the "Default" tag needs only the default model id, which the setting already defines.
