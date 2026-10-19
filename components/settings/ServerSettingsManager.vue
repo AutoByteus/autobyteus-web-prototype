@@ -28,6 +28,7 @@
       </div>
 
       <ServerSettingsBasicsPanel v-else-if="activeTab === 'quick'" />
+      <SearchSettingsManager v-else-if="activeTab === 'embedding'" />
       <ServerMigrationsManager v-else-if="activeTab === 'migrations'" />
 
       <div v-else class="space-y-4">
@@ -173,8 +174,9 @@ import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 import ServerMonitor from '~/components/server/ServerMonitor.vue'
 import ServerSettingsBasicsPanel from '~/components/settings/ServerSettingsBasicsPanel.vue'
 import ServerMigrationsManager from '~/components/settings/ServerMigrationsManager.vue'
+import SearchSettingsManager from '~/components/settings/SearchSettingsManager.vue'
 
-type SettingsTab = 'quick' | 'advanced' | 'migrations'
+type SettingsTab = 'quick' | 'embedding' | 'advanced' | 'migrations'
 type AdvancedPanel = 'raw-settings' | 'server-status'
 
 const saveButtonClass =

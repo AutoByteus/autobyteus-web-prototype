@@ -1,33 +1,34 @@
 # Design Review Notes — Settings → Search (`search-model-settings`)
 
-Review URL: <http://127.0.0.1:4691/settings?section=search> (Settings → **Search**). State is synthetic and in memory; reload resets it.
+Review URL: <http://127.0.0.1:4691/settings?section=server-settings&mode=embedding> (Settings → Server Settings → **Embedding**). State is synthetic and in memory; reload resets it.
+
+**Revision 2 (2026-10-19, the user's direction):** the section is a sub-section of **Server Settings** named **Embedding** (not a top-level "Search"), and the wording is technical: "Embedding model". This resolves DEC-005 in favour of "under Server Settings".
 
 ## The design in one paragraph
 
-A new top-level Settings section **Search**, placed between *Agent Packages* and *Server Settings*, with the same header as *Extensions* (eyebrow, title "Meaning search", one
-sentence that says it applies to the node the window is connected to) and two cards in the product's existing card style: **Search model** and **Project indexes**.
+Server Settings gets a fourth sub-section, **Embedding**, between *Basics* and *Advanced* (Basics · Embedding · Advanced · Migrations). It uses the Server Settings page's own look (slate page,
+large white rounded cards with a 2xl title) and has a one-line intro (what embeddings are for, and that the settings apply to the node the window is connected to) and two cards:
+**Embedding model** and **Project indexes**. Route: `/settings?section=server-settings&mode=embedding`.
 
 ## Answers to the four open questions
 
-1. **Placement (DEC-005): top-level "Search", before Server Settings.** Users look for "search"; it is node-level, so Extensions (Electron-only today) is wrong, and Server
-   Settings has Basics / Advanced / Migrations sub-sections that this would crowd. Putting it before Server Settings keeps Server Settings' sub-items next to Extensions and Updates.
-   Route: `/settings?section=search`. Nothing is Electron-specific, so it renders the same in a browser (Docker / self-hosted node) and the desktop window.
-2. **Structure: two cards, as sketched.** Each model is a row with name, state pill and (for Active) readiness; the five catalog facts (Languages, Download, Indexing speed, Memory,
-   Licence) are always shown as a small labelled grid, so the three models can be compared at a glance down the column. Memory shows "—" when the catalog has none. The Active
-   row has a blue tint and an *Active* pill; no radio buttons (they would not be controls). Each downloaded model shows "N MB on disk", and the card header totals it (QR-003).
-3. **Many Projects:** the Project list shows one row per Project with fixed columns (name · state · actions) and keeps a stable, alphabetical order, so rows do not jump during live
-   updates. A row of count chips (**All · Needs indexing · Indexing · Ready**) summarises and filters; a name filter appears once there are more than 8 Projects
-   (try scenario `search_many_projects`). No paging; the list scrolls with the page.
-4. **Confirmation dialog:** a standard modal (Cancel focused, Esc cancels). It says every Project has to be indexed again, that meaning search finds exact matches only until a
-   Project is indexed, when indexing starts (first search, or Index all Projects), and that only the active model's index is kept. A "What it costs" box shows the **download**
-   ("346 MB, not downloaded yet" or "Already downloaded"), **indexing speed** (per Task), and **memory** when the catalog has it.
+1. **Placement (DEC-005): under Server Settings, as "Embedding"** (the user's decision). It sits next to Advanced, where the raw `AUTOBYTEUS_EMBEDDING_MODEL` key lives, and it is node-level
+   like the rest of Server Settings. Nothing is Electron-specific, so it renders the same in a browser (Docker / self-hosted node) and the desktop window.
+2. **Structure: two cards.** Each model is a row with name, state pill and (for Active) readiness; the five catalog facts (Languages, Download, Indexing speed, Memory, Licence) are always
+   shown as a small labelled grid, so the three models compare at a glance down the column. Memory shows "—" when the catalog has none. The Active row has a blue tint and an *Active* pill;
+   no radio buttons (they would not be controls). Each downloaded model shows "N MB on disk", and the card header totals it (QR-003).
+3. **Many Projects:** one row per Project with fixed columns (name · state · actions) in a stable, alphabetical order, so rows do not jump during live updates. Count chips
+   (**All · Needs indexing · Indexing · Ready**) summarise and filter; a name filter appears once there are more than 8 Projects (scenario `search_many_projects`). No paging.
+4. **Confirmation dialog:** a standard modal (Cancel focused, Esc cancels). It says every Project has to be indexed again, that meaning search finds exact matches only until a Project is
+   indexed, when indexing starts (first search, or Index all Projects), and that only the active model's index is kept. A "What it costs" box shows the **download** ("346 MB, not downloaded
+   yet" or "Already downloaded"), **indexing speed** (per Task), and **memory** when the catalog has it.
 
 ## States and actions covered (try them in the live reference)
 
 - Model: Not downloaded · Downloading N of M MB with Cancel · Downloaded (Use this model, Remove) · Active ready / preparing (download or loading) / unavailable with reason and Retry ·
   download failed with reason, "No partial files were kept" and Retry · cancelled and removed notices.
 - Project: Not indexed · Waiting · Indexing N of M · Ready (M Tasks) · Needs update (K changed) · Unavailable; Index now, Rebuild, Index all Projects.
-- Section: loading, load error with Retry, no Projects, en and zh-CN, narrow layout (390 px).
+- Section: loading, load error with Retry, no Projects, en and zh-CN (nav label 嵌入, card 嵌入模型), narrow layout (390 px).
 - Live: progress ticks on its own, and leaving the section and coming back shows the current state. Opening the section starts nothing.
 
 Scenarios (seed the start state only; set `localStorage['autobyteus.prototype.scenario']` and reload): `search_offline` (the first download fails, then Retry works),

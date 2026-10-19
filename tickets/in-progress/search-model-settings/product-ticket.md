@@ -4,8 +4,8 @@
 
 - Ticket / request ID: `search-model-settings` (the Solution Designer's package identifier). Supplied request identifier: Project Task `autobyteus-146`
   ("Search model settings: choose, download and index the embedding model from Settings"), follow-up FU-1 of `autobyteus-71`. There is no second ID.
-- Title: Settings → Search: choose, download and index the embedding model.
-- Mode: `Product Experience Design`. It evolves the accepted AutoByteus Web baseline in place: the Settings page gets one new top-level section.
+- Title: Settings → Server Settings → Embedding: choose, download and index the embedding model.
+- Mode: `Product Experience Design`. It evolves the accepted AutoByteus Web baseline in place: Server Settings gets one new sub-section, **Embedding** (the user's direction, 2026-10-19: under Server Settings, technical wording).
 - Status: `Awaiting User Review`
 - Requester: the Solution Designer (`solution_designer_80624588913d473bac3ef7d8c3d4d305`), for the user, 2026-10-19.
 - Related requirements: `requirements-doc.md` `SR-001` (`/Users/normy/autobyteus_org/autobyteus-worktrees/search-model-settings/tickets/in-progress/search-model-settings/`):
@@ -35,11 +35,11 @@
 
 ## Delivery And Validation
 
-- UI reference changes: `pages/settings.vue` (nav item and section), `components/settings/SearchSettingsManager.vue`, `SearchModelsCard.vue`,
-  `SearchProjectIndexesCard.vue`, `SearchModelSwitchDialog.vue`, `prototype/search-settings/searchSettingsFixture.ts`, localization en / zh-CN (`settings.search.*`,
-  `settings.page.sections.search`).
+- UI reference changes: `pages/settings.vue` (Server Settings sub-nav item and mode), `components/settings/ServerSettingsManager.vue` (renders the panel), `components/settings/SearchSettingsManager.vue`, `SearchModelsCard.vue`,
+  `SearchProjectIndexesCard.vue`, `SearchModelSwitchDialog.vue`, `prototype/search-settings/searchSettingsFixture.ts`, localization en / zh-CN (`settings.search.*` keys,
+  `settings.page.serverSettings.embedding`). The `Search*` file names and `search-*` test ids are historical; the product name is Embedding..
 - Validation so far (port 4691): `visual-references/final-validation.mjs` 72/72 (SRCH-001–016); `corepack pnpm typecheck` 0 errors; `corepack pnpm test` 17/17; `corepack pnpm lint` clean.
-- Review URL: <http://127.0.0.1:4691/settings?section=search>
+- Review URL: <http://127.0.0.1:4691/settings?section=server-settings&mode=embedding>
 
 ## Outcome And Handoff
 

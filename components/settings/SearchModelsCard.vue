@@ -1,8 +1,8 @@
 <template>
-  <section class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm" data-testid="search-models-card" aria-labelledby="search-models-heading">
+  <section class="rounded-3xl border border-slate-200 bg-white px-6 py-5 shadow-sm" data-testid="search-models-card" aria-labelledby="search-models-heading">
     <div class="flex flex-wrap items-start justify-between gap-x-4 gap-y-1">
-      <div class="min-w-0">
-        <h3 id="search-models-heading" class="text-lg font-semibold text-gray-900">{{ t('settings.search.models.title') }}</h3>
+      <div class="min-w-0 max-w-2xl">
+        <h3 id="search-models-heading" class="text-2xl font-semibold leading-tight text-gray-900">{{ t('settings.search.models.title') }}</h3>
         <p class="mt-1 text-sm text-gray-500">{{ t('settings.search.models.description') }}</p>
       </div>
       <p class="text-sm font-medium text-gray-700" data-testid="search-disk-total">{{ t('settings.search.models.disk', { size: mb(diskMb) }) }}</p>
@@ -13,7 +13,7 @@
         v-for="model in CATALOG"
         :key="model.id"
         tabindex="-1"
-        class="rounded-lg border p-4 focus:outline-none"
+        class="rounded-xl border p-4 focus:outline-none"
         :class="isActive(model) ? 'border-blue-200 bg-blue-50/50' : 'border-gray-200 bg-white'"
         :data-testid="`search-model-${model.id}`"
         :data-state="rowState(model)"

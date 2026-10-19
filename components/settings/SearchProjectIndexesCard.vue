@@ -1,8 +1,8 @@
 <template>
-  <section class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm" data-testid="search-projects-card" aria-labelledby="search-projects-heading">
+  <section class="rounded-3xl border border-slate-200 bg-white px-6 py-5 shadow-sm" data-testid="search-projects-card" aria-labelledby="search-projects-heading">
     <div class="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
       <div class="min-w-0">
-        <h3 id="search-projects-heading" class="text-lg font-semibold text-gray-900">{{ t('settings.search.projects.title') }}</h3>
+        <h3 id="search-projects-heading" class="text-2xl font-semibold leading-tight text-gray-900">{{ t('settings.search.projects.title') }}</h3>
         <p class="mt-1 text-sm text-gray-500" data-testid="search-projects-subtitle">{{ t('settings.search.projects.subtitle', { model: activeModel.name }) }}</p>
       </div>
       <button
@@ -39,7 +39,7 @@
         </label>
       </div>
 
-      <ul class="mt-3 divide-y divide-gray-100 rounded-lg border border-gray-200" :aria-label="t('settings.search.projects.listLabel')" data-testid="search-project-list">
+      <ul class="mt-3 divide-y divide-gray-100 rounded-xl border border-gray-200" :aria-label="t('settings.search.projects.listLabel')" data-testid="search-project-list">
         <li v-for="p in visible" :key="p.id" class="px-4 py-3" :data-testid="`search-project-${p.id}`" :data-state="displayState(p)">
           <div class="flex flex-col gap-2 sm:min-h-[2.5rem] sm:flex-row sm:items-center sm:gap-4">
             <div class="min-w-0 sm:w-[30%]">

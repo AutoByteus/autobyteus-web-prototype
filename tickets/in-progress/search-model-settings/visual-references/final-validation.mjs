@@ -1,9 +1,9 @@
-// search-model-settings: browser validation of Settings -> Search (SRCH-001 .. SRCH-020).
+// search-model-settings: browser validation of Settings -> Server Settings -> Embedding (SRCH-001 .. SRCH-020).
 // BASE=http://127.0.0.1:4691 node final-validation.mjs
 // Time is driven by Playwright's clock, so every run is deterministic; state is in memory and resets on reload.
 import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design/node_modules/playwright-core/index.mjs';
 const BASE = process.env.BASE || 'http://127.0.0.1:4691';
-const URL = `${BASE}/settings?section=search`;
+const URL = `${BASE}/settings?section=server-settings&mode=embedding`;
 const browser = await chromium.launch(process.env.CHROME ? { executablePath: process.env.CHROME } : {});
 let pass = 0, fail = 0;
 const ok = (id, cond, note = '') => { if (cond) pass++; else fail++; console.log(`${cond ? 'PASS' : 'FAIL'} ${id} ${note}`); };
@@ -21,15 +21,15 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
 
 { // SRCH-001 placement and entry
   const p = await open();
-  const labels = await p.locator('[data-testid="settings-page-navigation"] > div > nav > ul > li > button span.text-left').allInnerTexts();
-  const i = labels.findIndex((x) => x.trim() === 'Search');
-  ok('SRCH-001a', i > 0 && labels[i - 1].trim() === 'Agent Packages' && labels[i + 1].trim() === 'Server Settings', `nav order: ${labels.map((x) => x.trim()).join(' | ')}`);
-  ok('SRCH-001b', (await text(p, 'settings-page-content')).includes('Meaning search') && await has(p, 'search-models-card') && await has(p, 'search-projects-card'));
-  await p.click('[data-testid="settings-nav-language"]').catch(() => p.getByText('Language', { exact: true }).first().click()); await tick(p, 100);
-  ok('SRCH-001c', !(await has(p, 'settings-search-panel')));
-  await p.click('[data-testid="settings-nav-search"]'); await tick(p, 100);
-  ok('SRCH-001d', await has(p, 'settings-search-panel'), 'Search nav opens the section');
-  ok('SRCH-001e', p.errors.length === 0, p.errors.join(';'));
+  const top = (await p.locator('[data-testid="settings-page-navigation"] > div > nav > ul > li > button span.text-left').allInnerTexts()).map((x) => x.trim());
+  ok('SRCH-001a', !top.includes('Search') && top.join('|') === 'API Keys|Token Statistics|Display|Language|Local Tools|MCP Servers|Application Packages|Agent Packages|Server Settings|Extensions|Updates', `top-level nav unchanged: ${top.join(' | ')}`);
+  const sub = (await p.locator('[data-testid^="settings-nav-server-settings-"]').allInnerTexts()).map((x) => x.trim());
+  ok('SRCH-001b', sub.join('|') === 'Basics|Embedding|Advanced|Migrations', `Server Settings sub-sections: ${sub.join(' | ')}`);
+  ok('SRCH-001c', (await t(p, 'settings-nav-server-settings-embedding').getAttribute('class')).includes('bg-gray-100') && await has(p, 'search-models-card') && await has(p, 'search-projects-card') && (await text(p, 'settings-search-panel')).includes('Embedding model'));
+  await t(p, 'settings-nav-server-settings-advanced').click(); await tick(p, 800);
+  ok('SRCH-001d', !(await has(p, 'settings-search-panel')));
+  await t(p, 'settings-nav-server-settings-embedding').click(); await tick(p, 800);
+  ok('SRCH-001e', await has(p, 'settings-search-panel') && p.errors.length === 0, `Embedding sub-section opens ${p.errors.join(';')}`);
   await p.context().close();
 }
 { // SRCH-002 models and facts; SRCH-003 opening starts nothing
@@ -123,8 +123,8 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
   await t(p, 'search-project-prototype-launch-index').click(); await tick(p, 100);
   const s1 = await text(p, 'search-project-prototype-launch-status');
   ok('SRCH-009c', /Waiting|Indexing 0 of 3|Indexing \d of 3/.test(s1), s1);
-  await p.click('[data-testid="settings-nav-language"]').catch(() => p.getByText('Language', { exact: true }).first().click()); await tick(p, 20000);
-  await p.click('[data-testid="settings-nav-search"]'); await tick(p, 100);
+  await p.click('[data-testid="settings-nav-language"]'); await tick(p, 20000);
+  await p.click('[data-testid="settings-nav-server-settings"]'); await tick(p, 500); await p.click('[data-testid="settings-nav-server-settings-embedding"]'); await tick(p, 800);
   ok('SRCH-009d', (await state(p, 'search-project-prototype-launch')) === 'ready' && (await text(p, 'search-project-prototype-launch-status')) === 'Ready · 58 Tasks', 'work continued while the page was left');
   await p.context().close();
 }
@@ -165,6 +165,7 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
   await p.context().close();
   const q = await browser.newContext({ viewport: { width: 1440, height: 900 } }); const pg = await q.newPage();
   await pg.clock.install({ time: 1000 }); await pg.clock.pauseAt(2000); await pg.goto(URL); await pg.waitForTimeout(1500);
+  for (let i = 0; i < 30 && !(await has(pg, 'settings-search-panel')); i++) { await pg.clock.runFor(50); await pg.waitForTimeout(80); }
   ok('SRCH-013b', await has(pg, 'search-loading') && !(await has(pg, 'search-models-card')), 'loading skeleton before the status arrives');
   await q.close();
   const r = await open('search_load_failed');
@@ -176,7 +177,7 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
 { // SRCH-014 zh-CN
   const p = await open('', 'zh-CN');
   const c = await text(p, 'settings-search-panel');
-  ok('SRCH-014a', c.includes('语义搜索') && c.includes('搜索模型') && c.includes('项目索引') && c.includes('为所有项目建立索引') && c.includes('就绪 · 170 个任务'));
+  ok('SRCH-014a', c.includes('嵌入让语义搜索') && c.includes('嵌入模型') && c.includes('项目索引') && c.includes('为所有项目建立索引') && c.includes('就绪 · 170 个任务'));
   await t(p, `${M}-use`).click(); await tick(p, 50);
   const d = await text(p, 'search-switch-dialog');
   ok('SRCH-014b', d.includes('使用 Google EmbeddingGemma 2？') && d.includes('所有项目都需要用此模型重新建立索引。') && d.includes('346 MB，尚未下载') && d.includes('约 4 秒/任务'));
@@ -195,7 +196,8 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
 }
 { // SRCH-016 preserved Settings sections still open
   const p = await open();
-  for (const [id, needle] of [['settings-nav-extensions', 'Optional capabilities'], ['settings-nav-updates', 'Current Version'], ['settings-nav-server-settings', 'Basics']]) {
+  for (const [id, needle] of [['settings-nav-extensions', 'Optional capabilities'], ['settings-nav-updates', 'Current Version'], ['settings-nav-server-settings', 'Basics'], ['settings-nav-server-settings-advanced', 'All Settings'], ['settings-nav-server-settings-migrations', 'Migrations']]) {
+    if (id.includes('advanced') || id.includes('migrations')) await t(p, 'settings-nav-server-settings').click().catch(() => {});
     await t(p, id).click(); await tick(p, 500);
     ok(`SRCH-016-${id}`, (await text(p, 'settings-page-layout')).includes(needle));
   }
