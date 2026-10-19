@@ -17,9 +17,11 @@ it is optional in the UI, so a model without a label simply shows its size. The 
 **Requirement impact for the Solution Designer:** this narrows REQ-001 (licence, indexing speed and memory no longer shown) and the cost in REQ-004 / DEC-008 (the dialog no longer
 shows time per Task). It also removes the need for structured speed and memory values in the catalog (old F-1, F-3).
 
-**Revision 5 (2026-10-19, "where does the model come from?"):** every catalog model is pinned to a Hugging Face repository and the server downloads from `huggingface.co`. Since that is the only
-source, it is said **once**, in the card's footnote ("Models are downloaded from Hugging Face", with a link to huggingface.co), not on every row. A failed download names the host
-("Couldn't reach huggingface.co…"). Rows stay at language · size.
+**Revision 5 (2026-10-19, "less text; where does the model come from?"):** the people who open Embedding are technical, so the copy is cut to what they need. The Embedding model card has one
+line under its title: "Used for meaning search. Downloaded from Hugging Face." (every catalog model is pinned to a Hugging Face repository, so the source is said once, as a link, not per row).
+Removed: the "applies to this node" sentence, the "one model at a time / stays on disk" footnote, the Project indexes help sentence, the dialog's two extra bullets, the "No partial files",
+"Exact-match search still works" and "You can download it again" lines, and the completion/cancel/removed notices (the row's state change is the feedback). A failed download still names
+`huggingface.co`. The switch dialog is now: title, one lead sentence, one bullet (exact matches only until then), and the download size.
 
 ## The design in one paragraph
 

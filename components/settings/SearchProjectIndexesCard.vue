@@ -3,7 +3,7 @@
     <div class="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
       <div class="min-w-0 max-w-3xl">
         <h3 id="search-projects-heading" class="text-2xl font-semibold leading-tight text-gray-900">{{ t('settings.search.projects.title') }}</h3>
-        <p class="mt-1 text-sm text-gray-500"><span data-testid="search-projects-subtitle">{{ t('settings.search.projects.subtitle', { model: activeModel.name }) }}</span> {{ t('settings.search.projects.help') }}</p>
+        <p class="mt-1 text-sm text-gray-500"><span data-testid="search-projects-subtitle">{{ t('settings.search.projects.subtitle', { model: activeModel.name }) }}</span></p>
       </div>
       <button
         type="button"
@@ -91,7 +91,6 @@
         </li>
         <li v-if="visible.length === 0" class="px-4 py-6 text-center text-sm text-gray-500" data-testid="search-projects-no-match">{{ t('settings.search.projects.noMatch') }}</li>
       </ul>
-      <p v-if="unavailable" class="mt-3 text-sm text-gray-500" data-testid="search-projects-unavailable-note">{{ t('settings.search.projects.unavailableNote') }}</p>
     </template>
   </section>
 </template>

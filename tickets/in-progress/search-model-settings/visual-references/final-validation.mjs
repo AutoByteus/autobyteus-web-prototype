@@ -39,7 +39,7 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
   const f = await text(p, `${M}-facts`);
   ok('SRCH-002c', f.includes('100+ languages') && f.includes('346 MB') && !/Apache|per Task|RAM|Fastest|Memory/.test(f), f);
   ok('SRCH-002d', (await text(p, `${L}-facts`)).includes('English') && (await text(p, `${L}-facts`)).includes('23 MB') && (await text(p, `${G}-facts`)).includes('55 MB') && !/Apache|per Task|RAM|Fastest|Memory/.test(await text(p, 'search-models-card')), 'only language and size are shown');
-  ok('SRCH-002i', (await t(p, 'search-source-link').getAttribute('href')) === 'https://huggingface.co' && (await text(p, 'search-models-footnote')).includes('Models are downloaded from Hugging Face.') && !(await text(p, `${M}-facts`)).includes('Hugging') && !(await text(p, `${G}-facts`)).includes('Hugging'), 'the source is said once, in the card footnote, not on every row');
+  ok('SRCH-002i', (await t(p, 'search-source-link').getAttribute('href')) === 'https://huggingface.co' && (await text(p, 'search-models-footnote')) === 'Used for meaning search. Downloaded from Hugging Face.' && !(await text(p, `${M}-facts`)).includes('Hugging') && !(await text(p, `${G}-facts`)).includes('Hugging'), 'the source is said once, in the card footnote, not on every row');
   ok('SRCH-002e', (await state(p, L)) === 'downloaded' && (await state(p, M)) === 'not_downloaded');
   ok('SRCH-002f', (await text(p, 'search-disk-total')) === 'On disk: 78 MB');
   ok('SRCH-002g', !(await has(p, `${G}-remove`)) && !(await has(p, `${G}-use`)), 'the Active model has no Remove and no Use');
@@ -61,16 +61,16 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
   ok('SRCH-004b', prog1 !== prog2 && /of 346 MB/.test(prog2) && /%/.test(prog2), `${prog1} -> ${prog2}`);
   ok('SRCH-004c', (await t(p, `${M}-progress`).locator('[role="progressbar"]').getAttribute('aria-valuemax')) === '346');
   await t(p, `${M}-cancel`).click(); await tick(p, 100);
-  ok('SRCH-004d', (await state(p, M)) === 'not_downloaded' && (await text(p, `${M}-notice`)) === 'Download cancelled. No files were kept.' && (await text(p, 'search-disk-total')) === 'On disk: 78 MB');
+  ok('SRCH-004d', (await state(p, M)) === 'not_downloaded' && (await text(p, 'search-disk-total')) === 'On disk: 78 MB');
   await t(p, `${M}-download`).click(); await tick(p, 25000);
-  ok('SRCH-005a', (await state(p, M)) === 'downloaded' && (await text(p, `${M}-notice`)).includes('Downloaded and verified') && (await text(p, 'search-pill-downloaded')) !== undefined);
+  ok('SRCH-005a', (await state(p, M)) === 'downloaded');
   ok('SRCH-005b', (await text(p, 'search-disk-total')) === 'On disk: 424 MB' && (await has(p, `${M}-remove`)));
   await t(p, `${M}-remove`).click(); await tick(p, 50);
   ok('SRCH-005c', await has(p, `${M}-remove-confirmation`) && (await text(p, `${M}-remove-confirmation`)).includes('This frees 346 MB'));
   await t(p, `${M}-remove-cancel`).click(); await tick(p, 50);
   ok('SRCH-005d', (await state(p, M)) === 'downloaded' && !(await has(p, `${M}-remove-confirmation`)));
   await t(p, `${M}-remove`).click(); await t(p, `${M}-remove-confirm`).click(); await tick(p, 50);
-  ok('SRCH-005e', (await state(p, M)) === 'not_downloaded' && (await text(p, `${M}-notice`)) === 'Removed. 346 MB freed.' && (await text(p, 'search-disk-total')) === 'On disk: 78 MB');
+  ok('SRCH-005e', (await state(p, M)) === 'not_downloaded' && (await text(p, 'search-disk-total')) === 'On disk: 78 MB');
   ok('SRCH-005f', p.errors.length === 0, p.errors.join(';'));
   await p.context().close();
 }
@@ -78,7 +78,7 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
   const p = await open();
   await t(p, `${M}-use`).click(); await tick(p, 100);
   const d = await text(p, 'search-switch-dialog');
-  ok('SRCH-006a', d.includes('Use Google EmbeddingGemma 2?') && d.includes('Every Project has to be indexed again with this model.') && d.includes('meaning search finds exact matches only') && d.includes('Index all Projects') && d.includes('switching back later means indexing again'), d);
+  ok('SRCH-006a', d.includes('Use Google EmbeddingGemma 2?') && d.includes('Every Project has to be indexed again with this model.') && d.includes('meaning search finds exact matches only'), d);
   ok('SRCH-006b', (await text(p, 'search-switch-cost-download')) === '346 MB, not downloaded yet' && !(await has(p, 'search-switch-cost-indexing')) && !(await has(p, 'search-switch-cost-memory')), 'the dialog states the download size only');
   ok('SRCH-006c', await p.evaluate(() => document.activeElement?.getAttribute('data-testid')) === 'search-switch-cancel', 'focus starts on Cancel');
   await p.keyboard.press('Tab'); await p.keyboard.press('Tab');
@@ -132,7 +132,7 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
 { // SRCH-010 offline failure and retry
   const p = await open('search_offline');
   await t(p, `${M}-download`).click(); await tick(p, 8000);
-  ok('SRCH-010a', await has(p, `${M}-failed`) && (await text(p, `${M}-failed`)).includes('Download failed: Couldn’t reach huggingface.co') && (await text(p, `${M}-failed`)).includes('No partial files were kept.') && (await state(p, M)) === 'not_downloaded');
+  ok('SRCH-010a', await has(p, `${M}-failed`) && (await text(p, `${M}-failed`)).includes('Download failed: Couldn’t reach huggingface.co') && (await state(p, M)) === 'not_downloaded');
   ok('SRCH-010b', await has(p, `${M}-retry`) && !(await has(p, `${M}-download`)) && await has(p, `${M}-use`));
   await t(p, `${M}-retry`).click(); await tick(p, 25000);
   ok('SRCH-010c', (await state(p, M)) === 'downloaded' && !(await has(p, `${M}-failed`)));
@@ -140,8 +140,8 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
 }
 { // SRCH-011 active model unavailable, Retry at model level
   const p = await open('search_unavailable');
-  ok('SRCH-011a', (await state(p, G)) === 'active-unavailable' && (await text(p, `${G}-unavailable`)).includes('Unavailable: The model files failed verification.') && (await text(p, `${G}-unavailable`)).includes('Exact-match search still works.'));
-  ok('SRCH-011b', (await state(p, 'search-project-desktop-app')) === 'unavailable' && !(await has(p, 'search-project-desktop-app-rebuild')) && !(await has(p, 'search-project-marketing-site-index')) && !(await t(p, 'search-index-all').isEnabled()) && (await text(p, 'search-projects-unavailable-note')).includes('Retry the model above'));
+  ok('SRCH-011a', (await state(p, G)) === 'active-unavailable' && (await text(p, `${G}-unavailable`)).includes('Unavailable: The model files failed verification.'));
+  ok('SRCH-011b', (await state(p, 'search-project-desktop-app')) === 'unavailable' && !(await has(p, 'search-project-desktop-app-rebuild')) && !(await has(p, 'search-project-marketing-site-index')) && !(await t(p, 'search-index-all').isEnabled()));
   await t(p, `${G}-retry`).click(); await tick(p, 1000);
   ok('SRCH-011c', (await state(p, G)) === 'active-preparing');
   await tick(p, 4000);
@@ -178,7 +178,7 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
 { // SRCH-014 zh-CN
   const p = await open('', 'zh-CN');
   const c = await text(p, 'settings-search-panel');
-  ok('SRCH-014a', c.includes('嵌入模型') && c.includes('适用于此窗口所连接的节点') && c.includes('项目索引') && c.includes('为所有项目建立索引') && c.includes('就绪 · 170 个任务'));
+  ok('SRCH-014a', c.includes('嵌入模型') && c.includes('项目索引') && c.includes('为所有项目建立索引') && c.includes('就绪 · 170 个任务'));
   await t(p, `${M}-use`).click(); await tick(p, 50);
   const d = await text(p, 'search-switch-dialog');
   ok('SRCH-014b', d.includes('使用 Google EmbeddingGemma 2？') && d.includes('所有项目都需要用此模型重新建立索引。') && d.includes('346 MB，尚未下载'));

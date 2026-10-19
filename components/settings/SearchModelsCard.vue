@@ -3,7 +3,7 @@
     <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
       <div class="min-w-0 max-w-3xl">
         <h3 id="search-models-heading" class="text-2xl font-semibold leading-tight text-gray-900">{{ t('settings.search.models.title') }}</h3>
-        <p class="mt-1 text-sm text-gray-500">{{ t('settings.search.models.description') }}</p>
+        <p class="mt-1 text-sm text-gray-500" data-testid="search-models-footnote">{{ t('settings.search.models.description') }} {{ t('settings.search.models.sourceBefore') }}<a href="https://huggingface.co" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-300 underline-offset-2 hover:text-gray-800 hover:decoration-gray-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" data-testid="search-source-link">Hugging Face</a>{{ t('settings.search.models.sourceAfter') }}</p>
       </div>
       <p class="flex-shrink-0 text-sm text-gray-500 sm:pt-1.5" data-testid="search-disk-total">{{ t('settings.search.models.disk', { size: mb(diskMb) }) }}</p>
     </div>
@@ -68,13 +68,10 @@
             <!-- problems and outcomes: plain text lines -->
             <div v-if="isActive(model) && state.readiness.kind === 'unavailable'" class="mt-3 text-sm" role="alert" :data-testid="`search-model-${model.id}-unavailable`">
               <p class="text-red-700">{{ t('settings.search.unavailable.reason', { reason: t(state.readiness.reasonKey) }) }}</p>
-              <p class="mt-0.5 text-gray-500">{{ t('settings.search.unavailable.exactStillWorks') }}</p>
             </div>
             <div v-if="runtime(model).failureKey && !isActive(model)" class="mt-3 text-sm" role="alert" :data-testid="`search-model-${model.id}-failed`">
               <p class="text-red-700">{{ t('settings.search.failed.reason', { reason: t(runtime(model).failureKey!) }) }}</p>
-              <p class="mt-0.5 text-gray-500">{{ t('settings.search.failed.noPartial') }}</p>
             </div>
-            <p v-if="runtime(model).noticeKey && !isActive(model) && runtime(model).file !== 'downloading'" class="mt-3 text-sm text-gray-500" role="status" :data-testid="`search-model-${model.id}-notice`">{{ t(runtime(model).noticeKey!, runtime(model).noticeParams) }}</p>
           </div>
 
           <div class="flex flex-shrink-0 flex-wrap items-center gap-2" :data-testid="`search-model-${model.id}-actions`">
@@ -103,7 +100,6 @@
         </div>
       </li>
     </ul>
-    <p class="mt-3 text-xs text-gray-500" data-testid="search-models-footnote">{{ t('settings.search.models.footnote') }} {{ t('settings.search.models.sourceBefore') }}<a href="https://huggingface.co" target="_blank" rel="noopener noreferrer" class="underline decoration-gray-300 underline-offset-2 hover:text-gray-800 hover:decoration-gray-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" data-testid="search-source-link">Hugging Face</a>{{ t('settings.search.models.sourceAfter') }}</p>
   </section>
 </template>
 

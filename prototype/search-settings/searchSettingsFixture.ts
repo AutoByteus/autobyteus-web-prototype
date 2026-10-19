@@ -26,8 +26,6 @@ export interface ModelRuntime {
   file: ModelFileState
   downloadedMb: number
   failureKey: string | null // last download failure (reason), cleared by the next action
-  noticeKey: string | null // short outcome of the last action on this row
-  noticeParams?: Record<string, string | number>
   confirmingRemove: boolean
 }
 
@@ -64,7 +62,7 @@ const state = reactive({
 })
 
 const freshModel = (file: ModelFileState): ModelRuntime => ({
-  file, downloadedMb: 0, failureKey: null, noticeKey: null, confirmingRemove: false,
+  file, downloadedMb: 0, failureKey: null, confirmingRemove: false,
 })
 
 const project = (id: string, name: string, s: ProjectIndexState, tasks: number, extra: Partial<ProjectRuntime> = {}): ProjectRuntime => ({
@@ -142,8 +140,6 @@ const tick = () => {
     runtime.downloadedMb = next
     if (next >= model.sizeMb) {
       runtime.file = 'downloaded'
-      runtime.noticeKey = state.activeId === model.id ? null : 'settings.search.notice.downloaded'
-      runtime.noticeParams = { size: model.sizeMb }
       if (state.activeId === model.id) state.readiness = { kind: 'preparing', phase: 'load', loadTicks: 0 }
     }
   }
@@ -196,7 +192,6 @@ export const retryLoad = () => {
 
 const clearNotices = (runtime: ModelRuntime) => {
   runtime.failureKey = null
-  runtime.noticeKey = null
   runtime.confirmingRemove = false
 }
 
@@ -212,7 +207,6 @@ export const cancelDownload = (id: ModelId) => {
   const runtime = state.models[id]
   runtime.file = 'not_downloaded'
   runtime.downloadedMb = 0
-  runtime.noticeKey = 'settings.search.notice.cancelled'
 }
 
 export const askRemove = (id: ModelId, on: boolean) => { state.models[id].confirmingRemove = on }
@@ -221,8 +215,6 @@ export const removeModel = (id: ModelId) => {
   const runtime = state.models[id]
   runtime.file = 'not_downloaded'
   runtime.confirmingRemove = false
-  runtime.noticeKey = 'settings.search.notice.removed'
-  runtime.noticeParams = { size: catalogModel(id).sizeMb }
 }
 
 export const useModel = (id: ModelId) => {
@@ -242,7 +234,6 @@ export const useModel = (id: ModelId) => {
     state.models[id].downloadedMb = 0
     state.readiness = { kind: 'preparing', phase: 'download', loadTicks: 0 }
   }
-  state.models[previous].noticeKey = null
   ensureTimer()
 }
 

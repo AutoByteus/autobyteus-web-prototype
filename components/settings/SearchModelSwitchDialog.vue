@@ -18,8 +18,6 @@
           <p class="font-medium text-gray-900">{{ t('settings.search.switch.lead') }}</p>
           <ul class="list-disc space-y-1.5 pl-5">
             <li>{{ t('settings.search.switch.limited') }}</li>
-            <li>{{ t('settings.search.switch.when') }}</li>
-            <li>{{ t('settings.search.switch.kept') }}</li>
           </ul>
         </div>
 
