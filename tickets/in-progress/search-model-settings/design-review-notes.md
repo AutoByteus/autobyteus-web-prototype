@@ -10,6 +10,13 @@ repeated three times; progress as a thin bar and one text line (no tinted box); 
 **Index all Projects** the only filled blue button on the page; filter chips became plain text tabs; the loose intro paragraph moved into the card description; the "one model at a time" note
 became a footnote; Projects of an unavailable model show quiet grey "Unavailable".
 
+**Revision 4 (2026-10-19, "be conservative about the information"):** each model now shows only **its name, its state, its language label and its download size** (for example
+"English · 55 MB"). Licence, indexing speed and memory are gone from the rows, and the switch dialog states the **download size only**. Size is the only fact that is certain (the sum of the
+model's file sizes). The language label is the one catalog fact kept, because it is the one that changes which model a user should pick (an English-only model for Chinese Tasks);
+it is optional in the UI, so a model without a label simply shows its size. The per-model "on disk" text is gone (size already says it); the card still totals "On disk: N MB".
+**Requirement impact for the Solution Designer:** this narrows REQ-001 (licence, indexing speed and memory no longer shown) and the cost in REQ-004 / DEC-008 (the dialog no longer
+shows time per Task). It also removes the need for structured speed and memory values in the catalog (old F-1, F-3).
+
 ## The design in one paragraph
 
 Server Settings gets a fourth sub-section, **Embedding**, between *Basics* and *Advanced* (Basics · Embedding · Advanced · Migrations). It uses the Server Settings page's own look (slate page,
@@ -53,8 +60,7 @@ Scenarios (seed the start state only; set `localStorage['autobyteus.prototype.sc
 
 ## Findings for the requirements / architecture (not decided here)
 
-- **F-1 Catalog values in zh-CN.** The reference localises the catalog facts (languages, speed, memory) by model id. If the server sends them only as an English description, the web
-  client needs structured facts (size in MB, seconds per Task) or a client-side table by model id. "Fastest" for LEAF-IR is a catalog word, not a number.
-- **F-2 Status shape.** The UI needs per Project: state, Tasks indexed, Tasks to index, changed count, and "waiting"; per model: file state, downloaded bytes, readiness and a failure reason.
-- **F-3 Estimated total time** (Tasks × time per Task) in the dialog would be more persuasive for EmbeddingGemma 2, but needs numeric speeds and Task counts for Projects that are not
-  indexed. Not designed in; the requirement asks only for download size and time per Task.
+- **F-1 What the UI needs from the catalog:** per model its id, name, total download size in bytes, and (optionally) a short language label. The reference localises the language label by
+  model id, so zh-CN works; if the server supplies it only in English, either keep a client table by model id or omit the label.
+- **F-2 Status shape.** Per Project: state, Tasks indexed, Tasks to index, changed count, and "waiting". Per model: file state, downloaded bytes, readiness and a failure reason.
+- **F-3 Default model:** the "Default" tag needs only the default model id, which the setting already defines.

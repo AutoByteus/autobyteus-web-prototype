@@ -37,8 +37,8 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
   ok('SRCH-002a', (await p.locator('[data-testid^="search-model-"][data-state]').count()) === 3);
   ok('SRCH-002b', (await state(p, G)) === 'active-ready' && await has(p, 'search-pill-active') && await has(p, 'search-pill-ready'));
   const f = await text(p, `${M}-facts`);
-  ok('SRCH-002c', ['100+ languages', '346 MB download', 'Indexes ~4 s per Task', 'Up to 1.5 GB RAM', 'Apache-2.0'].every((x) => f.includes(x)), f);
-  ok('SRCH-002d', (await text(p, `${L}-facts`)).includes('Fastest indexing') && (await text(p, `${G}-facts`)).includes('Indexes ~0.5 s per Task') && !(await text(p, `${G}-facts`)).includes('Up to'));
+  ok('SRCH-002c', f.includes('100+ languages') && f.includes('346 MB') && !/Apache|per Task|RAM|Fastest|Memory/.test(f), f);
+  ok('SRCH-002d', (await text(p, `${L}-facts`)).includes('English') && (await text(p, `${L}-facts`)).includes('23 MB') && (await text(p, `${G}-facts`)).includes('55 MB') && !/Apache|per Task|RAM|Fastest|Memory/.test(await text(p, 'search-models-card')), 'only language and size are shown');
   ok('SRCH-002e', (await state(p, L)) === 'downloaded' && (await state(p, M)) === 'not_downloaded');
   ok('SRCH-002f', (await text(p, 'search-disk-total')) === 'On disk: 78 MB');
   ok('SRCH-002g', !(await has(p, `${G}-remove`)) && !(await has(p, `${G}-use`)), 'the Active model has no Remove and no Use');
@@ -78,7 +78,7 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
   await t(p, `${M}-use`).click(); await tick(p, 100);
   const d = await text(p, 'search-switch-dialog');
   ok('SRCH-006a', d.includes('Use Google EmbeddingGemma 2?') && d.includes('Every Project has to be indexed again with this model.') && d.includes('meaning search finds exact matches only') && d.includes('Index all Projects') && d.includes('switching back later means indexing again'), d);
-  ok('SRCH-006b', (await text(p, 'search-switch-cost-download')) === '346 MB, not downloaded yet' && (await text(p, 'search-switch-cost-indexing')) === '~4 s per Task' && (await text(p, 'search-switch-cost-memory')) === 'Up to 1.5 GB RAM');
+  ok('SRCH-006b', (await text(p, 'search-switch-cost-download')) === '346 MB, not downloaded yet' && !(await has(p, 'search-switch-cost-indexing')) && !(await has(p, 'search-switch-cost-memory')), 'the dialog states the download size only');
   ok('SRCH-006c', await p.evaluate(() => document.activeElement?.getAttribute('data-testid')) === 'search-switch-cancel', 'focus starts on Cancel');
   await p.keyboard.press('Tab'); await p.keyboard.press('Tab');
   ok('SRCH-006d', await p.evaluate(() => document.activeElement?.getAttribute('data-testid')) === 'search-switch-cancel', 'Tab stays inside the dialog');
@@ -97,7 +97,7 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
 { // SRCH-007 switch to a downloaded model; SRCH-008 index now / rebuild / index all
   const p = await open();
   await t(p, `${L}-use`).click(); await tick(p, 50);
-  ok('SRCH-007a', (await text(p, 'search-switch-cost-download')) === 'Already downloaded' && !(await has(p, 'search-switch-cost-memory')));
+  ok('SRCH-007a', (await text(p, 'search-switch-cost-download')) === 'Already downloaded');
   await t(p, 'search-switch-confirm').click(); await tick(p, 5000);
   ok('SRCH-007b', (await state(p, L)) === 'active-ready' && (await state(p, G)) === 'downloaded', 'a downloaded model prepares without a download');
   ok('SRCH-008a', (await state(p, 'search-project-desktop-app')) === 'not_indexed' && (await state(p, 'search-project-onboarding-redesign')) === 'not_indexed');
@@ -180,7 +180,7 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
   ok('SRCH-014a', c.includes('嵌入模型') && c.includes('适用于此窗口所连接的节点') && c.includes('项目索引') && c.includes('为所有项目建立索引') && c.includes('就绪 · 170 个任务'));
   await t(p, `${M}-use`).click(); await tick(p, 50);
   const d = await text(p, 'search-switch-dialog');
-  ok('SRCH-014b', d.includes('使用 Google EmbeddingGemma 2？') && d.includes('所有项目都需要用此模型重新建立索引。') && d.includes('346 MB，尚未下载') && d.includes('约 4 秒/任务'));
+  ok('SRCH-014b', d.includes('使用 Google EmbeddingGemma 2？') && d.includes('所有项目都需要用此模型重新建立索引。') && d.includes('346 MB，尚未下载'));
   const latin = (c.match(/[A-Za-z]{4,}/g) || []).filter((w) => !/^(IBM|Granite|Embedding|Small|English|MongoDB|LEAF|Google|EmbeddingGemma|Apache|Desktop|Onboarding|Redesign|Marketing|Site|Prototype|Launch|Agent|Runtime|Billing|Cleanup|Release|Notes|Task|Tasks)$/i.test(w));
   ok('SRCH-014c', latin.length === 0, `untranslated: ${latin.join(',')}`);
   await p.context().close();

@@ -31,7 +31,7 @@
 - Design-only layers: `prototype/search-settings/searchSettingsFixture.ts` (module-level synthetic state and a 1 s scripted timeline: downloads, model preparation and
   indexing advance while the section is not mounted, so leaving and returning shows current state). Scenarios seed the starting state only, through the existing key
   `autobyteus.prototype.scenario`: `search_unavailable`, `search_offline`, `search_empty`, `search_many_projects`, `search_load_failed` (default: `populated`).
-  Model facts follow the request's catalog table; Project names and Task counts are invented and illustrative.
+  Each model shows name, state, language label and download size only (user direction); Project names and Task counts are invented and illustrative.
 
 ## Delivery And Validation
 

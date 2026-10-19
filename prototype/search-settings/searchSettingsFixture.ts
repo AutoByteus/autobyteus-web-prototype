@@ -12,16 +12,14 @@ export type ProjectIndexState = 'not_indexed' | 'waiting' | 'indexing' | 'ready'
 export interface CatalogModel {
   id: ModelId
   name: string
-  sizeMb: number
-  secondsPerTask: number | null
-  hasMemoryNote: boolean
+  sizeMb: number // the one fact every model has: the sum of its files
 }
 
-// The catalog facts of the request (illustrative here: the product's catalog stays the authority).
+// Name and size only (size = total file bytes). The language label is the one optional catalog fact the UI shows.
 export const CATALOG: CatalogModel[] = [
-  { id: 'granite-small-english-r2', name: 'IBM Granite Embedding Small English R2', sizeMb: 55, secondsPerTask: 0.5, hasMemoryNote: false },
-  { id: 'leaf-ir', name: 'MongoDB LEAF-IR', sizeMb: 23, secondsPerTask: null, hasMemoryNote: false },
-  { id: 'embeddinggemma-2', name: 'Google EmbeddingGemma 2', sizeMb: 346, secondsPerTask: 4, hasMemoryNote: true },
+  { id: 'granite-small-english-r2', name: 'IBM Granite Embedding Small English R2', sizeMb: 55 },
+  { id: 'leaf-ir', name: 'MongoDB LEAF-IR', sizeMb: 23 },
+  { id: 'embeddinggemma-2', name: 'Google EmbeddingGemma 2', sizeMb: 346 },
 ]
 
 export interface ModelRuntime {

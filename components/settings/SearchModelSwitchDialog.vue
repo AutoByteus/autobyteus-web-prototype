@@ -23,19 +23,10 @@
           </ul>
         </div>
 
-        <section class="mt-4 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3" aria-labelledby="search-switch-cost" data-testid="search-switch-cost">
-          <h4 id="search-switch-cost" class="text-xs font-semibold uppercase tracking-wide text-gray-500">{{ t('settings.search.switch.costTitle') }}</h4>
-          <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-6 gap-y-1.5 text-sm">
-            <dt class="text-gray-500">{{ t('settings.search.switch.costDownload') }}</dt>
-            <dd class="font-medium text-gray-900" data-testid="search-switch-cost-download">{{ downloaded ? t('settings.search.switch.costDownloadDone') : t('settings.search.switch.costDownloadNeeded', { size: model.sizeMb }) }}</dd>
-            <dt class="text-gray-500">{{ t('settings.search.switch.costIndexing') }}</dt>
-            <dd class="font-medium text-gray-900" data-testid="search-switch-cost-indexing">{{ t(`settings.search.facts.speedValue.${model.id}`) }}</dd>
-            <template v-if="model.hasMemoryNote">
-              <dt class="text-gray-500">{{ t('settings.search.switch.costMemory') }}</dt>
-              <dd class="font-medium text-gray-900" data-testid="search-switch-cost-memory">{{ t(`settings.search.facts.memoryValue.${model.id}`) }}</dd>
-            </template>
-          </dl>
-        </section>
+        <p class="mt-4 text-sm" data-testid="search-switch-cost">
+          <span class="text-gray-500">{{ t('settings.search.switch.costDownload') }}: </span>
+          <span class="font-medium text-gray-900" data-testid="search-switch-cost-download">{{ downloaded ? t('settings.search.switch.costDownloadDone') : t('settings.search.switch.costDownloadNeeded', { size: model.sizeMb }) }}</span>
+        </p>
 
         <div class="mt-6 flex justify-end gap-3">
           <button ref="cancelRef" type="button" class="inline-flex min-h-9 items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" data-testid="search-switch-cancel" @click="$emit('cancel')">{{ t('settings.search.switch.cancel') }}</button>

@@ -37,10 +37,7 @@
               <span v-else-if="runtime(model).file === 'downloading'" class="inline-flex items-center gap-1.5 text-amber-700" data-testid="search-pill-downloading"><span class="h-3 w-3 animate-spin rounded-full border-2 border-amber-300 border-t-amber-600"></span>{{ t('settings.search.state.downloading') }}</span>
               <span v-else-if="runtime(model).file === 'downloaded'" class="text-gray-700" data-testid="search-pill-downloaded">{{ t('settings.search.state.downloaded') }}</span>
               <span v-else class="text-gray-400" data-testid="search-pill-not-downloaded">{{ t('settings.search.state.notDownloaded') }}</span>
-              <template v-if="runtime(model).file === 'downloaded'">
-                <span class="text-gray-300" aria-hidden="true">·</span>
-                <span class="text-gray-500">{{ t('settings.search.onDisk', { size: mb(model.sizeMb) }) }}</span>
-              </template>
+
             </p>
 
             <!-- the catalog facts: one quiet line (labels live in the aria text) -->
@@ -126,12 +123,10 @@ const runtime = (model: CatalogModel): ModelRuntime => state.models[model.id]
 const isActive = (model: CatalogModel) => state.activeId === model.id
 const mb = (value: number) => t('settings.search.facts.size', { mb: value })
 const percent = (model: CatalogModel) => Math.round((runtime(model).downloadedMb / model.sizeMb) * 100)
+// Two facts at most: the language label (optional, from the catalog) and the download size (always known).
 const facts = (model: CatalogModel) => [
   { id: 'languages', label: t('settings.search.facts.languages'), value: t(`settings.search.facts.languagesValue.${model.id}`) },
-  { id: 'download', label: t('settings.search.facts.download'), value: t('settings.search.facts.sizeDownload', { mb: model.sizeMb }) },
-  { id: 'speed', label: t('settings.search.facts.speed'), value: t(`settings.search.facts.speedLine.${model.id}`) },
-  ...(model.hasMemoryNote ? [{ id: 'memory', label: t('settings.search.facts.memory'), value: t(`settings.search.facts.memoryValue.${model.id}`) }] : []),
-  { id: 'licence', label: t('settings.search.facts.licence'), value: t('settings.search.facts.licenceValue') },
+  { id: 'size', label: t('settings.search.facts.download'), value: t('settings.search.facts.size', { mb: model.sizeMb }) },
 ]
 const rowState = (model: CatalogModel) => (isActive(model) ? `active-${state.readiness.kind}` : runtime(model).file)
 
