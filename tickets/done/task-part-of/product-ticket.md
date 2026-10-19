@@ -64,8 +64,13 @@
 - User-confirmation reference (2026-10-19): the user replied "approved" to the review package (design plus three open choices); the
   recommended choice of each stands (parent key on a part's card, the three extras, the empty Parts card).
 - Final references: 34 images `visual-references/VIS-001`–`VIS-017` captured after approval (`capture-references.mjs`); spec `ui-ux-spec.md` (`Approved`).
-- Integration, default-entry-point validation and cleanup: recorded below at finalization.
+- Design revision: `c406879` (approved design, spec, references, runbook); this record follows as the integration commit.
+- Default-entry-point validation after integration: `Completed`. On the canonical checkout at `personal@c406879`,
+  `corepack pnpm dev --port 4673` with `final-validation.mjs` (BASE 4673) passed 56/56 and the step-1 `final-validation.mjs` 14/14.
+- Integration: `Completed`. Fast-forward push `e5ad9d8..c406879` to `origin/personal`; the canonical checkout was fast-forwarded; local = origin.
+- Cleanup: `Completed`. Servers on ports 4671 and 4673 stopped; the worktree and local branch removed after this record (no remote ticket branch pushed).
 
 ## Outcome And Handoff
 
-- Next expected action: the review package goes to the user; the Solution Designer receives the approved package.
+- Next expected action: the Solution Designer integrates the approved package into the requirements (next solution revision) and starts the architecture design.
+- Handoff: `get_handoff_rules` decides the route; the result goes back to the requester (see the message sent).
