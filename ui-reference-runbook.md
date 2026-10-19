@@ -1,5 +1,20 @@
 # UI Reference Runbook
 
+## search-model-settings (Settings -> Server Settings -> Embedding; source pin unchanged `2f21134`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4691
+```
+
+- Open `/settings?section=server-settings&mode=embedding` (sidebar: Server Settings -> Embedding). Models: Download -> progress -> Cancel; Use this model -> dialog -> confirm;
+  Remove (inline confirmation). Projects: Index now, Rebuild (inline confirmation), Index all Projects, filter tabs. Leave the section and return: work continues.
+- Scenarios (starting state only; `localStorage.setItem('autobyteus.prototype.scenario', '<name>')`, reload): `search_offline` (first download fails, Retry works), `search_unavailable`,
+  `search_many_projects`, `search_empty`, `search_load_failed`. Remove the key to reset to `populated`. Locale: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`.
+- Validation: `BASE=http://127.0.0.1:4691 node tickets/done/search-model-settings/visual-references/final-validation.mjs` (SRCH-001-019, 87 checks; the page clock is paused and driven by the script).
+  Final references: `BASE=... OUT=tickets/done/search-model-settings/visual-references/ node tickets/done/search-model-settings/visual-references/capture-references.mjs`.
+- Reset: reload the page (in-memory state). Spec: `tickets/done/search-model-settings/ui-ux-spec.md`.
+
 ## task-part-of ("part of" between Project Tasks; source pin unchanged `2f21134`)
 
 ```bash

@@ -6,7 +6,7 @@
   ("Search model settings: choose, download and index the embedding model from Settings"), follow-up FU-1 of `autobyteus-71`. There is no second ID.
 - Title: Settings → Server Settings → Embedding: choose, download and index the embedding model.
 - Mode: `Product Experience Design`. It evolves the accepted AutoByteus Web baseline in place: Server Settings gets one new sub-section, **Embedding** (the user's direction, 2026-10-19: under Server Settings, technical wording).
-- Status: `Awaiting User Review`
+- Status: `Completed`
 - Requester: the Solution Designer (`solution_designer_80624588913d473bac3ef7d8c3d4d305`), for the user, 2026-10-19.
 - Related requirements: `requirements-doc.md` `SR-001` (`/Users/normy/autobyteus_org/autobyteus-worktrees/search-model-settings/tickets/in-progress/search-model-settings/`):
   UC-001–UC-004, REQ-001–REQ-009, AC-001–AC-009, SCN-001–SCN-004, DEC-001–DEC-008 (open: DEC-005).
@@ -18,7 +18,7 @@
 ## Design & Repository Context
 
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`, remote `origin` = autobyteus-web-prototype)
-- Ticket folder: `tickets/in-progress/search-model-settings/`
+- Ticket folder: `tickets/done/search-model-settings/`
 - Ticket worktree / branch: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/search-model-settings`, `design/search-model-settings`
 - Accepted design base: `10207c6badd8a14b7d286fcbffc41c6b0cb12c47` (`origin/personal`, fetched 2026-10-19; local `personal` equals `origin/personal`)
 - Source repository and selected frontend: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`, `autobyteus-web`
@@ -35,12 +35,17 @@
 
 ## Delivery And Validation
 
-- UI reference changes: `pages/settings.vue` (Server Settings sub-nav item and mode), `components/settings/ServerSettingsManager.vue` (renders the panel), `components/settings/SearchSettingsManager.vue`, `SearchModelsCard.vue`,
-  `SearchProjectIndexesCard.vue`, `SearchModelSwitchDialog.vue`, `prototype/search-settings/searchSettingsFixture.ts`, localization en / zh-CN (`settings.search.*` keys,
-  `settings.page.serverSettings.embedding`). The `Search*` file names and `search-*` test ids are historical; the product name is Embedding..
-- Validation so far (port 4691): `visual-references/final-validation.mjs` 87/87 (SRCH-001–019); `corepack pnpm typecheck` 0 errors; `corepack pnpm test` 17/17; `corepack pnpm lint` clean.
-- Review URL: <http://127.0.0.1:4691/settings?section=server-settings&mode=embedding>
+- UI reference changes: `pages/settings.vue` (Server Settings sub-nav item and mode), `components/settings/ServerSettingsManager.vue` (renders the panel before the raw-settings gate), `components/settings/SearchSettingsManager.vue`,
+  `SearchModelsCard.vue`, `SearchProjectIndexesCard.vue`, `SearchModelSwitchDialog.vue`, `prototype/search-settings/searchSettingsFixture.ts`, localization en / zh-CN (`settings.search.*` keys,
+  `settings.page.serverSettings.embedding`). The `Search*` file names and `search-*` test ids are historical; the product name is Embedding.
+- Validation (port 4691): `visual-references/final-validation.mjs` 87/87 (SRCH-001-019); `corepack pnpm typecheck` 0 errors; `corepack pnpm test` 17/17; `corepack pnpm lint` clean.
+- User-confirmation reference (2026-10-19): the user replied "done" to the final review package (with the self-validation round), after directing: placement under Server Settings named Embedding with technical wording;
+  a cleaner UI; only the necessary facts per model; the Hugging Face source said once; much less text. D-1-D-5 were recorded as approved because the user did not object.
+- Final references: 23 images `visual-references/VIS-001`-`VIS-021` captured after approval (`capture-references.mjs`); spec `ui-ux-spec.md` (`Approved`).
+- Requirement impact reported to the Solution Designer: DEC-005 resolved (Server Settings -> Embedding); REQ-001 facts narrowed (no licence, indexing speed, memory); REQ-004 / DEC-008 cost narrowed to download size; minimal copy.
+- Design revision, default-entry-point validation, integration and cleanup: recorded below at finalization.
 
 ## Outcome And Handoff
 
-- Next expected action: the user reviews the design and answers the open choices in `design-review-notes.md`.
+- Next expected action: the Solution Designer reconciles the approved package with the requirements (next solution revision, including the requirement impact above) and starts the architecture design.
+- Handoff: `get_handoff_rules` returned only the Baseline Needed route, so the result goes back to the requester (see the message sent).
