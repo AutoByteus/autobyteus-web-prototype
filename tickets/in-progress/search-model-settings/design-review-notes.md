@@ -70,3 +70,20 @@ Scenarios (seed the start state only; set `localStorage['autobyteus.prototype.sc
   model id, so zh-CN works; if the server supplies it only in English, either keep a client table by model id or omit the label.
 - **F-2 Status shape.** Per Project: state, Tasks indexed, Tasks to index, changed count, and "waiting". Per model: file state, downloaded bytes, readiness and a failure reason.
 - **F-3 Default model:** the "Default" tag needs only the default model id, which the setting already defines.
+
+## Self-validation round (2026-10-19, before the final approval)
+
+Checked the reference against the requirements (REQ-001–009, AC-001–009), the real catalog code (`embedding-model-catalog.ts`, `embedding-model-setting.ts`) and the flows. Found and fixed:
+
+1. **LEAF-IR is 24 MB, not 23.** Its files total 23,888,539 bytes (23.9 MB in decimal MB); the catalog's "About 23 MB" text is rounded down. Sizes are the sum of the file bytes in decimal MB: Granite 55, LEAF-IR 24, EmbeddingGemma 2 346 (total 425, which matches ASM-001). The UI must compute sizes from `files[].bytes`, not from the description text.
+2. **Model ids** in the reference now match the catalog ids (`granite-embedding-small-english-r2`, `mdbr-leaf-ir`, `embeddinggemma-2`).
+3. **Keyboard focus** follows the inline Remove and Rebuild confirmations (into Cancel, back to the row's button on Esc or Cancel, onto the row after a confirm).
+4. **Completions are announced** to screen readers (a hidden polite status: "<model> downloaded.", "<model> is ready.", "<Project> indexed."), since the visible notices were removed.
+5. **The Embedding panel does not wait for the raw settings to load** (it has its own loading and error states).
+6. New browser checks: a switch whose download fails then Retry (SRCH-017), Index all while the model prepares, focus and announcements (SRCH-018), sizes (SRCH-019): 87/87.
+
+Behavior the reference does not model, for the specification and the architecture:
+
+- **REQ-009 / AC-009:** a value set in Advanced or an env file must show as Active in Embedding. The code resolves a blank value, or a value outside the catalog, to the default model (`resolveActiveEmbeddingModel`), so the Active row shows the resolved model. The reference has no link between the Advanced table and this section.
+- Index all means "Index now for every Project that is Not indexed or Needs update"; Ready Projects show Rebuild only, Not indexed Projects show Index now only.
+- Downloads of different models may run side by side in the UI; whether the server allows it is an architecture matter.

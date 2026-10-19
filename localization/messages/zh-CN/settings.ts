@@ -444,8 +444,8 @@ const settingsMessages = {
   "settings.search.facts.languages": "语言",
   "settings.search.facts.download": "下载大小",
   "settings.search.facts.size": "{{mb}} MB",
-  "settings.search.facts.languagesValue.granite-small-english-r2": "英语",
-  "settings.search.facts.languagesValue.leaf-ir": "英语",
+  "settings.search.facts.languagesValue.granite-embedding-small-english-r2": "英语",
+  "settings.search.facts.languagesValue.mdbr-leaf-ir": "英语",
   "settings.search.facts.languagesValue.embeddinggemma-2": "100 多种语言",
   "settings.search.actions.download": "下载",
   "settings.search.actions.cancel": "取消",
@@ -496,6 +496,9 @@ const settingsMessages = {
   "settings.search.switch.cancel": "取消",
   "settings.search.models.sourceBefore": "模型从 ",
   "settings.search.models.sourceAfter": " 下载。",
+  "settings.search.announce.downloaded": "{{name}} 已下载。",
+  "settings.search.announce.ready": "{{name}} 已就绪。",
+  "settings.search.announce.indexed": "{{name}} 已建立索引。",
 } satisfies TranslationCatalog;
 
 export default settingsMessages;

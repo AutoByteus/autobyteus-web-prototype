@@ -38,7 +38,7 @@
 - UI reference changes: `pages/settings.vue` (Server Settings sub-nav item and mode), `components/settings/ServerSettingsManager.vue` (renders the panel), `components/settings/SearchSettingsManager.vue`, `SearchModelsCard.vue`,
   `SearchProjectIndexesCard.vue`, `SearchModelSwitchDialog.vue`, `prototype/search-settings/searchSettingsFixture.ts`, localization en / zh-CN (`settings.search.*` keys,
   `settings.page.serverSettings.embedding`). The `Search*` file names and `search-*` test ids are historical; the product name is Embedding..
-- Validation so far (port 4691): `visual-references/final-validation.mjs` 72/72 (SRCH-001–016); `corepack pnpm typecheck` 0 errors; `corepack pnpm test` 17/17; `corepack pnpm lint` clean.
+- Validation so far (port 4691): `visual-references/final-validation.mjs` 87/87 (SRCH-001–019); `corepack pnpm typecheck` 0 errors; `corepack pnpm test` 17/17; `corepack pnpm lint` clean.
 - Review URL: <http://127.0.0.1:4691/settings?section=server-settings&mode=embedding>
 
 ## Outcome And Handoff

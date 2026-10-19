@@ -17,7 +17,7 @@ const t = (p, id) => p.locator(`[data-testid="${id}"]`);
 const text = async (p, id) => ((await t(p, id).first().innerText().catch(() => '')) || '').replace(/\s+/g, ' ').trim();
 const has = async (p, id) => (await t(p, id).count()) > 0;
 const state = (p, id) => t(p, id).getAttribute('data-state');
-const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M = 'search-model-embeddinggemma-2';
+const G = 'search-model-granite-embedding-small-english-r2', L = 'search-model-mdbr-leaf-ir', M = 'search-model-embeddinggemma-2';
 
 { // SRCH-001 placement and entry
   const p = await open();
@@ -38,10 +38,10 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
   ok('SRCH-002b', (await state(p, G)) === 'active-ready' && await has(p, 'search-pill-active') && await has(p, 'search-pill-ready'));
   const f = await text(p, `${M}-facts`);
   ok('SRCH-002c', f.includes('100+ languages') && f.includes('346 MB') && !/Apache|per Task|RAM|Fastest|Memory/.test(f), f);
-  ok('SRCH-002d', (await text(p, `${L}-facts`)).includes('English') && (await text(p, `${L}-facts`)).includes('23 MB') && (await text(p, `${G}-facts`)).includes('55 MB') && !/Apache|per Task|RAM|Fastest|Memory/.test(await text(p, 'search-models-card')), 'only language and size are shown');
+  ok('SRCH-002d', (await text(p, `${L}-facts`)).includes('English') && (await text(p, `${L}-facts`)).includes('24 MB') && (await text(p, `${G}-facts`)).includes('55 MB') && !/Apache|per Task|RAM|Fastest|Memory/.test(await text(p, 'search-models-card')), 'only language and size are shown');
   ok('SRCH-002i', (await t(p, 'search-source-link').getAttribute('href')) === 'https://huggingface.co' && (await text(p, 'search-models-footnote')) === 'Used for meaning search. Downloaded from Hugging Face.' && !(await text(p, `${M}-facts`)).includes('Hugging') && !(await text(p, `${G}-facts`)).includes('Hugging'), 'the source is said once, in the card footnote, not on every row');
   ok('SRCH-002e', (await state(p, L)) === 'downloaded' && (await state(p, M)) === 'not_downloaded');
-  ok('SRCH-002f', (await text(p, 'search-disk-total')) === 'On disk: 78 MB');
+  ok('SRCH-002f', (await text(p, 'search-disk-total')) === 'On disk: 79 MB');
   ok('SRCH-002g', !(await has(p, `${G}-remove`)) && !(await has(p, `${G}-use`)), 'the Active model has no Remove and no Use');
   ok('SRCH-002h', (await has(p, `${L}-use`)) && (await has(p, `${L}-remove`)) && (await has(p, `${M}-download`)) && (await has(p, `${M}-use`)));
   const before = await text(p, 'search-project-list');
@@ -61,16 +61,16 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
   ok('SRCH-004b', prog1 !== prog2 && /of 346 MB/.test(prog2) && /%/.test(prog2), `${prog1} -> ${prog2}`);
   ok('SRCH-004c', (await t(p, `${M}-progress`).locator('[role="progressbar"]').getAttribute('aria-valuemax')) === '346');
   await t(p, `${M}-cancel`).click(); await tick(p, 100);
-  ok('SRCH-004d', (await state(p, M)) === 'not_downloaded' && (await text(p, 'search-disk-total')) === 'On disk: 78 MB');
+  ok('SRCH-004d', (await state(p, M)) === 'not_downloaded' && (await text(p, 'search-disk-total')) === 'On disk: 79 MB');
   await t(p, `${M}-download`).click(); await tick(p, 25000);
   ok('SRCH-005a', (await state(p, M)) === 'downloaded');
-  ok('SRCH-005b', (await text(p, 'search-disk-total')) === 'On disk: 424 MB' && (await has(p, `${M}-remove`)));
+  ok('SRCH-005b', (await text(p, 'search-disk-total')) === 'On disk: 425 MB' && (await has(p, `${M}-remove`)));
   await t(p, `${M}-remove`).click(); await tick(p, 50);
   ok('SRCH-005c', await has(p, `${M}-remove-confirmation`) && (await text(p, `${M}-remove-confirmation`)).includes('This frees 346 MB'));
   await t(p, `${M}-remove-cancel`).click(); await tick(p, 50);
   ok('SRCH-005d', (await state(p, M)) === 'downloaded' && !(await has(p, `${M}-remove-confirmation`)));
   await t(p, `${M}-remove`).click(); await t(p, `${M}-remove-confirm`).click(); await tick(p, 50);
-  ok('SRCH-005e', (await state(p, M)) === 'not_downloaded' && (await text(p, 'search-disk-total')) === 'On disk: 78 MB');
+  ok('SRCH-005e', (await state(p, M)) === 'not_downloaded' && (await text(p, 'search-disk-total')) === 'On disk: 79 MB');
   ok('SRCH-005f', p.errors.length === 0, p.errors.join(';'));
   await p.context().close();
 }
@@ -193,6 +193,42 @@ const G = 'search-model-granite-small-english-r2', L = 'search-model-leaf-ir', M
   await t(p, `${M}-download`).click(); await tick(p, 3000);
   const over2 = await p.evaluate(() => { const c = document.querySelector('[data-testid="settings-page-content"]'); return c.scrollWidth - c.clientWidth; });
   ok('SRCH-015b', over2 <= 0, `overflow while downloading ${over2}`);
+  await p.context().close();
+}
+{ // SRCH-017 a switch to a model whose download fails; Retry at model level; Index all while the model prepares
+  const p = await open('search_offline');
+  await t(p, `${M}-use`).click(); await t(p, 'search-switch-confirm').click(); await tick(p, 8000);
+  ok('SRCH-017a', (await state(p, M)) === 'active-unavailable' && (await text(p, `${M}-unavailable`)).includes('Couldn’t reach huggingface.co') && (await state(p, 'search-project-desktop-app')) === 'unavailable');
+  await t(p, `${M}-retry`).click(); await tick(p, 2000);
+  ok('SRCH-017b', (await state(p, M)) === 'active-preparing');
+  await t(p, 'search-index-all').click(); await tick(p, 100);
+  ok('SRCH-017c', (await text(p, 'search-project-marketing-site-status')) === 'Waiting for the model…', 'Index all while the model prepares waits for it');
+  await tick(p, 40000);
+  ok('SRCH-017d', (await state(p, M)) === 'active-ready' && ['indexing', 'ready'].includes(await state(p, 'search-project-desktop-app')), 'indexing starts once the model is ready');
+  await tick(p, 120000);
+  ok('SRCH-017e', (await p.locator('[data-testid^="search-project-"][data-state="ready"]').count()) === 7);
+  await p.context().close();
+}
+{ // SRCH-018 keyboard focus follows the inline confirmations; completions are announced
+  const p = await open();
+  await t(p, `${L}-remove`).focus(); await p.keyboard.press('Enter'); await tick(p, 100);
+  ok('SRCH-018a', await p.evaluate(() => document.activeElement?.getAttribute('data-testid')) === `${L}-remove-cancel`.replace('search-model-mdbr-leaf-ir', 'search-model-mdbr-leaf-ir'), 'focus moves to Cancel in the Remove confirmation');
+  await p.keyboard.press('Escape'); await tick(p, 100);
+  ok('SRCH-018b', await p.evaluate(() => document.activeElement?.getAttribute('data-testid')) === `${L}-remove` && !(await has(p, `${L}-remove-confirmation`)), 'Esc closes it and focus returns to Remove');
+  await t(p, 'search-project-desktop-app-rebuild').click(); await tick(p, 100);
+  ok('SRCH-018c', await p.evaluate(() => document.activeElement?.getAttribute('data-testid')) === 'search-project-desktop-app-rebuild-cancel');
+  await t(p, 'search-project-desktop-app-rebuild-confirm').click(); await tick(p, 100);
+  ok('SRCH-018d', await p.evaluate(() => document.activeElement?.getAttribute('data-testid')) === 'search-project-desktop-app', 'after confirming, focus lands on the Project row');
+  await tick(p, 30000);
+  ok('SRCH-018e', (await text(p, 'search-announce')).endsWith('indexed.'), await text(p, 'search-announce'));
+  await t(p, `${M}-download`).click(); await tick(p, 30000);
+  ok('SRCH-018f', (await text(p, 'search-announce')) === 'Google EmbeddingGemma 2 downloaded.');
+  await p.context().close();
+}
+{ // SRCH-019 sizes follow the catalog's file bytes (decimal MB): 55 + 24 + 346 = 425
+  const p = await open();
+  const sz = async (m) => (await text(p, `${m}-facts`)).match(/(\d+) MB/)?.[1];
+  ok('SRCH-019', (await sz(G)) === '55' && (await sz(L)) === '24' && (await sz(M)) === '346', 'sizes follow the catalog file bytes');
   await p.context().close();
 }
 { // SRCH-016 preserved Settings sections still open

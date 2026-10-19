@@ -1,8 +1,11 @@
 <template>
   <div class="server-settings-manager h-full flex flex-col overflow-hidden">
     <div class="flex-1 overflow-auto bg-slate-50 p-3 sm:p-5 md:p-8 md:pt-6">
+      <!-- Embedding has its own status, loading and error states; it does not wait for the raw settings. -->
+      <SearchSettingsManager v-if="activeTab === 'embedding'" />
+
       <div
-        v-if="isInitialLoading"
+        v-else-if="isInitialLoading"
         class="flex justify-center items-center py-8"
         data-testid="server-settings-initial-loading"
       >
@@ -28,7 +31,6 @@
       </div>
 
       <ServerSettingsBasicsPanel v-else-if="activeTab === 'quick'" />
-      <SearchSettingsManager v-else-if="activeTab === 'embedding'" />
       <ServerMigrationsManager v-else-if="activeTab === 'migrations'" />
 
       <div v-else class="space-y-4">

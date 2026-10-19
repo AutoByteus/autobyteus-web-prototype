@@ -27,12 +27,14 @@
       <SearchProjectIndexesCard />
     </template>
 
+    <p class="sr-only" role="status" aria-live="polite" data-testid="search-announce">{{ announcement }}</p>
+
     <SearchModelSwitchDialog v-if="switchTarget" :model-id="switchTarget" @cancel="switchTarget = null" @confirm="confirmSwitch" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
 import SearchModelsCard from '~/components/settings/SearchModelsCard.vue'
 import SearchProjectIndexesCard from '~/components/settings/SearchProjectIndexesCard.vue'
 import SearchModelSwitchDialog from '~/components/settings/SearchModelSwitchDialog.vue'
@@ -41,6 +43,10 @@ import { initSearchSettings, retryLoad, useModel, useSearchSettingsState, type M
 const { t } = useLocalization()
 const { state } = useSearchSettingsState()
 const switchTarget = ref<ModelId | null>(null)
+const announcement = computed(() => {
+  const [name, kind] = state.announce.split('|')
+  return name ? t(`settings.search.announce.${kind}`, { name }) : ''
+})
 
 // Opening the section only reads status (REQ-005): initSearchSettings seeds and shows; it starts nothing.
 onMounted(() => initSearchSettings())

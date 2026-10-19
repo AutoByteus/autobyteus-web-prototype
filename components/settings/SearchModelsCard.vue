@@ -85,17 +85,17 @@
               <button v-if="runtime(model).file === 'not_downloaded' && !runtime(model).failureKey" type="button" :class="secondaryButton" :data-testid="`search-model-${model.id}-download`" @click="startDownload(model.id)">{{ t('settings.search.actions.download') }}</button>
               <button v-if="runtime(model).failureKey" type="button" :class="secondaryButton" :data-testid="`search-model-${model.id}-retry`" @click="startDownload(model.id)">{{ t('settings.search.actions.retry') }}</button>
               <button type="button" :class="secondaryButton" :data-testid="`search-model-${model.id}-use`" @click="$emit('use', model.id)">{{ t('settings.search.actions.use') }}</button>
-              <button v-if="runtime(model).file === 'downloaded'" type="button" :class="textDangerButton" :data-testid="`search-model-${model.id}-remove`" @click="askRemove(model.id, true)">{{ t('settings.search.actions.remove') }}</button>
+              <button v-if="runtime(model).file === 'downloaded'" type="button" :class="textDangerButton" :data-testid="`search-model-${model.id}-remove`" @click="openRemove(model.id)">{{ t('settings.search.actions.remove') }}</button>
             </template>
           </div>
         </div>
 
         <!-- Remove: inline confirmation -->
-        <div v-if="runtime(model).confirmingRemove" class="mt-3 flex flex-col gap-3 rounded-lg bg-gray-50 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between" role="group" :aria-label="t('settings.search.actions.remove')" :data-testid="`search-model-${model.id}-remove-confirmation`" @keydown.esc.prevent="askRemove(model.id, false)">
+        <div v-if="runtime(model).confirmingRemove" class="mt-3 flex flex-col gap-3 rounded-lg bg-gray-50 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between" role="group" :aria-label="t('settings.search.actions.remove')" :data-testid="`search-model-${model.id}-remove-confirmation`" @keydown.esc.prevent="closeRemove(model.id, true)">
           <p class="text-sm text-gray-700">{{ t('settings.search.removeConfirm.text', { name: model.name, size: model.sizeMb }) }}</p>
           <div class="flex flex-shrink-0 items-center gap-2">
-            <button type="button" class="inline-flex min-h-9 items-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1" :data-testid="`search-model-${model.id}-remove-confirm`" @click="removeModel(model.id)">{{ t('settings.search.actions.remove') }}</button>
-            <button type="button" :class="secondaryButton" :data-testid="`search-model-${model.id}-remove-cancel`" @click="askRemove(model.id, false)">{{ t('settings.search.actions.cancel') }}</button>
+            <button type="button" class="inline-flex min-h-9 items-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1" :data-testid="`search-model-${model.id}-remove-confirm`" @click="confirmRemove(model.id)">{{ t('settings.search.actions.remove') }}</button>
+            <button type="button" :class="secondaryButton" :data-testid="`search-model-${model.id}-remove-cancel`" @click="closeRemove(model.id, true)">{{ t('settings.search.actions.cancel') }}</button>
           </div>
         </div>
       </li>
@@ -104,6 +104,7 @@
 </template>
 
 <script setup lang="ts">
+import { nextTick } from 'vue'
 import {
   askRemove, cancelDownload, CATALOG, removeModel, retryModel, startDownload, useSearchSettingsState,
   type CatalogModel, type ModelRuntime,
@@ -113,7 +114,7 @@ defineEmits<{ (e: 'use', id: CatalogModel['id']): void }>()
 
 const { t } = useLocalization()
 const { state, diskMb } = useSearchSettingsState()
-const DEFAULT_ID = 'granite-small-english-r2'
+const DEFAULT_ID = 'granite-embedding-small-english-r2'
 
 const runtime = (model: CatalogModel): ModelRuntime => state.models[model.id]
 const isActive = (model: CatalogModel) => state.activeId === model.id
@@ -124,6 +125,11 @@ const facts = (model: CatalogModel) => [
   { id: 'languages', label: t('settings.search.facts.languages'), value: t(`settings.search.facts.languagesValue.${model.id}`) },
   { id: 'size', label: t('settings.search.facts.download'), value: t('settings.search.facts.size', { mb: model.sizeMb }) },
 ]
+// Focus follows the inline confirmation: into it (on the safe Cancel), then back to the row's own button or the row.
+const focusTest = async (id: string) => { await nextTick(); document.querySelector<HTMLElement>(`[data-testid="${id}"]`)?.focus() }
+const openRemove = (id: CatalogModel['id']) => { askRemove(id, true); void focusTest(`search-model-${id}-remove-cancel`) }
+const closeRemove = (id: CatalogModel['id'], restore: boolean) => { askRemove(id, false); if (restore) void focusTest(`search-model-${id}-remove`) }
+const confirmRemove = (id: CatalogModel['id']) => { removeModel(id); void focusTest(`search-model-${id}`) }
 const rowState = (model: CatalogModel) => (isActive(model) ? `active-${state.readiness.kind}` : runtime(model).file)
 
 const secondaryButton = 'inline-flex min-h-9 items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1'

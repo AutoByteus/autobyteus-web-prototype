@@ -39,7 +39,7 @@
       </div>
 
       <ul class="mt-3 divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-200" :aria-label="t('settings.search.projects.listLabel')" data-testid="search-project-list">
-        <li v-for="p in visible" :key="p.id" class="px-4 py-2.5" :data-testid="`search-project-${p.id}`" :data-state="displayState(p)">
+        <li v-for="p in visible" :key="p.id" tabindex="-1" class="px-4 py-2.5 focus:outline-none" :data-testid="`search-project-${p.id}`" :data-state="displayState(p)">
           <div class="flex flex-col gap-1.5 sm:min-h-[2.25rem] sm:flex-row sm:items-center sm:gap-4">
             <p class="min-w-0 truncate text-sm font-medium text-gray-900 sm:w-[30%]" :title="p.name">{{ p.name }}</p>
             <div class="min-w-0 flex-1 text-sm" :data-testid="`search-project-${p.id}-status`">
@@ -76,16 +76,16 @@
             <div class="flex flex-shrink-0 flex-wrap items-center gap-1 sm:w-[14rem] sm:justify-end">
               <template v-if="!p.confirmingRebuild">
                 <button v-if="canIndex(p)" type="button" :class="secondaryButton" :data-testid="`search-project-${p.id}-index`" @click="indexNow(p.id)">{{ t('settings.search.projects.indexNow') }}</button>
-                <button v-if="canRebuild(p)" type="button" :class="textButton" :data-testid="`search-project-${p.id}-rebuild`" @click="askRebuild(p.id, true)">{{ t('settings.search.projects.rebuild') }}</button>
+                <button v-if="canRebuild(p)" type="button" :class="textButton" :data-testid="`search-project-${p.id}-rebuild`" @click="openRebuild(p.id)">{{ t('settings.search.projects.rebuild') }}</button>
               </template>
             </div>
           </div>
 
-          <div v-if="p.confirmingRebuild" class="mt-2.5 flex flex-col gap-3 rounded-lg bg-gray-50 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between" role="group" :aria-label="t('settings.search.projects.rebuild')" :data-testid="`search-project-${p.id}-rebuild-confirmation`" @keydown.esc.prevent="askRebuild(p.id, false)">
+          <div v-if="p.confirmingRebuild" class="mt-2.5 flex flex-col gap-3 rounded-lg bg-gray-50 px-3 py-2.5 sm:flex-row sm:items-center sm:justify-between" role="group" :aria-label="t('settings.search.projects.rebuild')" :data-testid="`search-project-${p.id}-rebuild-confirmation`" @keydown.esc.prevent="closeRebuild(p.id, true)">
             <p class="text-sm text-gray-700">{{ t('settings.search.projects.rebuildConfirm', { name: p.name }) }}</p>
             <div class="flex flex-shrink-0 items-center gap-2">
-              <button type="button" :class="primaryButton" :data-testid="`search-project-${p.id}-rebuild-confirm`" @click="rebuild(p.id)">{{ t('settings.search.projects.rebuild') }}</button>
-              <button type="button" :class="secondaryButton" :data-testid="`search-project-${p.id}-rebuild-cancel`" @click="askRebuild(p.id, false)">{{ t('settings.search.actions.cancel') }}</button>
+              <button type="button" :class="primaryButton" :data-testid="`search-project-${p.id}-rebuild-confirm`" @click="confirmRebuild(p.id)">{{ t('settings.search.projects.rebuild') }}</button>
+              <button type="button" :class="secondaryButton" :data-testid="`search-project-${p.id}-rebuild-cancel`" @click="closeRebuild(p.id, true)">{{ t('settings.search.actions.cancel') }}</button>
             </div>
           </div>
         </li>
@@ -96,7 +96,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import {
   askRebuild, indexAll, indexNow, rebuild, useSearchSettingsState, type ProjectRuntime,
 } from '~/prototype/search-settings/searchSettingsFixture'
@@ -108,6 +108,10 @@ type Filter = 'all' | 'needs' | 'indexing' | 'ready'
 const filter = ref<Filter>('all')
 const query = ref('')
 
+const focusTest = async (id: string) => { await nextTick(); document.querySelector<HTMLElement>(`[data-testid="${id}"]`)?.focus() }
+const openRebuild = (id: string) => { askRebuild(id, true); void focusTest(`search-project-${id}-rebuild-cancel`) }
+const closeRebuild = (id: string, restore: boolean) => { askRebuild(id, false); if (restore) void focusTest(`search-project-${id}-rebuild`) }
+const confirmRebuild = (id: string) => { rebuild(id); void focusTest(`search-project-${id}`) }
 const displayState = (p: ProjectRuntime) => (unavailable.value ? 'unavailable' : p.state)
 const isBusy = (p: ProjectRuntime) => p.state === 'indexing' || p.state === 'waiting'
 const canIndex = (p: ProjectRuntime) => !unavailable.value && (p.state === 'not_indexed' || p.state === 'needs_update')

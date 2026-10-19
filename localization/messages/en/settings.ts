@@ -444,8 +444,8 @@ const settingsMessages = {
   "settings.search.facts.languages": "Languages",
   "settings.search.facts.download": "Download size",
   "settings.search.facts.size": "{{mb}} MB",
-  "settings.search.facts.languagesValue.granite-small-english-r2": "English",
-  "settings.search.facts.languagesValue.leaf-ir": "English",
+  "settings.search.facts.languagesValue.granite-embedding-small-english-r2": "English",
+  "settings.search.facts.languagesValue.mdbr-leaf-ir": "English",
   "settings.search.facts.languagesValue.embeddinggemma-2": "100+ languages",
   "settings.search.actions.download": "Download",
   "settings.search.actions.cancel": "Cancel",
@@ -496,6 +496,9 @@ const settingsMessages = {
   "settings.search.switch.cancel": "Cancel",
   "settings.search.models.sourceBefore": "Downloaded from ",
   "settings.search.models.sourceAfter": ".",
+  "settings.search.announce.downloaded": "{{name}} downloaded.",
+  "settings.search.announce.ready": "{{name}} is ready.",
+  "settings.search.announce.indexed": "{{name}} indexed.",
 } satisfies TranslationCatalog;
 
 export default settingsMessages;

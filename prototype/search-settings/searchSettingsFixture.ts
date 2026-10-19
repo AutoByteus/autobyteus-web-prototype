@@ -5,7 +5,7 @@
 // Nothing starts at mount (REQ-005): only the work that a scenario seeds as already running ticks.
 import { computed, reactive } from 'vue'
 
-export type ModelId = 'granite-small-english-r2' | 'leaf-ir' | 'embeddinggemma-2'
+export type ModelId = 'granite-embedding-small-english-r2' | 'mdbr-leaf-ir' | 'embeddinggemma-2'
 export type ModelFileState = 'not_downloaded' | 'downloaded' | 'downloading'
 export type ProjectIndexState = 'not_indexed' | 'waiting' | 'indexing' | 'ready' | 'needs_update'
 
@@ -17,8 +17,8 @@ export interface CatalogModel {
 
 // Name and size only (size = total file bytes). The language label is the one optional catalog fact the UI shows.
 export const CATALOG: CatalogModel[] = [
-  { id: 'granite-small-english-r2', name: 'IBM Granite Embedding Small English R2', sizeMb: 55 },
-  { id: 'leaf-ir', name: 'MongoDB LEAF-IR', sizeMb: 23 },
+  { id: 'granite-embedding-small-english-r2', name: 'IBM Granite Embedding Small English R2', sizeMb: 55 },
+  { id: 'mdbr-leaf-ir', name: 'MongoDB LEAF-IR', sizeMb: 24 },
   { id: 'embeddinggemma-2', name: 'Google EmbeddingGemma 2', sizeMb: 346 },
 ]
 
@@ -52,13 +52,14 @@ const SCENARIO_KEY = 'autobyteus.prototype.scenario'
 
 const state = reactive({
   loadStatus: 'loading' as LoadStatus,
-  activeId: 'granite-small-english-r2' as ModelId,
+  activeId: 'granite-embedding-small-english-r2' as ModelId,
   readiness: { kind: 'ready' } as Readiness,
   models: {} as Record<ModelId, ModelRuntime>,
   projects: [] as ProjectRuntime[],
   failNextDownload: false,
   loadAttempts: 0,
   scenario: 'populated',
+  announce: '' as string, // a polite screen-reader message for completions (downloaded, ready, indexed)
 })
 
 const freshModel = (file: ModelFileState): ModelRuntime => ({
@@ -94,11 +95,11 @@ const manyProjects = (): ProjectRuntime[] => {
 
 const seed = (scenario: string) => {
   state.scenario = scenario
-  state.activeId = 'granite-small-english-r2'
+  state.activeId = 'granite-embedding-small-english-r2'
   state.readiness = { kind: 'ready' }
   state.models = {
-    'granite-small-english-r2': freshModel('downloaded'),
-    'leaf-ir': freshModel('downloaded'),
+    'granite-embedding-small-english-r2': freshModel('downloaded'),
+    'mdbr-leaf-ir': freshModel('downloaded'),
     'embeddinggemma-2': freshModel('not_downloaded'),
   }
   state.projects = baseProjects()
@@ -140,13 +141,14 @@ const tick = () => {
     runtime.downloadedMb = next
     if (next >= model.sizeMb) {
       runtime.file = 'downloaded'
+      state.announce = `${model.name}|downloaded`
       if (state.activeId === model.id) state.readiness = { kind: 'preparing', phase: 'load', loadTicks: 0 }
     }
   }
   // Loading the active model after it is on disk.
   if (state.readiness.kind === 'preparing' && state.readiness.phase === 'load') {
     state.readiness.loadTicks += 1
-    if (state.readiness.loadTicks >= 3) state.readiness = { kind: 'ready' }
+    if (state.readiness.loadTicks >= 3) { state.readiness = { kind: 'ready' }; state.announce = `${catalogModel(state.activeId).name}|ready` }
   }
   // Indexing: one Project at a time, in list order, once the model is ready.
   if (state.readiness.kind === 'ready') {
@@ -156,6 +158,7 @@ const tick = () => {
       running.done = Math.min(running.total, running.done + indexStep(running))
       if (running.done >= running.total) {
         running.state = 'ready'
+        state.announce = `${running.name}|indexed`
         running.changed = 0
         running.rebuild = false
       }
