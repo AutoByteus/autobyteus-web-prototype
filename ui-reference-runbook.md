@@ -1,5 +1,18 @@
 # UI Reference Runbook
 
+## task-part-of ("part of" between Project Tasks; source pin unchanged `2f21134`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4620
+```
+
+- Parents and parts: `/projects/project-desktop-app` (parent `autobyteus-25` with five parts; `-14` all done; `-10` none done;
+  `-6` Done; `-3` Cancelled; `-1` only Cancelled parts), a Task page, Edit task ("Part of"), "New part" on a parent's page.
+- Long keys: `/projects/project-onboarding-redesign`. Tab: `/chat?id=run-ptm-0001` → Projects.
+- Validation: `BASE=http://127.0.0.1:4620 node tickets/done/task-part-of/visual-references/final-validation.mjs` (PART-001–009).
+- Reset: reload the page. Spec: `tickets/done/task-part-of/ui-ux-spec.md`.
+
 ## WEB-BASELINE-REFRESH-010 (source pin `2f21134`)
 
 ```bash

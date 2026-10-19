@@ -10,7 +10,7 @@
   - the Task page and the tab's Task view;
   - the New / Edit task page;
   - the Task page's delete confirmation.
-- Status: `Awaiting User Review` (review package sent 2026-10-19; review URL `http://127.0.0.1:4671/projects/project-desktop-app`)
+- Status: `Completed`
 - Requester: the Solution Designer (AgentRun `solution_designer_f5da9fb3e1e6434e914df387cc785cad`), for the user, 2026-10-19.
 - Related requirements revision: `SR-003` (`requirements-doc.md` in
   `/Users/normy/autobyteus_org/autobyteus-worktrees/task-part-of/tickets/in-progress/task-part-of/`): UC-001–UC-007,
@@ -61,7 +61,10 @@
   - `prototype/task-part-of/taskPartOfFixture.ts`, `prototype/source-observation/fixtures.mjs`, `utils/apolloClient.ts` (example data and rules).
 - Validation so far (port 4671): `visual-references/final-validation.mjs` 56/56; step-1 `final-validation.mjs` 14/14 (keys and
   `depends on` unchanged); `corepack pnpm typecheck` 0 errors; `corepack pnpm test` 17/17.
-- Final references, spec, integration and cleanup: pending the user's approval.
+- User-confirmation reference (2026-10-19): the user replied "approved" to the review package (design plus three open choices); the
+  recommended choice of each stands (parent key on a part's card, the three extras, the empty Parts card).
+- Final references: 34 images `visual-references/VIS-001`–`VIS-017` captured after approval (`capture-references.mjs`); spec `ui-ux-spec.md` (`Approved`).
+- Integration, default-entry-point validation and cleanup: recorded below at finalization.
 
 ## Outcome And Handoff
 
