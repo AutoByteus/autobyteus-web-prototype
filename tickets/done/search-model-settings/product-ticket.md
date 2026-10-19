@@ -43,7 +43,10 @@
   a cleaner UI; only the necessary facts per model; the Hugging Face source said once; much less text. D-1-D-5 were recorded as approved because the user did not object.
 - Final references: 23 images `visual-references/VIS-001`-`VIS-021` captured after approval (`capture-references.mjs`); spec `ui-ux-spec.md` (`Approved`).
 - Requirement impact reported to the Solution Designer: DEC-005 resolved (Server Settings -> Embedding); REQ-001 facts narrowed (no licence, indexing speed, memory); REQ-004 / DEC-008 cost narrowed to download size; minimal copy.
-- Design revision, default-entry-point validation, integration and cleanup: recorded below at finalization.
+- Design revision: `4e4ac06` (approved design, spec, 23 references, runbook; branch `design/search-model-settings`, accepted base `10207c6`); this record follows as the integration commit.
+- Default-entry-point validation after integration: `Completed`. On the canonical checkout at `personal@4e4ac06`, `corepack pnpm dev --port 4693` with `final-validation.mjs` (BASE 4693) passed 87/87 (route `/settings?section=server-settings&mode=embedding`, no preview URL or preview-only state).
+- Integration: `Completed`. Fast-forward push `10207c6..4e4ac06` to `origin/personal`; the canonical checkout was fast-forwarded; local = origin.
+- Cleanup: `Completed`. Servers on ports 4691 and 4693 stopped; the worktree and local branch removed after this record (no remote ticket branch pushed).
 
 ## Outcome And Handoff
 
