@@ -130,6 +130,19 @@
             </li>
             <li class="w-full">
               <button
+                @click="activeSection = 'search'"
+                data-testid="settings-nav-search"
+                class="flex w-full items-center justify-start px-4 py-2 rounded-md transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900 group"
+                :class="{ 'bg-gray-100 text-gray-900': activeSection === 'search' }"
+              >
+                <div class="flex items-center min-w-[20px] mr-3">
+                  <span class="i-heroicons-magnifying-glass-20-solid w-5 h-5"></span>
+                </div>
+                <span class="text-left">{{ $t('settings.page.sections.search') }}</span>
+              </button>
+            </li>
+            <li class="w-full">
+              <button
                 @click="selectServerSettings()"
                 data-testid="settings-nav-server-settings"
                 class="flex w-full items-center justify-start px-4 py-2 rounded-md transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900 group"
@@ -245,6 +258,7 @@
         <TokenUsageStatistics v-if="activeSection === 'token-usage'" />
         <DisplaySettingsManager v-if="activeSection === 'display'" />
         <LanguageSettingsManager v-if="activeSection === 'language'" />
+        <SearchSettingsManager v-if="activeSection === 'search'" />
         <ExtensionsManager v-if="activeSection === 'extensions'" />
         <AboutSettingsManager v-if="activeSection === 'updates'" />
         <ToolsManagementWorkspace
@@ -280,6 +294,7 @@ import ProviderAPIKeyManager from '~/components/settings/ProviderAPIKeyManager.v
 import TokenUsageStatistics from '~/components/settings/TokenUsageStatistics.vue';
 import ServerSettingsManager from '~/components/settings/ServerSettingsManager.vue';
 import ExtensionsManager from '~/components/settings/ExtensionsManager.vue';
+import SearchSettingsManager from '~/components/settings/SearchSettingsManager.vue';
 import AboutSettingsManager from '~/components/settings/AboutSettingsManager.vue';
 import AgentPackagesManager from '~/components/settings/AgentPackagesManager.vue';
 import ApplicationPackagesManager from '~/components/settings/ApplicationPackagesManager.vue';
@@ -307,6 +322,7 @@ type SettingsSection =
   | 'mcp-servers'
   | 'application-packages'
   | 'agent-packages'
+  | 'search'
   | 'server-settings';
 type ServerSettingsMode = 'quick' | 'advanced' | 'migrations';
 
@@ -342,6 +358,7 @@ const validSections = new Set<SettingsSection>([
   'mcp-servers',
   'application-packages',
   'agent-packages',
+  'search',
   'server-settings',
 ]);
 
