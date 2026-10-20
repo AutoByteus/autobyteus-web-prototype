@@ -26,16 +26,16 @@
 - Accepted design base: `cb384e3` (`origin/personal`, 2026-10-20)
 - Source: `autobyteus-web`, selected authority `origin/personal@9227d61597fd7ef8f6324fc9092be24ed1684c8a`
 - Product acceptance result and date: `Accepted`, 2026-10-20 (see Product Acceptance)
-- Integration target and result: `personal`, `Pending`
+- Integration target and result: `personal`, `Completed`: the refresh `788c230` plus the merge of the advanced default branch (`runtime-lifecycle-review`, `43d2d7d`), integrated as `15057b4`. Conflicts in the settings messages (en, zh-CN) were resolved as the source's file plus the 59 Agent Runtimes lines. The runbook keeps both sections. tsc 0, tests 20/20; Agent Runtimes and Embedding verified in the browser.
 - Runtime isolation: the Bootstrapper uses free ports other than 3210 and 4681–4689 (design review).
-- Cleanup result or blocker: `Pending`
-- Ticket folder: `tickets/in-progress/WEB-BASELINE-REFRESH-011/`
+- Cleanup result or blocker: `Completed`: preview server 4684 stopped, worktree removed, branch deleted.
+- Ticket folder: `tickets/done/WEB-BASELINE-REFRESH-011/`
 
 ## Outcome And Handoff
 
 - Bootstrapper result: `Completed` (Refresh), report `ui-baseline-report.md`, evidence
   `evidence/WEB-BASELINE-REFRESH-011/`.
-- Next expected action: integrate into `personal`; then `settings-update-notifications` merges `personal`.
+- Next expected action: `settings-update-notifications` merges `personal`.
 
 ## Product Acceptance (2026-10-20)
 
