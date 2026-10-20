@@ -22,6 +22,21 @@ corepack pnpm dev --port 4620
   imported".
 - Reset: reload the page. Comparison runs set `autobyteus.prototype.designOnlyLayers=off`.
 
+## runtime-lifecycle-review (Settings -> Agent Runtimes; source pin unchanged `2f21134`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4701
+```
+
+- Open `/settings?section=agent-runtimes` (menu: Agent Runtimes, after API Keys). Default view: Codex up to date and not signed in (Sign in), Claude update available (Update), Antigravity not signed in (Sign in opens a terminal running `agy`: press Enter), Grok not installed (Install instructions).
+- Try: Update on Claude (steps, result, re-check); Sign in on Codex (waiting, Cancel); Sign in on Antigravity (terminal, Enter); Check again; leave the page and return.
+- Scenarios (starting state only; `localStorage.setItem('autobyteus.prototype.scenario', '<name>')`, reload; remove the key to reset): `runtimes_mac` (Grok installed), `runtimes_all_current`, `runtimes_mixed`, `runtimes_agents_running` (agents finish at 12 s / 24 s), `runtimes_update_fails`, `runtimes_signed_out`, `runtimes_sign_in_fails`, `runtimes_check_failed`, `runtimes_load_failed`.
+- Remote/Docker node window: `localStorage.setItem('autobyteus.prototype.context', 'electron_remote')`, reload (remove or set `desktop` to reset). Chinese: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`.
+- Validation: `BASE=http://127.0.0.1:4701 node tickets/done/runtime-lifecycle-review/visual-references/final-validation.mjs` (RTM-001-020, 96 checks; the page clock is paused and driven by the script).
+  Final references: `BASE=... OUT=tickets/done/runtime-lifecycle-review/visual-references/ node tickets/done/runtime-lifecycle-review/visual-references/capture-references.mjs`.
+- Reset: reload the page (in-memory state). Spec: `tickets/done/runtime-lifecycle-review/ui-ux-spec.md`.
+
 ## search-model-settings (Settings -> Server Settings -> Embedding; source pin unchanged `2f21134`)
 
 > WEB-BASELINE-REFRESH-011: the source now ships this section, and its components replaced the design-only ones. The scenario
