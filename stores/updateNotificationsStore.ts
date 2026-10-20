@@ -51,10 +51,9 @@ export const compareUrlOf = (item: SourceUpdateNotification) =>
 
 export const useUpdateNotificationsStore = defineStore('updateNotifications', () => {
   const sources = ref<SourceUpdateNotification[]>([])
-  /** The app notification's own read / skipped state (the shell persists it in production). */
+  /** The app notification's own read state (the shell persists it in production). */
   const appUnread = ref(true)
   const appFoundAt = ref<string | null>(null)
-  const appSkippedVersion = ref<string | null>(null)
   /** Per-node setting: check imported GitHub packages and skill sources in the background. */
   const backgroundChecks = ref(true)
   /** Whether this window shows the app notification (desktop: yes; a browser window of a server node: no). */
@@ -72,8 +71,7 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
   const app = useAppUpdateStore()
   const appVisible = computed(() => {
     if (!showsAppNotification.value || !app.isElectron || !app.availableVersion) return false
-    if (!['available', 'downloading', 'downloaded', 'installing', 'error'].includes(app.status)) return false
-    return app.availableVersion !== appSkippedVersion.value
+    return ['available', 'downloading', 'downloaded', 'installing', 'error'].includes(app.status)
   })
 
   const visibleSources = computed(() => sources.value)
@@ -143,12 +141,12 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
     }, 1600)
   }
 
-  /** Skip this version: the notification goes away for this revision; a newer one notifies again. */
-  const skipSource = (id: string) => {
+  /** Round 10 (user, 2026-10-20): no "Skip this version". A notification goes away when its update is done and
+   * the user clears it; a newer version replaces the waiting one (one per source). */
+  const clearSource = (id: string) => {
     sources.value = sources.value.filter((item) => item.id !== id)
     newThisVisit.value = newThisVisit.value.filter((entry) => entry !== id)
   }
-  const skipApp = () => { appSkippedVersion.value = app.availableVersion }
 
   const openCenter = (anchor: { left: number; bottom: number; side: 'above' | 'right' }) => {
     centerAnchor.value = anchor
@@ -163,8 +161,8 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
 
   return {
     centerOpen, centerAnchor, openCenter, closeCenter,
-    sources, visibleSources, appUnread, appFoundAt, appSkippedVersion, backgroundChecks, showsAppNotification,
+    sources, visibleSources, appUnread, appFoundAt, backgroundChecks, showsAppNotification,
     newThisVisit, scriptedOutcomes, appVisible, unreadCount, unreadByCategory, unreadByKind, waitingByKind, waitingByCategory, waitingCount, isEmpty,
-    markSeen, endVisit, isNew, updateSource, skipSource, skipApp,
+    markSeen, endVisit, isNew, updateSource, clearSource,
   }
 })

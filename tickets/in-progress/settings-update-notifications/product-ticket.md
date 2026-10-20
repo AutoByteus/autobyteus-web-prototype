@@ -384,7 +384,7 @@ One recommended design.
   - C-024: three cards (Software update; Agent package updates 2; Skill updates 1);
   - C-025: `many` shows three entries and "Show 2 more", and expands in place.
 
-## Round 8 Feedback And Round 9 (current proposal)
+## Round 8 Feedback And Round 9 (actions superseded by round 10)
 
 - User feedback on round 8 (2026-10-20): "Do you need this separate … notification headers and updates …? Isn't it
   already quite obvious what the user sees? … keep the UI cleaner."
@@ -399,6 +399,37 @@ One recommended design.
   - DC-035: strings `settings.notifications.center.close` and `category.updates` removed.
 - Round 9 validation (`review-evidence/round-9/r11.mjs`): **28/28**. This is the round 8 set plus C-026 (no
   visible header or group label; the name is kept; the panel takes focus).
+
+## Round 9 Feedback And Round 10 (current proposal)
+
+- User question on round 9 (2026-10-20): "do we really need the skip? … I personally have never clicked a skip … when
+  you have a new version … a new version will be shown there … when I do updates … I update to the latest. So do we
+  need this skip?"
+- Product answer, which the user accepted when asking: no.
+  - Each source has one notification, which always shows the newest version, so skipping a version and waiting
+    for the next one happens by itself.
+  - Updating always goes to the latest version.
+  - The notification is quiet: it never opens by itself, and the pill turns grey once seen.
+  - The Update checks card turns off the package and skill checks for those who never want them.
+  - Common products (VS Code, Chrome, the App Store) keep an available update until it is installed.
+  - Removing Skip also removes the need to store a skipped version for each source.
+  - Accepted cost: someone who deliberately stays on an old package keeps seeing it in the grey count.
+- Round 10: **no "Skip this version".**
+  - Each update's only action is its update: **Update** (with the skill confirmation), or **Download** then
+    **Install and restart** for the app.
+  - **Try again** appears after a failure.
+  - **Clear** removes an entry that has already been updated.
+  - A waiting notification goes away when it is updated, or is replaced when a newer version is found.
+- Note for the Solution Designer (SR-002 integration). The user decided to remove Dismiss (= skip this version)
+  from SR-001: its requirement, acceptance criteria and decision, and any skipped-version storage. The
+  notifications store no skip state.
+- Round 10 changes:
+  - DC-036: Skip buttons removed from `NotificationEntry.vue`.
+  - DC-037: the store's `skipApp` and `appSkippedVersion` are removed; `skipSource` is renamed `clearSource` (used
+    by Clear).
+  - DC-038: strings `settings.notifications.skip` and `skipHint` are removed (en, zh-CN).
+- Round 10 validation (`review-evidence/round-10/r12.mjs`): **28/28**. C-012 now checks that there is no Skip and
+  four update actions.
 
 ## Delivery And Validation
 

@@ -57,13 +57,11 @@
       <template v-if="kind === 'app'">
         <button v-if="app.status === 'available' || app.status === 'error'" type="button" :class="primary" data-testid="notification-entry-update" @click="app.downloadUpdate()">{{ t(app.status === 'error' ? 'settings.notifications.tryAgain' : 'settings.notifications.app.download') }}</button>
         <button v-if="app.status === 'downloaded'" type="button" class="rounded-md bg-emerald-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-emerald-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500" data-testid="notification-entry-install" @click="app.installUpdateAndRestart()">{{ t('settings.notifications.app.install') }}</button>
-        <button v-if="app.status === 'available' || app.status === 'error'" type="button" :class="secondary" :title="t('settings.notifications.skipHint')" data-testid="notification-entry-skip" @click="store.skipApp()">{{ t('settings.notifications.skip') }}</button>
       </template>
       <template v-else-if="item">
         <button v-if="item.state === 'waiting' || item.state === 'failed'" type="button" :class="primary" data-testid="notification-entry-update" @click="emit('update', item)">{{ t(item.state === 'failed' ? 'settings.notifications.tryAgain' : 'settings.notifications.update') }}</button>
         <span v-else-if="item.state === 'updating'" class="inline-flex items-center gap-1.5 rounded-md bg-sky-50 px-2.5 py-1 text-xs font-medium text-sky-800" role="status" data-testid="notification-entry-updating"><Icon icon="heroicons:arrow-path-20-solid" class="h-3.5 w-3.5 animate-spin motion-reduce:animate-none" aria-hidden="true" />{{ t('settings.notifications.updating') }}</span>
-        <button v-if="item.state === 'waiting' || item.state === 'failed'" type="button" :class="secondary" :title="t('settings.notifications.skipHint')" data-testid="notification-entry-skip" @click="store.skipSource(item.id)">{{ t('settings.notifications.skip') }}</button>
-        <button v-if="item.state === 'handled'" type="button" :class="secondary" data-testid="notification-entry-clear" @click="store.skipSource(item.id)">{{ t('settings.notifications.clear') }}</button>
+        <button v-if="item.state === 'handled'" type="button" :class="secondary" data-testid="notification-entry-clear" @click="store.clearSource(item.id)">{{ t('settings.notifications.clear') }}</button>
       </template>
     </div>
   </li>

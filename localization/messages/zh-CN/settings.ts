@@ -513,8 +513,6 @@ const settingsMessages = {
   "settings.notifications.compare": "在 GitHub 上查看变更",
   "settings.notifications.releasePage": "发布页面",
   "settings.notifications.update": "更新",
-  "settings.notifications.skip": "跳过此版本",
-  "settings.notifications.skipHint": "不再提醒此版本",
   "settings.notifications.clear": "清除",
   "settings.notifications.updating": "正在更新…",
   "settings.notifications.failed": "更新失败，未做任何更改。",

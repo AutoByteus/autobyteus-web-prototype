@@ -513,8 +513,6 @@ const settingsMessages = {
   "settings.notifications.compare": "See changes on GitHub",
   "settings.notifications.releasePage": "Release page",
   "settings.notifications.update": "Update",
-  "settings.notifications.skip": "Skip this version",
-  "settings.notifications.skipHint": "Don't notify me about this version again",
   "settings.notifications.clear": "Clear",
   "settings.notifications.updating": "Updating…",
   "settings.notifications.failed": "Update failed. Nothing was changed.",
