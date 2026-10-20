@@ -1,4 +1,4 @@
-import { ref, computed, onBeforeUnmount } from 'vue'
+import { ref, computed, onBeforeUnmount, watch } from 'vue'
 import { createProjectTaskContextClient } from '~/services/projects/projectTaskContextClient'
 import { useProjectTaskStore } from '~/stores/projectTaskStore'
 import { useVoiceInputStore } from '~/stores/voiceInputStore'
@@ -15,8 +15,13 @@ export function useProjectTaskDraft(projectId: string, saved?: ProjectTask, init
   // "Depends on" (same Project), starting from the dependencies that still exist, so a deleted one is never resubmitted.
   const dependsOn = ref<string[]>(saved ? dependenciesOf(saved, useProjectTaskStore().getList(projectId)?.tasks ?? []).map((t) => t.taskId) : [])
   // "Part of" (same Project): the parent that still exists (a deleted one is never resubmitted); a new Task may start with the
-  // parent the "New part" shortcut gave it.
+  // parent the "New part" shortcut gave it, while that names a current Task of this Project (checked once the list is known).
   const partOf = ref<string | null>(saved ? parentOf(saved, useProjectTaskStore().getList(projectId)?.tasks ?? [])?.taskId ?? null : initialPartOf ?? null)
+  if (!saved && initialPartOf) {
+    watch(() => useProjectTaskStore().getList(projectId)?.tasks, (tasks) => {
+      if (tasks && partOf.value === initialPartOf && !tasks.some((task) => task.taskId === initialPartOf)) partOf.value = null
+    }, {immediate: true})
+  }
   const added = new Set<string>(), removed = new Set<string>()
   const draftId = ref<string>()
   let beginPromise: Promise<string> | null = null

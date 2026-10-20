@@ -1,14 +1,14 @@
 # AutoByteus Web Design
 
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
-commit `2f211340ee36b81cef74a74b2e042b5102c269d3` (`origin/personal`,
-v1.5.6-beta.1, refreshed by `WEB-BASELINE-REFRESH-010`; previous pin
-`73f743211c8b86c704acb33f216154e42b7a67b8`). The refresh brings in the source's
-Task keys and "depends on" (two earlier design-only changes that the source now
-implements), delegated copies in a run's Settings with Stop and model change,
-the universal Team status dot, the removal of collaborators and of Teams inside
-Teams, the skill update notice, the Token Meter's per-call TPS card, the NFS
-guide and the rest of the range. The accepted design-only Reconnect change
+commit `9227d61597fd7ef8f6324fc9092be24ed1684c8a` (`origin/personal`, refreshed
+by `WEB-BASELINE-REFRESH-011`; previous pin
+`2f211340ee36b81cef74a74b2e042b5102c269d3`). The refresh brings in the source's
+"part of" between Project Tasks and its Settings → Server Settings → Embedding
+section (two approved designs, `task-part-of` and `search-model-settings`, that
+the source now implements), meaning search on the Projects board, the bulk MCP
+import's failed entries, delegated copies shown and edited from their recorded
+source, and the rest of the range. The accepted design-only Reconnect change
 (`agent-definition-reconnect-ui`) is preserved. See
 [ui-baseline-report.md](ui-baseline-report.md) for the refresh scope,
 evidence, and known gaps.

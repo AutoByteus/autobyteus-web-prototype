@@ -102,7 +102,9 @@ const localActions: Record<string, Set<string>> = {
   application: new Set(['clearError']),
   applicationPackages: new Set(['clearError']),
   agentPackages: new Set(['isPackageActionLoading', 'clearError']),
-  toolManagement: new Set(['clearError', 'clearPreviewResult']),
+  // WEB-BASELINE-REFRESH-011 (df15c43): the bulk MCP import runs the source action (its busy state disables the
+  // Import button, as in the source) against the local ImportMcpServerConfigs answer.
+  toolManagement: new Set(['clearError', 'clearPreviewResult', 'importMcpServerConfigs']),
   agentDefinition: new Set(['clearDeleteResult', 'invalidateAgentDefinitions']),
   nodeStore: new Set(['replaceSnapshot', 'persistSnapshotToLocalStorage', 'persistCurrentSnapshotToLocalStorage', 'applyRegistrySnapshot', 'ensureBrowserEmbeddedNodePresent', 'initializeRegistry', 'getNodeById', 'getNodeBaseUrl', 'upsertRegistry', 'addRemoteNode', 'removeRemoteNode', 'renameNode', 'teardownRegistryListener']),
   windowNodeContext: new Set(['initializeFromWindowContext', 'bindNodeContext', 'getBoundEndpoints', 'waitForBoundBackendReady']),
@@ -427,9 +429,6 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
     store.mcpServers = (store.mcpServers || []).filter((item: { serverId?: string }) => item.serverId !== id)
     return { success: true, message: 'Synthetic operation completed.' }
   }
-  if (store.$id === 'toolManagement' && action === 'importMcpServerConfigs') {
-    return { success: true, message: 'Synthetic operation completed.', imported_count: 1, importedCount: 1, failed_count: 0, failedCount: 0 }
-  }
   if (action === 'saveProviderApiKey') return true
   if (/^(?:enable|disable|update|refresh|save|create|delete|remove|reload|check|import|install)/i.test(action)) {
     return { success: true, message: 'Synthetic operation completed.' }
@@ -455,7 +454,12 @@ export default defineNuxtPlugin({
     // narrow window mounts the panel when its drawer opens and measures it then, as the source does.
     if (!localStorage.getItem('autobyteus.app-left-panel.primary-nav-height') && window.matchMedia('(min-width: 768px)').matches) {
       const [, initialSnapshot] = findSnapshot()
-      localStorage.setItem('autobyteus.app-left-panel.primary-nav-height', initialSnapshot?.primaryNavHeight || '300')
+      // WEB-BASELINE-REFRESH-011: an entry route without the docked panel (Settings) records no split. The source
+      // measures the panel when a later in-app navigation mounts it, after the capabilities resolved, as on its
+      // workspace route; use that scenario's workspace split.
+      const mountedLater = initialSnapshot?.primaryNavHeight ? null : Object.values(snapshots).find(value =>
+        value.item.scenario === scenario() && (value.item.mobile || 'desktop') === context() && canonicalPath(value.item.path) === '/workspace')
+      localStorage.setItem('autobyteus.app-left-panel.primary-nav-height', initialSnapshot?.primaryNavHeight || mountedLater?.primaryNavHeight || '300')
     }
     const pinia = nuxtApp.$pinia as PrototypePinia
     const router = nuxtApp.$router as Router

@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-10-20T06:49:38.624Z",
+  "base": "http://127.0.0.1:4620",
+  "results": [
+    {
+      "id": "DCE-001 copies show their current Task",
+      "ok": true,
+      "detail": [
+        "Token Meter accuracy: the context fill reads 97% right after compaction",
+        "Package the release-notes agent for the agent store",
+        "Members of a delegated team can't reach the agent package creator",
+        "Draft an onboarding agent package for the pilot customers",
+        "Image context files don't reach the model on the first turn"
+      ]
+    },
+    {
+      "id": "DCE-002 a summary shows its Task on its Project board (AutoByteus, renamed by task-keys-and-dependencies)",
+      "ok": true,
+      "detail": {
+        "board": "AutoByteus",
+        "focused": "project-task-row-dct-image-context"
+      }
+    },
+    {
+      "id": "DCE-003 a Temp task summary shows the Temp tasks board",
+      "ok": true,
+      "detail": {
+        "board": "Temp tasks",
+        "focused": "project-task-row-dct-temp-onboarding"
+      }
+    },
+    {
+      "id": "DCE-004 no browser error and no non-local request",
+      "ok": true,
+      "detail": {
+        "errors": [],
+        "external": []
+      }
+    }
+  ]
+}

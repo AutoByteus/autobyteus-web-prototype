@@ -1,0 +1,3454 @@
+{
+  "generatedAt": "2026-10-20T04:57:39.295Z",
+  "results": [
+    {
+      "id": "EMB-002",
+      "title": "Embedding: download a model ahead; progress",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"embedding-model-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "embedding-model-granite-embedding-small-english-r2",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "IBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nReady\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB",
+            "rect": [
+              314,
+              136,
+              1052,
+              106
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(239, 246, 255, 0.4)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-model-mdbr-leaf-ir",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "MongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove",
+            "rect": [
+              314,
+              242,
+              1052,
+              107
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-model-embeddinggemma-2",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Google EmbeddingGemma 2\n\nDownloading\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\n173 of 346 MB · 50%\n\nCancel",
+            "rect": [
+              314,
+              349,
+              1052,
+              147
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          }
+        ],
+        "[data-testid$=\"-progress\"]": [
+          {
+            "tag": "DIV",
+            "test": "embedding-model-embeddinggemma-2-progress",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "173 of 346 MB · 50%",
+            "rect": [
+              330,
+              452,
+              215.9,
+              28
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "215.891px"
+            }
+          }
+        ],
+        "[data-testid$=\"-status\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-model-granite-embedding-small-english-r2-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Active\n·\nReady",
+            "rect": [
+              330,
+              180,
+              356.6,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "356.562px"
+            }
+          },
+          {
+            "tag": "P",
+            "test": "embedding-model-mdbr-leaf-ir-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Downloaded",
+            "rect": [
+              330,
+              287,
+              139.5,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "139.5px"
+            }
+          },
+          {
+            "tag": "P",
+            "test": "embedding-model-embeddinggemma-2-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Downloading",
+            "rect": [
+              330,
+              394,
+              215.9,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "215.891px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-prototype-launch-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready · 5 Tasks",
+            "rect": [
+              652,
+              690,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          }
+        ],
+        "[data-testid=\"embedding-disk-total\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-disk-total",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "On disk: 79 MB",
+            "rect": [
+              1269,
+              61,
+              98,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "98.0156px"
+            }
+          }
+        ],
+        "[data-testid^=\"embedding-project-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-prototype-launch",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Prototype Launch\n\nReady · 5 Tasks\nRebuild",
+            "rect": [
+              314,
+              672,
+              1052,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          }
+        ],
+        "[data-testid^=\"embedding-filter-\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-all",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "All 1",
+            "rect": [
+              313,
+              633,
+              27,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(26, 26, 26)",
+              "border-top-color": "rgb(59, 130, 246)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "27px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-needs",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Needs indexing 0",
+            "rect": [
+              360,
+              633,
+              112.1,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "112.062px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-indexing",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Indexing 0",
+            "rect": [
+              492.1,
+              633,
+              67,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "67px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-ready",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready 1",
+            "rect": [
+              579.1,
+              633,
+              50.3,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "50.25px"
+            }
+          }
+        ],
+        "[data-testid=\"embedding-announce\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-announce",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              287,
+              39,
+              1,
+              1
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=embedding",
+        "/settings?section=server-settings&mode=embedding"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "EMB-017",
+      "title": "Embedding (many Projects): find a Project",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"embedding-model-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "embedding-model-granite-embedding-small-english-r2",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "IBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nReady\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB",
+            "rect": [
+              314,
+              136,
+              1052,
+              106
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(239, 246, 255, 0.4)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-model-mdbr-leaf-ir",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "MongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove",
+            "rect": [
+              314,
+              242,
+              1052,
+              107
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-model-embeddinggemma-2",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Google EmbeddingGemma 2\n\nNot downloaded\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\nDownload\nUse this model",
+            "rect": [
+              314,
+              349,
+              1052,
+              107
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          }
+        ],
+        "[data-testid$=\"-status\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-model-granite-embedding-small-english-r2-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Active\n·\nReady",
+            "rect": [
+              330,
+              180,
+              356.6,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "356.562px"
+            }
+          },
+          {
+            "tag": "P",
+            "test": "embedding-model-mdbr-leaf-ir-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Downloaded",
+            "rect": [
+              330,
+              287,
+              139.5,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "139.5px"
+            }
+          },
+          {
+            "tag": "P",
+            "test": "embedding-model-embeddinggemma-2-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Not downloaded",
+            "rect": [
+              330,
+              394,
+              215.9,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "215.891px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-marketing-site-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Not indexed",
+            "rect": [
+              652,
+              658,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          }
+        ],
+        "[data-testid=\"embedding-disk-total\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-disk-total",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "On disk: 79 MB",
+            "rect": [
+              1269,
+              61,
+              98,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "98.0156px"
+            }
+          }
+        ],
+        "[data-testid^=\"embedding-project-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-marketing-site",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Marketing Site\n\nNot indexed\nIndex now",
+            "rect": [
+              314,
+              640,
+              1052,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          }
+        ],
+        "[data-testid^=\"embedding-filter-\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-all",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "All 11",
+            "rect": [
+              313,
+              597,
+              33.6,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(26, 26, 26)",
+              "border-top-color": "rgb(59, 130, 246)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "33.5625px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-needs",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Needs indexing 3",
+            "rect": [
+              366.6,
+              597,
+              112,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "112.031px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-indexing",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Indexing 0",
+            "rect": [
+              498.6,
+              597,
+              67,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "67px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-ready",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready 8",
+            "rect": [
+              585.6,
+              597,
+              52.7,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "52.7031px"
+            }
+          }
+        ],
+        "[data-testid=\"embedding-announce\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-announce",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              287,
+              39,
+              1,
+              1
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1px"
+            }
+          }
+        ],
+        "focused": "embedding-project-find",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=embedding",
+        "/settings?section=server-settings&mode=embedding"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "EMB-018",
+      "title": "Embedding (many Projects): find with no match",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"embedding-model-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "embedding-model-granite-embedding-small-english-r2",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "IBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nReady\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB",
+            "rect": [
+              314,
+              136,
+              1052,
+              106
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(239, 246, 255, 0.4)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-model-mdbr-leaf-ir",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "MongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove",
+            "rect": [
+              314,
+              242,
+              1052,
+              107
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-model-embeddinggemma-2",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Google EmbeddingGemma 2\n\nNot downloaded\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\nDownload\nUse this model",
+            "rect": [
+              314,
+              349,
+              1052,
+              107
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          }
+        ],
+        "[data-testid$=\"-status\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-model-granite-embedding-small-english-r2-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Active\n·\nReady",
+            "rect": [
+              330,
+              180,
+              356.6,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "356.562px"
+            }
+          },
+          {
+            "tag": "P",
+            "test": "embedding-model-mdbr-leaf-ir-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Downloaded",
+            "rect": [
+              330,
+              287,
+              139.5,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "139.5px"
+            }
+          },
+          {
+            "tag": "P",
+            "test": "embedding-model-embeddinggemma-2-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Not downloaded",
+            "rect": [
+              330,
+              394,
+              215.9,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "215.891px"
+            }
+          }
+        ],
+        "[data-testid=\"embedding-disk-total\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-disk-total",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "On disk: 79 MB",
+            "rect": [
+              1269,
+              61,
+              98,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "98.0156px"
+            }
+          }
+        ],
+        "[data-testid^=\"embedding-filter-\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-all",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "All 11",
+            "rect": [
+              313,
+              597,
+              33.6,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(26, 26, 26)",
+              "border-top-color": "rgb(59, 130, 246)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "33.5625px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-needs",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Needs indexing 3",
+            "rect": [
+              366.6,
+              597,
+              112,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "112.031px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-indexing",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Indexing 0",
+            "rect": [
+              498.6,
+              597,
+              67,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "67px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-ready",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready 8",
+            "rect": [
+              585.6,
+              597,
+              52.7,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "52.7031px"
+            }
+          }
+        ],
+        "[data-testid=\"embedding-announce\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-announce",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              287,
+              39,
+              1,
+              1
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1px"
+            }
+          }
+        ],
+        "focused": "embedding-project-find",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=embedding",
+        "/settings?section=server-settings&mode=embedding"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "EMB-029",
+      "title": "Embedding (many Projects): the list with Find",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"embedding-model-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "embedding-model-granite-embedding-small-english-r2",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "IBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nReady\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB",
+            "rect": [
+              314,
+              136,
+              1052,
+              106
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(239, 246, 255, 0.4)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-model-mdbr-leaf-ir",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "MongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove",
+            "rect": [
+              314,
+              242,
+              1052,
+              107
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-model-embeddinggemma-2",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Google EmbeddingGemma 2\n\nNot downloaded\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\nDownload\nUse this model",
+            "rect": [
+              314,
+              349,
+              1052,
+              107
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          }
+        ],
+        "[data-testid$=\"-status\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-model-granite-embedding-small-english-r2-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Active\n·\nReady",
+            "rect": [
+              330,
+              180,
+              356.6,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "356.562px"
+            }
+          },
+          {
+            "tag": "P",
+            "test": "embedding-model-mdbr-leaf-ir-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Downloaded",
+            "rect": [
+              330,
+              287,
+              139.5,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "139.5px"
+            }
+          },
+          {
+            "tag": "P",
+            "test": "embedding-model-embeddinggemma-2-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Not downloaded",
+            "rect": [
+              330,
+              394,
+              215.9,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "215.891px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-agent-runtime-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready · 63 Tasks",
+            "rect": [
+              652,
+              658,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-billing-cleanup-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Needs update · 4 changed",
+            "rect": [
+              652,
+              715,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-docs-portal-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready · 28 Tasks",
+            "rect": [
+              652,
+              772,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-field-survey-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Not indexed",
+            "rect": [
+              652,
+              829,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-help-center-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready · 35 Tasks",
+            "rect": [
+              652,
+              886,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-marketing-site-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Not indexed",
+            "rect": [
+              652,
+              943,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-mobile-shell-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready · 22 Tasks",
+            "rect": [
+              652,
+              1000,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-partner-api-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready · 14 Tasks",
+            "rect": [
+              652,
+              1057,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-prototype-launch-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready · 5 Tasks",
+            "rect": [
+              652,
+              1114,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          }
+        ],
+        "[data-testid=\"embedding-disk-total\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-disk-total",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "On disk: 79 MB",
+            "rect": [
+              1269,
+              61,
+              98,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "98.0156px"
+            }
+          }
+        ],
+        "[data-testid^=\"embedding-project-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-agent-runtime",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtime\n\nReady · 63 Tasks\nRebuild",
+            "rect": [
+              314,
+              640,
+              1052,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-billing-cleanup",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Billing Cleanup\n\nNeeds update · 4 changed\nIndex now\nRebuild",
+            "rect": [
+              314,
+              696,
+              1052,
+              57
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-docs-portal",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Docs Portal\n\nReady · 28 Tasks\nRebuild",
+            "rect": [
+              314,
+              753,
+              1052,
+              57
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-field-survey",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Field Survey\n\nNot indexed\nIndex now",
+            "rect": [
+              314,
+              810,
+              1052,
+              57
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-help-center",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Help Center\n\nReady · 35 Tasks\nRebuild",
+            "rect": [
+              314,
+              867,
+              1052,
+              57
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-marketing-site",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Marketing Site\n\nNot indexed\nIndex now",
+            "rect": [
+              314,
+              924,
+              1052,
+              57
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-mobile-shell",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Mobile Shell\n\nReady · 22 Tasks\nRebuild",
+            "rect": [
+              314,
+              981,
+              1052,
+              57
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-partner-api",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Partner API\n\nReady · 14 Tasks\nRebuild",
+            "rect": [
+              314,
+              1038,
+              1052,
+              57
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-prototype-launch",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Prototype Launch\n\nReady · 5 Tasks\nRebuild",
+            "rect": [
+              314,
+              1095,
+              1052,
+              57
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-release-notes",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Release Notes\n\nReady · 9 Tasks\nRebuild",
+            "rect": [
+              314,
+              1152,
+              1052,
+              57
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-usage-reports",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Usage Reports\n\nReady · 11 Tasks\nRebuild",
+            "rect": [
+              314,
+              1209,
+              1052,
+              57
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          }
+        ],
+        "[data-testid^=\"embedding-filter-\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-all",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "All 11",
+            "rect": [
+              313,
+              597,
+              33.6,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(26, 26, 26)",
+              "border-top-color": "rgb(59, 130, 246)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "33.5625px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-needs",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Needs indexing 3",
+            "rect": [
+              366.6,
+              597,
+              112,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "112.031px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-indexing",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Indexing 0",
+            "rect": [
+              498.6,
+              597,
+              67,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "67px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-ready",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready 8",
+            "rect": [
+              585.6,
+              597,
+              52.7,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "52.7031px"
+            }
+          }
+        ],
+        "[data-testid=\"embedding-announce\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-announce",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              287,
+              39,
+              1,
+              1
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=embedding",
+        "/settings?section=server-settings&mode=embedding"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "EMB-030",
+      "title": "Embedding (many Projects): Needs indexing filter",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"embedding-model-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "embedding-model-granite-embedding-small-english-r2",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "IBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nReady\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB",
+            "rect": [
+              314,
+              136,
+              1052,
+              106
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(239, 246, 255, 0.4)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-model-mdbr-leaf-ir",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "MongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove",
+            "rect": [
+              314,
+              242,
+              1052,
+              107
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-model-embeddinggemma-2",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Google EmbeddingGemma 2\n\nNot downloaded\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\nDownload\nUse this model",
+            "rect": [
+              314,
+              349,
+              1052,
+              107
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          }
+        ],
+        "[data-testid$=\"-status\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-model-granite-embedding-small-english-r2-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Active\n·\nReady",
+            "rect": [
+              330,
+              180,
+              356.6,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "356.562px"
+            }
+          },
+          {
+            "tag": "P",
+            "test": "embedding-model-mdbr-leaf-ir-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Downloaded",
+            "rect": [
+              330,
+              287,
+              139.5,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "139.5px"
+            }
+          },
+          {
+            "tag": "P",
+            "test": "embedding-model-embeddinggemma-2-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Not downloaded",
+            "rect": [
+              330,
+              394,
+              215.9,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "215.891px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-billing-cleanup-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Needs update · 4 changed",
+            "rect": [
+              652,
+              658,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-field-survey-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Not indexed",
+            "rect": [
+              652,
+              715,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-marketing-site-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Not indexed",
+            "rect": [
+              652,
+              772,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          }
+        ],
+        "[data-testid=\"embedding-disk-total\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-disk-total",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "On disk: 79 MB",
+            "rect": [
+              1269,
+              61,
+              98,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "98.0156px"
+            }
+          }
+        ],
+        "[data-testid^=\"embedding-project-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-billing-cleanup",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Billing Cleanup\n\nNeeds update · 4 changed\nIndex now\nRebuild",
+            "rect": [
+              314,
+              640,
+              1052,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-field-survey",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Field Survey\n\nNot indexed\nIndex now",
+            "rect": [
+              314,
+              696,
+              1052,
+              57
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-marketing-site",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Marketing Site\n\nNot indexed\nIndex now",
+            "rect": [
+              314,
+              753,
+              1052,
+              57
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          }
+        ],
+        "[data-testid^=\"embedding-filter-\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-all",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "All 11",
+            "rect": [
+              313,
+              597,
+              32.5,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "32.5469px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-needs",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Needs indexing 3",
+            "rect": [
+              365.5,
+              597,
+              114.3,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(26, 26, 26)",
+              "border-top-color": "rgb(59, 130, 246)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.281px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-indexing",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Indexing 0",
+            "rect": [
+              499.8,
+              597,
+              67,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "67px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-ready",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready 8",
+            "rect": [
+              586.8,
+              597,
+              52.7,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "52.7031px"
+            }
+          }
+        ],
+        "[data-testid=\"embedding-announce\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-announce",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              287,
+              39,
+              1,
+              1
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1px"
+            }
+          }
+        ],
+        "focused": "embedding-filter-needs",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=embedding",
+        "/settings?section=server-settings&mode=embedding"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SRC-004",
+      "title": "Board search while meaning search prepares (after a model switch)",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid$=\"-progress\"]": [
+          {
+            "tag": "SPAN",
+            "test": "task-parts-progress",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": "1 of 2 done · 1 cancelled",
+            "text": "1 of 2 done",
+            "rect": [
+              372,
+              403,
+              97.6,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(248, 250, 252)",
+              "color": "rgb(71, 85, 105)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(226, 232, 240) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "97.625px"
+            }
+          }
+        ],
+        "[data-testid$=\"-status\"]": [
+          {
+            "tag": "P",
+            "test": "project-tasks-meaning-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Preparing meaning search: downloading the model (58 of 346 MB)…",
+            "rect": [
+              355,
+              242,
+              1053,
+              16
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(100, 116, 139)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"project-tasks-meaning-status\"]": [
+          {
+            "tag": "P",
+            "test": "project-tasks-meaning-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Preparing meaning search: downloading the model (58 of 346 MB)…",
+            "rect": [
+              355,
+              242,
+              1053,
+              16
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(100, 116, 139)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid^=\"project-task-row-task-\"]": [
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-outline",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Outline the launch checklist.\nDependency cancelled:\nprototype-launch-5\n1 of 2 done",
+            "rect": [
+              356,
+              331,
+              338.3,
+              106
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "338.328px"
+            }
+          }
+        ],
+        "[data-testid=\"task-parts-progress\"]": [
+          {
+            "tag": "SPAN",
+            "test": "task-parts-progress",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": "1 of 2 done · 1 cancelled",
+            "text": "1 of 2 done",
+            "rect": [
+              372,
+              403,
+              97.6,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(248, 250, 252)",
+              "color": "rgb(71, 85, 105)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(226, 232, 240) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "97.625px"
+            }
+          }
+        ],
+        "focused": "project-tasks-search-input",
+        "sendDisabled": []
+      },
+      "noise": null,
+      "pixels": {
+        "changed": 6100,
+        "max": 178,
+        "low": 110
+      },
+      "route": [
+        "/projects/project-prototype-launch",
+        "/projects/project-prototype-launch"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRT-009",
+      "title": "Projects tab: the parent with its parts",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid$=\"-status\"]": [
+          {
+            "tag": "SPAN",
+            "test": "projects-panel-task-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "To Do",
+            "rect": [
+              1361.9,
+              189,
+              49.1,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(241, 245, 249)",
+              "color": "rgb(51, 65, 85)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(226, 232, 240) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "49.0625px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "task-part-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "In Progress",
+            "rect": [
+              1157.6,
+              320,
+              81.3,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(239, 246, 255)",
+              "color": "rgb(30, 64, 175)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(191, 219, 254) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "81.3281px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "task-part-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Done",
+            "rect": [
+              1157.8,
+              354,
+              64.2,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(236, 253, 245)",
+              "color": "rgb(6, 95, 70)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(167, 243, 208) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "64.1719px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "task-part-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Cancelled",
+            "rect": [
+              1157.5,
+              388,
+              73.3,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(100, 116, 139)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(203, 213, 225) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "73.3438px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "task-dependency-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Cancelled",
+            "rect": [
+              1157.5,
+              534,
+              73.3,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(100, 116, 139)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(203, 213, 225) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "73.3438px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "task-dependency-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "In Progress",
+            "rect": [
+              1157.6,
+              608,
+              81.3,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(239, 246, 255)",
+              "color": "rgb(30, 64, 175)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(191, 219, 254) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "81.3281px"
+            }
+          }
+        ],
+        "[data-testid=\"task-parts\"]": [
+          {
+            "tag": "SECTION",
+            "test": "task-parts",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Parts\n\n1 of 2 done · 1 cancelled\n\nprototype-launch-3\nIn Progress\nTranslate the release summary.\nprototype-launch-4\nDone\n",
+            "rect": [
+              1002,
+              275,
+              426,
+              202
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "12px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "426px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

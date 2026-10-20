@@ -1,0 +1,13 @@
+PASS FLW-001 Expand workspace history (Teams and Orgs groups) text=true px=1 max=6   srcErr=0 protoErr=0
+PASS FLW-002 Open stored team run from workspace history text=true px=0 max=0   srcErr=0 protoErr=0
+PASS FLW-003 Open stored Agent Org run from workspace history text=true px=0 max=0   srcErr=0 protoErr=0
+PASS FLW-004 Agent catalog Run opens workspace launch configuration text=true px=0 max=0   srcErr=0 protoErr=0
+PASS FLW-005 Team catalog Run opens Team launch configuration text=true px=0 max=0   srcErr=0 protoErr=0
+PASS FLW-006 Agent Org catalog Run opens Org launch configuration text=true px=0 max=0   srcErr=0 protoErr=0
+PASS FLW-009 Agent Org create: required validation text=true px=1 max=2   srcErr=0 protoErr=0
+PASS FLW-010 Primary navigation to Projects text=true px=0 max=0   srcErr=0 protoErr=0
+PASS FLW-011 Stored team run: focus writer member text=true px=0 max=0   srcErr=0 protoErr=0
+PASS FLW-012 Stored team run: compose a chat message text=true px=0 max=0   srcErr=0 protoErr=0
+PASS FLW-013 Team catalog Run opens New chat preset to the Team, ready to launch (the launch outcome is scripted; see team-launch-outcome/) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS FLW-014 Agent catalog Run (Research Assistant) opens New chat preset to the agent text=true px=0 max=0   srcErr=0 protoErr=0
+PASS FLW-015 Stored Agent Org run: open analyst member conversation text=true px=0 max=0   srcErr=0 protoErr=0

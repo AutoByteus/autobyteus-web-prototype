@@ -1,0 +1,41 @@
+PASS PRJ-001 Workspace: the Projects tab is first in the right panel and shows the board text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-002 Projects tab: choose Temp tasks in the picker text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-003 Projects tab: a card opens its Task inside the tab text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-004 Projects tab: back from the Task to the board text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-005 Projects tab: a Temp task opens inside the tab text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-006 Chat run: Projects tab beside the conversation text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-007 Projects tab (zh-CN) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-010 Projects: Temp tasks link opens the Temp tasks board text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-011 Temp tasks: a card opens the Temp task page text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-012 Task page: the running root opens its conversation in the hosting run text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-013 Board: the root line of a card opens the worker text=true px=0 max=0   srcErr=0 protoErr=0
+FAIL PRJ-014 Board: search filters cards text=true px=0 max=0 SRC-STEP step 1: locator.fill: Timeout 10000ms exceeded. PROTO-STEP step 1: locator.fill: Timeout 10000ms exceeded. srcErr=0 protoErr=0
+PASS PRJ-015 Task page: a root that could not start shows its error text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-016 Task page: a closed (DONE) team root is muted, not openable text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-020 Edit Project: Workspaces tab text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-021 Edit Project: add a workspace row text=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRJ-022 Project Workspaces tab text=true px=0 max=0   srcErr=0 protoErr=0
+PASS WSH-001 Workspaces tree: runs with task rows; closed Task team left out text=true px=0 max=0   srcErr=0 protoErr=0
+PASS WSH-002 Workspaces tree: agent group header shows Archive all on hover text=true px=0 max=0   srcErr=0 protoErr=0
+PASS WSH-003 Workspaces tree: Archive all asks for confirmation text=true px=0 max=0   srcErr=0 protoErr=0
+PASS WSH-004 Workspaces tree: confirm Archive all text=true px=0 max=0   srcErr=0 protoErr=0
+PASS WSH-005 Workspaces tree: open the stored agent run with its task worker rows text=true px=0 max=0   srcErr=0 protoErr=0
+PASS RST-001 New chat: open the target switcher text=true px=0 max=0   srcErr=0 protoErr=0
+PASS RST-002 New chat: switcher search filters text=true px=0 max=0   srcErr=0 protoErr=0
+PASS RST-003 New chat: choose a Team (members line) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS RST-004 New chat: open the Team member settings drawer text=true px=0 max=0   srcErr=0 protoErr=0
+PASS RST-005 New chat: choose an Agent Org (Org launch page) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS RST-006 New chat: Codex model with effort and Fast mode text=true px=0 max=0   srcErr=0 protoErr=0
+PASS RST-007 New chat: turn Fast mode on text=true px=0 max=0   srcErr=0 protoErr=0
+PASS RST-008 New chat: show the right-side tools text=true px=0 max=0   srcErr=0 protoErr=0
+PASS RST-009 Chat run: saved-run settings (Edit Config) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS RST-010 Stored agent run: saved-run settings text=true px=0 max=0   srcErr=0 protoErr=0
+PASS RST-011 Stored team run: saved-run settings with members text=true px=0 max=0   srcErr=0 protoErr=0
+PASS RST-012 New chat (390x844): target switcher text=true px=0 max=0   srcErr=0 protoErr=0
+PASS DRF-001 New chat: typed text becomes a Draft row under Chat after leaving text=true px=4 max=17   srcErr=0 protoErr=0
+PASS DRF-002 Draft row reopens the New chat with its text text=true px=0 max=0   srcErr=0 protoErr=0
+PASS DRF-003 Draft row discard text=true px=4 max=17   srcErr=0 protoErr=0
+PASS HOST-001 Desktop host: New chat workspace menu offers Browse… text=true px=0 max=0   srcErr=0 protoErr=0
+PASS HOST-002 Desktop host: Browse… fills the chosen folder path text=true px=0 max=0   srcErr=0 protoErr=0
+PASS HOST-003 Desktop host: Workspaces + adds a folder through the native picker text=true px=0 max=0   srcErr=0 protoErr=0
+PASS MEN-001 Chat run: @ lists agents and teams text=true px=0 max=0   srcErr=0 protoErr=0

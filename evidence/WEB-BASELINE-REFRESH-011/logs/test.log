@@ -1,0 +1,16 @@
+
+> autobyteus-web-design@0.1.0 test /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-011
+> vitest run
+
+
+ RUN  v3.2.7 /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-011
+
+ ✓ prototype/tests/host-scenario.test.ts (3 tests) 7ms
+ ✓ prototype/tests/token-statistics-refresh-fixture.test.ts (4 tests) 8ms
+ ✓ prototype/tests/fixture-contract.test.ts (13 tests) 32ms
+
+ Test Files  3 passed (3)
+      Tests  20 passed (20)
+   Start at  09:31:40
+   Duration  756ms (transform 192ms, setup 0ms, collect 373ms, tests 48ms, environment 1ms, prepare 238ms)
+

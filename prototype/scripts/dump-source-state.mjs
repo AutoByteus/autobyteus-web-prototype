@@ -22,7 +22,7 @@ const routes = [
   // WEB-BASELINE-REFRESH-008 (4d469b0): a Task page with its root, and the Temp tasks pages.
   '/projects/project-prototype-launch/tasks/task-review', '/projects/temp-tasks', '/projects/temp-tasks/tasks/temp-task-links',
   '/workspace', '/tools', '/media',
-  ...['api-keys', 'token-usage', 'display', 'language', 'local-tools', 'mcp-servers', 'application-packages', 'agent-packages', 'server-settings&mode=quick', 'server-settings&mode=advanced', 'server-settings&mode=migrations', 'extensions', 'updates'].map(section => `/settings?section=${section}`),
+  ...['api-keys', 'token-usage', 'display', 'language', 'local-tools', 'mcp-servers', 'application-packages', 'agent-packages', 'server-settings&mode=quick', 'server-settings&mode=embedding', 'server-settings&mode=advanced', 'server-settings&mode=migrations', 'extensions', 'updates'].map(section => `/settings?section=${section}`),
 ]
 
 const scenarios = routes.map(path => ({ path, scenario: 'populated', locale: 'en' }))
@@ -48,6 +48,13 @@ scenarios.push(
   { path: '/chat', scenario: 'agy_signed_out', locale: 'en' },
   // WEB-BASELINE-REFRESH-010: live stored runs.
   { path: '/workspace', scenario: 'live_runs', locale: 'en' },
+  // WEB-BASELINE-REFRESH-011: Embedding states.
+  { path: '/settings?section=server-settings&mode=embedding', scenario: 'embedding_busy', locale: 'en' },
+  { path: '/settings?section=server-settings&mode=embedding', scenario: 'embedding_unavailable', locale: 'en' },
+  { path: '/settings?section=server-settings&mode=embedding', scenario: 'embedding_load_failed', locale: 'en' },
+  { path: '/settings?section=server-settings&mode=embedding', scenario: 'embedding_offline', locale: 'en' },
+  { path: '/settings?section=server-settings&mode=embedding', scenario: 'embedding_many', locale: 'en' },
+  { path: '/settings?section=server-settings&mode=embedding', scenario: 'empty', locale: 'en' },
   { path: '/mobile', scenario: 'populated', locale: 'en', mobile: 'unpaired' },
   { path: '/mobile', scenario: 'populated', locale: 'en', mobile: 'paired' },
   { path: '/mobile?unsupported=desktopSettings', scenario: 'populated', locale: 'en', mobile: 'paired' },
@@ -81,6 +88,12 @@ try {
     page.on('pageerror', e => errors.push(e.message))
     await page.goto(sourceBaseUrl + item.path, { waitUntil: 'domcontentloaded', timeout: 30000 })
     await page.waitForTimeout(item.waitMs ?? 1700)
+    // WEB-BASELINE-REFRESH-011: a busy machine can capture a route before its runtime availability reads
+    // answered (a 'pending' request would hide those runtimes in the baseline); wait up to 8 s for them.
+    await page.waitForFunction(() => {
+      const requests = window.useNuxtApp?.()?.$pinia?.state?.value?.runtimeAvailability?.requestsByKind
+      return !requests || Object.values(requests).every(request => request?.status !== 'pending')
+    }, null, { timeout: 8000, polling: 100 }).catch(() => {})
     const captured = await page.evaluate(() => {
       if (typeof window.useNuxtApp !== 'function') {
         return { actualPath: location.pathname + location.search, state: {}, stores: {}, bodyText: document.body.innerText, bootstrapPending: true }

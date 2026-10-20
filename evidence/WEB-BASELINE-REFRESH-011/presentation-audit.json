@@ -1,0 +1,92 @@
+{
+ "sourcePin": "9227d61597fd7ef8f6324fc9092be24ed1684c8a",
+ "previousPin": "2f211340ee36b81cef74a74b2e042b5102c269d3",
+ "identicalUiFiles": 1058,
+ "differingFiles": [
+  {
+   "path": "components/conversation/segments/ErrorSegment.vue",
+   "reason": "agent-definition-reconnect-ui (design-only, preserved)"
+  },
+  {
+   "path": "components/run-settings/ExistingRunSettings.vue",
+   "reason": "agent-definition-reconnect-ui re-applied onto 9227d61 (rootRunId prop + reconnect notes)"
+  },
+  {
+   "path": "components/run-settings/RunMemberRow.vue",
+   "reason": "agent-definition-reconnect-ui re-applied onto 9227d61 (\"Agent missing ·\" prefix)"
+  },
+  {
+   "path": "components/workspace/agent/AgentEventMonitor.vue",
+   "reason": "agent-definition-reconnect-ui; 3-way merged onto 9227d61 (composer notice)"
+  },
+  {
+   "path": "components/workspace/config/ExistingRunConfigEditor.vue",
+   "reason": "agent-definition-reconnect-ui; 3-way merged onto 9227d61 (root-run-id)"
+  },
+  {
+   "path": "components/workspace/history/WorkspaceHistoryWorkspaceSection.vue",
+   "reason": "agent-definition-reconnect-ui re-applied onto 9227d61 (missing-agent mark, no new run)"
+  },
+  {
+   "path": "components/workspace/history/WorkspaceStableExecutionRow.vue",
+   "reason": "agent-definition-reconnect-ui re-applied onto 9227d61; the source's row structure renders when no agent is missing"
+  },
+  {
+   "path": "components/workspace/history/WorkspaceTransientExecutionRow.vue",
+   "reason": "agent-definition-reconnect-ui re-applied onto 9227d61; the source's row structure renders when no agent is missing"
+  },
+  {
+   "path": "localization/messages/en/index.ts",
+   "reason": "agent-definition-reconnect-ui (registers the reconnect messages); 3-way merged onto 9227d61 (embeddingSettings messages)"
+  },
+  {
+   "path": "localization/messages/zh-CN/index.ts",
+   "reason": "agent-definition-reconnect-ui (registers the reconnect messages); 3-way merged onto 9227d61 (embeddingSettings messages)"
+  },
+  {
+   "path": "nuxt.config.ts",
+   "reason": "design-owned (local GraphQL/WebSocket endpoints, offline assets)"
+  },
+  {
+   "path": "package.json",
+   "reason": "design-owned (file: contract dependencies, baseline scripts)"
+  },
+  {
+   "path": "tsconfig.json",
+   "reason": "design-owned"
+  },
+  {
+   "path": "utils/apolloClient.ts",
+   "reason": "design-owned local answer adapter (REFRESH-011: Embedding mutations, ImportMcpServerConfigs, scripted read failures)"
+  }
+ ],
+ "sourceFilesNotInBaseline": [
+  "Dockerfile",
+  "LICENSE",
+  "codegen.ts",
+  "dist-scripts/build.js",
+  "docker-compose.dev.yml",
+  "docker-compose.prod.yml",
+  "docker-compose.yml",
+  "modules/devhandler-compat.ts",
+  "modules/electron/index.ts",
+  "modules/electron/package.json",
+  "nuxt.electron.config.ts",
+  "plugins/06.appFontSize.client.ts",
+  "plugins/10.serverStore.client.ts",
+  "plugins/15.appUpdater.client.ts",
+  "plugins/20.windowNodeBootstrap.client.ts",
+  "plugins/21.mobileRemoteAccessBootstrap.client.ts",
+  "plugins/25.browserShell.client.ts",
+  "plugins/30.apollo.client.ts",
+  "plugins/apolloErrorLink.client.ts",
+  "plugins/uiErrorCapture.client.ts",
+  "vitest.config.mts"
+ ],
+ "sourceFilesNotInBaselineNote": "Source infrastructure the baseline replaces (Electron/Docker/build files and the source plugins replaced by plugins/00 and 10). None of them changed in 2f21134..9227d61.",
+ "sourceWins": [
+  "task-part-of: ProjectTaskDetail.vue, ProjectTaskDraftEditor.vue, ProjectTaskRow.vue, ProjectsPanelTaskDetail.vue, TaskPartOfPicker.vue, useProjectTaskDraft.ts, projectTaskQueries.ts, projectTaskStore.ts, types/project.ts, localization projects (en, zh-CN), generated/graphql.ts",
+  "search-model-settings: components/settings/embedding/*, composables/settings/useEmbeddingSettings.ts, ServerSettingsManager.vue, pages/settings.vue, localization settings and embeddingSettings (en, zh-CN); removed design-only SearchSettingsManager.vue, SearchModelsCard.vue, SearchProjectIndexesCard.vue, SearchModelSwitchDialog.vue and prototype/search-settings/"
+ ],
+ "vendoredContracts": "src and dist of the contract packages synced to 9227d61 (35675e3: every delegated copy carries its recorded source; be00680: content batch frames). application-sdk-contracts src is unchanged in the range; its built dist is the vendored one. package.json file: dependency lines kept."
+}

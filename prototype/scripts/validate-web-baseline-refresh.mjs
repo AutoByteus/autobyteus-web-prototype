@@ -49,6 +49,8 @@ export const ROUTES = [
   '/projects/project-prototype-launch/tasks/task-review', '/projects/temp-tasks', '/projects/temp-tasks/tasks/temp-task-links',
   // WEB-BASELINE-REFRESH-010 (2f21134): a Task page and its edit page by key.
   '/projects/project-prototype-launch/tasks/prototype-launch-3', '/projects/project-prototype-launch/tasks/prototype-launch-2/edit',
+  // WEB-BASELINE-REFRESH-011 (8469d4b): Server Settings → Embedding.
+  '/settings?section=server-settings&mode=embedding',
 ]
 
 const VARIANTS = [
@@ -89,6 +91,12 @@ const stateRows = [
   { id: 'WBR-S023', path: '/chat', scenario: 'agy_signed_out' },
   // WEB-BASELINE-REFRESH-010 (d1a66fe, 3126536): live stored runs (Team status, running copy).
   { id: 'WBR-S024', path: '/workspace', scenario: 'live_runs' },
+  // WEB-BASELINE-REFRESH-011 (8469d4b, 54e26d7): Embedding states.
+  { id: 'WBR-S025', path: '/settings?section=server-settings&mode=embedding', scenario: 'embedding_busy' },
+  { id: 'WBR-S026', path: '/settings?section=server-settings&mode=embedding', scenario: 'embedding_unavailable' },
+  { id: 'WBR-S027', path: '/settings?section=server-settings&mode=embedding', scenario: 'embedding_load_failed' },
+  { id: 'WBR-S028', path: '/settings?section=server-settings&mode=embedding', scenario: 'empty' },
+  { id: 'WBR-S029', path: '/settings?section=server-settings&mode=embedding', scenario: 'embedding_many' },
 ].map(row => ({ kind: 'state', viewport: 'desktop', locale: 'en', ...row }))
 
 // Proportionate coverage: every route in the primary configuration (desktop,

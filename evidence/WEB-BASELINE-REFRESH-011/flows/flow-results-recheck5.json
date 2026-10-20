@@ -1,0 +1,175 @@
+{
+  "generatedAt": "2026-10-20T07:31:08.125Z",
+  "results": [
+    {
+      "id": "MCP-001",
+      "title": "MCP servers: Bulk Import view",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=mcp-servers",
+        "/settings?section=mcp-servers"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MCP-002",
+      "title": "Bulk import with one failing entry: partial notice and the failures in view",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "#bulk-import-failures": [
+          {
+            "tag": "DIV",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "These entries were not imported:\n\nsynthetic-broken: No transport: give a url (streamable_http) or a command (stdio).",
+            "rect": [
+              305,
+              802,
+              1070,
+              82
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(254, 242, 242)",
+              "color": "rgb(153, 27, 27)",
+              "border-top-color": "rgb(254, 202, 202)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "1070px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=mcp-servers",
+        "/settings?section=mcp-servers"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MCP-003",
+      "title": "Bulk import: every entry imported",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=mcp-servers",
+        "/settings?section=mcp-servers"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MCP-004",
+      "title": "Bulk import where every entry fails: nothing imported",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "#bulk-import-failures": [
+          {
+            "tag": "DIV",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "These entries were not imported:\n\nsynthetic-broken: No transport: give a url (streamable_http) or a command (stdio).\nsyn",
+            "rect": [
+              305,
+              778,
+              1070,
+              106
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(254, 242, 242)",
+              "color": "rgb(153, 27, 27)",
+              "border-top-color": "rgb(254, 202, 202)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "1070px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=mcp-servers",
+        "/settings?section=mcp-servers"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

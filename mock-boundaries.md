@@ -164,6 +164,35 @@ Reconnect (`prototype/agent-reconnect/`), the delegated-copy example data
 its Tasks now answer `GetTaskWorkerTasks` through the same rule), and the skill
 sources example data (`prototype/skill-sources/`).
 
+## Refresh to `9227d61` (WEB-BASELINE-REFRESH-011)
+
+The source shipped two approved designs, "part of" (`task-part-of`) and the
+Embedding section (`search-model-settings`); their source versions run
+unchanged. The design-only search-settings simulation (`prototype/search-settings/`
+and the design's own Search components) was removed: it was an implementation of
+the design's components, not example data on the source's API. New server data is
+answered from invented fixtures (`prototype/source-observation/embedding-fixtures.mjs`,
+shared by the observation node and the baseline):
+
+- Embedding: the three catalog models and sizes are the design's invented catalog.
+  The node's state lives in memory per caller and resets with the scenario. Work
+  (downloads, the active model's preparation, one indexing Project at a time)
+  moves one step per status or search read, so both sides advance alike; nothing
+  runs in the background. Index-only extra Projects in `embedding_busy` and
+  `embedding_many` exist only in the index list (invented names and counts).
+- Meaning search: `SearchProjectTasks` answers exact substring matches first, then
+  Tasks sharing a four-letter word prefix as "related by meaning"; its status follows
+  the active model (preparing, unavailable).
+- Part of: the base Prototype Launch Tasks `prototype-launch-3`, `-4` and `-5` are
+  parts of `prototype-launch-1` (one in progress, one done, one cancelled).
+- Bulk MCP import: an entry without `url` or `command` fails with an invented
+  reason; a result with failures is not a success. The source's store action runs
+  against the local answer.
+- Delegated copies: every Team copy member records its launch and `followsTeam`
+  (35675e3); a test checks the stored run's views against the pinned contract.
+  Copy file-change reads answer empty lists.
+- A scripted read failure (`embedding_load_failed`) answers a GraphQL error.
+
 ## Refresh to `2f21134` (WEB-BASELINE-REFRESH-010)
 
 The source shipped the accepted design-only Task keys and "depends on"

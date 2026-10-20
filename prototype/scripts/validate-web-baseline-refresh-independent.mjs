@@ -10,7 +10,7 @@
 // observation node stopped, recording browser errors and non-local requests.
 import { chromium } from 'playwright-core'
 import { mkdir, writeFile } from 'node:fs/promises'
-const OUT = process.env.OUT || 'evidence/WEB-BASELINE-REFRESH-010/independent-preview'
+const OUT = process.env.OUT || 'evidence/WEB-BASELINE-REFRESH-011/independent-preview'
 const BASE = process.env.BASE || 'http://127.0.0.1:4621'
 const PORT = new URL(BASE).port
 await mkdir(OUT, { recursive: true })
@@ -92,5 +92,14 @@ await run('IND-036-live-copy-stop', '/workspace', async p => { await withScenari
 await run('IND-037-skill-update-notice', '/workspace', async p => { await openTree(p); await p.getByText('Compare current navigation states', { exact: false }).first().click(); await p.getByTestId('system-task-notification-label').first().waitFor({ timeout: 8000 }) })
 await run('IND-038-tps-card', '/chat', async p => { await composer(p).click(); await p.keyboard.type('Summarize the synthetic baseline.'); await p.keyboard.press('Enter'); await p.waitForTimeout(2500); await p.locator('[data-test="right-side-tab-list"]').getByText(/^Token/).first().click(); await p.locator('[data-test="throughput-card"]').waitFor({ timeout: 5000 }) })
 await run('IND-039-nfs-guide', '/nodes?tab=manage', async p => { await p.getByText('NFS Guide', { exact: true }).first().click(); await p.getByTestId('nfs-guide-card').waitFor({ timeout: 5000 }) })
+// WEB-BASELINE-REFRESH-011 (9227d61)
+const EMB = '/settings?section=server-settings&mode=embedding'
+await run('IND-040-embedding-download', EMB, async p => { await p.getByTestId('embedding-model-embeddinggemma-2-download').click(); await p.getByTestId('embedding-model-embeddinggemma-2-progress').waitFor({ timeout: 8000 }) })
+await run('IND-041-embedding-switch', EMB, async p => { await p.getByTestId('embedding-model-mdbr-leaf-ir-use').click(); await p.getByTestId('embedding-switch-confirm').click(); await p.locator('[data-testid="embedding-model-mdbr-leaf-ir"][data-state="active-ready"]').waitFor({ timeout: 15000 }); await p.locator('[data-testid="embedding-project-project-prototype-launch"][data-state="NOT_INDEXED"]').waitFor({ timeout: 5000 }) })
+await run('IND-042-embedding-rebuild', EMB, async p => { await p.getByTestId('embedding-project-project-prototype-launch-rebuild').click(); await p.getByTestId('embedding-project-project-prototype-launch-rebuild-confirm').click(); await p.locator('[data-testid="embedding-project-project-prototype-launch"][data-state="READY"]').waitFor({ timeout: 15000 }) })
+await run('IND-043-board-meaning-search', '/projects/project-prototype-launch', async p => { await p.getByTestId('project-tasks-search-input').fill('checklists'); await p.getByTestId('project-task-row-task-outline').waitFor({ timeout: 8000 }) })
+await run('IND-044-part-of', '/projects/project-prototype-launch/tasks/task-outline', async p => { await p.getByTestId('task-parts').waitFor({ timeout: 8000 }); await p.getByTestId('task-parts-summary').waitFor({ timeout: 5000 }) })
+await run('IND-046-embedding-unavailable-retry', EMB, async p => { await p.evaluate(() => { localStorage.setItem('autobyteus.prototype.scenario', 'embedding_unavailable') }); await p.reload(); await p.waitForTimeout(2500); await p.getByTestId('embedding-model-granite-embedding-small-english-r2-retry').click(); await p.locator('[data-testid="embedding-model-granite-embedding-small-english-r2"][data-state="active-ready"]').waitFor({ timeout: 15000 }) })
+await run('IND-045-mcp-bulk-import-failures', '/settings?section=mcp-servers', async p => { await p.getByRole('button', { name: /Bulk Import/ }).first().click(); await p.locator('textarea').first().fill(JSON.stringify({ mcpServers: { 'synthetic-files': { command: 'synthetic-files-server', args: [] }, 'synthetic-broken': { args: [] } } })); await p.getByRole('button', { name: /^Import/ }).last().click(); await p.locator('#bulk-import-failures').waitFor({ timeout: 8000 }) })
 await writeFile(`${OUT}/results.json`, JSON.stringify({ generatedAt: new Date().toISOString(), base: BASE, note: 'Built preview (node .output/server/index.mjs) with the pinned source and the observation node stopped.', results }, null, 2))
 await b.close()

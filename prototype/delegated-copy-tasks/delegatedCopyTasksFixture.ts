@@ -53,7 +53,7 @@ const taskExecution = (copy: Copy) => copy.kind === 'agent'
   : {
       address: copy.address, teamRunId: copy.teamRunId, delegatorAgentRunId: PTM_RUN_ID, startedAt: createdAt,
       source: { kind: 'agent_team', teamDefinitionId: 'team-product', coordinatorAddress: `${copy.address}/solution_designer`,
-        members: copy.members.map((member) => ({ address: `${copy.address}/${member.name}`, agentDefinitionId: 'agent-researcher' })),
+        members: copy.members.map((member) => ({ address: `${copy.address}/${member.name}`, agentDefinitionId: 'agent-researcher', launchConfiguration: launch, followsTeam: true })),
         handoffs: [], defaultLaunchConfiguration: launch },
       members: copy.members.map((member) => ({ address: `${copy.address}/${member.name}`, agentRunId: member.agentRunId, platformAgentRunId: null })),
       taskExecutions: [],

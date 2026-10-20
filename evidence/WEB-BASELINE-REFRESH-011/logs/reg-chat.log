@@ -1,0 +1,53 @@
+PASS CHT-001 New chat: open workspace menu text=true px=2 max=2   srcErr=0 protoErr=0
+PASS CHT-002 New chat: workspace menu search filters text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-003 New chat: choose an existing workspace text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-004 New chat: open another folder, relative path validation text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-005 New chat: open model menu text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-006 New chat: model menu search text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-007 New chat: choose the thinking-capable model (thinking control appears) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-008 New chat: open thinking menu text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-009 New chat: choose a thinking effort text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-010 New chat: toggle auto-approve to ask first text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-011 New chat: / opens the skill menu text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-012 New chat: choose a skill (tag chip) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-013 New chat: @ opens the agent/team menu text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-014 New chat: address a team with @ text=true px=1 max=2   srcErr=0 protoErr=0
+PASS CHT-015 New chat: address another agent with @ text=true px=4 max=8   srcErr=0 protoErr=0
+PASS CHT-016 New chat: type a message (send enabled) text=true px=1 max=2   srcErr=0 protoErr=0
+PASS CHT-017 New chat: send opens the chat run view text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-018 Chat nav item from Agents opens New chat text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-019 Collapse the left panel from the Chat row text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-020 New chat (pencil) from the Workspaces page text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-021 New chat: model menu runtime drill-in lists models text=true px=2 max=2   srcErr=0 protoErr=0
+PASS CHT-022 Chat run: open run settings (Edit Config) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-023 Chat run: header + starts a New chat text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-024 Chat run: reply in the run composer text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-025 Chat run: right tool shell Files tab text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-026 Chat run: collapse the right tool shell text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-027 Chat run: reopen the chat from the Workspaces tree after leaving text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-028 Workspaces tree: + on the Daily Assistant row after a chat opens a New chat preset to it text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-029 Chat run: / skill menu in the run composer text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-032 Chat run: @ opens the live-run mention menu (0a32261) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-033 Chat run: a reply with an @ mention shows the inline mention chip (0a32261) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-034 Chat run: collaborator add-failure notice above the composer (0a32261) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-035 Chat run: dismiss the collaborator add-failure notice text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CMP-001 Chat run: compaction status rows (completed, failed, stopped, started) (0a32261) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CMP-002 Chat run: Activity tab compaction items text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-030 New chat (390x844): model menu as a bottom sheet text=true px=0 max=0   srcErr=0 protoErr=0
+PASS CHT-031 New chat (390x844): workspace menu as a bottom sheet text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-001 Chat run: Activity tab shows Background Tasks (collapsed, 0 running) above Activity text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-002 Chat run: expand Background Tasks, empty state text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-003 Chat run: task snapshots arrive, collapsed header counts update text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-004 Chat run: Background Tasks list (running, completed, failed, stopped; untitled fallback) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-005 Chat run: expand a finished task summary text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-006 Chat run: collapse Background Tasks again (both sections collapsed) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-007 Chat run: tasks arriving on the Files tab do not switch tabs (To-Do auto-switch removed) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-008 Stored team run: Activity tab Background Tasks for the focused member text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-009 Stored team run (zh-CN): Background Tasks list text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-010 Chat run: shell tasks show their command after the kind label (10fb695) text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-011 Chat run: a long command expands on click text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-012 Chat run: an expanded command collapses again text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-013 Chat run: the command expands independently of the finished task summary text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-014 Stored team run (zh-CN): shell task commands text=true px=0 max=0   srcErr=0 protoErr=0
+PASS BGT-015 Chat run (390x844): shell task commands text=true px=0 max=0   srcErr=0 protoErr=0
+PASS SKL-001 Skills: name-issues banner expands details text=true px=0 max=0   srcErr=0 protoErr=0

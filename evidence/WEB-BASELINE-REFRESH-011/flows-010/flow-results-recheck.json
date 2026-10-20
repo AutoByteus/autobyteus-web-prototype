@@ -1,0 +1,1061 @@
+{
+  "generatedAt": "2026-10-20T05:24:56.498Z",
+  "results": [
+    {
+      "id": "DLG-001",
+      "title": "Stored run Settings: Delegated copies, collapsed",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"team-aggregate-status-dot\"]": [
+          {
+            "tag": "SPAN",
+            "test": "team-aggregate-status-dot",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Team status: Offline",
+            "title": "Team status: Offline",
+            "text": "",
+            "rect": [
+              76,
+              535,
+              8,
+              8
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(102, 102, 102)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "team-aggregate-status-dot",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Team status: Offline",
+            "title": "Team status: Offline",
+            "text": "",
+            "rect": [
+              38,
+              641.5,
+              8,
+              8
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "[data-test=\"run-member-badge\"]": [
+          {
+            "tag": "SPAN",
+            "test": "run-member-badge",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Delegated copy",
+            "rect": [
+              545.1,
+              368.8,
+              95.8,
+              18.5
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(230, 230, 230)",
+              "color": "rgb(102, 102, 102)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "1px",
+              "padding-left": "6px",
+              "font-size": "11px",
+              "font-weight": "500",
+              "line-height": "16.5px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "run-member-badge",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Delegated copy",
+            "rect": [
+              543.5,
+              464.8,
+              95.8,
+              18.5
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(230, 230, 230)",
+              "color": "rgb(102, 102, 102)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "1px",
+              "padding-left": "6px",
+              "font-size": "11px",
+              "font-weight": "500",
+              "line-height": "16.5px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "run-member-badge",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Delegated copy",
+            "rect": [
+              525.3,
+              526.8,
+              95.8,
+              18.5
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(230, 230, 230)",
+              "color": "rgb(102, 102, 102)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "1px",
+              "padding-left": "6px",
+              "font-size": "11px",
+              "font-weight": "500",
+              "line-height": "16.5px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "[data-test=\"run-member-summary\"]": [
+          {
+            "tag": "SPAN",
+            "test": "run-member-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "mock/gpt-prototype · AutoByteus · Ask first · Inherited from the run",
+            "rect": [
+              392,
+              390,
+              535,
+              16
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "run-member-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "mock/gpt-prototype · AutoByteus · Ask first · Team default",
+            "rect": [
+              392,
+              486,
+              535,
+              16
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "run-member-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "mock/gpt-prototype · AutoByteus · Ask first · Source not recorded",
+            "rect": [
+              392,
+              548,
+              535,
+              16
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "[data-test=\"run-member-launch-note\"]": [
+          {
+            "tag": "SPAN",
+            "test": "run-member-launch-note",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent default AutoByteus · mock/gpt-retired was not used: the model is not offered on this node",
+            "rect": [
+              392,
+              408,
+              535,
+              32
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(180, 83, 9)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "[data-test=\"run-members-description\"]": [
+          {
+            "tag": "P",
+            "test": "run-members-description",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Started by agents in this run. Stop one to change its model; its next message resumes it on the new model.",
+            "rect": [
+              339,
+              335,
+              603.7,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(153, 153, 153)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "DLG-002",
+      "title": "Delegated copies: open an agent copy (editable while stopped; skipped default)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"team-aggregate-status-dot\"]": [
+          {
+            "tag": "SPAN",
+            "test": "team-aggregate-status-dot",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Team status: Offline",
+            "title": "Team status: Offline",
+            "text": "",
+            "rect": [
+              76,
+              535,
+              8,
+              8
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(102, 102, 102)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "team-aggregate-status-dot",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Team status: Offline",
+            "title": "Team status: Offline",
+            "text": "",
+            "rect": [
+              38,
+              641.5,
+              8,
+              8
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "[data-test=\"run-member-badge\"]": [
+          {
+            "tag": "SPAN",
+            "test": "run-member-badge",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Delegated copy",
+            "rect": [
+              545.1,
+              368.8,
+              95.8,
+              18.5
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(230, 230, 230)",
+              "color": "rgb(102, 102, 102)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "1px",
+              "padding-left": "6px",
+              "font-size": "11px",
+              "font-weight": "500",
+              "line-height": "16.5px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "run-member-badge",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Delegated copy",
+            "rect": [
+              543.5,
+              593.8,
+              95.8,
+              18.5
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(230, 230, 230)",
+              "color": "rgb(102, 102, 102)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "1px",
+              "padding-left": "6px",
+              "font-size": "11px",
+              "font-weight": "500",
+              "line-height": "16.5px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "run-member-badge",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Delegated copy",
+            "rect": [
+              525.3,
+              655.8,
+              95.8,
+              18.5
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(230, 230, 230)",
+              "color": "rgb(102, 102, 102)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "1px",
+              "padding-left": "6px",
+              "font-size": "11px",
+              "font-weight": "500",
+              "line-height": "16.5px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "[data-test=\"run-member-summary\"]": [
+          {
+            "tag": "SPAN",
+            "test": "run-member-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "mock/gpt-prototype · AutoByteus · Ask first · Inherited from the run",
+            "rect": [
+              392,
+              390,
+              535,
+              16
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "run-member-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "mock/gpt-prototype · AutoByteus · Ask first · Team default",
+            "rect": [
+              392,
+              615,
+              535,
+              16
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "run-member-summary",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "mock/gpt-prototype · AutoByteus · Ask first · Source not recorded",
+            "rect": [
+              392,
+              677,
+              535,
+              16
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "[data-test=\"run-member-launch-note\"]": [
+          {
+            "tag": "SPAN",
+            "test": "run-member-launch-note",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent default AutoByteus · mock/gpt-retired was not used: the model is not offered on this node",
+            "rect": [
+              392,
+              408,
+              535,
+              32
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(180, 83, 9)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "[data-test=\"run-members-description\"]": [
+          {
+            "tag": "P",
+            "test": "run-members-description",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Started by agents in this run. Stop one to change its model; its next message resumes it on the new model.",
+            "rect": [
+              339,
+              335,
+              603.7,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(153, 153, 153)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "focused": "run-member-toggle",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat?id=run-research-001",
+        "/chat?id=run-research-001"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "LIV-001",
+      "title": "Workspaces tree: Team status dots (busy Team run, copy Team in error)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"team-aggregate-status-dot\"]": [
+          {
+            "tag": "SPAN",
+            "test": "team-aggregate-status-dot",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Team status: Error",
+            "title": "Team status: Error",
+            "text": "",
+            "rect": [
+              76,
+              535,
+              8,
+              8
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(102, 102, 102)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "team-aggregate-status-dot",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Team status: Running",
+            "title": "Team status: Running",
+            "text": "",
+            "rect": [
+              38,
+              641.5,
+              8,
+              8
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "[data-test=\"workspace-delegated-stop\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "workspace-delegated-stop",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Stop documentation writer",
+            "title": "Stop documentation writer",
+            "text": "",
+            "rect": [
+              288,
+              488,
+              24,
+              24
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(239, 68, 68)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "workspace-delegated-stop",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Stop product review team",
+            "title": "Stop product review team",
+            "text": "",
+            "rect": [
+              288,
+              527,
+              24,
+              24
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(239, 68, 68)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "focused": "workspace-agent-row",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "LIV-002",
+      "title": "Workspaces tree: the running copy's red Stop, hovered",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"team-aggregate-status-dot\"]": [
+          {
+            "tag": "SPAN",
+            "test": "team-aggregate-status-dot",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Team status: Error",
+            "title": "Team status: Error",
+            "text": "",
+            "rect": [
+              76,
+              535,
+              8,
+              8
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(102, 102, 102)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "team-aggregate-status-dot",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Team status: Running",
+            "title": "Team status: Running",
+            "text": "",
+            "rect": [
+              38,
+              641.5,
+              8,
+              8
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "[data-test=\"workspace-delegated-stop\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "workspace-delegated-stop",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Stop documentation writer",
+            "title": "Stop documentation writer",
+            "text": "",
+            "rect": [
+              288,
+              488,
+              24,
+              24
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(254, 242, 242)",
+              "color": "rgb(220, 38, 38)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "workspace-delegated-stop",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "Stop product review team",
+            "title": "Stop product review team",
+            "text": "",
+            "rect": [
+              288,
+              527,
+              24,
+              24
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(239, 68, 68)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "text-decoration-line": "none",
+              "outline-style": "none",
+              "opacity": "1",
+              "animation-name": "none"
+            }
+          }
+        ],
+        "focused": "workspace-agent-row",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

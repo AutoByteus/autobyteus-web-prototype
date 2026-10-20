@@ -10,6 +10,7 @@
  * source without an Apollo client, schema, or network boundary. Mutations and
  * subscriptions stay inert.
  */
+import { EMBEDDING_MUTATIONS } from '~/prototype/source-observation/embedding-fixtures.mjs'
 import { operationFixture, baseState, DELEGATED_MUTATIONS, PROJECT_MUTATIONS, SKILL_SOURCE_MUTATIONS } from '~/prototype/source-observation/fixtures.mjs'
 import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/launchedTeamFixture'
 import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/prototype/run-settings/launchedOrgFixture'
@@ -46,6 +47,7 @@ const fixtureState = (): Record<string, any> => {
     localFixtureState.taskContextFiles = {}
     localFixtureState.archivedAgentGroup = false
     localFixtureState.delegatedSelections = null
+    localFixtureState.embedding = null
     // skill-sources-dialog-redesign (design-only): representative skill sources for the redesigned dialog.
     if (designOnlyLayersEnabled()) localFixtureState.skillSourceData = designSkillSourceData(scenario)
   }
@@ -94,6 +96,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (designOnlyLayersEnabled()) data = data ? withDelegatedCopyTasks(name, request.variables || {}, structuredClone(data), scenario) : data
   // skill-sources-dialog-redesign (design-only): the registry-error scenario.
   if (designOnlyLayersEnabled() && name === 'GetSkillSources' && data) data = { ...data, skillSourceRegistryError: designRegistryError(scenario) ?? data.skillSourceRegistryError }
+  // WEB-BASELINE-REFRESH-011: a scripted read failure (for example the Embedding status) answers as GraphQL errors.
+  if (data?.__projectError) return { data: null, errors: [data.__projectError] }
   return { data: data ? structuredClone(data) : {} }
 }
 
@@ -103,7 +107,7 @@ const resolveLocally = async (request: OperationRequest = {}) => {
 // Project/Task mutations back the Projects pages (0a32261); the skill-source
 // mutations back the Skill Sources dialog (4dee901); ReloadAgentPackageDefinitions backs the
 // Agents, Teams and Orgs Reload buttons (f7fcf90).
-const LOCAL_MUTATIONS = new Set([...DELEGATED_MUTATIONS, 'ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
+const LOCAL_MUTATIONS = new Set([...EMBEDDING_MUTATIONS, ...DELEGATED_MUTATIONS, 'ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', 'ImportMcpServerConfigs', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
 
 const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const definition = request.mutation?.definitions?.find((entry: any) => entry.kind === 'OperationDefinition')

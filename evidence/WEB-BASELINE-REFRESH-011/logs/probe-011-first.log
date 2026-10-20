@@ -1,0 +1,48 @@
+PASS EMB-001 Embedding: models (active ready, downloaded, not downloaded) and Project indexes text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+FAIL EMB-002 Embedding: download a model ahead; progress text=true probe=false px=12 max=7   srcErr=0 protoErr=0
+PASS EMB-003 Embedding: the download completes text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-004 Embedding: cancel a download text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-005 Embedding: Remove asks for confirmation text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-006 Embedding: confirm Remove text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-007 Embedding: keep the model text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-008 Embedding: switch dialog for a model that is not downloaded text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-009 Embedding: switch dialog for a downloaded model text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-010 Embedding: switch; the model prepares, Projects are not indexed text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-011 Embedding: after the switch the model is ready text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-012 Embedding: switch, then Index all Projects text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-013 Embedding: Rebuild asks for confirmation text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-014 Embedding: confirm Rebuild; the Project indexes text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-015 Embedding (busy): every index state text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-016 Embedding (busy): the Indexing filter text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+FAIL EMB-017 Embedding (busy): find a Project text=true probe=true px=0 max=0 SRC-STEP step 1: locator.fill: Timeout 10000ms exceeded. PROTO-STEP step 1: locator.fill: Timeout 10000ms exceeded. srcErr=0 protoErr=0
+FAIL EMB-018 Embedding (busy): find with no match text=true probe=true px=0 max=0 SRC-STEP step 1: locator.fill: Timeout 10000ms exceeded. PROTO-STEP step 1: locator.fill: Timeout 10000ms exceeded. srcErr=0 protoErr=0
+PASS EMB-019 Embedding (busy): Index now on a Project that is not indexed text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-020 Embedding: the active model is unavailable text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-021 Embedding: retry the unavailable model text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-022 Embedding: the first status read fails text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-023 Embedding: Retry loads the section text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-024 Embedding (offline): a download fails text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-025 Embedding (empty): no Projects text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-026 Settings: Server Settings → Basics, then Embedding text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-027 Embedding (390x844) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS EMB-028 Embedding (zh-CN) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SRC-001 Board search: exact matches first text=true probe=true px=2 max=12   srcErr=0 protoErr=0
+PASS SRC-002 Board search: related by meaning text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SRC-003 Board search: no match text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+FAIL SRC-004 Board search while meaning search prepares (after a model switch) text=false probe=false px=94727 max=225   srcErr=0 protoErr=0
+PASS SRC-005 Board search when meaning search is unavailable text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS SRC-006 Board search: retry an unavailable model text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRT-001 Board: part markers and the parent progress text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRT-002 Parent Task page: Parts (progress, cancelled part) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRT-003 Part Task page: Part of text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRT-004 Edit a parent: Part of offers nothing (it has parts) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRT-005 Edit a part: Part of chosen; open the list text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRT-006 Edit a part: remove Part of and Save text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRT-007 Parts: New part opens New task with Part of set text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRT-008 New task as a part: Create text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+FAIL PRT-009 Projects tab: the parent with its parts text=true probe=true px=0 max=0   srcErr=0 protoErr=6
+PASS PRT-010 Parent Task page (zh-CN) text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS PRT-011 Board (390x844) with parts text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS MCP-001 MCP servers: Bulk Import view text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS MCP-002 Bulk import with one failing entry: partial notice and the failures in view text=true probe=true px=0 max=0   srcErr=0 protoErr=0
+PASS MCP-003 Bulk import: every entry imported text=true probe=true px=0 max=0   srcErr=0 protoErr=0

@@ -1,0 +1,1098 @@
+{
+  "generatedAt": "2026-10-20T07:33:57.368Z",
+  "results": [
+    {
+      "id": "EMB-002",
+      "title": "Embedding: download a model ahead; progress",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"embedding-model-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "embedding-model-granite-embedding-small-english-r2",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "IBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nReady\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB",
+            "rect": [
+              314,
+              136,
+              1052,
+              106
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(239, 246, 255, 0.4)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-model-mdbr-leaf-ir",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "MongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove",
+            "rect": [
+              314,
+              242,
+              1052,
+              107
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "embedding-model-embeddinggemma-2",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Google EmbeddingGemma 2\n\nDownloading\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\n173 of 346 MB · 50%\n\nCancel",
+            "rect": [
+              314,
+              349,
+              1052,
+              147
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          }
+        ],
+        "[data-testid$=\"-progress\"]": [
+          {
+            "tag": "DIV",
+            "test": "embedding-model-embeddinggemma-2-progress",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "173 of 346 MB · 50%",
+            "rect": [
+              330,
+              452,
+              215.9,
+              28
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "215.891px"
+            }
+          }
+        ],
+        "[data-testid$=\"-status\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-model-granite-embedding-small-english-r2-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Active\n·\nReady",
+            "rect": [
+              330,
+              180,
+              356.6,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "356.562px"
+            }
+          },
+          {
+            "tag": "P",
+            "test": "embedding-model-mdbr-leaf-ir-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Downloaded",
+            "rect": [
+              330,
+              287,
+              139.5,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "139.5px"
+            }
+          },
+          {
+            "tag": "P",
+            "test": "embedding-model-embeddinggemma-2-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Downloading",
+            "rect": [
+              330,
+              394,
+              215.9,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "215.891px"
+            }
+          },
+          {
+            "tag": "DIV",
+            "test": "embedding-project-project-prototype-launch-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready · 5 Tasks",
+            "rect": [
+              652,
+              690,
+              458,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "458px"
+            }
+          }
+        ],
+        "[data-testid=\"embedding-disk-total\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-disk-total",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "On disk: 79 MB",
+            "rect": [
+              1269,
+              61,
+              98,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "98.0156px"
+            }
+          }
+        ],
+        "[data-testid^=\"embedding-project-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "embedding-project-project-prototype-launch",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Prototype Launch\n\nReady · 5 Tasks\nRebuild",
+            "rect": [
+              314,
+              672,
+              1052,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "10px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1052px"
+            }
+          }
+        ],
+        "[data-testid^=\"embedding-filter-\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-all",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "All 1",
+            "rect": [
+              313,
+              633,
+              27,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(26, 26, 26)",
+              "border-top-color": "rgb(59, 130, 246)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "27px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-needs",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Needs indexing 0",
+            "rect": [
+              360,
+              633,
+              112.1,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "112.062px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-indexing",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Indexing 0",
+            "rect": [
+              492.1,
+              633,
+              67,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "67px"
+            }
+          },
+          {
+            "tag": "BUTTON",
+            "test": "embedding-filter-ready",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Ready 1",
+            "rect": [
+              579.1,
+              633,
+              50.3,
+              26
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgba(0, 0, 0, 0)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "50.25px"
+            }
+          }
+        ],
+        "[data-testid=\"embedding-announce\"]": [
+          {
+            "tag": "P",
+            "test": "embedding-announce",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              287,
+              39,
+              1,
+              1
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=embedding",
+        "/settings?section=server-settings&mode=embedding"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "EMB-031",
+      "title": "Embedding: Back to Workspace (the left panel mounts after Settings)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRT-005",
+      "title": "Edit a part: Part of chosen; open the list",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"task-part-of-picker\"]": [
+          {
+            "tag": "DIV",
+            "test": "task-part-of-picker",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Part of (optional)\n\nThe bigger Task in Prototype Launch that this Task is part of. One level only: a part can't have par",
+            "rect": [
+              498.5,
+              533,
+              766,
+              121
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "20px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "766px"
+            }
+          }
+        ],
+        "focused": "task-part-of-input",
+        "sendDisabled": [
+          [
+            null,
+            false,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/prototype-launch-3/edit",
+        "/projects/project-prototype-launch/tasks/prototype-launch-3/edit"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "PRT-009",
+      "title": "Projects tab: the parent with its parts",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid$=\"-status\"]": [
+          {
+            "tag": "SPAN",
+            "test": "projects-panel-task-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "To Do",
+            "rect": [
+              1361.9,
+              189,
+              49.1,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(241, 245, 249)",
+              "color": "rgb(51, 65, 85)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(226, 232, 240) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "49.0625px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "task-part-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "In Progress",
+            "rect": [
+              1157.6,
+              320,
+              81.3,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(239, 246, 255)",
+              "color": "rgb(30, 64, 175)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(191, 219, 254) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "81.3281px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "task-part-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Done",
+            "rect": [
+              1157.8,
+              354,
+              64.2,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(236, 253, 245)",
+              "color": "rgb(6, 95, 70)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(167, 243, 208) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "64.1719px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "task-part-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Cancelled",
+            "rect": [
+              1157.5,
+              388,
+              73.3,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(100, 116, 139)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(203, 213, 225) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "73.3438px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "task-dependency-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Cancelled",
+            "rect": [
+              1157.5,
+              534,
+              73.3,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(100, 116, 139)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(203, 213, 225) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "73.3438px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "task-dependency-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "In Progress",
+            "rect": [
+              1157.6,
+              608,
+              81.3,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(239, 246, 255)",
+              "color": "rgb(30, 64, 175)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(191, 219, 254) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "81.3281px"
+            }
+          }
+        ],
+        "[data-testid=\"task-parts\"]": [
+          {
+            "tag": "SECTION",
+            "test": "task-parts",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Parts\n\n1 of 2 done · 1 cancelled\n\nprototype-launch-3\nIn Progress\nTranslate the release summary.\nprototype-launch-4\nDone\n",
+            "rect": [
+              1002,
+              275,
+              426,
+              202
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(51, 51, 51)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "12px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "426px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MCP-002",
+      "title": "Bulk import with one failing entry: partial notice and the failures in view",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "#bulk-import-failures": [
+          {
+            "tag": "DIV",
+            "test": null,
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "These entries were not imported:\n\nsynthetic-broken: No transport: give a url (streamable_http) or a command (stdio).",
+            "rect": [
+              305,
+              802,
+              1070,
+              82
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(254, 242, 242)",
+              "color": "rgb(153, 27, 27)",
+              "border-top-color": "rgb(254, 202, 202)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "16px",
+              "padding-left": "16px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "1070px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=mcp-servers",
+        "/settings?section=mcp-servers"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SRC-005",
+      "title": "Board search when meaning search is unavailable",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid$=\"-progress\"]": [
+          {
+            "tag": "SPAN",
+            "test": "task-parts-progress",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": "1 of 2 done · 1 cancelled",
+            "text": "1 of 2 done",
+            "rect": [
+              372,
+              419,
+              97.6,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(248, 250, 252)",
+              "color": "rgb(71, 85, 105)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(226, 232, 240) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "97.625px"
+            }
+          }
+        ],
+        "[data-testid$=\"-status\"]": [
+          {
+            "tag": "P",
+            "test": "project-tasks-meaning-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Meaning search is unavailable: The model files did not pass the integrity check.. Exact matches still work.\nTry again",
+            "rect": [
+              355,
+              242,
+              1053,
+              32
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(100, 116, 139)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"project-tasks-meaning-status\"]": [
+          {
+            "tag": "P",
+            "test": "project-tasks-meaning-status",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Meaning search is unavailable: The model files did not pass the integrity check.. Exact matches still work.\nTry again",
+            "rect": [
+              355,
+              242,
+              1053,
+              32
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(100, 116, 139)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid^=\"project-task-row-task-\"]": [
+          {
+            "tag": "DIV",
+            "test": "project-task-row-task-outline",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Outline the launch checklist.\nDependency cancelled:\nprototype-launch-5\n1 of 2 done",
+            "rect": [
+              356,
+              347,
+              338.3,
+              106
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "14px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "338.328px"
+            }
+          }
+        ],
+        "[data-testid=\"task-parts-progress\"]": [
+          {
+            "tag": "SPAN",
+            "test": "task-parts-progress",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": "1 of 2 done · 1 cancelled",
+            "text": "1 of 2 done",
+            "rect": [
+              372,
+              419,
+              97.6,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(248, 250, 252)",
+              "color": "rgb(71, 85, 105)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(226, 232, 240) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "2px",
+              "padding-left": "8px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "97.625px"
+            }
+          }
+        ],
+        "focused": "project-tasks-search-input",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch",
+        "/projects/project-prototype-launch"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}
