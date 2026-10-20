@@ -500,6 +500,7 @@ const settingsMessages = {
   "settings.search.announce.ready": "{{name}} is ready.",
   "settings.search.announce.indexed": "{{name}} indexed.",
   // settings-update-notifications (design)
+  "settings.notifications.center.close": "Close",
   "settings.notifications.title": "Notifications",
   "settings.notifications.new": "New",
   "settings.notifications.kind.app": "Software update",

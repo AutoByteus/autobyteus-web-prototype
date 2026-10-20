@@ -500,6 +500,7 @@ const settingsMessages = {
   "settings.search.announce.ready": "{{name}} 已就绪。",
   "settings.search.announce.indexed": "{{name}} 已建立索引。",
   // settings-update-notifications (design)
+  "settings.notifications.center.close": "关闭",
   "settings.notifications.title": "通知",
   "settings.notifications.new": "新",
   "settings.notifications.kind.app": "软件更新",

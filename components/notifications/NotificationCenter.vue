@@ -7,7 +7,7 @@
       <section
         v-if="store.centerOpen && store.centerAnchor"
         ref="panel"
-        class="fixed z-[90] flex outline-none w-[360px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-black/5"
+        class="fixed z-[90] flex outline-none w-[360px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-2xl border border-sky-200 bg-white shadow-xl"
         :style="position"
         role="dialog"
         tabindex="-1"
@@ -17,10 +17,20 @@
         <!-- Round 9: no visible header or group label; the cards say what they are. The name stays for assistive
              technology, and focus lands on the panel so Esc and Tab work at once. -->
         <h2 :id="headingId" class="sr-only">{{ t('settings.notifications.title') }}</h2>
+        <!-- Round 15: a visible close button, top right, on the line of the first section header. -->
+        <button
+          type="button"
+          class="absolute right-2 top-2 z-10 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+          :aria-label="t('settings.notifications.center.close')"
+          :title="t('settings.notifications.center.close')"
+          data-testid="notification-center-close"
+          @click="close(true)"
+        ><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" aria-hidden="true" /></button>
 
         <div class="min-h-0 flex-1 overflow-y-auto">
           <template v-if="!store.isEmpty">
-            <!-- Round 13: one white panel; each type is a section, separated by one thin line (no nested cards). -->
+            <!-- Round 14: one white panel with the app-update card's light-blue border (sky-200); each type is a section,
+                 separated by one thin line (no nested cards). -->
             <ul class="divide-y divide-gray-100" :aria-label="t('settings.notifications.listLabel')">
               <!-- Round 8: one card per type (the app first; then the types by their newest waiting update). -->
               <NotificationCard v-if="store.appVisible" kind="app" />

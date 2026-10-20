@@ -483,7 +483,7 @@ One recommended design.
   - Captures: `r14-10-pill-new.png`, `r14-11-pill-seen.png` (the seen pill with keyboard focus returned after Esc,
     so its focus ring and hover lines show) and `r14-12-strip-seen.png`.
 
-## Round 12 Feedback And Round 13 (current proposal)
+## Round 12 Feedback And Round 13 (current layout; border and close button in round 14)
 
 - User question on round 12 (2026-10-20), about the release notes: "do we also have release note there? … whether
   its actually valuable … I actually never read it".
@@ -507,6 +507,31 @@ One recommended design.
   - DC-044: `NotificationCard.vue`: a section, not a card. `NotificationEntry.vue`: row spacing.
 - Round 13 validation (`review-evidence/round-13/r15.mjs`): **29/29**, plus the in-context capture
   `r15-00-panel-in-context-2x.png`.
+
+## Round 13 Feedback And Round 14 (current proposal)
+
+- User feedback on round 13 (2026-10-20), with screenshots of the current app-update card: use the style of the
+  app update card; "the border, the color was really nice."
+- First try (not committed): the full app-update-card look:
+  - a `sky-200` border, a white→`sky-50` gradient and `shadow-2xl`;
+  - uppercase `sky-700` section labels;
+  - slate text and square buttons.
+- The user, on that try: "a bit too heavy. maybe the earlier style but with better border".
+- The user then: "we need a button to make the notification disappear. by the way how to close it". Closing by
+  Esc, a click outside or the pill again was not discoverable.
+- Round 14:
+  - **Border:** the round 13 panel with the app-update card's border: `rounded-2xl border border-sky-200
+    bg-white shadow-xl`. Round 13 had `ring-1 ring-black/5`.
+  - **Close button:** a visible ✕ at the top right (`absolute right-2 top-2`, 28 px, `rounded-full bg-white`,
+    `gray-400`, `hover:bg-gray-100`), on the line of the first section header.
+    - Its name is "Close" / "关闭" (`settings.notifications.center.close`, restored).
+    - It returns focus to the entry. Esc, a click outside and the pill still close the panel too.
+  - Everything else is as in round 13.
+- Round 14 changes:
+  - DC-045: the `NotificationCenter.vue` panel border.
+  - DC-046: the close button, and the restored `center.close` string.
+- Validation: typecheck. The click-through set runs in the final validation. Capture:
+  `review-evidence/round-14/r16-00-panel-border-and-close-2x.png`.
 
 ## Requirement Impact (raised 2026-10-20, during user review)
 
