@@ -547,6 +547,8 @@ const settingsMessages = {
   "settings.notifications.sidebar.kind.skill_source.other": "{{count}} 个技能更新",
   "settings.notifications.sidebar.listSeparator": "、",
   "settings.notifications.sidebar.description": "{{summary}}：{{details}}",
+  "settings.notifications.center.settings": "通知设置",
+  "settings.notifications.center.close": "关闭",
   "settings.notifications.listLabel": "更新通知",
 } satisfies TranslationCatalog;
 

@@ -62,6 +62,10 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
   /** Items that were unread when the user opened the area in this visit: they keep a "New" mark until the
    * user leaves Settings, although they are already counted as read. */
   const newThisVisit = ref<string[]>([])
+  /** Round 6 (user, 2026-10-20, "how does Mac … show notification"): the Notification Center panel, opened from the
+   * sidebar entry where the user is; `anchor` is the entry's position (the panel opens next to it). */
+  const centerOpen = ref(false)
+  const centerAnchor = ref<{ left: number; bottom: number; side: 'above' | 'right' } | null>(null)
   /** Scripted outcomes (design only): how an Update ends. */
   const scriptedOutcomes = ref<Record<string, 'fail-once' | 'ok'>>({})
 
@@ -84,6 +88,20 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
       ? (appVisible.value && appUnread.value ? 1 : 0)
       : sources.value.filter((item) => item.kind === kind && item.unread && item.state !== 'handled').length
     return kinds.map((kind) => [kind, count(kind)] as const).filter(([, n]) => n > 0)
+  })
+  /** Waiting (not yet updated) notifications per kind and per category: the sidebar entry shows them while any wait
+   * (round 6: blue while some are new, grey once all are read), so they can always be reopened. */
+  const waitingByKind = computed(() => {
+    const kinds: UpdateNotificationKind[] = ['app', 'agent_package', 'skill_source']
+    const count = (kind: UpdateNotificationKind) => kind === 'app'
+      ? (appVisible.value ? 1 : 0)
+      : sources.value.filter((item) => item.kind === kind && item.state !== 'handled').length
+    return kinds.map((kind) => [kind, count(kind)] as const).filter(([, n]) => n > 0)
+  })
+  const waitingByCategory = computed(() => {
+    const counts: Partial<Record<NotificationCategory, number>> = {}
+    for (const [kind, n] of waitingByKind.value) counts[KIND_CATEGORY[kind]] = (counts[KIND_CATEGORY[kind]] ?? 0) + n
+    return (Object.entries(counts) as [NotificationCategory, number][]).filter(([, n]) => n > 0)
   })
   /** Unread notifications per category, for the sidebar entries (categories with none are not shown). */
   const unreadByCategory = computed(() => {
@@ -132,9 +150,21 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
   }
   const skipApp = () => { appSkippedVersion.value = app.availableVersion }
 
+  const openCenter = (anchor: { left: number; bottom: number; side: 'above' | 'right' }) => {
+    centerAnchor.value = anchor
+    centerOpen.value = true
+    markSeen()
+  }
+  const closeCenter = () => {
+    if (!centerOpen.value) return
+    centerOpen.value = false
+    endVisit()
+  }
+
   return {
+    centerOpen, centerAnchor, openCenter, closeCenter,
     sources, visibleSources, appUnread, appFoundAt, appSkippedVersion, backgroundChecks, showsAppNotification,
-    newThisVisit, scriptedOutcomes, appVisible, unreadCount, unreadByCategory, unreadByKind, waitingCount, isEmpty,
+    newThisVisit, scriptedOutcomes, appVisible, unreadCount, unreadByCategory, unreadByKind, waitingByKind, waitingByCategory, waitingCount, isEmpty,
     markSeen, endVisit, isNew, updateSource, skipSource, skipApp,
   }
 })

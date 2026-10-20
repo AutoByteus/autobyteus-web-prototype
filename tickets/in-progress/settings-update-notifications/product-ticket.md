@@ -253,10 +253,66 @@ One recommended design.
 - Round 5 adjustment (user, 2026-10-20: "Blue is nice. Can you make the blue … the color is a little bit too
   light"): the pill is one step deeper: `sky-100` background, `sky-300` ring, `sky-800` text, hover `sky-200`.
 
+## Round 5 Feedback And Round 6 (current proposal)
+
+- User feedback on round 5 (2026-10-20), with a screenshot of Settings with the right-hand list:
+
+  > … when I click the update notification, then immediately jump to the setting page and show a very big list
+  > on the very right side of the area … makes me feel not so nice. … You know how Mac … show notification …
+  > I feel like their notification is super nice.
+
+- Round 6 (a Notification Center in the manner of macOS):
+  - **Opened where the user is.** Clicking the sidebar entry opens a floating **Notification Center** next to it,
+    over the current page; nothing navigates.
+    - Docked panel: it opens above the Settings row. Collapsed strip: to the right of the icon.
+    - Panel: 360 px wide, up to 72 % of the window high, `rounded-2xl`, `gray-50/95` with backdrop blur,
+      `shadow-2xl`, a `black/10` ring.
+    - Header: "Notifications", a gear "Notification settings" (→ Settings → Notifications) and a close button.
+    - Esc, a click outside, the close button or the entry again closes it; focus returns to the entry.
+    - It never opens by itself. Opening it marks the notifications read.
+  - **Compact cards grouped by category** ("Updates 4"). Each card is white, `rounded-xl`, with `shadow-sm` and a
+    ring, and contains:
+    - a 32 px `gray-100` square with the type's grey outline icon;
+    - the type in words (13 px semibold), the short time ("3 hr. ago"), and a blue dot while new;
+    - the name; the change (`main a1b2c3d → 9f8e7d6`, or `1.5.6 → 1.5.7`);
+    - the actions: Update / Download / Install and restart, Skip this version, Clear (for updated cards).
+    - Clicking the summary expands the details: the repository and "See changes on GitHub"; for the app, the
+      release notes and the release page.
+    - Updating, failed (with the reason and Try again) and download progress show inside the card.
+    - A skill source's Update keeps the existing confirmation dialog.
+  - **The entry stays available.** The Settings-row pill shows the waiting count ("4 updates"): blue while some are
+    new, grey once all are read, and gone when nothing waits. The strip badge is blue or grey in the same way.
+    The hover lines and the name list the waiting types ("1 software update, 2 agent package updates, 1 skill
+    update").
+  - **Settings:** the always-visible right-hand column is removed. **Notifications** is a regular Settings section
+    (first in the navigation at every width) with the full list and the background-check setting with its
+    description (REQ-013/014).
+- Note for the Solution Designer (SR-002 integration): REQ-011 says "it lives in Settings, and an indicator on
+  the Settings entry". In this design the full area is the Settings → Notifications section and the indicator is
+  the entry on the Settings row. The Notification Center is an additional quick view that the user opens. It is
+  never opened by itself, so it keeps "no pop-up by itself". Wording such as "a Notification Center opened from
+  the Settings row" may be added when integrating.
+- Round 6 changes:
+  - DC-022: `components/notifications/NotificationCenter.vue` and `NotificationCard.vue` (new), mounted in
+    `app.vue`.
+  - DC-023: `SidebarNotificationsEntry.vue` toggles the panel; waiting count; blue / grey; tooltips hidden while
+    open.
+  - DC-024: the store (`centerOpen`, `centerAnchor`, `openCenter`, `closeCenter`, `waitingByKind`,
+    `waitingByCategory`).
+  - DC-025: `pages/settings.vue`: rail removed; the Notifications section in the navigation at every width.
+  - DC-026: strings `settings.notifications.center.settings|close`.
+- Round 6 validation (`review-evidence/round-6/r8.mjs`): **20/20**.
+  - The pill (words, blue while new, the type list) opens the panel in place; read turns it grey.
+  - A card expands; Update → updated; failure → Try again; the skill confirmation (Cancel keeps the panel);
+    app Download → progress → Install.
+  - Esc returns focus; a click outside closes; the gear goes to the Settings section with the setting.
+  - Skip; Clear; the strip opens the panel beside it.
+  - Empty and checks-off (no entry; the section's empty state); browser (no software card); zh-CN.
+
 ## Delivery And Validation
 
 - UI/UX specification: pending
-- Runnable UI reference entry point:
+- Runnable UI reference entry point (round 6: `/chat`, then the "4 updates" pill on the Settings row; Settings → Notifications for the section). Earlier:
   - `http://127.0.0.1:4681/settings?section=updates` (wide window);
   - any page for the sidebar dot (e.g. `/chat`);
   - a window narrower than 1280 px for the section.

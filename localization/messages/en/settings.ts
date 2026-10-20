@@ -547,6 +547,8 @@ const settingsMessages = {
   "settings.notifications.sidebar.kind.skill_source.other": "{{count}} skill updates",
   "settings.notifications.sidebar.listSeparator": ", ",
   "settings.notifications.sidebar.description": "{{summary}}: {{details}}",
+  "settings.notifications.center.settings": "Notification settings",
+  "settings.notifications.center.close": "Close",
   "settings.notifications.listLabel": "Update notifications",
 } satisfies TranslationCatalog;
 

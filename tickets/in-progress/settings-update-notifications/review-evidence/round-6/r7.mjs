@@ -1,0 +1,18 @@
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/settings-update-notifications/node_modules/playwright-core/index.mjs';
+const B='http://127.0.0.1:4681', O='/tmp/sun/shots/';
+const browser = await chromium.launch(); const log=(...a)=>console.log(...a);
+const p = await browser.newPage({ viewport:{width:1440,height:900} }); p.on('pageerror', e => log('PAGEERR', e.message));
+await p.goto(B+'/chat'); await p.waitForTimeout(6000);
+await p.click('[data-test="sidebar-notifications-updates"]'); await p.waitForTimeout(600);
+await p.screenshot({ path: O+'r7-01-center-open.png' });
+await p.click('[data-testid="notification-card-pkg-autobyteus-agents"] [data-testid="notification-card-summary"]'); await p.waitForTimeout(300);
+await p.screenshot({ path: O+'r7-02-center-expanded.png' });
+await p.keyboard.press('Escape'); await p.waitForTimeout(400);
+log('closed', await p.locator('[data-testid="notification-center"]').count(), 'pill new?', await p.locator('[data-test="sidebar-notifications-updates"]').getAttribute('data-new'));
+await p.screenshot({ path: O+'r7-03-after-close.png', clip:{x:0,y:820,width:330,height:80} });
+await p.click('[data-test="app-left-panel-collapse"]'); await p.waitForTimeout(500);
+await p.click('button[data-test="sidebar-notifications-updates"]'); await p.waitForTimeout(600);
+await p.screenshot({ path: O+'r7-04-center-from-strip.png' });
+await p.goto(B+'/settings?section=notifications'); await p.waitForTimeout(4000);
+await p.screenshot({ path: O+'r7-05-settings-section.png' });
+await browser.close();

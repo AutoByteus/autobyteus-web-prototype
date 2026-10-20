@@ -8,7 +8,8 @@
       </template>
 
       <!-- settings-update-notifications: the self-opening app-update card is retired (DEC-001); the app update
-           is announced in Settings' notification area and Settings → Updates. -->
+           is announced in the Notification Center (opened by the user) and Settings → Updates. -->
+      <NotificationCenter />
       <UiErrorPanel v-if="config.public.showDebugErrorPanel" />
       <ToastContainer />
       <SkillNameConflictDialog />
@@ -21,6 +22,7 @@
 </template>
 
 <script setup lang="ts">
+import NotificationCenter from '~/components/notifications/NotificationCenter.vue'
 import { computed } from 'vue'
 import { useServerStore } from '~/stores/serverStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
