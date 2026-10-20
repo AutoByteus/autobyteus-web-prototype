@@ -5,7 +5,7 @@
 - Ticket / request ID: `runtime-lifecycle-review` (the Solution Designer's package identifier, solution revision SR-004). No second ID.
 - Title: Settings → Agent Runtimes (renamed from "AI Runtimes" on the user's direction 2026-10-20; requirement impact for the Solution Designer) — show the four AI coding engines (Codex, Claude, Antigravity, Grok) for the current node, check for newer versions, update.
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web Settings page in place).
-- Status: `Awaiting User Review`
+- Status: `Completed`
 - Requester: Solution Designer (`solution_designer_01a89da60c294d39aa5390913af8a6f0`), for the user, 2026-10-20: "could you ask @Product Team to work on the UI first. so we could first pin down the ui design you know".
 - Related requirements (draft, not approved): `requirements-doc.md` BEH-001…005, REQ-001…005, DEC-001…003; evidence E-R19, E-R20.
   Request package: `/Users/normy/autobyteus_org/autobyteus-worktrees/runtime-lifecycle-design-review/tickets/in-progress/runtime-lifecycle-review/`.
@@ -15,7 +15,7 @@
 ## Design & Repository Context
 
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`, remote `origin` = autobyteus-web-prototype)
-- Ticket folder: `tickets/in-progress/runtime-lifecycle-review/`
+- Ticket folder: `tickets/done/runtime-lifecycle-review/`
 - Ticket worktree / branch: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/runtime-lifecycle-review`, `design/runtime-lifecycle-review`
 - Accepted design base: `cb384e32c216048c5214410c435b854dc3fa96fd` (`origin/personal`, fetched 2026-10-20; local = origin)
 - Source repository / frontend: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`, `autobyteus-web`; request code `origin/personal@9227d61597`
@@ -39,8 +39,14 @@
 
 ## Delivery And Validation
 
-- Validation so far: `corepack pnpm typecheck` 0 errors; `lint` clean; `test` 17/17; browser checks of default, mixed, remote, update, failed update, agents running, load error, check failed, zh-CN, 390 px.
-- Review URL: <http://127.0.0.1:4701/settings?section=agent-runtimes>
-- User-confirmation reference: pending.
-- Final references / `ui-ux-spec.md`: not yet captured (only after confirmation).
-- Integration: Pending. Cleanup: Pending.
+- UI reference changes: `pages/settings.vue` (menu item `agent-runtimes`), `components/settings/AiRuntimesManager.vue`, `prototype/ai-runtimes/aiRuntimesFixture.ts`, localization en / zh-CN (`settings.aiRuntimes.*`, `settings.page.sections.aiRuntimes`). The `AiRuntimes*` file names and `ai-runtimes-*` test ids are historical; the product name is Agent Runtimes.
+- Validation (port 4701): `visual-references/final-validation.mjs` 96/96 (RTM-001-020); `corepack pnpm typecheck` 0 errors; `lint` clean; `test` 17/17.
+- User-confirmation reference (2026-10-20): "yes approved" after the final design summary; the user also said Q-1, Q-2 and Q-3 should be taken to the Solution Designer. Direction folded in during review: full sign-in as the target; Antigravity sign-in through a terminal running `agy` (Enter, then browser); name changed from "AI Runtimes" to "Agent Runtimes"; a not-installed runtime visible in the default view; the sign-in terminal polished ("perfect").
+- Final references: 23 images `visual-references/VIS-001`-`VIS-023` captured after approval (`capture-references.mjs`); spec `ui-ux-spec.md` (`Approved`).
+- Requirement impact reported to the Solution Designer: section renamed to Agent Runtimes; REQ-005 widened to Sign in (per-runtime, E-R21) with Cancel and time-out; a node-level terminal is new engineering work; runtime naming vs the model menu ("Claude SDK", "Grok Build") open; Q-1, Q-2, Q-3 and vendor terms remain the user's decisions via the Solution Designer.
+- Design revision, default-entry-point validation, integration and cleanup: recorded below by the integration commit.
+
+## Outcome And Handoff
+
+- Next expected action: the Solution Designer takes Q-1, Q-2, Q-3 (and the Codex / Claude terms questions) to the user, writes acceptance criteria against `ui-ux-spec.md`, and brings the requirements to the user for approval.
+- Handoff: `get_handoff_rules` returned only the Baseline Needed route, so the result goes back to the requester.

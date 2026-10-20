@@ -167,7 +167,7 @@
               </div>
 
               <!-- the vendor's own sign-in, finished in the browser -->
-              <div v-if="e.signing.phase !== 'idle' && e.signIn === 'not_signed_in'" class="sm:col-span-3 sm:col-start-3" :data-testid="`runtime-${e.id}-signin-outcome`">
+              <div v-if="e.signing.phase !== 'idle' && (e.signIn === 'not_signed_in' || e.signing.phase === 'terminal')" class="sm:col-span-3 sm:col-start-3" :data-testid="`runtime-${e.id}-signin-outcome`">
                 <div v-if="e.signing.phase === 'waiting'" class="flex flex-wrap items-center gap-x-3 text-sm text-gray-600" role="status">
                   <span :data-testid="`runtime-${e.id}-signin-waiting`">{{ t('settings.aiRuntimes.signIn.waiting', { name: e.name }) }}</span>
                   <button type="button" class="rounded-md px-2 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-testid="`runtime-${e.id}-signin-cancel`" @click="cancelSignIn(e.id)">{{ t('settings.aiRuntimes.signIn.cancel') }}</button>
