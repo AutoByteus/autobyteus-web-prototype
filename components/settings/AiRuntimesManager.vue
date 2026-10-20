@@ -172,10 +172,14 @@
                   <span :data-testid="`runtime-${e.id}-signin-waiting`">{{ t('settings.aiRuntimes.signIn.waiting', { name: e.name }) }}</span>
                   <button type="button" class="rounded-md px-2 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-testid="`runtime-${e.id}-signin-cancel`" @click="cancelSignIn(e.id)">{{ t('settings.aiRuntimes.signIn.cancel') }}</button>
                 </div>
-                <div v-else-if="e.signing.phase === 'terminal'" :data-testid="`runtime-${e.id}-signin-terminal-area`">
-                  <div class="flex flex-wrap items-center gap-x-3 text-sm text-gray-600">
-                    <span>{{ t('settings.aiRuntimes.signIn.terminalHint', { name: e.name }) }}</span>
-                    <button type="button" class="rounded-md px-2 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-testid="`runtime-${e.id}-signin-cancel`" @click="cancelSignIn(e.id)">{{ t('settings.aiRuntimes.signIn.close') }}</button>
+                <div
+                  v-else-if="e.signing.phase === 'terminal'"
+                  class="mt-2 max-w-2xl overflow-hidden rounded-xl border border-slate-200 shadow-sm"
+                  :data-testid="`runtime-${e.id}-signin-terminal-area`"
+                >
+                  <div class="flex items-center justify-between bg-gray-800 px-4 py-1.5">
+                    <span class="text-xs font-medium text-gray-300">{{ t('settings.aiRuntimes.signIn.terminalTitle') }}</span>
+                    <button type="button" class="rounded px-2 py-0.5 text-xs font-medium text-gray-300 hover:bg-gray-700 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400" :data-testid="`runtime-${e.id}-signin-cancel`" @click="cancelSignIn(e.id)">{{ t('settings.aiRuntimes.signIn.close') }}</button>
                   </div>
                   <div
                     :ref="(el) => focusTerminal(el as HTMLElement | null)"
@@ -183,16 +187,23 @@
                     role="textbox"
                     aria-readonly="true"
                     :aria-label="t('settings.aiRuntimes.signIn.terminalLabel', { name: e.name })"
-                    class="mt-2 max-w-2xl rounded-lg bg-gray-900 px-4 py-3 font-mono text-xs leading-5 text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                    class="bg-gray-900 px-4 py-3 font-mono text-sm leading-6 text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-400"
                     :data-testid="`runtime-${e.id}-signin-terminal`"
                     @keydown.enter.prevent="terminalEnter(e.id)"
                   >
-                    <p class="text-gray-400">$ {{ commandOfSignIn(e) }}</p>
-                    <p>{{ t('settings.aiRuntimes.signIn.terminal.prompt') }}</p>
+                    <p><span class="select-none text-green-400">$</span> {{ commandOfSignIn(e) }}</p>
+                    <p>{{ t('settings.aiRuntimes.signIn.terminal.prompt') }}<span v-if="e.signing.terminalStep === 0" class="ml-1 animate-pulse text-gray-400">▍</span></p>
                     <p v-if="e.signing.terminalStep >= 1" class="text-gray-400">{{ t('settings.aiRuntimes.signIn.terminal.opening') }}</p>
                     <p v-if="e.signing.terminalStep >= 2" class="text-green-400">{{ t('settings.aiRuntimes.signIn.terminal.done') }}</p>
-                    <p v-if="e.signing.terminalStep === 0" class="animate-pulse text-gray-400">▍</p>
                   </div>
+                  <ol class="flex flex-col gap-1.5 border-t border-slate-200 bg-gray-50 px-4 py-3 text-sm sm:flex-row sm:gap-6" :data-testid="`runtime-${e.id}-signin-steps`">
+                    <li v-for="n in 2" :key="n" class="flex items-center gap-2" :class="e.signing.terminalStep >= n ? 'text-gray-500' : e.signing.terminalStep === n - 1 ? 'font-medium text-gray-900' : 'text-gray-400'" :aria-current="e.signing.terminalStep === n - 1 ? 'step' : undefined">
+                      <Icon v-if="e.signing.terminalStep >= n" icon="heroicons:check-circle-20-solid" class="h-5 w-5 flex-shrink-0 text-green-600" aria-hidden="true" />
+                      <span v-else-if="e.signing.terminalStep === n - 1 && n === 2" class="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600" aria-hidden="true"></span>
+                      <span v-else class="flex h-5 w-5 items-center justify-center rounded-full border text-xs" :class="e.signing.terminalStep === n - 1 ? 'border-gray-900 bg-gray-900 text-white' : 'border-gray-300'" aria-hidden="true">{{ n }}</span>
+                      <span>{{ t(`settings.aiRuntimes.signIn.terminal.step${n}`, { name: e.name }) }}</span>
+                    </li>
+                  </ol>
                 </div>
                 <p v-else class="text-sm text-red-700" role="alert" :data-testid="`runtime-${e.id}-signin-failed`">{{ t('settings.aiRuntimes.signIn.failed') }}</p>
               </div>

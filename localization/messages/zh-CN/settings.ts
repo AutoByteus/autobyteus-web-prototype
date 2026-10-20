@@ -550,12 +550,14 @@ const settingsMessages = {
   "settings.aiRuntimes.signIn.cancel": "取消",
   "settings.aiRuntimes.signIn.failed": "登录未完成。请重试。",
   "settings.aiRuntimes.announce.signedIn": "{{name}} 已登录。",
-  "settings.aiRuntimes.signIn.terminalHint": "在终端中按 Enter，然后在浏览器中完成 {{name}} 的登录。",
   "settings.aiRuntimes.signIn.close": "关闭",
   "settings.aiRuntimes.signIn.terminalLabel": "{{name}} 登录终端",
   "settings.aiRuntimes.signIn.terminal.prompt": "按 Enter 登录。",
   "settings.aiRuntimes.signIn.terminal.opening": "正在打开浏览器…",
   "settings.aiRuntimes.signIn.terminal.done": "已登录。",
+  "settings.aiRuntimes.signIn.terminalTitle": "终端",
+  "settings.aiRuntimes.signIn.terminal.step1": "在终端中按 Enter",
+  "settings.aiRuntimes.signIn.terminal.step2": "在浏览器中完成 {{name}} 的登录",
 } satisfies TranslationCatalog;
 
 export default settingsMessages;
