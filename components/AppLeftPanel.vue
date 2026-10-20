@@ -108,20 +108,21 @@
     </div>
 
     <footer class="flex-shrink-0 bg-white p-2">
-      <!-- settings-update-notifications (round 2): unread notifications per category, above Settings. -->
-      <SidebarNotificationsEntry v-if="showSettingsNavigation" variant="panel" />
-      <button
-        v-if="showSettingsNavigation"
-        type="button"
-        class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm font-medium transition-colors"
-        :class="isSettingsActive
-          ? 'bg-gray-100 text-gray-900'
-          : 'text-gray-700 hover:bg-gray-100'"
-        @click="navigateToSettings"
-      >
-        <Icon icon="heroicons:cog-6-tooth" class="h-4 w-4 flex-shrink-0" />
-        <span class="truncate">{{ $t('shell.navigation.settings') }}</span>
-      </button>
+      <!-- settings-update-notifications (round 3): unread notifications sit on the Settings row, on its right. -->
+      <div v-if="showSettingsNavigation" class="flex items-center gap-1.5">
+        <button
+          type="button"
+          class="flex min-w-0 flex-1 items-center gap-2 rounded-md px-3 py-2 text-left text-sm font-medium transition-colors"
+          :class="isSettingsActive
+            ? 'bg-gray-100 text-gray-900'
+            : 'text-gray-700 hover:bg-gray-100'"
+          @click="navigateToSettings"
+        >
+          <Icon icon="heroicons:cog-6-tooth" class="h-4 w-4 flex-shrink-0" />
+          <span class="truncate">{{ $t('shell.navigation.settings') }}</span>
+        </button>
+        <SidebarNotificationsEntry variant="inline" />
+      </div>
     </footer>
   </div>
 </template>

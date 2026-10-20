@@ -1,18 +1,21 @@
 <template>
-  <!-- settings-update-notifications (round 2): a labelled entry per notification category with unread items, just
-       above Settings ("3 updates available"). It opens the notification area, where each item has its actions.
-       `panel`: a row in the docked left panel. `strip`: the category icon with a count in the collapsed strip. -->
+  <!-- settings-update-notifications (round 3): one entry per notification category with unread items, showing the
+       category's icon and count; its name is "3 updates available". It opens the notification area, where each item
+       has its actions.
+       `inline`: a pill on the right of the Settings row in the docked left panel.
+       `strip`: the icon with a count badge just above the cog in the collapsed strip. -->
   <template v-for="[category, count] in store.unreadByCategory" :key="category">
     <button
-      v-if="variant === 'panel'"
+      v-if="variant === 'inline'"
       type="button"
-      class="mb-1 flex w-full items-center gap-2.5 rounded-md bg-sky-50 px-3 py-2 text-left text-sm font-medium text-sky-900 ring-1 ring-inset ring-sky-200 transition-colors hover:bg-sky-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+      class="inline-flex h-8 flex-shrink-0 items-center gap-1 rounded-full bg-sky-50 px-2.5 text-sm font-semibold text-sky-700 ring-1 ring-inset ring-sky-200 transition-colors hover:bg-sky-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+      :title="label(category, count)"
+      :aria-label="label(category, count)"
       :data-test="`sidebar-notifications-${category}`"
       @click="open"
     >
-      <Icon :icon="CATEGORY_ICONS[category]" class="h-5 w-5 flex-shrink-0 text-sky-600" aria-hidden="true" />
-      <span class="min-w-0 flex-1 truncate">{{ label(category, count) }}</span>
-      <Icon icon="heroicons:chevron-right-20-solid" class="h-4 w-4 flex-shrink-0 text-sky-500" aria-hidden="true" />
+      <Icon :icon="CATEGORY_ICONS[category]" class="h-4 w-4 text-sky-600" aria-hidden="true" />
+      <span aria-hidden="true">{{ count }}</span>
     </button>
     <button
       v-else
@@ -35,7 +38,7 @@ import { useRouter } from 'vue-router'
 import { useLocalization } from '~/composables/useLocalization'
 import { CATEGORY_ICONS, useUpdateNotificationsStore, type NotificationCategory } from '~/stores/updateNotificationsStore'
 
-defineProps<{ variant: 'panel' | 'strip' }>()
+defineProps<{ variant: 'inline' | 'strip' }>()
 const emit = defineEmits<{ (event: 'navigate'): void }>()
 const { t } = useLocalization()
 const store = useUpdateNotificationsStore()

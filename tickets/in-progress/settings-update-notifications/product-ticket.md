@@ -159,6 +159,30 @@ One recommended design.
   - N-016 / N-017: zh-CN, including "3 个可用更新".
   - All of round 1's interactions still pass.
 
+## Round 2 Feedback And Round 3 (current proposal)
+
+- User feedback on round 2 (2026-10-20), with a zh-CN screenshot of the "3 个可用更新" row above "设置":
+
+  > Oh no, you definitely don't want to put them into two rows. Or if you wanna put it into two rows … above
+  > [the] setting, you'll use notifications … Or what I imagined is that the notification is on the same row,
+  > on the same row as setting itself, you know, on the right side of setting.
+
+- Round 3 (the user's preferred option, "same row, on the right side of Settings"):
+  - **Docked left panel.** The Settings row is unchanged on the left. On its right, while a category has
+    unread notifications, a pill shows the category icon and the count, e.g. `↓ 3`.
+    - Style: 32 px high, fully rounded, `sky-50` background with a `sky-200` ring; 14 px semibold `sky-700`
+      count; 16 px `sky-600` icon; hover `sky-100`.
+    - Name and tooltip: "3 updates available" / "3 个可用更新".
+    - Clicking it opens the notification area. One pill per category with unread items.
+  - **Collapsed strip** (one column, so no shared row): unchanged from round 2, the category icon with a count
+    badge just above the cog.
+  - Removed: round 2's full-width "3 updates available ›" row above Settings.
+- Round 3 changes:
+  - DC-013: `SidebarNotificationsEntry.vue` variant `inline` (replaces `panel`).
+  - DC-013: `AppLeftPanel.vue` footer: one row with Settings (flex-1) and the pill.
+- Round 3 validation (`review-evidence/round-3/r2.mjs`): **19/19**; N-001 / N-017 read the pill's accessible
+  name.
+
 ## Delivery And Validation
 
 - UI/UX specification: pending
