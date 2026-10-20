@@ -77,6 +77,14 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
     + (appVisible.value && appUnread.value ? 1 : 0))
   const waitingCount = computed(() => sources.value.filter((item) => item.state !== 'handled').length + (appVisible.value ? 1 : 0))
   const isEmpty = computed(() => !appVisible.value && sources.value.length === 0)
+  /** Unread notifications per kind, in display order, for the sidebar entry's description ("1 software update, …"). */
+  const unreadByKind = computed(() => {
+    const kinds: UpdateNotificationKind[] = ['app', 'agent_package', 'skill_source']
+    const count = (kind: UpdateNotificationKind) => kind === 'app'
+      ? (appVisible.value && appUnread.value ? 1 : 0)
+      : sources.value.filter((item) => item.kind === kind && item.unread && item.state !== 'handled').length
+    return kinds.map((kind) => [kind, count(kind)] as const).filter(([, n]) => n > 0)
+  })
   /** Unread notifications per category, for the sidebar entries (categories with none are not shown). */
   const unreadByCategory = computed(() => {
     const counts: Partial<Record<NotificationCategory, number>> = {}
@@ -126,7 +134,7 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
 
   return {
     sources, visibleSources, appUnread, appFoundAt, appSkippedVersion, backgroundChecks, showsAppNotification,
-    newThisVisit, scriptedOutcomes, appVisible, unreadCount, unreadByCategory, waitingCount, isEmpty,
+    newThisVisit, scriptedOutcomes, appVisible, unreadCount, unreadByCategory, unreadByKind, waitingCount, isEmpty,
     markSeen, endVisit, isNew, updateSource, skipSource, skipApp,
   }
 })

@@ -219,6 +219,37 @@ One recommended design.
   - DC-018: icons `arrow-down-circle` (outline).
 - Round 4 validation (`review-evidence/round-4/r2.mjs`): **19/19**.
 
+## Round 4 Feedback And Round 5 (current proposal)
+
+- User feedback on round 4 (2026-10-20), with a screenshot of the outline icon and the separate "3" badge on the
+  Settings row:
+
+  > Still not good. … I think it doesn't look like it's a whole. … You have updates, you have three … you show
+  > like updates or something, some words. … I think it's better to use some words. It's much more clear. For
+  > example, software updates, agent package updates, skill updates.
+
+- Round 5:
+  - **The Settings row shows words as one pill:** "3 updates" ("1 update"; zh-CN "3 个更新").
+    - Style: 28 px high, fully rounded, `sky-50` background with a `sky-200` ring, 12 px semibold `sky-700`;
+      hover `sky-100`. No separate icon or badge.
+  - **The types in words:**
+    - On hover or keyboard focus, the pill shows the app's dark tooltip with one line per type: "1 software
+      update", "1 agent package update", "1 skill update" (zh-CN "1 个软件更新" …).
+    - The accessible name is "3 updates available: 1 software update, 1 agent package update, 1 skill update"
+      (zh-CN "3 个可用更新：1 个软件更新、1 个智能体包更新、1 个技能更新").
+  - **Collapsed strip** (one icon wide; words do not fit): the outline icon with its count badge on it, as one
+    unit. Its tooltip reads "3 updates available" with the same per-type lines.
+  - The list items keep their round-4 type headlines ("Software update" / "Agent package update" / "Skill
+    update").
+- Round 5 changes:
+  - DC-019: `SidebarNotificationsEntry.vue` `inline` is the word pill with its tooltip; both variants carry the
+    per-type description.
+  - DC-020: `unreadByKind` in the store.
+  - DC-021: strings `settings.notifications.sidebar.updates.short.*`, `sidebar.kind.*.one|other`,
+    `sidebar.listSeparator` and `sidebar.description`.
+- Round 5 validation (`review-evidence/round-5/r2.mjs`): **19/19**; N-001 / N-017 check the pill's words and its
+  full name in en and zh-CN.
+
 ## Delivery And Validation
 
 - UI/UX specification: pending

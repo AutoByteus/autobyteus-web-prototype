@@ -537,6 +537,16 @@ const settingsMessages = {
   "settings.notifications.category.updates": "Updates",
   "settings.notifications.sidebar.updates.one": "1 update available",
   "settings.notifications.sidebar.updates.other": "{{count}} updates available",
+  "settings.notifications.sidebar.updates.short.one": "1 update",
+  "settings.notifications.sidebar.updates.short.other": "{{count}} updates",
+  "settings.notifications.sidebar.kind.app.one": "1 software update",
+  "settings.notifications.sidebar.kind.app.other": "{{count}} software updates",
+  "settings.notifications.sidebar.kind.agent_package.one": "1 agent package update",
+  "settings.notifications.sidebar.kind.agent_package.other": "{{count}} agent package updates",
+  "settings.notifications.sidebar.kind.skill_source.one": "1 skill update",
+  "settings.notifications.sidebar.kind.skill_source.other": "{{count}} skill updates",
+  "settings.notifications.sidebar.listSeparator": ", ",
+  "settings.notifications.sidebar.description": "{{summary}}: {{details}}",
   "settings.notifications.listLabel": "Update notifications",
 } satisfies TranslationCatalog;
 

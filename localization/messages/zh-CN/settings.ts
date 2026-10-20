@@ -537,6 +537,16 @@ const settingsMessages = {
   "settings.notifications.category.updates": "更新",
   "settings.notifications.sidebar.updates.one": "1 个可用更新",
   "settings.notifications.sidebar.updates.other": "{{count}} 个可用更新",
+  "settings.notifications.sidebar.updates.short.one": "1 个更新",
+  "settings.notifications.sidebar.updates.short.other": "{{count}} 个更新",
+  "settings.notifications.sidebar.kind.app.one": "1 个软件更新",
+  "settings.notifications.sidebar.kind.app.other": "{{count}} 个软件更新",
+  "settings.notifications.sidebar.kind.agent_package.one": "1 个智能体包更新",
+  "settings.notifications.sidebar.kind.agent_package.other": "{{count}} 个智能体包更新",
+  "settings.notifications.sidebar.kind.skill_source.one": "1 个技能更新",
+  "settings.notifications.sidebar.kind.skill_source.other": "{{count}} 个技能更新",
+  "settings.notifications.sidebar.listSeparator": "、",
+  "settings.notifications.sidebar.description": "{{summary}}：{{details}}",
   "settings.notifications.listLabel": "更新通知",
 } satisfies TranslationCatalog;
 
