@@ -253,7 +253,7 @@ One recommended design.
 - Round 5 adjustment (user, 2026-10-20: "Blue is nice. Can you make the blue … the color is a little bit too
   light"): the pill is one step deeper: `sky-100` background, `sky-300` ring, `sky-800` text, hover `sky-200`.
 
-## Round 5 Feedback And Round 6 (current proposal)
+## Round 5 Feedback And Round 6 (superseded in part by round 7)
 
 - User feedback on round 5 (2026-10-20), with a screenshot of Settings with the right-hand list:
 
@@ -309,10 +309,57 @@ One recommended design.
   - Skip; Clear; the strip opens the panel beside it.
   - Empty and checks-off (no entry; the section's empty state); browser (no software card); zh-CN.
 
+## Round 6 Feedback And Round 7 (current proposal)
+
+- User feedback on round 6 (2026-10-20), with screenshots of the panel, its gear, the Settings setting card and
+  Server Settings → Basics:
+  - Use the darker blue (the user pointed at the darker Download button).
+  - Keep it simple and in place. Download progress in the card is right. Everything happens in the card.
+  - Remove the separate Notifications list in Settings ("don't make it redundant"). Remove the gear.
+  - The background-check setting is a separate card in Server Settings → Basics, where the features' settings are.
+- Round 7:
+  - **Darker blue.** Primary buttons are `bg-sky-700` with `hover:bg-sky-800` (was `sky-600` / `sky-700`). The
+    download progress, the card's new dot and the strip badge are `sky-700` too. The Settings-row pill keeps its
+    approved blue (`sky-100` / `sky-800` / `sky-300`).
+  - **One place for notifications.** The Notification Center panel is the whole notification area. Every action
+    (Update, Download → Install and restart, Skip this version, Clear, Try again, the details) happens in the
+    card. The panel header has the title and the close button only (no gear).
+  - **Settings → Notifications removed.** The section, its navigation item and count, and the
+    `components/settings/notifications/*` list components are gone. `pages/settings.vue` is back to the baseline.
+  - **Update checks card in Server Settings → Basics** (`components/settings/UpdateChecksCard.vue`, last in the
+    Basics grid). It follows the Basics card pattern (`rounded-3xl`, a 2xl title, a summary), with an inner row like
+    Codex full access:
+    - the label "Check GitHub packages and skills in the background";
+    - the REQ-014 description of exactly what is sent;
+    - the emerald / slate switch;
+    - "Applies to this node."
+- Note for the Solution Designer (SR-002 integration). This replaces the round 6 note. REQ-011 says the area "lives
+  in Settings, and an indicator on the Settings entry". In the approved design:
+  - the area is the **Notification Center**, which the user opens from the entry on the Settings row (or the strip
+    icon) and which is never opened by itself;
+  - there is **no Settings section** for notifications;
+  - the per-node setting (REQ-013/014) is the **Update checks** card in **Server Settings → Basics**.
+  - REQ-011 and the related AC need this wording when integrating.
+- Round 7 changes:
+  - DC-027: darker primary blue.
+  - DC-028: the Settings Notifications section and the list components are removed; the gear is removed.
+  - DC-029: `UpdateChecksCard.vue` in `ServerSettingsBasicsPanel.vue`.
+  - DC-030: strings: added `settings.notifications.setting.title|summary`; removed `newCount`, `found`,
+    `releaseNotes`, `offNotice`, `app.channel.*` and `center.settings`.
+- Round 7 validation (`review-evidence/round-7/r9.mjs`): **25/25**. This is the round 6 set without the gear and
+  section checks, plus:
+  - C-011: no gear and no Settings link;
+  - C-019: the button colour is `rgb(3, 105, 161)`;
+  - C-020: no Notifications section in Settings;
+  - C-021: the Basics card text, the switch and the scope;
+  - C-022: zh-CN;
+  - C-023: compact width;
+  - the empty and off scenarios show the card's switch on and off.
+
 ## Delivery And Validation
 
 - UI/UX specification: pending
-- Runnable UI reference entry point (round 6: `/chat`, then the "4 updates" pill on the Settings row; Settings → Notifications for the section). Earlier:
+- Runnable UI reference entry point (round 7: `/chat`, then the "4 updates" pill on the Settings row; Settings → Server Settings → Basics → Update checks for the setting). Earlier:
   - `http://127.0.0.1:4681/settings?section=updates` (wide window);
   - any page for the sidebar dot (e.g. `/chat`);
   - a window narrower than 1280 px for the section.

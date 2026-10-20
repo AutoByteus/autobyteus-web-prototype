@@ -38,7 +38,7 @@
       @click="toggle($event, 'right')"
     >
       <Icon :icon="CATEGORY_ICONS[category]" class="h-5 w-5" aria-hidden="true" />
-      <span class="absolute right-0 top-0 min-w-[16px] rounded-full px-1 text-center text-[10px] font-semibold leading-4 text-white ring-2 ring-white" :class="hasNew(category) ? 'bg-sky-600' : 'bg-gray-400'" aria-hidden="true">{{ count }}</span>
+      <span class="absolute right-0 top-0 min-w-[16px] rounded-full px-1 text-center text-[10px] font-semibold leading-4 text-white ring-2 ring-white" :class="hasNew(category) ? 'bg-sky-700' : 'bg-gray-400'" aria-hidden="true">{{ count }}</span>
       <span v-if="!store.centerOpen" class="invisible absolute left-full z-50 ml-2 whitespace-nowrap rounded bg-gray-900 px-2.5 py-1.5 text-left text-xs leading-5 text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100" aria-hidden="true">
         <span class="block font-medium">{{ label(category, count) }}</span>
         <span v-for="line in detailLines()" :key="line" class="block text-gray-300">{{ line }}</span>

@@ -11,6 +11,8 @@
       <FeaturedCatalogItemsCard />
       <WebSearchConfigurationCard @notify="showNotification" />
       <CompactionConfigCard />
+      <!-- settings-update-notifications: the background-check setting for update notifications. -->
+      <UpdateChecksCard />
     </div>
 
     <div
@@ -34,6 +36,7 @@ import MediaDefaultModelsCard from '~/components/settings/MediaDefaultModelsCard
 import ServerSettingsEndpointCards from '~/components/settings/ServerSettingsEndpointCards.vue'
 import SkillImprovementFeatureToggleCard from '~/components/settings/SkillImprovementFeatureToggleCard.vue'
 import LiveResponseStreamingCard from '~/components/settings/LiveResponseStreamingCard.vue'
+import UpdateChecksCard from '~/components/settings/UpdateChecksCard.vue'
 import WebSearchConfigurationCard from '~/components/settings/WebSearchConfigurationCard.vue'
 
 type NotificationType = 'success' | 'error'

@@ -1,7 +1,7 @@
 <template>
   <!-- settings-update-notifications (round 6): the Notification Center. The user opens it from the sidebar entry
        ("3 updates"); it floats next to that entry, over the current page, in the manner of macOS: compact cards
-       grouped by category, each with its actions. Never opens by itself. Esc, a click outside, or the close button
+       grouped by category, each with its actions in place (round 7: no separate Settings list, no gear). Never opens by itself. Esc, a click outside, or the close button
        closes it. -->
   <Teleport to="body">
     <transition name="notification-center">
@@ -16,14 +16,6 @@
       >
         <header class="flex items-center gap-2 px-4 pb-2 pt-3">
           <h2 :id="headingId" ref="heading" tabindex="-1" class="flex-1 text-sm font-semibold text-gray-900 outline-none">{{ t('settings.notifications.title') }}</h2>
-          <NuxtLink
-            to="/settings?section=notifications"
-            class="inline-flex h-7 w-7 items-center justify-center rounded-md text-gray-500 hover:bg-gray-200/70 hover:text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
-            :title="t('settings.notifications.center.settings')"
-            :aria-label="t('settings.notifications.center.settings')"
-            data-testid="notification-center-settings"
-            @click="close(false)"
-          ><Icon icon="heroicons:cog-6-tooth" class="h-4 w-4" aria-hidden="true" /></NuxtLink>
           <button
             type="button"
             class="inline-flex h-7 w-7 items-center justify-center rounded-md text-gray-500 hover:bg-gray-200/70 hover:text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"

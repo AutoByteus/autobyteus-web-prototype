@@ -19,7 +19,7 @@
           <span class="flex items-baseline gap-2">
             <span class="min-w-0 flex-1 truncate text-[13px] font-semibold leading-5 text-gray-900" data-testid="notification-card-kind">{{ t(`settings.notifications.kind.${kind}`) }}</span>
             <span class="flex-shrink-0 text-[11px] leading-5 text-gray-500" :title="new Date(foundAt).toLocaleString(resolvedLocale)">{{ shortTime }}</span>
-            <span v-if="isNew" class="h-2 w-2 flex-shrink-0 self-center rounded-full bg-sky-600" data-testid="notification-card-new" />
+            <span v-if="isNew" class="h-2 w-2 flex-shrink-0 self-center rounded-full bg-sky-700" data-testid="notification-card-new" />
             <span v-if="isNew" class="sr-only">{{ t('settings.notifications.new') }}</span>
           </span>
           <span class="block truncate text-[13px] leading-5" :class="state === 'handled' ? 'text-gray-500' : 'text-gray-800'" data-testid="notification-card-name">{{ name }}</span>
@@ -50,7 +50,7 @@
         <!-- Progress and results. -->
         <div v-if="kind === 'app' && app.status === 'downloading'" class="mt-2" role="status" data-testid="notification-card-progress">
           <p class="text-xs leading-5 text-gray-600">{{ t('settings.notifications.app.downloading', { percent: Math.round(app.downloadPercent ?? 0) }) }}</p>
-          <div class="mt-1 h-1.5 w-full rounded-full bg-gray-200" aria-hidden="true"><div class="h-1.5 rounded-full bg-sky-600 transition-all" :style="{ width: `${Math.max(0, Math.min(100, app.downloadPercent ?? 0))}%` }" /></div>
+          <div class="mt-1 h-1.5 w-full rounded-full bg-gray-200" aria-hidden="true"><div class="h-1.5 rounded-full bg-sky-700 transition-all" :style="{ width: `${Math.max(0, Math.min(100, app.downloadPercent ?? 0))}%` }" /></div>
         </div>
         <p v-if="kind === 'app' && app.status === 'downloaded'" class="mt-1.5 text-xs leading-5 text-emerald-700">{{ t('settings.notifications.app.downloaded') }}</p>
         <p v-if="kind === 'app' && app.status === 'installing'" class="mt-1.5 inline-flex items-center gap-1.5 text-xs leading-5 text-emerald-700" role="status"><Icon icon="heroicons:arrow-path-20-solid" class="h-3.5 w-3.5 animate-spin motion-reduce:animate-none" aria-hidden="true" />{{ t('settings.notifications.app.installing') }}</p>
@@ -90,7 +90,7 @@ const store = useUpdateNotificationsStore()
 const app = useAppUpdateStore()
 const expanded = ref(false)
 const detailsId = `notification-card-details-${Math.random().toString(36).slice(2, 8)}`
-const primary = 'rounded-md bg-sky-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-sky-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500'
+const primary = 'rounded-md bg-sky-700 px-2.5 py-1 text-xs font-medium text-white hover:bg-sky-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500'
 const secondary = 'rounded-md px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500'
 
 /** Each type's outline icon, from the sidebar's set. A new kind adds one. */
