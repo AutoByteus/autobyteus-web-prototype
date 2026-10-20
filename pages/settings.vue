@@ -28,6 +28,27 @@
                 <span class="ml-2 text-sm font-medium">{{ $t('settings.page.backLabel') }}</span>
               </button>
             </li>
+            <!-- settings-update-notifications: on narrower windows the notification area is a section. -->
+            <li v-if="!isWide" class="w-full">
+              <button
+                type="button"
+                data-testid="settings-nav-notifications"
+                class="flex w-full items-center justify-start px-4 py-2 rounded-md transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900 group"
+                :class="{ 'bg-gray-100 text-gray-900': activeSection === 'notifications' }"
+                @click="activeSection = 'notifications'"
+              >
+                <div class="flex items-center min-w-[20px] mr-3">
+                  <span class="i-heroicons-bell-20-solid w-5 h-5"></span>
+                </div>
+                <span class="text-left">{{ $t('settings.notifications.title') }}</span>
+                <span
+                  v-if="notifications.unreadCount"
+                  class="ml-auto rounded-full bg-sky-600 px-1.5 text-[11px] font-semibold leading-5 text-white"
+                  data-testid="settings-nav-notifications-count"
+                  :aria-label="$t('settings.notifications.indicator', { count: notifications.unreadCount })"
+                >{{ notifications.unreadCount }}</span>
+              </button>
+            </li>
             <li class="w-full">
               <button
                 @click="activeSection = 'api-keys'"
@@ -256,6 +277,7 @@
         <LanguageSettingsManager v-if="activeSection === 'language'" />
         <ExtensionsManager v-if="activeSection === 'extensions'" />
         <AboutSettingsManager v-if="activeSection === 'updates'" />
+        <SettingsNotificationsPanel v-if="activeSection === 'notifications'" variant="section" />
         <ToolsManagementWorkspace
           v-if="activeSection === 'local-tools'"
           initial-root-section="local-tools"
@@ -276,11 +298,23 @@
         </div>
       </div>
     </div>
+
+    <!-- settings-update-notifications: the notification area in the right-hand space (wide windows). -->
+    <aside
+      v-if="isWide && activeSection !== 'notifications'"
+      class="w-[22rem] shrink-0 border-l border-gray-200 bg-gray-50"
+      :aria-label="$t('settings.notifications.title')"
+      data-testid="settings-notifications-rail-aside"
+    >
+      <SettingsNotificationsPanel variant="rail" />
+    </aside>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
+import SettingsNotificationsPanel from '~/components/settings/notifications/SettingsNotificationsPanel.vue';
+import { useUpdateNotificationsStore } from '~/stores/updateNotificationsStore';
 import { useRoute, useRouter } from 'vue-router';
 import { Icon } from '@iconify/vue';
 import { useServerStore } from '~/stores/serverStore';
@@ -316,7 +350,8 @@ type SettingsSection =
   | 'mcp-servers'
   | 'application-packages'
   | 'agent-packages'
-  | 'server-settings';
+  | 'server-settings'
+  | 'notifications';
 type ServerSettingsMode = 'quick' | 'embedding' | 'advanced' | 'migrations';
 
 const route = useRoute();
@@ -324,6 +359,11 @@ const router = useRouter();
 const serverStore = useServerStore();
 const windowNodeContextStore = useWindowNodeContextStore();
 const activeSection = ref<SettingsSection>('api-keys');
+// settings-update-notifications: the rail needs room beside the section (wide windows); otherwise it is a section.
+const notifications = useUpdateNotificationsStore();
+const WIDE_SETTINGS_MIN_WIDTH = 1280;
+const isWide = ref(typeof window !== 'undefined' ? window.innerWidth >= WIDE_SETTINGS_MIN_WIDTH : true);
+const onWindowResize = () => { isWide.value = window.innerWidth >= WIDE_SETTINGS_MIN_WIDTH; };
 const serverSettingsMode = ref<ServerSettingsMode>('quick');
 const isEmbeddedWindow = computed(() => windowNodeContextStore.isEmbeddedWindow);
 const {
@@ -352,6 +392,7 @@ const validSections = new Set<SettingsSection>([
   'application-packages',
   'agent-packages',
   'server-settings',
+  'notifications',
 ]);
 
 const normalizeSection = (section: string | undefined): SettingsSection | null => {
@@ -394,10 +435,19 @@ onMounted(() => {
     }
   }
 
+  // settings-update-notifications: on wide windows the notifications are in the rail beside the first section.
+  window.addEventListener('resize', onWindowResize);
+  if (activeSection.value === 'notifications' && isWide.value) activeSection.value = 'api-keys';
+
   // If server is not running and we are in Electron mode, default to server-settings section.
   if (isEmbeddedWindow.value && serverStore.status !== 'running') {
     selectServerSettings(serverSettingsMode.value);
   }
+});
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', onWindowResize);
+  // Leaving Settings ends the visit: "New" marks go (the items were already counted as read).
+  notifications.endVisit();
 });
 </script>
 

@@ -79,10 +79,17 @@
         :class="isSettingsActive ? 'bg-gray-100 text-gray-900' : ''"
         data-nav-key="settings"
         :title="$t('shell.components.layout.LeftSidebarStrip.settings')"
-        :aria-label="$t('shell.navigation.settings')"
+        :aria-label="settingsAriaLabel"
         @click="handleSettingsClick($event)"
       >
         <Icon icon="heroicons:cog-6-tooth" class="h-5 w-5" />
+        <!-- settings-update-notifications: a quiet dot while unread notifications wait in Settings. -->
+        <span
+          v-if="notifications.unreadCount"
+          class="absolute right-1 top-1 h-2 w-2 rounded-full bg-sky-600 ring-2 ring-white"
+          aria-hidden="true"
+          data-test="settings-notifications-indicator"
+        />
 
         <div class="absolute left-full ml-2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 invisible transition-all group-hover:opacity-100 group-hover:visible z-50">
           {{ $t('shell.navigation.settings') }}
@@ -95,6 +102,7 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
 import { computed, nextTick, onMounted } from 'vue';
+import { useUpdateNotificationsStore } from '~/stores/updateNotificationsStore';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
 import { useAppLayoutStore } from '~/stores/appLayoutStore';
 import { rememberDrawerTrigger } from '~/composables/useAccessibleDrawer';
@@ -127,6 +135,10 @@ const stripClasses = computed(() =>
 );
 
 const isSettingsActive = computed(() => route.path.startsWith('/settings'));
+const notifications = useUpdateNotificationsStore();
+const settingsAriaLabel = computed(() => notifications.unreadCount
+  ? `${t('shell.navigation.settings')}, ${t('settings.notifications.indicator', { count: notifications.unreadCount })}`
+  : t('shell.navigation.settings'));
 const showSettingsNavigation = computed(() => isFeatureAvailableInRuntime('desktopSettings'));
 
 const emit = defineEmits<{
@@ -187,7 +199,8 @@ const handleSettingsClick = async (event: MouseEvent): Promise<void> => {
     return;
   }
 
-  await pushRoute('/settings');
+  // settings-update-notifications: with unread notifications, Settings opens on them.
+  await pushRoute(notifications.unreadCount ? '/settings?section=notifications' : '/settings');
 };
 
 onMounted(() => {

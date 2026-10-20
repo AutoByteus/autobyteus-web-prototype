@@ -7,7 +7,8 @@
         <ServerShutdown />
       </template>
 
-      <AppUpdateNotice />
+      <!-- settings-update-notifications: the self-opening app-update card is retired (DEC-001); the app update
+           is announced in Settings' notification area and Settings → Updates. -->
       <UiErrorPanel v-if="config.public.showDebugErrorPanel" />
       <ToastContainer />
       <SkillNameConflictDialog />
@@ -26,7 +27,6 @@ import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 import ServerLoading from '~/components/server/ServerLoading.vue'
 import ServerShutdown from '~/components/server/ServerShutdown.vue'
 import AppLocalizationGate from '~/components/app/AppLocalizationGate.vue'
-import AppUpdateNotice from '~/components/app/AppUpdateNotice.vue'
 import UiErrorPanel from '~/components/ui/UiErrorPanel.vue'
 import ToastContainer from '~/components/common/ToastContainer.vue'
 import SkillNameConflictDialog from '~/components/skills/SkillNameConflictDialog.vue'
