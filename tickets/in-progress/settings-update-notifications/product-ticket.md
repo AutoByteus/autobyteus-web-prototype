@@ -538,6 +538,22 @@ matching handoff rule, so the result goes to the assigning PM run.
   REQ-013/014, AC-003, AC-015/016, QR-004.
 - Design status: user review continues on the current proposal (round 13). The final package will reflect
   these decisions unless the revised requirements say otherwise.
+- **Resolved 2026-10-20.** The Solution Designer (autobyteus-209) integrated the three decisions as **SR-002**,
+  with no objection:
+  - REQ-009: no dismiss or skip, and no skipped-version state. A handled notification stays until Clear, until a
+    newer update replaces it, or until its source is removed.
+  - REQ-010: read, handled and cleared states persist; there is no dismissed state.
+  - REQ-011: a Notification Center opened only from the Settings-row indicator or the strip icon. The indicator
+    counts waiting updates: emphasised while any is unread, softer once all are read, absent only when nothing
+    waits.
+  - AC-009 / AC-010, UC-004 and SCN-006 are rewritten to match.
+  - DEC-004 is superseded by DEC-013.
+  - The setting stays REQ-013/014, in the Update checks card in Server Settings → Basics.
+  - Unchanged: REQ-004, REQ-012, AC-002/003, AC-015/016.
+  - Files: `/Users/normy/autobyteus_org/autobyteus-worktrees/settings-update-notifications/tickets/in-progress/settings-update-notifications/requirements-doc.md`
+    (SR-002) and `solution-revision-record.md` in the same folder.
+  - The current design (round 13) matches SR-002. Clear removes a handled entry; the pill is solid while unread
+    and soft once read.
 
 ## Delivery And Validation
 
