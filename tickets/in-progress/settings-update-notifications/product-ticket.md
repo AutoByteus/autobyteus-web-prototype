@@ -532,6 +532,17 @@ One recommended design.
   - DC-046: the close button, and the restored `center.close` string.
 - Validation: typecheck. The click-through set runs in the final validation. Capture:
   `review-evidence/round-14/r16-00-panel-border-and-close-2x.png`.
+- **Baseline refresh merged (2026-10-20).**
+  - `WEB-BASELINE-REFRESH-011` (source pin `9227d61`) was accepted and integrated into `personal` (`15057b4`,
+    closed `c3b29e5`), together with the advanced default branch (`runtime-lifecycle-review`, Settings → Agent
+    Runtimes).
+  - It was merged into this ticket as `3b599ff`. The settings messages were resolved as the refreshed file plus
+    this design's 47 notification keys.
+  - Afterwards: reinstall (`--force`), `.nuxt` and the Vite cache cleared; tsc 0; tests 20/20.
+  - Click-through `review-evidence/round-14/r17.mjs`: **30/30**. C-026 now expects the visible Close; the new
+    C-028 checks that ✕ closes the panel and returns focus.
+  - The Update checks card sits correctly in the refreshed Basics (`r17-04-basics-card-refreshed.png`).
+- Accepted design base for finalization: `c3b29e5`.
 
 ## Requirement Impact (raised 2026-10-20, during user review)
 
