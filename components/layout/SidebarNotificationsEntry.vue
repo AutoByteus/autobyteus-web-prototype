@@ -75,6 +75,7 @@ const toggle = (event: MouseEvent, side: 'above' | 'right') => {
   const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
   store.openCenter(side === 'above'
     ? { side, left: 8, bottom: window.innerHeight - rect.top + 8 }
-    : { side, left: rect.right + 8, bottom: Math.max(8, window.innerHeight - rect.bottom) })
+    // The panel is 360 px wide (narrower windows: the window less 8 px each side); keep it inside the window.
+    : { side, left: Math.max(8, Math.min(rect.right + 8, window.innerWidth - Math.min(360, window.innerWidth - 16) - 8)), bottom: Math.max(8, window.innerHeight - rect.bottom) })
 }
 </script>

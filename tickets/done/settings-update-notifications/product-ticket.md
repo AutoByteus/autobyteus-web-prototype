@@ -7,7 +7,7 @@
 - Title: The update-notifications area in Settings.
 - Mode: `Product Experience Design` (evolves the Settings page, the sidebar Settings entries and the app-update
   presentation).
-- Status: `Awaiting User Review`
+- Status: `Completed` (approved by the user 2026-10-20; final artifacts committed)
 - Requester: `/project_task_manager` (AgentRun `project_task_manager_7c8dce0c4a8b44f88e776a83809dee03`),
   2026-10-20, for autobyteus-209's Solution Designer (run `solution_designer_8f0e52ca19ce43c1a1bab5c82f6fe8ed`).
   The handoff is `Product Design Requested`, New Request, SR-001.
@@ -38,7 +38,8 @@
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`)
 - Ticket worktree / branch: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/settings-update-notifications`,
   `design/settings-update-notifications` (base `cb384e3`)
-- Source pin of the baseline: `autobyteus-web@2f211340ee` (`WEB-BASELINE-REFRESH-010`).
+- Source pin of the baseline: `autobyteus-web@9227d61597` (`WEB-BASELINE-REFRESH-011`, merged 2026-10-20;
+  previously `2f211340ee`, `WEB-BASELINE-REFRESH-010`). Accepted design base for finalization: `c3b29e5`.
 - Baseline check (2026-10-20): `2f21134..9227d61` changes 176 files, including the Settings page (a Server
   Settings → Embedding sub-section). This does not block the placement decision. A full refresh,
   `WEB-BASELINE-REFRESH-011`, runs in parallel in its own worktree; it is merged here before the final
@@ -591,20 +592,40 @@ matching handoff rule, so the result goes to the assigning PM run.
   - The current design (round 13) matches SR-002. Clear removes a handled entry; the pill is solid while unread
     and soft once read.
 
+## Approval And Final Validation
+
+- **User confirmation:** "i like the UI approved" (2026-10-20), on round 14 (`e6ef28c`), after the baseline
+  refresh merge (`214f626`, 30/30).
+- **Final validation fixes** (not material; recorded in the spec):
+  - DC-047: below about 420 px the strip-anchored panel is clamped inside the window (`SidebarNotificationsEntry`
+    toggle). It was clipped on the right at 390 px.
+  - DC-048: Install and restart uses `emerald-700` / `hover:emerald-800` for contrast. White text on
+    `emerald-600` was 3.77:1; it is now 5.48:1.
+- **Final validation (2026-10-20):**
+  - `visual-references/final-validation.mjs`: 30/30 (C-001–C-028);
+  - `corepack pnpm typecheck`: 0 errors; `corepack pnpm test`: 20/20;
+  - no page errors during capture.
+  - The visual review covered every changed surface beside the product: hierarchy, colour, borders, focus,
+    narrow and compact widths, and zh-CN.
+
 ## Delivery And Validation
 
-- UI/UX specification: pending
-- Runnable UI reference entry point (round 7: `/chat`, then the "4 updates" pill on the Settings row; Settings → Server Settings → Basics → Update checks for the setting). Earlier:
-  - `http://127.0.0.1:4681/settings?section=updates` (wide window);
-  - any page for the sidebar dot (e.g. `/chat`);
-  - a window narrower than 1280 px for the section.
-- Visual-reference directory: pending
-- Validation: see above
-- User-confirmation reference: pending
-- Mocked boundaries: items and outcomes are scripted; production fills them from the node and the desktop
-  shell.
+- UI/UX specification: `tickets/done/settings-update-notifications/ui-ux-spec.md`
+- Runnable UI reference entry point: `/chat`, then the "4 updates" pill on the Settings row (or the strip icon).
+  For the setting: Settings → Server Settings → Basics → Update checks. Run instructions are in
+  `ui-reference-runbook.md` (settings-update-notifications).
+- Visual-reference directory: `tickets/done/settings-update-notifications/visual-references/`. It holds
+  VIS-001–VIS-028, `capture-references.mjs` and `final-validation.mjs`.
+- Validation: see Approval And Final Validation; per-round evidence is in `review-evidence/round-1` … `round-14`.
+- User-confirmation reference: see above.
+- Mocked boundaries: items and outcomes are scripted (a design store and a design-only plugin, off with
+  `designOnlyLayers=off`). Production fills them from the node and the desktop shell; see the spec's Data,
+  Contract, And Mock Boundaries.
+- Integration target and result: `personal`, `Pending`.
+- Cleanup result: `Pending`.
 
 ## Outcome And Handoff
 
-- Next expected action: the user reviews round 1.
-- Return context: `/project_task_manager` (forwards to autobyteus-209's Solution Designer).
+- Outcome: `Design Completed` (after integration).
+- Return context: `/project_task_manager` (forwards to autobyteus-209's Solution Designer, run
+  `solution_designer_8f0e52ca19ce43c1a1bab5c82f6fe8ed`).

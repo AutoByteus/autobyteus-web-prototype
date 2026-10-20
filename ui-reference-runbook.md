@@ -1,5 +1,30 @@
 # UI Reference Runbook
 
+## settings-update-notifications (update notifications: sidebar entry, Notification Center, Update checks card; source pin `9227d61`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4681
+```
+
+- Open `/chat`. The Settings row shows "4 updates" (solid while unread). Click it to open the Notification Center
+  over the page.
+- Try:
+  - Update on AutoByteus Agents (Updating… → Updated; Clear);
+  - Update on "Research Assistant…" (fails once, then Try again);
+  - Update on AutoByteus Skills (the existing confirmation);
+  - Download on AutoByteus (progress → Install and restart);
+  - click a name for its details;
+  - close with ✕, Esc or a click outside.
+  - Collapse the sidebar for the strip icon.
+  - The setting is at Settings → Server Settings → Basics → Update checks.
+- Scenarios: `localStorage.setItem('autobyteus.prototype.notifications', 'many' | 'empty' | 'off' | 'browser')`,
+  then reload; remove the key to reset. Chinese: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`.
+- Validation: `BASE=http://127.0.0.1:4681 node tickets/done/settings-update-notifications/visual-references/final-validation.mjs`
+  (30 checks).
+- References: `BASE=... OUT=tickets/done/settings-update-notifications/visual-references/ node tickets/done/settings-update-notifications/visual-references/capture-references.mjs`.
+- Reset: reload (in-memory state). Spec: `tickets/done/settings-update-notifications/ui-ux-spec.md`.
+
 ## WEB-BASELINE-REFRESH-011 (source pin `9227d61`)
 
 ```bash
