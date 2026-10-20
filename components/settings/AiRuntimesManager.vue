@@ -92,7 +92,7 @@
                       rel="noopener noreferrer"
                       class="flex sm:min-h-9 w-fit items-center gap-1 text-blue-700 underline decoration-blue-200 underline-offset-2 hover:decoration-blue-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
                       :data-testid="`runtime-${e.id}-install-link`"
-                    >{{ t('settings.aiRuntimes.installInstructions') }}<span class="i-heroicons-arrow-top-right-on-square-20-solid inline-block h-4 w-4" aria-hidden="true"></span><span class="sr-only"> {{ t('settings.aiRuntimes.opensInBrowser') }}</span></a>
+                    >{{ t('settings.aiRuntimes.installInstructions') }}<Icon icon="heroicons:arrow-top-right-on-square-20-solid" class="h-4 w-4 flex-shrink-0" aria-hidden="true" /><span class="sr-only"> {{ t('settings.aiRuntimes.opensInBrowser') }}</span></a>
                   </template>
                   <p v-else-if="e.check === 'checking'" class="flex sm:min-h-9 items-center gap-2 text-gray-500" :data-testid="`runtime-${e.id}-status`" role="status">
                     <span class="h-3 w-3 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600"></span>{{ t('settings.aiRuntimes.status.checking') }}
@@ -225,6 +225,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
+import { Icon } from '@iconify/vue'
 import { useNodeStore } from '~/stores/nodeStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 import {

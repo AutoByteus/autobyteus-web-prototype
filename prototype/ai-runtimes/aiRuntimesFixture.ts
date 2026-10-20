@@ -71,7 +71,8 @@ const ownNode = (): EngineRuntime[] => [
   engine('codex', true, '0.163.0', '0.163.0', 'not_signed_in'),
   engine('claude', true, '2.1.302', '2.1.304', 'signed_in'),
   engine('antigravity', true, '1.4.3', '1.4.3', 'not_signed_in'),
-  engine('grok', true, '1.0.62', '1.0.62', 'signed_in'),
+  // Not installed in the default view so the state is visible; scenario runtimes_mac / runtimes_all_current install it (1.0.62, as on the requester's Mac).
+  engine('grok', false, null, null, 'unknown'),
 ]
 
 // A remote or Docker node carries its own engines (status only here).
@@ -98,6 +99,8 @@ const seed = (scenario: string, isOwnNode: boolean, nodeName: string) => {
   state.checkedAt = null
   state.loadStatus = 'loading'
   const get = (id: EngineId) => state.engines.find((e) => e.id === id)!
+  if ((scenario === 'runtimes_mac' || scenario === 'runtimes_all_current' || scenario === 'runtimes_signed_out') && isOwnNode) Object.assign(get('grok'), { installed: true, version: '1.0.62', latest: '1.0.62', signIn: 'signed_in' })
+  if (scenario === 'runtimes_mixed' && isOwnNode) Object.assign(get('grok'), { installed: true, version: '1.0.62', latest: '1.0.62', signIn: 'signed_in' })
   if (scenario === 'runtimes_all_current') {
     get('claude').latest = '2.1.302'
   }
