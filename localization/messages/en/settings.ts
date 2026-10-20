@@ -550,6 +550,12 @@ const settingsMessages = {
   "settings.aiRuntimes.signIn.cancel": "Cancel",
   "settings.aiRuntimes.signIn.failed": "Sign-in didn't finish. Try again.",
   "settings.aiRuntimes.announce.signedIn": "{{name}} is signed in.",
+  "settings.aiRuntimes.signIn.terminalHint": "Press Enter in the terminal, then finish signing in to {{name}} in your browser.",
+  "settings.aiRuntimes.signIn.close": "Close",
+  "settings.aiRuntimes.signIn.terminalLabel": "{{name}} sign-in terminal",
+  "settings.aiRuntimes.signIn.terminal.prompt": "Press Enter to sign in.",
+  "settings.aiRuntimes.signIn.terminal.opening": "Opening your browser…",
+  "settings.aiRuntimes.signIn.terminal.done": "Signed in.",
 } satisfies TranslationCatalog;
 
 export default settingsMessages;

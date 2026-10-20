@@ -123,7 +123,7 @@
                   <span v-else-if="e.signIn === 'signed_in'" class="flex sm:min-h-9 items-center gap-1.5 text-gray-700" :data-testid="`runtime-${e.id}-signin`"><span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>{{ t('settings.aiRuntimes.signIn.signedIn') }}</span>
                   <template v-else-if="e.signIn === 'not_signed_in'">
                     <span class="flex sm:min-h-9 items-center gap-1.5 text-amber-700" :data-testid="`runtime-${e.id}-signin`"><span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>{{ t('settings.aiRuntimes.signIn.notSignedIn') }}</span>
-                    <p v-if="!e.signInInApp || !state.isOwnNode" class="-mt-1 text-gray-500" :data-testid="`runtime-${e.id}-signin-hint`">{{ t('settings.aiRuntimes.signIn.hint') }}</p>
+                    <p v-if="e.signInMode === 'command_line' || !state.isOwnNode" class="-mt-1 text-gray-500" :data-testid="`runtime-${e.id}-signin-hint`">{{ t('settings.aiRuntimes.signIn.hint') }}</p>
                   </template>
                   <span v-else class="flex sm:min-h-9 items-center text-gray-500" :data-testid="`runtime-${e.id}-signin`">{{ t('settings.aiRuntimes.signIn.unknown') }}</span>
                 </div>
@@ -133,16 +133,16 @@
               <div class="flex flex-col gap-2 sm:items-end sm:justify-self-end" :data-testid="`runtime-${e.id}-actions`">
                 <template v-if="state.isOwnNode && e.installed">
                   <button
-                    v-if="e.signIn === 'not_signed_in' && e.signInInApp"
+                    v-if="e.signIn === 'not_signed_in' && e.signInMode !== 'command_line'"
                     type="button"
-                    :class="[secondaryButton, e.signing.phase === 'waiting' ? 'cursor-wait' : '']"
-                    :disabled="e.signing.phase === 'waiting'"
-                    :aria-label="`${e.signing.phase === 'waiting' ? t('settings.aiRuntimes.signIn.signingIn') : e.signing.phase === 'failed' ? t('settings.aiRuntimes.update.retry') : t('settings.aiRuntimes.signIn.action')} ${e.name}`"
+                    :class="[secondaryButton, isSigningIn(e) ? 'cursor-wait' : '']"
+                    :disabled="isSigningIn(e)"
+                    :aria-label="`${isSigningIn(e) ? t('settings.aiRuntimes.signIn.signingIn') : e.signing.phase === 'failed' ? t('settings.aiRuntimes.update.retry') : t('settings.aiRuntimes.signIn.action')} ${e.name}`"
                     :data-testid="`runtime-${e.id}-signin-button`"
                     @click="onSignIn(e.id)"
                   >
-                    <span v-if="e.signing.phase === 'waiting'" class="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600"></span>
-                    {{ e.signing.phase === 'waiting' ? t('settings.aiRuntimes.signIn.signingIn') : e.signing.phase === 'failed' ? t('settings.aiRuntimes.update.retry') : t('settings.aiRuntimes.signIn.action') }}
+                    <span v-if="isSigningIn(e)" class="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600"></span>
+                    {{ isSigningIn(e) ? t('settings.aiRuntimes.signIn.signingIn') : e.signing.phase === 'failed' ? t('settings.aiRuntimes.update.retry') : t('settings.aiRuntimes.signIn.action') }}
                   </button>
                   <button
                     v-if="e.update.phase === 'running'"
@@ -171,6 +171,28 @@
                 <div v-if="e.signing.phase === 'waiting'" class="flex flex-wrap items-center gap-x-3 text-sm text-gray-600" role="status">
                   <span :data-testid="`runtime-${e.id}-signin-waiting`">{{ t('settings.aiRuntimes.signIn.waiting', { name: e.name }) }}</span>
                   <button type="button" class="rounded-md px-2 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-testid="`runtime-${e.id}-signin-cancel`" @click="cancelSignIn(e.id)">{{ t('settings.aiRuntimes.signIn.cancel') }}</button>
+                </div>
+                <div v-else-if="e.signing.phase === 'terminal'" :data-testid="`runtime-${e.id}-signin-terminal-area`">
+                  <div class="flex flex-wrap items-center gap-x-3 text-sm text-gray-600">
+                    <span>{{ t('settings.aiRuntimes.signIn.terminalHint', { name: e.name }) }}</span>
+                    <button type="button" class="rounded-md px-2 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-testid="`runtime-${e.id}-signin-cancel`" @click="cancelSignIn(e.id)">{{ t('settings.aiRuntimes.signIn.close') }}</button>
+                  </div>
+                  <div
+                    :ref="(el) => focusTerminal(el as HTMLElement | null)"
+                    tabindex="0"
+                    role="textbox"
+                    aria-readonly="true"
+                    :aria-label="t('settings.aiRuntimes.signIn.terminalLabel', { name: e.name })"
+                    class="mt-2 max-w-2xl rounded-lg bg-gray-900 px-4 py-3 font-mono text-xs leading-5 text-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                    :data-testid="`runtime-${e.id}-signin-terminal`"
+                    @keydown.enter.prevent="terminalEnter(e.id)"
+                  >
+                    <p class="text-gray-400">$ {{ commandOfSignIn(e) }}</p>
+                    <p>{{ t('settings.aiRuntimes.signIn.terminal.prompt') }}</p>
+                    <p v-if="e.signing.terminalStep >= 1" class="text-gray-400">{{ t('settings.aiRuntimes.signIn.terminal.opening') }}</p>
+                    <p v-if="e.signing.terminalStep >= 2" class="text-green-400">{{ t('settings.aiRuntimes.signIn.terminal.done') }}</p>
+                    <p v-if="e.signing.terminalStep === 0" class="animate-pulse text-gray-400">▍</p>
+                  </div>
                 </div>
                 <p v-else class="text-sm text-red-700" role="alert" :data-testid="`runtime-${e.id}-signin-failed`">{{ t('settings.aiRuntimes.signIn.failed') }}</p>
               </div>
@@ -206,7 +228,7 @@ import { computed, onMounted } from 'vue'
 import { useNodeStore } from '~/stores/nodeStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 import {
-  cancelSignIn, checkAgain, dismissOutcome, initAiRuntimes, reopenAiRuntimes, retryLoad, startSignIn, startUpdate, useAiRuntimesState, useRelativeClock,
+  cancelSignIn, checkAgain, terminalEnter, dismissOutcome, initAiRuntimes, reopenAiRuntimes, retryLoad, startSignIn, startUpdate, useAiRuntimesState, useRelativeClock,
   type EngineId, type EngineRuntime,
 } from '~/prototype/ai-runtimes/aiRuntimesFixture'
 
@@ -222,6 +244,10 @@ const primaryButton = 'inline-flex whitespace-nowrap min-h-9 items-center justif
 
 const COMMAND: Record<EngineId, string> = { codex: 'codex update', claude: 'claude update', antigravity: 'agy update', grok: 'grok update' }
 const commandOf = (e: EngineRuntime) => COMMAND[e.id]
+const commandOfSignIn = (e: EngineRuntime) => (e.id === 'antigravity' ? 'agy' : e.id)
+const isSigningIn = (e: EngineRuntime) => e.signing.phase === 'waiting' || e.signing.phase === 'terminal'
+// The terminal takes keyboard focus when it opens, so Enter goes straight to it.
+const focusTerminal = (el: HTMLElement | null) => { if (el && document.activeElement !== el && !el.dataset.focused) { el.dataset.focused = '1'; setTimeout(() => el.focus(), 0) } }
 
 const blockedByAgents = (e: EngineRuntime) => e.installed && e.check === 'update_available' && e.agentsRunning > 0 && e.update.phase !== 'running'
 const rowState = (e: EngineRuntime) => (!e.installed ? 'not_installed' : e.update.phase !== 'idle' ? `update_${e.update.phase}` : e.check)

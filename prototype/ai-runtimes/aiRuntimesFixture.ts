@@ -23,9 +23,9 @@ export interface EngineRuntime {
   availableVersion: string | null
   signIn: SignInState
   agentsRunning: number
-  signInInApp: boolean // the engine's own sign-in can be started from AutoByteus (otherwise: its command line)
+  signInMode: 'browser' | 'terminal' | 'command_line' // browser: AutoByteus starts the engine's login; terminal: AutoByteus opens a terminal running the engine; command_line: the user does it themselves
   signInWillFail: boolean // the sign-in does not finish
-  signing: { phase: 'idle' | 'waiting' | 'failed'; token: number }
+  signing: { phase: 'idle' | 'waiting' | 'terminal' | 'failed'; token: number; terminalStep: 0 | 1 | 2 }
   installUrl: string
   update: { phase: UpdatePhase; step: number; fromVersion: string | null; toVersion: string | null; failureOutput: string | null }
 }
@@ -62,15 +62,15 @@ const engine = (
   id: EngineId, installed: boolean, version: string | null, latest: string | null, signIn: SignInState, extra: Partial<EngineRuntime> = {},
 ): EngineRuntime => ({
   id, name: NAME[id], installed, version, latest, checkWillFail: false, updateWillFail: false, check: 'idle', availableVersion: null,
-  signIn, agentsRunning: 0, signInInApp: true, signInWillFail: false, signing: { phase: 'idle', token: 0 }, installUrl: INSTALL_URL[id],
+  signIn, agentsRunning: 0, signInMode: 'browser', signInWillFail: false, signing: { phase: 'idle', token: 0, terminalStep: 0 }, installUrl: INSTALL_URL[id],
   update: { phase: 'idle', step: 0, fromVersion: null, toVersion: null, failureOutput: null }, ...extra,
 })
 
 // The desktop's own node, as on the requester's Mac (2026-10-20).
 const ownNode = (): EngineRuntime[] => [
   engine('codex', true, '0.163.0', '0.163.0', 'not_signed_in'),
-  engine('claude', true, '2.1.302', '2.1.304', 'signed_in', { signInInApp: false }),
-  engine('antigravity', true, '1.4.3', '1.4.3', 'not_signed_in', { signInInApp: false }),
+  engine('claude', true, '2.1.302', '2.1.304', 'signed_in'),
+  engine('antigravity', true, '1.4.3', '1.4.3', 'not_signed_in'),
   engine('grok', true, '1.0.62', '1.0.62', 'signed_in'),
 ]
 
@@ -85,15 +85,16 @@ const remoteNode = (): EngineRuntime[] => [
 const byId = (id: EngineId) => state.engines.find((e) => e.id === id)!
 
 // Recommended (Solution Designer, E-R21; pending the user's decision): Codex and Grok get a Sign in button;
-// Claude (Anthropic approval) and Antigravity (no login command) show "Sign in from its command line."
-const IN_APP_SIGN_IN: Record<EngineId, boolean> = { codex: true, claude: false, antigravity: false, grok: true }
+// Claude (needs Anthropic's approval) shows "Sign in from its command line."; Antigravity has no login command, so its
+// Sign in opens a terminal already running `agy` (the user presses Enter and follows the browser).
+const SIGN_IN_MODE: Record<EngineId, EngineRuntime['signInMode']> = { codex: 'browser', claude: 'command_line', antigravity: 'terminal', grok: 'browser' }
 
 const seed = (scenario: string, isOwnNode: boolean, nodeName: string) => {
   state.scenario = scenario
   state.isOwnNode = isOwnNode
   state.nodeName = nodeName
   state.engines = isOwnNode ? ownNode() : remoteNode()
-  for (const e of state.engines) e.signInInApp = IN_APP_SIGN_IN[e.id]
+  for (const e of state.engines) e.signInMode = SIGN_IN_MODE[e.id]
   state.checkedAt = null
   state.loadStatus = 'loading'
   const get = (id: EngineId) => state.engines.find((e) => e.id === id)!
@@ -222,21 +223,37 @@ export const startUpdate = (id: EngineId) => {
 const SIGN_IN_WAIT_MS = 5000
 export const startSignIn = (id: EngineId) => {
   const e = byId(id)
-  if (!state.isOwnNode || !e.installed || !e.signInInApp || e.signIn !== 'not_signed_in' || e.signing.phase === 'waiting') return
+  if (!state.isOwnNode || !e.installed || e.signInMode === 'command_line' || e.signIn !== 'not_signed_in'
+    || e.signing.phase === 'waiting' || e.signing.phase === 'terminal') return
   const token = e.signing.token + 1
-  e.signing = { phase: 'waiting', token }
+  if (e.signInMode === 'terminal') { e.signing = { phase: 'terminal', token, terminalStep: 0 }; return }
+  e.signing = { phase: 'waiting', token, terminalStep: 0 }
   // The user finishes (or abandons) the vendor's own sign-in in the browser; the engine then reports its status.
   later(SIGN_IN_WAIT_MS, () => {
     if (e.signing.phase !== 'waiting' || e.signing.token !== token) return
-    if (e.signInWillFail) { e.signing = { phase: 'failed', token }; return }
+    if (e.signInWillFail) { e.signing = { phase: 'failed', token, terminalStep: 0 }; return }
     e.signIn = 'signed_in'
-    e.signing = { phase: 'idle', token }
+    e.signing = { phase: 'idle', token, terminalStep: 0 }
     announce(e.name, 'signedIn')
+  })
+}
+// Terminal mode: the user presses Enter in the terminal (as in `agy`), finishes in the browser, and AutoByteus sees the engine signed in.
+export const terminalEnter = (id: EngineId) => {
+  const e = byId(id)
+  if (e.signing.phase !== 'terminal' || e.signing.terminalStep !== 0) return
+  const token = e.signing.token
+  e.signing.terminalStep = 1
+  later(4000, () => {
+    if (e.signing.phase !== 'terminal' || e.signing.token !== token) return
+    e.signIn = 'signed_in'
+    e.signing.terminalStep = 2
+    announce(e.name, 'signedIn')
+    later(1400, () => { if (e.signing.token === token && e.signing.phase === 'terminal') e.signing = { phase: 'idle', token, terminalStep: 0 } })
   })
 }
 export const cancelSignIn = (id: EngineId) => {
   const e = byId(id)
-  if (e.signing.phase === 'waiting' || e.signing.phase === 'failed') e.signing = { phase: 'idle', token: e.signing.token }
+  if (e.signing.phase !== 'idle') e.signing = { phase: 'idle', token: e.signing.token, terminalStep: 0 }
 }
 
 // A new action on the row clears the previous outcome.
