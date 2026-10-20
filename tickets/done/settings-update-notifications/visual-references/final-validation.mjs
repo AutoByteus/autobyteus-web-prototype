@@ -1,5 +1,5 @@
 import { chromium } from 'playwright-core';
-const B=process.env.BASE||'http://127.0.0.1:4681', O=process.env.OUT||'/tmp/sun/shots/';
+const B=process.env.BASE||'http://127.0.0.1:4681', O=process.env.OUT||(await import('node:os')).tmpdir()+'/';
 const browser = await chromium.launch(); const log=(...a)=>console.log(...a); const res=[];
 const check=(id,ok,d)=>{res.push({id,ok,d}); log(ok?'PASS':'FAIL',id,JSON.stringify(d??null).slice(0,200));};
 const page = async (w=1440,h=900,scenario=null,lang=null) => { const ctx = await browser.newContext({ viewport:{width:w,height:h} }); const p = await ctx.newPage(); p.on('pageerror', e => log('PAGEERR', e.message));
