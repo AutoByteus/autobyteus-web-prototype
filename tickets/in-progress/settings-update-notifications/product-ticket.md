@@ -309,7 +309,7 @@ One recommended design.
   - Skip; Clear; the strip opens the panel beside it.
   - Empty and checks-off (no entry; the section's empty state); browser (no software card); zh-CN.
 
-## Round 6 Feedback And Round 7 (current proposal)
+## Round 6 Feedback And Round 7 (card layout superseded by round 8)
 
 - User feedback on round 6 (2026-10-20), with screenshots of the panel, its gear, the Settings setting card and
   Server Settings → Basics:
@@ -355,6 +355,34 @@ One recommended design.
   - C-022: zh-CN;
   - C-023: compact width;
   - the empty and off scenarios show the card's switch on and off.
+
+## Round 7 Feedback And Round 8 (current proposal)
+
+- User feedback on round 7 (2026-10-20), with a screenshot showing two "Agent package update" cards and two "Skill
+  update" cards: "there should be only one entry … for each category … why do we have multiple entries there?"
+- Round 8: **one card per type**, in the manner of macOS grouping notifications by app.
+  - Cards: Software update; Agent package update(s); Skill update(s). The app is first; then the types ordered by
+    their newest waiting update.
+  - **One update:** the card reads "Agent package update", with the time and the "New" dot in its header. It looks
+    the same as round 7.
+  - **Several updates:** the card reads "Agent package updates  2" (the waiting count in grey). Its entries are
+    separated by thin dividers. Each entry has:
+    - its name (medium weight), its own time and its "New" dot;
+    - the change (`main a1b2c3d → 9f8e7d6`, or "Updated to …");
+    - its own actions in place: Update / Skip this version / Try again / Clear.
+    - Clicking an entry's name or change expands its details (the repository and the compare link) in place.
+  - **Long lists:** a card shows its first three entries and "Show N more" (then "Show less"), in place.
+  - **Kept:** one notification per source (each source keeps its own Update and Skip, as REQ requires); the panel;
+    the pill; the darker blue; the Update checks card in Server Settings → Basics.
+- Round 8 changes:
+  - DC-031: `NotificationCard.vue` is now the per-type card. The new `NotificationEntry.vue` is one update inside
+    it, and the new `notificationTime.ts` holds the shared short time.
+  - DC-032: `NotificationCenter.vue` groups the sources by type.
+  - DC-033: strings: added `settings.notifications.kindGroup.*`, `showMore` and `showLess` (en, zh-CN).
+  - Test ids: `notification-card-<kind>` is the card; `notification-entry-<id>` and its parts are the entries.
+- Round 8 validation (`review-evidence/round-8/r10.mjs`): **27/27**. This is the round 7 set plus:
+  - C-024: three cards (Software update; Agent package updates 2; Skill updates 1);
+  - C-025: `many` shows three entries and "Show 2 more", and expands in place.
 
 ## Delivery And Validation
 

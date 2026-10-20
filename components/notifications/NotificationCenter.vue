@@ -34,8 +34,9 @@
               <span>{{ store.waitingCount }}</span>
             </p>
             <ul class="space-y-2" :aria-label="t('settings.notifications.listLabel')">
-              <NotificationCard v-if="store.appVisible" />
-              <NotificationCard v-for="item in ordered" :key="item.id" :item="item" @update="update" />
+              <!-- Round 8: one card per type (the app first; then the types by their newest waiting update). -->
+              <NotificationCard v-if="store.appVisible" kind="app" />
+              <NotificationCard v-for="group in groups" :key="group.kind" :kind="group.kind" :items="group.items" @update="update" />
             </ul>
           </template>
           <div v-else class="rounded-xl bg-white px-4 py-6 text-center ring-1 ring-gray-200/80" role="status" data-testid="notification-center-empty">
@@ -71,7 +72,7 @@ import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { Icon } from '@iconify/vue'
 import ConfirmationModal from '~/components/common/ConfirmationModal.vue'
 import { useLocalization } from '~/composables/useLocalization'
-import { useUpdateNotificationsStore, type SourceUpdateNotification } from '~/stores/updateNotificationsStore'
+import { useUpdateNotificationsStore, type SourceUpdateNotification, type UpdateNotificationKind } from '~/stores/updateNotificationsStore'
 import NotificationCard from './NotificationCard.vue'
 
 const { t } = useLocalization()
@@ -83,6 +84,14 @@ const confirming = ref<SourceUpdateNotification | null>(null)
 
 const ordered = computed(() => [...store.visibleSources].sort((a, b) =>
   Number(a.state === 'handled') - Number(b.state === 'handled') || b.foundAt.localeCompare(a.foundAt)))
+/** The sources grouped by type, one card each; the type with the newest waiting update comes first. */
+const groups = computed(() => {
+  const byKind = new Map<UpdateNotificationKind, SourceUpdateNotification[]>()
+  for (const item of ordered.value) byKind.set(item.kind, [...(byKind.get(item.kind) ?? []), item])
+  const newest = (items: SourceUpdateNotification[]) => items.find((item) => item.state !== 'handled')?.foundAt ?? ''
+  return [...byKind].map(([kind, items]) => ({ kind, items }))
+    .sort((a, b) => newest(b.items).localeCompare(newest(a.items)))
+})
 /** Next to the entry that opened it: above the Settings row (docked panel) or right of the strip icon. */
 const position = computed(() => {
   const anchor = store.centerAnchor
