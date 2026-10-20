@@ -3,7 +3,7 @@
 ## Identity And Scope
 
 - Ticket / request ID: `runtime-lifecycle-review` (the Solution Designer's package identifier, solution revision SR-004). No second ID.
-- Title: Settings → AI Runtimes — show the four AI coding engines (Codex, Claude, Antigravity, Grok) for the current node, check for newer versions, update.
+- Title: Settings → Agent Runtimes (renamed from "AI Runtimes" on the user's direction 2026-10-20; requirement impact for the Solution Designer) — show the four AI coding engines (Codex, Claude, Antigravity, Grok) for the current node, check for newer versions, update.
 - Mode: `Product Experience Design` (evolves the accepted AutoByteus Web Settings page in place).
 - Status: `Awaiting User Review`
 - Requester: Solution Designer (`solution_designer_01a89da60c294d39aa5390913af8a6f0`), for the user, 2026-10-20: "could you ask @Product Team to work on the UI first. so we could first pin down the ui design you know".
@@ -25,7 +25,7 @@
 
 ## Design Summary (review candidate)
 
-- New top-level Settings item **AI Runtimes** (after API Keys), `/settings?section=ai-runtimes`.
+- New top-level Settings item **Agent Runtimes** (after API Keys), `/settings?section=agent-runtimes`. Name rationale: the product already says "runtime" (model menu "Runtimes", "Preferred runtime"); "AI" adds nothing; "provider" collides with API Keys providers. The page says "runtimes" (not "engines").
 - One card in the Embedding visual language: title, one line of description, node line (name + "This computer" / "Remote node"), "Checked …" + **Check again**, and a four-row table: Engine · Installed · Updates · Account · action.
 - Updates: Checking for updates… / Up to date / Update available (version X) / Check failed (+ "<Engine> still works") / for a missing engine, Not installed + Install instructions link.
 - Update (dark button, desktop's own node only): Updating… with indeterminate bar and the vendor command + step; result "Updated from X to Y." then automatic re-check; failure shows the vendor's error and Try again. Disabled with the reason visible while the engine has agents running.
@@ -39,7 +39,7 @@
 ## Delivery And Validation
 
 - Validation so far: `corepack pnpm typecheck` 0 errors; `lint` clean; `test` 17/17; browser checks of default, mixed, remote, update, failed update, agents running, load error, check failed, zh-CN, 390 px.
-- Review URL: <http://127.0.0.1:4701/settings?section=ai-runtimes>
+- Review URL: <http://127.0.0.1:4701/settings?section=agent-runtimes>
 - User-confirmation reference: pending.
 - Final references / `ui-ux-spec.md`: not yet captured (only after confirmation).
 - Integration: Pending. Cleanup: Pending.
