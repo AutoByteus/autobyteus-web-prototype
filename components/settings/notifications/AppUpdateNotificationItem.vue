@@ -2,17 +2,17 @@
   <!-- settings-update-notifications: the app update, which replaces the self-opening bottom-right card. It reads the
        same state as Settings → Updates; Download and Install only run when pressed. -->
   <li class="update-notification px-4 py-3.5 text-gray-900" data-testid="update-notification-app" :data-state="app.status" :data-new="isNew || undefined">
-    <div class="flex gap-3">
-      <UpdateNotificationKindTile :kind="'app'" />
-      <div class="min-w-0 flex-1">
-    <UpdateNotificationMeta kind="app" :found-at="store.appFoundAt ?? new Date().toISOString()" :is-new="isNew" />
-    <p class="mt-1.5 text-sm font-semibold leading-5 text-gray-900" data-testid="update-notification-name">{{ t('settings.notifications.app.name', { version: app.availableVersion }) }}</p>
+    <UpdateNotificationMeta kind="app" :is-new="isNew" />
+    <div class="pl-7">
+    <p class="mt-0.5 text-sm font-medium leading-5 text-gray-800" data-testid="update-notification-name">{{ t('settings.notifications.app.name', { version: app.availableVersion }) }}</p>
     <p class="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-xs leading-5 text-gray-600" data-testid="update-notification-revisions">
       <span>{{ app.currentVersion }}</span>
       <Icon icon="heroicons:arrow-right-20-solid" class="h-3.5 w-3.5 text-gray-400" aria-hidden="true" />
       <span class="font-medium text-gray-900">{{ app.availableVersion }}</span>
       <span aria-hidden="true">·</span>
       <span>{{ t(app.updateChannel === 'beta' ? 'settings.notifications.app.channel.beta' : 'settings.notifications.app.channel.stable') }}</span>
+      <span aria-hidden="true">·</span>
+      <FoundTime class="text-gray-500" :found-at="store.appFoundAt ?? new Date().toISOString()" />
     </p>
 
     <div class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
@@ -74,7 +74,6 @@
         @click="store.skipApp()"
       >{{ t('settings.notifications.skip') }}</button>
     </div>
-      </div>
     </div>
   </li>
 </template>
@@ -86,7 +85,7 @@ import { useLocalization } from '~/composables/useLocalization'
 import { useAppUpdateStore } from '~/stores/appUpdateStore'
 import { useUpdateNotificationsStore } from '~/stores/updateNotificationsStore'
 import UpdateNotificationMeta from './UpdateNotificationMeta.vue'
-import UpdateNotificationKindTile from './UpdateNotificationKindTile.vue'
+import FoundTime from './FoundTime.vue'
 
 const { t } = useLocalization()
 const app = useAppUpdateStore()

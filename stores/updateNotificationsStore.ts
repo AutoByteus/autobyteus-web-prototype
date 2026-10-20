@@ -42,7 +42,8 @@ export type NotificationCategory = 'updates'
 export const KIND_CATEGORY: Record<UpdateNotificationKind, NotificationCategory> = {
   app: 'updates', agent_package: 'updates', skill_source: 'updates',
 }
-export const CATEGORY_ICONS: Record<NotificationCategory, string> = { updates: 'heroicons:arrow-down-circle-20-solid' }
+/** Outline icons, in the style of the sidebar's icons (round 4). */
+export const CATEGORY_ICONS: Record<NotificationCategory, string> = { updates: 'heroicons:arrow-down-circle' }
 
 export const shortRevision = (revision: string) => revision.slice(0, 7)
 export const compareUrlOf = (item: SourceUpdateNotification) =>

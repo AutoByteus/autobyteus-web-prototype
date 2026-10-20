@@ -7,11 +7,9 @@
     :data-state="item.state"
     :data-new="isNew || undefined"
   >
-    <div class="flex gap-3">
-      <UpdateNotificationKindTile :kind="item.kind" />
-      <div class="min-w-0 flex-1">
-    <UpdateNotificationMeta :kind="item.kind" :found-at="item.foundAt" :is-new="isNew" />
-    <p class="mt-1.5 line-clamp-2 break-words text-sm font-semibold leading-5" :class="item.state === 'handled' ? 'text-gray-600' : 'text-gray-900'" data-testid="update-notification-name">{{ item.name }}</p>
+    <UpdateNotificationMeta :kind="item.kind" :is-new="isNew" />
+    <div class="pl-7">
+    <p class="mt-0.5 line-clamp-2 break-words text-sm font-medium leading-5" :class="item.state === 'handled' ? 'text-gray-500' : 'text-gray-800'" data-testid="update-notification-name">{{ item.name }}</p>
     <p class="truncate text-xs leading-5 text-gray-500" :title="item.repository" data-testid="update-notification-repository">{{ item.repository }}</p>
 
     <!-- What changed: installed → latest, and GitHub's compare page. -->
@@ -21,14 +19,18 @@
       <Icon icon="heroicons:arrow-right-20-solid" class="h-3.5 w-3.5 text-gray-400" aria-hidden="true" />
       <span class="font-mono text-[11.5px] font-medium text-gray-900" :title="item.latestRevision">{{ shortRevision(item.latestRevision) }}</span>
     </p>
-    <a
-      v-if="item.state !== 'handled'"
-      :href="compareUrlOf(item)"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="mt-0.5 inline-flex items-center gap-1 rounded text-xs font-medium text-sky-700 hover:text-sky-800 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
-      data-testid="update-notification-compare"
-    >{{ t('settings.notifications.compare') }}<Icon icon="heroicons:arrow-top-right-on-square-20-solid" class="h-3.5 w-3.5" aria-hidden="true" /></a>
+    <!-- What changed (left) and when it was found (right). -->
+    <div class="mt-0.5 flex flex-wrap items-center justify-between gap-x-3">
+      <a
+        v-if="item.state !== 'handled'"
+        :href="compareUrlOf(item)"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1 rounded text-xs font-medium text-sky-700 hover:text-sky-800 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+        data-testid="update-notification-compare"
+      >{{ t('settings.notifications.compare') }}<Icon icon="heroicons:arrow-top-right-on-square-20-solid" class="h-3.5 w-3.5" aria-hidden="true" /></a>
+      <FoundTime v-if="item.state !== 'handled'" class="text-xs leading-5 text-gray-400" :found-at="item.foundAt" />
+    </div>
 
     <!-- Updated (by any path): kept quietly until cleared or superseded. -->
     <p v-if="item.state === 'handled'" class="mt-1.5 flex items-center gap-1.5 text-xs leading-5 text-emerald-700" data-testid="update-notification-handled">
@@ -71,7 +73,6 @@
         @click="store.skipSource(item.id)"
       >{{ t('settings.notifications.clear') }}</button>
     </div>
-      </div>
     </div>
   </li>
 </template>
@@ -82,7 +83,7 @@ import { Icon } from '@iconify/vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { compareUrlOf, shortRevision, useUpdateNotificationsStore, type SourceUpdateNotification } from '~/stores/updateNotificationsStore'
 import UpdateNotificationMeta from './UpdateNotificationMeta.vue'
-import UpdateNotificationKindTile from './UpdateNotificationKindTile.vue'
+import FoundTime from './FoundTime.vue'
 
 const props = defineProps<{ item: SourceUpdateNotification }>()
 const emit = defineEmits<{ (event: 'update', item: SourceUpdateNotification): void }>()

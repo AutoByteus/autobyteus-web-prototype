@@ -183,6 +183,42 @@ One recommended design.
 - Round 3 validation (`review-evidence/round-3/r2.mjs`): **19/19**; N-001 / N-017 read the pill's accessible
   name.
 
+## Round 3 Feedback And Round 4 (current proposal)
+
+- User feedback on round 3 (2026-10-20), with screenshots of the zh-CN rail and the `↓ 3` pill:
+
+  > … you got a software updates, you show like software updates, the words there … if you have a skill update,
+  > you show agent package update … this gives the user very good notification … this kind of small icon, there
+  > was actually nice, but … I feel that the icon you put there is not like in line with our overall styling.
+
+- Round 4:
+  - **The headline says the type in words:** "Software update" / "Agent package update" / "Skill update"
+    (软件更新 / 智能体包更新 / 技能更新), 14 px semibold `gray-900`, with a "New" marker on the right while
+    unread.
+    - Below: the name (14 px medium `gray-800`) and the repository (12 px `gray-500`).
+    - For the app: "1.5.6 → 1.5.7 · Stable · Found 2 hours ago".
+    - For packages and skills: `branch installed → latest`, then "See changes on GitHub ↗" and "Found 3 hours
+      ago" (12 px `gray-400`, beside the link when it fits, else under it).
+  - **Icons in the app's style:** grey (`gray-500`) 20 px **outline** heroicons from the sidebar's set, with no
+    coloured tiles or filled icons:
+    - `computer-desktop` (software update);
+    - `cube` (agent package update);
+    - `sparkles` (skill update; the sidebar's Skills icon);
+    - `arrow-down-circle` (the Updates category heading).
+    - The round-2 tiles are removed.
+  - **Sidebar, in the same style:**
+    - **Pill on the Settings row:** a grey outline `arrow-down-circle` (20 px, like the cog) and a small blue
+      count (`sky-600`, white 11 px semibold); hover `gray-100`. Name: "3 updates available".
+    - **Collapsed strip:** the same outline icon with the blue count badge, above the cog.
+- Round 4 changes:
+  - DC-014: `UpdateNotificationMeta.vue` (headline with the outline icon); `FoundTime.vue` (new);
+    `UpdateNotificationKindTile.vue` removed; the items are restructured.
+  - DC-015: `CATEGORY_ICONS` uses the outline icon; the panel heading icon is grey.
+  - DC-016: `SidebarNotificationsEntry.vue` styles.
+  - DC-017: strings `settings.notifications.kind.*` changed to headline wording.
+  - DC-018: icons `arrow-down-circle` (outline).
+- Round 4 validation (`review-evidence/round-4/r2.mjs`): **19/19**.
+
 ## Delivery And Validation
 
 - UI/UX specification: pending
