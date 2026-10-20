@@ -534,7 +534,9 @@ const settingsMessages = {
   "settings.notifications.setting.label": "Check GitHub packages and skills in the background",
   "settings.notifications.setting.description": "At most every 6 hours, this node asks api.github.com for the latest commit of each agent package and skill source you imported from GitHub. No account or token is used. GitHub sees your IP address and the repository names; nothing is sent to AutoByteus. Nothing is updated until you press Update. The desktop app also checks GitHub releases for its own update when it starts.",
   "settings.notifications.setting.scope": "Applies to this node.",
-  "settings.notifications.indicator": "{{count}} new notifications",
+  "settings.notifications.category.updates": "Updates",
+  "settings.notifications.sidebar.updates.one": "1 update available",
+  "settings.notifications.sidebar.updates.other": "{{count}} updates available",
   "settings.notifications.listLabel": "Update notifications",
 } satisfies TranslationCatalog;
 

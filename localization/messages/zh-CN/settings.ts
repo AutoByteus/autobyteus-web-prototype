@@ -534,7 +534,9 @@ const settingsMessages = {
   "settings.notifications.setting.label": "在后台检查 GitHub 智能体包和技能",
   "settings.notifications.setting.description": "此节点最多每 6 小时向 api.github.com 查询一次你从 GitHub 导入的每个智能体包和技能来源的最新提交。不使用任何账号或令牌。GitHub 能看到你的 IP 地址和仓库名称；不会向 AutoByteus 发送任何内容。在你按下“更新”之前不会更新任何内容。桌面应用启动时也会检查 GitHub 发布页面以获取自身更新。",
   "settings.notifications.setting.scope": "仅适用于此节点。",
-  "settings.notifications.indicator": "{{count}} 条新通知",
+  "settings.notifications.category.updates": "更新",
+  "settings.notifications.sidebar.updates.one": "1 个可用更新",
+  "settings.notifications.sidebar.updates.other": "{{count}} 个可用更新",
   "settings.notifications.listLabel": "更新通知",
 } satisfies TranslationCatalog;
 

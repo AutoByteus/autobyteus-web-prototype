@@ -1,0 +1,14 @@
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/settings-update-notifications/node_modules/playwright-core/index.mjs';
+const B='http://127.0.0.1:4681', O='/tmp/sun/shots/';
+const browser = await chromium.launch(); const log=(...a)=>console.log(...a);
+const p = await browser.newPage({ viewport:{width:1440,height:900}, deviceScaleFactor:2 }); p.on('pageerror', e => log('PAGEERR', e.message));
+await p.goto(B+'/chat'); await p.waitForTimeout(6000); await p.mouse.move(700,300);
+await p.screenshot({ path: O+'r3-01-panel-entry-2x.png', clip:{x:0,y:780,width:330,height:120} });
+await p.click('[data-test="app-left-panel-collapse"]'); await p.waitForTimeout(500); await p.mouse.move(700,300);
+await p.screenshot({ path: O+'r3-02-strip-entry-2x.png', clip:{x:0,y:760,width:60,height:140} });
+await p.hover('[data-test="sidebar-notifications-updates"]'); await p.waitForTimeout(400);
+await p.screenshot({ path: O+'r3-03-strip-hover-2x.png', clip:{x:0,y:760,width:260,height:140} });
+await p.click('[data-test="sidebar-notifications-updates"]'); await p.waitForTimeout(3500);
+log('url', p.url());
+await p.screenshot({ path: O+'r3-04-settings.png' });
+await browser.close();

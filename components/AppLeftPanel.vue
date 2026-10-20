@@ -108,6 +108,8 @@
     </div>
 
     <footer class="flex-shrink-0 bg-white p-2">
+      <!-- settings-update-notifications (round 2): unread notifications per category, above Settings. -->
+      <SidebarNotificationsEntry v-if="showSettingsNavigation" variant="panel" />
       <button
         v-if="showSettingsNavigation"
         type="button"
@@ -119,13 +121,6 @@
       >
         <Icon icon="heroicons:cog-6-tooth" class="h-4 w-4 flex-shrink-0" />
         <span class="truncate">{{ $t('shell.navigation.settings') }}</span>
-        <!-- settings-update-notifications: a quiet dot while unread notifications wait in Settings. -->
-        <span
-          v-if="notifications.unreadCount"
-          class="ml-auto h-2 w-2 flex-shrink-0 rounded-full bg-sky-600"
-          data-test="settings-notifications-indicator"
-        />
-        <span v-if="notifications.unreadCount" class="sr-only">{{ $t('settings.notifications.indicator', { count: notifications.unreadCount }) }}</span>
       </button>
     </footer>
   </div>
@@ -133,7 +128,7 @@
 
 <script setup lang="ts">
 import { useAgentSelectionStore } from '~/stores/agentSelectionStore';
-import { useUpdateNotificationsStore } from '~/stores/updateNotificationsStore';
+import SidebarNotificationsEntry from '~/components/layout/SidebarNotificationsEntry.vue';
 import { computed, nextTick, onMounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
@@ -187,7 +182,7 @@ const isNavRowActive = (key: ShellPrimaryNavKey): boolean =>
   isPrimaryNavActive(key) && !(key === 'chat' && rowSelected.value);
 
 const isSettingsActive = computed(() => route.path.startsWith('/settings'));
-const notifications = useUpdateNotificationsStore();
+
 const showSettingsNavigation = computed(() => isFeatureAvailableInRuntime('desktopSettings'));
 
 const pushRoute = async (target: RouteLocationRaw): Promise<void> => {
@@ -237,8 +232,7 @@ const openChatDraft = async (draftId: string): Promise<void> => {
 
 const navigateToSettings = async (): Promise<void> => {
   useAgentSelectionStore().beginSelectionIntent();
-  // settings-update-notifications: with unread notifications, Settings opens on them.
-  await pushRoute(notifications.unreadCount ? '/settings?section=notifications' : '/settings');
+  await pushRoute('/settings');
 };
 
 const isCurrentRoute = (target: RouteLocationRaw): boolean => {

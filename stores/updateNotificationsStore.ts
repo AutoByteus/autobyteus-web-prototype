@@ -33,6 +33,17 @@ export interface SourceUpdateNotification {
   error: string | null
 }
 
+/**
+ * Round 2 (user, 2026-10-20): every notification belongs to a category with its own icon and label, shown in the
+ * sidebar entry and as the group heading in the area. Today there is one category, `updates` (the app, agent
+ * packages, skill sources). A later category adds an entry here and its strings.
+ */
+export type NotificationCategory = 'updates'
+export const KIND_CATEGORY: Record<UpdateNotificationKind, NotificationCategory> = {
+  app: 'updates', agent_package: 'updates', skill_source: 'updates',
+}
+export const CATEGORY_ICONS: Record<NotificationCategory, string> = { updates: 'heroicons:arrow-down-circle-20-solid' }
+
 export const shortRevision = (revision: string) => revision.slice(0, 7)
 export const compareUrlOf = (item: SourceUpdateNotification) =>
   `https://github.com/${item.repository}/compare/${item.installedRevision}...${item.latestRevision}`
@@ -65,6 +76,13 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
     + (appVisible.value && appUnread.value ? 1 : 0))
   const waitingCount = computed(() => sources.value.filter((item) => item.state !== 'handled').length + (appVisible.value ? 1 : 0))
   const isEmpty = computed(() => !appVisible.value && sources.value.length === 0)
+  /** Unread notifications per category, for the sidebar entries (categories with none are not shown). */
+  const unreadByCategory = computed(() => {
+    const counts: Partial<Record<NotificationCategory, number>> = {}
+    for (const item of sources.value) if (item.unread && item.state !== 'handled') counts[KIND_CATEGORY[item.kind]] = (counts[KIND_CATEGORY[item.kind]] ?? 0) + 1
+    if (appVisible.value && appUnread.value) counts.updates = (counts.updates ?? 0) + 1
+    return (Object.entries(counts) as [NotificationCategory, number][]).filter(([, count]) => count > 0)
+  })
 
   /** Opening the area marks everything read; the "New" mark stays for this visit. */
   const markSeen = () => {
@@ -107,7 +125,7 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
 
   return {
     sources, visibleSources, appUnread, appFoundAt, appSkippedVersion, backgroundChecks, showsAppNotification,
-    newThisVisit, scriptedOutcomes, appVisible, unreadCount, waitingCount, isEmpty,
+    newThisVisit, scriptedOutcomes, appVisible, unreadCount, unreadByCategory, waitingCount, isEmpty,
     markSeen, endVisit, isNew, updateSource, skipSource, skipApp,
   }
 })

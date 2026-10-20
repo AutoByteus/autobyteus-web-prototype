@@ -13,6 +13,11 @@
         <p v-if="!store.backgroundChecks && !store.isEmpty" class="flex items-center gap-1.5 border-b border-gray-100 bg-gray-50 px-4 py-2 text-xs text-gray-600" data-testid="settings-notifications-off-notice">
           <Icon icon="heroicons:pause-circle-20-solid" class="h-4 w-4 text-gray-400" aria-hidden="true" />{{ t('settings.notifications.offNotice') }}
         </p>
+        <!-- Round 2: the list is grouped by category (today: Updates). -->
+        <h3 v-if="!store.isEmpty" class="flex items-center gap-2 border-b border-gray-100 bg-gray-50 px-4 py-2 text-xs font-semibold text-gray-700" data-testid="settings-notifications-category-updates">
+          <Icon :icon="CATEGORY_ICONS.updates" class="h-4 w-4 text-sky-600" aria-hidden="true" />{{ t('settings.notifications.category.updates') }}
+          <span class="font-normal text-gray-500">{{ store.waitingCount }}</span>
+        </h3>
         <ul v-if="!store.isEmpty" class="divide-y divide-gray-100" :aria-label="t('settings.notifications.listLabel')" data-testid="settings-notifications-list">
           <AppUpdateNotificationItem v-if="store.appVisible" />
           <UpdateNotificationItem v-for="item in ordered" :key="item.id" :item="item" @update="update" />
@@ -81,7 +86,7 @@ import { computed, onMounted, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import ConfirmationModal from '~/components/common/ConfirmationModal.vue'
 import { useLocalization } from '~/composables/useLocalization'
-import { useUpdateNotificationsStore, type SourceUpdateNotification } from '~/stores/updateNotificationsStore'
+import { CATEGORY_ICONS, useUpdateNotificationsStore, type SourceUpdateNotification } from '~/stores/updateNotificationsStore'
 import AppUpdateNotificationItem from './AppUpdateNotificationItem.vue'
 import UpdateNotificationItem from './UpdateNotificationItem.vue'
 

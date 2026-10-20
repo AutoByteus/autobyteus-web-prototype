@@ -1,7 +1,7 @@
 <template>
-  <!-- settings-update-notifications: kind and when it was found; a "New" dot for unread items (this visit). -->
+  <!-- settings-update-notifications: kind and when it was found; a "New" dot for unread items (this visit).
+       The kind's icon is the tile beside the item (UpdateNotificationKindTile). -->
   <p class="flex min-w-0 items-center gap-1.5 text-xs leading-5 text-gray-500" data-testid="update-notification-meta">
-    <Icon :icon="KIND_ICONS[kind]" class="h-4 w-4 flex-shrink-0 text-gray-400" aria-hidden="true" />
     <span class="flex-shrink-0 font-medium text-gray-600">{{ t(`settings.notifications.kind.${kind}`) }}</span>
     <span aria-hidden="true">·</span>
     <time class="min-w-0 truncate" :datetime="foundAt" :title="new Date(foundAt).toLocaleString(resolvedLocale)">{{ t('settings.notifications.found', { time: relative }) }}</time>
@@ -13,18 +13,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Icon } from '@iconify/vue'
 import { useLocalization } from '~/composables/useLocalization'
 import type { UpdateNotificationKind } from '~/stores/updateNotificationsStore'
 
 const props = defineProps<{ kind: UpdateNotificationKind; foundAt: string; isNew: boolean }>()
 const { t, resolvedLocale } = useLocalization()
-/** Each kind's icon (a new kind adds one entry). */
-const KIND_ICONS: Record<UpdateNotificationKind, string> = {
-  app: 'heroicons:computer-desktop-20-solid',
-  agent_package: 'heroicons:cube-20-solid',
-  skill_source: 'heroicons:sparkles-20-solid',
-}
 /** "3 hours ago", "yesterday", "2 days ago" in the UI language. */
 const relative = computed(() => {
   const seconds = Math.round((new Date(props.foundAt).getTime() - Date.now()) / 1000)

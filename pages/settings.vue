@@ -45,7 +45,7 @@
                   v-if="notifications.unreadCount"
                   class="ml-auto rounded-full bg-sky-600 px-1.5 text-[11px] font-semibold leading-5 text-white"
                   data-testid="settings-nav-notifications-count"
-                  :aria-label="$t('settings.notifications.indicator', { count: notifications.unreadCount })"
+                  :aria-label="$t(notifications.unreadCount === 1 ? 'settings.notifications.sidebar.updates.one' : 'settings.notifications.sidebar.updates.other', { count: notifications.unreadCount })"
                 >{{ notifications.unreadCount }}</span>
               </button>
             </li>

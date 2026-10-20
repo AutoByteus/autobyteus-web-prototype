@@ -111,6 +111,54 @@ One recommended design.
   - Skip this version (package and app); checks off;
   - empty; checks-off empty; browser (no app item); many items; zh-CN.
 
+## Round 1 Feedback And Round 2 (current proposal)
+
+- User feedback on round 1 (2026-10-20), with screenshots of the docked Settings row with and without the dot:
+
+  > Wow, the sidebar dot looks really ugly. … Who is able to recognize it's a notification? The dot. No, you
+  > shouldn't do that. … notification has a category, right? You have like software update, you have other
+  > kind of notification, and you give each notification a different type. And then you show some kind of
+  > different icon or something, or at least they should be bigger … people can click the notification and
+  > then there's action what they can do there.
+
+- Round 2:
+  - **DEC-B replaced: a labelled category entry, no dot.**
+    - Every notification belongs to a **category** with its own icon and wording. Today there is one,
+      **Updates** (`heroicons:arrow-down-circle-20-solid`, sky-600), covering the app, agent packages and
+      skill sources. A later category adds its icon and strings.
+    - **Docked left panel:** while a category has unread notifications, a row sits just above Settings:
+      "↓ 3 updates available ›" (`sky-50` background, `sky-200` ring, 14 px medium `sky-900`).
+    - **Collapsed strip:** the category icon is a button above the cog, with a count badge (sky-600, white
+      ring) and the tooltip / accessible name "3 updates available".
+    - Clicking either opens the notification area (`/settings?section=notifications`: the section on narrow
+      windows; on wide windows the first section with the rail beside it), where each item has its actions.
+    - The entry goes away once the notifications are read.
+    - The Settings entries are unchanged and open Settings as before (the round-1 dot is removed).
+  - **DEC-C extended: larger kind icons.** Each item has a 32 px tile beside it: app `computer-desktop` on
+    sky-50 / sky-600; agent package `cube` on violet-50 / violet-600; skill source `sparkles` on amber-50 /
+    amber-600.
+  - **The list is grouped by category:** an "Updates" heading with its icon and the number of items, at the
+    top of the list card.
+  - Strings:
+    - `settings.notifications.category.updates` (Updates / 更新);
+    - `settings.notifications.sidebar.updates.one|other` (1 update available / {{count}} updates available;
+      1 个可用更新 / {{count}} 个可用更新);
+    - `settings.notifications.indicator` is removed.
+- Round 2 changes:
+  - DC-009: `components/layout/SidebarNotificationsEntry.vue` (new), placed in `LeftSidebarStrip.vue` and
+    `AppLeftPanel.vue`; the dot and the "Settings opens on notifications" routing are removed.
+  - DC-010: the store's categories (`KIND_CATEGORY`, `CATEGORY_ICONS`, `unreadByCategory`).
+  - DC-011: `UpdateNotificationKindTile.vue` (new); the items use a two-column layout; the panel has a
+    category heading.
+  - DC-012: icons `arrow-down-circle-20-solid` and `chevron-right-20-solid`.
+- Round 2 validation (`review-evidence/round-2/r2.mjs`): **19/19**.
+  - N-001: panel "3 updates available"; strip `aria-label` "3 updates available".
+  - N-002: the entry opens the area.
+  - N-003: the entry is gone after viewing.
+  - N-012 / N-013: no entry when nothing waits.
+  - N-016 / N-017: zh-CN, including "3 个可用更新".
+  - All of round 1's interactions still pass.
+
 ## Delivery And Validation
 
 - UI/UX specification: pending
