@@ -1,14 +1,14 @@
 <template>
-  <!-- settings-update-notifications (round 11): one card per type of update, in the manner of macOS notifications.
-       A small grey header (the type's icon and name in words) and then the updates as rows, App Store style: the name,
+  <!-- settings-update-notifications (round 13): one section per type of update in the panel (no card box, border or
+       shadow; sections are separated by one thin line in the panel). A small grey header (the type's icon and name in words) and then the updates as rows, App Store style: the name,
        the change and time below it, and the one action on the right. Long lists show the first three and
        "Show N more". -->
-  <li class="rounded-xl bg-white px-4 pb-0.5 pt-2.5 shadow-sm ring-1 ring-gray-200/80" :data-testid="`notification-card-${kind}`">
+  <li class="px-4 pb-1.5 pt-3" :data-testid="`notification-card-${kind}`">
     <h3 :id="headingId" class="flex items-center gap-1.5 text-xs font-medium leading-5 text-gray-500" data-testid="notification-card-title">
       <Icon :icon="KIND_ICONS[kind]" class="h-4 w-4 flex-shrink-0" aria-hidden="true" />
       <span class="truncate">{{ t(items.length > 1 ? `settings.notifications.kindGroup.${kind}` : `settings.notifications.kind.${kind}`) }}</span>
     </h3>
-    <ul class="divide-y divide-gray-100" :aria-labelledby="headingId">
+    <ul :aria-labelledby="headingId">
       <NotificationEntry v-if="kind === 'app'" />
       <NotificationEntry v-for="item in shown" v-else :key="item.id" :item="item" @update="emit('update', $event)" />
     </ul>

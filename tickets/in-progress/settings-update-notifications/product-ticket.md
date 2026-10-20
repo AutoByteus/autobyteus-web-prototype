@@ -465,7 +465,7 @@ One recommended design.
   to the right of the text and vertically centred, and the change line carrying the time. C-024 checks the titles
   without counts.
 
-## Round 11 Feedback And Round 12 (current proposal)
+## Round 11 Feedback And Round 12 (current entry colours)
 
 - User feedback on round 11 (2026-10-20), with a screenshot of the grey "3 updates" pill: "Is this a really good
   idea to use a gray color … a blue color would be better … a darker blue … Gray color makes people feel like
@@ -482,6 +482,31 @@ One recommended design.
   is `rgb(3, 105, 161)` with white text; seen is `rgb(224, 242, 254)` with `rgb(7, 89, 133)` text.
   - Captures: `r14-10-pill-new.png`, `r14-11-pill-seen.png` (the seen pill with keyboard focus returned after Esc,
     so its focus ring and hover lines show) and `r14-12-strip-seen.png`.
+
+## Round 12 Feedback And Round 13 (current proposal)
+
+- User question on round 12 (2026-10-20), about the release notes: "do we also have release note there? … whether
+  its actually valuable … I actually never read it".
+  - Answer: they are in the app row's details, hidden until the name is clicked. They add no visible clutter, the
+    current app's update card shows them, and the requirements ask for them.
+  - Committed design: keep them hidden in the details (no change).
+- User feedback on round 12 (2026-10-20): "there is a big panel and then there are multiple cards on it … around the
+  edge … too many lines … very crowded … Can it be a bit cleaner?"
+  - Cause: three stacked edge treatments: the panel's ring and shadow, each card's ring and shadow, and dividers
+    between rows.
+- Round 13: **one white panel, sections, no nested cards.**
+  - Panel: `rounded-2xl bg-white shadow-xl ring-1 ring-black/5`. The grey translucent fill and blur are gone.
+  - Each type is a section (`px-4 pt-3 pb-1.5`), with its small grey header (16 px outline icon and type in words)
+    and rows below.
+  - The only line is one `divide-gray-100` divider between sections. Rows within a section are separated by
+    spacing (`py-2`), not lines.
+  - The empty state is plain text in the panel (no box).
+  - Everything else is as in rounds 11–12.
+- Round 13 changes:
+  - DC-043: `NotificationCenter.vue`: the panel surface, the section dividers, the empty state.
+  - DC-044: `NotificationCard.vue`: a section, not a card. `NotificationEntry.vue`: row spacing.
+- Round 13 validation (`review-evidence/round-13/r15.mjs`): **29/29**, plus the in-context capture
+  `r15-00-panel-in-context-2x.png`.
 
 ## Delivery And Validation
 

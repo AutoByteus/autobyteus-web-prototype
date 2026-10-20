@@ -3,8 +3,8 @@
        "New" dot in a fixed gutter), and below it the change and when it was found. Right: its one action (Download /
        Install and restart / Update / Try again / Clear, or "Updating…"). Clicking the name or the change expands the
        details in place; progress and errors show under the row, full width. -->
-  <li class="relative py-2.5" :data-testid="`notification-entry-${id}`" :data-state="state">
-    <span v-if="isNew" class="absolute -left-[11px] top-[18px] h-1.5 w-1.5 rounded-full bg-sky-700" aria-hidden="true" data-testid="notification-entry-new" />
+  <li class="relative py-2" :data-testid="`notification-entry-${id}`" :data-state="state">
+    <span v-if="isNew" class="absolute -left-[11px] top-[15px] h-1.5 w-1.5 rounded-full bg-sky-700" aria-hidden="true" data-testid="notification-entry-new" />
     <div class="flex items-center gap-3">
       <button
         type="button"

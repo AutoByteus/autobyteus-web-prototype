@@ -1,13 +1,13 @@
 <template>
   <!-- settings-update-notifications: the Notification Center. The user opens it from the sidebar entry ("4 updates");
-       it floats next to that entry, over the current page, in the manner of macOS: just the cards, one per type, each
-       with its actions in place. Never opens by itself. Esc, a click outside, or the entry again closes it. -->
+       it floats next to that entry, over the current page, in the manner of macOS: one clean white panel with a section
+       per type, each update a row with its action in place. Never opens by itself. Esc, a click outside, or the entry again closes it. -->
   <Teleport to="body">
     <transition name="notification-center">
       <section
         v-if="store.centerOpen && store.centerAnchor"
         ref="panel"
-        class="fixed z-[90] flex outline-none w-[360px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-2xl bg-gray-50/95 shadow-2xl ring-1 ring-black/10 backdrop-blur"
+        class="fixed z-[90] flex outline-none w-[360px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-2xl bg-white shadow-xl ring-1 ring-black/5"
         :style="position"
         role="dialog"
         tabindex="-1"
@@ -18,15 +18,16 @@
              technology, and focus lands on the panel so Esc and Tab work at once. -->
         <h2 :id="headingId" class="sr-only">{{ t('settings.notifications.title') }}</h2>
 
-        <div class="min-h-0 flex-1 overflow-y-auto p-2.5">
+        <div class="min-h-0 flex-1 overflow-y-auto">
           <template v-if="!store.isEmpty">
-            <ul class="space-y-2" :aria-label="t('settings.notifications.listLabel')">
+            <!-- Round 13: one white panel; each type is a section, separated by one thin line (no nested cards). -->
+            <ul class="divide-y divide-gray-100" :aria-label="t('settings.notifications.listLabel')">
               <!-- Round 8: one card per type (the app first; then the types by their newest waiting update). -->
               <NotificationCard v-if="store.appVisible" kind="app" />
               <NotificationCard v-for="group in groups" :key="group.kind" :kind="group.kind" :items="group.items" @update="update" />
             </ul>
           </template>
-          <div v-else class="rounded-xl bg-white px-4 py-6 text-center ring-1 ring-gray-200/80" role="status" data-testid="notification-center-empty">
+          <div v-else class="px-4 py-6 text-center" role="status" data-testid="notification-center-empty">
             <p class="text-sm font-medium text-gray-700">{{ t('settings.notifications.empty.title') }}</p>
             <p class="mt-1 text-xs leading-5 text-gray-500">{{ t(store.backgroundChecks ? 'settings.notifications.empty.on' : 'settings.notifications.empty.off') }}</p>
           </div>
