@@ -1,6 +1,8 @@
 <template>
   <!-- settings-update-notifications (round 6): the entry to the Notification Center. The Settings row shows words,
-       "4 updates", as one pill (blue while some are new, grey once all are read; gone when nothing waits); the strip
+       "4 updates", as one pill (round 12: always blue while updates wait: solid dark blue while some are new, soft
+       blue once all are seen; gone when nothing waits. The strip's small count badge is always solid dark blue, since
+       a pale badge that small is hard to see); the strip
        keeps the outline icon with its count badge because it is one icon wide. Clicking toggles the Notification
        Center next to the entry. one entry per notification category with unread items, showing the
        category's icon and count; its name is "3 updates available". It opens the notification area, where each item
@@ -12,7 +14,7 @@
       v-if="variant === 'inline'"
       type="button"
       class="group relative inline-flex h-7 flex-shrink-0 items-center rounded-full px-3 text-xs font-semibold ring-1 ring-inset transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
-      :class="hasNew(category) ? 'bg-sky-100 text-sky-800 ring-sky-300 hover:bg-sky-200' : 'bg-gray-100 text-gray-700 ring-gray-200 hover:bg-gray-200'"
+      :class="hasNew(category) ? 'bg-sky-700 text-white ring-sky-700 hover:bg-sky-800' : 'bg-sky-100 text-sky-800 ring-sky-300 hover:bg-sky-200'"
       :aria-label="description(category, count)"
       :aria-expanded="store.centerOpen"
       aria-haspopup="dialog"
@@ -38,7 +40,7 @@
       @click="toggle($event, 'right')"
     >
       <Icon :icon="CATEGORY_ICONS[category]" class="h-5 w-5" aria-hidden="true" />
-      <span class="absolute right-0 top-0 min-w-[16px] rounded-full px-1 text-center text-[10px] font-semibold leading-4 text-white ring-2 ring-white" :class="hasNew(category) ? 'bg-sky-700' : 'bg-gray-400'" aria-hidden="true">{{ count }}</span>
+      <span class="absolute right-0 top-0 min-w-[16px] rounded-full px-1 text-center text-[10px] font-semibold leading-4 text-white ring-2 ring-white bg-sky-700" aria-hidden="true">{{ count }}</span>
       <span v-if="!store.centerOpen" class="invisible absolute left-full z-50 ml-2 whitespace-nowrap rounded bg-gray-900 px-2.5 py-1.5 text-left text-xs leading-5 text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100" aria-hidden="true">
         <span class="block font-medium">{{ label(category, count) }}</span>
         <span v-for="line in detailLines()" :key="line" class="block text-gray-300">{{ line }}</span>

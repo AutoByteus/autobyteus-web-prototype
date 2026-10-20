@@ -1,0 +1,11 @@
+import { chromium } from '/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/settings-update-notifications/node_modules/playwright-core/index.mjs';
+const b = await chromium.launch(); const p = await (await b.newContext({ viewport:{width:1440,height:900}, deviceScaleFactor: 2 })).newPage();
+const pill='[data-test="sidebar-notifications-updates"]';
+await p.goto('http://127.0.0.1:4681/chat'); await p.waitForTimeout(6000);
+const clip = { x: 0, y: 830, width: 330, height: 70 };
+await p.screenshot({ path: '/tmp/sun/shots/r14-10-pill-new.png', clip });
+await p.click(pill); await p.waitForTimeout(400); await p.keyboard.press('Escape'); await p.mouse.move(900,40); await p.waitForTimeout(400);
+await p.screenshot({ path: '/tmp/sun/shots/r14-11-pill-seen.png', clip });
+await p.click('[data-test="app-left-panel-collapse"]'); await p.waitForTimeout(500);
+await p.screenshot({ path: '/tmp/sun/shots/r14-12-strip-seen.png', clip: { x: 0, y: 780, width: 120, height: 120 } });
+await b.close();

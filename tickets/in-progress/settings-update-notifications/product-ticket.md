@@ -431,7 +431,7 @@ One recommended design.
 - Round 10 validation (`review-evidence/round-10/r12.mjs`): **28/28**. C-012 now checks that there is no Skip and
   four update actions.
 
-## Round 10 Feedback And Round 11 (current proposal)
+## Round 10 Feedback And Round 11 (current card layout; the entry colour is in round 12)
 
 - User feedback on round 10 (2026-10-20): "why do I feel like you have information layout problem … the content
   inside the card … looks strange".
@@ -464,6 +464,24 @@ One recommended design.
 - Round 11 validation (`review-evidence/round-11/r13.mjs`): **29/29**. This adds C-027: one row, with the action
   to the right of the text and vertically centred, and the change line carrying the time. C-024 checks the titles
   without counts.
+
+## Round 11 Feedback And Round 12 (current proposal)
+
+- User feedback on round 11 (2026-10-20), with a screenshot of the grey "3 updates" pill: "Is this a really good
+  idea to use a gray color … a blue color would be better … a darker blue … Gray color makes people feel like
+  notification is normally not gray."
+- Round 12: **the entry is always blue while updates wait.**
+  - New (not yet seen): a solid dark-blue pill: `bg-sky-700`, white text, `hover:bg-sky-800`. This is the same
+    blue as the Update buttons.
+  - Seen: the soft blue approved in round 5: `bg-sky-100`, `text-sky-800`, `ring-sky-300`.
+  - Nothing waiting: no pill.
+  - The collapsed strip's count badge is always solid `sky-700` with white text. A pale badge at 16 px is too
+    faint, as the review capture showed.
+- Round 12 changes: DC-042, `SidebarNotificationsEntry.vue` colours.
+- Round 12 validation (`review-evidence/round-12/r14.mjs`): **29/29**. C-003 now checks the computed colours: new
+  is `rgb(3, 105, 161)` with white text; seen is `rgb(224, 242, 254)` with `rgb(7, 89, 133)` text.
+  - Captures: `r14-10-pill-new.png`, `r14-11-pill-seen.png` (the seen pill with keyboard focus returned after Esc,
+    so its focus ring and hover lines show) and `r14-12-strip-seen.png`.
 
 ## Delivery And Validation
 
