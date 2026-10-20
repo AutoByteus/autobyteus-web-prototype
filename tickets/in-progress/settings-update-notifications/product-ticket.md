@@ -356,7 +356,7 @@ One recommended design.
   - C-023: compact width;
   - the empty and off scenarios show the card's switch on and off.
 
-## Round 7 Feedback And Round 8 (current proposal)
+## Round 7 Feedback And Round 8 (panel header superseded by round 9)
 
 - User feedback on round 7 (2026-10-20), with a screenshot showing two "Agent package update" cards and two "Skill
   update" cards: "there should be only one entry … for each category … why do we have multiple entries there?"
@@ -383,6 +383,22 @@ One recommended design.
 - Round 8 validation (`review-evidence/round-8/r10.mjs`): **27/27**. This is the round 7 set plus:
   - C-024: three cards (Software update; Agent package updates 2; Skill updates 1);
   - C-025: `many` shows three entries and "Show 2 more", and expands in place.
+
+## Round 8 Feedback And Round 9 (current proposal)
+
+- User feedback on round 8 (2026-10-20): "Do you need this separate … notification headers and updates …? Isn't it
+  already quite obvious what the user sees? … keep the UI cleaner."
+- Round 9: **the panel is just the cards.**
+  - Removed: the visible "Notifications" title, the close button and the "Updates 4" group label.
+  - The panel keeps its accessible name ("Notifications", from a visually hidden heading). Focus moves to the panel
+    when it opens, so Esc and Tab work at once.
+  - It closes with Esc, a click outside, or the Settings-row entry again. Focus returns to the entry.
+  - Padding: `p-2.5` around the cards. Everything else is as in round 8 (one card per type, entries inside).
+- Round 9 changes:
+  - DC-034: `NotificationCenter.vue` header and group label removed; the panel takes focus.
+  - DC-035: strings `settings.notifications.center.close` and `category.updates` removed.
+- Round 9 validation (`review-evidence/round-9/r11.mjs`): **28/28**. This is the round 8 set plus C-026 (no
+  visible header or group label; the name is kept; the panel takes focus).
 
 ## Delivery And Validation
 

@@ -1,38 +1,25 @@
 <template>
-  <!-- settings-update-notifications (round 6): the Notification Center. The user opens it from the sidebar entry
-       ("3 updates"); it floats next to that entry, over the current page, in the manner of macOS: compact cards
-       grouped by category, each with its actions in place (round 7: no separate Settings list, no gear). Never opens by itself. Esc, a click outside, or the close button
-       closes it. -->
+  <!-- settings-update-notifications: the Notification Center. The user opens it from the sidebar entry ("4 updates");
+       it floats next to that entry, over the current page, in the manner of macOS: just the cards, one per type, each
+       with its actions in place. Never opens by itself. Esc, a click outside, or the entry again closes it. -->
   <Teleport to="body">
     <transition name="notification-center">
       <section
         v-if="store.centerOpen && store.centerAnchor"
         ref="panel"
-        class="fixed z-[90] flex w-[360px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-2xl bg-gray-50/95 shadow-2xl ring-1 ring-black/10 backdrop-blur"
+        class="fixed z-[90] flex outline-none w-[360px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-2xl bg-gray-50/95 shadow-2xl ring-1 ring-black/10 backdrop-blur"
         :style="position"
         role="dialog"
+        tabindex="-1"
         :aria-labelledby="headingId"
         data-testid="notification-center"
       >
-        <header class="flex items-center gap-2 px-4 pb-2 pt-3">
-          <h2 :id="headingId" ref="heading" tabindex="-1" class="flex-1 text-sm font-semibold text-gray-900 outline-none">{{ t('settings.notifications.title') }}</h2>
-          <button
-            type="button"
-            class="inline-flex h-7 w-7 items-center justify-center rounded-md text-gray-500 hover:bg-gray-200/70 hover:text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
-            :aria-label="t('settings.notifications.center.close')"
-            :title="t('settings.notifications.center.close')"
-            data-testid="notification-center-close"
-            @click="close(true)"
-          ><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" aria-hidden="true" /></button>
-        </header>
+        <!-- Round 9: no visible header or group label; the cards say what they are. The name stays for assistive
+             technology, and focus lands on the panel so Esc and Tab work at once. -->
+        <h2 :id="headingId" class="sr-only">{{ t('settings.notifications.title') }}</h2>
 
-        <div class="min-h-0 flex-1 overflow-y-auto px-3 pb-3">
+        <div class="min-h-0 flex-1 overflow-y-auto p-2.5">
           <template v-if="!store.isEmpty">
-            <!-- One group per category (today: Updates). -->
-            <p class="flex items-center gap-1.5 px-1 pb-1.5 text-xs font-medium text-gray-500" data-testid="notification-center-group-updates">
-              <span class="text-gray-700">{{ t('settings.notifications.category.updates') }}</span>
-              <span>{{ store.waitingCount }}</span>
-            </p>
             <ul class="space-y-2" :aria-label="t('settings.notifications.listLabel')">
               <!-- Round 8: one card per type (the app first; then the types by their newest waiting update). -->
               <NotificationCard v-if="store.appVisible" kind="app" />
@@ -78,7 +65,6 @@ import NotificationCard from './NotificationCard.vue'
 const { t } = useLocalization()
 const store = useUpdateNotificationsStore()
 const panel = ref<HTMLElement | null>(null)
-const heading = ref<HTMLElement | null>(null)
 const headingId = 'notification-center-heading'
 const confirming = ref<SourceUpdateNotification | null>(null)
 
@@ -131,7 +117,7 @@ watch(() => store.centerOpen, async (open) => {
     document.addEventListener('pointerdown', onPointerDown, true)
     document.addEventListener('keydown', onKeyDown)
     await nextTick()
-    heading.value?.focus()
+    panel.value?.focus()
   } else {
     document.removeEventListener('pointerdown', onPointerDown, true)
     document.removeEventListener('keydown', onKeyDown)
