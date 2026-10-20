@@ -44,7 +44,10 @@
 - User-confirmation reference (2026-10-20): "yes approved" after the final design summary; the user also said Q-1, Q-2 and Q-3 should be taken to the Solution Designer. Direction folded in during review: full sign-in as the target; Antigravity sign-in through a terminal running `agy` (Enter, then browser); name changed from "AI Runtimes" to "Agent Runtimes"; a not-installed runtime visible in the default view; the sign-in terminal polished ("perfect").
 - Final references: 23 images `visual-references/VIS-001`-`VIS-023` captured after approval (`capture-references.mjs`); spec `ui-ux-spec.md` (`Approved`).
 - Requirement impact reported to the Solution Designer: section renamed to Agent Runtimes; REQ-005 widened to Sign in (per-runtime, E-R21) with Cancel and time-out; a node-level terminal is new engineering work; runtime naming vs the model menu ("Claude SDK", "Grok Build") open; Q-1, Q-2, Q-3 and vendor terms remain the user's decisions via the Solution Designer.
-- Design revision, default-entry-point validation, integration and cleanup: recorded below by the integration commit.
+- Design revision: `a74ecd4` (approved design, spec, 23 references, runbook; branch `design/runtime-lifecycle-review`, accepted base `cb384e3`); this record follows as the integration commit.
+- Default-entry-point validation after integration: `Completed`. On the canonical checkout at `personal@a74ecd4`, `corepack pnpm dev --port 4703` with `final-validation.mjs` (BASE 4703) passed 96/96 (route `/settings?section=agent-runtimes`, no preview URL or preview-only state).
+- Integration: `Completed`. Fast-forward push `cb384e3..a74ecd4` to `origin/personal`; the canonical checkout was fast-forwarded; local = origin.
+- Cleanup: `Completed`. Dev servers on ports 4701 and 4703 stopped; the worktree and local branch removed after this record (no remote ticket branch pushed).
 
 ## Outcome And Handoff
 
