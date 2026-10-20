@@ -250,6 +250,9 @@ One recommended design.
 - Round 5 validation (`review-evidence/round-5/r2.mjs`): **19/19**; N-001 / N-017 check the pill's words and its
   full name in en and zh-CN.
 
+- Round 5 adjustment (user, 2026-10-20: "Blue is nice. Can you make the blue … the color is a little bit too
+  light"): the pill is one step deeper: `sky-100` background, `sky-300` ring, `sky-800` text, hover `sky-200`.
+
 ## Delivery And Validation
 
 - UI/UX specification: pending

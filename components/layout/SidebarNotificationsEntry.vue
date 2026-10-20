@@ -9,7 +9,7 @@
     <button
       v-if="variant === 'inline'"
       type="button"
-      class="group relative inline-flex h-7 flex-shrink-0 items-center rounded-full bg-sky-50 px-3 text-xs font-semibold text-sky-700 ring-1 ring-inset ring-sky-200 transition-colors hover:bg-sky-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+      class="group relative inline-flex h-7 flex-shrink-0 items-center rounded-full bg-sky-100 px-3 text-xs font-semibold text-sky-800 ring-1 ring-inset ring-sky-300 transition-colors hover:bg-sky-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
       :aria-label="description(category, count)"
       :data-test="`sidebar-notifications-${category}`"
       @click="open"
