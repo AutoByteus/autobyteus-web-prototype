@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-10-20T07:51:33.991Z",
+  "total": 5,
+  "passed": 5,
+  "exactPixelRows": 5,
+  "noiseOnlyRows": [],
+  "failed": [],
+  "sourceBrowserErrorRows": [],
+  "prototypeBrowserErrorRows": []
+}

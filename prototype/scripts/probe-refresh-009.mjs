@@ -238,7 +238,9 @@ for (const id of selected) {
   const total = viewport.width * viewport.height
   const noise = d.changed === 0 ? 'exact' : (d.changed / total <= 0.0001 && d.max <= 64) ? 'A-edge-antialiasing' : (d.low / d.changed >= 0.99 && d.max <= 16) ? 'B-compositing-rounding' : null
   const probeEqual = JSON.stringify(s.probe) === JSON.stringify(p.probe)
-  const pass = probeEqual && !s.stepError && !p.stepError && s.text === p.text && s.route === p.route && Boolean(noise) && p.errors.length === 0 && p.external.length === 0
+  // WEB-BASELINE-REFRESH-011: a fixture the pinned contract rejects shows the same zod issue text on both sides; it never passes.
+  const contractRejected = /"code": "(?:invalid_type|invalid_union|invalid_value|unrecognized_keys)"/.test(s.text)
+  const pass = probeEqual && !s.stepError && !p.stepError && s.text === p.text && s.route === p.route && Boolean(noise) && p.errors.length === 0 && p.external.length === 0 && !contractRejected
   results.push({ id, title: FLOWS[id].title, pass, probeEqual, probe: s.probe, prototypeProbe: probeEqual ? undefined : p.probe, noise, pixels: d, route: [s.route, p.route], textEqual: s.text === p.text, sourceStepError: s.stepError, prototypeStepError: p.stepError, sourceErrors: s.errors, prototypeErrors: p.errors, prototypeExternal: p.external })
   console.log(`${pass ? 'PASS' : 'FAIL'} ${id} ${FLOWS[id].title} text=${s.text === p.text} probe=${probeEqual} px=${d.changed} max=${d.max} ${s.stepError ? 'SRC-STEP ' + s.stepError : ''} ${p.stepError ? 'PROTO-STEP ' + p.stepError : ''} srcErr=${s.errors.length} protoErr=${p.errors.length}`)
   if (!pass && process.env.VERBOSE) {

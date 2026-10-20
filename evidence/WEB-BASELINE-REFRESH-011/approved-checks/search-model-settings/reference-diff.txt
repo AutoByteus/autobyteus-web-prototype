@@ -1,0 +1,23 @@
+differs      290898	VIS-001-embedding-default-1440x1180.png
+differs      290841	VIS-002-download-ahead-progress-1440x1180.png
+differs      413005	VIS-003-download-failed-1440x1180.png
+differs      521448	VIS-004-switch-dialog-not-downloaded-1440x1180.png
+differs      521178	VIS-005-switch-dialog-downloaded-1440x1180.png
+differs      281920	VIS-006-after-switch-all-projects-not-indexed-1440x1180.png
+differs      287972	VIS-007-switch-preparing-index-all-waiting-1440x1180.png
+differs      291708	VIS-008-remove-confirmation-1440x1180.png
+differs      295360	VIS-009-rebuild-confirmation-1440x1180.png
+not-captured 	VIS-010-needs-update-indexing-1440x1180.png
+differs      409226	VIS-011-model-unavailable-1440x1180.png
+differs      1447165	VIS-012-many-projects-1440x2000.png
+not-captured 	VIS-013-many-projects-filtered-1440x1500.png
+differs      26019	VIS-014-no-projects-1440x1180.png
+differs      16497	VIS-015-loading-1440x1180.png
+differs      7492	VIS-016-load-error-1440x1180.png
+differs      290506	VIS-017-zh-CN-default-1440x1180.png
+differs      521394	VIS-018-zh-CN-switch-dialog-1440x1180.png
+differs      412052	VIS-019-zh-CN-download-failed-1440x1180.png
+differs      9718	VIS-020a-narrow-390x1100-scroll-0.png
+differs      9718	VIS-020b-narrow-390x1100-scroll-700.png
+differs      9718	VIS-020c-narrow-390x1100-scroll-1400.png
+differs      98448	VIS-021-narrow-switch-dialog-390x1100.png

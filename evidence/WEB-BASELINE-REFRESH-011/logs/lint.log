@@ -1,0 +1,4 @@
+
+> autobyteus-web-design@0.1.0 lint /Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-011
+> eslint prototype/scripts prototype/shared prototype/source-observation plugins/00.prototype-state.client.ts plugins/10.prototype-host-bootstrap.client.ts prototype/tests
+

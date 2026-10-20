@@ -1,6 +1,32 @@
 # UI Reference Runbook
 
+## WEB-BASELINE-REFRESH-011 (source pin `9227d61`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4620
+```
+
+- Embedding (the source's section): `/settings?section=server-settings&mode=embedding`. Download → progress → Cancel; Use this
+  model → dialog → confirm (the model prepares, Projects are not indexed); Remove and Rebuild (inline confirmations); Index now,
+  Index all Projects, filter tabs. Work advances one step per status read (the section reads every 2 s while busy).
+- Scenarios (`autobyteus.prototype.scenario`, reload): `embedding_busy` (a download ahead and every index state),
+  `embedding_many` (eleven Projects: Find), `embedding_offline` (each model's first download fails; Retry succeeds),
+  `embedding_unavailable` (the active model is unavailable; Retry), `embedding_load_failed` (the first status read fails; Retry),
+  `empty` (no Projects).
+- Meaning search: `/projects/project-prototype-launch`, search `checklists` (related by meaning) or `launch` (exact first); after a
+  model switch the board says meaning search is preparing; `embedding_unavailable` offers Retry.
+- Part of: `/projects/project-prototype-launch/tasks/prototype-launch-1` (Parts: 1 of 2 done, 1 cancelled), a part's page
+  (`prototype-launch-3`), Edit task ("Part of" picker), "New part".
+- Bulk MCP import: Settings → MCP Servers → Bulk Import; an entry without `url` or `command` is listed under "These entries were not
+  imported".
+- Reset: reload the page. Comparison runs set `autobyteus.prototype.designOnlyLayers=off`.
+
 ## search-model-settings (Settings -> Server Settings -> Embedding; source pin unchanged `2f21134`)
+
+> WEB-BASELINE-REFRESH-011: the source now ships this section, and its components replaced the design-only ones. The scenario
+> names below are the design's; the baseline's are `embedding_*` (see above). The approved scripts in `tickets/done/` are
+> unchanged; adjusted copies run in `evidence/WEB-BASELINE-REFRESH-011/approved-checks/search-model-settings/`.
 
 ```bash
 corepack pnpm install --ignore-workspace --frozen-lockfile
@@ -16,6 +42,8 @@ corepack pnpm dev --port 4691
 - Reset: reload the page (in-memory state). Spec: `tickets/done/search-model-settings/ui-ux-spec.md`.
 
 ## task-part-of ("part of" between Project Tasks; source pin unchanged `2f21134`)
+
+> WEB-BASELINE-REFRESH-011: the source now ships "part of"; its components run unchanged. The example Projects below are design-only data.
 
 ```bash
 corepack pnpm install --ignore-workspace --frozen-lockfile

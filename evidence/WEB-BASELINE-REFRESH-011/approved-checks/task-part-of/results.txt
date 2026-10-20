@@ -1,0 +1,57 @@
+PASS PART-001a parent card "2 of 4 done"
+PASS PART-001b all-done parent "3 of 3 done"
+PASS PART-001c no-part-done parent "0 of 2 done"
+PASS PART-001d part card "Part of autobyteus-25"
+PASS PART-001e part card carries Blocked badge and marker together
+PASS PART-001f a Task with neither shows no relation line
+PASS PART-001g parts stay in their own status lanes (flat board)
+PASS PART-001h only-cancelled-parts parent shows no progress
+PASS PART-001i progress tooltip names cancelled parts
+PASS PART-001j marker tooltip: key, summary, status
+PASS PART-002a five rows, key order
+PASS PART-002b progress and cancelled count
+PASS PART-002c close hint while open parts
+PASS PART-002d New part link
+PASS PART-002e no Part of card on a parent
+PASS PART-002f Dependencies card unchanged
+PASS PART-002g a row opens that Task (cancelled part)
+PASS PART-003a empty state
+PASS PART-003b all parts done, parent still In Progress
+PASS PART-003c Cancelled parent: 1 of 1 done · 1 cancelled, no close hint
+PASS PART-003d only cancelled parts: "1 cancelled" alone
+PASS PART-004 po-cn-route: Part of autobyteus-25 (To Do)
+PASS PART-004 po-cn-route: no Parts card, no New part
+PASS PART-004 row opens the parent
+PASS PART-004 po-hardening-a: Part of autobyteus-6 (Done)
+PASS PART-004 po-hardening-a: no Parts card, no New part
+PASS PART-004 po-voice-play: Part of autobyteus-3 (Cancelled)
+PASS PART-004 po-voice-play: no Parts card, no New part
+PASS PART-005a tab card progress
+PASS PART-005b tab parent view
+PASS PART-005c a row opens the part inside the tab
+PASS PART-005d the parent row opens the parent inside the tab
+PASS PART-006a empty field, label and placeholder
+PASS PART-006b a Task that is a part is listed but cannot be chosen
+PASS PART-006c the Task itself is not offered
+PASS PART-006d clicking a blocked option changes nothing
+PASS PART-006e search by text finds the parent
+PASS PART-006f chosen row; list closes; placeholder changes
+PASS PART-006g saved: the Task page shows Part of autobyteus-25
+PASS PART-006h the parent now lists it: "2 of 5 done · 1 cancelled"
+PASS PART-006i Edit starts with the current parent
+PASS PART-006j choosing replaces the parent
+PASS PART-006k remove clears; focus goes to the search
+PASS PART-006l saved without a parent: the page shows the Parts card
+PASS PART-006m a Task with parts cannot get a parent
+PASS PART-006n the Depends on field is unchanged and present
+PASS PART-006o New part opens New task with the parent chosen
+PASS PART-006p new part on the board: marker; parent progress "2 of 5 done"
+PASS PART-007a confirmation mentions the parts
+PASS PART-007b the parts stay on the board without the marker
+PASS PART-007c a part's confirmation has no parts note
+PASS PART-008a long key and long summary in the Part of row
+PASS PART-008b no horizontal overflow on the page
+PASS PART-008c narrow board: the chips fit inside the cards
+PASS PART-009a zh-CN parent card
+PASS PART-009b zh-CN part card
+56 passed, 0 failed

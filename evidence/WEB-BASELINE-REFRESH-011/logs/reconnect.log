@@ -1,0 +1,15 @@
+PASS j1.js step=null errors=0 external=0
+PASS j2.js step=null errors=0 external=0
+PASS j4.js step=null errors=0 external=0
+["V\nvideo_lead\n2w","E\neditor\n2w","TV\ntutorial video producer","TV\ntutorial video producer"]
+["V\nvideo_lead\n2w","E\neditor\n2w","PV\nproduct video producer","PV\nproduct video producer"]
+PASS j5.js step=null errors=0 external=0
+AGENT_RUN_ACTIVE → Tutorial Video Producer is running. Stop it, then reconnect. | PVP listed: 1
+AGENT_DEFINITION_REBIND_PENDING → Reconnect is still finishing. Try again. | PVP listed: 1
+RUN_ACTIVE → This run is in use by another workflow. Stop it, then reconnect. | PVP listed: 1
+DEFINITION_NOT_FOUND → Product Video Producer no longer exists. Choose another agent. | PVP listed: 0
+PASS j6.js step=null errors=0 external=0
+live: tutorial-video-producer reconnected to Product Video Producer
+reopened: Agent tutorial-video-producer no longer exists | reconnect buttons: 0
+PASS j7.js step=null errors=0 external=0
+PASS narrow.js step=null errors=0 external=0

@@ -1,0 +1,16 @@
+differs      124	VIS-001-ptm-run-copies-with-task-summaries-desktop-1440x900.png
+differs      375	VIS-002-copy-rows-task-summary-closeup-2x.png
+differs      375	VIS-003-task-summary-hover-closeup-2x.png
+differs      375	VIS-004-copy-open-row-summary-unchanged-closeup-2x.png
+differs      142369	VIS-005-summary-click-task-located-desktop-app-1440x900.png
+differs      98872	VIS-006-task-located-other-project-prototype-launch-1440x900.png
+differs      37196	VIS-007-task-located-temp-tasks-1440x900.png
+differs      65413	VIS-008-follow-up-copy-current-task-located-1440x900.png
+differs      8124	VIS-009a-panel-search-hides-task-1440x900.png
+differs      62780	VIS-009b-search-cleared-task-located-1440x900.png
+differs      122451	VIS-010-cancelled-task-located-cancelled-lane-1440x900.png
+differs      124	VIS-011a-right-panel-collapsed-1440x900.png
+differs      113719	VIS-011b-right-panel-reopened-task-located-1440x900.png
+identical    	VIS-012-task-summary-keyboard-focus-closeup-2x.png
+differs      89231	VIS-013-narrow-window-drawer-task-located-900x800.png
+identical    	VIS-014-collaborators-without-summary-task-workers-with-closeup-2x.png

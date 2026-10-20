@@ -1,0 +1,80 @@
+PASS SRCH-001a top-level nav unchanged: API Keys | Token Statistics | Display | Language | Local Tools | MCP Servers | Application Packages | Agent Packages | Server Settings | Extensions | Updates
+PASS SRCH-001b Server Settings sub-sections: Basics | Embedding | Advanced | Migrations
+PASS SRCH-001c 
+PASS SRCH-001d 
+PASS SRCH-001e Embedding sub-section opens 
+PASS SRCH-002a 
+FAIL SRCH-002b 
+PASS SRCH-002c Languages: 100+ languages · Download size: 346 MB
+PASS SRCH-002d only language and size are shown
+PASS SRCH-002i the source is said once, in the card footnote, not on every row
+PASS SRCH-002e 
+PASS SRCH-002f 
+PASS SRCH-002g the Active model has no Remove and no Use
+PASS SRCH-002h 
+FAIL SRCH-002-aborted block stopped: locator.getAttribute: Timeout 4000ms exceeded.
+PASS SRCH-004a 
+PASS SRCH-004b 115 of 346 MB · 33% -> 231 of 346 MB · 67%
+PASS SRCH-004c 
+PASS SRCH-004d 
+PASS SRCH-005a 
+PASS SRCH-005b 
+PASS SRCH-005c 
+PASS SRCH-005d 
+PASS SRCH-005e 
+PASS SRCH-005f 
+PASS SRCH-006a Use Google EmbeddingGemma 2? Every Project has to be indexed again with this model. Until then, meaning search finds exact matches only. Download: 346 MB, not downloaded yet Cancel Use this model
+PASS SRCH-006b the dialog states the download size only
+PASS SRCH-006c focus starts on Cancel
+PASS SRCH-006d Tab stays inside the dialog
+PASS SRCH-006e Esc cancels and changes nothing
+PASS SRCH-006f Cancel changes nothing
+PASS SRCH-006g 
+PASS SRCH-006h 
+PASS SRCH-006i focus lands on the new Active row
+PASS SRCH-006j 
+PASS SRCH-007a 
+PASS SRCH-007b a downloaded model prepares without a download
+PASS SRCH-008a 
+PASS SRCH-008b Index all starts every Project and disables itself
+FAIL SRCH-008c ready=3
+FAIL SRCH-007-aborted block stopped: locator.click: Timeout 4000ms exceeded.
+FAIL SRCH-009a 
+FAIL SRCH-009b 
+FAIL SRCH-009-aborted block stopped: locator.click: Timeout 4000ms exceeded.
+FAIL SRCH-010a 
+PASS SRCH-010b 
+PASS SRCH-010c 
+FAIL SRCH-011a 
+FAIL SRCH-011-aborted block stopped: locator.getAttribute: Timeout 4000ms exceeded.
+FAIL SRCH-012a 
+FAIL SRCH-012b needs=3
+FAIL SRCH-012c 
+PASS SRCH-012d 
+PASS SRCH-013a 
+PASS SRCH-013b loading skeleton before the status arrives
+PASS SRCH-013c 
+PASS SRCH-013d 
+FAIL SRCH-014a 
+PASS SRCH-014b 
+FAIL SRCH-014c untranslated: AutoByteus,Customer,Experience
+PASS SRCH-015a overflow 0
+PASS SRCH-015b overflow while downloading 0
+FAIL SRCH-017a 
+PASS SRCH-017b 
+FAIL SRCH-017c Index all while the model prepares waits for it
+FAIL SRCH-017-aborted block stopped: locator.getAttribute: Timeout 4000ms exceeded.
+PASS SRCH-018a focus moves to Cancel in the Remove confirmation
+PASS SRCH-018b Esc closes it and focus returns to Remove
+PASS SRCH-018c 
+PASS SRCH-018d after confirming, focus lands on the Project row
+PASS SRCH-018e AutoByteus indexed.
+PASS SRCH-018f 
+PASS SRCH-019 sizes follow the catalog file bytes
+PASS SRCH-016-settings-nav-extensions 
+PASS SRCH-016-settings-nav-updates 
+PASS SRCH-016-settings-nav-server-settings 
+PASS SRCH-016-settings-nav-server-settings-advanced 
+PASS SRCH-016-settings-nav-server-settings-migrations 
+
+60 passed, 18 failed

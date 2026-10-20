@@ -2,7 +2,7 @@
   <div class="server-settings-manager h-full flex flex-col overflow-hidden">
     <div class="flex-1 overflow-auto bg-slate-50 p-3 sm:p-5 md:p-8 md:pt-6">
       <!-- Embedding has its own status, loading and error states; it does not wait for the raw settings. -->
-      <SearchSettingsManager v-if="activeTab === 'embedding'" />
+      <EmbeddingSettingsPanel v-if="activeTab === 'embedding'" />
 
       <div
         v-else-if="isInitialLoading"
@@ -176,7 +176,7 @@ import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 import ServerMonitor from '~/components/server/ServerMonitor.vue'
 import ServerSettingsBasicsPanel from '~/components/settings/ServerSettingsBasicsPanel.vue'
 import ServerMigrationsManager from '~/components/settings/ServerMigrationsManager.vue'
-import SearchSettingsManager from '~/components/settings/SearchSettingsManager.vue'
+import EmbeddingSettingsPanel from '~/components/settings/embedding/EmbeddingSettingsPanel.vue'
 
 type SettingsTab = 'quick' | 'embedding' | 'advanced' | 'migrations'
 type AdvancedPanel = 'raw-settings' | 'server-status'

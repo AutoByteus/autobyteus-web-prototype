@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest'
+import { AgentRootExecutionViewDtoSchema } from '@autobyteus/collaboration-stream-contracts'
 import runtimeFixture from '../fixtures/runtime-state.json'
 import {
   baseState,
   exposedFixtures,
   fixtureContext,
+  mcpImportResult,
   operationFixture,
   scenarioCatalog,
 } from '../source-observation/fixtures.mjs'
@@ -15,9 +17,9 @@ const snapshots = runtimeFixture.snapshots as Record<string, {
 
 describe('deterministic prototype fixture contract', () => {
   it('is pinned to the selected source and covers every recorded scenario', () => {
-    expect(runtimeFixture.sourceCommit).toBe('2f211340ee36b81cef74a74b2e042b5102c269d3')
-    expect(Object.keys(snapshots)).toHaveLength(78)
-    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'loading', 'error', 'permission_denied', 'skill_name_issues', 'agy_runtime', 'agy_signed_out', 'definition_issues', 'live_runs']))
+    expect(runtimeFixture.sourceCommit).toBe('9227d61597fd7ef8f6324fc9092be24ed1684c8a')
+    expect(Object.keys(snapshots)).toHaveLength(85)
+    expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'loading', 'error', 'permission_denied', 'skill_name_issues', 'agy_runtime', 'agy_signed_out', 'definition_issues', 'live_runs', 'embedding_busy', 'embedding_unavailable', 'embedding_load_failed', 'embedding_offline', 'embedding_many']))
   })
 
   it('uses synthetic domain records and local-only node addresses', () => {
@@ -95,6 +97,25 @@ describe('deterministic prototype fixture contract', () => {
     expect(tree.taskExecutions.find((task: { agentRunId?: string }) => task.agentRunId === 'worker-writer-001').userLaunchSelection.llmModelIdentifier).toBe('mock/reasoning-prototype')
   })
 
+  it('answers the Embedding section, meaning search and "part of" (9227d61)', () => {
+    const state = baseState()
+    const first = operationFixture('EmbeddingSettingsStatus', {}, state)
+    expect(first.embeddingModelsStatus.models.map((model: { file: { state: string } }) => model.file.state)).toEqual(['DOWNLOADED', 'DOWNLOADED', 'NOT_DOWNLOADED'])
+    expect(first.embeddingModelsStatus.onDiskBytes).toBe(79e6)
+    expect(first.projectTaskIndexes).toEqual([expect.objectContaining({ projectId: 'project-prototype-launch', state: 'READY', total: 5 })])
+    operationFixture('DownloadEmbeddingModel', { modelId: 'embeddinggemma-2' }, state)
+    const next = operationFixture('EmbeddingSettingsStatus', {}, state).embeddingModelsStatus.models[2].file
+    expect(next).toMatchObject({ state: 'DOWNLOADING', total: 346e6 })
+    expect(next.done).toBeGreaterThan(0)
+    operationFixture('UseEmbeddingModel', { modelId: 'mdbr-leaf-ir' }, state)
+    const switched = operationFixture('EmbeddingSettingsStatus', {}, state)
+    expect(switched.projectTaskIndexes[0].state).toBe('NOT_INDEXED')
+    expect(operationFixture('SearchProjectTasks', { projectId: 'project-prototype-launch', query: 'launch' }, baseState()).searchProjectTasks.matches[0]).toMatchObject({ taskId: 'task-outline', match: 'EXACT' })
+    expect(operationFixture('EmbeddingSettingsStatus', {}, { ...baseState(), scenario: 'embedding_load_failed' }).__projectError).toBeTruthy()
+    const parts = operationFixture('GetProjectTasks', { projectId: 'project-prototype-launch' }, baseState()).projectTasks.filter((task: { partOfTaskId: string | null }) => task.partOfTaskId === 'task-outline')
+    expect(parts.map((task: { taskId: string }) => task.taskId).sort()).toEqual(['task-publish', 'task-retire', 'task-translate'])
+  })
+
   it('keeps skill-source operations in one resettable in-memory copy (4dee901)', () => {
     const state = baseState()
     expect(operationFixture('GetSkillSources', {}, state).skillSources.map((source: { sourceKind: string }) => source.sourceKind))
@@ -148,5 +169,20 @@ describe('deterministic prototype fixture contract', () => {
       ['/researcher', 'team-member-researcher-created'],
       ['/writer', 'team-member-writer-created'],
     ])
+  })
+  // WEB-BASELINE-REFRESH-011 (35675e3): every delegated copy carries its recorded source; the stored run's view and
+  // its live variant parse with the source's own schema (the design-only example run is checked in the browser).
+  it('serves collaboration views that parse with the pinned contract', () => {
+    for (const scenario of ['populated', 'live_runs']) {
+      const view = operationFixture('GetAgentRunCollaboration', { runId: 'run-research-001' }, { ...baseState(), scenario }).agentRunCollaboration
+      expect(view).toBeTruthy()
+      expect(AgentRootExecutionViewDtoSchema.safeParse(view).error?.issues ?? []).toEqual([])
+    }
+  })
+  // WEB-BASELINE-REFRESH-011 (df15c43, c5161ed): a bulk MCP import with failed entries is not a success.
+  it('answers a bulk MCP import with its failed entries', () => {
+    const partial = mcpImportResult(JSON.stringify({ mcpServers: { files: { command: 'files-server' }, broken: { args: [] } } }))
+    expect(partial).toMatchObject({ success: false, importedCount: 1, failedCount: 1, failures: [{ serverId: 'broken' }] })
+    expect(mcpImportResult(JSON.stringify({ mcpServers: { files: { url: 'http://127.0.0.1:9/mcp' } } }))).toMatchObject({ success: true, importedCount: 1, failedCount: 0 })
   })
 })

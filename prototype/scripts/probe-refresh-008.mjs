@@ -66,7 +66,8 @@ export const FLOWS = {
   'PRJ-011': { title: 'Temp tasks: a card opens the Temp task page', path: '/projects/temp-tasks', steps: [text('Collect the changelog links for the synthetic release.')] },
   'PRJ-012': { title: 'Task page: the running root opens its conversation in the hosting run', path: '/projects/project-prototype-launch/tasks/task-review', steps: [text('documentation writer')], settleMs: 6500 },
   'PRJ-013': { title: 'Board: the root line of a card opens the worker', path: '/projects/project-prototype-launch', steps: [text('documentation writer')], settleMs: 6500 },
-  'PRJ-014': { title: 'Board: search filters cards', path: '/projects/project-prototype-launch', steps: [fill('Search tasks', 'translate')] },
+  // WEB-BASELINE-REFRESH-011: the board search's placeholder is now "Describe the task you're looking for" (54e26d7); fill it by its test id.
+  'PRJ-014': { title: 'Board: search filters cards', path: '/projects/project-prototype-launch', steps: [async page => { await page.locator('[data-testid="project-tasks-search-input"]').first().fill('translate'); await page.waitForTimeout(1500) }] },
   'PRJ-015': { title: 'Task page: a root that could not start shows its error', path: '/projects/project-prototype-launch/tasks/task-translate', steps: [] },
   'PRJ-016': { title: 'Task page: a closed (DONE) team root is muted, not openable', path: '/projects/project-prototype-launch/tasks/task-publish', steps: [] },
   // Path-only Project workspaces (9dad89b)
@@ -177,7 +178,9 @@ for (const id of selected) {
   const viewport = FLOWS[id].viewport || { width: 1440, height: 900 }
   const total = viewport.width * viewport.height
   const noise = d.changed === 0 ? 'exact' : (d.changed / total <= 0.0001 && d.max <= 64) ? 'A-edge-antialiasing' : (d.low / d.changed >= 0.99 && d.max <= 16) ? 'B-compositing-rounding' : null
-  const pass = !s.stepError && !p.stepError && s.text === p.text && s.route === p.route && Boolean(noise) && p.errors.length === 0 && p.external.length === 0
+  // WEB-BASELINE-REFRESH-011: a fixture the pinned contract rejects shows the same zod issue text on both sides; it never passes.
+  const contractRejected = /"code": "(?:invalid_type|invalid_union|invalid_value|unrecognized_keys)"/.test(s.text)
+  const pass = !s.stepError && !p.stepError && s.text === p.text && s.route === p.route && Boolean(noise) && p.errors.length === 0 && p.external.length === 0 && !contractRejected
   results.push({ id, title: FLOWS[id].title, pass, noise, pixels: d, route: [s.route, p.route], textEqual: s.text === p.text, sourceStepError: s.stepError, prototypeStepError: p.stepError, sourceErrors: s.errors, prototypeErrors: p.errors, prototypeExternal: p.external })
   console.log(`${pass ? 'PASS' : 'FAIL'} ${id} ${FLOWS[id].title} text=${s.text === p.text} px=${d.changed} max=${d.max} ${s.stepError ? 'SRC-STEP ' + s.stepError : ''} ${p.stepError ? 'PROTO-STEP ' + p.stepError : ''} srcErr=${s.errors.length} protoErr=${p.errors.length}`)
   if (!pass && process.env.VERBOSE) {

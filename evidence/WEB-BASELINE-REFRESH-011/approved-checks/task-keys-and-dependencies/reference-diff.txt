@@ -1,0 +1,24 @@
+differs      125424	VIS-001-board-dependency-badges-1440x900.png
+size-differs 	VIS-002a-card-blocked-by-several-2x.png
+differs      5443	VIS-002b-card-blocked-by-one-2x.png
+differs      14342	VIS-002c-card-dependency-cancelled-2x.png
+differs      4151	VIS-002d-card-dependencies-done-no-badge-2x.png
+differs      200454	VIS-003-detail-depends-on-blocked-1440x900.png
+differs      209703	VIS-004-detail-depends-on-done-follow-up-1440x900.png
+differs      188243	VIS-005-detail-required-by-1440x900.png
+differs      2728	VIS-006-key-chip-copied-2x.png
+differs      151870	VIS-007a-edit-depends-on-field-1440x900.png
+differs      167362	VIS-007b-edit-depends-on-search-open-1440x900.png
+differs      171067	VIS-008-edit-depends-on-loop-not-allowed-1440x900.png
+differs      205669	VIS-009a-new-task-depends-on-chosen-2x.png
+size-differs 	VIS-009b-new-task-card-blocked-by-2x.png
+differs      2490	VIS-009c-new-task-page-next-key-2x.png
+differs      84158	VIS-010-right-panel-board-badges-1440x900.png
+differs      72036	VIS-011-right-panel-task-key-and-dependencies-1440x900.png
+differs      375	VIS-012-tree-task-summary-2x.png
+differs      170463	VIS-013-long-key-badge-board-2x.png
+differs      196620	VIS-014-long-key-detail-2x.png
+differs      111313	VIS-015-board-narrow-760x900.png
+not-captured 	r1-copied.png
+not-captured 	r1-cycle.png
+not-captured 	r1-editor-added.png

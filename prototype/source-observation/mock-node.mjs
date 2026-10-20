@@ -22,6 +22,7 @@ function applyScenario(name) {
   state.taskContextFiles = {}
   state.archivedAgentGroup = false
   state.delegatedSelections = null
+  state.embedding = null
 }
 
 applyScenario(process.env.PROTOTYPE_SCENARIO || 'populated')

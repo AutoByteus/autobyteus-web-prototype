@@ -56,9 +56,7 @@ import type { AbsoluteFilePathAction } from '~/utils/eventMonitorFilePaths/absol
 import {
   useEventMonitorActiveTraceBrowse,
 } from '~/services/eventMonitor/eventMonitorActiveTraceBrowse';
-import type {
-  EventMonitorActiveTraceBrowseSubject,
-} from '~/services/eventMonitor/eventMonitorActiveTracePageService';
+import type { AgentRunReadSubject } from '~/types/agent/agentRunReadSubject';
 
 const props = defineProps<{
   conversation: Conversation;
@@ -70,7 +68,7 @@ const props = defineProps<{
   beforeSend?: () => void | Promise<void>;
   presentationRevision?: number;
   hasEarlierActiveTraceEvents?: boolean;
-  browseSubject: EventMonitorActiveTraceBrowseSubject;
+  browseSubject: AgentRunReadSubject;
   /** `/` skill tags in the box; standalone agent runs only. */
   skillTagging?: SkillTaggingCapability | null;
   /** Composer placeholder when there are no skill tags (e.g. "Message code reviewer…"). */

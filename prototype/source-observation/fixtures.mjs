@@ -1,4 +1,5 @@
 import { createTokenUsageSummary } from '../shared/token-usage-fixture.js'
+import { EMBEDDING_MUTATIONS, embeddingExtraProjects, advanceEmbedding, embeddingMutation, embeddingState, embeddingStatusOf, meaningSearchOf, searchTasks } from './embedding-fixtures.mjs'
 import {
   createTokenUsageAnalyticsResult,
   createTokenUsageRunStatistics,
@@ -27,6 +28,12 @@ export const scenarioCatalog = Object.freeze({
   // WEB-BASELINE-REFRESH-009 (87b246c): the Antigravity CLI is installed but signed out.
   agy_signed_out: 'Populated data where the Antigravity runtime is listed but unavailable because its CLI is not signed in.',
   // WEB-BASELINE-REFRESH-010 (d1a66fe, 3126536, 14f9b3c): stored runs that are live, with agent statuses.
+  // WEB-BASELINE-REFRESH-011 (8469d4b, 54e26d7): Settings → Server Settings → Embedding and meaning search.
+  embedding_busy: 'Populated data where a model downloads ahead and Project indexes are indexing, waiting, not indexed or need an update.',
+  embedding_many: 'Populated data with eleven Projects in the Embedding index list, so it offers Find.',
+  embedding_offline: 'Populated data where the network is unreachable: each embedding model download fails once, and Retry then succeeds.',
+  embedding_unavailable: 'Populated data where the active embedding model is unavailable (it did not pass the integrity check).',
+  embedding_load_failed: 'Populated data where the first Embedding status read fails, so the section offers Retry.',
   live_runs: 'Populated data where the stored Research Assistant run and the stored Product Review Team run are live: a delegated copy is running, a copy Team has an agent in error, and the Team run is busy.',
   definition_issues: 'Populated data where some agent package definitions could not be read: card load-issue badges, list problem notices and package auto-refresh states.',
 })
@@ -217,7 +224,8 @@ const agentRootCollaboration = {
           launchSource: { origin: 'inherited', fallbacks: [{ layer: 'agent_default', runtimeKind: 'autobyteus', llmModelIdentifier: 'mock/gpt-retired', reason: 'model_unavailable', detail: 'the model is not offered on this node' }] } } },
         { address: '/release_team', teamRunId: 'worker-team-publish-001', delegatorAgentRunId: run.runId, startedAt: fixedNow,
           source: { kind: 'agent_team', teamDefinitionId: 'team-product', coordinatorAddress: '/release_team/researcher',
-            members: [{ address: '/release_team/researcher', agentDefinitionId: 'agent-researcher' }, { address: '/release_team/writer', agentDefinitionId: 'agent-writer' }],
+            // WEB-BASELINE-REFRESH-011 (35675e3): every member records the launch it started with and whether the Team's choice reaches it.
+            members: [{ address: '/release_team/researcher', agentDefinitionId: 'agent-researcher', launchConfiguration: agentRootLaunch, followsTeam: true }, { address: '/release_team/writer', agentDefinitionId: 'agent-writer', launchConfiguration: agentRootLaunch, followsTeam: true }],
             handoffs: [], defaultLaunchConfiguration: agentRootLaunch },
           members: [
             { address: '/release_team/researcher', agentRunId: 'worker-team-publish-researcher-001', platformAgentRunId: null },
@@ -228,7 +236,7 @@ const agentRootCollaboration = {
         // collaborators; delegated copies are the run's only children).
         { address: '/product_review_team', teamRunId: 'worker-team-review-001', delegatorAgentRunId: run.runId, startedAt: fixedNow,
           source: { kind: 'agent_team', teamDefinitionId: 'team-product', coordinatorAddress: '/product_review_team/researcher',
-            members: [{ address: '/product_review_team/researcher', agentDefinitionId: 'agent-researcher' }, { address: '/product_review_team/writer', agentDefinitionId: 'agent-writer', launchConfiguration: agentRootLaunch, launchSource: { origin: 'agent_default', fallbacks: [] } }],
+            members: [{ address: '/product_review_team/researcher', agentDefinitionId: 'agent-researcher', launchConfiguration: agentRootLaunch, followsTeam: true }, { address: '/product_review_team/writer', agentDefinitionId: 'agent-writer', launchConfiguration: agentRootLaunch, followsTeam: false, launchSource: { origin: 'agent_default', fallbacks: [] } }],
             handoffs: [], defaultLaunchConfiguration: agentRootLaunch, defaultLaunchSource: { origin: 'team_default', fallbacks: [] } },
           members: [
             { address: '/product_review_team/researcher', agentRunId: 'worker-team-review-researcher-001', platformAgentRunId: null },
@@ -412,13 +420,13 @@ const projectTasks = [
   { __typename: 'ProjectTask', taskId: 'task-outline', taskKey: 'prototype-launch-1', dependsOnTaskIds: ['task-retire'], projectId: project.projectId, description: 'Outline the launch checklist.', status: 'TODO', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [], root: null },
   { __typename: 'ProjectTask', taskId: 'task-review', taskKey: 'prototype-launch-2', dependsOnTaskIds: ['task-publish'], projectId: project.projectId, description: 'Review the synthetic navigation baseline.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
     root: taskRoot({ recipientAddress: '/documentation_writer', ingressAgentRunId: 'worker-writer-001', status: 'running' }) },
-  { __typename: 'ProjectTask', taskId: 'task-translate', taskKey: 'prototype-launch-3', dependsOnTaskIds: ['task-review', 'task-outline'], projectId: project.projectId, description: 'Translate the release summary.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+  { __typename: 'ProjectTask', taskId: 'task-translate', taskKey: 'prototype-launch-3', dependsOnTaskIds: ['task-review', 'task-outline'], partOfTaskId: 'task-outline', projectId: project.projectId, description: 'Translate the release summary.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
     root: taskRoot({ recipientAddress: '/translator', ingressAgentRunId: 'worker-translator-001', start: 'failed', startError: { __typename: 'TaskRootStartError', code: 'AGENT_DEFINITION_NOT_FOUND', message: 'No agent is available at /translator.' }, status: 'offline' }) },
-  { __typename: 'ProjectTask', taskId: 'task-publish', taskKey: 'prototype-launch-4', dependsOnTaskIds: [], projectId: project.projectId, description: 'Publish the deterministic evidence summary.', status: 'DONE', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+  { __typename: 'ProjectTask', taskId: 'task-publish', taskKey: 'prototype-launch-4', dependsOnTaskIds: [], partOfTaskId: 'task-outline', projectId: project.projectId, description: 'Publish the deterministic evidence summary.', status: 'DONE', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
     root: taskRoot({ kind: 'team', recipientAddress: '/release_team', ingressAgentRunId: 'worker-team-publish-researcher-001', teamRunId: 'worker-team-publish-001', closed: true, status: 'offline' }) },
   // delegated-copy-task-locator refresh (17e4299, 814e41a, 7f7b2c8): a Task dropped as not needed
   // (CANCELLED) is hidden until the board's "Cancelled (N)" toggle shows its lane.
-  { __typename: 'ProjectTask', taskId: 'task-retire', taskKey: 'prototype-launch-5', dependsOnTaskIds: [], projectId: project.projectId, description: 'Retire the unused synthetic welcome banner.', status: 'CANCELLED', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+  { __typename: 'ProjectTask', taskId: 'task-retire', taskKey: 'prototype-launch-5', dependsOnTaskIds: [], partOfTaskId: 'task-outline', projectId: project.projectId, description: 'Retire the unused synthetic welcome banner.', status: 'CANCELLED', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
     root: taskRoot({ recipientAddress: '/documentation_writer', ingressAgentRunId: 'worker-writer-002', closed: true, status: 'offline' }) },
 ]
 
@@ -966,7 +974,45 @@ function liveRunsOverlay(operationName, variables, result) {
   return next
 }
 
+// The Projects the embedding layer indexes: every Project (with its Task count), plus the busy or many-Projects scenario's index-only extras.
+const embeddingProjects = (state) => {
+  if (state.scenario === 'empty') return []
+  const data = projectData(state)
+  return [...data.projects.map(item => ({ projectId: item.projectId, name: item.name, tasks: data.tasks.filter(task => task.projectId === item.projectId).length })),
+    // An index-only extra never shadows a real Project (the design-only example Projects use their own ids).
+    ...embeddingExtraProjects(state.scenario).filter(extra => !data.projects.some(item => item.projectId === extra.projectId)).map(({ projectId, name, tasks }) => ({ projectId, name, tasks }))]
+}
+const embeddingOf = (state) => embeddingState(state, () => embeddingProjects(state))
+const advanceEmbeddingOf = (state) => {
+  const projects = embeddingProjects(state)
+  advanceEmbedding(embeddingOf(state), id => projects.find(item => item.projectId === id)?.tasks ?? 0)
+}
+
+// WEB-BASELINE-REFRESH-011 (df15c43, c5161ed): bulk MCP import. An entry with neither a url nor a command fails
+// with its reason (invented wording of the same kind); the rest import.
+export const mcpImportResult = (jsonString) => {
+  let servers = {}
+  try { servers = JSON.parse(String(jsonString || '{}')).mcpServers || {} } catch { return { __typename: 'McpImportResult', success: false, message: 'The JSON could not be read.', importedCount: 0, failedCount: 0, failures: [] } }
+  const failures = Object.entries(servers).filter(([, config]) => !config?.url && !config?.command)
+    .map(([serverId]) => ({ __typename: 'McpImportFailure', serverId, reason: 'No transport: give a url (streamable_http) or a command (stdio).' }))
+  const importedCount = Object.keys(servers).length - failures.length
+  // A result with failed entries is not a success: the view then stays on the import with the failures listed.
+  return { __typename: 'McpImportResult', success: failures.length === 0, message: failures.length ? 'Some server configurations could not be imported.' : 'Synthetic operation completed.', importedCount, failedCount: failures.length, failures }
+}
+
 export function operationFixture(operationName, variables = {}, state) {
+  if (EMBEDDING_MUTATIONS.has(operationName)) return embeddingMutation(embeddingOf(state), operationName, variables, embeddingProjects(state))
+  if (operationName === 'EmbeddingSettingsStatus') {
+    const e = embeddingOf(state)
+    e.statusReads += 1
+    if (state.scenario === 'embedding_load_failed' && e.statusReads === 1) return { __projectError: { message: 'Synthetic embedding status failure.', extensions: { code: 'EMBEDDING_STATUS_FAILED' } } }
+    if (e.statusReads > 1) advanceEmbeddingOf(state)
+    return embeddingStatusOf(e, embeddingProjects(state))
+  }
+  if (operationName === 'SearchProjectTasks') {
+    const tasks = projectData(state).tasks.filter(task => task.projectId === variables.projectId)
+    return { searchProjectTasks: { __typename: 'ProjectTaskSearchResult', matches: searchTasks(tasks, variables.query), meaningSearch: { __typename: 'MeaningSearchStatus', ...meaningSearchOf(embeddingOf(state)) } } }
+  }
   if (DELEGATED_MUTATIONS.has(operationName)) return delegatedMutationFixture(operationName, variables, state)
   if (PROJECT_MUTATIONS.has(operationName)) return projectMutationFixture(operationName, variables, state)
   if (SKILL_SOURCE_MUTATIONS.has(operationName)) return skillSourceMutationFixture(operationName, variables, state)
@@ -1092,7 +1138,7 @@ export function operationFixture(operationName, variables = {}, state) {
     ConfigureMcpServer: { configureMcpServer: { savedConfig: configuredMcp } },
     DeleteMcpServer: { deleteMcpServer: { __typename: 'McpMutationResult', ...success } },
     DiscoverAndRegisterMcpServerTools: { discoverAndRegisterMcpServerTools: { __typename: 'McpDiscoveryResult', ...success, discoveredTools: c.tools } },
-    ImportMcpServerConfigs: { importMcpServerConfigs: { __typename: 'McpImportResult', ...success, importedCount: 1, failedCount: 0 } },
+    ImportMcpServerConfigs: { importMcpServerConfigs: variables.jsonString !== undefined ? mcpImportResult(variables.jsonString) : { __typename: 'McpImportResult', ...success, importedCount: 1, failedCount: 0, failures: [] } },
     GetProviderSettings: { providerSettings: c.empty ? [] : [{ provider, llmModels: [model, thinkingModel], audioModels: [], imageModels: [], videoModels: [] }] },
     GetAvailableLLMProvidersWithModels: { availableLlmProvidersWithModels: c.empty ? [] : [{ provider, models: [model, thinkingModel] }], availableAudioProvidersWithModels: [], availableImageProvidersWithModels: [], availableVideoProvidersWithModels: [] },
     GetProviderCredentialSettings: { providerCredentialSettings: c.empty ? [] : [{ provider: providerCatalogSnapshot.ownerProvider, apiKeyConfigured: true }] },
@@ -1142,6 +1188,9 @@ export function operationFixture(operationName, variables = {}, state) {
     GetRunProjection: { getRunProjection: { runId: run.runId, summary: run.summary, lastActivityAt: fixedNow, conversation: [...storedConversation('Compare current navigation states.', 'The navigation states match the synthetic baseline.'),
       // 28fdf1d: the platform's skill update notice, replayed from history (labelled "Skill updated").
       { kind: 'system_task_notification', role: 'user', senderId: 'system', content: '[Platform notice — skill updated]\nThe following skills you use changed on disk since you last read them:\n- prototype-research (/synthetic/skills/prototype-research/SKILL.md): SKILL.md', ts: '2026-08-22T04:03:00.000Z' }], activities: [], hasEarlierActiveTraceEvents: false } },
+    // 03f2d4d, 291545c: a delegated copy's and a Team member's artifact lists, read with their owner (none recorded here).
+    GetAgentRunCollaborationMemberFileChanges: { agentRunCollaborationMemberFileChanges: [] },
+    GetTeamMemberFileChanges: { getTeamMemberFileChanges: [] },
     GetRunFileChanges: { getRunFileChanges: [{ id: 'file-change-1', runId: run.runId, path: 'README.md', type: 'modified', status: 'ready', sourceTool: 'write_file', sourceInvocationId: 'tool-1', content: '# Fixture', createdAt: fixedNow, updatedAt: fixedNow }] },
     GetRunEventMonitorActiveTracePage: { getRunEventMonitorActiveTracePage: { beforeCursor: null, hasEarlier: false, loadedEarlierCount: 0, activeGeneration: 0, cursorStatus: 'IDLE', events: [] } },
     GetTeamMemberEventMonitorActiveTracePage: { getTeamMemberEventMonitorActiveTracePage: { beforeCursor: null, hasEarlier: false, loadedEarlierCount: 0, activeGeneration: 0, cursorStatus: 'IDLE', events: [] } },

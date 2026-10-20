@@ -1,0 +1,375 @@
+{
+  "generatedAt": "2026-10-20T08:37:38.039Z",
+  "base": "http://127.0.0.1:4621",
+  "note": "Built preview (node .output/server/index.mjs) with the pinned source and the observation node stopped.",
+  "results": [
+    {
+      "id": "IND-001-chat",
+      "path": "/",
+      "route": "/chat",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-002-chat-thinking-menu",
+      "path": "/chat",
+      "route": "/chat",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-003-chat-send",
+      "path": "/chat",
+      "route": "/chat?id=run-prepared-fixture",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-004-workspace-team-run",
+      "path": "/workspace",
+      "route": "/workspace",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-005-skills-banner",
+      "path": "/skills",
+      "route": "/skills",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-006-agents",
+      "path": "/agents?view=list",
+      "route": "/agents?view=list",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-007-chat-background-tasks-empty",
+      "path": "/chat",
+      "route": "/chat?id=run-prepared-fixture",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-008-project-create",
+      "path": "/projects/new",
+      "route": "/projects/project-created-1?notice=created&tab=workspaces",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-009-task-create",
+      "path": "/projects/project-prototype-launch/tasks/new",
+      "route": "/projects/project-prototype-launch?notice=task-created",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-010-team-run-mention-menu",
+      "path": "/workspace",
+      "route": "/workspace",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-011-agent-run-task-rows",
+      "path": "/workspace",
+      "route": "/chat?id=run-research-001",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-012-skill-source-import",
+      "path": "/skills",
+      "route": "/skills",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-013-task-agent-token",
+      "path": "/workspace",
+      "route": "/chat?id=run-research-001",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-014-background-task-command",
+      "path": "/chat",
+      "route": "/chat?id=run-prepared-fixture",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-015-projects-tab",
+      "path": "/workspace",
+      "route": "/workspace",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-016-task-root-opens-worker",
+      "path": "/projects/project-prototype-launch/tasks/task-review",
+      "route": "/chat?id=run-research-001",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-017-temp-task-page",
+      "path": "/projects/temp-tasks",
+      "route": "/projects/temp-tasks/tasks/temp-task-links",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-018-codex-fast",
+      "path": "/chat",
+      "route": "/chat",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-019-draft-row",
+      "path": "/chat",
+      "route": "/agents?view=list",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-020-org-launch",
+      "path": "/chat",
+      "route": "/workspace?rootSubjectKind=agent_org&definitionId=org-product-launch&orgRunId=org-run-launched-1-7291&mode=active",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-021-archive-all",
+      "path": "/workspace",
+      "route": "/workspace",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-022-reconnect-preserved",
+      "path": "/workspace",
+      "route": "/chat?id=run-tvp-0001",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-023-project-cancelled-lane",
+      "path": "/projects/project-prototype-launch",
+      "route": "/projects/project-prototype-launch/tasks/prototype-launch-5",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-024-temp-cancelled-lane",
+      "path": "/workspace",
+      "route": "/workspace",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-025-task-summary-locate",
+      "path": "/workspace",
+      "route": "/workspace",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-026-definition-issues",
+      "path": "/agents?view=list",
+      "route": "/agents?view=list",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-027-reload-agents",
+      "path": "/agents?view=list",
+      "route": "/agents?view=list",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-028-skill-source-add",
+      "path": "/skills",
+      "route": "/skills",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-029-agy-signed-out",
+      "path": "/chat",
+      "route": "/chat",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-030-team-member-defaults",
+      "path": "/agent-teams?view=team-list",
+      "route": "/chat",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-031-delegated-launches",
+      "path": "/workspace",
+      "route": "/chat?id=run-research-001",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-032-token-compaction-marker",
+      "path": "/chat",
+      "route": "/chat?id=run-prepared-fixture",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-033-task-key-page",
+      "path": "/projects/project-prototype-launch/tasks/task-translate",
+      "route": "/projects/project-prototype-launch/tasks/prototype-launch-3",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-034-depends-on-picker",
+      "path": "/projects/project-prototype-launch/tasks/task-review/edit",
+      "route": "/projects/project-prototype-launch/tasks/prototype-launch-2/edit",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-035-delegated-copy-model-change",
+      "path": "/workspace",
+      "route": "/chat?id=run-research-001",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-036-live-copy-stop",
+      "path": "/workspace",
+      "route": "/workspace",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-037-skill-update-notice",
+      "path": "/workspace",
+      "route": "/chat?id=run-research-001",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-038-tps-card",
+      "path": "/chat",
+      "route": "/chat?id=run-prepared-fixture",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-039-nfs-guide",
+      "path": "/nodes?tab=manage",
+      "route": "/nodes?tab=manage",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-040-embedding-download",
+      "path": "/settings?section=server-settings&mode=embedding",
+      "route": "/settings?section=server-settings&mode=embedding",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-041-embedding-switch",
+      "path": "/settings?section=server-settings&mode=embedding",
+      "route": "/settings?section=server-settings&mode=embedding",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-042-embedding-rebuild",
+      "path": "/settings?section=server-settings&mode=embedding",
+      "route": "/settings?section=server-settings&mode=embedding",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-043-board-meaning-search",
+      "path": "/projects/project-prototype-launch",
+      "route": "/projects/project-prototype-launch",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-044-part-of",
+      "path": "/projects/project-prototype-launch/tasks/task-outline",
+      "route": "/projects/project-prototype-launch/tasks/prototype-launch-1",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-046-embedding-unavailable-retry",
+      "path": "/settings?section=server-settings&mode=embedding",
+      "route": "/settings?section=server-settings&mode=embedding",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    },
+    {
+      "id": "IND-045-mcp-bulk-import-failures",
+      "path": "/settings?section=mcp-servers",
+      "route": "/settings?section=mcp-servers",
+      "stepError": null,
+      "errors": [],
+      "external": []
+    }
+  ]
+}

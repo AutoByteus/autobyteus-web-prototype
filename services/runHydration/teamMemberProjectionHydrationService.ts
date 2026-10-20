@@ -9,7 +9,8 @@ import { buildConversationFromProjection } from './runProjectionConversation';
 import { buildActivitiesFromProjection } from './runProjectionActivityHydration';
 import { fetchExactTeamMemberProjection } from './teamRunContextHydrationService';
 import { commitMemberRunStates, fetchMemberRunState } from './memberRunStateHydration';
-import { teamAgentSourceAt } from '~/services/collaborators/agentSourceSelectors';
+import { fetchRunFileChanges } from './runFileChangeHydrationService';
+import { teamAgentSourceOf } from '~/services/collaborators/agentSourceSelectors';
 import {
   primeRecentEventMonitorBaseline,
   resetRecentEventMonitorBaseline,
@@ -57,7 +58,7 @@ const attemptHydration = async (
   }
   const rootTeamRunId = team.view.getRootTeamRunId();
   const location = team.view.getAgentExecutionLocation(agentRunId)!;
-  const configured = teamAgentSourceAt(team.view.getExecutionTree(), location.memberAddress, agentRunId);
+  const configured = teamAgentSourceOf(team.view.getExecutionTree(), agentRunId);
   if (!configured) {
     throw new Error(`AgentRun '${agentRunId}' has no configured Team placement.`);
   }
@@ -66,8 +67,10 @@ const attemptHydration = async (
   const activityStore = useAgentActivityStore();
   const expectedActivityRevision = activityStore.getActivityContentRevision(agentRunId);
   const { projection, fileChanges } = await fetchMemberRunState({
-    runId: agentRunId,
     fetchProjection: () => fetchExactTeamMemberProjection(rootTeamRunId, agentRunId),
+    fetchFileChanges: () => fetchRunFileChanges({
+      kind: 'teamMember', teamRunId: rootTeamRunId, memberAddress: location.memberAddress, agentRunId,
+    }),
   });
   let conversation = buildConversationFromProjection(
     agentRunId,

@@ -1,0 +1,410 @@
+[
+ {
+  "file": "VIS-001-board-parents-and-parts-1440x900.png",
+  "result": "differs",
+  "changedPixels": 44766,
+  "maxDelta": 178,
+  "box": [
+   8,
+   0,
+   1407,
+   899
+  ]
+ },
+ {
+  "file": "VIS-002a-card-parent-2-of-4-2x.png",
+  "result": "differs",
+  "changedPixels": 7078,
+  "maxDelta": 45,
+  "box": [
+   32,
+   40,
+   632,
+   267
+  ]
+ },
+ {
+  "file": "VIS-002b-card-parent-all-done-2x.png",
+  "result": "differs",
+  "changedPixels": 2927,
+  "maxDelta": 82,
+  "box": [
+   31,
+   40,
+   579,
+   131
+  ]
+ },
+ {
+  "file": "VIS-002c-card-parent-none-done-2x.png",
+  "result": "differs",
+  "changedPixels": 3715,
+  "maxDelta": 45,
+  "box": [
+   32,
+   40,
+   597,
+   179
+  ]
+ },
+ {
+  "file": "VIS-002d-card-part-with-blocked-badge-2x.png",
+  "result": "differs",
+  "changedPixels": 4576,
+  "maxDelta": 74,
+  "box": [
+   32,
+   40,
+   576,
+   220
+  ]
+ },
+ {
+  "file": "VIS-002e-card-part-2x.png",
+  "result": "differs",
+  "changedPixels": 3796,
+  "maxDelta": 20,
+  "box": [
+   33,
+   40,
+   623,
+   168
+  ]
+ },
+ {
+  "file": "VIS-002f-card-parent-only-cancelled-parts-no-progress-2x.png",
+  "result": "differs",
+  "changedPixels": 1851,
+  "maxDelta": 1,
+  "box": [
+   34,
+   40,
+   481,
+   67
+  ]
+ },
+ {
+  "file": "VIS-003-page-parent-2-of-4-1440x900.png",
+  "result": "differs",
+  "changedPixels": 23092,
+  "maxDelta": 178,
+  "box": [
+   8,
+   1,
+   1330,
+   899
+  ]
+ },
+ {
+  "file": "VIS-004-page-parent-all-parts-done-1440x900.png",
+  "result": "differs",
+  "changedPixels": 14466,
+  "maxDelta": 178,
+  "box": [
+   8,
+   1,
+   1330,
+   899
+  ]
+ },
+ {
+  "file": "VIS-005-page-parent-no-parts-1440x900.png",
+  "result": "differs",
+  "changedPixels": 14753,
+  "maxDelta": 178,
+  "box": [
+   8,
+   1,
+   1330,
+   899
+  ]
+ },
+ {
+  "file": "VIS-006-page-cancelled-parent-1440x900.png",
+  "result": "differs",
+  "changedPixels": 13152,
+  "maxDelta": 178,
+  "box": [
+   8,
+   1,
+   1330,
+   899
+  ]
+ },
+ {
+  "file": "VIS-006b-page-parent-only-cancelled-parts-1440x900.png",
+  "result": "differs",
+  "changedPixels": 11191,
+  "maxDelta": 178,
+  "box": [
+   8,
+   1,
+   1330,
+   899
+  ]
+ },
+ {
+  "file": "VIS-007a-page-part-of-todo-parent-1440x900.png",
+  "result": "differs",
+  "changedPixels": 14742,
+  "maxDelta": 178,
+  "box": [
+   8,
+   1,
+   1330,
+   899
+  ]
+ },
+ {
+  "file": "VIS-007b-page-part-of-done-parent-1440x900.png",
+  "result": "differs",
+  "changedPixels": 10866,
+  "maxDelta": 178,
+  "box": [
+   8,
+   1,
+   1330,
+   899
+  ]
+ },
+ {
+  "file": "VIS-007c-page-part-of-cancelled-parent-1440x900.png",
+  "result": "differs",
+  "changedPixels": 11009,
+  "maxDelta": 178,
+  "box": [
+   8,
+   1,
+   1330,
+   899
+  ]
+ },
+ {
+  "file": "VIS-008-tab-board-1440x900.png",
+  "result": "differs",
+  "changedPixels": 33584,
+  "maxDelta": 240,
+  "box": [
+   12,
+   1,
+   1427,
+   899
+  ]
+ },
+ {
+  "file": "VIS-009-tab-parent-1440x900.png",
+  "result": "differs",
+  "changedPixels": 33679,
+  "maxDelta": 240,
+  "box": [
+   12,
+   1,
+   1427,
+   899
+  ]
+ },
+ {
+  "file": "VIS-010-tab-part-1440x900.png",
+  "result": "differs",
+  "changedPixels": 26112,
+  "maxDelta": 240,
+  "box": [
+   12,
+   1,
+   1427,
+   899
+  ]
+ },
+ {
+  "file": "VIS-011a-editor-part-of-empty-1440x900-full.png",
+  "result": "differs",
+  "changedPixels": 19905,
+  "maxDelta": 178,
+  "box": [
+   8,
+   0,
+   1289,
+   899
+  ]
+ },
+ {
+  "file": "VIS-011b-editor-part-of-search-parts-blocked-1440x900-full.png",
+  "result": "differs",
+  "changedPixels": 38501,
+  "maxDelta": 178,
+  "box": [
+   8,
+   0,
+   1289,
+   899
+  ]
+ },
+ {
+  "file": "VIS-011c-editor-part-of-chosen-1440x900-full.png",
+  "result": "differs",
+  "changedPixels": 20653,
+  "maxDelta": 178,
+  "box": [
+   8,
+   0,
+   1289,
+   899
+  ]
+ },
+ {
+  "file": "VIS-011d-editor-part-of-no-match-1440x900-full.png",
+  "result": "differs",
+  "changedPixels": 33170,
+  "maxDelta": 178,
+  "box": [
+   8,
+   0,
+   1289,
+   899
+  ]
+ },
+ {
+  "file": "VIS-011e-editor-task-with-parts-1440x900-full.png",
+  "result": "differs",
+  "changedPixels": 18713,
+  "maxDelta": 178,
+  "box": [
+   8,
+   1,
+   1291,
+   899
+  ]
+ },
+ {
+  "file": "VIS-012-new-part-parent-chosen-1440x900-full.png",
+  "result": "differs",
+  "changedPixels": 17685,
+  "maxDelta": 178,
+  "box": [
+   8,
+   0,
+   1289,
+   899
+  ]
+ },
+ {
+  "file": "VIS-013-delete-parent-confirmation-1440x900.png",
+  "result": "differs",
+  "changedPixels": 25372,
+  "maxDelta": 178,
+  "box": [
+   8,
+   0,
+   1330,
+   899
+  ]
+ },
+ {
+  "file": "VIS-014a-long-keys-board-2x.png",
+  "result": "differs",
+  "changedPixels": 24016,
+  "maxDelta": 69,
+  "box": [
+   30,
+   16,
+   2135,
+   525
+  ]
+ },
+ {
+  "file": "VIS-014b-long-keys-parent-page-2x.png",
+  "result": "differs",
+  "changedPixels": 37545,
+  "maxDelta": 125,
+  "box": [
+   30,
+   24,
+   1981,
+   1039
+  ]
+ },
+ {
+  "file": "VIS-014c-long-keys-part-page-2x.png",
+  "result": "differs",
+  "changedPixels": 19747,
+  "maxDelta": 125,
+  "box": [
+   30,
+   24,
+   1981,
+   651
+  ]
+ },
+ {
+  "file": "VIS-015-board-narrow-760x900.png",
+  "result": "differs",
+  "changedPixels": 21161,
+  "maxDelta": 107,
+  "box": [
+   7,
+   24,
+   735,
+   874
+  ]
+ },
+ {
+  "file": "VIS-016a-zh-CN-page-parent-1440x900.png",
+  "result": "differs",
+  "changedPixels": 23144,
+  "maxDelta": 178,
+  "box": [
+   8,
+   1,
+   1330,
+   899
+  ]
+ },
+ {
+  "file": "VIS-016b-zh-CN-page-part-1440x900.png",
+  "result": "differs",
+  "changedPixels": 14369,
+  "maxDelta": 178,
+  "box": [
+   8,
+   1,
+   1330,
+   899
+  ]
+ },
+ {
+  "file": "VIS-016c-zh-CN-editor-search-1440x900-full.png",
+  "result": "differs",
+  "changedPixels": 38132,
+  "maxDelta": 178,
+  "box": [
+   8,
+   0,
+   1289,
+   899
+  ]
+ },
+ {
+  "file": "VIS-016d-zh-CN-board-1440x900.png",
+  "result": "differs",
+  "changedPixels": 45041,
+  "maxDelta": 178,
+  "box": [
+   8,
+   0,
+   1407,
+   899
+  ]
+ },
+ {
+  "file": "VIS-017-board-cancelled-lane-shown-1440x900.png",
+  "result": "differs",
+  "changedPixels": 47421,
+  "maxDelta": 178,
+  "box": [
+   8,
+   0,
+   1407,
+   899
+  ]
+ }
+]

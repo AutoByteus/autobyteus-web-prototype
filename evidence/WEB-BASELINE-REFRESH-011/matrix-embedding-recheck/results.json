@@ -1,0 +1,300 @@
+{
+  "generatedAt": "2026-10-20T07:51:33.991Z",
+  "sourceBaseUrl": "http://127.0.0.1:4622",
+  "prototypeBaseUrl": "http://127.0.0.1:4620",
+  "mockBaseUrl": "http://127.0.0.1:4623",
+  "chromiumPath": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "normalizedStyle": "*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}",
+  "rows": [
+    {
+      "row": {
+        "kind": "state",
+        "viewport": "desktop",
+        "locale": "en",
+        "id": "WBR-S025",
+        "path": "/settings?section=server-settings&mode=embedding",
+        "scenario": "embedding_busy"
+      },
+      "source": {
+        "target": "source",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-011/evidence/WEB-BASELINE-REFRESH-011/matrix-embedding-recheck/source/WBR-S025.png",
+        "screenshotSha256": "380dbec435c58afabc4dae2256519ed6e9ee2b43007212125af0ed499124ad7f",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nBasicsEmbeddingAdvancedMigrations\nExtensions\nUpdates\nEmbedding model\n\nUsed for meaning search. Downloaded from Hugging Face.\n\nOn disk: 79 MB\n\nIBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nReady\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB\n\nMongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove\nGoogle EmbeddingGemma 2\n\nDownloading\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\n104 of 346 MB · 30%\n\nCancel\nProject indexes\n\nUsing IBM Granite Embedding Small English R2.\n\nIndex all Projects\nAll 4\nNeeds indexing 2\nIndexing 2\nReady 0\n\nMarketing Site\n\nNot indexed\nIndex now\n\nPrototype Launch\n\nNeeds update · 2 changed\nIndex now\nRebuild\n\nRelease Notes\n\nWaiting to start…\n\nSupport Portal\n\nIndexing 12 of 24",
+        "bodyTextSha256": "52b53a2ab8e9204e1dc218bc725bef268f0dee4bf740fd4e1b0b74c4a4b91fd6",
+        "route": "/settings?section=server-settings&mode=embedding",
+        "lang": "",
+        "controlsSha256": "ff89660e649e02a90bbc17617d2fdbb636291a45aae359574bfa7defe48c83cd",
+        "geometrySha256": "715773477c83f9f579068e205c712bfa938e6e030c1fe8ef7ae48e9970a01d19",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "prototype": {
+        "target": "prototype",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-011/evidence/WEB-BASELINE-REFRESH-011/matrix-embedding-recheck/prototype/WBR-S025.png",
+        "screenshotSha256": "380dbec435c58afabc4dae2256519ed6e9ee2b43007212125af0ed499124ad7f",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nBasicsEmbeddingAdvancedMigrations\nExtensions\nUpdates\nEmbedding model\n\nUsed for meaning search. Downloaded from Hugging Face.\n\nOn disk: 79 MB\n\nIBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nReady\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB\n\nMongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove\nGoogle EmbeddingGemma 2\n\nDownloading\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\n104 of 346 MB · 30%\n\nCancel\nProject indexes\n\nUsing IBM Granite Embedding Small English R2.\n\nIndex all Projects\nAll 4\nNeeds indexing 2\nIndexing 2\nReady 0\n\nMarketing Site\n\nNot indexed\nIndex now\n\nPrototype Launch\n\nNeeds update · 2 changed\nIndex now\nRebuild\n\nRelease Notes\n\nWaiting to start…\n\nSupport Portal\n\nIndexing 12 of 24",
+        "bodyTextSha256": "52b53a2ab8e9204e1dc218bc725bef268f0dee4bf740fd4e1b0b74c4a4b91fd6",
+        "route": "/settings?section=server-settings&mode=embedding",
+        "lang": "",
+        "controlsSha256": "ff89660e649e02a90bbc17617d2fdbb636291a45aae359574bfa7defe48c83cd",
+        "geometrySha256": "715773477c83f9f579068e205c712bfa938e6e030c1fe8ef7ae48e9970a01d19",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "comparison": {
+        "routeEqual": true,
+        "bodyTextEqual": true,
+        "controlsEqual": true,
+        "geometryEqual": true,
+        "screenshotEqual": true,
+        "pixels": {
+          "dimensionsEqual": true,
+          "changedPixels": 0,
+          "totalPixels": 1296000,
+          "changedPixelRatio": 0,
+          "maximumChannelDelta": 0,
+          "changedBox": null,
+          "diffPath": null,
+          "lowDeltaPixels": 0,
+          "noiseClass": "A-edge-antialiasing"
+        },
+        "prototypeBrowserErrors": 0,
+        "prototypeExternalRequests": 0,
+        "pass": true
+      },
+      "geometryDelta": []
+    },
+    {
+      "row": {
+        "kind": "state",
+        "viewport": "desktop",
+        "locale": "en",
+        "id": "WBR-S026",
+        "path": "/settings?section=server-settings&mode=embedding",
+        "scenario": "embedding_unavailable"
+      },
+      "source": {
+        "target": "source",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-011/evidence/WEB-BASELINE-REFRESH-011/matrix-embedding-recheck/source/WBR-S026.png",
+        "screenshotSha256": "33d502e571c36390aafdc85624f11a96542c8a0e40b5314dfb469eacf47ec5a9",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nBasicsEmbeddingAdvancedMigrations\nExtensions\nUpdates\nEmbedding model\n\nUsed for meaning search. Downloaded from Hugging Face.\n\nOn disk: 79 MB\n\nIBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nUnavailable\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB\n\nUnavailable: The model files did not pass the integrity check.\n\nRetry\nMongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove\nGoogle EmbeddingGemma 2\n\nNot downloaded\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\nDownload\nUse this model\nProject indexes\n\nUsing IBM Granite Embedding Small English R2.\n\nIndex all Projects\n\nPrototype Launch\n\nUnavailable",
+        "bodyTextSha256": "41e4e2a7ac1e6dde0ed8ec26b7a2cebc3ca2d8ad8c8ef63c963bdfc65737d4f6",
+        "route": "/settings?section=server-settings&mode=embedding",
+        "lang": "",
+        "controlsSha256": "a3d3e57a9e7c2c98dbe806aacbe0eac2566e102e1f1812032a08dfc4acd91f9b",
+        "geometrySha256": "206dbaeeb73e260ce9fe75f00050843c1e486e2a47d2c5fa595a22c0bb639e92",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "prototype": {
+        "target": "prototype",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-011/evidence/WEB-BASELINE-REFRESH-011/matrix-embedding-recheck/prototype/WBR-S026.png",
+        "screenshotSha256": "33d502e571c36390aafdc85624f11a96542c8a0e40b5314dfb469eacf47ec5a9",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nBasicsEmbeddingAdvancedMigrations\nExtensions\nUpdates\nEmbedding model\n\nUsed for meaning search. Downloaded from Hugging Face.\n\nOn disk: 79 MB\n\nIBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nUnavailable\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB\n\nUnavailable: The model files did not pass the integrity check.\n\nRetry\nMongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove\nGoogle EmbeddingGemma 2\n\nNot downloaded\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\nDownload\nUse this model\nProject indexes\n\nUsing IBM Granite Embedding Small English R2.\n\nIndex all Projects\n\nPrototype Launch\n\nUnavailable",
+        "bodyTextSha256": "41e4e2a7ac1e6dde0ed8ec26b7a2cebc3ca2d8ad8c8ef63c963bdfc65737d4f6",
+        "route": "/settings?section=server-settings&mode=embedding",
+        "lang": "",
+        "controlsSha256": "a3d3e57a9e7c2c98dbe806aacbe0eac2566e102e1f1812032a08dfc4acd91f9b",
+        "geometrySha256": "206dbaeeb73e260ce9fe75f00050843c1e486e2a47d2c5fa595a22c0bb639e92",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "comparison": {
+        "routeEqual": true,
+        "bodyTextEqual": true,
+        "controlsEqual": true,
+        "geometryEqual": true,
+        "screenshotEqual": true,
+        "pixels": {
+          "dimensionsEqual": true,
+          "changedPixels": 0,
+          "totalPixels": 1296000,
+          "changedPixelRatio": 0,
+          "maximumChannelDelta": 0,
+          "changedBox": null,
+          "diffPath": null,
+          "lowDeltaPixels": 0,
+          "noiseClass": "A-edge-antialiasing"
+        },
+        "prototypeBrowserErrors": 0,
+        "prototypeExternalRequests": 0,
+        "pass": true
+      },
+      "geometryDelta": []
+    },
+    {
+      "row": {
+        "kind": "state",
+        "viewport": "desktop",
+        "locale": "en",
+        "id": "WBR-S027",
+        "path": "/settings?section=server-settings&mode=embedding",
+        "scenario": "embedding_load_failed"
+      },
+      "source": {
+        "target": "source",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-011/evidence/WEB-BASELINE-REFRESH-011/matrix-embedding-recheck/source/WBR-S027.png",
+        "screenshotSha256": "eccd794c85164be03f8af5ace40aabe86d000e7890f4323267512d776556d028",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nBasicsEmbeddingAdvancedMigrations\nExtensions\nUpdates\nCouldn’t load the search status.\nRetry",
+        "bodyTextSha256": "5aeb7d315c462bc6579d2aee5c9d14eca535f77c208dcf75b743dba3c7a723c1",
+        "route": "/settings?section=server-settings&mode=embedding",
+        "lang": "",
+        "controlsSha256": "e685b7c712a4b9e340f97ccc96eb753a8b606cf6e7eba00e74ae332fe570b1e9",
+        "geometrySha256": "201984fde39a3423bd4981731c0a670dfb790dfb381dc116d28b54be7d62385d",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "prototype": {
+        "target": "prototype",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-011/evidence/WEB-BASELINE-REFRESH-011/matrix-embedding-recheck/prototype/WBR-S027.png",
+        "screenshotSha256": "eccd794c85164be03f8af5ace40aabe86d000e7890f4323267512d776556d028",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nBasicsEmbeddingAdvancedMigrations\nExtensions\nUpdates\nCouldn’t load the search status.\nRetry",
+        "bodyTextSha256": "5aeb7d315c462bc6579d2aee5c9d14eca535f77c208dcf75b743dba3c7a723c1",
+        "route": "/settings?section=server-settings&mode=embedding",
+        "lang": "",
+        "controlsSha256": "e685b7c712a4b9e340f97ccc96eb753a8b606cf6e7eba00e74ae332fe570b1e9",
+        "geometrySha256": "201984fde39a3423bd4981731c0a670dfb790dfb381dc116d28b54be7d62385d",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "comparison": {
+        "routeEqual": true,
+        "bodyTextEqual": true,
+        "controlsEqual": true,
+        "geometryEqual": true,
+        "screenshotEqual": true,
+        "pixels": {
+          "dimensionsEqual": true,
+          "changedPixels": 0,
+          "totalPixels": 1296000,
+          "changedPixelRatio": 0,
+          "maximumChannelDelta": 0,
+          "changedBox": null,
+          "diffPath": null,
+          "lowDeltaPixels": 0,
+          "noiseClass": "A-edge-antialiasing"
+        },
+        "prototypeBrowserErrors": 0,
+        "prototypeExternalRequests": 0,
+        "pass": true
+      },
+      "geometryDelta": []
+    },
+    {
+      "row": {
+        "kind": "state",
+        "viewport": "desktop",
+        "locale": "en",
+        "id": "WBR-S028",
+        "path": "/settings?section=server-settings&mode=embedding",
+        "scenario": "empty"
+      },
+      "source": {
+        "target": "source",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-011/evidence/WEB-BASELINE-REFRESH-011/matrix-embedding-recheck/source/WBR-S028.png",
+        "screenshotSha256": "c32b758ae716654cd00e4863c642b6ce1d24a90e7418245b2ef3365174c62f93",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nBasicsEmbeddingAdvancedMigrations\nExtensions\nUpdates\nEmbedding model\n\nUsed for meaning search. Downloaded from Hugging Face.\n\nOn disk: 79 MB\n\nIBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nReady\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB\n\nMongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove\nGoogle EmbeddingGemma 2\n\nNot downloaded\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\nDownload\nUse this model\nProject indexes\n\nUsing IBM Granite Embedding Small English R2.\n\nIndex all Projects\n\nNo Projects yet.",
+        "bodyTextSha256": "97ede40ba4517e52994c03b3b4e76e904ff024157dad660e0f35b1e66d0961dd",
+        "route": "/settings?section=server-settings&mode=embedding",
+        "lang": "",
+        "controlsSha256": "9a9cfac359174695ac74e19615ae76fe029397b84118920a4d2fbe14076b801b",
+        "geometrySha256": "9755f65756bf7695349e2dce870a0c7fd78262ca87dbcf543e7548632c7e0349",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "prototype": {
+        "target": "prototype",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-011/evidence/WEB-BASELINE-REFRESH-011/matrix-embedding-recheck/prototype/WBR-S028.png",
+        "screenshotSha256": "c32b758ae716654cd00e4863c642b6ce1d24a90e7418245b2ef3365174c62f93",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nBasicsEmbeddingAdvancedMigrations\nExtensions\nUpdates\nEmbedding model\n\nUsed for meaning search. Downloaded from Hugging Face.\n\nOn disk: 79 MB\n\nIBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nReady\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB\n\nMongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove\nGoogle EmbeddingGemma 2\n\nNot downloaded\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\nDownload\nUse this model\nProject indexes\n\nUsing IBM Granite Embedding Small English R2.\n\nIndex all Projects\n\nNo Projects yet.",
+        "bodyTextSha256": "97ede40ba4517e52994c03b3b4e76e904ff024157dad660e0f35b1e66d0961dd",
+        "route": "/settings?section=server-settings&mode=embedding",
+        "lang": "",
+        "controlsSha256": "9a9cfac359174695ac74e19615ae76fe029397b84118920a4d2fbe14076b801b",
+        "geometrySha256": "9755f65756bf7695349e2dce870a0c7fd78262ca87dbcf543e7548632c7e0349",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "comparison": {
+        "routeEqual": true,
+        "bodyTextEqual": true,
+        "controlsEqual": true,
+        "geometryEqual": true,
+        "screenshotEqual": true,
+        "pixels": {
+          "dimensionsEqual": true,
+          "changedPixels": 0,
+          "totalPixels": 1296000,
+          "changedPixelRatio": 0,
+          "maximumChannelDelta": 0,
+          "changedBox": null,
+          "diffPath": null,
+          "lowDeltaPixels": 0,
+          "noiseClass": "A-edge-antialiasing"
+        },
+        "prototypeBrowserErrors": 0,
+        "prototypeExternalRequests": 0,
+        "pass": true
+      },
+      "geometryDelta": []
+    },
+    {
+      "row": {
+        "kind": "state",
+        "viewport": "desktop",
+        "locale": "en",
+        "id": "WBR-S029",
+        "path": "/settings?section=server-settings&mode=embedding",
+        "scenario": "embedding_many"
+      },
+      "source": {
+        "target": "source",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-011/evidence/WEB-BASELINE-REFRESH-011/matrix-embedding-recheck/source/WBR-S029.png",
+        "screenshotSha256": "dc8294c95257bbf531b053626efb8a6e5727e2c3496e51b77e3fc7274b5ea1e1",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nBasicsEmbeddingAdvancedMigrations\nExtensions\nUpdates\nEmbedding model\n\nUsed for meaning search. Downloaded from Hugging Face.\n\nOn disk: 79 MB\n\nIBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nReady\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB\n\nMongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove\nGoogle EmbeddingGemma 2\n\nNot downloaded\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\nDownload\nUse this model\nProject indexes\n\nUsing IBM Granite Embedding Small English R2.\n\nIndex all Projects\nAll 11\nNeeds indexing 3\nIndexing 0\nReady 8\nFilter Projects by name\n\nAgent Runtime\n\nReady · 63 Tasks\nRebuild\n\nBilling Cleanup\n\nNeeds update · 4 changed\nIndex now\nRebuild\n\nDocs Portal\n\nReady · 28 Tasks\nRebuild\n\nField Survey\n\nNot indexed\nIndex now\n\nHelp Center\n\nReady · 35 Tasks\nRebuild\n\nMarketing Site\n\nNot indexed\nIndex now\n\nMobile Shell\n\nReady · 22 Tasks\nRebuild\n\nPartner API\n\nReady · 14 Tasks\nRebuild\n\nPrototype Launch\n\nReady · 5 Tasks\nRebuild\n\nRelease Notes\n\nReady · 9 Tasks\nRebuild\n\nUsage Reports\n\nReady · 11 Tasks\nRebuild",
+        "bodyTextSha256": "b6c52b891718e52d0d7848f3d288d6aeef50f235ead587f33ba1390d6ab15ef8",
+        "route": "/settings?section=server-settings&mode=embedding",
+        "lang": "",
+        "controlsSha256": "b4da6bb091c73b7bca9343bf1bee2806a63968f97bcd57de363623a5f9fd3828",
+        "geometrySha256": "f19cbb438f3aceefedb91c7b40795a36086050192aeed753aa004a4ac4a6fce9",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "prototype": {
+        "target": "prototype",
+        "screenshotPath": "/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-011/evidence/WEB-BASELINE-REFRESH-011/matrix-embedding-recheck/prototype/WBR-S029.png",
+        "screenshotSha256": "dc8294c95257bbf531b053626efb8a6e5727e2c3496e51b77e3fc7274b5ea1e1",
+        "bodyText": "Back to Workspace\nAPI Keys\nToken Statistics\nDisplay\nLanguage\nLocal Tools\nMCP Servers\nApplication Packages\nAgent Packages\nServer Settings\nBasicsEmbeddingAdvancedMigrations\nExtensions\nUpdates\nEmbedding model\n\nUsed for meaning search. Downloaded from Hugging Face.\n\nOn disk: 79 MB\n\nIBM Granite Embedding Small English R2\nDefault\n\nActive\n·\nReady\n\nLanguages:\nEnglish\n·\nDownload size:\n55 MB\n\nMongoDB LEAF-IR\n\nDownloaded\n\nLanguages:\nEnglish\n·\nDownload size:\n24 MB\n\nUse this model\nRemove\nGoogle EmbeddingGemma 2\n\nNot downloaded\n\nLanguages:\n100+ languages\n·\nDownload size:\n346 MB\n\nDownload\nUse this model\nProject indexes\n\nUsing IBM Granite Embedding Small English R2.\n\nIndex all Projects\nAll 11\nNeeds indexing 3\nIndexing 0\nReady 8\nFilter Projects by name\n\nAgent Runtime\n\nReady · 63 Tasks\nRebuild\n\nBilling Cleanup\n\nNeeds update · 4 changed\nIndex now\nRebuild\n\nDocs Portal\n\nReady · 28 Tasks\nRebuild\n\nField Survey\n\nNot indexed\nIndex now\n\nHelp Center\n\nReady · 35 Tasks\nRebuild\n\nMarketing Site\n\nNot indexed\nIndex now\n\nMobile Shell\n\nReady · 22 Tasks\nRebuild\n\nPartner API\n\nReady · 14 Tasks\nRebuild\n\nPrototype Launch\n\nReady · 5 Tasks\nRebuild\n\nRelease Notes\n\nReady · 9 Tasks\nRebuild\n\nUsage Reports\n\nReady · 11 Tasks\nRebuild",
+        "bodyTextSha256": "b6c52b891718e52d0d7848f3d288d6aeef50f235ead587f33ba1390d6ab15ef8",
+        "route": "/settings?section=server-settings&mode=embedding",
+        "lang": "",
+        "controlsSha256": "b4da6bb091c73b7bca9343bf1bee2806a63968f97bcd57de363623a5f9fd3828",
+        "geometrySha256": "f19cbb438f3aceefedb91c7b40795a36086050192aeed753aa004a4ac4a6fce9",
+        "browserErrors": [],
+        "externalRequests": []
+      },
+      "comparison": {
+        "routeEqual": true,
+        "bodyTextEqual": true,
+        "controlsEqual": true,
+        "geometryEqual": true,
+        "screenshotEqual": true,
+        "pixels": {
+          "dimensionsEqual": true,
+          "changedPixels": 0,
+          "totalPixels": 1296000,
+          "changedPixelRatio": 0,
+          "maximumChannelDelta": 0,
+          "changedBox": null,
+          "diffPath": null,
+          "lowDeltaPixels": 0,
+          "noiseClass": "A-edge-antialiasing"
+        },
+        "prototypeBrowserErrors": 0,
+        "prototypeExternalRequests": 0,
+        "pass": true
+      },
+      "geometryDelta": []
+    }
+  ]
+}

@@ -1,0 +1,262 @@
+[
+ {
+  "file": "VIS-001-embedding-default-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 290898,
+  "maxDelta": 246,
+  "box": [
+   35,
+   0,
+   1393,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-002-download-ahead-progress-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 290841,
+  "maxDelta": 243,
+  "box": [
+   35,
+   0,
+   1393,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-003-download-failed-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 413005,
+  "maxDelta": 243,
+  "box": [
+   35,
+   0,
+   1393,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-004-switch-dialog-not-downloaded-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 521448,
+  "maxDelta": 122,
+  "box": [
+   0,
+   0,
+   1439,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-005-switch-dialog-downloaded-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 521178,
+  "maxDelta": 122,
+  "box": [
+   0,
+   0,
+   1439,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-006-after-switch-all-projects-not-indexed-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 281920,
+  "maxDelta": 229,
+  "box": [
+   35,
+   0,
+   1393,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-007-switch-preparing-index-all-waiting-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 287972,
+  "maxDelta": 229,
+  "box": [
+   35,
+   0,
+   1393,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-008-remove-confirmation-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 291708,
+  "maxDelta": 249,
+  "box": [
+   35,
+   0,
+   1393,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-009-rebuild-confirmation-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 295360,
+  "maxDelta": 249,
+  "box": [
+   35,
+   0,
+   1393,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-010-needs-update-indexing-1440x1180.png",
+  "result": "not-captured"
+ },
+ {
+  "file": "VIS-011-model-unavailable-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 409226,
+  "maxDelta": 229,
+  "box": [
+   35,
+   0,
+   1393,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-012-many-projects-1440x2000.png",
+  "result": "differs",
+  "changedPixels": 1447165,
+  "maxDelta": 246,
+  "box": [
+   35,
+   0,
+   1393,
+   1999
+  ]
+ },
+ {
+  "file": "VIS-013-many-projects-filtered-1440x1500.png",
+  "result": "not-captured"
+ },
+ {
+  "file": "VIS-014-no-projects-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 26019,
+  "maxDelta": 35,
+  "box": [
+   35,
+   0,
+   1393,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-015-loading-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 16497,
+  "maxDelta": 34,
+  "box": [
+   35,
+   0,
+   1393,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-016-load-error-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 7492,
+  "maxDelta": 34,
+  "box": [
+   35,
+   0,
+   1391,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-017-zh-CN-default-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 290506,
+  "maxDelta": 246,
+  "box": [
+   35,
+   0,
+   1393,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-018-zh-CN-switch-dialog-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 521394,
+  "maxDelta": 122,
+  "box": [
+   0,
+   0,
+   1439,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-019-zh-CN-download-failed-1440x1180.png",
+  "result": "differs",
+  "changedPixels": 412052,
+  "maxDelta": 243,
+  "box": [
+   35,
+   0,
+   1393,
+   1179
+  ]
+ },
+ {
+  "file": "VIS-020a-narrow-390x1100-scroll-0.png",
+  "result": "differs",
+  "changedPixels": 9718,
+  "maxDelta": 35,
+  "box": [
+   18,
+   24,
+   371,
+   1091
+  ]
+ },
+ {
+  "file": "VIS-020b-narrow-390x1100-scroll-700.png",
+  "result": "differs",
+  "changedPixels": 9718,
+  "maxDelta": 35,
+  "box": [
+   18,
+   24,
+   371,
+   1091
+  ]
+ },
+ {
+  "file": "VIS-020c-narrow-390x1100-scroll-1400.png",
+  "result": "differs",
+  "changedPixels": 9718,
+  "maxDelta": 35,
+  "box": [
+   18,
+   24,
+   371,
+   1091
+  ]
+ },
+ {
+  "file": "VIS-021-narrow-switch-dialog-390x1100.png",
+  "result": "differs",
+  "changedPixels": 98448,
+  "maxDelta": 35,
+  "box": [
+   0,
+   24,
+   389,
+   1091
+  ]
+ }
+]

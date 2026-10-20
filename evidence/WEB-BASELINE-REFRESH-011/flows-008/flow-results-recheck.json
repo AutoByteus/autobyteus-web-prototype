@@ -1,0 +1,26 @@
+{
+  "generatedAt": "2026-10-20T05:55:16.680Z",
+  "results": [
+    {
+      "id": "PRJ-014",
+      "title": "Board: search filters cards",
+      "pass": true,
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch",
+        "/projects/project-prototype-launch"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}
