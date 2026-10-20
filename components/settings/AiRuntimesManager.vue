@@ -215,10 +215,10 @@ const nodeStore = useNodeStore()
 const windowNodeContextStore = useWindowNodeContextStore()
 const { state, engines, isChecking, minutesSinceCheck } = useAiRuntimesState()
 
-const gridColumns = 'sm:grid-cols-[8rem_9rem_minmax(0,1fr)_12rem_7rem] sm:gap-x-6'
+const gridColumns = 'sm:grid-cols-[8rem_9rem_minmax(0,1fr)_15rem_8rem] sm:gap-x-6'
 const mobileLabel = 'w-20 flex-shrink-0 text-xs text-gray-400 sm:hidden'
-const secondaryButton = 'inline-flex min-h-9 items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1'
-const primaryButton = 'inline-flex min-h-9 items-center justify-center rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1'
+const secondaryButton = 'inline-flex whitespace-nowrap min-h-9 items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1'
+const primaryButton = 'inline-flex whitespace-nowrap min-h-9 items-center justify-center rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1'
 
 const COMMAND: Record<EngineId, string> = { codex: 'codex update', claude: 'claude update', antigravity: 'agy update', grok: 'grok update' }
 const commandOf = (e: EngineRuntime) => COMMAND[e.id]
