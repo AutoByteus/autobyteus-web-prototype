@@ -621,8 +621,13 @@ matching handoff rule, so the result goes to the assigning PM run.
 - Mocked boundaries: items and outcomes are scripted (a design store and a design-only plugin, off with
   `designOnlyLayers=off`). Production fills them from the node and the desktop shell; see the spec's Data,
   Contract, And Mock Boundaries.
-- Integration target and result: `personal`, `Pending`.
-- Cleanup result: `Pending`.
+- Integration target and result: `personal`, `Completed`.
+  - The ticket result (`e114a67` and the script fix `62f05a7`) was fast-forwarded onto `origin/personal` from
+    the base `c3b29e5`. The canonical checkout was fast-forwarded to the same revision (`62f05a7`).
+  - Revalidated from the default branch: canonical checkout on port 4682,
+    `BASE=http://127.0.0.1:4682 node tickets/done/settings-update-notifications/visual-references/final-validation.mjs`
+    → 30/30 through `/chat` (no preview-only state).
+- Cleanup result: `Completed`: servers on 4681 and 4682 stopped, the ticket worktree removed, the branch `design/settings-update-notifications` deleted (it is fully contained in `personal`).
 
 ## Outcome And Handoff
 
