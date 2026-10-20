@@ -544,6 +544,12 @@ const settingsMessages = {
   "settings.aiRuntimes.announce.checked": "已检查更新。",
   "settings.aiRuntimes.announce.updated": "{{name}} 已更新到 {{version}}。",
   "settings.aiRuntimes.announce.updateFailed": "{{name}} 更新失败。",
+  "settings.aiRuntimes.signIn.action": "登录",
+  "settings.aiRuntimes.signIn.signingIn": "登录中…",
+  "settings.aiRuntimes.signIn.waiting": "请在浏览器中完成 {{name}} 的登录。",
+  "settings.aiRuntimes.signIn.cancel": "取消",
+  "settings.aiRuntimes.signIn.failed": "登录未完成。请重试。",
+  "settings.aiRuntimes.announce.signedIn": "{{name}} 已登录。",
 } satisfies TranslationCatalog;
 
 export default settingsMessages;

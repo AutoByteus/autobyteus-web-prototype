@@ -23,6 +23,9 @@ export interface EngineRuntime {
   availableVersion: string | null
   signIn: SignInState
   agentsRunning: number
+  signInInApp: boolean // the engine's own sign-in can be started from AutoByteus (otherwise: its command line)
+  signInWillFail: boolean // the sign-in does not finish
+  signing: { phase: 'idle' | 'waiting' | 'failed'; token: number }
   installUrl: string
   update: { phase: UpdatePhase; step: number; fromVersion: string | null; toVersion: string | null; failureOutput: string | null }
 }
@@ -59,7 +62,7 @@ const engine = (
   id: EngineId, installed: boolean, version: string | null, latest: string | null, signIn: SignInState, extra: Partial<EngineRuntime> = {},
 ): EngineRuntime => ({
   id, name: NAME[id], installed, version, latest, checkWillFail: false, updateWillFail: false, check: 'idle', availableVersion: null,
-  signIn, agentsRunning: 0, installUrl: INSTALL_URL[id],
+  signIn, agentsRunning: 0, signInInApp: true, signInWillFail: false, signing: { phase: 'idle', token: 0 }, installUrl: INSTALL_URL[id],
   update: { phase: 'idle', step: 0, fromVersion: null, toVersion: null, failureOutput: null }, ...extra,
 })
 
@@ -67,8 +70,8 @@ const engine = (
 const ownNode = (): EngineRuntime[] => [
   engine('codex', true, '0.163.0', '0.163.0', 'signed_in'),
   engine('claude', true, '2.1.302', '2.1.304', 'signed_in'),
-  engine('antigravity', true, '1.4.3', '1.4.3', 'unknown'),
-  engine('grok', true, '1.0.62', '1.0.62', 'signed_in'),
+  engine('antigravity', true, '1.4.3', '1.4.3', 'not_signed_in'),
+  engine('grok', true, '1.0.62', '1.0.62', 'unknown'),
 ]
 
 // A remote or Docker node carries its own engines (status only here).
@@ -97,13 +100,17 @@ const seed = (scenario: string, isOwnNode: boolean, nodeName: string) => {
     get('claude').agentsRunning = 2
     get('antigravity').checkWillFail = true
     get('grok').signIn = 'not_signed_in'
+    get('grok').signInInApp = false
   }
   if (scenario === 'runtimes_agents_running') get('claude').agentsRunning = 2
   if (scenario === 'runtimes_update_fails') get('claude').updateWillFail = true
   if (scenario === 'runtimes_signed_out') {
+    // Claude's own sign-in can start here; Codex's cannot (command line only) — illustrative of an engine without in-app sign-in.
     get('claude').signIn = 'not_signed_in'
     get('codex').signIn = 'not_signed_in'
+    get('codex').signInInApp = false
   }
+  if (scenario === 'runtimes_sign_in_fails') get('antigravity').signInWillFail = true
   if (scenario === 'runtimes_check_failed') {
     for (const e of state.engines) if (e.installed) e.checkWillFail = true
   }
@@ -209,6 +216,26 @@ export const startUpdate = (id: EngineId) => {
     later(UPDATE_STEP_MS, advance)
   }
   later(UPDATE_STEP_MS, advance)
+}
+
+const SIGN_IN_WAIT_MS = 5000
+export const startSignIn = (id: EngineId) => {
+  const e = byId(id)
+  if (!state.isOwnNode || !e.installed || !e.signInInApp || e.signIn !== 'not_signed_in' || e.signing.phase === 'waiting') return
+  const token = e.signing.token + 1
+  e.signing = { phase: 'waiting', token }
+  // The user finishes (or abandons) the vendor's own sign-in in the browser; the engine then reports its status.
+  later(SIGN_IN_WAIT_MS, () => {
+    if (e.signing.phase !== 'waiting' || e.signing.token !== token) return
+    if (e.signInWillFail) { e.signing = { phase: 'failed', token }; return }
+    e.signIn = 'signed_in'
+    e.signing = { phase: 'idle', token }
+    announce(e.name, 'signedIn')
+  })
+}
+export const cancelSignIn = (id: EngineId) => {
+  const e = byId(id)
+  if (e.signing.phase === 'waiting' || e.signing.phase === 'failed') e.signing = { phase: 'idle', token: e.signing.token }
 }
 
 // A new action on the row clears the previous outcome.

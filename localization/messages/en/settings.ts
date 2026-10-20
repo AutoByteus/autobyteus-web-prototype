@@ -544,6 +544,12 @@ const settingsMessages = {
   "settings.aiRuntimes.announce.checked": "Checked for updates.",
   "settings.aiRuntimes.announce.updated": "{{name}} updated to {{version}}.",
   "settings.aiRuntimes.announce.updateFailed": "{{name}} update failed.",
+  "settings.aiRuntimes.signIn.action": "Sign in",
+  "settings.aiRuntimes.signIn.signingIn": "Signing in…",
+  "settings.aiRuntimes.signIn.waiting": "Finish signing in to {{name}} in your browser.",
+  "settings.aiRuntimes.signIn.cancel": "Cancel",
+  "settings.aiRuntimes.signIn.failed": "Sign-in didn't finish. Try again.",
+  "settings.aiRuntimes.announce.signedIn": "{{name}} is signed in.",
 } satisfies TranslationCatalog;
 
 export default settingsMessages;

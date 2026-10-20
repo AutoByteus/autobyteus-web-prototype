@@ -123,15 +123,27 @@
                   <span v-else-if="e.signIn === 'signed_in'" class="flex sm:min-h-9 items-center gap-1.5 text-gray-700" :data-testid="`runtime-${e.id}-signin`"><span class="h-1.5 w-1.5 rounded-full bg-green-600"></span>{{ t('settings.aiRuntimes.signIn.signedIn') }}</span>
                   <template v-else-if="e.signIn === 'not_signed_in'">
                     <span class="flex sm:min-h-9 items-center gap-1.5 text-amber-700" :data-testid="`runtime-${e.id}-signin`"><span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>{{ t('settings.aiRuntimes.signIn.notSignedIn') }}</span>
-                    <p class="-mt-1 text-gray-500">{{ t('settings.aiRuntimes.signIn.hint') }}</p>
+                    <p v-if="!e.signInInApp || !state.isOwnNode" class="-mt-1 text-gray-500" :data-testid="`runtime-${e.id}-signin-hint`">{{ t('settings.aiRuntimes.signIn.hint') }}</p>
                   </template>
                   <span v-else class="flex sm:min-h-9 items-center text-gray-500" :data-testid="`runtime-${e.id}-signin`">{{ t('settings.aiRuntimes.signIn.unknown') }}</span>
                 </div>
               </div>
 
               <!-- action: only on this computer's own node -->
-              <div class="sm:justify-self-end" :data-testid="`runtime-${e.id}-actions`">
+              <div class="flex flex-col gap-2 sm:items-end sm:justify-self-end" :data-testid="`runtime-${e.id}-actions`">
                 <template v-if="state.isOwnNode && e.installed">
+                  <button
+                    v-if="e.signIn === 'not_signed_in' && e.signInInApp"
+                    type="button"
+                    :class="[secondaryButton, e.signing.phase === 'waiting' ? 'cursor-wait' : '']"
+                    :disabled="e.signing.phase === 'waiting'"
+                    :aria-label="`${e.signing.phase === 'waiting' ? t('settings.aiRuntimes.signIn.signingIn') : e.signing.phase === 'failed' ? t('settings.aiRuntimes.update.retry') : t('settings.aiRuntimes.signIn.action')} ${e.name}`"
+                    :data-testid="`runtime-${e.id}-signin-button`"
+                    @click="onSignIn(e.id)"
+                  >
+                    <span v-if="e.signing.phase === 'waiting'" class="mr-2 h-3 w-3 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600"></span>
+                    {{ e.signing.phase === 'waiting' ? t('settings.aiRuntimes.signIn.signingIn') : e.signing.phase === 'failed' ? t('settings.aiRuntimes.update.retry') : t('settings.aiRuntimes.signIn.action') }}
+                  </button>
                   <button
                     v-if="e.update.phase === 'running'"
                     type="button"
@@ -152,6 +164,15 @@
                     @click="onUpdate(e.id)"
                   >{{ e.update.phase === 'failed' ? t('settings.aiRuntimes.update.retry') : t('settings.aiRuntimes.update.action') }}</button>
                 </template>
+              </div>
+
+              <!-- the vendor's own sign-in, finished in the browser -->
+              <div v-if="e.signing.phase !== 'idle' && e.signIn === 'not_signed_in'" class="sm:col-span-3 sm:col-start-3" :data-testid="`runtime-${e.id}-signin-outcome`">
+                <div v-if="e.signing.phase === 'waiting'" class="flex flex-wrap items-center gap-x-3 text-sm text-gray-600" role="status">
+                  <span :data-testid="`runtime-${e.id}-signin-waiting`">{{ t('settings.aiRuntimes.signIn.waiting', { name: e.name }) }}</span>
+                  <button type="button" class="rounded-md px-2 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-testid="`runtime-${e.id}-signin-cancel`" @click="cancelSignIn(e.id)">{{ t('settings.aiRuntimes.signIn.cancel') }}</button>
+                </div>
+                <p v-else class="text-sm text-red-700" role="alert" :data-testid="`runtime-${e.id}-signin-failed`">{{ t('settings.aiRuntimes.signIn.failed') }}</p>
               </div>
 
               <!-- progress and outcome of the vendor's updater -->
@@ -185,7 +206,7 @@ import { computed, onMounted } from 'vue'
 import { useNodeStore } from '~/stores/nodeStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 import {
-  checkAgain, dismissOutcome, initAiRuntimes, reopenAiRuntimes, retryLoad, startUpdate, useAiRuntimesState, useRelativeClock,
+  cancelSignIn, checkAgain, dismissOutcome, initAiRuntimes, reopenAiRuntimes, retryLoad, startSignIn, startUpdate, useAiRuntimesState, useRelativeClock,
   type EngineId, type EngineRuntime,
 } from '~/prototype/ai-runtimes/aiRuntimesFixture'
 
@@ -225,6 +246,7 @@ const onCheckAgain = () => {
   for (const e of engines.value) dismissOutcome(e.id)
   checkAgain()
 }
+const onSignIn = (id: EngineId) => startSignIn(id)
 const onUpdate = (id: EngineId) => {
   const e = engines.value.find((row) => row.id === id)
   if (!e || blockedByAgents(e)) return
