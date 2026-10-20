@@ -508,6 +508,37 @@ One recommended design.
 - Round 13 validation (`review-evidence/round-13/r15.mjs`): **29/29**, plus the in-context capture
   `r15-00-panel-in-context-2x.png`.
 
+## Requirement Impact (raised 2026-10-20, during user review)
+
+The user's review decisions change SR-001
+(`/Users/normy/.autobyteus/server-data/projects/project_a1377344-25db-482a-97cc-ecfdb0fb495a/tasks/project_task_836c0f71-7440-49f4-88d6-ce2a115d1b35/context/ctx_b26cd0860bc3__requirements-doc.md`).
+They are routed to the PM for the Solution Designer of autobyteus-209 as `Requirement Impact`. There is no
+matching handoff rule, so the result goes to the assigning PM run.
+
+1. **No Dismiss / "Skip this version"** (round 10; the user: "do we really need the skip? … I personally have
+   never clicked a skip").
+   - Affected: REQ-009; REQ-010 (the "dismissed" state); AC-009; UC-004; SCN-006; DEC-004; DEC-008 ("the user
+     dismisses it"); the outcome and success lines (§ desired outcome / observable definition: "plus dismissing
+     that version", "dismissed states"); § required states ("dismissed"); § acceptable loss.
+   - Design: a waiting notification goes only when it is updated, or is replaced by a newer version (one per
+     source). A handled one goes when the user presses **Clear**, which DEC-008's "until … the user dismisses it"
+     can cover. No skipped-version state is stored.
+2. **The indicator stays while updates wait, emphasised while unread** (round 12; the user: "Gray color makes
+   people feel like notification is normally not gray").
+   - Affected: REQ-011 ("an indicator … shows when unread notifications exist"); DEC-004 ("read but not acted on
+     … stays quietly listed (no indicator)"); AC-009 ("indicator off").
+   - Design: the Settings-row pill "N updates" (N = waiting, not handled) is solid `sky-700` while any are unread
+     and soft blue once all are read. It is absent only when nothing is waiting.
+3. **The area is a Notification Center opened from the Settings row, not a Settings section** (rounds 6–7, 9).
+   - Affected: REQ-011 ("it lives in Settings"; Product decides placement); AC-002 (holds as written); § required
+     screens ("notification area in Settings", "narrow-window behavior of the Settings page").
+   - Design: the panel opens only on the user's click (no pop-up by itself). The per-node setting (REQ-013/014) is
+     the Update checks card in Server Settings → Basics.
+- Not affected: REQ-004 (anatomy, including the app's release notes and link in the row details), REQ-012,
+  REQ-013/014, AC-003, AC-015/016, QR-004.
+- Design status: user review continues on the current proposal (round 13). The final package will reflect
+  these decisions unless the revised requirements say otherwise.
+
 ## Delivery And Validation
 
 - UI/UX specification: pending
