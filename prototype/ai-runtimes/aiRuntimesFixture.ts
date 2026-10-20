@@ -68,10 +68,10 @@ const engine = (
 
 // The desktop's own node, as on the requester's Mac (2026-10-20).
 const ownNode = (): EngineRuntime[] => [
-  engine('codex', true, '0.163.0', '0.163.0', 'signed_in'),
-  engine('claude', true, '2.1.302', '2.1.304', 'signed_in'),
-  engine('antigravity', true, '1.4.3', '1.4.3', 'not_signed_in'),
-  engine('grok', true, '1.0.62', '1.0.62', 'unknown'),
+  engine('codex', true, '0.163.0', '0.163.0', 'not_signed_in'),
+  engine('claude', true, '2.1.302', '2.1.304', 'signed_in', { signInInApp: false }),
+  engine('antigravity', true, '1.4.3', '1.4.3', 'not_signed_in', { signInInApp: false }),
+  engine('grok', true, '1.0.62', '1.0.62', 'signed_in'),
 ]
 
 // A remote or Docker node carries its own engines (status only here).
@@ -84,11 +84,16 @@ const remoteNode = (): EngineRuntime[] => [
 
 const byId = (id: EngineId) => state.engines.find((e) => e.id === id)!
 
+// Recommended (Solution Designer, E-R21; pending the user's decision): Codex and Grok get a Sign in button;
+// Claude (Anthropic approval) and Antigravity (no login command) show "Sign in from its command line."
+const IN_APP_SIGN_IN: Record<EngineId, boolean> = { codex: true, claude: false, antigravity: false, grok: true }
+
 const seed = (scenario: string, isOwnNode: boolean, nodeName: string) => {
   state.scenario = scenario
   state.isOwnNode = isOwnNode
   state.nodeName = nodeName
   state.engines = isOwnNode ? ownNode() : remoteNode()
+  for (const e of state.engines) e.signInInApp = IN_APP_SIGN_IN[e.id]
   state.checkedAt = null
   state.loadStatus = 'loading'
   const get = (id: EngineId) => state.engines.find((e) => e.id === id)!
@@ -100,17 +105,13 @@ const seed = (scenario: string, isOwnNode: boolean, nodeName: string) => {
     get('claude').agentsRunning = 2
     get('antigravity').checkWillFail = true
     get('grok').signIn = 'not_signed_in'
-    get('grok').signInInApp = false
   }
   if (scenario === 'runtimes_agents_running') get('claude').agentsRunning = 2
   if (scenario === 'runtimes_update_fails') get('claude').updateWillFail = true
   if (scenario === 'runtimes_signed_out') {
-    // Claude's own sign-in can start here; Codex's cannot (command line only) — illustrative of an engine without in-app sign-in.
-    get('claude').signIn = 'not_signed_in'
-    get('codex').signIn = 'not_signed_in'
-    get('codex').signInInApp = false
+    for (const e of state.engines) if (e.installed) e.signIn = 'not_signed_in'
   }
-  if (scenario === 'runtimes_sign_in_fails') get('antigravity').signInWillFail = true
+  if (scenario === 'runtimes_sign_in_fails') get('codex').signInWillFail = true
   if (scenario === 'runtimes_check_failed') {
     for (const e of state.engines) if (e.installed) e.checkWillFail = true
   }
