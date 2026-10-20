@@ -518,7 +518,7 @@ const settingsMessages = {
   "settings.notifications.failed": "Update failed. Nothing was changed.",
   "settings.notifications.tryAgain": "Try again",
   "settings.notifications.handled": "Updated to {{revision}}",
-  "settings.notifications.app.name": "AutoByteus {{version}}",
+  "settings.notifications.app.name": "AutoByteus",
   "settings.notifications.app.download": "Download",
   "settings.notifications.app.downloading": "Downloading {{percent}}%",
   "settings.notifications.app.downloaded": "Downloaded. Restart AutoByteus to install it.",

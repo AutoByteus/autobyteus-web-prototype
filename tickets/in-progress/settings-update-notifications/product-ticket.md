@@ -400,7 +400,7 @@ One recommended design.
 - Round 9 validation (`review-evidence/round-9/r11.mjs`): **28/28**. This is the round 8 set plus C-026 (no
   visible header or group label; the name is kept; the panel takes focus).
 
-## Round 9 Feedback And Round 10 (current proposal)
+## Round 9 Feedback And Round 10 (layout superseded by round 11)
 
 - User question on round 9 (2026-10-20): "do we really need the skip? … I personally have never clicked a skip … when
   you have a new version … a new version will be shown there … when I do updates … I update to the latest. So do we
@@ -430,6 +430,40 @@ One recommended design.
   - DC-038: strings `settings.notifications.skip` and `skipHint` are removed (en, zh-CN).
 - Round 10 validation (`review-evidence/round-10/r12.mjs`): **28/28**. C-012 now checks that there is no Skip and
   four update actions.
+
+## Round 10 Feedback And Round 11 (current proposal)
+
+- User feedback on round 10 (2026-10-20): "why do I feel like you have information layout problem … the content
+  inside the card … looks strange".
+- Problems found:
+  1. Each update spent a whole line on a lone button, leaving an empty strip to its right (three lines per update).
+  2. There was no hierarchy: the type title and the item name were nearly the same size and weight.
+  3. The time and "New" dot moved: they were on the title line in a single card, but on the item line in a
+     grouped card.
+  4. A 32 px icon column took width from the names, so they truncated early.
+  5. The app repeated the version ("AutoByteus 1.5.7" above "1.5.6 → 1.5.7").
+- Round 11: **rows, App Store style.**
+  - **Card header:** a small grey line with the type's 16 px outline icon and the type in words (`text-xs`,
+    `gray-500`): "Software update", "Agent package updates", "Skill updates". There is no count and no big icon
+    column. The card is `px-4`.
+  - **Each update is one row:**
+    - left: the name (13 px, medium, `gray-900`), and below it the change and when it was found
+      (`a1b2c3d → 9f8e7d6 · 3 hr. ago`; for the app `1.5.6 → 1.5.7 · 2 hr. ago`);
+    - right, vertically centred: its one action as a small rounded button. The actions are Download / Update /
+      Try again (`sky-700`), Install and restart (emerald), Clear (grey text), or "Updating…" with a spinner.
+  - **"New":** a 6 px `sky-700` dot in a fixed gutter left of the name, in the same place in every card.
+  - **The app's name is "AutoByteus"**; the versions are on the change line.
+  - **The branch moved to the details** (`AutoByteus/autobyteus-agents · main`, then See changes on GitHub).
+  - **Download progress, errors and "Downloaded…"** show under the row, at full width.
+  - Each Update button's accessible name includes the item ("Update: AutoByteus Agents").
+- Round 11 changes:
+  - DC-039: `NotificationCard.vue` (a small header; rows).
+  - DC-040: `NotificationEntry.vue` (a row with the action on the right; the dot gutter; the time on the change
+    line; the branch in the details).
+  - DC-041: the string `settings.notifications.app.name` is now "AutoByteus".
+- Round 11 validation (`review-evidence/round-11/r13.mjs`): **29/29**. This adds C-027: one row, with the action
+  to the right of the text and vertically centred, and the change line carrying the time. C-024 checks the titles
+  without counts.
 
 ## Delivery And Validation
 

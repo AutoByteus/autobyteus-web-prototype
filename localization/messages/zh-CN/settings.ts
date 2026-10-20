@@ -518,7 +518,7 @@ const settingsMessages = {
   "settings.notifications.failed": "更新失败，未做任何更改。",
   "settings.notifications.tryAgain": "重试",
   "settings.notifications.handled": "已更新到 {{revision}}",
-  "settings.notifications.app.name": "AutoByteus {{version}}",
+  "settings.notifications.app.name": "AutoByteus",
   "settings.notifications.app.download": "下载",
   "settings.notifications.app.downloading": "正在下载 {{percent}}%",
   "settings.notifications.app.downloaded": "已下载。重启 AutoByteus 即可安装。",
