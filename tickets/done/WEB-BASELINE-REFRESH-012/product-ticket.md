@@ -47,3 +47,9 @@
   design record (this ticket does not touch those surfaces); (2) the default scenario without waiting notifications is accepted;
   (3) the Reconnect collaborator case on delegated copies stays open and is out of scope here.
 - Runtime: preview server 4790 stopped.
+
+## Integration (2026-10-21)
+
+- Accepted refresh commit `e8e9119` pushed to `origin/personal` as a fast-forward from `288ef06`; the canonical checkout fast-forwarded to it.
+- Default-entry check: the Remote Collaboration tab was opened at `/nodes?nodeTab=remoteCollaboration` with the same code the default branch now holds.
+- Result: `Completed`. Cleanup: preview 4790 stopped; the worktree is removed after this record.
