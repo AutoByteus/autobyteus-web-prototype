@@ -1,0 +1,109 @@
+{
+  "generatedAt": "2026-10-21T14:28:45.389Z",
+  "results": [
+    {
+      "id": "MOB-001",
+      "title": "/mobile unpaired",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/mobile",
+        "/mobile"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MOB-002",
+      "title": "/mobile paired",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 8,
+        "max": 1,
+        "low": 8
+      },
+      "route": [
+        "/mobile",
+        "/mobile"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MOB-003",
+      "title": "/mobile paired, desktop settings unsupported",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/mobile?unsupported=desktopSettings",
+        "/mobile?unsupported=desktopSettings"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MOB-004",
+      "title": "/mobile paired, a waiting-updates scenario shows no Notification Center",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 8,
+        "max": 1,
+        "low": 8
+      },
+      "route": [
+        "/mobile",
+        "/mobile"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

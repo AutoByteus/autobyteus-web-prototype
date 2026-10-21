@@ -1,0 +1,2908 @@
+{
+  "generatedAt": "2026-10-21T14:01:29.663Z",
+  "results": [
+    {
+      "id": "NTF-030",
+      "title": "Desktop: Notification Center with the Software update row",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"sidebar-notifications-updates\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "sidebar-notifications-updates",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "4 updates available: 1 software update, 2 agent package updates, 1 skill update",
+            "title": null,
+            "text": "4 updates",
+            "rect": [
+              228.8,
+              860,
+              83.2,
+              28
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(186, 230, 253)",
+              "color": "rgb(7, 89, 133)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(125, 211, 252) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "0px",
+              "padding-left": "12px",
+              "font-size": "12px",
+              "font-weight": "600",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "83.2344px"
+            }
+          }
+        ],
+        "[data-testid=\"notification-center\"]": [
+          {
+            "tag": "SECTION",
+            "test": "notification-center",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Notifications\nSoftware update\nNew:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\nDownload\nAgent package updates",
+            "rect": [
+              8,
+              434,
+              360,
+              418
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(186, 230, 253)",
+              "border-top-width": "1px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "360px"
+            }
+          }
+        ],
+        "[data-testid^=\"notification-row-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "notification-row-app",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\nDownload",
+            "rect": [
+              25,
+              467,
+              326,
+              76
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-agent_package:package-research-pack",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nResearch Pack\na1b2c3d\n9f8e7d6\n·\n3 hr. ago\nUpdate",
+            "rect": [
+              25,
+              582,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-agent_package:package-docs-pack",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Docs Pack With A Rather Long Name For A Package\n0a1b2c3\ne8f9a0b\n·\nyesterday\nUpdate",
+            "rect": [
+              25,
+              638,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-skill_source:github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nreview-skills\n9a8b7c6\nc0ffee1\n·\n5 hr. ago\nUpdate",
+            "rect": [
+              25,
+              733,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-skill_source:github-docs-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "docs-skills\nUpdated to 1f2e3d4\nClear",
+            "rect": [
+              25,
+              789,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          }
+        ],
+        "[data-testid=\"notification-row-new\"]": [
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              482,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              597,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              748,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          }
+        ],
+        "[data-testid^=\"notification-section-\"]": [
+          {
+            "tag": "LI",
+            "test": "notification-section-app",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Software update\nNew:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\nDownload",
+            "rect": [
+              9,
+              435,
+              358,
+              114
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Software update",
+            "rect": [
+              25,
+              447,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-section-agent_package",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent package updates\nNew:\nResearch Pack\na1b2c3d\n9f8e7d6\n·\n3 hr. ago\nUpdate\nDocs Pack With A Rather Long Name For A Pack",
+            "rect": [
+              9,
+              549,
+              358,
+              151
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(230, 230, 230)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent package updates",
+            "rect": [
+              25,
+              562,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-section-skill_source",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Skill updates\nNew:\nreview-skills\n9a8b7c6\nc0ffee1\n·\n5 hr. ago\nUpdate\ndocs-skills\nUpdated to 1f2e3d4\nClear",
+            "rect": [
+              9,
+              700,
+              358,
+              151
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(230, 230, 230)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Skill updates",
+            "rect": [
+              25,
+              713,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          }
+        ],
+        "focused": "notification-center",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 14,
+        "max": 19,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "NTF-031",
+      "title": "Desktop: Software update details (release notes, release page)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"sidebar-notifications-updates\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "sidebar-notifications-updates",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "4 updates available: 1 software update, 2 agent package updates, 1 skill update",
+            "title": null,
+            "text": "4 updates",
+            "rect": [
+              228.8,
+              860,
+              83.2,
+              28
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(224, 242, 254)",
+              "color": "rgb(7, 89, 133)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(125, 211, 252) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "0px",
+              "padding-left": "12px",
+              "font-size": "12px",
+              "font-weight": "600",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "83.2344px"
+            }
+          }
+        ],
+        "[data-testid=\"notification-center\"]": [
+          {
+            "tag": "SECTION",
+            "test": "notification-center",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Notifications\nSoftware update\nNew:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\nDownload\n\nSynthetic review upd",
+            "rect": [
+              8,
+              372,
+              360,
+              480
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(186, 230, 253)",
+              "border-top-width": "1px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "360px"
+            }
+          }
+        ],
+        "[data-testid^=\"notification-row-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "notification-row-app",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\nDownload\n\nSynthetic review update.\n\nRelease page",
+            "rect": [
+              25,
+              405,
+              326,
+              138
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-agent_package:package-research-pack",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nResearch Pack\na1b2c3d\n9f8e7d6\n·\n3 hr. ago\nUpdate",
+            "rect": [
+              25,
+              582,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-agent_package:package-docs-pack",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Docs Pack With A Rather Long Name For A Package\n0a1b2c3\ne8f9a0b\n·\nyesterday\nUpdate",
+            "rect": [
+              25,
+              638,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-skill_source:github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nreview-skills\n9a8b7c6\nc0ffee1\n·\n5 hr. ago\nUpdate",
+            "rect": [
+              25,
+              733,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-skill_source:github-docs-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "docs-skills\nUpdated to 1f2e3d4\nClear",
+            "rect": [
+              25,
+              789,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          }
+        ],
+        "[data-testid=\"notification-row-new\"]": [
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              420,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              597,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              748,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          }
+        ],
+        "[data-testid^=\"notification-section-\"]": [
+          {
+            "tag": "LI",
+            "test": "notification-section-app",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Software update\nNew:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\nDownload\n\nSynthetic review update.\n\nRelease ",
+            "rect": [
+              9,
+              373,
+              358,
+              176
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Software update",
+            "rect": [
+              25,
+              385,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-section-agent_package",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent package updates\nNew:\nResearch Pack\na1b2c3d\n9f8e7d6\n·\n3 hr. ago\nUpdate\nDocs Pack With A Rather Long Name For A Pack",
+            "rect": [
+              9,
+              549,
+              358,
+              151
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(230, 230, 230)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent package updates",
+            "rect": [
+              25,
+              562,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-section-skill_source",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Skill updates\nNew:\nreview-skills\n9a8b7c6\nc0ffee1\n·\n5 hr. ago\nUpdate\ndocs-skills\nUpdated to 1f2e3d4\nClear",
+            "rect": [
+              9,
+              700,
+              358,
+              151
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(230, 230, 230)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Skill updates",
+            "rect": [
+              25,
+              713,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          }
+        ],
+        "[data-testid=\"notification-row-details\"]": [
+          {
+            "tag": "DIV",
+            "test": "notification-row-details",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Synthetic review update.\n\nRelease page",
+            "rect": [
+              25,
+              479,
+              326,
+              56
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(102, 102, 102)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          }
+        ],
+        "focused": "notification-row-summary",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 14,
+        "max": 19,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "NTF-032",
+      "title": "Desktop: Download shows progress",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"sidebar-notifications-updates\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "sidebar-notifications-updates",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "4 updates available: 1 software update, 2 agent package updates, 1 skill update",
+            "title": null,
+            "text": "4 updates",
+            "rect": [
+              228.8,
+              860,
+              83.2,
+              28
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(224, 242, 254)",
+              "color": "rgb(7, 89, 133)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(125, 211, 252) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "0px",
+              "padding-left": "12px",
+              "font-size": "12px",
+              "font-weight": "600",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "83.2344px"
+            }
+          }
+        ],
+        "[data-testid=\"notification-center\"]": [
+          {
+            "tag": "SECTION",
+            "test": "notification-center",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Notifications\nSoftware update\nNew:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\n\nDownloading 20%\n\nAgent packag",
+            "rect": [
+              8,
+              416,
+              360,
+              436
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(186, 230, 253)",
+              "border-top-width": "1px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "360px"
+            }
+          }
+        ],
+        "[data-testid^=\"notification-row-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "notification-row-app",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\n\nDownloading 20%",
+            "rect": [
+              25,
+              449,
+              326,
+              94
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-agent_package:package-research-pack",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nResearch Pack\na1b2c3d\n9f8e7d6\n·\n3 hr. ago\nUpdate",
+            "rect": [
+              25,
+              582,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-agent_package:package-docs-pack",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Docs Pack With A Rather Long Name For A Package\n0a1b2c3\ne8f9a0b\n·\nyesterday\nUpdate",
+            "rect": [
+              25,
+              638,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-skill_source:github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nreview-skills\n9a8b7c6\nc0ffee1\n·\n5 hr. ago\nUpdate",
+            "rect": [
+              25,
+              733,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-skill_source:github-docs-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "docs-skills\nUpdated to 1f2e3d4\nClear",
+            "rect": [
+              25,
+              789,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          }
+        ],
+        "[data-testid=\"notification-row-new\"]": [
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              464,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              597,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              748,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          }
+        ],
+        "[data-testid^=\"notification-section-\"]": [
+          {
+            "tag": "LI",
+            "test": "notification-section-app",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Software update\nNew:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\n\nDownloading 20%",
+            "rect": [
+              9,
+              417,
+              358,
+              132
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Software update",
+            "rect": [
+              25,
+              429,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-section-agent_package",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent package updates\nNew:\nResearch Pack\na1b2c3d\n9f8e7d6\n·\n3 hr. ago\nUpdate\nDocs Pack With A Rather Long Name For A Pack",
+            "rect": [
+              9,
+              549,
+              358,
+              151
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(230, 230, 230)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent package updates",
+            "rect": [
+              25,
+              562,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-section-skill_source",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Skill updates\nNew:\nreview-skills\n9a8b7c6\nc0ffee1\n·\n5 hr. ago\nUpdate\ndocs-skills\nUpdated to 1f2e3d4\nClear",
+            "rect": [
+              9,
+              700,
+              358,
+              151
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(230, 230, 230)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Skill updates",
+            "rect": [
+              25,
+              713,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          }
+        ],
+        "[data-testid=\"notification-row-progress\"]": [
+          {
+            "tag": "DIV",
+            "test": "notification-row-progress",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Downloading 20%",
+            "rect": [
+              25,
+              505,
+              326,
+              30
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          }
+        ],
+        "[data-testid$=\"-progress\"]": [
+          {
+            "tag": "DIV",
+            "test": "notification-row-progress",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Downloading 20%",
+            "rect": [
+              25,
+              505,
+              326,
+              30
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 14,
+        "max": 19,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "NTF-033",
+      "title": "Desktop: downloaded; Install and restart offered",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"sidebar-notifications-updates\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "sidebar-notifications-updates",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "4 updates available: 1 software update, 2 agent package updates, 1 skill update",
+            "title": null,
+            "text": "4 updates",
+            "rect": [
+              228.8,
+              860,
+              83.2,
+              28
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(224, 242, 254)",
+              "color": "rgb(7, 89, 133)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(125, 211, 252) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "0px",
+              "padding-left": "12px",
+              "font-size": "12px",
+              "font-weight": "600",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "83.2344px"
+            }
+          }
+        ],
+        "[data-testid=\"notification-center\"]": [
+          {
+            "tag": "SECTION",
+            "test": "notification-center",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Notifications\nSoftware update\nNew:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\nInstall and restart\n\nDownloade",
+            "rect": [
+              8,
+              410,
+              360,
+              442
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(186, 230, 253)",
+              "border-top-width": "1px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "360px"
+            }
+          }
+        ],
+        "[data-testid^=\"notification-row-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "notification-row-app",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\nInstall and restart\n\nDownloaded. Restart AutoByteus to insta",
+            "rect": [
+              25,
+              443,
+              326,
+              100
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-agent_package:package-research-pack",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nResearch Pack\na1b2c3d\n9f8e7d6\n·\n3 hr. ago\nUpdate",
+            "rect": [
+              25,
+              582,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-agent_package:package-docs-pack",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Docs Pack With A Rather Long Name For A Package\n0a1b2c3\ne8f9a0b\n·\nyesterday\nUpdate",
+            "rect": [
+              25,
+              638,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-skill_source:github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nreview-skills\n9a8b7c6\nc0ffee1\n·\n5 hr. ago\nUpdate",
+            "rect": [
+              25,
+              733,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-skill_source:github-docs-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "docs-skills\nUpdated to 1f2e3d4\nClear",
+            "rect": [
+              25,
+              789,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          }
+        ],
+        "[data-testid=\"notification-row-new\"]": [
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              458,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              597,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              748,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          }
+        ],
+        "[data-testid^=\"notification-section-\"]": [
+          {
+            "tag": "LI",
+            "test": "notification-section-app",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Software update\nNew:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\nInstall and restart\n\nDownloaded. Restart Aut",
+            "rect": [
+              9,
+              411,
+              358,
+              138
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Software update",
+            "rect": [
+              25,
+              423,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-section-agent_package",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent package updates\nNew:\nResearch Pack\na1b2c3d\n9f8e7d6\n·\n3 hr. ago\nUpdate\nDocs Pack With A Rather Long Name For A Pack",
+            "rect": [
+              9,
+              549,
+              358,
+              151
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(230, 230, 230)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent package updates",
+            "rect": [
+              25,
+              562,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-section-skill_source",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Skill updates\nNew:\nreview-skills\n9a8b7c6\nc0ffee1\n·\n5 hr. ago\nUpdate\ndocs-skills\nUpdated to 1f2e3d4\nClear",
+            "rect": [
+              9,
+              700,
+              358,
+              151
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(230, 230, 230)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Skill updates",
+            "rect": [
+              25,
+              713,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "NTF-034",
+      "title": "Desktop: Install and restart",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"sidebar-notifications-updates\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "sidebar-notifications-updates",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "4 updates available: 1 software update, 2 agent package updates, 1 skill update",
+            "title": null,
+            "text": "4 updates",
+            "rect": [
+              228.8,
+              860,
+              83.2,
+              28
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(224, 242, 254)",
+              "color": "rgb(7, 89, 133)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(125, 211, 252) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "0px",
+              "padding-left": "12px",
+              "font-size": "12px",
+              "font-weight": "600",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "83.2344px"
+            }
+          }
+        ],
+        "[data-testid=\"notification-center\"]": [
+          {
+            "tag": "SECTION",
+            "test": "notification-center",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Notifications\nSoftware update\nNew:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\n\nRestarting to install…\n\nAgent",
+            "rect": [
+              8,
+              427,
+              360,
+              425
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(186, 230, 253)",
+              "border-top-width": "1px",
+              "border-radius": "16px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.1) 0px 8px 10px -6px",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "360px"
+            }
+          }
+        ],
+        "[data-testid^=\"notification-row-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "notification-row-app",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\n\nRestarting to install…",
+            "rect": [
+              25,
+              460,
+              326,
+              83
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-agent_package:package-research-pack",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nResearch Pack\na1b2c3d\n9f8e7d6\n·\n3 hr. ago\nUpdate",
+            "rect": [
+              25,
+              582,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-agent_package:package-docs-pack",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Docs Pack With A Rather Long Name For A Package\n0a1b2c3\ne8f9a0b\n·\nyesterday\nUpdate",
+            "rect": [
+              25,
+              638,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-skill_source:github-review-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "New:\nreview-skills\n9a8b7c6\nc0ffee1\n·\n5 hr. ago\nUpdate",
+            "rect": [
+              25,
+              733,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-row-skill_source:github-docs-skills",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "docs-skills\nUpdated to 1f2e3d4\nClear",
+            "rect": [
+              25,
+              789,
+              326,
+              56
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "8px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          }
+        ],
+        "[data-testid=\"notification-row-new\"]": [
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              475,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              597,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          },
+          {
+            "tag": "SPAN",
+            "test": "notification-row-new",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              14,
+              748,
+              6,
+              6
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "6px"
+            }
+          }
+        ],
+        "[data-testid^=\"notification-section-\"]": [
+          {
+            "tag": "LI",
+            "test": "notification-section-app",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Software update\nNew:\nAutoByteus\n0.1.0-prototype\n0.2.0-prototype\n·\n2 hr. ago\n\nRestarting to install…",
+            "rect": [
+              9,
+              428,
+              358,
+              121
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Software update",
+            "rect": [
+              25,
+              440,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-section-agent_package",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent package updates\nNew:\nResearch Pack\na1b2c3d\n9f8e7d6\n·\n3 hr. ago\nUpdate\nDocs Pack With A Rather Long Name For A Pack",
+            "rect": [
+              9,
+              549,
+              358,
+              151
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(230, 230, 230)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent package updates",
+            "rect": [
+              25,
+              562,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "notification-section-skill_source",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Skill updates\nNew:\nreview-skills\n9a8b7c6\nc0ffee1\n·\n5 hr. ago\nUpdate\ndocs-skills\nUpdated to 1f2e3d4\nClear",
+            "rect": [
+              9,
+              700,
+              358,
+              151
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(230, 230, 230)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "358px"
+            }
+          },
+          {
+            "tag": "H3",
+            "test": "notification-section-title",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Skill updates",
+            "rect": [
+              25,
+              713,
+              326,
+              20
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "326px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "NTF-035",
+      "title": "Desktop: entry pill counts the app update",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-test=\"sidebar-notifications-updates\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "sidebar-notifications-updates",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": "4 updates available: 1 software update, 2 agent package updates, 1 skill update",
+            "title": null,
+            "text": "4 updates",
+            "rect": [
+              228.8,
+              860,
+              83.2,
+              28
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(3, 105, 161)",
+              "color": "rgb(255, 255, 255)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "rgb(255, 255, 255) 0px 0px 0px 0px inset, rgb(3, 105, 161) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px",
+              "padding-top": "0px",
+              "padding-left": "12px",
+              "font-size": "12px",
+              "font-weight": "600",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "83.2344px"
+            }
+          }
+        ],
+        "[data-test=\"sidebar-notifications-tooltip\"]": [
+          {
+            "tag": "SPAN",
+            "test": "sidebar-notifications-tooltip",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              149,
+              780,
+              163,
+              72
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(26, 26, 26)",
+              "color": "rgb(255, 255, 255)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "4px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "10px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "0",
+              "width": "163.047px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 14,
+        "max": 19,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "NTF-036",
+      "title": "Desktop: Settings → Updates while an update waits",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 8,
+        "max": 1,
+        "low": 8
+      },
+      "route": [
+        "/settings?section=updates",
+        "/settings?section=updates"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "NTF-037",
+      "title": "Desktop: no floating update card (update available)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 14,
+        "max": 19,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

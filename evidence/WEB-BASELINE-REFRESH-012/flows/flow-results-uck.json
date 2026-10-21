@@ -1,0 +1,905 @@
+{
+  "generatedAt": "2026-10-21T14:06:54.031Z",
+  "results": [
+    {
+      "id": "UCK-001",
+      "title": "Basics: Update checks card (on), no Skill improvement card",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"update-checks-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "update-checks-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Update checks\n\nFind new versions of the agent packages and skill sources you imported from GitHub, and show them in Noti",
+            "rect": [
+              850,
+              1788,
+              522,
+              390
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "522px"
+            }
+          }
+        ],
+        "[data-testid=\"update-checks-toggle\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "update-checks-toggle",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              1286,
+              1920,
+              44,
+              24
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(16, 185, 129)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "44px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=quick",
+        "/settings?section=server-settings&mode=quick"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "UCK-002",
+      "title": "Basics: Update checks turned off",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"update-checks-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "update-checks-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Update checks\n\nFind new versions of the agent packages and skill sources you imported from GitHub, and show them in Noti",
+            "rect": [
+              850,
+              442,
+              522,
+              390
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "522px"
+            }
+          }
+        ],
+        "[data-testid=\"update-checks-toggle\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "update-checks-toggle",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              1286,
+              574,
+              44,
+              24
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(203, 213, 225)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "44px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=quick",
+        "/settings?section=server-settings&mode=quick"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "UCK-003",
+      "title": "Basics: Update checks off from the start",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"update-checks-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "update-checks-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Update checks\n\nFind new versions of the agent packages and skill sources you imported from GitHub, and show them in Noti",
+            "rect": [
+              850,
+              1788,
+              522,
+              390
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "522px"
+            }
+          }
+        ],
+        "[data-testid=\"update-checks-toggle\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "update-checks-toggle",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              1286,
+              1920,
+              44,
+              24
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(203, 213, 225)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "44px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=quick",
+        "/settings?section=server-settings&mode=quick"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "UCK-004",
+      "title": "Basics (zh-CN)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"update-checks-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "update-checks-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "更新检查\n\n查找你从 GitHub 导入的智能体包和技能来源的新版本，并显示在“通知”中。\n\n在后台检查 GitHub 智能体包和技能\n此节点最多每 6 小时向 api.github.com 查询一次你从 GitHub 导入的每个智能体包和",
+            "rect": [
+              850,
+              1704,
+              522,
+              346
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "522px"
+            }
+          }
+        ],
+        "[data-testid=\"update-checks-toggle\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "update-checks-toggle",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              1286,
+              1816,
+              44,
+              24
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(16, 185, 129)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "44px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=quick",
+        "/settings?section=server-settings&mode=quick"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "UCK-005",
+      "title": "Basics (390x844)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"update-checks-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "update-checks-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Update checks\n\nFind new versions of the agent packages and skill sources you imported from GitHub, and show them in Noti",
+            "rect": [
+              36,
+              4346.7,
+              318,
+              666
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "318px"
+            }
+          }
+        ],
+        "[data-testid=\"update-checks-toggle\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "update-checks-toggle",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "",
+            "rect": [
+              268,
+              4498.7,
+              44,
+              24
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(16, 185, 129)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "9999px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "44px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=quick",
+        "/settings?section=server-settings&mode=quick"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-001",
+      "title": "Remote Collaboration tab: off by default, no peers",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=remoteCollaboration",
+        "/nodes?tab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": "expected state missing: [data-testid=\"remote-collaboration-card\"]",
+      "prototypeStepError": "expected state missing: [data-testid=\"remote-collaboration-card\"]",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-002",
+      "title": "Remote Collaboration: turn on",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=remoteCollaboration",
+        "/nodes?tab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "prototypeStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-003",
+      "title": "Remote Collaboration: peers listed (on)",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=remoteCollaboration",
+        "/nodes?tab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": "expected state missing: [data-testid=\"remote-collaboration-peer-node-docker-01\"]",
+      "prototypeStepError": "expected state missing: [data-testid=\"remote-collaboration-peer-node-docker-01\"]",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-004",
+      "title": "Remote Collaboration: add a peer",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=remoteCollaboration",
+        "/nodes?tab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": "step 2: locator.fill: Timeout 10000ms exceeded.",
+      "prototypeStepError": "step 2: locator.fill: Timeout 10000ms exceeded.",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-005",
+      "title": "Remote Collaboration: add a peer that cannot be reached",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=remoteCollaboration",
+        "/nodes?tab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": "step 2: locator.fill: Timeout 10000ms exceeded.",
+      "prototypeStepError": "step 2: locator.fill: Timeout 10000ms exceeded.",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-006",
+      "title": "Remote Collaboration: rename a peer",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=remoteCollaboration",
+        "/nodes?tab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "prototypeStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-007",
+      "title": "Remote Collaboration: save a new name",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=remoteCollaboration",
+        "/nodes?tab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "prototypeStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-008",
+      "title": "Remote Collaboration: remove a peer",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=remoteCollaboration",
+        "/nodes?tab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "prototypeStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-009",
+      "title": "Remote Collaboration: adding a peer while off (hint)",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=remoteCollaboration",
+        "/nodes?tab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": "step 2: locator.fill: Timeout 10000ms exceeded.",
+      "prototypeStepError": "step 2: locator.fill: Timeout 10000ms exceeded.",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-010",
+      "title": "Remote Collaboration (zh-CN)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=remoteCollaboration",
+        "/nodes?tab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-011",
+      "title": "Remote Collaboration (390x844)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=remoteCollaboration",
+        "/nodes?tab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-012",
+      "title": "Nodes: the tab list includes Remote Collaboration",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=manage",
+        "/nodes?tab=manage"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKC-001",
+      "title": "Skill sources: Update confirmation shows the source and revisions",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKC-002",
+      "title": "Skill sources: dialog with a stale-but-known newer revision (Update offered after a failed check)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "skill-sources-dialog",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKC-003",
+      "title": "Skill sources: Update confirmation, Cancel",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BUTTON",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "SKC-004",
+      "title": "Skill sources (populated): Update confirmation",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

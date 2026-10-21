@@ -29,7 +29,9 @@ const navigationOverlayStores = new Set(['agentRunConfig', 'agentSelection', 'te
 // WEB-BASELINE-REFRESH-009: Task workers' Tasks and the Task locate request (6bd2b69), and the
 // definition problems notices (f7fcf90), run the same way.
 // WEB-BASELINE-REFRESH-010 (3126536): a run's delegated copies' model options, Save and Stop, too.
-const sourceLoadedStores = new Set(['projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft'])
+// WEB-BASELINE-REFRESH-012 (origin/personal@9e7a458): the Notification Center, the "Update checks" setting, Remote
+// Collaboration and their stores run the source's own code against the local fixtures too.
+const sourceLoadedStores = new Set(['updateNotifications', 'notificationCenter', 'updateChecksCapability', 'remoteCollaborationCapability', 'remoteCollaborationStore', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),
@@ -101,7 +103,8 @@ const localActions: Record<string, Set<string>> = {
   skillNames: new Set(['fetchIssues', 'runWithSkillNameChecks']),
   application: new Set(['clearError']),
   applicationPackages: new Set(['clearError']),
-  agentPackages: new Set(['isPackageActionLoading', 'clearError']),
+  // WEB-BASELINE-REFRESH-012: the Notification Center's package Update runs the source action (local UpdateAgentPackage).
+  agentPackages: new Set(['isPackageActionLoading', 'clearError', 'updateAgentPackage']),
   // WEB-BASELINE-REFRESH-011 (df15c43): the bulk MCP import runs the source action (its busy state disables the
   // Import button, as in the source) against the local ImportMcpServerConfigs answer.
   toolManagement: new Set(['clearError', 'clearPreviewResult', 'importMcpServerConfigs']),
@@ -109,7 +112,8 @@ const localActions: Record<string, Set<string>> = {
   nodeStore: new Set(['replaceSnapshot', 'persistSnapshotToLocalStorage', 'persistCurrentSnapshotToLocalStorage', 'applyRegistrySnapshot', 'ensureBrowserEmbeddedNodePresent', 'initializeRegistry', 'getNodeById', 'getNodeBaseUrl', 'upsertRegistry', 'addRemoteNode', 'removeRemoteNode', 'renameNode', 'teardownRegistryListener']),
   windowNodeContext: new Set(['initializeFromWindowContext', 'bindNodeContext', 'getBoundEndpoints', 'waitForBoundBackendReady']),
   server: new Set(['initialize', 'waitForServerReady', 'handleElectronServerInitialization', 'handleBrowserServerConnection', 'attemptServerConnection', 'updateServerStatus', 'restartServer', 'resetServerDataAndRestart', 'checkServerHealth']),
-  appUpdate: new Set(['initialize', 'checkForUpdates', 'downloadUpdate', 'installUpdateAndRestart', 'dismissNotice', 'applyRemoteState']),
+  // WEB-BASELINE-REFRESH-012: the Notification Center marks the app update read and clears it through the host bridge.
+  appUpdate: new Set(['initialize', 'checkForUpdates', 'downloadUpdate', 'installUpdateAndRestart', 'dismissNotice', 'applyRemoteState', 'markNotificationRead', 'clearNotification']),
   extensions: new Set(['startInstallPolling', 'stopInstallPolling', 'refreshInstallState', 'applyRemoteState', 'updateLocalExtension', 'initialize', 'installExtension', 'enableExtension', 'disableExtension', 'updateVoiceInputSettings', 'updateVoiceInputLanguageMode', 'updateVoiceInputAudioInputDevice', 'removeExtension', 'reinstallExtension', 'openExtensionFolder']),
   voiceInput: new Set(['setLatestResult', 'clearLatestResult', 'clearCaptureWatchdog', 'armCaptureWatchdog', 'handleCaptureStartupTimeout', 'initialize', 'queryMicrophonePermission', 'registerMediaDeviceListener', 'refreshAudioInputDevices', 'startRecording', 'stopRecording', 'cancelOperationForSource', 'cleanup']),
   browserShell: new Set(['initialize', 'openTab', 'navigateTab', 'reloadTab', 'focusSession', 'setActiveSession', 'updateHostBounds', 'setDeviceEmulation', 'closeSession']),
@@ -772,6 +776,8 @@ export default defineNuxtPlugin({
         if (isLaunchedOrgRunId(runId)) void this.playLaunchedOrgStream(runId)
         // WEB-BASELINE-REFRESH-010: a live stored run's stream (live_runs scenario) answers with the same
         // frames the observation node plays (prototype/source-observation/live-streams.mjs).
+        // WEB-BASELINE-REFRESH-012: the update-notifications feed greets the connection (the window reads on it).
+        if (new URL(this.url, window.location.href).pathname === '/ws/update-notifications') setTimeout(() => this.emit({ type: 'connected' }), 20)
         const liveFrames = liveStreamFrames(localFixtureState, this.url)
         if (liveFrames) setTimeout(() => { for (const frame of liveFrames) this.emit(frame) }, 20)
         // The Team launched from New chat is live the same way: CONNECTED, then its view with every

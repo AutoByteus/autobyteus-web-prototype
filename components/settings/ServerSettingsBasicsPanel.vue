@@ -4,14 +4,12 @@
 
     <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
       <ApplicationsFeatureToggleCard />
-      <SkillImprovementFeatureToggleCard />
       <MediaDefaultModelsCard />
       <CodexFullAccessCard />
       <LiveResponseStreamingCard />
       <FeaturedCatalogItemsCard />
       <WebSearchConfigurationCard @notify="showNotification" />
       <CompactionConfigCard />
-      <!-- settings-update-notifications: the background-check setting for update notifications. -->
       <UpdateChecksCard />
     </div>
 
@@ -34,9 +32,8 @@ import CompactionConfigCard from '~/components/settings/CompactionConfigCard.vue
 import FeaturedCatalogItemsCard from '~/components/settings/FeaturedCatalogItemsCard.vue'
 import MediaDefaultModelsCard from '~/components/settings/MediaDefaultModelsCard.vue'
 import ServerSettingsEndpointCards from '~/components/settings/ServerSettingsEndpointCards.vue'
-import SkillImprovementFeatureToggleCard from '~/components/settings/SkillImprovementFeatureToggleCard.vue'
-import LiveResponseStreamingCard from '~/components/settings/LiveResponseStreamingCard.vue'
 import UpdateChecksCard from '~/components/settings/UpdateChecksCard.vue'
+import LiveResponseStreamingCard from '~/components/settings/LiveResponseStreamingCard.vue'
 import WebSearchConfigurationCard from '~/components/settings/WebSearchConfigurationCard.vue'
 
 type NotificationType = 'success' | 'error'

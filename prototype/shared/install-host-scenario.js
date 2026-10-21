@@ -43,11 +43,16 @@ export function installHostScenario(options = {}) {
     lastError: scenario === 'extension_error' ? 'Synthetic runtime verification failed.' : null,
   }]
   const checkedAt = '2026-08-22T04:05:00.000Z'
+  // WEB-BASELINE-REFRESH-012: in the update-notification scenarios the desktop shell holds a waiting app update
+  // (the Notification Center's "Software update" row). Its Download plays progress; nothing downloads.
+  const notifies = ['updates_waiting', 'updates_many'].includes(scenario)
+  const hoursAgo = hours => new Date(Date.now() - hours * 3_600_000).toISOString()
   let update = {
-    status: scenario === 'update_available' ? 'available' : scenario === 'update_error' ? 'error' : 'idle',
-    currentVersion: '0.1.0-prototype', availableVersion: scenario === 'update_available' ? '0.2.0-prototype' : null,
+    notification: notifies ? { version: '0.2.0-prototype', fromVersion: '0.1.0-prototype', foundAt: hoursAgo(2), read: false, state: 'waiting', handledVersion: null, releasePageUrl: 'https://github.com/synthetic-org/autobyteus-releases/releases/tag/v0.2.0-prototype' } : null,
+    status: scenario === 'update_available' || notifies ? 'available' : scenario === 'update_error' ? 'error' : 'idle',
+    currentVersion: '0.1.0-prototype', availableVersion: scenario === 'update_available' || notifies ? '0.2.0-prototype' : null,
     downloadPercent: null, downloadTransferredBytes: null, downloadTotalBytes: null,
-    releaseNotes: scenario === 'update_available' ? 'Synthetic review update.' : null,
+    releaseNotes: scenario === 'update_available' || notifies ? 'Synthetic review update.' : null,
     message: scenario === 'update_error' ? 'Synthetic update service unavailable.' : '',
     errorKind: scenario === 'update_error' ? 'network' : null,
     errorOperation: scenario === 'update_error' ? 'manual-check' : null,
@@ -87,7 +92,18 @@ export function installHostScenario(options = {}) {
     onBrowserShellSnapshotUpdated: callback => cleanup(listeners.browser, callback),
     getAppUpdateState: async () => structuredClone(update),
     checkForAppUpdates: async () => setUpdate({ status: 'available', availableVersion: '0.2.0-prototype', releaseNotes: 'Synthetic review update.', checkedAt }),
-    downloadAppUpdate: async () => setUpdate({ status: 'downloaded', downloadPercent: 100, downloadTransferredBytes: 1024, downloadTotalBytes: 1024, message: 'Update downloaded.' }),
+    downloadAppUpdate: async () => {
+      if (!update.notification) return setUpdate({ status: 'downloaded', downloadPercent: 100, downloadTransferredBytes: 1024, downloadTotalBytes: 1024, message: 'Update downloaded.' })
+      const started = setUpdate({ status: 'downloading', downloadPercent: 0, downloadTransferredBytes: 0, downloadTotalBytes: 1024, message: '' })
+      for (let step = 1; step <= 5; step += 1) {
+        setTimeout(() => setUpdate(step < 5
+          ? { status: 'downloading', downloadPercent: step * 20, downloadTransferredBytes: step * 205, downloadTotalBytes: 1024 }
+          : { status: 'downloaded', downloadPercent: 100, downloadTransferredBytes: 1024, downloadTotalBytes: 1024, message: 'Update downloaded.' }), step * 500)
+      }
+      return started
+    },
+    markAppUpdateNotificationRead: async () => setUpdate({ notification: update.notification ? { ...update.notification, read: true } : null }),
+    clearAppUpdateNotification: async () => setUpdate({ notification: null }),
     installAppUpdateAndRestart: async () => ({ accepted: true }), onAppUpdateState: callback => cleanup(listeners.update, callback),
     getLogFilePath: async () => '/synthetic/logs/autobyteus-server.log', openLogFile: async () => ({ success: true }), openExternalLink: async () => ({ success: true }),
     readLogFile: async () => ({ success: true, content: '[04:00:00] Synthetic Agent Server ready\n[04:00:01] Listening on deterministic fixture boundary', filePath: '/synthetic/logs/autobyteus-server.log' }),

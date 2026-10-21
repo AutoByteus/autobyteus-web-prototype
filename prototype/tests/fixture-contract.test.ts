@@ -17,7 +17,7 @@ const snapshots = runtimeFixture.snapshots as Record<string, {
 
 describe('deterministic prototype fixture contract', () => {
   it('is pinned to the selected source and covers every recorded scenario', () => {
-    expect(runtimeFixture.sourceCommit).toBe('9227d61597fd7ef8f6324fc9092be24ed1684c8a')
+    expect(runtimeFixture.sourceCommit).toBe('9e7a45880865912442f4188e6d2a58d99b10a54c')
     expect(Object.keys(snapshots)).toHaveLength(85)
     expect(new Set(Object.values(snapshots).map(value => value.item.scenario))).toEqual(new Set(['populated', 'empty', 'apps_disabled', 'loading', 'error', 'permission_denied', 'skill_name_issues', 'agy_runtime', 'agy_signed_out', 'definition_issues', 'live_runs', 'embedding_busy', 'embedding_unavailable', 'embedding_load_failed', 'embedding_offline', 'embedding_many']))
   })

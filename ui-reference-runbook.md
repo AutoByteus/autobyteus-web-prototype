@@ -25,6 +25,33 @@ corepack pnpm dev --port 4681
 - References: `BASE=... OUT=tickets/done/settings-update-notifications/visual-references/ node tickets/done/settings-update-notifications/visual-references/capture-references.mjs`.
 - Reset: reload (in-memory state). Spec: `tickets/done/settings-update-notifications/ui-ux-spec.md`.
 
+## WEB-BASELINE-REFRESH-012 (source pin `9e7a458`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4820
+```
+
+Scenarios (`localStorage.setItem('autobyteus.prototype.scenario', '<name>')`, reload; remove the key to reset). The window
+context is `autobyteus.prototype.context`: `desktop` (default browser window), `electron_internal` (the desktop's own node) or
+`electron_external` (a remote-node window).
+
+- Notification Center (the source's sidebar entry and panel): scenario `updates_waiting` (two agent package updates, one of which
+  fails once; a skill source update; an updated skill source). Open `/workspace`: the "N updates" pill sits on the right of the
+  Settings row (a count badge above the cog when the left panel is collapsed). `updates_many` (Show N more), `updates_one` (one
+  update; clearing it leaves "No updates waiting"), `updates_off` (background checks off). With `electron_internal`, a Software
+  update row also shows (Download → progress → Install and restart). Settings → Server Settings → Basics has the "Update checks"
+  card.
+- Agent Runtimes: `/settings?section=agent-runtimes` with `electron_internal` (Update and Sign in work) or `electron_external`
+  (status only). Scenarios: default (Codex up to date, Claude update available, Antigravity signed out, Grok not installed),
+  `runtimes_mixed`, `runtimes_blocked` (Update waits for running agents), `runtimes_update_fails`, `runtimes_sign_in_fails`,
+  `runtimes_load_failed` (Retry). Work advances one step per read (every 2 s while busy).
+- Remote Collaboration: `/nodes?nodeTab=remoteCollaboration`; scenario `collab_peers` has the switch on and two peers. Add a peer
+  with a URL containing `unreachable` to see the refusal.
+- Skill sources: `/skills` → Sources → Update opens the shared confirmation; `skill_source_issues` has a source whose later check
+  failed but whose newer revision is known (it stays updatable).
+- Reset: reload the page. Comparison runs set `autobyteus.prototype.designOnlyLayers=off`.
+
 ## WEB-BASELINE-REFRESH-011 (source pin `9227d61`)
 
 ```bash

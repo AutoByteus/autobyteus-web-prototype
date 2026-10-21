@@ -23,6 +23,7 @@ function applyScenario(name) {
   state.archivedAgentGroup = false
   state.delegatedSelections = null
   state.embedding = null
+  state.nodeSettings = null
 }
 
 applyScenario(process.env.PROTOTYPE_SCENARIO || 'populated')
@@ -173,6 +174,9 @@ server.on('upgrade', (req, socket, head) => {
 wss.on('connection', (ws, req) => {
   const pathname = new URL(req.url || '/', `http://${req.headers.host || `${host}:${port}`}`).pathname
   // WEB-BASELINE-REFRESH-010: a live stored run's stream (live_runs scenario) answers with its view.
+  // WEB-BASELINE-REFRESH-012: the update-notifications feed greets every connection; the greeting makes the
+  // window read its notifications (the baseline's local WebSocket plays the same greeting).
+  if (pathname === '/ws/update-notifications') setTimeout(() => ws.send(JSON.stringify({ type: 'connected' })), 20)
   const liveFrames = liveStreamFrames(state, pathname)
   if (liveFrames) setTimeout(() => { for (const frame of liveFrames) ws.send(JSON.stringify(frame)) }, 20)
   if (pathname.startsWith('/ws/file-explorer/')) {
@@ -193,6 +197,8 @@ server.listen(port, host, () => {
   process.stdout.write(`[prototype-mock-node] listening on http://${host}:${port} scenario=${state.scenario}\n`)
 })
 
+// A browser that aborts a request (a page closing mid-request) must not stop the observation node.
+process.on('unhandledRejection', () => {})
 const close = () => server.close(() => process.exit(0))
 process.on('SIGINT', close)
 process.on('SIGTERM', close)

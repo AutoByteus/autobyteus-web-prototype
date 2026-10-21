@@ -73,7 +73,7 @@
     </div>
 
     <div v-if="showSettingsNavigation" class="mt-auto flex flex-col items-center">
-      <!-- settings-update-notifications (round 2): unread notifications per category, above Settings. -->
+      <!-- Waiting updates: an icon with a count badge, above Settings. -->
       <SidebarNotificationsEntry variant="strip" />
       <button
         type="button"
@@ -97,9 +97,9 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue';
 import { computed, nextTick, onMounted } from 'vue';
-import SidebarNotificationsEntry from '~/components/layout/SidebarNotificationsEntry.vue';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
 import { useAppLayoutStore } from '~/stores/appLayoutStore';
+import SidebarNotificationsEntry from '~/components/layout/SidebarNotificationsEntry.vue';
 import { rememberDrawerTrigger } from '~/composables/useAccessibleDrawer';
 import { useShellPrimaryNavigation, type ShellPrimaryNavKey } from '~/composables/useShellPrimaryNavigation';
 import { isFeatureAvailableInRuntime } from '~/utils/mobileFeatureGates';
@@ -130,7 +130,6 @@ const stripClasses = computed(() =>
 );
 
 const isSettingsActive = computed(() => route.path.startsWith('/settings'));
-
 const showSettingsNavigation = computed(() => isFeatureAvailableInRuntime('desktopSettings'));
 
 const emit = defineEmits<{
