@@ -39,8 +39,15 @@
 - Round 1 feedback from the user: the first layout had too much text and was not clean. Reworked: every peer is one line by default
   (state + counts + the first names), expanded on demand; the rules paragraph is collapsed under "How peers' runs work"; Refresh is an icon.
 
-- Round 1 feedback 2 (user, 2026-10-21): the list of this node's own Agents and Teams is redundant (he knows them from the Agents page).
+- Round 1 feedback 2 (user, 2026-10-21; superseded by feedback 3): the list of this node's own Agents and Teams is redundant (he knows them from the Agents page).
   Decision: the "available to peers" card shows only the entries a peer could not start (reason + settings link), or one "all ready" line;
   no ready list, no search there. **Requirement impact** for the Solution Designer: REQ-505 (lists the shared set) and REQ-507 for this
   node's list (short default view, search) no longer apply to this card. AC-503 (three flags, one ready entry) becomes three flags and an
   all-ready line once defaults are fixed; AC-504 applies to peers' lists only. Scenario `collab_all_ready` shows the all-ready state.
+- Round 1 feedback 3 (user, 2026-10-21): "remove it" meant the whole card "Agents and Agent Teams available to peers" (he knows his own
+  agents from the Agents page). Decision: the card, its list, its readiness flags and its settings links are removed. The page is now the
+  switch card and "Peer nodes". The rules (temp workspace, auto-approve, local login, no default is refused) stay, as one collapsed line
+  "How peers' runs work" at the bottom of the Peer nodes card, so the preserved rules are still stated.
+  **Requirement impact (larger than feedback 2)**: UC-502, REQ-505, REQ-506, AC-503, SCN-502, DEC-501, DEC-503 and the "this node's list"
+  part of REQ-507 no longer have a UI. The server work for readiness (E-05) is not needed by this page. The earlier card (flagged-only
+  version) is in git history at `e8f76d6`, if the user wants it back.

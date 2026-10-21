@@ -18,16 +18,6 @@ export type PeerRefusalCode =
   | 'PEER_UNREACHABLE'
   | 'PEER_IDENTITY_MISMATCH'
 
-export type Readiness =
-  | { state: 'ready' }
-  | { state: 'no_default'; member?: string }
-  | { state: 'cannot_run'; reason: string }
-
-export interface SharedEntry extends OfferEntry {
-  definitionId: string
-  readiness: Readiness
-}
-
 export type PeerAnswer =
   | { ok: true; entries: OfferEntry[] }
   | { ok: false; code: PeerRefusalCode }
@@ -87,35 +77,3 @@ export const answerFor = (peer: { name: string; baseUrl: string }): ScriptedPeer
   if (url.includes('slow')) return BY_NAME.edge
   return { delayMs: 1200, answer: { ok: true, entries: DOCKER_OFFER.slice(0, 3) } }
 }
-
-const sharedAgent = (definitionId: string, name: string, readiness: Readiness, description?: string): SharedEntry => ({
-  key: `a:${definitionId}`, definitionId, kind: 'AGENT', name, readiness, ...(description ? { description } : {}),
-})
-const sharedTeam = (definitionId: string, name: string, readiness: Readiness, description?: string): SharedEntry => ({
-  key: `t:${definitionId}`, definitionId, kind: 'AGENT_TEAM', name, readiness, ...(description ? { description } : {}),
-})
-const ready: Readiness = { state: 'ready' }
-
-/** This node's shared Agents and Teams. Ids that exist in the baseline fixtures make the settings links open a real edit page. */
-export const SHARED_ENTRIES: SharedEntry[] = [
-  sharedAgent('agent-researcher', 'Research Assistant', ready, 'Finds sources and summarizes them with citations.'),
-  sharedAgent('agent-writer', 'Documentation Writer', { state: 'no_default' }, 'Writes and edits product documentation.'),
-  sharedAgent('autobyteus-daily-assistant', 'Daily Assistant', { state: 'cannot_run', reason: 'Codex App Server command “codex” is not available.' }, 'Plans the day and keeps a running list of follow-ups.'),
-  sharedAgent('agent-ex-01', 'Bug Triager', ready, 'Sorts incoming bug reports by severity.'),
-  sharedAgent('agent-ex-02', 'Changelog Keeper', ready),
-  sharedAgent('agent-ex-03', 'Code Explainer', ready, 'Explains unfamiliar code in plain language.'),
-  sharedAgent('agent-ex-04', 'Data Analyst', ready, 'Answers questions about a spreadsheet or CSV.'),
-  sharedAgent('agent-ex-05', 'Meeting Summarizer', ready, 'Turns a transcript into decisions and action items.'),
-  sharedAgent('agent-ex-06', 'Support Replier', ready, 'Drafts replies to customer questions.'),
-  sharedAgent('agent-ex-07', 'Test Author', ready),
-  sharedAgent('agent-ex-08', 'Translator', ready, 'Translates between English and Chinese.'),
-  sharedTeam('team-product', 'Product Review Team', { state: 'no_default', member: 'Documentation Writer' }, 'Researcher, writer and reviewer for a product page.'),
-  sharedTeam('team-ex-01', 'Release Crew', ready, 'Build, test and release notes for a release.'),
-  sharedTeam('team-ex-02', 'Support Desk Team', ready),
-]
-
-/** Scenario `collab_all_ready` (starting state only): every shared entry already has a default that runs. */
-export const sharedEntries = (scenario: string): SharedEntry[] =>
-  scenario === 'collab_all_ready' ? SHARED_ENTRIES.map((entry) => ({ ...entry, readiness: ready })) : SHARED_ENTRIES
-
-export const SHARED_DELAY_MS = 1800

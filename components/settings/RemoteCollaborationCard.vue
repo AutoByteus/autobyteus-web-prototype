@@ -20,14 +20,12 @@
 
     <RemoteCollaborationPeersSection :switch-on="capabilityStore.isEnabled" />
 
-    <RemoteCollaborationAvailabilitySection :switch-on="capabilityStore.isEnabled" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, watch } from 'vue'
 import FeatureCapabilityToggleCard from '~/components/settings/FeatureCapabilityToggleCard.vue'
-import RemoteCollaborationAvailabilitySection from '~/components/settings/RemoteCollaborationAvailabilitySection.vue'
 import RemoteCollaborationPeersSection from '~/components/settings/RemoteCollaborationPeersSection.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useRemoteCollaborationCapabilityStore } from '~/stores/remoteCollaborationCapabilityStore'

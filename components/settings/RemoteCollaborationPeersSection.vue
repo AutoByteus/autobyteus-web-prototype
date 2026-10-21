@@ -142,6 +142,28 @@
     <p v-if="!switchOn" class="mt-2 text-xs text-amber-700" data-testid="remote-collaboration-peer-switch-hint">
       {{ t('settings.components.settings.RemoteCollaboration.peers.switchHint') }}
     </p>
+
+    <div class="mt-5 border-t border-slate-100 pt-3">
+      <button
+        type="button"
+        class="flex items-center gap-2 rounded-md py-1 text-sm font-medium text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        :aria-expanded="rulesOpen"
+        data-testid="remote-collaboration-rules-toggle"
+        @click="rulesOpen = !rulesOpen"
+      >
+        <svg class="h-4 w-4 text-slate-400 transition-transform" :class="rulesOpen ? 'rotate-90' : ''" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m7.5 4.5 5.5 5.5-5.5 5.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        {{ t('settings.components.settings.RemoteCollaboration.rules.title') }}
+      </button>
+      <div v-if="rulesOpen" class="mt-2 pl-6 text-sm text-gray-500" data-testid="remote-collaboration-rules">
+        <p>{{ t('settings.components.settings.RemoteCollaboration.rules.lead') }}</p>
+        <ul class="mt-1 list-disc space-y-1 pl-5">
+          <li>{{ t('settings.components.settings.RemoteCollaboration.rules.runtime') }}</li>
+          <li>{{ t('settings.components.settings.RemoteCollaboration.rules.workspace') }}</li>
+          <li>{{ t('settings.components.settings.RemoteCollaboration.rules.login') }}</li>
+          <li>{{ t('settings.components.settings.RemoteCollaboration.rules.refused') }}</li>
+        </ul>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -163,6 +185,7 @@ const secondaryButton = 'rounded-md border border-slate-300 px-3 py-1.5 text-sm 
 const dangerButton = 'rounded-md border border-red-200 px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-50 disabled:cursor-not-allowed disabled:text-red-300'
 
 const draft = reactive({ baseUrl: '', name: '' })
+const rulesOpen = ref(false)
 const renaming = ref<string | null>(null)
 const renameDraft = ref('')
 

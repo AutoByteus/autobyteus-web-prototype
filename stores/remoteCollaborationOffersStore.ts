@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import {
-  answerFor, SHARED_DELAY_MS, sharedEntries,
-  type OfferEntry, type PeerRefusalCode, type SharedEntry,
+  answerFor,
+  type OfferEntry, type PeerRefusalCode,
 } from '~/prototype/remote-collaboration/offersScript'
 
 export type PeerOffer =
@@ -14,22 +14,20 @@ export interface AskedPeer { nodeId: string; name: string; baseUrl: string }
 let nextToken = 1
 
 /**
- * What the Remote Collaboration page knows about each peer's offer and about this node's own shared list.
+ * What the Remote Collaboration page knows about each peer's offer.
  * Design reference: the answers are scripted (prototype/remote-collaboration/offersScript.ts). In the product
  * the node's server asks the peer, and the window never contacts it. Nothing here polls.
  */
 export const useRemoteCollaborationOffersStore = defineStore('remoteCollaborationOffers', {
   state: () => ({
     peers: {} as Record<string, PeerOffer>,
-    shared: { phase: 'idle' as 'idle' | 'loading' | 'ready' | 'error', entries: [] as SharedEntry[], checkedAt: '' },
   }),
 
   actions: {
-    /** The page opened: every peer is asked at once, each with its own waiting state, and this node's list is checked. */
+    /** The page opened: every peer is asked at once, each with its own waiting state. */
     open(peers: AskedPeer[]) {
       this.peers = {}
       peers.forEach((peer) => this.askPeer(peer))
-      this.loadShared()
     },
     /** Asks the peers that have no answer yet (a peer that was just added). */
     askNew(peers: AskedPeer[]) {
@@ -51,16 +49,9 @@ export const useRemoteCollaborationOffersStore = defineStore('remoteCollaboratio
     forget(nodeId: string) {
       delete this.peers[nodeId]
     },
-    loadShared() {
-      this.shared.phase = 'loading'
-      setTimeout(() => {
-        this.shared = { phase: 'ready', entries: sharedEntries(String((window as any).__AUTOBYTEUS_PROTOTYPE__?.scenario ?? '')).map((entry) => ({ ...entry })), checkedAt: new Date().toISOString() }
-      }, SHARED_DELAY_MS)
-    },
-    /** The switch is off: no list, nothing is asked or checked. */
+    /** The switch is off: no list, nothing is asked. */
     clear() {
       this.peers = {}
-      this.shared = { phase: 'idle', entries: [], checkedAt: '' }
     },
   },
 })
