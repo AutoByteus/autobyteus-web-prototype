@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `remote-nodes-page` (engineering Task autobyteus-267)
 - Title: Nodes → Remote Collaboration: peers' Agents and Teams, and this node's shared offer
-- Status: `Baseline Needed` (waits for `WEB-BASELINE-REFRESH-012`)
+- Status: `Awaiting User Review` (round 1; baseline `WEB-BASELINE-REFRESH-012` accepted and integrated 2026-10-21)
 - Related requirements revision: SR-001 (`requirements-doc.md`, Ready for Approval)
 - Related IDs: UC-501…503, REQ-501…510, BEH-501…503, AC-501…507, DEC-501…504, SCN-501…503
 - Critical journey: owner opens Nodes → Remote Collaboration; sees each peer's state and offer; sees this
@@ -21,13 +21,20 @@
 - Ticket worktree: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/remote-nodes-page`
 - Ticket branch: `design/remote-nodes-page`
 - Source: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`, `autobyteus-web`
-- Accepted design base at open: `288ef06f5ed49e4bc636a6560fd6ca6b4f92d5b9`; the design merges `personal` after
-  the baseline refresh `WEB-BASELINE-REFRESH-012` is integrated.
-- Pinned source revision: target `origin/personal@9e7a458808` (after the refresh)
+- Accepted design base: `d711b817115b9456732e5be03f6b53c7a0e1ca4f` (`personal`, after the baseline refresh; merged into this branch).
+- Pinned source revision: `origin/personal@9e7a45880865912442f4188e6d2a58d99b10a54c`
 - Integration: `Pending`. Cleanup: `Pending`.
 - Ticket folder: `tickets/in-progress/remote-nodes-page/`
 
 ## Outcome And Handoff
 
-- Next expected action: baseline refresh accepted and integrated, then design work.
+- Next expected action: user review of round 1 (review URL below); feedback, then final references and `ui-ux-spec.md`.
 - Handoff target on completion: Solution Designer, run `solution_designer_fb26ec003e5d477c8604e2b140ba926c`.
+
+## Review (round 1)
+
+- Review URL: `http://127.0.0.1:4781/nodes?nodeTab=remoteCollaboration` (dev server of this worktree). Starting state: in the browser console run
+  `localStorage.setItem('autobyteus.prototype.scenario','collab_peers')` and reload (switch on, six peers in six states).
+- Runtime isolation: port 4781, `corepack pnpm dev --port 4781` in this worktree; state is in memory, reload resets it.
+- Round 1 feedback from the user: the first layout had too much text and was not clean. Reworked: every peer is one line by default
+  (state + counts + the first names), expanded on demand; the rules paragraph is collapsed under "How peers' runs work"; Refresh is an icon.

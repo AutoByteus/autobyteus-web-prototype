@@ -57,13 +57,16 @@
             <button
               v-if="switchOn"
               type="button"
-              :class="secondaryButton"
+              class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-slate-300 text-slate-600 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:text-slate-300"
               :disabled="offers.peers[peer.nodeId]?.phase === 'waiting'"
+              :title="t('settings.components.settings.RemoteCollaboration.peers.refresh')"
               :aria-label="t('settings.components.settings.RemoteCollaboration.peers.refreshLabel', { name: peer.name })"
               :data-testid="`remote-collaboration-peer-refresh-${peer.nodeId}`"
               @click="offers.askPeer(peer)"
             >
-              {{ t('settings.components.settings.RemoteCollaboration.peers.refresh') }}
+              <svg class="h-4 w-4" :class="offers.peers[peer.nodeId]?.phase === 'waiting' ? 'animate-spin' : ''" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path d="M16 10a6 6 0 1 1-1.8-4.3" stroke-linecap="round" /><path d="M16.2 3v3.2h-3.2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
             </button>
             <button type="button" :class="secondaryButton" :disabled="store.saving" @click="startRename(peer.nodeId, peer.name)">
               {{ t('settings.components.settings.RemoteCollaboration.peers.rename') }}
@@ -80,24 +83,22 @@
           </template>
         </div>
 
-        <div v-if="switchOn && offers.peers[peer.nodeId]" class="mt-3" aria-live="polite">
+        <div v-if="switchOn && offers.peers[peer.nodeId]" class="mt-2" aria-live="polite">
           <p v-if="offerOf(peer.nodeId).phase === 'waiting'" class="text-sm text-slate-500" :data-testid="`remote-collaboration-peer-detail-${peer.nodeId}`">
             {{ t('settings.components.settings.RemoteCollaboration.peers.detail.waiting', { name: peer.name }) }}
           </p>
           <p v-else-if="offerOf(peer.nodeId).phase === 'unavailable'" class="text-sm text-slate-600" :data-testid="`remote-collaboration-peer-detail-${peer.nodeId}`">
             {{ t(`settings.components.settings.RemoteCollaboration.peers.detail.${offerOf(peer.nodeId).code}`, { name: peer.name }) }}
-            <span class="ml-1 text-xs text-slate-400">{{ checkedAt(offerOf(peer.nodeId).checkedAt) }}</span>
           </p>
-          <template v-else-if="offerOf(peer.nodeId).phase === 'available'">
-            <p v-if="offerOf(peer.nodeId).entries.length === 0" class="text-sm text-slate-500" :data-testid="`remote-collaboration-peer-empty-${peer.nodeId}`">
-              {{ t('settings.components.settings.RemoteCollaboration.peers.emptyOffer', { name: peer.name }) }}
-              <span class="ml-1 text-xs text-slate-400">{{ checkedAt(offerOf(peer.nodeId).checkedAt) }}</span>
-            </p>
-            <div v-else class="border-l-2 border-slate-100 pl-4">
-              <RemoteCollaborationOfferList :entries="offerOf(peer.nodeId).entries" :test-id="`remote-collaboration-peer-offer-${peer.nodeId}`" columns />
-              <p class="mt-2 text-xs text-slate-400">{{ checkedAt(offerOf(peer.nodeId).checkedAt) }}</p>
-            </div>
-          </template>
+          <p v-else-if="offerOf(peer.nodeId).entries.length === 0" class="text-sm text-slate-500" :data-testid="`remote-collaboration-peer-empty-${peer.nodeId}`">
+            {{ t('settings.components.settings.RemoteCollaboration.peers.emptyOffer', { name: peer.name }) }}
+          </p>
+          <RemoteCollaborationOfferDisclosure
+            v-else
+            :entries="offerOf(peer.nodeId).entries"
+            :footer="checkedAt(offerOf(peer.nodeId).checkedAt)"
+            :test-id="`remote-collaboration-peer-offer-${peer.nodeId}`"
+          />
         </div>
       </li>
     </ul>
@@ -147,7 +148,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 import { useLocalization } from '~/composables/useLocalization'
-import RemoteCollaborationOfferList from '~/components/settings/RemoteCollaborationOfferList.vue'
+import RemoteCollaborationOfferDisclosure from '~/components/settings/RemoteCollaborationOfferDisclosure.vue'
 import { useRemoteCollaborationOffersStore } from '~/stores/remoteCollaborationOffersStore'
 import { useRemoteCollaborationStore } from '~/stores/remoteCollaborationStore'
 
