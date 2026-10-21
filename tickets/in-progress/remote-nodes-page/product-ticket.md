@@ -38,3 +38,9 @@
 - Runtime isolation: port 4781, `corepack pnpm dev --port 4781` in this worktree; state is in memory, reload resets it.
 - Round 1 feedback from the user: the first layout had too much text and was not clean. Reworked: every peer is one line by default
   (state + counts + the first names), expanded on demand; the rules paragraph is collapsed under "How peers' runs work"; Refresh is an icon.
+
+- Round 1 feedback 2 (user, 2026-10-21): the list of this node's own Agents and Teams is redundant (he knows them from the Agents page).
+  Decision: the "available to peers" card shows only the entries a peer could not start (reason + settings link), or one "all ready" line;
+  no ready list, no search there. **Requirement impact** for the Solution Designer: REQ-505 (lists the shared set) and REQ-507 for this
+  node's list (short default view, search) no longer apply to this card. AC-503 (three flags, one ready entry) becomes three flags and an
+  all-ready line once defaults are fixed; AC-504 applies to peers' lists only. Scenario `collab_all_ready` shows the all-ready state.

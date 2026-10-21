@@ -45,7 +45,7 @@
         <p v-if="attention.length" class="mb-1 text-sm font-medium text-slate-800" data-testid="remote-collaboration-attention-title">
           {{ t('settings.components.settings.RemoteCollaboration.availability.attentionTitle', { count: attention.length }) }}
         </p>
-        <ul v-if="attention.length" class="divide-y divide-slate-100 border-y border-slate-100" data-testid="remote-collaboration-attention-list">
+        <ul v-if="attention.length" class="divide-y divide-slate-100 border-t border-slate-100" data-testid="remote-collaboration-attention-list">
           <li v-for="entry in attention" :key="entry.key" class="py-3" data-testid="remote-collaboration-attention-entry">
             <div class="flex items-start justify-between gap-3">
               <p class="min-w-0 text-sm font-medium text-slate-900 break-words">
