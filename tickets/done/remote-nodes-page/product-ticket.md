@@ -61,3 +61,11 @@
 - Mocked boundaries and known limitations: `mock-boundaries.md`, section "Remote Collaboration offers"; spec section "Data, Contract, And Mock Boundaries". Screenshots are scaled by the capture tool; the viewport is normative.
 - Data origin: all peers, entries, descriptions, URLs, IDs and delays are invented in `prototype/remote-collaboration/offersScript.ts` and `prototype/source-observation/node-settings-fixtures.mjs`; no real data.
 - Requirement impact: recorded in "Review" above and in the spec's Open Decisions.
+
+## Final Integration (2026-10-21)
+
+- Design revision: code and final screenshots `4ddbe0e`; spec, runbook and ticket move `e4b4392`; this record is the next commit on `personal`.
+- Integration: `Completed`. `e4b4392` pushed to `origin/personal` as a fast-forward from `d711b81`; the canonical checkout fast-forwarded to it (local and remote the same).
+- Default-entry check: from the canonical checkout (`pnpm dev --port 4782`, scenario `collab_peers`), `/nodes?nodeTab=remoteCollaboration` shows six peers in the states Available, Available, Off there, Not registered there, Not reachable and Different server; the rules line is present; the old "available to peers" card is absent.
+- Runtime isolation: ports 4781 (ticket worktree) and 4782 (canonical check), both stopped. Browser tab `c6a9e6` closed.
+- Cleanup: the ticket worktree is removed and branch `design/remote-nodes-page` deleted after this record.
