@@ -19,7 +19,7 @@
         :data-testid="`remote-collaboration-peer-${peer.nodeId}`"
       >
         <div class="flex flex-wrap items-center gap-3">
-          <div class="min-w-0 flex-1">
+          <div class="min-w-[13rem] flex-1">
             <input
               v-if="renaming === peer.nodeId"
               v-model="renameDraft"

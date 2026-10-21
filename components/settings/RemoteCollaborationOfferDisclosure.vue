@@ -14,10 +14,7 @@
       <span v-if="!open" class="min-w-0 truncate text-slate-500" :data-testid="`${testId}-preview`">{{ preview }}</span>
     </button>
     <div v-if="open" class="mt-3 pl-6">
-      <!-- A long list scrolls inside its own panel so the page keeps its shape. -->
-      <div class="max-h-96 overflow-y-auto pr-3">
-        <RemoteCollaborationOfferList :entries="entries" :test-id="`${testId}-list`" />
-      </div>
+      <RemoteCollaborationOfferList :entries="entries" :test-id="`${testId}-list`" />
       <p v-if="footer" class="mt-3 text-xs text-slate-400">{{ footer }}</p>
     </div>
   </div>
