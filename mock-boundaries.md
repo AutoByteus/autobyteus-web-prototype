@@ -252,3 +252,11 @@ Collaboration. Their design-only simulations (`plugins/99.update-notifications.c
 - The desktop shell's app-update record (`notification`, read, clear) and a Download that plays progress in steps live in
   `prototype/shared/install-host-scenario.js`, used by the source comparison and by the baseline alike.
 - Absent: real update checks, downloads and installs, runtime updaters and logins, and contacting peer nodes.
+
+## Remote Collaboration offers (remote-nodes-page)
+
+| Boundary | UI reference behavior | Production behavior required |
+| --- | --- | --- |
+| A peer's Agents and Agent Teams, and its state | `stores/remoteCollaborationOffersStore.ts` answers from `prototype/remote-collaboration/offersScript.ts` after a scripted delay (0.8 s to 20 s); invented names, descriptions and delays | This node's server asks the peer; the window never contacts it; only name, kind and description travel |
+| Peer refusal reasons | Four scripted codes mapped to localized sentences | The server's refusal code (REMOTE_COLLABORATION_OFF, PEER_NOT_REGISTERED, PEER_UNREACHABLE, PEER_IDENTITY_MISMATCH) |
+| Timing | Scripted `setTimeout`; no polling | Each peer bounded by the 20 s request bound; asked on open, on add and on Refresh only |

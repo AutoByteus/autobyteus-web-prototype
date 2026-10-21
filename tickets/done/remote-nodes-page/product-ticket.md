@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `remote-nodes-page` (engineering Task autobyteus-267)
 - Title: Nodes → Remote Collaboration: peers' Agents and Teams, and this node's shared offer
-- Status: `Awaiting User Review` (round 1; baseline `WEB-BASELINE-REFRESH-012` accepted and integrated 2026-10-21)
+- Status: `Completed` (user approval 2026-10-21; baseline `WEB-BASELINE-REFRESH-012` accepted and integrated 2026-10-21)
 - Related requirements revision: SR-001 (`requirements-doc.md`, Ready for Approval)
 - Related IDs: UC-501…503, REQ-501…510, BEH-501…503, AC-501…507, DEC-501…504, SCN-501…503
 - Critical journey: owner opens Nodes → Remote Collaboration; sees each peer's state and offer; sees this
@@ -23,12 +23,12 @@
 - Source: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`, `autobyteus-web`
 - Accepted design base: `d711b817115b9456732e5be03f6b53c7a0e1ca4f` (`personal`, after the baseline refresh; merged into this branch).
 - Pinned source revision: `origin/personal@9e7a45880865912442f4188e6d2a58d99b10a54c`
-- Integration: `Pending`. Cleanup: `Pending`.
-- Ticket folder: `tickets/in-progress/remote-nodes-page/`
+- Integration: see Final Integration below.
+- Ticket folder: `tickets/done/remote-nodes-page/`
 
 ## Outcome And Handoff
 
-- Next expected action: user review of round 1 (review URL below); feedback, then final references and `ui-ux-spec.md`.
+- Next expected action: the Solution Designer designs the architecture from the approved package (`ui-ux-spec.md`).
 - Handoff target on completion: Solution Designer, run `solution_designer_fb26ec003e5d477c8604e2b140ba926c`.
 
 ## Review (round 1)
@@ -51,3 +51,13 @@
   **Requirement impact (larger than feedback 2)**: UC-502, REQ-505, REQ-506, AC-503, SCN-502, DEC-501, DEC-503 and the "this node's list"
   part of REQ-507 no longer have a UI. The server work for readiness (E-05) is not needed by this page. The earlier card (flagged-only
   version) is in git history at `e8f76d6`, if the user wants it back.
+
+## Delivery And Validation
+
+- UI/UX specification: `ui-ux-spec.md` (Approved). Final references: `visual-references/VIS-001 … VIS-007`.
+- Runnable UI reference entry point: `/nodes?nodeTab=remoteCollaboration` with scenario `collab_peers`; runbook section `remote-nodes-page`.
+- User-confirmation reference: the user's message "approved", 2026-10-21, in the review conversation (after rounds of feedback recorded above).
+- Final check (designer, in the browser, no scripts): the page opening with six peers in six states; the waiting state (edge waits the full 20 s); refresh on one peer; expanding docker and studio; search "copy" (2 of 24, "No match."); adding a peer named `empty`; the switch off and on; the rules line; the Chinese UI; 390 px width (a layout bug found there, the header squeezing the name and overlapping the refresh icon, was fixed and re-checked).
+- Mocked boundaries and known limitations: `mock-boundaries.md`, section "Remote Collaboration offers"; spec section "Data, Contract, And Mock Boundaries". Screenshots are scaled by the capture tool; the viewport is normative.
+- Data origin: all peers, entries, descriptions, URLs, IDs and delays are invented in `prototype/remote-collaboration/offersScript.ts` and `prototype/source-observation/node-settings-fixtures.mjs`; no real data.
+- Requirement impact: recorded in "Review" above and in the spec's Open Decisions.

@@ -1,5 +1,24 @@
 # UI Reference Runbook
 
+## remote-nodes-page (Nodes → Remote Collaboration: each peer's state and offer; source pin `9e7a458`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4781
+```
+
+- Entry: `/nodes?nodeTab=remoteCollaboration`. Starting state: in the browser console run
+  `localStorage.setItem('autobyteus.prototype.scenario', 'collab_peers')` and reload (switch on; six peers, one per state; remove the key to reset).
+  Chinese: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`, then reload.
+- The peers answer from `prototype/remote-collaboration/offersScript.ts`, by their registered name:
+  `docker` (0.9 s, 7 Agents and 2 Teams), `studio` (3.2 s, 24 Agents and 7 Teams), `lab` (off there), `nas` (not registered there),
+  `edge` (waits the full 20 s, then not reachable), `spare` (a different server), `empty` (available, shares nothing).
+  An added peer is judged by its URL: it contains `off`, `unregistered`, `mismatch` or `slow` for the matching state; any other URL is available
+  with three entries. A URL containing `unreachable` is still refused at add (the baseline's refusal).
+- Try: the page opening (every peer shows Checking… and settles at its own pace); the refresh icon on one peer; expanding `studio` and
+  searching "copy"; adding a peer named `empty`; turning the switch off and on; the "How peers' runs work" line.
+- State is in memory: reload resets it. Nothing polls. Spec: `tickets/done/remote-nodes-page/ui-ux-spec.md`.
+
 ## settings-update-notifications (update notifications: sidebar entry, Notification Center, Update checks card; source pin `9227d61`)
 
 ```bash
