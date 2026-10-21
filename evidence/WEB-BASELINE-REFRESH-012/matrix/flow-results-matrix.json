@@ -1,0 +1,2235 @@
+{
+  "generatedAt": "2026-10-21T14:27:42.149Z",
+  "results": [
+    {
+      "id": "MTX-001",
+      "title": "/ [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "chat-message-input",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 1,
+        "max": 2,
+        "low": 1
+      },
+      "route": [
+        "/chat",
+        "/chat"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-002",
+      "title": "/chat [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "chat-message-input",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 1,
+        "max": 2,
+        "low": 1
+      },
+      "route": [
+        "/chat",
+        "/chat"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-003",
+      "title": "/agents?view=list [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agents?view=list",
+        "/agents?view=list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-004",
+      "title": "/agents?view=create [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            false,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agents?view=create",
+        "/agents?view=create"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-005",
+      "title": "/agents?view=detail&id=agent-researcher [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agents?view=detail&id=agent-researcher",
+        "/agents?view=detail&id=agent-researcher"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-006",
+      "title": "/agents?view=edit&id=agent-researcher [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            false,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agents?view=edit&id=agent-researcher",
+        "/agents?view=edit&id=agent-researcher"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-007",
+      "title": "/agents?view=unsupported [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agents?view=unsupported",
+        "/agents?view=unsupported"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-008",
+      "title": "/agent-teams?view=team-list [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agent-teams?view=team-list",
+        "/agent-teams?view=team-list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-009",
+      "title": "/agent-teams?view=team-create [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agent-teams?view=team-create",
+        "/agent-teams?view=team-create"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-010",
+      "title": "/agent-teams?view=team-detail&id=team-product [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 8,
+        "max": 1,
+        "low": 8
+      },
+      "route": [
+        "/agent-teams?view=team-detail&id=team-product",
+        "/agent-teams?view=team-detail&id=team-product"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-011",
+      "title": "/agent-teams?view=team-edit&id=team-product [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            false,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agent-teams?view=team-edit&id=team-product",
+        "/agent-teams?view=team-edit&id=team-product"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-012",
+      "title": "/agent-teams?view=unsupported [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agent-teams?view=unsupported",
+        "/agent-teams?view=unsupported"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-013",
+      "title": "/agent-orgs?view=org-list [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 2,
+        "low": 2
+      },
+      "route": [
+        "/agent-orgs?view=org-list",
+        "/agent-orgs?view=org-list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-014",
+      "title": "/agent-orgs?view=org-create [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            false,
+            null
+          ]
+        ]
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 11,
+        "max": 11,
+        "low": 3
+      },
+      "route": [
+        "/agent-orgs?view=org-create",
+        "/agent-orgs?view=org-create"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-015",
+      "title": "/agent-orgs?view=org-detail&id=org-product-launch [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agent-orgs?view=org-detail&id=org-product-launch",
+        "/agent-orgs?view=org-detail&id=org-product-launch"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-016",
+      "title": "/agent-orgs?view=org-edit&id=org-product-launch [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            false,
+            null
+          ]
+        ]
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 42,
+        "max": 14,
+        "low": 16
+      },
+      "route": [
+        "/agent-orgs?view=org-edit&id=org-product-launch",
+        "/agent-orgs?view=org-edit&id=org-product-launch"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-017",
+      "title": "/applications [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/applications",
+        "/applications"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-018",
+      "title": "/applications/sample-app [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/applications/sample-app",
+        "/applications/sample-app"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-019",
+      "title": "/skills [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-020",
+      "title": "/skills?skill=prototype-research [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills?skill=prototype-research",
+        "/skills?skill=prototype-research"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-021",
+      "title": "/memory?view=home&tab=agents [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 5,
+        "max": 9,
+        "low": 1
+      },
+      "route": [
+        "/memory?view=home&tab=agents",
+        "/memory?view=home&tab=agents"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-022",
+      "title": "/memory?view=home&tab=teams [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 5,
+        "max": 9,
+        "low": 1
+      },
+      "route": [
+        "/memory?view=home&tab=teams",
+        "/memory?view=home&tab=teams"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-023",
+      "title": "/memory?view=home&tab=orgs [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 5,
+        "max": 9,
+        "low": 1
+      },
+      "route": [
+        "/memory?view=home&tab=orgs",
+        "/memory?view=home&tab=orgs"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-024",
+      "title": "/memory?view=agent-detail&agentDefinitionId=agent-researcher&agentName=Research%20Assistant [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/memory?view=agent-detail&agentDefinitionId=agent-researcher&agentName=Research+Assistant",
+        "/memory?view=agent-detail&agentDefinitionId=agent-researcher&agentName=Research+Assistant"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-025",
+      "title": "/memory?view=team-detail&teamDefinitionId=team-product&teamName=Product%20Review%20Team [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/memory?view=team-detail&teamDefinitionId=team-product&teamName=Product+Review+Team",
+        "/memory?view=team-detail&teamDefinitionId=team-product&teamName=Product+Review+Team"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-026",
+      "title": "/memory?view=org-detail&orgDefinitionId=org-product-launch&orgName=Product%20Launch%20Org [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/memory?view=org-detail&orgDefinitionId=org-product-launch&orgName=Product+Launch+Org",
+        "/memory?view=org-detail&orgDefinitionId=org-product-launch&orgName=Product+Launch+Org"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-027",
+      "title": "/memory?view=unsupported [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 5,
+        "max": 9,
+        "low": 1
+      },
+      "route": [
+        "/memory?view=unsupported",
+        "/memory?view=unsupported"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-028",
+      "title": "/nodes?tab=manage [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=manage",
+        "/nodes?tab=manage"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-029",
+      "title": "/nodes?tab=memorySync [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=memorySync",
+        "/nodes?tab=memorySync"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-030",
+      "title": "/nodes?tab=remoteCollaboration [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=remoteCollaboration",
+        "/nodes?tab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-031",
+      "title": "/nodes?tab=phoneSetup [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=phoneSetup",
+        "/nodes?tab=phoneSetup"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-032",
+      "title": "/nodes?tab=dockerGuide [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=dockerGuide",
+        "/nodes?tab=dockerGuide"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-033",
+      "title": "/projects [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects",
+        "/projects"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-034",
+      "title": "/projects/project-prototype-launch [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch",
+        "/projects/project-prototype-launch"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-035",
+      "title": "/projects/new [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "H1",
+        "sendDisabled": [
+          [
+            null,
+            false,
+            null
+          ]
+        ]
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 15,
+        "max": 3,
+        "low": 0
+      },
+      "route": [
+        "/projects/new",
+        "/projects/new"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-036",
+      "title": "/projects/project-prototype-launch/edit [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "H1",
+        "sendDisabled": [
+          [
+            null,
+            false,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/edit",
+        "/projects/project-prototype-launch/edit"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-037",
+      "title": "/projects/project-prototype-launch/tasks/new [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "task-page-heading",
+        "sendDisabled": [
+          [
+            null,
+            false,
+            null
+          ]
+        ]
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 31,
+        "max": 18,
+        "low": 1
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/new",
+        "/projects/project-prototype-launch/tasks/new"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-038",
+      "title": "/projects/project-prototype-launch/tasks/task-outline [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "task-page-heading",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/prototype-launch-1",
+        "/projects/project-prototype-launch/tasks/prototype-launch-1"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-039",
+      "title": "/projects/project-prototype-launch/tasks/task-outline/edit [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "task-page-heading",
+        "sendDisabled": [
+          [
+            null,
+            false,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/prototype-launch-1/edit",
+        "/projects/project-prototype-launch/tasks/prototype-launch-1/edit"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-040",
+      "title": "/projects/project-prototype-launch/tasks/task-review [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "task-page-heading",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/project-prototype-launch/tasks/prototype-launch-2",
+        "/projects/project-prototype-launch/tasks/prototype-launch-2"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-041",
+      "title": "/projects/temp-tasks [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 16,
+        "max": 7,
+        "low": 8
+      },
+      "route": [
+        "/projects/temp-tasks",
+        "/projects/temp-tasks"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-042",
+      "title": "/projects/temp-tasks/tasks/temp-task-links [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects/temp-tasks/tasks/temp-task-links",
+        "/projects/temp-tasks/tasks/temp-task-links"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-043",
+      "title": "/workspace [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-044",
+      "title": "/tools [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 10,
+        "max": 2,
+        "low": 10
+      },
+      "route": [
+        "/tools",
+        "/tools"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-045",
+      "title": "/media [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/media",
+        "/media"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-046",
+      "title": "/settings?section=api-keys [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "B-compositing-rounding",
+      "pixels": {
+        "changed": 9128,
+        "max": 9,
+        "low": 9126
+      },
+      "route": [
+        "/settings?section=api-keys",
+        "/settings?section=api-keys"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-047",
+      "title": "/settings?section=agent-runtimes [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-048",
+      "title": "/settings?section=token-usage [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=token-usage",
+        "/settings?section=token-usage"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-049",
+      "title": "/settings?section=display [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 6,
+        "max": 9,
+        "low": 4
+      },
+      "route": [
+        "/settings?section=display",
+        "/settings?section=display"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-050",
+      "title": "/settings?section=language [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=language",
+        "/settings?section=language"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-051",
+      "title": "/settings?section=local-tools [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 1,
+        "max": 4,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=local-tools",
+        "/settings?section=local-tools"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-052",
+      "title": "/settings?section=mcp-servers [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 16,
+        "max": 14,
+        "low": 5
+      },
+      "route": [
+        "/settings?section=mcp-servers",
+        "/settings?section=mcp-servers"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-053",
+      "title": "/settings?section=application-packages [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=application-packages",
+        "/settings?section=application-packages"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-054",
+      "title": "/settings?section=agent-packages [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-packages",
+        "/settings?section=agent-packages"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-055",
+      "title": "/settings?section=server-settings&mode=quick [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 9,
+        "max": 8,
+        "low": 1
+      },
+      "route": [
+        "/settings?section=server-settings&mode=quick",
+        "/settings?section=server-settings&mode=quick"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-056",
+      "title": "/settings?section=server-settings&mode=embedding [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=embedding",
+        "/settings?section=server-settings&mode=embedding"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-057",
+      "title": "/settings?section=server-settings&mode=advanced [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=advanced",
+        "/settings?section=server-settings&mode=advanced"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-058",
+      "title": "/settings?section=server-settings&mode=migrations [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=migrations",
+        "/settings?section=server-settings&mode=migrations"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-059",
+      "title": "/settings?section=extensions [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=extensions",
+        "/settings?section=extensions"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-060",
+      "title": "/settings?section=updates [populated]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 8,
+        "max": 1,
+        "low": 8
+      },
+      "route": [
+        "/settings?section=updates",
+        "/settings?section=updates"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-061",
+      "title": "/agents?view=list [empty]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agents?view=list",
+        "/agents?view=list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-062",
+      "title": "/applications [empty]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/applications",
+        "/applications"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-063",
+      "title": "/memory [empty]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 5,
+        "max": 9,
+        "low": 1
+      },
+      "route": [
+        "/memory",
+        "/memory"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-064",
+      "title": "/skills [empty]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 2,
+        "low": 2
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-065",
+      "title": "/applications [apps_disabled]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "chat-message-input",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/chat",
+        "/chat"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-066",
+      "title": "/projects [empty]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/projects",
+        "/projects"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-067",
+      "title": "/agent-orgs?view=org-list [empty]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 60,
+        "max": 45,
+        "low": 41
+      },
+      "route": [
+        "/agent-orgs?view=org-list",
+        "/agent-orgs?view=org-list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-068",
+      "title": "/agents?view=list [loading]",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": null,
+      "pixels": {
+        "changed": 1006302,
+        "max": 205,
+        "low": 54
+      },
+      "route": [
+        "/agents?view=list",
+        "/agents?view=list"
+      ],
+      "textEqual": false,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-069",
+      "title": "/agents?view=list [error]",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agents?view=list",
+        "/agents?view=list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [
+        "console: Failed to fetch all workspace metadata: ApolloError: Synthetic recoverable GraphQL failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websoc",
+        "console: Failed to fetch all workspace metadata: ApolloError: Synthetic recoverable GraphQL failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websoc",
+        "console: Failed to fetch initial data for agents page: ApolloError: Synthetic recoverable GraphQL failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+",
+        "console: Failed to fetch agent definitions: ApolloError: Synthetic recoverable GraphQL failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@1",
+        "console: Failed to fetch agent definitions: ApolloError: Synthetic recoverable GraphQL failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@1",
+        "console: Failed to fetch agent definitions: ApolloError: Synthetic recoverable GraphQL failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@1",
+        "console: Failed to fetch agent team definitions: ApolloError: Synthetic recoverable GraphQL failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websoc",
+        "console: Failed to reload AGENT definition problems: ApolloError: Synthetic recoverable GraphQL failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+we",
+        "console: Failed to fetch server settings: ApolloError: Synthetic recoverable GraphQL failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@10."
+      ],
+      "prototypeErrors": [
+        "console: Failed to reload AGENT definition problems: Error: Synthetic recoverable GraphQL failure.\n    at http://127.0.0.1:4820/_nuxt/stores/definitionProblemsStore.ts:19:33\n    at async run (http://127.0.0.1:4820/_nuxt/utils/agentPackages/loadedListReloader.ts:9:9)\n    at async Proxy.ensureLoaded (http://12"
+      ],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-070",
+      "title": "/skills [skill_name_issues]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/skills",
+        "/skills"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-071",
+      "title": "/agents?view=list [definition_issues]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agents?view=list",
+        "/agents?view=list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-072",
+      "title": "/agent-teams?view=team-list [definition_issues]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 3,
+        "max": 2,
+        "low": 3
+      },
+      "route": [
+        "/agent-teams?view=team-list",
+        "/agent-teams?view=team-list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-073",
+      "title": "/agent-orgs?view=org-list [definition_issues]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 2,
+        "max": 2,
+        "low": 2
+      },
+      "route": [
+        "/agent-orgs?view=org-list",
+        "/agent-orgs?view=org-list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-074",
+      "title": "/settings?section=agent-packages [definition_issues]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-packages",
+        "/settings?section=agent-packages"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-075",
+      "title": "/chat [agy_runtime]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "chat-message-input",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 1,
+        "max": 2,
+        "low": 1
+      },
+      "route": [
+        "/chat",
+        "/chat"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-076",
+      "title": "/chat [agy_signed_out]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "chat-message-input",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 1,
+        "max": 2,
+        "low": 1
+      },
+      "route": [
+        "/chat",
+        "/chat"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-077",
+      "title": "/workspace [live_runs]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-078",
+      "title": "/settings?section=server-settings&mode=embedding [embedding_busy]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=embedding",
+        "/settings?section=server-settings&mode=embedding"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-079",
+      "title": "/settings?section=server-settings&mode=embedding [embedding_unavailable]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=embedding",
+        "/settings?section=server-settings&mode=embedding"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-080",
+      "title": "/settings?section=server-settings&mode=embedding [embedding_load_failed]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 14,
+        "max": 4,
+        "low": 6
+      },
+      "route": [
+        "/settings?section=server-settings&mode=embedding",
+        "/settings?section=server-settings&mode=embedding"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-081",
+      "title": "/settings?section=server-settings&mode=embedding [embedding_offline]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=embedding",
+        "/settings?section=server-settings&mode=embedding"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-082",
+      "title": "/settings?section=server-settings&mode=embedding [embedding_many]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=embedding",
+        "/settings?section=server-settings&mode=embedding"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "MTX-083",
+      "title": "/settings?section=server-settings&mode=embedding [empty]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=server-settings&mode=embedding",
+        "/settings?section=server-settings&mode=embedding"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

@@ -235,3 +235,20 @@ Reconnect (its former collaborator `/tutorial_video_producer` is now two delegat
 copies of the same agent; its `/post_production` sub-team was removed because
 Teams are flat), the delegated-copy example data, the task-keys example data
 (AutoByteus and Customer Onboarding Projects) and the skill sources example data.
+
+## Notification Center, Agent Runtimes and Remote Collaboration (WEB-BASELINE-REFRESH-012)
+
+Source `9e7a458` shipped the approved `settings-update-notifications` and `runtime-lifecycle-review` designs and added Remote
+Collaboration. Their design-only simulations (`plugins/99.update-notifications.client.ts`, `components/settings/AiRuntimesManager.vue`,
+`prototype/ai-runtimes/`) were removed; the source's own components, stores and composables run unchanged:
+
+- `prototype/source-observation/node-settings-fixtures.mjs` (new) is the node-side state, one in-memory copy per browser context,
+  reset with the scenario. The observation node and `utils/apolloClient.ts` answer from it alike. It holds the update notifications
+  (and their read, handled and cleared states), the "Update checks" switch, the four agent runtimes (checks, updates and sign-ins move
+  one step per `AgentRuntimes` read) and the Remote Collaboration switch and peers. The package and skill source updates run the
+  source's existing mutations (`UpdateAgentPackage`, `UpdateGitHubSkillSource`), which also mark the notification handled.
+- The `/ws/update-notifications` feed greets each connection with `{"type":"connected"}` (the window reads its notifications on it);
+  the baseline's local WebSocket plays the same greeting.
+- The desktop shell's app-update record (`notification`, read, clear) and a Download that plays progress in steps live in
+  `prototype/shared/install-host-scenario.js`, used by the source comparison and by the baseline alike.
+- Absent: real update checks, downloads and installs, runtime updaters and logins, and contacting peer nodes.

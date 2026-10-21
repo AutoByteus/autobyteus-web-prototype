@@ -43,14 +43,14 @@
             <li class="w-full">
               <button
                 @click="activeSection = 'agent-runtimes'"
-                data-testid="settings-nav-ai-runtimes"
+                data-testid="settings-nav-agent-runtimes"
                 class="flex w-full items-center justify-start px-4 py-2 rounded-md transition-colors duration-200 text-gray-700 hover:bg-gray-100 hover:text-gray-900 group"
                 :class="{ 'bg-gray-100 text-gray-900': activeSection === 'agent-runtimes' }"
               >
                 <div class="flex items-center min-w-[20px] mr-3">
                   <span class="i-heroicons-cpu-chip-20-solid w-5 h-5"></span>
                 </div>
-                <span class="text-left">{{ $t('settings.page.sections.aiRuntimes') }}</span>
+                <span class="text-left">{{ $t('settings.page.sections.agentRuntimes') }}</span>
               </button>
             </li>
             <li class="w-full">
@@ -264,7 +264,7 @@
     >
       <div class="h-full w-full flex flex-col">
         <ProviderAPIKeyManager v-if="activeSection === 'api-keys'" />
-        <AiRuntimesManager v-if="activeSection === 'agent-runtimes'" />
+        <AgentRuntimesManager v-if="activeSection === 'agent-runtimes'" />
         <TokenUsageStatistics v-if="activeSection === 'token-usage'" />
         <DisplaySettingsManager v-if="activeSection === 'display'" />
         <LanguageSettingsManager v-if="activeSection === 'language'" />
@@ -300,7 +300,7 @@ import { Icon } from '@iconify/vue';
 import { useServerStore } from '~/stores/serverStore';
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
 import ProviderAPIKeyManager from '~/components/settings/ProviderAPIKeyManager.vue';
-import AiRuntimesManager from '~/components/settings/AiRuntimesManager.vue';
+import AgentRuntimesManager from '~/components/settings/agent-runtimes/AgentRuntimesManager.vue';
 import TokenUsageStatistics from '~/components/settings/TokenUsageStatistics.vue';
 import ServerSettingsManager from '~/components/settings/ServerSettingsManager.vue';
 import ExtensionsManager from '~/components/settings/ExtensionsManager.vue';

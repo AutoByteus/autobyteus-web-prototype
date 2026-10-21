@@ -108,7 +108,7 @@
     </div>
 
     <footer class="flex-shrink-0 bg-white p-2">
-      <!-- settings-update-notifications (round 3): unread notifications sit on the Settings row, on its right. -->
+      <!-- Waiting updates show as a pill on the right of the Settings row. -->
       <div v-if="showSettingsNavigation" class="flex items-center gap-1.5">
         <button
           type="button"
@@ -129,11 +129,11 @@
 
 <script setup lang="ts">
 import { useAgentSelectionStore } from '~/stores/agentSelectionStore';
-import SidebarNotificationsEntry from '~/components/layout/SidebarNotificationsEntry.vue';
 import { computed, nextTick, onMounted } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
 import WorkspaceAgentRunsTreePanel from '~/components/workspace/history/WorkspaceAgentRunsTreePanel.vue';
+import SidebarNotificationsEntry from '~/components/layout/SidebarNotificationsEntry.vue';
 import { useAppLeftPanelSectionResize } from '~/composables/useAppLeftPanelSectionResize';
 import { useLeftPanel } from '~/composables/useLeftPanel';
 import {
@@ -183,7 +183,6 @@ const isNavRowActive = (key: ShellPrimaryNavKey): boolean =>
   isPrimaryNavActive(key) && !(key === 'chat' && rowSelected.value);
 
 const isSettingsActive = computed(() => route.path.startsWith('/settings'));
-
 const showSettingsNavigation = computed(() => isFeatureAvailableInRuntime('desktopSettings'));
 
 const pushRoute = async (target: RouteLocationRaw): Promise<void> => {

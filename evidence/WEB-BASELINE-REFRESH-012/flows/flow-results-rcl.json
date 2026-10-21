@@ -1,0 +1,2017 @@
+{
+  "generatedAt": "2026-10-21T14:09:16.035Z",
+  "results": [
+    {
+      "id": "RCL-001",
+      "title": "Remote Collaboration tab: off by default, no peers",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"remote-collaboration-card\"]": [
+          {
+            "tag": "DIV",
+            "test": "remote-collaboration-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Remote Collaboration\n\nLet agents on this node delegate to agents on registered peer nodes, and let peers start this node",
+            "rect": [
+              355,
+              103,
+              1053,
+              622
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-peers\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-peers",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Peer nodes\n\nNodes this node collaborates with. Register each node on the other one too. Agents name a peer by the name y",
+            "rect": [
+              355,
+              315,
+              1053,
+              236
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-availability\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-availability",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agents and Agent Teams available to peers\n\nWith Remote Collaboration on, registered peer nodes can start any shared agen",
+            "rect": [
+              355,
+              571,
+              1053,
+              154
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 4,
+        "max": 13,
+        "low": 0
+      },
+      "route": [
+        "/nodes?nodeTab=remoteCollaboration",
+        "/nodes?nodeTab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-002",
+      "title": "Remote Collaboration: turn on",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"remote-collaboration-card\"]": [
+          {
+            "tag": "DIV",
+            "test": "remote-collaboration-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Remote Collaboration\n\nLet agents on this node delegate to agents on registered peer nodes, and let peers start this node",
+            "rect": [
+              355,
+              103,
+              1053,
+              562
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-peers\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-peers",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Peer nodes\n\nNodes this node collaborates with. Register each node on the other one too. Agents name a peer by the name y",
+            "rect": [
+              355,
+              279,
+              1053,
+              212
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-availability\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-availability",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agents and Agent Teams available to peers\n\nWith Remote Collaboration on, registered peer nodes can start any shared agen",
+            "rect": [
+              355,
+              511,
+              1053,
+              154
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?nodeTab=remoteCollaboration",
+        "/nodes?nodeTab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-003",
+      "title": "Remote Collaboration: peers listed (on)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"remote-collaboration-card\"]": [
+          {
+            "tag": "DIV",
+            "test": "remote-collaboration-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Remote Collaboration\n\nLet agents on this node delegate to agents on registered peer nodes, and let peers start this node",
+            "rect": [
+              355,
+              103,
+              1053,
+              707
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-peers\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-peers",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Peer nodes\n\nNodes this node collaborates with. Register each node on the other one too. Agents name a peer by the name y",
+            "rect": [
+              355,
+              315,
+              1053,
+              321
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid^=\"remote-collaboration-peer-node\"]": [
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-docker-01",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "docker\n\nhttp://192.168.1.20:29695 · node-docker-01\n\nRename\nRemove",
+            "rect": [
+              380,
+              404,
+              1003,
+              64
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-studio-02",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "studio\n\nhttp://192.168.1.31:29695 · node-studio-02\n\nRename\nRemove",
+            "rect": [
+              380,
+              468,
+              1003,
+              65
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-availability\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-availability",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agents and Agent Teams available to peers\n\nWith Remote Collaboration on, registered peer nodes can start any shared agen",
+            "rect": [
+              355,
+              656,
+              1053,
+              154
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?nodeTab=remoteCollaboration",
+        "/nodes?nodeTab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-004",
+      "title": "Remote Collaboration: add a peer",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"remote-collaboration-card\"]": [
+          {
+            "tag": "DIV",
+            "test": "remote-collaboration-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Remote Collaboration\n\nLet agents on this node delegate to agents on registered peer nodes, and let peers start this node",
+            "rect": [
+              355,
+              103,
+              1053,
+              772
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-peers\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-peers",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Peer nodes\n\nNodes this node collaborates with. Register each node on the other one too. Agents name a peer by the name y",
+            "rect": [
+              355,
+              315,
+              1053,
+              386
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid^=\"remote-collaboration-peer-node\"]": [
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-docker-01",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "docker\n\nhttp://192.168.1.20:29695 · node-docker-01\n\nRename\nRemove",
+            "rect": [
+              380,
+              404,
+              1003,
+              64
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-studio-02",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "studio\n\nhttp://192.168.1.31:29695 · node-studio-02\n\nRename\nRemove",
+            "rect": [
+              380,
+              468,
+              1003,
+              65
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-laptop-01",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "laptop\n\nhttp://192.168.1.40:29695 · node-laptop-01\n\nRename\nRemove",
+            "rect": [
+              380,
+              533,
+              1003,
+              65
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-availability\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-availability",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agents and Agent Teams available to peers\n\nWith Remote Collaboration on, registered peer nodes can start any shared agen",
+            "rect": [
+              355,
+              721,
+              1053,
+              154
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?nodeTab=remoteCollaboration",
+        "/nodes?nodeTab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-005",
+      "title": "Remote Collaboration: add a peer that cannot be reached",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"remote-collaboration-card\"]": [
+          {
+            "tag": "DIV",
+            "test": "remote-collaboration-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Remote Collaboration\n\nLet agents on this node delegate to agents on registered peer nodes, and let peers start this node",
+            "rect": [
+              355,
+              103,
+              1053,
+              765
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-peers\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-peers",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Peer nodes\n\nNodes this node collaborates with. Register each node on the other one too. Agents name a peer by the name y",
+            "rect": [
+              355,
+              315,
+              1053,
+              379
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid^=\"remote-collaboration-peer-node\"]": [
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-docker-01",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "docker\n\nhttp://192.168.1.20:29695 · node-docker-01\n\nRename\nRemove",
+            "rect": [
+              380,
+              404,
+              1003,
+              64
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-studio-02",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "studio\n\nhttp://192.168.1.31:29695 · node-studio-02\n\nRename\nRemove",
+            "rect": [
+              380,
+              468,
+              1003,
+              65
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-peers-error\"]": [
+          {
+            "tag": "P",
+            "test": "remote-collaboration-peers-error",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Synthetic peer check failed: the node could not be reached.",
+            "rect": [
+              380,
+              627,
+              1003,
+              46
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(254, 242, 242)",
+              "color": "rgb(185, 28, 28)",
+              "border-top-color": "rgb(254, 202, 202)",
+              "border-top-width": "1px",
+              "border-radius": "12px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-availability\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-availability",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agents and Agent Teams available to peers\n\nWith Remote Collaboration on, registered peer nodes can start any shared agen",
+            "rect": [
+              355,
+              714,
+              1053,
+              154
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            false,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?nodeTab=remoteCollaboration",
+        "/nodes?nodeTab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-006",
+      "title": "Remote Collaboration: rename a peer",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"remote-collaboration-card\"]": [
+          {
+            "tag": "DIV",
+            "test": "remote-collaboration-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Remote Collaboration\n\nLet agents on this node delegate to agents on registered peer nodes, and let peers start this node",
+            "rect": [
+              355,
+              103,
+              1053,
+              717
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-peers\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-peers",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Peer nodes\n\nNodes this node collaborates with. Register each node on the other one too. Agents name a peer by the name y",
+            "rect": [
+              355,
+              315,
+              1053,
+              331
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid^=\"remote-collaboration-peer-node\"]": [
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-docker-01",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "http://192.168.1.20:29695 · node-docker-01\n\nSave\nCancel",
+            "rect": [
+              380,
+              404,
+              1003,
+              74
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-studio-02",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "studio\n\nhttp://192.168.1.31:29695 · node-studio-02\n\nRename\nRemove",
+            "rect": [
+              380,
+              478,
+              1003,
+              65
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-availability\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-availability",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agents and Agent Teams available to peers\n\nWith Remote Collaboration on, registered peer nodes can start any shared agen",
+            "rect": [
+              355,
+              666,
+              1053,
+              154
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?nodeTab=remoteCollaboration",
+        "/nodes?nodeTab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-007",
+      "title": "Remote Collaboration: save a new name",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"remote-collaboration-card\"]": [
+          {
+            "tag": "DIV",
+            "test": "remote-collaboration-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Remote Collaboration\n\nLet agents on this node delegate to agents on registered peer nodes, and let peers start this node",
+            "rect": [
+              355,
+              103,
+              1053,
+              707
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-peers\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-peers",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Peer nodes\n\nNodes this node collaborates with. Register each node on the other one too. Agents name a peer by the name y",
+            "rect": [
+              355,
+              315,
+              1053,
+              321
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid^=\"remote-collaboration-peer-node\"]": [
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-docker-01",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "build-box\n\nhttp://192.168.1.20:29695 · node-docker-01\n\nRename\nRemove",
+            "rect": [
+              380,
+              404,
+              1003,
+              64
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-studio-02",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "studio\n\nhttp://192.168.1.31:29695 · node-studio-02\n\nRename\nRemove",
+            "rect": [
+              380,
+              468,
+              1003,
+              65
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-availability\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-availability",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agents and Agent Teams available to peers\n\nWith Remote Collaboration on, registered peer nodes can start any shared agen",
+            "rect": [
+              355,
+              656,
+              1053,
+              154
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?nodeTab=remoteCollaboration",
+        "/nodes?nodeTab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-008",
+      "title": "Remote Collaboration: remove a peer",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"remote-collaboration-card\"]": [
+          {
+            "tag": "DIV",
+            "test": "remote-collaboration-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Remote Collaboration\n\nLet agents on this node delegate to agents on registered peer nodes, and let peers start this node",
+            "rect": [
+              355,
+              103,
+              1053,
+              642
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-peers\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-peers",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Peer nodes\n\nNodes this node collaborates with. Register each node on the other one too. Agents name a peer by the name y",
+            "rect": [
+              355,
+              315,
+              1053,
+              256
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid^=\"remote-collaboration-peer-node\"]": [
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-studio-02",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "studio\n\nhttp://192.168.1.31:29695 · node-studio-02\n\nRename\nRemove",
+            "rect": [
+              380,
+              404,
+              1003,
+              64
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-availability\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-availability",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agents and Agent Teams available to peers\n\nWith Remote Collaboration on, registered peer nodes can start any shared agen",
+            "rect": [
+              355,
+              591,
+              1053,
+              154
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?nodeTab=remoteCollaboration",
+        "/nodes?nodeTab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-009",
+      "title": "Remote Collaboration: adding a peer while off (hint)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"remote-collaboration-card\"]": [
+          {
+            "tag": "DIV",
+            "test": "remote-collaboration-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Remote Collaboration\n\nLet agents on this node delegate to agents on registered peer nodes, and let peers start this node",
+            "rect": [
+              355,
+              103,
+              1053,
+              622
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-peers\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-peers",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Peer nodes\n\nNodes this node collaborates with. Register each node on the other one too. Agents name a peer by the name y",
+            "rect": [
+              355,
+              315,
+              1053,
+              236
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-availability\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-availability",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agents and Agent Teams available to peers\n\nWith Remote Collaboration on, registered peer nodes can start any shared agen",
+            "rect": [
+              355,
+              571,
+              1053,
+              154
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "focused": "remote-collaboration-peer-name",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?nodeTab=remoteCollaboration",
+        "/nodes?nodeTab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-010",
+      "title": "Remote Collaboration (zh-CN)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"remote-collaboration-card\"]": [
+          {
+            "tag": "DIV",
+            "test": "remote-collaboration-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "远程协作\n\n允许本节点的智能体委派给已登记的对等节点上的智能体，并允许对等节点启动本节点的共享智能体。仅适用于可信的私有网络：对等节点不做身份认证，也不共享任何凭据。\n\n已开启\n远程协作\n\n默认关闭。关闭时，本节点不向其他节点发送任何内容，",
+            "rect": [
+              355,
+              103,
+              1053,
+              687
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-peers\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-peers",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "对等节点\n\n与本节点协作的节点。也请在对方节点上登记本节点。智能体使用你在这里给出的名称指定对等节点。\n\ndocker\n\nhttp://192.168.1.20:29695 · node-docker-01\n\n重命名\n移除\n\nstudio\n",
+            "rect": [
+              355,
+              315,
+              1053,
+              321
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "[data-testid^=\"remote-collaboration-peer-node\"]": [
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-docker-01",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "docker\n\nhttp://192.168.1.20:29695 · node-docker-01\n\n重命名\n移除",
+            "rect": [
+              380,
+              404,
+              1003,
+              64
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-studio-02",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "studio\n\nhttp://192.168.1.31:29695 · node-studio-02\n\n重命名\n移除",
+            "rect": [
+              380,
+              468,
+              1003,
+              65
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1003px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-availability\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-availability",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "对等节点可用的智能体和智能体团队\n\n开启远程协作后，已登记的对等节点可以启动本节点的任何共享智能体或智能体团队。每个智能体使用自己的默认运行时和模型（没有默认值的团队成员使用其团队的默认值），在本节点的临时工作区中运行，运行中每个智能体的工",
+            "rect": [
+              355,
+              656,
+              1053,
+              134
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1053px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?nodeTab=remoteCollaboration",
+        "/nodes?nodeTab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-011",
+      "title": "Remote Collaboration (390x844)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"remote-collaboration-card\"]": [
+          {
+            "tag": "DIV",
+            "test": "remote-collaboration-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Remote Collaboration\n\nLet agents on this node delegate to agents on registered peer nodes, and let peers start this node",
+            "rect": [
+              74,
+              223,
+              292,
+              1253
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "292px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-peers\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-peers",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Peer nodes\n\nNodes this node collaborates with. Register each node on the other one too. Agents name a peer by the name y",
+            "rect": [
+              74,
+              555,
+              292,
+              499
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "292px"
+            }
+          }
+        ],
+        "[data-testid^=\"remote-collaboration-peer-node\"]": [
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-docker-01",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "docker\n\nhttp://192.168.1.20:29695 · node-docker-01\n\nRename\nRemove",
+            "rect": [
+              99,
+              704,
+              242,
+              64
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "242px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "remote-collaboration-peer-node-studio-02",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "studio\n\nhttp://192.168.1.31:29695 · node-studio-02\n\nRename\nRemove",
+            "rect": [
+              99,
+              768,
+              242,
+              65
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "242px"
+            }
+          }
+        ],
+        "[data-testid=\"remote-collaboration-availability\"]": [
+          {
+            "tag": "SECTION",
+            "test": "remote-collaboration-availability",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agents and Agent Teams available to peers\n\nWith Remote Collaboration on, registered peer nodes can start any shared agen",
+            "rect": [
+              74,
+              1074,
+              292,
+              402
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "292px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": [
+          [
+            null,
+            true,
+            null
+          ]
+        ]
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?nodeTab=remoteCollaboration",
+        "/nodes?nodeTab=remoteCollaboration"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RCL-012",
+      "title": "Nodes: the tab list includes Remote Collaboration",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/nodes?tab=manage",
+        "/nodes?tab=manage"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-10-21T14:28:07.154Z",
+  "results": [
+    {
+      "id": "MTX-068",
+      "title": "/agents?view=list [loading]",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/agents?view=list",
+        "/agents?view=list"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

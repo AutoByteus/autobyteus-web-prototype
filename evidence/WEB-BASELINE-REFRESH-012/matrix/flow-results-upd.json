@@ -1,0 +1,161 @@
+{
+  "generatedAt": "2026-10-21T14:31:28.966Z",
+  "results": [
+    {
+      "id": "UPD-001",
+      "title": "Settings → Updates: update available (desktop)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 8,
+        "max": 1,
+        "low": 8
+      },
+      "route": [
+        "/settings?section=updates",
+        "/settings?section=updates"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "UPD-002",
+      "title": "Settings → Updates: Download (desktop)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=updates",
+        "/settings?section=updates"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "UPD-003",
+      "title": "Settings → Updates: update check failed (desktop)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 8,
+        "max": 1,
+        "low": 8
+      },
+      "route": [
+        "/settings?section=updates",
+        "/settings?section=updates"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "UPD-004",
+      "title": "Workspace: update available shows no floating card; no entry",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 14,
+        "max": 19,
+        "low": 0
+      },
+      "route": [
+        "/workspace",
+        "/workspace"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "UPD-005",
+      "title": "Settings → Updates (browser window)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 8,
+        "max": 1,
+        "low": 8
+      },
+      "route": [
+        "/settings?section=updates",
+        "/settings?section=updates"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "UPD-006",
+      "title": "Settings → Extensions (desktop)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=extensions",
+        "/settings?section=extensions"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}

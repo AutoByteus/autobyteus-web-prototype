@@ -1,15 +1,15 @@
 # AutoByteus Web Design
 
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
-commit `9227d61597fd7ef8f6324fc9092be24ed1684c8a` (`origin/personal`, refreshed
-by `WEB-BASELINE-REFRESH-011`; previous pin
-`2f211340ee36b81cef74a74b2e042b5102c269d3`). The refresh brings in the source's
-"part of" between Project Tasks and its Settings → Server Settings → Embedding
-section (two approved designs, `task-part-of` and `search-model-settings`, that
-the source now implements), meaning search on the Projects board, the bulk MCP
-import's failed entries, delegated copies shown and edited from their recorded
-source, and the rest of the range. The accepted design-only Reconnect change
-(`agent-definition-reconnect-ui`) is preserved. See
+commit `9e7a45880865912442f4188e6d2a58d99b10a54c` (`origin/personal`, refreshed
+by `WEB-BASELINE-REFRESH-012`; previous pin
+`9227d61597fd7ef8f6324fc9092be24ed1684c8a`). The refresh brings in the
+source's Notification Center and "Update checks" setting (the shipped version of
+the approved `settings-update-notifications` design), Settings → Agent Runtimes
+(the shipped `runtime-lifecycle-review` design), Nodes → Remote Collaboration,
+the shared skill-source update confirmation, and the removal of Skill
+Improvement and of the self-opening app-update card. The accepted design-only
+Reconnect change (`agent-definition-reconnect-ui`) is preserved. See
 [ui-baseline-report.md](ui-baseline-report.md) for the refresh scope,
 evidence, and known gaps.
 

@@ -1,4 +1,5 @@
 import { createTokenUsageSummary } from '../shared/token-usage-fixture.js'
+import { NODE_SETTINGS_MUTATIONS, agentPackageUpdate, markNotificationHandled, nodeSettingsOperation } from './node-settings-fixtures.mjs'
 import { EMBEDDING_MUTATIONS, embeddingExtraProjects, advanceEmbedding, embeddingMutation, embeddingState, embeddingStatusOf, meaningSearchOf, searchTasks } from './embedding-fixtures.mjs'
 import {
   createTokenUsageAnalyticsResult,
@@ -34,6 +35,17 @@ export const scenarioCatalog = Object.freeze({
   embedding_offline: 'Populated data where the network is unreachable: each embedding model download fails once, and Retry then succeeds.',
   embedding_unavailable: 'Populated data where the active embedding model is unavailable (it did not pass the integrity check).',
   embedding_load_failed: 'Populated data where the first Embedding status read fails, so the section offers Retry.',
+  // WEB-BASELINE-REFRESH-012 (origin/personal@9e7a458): the Notification Center, Agent Runtimes and Remote Collaboration.
+  updates_waiting: 'Populated data where update notifications wait: two agent package updates (one fails once), a skill source update, an updated skill source and, in a desktop window, an app update.',
+  updates_many: 'Populated data with a long list of waiting update notifications, so sections offer "Show N more".',
+  updates_one: 'Populated data where one agent package update notification waits and background update checks are on.',
+  updates_off: 'Populated data where background update checks are off and one update notification waits.',
+  runtimes_mixed: 'Populated data where Codex is not installed, Claude has an update but two agents running, Antigravity\'s check fails and Grok is installed and signed out.',
+  runtimes_blocked: 'Populated data where Codex and Claude have updates but agents are running (one agent, three agents).',
+  runtimes_update_fails: 'Populated data where the Claude runtime update fails (Try again fails again).',
+  runtimes_sign_in_fails: 'Populated data where Codex is signed out and its browser sign-in does not finish.',
+  runtimes_load_failed: 'Populated data where the first Agent Runtimes read fails, so the section offers Retry.',
+  collab_peers: 'Populated data where Remote Collaboration is on and two peer nodes are registered.',
   live_runs: 'Populated data where the stored Research Assistant run and the stored Product Review Team run are live: a delegated copy is running, a copy Team has an agent in error, and the Team run is busy.',
   definition_issues: 'Populated data where some agent package definitions could not be read: card load-issue badges, list problem notices and package auto-refresh states.',
 })
@@ -599,6 +611,8 @@ const baseSkillSources = (scenario) => [
   scenario === 'skill_source_issues'
     ? githubSource('github-legacy-skills', 'synthetic-org', 'legacy-skills', 1, 'UPDATE_FAILED', '5e5e5e5e5e5e5e5e5e5e', '6f6f6f6f6f6f6f6f6f6f', 'Synthetic update failed: the repository archive could not be read.')
     : githubSource('github-legacy-skills', 'synthetic-org', 'legacy-skills', 1, 'CHECK_FAILED', '5e5e5e5e5e5e5e5e5e5e', null, 'Synthetic check failed: the repository could not be reached.'),
+  // WEB-BASELINE-REFRESH-012 (REQ-006): a known newer revision stays updatable after a failed later check.
+  ...(scenario === 'skill_source_issues' ? [githubSource('github-stale-skills', 'synthetic-org', 'stale-skills', 2, 'CHECK_FAILED', '3c3c3c3c3c3c3c3c3c3c', '4d4d4d4d4d4d4d4d4d4d', 'Synthetic check failed: the repository could not be reached.')] : []),
   ...(scenario === 'skill_source_issues' ? [githubSource('github-old-skills', 'synthetic-org', 'old-skills', 0, 'REMOVING', '7a7a7a7a7a7a7a7a7a7a', null, 'Synthetic removal was interrupted.')] : []),
 ]
 export const skillSourceData = (state) => {
@@ -628,6 +642,8 @@ export function skillSourceMutationFixture(operationName, variables = {}, state)
     case 'UpdateGitHubSkillSource': {
       const source = find(variables.sourceId)
       if (source?.github) Object.assign(source.github, { installedRevision: source.github.latestRevision || source.github.installedRevision, status: 'UP_TO_DATE', lastError: null })
+      // WEB-BASELINE-REFRESH-012: the update from the Notification Center handles its notification.
+      markNotificationHandled(state, 'SKILL_SOURCE', variables.sourceId)
       return { updateGitHubSkillSource: skillSourceResult(data) }
     }
     case 'RemoveGitHubSkillSource':
@@ -1001,6 +1017,9 @@ export const mcpImportResult = (jsonString) => {
 }
 
 export function operationFixture(operationName, variables = {}, state) {
+  // WEB-BASELINE-REFRESH-012: Notification Center, Agent Runtimes and Remote Collaboration (node-settings-fixtures.mjs).
+  const nodeSettings = nodeSettingsOperation(operationName, variables, state)
+  if (nodeSettings !== undefined) return nodeSettings
   if (EMBEDDING_MUTATIONS.has(operationName)) return embeddingMutation(embeddingOf(state), operationName, variables, embeddingProjects(state))
   if (operationName === 'EmbeddingSettingsStatus') {
     const e = embeddingOf(state)
@@ -1279,6 +1298,8 @@ export function operationFixture(operationName, variables = {}, state) {
     WriteFileContent: { writeFileContent: true }, DeleteFileOrFolder: { deleteFileOrFolder: true }, MoveFileOrFolder: { moveFileOrFolder: true }, RenameFileOrFolder: { renameFileOrFolder: true }, CreateFileOrFolder: { createFileOrFolder: true },
   }
 
+  // WEB-BASELINE-REFRESH-012: the package update from the Notification Center (a side effect, so not in the table).
+  if (operationName === 'UpdateAgentPackage') return agentPackageUpdate(state, variables.packageId, fixtures.GetAgentPackages.agentPackages)
   const result = fixtures[operationName] || null
   return state.scenario === 'live_runs' ? liveRunsOverlay(operationName, variables, result) : result
 }

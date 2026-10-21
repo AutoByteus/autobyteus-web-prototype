@@ -1,0 +1,4939 @@
+{
+  "generatedAt": "2026-10-21T14:14:52.997Z",
+  "results": [
+    {
+      "id": "RTM-001",
+      "title": "Agent Runtimes (desktop, own node): rows",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUp to date\n\nAccount\nSigned in",
+            "rect": [
+              282,
+              177,
+              1116,
+              60
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nAccount\nSigned in\nUpdate",
+            "rect": [
+              282,
+              237,
+              1116,
+              61
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\n\nSign in from its command line.",
+            "rect": [
+              282,
+              298,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              282,
+              375,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              458
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-002",
+      "title": "Agent Runtimes (browser window, remote node): status only",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUp to date\n\nAccount\nSigned in",
+            "rect": [
+              282,
+              177,
+              1116,
+              60
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nAccount\nSigned in\nUpdate",
+            "rect": [
+              282,
+              237,
+              1116,
+              61
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\n\nSign in from its command line.",
+            "rect": [
+              282,
+              298,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              282,
+              375,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              458
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": "expected state missing: [data-testid=\"agent-runtimes-remote-note\"]",
+      "prototypeStepError": "expected state missing: [data-testid=\"agent-runtimes-remote-note\"]",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-003",
+      "title": "Agent Runtimes: Check again",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUp to date\n\nAccount\nSigned in",
+            "rect": [
+              282,
+              177,
+              1116,
+              60
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nChecking for updates…\n\nAccount\nChecking…",
+            "rect": [
+              282,
+              237,
+              1116,
+              61
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nChecking for updates…\n\nAccount\nChecking…",
+            "rect": [
+              282,
+              298,
+              1116,
+              61
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              282,
+              359,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              442
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "disabled": true,
+            "text": "Checking…",
+            "rect": [
+              1279.1,
+              41,
+              119.9,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(242, 242, 242)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "0.6",
+              "width": "119.891px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-004",
+      "title": "Agent Runtimes: Update shows progress",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUp to date\n\nAccount\nSigned in",
+            "rect": [
+              282,
+              177,
+              1116,
+              60
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nAccount\nSigned in\nUpdating…\n\nsynthetic-c",
+            "rect": [
+              282,
+              237,
+              1116,
+              97
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\n\nSign in from its command line.",
+            "rect": [
+              282,
+              334,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              282,
+              411,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              494
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "[data-testid$=\"-progress\"]": [
+          {
+            "tag": "P",
+            "test": "runtime-claude_agent_sdk-progress",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-claude update · Downloading the update",
+            "rect": [
+              618,
+              306,
+              764,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "764px"
+            }
+          }
+        ],
+        "[data-testid$=\"-outcome\"]": [
+          {
+            "tag": "DIV",
+            "test": "runtime-claude_agent_sdk-outcome",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-claude update · Downloading the update",
+            "rect": [
+              618,
+              294,
+              764,
+              28
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "764px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-005",
+      "title": "Agent Runtimes: Update finished",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUp to date\n\nAccount\nSigned in",
+            "rect": [
+              282,
+              177,
+              1116,
+              60
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.304\n\nUpdates\n\nUp to date\n\nAccount\nSigned in\n\nUpdated from 2.1.302 to 2.1.304.",
+            "rect": [
+              282,
+              237,
+              1116,
+              89
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\n\nSign in from its command line.",
+            "rect": [
+              282,
+              326,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              282,
+              403,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              486
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "[data-testid$=\"-outcome\"]": [
+          {
+            "tag": "DIV",
+            "test": "runtime-claude_agent_sdk-outcome",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Updated from 2.1.302 to 2.1.304.",
+            "rect": [
+              618,
+              294,
+              764,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "764px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-006",
+      "title": "Agent Runtimes (mixed): not installed, blocked, check failed, signed out",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByte",
+            "rect": [
+              282,
+              177,
+              1116,
+              76
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nUpdate unavailable while 2 agents are ru",
+            "rect": [
+              282,
+              253,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nCheck failed\n\nCouldn't reach the update source. Antigravity still works.\n",
+            "rect": [
+              282,
+              330,
+              1116,
+              97
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nVersion\n1.0.62\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\nSign in",
+            "rect": [
+              282,
+              427,
+              1116,
+              61
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              494
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-007",
+      "title": "Agent Runtimes (blocked): one agent and three agents running",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUpdate available (version 0.164.0)\n\nUpdate unavailable while 1 agent is runni",
+            "rect": [
+              282,
+              177,
+              1116,
+              76
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nUpdate unavailable while 3 agents are ru",
+            "rect": [
+              282,
+              253,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\n\nSign in from its command line.",
+            "rect": [
+              282,
+              330,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              282,
+              407,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              490
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-008",
+      "title": "Agent Runtimes (blocked): Update does nothing",
+      "pass": false,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUpdate available (version 0.164.0)\n\nUpdate unavailable while 1 agent is runni",
+            "rect": [
+              282,
+              177,
+              1116,
+              76
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nUpdate unavailable while 3 agents are ru",
+            "rect": [
+              282,
+              253,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\n\nSign in from its command line.",
+            "rect": [
+              282,
+              330,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              282,
+              407,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              490
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "prototypeStepError": "step 2: locator.click: Timeout 10000ms exceeded.",
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-009",
+      "title": "Agent Runtimes: Update fails",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUp to date\n\nAccount\nSigned in",
+            "rect": [
+              282,
+              177,
+              1116,
+              60
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nAccount\nSigned in\nTry again\n\nUpdate fail",
+            "rect": [
+              282,
+              237,
+              1116,
+              159
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\n\nSign in from its command line.",
+            "rect": [
+              282,
+              396,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              282,
+              473,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              556
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "[data-testid$=\"-outcome\"]": [
+          {
+            "tag": "DIV",
+            "test": "runtime-claude_agent_sdk-outcome",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Update failed. Version 2.1.302 is unchanged.\n\nsynthetic-claude update: step 3 of 3 failed\nThe installer exited with code",
+            "rect": [
+              618,
+              294,
+              764,
+              90
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "764px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-010",
+      "title": "Agent Runtimes: Try again after a failed update",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUp to date\n\nAccount\nSigned in",
+            "rect": [
+              282,
+              177,
+              1116,
+              60
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nAccount\nSigned in\nUpdating…\n\nsynthetic-c",
+            "rect": [
+              282,
+              237,
+              1116,
+              97
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\n\nSign in from its command line.",
+            "rect": [
+              282,
+              334,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              282,
+              411,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              494
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "[data-testid$=\"-progress\"]": [
+          {
+            "tag": "P",
+            "test": "runtime-claude_agent_sdk-progress",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-claude update · Downloading the update",
+            "rect": [
+              618,
+              306,
+              764,
+              16
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "12px",
+              "font-weight": "400",
+              "line-height": "16px",
+              "opacity": "1",
+              "width": "764px"
+            }
+          }
+        ],
+        "[data-testid$=\"-outcome\"]": [
+          {
+            "tag": "DIV",
+            "test": "runtime-claude_agent_sdk-outcome",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "synthetic-claude update · Downloading the update",
+            "rect": [
+              618,
+              294,
+              764,
+              28
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "764px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-011",
+      "title": "Agent Runtimes: Sign in waits for the browser",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\nSigning in…\nFinish signing in to Codex in y",
+            "rect": [
+              282,
+              177,
+              1116,
+              96
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nAccount\nSigned in\nUpdate",
+            "rect": [
+              282,
+              273,
+              1116,
+              61
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\n\nSign in from its command line.",
+            "rect": [
+              282,
+              334,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              282,
+              411,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              494
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "[data-testid$=\"-signin-outcome\"]": [
+          {
+            "tag": "DIV",
+            "test": "runtime-codex_app_server-signin-outcome",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Finish signing in to Codex in your browser.\nCancel",
+            "rect": [
+              618,
+              233,
+              764,
+              28
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "764px"
+            }
+          }
+        ],
+        "[data-testid$=\"-outcome\"]": [
+          {
+            "tag": "DIV",
+            "test": "runtime-codex_app_server-signin-outcome",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Finish signing in to Codex in your browser.\nCancel",
+            "rect": [
+              618,
+              233,
+              764,
+              28
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "764px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-012",
+      "title": "Agent Runtimes: Sign in cancelled",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\nSign in",
+            "rect": [
+              282,
+              177,
+              1116,
+              60
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nAccount\nSigned in\nUpdate",
+            "rect": [
+              282,
+              237,
+              1116,
+              61
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\n\nSign in from its command line.",
+            "rect": [
+              282,
+              298,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              282,
+              375,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              458
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-013",
+      "title": "Agent Runtimes: Sign in did not finish",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\nTry again\n\nSign-in didn't finish. Try again",
+            "rect": [
+              282,
+              177,
+              1116,
+              88
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nAccount\nSigned in\nUpdate",
+            "rect": [
+              282,
+              265,
+              1116,
+              61
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\n\nSign in from its command line.",
+            "rect": [
+              282,
+              326,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              282,
+              403,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              486
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "[data-testid$=\"-signin-outcome\"]": [
+          {
+            "tag": "DIV",
+            "test": "runtime-codex_app_server-signin-outcome",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Sign-in didn't finish. Try again.",
+            "rect": [
+              618,
+              233,
+              764,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "764px"
+            }
+          }
+        ],
+        "[data-testid$=\"-outcome\"]": [
+          {
+            "tag": "DIV",
+            "test": "runtime-codex_app_server-signin-outcome",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Sign-in didn't finish. Try again.",
+            "rect": [
+              618,
+              233,
+              764,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "764px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-014",
+      "title": "Agent Runtimes: Sign in completes",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByte",
+            "rect": [
+              282,
+              177,
+              1116,
+              76
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nUpdate unavailable while 2 agents are ru",
+            "rect": [
+              282,
+              253,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nCheck failed\n\nCouldn't reach the update source. Antigravity still works.\n",
+            "rect": [
+              282,
+              330,
+              1116,
+              97
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nVersion\n1.0.62\n\nUpdates\n\nUp to date\n\nAccount\nSigned in",
+            "rect": [
+              282,
+              427,
+              1116,
+              61
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              494
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-015",
+      "title": "Agent Runtimes: first read fails",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              176
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-load-error\"]": [
+          {
+            "tag": "DIV",
+            "test": "agent-runtimes-load-error",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Couldn't read the agent runtimes on this node.\nRetry",
+            "rect": [
+              281,
+              111,
+              1118,
+              60
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(254, 242, 242)",
+              "color": "rgb(185, 28, 28)",
+              "border-top-color": "rgb(254, 202, 202)",
+              "border-top-width": "1px",
+              "border-radius": "12px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "1118px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 8,
+        "max": 9,
+        "low": 6
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-016",
+      "title": "Agent Runtimes: Retry loads the rows",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUp to date\n\nAccount\nSigned in",
+            "rect": [
+              282,
+              177,
+              1116,
+              60
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nAccount\nSigned in\nUpdate",
+            "rect": [
+              282,
+              237,
+              1116,
+              61
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\n\nSign in from its command line.",
+            "rect": [
+              282,
+              298,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              282,
+              375,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              458
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-017",
+      "title": "Agent Runtimes (390x844): stacked rows",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nVersion\n0.163.0\n\nUpdates\n\nUp to date\n\nAccount\nSigned in",
+            "rect": [
+              34,
+              544.7,
+              322,
+              140
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "322px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nAccount\nSigned in\nUpdate",
+            "rect": [
+              34,
+              684.7,
+              322,
+              197
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "322px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\n\nSign in from its command line.",
+            "rect": [
+              34,
+              881.7,
+              322,
+              157
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "322px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByteu",
+            "rect": [
+              34,
+              1038.7,
+              322,
+              177
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "322px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              8,
+              328.7,
+              374,
+              909
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "374px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              33,
+              495.7,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              159.4,
+              487.7,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "A-edge-antialiasing",
+      "pixels": {
+        "changed": 16,
+        "max": 9,
+        "low": 14
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-018",
+      "title": "Agent Runtimes (zh-CN)",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\n已安装\n版本\n0.163.0\n\n更新\n\n已是最新\n\n账户\n已登录",
+            "rect": [
+              282,
+              177,
+              1116,
+              60
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\n已安装\n版本\n2.1.302\n\n更新\n\n有可用更新（版本 2.1.304）\n\n账户\n已登录\n更新",
+            "rect": [
+              282,
+              237,
+              1116,
+              61
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\n已安装\n版本\n1.4.3\n\n更新\n\n已是最新\n\n账户\n未登录\n\n请在其命令行中登录。",
+            "rect": [
+              282,
+              298,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\n已安装\n未安装\n\n更新\n安装说明\n（在浏览器中打开）\n\n安装后请重启 AutoByteus。\n\n账户\n–\n不适用",
+            "rect": [
+              282,
+              375,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "智能体运行时\n\nAutoByteus 在此节点上使用的智能体运行时。它们通常会自动更新；仅在未更新时使用“更新”。\n\nEmbedded Node·本机\n\n刚刚检查\n\n重新检查\n运行时\n已安装\n更新\n账户\nCodex\n\n已安装\n版本\n0.16",
+            "rect": [
+              256,
+              16,
+              1168,
+              458
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "刚刚检查",
+            "rect": [
+              1251.7,
+              49,
+              55.6,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "55.5781px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "重新检查",
+            "rect": [
+              1319.3,
+              41,
+              79.7,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "79.6875px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-019",
+      "title": "Agent Runtimes (mixed, browser window): status only",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "[data-testid^=\"runtime-\"][data-state]": [
+          {
+            "tag": "LI",
+            "test": "runtime-codex_app_server",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Codex\n\nInstalled\nNot installed\n\nUpdates\nInstall instructions\n(opens in your browser)\n\nAfter installing, restart AutoByte",
+            "rect": [
+              282,
+              177,
+              1116,
+              76
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-claude_agent_sdk",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Claude\n\nInstalled\nVersion\n2.1.302\n\nUpdates\n\nUpdate available (version 2.1.304)\n\nUpdate unavailable while 2 agents are ru",
+            "rect": [
+              282,
+              253,
+              1116,
+              77
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-antigravity_cli",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Antigravity\n\nInstalled\nVersion\n1.4.3\n\nUpdates\n\nCheck failed\n\nCouldn't reach the update source. Antigravity still works.\n",
+            "rect": [
+              282,
+              330,
+              1116,
+              97
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          },
+          {
+            "tag": "LI",
+            "test": "runtime-grok_build",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Grok\n\nInstalled\nVersion\n1.0.62\n\nUpdates\n\nUp to date\n\nAccount\nNot signed in\nSign in",
+            "rect": [
+              282,
+              427,
+              1116,
+              61
+            ],
+            "style": {
+              "display": "list-item",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(241, 245, 249)",
+              "border-top-width": "1px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "12px",
+              "padding-left": "16px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1116px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-card\"]": [
+          {
+            "tag": "SECTION",
+            "test": "agent-runtimes-card",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Agent Runtimes\n\nThe agent runtimes AutoByteus uses on this node. They normally update themselves; use Update when one ha",
+            "rect": [
+              256,
+              16,
+              1168,
+              494
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(0, 0, 0)",
+              "border-top-color": "rgb(226, 232, 240)",
+              "border-top-width": "1px",
+              "border-radius": "24px",
+              "box-shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+              "padding-top": "20px",
+              "padding-left": "24px",
+              "font-size": "16px",
+              "font-weight": "400",
+              "line-height": "24px",
+              "opacity": "1",
+              "width": "1168px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-checked\"]": [
+          {
+            "tag": "P",
+            "test": "agent-runtimes-checked",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Checked just now",
+            "rect": [
+              1165.3,
+              49,
+              114.4,
+              20
+            ],
+            "style": {
+              "display": "block",
+              "background-color": "rgba(0, 0, 0, 0)",
+              "color": "rgb(128, 128, 128)",
+              "border-top-color": "rgb(204, 204, 204)",
+              "border-top-width": "0px",
+              "border-radius": "0px",
+              "box-shadow": "none",
+              "padding-top": "0px",
+              "padding-left": "0px",
+              "font-size": "14px",
+              "font-weight": "400",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "114.406px"
+            }
+          }
+        ],
+        "[data-testid=\"agent-runtimes-check-again\"]": [
+          {
+            "tag": "BUTTON",
+            "test": "agent-runtimes-check-again",
+            "ariaCurrent": null,
+            "ariaDisabled": null,
+            "ariaLabel": null,
+            "title": null,
+            "text": "Check again",
+            "rect": [
+              1291.7,
+              41,
+              107.3,
+              36
+            ],
+            "style": {
+              "display": "flex",
+              "background-color": "rgb(255, 255, 255)",
+              "color": "rgb(77, 77, 77)",
+              "border-top-color": "rgb(179, 179, 179)",
+              "border-top-width": "1px",
+              "border-radius": "6px",
+              "box-shadow": "none",
+              "padding-top": "6px",
+              "padding-left": "12px",
+              "font-size": "14px",
+              "font-weight": "500",
+              "line-height": "20px",
+              "opacity": "1",
+              "width": "107.266px"
+            }
+          }
+        ],
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "exact",
+      "pixels": {
+        "changed": 0,
+        "max": 0,
+        "low": 0
+      },
+      "route": [
+        "/settings?section=agent-runtimes",
+        "/settings?section=agent-runtimes"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    },
+    {
+      "id": "RTM-020",
+      "title": "Settings navigation lists Agent Runtimes",
+      "pass": true,
+      "probeEqual": true,
+      "probe": {
+        "focused": "BODY",
+        "sendDisabled": []
+      },
+      "noise": "B-compositing-rounding",
+      "pixels": {
+        "changed": 9128,
+        "max": 9,
+        "low": 9126
+      },
+      "route": [
+        "/settings?section=api-keys",
+        "/settings?section=api-keys"
+      ],
+      "textEqual": true,
+      "sourceStepError": null,
+      "prototypeStepError": null,
+      "sourceErrors": [],
+      "prototypeErrors": [],
+      "prototypeExternal": []
+    }
+  ]
+}
