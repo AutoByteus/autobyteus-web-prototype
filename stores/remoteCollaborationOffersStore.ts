@@ -1,0 +1,66 @@
+import { defineStore } from 'pinia'
+import {
+  answerFor, SHARED_DELAY_MS, SHARED_ENTRIES,
+  type OfferEntry, type PeerRefusalCode, type SharedEntry,
+} from '~/prototype/remote-collaboration/offersScript'
+
+export type PeerOffer =
+  | { phase: 'waiting'; token: number }
+  | { phase: 'available'; entries: OfferEntry[]; checkedAt: string }
+  | { phase: 'unavailable'; code: PeerRefusalCode; checkedAt: string }
+
+export interface AskedPeer { nodeId: string; name: string; baseUrl: string }
+
+let nextToken = 1
+
+/**
+ * What the Remote Collaboration page knows about each peer's offer and about this node's own shared list.
+ * Design reference: the answers are scripted (prototype/remote-collaboration/offersScript.ts). In the product
+ * the node's server asks the peer, and the window never contacts it. Nothing here polls.
+ */
+export const useRemoteCollaborationOffersStore = defineStore('remoteCollaborationOffers', {
+  state: () => ({
+    peers: {} as Record<string, PeerOffer>,
+    shared: { phase: 'idle' as 'idle' | 'loading' | 'ready' | 'error', entries: [] as SharedEntry[], checkedAt: '' },
+  }),
+
+  actions: {
+    /** The page opened: every peer is asked at once, each with its own waiting state, and this node's list is checked. */
+    open(peers: AskedPeer[]) {
+      this.peers = {}
+      peers.forEach((peer) => this.askPeer(peer))
+      this.loadShared()
+    },
+    /** Asks the peers that have no answer yet (a peer that was just added). */
+    askNew(peers: AskedPeer[]) {
+      peers.filter((peer) => !this.peers[peer.nodeId]).forEach((peer) => this.askPeer(peer))
+    },
+    askPeer(peer: AskedPeer) {
+      const token = nextToken++
+      this.peers[peer.nodeId] = { phase: 'waiting', token }
+      const scripted = answerFor(peer)
+      setTimeout(() => {
+        const current = this.peers[peer.nodeId]
+        if (!current || current.phase !== 'waiting' || current.token !== token) return
+        const checkedAt = new Date().toISOString()
+        this.peers[peer.nodeId] = scripted.answer.ok
+          ? { phase: 'available', entries: scripted.answer.entries, checkedAt }
+          : { phase: 'unavailable', code: scripted.answer.code, checkedAt }
+      }, scripted.delayMs)
+    },
+    forget(nodeId: string) {
+      delete this.peers[nodeId]
+    },
+    loadShared() {
+      this.shared.phase = 'loading'
+      setTimeout(() => {
+        this.shared = { phase: 'ready', entries: SHARED_ENTRIES.map((entry) => ({ ...entry })), checkedAt: new Date().toISOString() }
+      }, SHARED_DELAY_MS)
+    },
+    /** The switch is off: no list, nothing is asked or checked. */
+    clear() {
+      this.peers = {}
+      this.shared = { phase: 'idle', entries: [], checkedAt: '' }
+    },
+  },
+})

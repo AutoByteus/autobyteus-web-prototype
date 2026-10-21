@@ -20,24 +20,24 @@
 
     <RemoteCollaborationPeersSection :switch-on="capabilityStore.isEnabled" />
 
-    <section class="rounded-3xl border border-slate-200 bg-white px-6 py-5 shadow-sm" data-testid="remote-collaboration-availability">
-      <h3 class="text-xl font-semibold text-gray-900">{{ t('settings.components.settings.RemoteCollaboration.availability.title') }}</h3>
-      <p class="mt-1 text-sm text-gray-500">{{ t('settings.components.settings.RemoteCollaboration.availability.note') }}</p>
-    </section>
+    <RemoteCollaborationAvailabilitySection :switch-on="capabilityStore.isEnabled" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import FeatureCapabilityToggleCard from '~/components/settings/FeatureCapabilityToggleCard.vue'
+import RemoteCollaborationAvailabilitySection from '~/components/settings/RemoteCollaborationAvailabilitySection.vue'
 import RemoteCollaborationPeersSection from '~/components/settings/RemoteCollaborationPeersSection.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useRemoteCollaborationCapabilityStore } from '~/stores/remoteCollaborationCapabilityStore'
+import { useRemoteCollaborationOffersStore } from '~/stores/remoteCollaborationOffersStore'
 import { useRemoteCollaborationStore } from '~/stores/remoteCollaborationStore'
 
 const { t } = useLocalization()
 const capabilityStore = useRemoteCollaborationCapabilityStore()
 const store = useRemoteCollaborationStore()
+const offers = useRemoteCollaborationOffersStore()
 
 const statusLabels = computed(() => ({
   loading: t('settings.components.settings.RemoteCollaboration.status.loading'),
@@ -51,8 +51,21 @@ const statusMessage = computed(() => capabilityStore.capability?.source === 'DEF
   ? t('settings.components.settings.RemoteCollaboration.source.defaultDisabled')
   : null)
 
-onMounted(() => {
-  void capabilityStore.ensureResolved()
-  void store.load()
+// Opening the page asks every peer once, in parallel, and checks this node's list (REQ-504). Nothing polls.
+onMounted(async () => {
+  await Promise.all([capabilityStore.ensureResolved().catch(() => undefined), store.load()])
+  if (capabilityStore.isEnabled) offers.open(store.peers)
+})
+
+// Turning the switch on loads the lists; turning it off drops them and asks nobody.
+watch(() => capabilityStore.isEnabled, (on, was) => {
+  if (on === was) return
+  if (on) offers.open(store.peers)
+  else offers.clear()
+})
+
+// A peer added while the page is open is asked at once.
+watch(() => store.peers.map((peer) => peer.nodeId).join(','), () => {
+  if (capabilityStore.isEnabled) offers.askNew(store.peers)
 })
 </script>

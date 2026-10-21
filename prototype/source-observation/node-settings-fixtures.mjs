@@ -138,7 +138,14 @@ const nodeSettingsState = (state) => {
     runtimes: { rows: runtimeRows(scenario), reads: 0 },
     remote: {
       enabled: scenario === 'collab_peers', set: false, seq: 0,
-      peers: scenario === 'collab_peers' ? [peer('node-docker-01', 'docker', 'http://192.168.1.20:29695', 50), peer('node-studio-02', 'studio', 'http://192.168.1.31:29695', 20)] : [],
+      peers: scenario === 'collab_peers' ? [
+        peer('node-docker-01', 'docker', 'http://192.168.1.20:29695', 50),
+        peer('node-studio-02', 'studio', 'http://192.168.1.31:29695', 20),
+        peer('node-lab-03', 'lab', 'http://192.168.1.42:29695', 12),
+        peer('node-nas-04', 'nas', 'http://192.168.1.55:29695', 9),
+        peer('node-edge-05', 'edge', 'http://192.168.1.77:29695', 6),
+        peer('node-spare-06', 'spare', 'http://192.168.1.90:29695', 2),
+      ] : [],
     },
   }
   return state.nodeSettings
