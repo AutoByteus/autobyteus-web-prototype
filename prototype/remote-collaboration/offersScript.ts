@@ -114,4 +114,8 @@ export const SHARED_ENTRIES: SharedEntry[] = [
   sharedTeam('team-ex-02', 'Support Desk Team', ready),
 ]
 
+/** Scenario `collab_all_ready` (starting state only): every shared entry already has a default that runs. */
+export const sharedEntries = (scenario: string): SharedEntry[] =>
+  scenario === 'collab_all_ready' ? SHARED_ENTRIES.map((entry) => ({ ...entry, readiness: ready })) : SHARED_ENTRIES
+
 export const SHARED_DELAY_MS = 1800

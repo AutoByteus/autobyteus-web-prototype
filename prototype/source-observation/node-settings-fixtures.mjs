@@ -137,8 +137,8 @@ const nodeSettingsState = (state) => {
     updateChecksEnabled: scenario !== 'updates_off', updateChecksSet: false, failOncePackages: new Set(['package-docs-pack']),
     runtimes: { rows: runtimeRows(scenario), reads: 0 },
     remote: {
-      enabled: scenario === 'collab_peers', set: false, seq: 0,
-      peers: scenario === 'collab_peers' ? [
+      enabled: scenario === 'collab_peers' || scenario === 'collab_all_ready', set: false, seq: 0,
+      peers: scenario === 'collab_peers' || scenario === 'collab_all_ready' ? [
         peer('node-docker-01', 'docker', 'http://192.168.1.20:29695', 50),
         peer('node-studio-02', 'studio', 'http://192.168.1.31:29695', 20),
         peer('node-lab-03', 'lab', 'http://192.168.1.42:29695', 12),

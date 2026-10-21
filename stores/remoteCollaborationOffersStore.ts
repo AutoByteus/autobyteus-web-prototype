@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import {
-  answerFor, SHARED_DELAY_MS, SHARED_ENTRIES,
+  answerFor, SHARED_DELAY_MS, sharedEntries,
   type OfferEntry, type PeerRefusalCode, type SharedEntry,
 } from '~/prototype/remote-collaboration/offersScript'
 
@@ -54,7 +54,7 @@ export const useRemoteCollaborationOffersStore = defineStore('remoteCollaboratio
     loadShared() {
       this.shared.phase = 'loading'
       setTimeout(() => {
-        this.shared = { phase: 'ready', entries: SHARED_ENTRIES.map((entry) => ({ ...entry })), checkedAt: new Date().toISOString() }
+        this.shared = { phase: 'ready', entries: sharedEntries(String((window as any).__AUTOBYTEUS_PROTOTYPE__?.scenario ?? '')).map((entry) => ({ ...entry })), checkedAt: new Date().toISOString() }
       }, SHARED_DELAY_MS)
     },
     /** The switch is off: no list, nothing is asked or checked. */

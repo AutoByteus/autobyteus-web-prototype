@@ -68,14 +68,14 @@ const remoteCollaborationSettingsMessages = {
   'settings.components.settings.RemoteCollaboration.peers.emptyOffer': '{{name}} 没有共享智能体或智能体团队。',
   'settings.components.settings.RemoteCollaboration.peers.switchOff': '远程协作已关闭，不会询问对等节点。开启后可查看它们的智能体和智能体团队。',
   'settings.components.settings.RemoteCollaboration.availability.rulesTitle': '对等节点的运行方式',
-  'settings.components.settings.RemoteCollaboration.availability.readyCount': '{{count}} 个就绪',
-  'settings.components.settings.RemoteCollaboration.availability.allReady': '所有共享的智能体和智能体团队都已就绪。',
+  'settings.components.settings.RemoteCollaboration.availability.allReady': '所有共享的智能体和智能体团队都已可供对等节点使用。',
   'settings.components.settings.RemoteCollaboration.availability.kindAgent': '智能体',
   'settings.components.settings.RemoteCollaboration.availability.kindTeam': '智能体团队',
   'settings.components.settings.RemoteCollaboration.offer.agentsCount': '{{count}} 个智能体',
   'settings.components.settings.RemoteCollaboration.offer.agentOne': '1 个智能体',
   'settings.components.settings.RemoteCollaboration.offer.teamsCount': '{{count}} 个智能体团队',
   'settings.components.settings.RemoteCollaboration.offer.teamOne': '1 个智能体团队',
+  'settings.components.settings.RemoteCollaboration.availability.attentionTitle': '对等节点暂时无法启动你的 {{count}} 个智能体或智能体团队',
 } satisfies TranslationCatalog;
 
 export default remoteCollaborationSettingsMessages;

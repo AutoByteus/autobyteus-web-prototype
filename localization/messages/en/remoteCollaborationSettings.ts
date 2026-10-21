@@ -68,14 +68,14 @@ const remoteCollaborationSettingsMessages = {
   'settings.components.settings.RemoteCollaboration.peers.emptyOffer': '{{name}} shares no Agents or Agent Teams.',
   'settings.components.settings.RemoteCollaboration.peers.switchOff': 'Remote Collaboration is off, so peers are not asked. Turn it on to see their Agents and Agent Teams.',
   'settings.components.settings.RemoteCollaboration.availability.rulesTitle': 'How peers\' runs work',
-  'settings.components.settings.RemoteCollaboration.availability.readyCount': '{{count}} ready',
-  'settings.components.settings.RemoteCollaboration.availability.allReady': 'All shared Agents and Agent Teams are ready.',
+  'settings.components.settings.RemoteCollaboration.availability.allReady': 'Every shared Agent and Agent Team is ready for peers.',
   'settings.components.settings.RemoteCollaboration.availability.kindAgent': 'Agent',
   'settings.components.settings.RemoteCollaboration.availability.kindTeam': 'Agent Team',
   'settings.components.settings.RemoteCollaboration.offer.agentsCount': '{{count}} Agents',
   'settings.components.settings.RemoteCollaboration.offer.agentOne': '1 Agent',
   'settings.components.settings.RemoteCollaboration.offer.teamsCount': '{{count}} Agent Teams',
   'settings.components.settings.RemoteCollaboration.offer.teamOne': '1 Agent Team',
+  'settings.components.settings.RemoteCollaboration.availability.attentionTitle': 'Peers can\'t start {{count}} of your Agents and Agent Teams yet',
 } satisfies TranslationCatalog;
 
 export default remoteCollaborationSettingsMessages;

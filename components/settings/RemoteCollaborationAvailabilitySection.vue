@@ -42,6 +42,9 @@
         {{ t('settings.components.settings.RemoteCollaboration.availability.empty') }}
       </p>
       <template v-else>
+        <p v-if="attention.length" class="mb-1 text-sm font-medium text-slate-800" data-testid="remote-collaboration-attention-title">
+          {{ t('settings.components.settings.RemoteCollaboration.availability.attentionTitle', { count: attention.length }) }}
+        </p>
         <ul v-if="attention.length" class="divide-y divide-slate-100 border-y border-slate-100" data-testid="remote-collaboration-attention-list">
           <li v-for="entry in attention" :key="entry.key" class="py-3" data-testid="remote-collaboration-attention-entry">
             <div class="flex items-start justify-between gap-3">
@@ -70,18 +73,11 @@
           </li>
         </ul>
 
-        <p v-if="!attention.length" class="mb-2 flex items-center gap-1.5 text-sm font-medium text-emerald-700" data-testid="remote-collaboration-availability-all-ready">
+        <p v-if="!attention.length" class="flex items-center gap-1.5 text-sm font-medium text-emerald-700" data-testid="remote-collaboration-availability-all-ready">
           <svg class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m4.5 10.5 3.5 3.5 7.5-8" stroke-linecap="round" stroke-linejoin="round" /></svg>
           {{ t('settings.components.settings.RemoteCollaboration.availability.allReady') }}
         </p>
 
-        <RemoteCollaborationOfferDisclosure
-          v-if="ready.length"
-          class="mt-2"
-          :entries="ready"
-          :label="t('settings.components.settings.RemoteCollaboration.availability.readyCount', { count: ready.length })"
-          test-id="remote-collaboration-shared-ready"
-        />
       </template>
 
       <div class="mt-4 border-t border-slate-100 pt-3">
@@ -108,7 +104,6 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import RemoteCollaborationOfferDisclosure from '~/components/settings/RemoteCollaborationOfferDisclosure.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import type { SharedEntry } from '~/prototype/remote-collaboration/offersScript'
 import { useRemoteCollaborationOffersStore } from '~/stores/remoteCollaborationOffersStore'
@@ -120,7 +115,6 @@ const offers = useRemoteCollaborationOffersStore()
 const rulesOpen = ref(false)
 
 const attention = computed(() => offers.shared.entries.filter((entry) => entry.readiness.state !== 'ready').sort((a, b) => a.name.localeCompare(b.name)))
-const ready = computed(() => offers.shared.entries.filter((entry) => entry.readiness.state === 'ready'))
 
 const reasonOf = (entry: SharedEntry): string => {
   const base = 'settings.components.settings.RemoteCollaboration.availability.reason.'
