@@ -14,8 +14,8 @@
 
         <div class="mt-4 space-y-4">
           <section v-for="group in groups" :key="group.id" :data-testid="`node-change-group-${group.id}`">
-            <h4 class="text-xs font-semibold text-slate-500">{{ group.title }}</h4>
-            <ul class="mt-1.5 space-y-2">
+            <h4 v-if="group.title" class="text-xs font-semibold text-slate-500">{{ group.title }}</h4>
+            <ul :class="group.title ? 'mt-1.5 space-y-2' : 'space-y-2'">
               <li v-for="line in group.lines" :key="line.id" class="flex items-start gap-2.5 text-sm" :data-testid="`node-change-step-${line.id}`">
                 <span class="mt-0.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center text-xs" :class="markClass(line)" :aria-label="statusLabel(line)">
                   <span v-if="line.status === 'running'" class="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600" />
@@ -115,6 +115,8 @@ const SIDE: Record<string, 'here' | 'there' | 'list'> = {
 const groups = computed(() => {
   const p = plan.value!
   const result: { id: string; title: string; lines: PlanLine[] }[] = []
+  // Turning off and removing are short: one plain list, each line already names its node.
+  if (p.kind === 'off' || p.kind === 'remove') return [{ id: 'all', title: '', lines: p.lines }]
   const add = (id: 'here' | 'there' | 'list', title: string): void => {
     const lines = p.lines.filter((line) => SIDE[line.id] === id)
     if (lines.length) result.push({ id, title, lines })

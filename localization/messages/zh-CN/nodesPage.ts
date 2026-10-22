@@ -23,9 +23,7 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.row.agentsHint': '让本节点和该节点上的智能体互相协作',
   'settings.components.settings.NodesPage.row.agentsLabel': '让智能体与 {{name}} 协作',
   'settings.components.settings.NodesPage.row.open': '打开',
-  'settings.components.settings.NodesPage.row.menu': '{{name}} 的更多操作',
-  'settings.components.settings.NodesPage.row.rename': '重命名',
-  'settings.components.settings.NodesPage.row.remove': '移除',
+  'settings.components.settings.NodesPage.row.rename': '点击重命名',
   'settings.components.settings.NodesPage.row.expand': '显示 {{name}} 的详情',
   'settings.components.settings.NodesPage.row.collapse': '隐藏 {{name}} 的详情',
   'settings.components.settings.NodesPage.row.reachable': '当前可达',
@@ -97,8 +95,6 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.banner.addedChecking': '已添加。{{name}} 尚未应答；它所在行会继续检查，最长 20 秒。',
   'settings.components.settings.NodesPage.banner.dismiss': '关闭',
   'settings.components.settings.NodesPage.rename.label': '{{name}} 的名称',
-  'settings.components.settings.NodesPage.rename.save': '保存',
-  'settings.components.settings.NodesPage.rename.cancel': '取消',
   'settings.components.settings.NodesPage.rename.errorName': '请使用 1–64 个字母、数字、空格、_ . 或 -（以字母或数字开头）。',
   'settings.components.settings.NodesPage.rename.errorTaken': '已有另一个节点名为 {{name}}。',
   'settings.components.settings.NodesPage.dialog.onTitle': '让智能体与 {{name}} 协作？',
@@ -142,6 +138,7 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.detail.emptyOffer': '{{name}} 没有共享任何智能体或智能体团队。',
   'settings.components.settings.NodesPage.line.agentsOff': '本节点上的智能体暂时无法与 {{name}} 协作。',
   'settings.components.settings.NodesPage.banner.addedUnreachableCollab': '已添加。{{name}} 当前不可达，因此智能体暂时无法与它协作。',
+  'settings.components.settings.NodesPage.row.removeNode': '移除 {{name}}…',
 } satisfies TranslationCatalog;
 
 export default nodesPageMessages;

@@ -12,24 +12,34 @@
         </span>
         <div class="min-w-0 flex-1">
           <template v-if="renaming">
-            <div class="flex flex-wrap items-center gap-2">
-              <input
-                ref="renameInput"
-                v-model="renameDraft"
-                type="text"
-                class="w-full max-w-xs rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-sm shadow-sm transition focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
-                :aria-label="t(k('rename.label'), { name: row.name })"
-                :data-testid="`node-rename-input-${row.key}`"
-                @keydown.enter.prevent="saveRename"
-                @keydown.esc.prevent="renaming = false"
-              >
-              <button type="button" :class="primaryButton" :data-testid="`node-rename-save-${row.key}`" @click="saveRename">{{ t(k('rename.save')) }}</button>
-              <button type="button" :class="secondaryButton" @click="renaming = false">{{ t(k('rename.cancel')) }}</button>
-            </div>
-            <p v-if="renameError" class="mt-1.5 text-sm text-red-600" role="alert" :data-testid="`node-rename-error-${row.key}`">{{ renameError }}</p>
+            <input
+              ref="renameInput"
+              v-model="renameDraft"
+              type="text"
+              class="w-full max-w-xs rounded-md border border-blue-400 bg-white px-2 py-0.5 text-sm font-semibold text-slate-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-100"
+              :aria-label="t(k('rename.label'), { name: row.name })"
+              :aria-invalid="Boolean(renameError)"
+              :data-testid="`node-rename-input-${row.key}`"
+              @keydown.enter.prevent="saveRename"
+              @keydown.esc.prevent="cancelRename"
+              @blur="saveRename"
+            >
+            <p v-if="renameError" class="mt-1 text-sm text-red-600" role="alert" :data-testid="`node-rename-error-${row.key}`">{{ renameError }}</p>
           </template>
           <template v-else>
-            <p class="truncate text-sm font-semibold text-slate-900" :data-testid="`node-name-${row.key}`">{{ row.name }}</p>
+            <button
+              v-if="!row.isEmbedded"
+              type="button"
+              class="group -mx-1 inline-flex max-w-full items-center gap-1.5 rounded px-1 text-left text-sm font-semibold text-slate-900 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              :title="t(k('row.rename'))"
+              :aria-label="`${t(k('row.rename'))}: ${row.name}`"
+              :data-testid="`node-name-${row.key}`"
+              @click="startRename"
+            >
+              <span class="truncate">{{ row.name }}</span>
+              <svg class="h-3.5 w-3.5 flex-shrink-0 text-slate-400 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m13.5 4.5 2 2M4 16l.7-3.1L13.8 3.8a1.4 1.4 0 0 1 2 0l.4.4a1.4 1.4 0 0 1 0 2l-9.1 9.1L4 16Z" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </button>
+            <p v-else class="truncate text-sm font-semibold text-slate-900" :data-testid="`node-name-${row.key}`">{{ row.name }}</p>
             <p class="mt-0.5 break-all font-mono text-xs text-slate-500" :data-testid="`node-url-${row.key}`">{{ shownUrl }}</p>
           </template>
         </div>
@@ -60,36 +70,6 @@
           :data-testid="`node-open-${row.key}`"
           @click="store.openNode(row.key)"
         >{{ t('settings.components.settings.NodeManager.open') }}</button>
-
-        <div v-if="!row.isEmbedded" ref="menuRoot" class="relative">
-          <button
-            type="button"
-            class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-            aria-haspopup="menu"
-            :aria-expanded="menuOpen"
-            :aria-label="t(k('row.menu'), { name: row.name })"
-            :data-testid="`node-menu-${row.key}`"
-            @click="toggleMenu"
-            @keydown.esc="menuOpen = false"
-          >
-            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="4.5" cy="10" r="1.5" /><circle cx="10" cy="10" r="1.5" /><circle cx="15.5" cy="10" r="1.5" /></svg>
-          </button>
-          <Teleport to="body">
-            <div
-              v-if="menuOpen"
-              ref="menuPanel"
-              role="menu"
-              class="fixed z-50 w-40 overflow-hidden rounded-lg border border-slate-200 bg-white py-1 shadow-lg"
-              :style="{ top: `${menuPos.top}px`, left: `${menuPos.left}px` }"
-              :data-testid="`node-menu-panel-${row.key}`"
-              @keydown.esc="menuOpen = false"
-            >
-              <button type="button" role="menuitem" class="block w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 focus-visible:bg-slate-50 focus-visible:outline-none" :data-testid="`node-menu-rename-${row.key}`" @click="startRename">{{ t(k('row.rename')) }}</button>
-              <button type="button" role="menuitem" class="block w-full px-4 py-2 text-left text-sm text-red-700 hover:bg-red-50 focus-visible:bg-red-50 focus-visible:outline-none" :data-testid="`node-menu-remove-${row.key}`" @click="startRemove">{{ t(k('row.remove')) }}</button>
-            </div>
-          </Teleport>
-        </div>
-        <span v-else class="inline-block h-8 w-8" aria-hidden="true" />
 
         <button
           type="button"
@@ -216,12 +196,20 @@
           </button>
         </span>
       </div>
+      <div v-if="!row.isEmbedded" class="mt-3 border-t border-slate-200 pt-3">
+        <button
+          type="button"
+          class="rounded text-sm font-medium text-red-700 hover:text-red-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+          :data-testid="`node-remove-${row.key}`"
+          @click="store.requestRemove(row.key)"
+        >{{ t(k('row.removeNode'), { name: row.name }) }}</button>
+      </div>
     </div>
   </li>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import NodeAddressHint from '~/components/settings/nodes/NodeAddressHint.vue'
 import RemoteCollaborationOfferDisclosure from '~/components/settings/RemoteCollaborationOfferDisclosure.vue'
 import { useNodeText } from '~/composables/useNodeText'
@@ -240,10 +228,6 @@ const primaryButton = 'rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium te
 const secondaryButton = 'rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:text-slate-400'
 
 const expanded = computed({ get: () => Boolean(store.expanded[props.row.key]), set: (value: boolean) => { store.expanded[props.row.key] = value } })
-const menuOpen = ref(false)
-const menuRoot = ref<HTMLElement | null>(null)
-const menuPanel = ref<HTMLElement | null>(null)
-const menuPos = ref({ top: 0, left: 0 })
 const renaming = ref(false)
 const renameDraft = ref('')
 const renameError = ref('')
@@ -393,9 +377,9 @@ const saveAddress = async (address?: string): Promise<void> => {
   else addressError.value = result.error
 }
 
-// ---- rename and remove (⋯ menu)
+// ---- rename: click the name, type, Enter (Esc cancels)
+let renameSaving = false
 const startRename = async (): Promise<void> => {
-  menuOpen.value = false
   renameDraft.value = props.row.name
   renameError.value = ''
   renaming.value = true
@@ -403,29 +387,14 @@ const startRename = async (): Promise<void> => {
   renameInput.value?.focus()
   renameInput.value?.select()
 }
+const cancelRename = (): void => { renameSaving = true; renaming.value = false; renameError.value = ''; renameSaving = false }
 const saveRename = async (): Promise<void> => {
+  if (renameSaving || !renaming.value) return
+  if (renameDraft.value.trim() === props.row.name) { renaming.value = false; renameError.value = ''; return }
+  renameSaving = true
   const result = await store.renameNode(props.row.key, renameDraft.value)
+  renameSaving = false
   if (result.ok) { renaming.value = false; renameError.value = ''; return }
   renameError.value = result.error === 'taken' ? t(k('rename.errorTaken'), { name: renameDraft.value.trim() }) : t(k('rename.errorName'))
 }
-const startRemove = (): void => {
-  menuOpen.value = false
-  store.requestRemove(props.row.key)
-}
-
-// The menu floats above the card (it is never clipped by it), under the ⋯ button, right edges aligned.
-const toggleMenu = (): void => {
-  if (menuOpen.value) { menuOpen.value = false; return }
-  const rect = menuRoot.value?.getBoundingClientRect()
-  if (rect) menuPos.value = { top: rect.bottom + 4, left: Math.max(8, rect.right - 160) }
-  menuOpen.value = true
-}
-const closeMenuOutside = (event: MouseEvent): void => {
-  const target = event.target as Node
-  if (menuOpen.value && !menuRoot.value?.contains(target) && !menuPanel.value?.contains(target)) menuOpen.value = false
-}
-const closeMenu = (): void => { menuOpen.value = false }
-onMounted(() => { document.addEventListener('mousedown', closeMenuOutside); window.addEventListener('resize', closeMenu); document.addEventListener('scroll', closeMenu, true) })
-onBeforeUnmount(() => { document.removeEventListener('mousedown', closeMenuOutside); window.removeEventListener('resize', closeMenu); document.removeEventListener('scroll', closeMenu, true) })
-
 </script>

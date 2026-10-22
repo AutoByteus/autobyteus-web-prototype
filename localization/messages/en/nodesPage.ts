@@ -23,9 +23,7 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.row.agentsHint': 'Let agents on this node and on that node work together',
   'settings.components.settings.NodesPage.row.agentsLabel': 'Let agents work with {{name}}',
   'settings.components.settings.NodesPage.row.open': 'Open',
-  'settings.components.settings.NodesPage.row.menu': 'More actions for {{name}}',
-  'settings.components.settings.NodesPage.row.rename': 'Rename',
-  'settings.components.settings.NodesPage.row.remove': 'Remove',
+  'settings.components.settings.NodesPage.row.rename': 'Click to rename',
   'settings.components.settings.NodesPage.row.expand': 'Show details for {{name}}',
   'settings.components.settings.NodesPage.row.collapse': 'Hide details for {{name}}',
   'settings.components.settings.NodesPage.row.reachable': 'Reachable now',
@@ -97,8 +95,6 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.banner.addedChecking': "Added. {{name}} hasn't answered yet; its row keeps checking for up to 20 seconds.",
   'settings.components.settings.NodesPage.banner.dismiss': 'Dismiss',
   'settings.components.settings.NodesPage.rename.label': 'Name of {{name}}',
-  'settings.components.settings.NodesPage.rename.save': 'Save',
-  'settings.components.settings.NodesPage.rename.cancel': 'Cancel',
   'settings.components.settings.NodesPage.rename.errorName': 'Use 1–64 letters, digits, spaces, _ . or - (start with a letter or digit).',
   'settings.components.settings.NodesPage.rename.errorTaken': 'Another node is already named {{name}}.',
   'settings.components.settings.NodesPage.dialog.onTitle': 'Let agents work with {{name}}?',
@@ -142,6 +138,7 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.detail.emptyOffer': '{{name}} shares no Agents or Agent Teams.',
   'settings.components.settings.NodesPage.line.agentsOff': "Agents here can't work with {{name}} yet.",
   'settings.components.settings.NodesPage.banner.addedUnreachableCollab': "Added. {{name}} isn't reachable now, so agents can't work with it yet.",
+  'settings.components.settings.NodesPage.row.removeNode': 'Remove {{name}}…',
 } satisfies TranslationCatalog;
 
 export default nodesPageMessages;
