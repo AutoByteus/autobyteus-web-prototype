@@ -69,15 +69,25 @@
             :aria-expanded="menuOpen"
             :aria-label="t(k('row.menu'), { name: row.name })"
             :data-testid="`node-menu-${row.key}`"
-            @click="menuOpen = !menuOpen"
+            @click="toggleMenu"
             @keydown.esc="menuOpen = false"
           >
             <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="4.5" cy="10" r="1.5" /><circle cx="10" cy="10" r="1.5" /><circle cx="15.5" cy="10" r="1.5" /></svg>
           </button>
-          <div v-if="menuOpen" role="menu" class="absolute right-0 z-20 mt-1 w-40 overflow-hidden rounded-lg border border-slate-200 bg-white py-1 shadow-lg">
-            <button type="button" role="menuitem" class="block w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 focus-visible:bg-slate-50 focus-visible:outline-none" :data-testid="`node-menu-rename-${row.key}`" @click="startRename">{{ t(k('row.rename')) }}</button>
-            <button type="button" role="menuitem" class="block w-full px-4 py-2 text-left text-sm text-red-700 hover:bg-red-50 focus-visible:bg-red-50 focus-visible:outline-none" :data-testid="`node-menu-remove-${row.key}`" @click="startRemove">{{ t(k('row.remove')) }}</button>
-          </div>
+          <Teleport to="body">
+            <div
+              v-if="menuOpen"
+              ref="menuPanel"
+              role="menu"
+              class="fixed z-50 w-40 overflow-hidden rounded-lg border border-slate-200 bg-white py-1 shadow-lg"
+              :style="{ top: `${menuPos.top}px`, left: `${menuPos.left}px` }"
+              :data-testid="`node-menu-panel-${row.key}`"
+              @keydown.esc="menuOpen = false"
+            >
+              <button type="button" role="menuitem" class="block w-full px-4 py-2 text-left text-sm text-slate-700 hover:bg-slate-50 focus-visible:bg-slate-50 focus-visible:outline-none" :data-testid="`node-menu-rename-${row.key}`" @click="startRename">{{ t(k('row.rename')) }}</button>
+              <button type="button" role="menuitem" class="block w-full px-4 py-2 text-left text-sm text-red-700 hover:bg-red-50 focus-visible:bg-red-50 focus-visible:outline-none" :data-testid="`node-menu-remove-${row.key}`" @click="startRemove">{{ t(k('row.remove')) }}</button>
+            </div>
+          </Teleport>
         </div>
         <span v-else class="inline-block h-8 w-8" aria-hidden="true" />
 
@@ -232,6 +242,8 @@ const secondaryButton = 'rounded-md border border-slate-300 bg-white px-3 py-1.5
 const expanded = computed({ get: () => Boolean(store.expanded[props.row.key]), set: (value: boolean) => { store.expanded[props.row.key] = value } })
 const menuOpen = ref(false)
 const menuRoot = ref<HTMLElement | null>(null)
+const menuPanel = ref<HTMLElement | null>(null)
+const menuPos = ref({ top: 0, left: 0 })
 const renaming = ref(false)
 const renameDraft = ref('')
 const renameError = ref('')
@@ -400,10 +412,19 @@ const startRemove = (): void => {
   store.requestRemove(props.row.key)
 }
 
-const closeMenuOutside = (event: MouseEvent): void => {
-  if (menuOpen.value && menuRoot.value && !menuRoot.value.contains(event.target as Node)) menuOpen.value = false
+// The menu floats above the card (it is never clipped by it), under the ⋯ button, right edges aligned.
+const toggleMenu = (): void => {
+  if (menuOpen.value) { menuOpen.value = false; return }
+  const rect = menuRoot.value?.getBoundingClientRect()
+  if (rect) menuPos.value = { top: rect.bottom + 4, left: Math.max(8, rect.right - 160) }
+  menuOpen.value = true
 }
-onMounted(() => document.addEventListener('mousedown', closeMenuOutside))
-onBeforeUnmount(() => document.removeEventListener('mousedown', closeMenuOutside))
+const closeMenuOutside = (event: MouseEvent): void => {
+  const target = event.target as Node
+  if (menuOpen.value && !menuRoot.value?.contains(target) && !menuPanel.value?.contains(target)) menuOpen.value = false
+}
+const closeMenu = (): void => { menuOpen.value = false }
+onMounted(() => { document.addEventListener('mousedown', closeMenuOutside); window.addEventListener('resize', closeMenu); document.addEventListener('scroll', closeMenu, true) })
+onBeforeUnmount(() => { document.removeEventListener('mousedown', closeMenuOutside); window.removeEventListener('resize', closeMenu); document.removeEventListener('scroll', closeMenu, true) })
 
 </script>
