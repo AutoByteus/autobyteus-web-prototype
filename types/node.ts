@@ -17,6 +17,8 @@ export interface NodeProfile {
   nodeType: NodeType;
   capabilities?: NodeCapabilities;
   capabilityProbeState?: CapabilityProbeState;
+  /** The node's own ID (`srv_…`), remembered once this desktop has reached it. Joins this entry with the node's peer entries. */
+  serverInstanceId?: string;
   isSystem: boolean;
   createdAt: string;
   updatedAt: string;

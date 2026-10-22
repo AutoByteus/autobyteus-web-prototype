@@ -45,7 +45,9 @@ export const scenarioCatalog = Object.freeze({
   runtimes_update_fails: 'Populated data where the Claude runtime update fails (Try again fails again).',
   runtimes_sign_in_fails: 'Populated data where Codex is signed out and its browser sign-in does not finish.',
   runtimes_load_failed: 'Populated data where the first Agent Runtimes read fails, so the section offers Retry.',
-  collab_peers: 'Populated data where Remote Collaboration is on and six peer nodes are registered, one in each state a peer can be in.',
+  // one-nodes-tab: Nodes → Manage Nodes (one list of nodes). The simulated network is prototype/nodes/nodeWorld.ts.
+  nodes_user: 'Populated data where this desktop lists the embedded node and Docker 8001 (collaborating); Docker 8003, 8004 and 8005 are running and can be added.',
+  nodes_states: 'Nodes scenario with one row in each state: working, off there, not registered there, a different node, not reachable, still checking, registered only by the other node, and one not collaborating.',
   live_runs: 'Populated data where the stored Research Assistant run and the stored Product Review Team run are live: a delegated copy is running, a copy Team has an agent in error, and the Team run is busy.',
   definition_issues: 'Populated data where some agent package definitions could not be read: card load-issue badges, list problem notices and package auto-refresh states.',
 })

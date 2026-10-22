@@ -1,5 +1,5 @@
-// Remote Collaboration offers (design remote-nodes-page, autobyteus-267).
-// UI-reference simulation only: what each peer answers and what this node shares are invented here.
+// What a node offers (design remote-nodes-page, autobyteus-267; reused by one-nodes-tab).
+// UI-reference simulation only: the entries each node offers are invented here.
 // Every name, description, delay and reason below is illustrative.
 
 export type OfferKind = 'AGENT' | 'AGENT_TEAM'
@@ -12,22 +12,10 @@ export interface OfferEntry {
   description?: string
 }
 
-export type PeerRefusalCode =
-  | 'REMOTE_COLLABORATION_OFF'
-  | 'PEER_NOT_REGISTERED'
-  | 'PEER_UNREACHABLE'
-  | 'PEER_IDENTITY_MISMATCH'
-
-export type PeerAnswer =
-  | { ok: true; entries: OfferEntry[] }
-  | { ok: false; code: PeerRefusalCode }
-
-export interface ScriptedPeerAnswer { delayMs: number; answer: PeerAnswer }
-
 const agent = (name: string, description?: string): OfferEntry => ({ key: `a:${name}`, kind: 'AGENT', name, ...(description ? { description } : {}) })
 const team = (name: string, description?: string): OfferEntry => ({ key: `t:${name}`, kind: 'AGENT_TEAM', name, ...(description ? { description } : {}) })
 
-const DOCKER_OFFER: OfferEntry[] = [
+export const DOCKER_OFFER: OfferEntry[] = [
   agent('Build Runner', 'Runs the project build and reports failing steps.'),
   agent('Code Reviewer', 'Reviews a change and lists risks before merge.'),
   agent('Data Cleaner', 'Normalizes CSV exports and flags odd rows.'),
@@ -45,7 +33,7 @@ const STUDIO_NAMES = [
   'Naming Brainstormer', 'Poster Designer', 'Proofreader', 'Social Post Planner', 'Storyboard Artist', 'Style Guide Keeper',
   'Tagline Tester', 'Thumbnail Ideator', 'Tone Checker', 'UX Copy Reviewer', 'Video Script Writer', 'Visual QA',
 ]
-const STUDIO_OFFER: OfferEntry[] = [
+export const STUDIO_OFFER: OfferEntry[] = [
   ...STUDIO_NAMES.map((name, index) => index % 3 === 1 ? agent(name) : agent(name, `Studio agent for ${name.toLowerCase()} tasks.`)),
   team('Campaign Team', 'Plans and drafts a campaign from a brief.'),
   team('Launch Visuals Team', 'Moodboard, posters and thumbnails for a launch.'),
@@ -56,24 +44,15 @@ const STUDIO_OFFER: OfferEntry[] = [
   team('Video Team', 'Script, storyboard and captions for a short video.'),
 ]
 
-/** What each seeded peer answers, by its registered name. An added peer is judged by its URL (see `answerFor`). */
-const BY_NAME: Record<string, ScriptedPeerAnswer> = {
-  docker: { delayMs: 900, answer: { ok: true, entries: DOCKER_OFFER } },
-  studio: { delayMs: 3200, answer: { ok: true, entries: STUDIO_OFFER } },
-  lab: { delayMs: 1400, answer: { ok: false, code: 'REMOTE_COLLABORATION_OFF' } },
-  nas: { delayMs: 1100, answer: { ok: false, code: 'PEER_NOT_REGISTERED' } },
-  edge: { delayMs: 20000, answer: { ok: false, code: 'PEER_UNREACHABLE' } },
-  spare: { delayMs: 1700, answer: { ok: false, code: 'PEER_IDENTITY_MISMATCH' } },
-  empty: { delayMs: 800, answer: { ok: true, entries: [] } },
-}
+export const EIGHT_THREE_OFFER: OfferEntry[] = [
+  agent('Code Reviewer', 'Reviews a change and lists risks before merge.'),
+  agent('Researcher', 'Searches the web and summarizes what it finds.'),
+  agent('Writer'),
+  team('Software Team', 'Design, build and test a change.'),
+]
 
-export const answerFor = (peer: { name: string; baseUrl: string }): ScriptedPeerAnswer => {
-  const named = BY_NAME[peer.name.trim().toLowerCase()]
-  if (named) return named
-  const url = peer.baseUrl.toLowerCase()
-  if (url.includes('off')) return BY_NAME.lab
-  if (url.includes('unregistered')) return BY_NAME.nas
-  if (url.includes('mismatch')) return BY_NAME.spare
-  if (url.includes('slow')) return BY_NAME.edge
-  return { delayMs: 1200, answer: { ok: true, entries: DOCKER_OFFER.slice(0, 3) } }
-}
+export const EMBEDDED_OFFER: OfferEntry[] = [
+  agent('Project Planner', 'Breaks a goal into tasks and tracks them.'),
+  agent('Doc Writer', 'Drafts and edits documentation.'),
+  team('Product Team', 'Plans, designs and reviews a product change.'),
+]

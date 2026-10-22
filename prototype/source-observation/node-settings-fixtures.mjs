@@ -8,7 +8,7 @@
 //   source (the source's own existing mutations) marks its notification handled.
 // - Settings → Agent Runtimes (runtime-lifecycle-review): `AgentRuntimes` and its four mutations. Work moves one step
 //   per read of `AgentRuntimes`, so the observation node and the baseline advance alike.
-// - Nodes → Remote Collaboration (autobyteus-191, 245): the capability switch and the peer list.
+// - (Nodes → Remote Collaboration was merged into Manage Nodes by one-nodes-tab; its simulation is prototype/nodes/nodeWorld.ts.)
 
 const HOUR = 3_600_000
 const hoursAgo = (hours) => new Date(Date.now() - hours * HOUR).toISOString()
@@ -18,7 +18,6 @@ const failure = (message, code) => ({ __projectError: { message, extensions: { c
 export const NODE_SETTINGS_MUTATIONS = new Set([
   'MarkUpdateNotificationsRead', 'ClearUpdateNotification', 'SetUpdateChecksEnabled', 'UpdateAgentPackage',
   'CheckAgentRuntimes', 'UpdateAgentRuntime', 'StartAgentRuntimeSignIn', 'CancelAgentRuntimeSignIn',
-  'SetRemoteCollaborationEnabled', 'AddPeerNode', 'RenamePeerNode', 'RemovePeerNode',
 ])
 
 // ---------------------------------------------------------------- Notification Center
@@ -125,9 +124,6 @@ const runtimeView = (item) => ({
   checkedAt: item.checkedAt,
 })
 
-// ---------------------------------------------------------------- Remote Collaboration
-const peer = (nodeId, name, baseUrl, hours) => ({ __typename: 'PeerNodeGql', nodeId, name, baseUrl, addedAt: hoursAgo(hours) })
-
 // ---------------------------------------------------------------- state
 const nodeSettingsState = (state) => {
   if (state.nodeSettings) return state.nodeSettings
@@ -136,17 +132,6 @@ const nodeSettingsState = (state) => {
     notifications: scenario === 'updates_many' ? manyNotifications() : scenario === 'updates_waiting' ? waitingNotifications() : UPDATE_SCENARIOS.has(scenario) ? oneNotification() : [],
     updateChecksEnabled: scenario !== 'updates_off', updateChecksSet: false, failOncePackages: new Set(['package-docs-pack']),
     runtimes: { rows: runtimeRows(scenario), reads: 0 },
-    remote: {
-      enabled: scenario === 'collab_peers', set: false, seq: 0,
-      peers: scenario === 'collab_peers' ? [
-        peer('node-docker-01', 'docker', 'http://192.168.1.20:29695', 50),
-        peer('node-studio-02', 'studio', 'http://192.168.1.31:29695', 20),
-        peer('node-lab-03', 'lab', 'http://192.168.1.42:29695', 12),
-        peer('node-nas-04', 'nas', 'http://192.168.1.55:29695', 9),
-        peer('node-edge-05', 'edge', 'http://192.168.1.77:29695', 6),
-        peer('node-spare-06', 'spare', 'http://192.168.1.90:29695', 2),
-      ] : [],
-    },
   }
   return state.nodeSettings
 }
@@ -168,14 +153,12 @@ export const agentPackageUpdate = (state, packageId, packages) => {
 }
 
 const RUNTIME_ID = 'runtimeKind'
-const peerSlug = (value) => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'node'
 
 /** The Settings answers of this file, or `undefined` when the operation is not one of them. */
 export const nodeSettingsOperation = (operationName, variables, state) => {
   const ns = (() => { switch (operationName) {
     case 'GetUpdateNotifications': case 'MarkUpdateNotificationsRead': case 'ClearUpdateNotification': case 'GetUpdateChecksCapability': case 'SetUpdateChecksEnabled':
     case 'AgentRuntimes': case 'CheckAgentRuntimes': case 'UpdateAgentRuntime': case 'StartAgentRuntimeSignIn': case 'CancelAgentRuntimeSignIn':
-    case 'GetRemoteCollaborationCapability': case 'GetRemoteCollaborationSettings': case 'SetRemoteCollaborationEnabled': case 'AddPeerNode': case 'RenamePeerNode': case 'RemovePeerNode':
       return nodeSettingsState(state)
     default: return null
   } })()
@@ -225,31 +208,6 @@ export const nodeSettingsOperation = (operationName, variables, state) => {
       return { cancelAgentRuntimeSignIn: true }
     }
 
-    case 'GetRemoteCollaborationCapability':
-      return { remoteCollaborationCapability: { __typename: 'RemoteCollaborationCapabilityGql', enabled: ns.remote.enabled, settingKey: 'ENABLE_REMOTE_COLLABORATION', source: ns.remote.set ? 'SERVER_SETTING' : 'DEFAULT_DISABLED' } }
-    case 'SetRemoteCollaborationEnabled':
-      ns.remote.enabled = Boolean(variables.enabled); ns.remote.set = true
-      return { setRemoteCollaborationEnabled: { __typename: 'RemoteCollaborationCapabilityGql', enabled: ns.remote.enabled, settingKey: 'ENABLE_REMOTE_COLLABORATION', source: 'SERVER_SETTING' } }
-    case 'GetRemoteCollaborationSettings': return { peerNodes: structuredClone(ns.remote.peers) }
-    case 'AddPeerNode': {
-      const input = variables.input || {}
-      if (!ns.remote.enabled) return failure('Synthetic refusal: Remote Collaboration is off.', 'REMOTE_COLLABORATION_DISABLED')
-      if (String(input.baseUrl).includes('unreachable')) return failure('Synthetic peer check failed: the node could not be reached.', 'PEER_UNREACHABLE')
-      if (ns.remote.peers.some(item => item.name === input.name)) return failure(`Synthetic refusal: a peer named "${input.name}" is already registered.`, 'PEER_NAME_TAKEN')
-      const added = peer(`node-${peerSlug(input.name)}-${String(++ns.remote.seq).padStart(2, '0')}`, String(input.name), String(input.baseUrl), 0)
-      ns.remote.peers.push(added)
-      return { addPeerNode: structuredClone(added) }
-    }
-    case 'RenamePeerNode': {
-      const item = ns.remote.peers.find(row => row.nodeId === variables.nodeId)
-      if (!item) return failure('Synthetic refusal: the peer is not registered.', 'PEER_NOT_FOUND')
-      if (ns.remote.peers.some(row => row !== item && row.name === variables.name)) return failure(`Synthetic refusal: a peer named "${variables.name}" is already registered.`, 'PEER_NAME_TAKEN')
-      item.name = String(variables.name)
-      return { renamePeerNode: structuredClone(item) }
-    }
-    case 'RemovePeerNode':
-      ns.remote.peers = ns.remote.peers.filter(row => row.nodeId !== variables.nodeId)
-      return { removePeerNode: true }
     default: return undefined
   }
 }

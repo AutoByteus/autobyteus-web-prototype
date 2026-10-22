@@ -31,7 +31,7 @@ const navigationOverlayStores = new Set(['agentRunConfig', 'agentSelection', 'te
 // WEB-BASELINE-REFRESH-010 (3126536): a run's delegated copies' model options, Save and Stop, too.
 // WEB-BASELINE-REFRESH-012 (origin/personal@9e7a458): the Notification Center, the "Update checks" setting, Remote
 // Collaboration and their stores run the source's own code against the local fixtures too.
-const sourceLoadedStores = new Set(['remoteCollaborationOffers', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'remoteCollaborationCapability', 'remoteCollaborationStore', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft'])
+const sourceLoadedStores = new Set(['nodeList', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),

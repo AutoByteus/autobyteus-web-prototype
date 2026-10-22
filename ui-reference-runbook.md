@@ -1,6 +1,23 @@
 # UI Reference Runbook
 
-## remote-nodes-page (Nodes → Remote Collaboration: each peer's state and offer; source pin `9e7a458`)
+## one-nodes-tab (Nodes → Manage Nodes: one list of nodes, Remote Collaboration merged in; source pin `9e7a458`, engineering base `ca1f09e52a`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4801
+```
+
+- Entry: `/nodes?nodeTab=manage`. Select the starting state in the browser console and reload:
+  - desktop window on the embedded node: `localStorage.setItem('autobyteus.prototype.scenario','nodes_user'); localStorage.setItem('autobyteus.prototype.context','electron_internal')`
+  - a window opened on Docker 8001: context `electron_external`
+  - a browser (no Open): remove the `autobyteus.prototype.context` key
+  - one row in every state: scenario `nodes_states`
+  - Chinese: `localStorage['autobyteus.localization.preference-mode']='zh-CN'`
+- The nodes answer from `prototype/nodes/nodeWorld.ts`. Add these addresses: `http://localhost:8003` (off, reachable), `localhost:8004` (a Docker node that cannot find an address for this node: the hint), `localhost:8005` (goes away on its first write, back after 8 s: the partial state), a host containing `slow` (no answer in 20 s), `nohost` (name not found), `notab` (not an AutoByteus node), any other unknown address (refused). Port `8001` is already in the list.
+- Try: Add node (unticked, then ticked); the Agents switch on a row; the confirmation, its running and failed views; Try again; ⋯ → Rename / Remove; expand a row, Change address (`http://127.0.0.1:29695` in the Docker window); Check again; the This node switch off and on.
+- State is in memory: reload resets it. Nothing polls. Spec: `tickets/in-progress/one-nodes-tab/ui-ux-spec.md` (once approved).
+
+## remote-nodes-page (historical: the Remote Collaboration tab it designed is merged into Manage Nodes by one-nodes-tab; the `collab_peers` scenario is gone)
 
 ```bash
 corepack pnpm install --ignore-workspace --frozen-lockfile

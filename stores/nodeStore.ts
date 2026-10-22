@@ -212,6 +212,9 @@ export const useNodeStore = defineStore('nodeStore', () => {
     baseUrl: string;
     capabilities?: NodeProfile['capabilities'];
     capabilityProbeState?: NodeProfile['capabilityProbeState'];
+    serverInstanceId?: string;
+    /** Manage Nodes adds a node without opening its window: the owner stays in this window (design one-nodes-tab). */
+    openWindow?: boolean;
   }): Promise<NodeProfile> {
     const trimmedName = input.name.trim();
     if (!trimmedName) {
@@ -238,11 +241,12 @@ export const useNodeStore = defineStore('nodeStore', () => {
       updatedAt: now,
       capabilityProbeState: input.capabilityProbeState ?? 'unknown',
       capabilities: input.capabilities,
+      serverInstanceId: input.serverInstanceId,
     };
 
     if (window.electronAPI) {
       await upsertRegistry({ type: 'add', node });
-      await window.electronAPI.openNodeWindow?.(node.id);
+      if (input.openWindow !== false) await window.electronAPI.openNodeWindow?.(node.id);
       return getNodeById(node.id) || node;
     }
 
