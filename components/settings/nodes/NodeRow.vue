@@ -305,13 +305,14 @@ const lineText = computed(() => {
     case 'notRegisteredThere': return t(k('line.notRegisteredThere'), { name })
     case 'different': return t(k('line.different'))
     case 'notRegisteredHereInfo': return t(k('line.notRegisteredHere'), { name })
+    case 'agentsOff': return t(k('line.agentsOff'), { name })
     default: return ''
   }
 })
 const lineFixLabel = computed(() => {
   const l = line.value
   if (!l) return ''
-  if (l.kind === 'notRegisteredHereInfo') return t(k('line.fixTurnOn'))
+  if (l.kind === 'notRegisteredHereInfo' || l.kind === 'agentsOff') return t(k('line.fixTurnOn'))
   switch (l.fix) {
     case 'turnOnThere': return t(k('line.fixOffThere'))
     case 'registerThere': return t(k('line.fixRegisterThere'))
@@ -324,7 +325,7 @@ const lineFixLabel = computed(() => {
 const runFix = (): void => {
   const l = line.value
   if (!l) return
-  if (l.kind === 'notRegisteredHereInfo') return store.requestOn(props.row.key)
+  if (l.kind === 'notRegisteredHereInfo' || l.kind === 'agentsOff') return store.requestOn(props.row.key)
   switch (l.fix) {
     case 'turnOnThere': case 'registerThere': case 'tryAgain': return store.requestFix(props.row.key)
     case 'checkAgain': return store.askAgain(props.row.key)

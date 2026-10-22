@@ -84,8 +84,8 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.add.addressPlaceholder': 'http://host:port',
   'settings.components.settings.NodesPage.add.name': 'Name',
   'settings.components.settings.NodesPage.add.namePlaceholder': 'Node name',
-  'settings.components.settings.NodesPage.add.collaborate': 'Let agents work with this node',
-  'settings.components.settings.NodesPage.add.collaborateHint': 'Off by default. You confirm every change on both nodes first.',
+  'settings.components.settings.NodesPage.add.collaborate': 'Let agents on both nodes work together',
+  'settings.components.settings.NodesPage.add.collaborateHint': 'You confirm every change on both nodes next. Untick to only list the node and open it.',
   'settings.components.settings.NodesPage.add.submit': 'Add node',
   'settings.components.settings.NodesPage.add.checking': 'Checking address…',
   'settings.components.settings.NodesPage.add.cancel': 'Cancel',
@@ -140,6 +140,8 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.step.failed': 'Not done',
   'settings.components.settings.NodesPage.step.notRun': 'Not done yet',
   'settings.components.settings.NodesPage.detail.emptyOffer': '{{name}} shares no Agents or Agent Teams.',
+  'settings.components.settings.NodesPage.line.agentsOff': "Agents here can't work with {{name}} yet.",
+  'settings.components.settings.NodesPage.banner.addedUnreachableCollab': "Added. {{name}} isn't reachable now, so agents can't work with it yet.",
 } satisfies TranslationCatalog;
 
 export default nodesPageMessages;

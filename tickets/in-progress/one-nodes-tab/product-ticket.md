@@ -41,6 +41,8 @@
   - Chinese: `localStorage['autobyteus.localization.preference-mode']='zh-CN'`.
 - Try, in the desktop window: Add node → `http://localhost:8003`, name `8003`, leave the box unticked → turn the row's Agents switch on → read the confirmation → Turn on → the row opens and shows both directions and 8003's Agents and Agent Teams. Then: add `localhost:8005` with the box ticked (8005 goes away mid-way: the partial state, then Try again after ~8 s); add `localhost:8004` (the Docker address hint with Use this); ⋯ → Rename / Remove; the This node switch off and on.
 
+- Round 1 feedback (user, 2026-10-22): the Agents switch is hard to understand; adding a node should connect agents without a separate toggle. Applied as option B (DC-714): the Add form's box is ticked by default with clearer words, the one confirmation still follows (it changes the other node), and an unconnected row says so in plain words with a Turn on button. **Requirement impact for the Solution Designer:** REQ-704 / DEC-707 (collaboration off by default when adding) is replaced by "ticked by default, confirmed once"; QR-702 (explicit confirmation) still holds. Waiting for the user's look and approval of this version.
+
 ## Outcome And Handoff
 
 - Next expected action: the user reviews and approves or sends feedback; then final screenshots, `ui-ux-spec.md`, repository finalization, and the handoff to the Solution Designer.

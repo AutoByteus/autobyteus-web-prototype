@@ -184,7 +184,7 @@ export const useNodeListStore = defineStore('nodeList', () => {
   const isChecking = (key: string): boolean => runtime.value[key]?.phase !== 'settled'
 
   type Fix = 'turnOnThere' | 'registerThere' | 'changeAddress' | 'checkAgain' | 'tryAgain'
-  interface RowLine { tone: 'warn' | 'error' | 'info'; kind: DirState['state'] | 'partial' | 'notRegisteredHereInfo'; dir?: DirState; cause?: Cause; host?: string; fix?: Fix; partialError?: StepError }
+  interface RowLine { tone: 'warn' | 'error' | 'info'; kind: DirState['state'] | 'partial' | 'notRegisteredHereInfo' | 'agentsOff'; dir?: DirState; cause?: Cause; host?: string; fix?: Fix; partialError?: StepError }
 
   /** One line under a row, only when something needs the owner, with the one action that fixes it. */
   const lineOf = (row: NodeRow): RowLine | null => {
@@ -199,12 +199,13 @@ export const useNodeListStore = defineStore('nodeList', () => {
     }
     if (!ins.windowReach.ok) return { tone: 'info', kind: 'unreachable', dir: ins.thisToIt, cause: ins.windowReach.cause, host: ins.windowReach.host, fix: 'checkAgain' }
     if (ins.thisToIt.state === 'different') return { tone: 'error', kind: 'different', dir: ins.thisToIt, fix: 'changeAddress' }
-    if (!switchOn.value) return null
     if (!row.collaborating) {
       // The other node has registered this node, but this node has not registered it.
       if (ins.registeredThere && ins.itSwitchOn) return { tone: 'info', kind: 'notRegisteredHereInfo', dir: ins.itToThis }
-      return null
+      // Reachable, but agents are not connected yet: say so in plain words, with the button that connects them.
+      return { tone: 'info', kind: 'agentsOff', fix: 'turnOn' as any }
     }
+    if (!switchOn.value) return null
     const dir = ins.thisToIt
     if (dir.state === 'unreachable') return { tone: 'info', kind: 'unreachable', dir, cause: dir.cause, host: dir.host, fix: 'checkAgain' }
     if (dir.state === 'offThere') return { tone: 'warn', kind: 'offThere', dir, fix: 'turnOnThere' }
@@ -403,7 +404,7 @@ export const useNodeListStore = defineStore('nodeList', () => {
     } else if (probe.delayMs > 1500) {
       banner.value = { tone: 'info', key: 'addedChecking', params: { name }, rowKey: key }
     } else {
-      banner.value = { tone: 'info', key: 'addedUnreachable', params: { name, host: probe.host }, cause: probe.cause, rowKey: key }
+      banner.value = { tone: 'info', key: input.collaborate ? 'addedUnreachableCollab' : 'addedUnreachable', params: { name, host: probe.host }, cause: probe.cause, rowKey: key }
     }
     return { ok: true, key }
   }

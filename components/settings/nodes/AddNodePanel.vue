@@ -59,7 +59,7 @@ const emit = defineEmits<{ close: [] }>()
 const { t, k } = useNodeText()
 const store = useNodeListStore()
 
-const draft = reactive({ address: '', name: '', collaborate: false })
+const draft = reactive({ address: '', name: '', collaborate: true })
 const errors = reactive({ address: '', name: '' })
 const duplicate = ref('')
 const busy = ref(false)

@@ -8,6 +8,7 @@
 | PA-702 | DEC-709 option (b): the confirmation does not show the address of a node whose switch is being turned on by the same confirmation | Keeps every node silent while its switch is off | The user (DEC-709) |
 | PA-703 | Removing a node also removes this node's registration on the other node when that node can be reached; when it cannot, the row is removed here and the result says this node stays registered there | REQ-710 asks the confirmation to say whether the other side is removed too | The Solution Designer to confirm as the REQ-710 rule |
 | PA-704 | A row is keyed by the node ID; a desktop entry remembers its node's ID once reached (seeded in the reference) | One row per node without migration (DEC-701) | Engineering design |
+| PA-706 | Adding a node connects agents by default (ticked box, one confirmation); the user can untick to only list and open a node | The user's feedback: adding should mean using; a separate toggle confuses | The user to approve; Solution Designer to update REQ-704 / DEC-707 |
 | PA-705 | "Different node" shows a red dot; "not reachable" a hollow grey dot; "checking" a spinner | Reachability dot = "reachable now" and a wrong node is worse than an absent one | The user |
 
 ## Mocked Boundaries
