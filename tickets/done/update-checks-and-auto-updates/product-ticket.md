@@ -157,3 +157,13 @@
 - Open items for the Solution Designer: PQ-1 not adopted (the user); which windows count as the desktop's own node (rule question,
   spec Open Decisions); the replaced-folder risk is accepted (DEC-019).
 - Integration and cleanup: see the final record at the end of this file.
+
+## Integration And Cleanup
+
+- Ticket result commits `4690753`…`e354f98` on `design/update-checks-and-auto-updates`, pushed to `origin/personal` as a fast-forward
+  (`1cc5563..e354f98`); the canonical checkout fast-forwarded to `e354f98` (local = remote).
+- Default-entry check after integration (canonical checkout, port 4931, then stopped): `/workspace` with
+  `electron_internal` + `updates_waiting` shows "6 updates"; the confirmation opens on turning packages on; automatic outcomes
+  appear; the Update checks card shows three intervals. No preview-only control.
+- Ticket folder moved to `tickets/done/update-checks-and-auto-updates/`. Review server (port 4930) and the check server stopped.
+- Worktree and branch removal: after this record is pushed (see the final report).
