@@ -365,7 +365,8 @@ export const useNodeListStore = defineStore('nodeList', () => {
   // ------------------------------------------------------------ add, rename, change address
   type AddResult =
     | { ok: true; key: string }
-    | { ok: false; error: 'address' | 'name' | 'duplicate'; existing?: string }
+    | { ok: false; error: 'invalid'; address: boolean; name: boolean }
+    | { ok: false; error: 'duplicate'; existing?: string }
 
   const normalizeUrl = (address: string): string | null => {
     const text = address.trim().replace(/\/+$/, '')
@@ -377,8 +378,8 @@ export const useNodeListStore = defineStore('nodeList', () => {
   const addNode = async (input: { address: string; name: string; collaborate: boolean }): Promise<AddResult> => {
     ensureWorld()
     const url = normalizeUrl(input.address)
-    if (!url) return { ok: false, error: 'address' }
-    if (!isValidName(input.name)) return { ok: false, error: 'name' }
+    const nameOk = isValidName(input.name)
+    if (!url || !nameOk) return { ok: false, error: 'invalid', address: !url, name: !nameOk }
     const name = input.name.trim()
     const sameUrl = rows.value.find((r) => hostPort(r.url) === hostPort(url))
     if (sameUrl) { flash(sameUrl.key); return { ok: false, error: 'duplicate', existing: sameUrl.name } }

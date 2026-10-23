@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `one-nodes-tab` (engineering package `one-nodes-tab`, branch `codex/one-nodes-tab`)
 - Title: Nodes → Manage Nodes: one list of nodes, each added once; Remote Collaboration merged in
-- Status: `Awaiting User Review` (round 1)
+- Status: `Completed` (user approval 2026-10-23: "i think we are ready. approved"; eight rounds of review, DC-714 … DC-723)
 - Related requirements revision: SR-004/SR-005 (`requirements-doc.md`; DEC-709 pending the user)
 - Related IDs: UC-701…706, REQ-701…714, BEH-701…707, AC-701…713, DEC-701…709, SCN-701…706
 - Critical journey: staying in the embedded node's window, the owner adds a node (8003) once, turns on its "Agents" switch, confirms once, and sees 8003's Agents and Agent Teams — without opening 8003's window.
@@ -22,8 +22,8 @@
 - Source: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`, `autobyteus-web`; engineering worktree `/Users/normy/autobyteus_org/autobyteus-worktrees/one-nodes-tab` (read only) at `origin/personal@ca1f09e52a`
 - Pinned source revision of the baseline: `origin/personal@9e7a45880865912442f4188e6d2a58d99b10a54c` (`ui-baseline-report.md`, `WEB-BASELINE-REFRESH-012`), plus the accepted `remote-nodes-page` design (267)
 - Baseline check for this request (no refresh needed): between `9e7a458` and `ca1f09e52a`, `NodeManager.vue`, `NodeManagerTabs.vue`, `CurrentWindowNodeCard.vue` and `FeatureCapabilityToggleCard.vue` are identical to the design repository; the Remote Collaboration components differ only in internal state names (`checking` vs `waiting`) and the offers store, not in markup or copy. The one changed Nodes-area surface, `NfsGuideCard.vue` (sticky copy feedback, release line), is a tab this design does not touch and is not refreshed here.
-- Integration: `Pending`
-- Ticket folder: `tickets/in-progress/one-nodes-tab/`
+- Integration: see Final Integration below
+- Ticket folder: `tickets/done/one-nodes-tab/`
 
 ## Runtime isolation
 
@@ -53,5 +53,15 @@
 
 ## Outcome And Handoff
 
-- Next expected action: the user reviews and approves or sends feedback; then final screenshots, `ui-ux-spec.md`, repository finalization, and the handoff to the Solution Designer.
+- Next expected action: the Solution Designer integrates `ui-ux-spec.md` and the 31 final references into the requirements (the requirement impacts are listed in the spec's "Open Decisions And Risks"), finishes the design and sends it to architecture review round 2.
 - Handoff target on completion: Solution Designer, run `solution_designer_ab22860c1d5f4de5974921c0128991f5`.
+
+## Delivery And Validation
+
+- UI/UX specification: `ui-ux-spec.md` (Approved). Final references: `visual-references/VIS-001 … VIS-031`. Supporting: `design-change-log.md` (DC-701 … DC-723), `design-assumptions.md`.
+- Runnable UI reference entry point: `/nodes?nodeTab=manage`; scenarios `nodes_user`, `nodes_states`; contexts `electron_internal`, `electron_external`, browser; runbook section `one-nodes-tab`.
+- User-confirmation reference: the user's message "i think we are ready. approved", 2026-10-23, in the Product UI/UX Designer conversation.
+- Final check (designer, in the browser, no committed scripts; a disposable Playwright capture script in `/tmp`): the approved journeys through the product's normal entry point: add 8003 and confirm (running, done, counts under the bar, details open); add with the switch off (plain line, Turn on); turn off, Remove, rename (error, click away, Esc); duplicate and invalid fields; not reachable on add; `localhost:8005` partial result, Try again; `localhost:8004` Docker hint with Use this; all row states in `nodes_states` (off there, not registered there, different node, not reachable, checking up to 20 s, registered only by the other node, not collaborating, laptop's numbered name and address); Change address; This node switch off and on; the Docker window and its loopback hint; the browser (no Open); Chinese; 390 px; the old `?nodeTab=remoteCollaboration` URL opens Manage Nodes; the Docker Guide link opens the Docker Guide tab. A gap found in the final pass (only the address error showed when the name was also invalid) was fixed and re-captured before finalizing.
+- Data-boundary check: all nodes, names, IDs, addresses, agent names and delays are invented (`prototype/nodes/nodeWorld.ts`, `prototype/remote-collaboration/offersScript.ts`); nothing real, captured or replayed; the host mock seeds the desktop list with invented entries.
+- Baseline status: applicable accepted baseline `ui-baseline-report.md` (`WEB-BASELINE-REFRESH-012`) plus the accepted `remote-nodes-page` design; no refresh or correction was needed (see "Design & Repository Context").
+- Obsolete reference code removed with the Remote Collaboration tab: `RemoteCollaborationCard.vue`, `RemoteCollaborationPeersSection.vue`, `CurrentWindowNodeCard.vue`, the remote-collaboration stores, GraphQL documents and fixtures, `nodeCapabilityProbe.ts`, `nodeHostValidation.ts`, the `collab_peers` scenario and their strings.

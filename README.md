@@ -47,6 +47,7 @@ The promoted default product entries are:
 - Workspace: <http://127.0.0.1:3210/workspace>
 - Projects: <http://127.0.0.1:3210/projects>
 - Token Statistics: <http://127.0.0.1:3210/settings?section=token-usage>
+- Nodes (one Manage Nodes list, Remote Collaboration merged in; `one-nodes-tab`): <http://127.0.0.1:3210/nodes?nodeTab=manage> (scenarios `nodes_user` and `nodes_states`, see the runbook)
 
 Normal navigation and launch/configuration journeys do not depend on
 `prototypeReview` or another preview-only route switch. Historical review URLs

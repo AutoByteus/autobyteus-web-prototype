@@ -80,8 +80,9 @@ const submit = async (): Promise<void> => {
     draft.collaborate = true
     return
   }
-  if (result.error === 'address') errors.address = t(k('add.errorAddress'))
-  else if (result.error === 'name') errors.name = t(k('add.errorName'))
-  else duplicate.value = result.existing ?? ''
+  if (result.error === 'invalid') {
+    if (result.address) errors.address = t(k('add.errorAddress'))
+    if (result.name) errors.name = t(k('add.errorName'))
+  } else duplicate.value = result.existing ?? ''
 }
 </script>
