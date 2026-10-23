@@ -97,13 +97,13 @@ const close = (focusEntry: boolean) => {
 /** A click outside the panel and the entry closes it (not while the skill confirmation is open). */
 const onPointerDown = (event: PointerEvent) => {
   const target = event.target as HTMLElement | null
-  if (!center.isOpen || !target || confirming.value) return
+  if (!center.isOpen || !target || confirming.value || center.modalOpen) return
   if (panel.value?.contains(target) || target.closest(ENTRY_SELECTOR)) return
   close(false)
 }
 /** Esc closes it wherever focus is; with the skill confirmation open, Esc closes that first. */
 const onKeyDown = (event: KeyboardEvent) => {
-  if (event.key !== 'Escape' || !center.isOpen) return
+  if (event.key !== 'Escape' || !center.isOpen || center.modalOpen) return
   event.preventDefault()
   if (confirming.value) { confirming.value = null; return }
   close(true)

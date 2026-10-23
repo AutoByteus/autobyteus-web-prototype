@@ -13,6 +13,8 @@ export const useNotificationCenterStore = defineStore('notificationCenter', () =
   const isOpen = ref(false)
   const anchor = ref<NotificationCenterAnchor | null>(null)
   const newRowIds = ref<string[]>([])
+  /** A confirmation opened from the panel (turning on an automatic update) is showing: outside clicks and Esc belong to it. */
+  const modalOpen = ref(false)
 
   function open(at: NotificationCenterAnchor): void {
     const notifications = useUpdateNotificationsStore()
@@ -29,5 +31,5 @@ export const useNotificationCenterStore = defineStore('notificationCenter', () =
 
   const isNew = (rowId: string): boolean => newRowIds.value.includes(rowId)
 
-  return { isOpen, anchor, open, close, isNew }
+  return { isOpen, anchor, modalOpen, open, close, isNew }
 })

@@ -4,9 +4,10 @@ export type NodeUpdateNotificationKind = 'AGENT_PACKAGE' | 'SKILL_SOURCE' | 'AGE
 
 /**
  * What an automatic update did, when the setting of that kind was on (REQ-008, REQ-022). `AUTO_UPDATED` is a handled
- * record that stays unread until seen; the others are waiting records that say why nothing changed.
+ * record that stays unread until seen; `AUTO_FAILED` and `AUTO_WAITING` (a runtime whose agents run) are waiting records
+ * that say why nothing changed. Local changes never skip an update (SR-003, DEC-019).
  */
-export type UpdateNotificationOutcome = 'AUTO_UPDATED' | 'AUTO_FAILED' | 'AUTO_SKIPPED_LOCAL_CHANGES' | 'AUTO_WAITING'
+export type UpdateNotificationOutcome = 'AUTO_UPDATED' | 'AUTO_FAILED' | 'AUTO_WAITING'
 
 /** One node update notification (GraphQL `UpdateNotification`). */
 export interface NodeUpdateNotification {

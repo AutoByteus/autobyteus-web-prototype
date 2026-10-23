@@ -114,3 +114,14 @@
   the evidence (whole-folder replacement; no installed-content record). Not yet built; the design waits for the revised
   requirement. Planned design: confirmation overlay on turning a switch on (packages, skill sources, panel and card); inline
   text "local changes are replaced"; no amber row.
+
+### Round 5 (2026-10-23) — SR-003: automatic updates replace local changes, confirmed once
+
+- Requirements revised to SR-003 by the Solution Designer ("the user's direction stands as approved"): REQ-007 replace local
+  changes and added files, confirmation when turning on packages or skill sources (panel and card; Cancel leaves it off);
+  REQ-008 the local-changes outcome is removed; DEC-002 superseded by DEC-019. Runtimes: no confirmation (my design choice, the
+  explanation at the switch is enough; no local changes exist).
+- Changed: confirmation overlay (the shared danger-variant dialog, above the panel at z-100, Esc cancels it first, the panel stays
+  open behind it); inline text now says local changes are replaced; the amber row, the outcome and its strings are gone.
+- Seeds: `updates_auto_on` shows an automatic update of a package and of a skill source (unread), a failed package, a failed
+  runtime, a runtime waiting for agents.

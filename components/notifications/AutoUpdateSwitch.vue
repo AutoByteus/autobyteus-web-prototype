@@ -35,13 +35,32 @@
     <p v-else-if="enabled && applyingCount > 0" :id="noEffectId" class="mt-1.5 flex items-start gap-1.5 text-xs leading-5 text-sky-800" role="status" :data-testid="`auto-update-${kind}-applying`">
       <Icon icon="heroicons:clock-20-solid" class="mt-0.5 h-4 w-4 flex-shrink-0 text-sky-600" aria-hidden="true" />{{ $t(`settings.notifications.auto.applying.${applyingCount === 1 ? 'one' : 'other'}`, { count: applyingCount }) }}
     </p>
+    <!-- Turning on replaces local changes without asking again, so the user confirms once, here (SR-003, REQ-007). -->
+    <ConfirmationModal
+      :show="confirming"
+      :title="$t(`settings.notifications.auto.confirm.title.${kind}`)"
+      :confirm-button-text="$t('settings.notifications.auto.confirm.action')"
+      variant="danger"
+      layer-class="z-[100]"
+      @confirm="confirmTurnOn"
+      @cancel="cancelTurnOn"
+    >
+      <ul class="space-y-2 text-sm leading-6 text-slate-600" :data-testid="`auto-update-${kind}-confirm`">
+        <li>{{ $t(`settings.notifications.auto.confirm.download.${kind}`) }}</li>
+        <li>{{ $t('settings.notifications.auto.confirm.change') }}</li>
+        <li class="font-medium text-slate-900">{{ $t(`settings.notifications.auto.confirm.replace.${kind}`) }}</li>
+        <li>{{ $t('settings.notifications.auto.confirm.off') }}</li>
+      </ul>
+    </ConfirmationModal>
     <p v-if="failed" class="mt-1.5 text-xs leading-5 text-red-700" role="alert" :data-testid="`auto-update-${kind}-error`">{{ $t('settings.notifications.auto.saveFailed') }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, useId } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, useId, watch } from 'vue'
 import { Icon } from '@iconify/vue'
+import ConfirmationModal from '~/components/common/ConfirmationModal.vue'
+import { useNotificationCenterStore } from '~/stores/notificationCenterStore'
 import { useUpdateAutomationStore } from '~/stores/updateAutomationStore'
 import { useUpdateChecksCapabilityStore } from '~/stores/capabilities/updateChecksCapabilityStore'
 import type { UpdateAutomationSwitch } from '~/types/updateNotifications'
@@ -70,18 +89,39 @@ const applyingCount = computed(() => props.applyingCount ?? 0)
 const label = computed(() => props.variant === 'panel' ? t('settings.notifications.auto.label') : t(`settings.notifications.auto.kind.${props.kind}`))
 const describedBy = computed(() => [explainId, (enabled.value && (checksOff.value || applyingCount.value > 0)) ? noEffectId : ''].filter(Boolean).join(' '))
 
-const toggle = async () => {
-  if (saving.value || settings.status !== 'resolved') return
+const center = useNotificationCenterStore()
+const confirming = ref(false)
+/** Turning on packages or skill sources replaces local changes later without asking, so it is confirmed first; runtimes have none. */
+const needsConfirmation = computed(() => props.kind !== 'agent_runtime')
+const save = async (value: boolean) => {
   saving.value = true
   failed.value = false
   try {
-    await settings.save({ [SETTING[props.kind]]: !enabled.value })
+    await settings.save({ [SETTING[props.kind]]: value })
   } catch {
     failed.value = true
   } finally {
     saving.value = false
   }
 }
+const toggle = async () => {
+  if (saving.value || settings.status !== 'resolved') return
+  if (!enabled.value && needsConfirmation.value) { confirming.value = true; return }
+  await save(!enabled.value)
+}
+const confirmTurnOn = async () => {
+  confirming.value = false
+  await save(true)
+}
+const cancelTurnOn = () => { confirming.value = false }
+/** While the confirmation shows, the Notification Center leaves outside clicks and Esc to it; Esc cancels. */
+const onKeyDown = (event: KeyboardEvent) => { if (event.key === 'Escape' && confirming.value) { event.preventDefault(); cancelTurnOn() } }
+watch(confirming, (open) => {
+  center.modalOpen = open
+  if (open) document.addEventListener('keydown', onKeyDown)
+  else document.removeEventListener('keydown', onKeyDown)
+})
+onBeforeUnmount(() => { document.removeEventListener('keydown', onKeyDown); if (confirming.value) center.modalOpen = false })
 onMounted(() => {
   void settings.ensureResolved()
   void updateChecks.ensureResolved().catch(() => undefined)

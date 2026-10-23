@@ -64,10 +64,6 @@
       {{ $t('settings.notifications.outcome.failed') }}
       <span v-if="row.outcomeReason" class="block whitespace-pre-line break-words text-red-700">{{ row.outcomeReason }}</span>
     </p>
-    <p v-if="row.state === 'waiting' && row.outcome === 'AUTO_SKIPPED_LOCAL_CHANGES'" class="mt-1.5 flex items-start gap-1.5 rounded-md bg-amber-50 px-2.5 py-1.5 text-xs leading-5 text-amber-900" role="status" data-testid="notification-row-auto-local">
-      <Icon icon="heroicons:exclamation-triangle-20-solid" class="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-amber-600" aria-hidden="true" />
-      <span>{{ $t(`settings.notifications.outcome.local.${row.kind}`) }}</span>
-    </p>
 
     <div v-if="expanded" :id="detailsId" class="mt-1.5 space-y-1 text-xs leading-5 text-gray-600" data-testid="notification-row-details">
       <template v-if="row.kind === 'agent_runtime'">

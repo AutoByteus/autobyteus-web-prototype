@@ -37,7 +37,7 @@ const waitingNotifications = () => [
   source('AGENT_PACKAGE', 'package-docs-pack', 'Docs Pack With A Rather Long Name For A Package', 'docs-pack-with-a-rather-long-name-for-a-package', '0a1b2c3d', 'e8f9a0b1', 30, { read: true, autoScript: 'failed' }),
   // Same repository and revisions as the Skill Sources dialog's "review-skills" source (fixtures.mjs).
   notification({ kind: 'SKILL_SOURCE', sourceId: 'github-review-skills', name: 'review-skills', repositoryUrl: 'https://github.com/synthetic-org/review-skills',
-    installedRevision: '9a8b7c6d5e4f30211203', latestRevision: 'c0ffee1234abcd567890', foundAt: hoursAgo(5), autoScript: 'local' }),
+    installedRevision: '9a8b7c6d5e4f30211203', latestRevision: 'c0ffee1234abcd567890', foundAt: hoursAgo(5), autoScript: 'updated' }),
   notification({ kind: 'SKILL_SOURCE', sourceId: 'github-docs-skills', name: 'docs-skills', repositoryUrl: 'https://github.com/synthetic-org/docs-skills',
     installedRevision: '1f2e3d4c5b6a79880716', latestRevision: '1f2e3d4c5b6a79880716', foundAt: hoursAgo(75), read: true, state: 'HANDLED',
     handledRevision: '1f2e3d4c5b6a79880716', handledAt: hoursAgo(70) }),
@@ -54,14 +54,13 @@ const REASON_ARCHIVE = 'GitHub answered 502 while downloading the repository arc
 const REASON_VENDOR = 'synthetic-agy update: could not write to /usr/local/bin. Permission denied.'
 const autoUpdated = (fields) => ({ state: 'HANDLED', read: false, outcome: 'AUTO_UPDATED', handledRevision: fields.latestRevision, handledAt: hoursAgo(1), ...fields })
 const outcomeNotifications = () => [
-  // packages: updated automatically (unread), failed, local changes
+  // packages: updated automatically (unread), failed
   source('AGENT_PACKAGE', 'package-research-pack', 'Research Pack', 'research-pack', 'a1b2c3d4', '9f8e7d6c', 3, autoUpdated({ latestRevision: sha('9f8e7d6c'), foundAt: hoursAgo(1.2), handledAt: hoursAgo(1) })),
   source('AGENT_PACKAGE', 'package-docs-pack', 'Docs Pack With A Rather Long Name For A Package', 'docs-pack-with-a-rather-long-name-for-a-package', '0a1b2c3d', 'e8f9a0b1', 2,
     { outcome: 'AUTO_FAILED', outcomeReason: REASON_ARCHIVE, autoScript: 'failed' }),
-  source('AGENT_PACKAGE', 'package-data-wrangling', 'data-wrangling-pack', 'data-wrangling-pack', '3c4d5e6f', '7a8b9c0d', 4, { outcome: 'AUTO_SKIPPED_LOCAL_CHANGES', autoScript: 'local' }),
-  // skill sources: local changes; an older automatic update, already seen
+  // skill sources: an automatic update not yet seen; an older one, already seen
   notification({ kind: 'SKILL_SOURCE', sourceId: 'github-review-skills', name: 'review-skills', repositoryUrl: 'https://github.com/synthetic-org/review-skills',
-    installedRevision: '9a8b7c6d5e4f30211203', latestRevision: 'c0ffee1234abcd567890', foundAt: hoursAgo(5), outcome: 'AUTO_SKIPPED_LOCAL_CHANGES', autoScript: 'local' }),
+    installedRevision: '9a8b7c6d5e4f30211203', latestRevision: 'c0ffee1234abcd567890', foundAt: hoursAgo(5), state: 'HANDLED', read: false, outcome: 'AUTO_UPDATED', handledRevision: 'c0ffee1234abcd567890', handledAt: hoursAgo(4.5) }),
   notification({ kind: 'SKILL_SOURCE', sourceId: 'github-docs-skills', name: 'docs-skills', repositoryUrl: 'https://github.com/synthetic-org/docs-skills',
     installedRevision: '0d1e2f3a4b5c69788695', latestRevision: '1f2e3d4c5b6a79880716', foundAt: hoursAgo(75), read: true, state: 'HANDLED', outcome: 'AUTO_UPDATED',
     handledRevision: '1f2e3d4c5b6a79880716', handledAt: hoursAgo(74) }),
@@ -224,8 +223,7 @@ const applyAutomatic = (ns, kind) => {
   if (!settingOn || !ns.updateChecksEnabled) return
   for (const item of ns.notifications.filter(entry => entry.kind === kind && entry.state === 'WAITING')) {
     const at = new Date().toISOString()
-    if (item.autoScript === 'local') Object.assign(item, { outcome: 'AUTO_SKIPPED_LOCAL_CHANGES', outcomeReason: null, read: false })
-    else if (item.autoScript === 'failed') Object.assign(item, { outcome: 'AUTO_FAILED', outcomeReason: REASON_ARCHIVE, read: false })
+    if (item.autoScript === 'failed') Object.assign(item, { outcome: 'AUTO_FAILED', outcomeReason: REASON_ARCHIVE, read: false })
     else if (kind === 'AGENT_RUNTIME') {
       const row = ns.runtimes.rows.find(entry => entry.kind === item.sourceId)
       if (row && row.agents > 0) Object.assign(item, { outcome: 'AUTO_WAITING', outcomeReason: null, runningAgentCount: row.agents })
