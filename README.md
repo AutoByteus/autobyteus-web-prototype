@@ -49,6 +49,11 @@ The promoted default product entries are:
 - Token Statistics: <http://127.0.0.1:3210/settings?section=token-usage>
 - Nodes (one Manage Nodes list, Remote Collaboration merged in; `one-nodes-tab`): <http://127.0.0.1:3210/nodes?nodeTab=manage> (scenarios `nodes_user` and `nodes_states`, see the runbook)
 
+- Update checks, agent runtimes and automatic updates (`update-checks-and-auto-updates`, autobyteus-210): <http://127.0.0.1:3210/workspace>
+  with `autobyteus.prototype.context` = `electron_internal` and `autobyteus.prototype.scenario` = `updates_waiting` (other scenarios in
+  the runbook); the Notification Center opens on the right side of the window; Settings → Server Settings → Basics → Update checks;
+  Settings → Updates. Spec: `tickets/done/update-checks-and-auto-updates/ui-ux-spec.md`.
+
 Normal navigation and launch/configuration journeys do not depend on
 `prototypeReview` or another preview-only route switch. Historical review URLs
 remain evidence only and may still expose deterministic comparison controls.
