@@ -11,7 +11,7 @@
 - Critical journey: in the Workspaces tree the user's Project Task Manager run shows the Marketing Team it delegated to the node "docker" under it, like a local copy, marked with a computer icon and "docker", with its title and status; the user opens it, follows its conversation live, sends it a message and gets its answer; its Files, Terminal and Artifacts say it is on docker; an unreachable node shows a plain error and the rest of the tree works.
 - Decisions resolved with the user: the node marker's form (chip left of the team icon and name; summary under the node's name; DC-801/802); **DEC-804 decided yes** by his approval of the design with the stop square shown (he was asked twice and gave no separate yes/no); PA-803/PA-805 shown and unchanged.
 - Non-goals: files, terminal, workspace of remote runs; reconnecting and catch-up; messaging unlinked runs; attachments across nodes; the mobile shell.
-- Authority files (read-only): `/Users/normy/autobyteus_org/autobyteus-worktrees/remote-runs-in-tree/tickets/done/remote-runs-in-tree/{handoff-product-design,requirements-doc,investigation-notes}.md`
+- Authority files (read-only): `/Users/normy/autobyteus_org/autobyteus-worktrees/remote-runs-in-tree/tickets/in-progress/remote-runs-in-tree/{handoff-product-design,requirements-doc,investigation-notes}.md`
 
 ## Design & Repository Context
 
