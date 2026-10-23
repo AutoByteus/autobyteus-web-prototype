@@ -59,7 +59,7 @@
       aria-hidden="true"
     />
 
-    <div class="flex min-w-0 flex-1 items-start py-1 pr-2">
+    <div class="flex min-w-0 flex-1 items-start py-1 pr-2" :class="remote ? 'flex-wrap' : ''">
       <!-- Status and icon sit in a box as tall as the name line, so they stay centered on it. -->
       <span class="member-status inline-flex h-5 flex-shrink-0 items-center">
         <StatusDot
@@ -108,38 +108,7 @@
             data-test="workspace-member-agent-missing"
           />
         </span>
-        <!-- remote-runs-in-tree: the run's title from its node (its first message) when no Project Task names the copy; with a Task the Task summary link stays. -->
-        <span
-          v-if="remote && !task && remote.reachable && remote.title"
-          class="mt-0.5 block truncate text-[0.6875rem] font-normal leading-4"
-          :class="isSelected ? 'text-indigo-700' : 'text-gray-500'"
-          data-test="workspace-remote-run-title"
-          :title="remote.title"
-        >{{ remote.title }}</span>
-        <TaskWorkerTaskSummary v-else-if="task" :task="task" :selected="isSelected" @locate="emit('locate-task', task)" />
-        <!-- remote-runs-in-tree: the node did not answer; same red line and Retry as a failed activity load. -->
-        <span
-          v-if="remote && retrying"
-          class="mt-0.5 block text-[0.6875rem] font-medium text-indigo-700"
-          role="status"
-          data-test="workspace-remote-run-checking"
-        >{{ t('remote.row.checking', { node: remote.nodeName }) }}</span>
-        <span
-          v-else-if="remote && (!remote.reachable || stopError)"
-          class="mt-0.5 flex items-center gap-1 text-[0.6875rem] font-medium text-red-700"
-          role="alert"
-          data-test="workspace-remote-run-error"
-        >
-          <span>{{ stopError ? t('remote.row.stopFailed', { node: remote.nodeName }) : t('remote.row.unreachable', { node: remote.nodeName }) }}</span>
-          <button
-            v-if="!stopError"
-            type="button"
-            class="rounded px-1 py-0.5 underline focus:outline-none focus-visible:ring-1 focus-visible:ring-red-500"
-            :aria-label="t('remote.row.retryAria', { node: remote.nodeName })"
-            data-test="workspace-remote-run-retry"
-            @click.stop="retry"
-          >{{ t('remote.row.retry') }}</button>
-        </span>
+        <TaskWorkerTaskSummary v-if="task && !remote" :task="task" :selected="isSelected" @locate="emit('locate-task', task)" />
         <span
           v-if="inspectionAttempt?.state === 'loading'"
           class="mt-0.5 block text-[0.6875rem] font-medium text-indigo-700"
@@ -159,6 +128,39 @@
           >{{ t('workspace.task_monitor.retry') }}</button>
         </span>
       </span>
+      <!-- remote-runs-in-tree: the run's title and any error start at the row's left edge, under the status dot. -->
+      <div v-if="remote" class="mt-0.5 w-full basis-full" data-test="workspace-remote-run-lines">
+        <TaskWorkerTaskSummary v-if="task" class="!mt-0" :task="task" :selected="isSelected" @locate="emit('locate-task', task)" />
+        <span
+          v-if="!task && remote.reachable && remote.title && !retrying"
+          class="block truncate text-[0.6875rem] font-normal leading-4"
+          :class="isSelected ? 'text-indigo-700' : 'text-gray-500'"
+          data-test="workspace-remote-run-title"
+          :title="remote.title"
+        >{{ remote.title }}</span>
+        <span
+          v-if="retrying"
+          class="block text-[0.6875rem] font-medium text-indigo-700"
+          role="status"
+          data-test="workspace-remote-run-checking"
+        >{{ t('remote.row.checking', { node: remote.nodeName }) }}</span>
+        <span
+          v-else-if="!remote.reachable || stopError"
+          class="flex items-center gap-1 text-[0.6875rem] font-medium text-red-700"
+          role="alert"
+          data-test="workspace-remote-run-error"
+        >
+          <span>{{ stopError ? t('remote.row.stopFailed', { node: remote.nodeName }) : t('remote.row.unreachable', { node: remote.nodeName }) }}</span>
+          <button
+            v-if="!stopError"
+            type="button"
+            class="rounded px-1 py-0.5 underline focus:outline-none focus-visible:ring-1 focus-visible:ring-red-500"
+            :aria-label="t('remote.row.retryAria', { node: remote.nodeName })"
+            data-test="workspace-remote-run-retry"
+            @click.stop="retry"
+          >{{ t('remote.row.retry') }}</button>
+        </span>
+      </div>
     </div>
     <!-- SR-007: a running copy has the same stop icon as a running run. -->
     <DelegatedStopButton
