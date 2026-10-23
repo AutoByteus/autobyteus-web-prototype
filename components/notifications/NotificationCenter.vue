@@ -14,15 +14,18 @@
         :aria-labelledby="headingId"
         data-testid="notification-center"
       >
-        <h2 :id="headingId" class="sr-only">{{ $t('settings.notifications.title') }}</h2>
-        <button
-          type="button"
-          class="absolute right-2 top-2 z-10 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-gray-400 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
-          :aria-label="$t('settings.notifications.center.close')"
-          :title="$t('settings.notifications.center.close')"
-          data-testid="notification-center-close"
-          @click="close(true)"
-        ><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" aria-hidden="true" /></button>
+        <!-- A fixed title row: the rows scroll under it, never under the close button. -->
+        <div class="flex h-10 flex-shrink-0 items-center justify-between border-b border-gray-100 pl-4 pr-2">
+          <h2 :id="headingId" class="text-[13px] font-semibold text-gray-900">{{ $t('settings.notifications.title') }}</h2>
+          <button
+            type="button"
+            class="inline-flex h-7 w-7 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+            :aria-label="$t('settings.notifications.center.close')"
+            :title="$t('settings.notifications.center.close')"
+            data-testid="notification-center-close"
+            @click="close(true)"
+          ><Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" aria-hidden="true" /></button>
+        </div>
 
         <div class="min-h-0 flex-1 overflow-y-auto">
           <ul v-if="!notifications.isEmpty" class="divide-y divide-gray-100" :aria-label="$t('settings.notifications.listLabel')">

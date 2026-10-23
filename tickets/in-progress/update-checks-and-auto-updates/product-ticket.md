@@ -63,3 +63,11 @@
      three automatic-update switches.
   6. Settings → Updates: automatic-check switch, interval, status and last check made truthful.
 
+
+### Round 2 (2026-10-23) — placement
+
+- The user asked whether the panel should move to the right corner. Answer: no; it opens beside the sidebar instead.
+  - The panel had grown tall and covered the sidebar's navigation; the ✕ floated over scrolling rows.
+  - Changed: the docked panel opens to the right of the sidebar, bottom-aligned with the Settings row (the strip variant
+    already opened to the right of its icon); a fixed title row ("Notifications" + ✕) with a hairline; rows scroll under it.
+  - Not chosen: the right corner (far from the pill that opened it, and it covers the Projects/Files/Terminal tools).

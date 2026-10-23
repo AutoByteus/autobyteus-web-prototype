@@ -82,8 +82,10 @@ const toggle = (event: MouseEvent, side: 'above' | 'right') => {
   if (center.isOpen) { center.close(); return }
   const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
   const panelWidth = Math.min(PANEL_WIDTH, window.innerWidth - 2 * EDGE)
+  // Docked: beside the sidebar (never over its navigation), bottom-aligned with the Settings row; strip: right of the icon.
+  const sidebarRight = (event.currentTarget as HTMLElement).closest('footer')?.getBoundingClientRect().right ?? rect.right
   center.open(side === 'above'
-    ? { left: EDGE, bottom: window.innerHeight - rect.top + EDGE }
+    ? { left: Math.max(EDGE, Math.min(sidebarRight + EDGE, window.innerWidth - panelWidth - EDGE)), bottom: Math.max(EDGE, window.innerHeight - rect.bottom - 2) }
     : { left: Math.max(EDGE, Math.min(rect.right + EDGE, window.innerWidth - panelWidth - EDGE)), bottom: Math.max(EDGE, window.innerHeight - rect.bottom) })
 }
 </script>
