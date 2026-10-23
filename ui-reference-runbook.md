@@ -67,12 +67,13 @@ localStorage.setItem('autobyteus.prototype.scenario', 'updates_waiting')   // or
 ```
 
 - `updates_waiting` (the starting point): Settings row "6 updates"; a software update, two runtime updates (Codex free to update, Claude
-  with 2 agents running), two package updates, a skill update, an updated skill. All automatic-update switches are off.
+  with 2 agents running), two package updates, a skill update, an updated skill. All automatic-update switches are off. Turning a
+  packages or skill-sources switch on opens the confirmation (Turn on / Cancel / Esc).
   - Turn on "Update automatically" at a category: after a few seconds (the product: within about a minute) its waiting updates
-    are applied or answered: packages "Research Pack" is updated, "Docs Pack…" fails, skills "review-skills" has local changes,
+    are applied or answered: package "Research Pack" is updated, "Docs Pack…" fails, skill "review-skills" is updated,
     Codex is updated, Claude waits for its agents. Reload resets.
   - Update on Codex: Updating… → Updated to 0.164.0 (the vendor update of Settings → Agent Runtimes).
-- `updates_auto_on`: all three switches on, with every outcome row already there (updated automatically, failed, local changes,
+- `updates_auto_on`: all three switches on, with every outcome row already there (updated automatically, failed,
   runtime waiting for agents).
 - `updates_outcomes_only`: nothing waits, one automatic update is unread: the Settings row says "1 updated".
 - `updates_off`: Update checks off for the node: the switches say they have no effect. `updates_backoff`: Settings → Server Settings →
@@ -86,7 +87,7 @@ localStorage.setItem('autobyteus.prototype.scenario', 'updates_waiting')   // or
 - Chinese: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`.
 - Mock boundaries: the node's passes, the vendor update commands and the app's periodic timer are scripted in
   `prototype/source-observation/node-settings-fixtures.mjs` and `prototype/shared/install-host-scenario.js`; nothing is requested.
-  Spec: `tickets/in-progress/update-checks-and-auto-updates/ui-ux-spec.md` (written after approval).
+  Spec: `tickets/done/update-checks-and-auto-updates/ui-ux-spec.md` (approved 2026-10-23; the final references are VIS-001..037 beside it).
 
 ## settings-update-notifications (update notifications: sidebar entry, Notification Center, Update checks card; source pin `9227d61`)
 

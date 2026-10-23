@@ -71,7 +71,7 @@ watch(current, reset, { immediate: true })
 const commit = async () => {
   if (current.value === null) return
   const minutes = toMinutes(Number(text.value), unit.value)
-  if (!text.value.trim() || !isValidIntervalMinutes(minutes)) { invalid.value = true; return }
+  if (!String(text.value ?? '').trim() || !isValidIntervalMinutes(minutes)) { invalid.value = true; return }
   invalid.value = false
   if (minutes === current.value) { reset(); return }
   try {

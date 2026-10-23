@@ -7,7 +7,7 @@
   Notification Center, per-category check intervals, the app's own periodic check.
 - Mode: `Product Experience Design` (evolves the approved Notification Center of autobyteus-209, the Update checks
   card, Settings → Updates).
-- Status: `Awaiting User Review` (round 1)
+- Status: `Completed` (approved by the user 2026-10-23; final artifacts committed)
 - Requester: Solution Designer, run `solution_designer_8f0e52ca19ce43c1a1bab5c82f6fe8ed`, 2026-10-23 (Project Task
   autobyteus-210, requested by `/project_task_manager`). Handoff: `Product Design Requested`, SR-002.
 - Requirements (read in full): `/Users/normy/autobyteus_org/autobyteus-worktrees/update-checks-and-auto-updates/tickets/in-progress/update-checks-and-auto-updates/requirements-doc.md`
@@ -138,3 +138,22 @@
 
 - The user: far too many words. The card now has one-line summaries, a two-sentence network note plus three one-line "Contacts",
   one interval note, one-line switch explanations, a one-sentence back-off line. Settings → Updates description cut the same way.
+
+### Approval (2026-10-23, round 7)
+
+- The user: "Okay, now I think I like [it]. It's satisfying. I like it now. Works nice. Looks nice as well. Approved."
+- Fixed after that approval and before capture (not material): the interval field threw on a number value (refusal and save did
+  not work); the Settings → Updates switch was a no-op in the reference (a store action missing from the allowed-action list).
+
+## Delivery And Validation
+
+- Requirements revision: SR-003 (the Solution Designer's message of 2026-10-23: the user's direction stands).
+- Final check (2026-10-23, in the browser, en and zh-CN): turn on packages (confirmation, Cancel/Esc, Turn on, applying note,
+  outcomes); runtimes on (no confirmation); runtime Update, failure and blocked; outcome-only entry; checks off; card intervals
+  (refused, saved), GitHub wait, remote-node card; confirmation above the panel at 1000 px; Settings → Updates states and the
+  switch and interval; narrow, strip, browser and other-node windows. 37 final references, `visual-references/VIS-001..037`.
+- Mock data origin: all fixture values invented (`prototype/source-observation/node-settings-fixtures.mjs`,
+  `prototype/shared/install-host-scenario.js`); nothing copied from source content.
+- Open items for the Solution Designer: PQ-1 not adopted (the user); which windows count as the desktop's own node (rule question,
+  spec Open Decisions); the replaced-folder risk is accepted (DEC-019).
+- Integration and cleanup: see the final record at the end of this file.
