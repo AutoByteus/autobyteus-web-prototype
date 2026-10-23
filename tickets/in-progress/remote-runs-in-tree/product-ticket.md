@@ -38,7 +38,7 @@
   - Chinese: `localStorage['autobyteus.localization.preference-mode']='zh-CN'`
 - Steps and what to look at are in `ui-reference-runbook.md`, section `remote-runs-in-tree`.
 
-- Round 1 feedback (user, 2026-10-23): put the computer icon and node name on the left of the team name, not on the second line. Applied (DC-801): chip left of the team icon and name; the title (and the error line) starts under the node chip's computer icon. Long names truncate a little ("market researc…"); the tooltip shows them in full.
+- Round 1 feedback (user, 2026-10-23): put the computer icon and node name on the left of the team name, not on the second line. Applied (DC-801): chip left of the team icon and name; the title (and the error line) starts under the node's name in the chip (the same column as a local copy's summary; the computer icon is 14 px). Long names truncate a little ("market researc…"); the tooltip shows them in full.
 
 ## Outcome And Handoff
 

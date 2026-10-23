@@ -128,8 +128,8 @@
           >{{ t('workspace.task_monitor.retry') }}</button>
         </span>
       </span>
-      <!-- remote-runs-in-tree: the run's title and any error start under the node chip (its computer icon), one status-dot width in from the row's left edge. -->
-      <div v-if="remote" class="mt-0.5 w-full basis-full pl-3.5" data-test="workspace-remote-run-lines">
+      <!-- remote-runs-in-tree: the run's title and any error start under the node's name in the chip (status dot + chip padding + icon in from the row's left edge). -->
+      <div v-if="remote" class="mt-0.5 w-full basis-full pl-9" data-test="workspace-remote-run-lines">
         <TaskWorkerTaskSummary v-if="task" class="!mt-0" :task="task" :selected="isSelected" @locate="emit('locate-task', task)" />
         <span
           v-if="!task && remote.reachable && remote.title && !retrying"
