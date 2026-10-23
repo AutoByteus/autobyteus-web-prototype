@@ -75,6 +75,7 @@ const position = computed(() => {
 const update = (row: NotificationRow) => {
   if (row.kind === 'skill_source') confirming.value = row
   else if (row.kind === 'agent_package') void notifications.updateSource(row)
+  else if (row.kind === 'agent_runtime') void notifications.updateRuntime(row)
 }
 const confirmSkillUpdate = () => {
   const row = confirming.value

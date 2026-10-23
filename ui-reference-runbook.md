@@ -51,6 +51,43 @@ corepack pnpm dev --port 4781
   searching "copy"; adding a peer named `empty`; turning the switch off and on; the "How peers' runs work" line.
 - State is in memory: reload resets it. Nothing polls. Spec: `tickets/done/remote-nodes-page/ui-ux-spec.md`.
 
+## update-checks-and-auto-updates (agent runtimes category, automatic-update switches, intervals, app check; source pin `9e7a458`, requirements SR-002)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4930
+```
+
+Open `/workspace` (the product's normal entry). The runtime category and the app row exist only in the desktop's own window, so set
+the context once in the browser console, then reload:
+
+```js
+localStorage.setItem('autobyteus.prototype.context', 'electron_internal')   // the desktop's own node
+localStorage.setItem('autobyteus.prototype.scenario', 'updates_waiting')   // or another scenario below
+```
+
+- `updates_waiting` (the starting point): Settings row "6 updates"; a software update, two runtime updates (Codex free to update, Claude
+  with 2 agents running), two package updates, a skill update, an updated skill. All automatic-update switches are off.
+  - Turn on "Update automatically" at a category: after a few seconds (the product: within about a minute) its waiting updates
+    are applied or answered: packages "Research Pack" is updated, "Docs Pack…" fails, skills "review-skills" has local changes,
+    Codex is updated, Claude waits for its agents. Reload resets.
+  - Update on Codex: Updating… → Updated to 0.164.0 (the vendor update of Settings → Agent Runtimes).
+- `updates_auto_on`: all three switches on, with every outcome row already there (updated automatically, failed, local changes,
+  runtime waiting for agents).
+- `updates_outcomes_only`: nothing waits, one automatic update is unread: the Settings row says "1 updated".
+- `updates_off`: Update checks off for the node: the switches say they have no effect. `updates_backoff`: Settings → Server Settings →
+  Basics → Update checks says "GitHub asked this node to wait until …". `updates_discover`: a package update appears by itself about 7 s
+  after load (the node's pass found it). `updates_many`, `updates_one`: as in 209.
+- Update checks card: `/settings?section=server-settings` (Basics, last card). Intervals save when the field loses focus or Enter
+  is pressed; try `5` minutes (refused) or `2` hours.
+- Settings → Updates: `/settings?section=updates` with `update_up_to_date`, `update_available`, `update_check_failed` (a periodic
+  check failed; quiet, no toast) or `update_checks_off`.
+- Browser window (no runtimes, no software update): context `desktop` (the default). Remote node window: `electron_external`.
+- Chinese: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`.
+- Mock boundaries: the node's passes, the vendor update commands and the app's periodic timer are scripted in
+  `prototype/source-observation/node-settings-fixtures.mjs` and `prototype/shared/install-host-scenario.js`; nothing is requested.
+  Spec: `tickets/in-progress/update-checks-and-auto-updates/ui-ux-spec.md` (written after approval).
+
 ## settings-update-notifications (update notifications: sidebar entry, Notification Center, Update checks card; source pin `9227d61`)
 
 ```bash

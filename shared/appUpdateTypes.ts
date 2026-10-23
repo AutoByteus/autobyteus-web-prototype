@@ -24,7 +24,9 @@ export type AppUpdateOperation =
   | 'manual-check'
   | 'download'
   | 'install'
-  | 'updater-event';
+  | 'updater-event'
+  /** A periodic check while the app runs (update-checks-and-auto-updates): its failure stays quiet like the startup check. */
+  | 'auto-check';
 
 /** Desktop update channel: `beta` also receives pre-releases (vX.Y.Z-beta.N). */
 export type AppUpdateChannel = 'stable' | 'beta';
@@ -43,6 +45,12 @@ export interface AppUpdateNotification {
   handledVersion: string | null;
   /** GitHub release page of `version`; null when the release feed is not GitHub (the e2e test feed). */
   releasePageUrl: string | null;
+}
+
+/** The app's own periodic update check (REQ-012/013): on by default, every 60 minutes; 15 minutes to 24 hours. */
+export interface AppUpdateAutoCheck {
+  enabled: boolean;
+  intervalMinutes: number;
 }
 
 export interface AppUpdateState {
@@ -67,6 +75,13 @@ export interface AppUpdateState {
   errorOperation: AppUpdateOperation | null;
   checkedAt: string | null;
   notification: AppUpdateNotification | null;
+  autoCheck: AppUpdateAutoCheck;
+}
+
+/** Result of `app-update:set-auto-check`: `accepted: false` when the interval is out of range; the state is the current one. */
+export interface AppUpdateAutoCheckChangeResult {
+  accepted: boolean;
+  state: AppUpdateState;
 }
 
 /**

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { useToasts } from '~/composables/useToasts';
 import { localizationRuntime } from '~/localization/runtime/localizationRuntime';
-import type { AppUpdateChannel, AppUpdateState, AppUpdateStatus } from '~/shared/appUpdateTypes';
+import type { AppUpdateAutoCheck, AppUpdateChannel, AppUpdateState, AppUpdateStatus } from '~/shared/appUpdateTypes';
 import {
   buildAppUpdateErrorToastSignature,
   getAppUpdateErrorToastMessageKey,
@@ -40,6 +40,7 @@ const DEFAULT_STATE: AppUpdateStatePayload = {
   errorOperation: null,
   checkedAt: null,
   notification: null,
+  autoCheck: { enabled: true, intervalMinutes: 60 },
 };
 
 export const useAppUpdateStore = defineStore('appUpdate', {
@@ -189,6 +190,16 @@ export const useAppUpdateStore = defineStore('appUpdate', {
       }
     },
 
+    /** The app's own periodic check: its switch and interval (Settings → Updates). A refused interval leaves the old one. */
+    async setAutoCheck(settings: Partial<AppUpdateAutoCheck>): Promise<boolean> {
+      if (this.status === 'disabled' || !window.electronAPI?.setAppUpdateAutoCheck) {
+        return false;
+      }
+      const result = await window.electronAPI.setAppUpdateAutoCheck(settings);
+      this.applyRemoteState(result.state);
+      return result.accepted;
+    },
+
     /** The user saw the app update notification (the shell keeps its read state). */
     async markNotificationRead(): Promise<void> {
       if (!this.notification || this.notification.read || !window.electronAPI?.markAppUpdateNotificationRead) {
@@ -230,6 +241,7 @@ export const useAppUpdateStore = defineStore('appUpdate', {
       }
       this.checkedAt = payload.checkedAt ?? this.checkedAt;
       this.notification = payload.notification !== undefined ? payload.notification : this.notification;
+      this.autoCheck = payload.autoCheck ?? this.autoCheck;
 
       const isQuietError = isQuietStartupAppUpdateError(this);
 

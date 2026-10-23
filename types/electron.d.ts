@@ -1,5 +1,7 @@
 import type {
   AppUpdateChannel,
+  AppUpdateAutoCheck,
+  AppUpdateAutoCheckChangeResult,
   AppUpdateChannelChangeResult,
   AppUpdateState,
 } from '../shared/appUpdateTypes';
@@ -64,6 +66,7 @@ declare global {
       downloadAppUpdate: () => Promise<AppUpdateState>;
       installAppUpdateAndRestart: () => Promise<{ accepted: boolean }>;
       setAppUpdateChannel: (channel: AppUpdateChannel) => Promise<AppUpdateChannelChangeResult>;
+      setAppUpdateAutoCheck: (settings: Partial<AppUpdateAutoCheck>) => Promise<AppUpdateAutoCheckChangeResult>;
       markAppUpdateNotificationRead: () => Promise<AppUpdateState>;
       clearAppUpdateNotification: () => Promise<AppUpdateState>;
       onAppUpdateState: (callback: (updateState: AppUpdateState) => void) => Cleanup;

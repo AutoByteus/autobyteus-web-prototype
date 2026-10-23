@@ -7,12 +7,15 @@ import { useAgentPackagesStore } from '~/stores/agentPackagesStore'
 import { useSkillSourcesStore } from '~/stores/skillSourcesStore'
 import { useSkillStore } from '~/stores/skillStore'
 import { useSkillNamesStore } from '~/stores/skillNamesStore'
+import { AgentRuntimes } from '~/graphql/queries/agentRuntimesQueries'
+import { UpdateAgentRuntime } from '~/graphql/mutations/agentRuntimesMutations'
+import type { AgentRuntime } from '~/types/agentRuntimes'
 import {
   CLEAR_UPDATE_NOTIFICATION,
   GET_UPDATE_NOTIFICATIONS,
   MARK_UPDATE_NOTIFICATIONS_READ,
 } from '~/graphql/updateNotifications'
-import type { NodeUpdateNotification, NodeUpdateNotificationKind, UpdateNotificationKind } from '~/types/updateNotifications'
+import type { NodeUpdateNotification, NodeUpdateNotificationKind, UpdateNotificationKind, UpdateNotificationOutcome } from '~/types/updateNotifications'
 
 type SourceKind = Exclude<UpdateNotificationKind, 'app'>
 
@@ -30,7 +33,14 @@ export interface SourceNotificationRow {
   unread: boolean
   state: 'waiting' | 'updating' | 'failed' | 'handled'
   handledRevision: string | null
+  handledAt: string | null
   error: string | null
+  /** What an automatic update did (update-checks-and-auto-updates); null for a plain waiting or manually handled row. */
+  outcome: UpdateNotificationOutcome | null
+  /** The reason of an automatic failure (the node's or the vendor's message). */
+  outcomeReason: string | null
+  /** Runtimes: agents of that runtime running now. */
+  runningAgentCount: number
 }
 
 /** The app's own update in the Notification Center (desktop windows only). */
@@ -50,8 +60,10 @@ export interface AppNotificationRow {
 export type NotificationRow = SourceNotificationRow | AppNotificationRow
 export type NotificationSection = { kind: UpdateNotificationKind; rows: NotificationRow[] }
 
-const SOURCE_KINDS: Record<NodeUpdateNotificationKind, SourceKind> = { AGENT_PACKAGE: 'agent_package', SKILL_SOURCE: 'skill_source' }
-const NODE_KINDS: Record<SourceKind, NodeUpdateNotificationKind> = { agent_package: 'AGENT_PACKAGE', skill_source: 'SKILL_SOURCE' }
+const SOURCE_KINDS: Record<NodeUpdateNotificationKind, SourceKind> = { AGENT_PACKAGE: 'agent_package', SKILL_SOURCE: 'skill_source', AGENT_RUNTIME: 'agent_runtime' }
+const NODE_KINDS: Record<SourceKind, NodeUpdateNotificationKind> = { agent_package: 'AGENT_PACKAGE', skill_source: 'SKILL_SOURCE', agent_runtime: 'AGENT_RUNTIME' }
+/** How often a runtime's own update is read while the row says "Updating…". */
+const RUNTIME_POLL_MS = 1000
 type RowAction = { state: 'updating' | 'failed'; error: string | null }
 
 const errorMessage = (cause: unknown): string => cause instanceof Error ? cause.message : String(cause)
@@ -80,7 +92,11 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
     rowActions.value = {}
   })
 
-  const sourceRows = computed<SourceNotificationRow[]>(() => nodeNotifications.value.map((entry) => {
+  /** Agent runtimes exist only in windows of the desktop's own node (DEC-017); other windows never show the category. */
+  const showsRuntimes = computed(() => node.isEmbeddedWindow)
+  const sourceRows = computed<SourceNotificationRow[]>(() => nodeNotifications.value
+    .filter((entry) => entry.kind !== 'AGENT_RUNTIME' || showsRuntimes.value)
+    .map((entry) => {
     const kind = SOURCE_KINDS[entry.kind]
     const id = `${kind}:${entry.sourceId}`
     const action = rowActions.value[id]
@@ -88,8 +104,9 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
     return {
       id, kind, sourceId: entry.sourceId, name: entry.name, repositoryUrl: entry.repositoryUrl, branch: entry.defaultBranch,
       installedRevision: entry.installedRevision, latestRevision: entry.latestRevision, foundAt: entry.foundAt,
-      unread: waiting && !entry.read, state: !waiting ? 'handled' : action?.state ?? 'waiting',
-      handledRevision: entry.handledRevision, error: waiting ? action?.error ?? null : null,
+      unread: !entry.read && (waiting || entry.outcome === 'AUTO_UPDATED'), state: !waiting ? 'handled' : action?.state ?? 'waiting',
+      handledRevision: entry.handledRevision, handledAt: entry.handledAt, error: waiting ? action?.error ?? null : null,
+      outcome: entry.outcome ?? null, outcomeReason: entry.outcomeReason ?? null, runningAgentCount: entry.runningAgentCount ?? 0,
     }
   }))
 
@@ -125,7 +142,11 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
   const rows = computed<NotificationRow[]>(() => sections.value.flatMap((section) => section.rows))
   const waitingRows = computed(() => rows.value.filter((row) => row.state !== 'handled'))
   const waitingCount = computed(() => waitingRows.value.length)
-  const hasUnread = computed(() => waitingRows.value.some((row) => row.unread))
+  /** Rows an automatic update has already applied and the user has not seen: they keep the entry visible (REQ-008). */
+  const unreadOutcomeRows = computed(() => rows.value.filter((row) => row.state === 'handled' && row.kind !== 'app' && row.outcome === 'AUTO_UPDATED' && row.unread))
+  const hasUnread = computed(() => waitingRows.value.some((row) => row.unread) || unreadOutcomeRows.value.length > 0)
+  /** The entry shows while updates wait or an automatic outcome is unread, even when nothing waits (DEC-007). */
+  const hasEntry = computed(() => waitingCount.value > 0 || unreadOutcomeRows.value.length > 0)
   /** Waiting rows per kind, in section order, for the entry's type lines ("1 software update", …). */
   const waitingByKind = computed(() => sections.value
     .map((section) => [section.kind, section.rows.filter((row) => row.state !== 'handled').length] as const)
@@ -179,6 +200,37 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
     }
   }
 
+  /**
+   * A runtime's Update runs the vendor update of Settings → Agent Runtimes (REQ-021): refused by the node while that runtime
+   * has running agents; otherwise the row says "Updating…" until the update's own state is finished.
+   */
+  async function updateRuntime(row: SourceNotificationRow): Promise<void> {
+    if (row.state === 'updating' || row.state === 'handled' || row.runningAgentCount > 0) return
+    rowActions.value = { ...rowActions.value, [row.id]: { state: 'updating', error: null } }
+    const finish = (next: RowAction | null) => {
+      const { [row.id]: _done, ...rest } = rowActions.value
+      rowActions.value = next ? { ...rest, [row.id]: next } : rest
+    }
+    try {
+      const { data, errors } = await getApolloClient().mutate({ mutation: UpdateAgentRuntime, variables: { runtimeKind: row.sourceId } })
+      graphqlErrors(errors)
+      if (!data?.updateAgentRuntime) throw new Error('refused')
+      for (;;) {
+        await new Promise<void>((done) => setTimeout(done, RUNTIME_POLL_MS))
+        const read = await getApolloClient().query({ query: AgentRuntimes, fetchPolicy: 'network-only' })
+        const runtime = (read.data?.agentRuntimes as AgentRuntime[] | undefined)?.find((entry) => entry.runtimeKind === row.sourceId)
+        const operation = runtime?.operation
+        if (operation?.kind === 'UPDATE' && operation.state === 'RUNNING') continue
+        if (operation?.kind === 'UPDATE' && operation.state === 'FAILED') { finish({ state: 'failed', error: operation.error }); return }
+        break
+      }
+      await reload()
+      finish(null)
+    } catch (cause) {
+      finish({ state: 'failed', error: errorMessage(cause) === 'refused' ? null : errorMessage(cause) })
+    }
+  }
+
   /** Download (it re-checks first after a restart); a failure shows its message in the row. */
   async function downloadApp(): Promise<void> {
     const { app: _previous, ...rest } = rowActions.value
@@ -205,7 +257,7 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
   }
 
   return {
-    sections, rows, waitingCount, hasUnread, waitingByKind, isEmpty,
-    reload, markAllRead, updateSource, downloadApp, installApp: () => app.installUpdateAndRestart(), clear,
+    sections, rows, waitingCount, hasUnread, hasEntry, unreadOutcomeRows, waitingByKind, isEmpty,
+    reload, markAllRead, updateSource, updateRuntime, downloadApp, installApp: () => app.installUpdateAndRestart(), clear,
   }
 })

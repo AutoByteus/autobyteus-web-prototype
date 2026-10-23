@@ -14,6 +14,9 @@ export const UPDATE_NOTIFICATION_FIELDS = gql`
     state
     handledRevision
     handledAt
+    outcome
+    outcomeReason
+    runningAgentCount
   }
 `
 
@@ -60,6 +63,34 @@ export const SET_UPDATE_CHECKS_ENABLED = gql`
       enabled
       settingKey
       source
+    }
+  }
+`
+
+export const GET_UPDATE_AUTOMATION_SETTINGS = gql`
+  query GetUpdateAutomationSettings {
+    updateAutomationSettings {
+      packageIntervalMinutes
+      skillIntervalMinutes
+      runtimeIntervalMinutes
+      autoUpdatePackages
+      autoUpdateSkills
+      autoUpdateRuntimes
+      waitUntil
+    }
+  }
+`
+
+export const SET_UPDATE_AUTOMATION_SETTINGS = gql`
+  mutation SetUpdateAutomationSettings($input: UpdateAutomationSettingsInput!) {
+    setUpdateAutomationSettings(input: $input) {
+      packageIntervalMinutes
+      skillIntervalMinutes
+      runtimeIntervalMinutes
+      autoUpdatePackages
+      autoUpdateSkills
+      autoUpdateRuntimes
+      waitUntil
     }
   }
 `

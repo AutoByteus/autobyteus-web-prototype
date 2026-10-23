@@ -38,7 +38,7 @@ export function getAppUpdateErrorToastMessageKey(errorKind: AppUpdateErrorKind |
 export function isQuietStartupAppUpdateError(
   state: Pick<AppUpdateState, 'status' | 'errorOperation'>,
 ): boolean {
-  return state.status === 'error' && state.errorOperation === 'startup-check';
+  return state.status === 'error' && (state.errorOperation === 'startup-check' || state.errorOperation === 'auto-check');
 }
 
 export function buildAppUpdateErrorToastSignature(

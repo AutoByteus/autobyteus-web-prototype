@@ -61,18 +61,22 @@ export function installHostScenario(options = {}) {
   const checkedAt = '2026-08-22T04:05:00.000Z'
   // WEB-BASELINE-REFRESH-012: in the update-notification scenarios the desktop shell holds a waiting app update
   // (the Notification Center's "Software update" row). Its Download plays progress; nothing downloads.
-  const notifies = ['updates_waiting', 'updates_many'].includes(scenario)
+  const notifies = ['updates_waiting', 'updates_many', 'updates_off', 'updates_auto_on', 'updates_backoff', 'updates_discover'].includes(scenario)
   const hoursAgo = hours => new Date(Date.now() - hours * 3_600_000).toISOString()
   let update = {
     notification: notifies ? { version: '0.2.0-prototype', fromVersion: '0.1.0-prototype', foundAt: hoursAgo(2), read: false, state: 'waiting', handledVersion: null, releasePageUrl: 'https://github.com/synthetic-org/autobyteus-releases/releases/tag/v0.2.0-prototype' } : null,
-    status: scenario === 'update_available' || notifies ? 'available' : scenario === 'update_error' ? 'error' : 'idle',
+    // update-checks-and-auto-updates: Settings → Updates states: found by a check, checked and current, a failed periodic check, checks off.
+    status: scenario === 'update_available' || notifies ? 'available' : scenario === 'update_error' || scenario === 'update_check_failed' ? 'error'
+      : scenario === 'update_up_to_date' ? 'no-update' : 'idle',
     currentVersion: '0.1.0-prototype', availableVersion: scenario === 'update_available' || notifies ? '0.2.0-prototype' : null,
     downloadPercent: null, downloadTransferredBytes: null, downloadTotalBytes: null,
     releaseNotes: scenario === 'update_available' || notifies ? 'Synthetic review update.' : null,
     message: scenario === 'update_error' ? 'Synthetic update service unavailable.' : '',
-    errorKind: scenario === 'update_error' ? 'network' : null,
-    errorOperation: scenario === 'update_error' ? 'manual-check' : null,
-    checkedAt: scenario.startsWith('update_') ? checkedAt : null,
+    errorKind: scenario === 'update_error' || scenario === 'update_check_failed' ? 'network' : null,
+    errorOperation: scenario === 'update_error' ? 'manual-check' : scenario === 'update_check_failed' ? 'auto-check' : null,
+    checkedAt: scenario === 'update_up_to_date' ? hoursAgo(0.2) : scenario === 'update_check_failed' ? hoursAgo(0.4) : scenario.startsWith('update_') ? checkedAt : notifies ? hoursAgo(0.5) : null,
+    // The app's own periodic check (REQ-012/013): on by default, every 60 minutes. Nothing is requested; only the state is kept.
+    autoCheck: { enabled: scenario !== 'update_checks_off', intervalMinutes: 60 },
   }
   let browser = { activeTabId: 'browser-tab-1', sessions: [{ tab_id: 'browser-tab-1', title: 'Prototype browser', url: 'https://example.invalid/prototype', deviceEmulation: { mode: 'desktop', profile: null } }] }
   const emit = (key, value) => listeners[key].forEach(callback => callback(structuredClone(value)))
@@ -107,7 +111,10 @@ export function installHostScenario(options = {}) {
     closeBrowserShellSession: async id => setBrowser({ activeTabId: browser.activeTabId === id ? null : browser.activeTabId, sessions: browser.sessions.filter(tab => tab.tab_id !== id) }),
     onBrowserShellSnapshotUpdated: callback => cleanup(listeners.browser, callback),
     getAppUpdateState: async () => structuredClone(update),
-    checkForAppUpdates: async () => setUpdate({ status: 'available', availableVersion: '0.2.0-prototype', releaseNotes: 'Synthetic review update.', checkedAt }),
+    // A pressed "Check for Updates" works with automatic checks off; it reports the true result and time.
+    checkForAppUpdates: async () => ['update_up_to_date', 'update_checks_off', 'update_check_failed'].includes(scenario)
+      ? setUpdate({ status: 'no-update', availableVersion: null, errorKind: null, errorOperation: null, message: '', checkedAt: new Date().toISOString() })
+      : setUpdate({ status: 'available', availableVersion: '0.2.0-prototype', releaseNotes: 'Synthetic review update.', checkedAt: new Date().toISOString() }),
     downloadAppUpdate: async () => {
       if (!update.notification) return setUpdate({ status: 'downloaded', downloadPercent: 100, downloadTransferredBytes: 1024, downloadTotalBytes: 1024, message: 'Update downloaded.' })
       const started = setUpdate({ status: 'downloading', downloadPercent: 0, downloadTransferredBytes: 0, downloadTotalBytes: 1024, message: '' })
@@ -117,6 +124,12 @@ export function installHostScenario(options = {}) {
           : { status: 'downloaded', downloadPercent: 100, downloadTransferredBytes: 1024, downloadTotalBytes: 1024, message: 'Update downloaded.' }), step * 500)
       }
       return started
+    },
+    setAppUpdateAutoCheck: async settings => {
+      const next = { ...update.autoCheck, ...settings }
+      const valid = Number.isInteger(next.intervalMinutes) && next.intervalMinutes >= 15 && next.intervalMinutes <= 1440
+      if (!valid) return { accepted: false, state: structuredClone(update) }
+      return { accepted: true, state: setUpdate({ autoCheck: next }) }
     },
     markAppUpdateNotificationRead: async () => setUpdate({ notification: update.notification ? { ...update.notification, read: true } : null }),
     clearAppUpdateNotification: async () => setUpdate({ notification: null }),

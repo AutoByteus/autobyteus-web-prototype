@@ -35,7 +35,7 @@ const navigationOverlayStores = new Set(['agentRunConfig', 'agentSelection', 'te
 // WEB-BASELINE-REFRESH-010 (3126536): a run's delegated copies' model options, Save and Stop, too.
 // WEB-BASELINE-REFRESH-012 (origin/personal@9e7a458): the Notification Center, the "Update checks" setting, Remote
 // Collaboration and their stores run the source's own code against the local fixtures too.
-const sourceLoadedStores = new Set(['nodeList', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft'])
+const sourceLoadedStores = new Set(['nodeList', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),
@@ -781,7 +781,11 @@ export default defineNuxtPlugin({
         // WEB-BASELINE-REFRESH-010: a live stored run's stream (live_runs scenario) answers with the same
         // frames the observation node plays (prototype/source-observation/live-streams.mjs).
         // WEB-BASELINE-REFRESH-012: the update-notifications feed greets the connection (the window reads on it).
-        if (new URL(this.url, window.location.href).pathname === '/ws/update-notifications') setTimeout(() => this.emit({ type: 'connected' }), 20)
+        if (new URL(this.url, window.location.href).pathname === '/ws/update-notifications') {
+          setTimeout(() => this.emit({ type: 'connected' }), 20)
+          // update-checks-and-auto-updates: the node's scripted passes tell the window to read again (the product's change feed).
+          window.addEventListener('prototype-update-notifications-changed', () => this.emit({ type: 'update_notifications_changed' }))
+        }
         const liveFrames = liveStreamFrames(localFixtureState, this.url)
         if (liveFrames) setTimeout(() => { for (const frame of liveFrames) this.emit(frame) }, 20)
         // remote-runs-in-tree: the delegating node streams the copies on another node like its own.

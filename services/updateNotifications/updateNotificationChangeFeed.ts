@@ -1,6 +1,7 @@
 import { watch } from 'vue'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 import { useUpdateNotificationsStore } from '~/stores/updateNotificationsStore'
+import { useUpdateAutomationStore } from '~/stores/updateAutomationStore'
 import { buildAuthenticatedWebSocketUrl } from '~/utils/remoteAccess/websocketAuth'
 import { getActiveRemoteAccessCredential } from '~/utils/remoteAccess/authorizedTransport'
 import { NodeChangeFeed, type NodeChangeSocket } from '~/services/nodeChangeFeed/nodeChangeFeed'
@@ -41,7 +42,7 @@ export const getUpdateNotificationChangeFeed = (): UpdateNotificationChangeFeed 
       try { return buildAuthenticatedWebSocketUrl(node.getBoundEndpoints().updateNotificationsWs, getActiveRemoteAccessCredential() ?? '') }
       catch { return null }
     },
-    deliver: () => { void useUpdateNotificationsStore().reload() },
+    deliver: () => { void useUpdateNotificationsStore().reload(); void useUpdateAutomationStore().refresh() },
   })
   watch(() => node.bindingRevision, () => created.rebind())
   feed = created
