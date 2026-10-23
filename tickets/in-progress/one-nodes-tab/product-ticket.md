@@ -39,7 +39,7 @@
   - One row in every state: scenario `nodes_states`.
   - Browser (no Open): remove the `autobyteus.prototype.context` key.
   - Chinese: `localStorage['autobyteus.localization.preference-mode']='zh-CN'`.
-- Try, in the desktop window: Add node → `http://localhost:8003`, name `8003`, leave the box unticked → turn the row's Agents switch on → read the confirmation → Turn on → the row opens and shows both directions and 8003's Agents and Agent Teams. Then: add `localhost:8005` with the box ticked (8005 goes away mid-way: the partial state, then Try again after ~8 s); add `localhost:8004` (the Docker address hint with Use this); ⋯ → Rename / Remove; the This node switch off and on.
+- Try, in the desktop window: type `http://localhost:8003` and `8003` in the always-open form (the switch next to the name is on by default) → confirm → read the confirmation → Turn on → the row opens and shows both directions and 8003's Agents and Agent Teams. Then: add `localhost:8005` with the box ticked (8005 goes away mid-way: the partial state, then Try again after ~8 s); add `localhost:8004` (the Docker address hint with Use this); ⋯ → Rename / Remove; the This node switch off and on.
 
 - Round 1 feedback (user, 2026-10-22): the Agents switch is hard to understand; adding a node should connect agents without a separate toggle. Applied as option B (DC-714): the Add form's box is ticked by default with clearer words, the one confirmation still follows (it changes the other node), and an unconnected row says so in plain words with a Turn on button. **Requirement impact for the Solution Designer:** REQ-704 / DEC-707 (collaboration off by default when adding) is replaced by "ticked by default, confirmed once"; QR-702 (explicit confirmation) still holds. Waiting for the user's look and approval of this version.
 - Round 1 feedback 2 (user, 2026-10-22): the ⋯ menu for Rename and Remove is not clean. Applied (DC-715): click the name to rename (Enter saves); Remove is a plain line in the expanded row. No menu.
@@ -47,6 +47,7 @@
 - Round 1 feedback 4 (user, 2026-10-23): one icon for remote collaboration in the section and on each row. Applied (DC-717).
 - Round 1 feedback 5 (user, 2026-10-23): Open as an icon. Applied (DC-718).
 - Round 1 feedback 6 (user, 2026-10-23): counts of Agents and Teams under the bar once collaboration is on (click for details), no left chevron, bigger Open and Remove. Applied (DC-719).
+- Round 1 feedback 7 (user, 2026-10-23): the add inputs always visible; the collaboration toggle to the right of the name. Applied (DC-720).
 
 ## Outcome And Handoff
 

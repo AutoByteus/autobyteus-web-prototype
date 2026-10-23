@@ -1,20 +1,13 @@
 <template>
   <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" data-testid="node-list-card">
-    <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-slate-200 bg-slate-50 px-5 py-4">
+    <div class="border-b border-slate-200 bg-slate-50 px-5 py-4">
       <div class="min-w-0">
         <h3 class="text-sm font-semibold text-gray-900">{{ t(k('list.title')) }}</h3>
         <p class="mt-0.5 text-xs text-gray-500">{{ t(k('list.description')) }}</p>
       </div>
-      <button
-        v-if="!adding"
-        type="button"
-        class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
-        data-testid="node-list-add"
-        @click="adding = true"
-      >{{ t(k('list.add')) }}</button>
     </div>
 
-    <AddNodePanel v-if="adding" @close="adding = false" />
+    <AddNodePanel />
 
     <div
       v-if="store.banner"
@@ -38,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import AddNodePanel from '~/components/settings/nodes/AddNodePanel.vue'
 import NodeChangeDialog from '~/components/settings/nodes/NodeChangeDialog.vue'
 import NodeRow from '~/components/settings/nodes/NodeRow.vue'
@@ -48,7 +41,6 @@ import { useNodeListStore } from '~/stores/nodeListStore'
 const emit = defineEmits<{ guide: [] }>()
 const { t, k, causeText } = useNodeText()
 const store = useNodeListStore()
-const adding = ref(false)
 
 const bannerText = computed(() => {
   const banner = store.banner
