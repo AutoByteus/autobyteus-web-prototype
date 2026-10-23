@@ -133,3 +133,8 @@
   exactly as in 209 (the accepted state). Both attempts are removed from the reference.
 - PQ-2: the skill-source update confirmation opened from the panel sits above the panel (z-100; the panel is z-90), so it no
   longer overlaps below ~1100 px. `ConfirmationModal` gained an optional `layerClass` (default unchanged, `z-50`).
+
+### Round 7 (2026-10-23) — fewer words in Update checks
+
+- The user: far too many words. The card now has one-line summaries, a two-sentence network note plus three one-line "Contacts",
+  one interval note, one-line switch explanations, a one-sentence back-off line. Settings → Updates description cut the same way.

@@ -12,7 +12,7 @@
       <div class="flex items-start justify-between gap-4">
         <span class="min-w-0">
           <span :id="labelId" class="block text-sm font-semibold text-gray-900">{{ $t('settings.notifications.setting.label') }}</span>
-          <span :id="descriptionId" class="mt-1 block text-sm leading-6 text-gray-600" data-testid="update-checks-description">{{ $t('settings.notifications.setting.description') }}</span>
+          <span :id="descriptionId" class="mt-0.5 block text-sm leading-6 text-gray-600" data-testid="update-checks-description">{{ $t('settings.notifications.setting.description') }}</span>
         </span>
         <button
           type="button"
@@ -30,9 +30,9 @@
         </button>
       </div>
 
-      <div class="mt-3 border-t border-slate-200 pt-3" data-testid="update-checks-network">
+      <div class="mt-2.5 border-t border-slate-200 pt-2.5" data-testid="update-checks-network">
         <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">{{ $t('settings.notifications.setting.network.title') }}</p>
-        <ul class="mt-1.5 space-y-1 text-[13px] leading-5 text-gray-600">
+        <ul class="mt-1 space-y-0.5 text-[13px] leading-5 text-gray-600">
           <li class="flex gap-2"><span class="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-gray-400" aria-hidden="true" />{{ $t('settings.notifications.setting.network.packages') }}</li>
           <li v-if="ownsRuntimes" class="flex gap-2" data-testid="update-checks-network-runtimes"><span class="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-gray-400" aria-hidden="true" />{{ $t('settings.notifications.setting.network.runtimes') }}</li>
           <li class="flex gap-2"><span class="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-gray-400" aria-hidden="true" />{{ $t('settings.notifications.setting.network.updates') }}</li>
