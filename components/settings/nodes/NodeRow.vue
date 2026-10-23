@@ -78,10 +78,15 @@
         <button
           v-if="canOpen"
           type="button"
-          class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          :title="t(k('row.openNode'), { name: row.name })"
+          :aria-label="t(k('row.openNode'), { name: row.name })"
           :data-testid="`node-open-${row.key}`"
           @click="store.openNode(row.key)"
-        >{{ t('settings.components.settings.NodeManager.open') }}</button>
+        >
+          <svg class="h-[18px] w-[18px]" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M11 3.5h5.5V9M16.2 3.8 9.5 10.5M8 4.5H5.5A2 2 0 0 0 3.5 6.5v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V12" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
+        <span v-else class="inline-block h-8 w-8" aria-hidden="true" />
 
         <button
           v-if="!row.isEmbedded"

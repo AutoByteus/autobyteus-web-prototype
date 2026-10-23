@@ -139,6 +139,7 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.line.agentsOff': "Agents here can't work with {{name}} yet.",
   'settings.components.settings.NodesPage.banner.addedUnreachableCollab': "Added. {{name}} isn't reachable now, so agents can't work with it yet.",
   'settings.components.settings.NodesPage.row.removeNode': 'Remove {{name}}',
+  'settings.components.settings.NodesPage.row.openNode': 'Open {{name}} in its own window',
 } satisfies TranslationCatalog;
 
 export default nodesPageMessages;

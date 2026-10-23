@@ -45,6 +45,7 @@
 - Round 1 feedback 2 (user, 2026-10-22): the ⋯ menu for Rename and Remove is not clean. Applied (DC-715): click the name to rename (Enter saves); Remove is a plain line in the expanded row. No menu.
 - Round 1 feedback 3 (user, 2026-10-23): keep Remove visible and move the expand chevron to the left. Applied (DC-716): chevron on the left; a quiet trash icon at the right end of the row opens the confirmation.
 - Round 1 feedback 4 (user, 2026-10-23): one icon for remote collaboration in the section and on each row. Applied (DC-717).
+- Round 1 feedback 5 (user, 2026-10-23): Open as an icon. Applied (DC-718).
 
 ## Outcome And Handoff
 
