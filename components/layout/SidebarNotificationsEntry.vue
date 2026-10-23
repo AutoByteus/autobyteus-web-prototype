@@ -16,7 +16,7 @@
       @click="toggle"
     >
       <span aria-hidden="true">{{ plural(outcomeOnly ? 'settings.notifications.sidebar.updated.short' : 'settings.notifications.sidebar.updates.short', count) }}</span>
-      <span v-if="!center.isOpen" class="invisible absolute bottom-full right-0 z-50 mb-2 whitespace-nowrap rounded bg-gray-900 px-2.5 py-1.5 text-left text-xs font-normal leading-5 text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100 group-focus-visible:visible group-focus-visible:opacity-100" aria-hidden="true" data-test="sidebar-notifications-tooltip">
+      <span v-if="!center.isOpen" class="invisible absolute right-0 z-50 whitespace-nowrap rounded bg-gray-900 px-2.5 py-1.5 text-left text-xs font-normal leading-5 text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100 group-focus-visible:visible group-focus-visible:opacity-100" aria-hidden="true" :class="props.tooltip === 'below' ? 'top-full mt-2' : 'bottom-full mb-2'" data-test="sidebar-notifications-tooltip">
         <span v-for="line in kindLines" :key="line" class="block">{{ line }}</span>
       </span>
     </button>
@@ -47,7 +47,7 @@ import { Icon } from '@iconify/vue'
 import { useNotificationCenterStore } from '~/stores/notificationCenterStore'
 import { useUpdateNotificationsStore } from '~/stores/updateNotificationsStore'
 
-defineProps<{ variant: 'inline' | 'strip' }>()
+const props = withDefaults(defineProps<{ variant: 'inline' | 'strip'; tooltip?: 'above' | 'below' }>(), { tooltip: 'above' })
 const { t } = useLocalization()
 const notifications = useUpdateNotificationsStore()
 const center = useNotificationCenterStore()

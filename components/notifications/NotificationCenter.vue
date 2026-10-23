@@ -40,7 +40,7 @@
     </transition>
 
     <!-- A skill source's Update keeps its existing confirmation (local edits are replaced). -->
-    <SkillSourceUpdateConfirmation :show="!!confirming" :source="confirmingTarget" @confirm="confirmSkillUpdate" @cancel="confirming = null" />
+    <SkillSourceUpdateConfirmation layer-class="z-[100]" :show="!!confirming" :source="confirmingTarget" @confirm="confirmSkillUpdate" @cancel="confirming = null" />
   </Teleport>
 </template>
 
