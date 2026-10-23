@@ -1,7 +1,7 @@
 import type { TranslationCatalog } from '../../runtime/types';
 
 // remote-runs-in-tree: runs another node runs for this node's delegation. The English strings are
-// normative UI copy (tickets/in-progress/remote-runs-in-tree/ui-ux-spec.md).
+// normative UI copy (tickets/done/remote-runs-in-tree/ui-ux-spec.md).
 const remoteRunsMessages = {
   'remote.chip.label': 'Runs on {{node}}',
   'remote.row.accessible': 'on {{node}}',

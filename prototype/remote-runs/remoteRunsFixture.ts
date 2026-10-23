@@ -153,7 +153,7 @@ const CONVERSATIONS: Record<string, any[]> = {
     fromManager(RESEARCHER_TITLE, 3),
     { kind: 'tool_call', invocationId: 'rm-inv-2', toolName: 'web_search', toolArgs: { query: 'AI desktop agent app pricing 2026' },
       toolResult: 'Three comparable products; two changed their tiers in October.', ts: at(4) },
-    { kind: 'message', role: 'assistant', content: 'The pricing table is ready. Two competitors changed their tiers in October; the summary sits at the top of the sheet.', ts: at(5) },
+    { kind: 'message', role: 'assistant', content: 'The pricing table is ready: /workspace/pricing/competitors.csv. Two competitors changed their tiers in October; the summary sits at the top of the sheet.', ts: at(5) },
   ],
   'ptm-trn-0001': [fromManager('Translate the release notes into Chinese and German', 3)],
   'ptm-vid-0001': [

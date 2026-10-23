@@ -5,13 +5,13 @@
 - Ticket / request ID: `remote-runs-in-tree` (AutoByteus engineering Task `autobyteus-278`; engineering branch `codex/remote-runs-in-tree`)
 - Title: Show a run delegated to another node under its delegator in the run tree; open it and talk to it
 - Mode: `Product Experience Design` (it evolves the accepted run tree and run view)
-- Status: `Awaiting User Review`
+- Status: `Completed` (user approval 2026-10-23: "Yeah, I think we're good. This looks perfect, I have to say. Yeah, it's done.")
 - Requester: Solution Designer `solution_designer_fb26ec003e5d477c8604e2b140ba926c`, for the user ("good contact it to work on the UI now", 2026-10-23)
 - Related requirements: `requirements-doc.md` (SR-002): UC-801…804, REQ-801…807, BEH-801…805, AC-801…807, DEC-801…807
 - Critical journey: in the Workspaces tree the user's Project Task Manager run shows the Marketing Team it delegated to the node "docker" under it, like a local copy, marked with a computer icon and "docker", with its title and status; the user opens it, follows its conversation live, sends it a message and gets its answer; its Files, Terminal and Artifacts say it is on docker; an unreachable node shows a plain error and the rest of the tree works.
-- Decisions to resolve with the user: DEC-804 (Stop on a remote row); the form of the node marker; PA-803/PA-805.
+- Decisions resolved with the user: the node marker's form (chip left of the team icon and name; summary under the node's name; DC-801/802); **DEC-804 decided yes** by his approval of the design with the stop square shown (he was asked twice and gave no separate yes/no); PA-803/PA-805 shown and unchanged.
 - Non-goals: files, terminal, workspace of remote runs; reconnecting and catch-up; messaging unlinked runs; attachments across nodes; the mobile shell.
-- Authority files (read-only): `/Users/normy/autobyteus_org/autobyteus-worktrees/remote-runs-in-tree/tickets/in-progress/remote-runs-in-tree/{handoff-product-design,requirements-doc,investigation-notes}.md`
+- Authority files (read-only): `/Users/normy/autobyteus_org/autobyteus-worktrees/remote-runs-in-tree/tickets/done/remote-runs-in-tree/{handoff-product-design,requirements-doc,investigation-notes}.md`
 
 ## Design & Repository Context
 
@@ -22,8 +22,8 @@
 - Source: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`, `autobyteus-web`; engineering worktree `/Users/normy/autobyteus_org/autobyteus-worktrees/remote-runs-in-tree` (read only) at `ffa2390275` (base `origin/personal@3b09fbe308`)
 - Pinned source revision of the baseline: `origin/personal@9e7a45880865912442f4188e6d2a58d99b10a54c` (`ui-baseline-report.md`, `WEB-BASELINE-REFRESH-012`), plus the accepted `delegated-copy-task-locator`, `agent-definition-reconnect-ui` and `one-nodes-tab` designs
 - Baseline check for this request (no refresh needed): between `9e7a458` and the engineering worktree, `components/workspace`, `components/conversation`, `components/layout`, `components/chat` have no change; `utils/runTreeProjection.ts` changes one line (the stored title is resolved for display, 269), which is data, not markup; the other changed files (Project Task comments, Nodes page, Agent Runtimes strings) are surfaces this design does not touch.
-- Integration: `Pending`
-- Ticket folder: `tickets/in-progress/remote-runs-in-tree/`
+- Integration: see Final Integration below
+- Ticket folder: `tickets/done/remote-runs-in-tree/`
 
 ## Runtime isolation
 
@@ -42,11 +42,18 @@
 
 ## Outcome And Handoff
 
-- Next expected action: the user reviews the UI reference and answers DEC-804 and the review questions; then final screenshots and `ui-ux-spec.md`.
+- Next expected action: the Solution Designer integrates `ui-ux-spec.md` and the 21 final references into the requirements and starts the architecture design.
 - Handoff target on completion: Solution Designer `solution_designer_fb26ec003e5d477c8604e2b140ba926c`.
 
 ## Delivery And Validation
 
-- Supporting: `design-change-log.md` (DC-801 … DC-811), `design-assumptions.md` (PA-801 … PA-809). `ui-ux-spec.md` and the final `visual-references/` follow the user's approval.
+- UI/UX specification: `ui-ux-spec.md` (Approved). Final references: `visual-references/VIS-001 … VIS-021`. Supporting: `design-change-log.md` (DC-801 … DC-811), `design-assumptions.md` (PA-801 … PA-809).
 - Runnable UI reference entry point: `/workspace`; scenarios `remote_runs`, `remote_states`; fixture `prototype/remote-runs/remoteRunsFixture.ts`.
+- User-confirmation reference: the user's message "Yeah, I think we're good. This looks perfect, I have to say. Yeah, it's done.", 2026-10-23, in the Product UI/UX Designer conversation.
+- Final check (designer, in the browser, no committed scripts; disposable Playwright scripts in `/tmp`): the approved journeys through the normal entry point `/workspace` with the default data (tree, open, live update, send and answer, Files/Terminal/Activity, file path, Stop, not reachable, Retry, failed send), every state in `remote_states`, run settings, Chinese, and the 390 px layout. A gap found in the final pass (the narrow capture cut off before the remote rows) was re-captured.
+- Baseline status: applicable accepted baseline `ui-baseline-report.md` (`WEB-BASELINE-REFRESH-012`) plus the accepted designs listed above; no refresh or correction was needed.
 - Data-boundary check: every node, run, title, conversation, timing and failure is invented in `prototype/remote-runs/remoteRunsFixture.ts` (and the existing `delegatedCopyTasksFixture.ts`); nothing real, captured or replayed.
+
+## Final Integration
+
+- Integration: `Pending`
