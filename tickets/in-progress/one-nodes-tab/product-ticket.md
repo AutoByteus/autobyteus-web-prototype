@@ -43,6 +43,7 @@
 
 - Round 1 feedback (user, 2026-10-22): the Agents switch is hard to understand; adding a node should connect agents without a separate toggle. Applied as option B (DC-714): the Add form's box is ticked by default with clearer words, the one confirmation still follows (it changes the other node), and an unconnected row says so in plain words with a Turn on button. **Requirement impact for the Solution Designer:** REQ-704 / DEC-707 (collaboration off by default when adding) is replaced by "ticked by default, confirmed once"; QR-702 (explicit confirmation) still holds. Waiting for the user's look and approval of this version.
 - Round 1 feedback 2 (user, 2026-10-22): the ⋯ menu for Rename and Remove is not clean. Applied (DC-715): click the name to rename (Enter saves); Remove is a plain line in the expanded row. No menu.
+- Round 1 feedback 3 (user, 2026-10-23): keep Remove visible and move the expand chevron to the left. Applied (DC-716): chevron on the left; a quiet trash icon at the right end of the row opens the confirmation.
 
 ## Outcome And Handoff
 

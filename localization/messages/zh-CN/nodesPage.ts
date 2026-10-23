@@ -138,7 +138,7 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.detail.emptyOffer': '{{name}} 没有共享任何智能体或智能体团队。',
   'settings.components.settings.NodesPage.line.agentsOff': '本节点上的智能体暂时无法与 {{name}} 协作。',
   'settings.components.settings.NodesPage.banner.addedUnreachableCollab': '已添加。{{name}} 当前不可达，因此智能体暂时无法与它协作。',
-  'settings.components.settings.NodesPage.row.removeNode': '移除 {{name}}…',
+  'settings.components.settings.NodesPage.row.removeNode': '移除 {{name}}',
 } satisfies TranslationCatalog;
 
 export default nodesPageMessages;
