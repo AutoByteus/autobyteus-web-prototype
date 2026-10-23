@@ -89,3 +89,8 @@
     the switch and its text sit between the card header and the rows, closed by a hairline;
   - the fixed title row sits on the grey with a hairline under it.
   - A translucent first try let the page tabs show through the title; the surface is opaque.
+
+### Decision (2026-10-23)
+
+- A package whose automatic update was skipped for local changes: its manual Update runs without a confirmation (the row
+  already says "Update replaces them"). The user: no confirmation. Skill sources keep their existing confirmation.
