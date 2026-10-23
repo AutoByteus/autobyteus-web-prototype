@@ -9,7 +9,7 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.collab.off': '关',
   'settings.components.settings.NodesPage.collab.saving': '保存中…',
   'settings.components.settings.NodesPage.collab.offNote': '默认关闭。关闭时，本节点不会联系其他节点，也会拒绝它们的请求。',
-  'settings.components.settings.NodesPage.rules.title': '对端的运行如何进行',
+  'settings.components.settings.NodesPage.rules.title': '远程协作如何运作',
   'settings.components.settings.NodesPage.rules.lead': '开启远程协作后，你允许智能体与之协作的节点可以启动本节点任何共享的智能体或智能体团队。',
   'settings.components.settings.NodesPage.rules.runtime': '每个智能体使用自己的默认运行时和模型；没有默认值的团队成员使用其团队的默认值。',
   'settings.components.settings.NodesPage.rules.workspace': '它在本节点的临时工作区中运行，且该次运行中每个智能体的工具调用都会自动批准。',

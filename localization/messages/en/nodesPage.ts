@@ -9,7 +9,7 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.collab.off': 'Off',
   'settings.components.settings.NodesPage.collab.saving': 'Saving…',
   'settings.components.settings.NodesPage.collab.offNote': 'Off by default. While it is off, this node asks no other node and refuses their requests.',
-  'settings.components.settings.NodesPage.rules.title': "How peers' runs work",
+  'settings.components.settings.NodesPage.rules.title': 'How remote collaboration works',
   'settings.components.settings.NodesPage.rules.lead': 'With remote collaboration on, a node you let agents work with can start any shared Agent or Agent Team of this node.',
   'settings.components.settings.NodesPage.rules.runtime': "Each agent runs with its own default runtime and model; a team member without one uses its team's default.",
   'settings.components.settings.NodesPage.rules.workspace': "It runs in this node's temp workspace, and every agent of the run has its tool calls auto-approved.",
