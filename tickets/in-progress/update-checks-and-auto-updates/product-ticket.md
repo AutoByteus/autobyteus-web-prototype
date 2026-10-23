@@ -126,11 +126,10 @@
 - Seeds: `updates_auto_on` shows an automatic update of a package and of a skill source (unread), a failed package, a failed
   runtime, a runtime waiting for agents.
 
-### Round 6 (2026-10-23) — PQ-1 and PQ-2 approved by the user ("yes, implement it so I can have a look")
+### Round 6 (2026-10-23) — PQ-1 tried and rejected; PQ-2 adopted
 
-- PQ-1: Settings pages show the entry. The user rejected a "Notifications" row with a text pill in the Settings navigation
-  ("ugly"). Now: the collapsed sidebar's icon-and-count badge, alone, in a small white bordered button at the top right of the
-  Settings page (where the panel opens); same rule (shown while updates wait or an automatic update is unread), same panel, the
-  tooltip opens below-left. Needs a requirements revision (outside SR-003); reported with the final package.
+- PQ-1: **not adopted.** The user tried a Notifications row with a pill in the Settings navigation ("ugly") and then an
+  icon-and-count button at the top right of Settings ("not clean"), and asked to remove both. Settings pages keep no indicator,
+  exactly as in 209 (the accepted state). Both attempts are removed from the reference.
 - PQ-2: the skill-source update confirmation opened from the panel sits above the panel (z-100; the panel is z-90), so it no
   longer overlaps below ~1100 px. `ConfirmationModal` gained an optional `layerClass` (default unchanged, `z-50`).

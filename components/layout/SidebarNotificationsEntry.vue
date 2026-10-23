@@ -16,7 +16,7 @@
       @click="toggle"
     >
       <span aria-hidden="true">{{ plural(outcomeOnly ? 'settings.notifications.sidebar.updated.short' : 'settings.notifications.sidebar.updates.short', count) }}</span>
-      <span v-if="!center.isOpen" class="invisible absolute right-0 z-50 whitespace-nowrap rounded bg-gray-900 px-2.5 py-1.5 text-left text-xs font-normal leading-5 text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100 group-focus-visible:visible group-focus-visible:opacity-100" aria-hidden="true" :class="props.tooltip === 'below' ? 'top-full mt-2' : 'bottom-full mb-2'" data-test="sidebar-notifications-tooltip">
+      <span v-if="!center.isOpen" class="invisible absolute bottom-full right-0 z-50 mb-2 whitespace-nowrap rounded bg-gray-900 px-2.5 py-1.5 text-left text-xs font-normal leading-5 text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100 group-focus-visible:visible group-focus-visible:opacity-100" aria-hidden="true" data-test="sidebar-notifications-tooltip">
         <span v-for="line in kindLines" :key="line" class="block">{{ line }}</span>
       </span>
     </button>
@@ -33,7 +33,7 @@
     >
       <Icon icon="heroicons:arrow-down-circle" class="h-5 w-5" aria-hidden="true" />
       <span class="absolute right-0 top-0 min-w-[16px] rounded-full bg-sky-700 px-1 text-center text-[10px] font-semibold leading-4 text-white ring-2 ring-white" aria-hidden="true">{{ count }}</span>
-      <span v-if="!center.isOpen" :class="props.tooltip === 'below' ? 'right-0 top-full mt-2' : 'left-full ml-2'" class="invisible absolute z-50 whitespace-nowrap rounded bg-gray-900 px-2.5 py-1.5 text-left text-xs leading-5 text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100 group-focus-visible:visible group-focus-visible:opacity-100" aria-hidden="true">
+      <span v-if="!center.isOpen" class="invisible absolute left-full z-50 ml-2 whitespace-nowrap rounded bg-gray-900 px-2.5 py-1.5 text-left text-xs leading-5 text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100 group-focus-visible:visible group-focus-visible:opacity-100" aria-hidden="true">
         <span class="block font-medium">{{ summary }}</span>
         <span v-for="line in kindLines" :key="line" class="block text-gray-300">{{ line }}</span>
       </span>
@@ -47,7 +47,7 @@ import { Icon } from '@iconify/vue'
 import { useNotificationCenterStore } from '~/stores/notificationCenterStore'
 import { useUpdateNotificationsStore } from '~/stores/updateNotificationsStore'
 
-const props = withDefaults(defineProps<{ variant: 'inline' | 'strip'; tooltip?: 'above' | 'below' }>(), { tooltip: 'above' })
+defineProps<{ variant: 'inline' | 'strip' }>()
 const { t } = useLocalization()
 const notifications = useUpdateNotificationsStore()
 const center = useNotificationCenterStore()

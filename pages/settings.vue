@@ -1,14 +1,9 @@
 <template>
   <div
-    class="relative flex h-full min-w-0 flex-col bg-white md:flex-row"
+    class="flex h-full min-w-0 flex-col bg-white md:flex-row"
     data-testid="settings-page-layout"
     :style="navigationWidthStyle"
   >
-    <!-- update-checks-and-auto-updates (PQ-1): the same icon-and-count entry as the collapsed sidebar, at the top right where the panel opens. -->
-    <div class="absolute right-4 top-3 z-30 rounded-lg border border-gray-200 bg-white shadow-sm [&>button]:mb-0" data-testid="settings-notifications-entry">
-      <SidebarNotificationsEntry variant="strip" tooltip="below" />
-    </div>
-
     <!-- Sidebar -->
     <div
       ref="navigationRef"
@@ -306,7 +301,6 @@ import { useServerStore } from '~/stores/serverStore';
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
 import ProviderAPIKeyManager from '~/components/settings/ProviderAPIKeyManager.vue';
 import AgentRuntimesManager from '~/components/settings/agent-runtimes/AgentRuntimesManager.vue';
-import SidebarNotificationsEntry from '~/components/layout/SidebarNotificationsEntry.vue';
 import TokenUsageStatistics from '~/components/settings/TokenUsageStatistics.vue';
 import ServerSettingsManager from '~/components/settings/ServerSettingsManager.vue';
 import ExtensionsManager from '~/components/settings/ExtensionsManager.vue';
