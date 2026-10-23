@@ -56,4 +56,8 @@
 
 ## Final Integration
 
-- Integration: `Pending`
+- Integration: `Completed` (2026-10-23)
+- Design result commit: `f828ca5` (spec, 21 final references, runbook, UI reference); ticket-record fix `e71e5d2`; this record follows. Pushed to `origin/personal` as fast-forwards from `design/remote-runs-in-tree` (base `feed5c653e31692235c64680e7963e73afd27f6e`, no advance in between); the canonical checkout `/Users/normy/autobyteus_org/autobyteus-web-design` was fast-forwarded to it.
+- Default-entry-point check after integration: the canonical checkout started on port 4902 shows `/workspace` → Project Task Manager with three remote rows (three node chips), opens the marketing team's coordinator with the header chip, and the streamed tool call arrives; no preview URL or switch (the default data carries the remote runs).
+- Runtime: ports 4901 (ticket worktree) and 4902 (canonical check) stopped.
+- Cleanup: the ticket worktree and branch `design/remote-runs-in-tree` removed after this record is integrated.
