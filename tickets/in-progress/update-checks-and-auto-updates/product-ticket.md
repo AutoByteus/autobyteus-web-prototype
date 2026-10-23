@@ -79,3 +79,13 @@
 - Changed: the panel opens at the right edge of the window, 8 px from the top and right, from either entry (docked pill or
   collapsed-strip icon); it slides in from the right (150 ms); max height is the window's height minus 16 px. It covers the
   right tool panel while open. Fixed title row stays.
+
+### Round 4 (2026-10-23) — a clearer boundary and background
+
+- The user: clean, but no clear boundary or background that fits a notification centre.
+- Changed (this reverses 209's "one white sheet, no nested cards", at the user's request):
+  - the panel is a solid `slate-200` surface with a `slate-300` border, `shadow-2xl` and a faint ring, 368 px wide;
+  - each category is a white `rounded-xl` card with a hairline border and a light shadow; rows inside are divided by hairlines;
+    the switch and its text sit between the card header and the rows, closed by a hairline;
+  - the fixed title row sits on the grey with a hairline under it.
+  - A translucent first try let the page tabs show through the title; the surface is opaque.

@@ -3,7 +3,7 @@
        (the panel) and in the Update checks card (the full home). One setting: both places read and write the same store.
        `panel`: a quiet well under the section header; `card`: a row of the card's inner list. -->
   <div
-    :class="variant === 'panel' ? 'mb-1 mt-1' : 'px-4 py-3.5'"
+    :class="variant === 'panel' ? 'mt-1 border-b border-gray-100 pb-2.5' : 'px-4 py-3.5'"
     :data-testid="`auto-update-${kind}`"
     :data-variant="variant"
   >

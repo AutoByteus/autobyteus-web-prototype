@@ -1,20 +1,20 @@
 <template>
   <!-- One section per kind of update: a small grey header (the kind's icon and name) and its rows. Long lists show
        the first three and "Show N more". -->
-  <li class="px-4 pb-1.5 pt-3" :data-testid="`notification-section-${section.kind}`">
+  <li class="rounded-xl border border-slate-200/80 bg-white px-4 pb-1 pt-3 shadow-[0_1px_2px_rgba(15,23,42,0.08)]" :data-testid="`notification-section-${section.kind}`">
     <h3 :id="headingId" class="flex items-center gap-1.5 text-xs font-medium leading-5 text-gray-500" data-testid="notification-section-title">
       <Icon :icon="KIND_ICONS[section.kind]" class="h-4 w-4 flex-shrink-0" aria-hidden="true" />
       <span class="truncate">{{ title }}</span>
     </h3>
     <!-- update-checks-and-auto-updates: the kind's automatic-update switch, with what it means, at the category (never for software). -->
     <AutoUpdateSwitch v-if="hasAutoUpdate" :kind="autoKind" variant="panel" :applying-count="applyingCount" />
-    <ul :aria-labelledby="headingId">
+    <ul :aria-labelledby="headingId" class="divide-y divide-gray-100">
       <NotificationRow v-for="row in shownRows" :key="row.id" :row="row" @update="emit('update', $event)" />
     </ul>
     <button
       v-if="hiddenCount > 0"
       type="button"
-      class="mb-2 rounded-md text-xs font-medium text-sky-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
+      class="mb-2 mt-1 rounded-md text-xs font-medium text-sky-700 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
       :aria-expanded="showAll"
       data-testid="notification-section-more"
       @click="showAll = !showAll"

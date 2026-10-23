@@ -2,7 +2,7 @@
   <!-- One update as a row: the name (with the "New" dot in a fixed gutter), below it the change and when it was
        found, and its one action on the right. The name or the change toggles the details; progress and errors
        show under the row, full width. -->
-  <li class="relative py-2" :data-testid="`notification-row-${row.id}`" :data-state="row.state">
+  <li class="relative py-2.5" :data-testid="`notification-row-${row.id}`" :data-state="row.state">
     <span v-if="showNewDot" class="absolute -left-[11px] top-[15px] h-1.5 w-1.5 rounded-full bg-sky-700" aria-hidden="true" data-testid="notification-row-new" />
     <div class="flex items-center gap-3">
       <button

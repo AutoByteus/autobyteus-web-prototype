@@ -7,7 +7,7 @@
       <section
         v-if="center.isOpen && center.anchor"
         ref="panel"
-        class="fixed z-[90] flex w-[360px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-2xl border border-sky-200 bg-white shadow-xl outline-none"
+        class="fixed z-[90] flex w-[368px] max-w-[calc(100vw-1rem)] flex-col overflow-hidden rounded-2xl border border-slate-300 bg-slate-200 shadow-2xl ring-1 ring-black/5 outline-none"
         :style="position"
         role="dialog"
         tabindex="-1"
@@ -15,8 +15,8 @@
         data-testid="notification-center"
       >
         <!-- A fixed title row: the rows scroll under it, never under the close button. -->
-        <div class="flex h-10 flex-shrink-0 items-center justify-between border-b border-gray-100 pl-4 pr-2">
-          <h2 :id="headingId" class="text-[13px] font-semibold text-gray-900">{{ $t('settings.notifications.title') }}</h2>
+        <div class="flex h-11 flex-shrink-0 items-center justify-between border-b border-slate-300/60 pl-4 pr-2.5">
+          <h2 :id="headingId" class="text-sm font-semibold text-gray-900">{{ $t('settings.notifications.title') }}</h2>
           <button
             type="button"
             class="inline-flex h-7 w-7 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
@@ -28,10 +28,10 @@
         </div>
 
         <div class="min-h-0 flex-1 overflow-y-auto">
-          <ul v-if="!notifications.isEmpty" class="divide-y divide-gray-100" :aria-label="$t('settings.notifications.listLabel')">
+          <ul v-if="!notifications.isEmpty" class="space-y-3 p-3" :aria-label="$t('settings.notifications.listLabel')">
             <NotificationSection v-for="section in notifications.sections" :key="section.kind" :section="section" @update="update" />
           </ul>
-          <div v-else class="px-4 py-6 text-center" role="status" data-testid="notification-center-empty">
+          <div v-else class="m-3 rounded-xl border border-slate-200 bg-white px-4 py-6 text-center shadow-sm" role="status" data-testid="notification-center-empty">
             <p class="text-sm font-medium text-gray-700">{{ $t('settings.notifications.empty.title') }}</p>
             <p class="mt-1 text-xs leading-5 text-gray-500">{{ $t(checksOff ? 'settings.notifications.empty.off' : 'settings.notifications.empty.on') }}</p>
           </div>
