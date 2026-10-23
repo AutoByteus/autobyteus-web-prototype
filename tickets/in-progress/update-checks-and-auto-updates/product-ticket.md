@@ -105,3 +105,12 @@
 - Consequence: a package that gets tools added is never updated automatically, and its manual Update deletes them.
 - Options (not designed; need the user): keep user content outside managed folders (architecture); or keep the replaced folder and
   say where (new behavior, conflicts with DEC-003). Asked the user which they want.
+
+### Requirement Impact (2026-10-23): overwrite local changes when automatic updates are on
+
+- The user: with the switch on, directly overwrite local changes (a stale package costs more than lost edits); a confirmation
+  overlay when the switch is turned on says so.
+- Contradicts REQ-007 / REQ-008 (third outcome) / DEC-002 / AC-008. Sent to the Solution Designer as a Requirement Impact with
+  the evidence (whole-folder replacement; no installed-content record). Not yet built; the design waits for the revised
+  requirement. Planned design: confirmation overlay on turning a switch on (packages, skill sources, panel and card); inline
+  text "local changes are replaced"; no amber row.
