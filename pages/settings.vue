@@ -1,9 +1,14 @@
 <template>
   <div
-    class="flex h-full min-w-0 flex-col bg-white md:flex-row"
+    class="relative flex h-full min-w-0 flex-col bg-white md:flex-row"
     data-testid="settings-page-layout"
     :style="navigationWidthStyle"
   >
+    <!-- update-checks-and-auto-updates (PQ-1): the same icon-and-count entry as the collapsed sidebar, at the top right where the panel opens. -->
+    <div class="absolute right-4 top-3 z-30 rounded-lg border border-gray-200 bg-white shadow-sm [&>button]:mb-0" data-testid="settings-notifications-entry">
+      <SidebarNotificationsEntry variant="strip" tooltip="below" />
+    </div>
+
     <!-- Sidebar -->
     <div
       ref="navigationRef"
@@ -27,14 +32,6 @@
                 <Icon icon="heroicons:arrow-left-20-solid" class="h-5 w-5 flex-shrink-0" />
                 <span class="ml-2 text-sm font-medium">{{ $t('settings.page.backLabel') }}</span>
               </button>
-            </li>
-            <!-- update-checks-and-auto-updates (PQ-1): the sidebar's Settings-row entry, here, so updates and automatic results are seen in Settings too. -->
-            <li v-if="notificationEntryShown" class="flex w-full items-center justify-between gap-2 border-b border-gray-100 pb-2 pl-4 pr-1" data-testid="settings-nav-notifications">
-              <span class="flex min-w-0 items-center gap-2 text-sm font-medium text-gray-600">
-                <Icon icon="heroicons:bell" class="h-5 w-5 flex-shrink-0" aria-hidden="true" />
-                <span class="truncate">{{ $t('settings.notifications.title') }}</span>
-              </span>
-              <SidebarNotificationsEntry variant="inline" tooltip="below" />
             </li>
             <li class="w-full">
               <button
@@ -310,7 +307,6 @@ import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
 import ProviderAPIKeyManager from '~/components/settings/ProviderAPIKeyManager.vue';
 import AgentRuntimesManager from '~/components/settings/agent-runtimes/AgentRuntimesManager.vue';
 import SidebarNotificationsEntry from '~/components/layout/SidebarNotificationsEntry.vue';
-import { useUpdateNotificationsStore } from '~/stores/updateNotificationsStore';
 import TokenUsageStatistics from '~/components/settings/TokenUsageStatistics.vue';
 import ServerSettingsManager from '~/components/settings/ServerSettingsManager.vue';
 import ExtensionsManager from '~/components/settings/ExtensionsManager.vue';
@@ -348,9 +344,6 @@ type ServerSettingsMode = 'quick' | 'embedding' | 'advanced' | 'migrations';
 const route = useRoute();
 const router = useRouter();
 const serverStore = useServerStore();
-const updateNotifications = useUpdateNotificationsStore();
-/** The notification entry shows while updates wait or an automatic update is unread (the same rule as the sidebar's). */
-const notificationEntryShown = computed(() => updateNotifications.hasEntry);
 const windowNodeContextStore = useWindowNodeContextStore();
 const activeSection = ref<SettingsSection>('api-keys');
 const serverSettingsMode = ref<ServerSettingsMode>('quick');

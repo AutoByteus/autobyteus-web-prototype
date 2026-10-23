@@ -33,7 +33,7 @@
     >
       <Icon icon="heroicons:arrow-down-circle" class="h-5 w-5" aria-hidden="true" />
       <span class="absolute right-0 top-0 min-w-[16px] rounded-full bg-sky-700 px-1 text-center text-[10px] font-semibold leading-4 text-white ring-2 ring-white" aria-hidden="true">{{ count }}</span>
-      <span v-if="!center.isOpen" class="invisible absolute left-full z-50 ml-2 whitespace-nowrap rounded bg-gray-900 px-2.5 py-1.5 text-left text-xs leading-5 text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100 group-focus-visible:visible group-focus-visible:opacity-100" aria-hidden="true">
+      <span v-if="!center.isOpen" :class="props.tooltip === 'below' ? 'right-0 top-full mt-2' : 'left-full ml-2'" class="invisible absolute z-50 whitespace-nowrap rounded bg-gray-900 px-2.5 py-1.5 text-left text-xs leading-5 text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100 group-focus-visible:visible group-focus-visible:opacity-100" aria-hidden="true">
         <span class="block font-medium">{{ summary }}</span>
         <span v-for="line in kindLines" :key="line" class="block text-gray-300">{{ line }}</span>
       </span>
