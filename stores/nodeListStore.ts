@@ -66,8 +66,6 @@ export interface Plan {
 
 export interface LastRun { kind: PlanKind; lines: PlanLine[] }
 
-export interface Banner { tone: 'info'; key: string; params: Record<string, string>; cause?: Cause; rowKey?: string }
-
 const wait = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms))
 
 let nextToken = 1
@@ -84,7 +82,6 @@ export const useNodeListStore = defineStore('nodeList', () => {
   const runtime = ref<Record<string, RowPhase>>({})
   const lastRuns = ref<Record<string, LastRun>>({})
   const plan = ref<Plan | null>(null)
-  const banner = ref<Banner | null>(null)
   const flashKey = ref<string | null>(null)
   /** Rows the owner has expanded; a row opens by itself once collaboration with it has been set up, so its result is visible. */
   const expanded = ref<Record<string, boolean>>({})
@@ -398,18 +395,10 @@ export const useNodeListStore = defineStore('nodeList', () => {
     const key = probe.ok ? probe.nodeId : `d:${added.id}`
     flash(key)
     ask(rowByKey(key) ?? { key, nodeId: probe.ok ? probe.nodeId : null, desktopId: added.id, name, url, isEmbedded: false, collaborating: false })
-    if (probe.ok) {
-      banner.value = { tone: 'info', key: 'added', params: { name }, rowKey: key }
-      if (input.collaborate) requestOn(key)
-    } else if (probe.delayMs > 1500) {
-      banner.value = { tone: 'info', key: 'addedChecking', params: { name }, rowKey: key }
-    } else {
-      banner.value = { tone: 'info', key: input.collaborate ? 'addedUnreachableCollab' : 'addedUnreachable', params: { name, host: probe.host }, cause: probe.cause, rowKey: key }
-    }
+    // No notice: the row itself shows the node, its cause when it does not answer, and the collaboration confirmation follows.
+    if (probe.ok && input.collaborate) requestOn(key)
     return { ok: true, key }
   }
-
-  const dismissBanner = (): void => { banner.value = null }
 
   let flashTimer: ReturnType<typeof setTimeout> | null = null
   const flash = (key: string): void => {
@@ -476,9 +465,9 @@ export const useNodeListStore = defineStore('nodeList', () => {
   const offersOf = (key: string): OfferEntry[] | null => inspectionOf(key)?.offers ?? null
 
   return {
-    thisId, switchOn, switchBusy, peers, rows, plan, banner, flashKey, expanded, lastRuns, hasOpen, thisName, currentNode,
+    thisId, switchOn, switchBusy, peers, rows, plan, flashKey, expanded, lastRuns, hasOpen, thisName, currentNode,
     open, ensureWorld, askAgain, setSwitch, inspectionOf, isChecking, lineOf, offersOf, runtime,
     requestOn, requestFix, requestOff, requestRemove, cancelPlan, confirmPlan,
-    addNode, dismissBanner, renameNode, changeAddress, openNode, rowByKey,
+    addNode, renameNode, changeAddress, openNode, rowByKey,
   }
 })

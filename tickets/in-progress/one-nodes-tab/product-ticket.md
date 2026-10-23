@@ -48,6 +48,7 @@
 - Round 1 feedback 5 (user, 2026-10-23): Open as an icon. Applied (DC-718).
 - Round 1 feedback 6 (user, 2026-10-23): counts of Agents and Teams under the bar once collaboration is on (click for details), no left chevron, bigger Open and Remove. Applied (DC-719).
 - Round 1 feedback 7 (user, 2026-10-23): the add inputs always visible; the collaboration toggle to the right of the name. Applied (DC-720).
+- Round 1 feedback 8 (user, 2026-10-23): remove the "Added …" notice. Applied (DC-721).
 
 ## Outcome And Handoff
 

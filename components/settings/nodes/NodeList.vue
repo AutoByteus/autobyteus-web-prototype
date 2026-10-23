@@ -9,18 +9,6 @@
 
     <AddNodePanel />
 
-    <div
-      v-if="store.banner"
-      class="flex items-start justify-between gap-3 border-b border-blue-100 bg-blue-50 px-5 py-3 text-sm text-blue-900"
-      role="status"
-      data-testid="node-list-banner"
-    >
-      <p>
-        ⓘ {{ bannerText }}
-      </p>
-      <button type="button" class="flex-shrink-0 rounded text-xs font-medium text-blue-700 hover:text-blue-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="node-list-banner-dismiss" @click="store.dismissBanner()">{{ t(k('banner.dismiss')) }}</button>
-    </div>
-
     <ul v-if="store.rows.length" class="divide-y divide-slate-100" data-testid="node-list">
       <NodeRow v-for="row in store.rows" :key="row.key" :row="row" @guide="emit('guide')" />
     </ul>
@@ -31,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import AddNodePanel from '~/components/settings/nodes/AddNodePanel.vue'
 import NodeChangeDialog from '~/components/settings/nodes/NodeChangeDialog.vue'
 import NodeRow from '~/components/settings/nodes/NodeRow.vue'
@@ -39,15 +27,8 @@ import { useNodeText } from '~/composables/useNodeText'
 import { useNodeListStore } from '~/stores/nodeListStore'
 
 const emit = defineEmits<{ guide: [] }>()
-const { t, k, causeText } = useNodeText()
+const { t, k } = useNodeText()
 const store = useNodeListStore()
-
-const bannerText = computed(() => {
-  const banner = store.banner
-  if (!banner) return ''
-  const base = t(k(`banner.${banner.key}`), banner.params)
-  return banner.cause ? `${base} ${causeText(banner.cause, banner.params.host ?? '')}` : base
-})
 
 onMounted(() => store.open())
 </script>
