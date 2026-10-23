@@ -74,6 +74,10 @@
           :status="teamStatus"
         />
       </span>
+      <!-- remote-runs-in-tree: a run another node runs carries its node, left of its icon and name: a computer icon and the node's name. -->
+      <span v-if="remote" class="mr-1.5 inline-flex h-5 min-w-0 flex-shrink items-center" data-test="workspace-remote-run-node">
+        <RemoteNodeChip :node-name="remote.nodeName" />
+      </span>
       <span class="mr-1.5 inline-flex h-5 flex-shrink-0 items-center" aria-hidden="true">
         <!-- Teams share the people-group identity, in the tree's slate. -->
         <span
@@ -104,19 +108,14 @@
             data-test="workspace-member-agent-missing"
           />
         </span>
-        <!-- remote-runs-in-tree: a run another node runs starts its second line with that node: a computer icon and its name. -->
-        <span v-if="remote" class="mt-0.5 flex min-w-0 items-center gap-1.5" data-test="workspace-remote-run-line">
-          <RemoteNodeChip :node-name="remote.nodeName" />
-          <TaskWorkerTaskSummary v-if="task" class="!mt-0 min-w-0 flex-1" :task="task" :selected="isSelected" @locate="emit('locate-task', task)" />
-          <!-- The run's title from its node (its first message), when no Task names it. -->
-          <span
-            v-else-if="remote.reachable && remote.title"
-            class="min-w-0 flex-1 truncate text-[0.6875rem] font-normal leading-4"
-            :class="isSelected ? 'text-indigo-700' : 'text-gray-500'"
-            data-test="workspace-remote-run-title"
-            :title="remote.title"
-          >{{ remote.title }}</span>
-        </span>
+        <!-- remote-runs-in-tree: the run's title from its node (its first message) when no Project Task names the copy; with a Task the Task summary link stays. -->
+        <span
+          v-if="remote && !task && remote.reachable && remote.title"
+          class="mt-0.5 block truncate text-[0.6875rem] font-normal leading-4"
+          :class="isSelected ? 'text-indigo-700' : 'text-gray-500'"
+          data-test="workspace-remote-run-title"
+          :title="remote.title"
+        >{{ remote.title }}</span>
         <TaskWorkerTaskSummary v-else-if="task" :task="task" :selected="isSelected" @locate="emit('locate-task', task)" />
         <!-- remote-runs-in-tree: the node did not answer; same red line and Retry as a failed activity load. -->
         <span

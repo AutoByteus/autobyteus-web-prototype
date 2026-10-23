@@ -38,6 +38,8 @@
   - Chinese: `localStorage['autobyteus.localization.preference-mode']='zh-CN'`
 - Steps and what to look at are in `ui-reference-runbook.md`, section `remote-runs-in-tree`.
 
+- Round 1 feedback (user, 2026-10-23): put the computer icon and node name on the left of the team name, not on the second line. Applied (DC-801): chip left of the team icon and name; the title stays on the second line. Long names truncate a little ("market researc…"); the tooltip shows them in full.
+
 ## Outcome And Handoff
 
 - Next expected action: the user reviews the UI reference and answers DEC-804 and the review questions; then final screenshots and `ui-ux-spec.md`.
