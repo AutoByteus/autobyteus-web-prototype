@@ -49,6 +49,7 @@
 - Round 1 feedback 6 (user, 2026-10-23): counts of Agents and Teams under the bar once collaboration is on (click for details), no left chevron, bigger Open and Remove. Applied (DC-719).
 - Round 1 feedback 7 (user, 2026-10-23): the add inputs always visible; the collaboration toggle to the right of the name. Applied (DC-720).
 - Round 1 feedback 8 (user, 2026-10-23): remove the "Added …" notice. Applied (DC-721).
+- Round 1 decisions delegated to the designer (user, 2026-10-23: "you decide … you understand and could reason"): DEC-709 → option (b); Remove also removes this node on the other side when reachable (PA-703); Agents and Teams show once the switch is on (PA-701); no toast when a node is added, the row carries the notice for an unavailable node (PA-707). The user has not yet given the explicit final approval of the page.
 
 ## Outcome And Handoff
 
