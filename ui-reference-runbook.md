@@ -7,12 +7,11 @@ corepack pnpm install --ignore-workspace --frozen-lockfile
 corepack pnpm dev --port 4901
 ```
 
-- Entry: `/workspace`. Select the starting state in the browser console and reload (remove the key to reset):
-  - the journey: `localStorage.setItem('autobyteus.prototype.scenario','remote_runs')` — the Project Task Manager run is live, with its five local copies and two on the node `docker`: a Marketing Team (working) and a market researcher (idle).
+- Entry: `/workspace`, **no setup**: the default data has the Project Task Manager run live, with its five local copies and three remote ones: a Marketing Team and a market researcher on the node `docker`, and a Support Team on `office-mac` that is not reachable. Optional starting states (browser console, reload; remove the key to reset):
   - every state at once: scenario `remote_states` — one remote row each: working, idle, waiting, offline, and a Team on `office-mac` that is not reachable (no local copies).
   - Chinese: `localStorage['autobyteus.localization.preference-mode']='zh-CN'`
-- Try (`remote_runs`): Workspaces → prototype-workspace → Project Task Manager → open the run row → expand `marketing team` → open `campaign lead`. About 3 s after you open it a new tool call and a message arrive (the other node's events, passed on by this node); the lead then goes idle. Send `status?`: the lead answers and the sent message shows as yours. Open Files, Terminal and Artifacts in the right panel: each says the run is on docker. Click the red stop square on the team row: the copy and its members go offline.
-- Try (`remote_states`): open `support team` → `triage lead`: the red notice and Retry; Retry on the row shows "Checking office-mac…" for 1.5 s; send a message: the existing red error block names the node. Stop on a working row.
+- Try (default data): Workspaces → prototype-workspace → Project Task Manager → open the run row → expand `marketing team` → open `campaign lead`. About 3 s after you open it a new tool call and a message arrive (the other node's events, passed on by this node); the lead then goes idle. Send `status?`: the lead answers and the sent message shows as yours. Open Files, Terminal and Artifacts in the right panel: each says the run is on docker. Click the red stop square on the team row: the copy and its members go offline.
+- Try the failure (default data): open `support team` → `triage lead`: the red notice and Retry; Retry on the row shows "Checking office-mac…" for 1.5 s; send a message: the existing red error block names the node. Stop on a working row.
 - The nodes, runs, titles, conversations, timings and failures are invented in `prototype/remote-runs/remoteRunsFixture.ts` and answer through the existing mock GraphQL and WebSocket layers (`plugins/00.prototype-state.client.ts`, `utils/apolloClient.ts`). Nothing is read from a real node. State is in memory: reload resets it.
 - Spec: `tickets/in-progress/remote-runs-in-tree/ui-ux-spec.md` (once approved).
 

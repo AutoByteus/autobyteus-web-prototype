@@ -33,8 +33,7 @@
 ## Review (round 1)
 
 - Review URL: `http://127.0.0.1:4901/workspace`
-- Seed the starting state in the browser console and reload (this is the product's existing scenario seeding, not a review control):
-  - the journey: `localStorage.setItem('autobyteus.prototype.scenario','remote_runs'); location.reload()`
+- No setup: the default data carries the remote runs. Optional starting states (existing scenario seeding, browser console):
   - every state at once: `localStorage.setItem('autobyteus.prototype.scenario','remote_states'); location.reload()`
   - Chinese: `localStorage['autobyteus.localization.preference-mode']='zh-CN'`
 - Steps and what to look at are in `ui-reference-runbook.md`, section `remote-runs-in-tree`.

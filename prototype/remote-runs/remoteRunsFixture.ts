@@ -14,7 +14,8 @@
  * Turned off with the other design-only layers (`autobyteus.prototype.designOnlyLayers=off`).
  */
 export const PTM_HOST_RUN_ID = 'run-ptm-0001'
-export const REMOTE_SCENARIOS = Object.freeze(['remote_runs', 'remote_states'])
+// The default (populated) data carries the remote runs, so the review needs no setup; `remote_states` adds every state.
+export const REMOTE_SCENARIOS = Object.freeze(['populated', 'remote_runs', 'remote_states'])
 export const isRemoteScenario = (scenario: string): boolean => REMOTE_SCENARIOS.includes(scenario)
 
 type Status = 'offline' | 'initializing' | 'idle' | 'running'
@@ -44,19 +45,21 @@ const researcher = (status: Status = 'idle'): RemoteCopy => ({
   kind: 'agent', node: 'docker', agentRunId: 'ptm-mkr-0001', address: '/market_researcher', title: RESEARCHER_TITLE, status,
 })
 
+const supportTeam = (): RemoteCopy => ({ kind: 'team', node: 'office-mac', teamRunId: 'ptm-sup-0001', address: '/support_team', title: 'Triage the open desktop support threads',
+  members: [
+    { name: 'triage_lead', agentRunId: 'ptm-sup-0001-triage_lead', status: 'offline' },
+    { name: 'answer_writer', agentRunId: 'ptm-sup-0001-answer_writer', status: 'offline' },
+  ] })
+
 const copiesFor = (scenario: string): RemoteCopy[] => {
-  if (scenario === 'remote_runs') return [marketingTeam(), researcher('idle')]
+  if (scenario === 'populated' || scenario === 'remote_runs') return [marketingTeam(), researcher('idle'), supportTeam()]
   if (scenario === 'remote_states') {
     return [
       marketingTeam(),
       researcher('idle'),
       { kind: 'agent', node: 'docker', agentRunId: 'ptm-trn-0001', address: '/translator', title: 'Translate the release notes into Chinese and German', status: 'initializing' },
       { kind: 'agent', node: 'docker', agentRunId: 'ptm-vid-0001', address: '/video_producer', title: 'Cut a 30 second teaser from the 1.6 demo recording', status: 'offline' },
-      { kind: 'team', node: 'office-mac', teamRunId: 'ptm-sup-0001', address: '/support_team', title: 'Triage the open desktop support threads',
-        members: [
-          { name: 'triage_lead', agentRunId: 'ptm-sup-0001-triage_lead', status: 'offline' },
-          { name: 'answer_writer', agentRunId: 'ptm-sup-0001-answer_writer', status: 'offline' },
-        ] },
+      supportTeam(),
     ]
   }
   return []
@@ -165,7 +168,7 @@ export const remoteMemberProjection = (agentRunId: string, summary: string, last
   const info = remoteRunInfo(agentRunId)
   if (!info) return null
   // The working coordinator carries on while its view is open: the stream plays its next steps (once per page load).
-  if (info.reachable && agentRunId === LEAD_ID && scenarioNow() === 'remote_runs' && !timelineStarted) {
+  if (info.reachable && agentRunId === LEAD_ID && scenarioNow() !== 'remote_states' && !timelineStarted) {
     timelineStarted = true
     window.dispatchEvent(new CustomEvent('prototype-remote-opened', { detail: { agentRunId } }))
   }
