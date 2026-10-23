@@ -68,11 +68,11 @@ const confirmingTarget = computed<SkillSourceUpdateTarget | null>(() => confirmi
   name: confirming.value.name, repositoryUrl: confirming.value.repositoryUrl, branch: confirming.value.branch,
   installedRevision: confirming.value.installedRevision, latestRevision: confirming.value.latestRevision,
 })
-/** Above the Settings row (docked panel) or right of the strip icon; the body scrolls in short windows. */
+/** On the right side of the whole window, from the top; the body scrolls in short windows. */
 const position = computed(() => {
   const anchor = center.anchor
   if (!anchor) return {}
-  return { left: `${anchor.left}px`, bottom: `${anchor.bottom}px`, maxHeight: `min(72vh, calc(100vh - ${anchor.bottom + 16}px))` }
+  return { right: `${anchor.right}px`, top: `${anchor.top}px`, maxHeight: `calc(100vh - ${anchor.top + 8}px)` }
 })
 
 const update = (row: NotificationRow) => {
@@ -125,7 +125,7 @@ onBeforeUnmount(stopListening)
 
 <style scoped>
 .notification-center-enter-active, .notification-center-leave-active { transition: opacity 150ms ease, transform 150ms ease; }
-.notification-center-enter-from, .notification-center-leave-to { opacity: 0; transform: translateY(6px); }
+.notification-center-enter-from, .notification-center-leave-to { opacity: 0; transform: translateX(8px); }
 @media (prefers-reduced-motion: reduce) {
   .notification-center-enter-active, .notification-center-leave-active { transition: none; }
 }

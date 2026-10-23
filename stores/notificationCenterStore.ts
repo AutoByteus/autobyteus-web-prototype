@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { useUpdateNotificationsStore } from '~/stores/updateNotificationsStore'
 
-/** Where the panel floats: its left edge and its distance from the window's bottom. */
-export type NotificationCenterAnchor = { left: number; bottom: number }
+/** Where the panel floats: its distance from the window's right edge and top edge (the right side of the whole window). */
+export type NotificationCenterAnchor = { right: number; top: number }
 
 /**
  * The Notification Center panel: open or closed, where it floats, and which rows were unread when

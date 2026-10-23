@@ -71,3 +71,11 @@
   - Changed: the docked panel opens to the right of the sidebar, bottom-aligned with the Settings row (the strip variant
     already opened to the right of its icon); a fixed title row ("Notifications" + ✕) with a hairline; rows scroll under it.
   - Not chosen: the right corner (far from the pill that opened it, and it covers the Projects/Files/Terminal tools).
+
+### Round 3 (2026-10-23) — right side of the whole window
+
+- The user clarified: not a corner of the sidebar, but the right side of the whole site, like a notification centre, coming
+  out when the pill is pressed. (Round 2's "beside the sidebar" is replaced.)
+- Changed: the panel opens at the right edge of the window, 8 px from the top and right, from either entry (docked pill or
+  collapsed-strip icon); it slides in from the right (150 ms); max height is the window's height minus 16 px. It covers the
+  right tool panel while open. Fixed title row stays.

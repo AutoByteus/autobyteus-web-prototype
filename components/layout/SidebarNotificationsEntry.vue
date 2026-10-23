@@ -13,7 +13,7 @@
       aria-haspopup="dialog"
       data-test="sidebar-notifications-updates"
       :data-unread="notifications.hasUnread || undefined"
-      @click="toggle($event, 'above')"
+      @click="toggle"
     >
       <span aria-hidden="true">{{ plural(outcomeOnly ? 'settings.notifications.sidebar.updated.short' : 'settings.notifications.sidebar.updates.short', count) }}</span>
       <span v-if="!center.isOpen" class="invisible absolute bottom-full right-0 z-50 mb-2 whitespace-nowrap rounded bg-gray-900 px-2.5 py-1.5 text-left text-xs font-normal leading-5 text-white opacity-0 transition-all group-hover:visible group-hover:opacity-100 group-focus-visible:visible group-focus-visible:opacity-100" aria-hidden="true" data-test="sidebar-notifications-tooltip">
@@ -29,7 +29,7 @@
       aria-haspopup="dialog"
       data-test="sidebar-notifications-updates"
       :data-unread="notifications.hasUnread || undefined"
-      @click="toggle($event, 'right')"
+      @click="toggle"
     >
       <Icon icon="heroicons:arrow-down-circle" class="h-5 w-5" aria-hidden="true" />
       <span class="absolute right-0 top-0 min-w-[16px] rounded-full bg-sky-700 px-1 text-center text-[10px] font-semibold leading-4 text-white ring-2 ring-white" aria-hidden="true">{{ count }}</span>
@@ -60,7 +60,6 @@ const center = useNotificationCenterStore()
 const outcomes = computed(() => notifications.rows.filter((row) => row.state === 'handled' && row.kind !== 'app' && row.outcome === 'AUTO_UPDATED' && (row.unread || center.isNew(row.id))))
 const outcomeOnly = computed(() => notifications.waitingCount === 0)
 const count = computed(() => outcomeOnly.value ? outcomes.value.length : notifications.waitingCount)
-const PANEL_WIDTH = 360
 const EDGE = 8
 const plural = (key: string, count: number) => t(`${key}.${count === 1 ? 'one' : 'other'}`, { count })
 /** "3 updates available", or "1 update applied automatically" when nothing waits. */
@@ -77,15 +76,9 @@ const description = computed(() => t('settings.notifications.sidebar.description
   summary: summary.value, details: kindLines.value.join(t('settings.notifications.sidebar.listSeparator')),
 }))
 
-/** Opens (or closes) the panel: above the Settings row, or right of the strip icon, kept inside the window. */
-const toggle = (event: MouseEvent, side: 'above' | 'right') => {
+/** Opens (or closes) the panel on the right side of the whole window, whichever entry was pressed. */
+const toggle = () => {
   if (center.isOpen) { center.close(); return }
-  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
-  const panelWidth = Math.min(PANEL_WIDTH, window.innerWidth - 2 * EDGE)
-  // Docked: beside the sidebar (never over its navigation), bottom-aligned with the Settings row; strip: right of the icon.
-  const sidebarRight = (event.currentTarget as HTMLElement).closest('footer')?.getBoundingClientRect().right ?? rect.right
-  center.open(side === 'above'
-    ? { left: Math.max(EDGE, Math.min(sidebarRight + EDGE, window.innerWidth - panelWidth - EDGE)), bottom: Math.max(EDGE, window.innerHeight - rect.bottom - 2) }
-    : { left: Math.max(EDGE, Math.min(rect.right + EDGE, window.innerWidth - panelWidth - EDGE)), bottom: Math.max(EDGE, window.innerHeight - rect.bottom) })
+  center.open({ right: EDGE, top: EDGE })
 }
 </script>
