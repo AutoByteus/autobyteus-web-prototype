@@ -13,6 +13,11 @@
  * Turned off with the other design-only layers (`autobyteus.prototype.designOnlyLayers=off`).
  */
 import { exposedFixtures, projectData } from '~/prototype/source-observation/fixtures.mjs'
+// remote-runs-in-tree (design-only): copies on another node, under the same run.
+import { hostIsLive, isRemoteScenario, keepsLocalCopies, remoteAgentStatuses, remoteMemberProjection, remoteTaskExecutions } from '~/prototype/remote-runs/remoteRunsFixture'
+
+/** The scenarios whose catalog is the populated one plus the Project Task Manager run. */
+const appliesTo = (scenario: string): boolean => scenario === 'populated' || isRemoteScenario(scenario)
 
 const { workspace, project: launchProject } = exposedFixtures as Record<string, any>
 
@@ -59,21 +64,25 @@ const taskExecution = (copy: Copy) => copy.kind === 'agent'
       taskExecutions: [],
     }
 
-const collaboration = () => ({
+export const collaborationView = (scenario = 'populated') => ({
   root_subject_kind: 'agent', root_run_id: PTM_RUN_ID,
   root_agent: {
-    base_change_sequence: 1, is_active: false,
+    base_change_sequence: 1, is_active: hostIsLive(scenario),
     execution_tree: {
       subjectKind: 'agent', createdAt,
       host: { address: '/project_task_manager', agentRunId: PTM_RUN_ID, agentDefinitionId: PTM_DEFINITION_ID },
-      taskExecutions: COPIES.map(taskExecution),
+      taskExecutions: [
+        ...(keepsLocalCopies(scenario) ? COPIES.map(taskExecution) : []),
+        ...remoteTaskExecutions(scenario, workspace.workspaceRootPath, PTM_RUN_ID),
+      ],
     },
     closed_task_executions: [],
     communication_messages: { schemaVersion: 1, subjectKind: 'agent', hostRunId: PTM_RUN_ID, messages: [] },
-    agent_statuses: [],
+    agent_statuses: remoteAgentStatuses(scenario),
     agent_input_states: [],
   },
 })
+const collaboration = collaborationView
 
 // --- Tasks ---------------------------------------------------------------------------------
 
@@ -121,7 +130,7 @@ const designTempTasks = () => [
 
 /** Seeds this layer's Projects and Tasks into a browser context's fixture state (once per scenario). */
 export const seedDelegatedCopyTasks = (state: Record<string, any>, scenario: string): void => {
-  if (scenario !== 'populated') return
+  if (!appliesTo(scenario)) return
   const data = projectData(state)
   if (data.projects.some((item: any) => item.projectId === DESKTOP_PROJECT_ID)) return
   data.projects.unshift(structuredClone(desktopProject))
@@ -131,11 +140,11 @@ export const seedDelegatedCopyTasks = (state: Record<string, any>, scenario: str
 
 // --- Run history and the run's views --------------------------------------------------------
 
-const historyRun = (template: Record<string, any>) => ({
+const historyRun = (template: Record<string, any>, scenario = 'populated') => ({
   ...template,
   runId: PTM_RUN_ID, agentRunId: PTM_RUN_ID, agentDefinitionId: PTM_DEFINITION_ID, agentName: PTM_NAME,
   summary: 'Dispatch the approved desktop app Tasks', createdAt, lastUpdatedAt: updatedAt, lastActivityAt: updatedAt,
-  archivedAt: null, terminatedAt: null, status: 'IDLE', isActive: false, shouldConnectStream: false,
+  archivedAt: null, terminatedAt: null, status: 'IDLE', isActive: hostIsLive(scenario), shouldConnectStream: hostIsLive(scenario),
   workspaceRootPath: workspace.workspaceRootPath, hasCollaboration: true,
 })
 
@@ -150,19 +159,19 @@ const memberConversation = (agentRunId: string) => [
 ]
 
 export const withDelegatedCopyTasks = (name: string, variables: Record<string, any>, data: any, scenario: string): any => {
-  if (scenario !== 'populated' || !data) return data
+  if (!appliesTo(scenario) || !data) return data
   switch (name) {
     case 'ListWorkspaceRunHistory': {
       const entry = data.listWorkspaceRunHistory?.find((item: any) => item.workspaceRootPath === workspace.workspaceRootPath)
       if (!entry || entry.agentDefinitions.some((item: any) => item.agentDefinitionId === PTM_DEFINITION_ID)) return data
-      entry.agentDefinitions = [...entry.agentDefinitions, { agentDefinitionId: PTM_DEFINITION_ID, agentName: PTM_NAME, runs: [historyRun(entry.agentDefinitions?.[0]?.runs?.[0] ?? {})] }]
+      entry.agentDefinitions = [...entry.agentDefinitions, { agentDefinitionId: PTM_DEFINITION_ID, agentName: PTM_NAME, runs: [historyRun(entry.agentDefinitions?.[0]?.runs?.[0] ?? {}, scenario)] }]
       return data
     }
     case 'GetWorkspaceRunHistory': {
       const entry = data.workspaceRunHistory
       if (!entry || entry.workspaceRootPath !== workspace.workspaceRootPath || !entry.agentDefinitions?.length) return data
       if (!entry.agentDefinitions.some((item: any) => item.agentDefinitionId === PTM_DEFINITION_ID)) {
-        entry.agentDefinitions = [...entry.agentDefinitions, { agentDefinitionId: PTM_DEFINITION_ID, agentName: PTM_NAME, runs: [historyRun(entry.agentDefinitions[0].runs[0])] }]
+        entry.agentDefinitions = [...entry.agentDefinitions, { agentDefinitionId: PTM_DEFINITION_ID, agentName: PTM_NAME, runs: [historyRun(entry.agentDefinitions[0].runs[0], scenario)] }]
       }
       return data
     }
@@ -172,15 +181,22 @@ export const withDelegatedCopyTasks = (name: string, variables: Record<string, a
         : data
     case 'GetAgentRunResumeConfig':
       return variables.runId === PTM_RUN_ID
-        ? { getAgentRunResumeConfig: { ...data.getAgentRunResumeConfig, runId: PTM_RUN_ID, isActive: false,
+        ? { getAgentRunResumeConfig: { ...data.getAgentRunResumeConfig, runId: PTM_RUN_ID, isActive: hostIsLive(scenario),
             metadataConfig: { ...data.getAgentRunResumeConfig.metadataConfig, agentDefinitionId: PTM_DEFINITION_ID } } }
         : data
     case 'GetAgentRunCollaboration':
-      return variables.runId === PTM_RUN_ID ? { agentRunCollaboration: collaboration() } : data
-    case 'GetAgentRunCollaborationMemberProjection':
+      return variables.runId === PTM_RUN_ID ? { agentRunCollaboration: collaborationView(scenario) } : data
+    case 'GetAgentRunCollaborationMemberProjection': {
+      // remote-runs-in-tree: a run on another node answers from that node (or fails when it is not reachable).
+      const remote = variables.hostRunId === PTM_RUN_ID ? remoteMemberProjection(String(variables.agentRunId), historyRun({}).summary, updatedAt) : null
+      if (remote) {
+        if (remote.agentRunCollaborationMemberProjection) remote.agentRunCollaborationMemberProjection.memberAddress = variables.memberAddress
+        return remote
+      }
       return variables.hostRunId === PTM_RUN_ID
         ? { agentRunCollaborationMemberProjection: { agentRunId: variables.agentRunId, memberAddress: variables.memberAddress, summary: historyRun({}).summary, lastActivityAt: updatedAt, conversation: memberConversation(String(variables.agentRunId)), activities: [], hasEarlierActiveTraceEvents: false } }
         : data
+    }
     case 'GetAgentRunCollaborationMemberEventMonitorActiveTracePage':
       return variables.hostRunId === PTM_RUN_ID
         ? { agentRunCollaborationMemberEventMonitorActiveTracePage: { beforeCursor: null, hasEarlier: false, loadedEarlierCount: 0, activeGeneration: '1', cursorStatus: 'VALID', events: [] } }

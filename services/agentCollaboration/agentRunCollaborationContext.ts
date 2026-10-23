@@ -31,6 +31,8 @@ import {
   type CollaborationTreeNode,
 } from '~/utils/collaboration/taskExecutionClosure'
 import { resolveTeamStatus, type TeamStatus } from '~/utils/workspaceTeamAggregateStatus'
+// remote-runs-in-tree (design-only): the node that runs a delegated copy, when it is not this one.
+import { remoteRunInfo } from '~/prototype/remote-runs/remoteRunsFixture'
 
 export type AgentRunCollaborationPhase = 'live' | 'historical' | 'reopen_required'
 export type AgentRunCollaborationEventApplication = 'applied' | 'checkpoint_required'
@@ -284,6 +286,7 @@ export class AgentRunCollaborationContext {
       rowKey: `agent:${agent.agentRunId}`, teamRunId: this.hostRunId, memberAddress: agent.address,
       agentRunId: agent.agentRunId, teamRunIdForNode: null, memberKind: 'agent', displayName: nameAt(agent.address),
       currentStatus: statusOf(agent.agentRunId), delegatedBy: delegatorName(agent.delegatorAgentRunId), depth, hasChildren: false,
+      remote: remoteRunInfo(agent.agentRunId),
     })
     type TaskExecution = AgentRunCollaborationViewDto['execution_tree']['taskExecutions'][number]
     const listed = (node: CollaborationTreeNode) => !hidden.has(collaborationTreeWalk.keyOf(node))
@@ -304,7 +307,7 @@ export class AgentRunCollaborationContext {
         kind: 'transient_execution', transientKind: 'task_team', rowKey: `team:${task.teamRunId}`, teamRunId: this.hostRunId,
         memberAddress: task.address, agentRunId: null, teamRunIdForNode: task.teamRunId, memberKind: 'agent_team',
         displayName: nameAt(task.address), currentStatus: null, delegatedBy: delegatorName(team.delegatorAgentRunId),
-        depth, hasChildren: members.length + tasks.length > 0,
+        depth, hasChildren: members.length + tasks.length > 0, remote: remoteRunInfo(task.teamRunId),
       }, teamStatus: null }
       if (shown) flat.push(entry)
       const childrenShown = shown && isTeamExpanded(task.teamRunId)

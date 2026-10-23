@@ -57,6 +57,8 @@ import {
   useEventMonitorActiveTraceBrowse,
 } from '~/services/eventMonitor/eventMonitorActiveTraceBrowse';
 import type { AgentRunReadSubject } from '~/types/agent/agentRunReadSubject';
+import { useRemoteRun } from '~/composables/remoteRuns/useRemoteRun';
+import { useLocalization } from '~/composables/useLocalization';
 
 const props = defineProps<{
   conversation: Conversation;
@@ -76,6 +78,7 @@ const props = defineProps<{
 }>();
 
 const activityStore = useAgentActivityStore();
+const { t } = useLocalization();
 const effectiveRunId = computed(() => props.runId || props.conversation.id);
 const compactionActivities = computed(() => activityStore.getCompactionActivities(effectiveRunId.value));
 const filePreviewStatus = ref('');
@@ -88,7 +91,10 @@ const browse = useEventMonitorActiveTraceBrowse({
   presentationRevision: () => props.presentationRevision ?? 0,
 });
 
+// remote-runs-in-tree: a file path in a remote run's conversation names a file on the other node.
+const remote = useRemoteRun(() => effectiveRunId.value);
 const handleFilePathAction = async (action: AbsoluteFilePathAction): Promise<void> => {
+  if (remote.value) { filePreviewStatus.value = t('remote.filePath', { node: remote.value.nodeName }); return; }
   // Keep the launcher effect boundary out of Markdown rendering and passive
   // message arrival. It is created only for explicit user activation.
   const originRunId = effectiveRunId.value;

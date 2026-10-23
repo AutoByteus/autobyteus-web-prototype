@@ -48,6 +48,9 @@ export const scenarioCatalog = Object.freeze({
   // one-nodes-tab: Nodes → Manage Nodes (one list of nodes). The simulated network is prototype/nodes/nodeWorld.ts.
   nodes_user: 'Populated data where this desktop lists the embedded node and Docker 8001 (collaborating); Docker 8003, 8004 and 8005 are running and can be added.',
   nodes_states: 'Nodes scenario with one row in each state: working, off there, not registered there, a different node, not reachable, still checking, registered only by the other node, and one not collaborating.',
+  // remote-runs-in-tree: runs the Project Task Manager delegated to another node (prototype/remote-runs/remoteRunsFixture.ts).
+  remote_runs: 'Populated data where the Project Task Manager run is live and delegated a Marketing Team (working) and a market researcher (idle) to the node "docker", next to its five local copies.',
+  remote_states: 'Populated data where the Project Task Manager run is live with one run on another node in every state: working, idle, waiting, offline and not reachable.',
   live_runs: 'Populated data where the stored Research Assistant run and the stored Product Review Team run are live: a delegated copy is running, a copy Team has an agent in error, and the Team run is busy.',
   definition_issues: 'Populated data where some agent package definitions could not be read: card load-issue badges, list problem notices and package auto-refresh states.',
 })

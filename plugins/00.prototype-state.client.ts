@@ -11,6 +11,10 @@ import { applyExperienceScenario } from '~/prototype/shared/apply-experience-sce
 import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, taskContextUpload } from '~/prototype/source-observation/fixtures.mjs'
 import { getApolloClient, localFixtureState } from '~/utils/apolloClient'
 import { liveStreamFrames } from '~/prototype/source-observation/live-streams.mjs'
+// remote-runs-in-tree (design-only): the live stream of a run that delegated copies to another node.
+import { PTM_HOST_RUN_ID, remoteInterruptReply, remoteSendReply, remoteStopFrames, remoteStreamIsLive, remoteTimeline } from '~/prototype/remote-runs/remoteRunsFixture'
+import { collaborationView } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
+import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
 import { GetAgentOrgRunInspection } from '~/graphql/queries/runHistoryQueries'
 import { isLaunchedOrgRunId } from '~/prototype/run-settings/launchedOrgFixture'
 import { isLaunchedTeamRunId } from '~/prototype/run-settings/launchedTeamFixture'
@@ -780,6 +784,9 @@ export default defineNuxtPlugin({
         if (new URL(this.url, window.location.href).pathname === '/ws/update-notifications') setTimeout(() => this.emit({ type: 'connected' }), 20)
         const liveFrames = liveStreamFrames(localFixtureState, this.url)
         if (liveFrames) setTimeout(() => { for (const frame of liveFrames) this.emit(frame) }, 20)
+        // remote-runs-in-tree: the delegating node streams the copies on another node like its own.
+        const remoteScenario = (() => { try { return localStorage.getItem('autobyteus.prototype.scenario') || 'populated' } catch { return 'populated' } })()
+        if (designOnlyLayersEnabled() && remoteStreamIsLive(remoteScenario, new URL(this.url, window.location.href).pathname)) this.playRemoteRunsStream(remoteScenario)
         // The Team launched from New chat is live the same way: CONNECTED, then its view with every
         // agent idle; each sent message is received (nothing replies).
         if (isLaunchedTeamRunId(runId) && this.url.includes('/ws/agent-team')) {
@@ -788,6 +795,28 @@ export default defineNuxtPlugin({
         }
       }
       private launchedTeamRunId: string | null = null
+      private remoteScenario: string | null = null
+      private playLater(frames: { delay: number; frame: unknown }[], from = 0): void {
+        let at = from
+        for (const { delay, frame } of frames) { at += delay; setTimeout(() => this.emit(frame), at) }
+      }
+      private playRemoteRunsStream(scenario: string): void {
+        this.remoteScenario = scenario
+        setTimeout(() => {
+          this.emit({ type: 'CONNECTED', payload: { root_subject_kind: 'agent', root_run_id: PTM_HOST_RUN_ID, session_id: 'prototype-remote-runs-session' } })
+          this.emit({ type: 'ROOT_EXECUTION_VIEW_SNAPSHOT', payload: collaborationView(scenario) })
+        }, 20)
+        // The working coordinator carries on once its view is opened (the first projection read of its conversation).
+        const onOpened = () => { window.removeEventListener('prototype-remote-opened', onOpened); this.playLater(remoteTimeline()) }
+        window.addEventListener('prototype-remote-opened', onOpened)
+        // A Stop of a remote copy from the tree: the other node reports its agents offline.
+        const onStop = (stopEvent: Event) => {
+          if (this.readyState !== PrototypeWebSocket.OPEN) { window.removeEventListener('prototype-remote-stopped', onStop); return }
+          const reference = (stopEvent as CustomEvent).detail
+          setTimeout(() => { for (const frame of remoteStopFrames(scenario, reference)) this.emit(frame) }, 350)
+        }
+        window.addEventListener('prototype-remote-stopped', onStop)
+      }
       private teamChangeSequence = 1
       private emit(frame: unknown): void {
         if (this.readyState !== PrototypeWebSocket.OPEN) return
@@ -830,6 +859,11 @@ export default defineNuxtPlugin({
         if (typeof data !== 'string') return
         let message: { type?: string; payload?: { message_id?: string; dedupe_key?: string; mentions?: unknown[]; agent_run_id?: string; content?: string; context_file_paths?: string[] } }
         try { message = JSON.parse(data) } catch { return }
+        // remote-runs-in-tree: a message or an interrupt for a run on another node is answered by that node.
+        if (this.remoteScenario && message.payload) {
+          if (message.type === 'SEND_MESSAGE') { const frames = remoteSendReply(this.remoteScenario, message.payload as Record<string, any>); if (frames.length) { this.playLater(frames); return } }
+          if (message.type === 'INTERRUPT_GENERATION') { const frames = remoteInterruptReply(message.payload as Record<string, any>); if (frames.length) { this.playLater(frames); return } }
+        }
         if (this.launchedTeamRunId && message.type === 'SEND_MESSAGE' && message.payload) {
           const payload = message.payload
           setTimeout(() => this.emit({ type: 'MEMBER_INPUT_MESSAGE', payload: {

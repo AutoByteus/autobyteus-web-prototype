@@ -18,6 +18,7 @@ import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/protot
 import { withAgentReconnect } from '~/prototype/agent-reconnect/agentReconnectFixture'
 import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
+import { remoteStopResult } from '~/prototype/remote-runs/remoteRunsFixture'
 import { seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
 import { seedTaskParts } from '~/prototype/task-part-of/taskPartOfFixture'
 import { designSkillSourceData, designRegistryError, designSkillSourceMutation } from '~/prototype/skill-sources/skillSourcesDesignFixture'
@@ -125,6 +126,16 @@ const resolveMutationLocally = async (request: OperationRequest = {}) => {
   if (designOnlyLayersEnabled()) {
     const scripted = await designSkillSourceMutation(name, request.variables || {}, state)
     if (scripted) return scripted
+  }
+  // remote-runs-in-tree (design-only): a Stop of a copy on another node goes through this node to that node.
+  if (designOnlyLayersEnabled() && name === 'StopDelegatedExecution') {
+    const input = request.variables?.input || {}
+    const remote = remoteStopResult(localScenario(), { agentRunId: input.agentRunId ?? null, teamRunId: input.teamRunId ?? null })
+    if (remote?.__projectError) return { data: null, errors: [remote.__projectError] }
+    if (remote) {
+      window.dispatchEvent(new CustomEvent('prototype-remote-stopped', { detail: { agentRunId: input.agentRunId ?? null, teamRunId: input.teamRunId ?? null } }))
+      return { data: structuredClone(remote) }
+    }
   }
   let data = operationFixture(name, request.variables || {}, state)
   // run-settings-ui-unification: each Team launch is its own run (launchedTeamFixture.ts).

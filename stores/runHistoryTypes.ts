@@ -197,6 +197,11 @@ export interface RunHistoryTransientExecutionRow extends RunHistoryTeamExecution
   currentStatus: AgentStatus | string | null;
   /** Display name of the AgentRun that started a delegated child row; null otherwise. */
   delegatedBy: string | null;
+  /**
+   * remote-runs-in-tree: set on a run that another node runs (this node's delegation started it): that
+   * node's name as the owner gave it, whether it answered, and the run's title (its first message).
+   */
+  remote?: Readonly<{ nodeName: string; reachable: boolean; title: string | null }> | null;
 }
 
 export type RunHistoryTeamExecutionRow =

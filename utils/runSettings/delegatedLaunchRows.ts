@@ -1,3 +1,4 @@
+import { remoteRunInfo } from '~/prototype/remote-runs/remoteRunsFixture'
 import {
   teamCopyAgentLaunch,
   teamMemberLaunchSource,
@@ -267,6 +268,8 @@ export const collaborationDelegatedLaunchNodes = (input: Readonly<{
     for (const task of tasks) {
       if ('agentRunId' in task) {
         if (closedKeys.has(`agent:${task.agentRunId}`)) continue
+        // remote-runs-in-tree: a copy another node runs keeps its model and settings on that node; they are not listed here.
+        if (remoteRunInfo(task.agentRunId)) continue
         result.push(build.agent({ key: `${task.address}@${task.agentRunId}`, address: task.address,
           started: camelLaunch(task.source.launchConfiguration),
           recorded: { agent: camelChoice(task.userLaunchSelection) },
@@ -275,6 +278,7 @@ export const collaborationDelegatedLaunchNodes = (input: Readonly<{
         continue
       }
       if (closedKeys.has(`team:${task.teamRunId}`)) continue
+      if (remoteRunInfo(task.teamRunId)) continue
       const source = task.source
       const teamStarted = camelLaunch(source.defaultLaunchConfiguration)
       const teamChoice = camelChoice(task.userTeamLaunchSelection)
