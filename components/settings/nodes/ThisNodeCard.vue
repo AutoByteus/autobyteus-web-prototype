@@ -14,8 +14,13 @@
     <div class="mt-4 border-t border-slate-100 pt-4" data-testid="this-node-collaboration">
       <div class="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
         <div class="min-w-0 flex-1 basis-80">
-          <h4 class="text-sm font-semibold text-slate-900">{{ t(k('collab.title')) }}</h4>
-          <p class="mt-1 text-sm text-gray-500">{{ t(k('collab.description')) }}</p>
+          <h4 class="flex items-center gap-2.5 text-sm font-semibold text-slate-900">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg" :class="store.switchOn ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'" data-testid="this-node-collab-icon">
+              <RemoteCollaborationIcon size-class="h-5 w-5" />
+            </span>
+            {{ t(k('collab.title')) }}
+          </h4>
+          <p class="mt-2 text-sm text-gray-500">{{ t(k('collab.description')) }}</p>
         </div>
         <div class="inline-flex items-center gap-3">
           <span class="text-sm font-medium" :class="store.switchBusy ? 'text-slate-600' : store.switchOn ? 'text-emerald-700' : 'text-amber-700'" data-testid="this-node-switch-status">
@@ -65,6 +70,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import RemoteCollaborationIcon from '~/components/settings/nodes/RemoteCollaborationIcon.vue'
 import { useNodeText } from '~/composables/useNodeText'
 import { useNodeListStore } from '~/stores/nodeListStore'
 

@@ -9,7 +9,10 @@
         :aria-busy="plan.phase === 'running'"
         :data-testid="`node-change-dialog-${plan.kind}`"
       >
-        <h3 :id="titleId" class="text-lg font-semibold" :class="plan.kind === 'remove' ? 'text-red-700' : 'text-gray-900'">{{ title }}</h3>
+        <h3 :id="titleId" class="flex items-center gap-2.5 text-lg font-semibold" :class="plan.kind === 'remove' ? 'text-red-700' : 'text-gray-900'">
+          <RemoteCollaborationIcon v-if="plan.kind !== 'remove'" size-class="h-6 w-6 flex-shrink-0 text-emerald-600" />
+          {{ title }}
+        </h3>
         <p class="mt-2 text-sm text-gray-600">{{ lead }}</p>
 
         <div class="mt-4 space-y-4">
@@ -75,6 +78,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
+import RemoteCollaborationIcon from '~/components/settings/nodes/RemoteCollaborationIcon.vue'
 import NodeAddressHint from '~/components/settings/nodes/NodeAddressHint.vue'
 import { useNodeText } from '~/composables/useNodeText'
 import { useNodeListStore, type PlanLine } from '~/stores/nodeListStore'

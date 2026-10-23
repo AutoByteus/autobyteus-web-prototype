@@ -57,7 +57,9 @@
 
       <div class="ml-auto flex items-center gap-3">
         <span class="inline-flex items-center gap-2">
-          <span class="text-sm font-medium text-slate-700" :title="t(k('row.agentsHint'))">{{ t(k('row.agents')) }}</span>
+          <span :class="row.collaborating ? 'text-emerald-600' : 'text-slate-400'" :title="t(k('row.agentsHint'))" role="img" :aria-label="t(k('row.agentsHint'))" data-testid="node-collab-icon">
+            <RemoteCollaborationIcon size-class="h-5 w-5" />
+          </span>
           <button
             type="button"
             role="switch"
@@ -214,6 +216,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref } from 'vue'
+import RemoteCollaborationIcon from '~/components/settings/nodes/RemoteCollaborationIcon.vue'
 import NodeAddressHint from '~/components/settings/nodes/NodeAddressHint.vue'
 import RemoteCollaborationOfferDisclosure from '~/components/settings/RemoteCollaborationOfferDisclosure.vue'
 import { useNodeText } from '~/composables/useNodeText'
