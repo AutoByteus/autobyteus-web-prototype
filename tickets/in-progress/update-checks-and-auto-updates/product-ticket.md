@@ -94,3 +94,14 @@
 
 - A package whose automatic update was skipped for local changes: its manual Update runs without a confirmation (the row
   already says "Update replaces them"). The user: no confirmation. Skill sources keep their existing confirmation.
+
+### Finding for the Solution Designer (2026-10-23): local changes in a managed package
+
+- Read in the source: a package update replaces the whole managed install folder with the GitHub archive (the old folder is
+  moved aside and deleted on success, `github-agent-package-installer.ts` `stagePackageReplacement`). Files added in that folder
+  (for example tools) are lost on any update, manual today; there is no undo (DEC-003).
+- No record of installed content exists today, so every existing package would be skipped once ("cannot be determined",
+  requirements Data Continuity). The skipped-row copy therefore says "may have local changes" (not "has").
+- Consequence: a package that gets tools added is never updated automatically, and its manual Update deletes them.
+- Options (not designed; need the user): keep user content outside managed folders (architecture); or keep the replaced folder and
+  say where (new behavior, conflicts with DEC-003). Asked the user which they want.
