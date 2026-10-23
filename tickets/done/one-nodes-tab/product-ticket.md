@@ -22,7 +22,7 @@
 - Source: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`, `autobyteus-web`; engineering worktree `/Users/normy/autobyteus_org/autobyteus-worktrees/one-nodes-tab` (read only) at `origin/personal@ca1f09e52a`
 - Pinned source revision of the baseline: `origin/personal@9e7a45880865912442f4188e6d2a58d99b10a54c` (`ui-baseline-report.md`, `WEB-BASELINE-REFRESH-012`), plus the accepted `remote-nodes-page` design (267)
 - Baseline check for this request (no refresh needed): between `9e7a458` and `ca1f09e52a`, `NodeManager.vue`, `NodeManagerTabs.vue`, `CurrentWindowNodeCard.vue` and `FeatureCapabilityToggleCard.vue` are identical to the design repository; the Remote Collaboration components differ only in internal state names (`checking` vs `waiting`) and the offers store, not in markup or copy. The one changed Nodes-area surface, `NfsGuideCard.vue` (sticky copy feedback, release line), is a tab this design does not touch and is not refreshed here.
-- Integration: see Final Integration below
+- Integration: `Completed` (see Final Integration below)
 - Ticket folder: `tickets/done/one-nodes-tab/`
 
 ## Runtime isolation
@@ -65,3 +65,12 @@
 - Data-boundary check: all nodes, names, IDs, addresses, agent names and delays are invented (`prototype/nodes/nodeWorld.ts`, `prototype/remote-collaboration/offersScript.ts`); nothing real, captured or replayed; the host mock seeds the desktop list with invented entries.
 - Baseline status: applicable accepted baseline `ui-baseline-report.md` (`WEB-BASELINE-REFRESH-012`) plus the accepted `remote-nodes-page` design; no refresh or correction was needed (see "Design & Repository Context").
 - Obsolete reference code removed with the Remote Collaboration tab: `RemoteCollaborationCard.vue`, `RemoteCollaborationPeersSection.vue`, `CurrentWindowNodeCard.vue`, the remote-collaboration stores, GraphQL documents and fixtures, `nodeCapabilityProbe.ts`, `nodeHostValidation.ts`, the `collab_peers` scenario and their strings.
+
+## Final Integration
+
+- Integration result: `Completed`. The ticket result was pushed as a fast-forward to the remote default branch (`git push origin design/one-nodes-tab:personal`, `d9e25db..371e2ef`) and the canonical checkout `/Users/normy/autobyteus_org/autobyteus-web-design` was fast-forwarded to it.
+- Design result commit (UI reference, spec, 31 final references, runbook, change log): `371e2ef0510d6b0dae471e63bd49f48d357e6cf6` on `design/one-nodes-tab`. This integration record is the finalization commit after it; the final local and `origin` revisions of `personal` are in the handoff (the record cannot name its own commit).
+- Default-entry-point check (from the canonical checkout at `371e2ef`, `corepack pnpm dev --port 4802`, scenario `nodes_user`): `/nodes?nodeTab=manage` shows the five tabs (no Remote Collaboration), adding `http://localhost:8003` opens "Let agents work with 8003?", Turn on ends with "3 Agents · 1 Agent Team" under the row, no notice, no console error. No preview URL or preview-only state was used.
+- Ticket moved to `tickets/done/one-nodes-tab/` in the finalization.
+- Runtime: the review dev server on port 4801 and the check server on 4802 (both started by this ticket) were stopped.
+- Cleanup: the ticket worktree `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/one-nodes-tab` is removed after this record is pushed; the branch `design/one-nodes-tab` is kept locally (no remote branch was pushed).
