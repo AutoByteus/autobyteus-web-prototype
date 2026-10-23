@@ -14,8 +14,9 @@
       <span v-if="!open" class="min-w-0 truncate text-slate-500" :data-testid="`${testId}-preview`">{{ preview }}</span>
     </button>
     <div v-if="open" class="mt-3 pl-6">
-      <RemoteCollaborationOfferList :entries="entries" :test-id="`${testId}-list`" />
+      <RemoteCollaborationOfferList v-if="entries.length" :entries="entries" :test-id="`${testId}-list`" />
       <p v-if="footer" class="mt-3 text-xs text-slate-400">{{ footer }}</p>
+      <div v-if="$slots.default" :class="entries.length ? 'mt-4 border-t border-slate-200 pt-4' : ''"><slot /></div>
     </div>
   </div>
 </template>
@@ -32,10 +33,17 @@ const props = defineProps<{
   /** Replaces the "7 Agents · 2 Agent Teams" counts, for a list that is already named (for example "11 ready"). */
   label?: string
   footer?: string
+  /** Optional: lets the page open the details itself (for example "Change address"). */
+  modelValue?: boolean
 }>()
+const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
 
 const { t } = useLocalization()
-const open = ref(false)
+const local = ref(false)
+const open = computed({
+  get: () => props.modelValue ?? local.value,
+  set: (value: boolean) => { local.value = value; emit('update:modelValue', value) },
+})
 
 const base = 'settings.components.settings.RemoteCollaboration.offer.'
 const agents = computed(() => props.entries.filter((entry) => entry.kind === 'AGENT').length)

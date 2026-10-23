@@ -6,16 +6,6 @@
   >
     <div class="flex flex-wrap items-center gap-x-4 gap-y-3 px-5 py-4">
       <div class="flex min-w-0 flex-1 basis-60 items-start gap-3">
-        <button
-          type="button"
-          class="-ml-2 -mt-1.5 inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-slate-400 hover:bg-slate-100 hover:text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-          :aria-expanded="expanded"
-          :aria-label="expanded ? t(k('row.collapse'), { name: row.name }) : t(k('row.expand'), { name: row.name })"
-          :data-testid="`node-expand-${row.key}`"
-          @click="expanded = !expanded"
-        >
-          <svg class="h-4 w-4 transition-transform" :class="expanded ? 'rotate-90' : ''" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m7.5 4.5 5.5 5.5-5.5 5.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
-        </button>
         <span class="mt-1.5 inline-flex h-3 w-3 flex-shrink-0 items-center justify-center" role="img" :aria-label="dotLabel" :title="dotLabel" :data-testid="`node-dot-${row.key}`">
           <span v-if="checking" class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-slate-200 border-t-slate-500" />
           <span v-else class="inline-block h-2.5 w-2.5 rounded-full" :class="dotClass" />
@@ -58,7 +48,7 @@
       <div class="ml-auto flex items-center gap-3">
         <span class="inline-flex items-center gap-2">
           <span :class="row.collaborating ? 'text-emerald-600' : 'text-slate-400'" :title="t(k('row.agentsHint'))" role="img" :aria-label="t(k('row.agentsHint'))" data-testid="node-collab-icon">
-            <RemoteCollaborationIcon size-class="h-5 w-5" />
+            <RemoteCollaborationIcon size-class="h-6 w-6" />
           </span>
           <button
             type="button"
@@ -78,32 +68,32 @@
         <button
           v-if="canOpen"
           type="button"
-          class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-600 transition hover:border-slate-400 hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           :title="t(k('row.openNode'), { name: row.name })"
           :aria-label="t(k('row.openNode'), { name: row.name })"
           :data-testid="`node-open-${row.key}`"
           @click="store.openNode(row.key)"
         >
-          <svg class="h-[18px] w-[18px]" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M11 3.5h5.5V9M16.2 3.8 9.5 10.5M8 4.5H5.5A2 2 0 0 0 3.5 6.5v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V12" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M11 3.5h5.5V9M16.2 3.8 9.5 10.5M8 4.5H5.5A2 2 0 0 0 3.5 6.5v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V12" stroke-linecap="round" stroke-linejoin="round" /></svg>
         </button>
-        <span v-else class="inline-block h-8 w-8" aria-hidden="true" />
+        <span v-else class="inline-block h-10 w-10" aria-hidden="true" />
 
         <button
           v-if="!row.isEmbedded"
           type="button"
-          class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:bg-red-50 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+          class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-500 transition hover:border-red-300 hover:bg-red-50 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
           :title="t(k('row.removeNode'), { name: row.name })"
           :aria-label="t(k('row.removeNode'), { name: row.name })"
           :data-testid="`node-remove-${row.key}`"
           @click="store.requestRemove(row.key)"
         >
-          <svg class="h-[18px] w-[18px]" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 6h12M8 6V4.5A1.5 1.5 0 0 1 9.5 3h1A1.5 1.5 0 0 1 12 4.5V6m1.5 0-.6 9a1.5 1.5 0 0 1-1.5 1.4H8.6A1.5 1.5 0 0 1 7.1 15L6.5 6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 6h12M8 6V4.5A1.5 1.5 0 0 1 9.5 3h1A1.5 1.5 0 0 1 12 4.5V6m1.5 0-.6 9a1.5 1.5 0 0 1-1.5 1.4H8.6A1.5 1.5 0 0 1 7.1 15L6.5 6" stroke-linecap="round" stroke-linejoin="round" /></svg>
         </button>
-        <span v-else class="inline-block h-8 w-8" aria-hidden="true" />
+        <span v-else class="inline-block h-10 w-10" aria-hidden="true" />
       </div>
     </div>
 
-    <div v-if="checking || line" class="px-5 pb-4 pl-[5rem]" aria-live="polite">
+    <div v-if="checking || line" class="px-5 pl-[2.75rem]" :class="row.collaborating && inspection && !checking ? 'pb-1' : 'pb-4'" aria-live="polite">
       <p v-if="checking" class="flex items-center gap-2 text-sm text-slate-500" :data-testid="`node-line-${row.key}`">
         {{ t(k('row.checkingLine'), { name: row.name }) }}
       </p>
@@ -122,99 +112,93 @@
       </div>
     </div>
 
-    <div v-if="expanded" class="border-t border-slate-100 bg-slate-50/60 px-5 py-4 pl-[5rem]" :data-testid="`node-details-${row.key}`">
-      <div v-if="row.collaborating" :data-testid="`node-directions-${row.key}`">
-        <div class="grid gap-x-6 gap-y-2 text-sm sm:grid-cols-[max-content_max-content_1fr]">
-        <div v-for="dir in directions" :key="dir.id" class="grid gap-x-6 gap-y-0.5 sm:col-span-3 sm:grid-cols-subgrid sm:items-baseline" :data-testid="`node-direction-${dir.id}-${row.key}`">
-          <span class="font-medium text-slate-700">{{ dir.label }}</span>
-          <span class="inline-flex items-center gap-1.5" :class="dir.toneClass">
-            <span v-if="dir.checking" class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-slate-200 border-t-slate-500" aria-hidden="true" />
-            <span v-else aria-hidden="true">{{ dir.mark }}</span>
-            {{ dir.status }}
-          </span>
-          <span class="min-w-0 break-all font-mono text-xs text-slate-500">
-            <template v-if="dir.via">{{ t(k('dir.via'), { address: dir.via }) }}</template>
+    <div v-if="row.collaborating && inspection && !checking" class="px-5 pb-4 pl-[2.75rem]" :data-testid="`node-details-${row.key}`">
+      <RemoteCollaborationOfferDisclosure
+        v-model="expanded"
+        :entries="offers ?? []"
+        :label="summaryLabel"
+        :test-id="`node-offer-${row.key}`"
+      >
+        <div :data-testid="`node-directions-${row.key}`">
+          <div class="grid gap-x-6 gap-y-2 text-sm sm:grid-cols-[max-content_max-content_1fr]">
+          <div v-for="dir in directions" :key="dir.id" class="grid gap-x-6 gap-y-0.5 sm:col-span-3 sm:grid-cols-subgrid sm:items-baseline" :data-testid="`node-direction-${dir.id}-${row.key}`">
+            <span class="font-medium text-slate-700">{{ dir.label }}</span>
+            <span class="inline-flex items-center gap-1.5" :class="dir.toneClass">
+              <span v-if="dir.checking" class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-slate-200 border-t-slate-500" aria-hidden="true" />
+              <span v-else aria-hidden="true">{{ dir.mark }}</span>
+              {{ dir.status }}
+            </span>
+            <span class="min-w-0 break-all font-mono text-xs text-slate-500">
+              <template v-if="dir.via">{{ t(k('dir.via'), { address: dir.via }) }}</template>
+              <button
+                v-if="dir.id === 'out' && inspection"
+                type="button"
+                class="ml-2 rounded font-sans text-xs font-medium text-blue-700 hover:text-blue-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                :data-testid="`node-change-address-${row.key}`"
+                @click="startAddress"
+              >{{ t(k('address.change')) }}</button>
+            </span>
+          </div>
+          </div>
+
+          <div v-if="editingAddress" class="mt-3 max-w-xl" :data-testid="`node-address-editor-${row.key}`">
+            <label class="block text-xs font-medium text-slate-600" :for="`addr-${row.key}`">{{ t(k('address.label'), { name: row.name }) }}</label>
+            <div class="mt-1 flex flex-wrap items-center gap-2">
+              <input
+                :id="`addr-${row.key}`"
+                v-model="addressDraft"
+                type="text"
+                class="w-full max-w-sm rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 font-mono text-sm shadow-sm transition focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                :data-testid="`node-address-input-${row.key}`"
+                @keydown.enter.prevent="saveAddress()"
+                @keydown.esc.prevent="editingAddress = false"
+              >
+              <button type="button" :class="primaryButton" :disabled="addressBusy" :data-testid="`node-address-save-${row.key}`" @click="saveAddress()">{{ addressBusy ? t(k('address.checking')) : t(k('address.save')) }}</button>
+              <button type="button" :class="secondaryButton" @click="editingAddress = false">{{ t(k('address.cancel')) }}</button>
+            </div>
+            <div v-if="addressError" class="mt-2">
+              <NodeAddressHint
+                v-if="addressError.kind === 'noAddress'"
+                :node="store.thisName"
+                :error="addressError"
+                :test-id="`node-address-hint-${row.key}`"
+                @use="(address) => saveAddress(address)"
+                @guide="emit('guide')"
+              />
+              <p v-else class="text-sm text-red-600" role="alert" :data-testid="`node-address-error-${row.key}`">{{ errorText(addressError, row.name) }}</p>
+            </div>
+          </div>
+        </div>
+        <div v-if="row.collaborating && lastRunSteps.length" class="mt-3 text-sm" :data-testid="`node-steps-${row.key}`">
+          <p class="font-medium text-slate-700">{{ t(k('detail.steps')) }}</p>
+          <ul class="mt-1 space-y-0.5">
+            <li v-for="step in lastRunSteps" :key="step.id" class="flex items-baseline gap-2" :class="step.status === 'failed' ? 'text-red-700' : step.status === 'done' ? 'text-slate-600' : 'text-slate-500'">
+              <span aria-hidden="true">{{ step.status === 'done' ? '✓' : step.status === 'failed' ? '✗' : '○' }}</span>
+              <span>{{ stepText(step) }}<span v-if="step.status === 'failed' && step.error"> — {{ errorText(step.error, row.name) }}</span></span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-slate-400">
+          <span v-if="row.nodeId">{{ t(k('detail.nodeId')) }} <span class="font-mono">{{ row.nodeId }}</span></span>
+          <span class="inline-flex items-center gap-1">
+            <span v-if="checkedAt && !checking">{{ checkedAt }}</span>
             <button
-              v-if="dir.id === 'out' && inspection"
               type="button"
-              class="ml-2 rounded font-sans text-xs font-medium text-blue-700 hover:text-blue-900 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-              :data-testid="`node-change-address-${row.key}`"
-              @click="startAddress"
-            >{{ t(k('address.change')) }}</button>
+              class="inline-flex h-7 w-7 items-center justify-center rounded-md border border-slate-300 bg-white text-slate-600 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:text-slate-300"
+              :disabled="checking"
+              :title="t(k('detail.checkAgain'), { name: row.name })"
+              :aria-label="t(k('detail.checkAgain'), { name: row.name })"
+              :data-testid="`node-refresh-${row.key}`"
+              @click="store.askAgain(row.key)"
+            >
+              <svg class="h-4 w-4" :class="checking ? 'animate-spin' : ''" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path d="M16 10a6 6 0 1 1-1.8-4.3" stroke-linecap="round" /><path d="M16.2 3v3.2h-3.2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
           </span>
         </div>
-        </div>
-
-        <div v-if="editingAddress" class="mt-3 max-w-xl" :data-testid="`node-address-editor-${row.key}`">
-          <label class="block text-xs font-medium text-slate-600" :for="`addr-${row.key}`">{{ t(k('address.label'), { name: row.name }) }}</label>
-          <div class="mt-1 flex flex-wrap items-center gap-2">
-            <input
-              :id="`addr-${row.key}`"
-              v-model="addressDraft"
-              type="text"
-              class="w-full max-w-sm rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 font-mono text-sm shadow-sm transition focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
-              :data-testid="`node-address-input-${row.key}`"
-              @keydown.enter.prevent="saveAddress()"
-              @keydown.esc.prevent="editingAddress = false"
-            >
-            <button type="button" :class="primaryButton" :disabled="addressBusy" :data-testid="`node-address-save-${row.key}`" @click="saveAddress()">{{ addressBusy ? t(k('address.checking')) : t(k('address.save')) }}</button>
-            <button type="button" :class="secondaryButton" @click="editingAddress = false">{{ t(k('address.cancel')) }}</button>
-          </div>
-          <div v-if="addressError" class="mt-2">
-            <NodeAddressHint
-              v-if="addressError.kind === 'noAddress'"
-              :node="store.thisName"
-              :error="addressError"
-              :test-id="`node-address-hint-${row.key}`"
-              @use="(address) => saveAddress(address)"
-              @guide="emit('guide')"
-            />
-            <p v-else class="text-sm text-red-600" role="alert" :data-testid="`node-address-error-${row.key}`">{{ errorText(addressError, row.name) }}</p>
-          </div>
-        </div>
-      </div>
-      <p v-else-if="!checking" class="max-w-2xl text-sm text-slate-600" :data-testid="`node-off-state-${row.key}`">{{ t(k('detail.offState'), { name: row.name }) }}</p>
-
-      <div v-if="row.collaborating && lastRunSteps.length" class="mt-3 text-sm" :data-testid="`node-steps-${row.key}`">
-        <p class="font-medium text-slate-700">{{ t(k('detail.steps')) }}</p>
-        <ul class="mt-1 space-y-0.5">
-          <li v-for="step in lastRunSteps" :key="step.id" class="flex items-baseline gap-2" :class="step.status === 'failed' ? 'text-red-700' : step.status === 'done' ? 'text-slate-600' : 'text-slate-500'">
-            <span aria-hidden="true">{{ step.status === 'done' ? '✓' : step.status === 'failed' ? '✗' : '○' }}</span>
-            <span>{{ stepText(step) }}<span v-if="step.status === 'failed' && step.error"> — {{ errorText(step.error, row.name) }}</span></span>
-          </li>
-        </ul>
-      </div>
-
-      <div v-if="row.collaborating && offers" class="mt-4" :data-testid="`node-offers-${row.key}`">
-        <RemoteCollaborationOfferDisclosure
-          v-if="offers.length"
-          :entries="offers"
-          :footer="checkedAt"
-          :test-id="`node-offer-${row.key}`"
-        />
-        <p v-else class="text-sm text-slate-500" :data-testid="`node-offer-empty-${row.key}`">{{ t(k('detail.emptyOffer'), { name: row.name }) }}</p>
-      </div>
-      <p v-else-if="row.collaborating && !checking && !offers" class="mt-4 text-sm text-slate-500" :data-testid="`node-offer-none-${row.key}`">{{ t(k('detail.offersUnavailable'), { name: row.name }) }}</p>
-
-      <div class="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs text-slate-400">
-        <span v-if="row.nodeId">{{ t(k('detail.nodeId')) }} <span class="font-mono">{{ row.nodeId }}</span></span>
-        <span class="inline-flex items-center gap-1">
-          <span v-if="checkedAt && !checking">{{ checkedAt }}</span>
-          <button
-            type="button"
-            class="inline-flex h-7 w-7 items-center justify-center rounded-md border border-slate-300 bg-white text-slate-600 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:text-slate-300"
-            :disabled="checking"
-            :title="t(k('detail.checkAgain'), { name: row.name })"
-            :aria-label="t(k('detail.checkAgain'), { name: row.name })"
-            :data-testid="`node-refresh-${row.key}`"
-            @click="store.askAgain(row.key)"
-          >
-            <svg class="h-4 w-4" :class="checking ? 'animate-spin' : ''" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-              <path d="M16 10a6 6 0 1 1-1.8-4.3" stroke-linecap="round" /><path d="M16.2 3v3.2h-3.2" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </button>
-        </span>
-      </div>
+      </RemoteCollaborationOfferDisclosure>
     </div>
   </li>
 </template>
@@ -253,6 +237,11 @@ const inspection = computed(() => store.inspectionOf(props.row.key))
 const checking = computed(() => store.isChecking(props.row.key))
 const line = computed(() => store.lineOf(props.row))
 const offers = computed(() => store.offersOf(props.row.key))
+// Under the bar: how many Agents and Teams the node offers; otherwise a plain label for the connection details.
+const summaryLabel = computed(() => {
+  if (offers.value === null) return t(k('detail.connection'))
+  return offers.value.length ? undefined : t(k('detail.emptyOffer'), { name: props.row.name })
+})
 
 const shownUrl = computed(() => props.row.url.replace(/^https?:\/\//, ''))
 

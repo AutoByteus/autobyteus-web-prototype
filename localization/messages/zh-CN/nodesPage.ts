@@ -140,6 +140,7 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.banner.addedUnreachableCollab': '已添加。{{name}} 当前不可达，因此智能体暂时无法与它协作。',
   'settings.components.settings.NodesPage.row.removeNode': '移除 {{name}}',
   'settings.components.settings.NodesPage.row.openNode': '在新窗口中打开 {{name}}',
+  'settings.components.settings.NodesPage.detail.connection': '连接详情',
 } satisfies TranslationCatalog;
 
 export default nodesPageMessages;

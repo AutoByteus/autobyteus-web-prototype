@@ -359,7 +359,7 @@ export const useNodeListStore = defineStore('nodeList', () => {
       ask(rowByKey(row.key) ?? row)
     }
     if (!anyFailed) {
-      if (p.kind === 'on' || p.kind === 'fix') { delete lastRuns.value[row.key]; expanded.value[row.key] = true }
+      if (p.kind === 'on' || p.kind === 'fix') delete lastRuns.value[row.key]
       await wait(700) // the last step shows done before the dialog closes
       plan.value = null
     }
