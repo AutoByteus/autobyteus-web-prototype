@@ -71,7 +71,7 @@ export const initialIndexStatus = (scenario: MemoryScenario): IndexStatus => {
         phase: 'failed',
         steps: steps(
           { runs: done(RUN_COUNT), journals: ['failed', 2240], text: ['waiting', 0], meaning: ['waiting', 0] },
-          { journals: 'Stopped at 2,240 of 3,654 runs: the memory folder could not be read (permission denied).' },
+          { journals: 'The memory folder could not be read (permission denied).' },
         ),
         builtWithModel: null, activeModel: ACTIVE_MODEL, updatedAt: null,
       }
@@ -101,6 +101,8 @@ const rng = (seed: string) => {
 const pick = <T>(items: readonly T[], r: () => number): T => items[Math.floor(r() * items.length)]
 const iso = (day: string, time = '09:00:00') => `${day}T${time}.000Z`
 const hex = (seed: string, n = 8) => hash(seed).toString(16).padStart(8, '0').slice(0, n)
+/** A member's own run ID: its own folder, not derived from the team run's ID (so lists do not repeat the same prefix). */
+const memberRunId = (teamRunId: string, name: string) => `${name.split('_')[0].slice(0, 4)}_${hex(`${teamRunId}/${name}`)}`
 
 /* ------------------------------------------------------------------ runs the scripted search can point at */
 
@@ -174,7 +176,7 @@ export const RUNS: RunSpec[] = [
     ],
   },
   {
-    runId: `${SET_RUN}_implementation_engineer`, agentDefinitionId: 'implementation-engineer', agentName: 'implementation_engineer', kind: 'team',
+    runId: memberRunId(SET_RUN, 'implementation_engineer'), agentDefinitionId: 'implementation-engineer', agentName: 'implementation_engineer', kind: 'team',
     team: { definitionId: 'software-engineering-team', name: 'Software Engineering Team', runId: SET_RUN, taskTeam: true }, member: 'implementation_engineer',
     workspace: '/Users/dev/projects/netpanel', summary: 'Router settings page',
     files: [file('work_journal_000001.md', 6120, 540, ['2026-09-11', '2026-09-12']), file('work_journal_active.md', 2210, 190, ['2026-09-12', '2026-09-13'], true)],
@@ -213,7 +215,7 @@ export const RUNS: RunSpec[] = [
     ],
   },
   {
-    runId: `${ORG_RUN}_analyst`, agentDefinitionId: 'agent-researcher', agentName: 'analyst', kind: 'org',
+    runId: memberRunId(ORG_RUN, 'analyst'), agentDefinitionId: 'agent-researcher', agentName: 'analyst', kind: 'org',
     team: { definitionId: 'org-launch', name: 'Launch Org', runId: ORG_RUN }, member: 'analyst', workspace: '/Users/dev/projects/launch',
     summary: 'Coordinate the synthetic launch review',
     files: [file('work_journal_active.md', 1460, 120, ['2026-06-30', '2026-07-01'], true)],
@@ -294,7 +296,7 @@ const runById = new Map(RUNS.map(run => [run.runId, run]))
 
 /* ------------------------------------------------------------------ lists: agents, runs, teams, orgs */
 
-const flags = (hasJournal = true) => ({ latestMemoryAt: NOW, hasWorkingContext: true, hasWorkJournal: hasJournal, hasRawTraces: true, hasRawArchive: false })
+const flags = (hasJournal = true) => ({ latestMemoryAt: NOW, hasWorkJournal: hasJournal, hasRawTraces: true, hasRawArchive: false })
 const paged = <T>(entries: T[], variables: Record<string, any>) => {
   const search = String(variables.search || '').trim().toLowerCase()
   const pageSize = Number(variables.pageSize) || 25
@@ -355,7 +357,7 @@ const teamRuns = (team: TeamSpec) => Array.from({ length: Math.min(team.runs, 8)
     teamRunId: runId, teamDefinitionId: team.id, teamDefinitionName: team.name, summary: team.task ? pick(TITLES.filter(t => t !== 'hello'), rng(runId)) : 'Review the launch plan',
     workspaceRootPath: WORKSPACES[i % WORKSPACES.length], createdAt: day, lastUpdatedAt: day, memory: flags(),
     memberTargets: (team.task ? SET_MEMBERS : ['reviewer', 'writer']).map(name => ({
-      memberAddress: `/${name}`, displayName: name, agentRunId: `${runId}_${name}`, agentDefinitionId: name, executionKind: team.task ? 'TASK_TEAM_MEMBER' : 'CONFIGURED',
+      memberAddress: `/${name}`, displayName: name, agentRunId: memberRunId(runId, name), agentDefinitionId: name, executionKind: team.task ? 'TASK_TEAM_MEMBER' : 'CONFIGURED',
       startedAt: day, groupPath: team.task ? [] : [], lastUpdatedAt: day, memory: flags(),
     })),
     __rootGroup: rootGroup,
@@ -365,7 +367,7 @@ const teamRuns = (team: TeamSpec) => Array.from({ length: Math.min(team.runs, 8)
 const orgRuns = () => [{
   orgRunId: ORG_RUN, orgDefinitionId: 'org-launch', orgDefinitionName: 'Launch Org', summary: 'Coordinate the synthetic launch review', workspaceRootPath: '/Users/dev/projects/launch',
   createdAt: '2026-06-30T09:00:00.000Z', lastUpdatedAt: '2026-07-01T14:00:00.000Z', memory: flags(),
-  memberTargets: ['analyst', 'writer'].map(name => ({ memberAddress: `/${name}`, displayName: name, agentRunId: `${ORG_RUN}_${name}`, agentDefinitionId: 'agent-researcher', executionKind: 'CONFIGURED', startedAt: null, groupPath: [], lastUpdatedAt: '2026-07-01T14:00:00.000Z', memory: flags() })),
+  memberTargets: ['analyst', 'writer'].map(name => ({ memberAddress: `/${name}`, displayName: name, agentRunId: memberRunId(ORG_RUN, name), agentDefinitionId: 'agent-researcher', executionKind: 'CONFIGURED', startedAt: null, groupPath: [], lastUpdatedAt: '2026-07-01T14:00:00.000Z', memory: flags() })),
 }]
 
 /**
@@ -457,12 +459,12 @@ const makeResult = (runId: string, picks: Array<{ file: string; kind: MatchKind;
 
 const ddnsResults = (): SearchResult[] => [
   makeResult(SERVER_HELPER, [{ file: 'work_journal_000004.md', kind: 'text', strength: 'strong' }, { file: 'work_journal_000002.md', kind: 'meaning', strength: 'strong' }]),
-  makeResult(`${SET_RUN}_implementation_engineer`, [{ file: 'work_journal_active.md', kind: 'text', strength: 'strong' }]),
+  makeResult(memberRunId(SET_RUN, 'implementation_engineer'), [{ file: 'work_journal_active.md', kind: 'text', strength: 'strong' }]),
   makeResult(PTM_RUN, [{ file: 'work_journal_000001.md', kind: 'text', strength: 'fair' }]),
   makeResult(DAILY_DDNS, [{ file: 'work_journal_000001.md', kind: 'text', strength: 'fair' }]),
   makeResult(NOTES_RUN, [{ file: 'work_journal_active.md', kind: 'text', strength: 'fair' }]),
   makeResult(RESEARCH_DNS, [{ file: 'work_journal_active.md', kind: 'meaning', strength: 'fair' }]),
-  makeResult(`${ORG_RUN}_analyst`, [{ file: 'work_journal_active.md', kind: 'meaning', strength: 'weak' }]),
+  makeResult(memberRunId(ORG_RUN, 'analyst'), [{ file: 'work_journal_active.md', kind: 'meaning', strength: 'weak' }]),
   makeResult(UNATTRIBUTED_RUN, [{ file: 'work_journal_active.md', kind: 'meaning', strength: 'weak' }]),
 ]
 const gameResults = (): SearchResult[] => [

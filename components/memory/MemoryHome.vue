@@ -45,7 +45,7 @@
         <div class="flex flex-wrap items-center gap-1">
           <button v-for="tab in browseTabs" :key="tab.id" type="button" class="whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition" :class="store.homeTab === tab.id ? 'bg-gray-200 text-gray-900' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'" @click="selectTab(tab.id)">{{ tab.label }}</button>
         </div>
-        <div class="flex flex-wrap items-center gap-3">
+        <div class="flex w-full flex-wrap items-center gap-3 sm:w-auto">
           <div v-if="store.sources.length > 1" class="flex items-center gap-2">
             <label class="sr-only" for="memory-source-select">{{ $t('memory.components.memory.MemoryHome.memorySource') }}</label>
             <select id="memory-source-select" :value="store.selectedSource.key" class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm" @change="onSourceChange">
@@ -53,7 +53,7 @@
             </select>
             <span v-if="store.selectedSource.readOnly" class="rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">{{ $t('memory.components.memory.common.importedReadOnly') }}</span>
           </div>
-          <div class="relative w-72 max-w-full">
+          <div class="relative w-full sm:w-80">
             <Icon icon="heroicons:magnifying-glass-20-solid" class="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" aria-hidden="true" />
             <input v-model="searchInput" type="text" :placeholder="$t(tabText[store.homeTab].search)" :aria-label="$t('memory.browse.filter_label')" class="w-full rounded-lg border border-gray-200 bg-white py-2.5 pl-10 pr-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100" data-test="memory-browse-filter" @keyup.enter="applySearch" />
           </div>
@@ -78,7 +78,7 @@
               </div>
               <span :class="countClass">{{ agent.runCount }} runs</span>
             </div>
-            <p v-if="agent.latestMemoryAt" class="mt-3 text-xs text-gray-500">{{ $t('memory.components.memory.MemoryHome.updated') }} {{ formatTimestamp(agent.latestMemoryAt) }}</p>
+            <p v-if="agent.latestMemoryAt" class="mt-3 text-xs text-gray-500">{{ formatTimestamp(agent.latestMemoryAt) }}</p>
             <MemoryBadges class="mt-3" :memory="agent.memory" />
           </button>
         </template>
@@ -95,7 +95,7 @@
               </div>
               <span :class="countClass">{{ team.teamRunCount }} runs</span>
             </div>
-            <p class="mt-3 text-xs text-gray-500">{{ team.memberMemoryCount }} {{ $t('memory.components.memory.MemoryHome.members') }}<span v-if="team.latestMemoryAt"> · {{ $t('memory.components.memory.MemoryHome.updated') }} {{ formatTimestamp(team.latestMemoryAt) }}</span></p>
+            <p class="mt-3 text-xs text-gray-500">{{ team.memberMemoryCount }} {{ $t('memory.components.memory.MemoryHome.members') }}<span v-if="team.latestMemoryAt"> · {{ formatTimestamp(team.latestMemoryAt) }}</span></p>
             <MemoryBadges class="mt-3" :memory="team.memory" />
           </button>
         </template>
@@ -109,7 +109,7 @@
               </div>
               <span :class="countClass">{{ org.orgRunCount }} runs</span>
             </div>
-            <p class="mt-3 text-xs text-gray-500">{{ org.memberMemoryCount }} {{ $t('memory.components.memory.MemoryHome.members') }}<span v-if="org.latestMemoryAt"> · {{ $t('memory.components.memory.MemoryHome.updated') }} {{ formatTimestamp(org.latestMemoryAt) }}</span></p>
+            <p class="mt-3 text-xs text-gray-500">{{ org.memberMemoryCount }} {{ $t('memory.components.memory.MemoryHome.members') }}<span v-if="org.latestMemoryAt"> · {{ formatTimestamp(org.latestMemoryAt) }}</span></p>
             <MemoryBadges class="mt-3" :memory="org.memory" />
           </button>
         </template>

@@ -19,7 +19,6 @@ export interface MemoryExplorerSourceOption {
 
 export interface MemoryAvailabilitySummary {
   latestMemoryAt?: string | null;
-  hasWorkingContext: boolean;
   hasWorkJournal: boolean;
   hasRawTraces: boolean;
   hasRawArchive: boolean;
@@ -176,13 +175,12 @@ export interface RawTraceFileSummary {
 
 export interface RunMemoryView {
   runId: string;
-  workingContext?: MemoryMessage[] | null;
   rawTraces?: MemoryTraceEvent[] | null;
   rawTraceFiles?: RawTraceFileSummary[] | null;
   selectedRawTraceFileName?: string | null;
 }
 
-export type MemoryInspectorTab = 'journal' | 'working' | 'raw';
+export type MemoryInspectorTab = 'journal' | 'raw';
 
 export type MemoryInspectTarget =
   | {

@@ -21,7 +21,7 @@ The page has no title of its own (the left menu already says Memory). One toolba
 3. **Index** (the pipeline, with room to breathe). A headline status (*Up to date · 3,654 runs · updated …*, *Not indexed yet*, *Step 3 of 4 · Text index 43%*, *Stopped at Journals*, *Embedding model changed*), then four connected step cards: **1 Find runs → 2 Journals → 3 Text index → 4 Meaning index**, each with state icon, progress bar and "X of Y".
    - **Index now** (first build, only by the click), **Try again** (after a failure), **Rebuild** (inline confirmation). The embedding model is named with a link to Server Settings → Embedding.
    - The **Index tab label carries a small badge** so progress is visible from the other tabs: a spinner and percent while it builds, an amber or red dot when it needs you, nothing when it is fine.
-4. **Run detail tabs**: **Work Journal** (the default), Working Context, Raw Traces. **Episodic and Semantic are gone** (tabs, badges, strings). The run badges say **Work Journal**.
+4. **Run detail tabs**: **Work Journal** (the default) and **Raw Traces**. **Episodic, Semantic and Working Context are gone** (tabs, badges, strings; see Decisions). The heading is just the name (`Server Helper`, or `member · team`), with the run ID and workspace under it.
 5. **Work Journal view**: file list on the left (name, days, lines, size; *Active*; *Matched lines* marker), a line-numbered reader with the matched lines highlighted and scrolled into view, a banner with the cue and *Match 1 / Match 2* buttons, **Jump to day**, **Go to line**, and *Show 300 earlier / later lines* at the edges of the loaded part so a 48,000-line file stays light. Back returns to the search results (or the Browse list).
 6. **Task teams** are listed in Agent Teams like any team, with a small dashed *Task team* tag. Runs of retired or renamed agents are named as recorded (*Server Helper*, *Release Notes Writer*); a run without metadata is named by its folder (*Unattributed runs* → `claude_7d21c0e4`).
 
@@ -49,7 +49,8 @@ Scenarios only choose the starting state; every outcome is reached through the p
 - *Entry tab:* Browse, because it is today's page and needs no index; Search and Index follow.
 - *No page title or subtitle,* and no repeated explanations: the left menu already says Memory.
 - *Strength is three words, not a number.* The evaluation report found no usable absolute score (off-topic and true matches overlap), so the page shows Strong / Fair / Weak.
-- *Work Journal is the default run tab; Working Context stays* (it is the live context window, not an old per-run file).
+- *Work Journal is the default run tab; Working Context is removed (user, round 4: "do we really need it?").* It is the agent's live context window, not a record of what happened; the Work Journal is the readable account and Raw Traces the authority. It is one component and one tab to put back if wanted. The server field is no longer read by the page.
+- *No repeated words:* no "Members" label, no "Updated" prefix, no path words in headings, and the availability badges appear only as exceptions (*No Work Journal*, *No Raw traces*, *Archive*), not on every card.
 - *Work Journal windows, not endless scroll:* a 3 MB file is read in 300-line parts around the jump.
 - *Cleanup in the area I touched:* the old "Memory source" card (a dropdown with only "This node" and a "Local runnable memory" pill) is shown only when there is more than one memory source, so imported memory can come back without redesign. The run detail is as wide as the home (6xl).
 

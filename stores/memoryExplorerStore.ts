@@ -382,7 +382,6 @@ export const useMemoryExplorerStore = defineStore('memoryExplorerStore', {
     emptyMemory() {
       return {
         latestMemoryAt: null,
-        hasWorkingContext: false,
         hasWorkJournal: false,
         hasRawTraces: false,
         hasRawArchive: false,

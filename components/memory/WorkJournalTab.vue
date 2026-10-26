@@ -1,17 +1,16 @@
 <template>
   <div data-test="work-journal">
-    <div v-if="focus" class="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-900" data-test="work-journal-found">
-      <p class="break-words font-semibold">
-        <template v-if="focus.cue">{{ $t('memory.journal.found_from', { cue: focus.cue }) }}</template>
-        <template v-else>{{ $t('memory.journal.found_lines') }}</template>
+    <div v-if="focus" class="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm text-amber-900" data-test="work-journal-found">
+      <p class="min-w-0 break-words">
+        <span class="font-semibold"><template v-if="focus.cue">{{ $t('memory.journal.found_from', { cue: focus.cue }) }}</template><template v-else>{{ $t('memory.journal.found_lines') }}</template></span>
+        <span class="text-amber-800"> · {{ matchedLabel }}</span>
       </p>
-      <p class="mt-0.5 text-xs text-amber-800">{{ matchedLabel }}</p>
-      <div v-if="siblingMatches.length > 1" class="mt-2 flex flex-wrap gap-1.5">
+      <div v-if="siblingMatches.length > 1" class="flex flex-shrink-0 flex-wrap gap-1.5">
         <button
           v-for="(match, index) in siblingMatches"
           :key="`${match.file}:${match.fromLine}`"
           type="button"
-          class="rounded-md border px-2 py-1 text-xs font-semibold"
+          class="rounded-md border px-2 py-1 text-xs font-medium"
           :class="isFocused(match) ? 'border-amber-400 bg-white text-amber-900' : 'border-amber-200 text-amber-800 hover:bg-white'"
           data-test="work-journal-match"
           @click="goToMatch(match)"

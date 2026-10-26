@@ -25,7 +25,6 @@ type ViewVariables = {
   orgRunId?: string;
   agentRunId?: string;
   source?: MemoryExplorerSourceInput;
-  includeWorkingContext?: boolean;
   includeRawTraces?: boolean;
   includeRawTraceFiles?: boolean;
   includeArchive?: boolean;
@@ -139,7 +138,6 @@ export const useMemoryInspectorStore = defineStore('memoryInspectorStore', {
     buildVariables(target: MemoryInspectTarget): ViewVariables {
       const common = {
         source: target.source ?? { type: 'LOCAL' as const },
-        includeWorkingContext: true,
         includeRawTraces: this.includeRawTraces,
         includeRawTraceFiles: this.includeRawTraces,
         includeArchive: false,
