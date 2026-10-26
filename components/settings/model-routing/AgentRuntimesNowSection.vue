@@ -8,7 +8,6 @@
       <p class="min-w-0 text-sm text-gray-500" data-testid="agent-runtimes-now-node">
         <span class="font-medium text-gray-700">{{ nodeName }}</span>
         <span class="mx-1.5 text-gray-300" aria-hidden="true">·</span>{{ ownNode ? t('settings.modelRouting.runtimesNow.node.own') : t('settings.modelRouting.runtimesNow.node.remote') }}
-        <span class="mx-1.5 text-gray-300" aria-hidden="true">·</span>{{ t('settings.modelRouting.runtimesNow.description') }}
       </p>
       <div v-if="status !== 'loading'" class="flex flex-shrink-0 items-center gap-3">
         <p v-if="report && !reading" class="text-sm text-gray-400" data-testid="agent-runtimes-now-checked">{{ t('settings.modelRouting.runtimesNow.checkedAt', { time: localTime(report.checkedAt, locale) }) }}</p>
@@ -16,6 +15,7 @@
           type="button"
           class="inline-flex min-h-9 items-center whitespace-nowrap rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
           :disabled="reading"
+          :title="t('settings.modelRouting.runtimesNow.description')"
           data-testid="agent-runtimes-now-check-again"
           @click="read()"
         >

@@ -1,10 +1,10 @@
 <template>
   <section class="px-1" data-testid="model-routing-decisions" :aria-label="t('settings.modelRouting.decisions.title')">
-    <div v-if="routing.delegations.length" class="flex items-center justify-between gap-3" data-testid="model-routing-decisions-filters">
-      <p class="text-sm text-gray-500">{{ t('settings.modelRouting.decisions.description') }}</p>
+    <div v-if="routing.delegations.length" class="flex items-center justify-end gap-3" data-testid="model-routing-decisions-filters">
       <select v-model="sourceFilter" class="h-9 flex-shrink-0 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30" :aria-label="t('settings.modelRouting.decisions.filterSource')" data-testid="model-routing-filter-source">
         <option value="">{{ t('settings.modelRouting.decisions.allSources') }}</option>
-        <option v-for="source in SOURCES" :key="source" :value="source">{{ t(SOURCE_KEY[source]) }}</option>
+        <option value="router">{{ t('settings.modelRouting.source.router') }}</option>
+        <option value="not_router">{{ t('settings.modelRouting.decisions.filterNotRouted') }}</option>
       </select>
     </div>
 
@@ -42,10 +42,10 @@
           <!-- Each delegation of the Task: to whom, by whom, when; then what each agent runs on -->
           <div v-for="item in task.delegations" :id="`decision-${item.delegation.id}`" :key="item.delegation.id" class="mt-2" :data-testid="`model-routing-decision-${item.delegation.id}`">
             <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-600">
-              <span>{{ t('settings.modelRouting.decisions.delegatedTo', { target: item.delegation.targetName, delegator: item.delegation.delegatorName }) }}</span>
+              <span class="text-gray-700">{{ item.delegation.targetName }}</span>
               <RemoteNodeChip v-if="item.delegation.node" :node-name="item.delegation.node" size="header" />
               <span class="text-gray-400">{{ decisionTime(item.delegation.at, locale, t) }}</span>
-              <button type="button" class="ml-auto inline-flex flex-shrink-0 items-center gap-1 whitespace-nowrap font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" data-testid="model-routing-decision-open-run" @click="openRun(item.delegation.delegatorRunId)">
+              <button type="button" class="ml-auto inline-flex flex-shrink-0 items-center gap-1 whitespace-nowrap font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" data-testid="model-routing-decision-open-run" :title="t('settings.modelRouting.decisions.openRunTitle', { delegator: item.delegation.delegatorName })" @click="openRun(item.delegation.delegatorRunId)">
                 {{ t('settings.modelRouting.decisions.openRun') }}<Icon icon="heroicons:arrow-top-right-on-square" class="h-3.5 w-3.5" aria-hidden="true" />
               </button>
             </div>
@@ -55,17 +55,20 @@
             </p>
             <ul class="mt-2">
               <li v-for="choice in item.choices" :key="choice.agent" class="py-1.5" data-testid="model-routing-decision-row">
-                <div class="grid gap-x-4 gap-y-0.5 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)_7.5rem] sm:items-baseline">
-                  <p class="truncate text-sm font-medium text-gray-900" :title="choice.agent">{{ choice.agent }}</p>
-                  <p class="flex min-w-0 items-center gap-2 text-sm text-gray-800">
-                    <span class="inline-block h-2.5 w-2.5 flex-shrink-0 translate-y-px rounded-[3px]" :style="{ backgroundColor: RUNTIME_COLORS[choice.runtime] }" aria-hidden="true"></span>
-                    <span class="truncate"><span class="font-medium">{{ choice.runtimeName }}</span><span class="text-gray-400"> · </span>{{ choice.model }}</span>
-                  </p>
-                  <p class="text-xs font-medium sm:text-right" :class="choice.source === 'router' ? 'text-gray-800' : choice.source === 'inherited' ? 'text-amber-700' : 'text-gray-400'">{{ t(SOURCE_KEY[choice.source]) }}</p>
+                <div class="grid gap-x-4 gap-y-0.5 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)]">
+                  <div class="min-w-0">
+                    <p class="truncate text-sm font-medium text-gray-900" :title="choice.agent">{{ choice.agent }}</p>
+                    <p v-if="choice.kind" class="text-xs text-gray-400">{{ kindLabel(choice.kind, t) }}</p>
+                  </div>
+                  <div class="min-w-0">
+                    <p class="flex min-w-0 items-center gap-2 text-sm text-gray-800">
+                      <span class="inline-block h-2.5 w-2.5 flex-shrink-0 translate-y-px rounded-[3px]" :style="{ backgroundColor: RUNTIME_COLORS[choice.runtime] }" aria-hidden="true"></span>
+                      <span class="truncate"><span class="font-medium">{{ choice.runtimeName }}</span><span class="text-gray-400"> · </span>{{ choice.model }}</span>
+                      <span v-if="choice.source !== 'router'" class="ml-auto flex-shrink-0 pl-3 text-xs" :class="choice.source === 'inherited' ? 'text-amber-700' : 'text-gray-400'">{{ t(SOURCE_KEY[choice.source]) }}</span>
+                    </p>
+                    <p v-if="choice.reason" class="mt-0.5 text-xs text-gray-500" data-testid="model-routing-decision-reason">{{ choice.reason }}</p>
+                  </div>
                 </div>
-                <p v-if="choice.reason" class="mt-0.5 text-xs text-gray-500 sm:ml-[13rem]" data-testid="model-routing-decision-reason">
-                  <span v-if="choice.kind" class="font-medium text-gray-600">{{ kindLabel(choice.kind, t) }} · </span>{{ choice.reason }}
-                </p>
                 <p v-if="choice.skipped" class="mt-1 flex items-start gap-1 text-xs text-amber-700 sm:ml-[13rem]" data-testid="model-routing-decision-skipped">
                   <Icon icon="heroicons:exclamation-triangle" class="mt-px h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" /><span>{{ skippedText(choice) }}</span>
                 </p>
@@ -110,7 +113,7 @@ type TaskGroup = { taskKey: string; taskTitle: string; delegations: { delegation
 const tasks = computed<TaskGroup[]>(() => {
   const byKey = new Map<string, TaskGroup>()
   for (const delegation of routing.delegations) {
-    const choices = delegation.choices.filter((choice) => !sourceFilter.value || choice.source === sourceFilter.value)
+    const choices = delegation.choices.filter((choice) => !sourceFilter.value || (sourceFilter.value === 'router') === (choice.source === 'router'))
     if (!choices.length) continue
     const group = byKey.get(delegation.taskKey) ?? { taskKey: delegation.taskKey, taskTitle: delegation.taskTitle, delegations: [] }
     group.delegations.push({ delegation, choices })

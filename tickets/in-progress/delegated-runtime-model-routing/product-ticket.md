@@ -67,3 +67,11 @@
 - The user's window is wider than the 1440 px the earlier screenshots used, and the user saw a layout problem. Earlier rounds looked at each tab at 1440 px only; this round checked every tab at 1512, 1180, 900 and 390 px (screenshots, and no horizontal scrolling at any width).
 - Fixed: one content width for the title, tabs and every tab (64 rem), so the tab bar and the content line up and the empty area on the right is small on wide windows; Setup's text box grows with its text (it clipped its last line at 900 px);
   Task titles wrap instead of being cut; the delegation line (to whom, by whom, when, Open run) wraps cleanly at 900 and 390 px.
+
+### Round 6 — 2026-10-26: less repeated text
+
+- The user's feedback: too much redundant text (for example "Delegated to … by …" on every Task); look at the live page in the browser tool while working.
+- Changes (checked in the live tab with the screenshot tool, and in Playwright at 853 and 1512 px): the delegation line is only the target and the time ("software engineering team  Today, 10:12 AM  Open run"; the delegator is in the link's tooltip);
+  "Model Router" is no longer written on every routed row (a row with a reason was chosen by the router; only defaults and inherited rows say so); the task kind sits under the agent name instead of in front of the reason; the Decisions and Overview intro lines and the status sentence are gone
+  ("On  Claude · prototype-sonnet"); the filter has three entries (All, Model Router, Defaults and inherited); the Setup switch text and the knowledge hint are one short sentence each; Agent runtimes now keeps only the node and the checked time (the "reading spends no tokens" note is the Check again tooltip).
+- A blank Runtime and Model while the runtime list loads (seen in the live tab) now shows the saved choice.

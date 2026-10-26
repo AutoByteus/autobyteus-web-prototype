@@ -1,7 +1,6 @@
 <template>
   <section class="px-1" data-testid="model-routing-overview" :aria-label="t('settings.modelRouting.overview.title')">
-    <div class="flex items-center justify-between gap-3">
-      <p class="text-sm text-gray-500">{{ t('settings.modelRouting.overview.description') }}</p>
+    <div class="flex items-center justify-end gap-3">
       <div class="flex flex-shrink-0 rounded-lg bg-slate-100 p-0.5" role="radiogroup" :aria-label="t('settings.modelRouting.overview.period')" data-testid="model-routing-period">
         <button
           v-for="option in PERIODS"
