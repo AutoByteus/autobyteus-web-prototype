@@ -85,3 +85,7 @@
 - The user's feedback: on Decisions the filter sat alone on its own row with the left side empty (the Overview period control did the same).
 - Change: the control of a tab sits at the right end of the tab row, the same segmented control on both tabs: Decisions "All · Model Router · Not routed", Overview "7 days · 30 days · All time". No row of its own; on a narrow window it wraps under the tabs, right-aligned. The first Task starts right under the tab line.
   Checked in the live tab and at 1512 and 390 px.
+
+### Round 9 — 2026-10-26: the tab "Agent runtimes now" is called "Runtimes"
+
+- The user asked what "Agent runtimes now" means. It is the name of the existing section (autobyteus-303): the runtimes available on this node at this moment. Inside Model Routing "agent" and "now" add nothing and the name sounds like Settings → Agent Runtimes (install, sign in), so the tab is "Runtimes" (zh-CN 运行时). The section itself (limits, models, blocked, Check again) is unchanged.

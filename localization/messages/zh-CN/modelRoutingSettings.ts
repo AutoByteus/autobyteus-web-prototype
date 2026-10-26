@@ -42,7 +42,7 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.tabs.setup": "设置",
   "settings.modelRouting.tabs.decisions": "决策",
   "settings.modelRouting.tabs.overview": "概览",
-  "settings.modelRouting.tabs.runtimes": "当前智能体运行时",
+  "settings.modelRouting.tabs.runtimes": "运行时",
   "settings.modelRouting.status.off": "已关闭",
   "settings.modelRouting.status.offDetail": "委派的智能体照常启动",
   "settings.modelRouting.status.active": "已开启",

@@ -42,7 +42,7 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.tabs.setup": "Setup",
   "settings.modelRouting.tabs.decisions": "Decisions",
   "settings.modelRouting.tabs.overview": "Overview",
-  "settings.modelRouting.tabs.runtimes": "Agent runtimes now",
+  "settings.modelRouting.tabs.runtimes": "Runtimes",
   "settings.modelRouting.status.off": "Off",
   "settings.modelRouting.status.offDetail": "delegated agents start as they do today",
   "settings.modelRouting.status.active": "On",
