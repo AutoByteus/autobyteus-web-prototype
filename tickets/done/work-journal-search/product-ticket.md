@@ -19,7 +19,7 @@
 - Accepted design base: `01290bf990342efc48918ce75d4dbffd05fffc59`; advanced to `205aff6ea07ccfe51738469a14230d15a16e70d9` by merging `origin/personal` before integration (the Model Routing design); the final check was repeated after the merge: 19 of the 24 references are pixel-identical, the other 5 are screens whose running-progress percentages depend on timing or whose select rendering differs by noise; no visible drift.
 - Source pin: `origin/personal@d74f75a51ab7dc47d42a13f33e0f943c3a230ad7` (baseline `WEB-BASELINE-REFRESH-013`); no bootstrap request was needed.
 - UI reference code revision before the merge: `5dedfcd84d7f32457192dfa8f81198479574d956`
-- Integration target and result: `personal`, see "Integration Record" below.
+- Integration target and result: `personal`, `Completed` (see "Integration Record").
 - Runtime isolation: dev server port 4930 (stopped at closure); a temporary `public/zz-frame.html` viewer was never committed and was deleted; screenshots were captured with a disposable script outside the repository (`/tmp/wjs-tools`), not committed.
 - Ticket folder: `tickets/done/work-journal-search/`
 
@@ -31,3 +31,9 @@ All data is invented: agents, runs, teams (including the task team), workspaces,
 
 - Deliverables: `ui-ux-spec.md`, 24 final visual references (`visual-references/VIS-001`…`VIS-024`, 20 at 1440×900 and 4 at 390×844), `design-review-notes.md`, the runnable UI reference, runbook section, README entry.
 - Handoff recipient: Solution Designer, run `solution_designer_80624588913d473bac3ef7d8c3d4d305`. Open points for the Solution Designer are listed in the spec's "Open Decisions And Risks".
+
+## Integration Record
+
+- Result commit (spec, 24 references, ticket record): `c315ca9bb1b08eb16bed9f175f20d65f8d7bcf40`, pushed to `origin/personal` as a fast-forward (`205aff6..c315ca9`) and fast-forwarded into the canonical checkout.
+- Default-entry check after integration: the canonical checkout (`personal`) was run on its own port and opened at `/memory`: tabs Browse · Search · Index; Browse cards; the Search tab centred; a search returned 8 results; a match opened the Work Journal with the banner `From your search “ddns updater” · lines 5353–5355 · Matched by words, strong`; the run tabs were Work Journal and Raw Traces; Back returned the 8 results; the Index tab showed "Up to date" with four steps; no page errors.
+- Ticket moved to `tickets/done/work-journal-search/` in the closing commit; dev servers on 4930 and 4931 stopped; the ticket worktree and branch removed after the push. The final local and remote `personal` revisions are recorded in the closing commit message and the result sent to the Solution Designer.
