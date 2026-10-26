@@ -1,6 +1,6 @@
 # UI Reference Runbook
 
-## work-journal-search (Memory page: memory search, Work Journal, memory index; source pin `d74f75a`, base `01290bf`)
+## work-journal-search (Memory page: memory search, Work Journal, memory index; source pin `d74f75a`, design base `205aff6`)
 
 ```bash
 corepack pnpm install --ignore-workspace --frozen-lockfile
