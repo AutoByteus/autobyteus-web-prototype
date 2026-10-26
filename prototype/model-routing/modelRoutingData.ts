@@ -38,6 +38,8 @@ export type RoutingChoice = Readonly<{
 export type RoutingDelegation = Readonly<{
   id: string
   at: number
+  /** The Project Task this copy works on (its key and title). */
+  taskKey: string
   taskTitle: string
   targetAddress: string
   targetName: string
@@ -69,7 +71,7 @@ const choice = (agent: string, kind: string | null, on: typeof CODEX, source: Ro
   ({ agent, agentRunId: null, kind: source === 'router' ? kind : null, ...on, source, reason, ...extra })
 
 const delegation = (n: number, ago: number, title: string, targetAddress: string, choices: RoutingChoice[], extra: Partial<RoutingDelegation> = {}): RoutingDelegation => ({
-  id: `dec-${String(n).padStart(3, '0')}`, at: ANCHOR_MS - ago, taskTitle: title, targetAddress,
+  id: `dec-${String(n).padStart(3, '0')}`, at: ANCHOR_MS - ago, taskKey: `autobyteus-${n < 100 ? 60 - n : 143 - n}`, taskTitle: title, targetAddress,
   targetName: targetAddress.slice(1).replace(/_/g, ' '), delegatorRunId: 'run-ptm-0001', delegatorName: 'Project Task Manager',
   node: null, failure: null, choices, ...extra,
 })

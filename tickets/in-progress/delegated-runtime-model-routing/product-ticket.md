@@ -43,3 +43,10 @@
   (3) while the switch is off, Setup shows only the switch and one sentence; the router and the text box appear once it is on; (4) shorter texts; the Decisions kind filter is gone;
   (5) tabs: Setup · Decisions · Overview · Agent runtimes now.
 - Routed to the Solution Designer as a requirement impact (REQ-007 box in Setup, REQ-010, REQ-011, REQ-012 grouping by the router's own labels).
+
+### Round 3 — 2026-10-26: Decisions are organised by Task
+
+- The user's question: should a decision be based on the Task ID (a Task is delegated; the agent, task agent or team gets its members' runtime/model), because the list "is very hard to see what it is doing".
+- Answer and change: yes. Decisions is now one block per Project Task: its key and title (for example `autobyteus-59 Image context files …`), then each delegation of that Task
+  ("Delegated to software engineering team by Project Task Manager · Today, 10:12 · Open run"), then one line per agent: name, runtime · model, who chose it, and under it the task kind and the reason.
+  The column headings and the separate task-kind column are gone. A Task delegated more than once lists each delegation under the same block.
