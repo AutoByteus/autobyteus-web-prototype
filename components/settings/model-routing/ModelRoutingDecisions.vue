@@ -52,7 +52,6 @@
                 <div class="grid gap-x-4 gap-y-0.5 sm:grid-cols-[minmax(0,12rem)_minmax(0,1fr)]">
                   <div class="min-w-0">
                     <p class="truncate text-sm font-medium text-gray-900" :title="choice.agent">{{ choice.agent }}</p>
-                    <p v-if="choice.kind" class="text-xs text-gray-400">{{ kindLabel(choice.kind, t) }}</p>
                   </div>
                   <div class="min-w-0">
                     <p class="flex min-w-0 items-center gap-2 text-sm text-gray-800">
@@ -88,7 +87,7 @@ import { routing, type RouterStatus } from '~/prototype/model-routing/modelRouti
 import { RUNTIME_COLORS, RUNTIME_NAMES, type RoutingChoice, type RoutingDelegation, type RoutingSource } from '~/prototype/model-routing/modelRoutingData'
 import TaskKey from '~/components/projects/TaskKey.vue'
 import RemoteNodeChip from '~/components/workspace/remote/RemoteNodeChip.vue'
-import { decisionTime, kindLabel, SOURCE_KEY } from './modelRoutingPresentation'
+import { decisionTime, SOURCE_KEY } from './modelRoutingPresentation'
 
 const props = defineProps<{ status: RouterStatus; focusId: string | null; source: string }>()
 const emit = defineEmits<{ (event: 'show-setup'): void; (event: 'update:source', value: string): void }>()

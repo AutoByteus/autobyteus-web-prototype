@@ -109,3 +109,7 @@
 - All seven needs accepted. Applied in the UI: the "changed by the router / by you" label is back (the server gives `updatedBy`); Undo swaps the current and the previous note (a second Undo brings the newer one back; there is still no Redo); the "No Project Task" group for a delegation that has no saved Project Task;
   copies delegated to another node are listed again in this node's Decisions (node chip, Open run) and not counted in Overview; "Open conversation" is enabled as soon as the router's runtime and model are set (the SD's recommendation, A5 of the earlier notes, still to be confirmed by the user);
   the fallback notice says 40 seconds (a correction).
+
+### Round 13 — 2026-10-26: no task kind under the agent name in Decisions
+
+- The user: the grey "Implementation" under implementation_engineer and "Code review" under code_reviewer only repeat the agent's name. The task kind is the router's own label per agent; it is kept in the record and shown where it helps (Overview groups by it; run Settings rows say "Model Router · implementation"; the delegate_task result names it), and no longer in Decisions rows.
