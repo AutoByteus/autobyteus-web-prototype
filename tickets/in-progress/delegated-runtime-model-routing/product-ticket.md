@@ -75,3 +75,7 @@
   "Model Router" is no longer written on every routed row (a row with a reason was chosen by the router; only defaults and inherited rows say so); the task kind sits under the agent name instead of in front of the reason; the Decisions and Overview intro lines and the status sentence are gone
   ("On  Claude · prototype-sonnet"); the filter has three entries (All, Model Router, Defaults and inherited); the Setup switch text and the knowledge hint are one short sentence each; Agent runtimes now keeps only the node and the checked time (the "reading spends no tokens" note is the Check again tooltip).
 - A blank Runtime and Model while the runtime list loads (seen in the live tab) now shows the saved choice.
+
+### Round 7 — 2026-10-26: space around the content
+
+- The user's feedback: the page content sat directly against the Settings menu's divider line. The page now has its own margins (32 px at the sides, 24 px at the top, like Token Statistics), the tab labels start on the same line as the content, and each tab was checked again in the live tab with the screenshot tool.

@@ -1,12 +1,12 @@
 <template>
-  <div class="flex w-full max-w-5xl flex-col gap-5" data-testid="settings-model-routing-panel">
-    <header class="px-1">
+  <div class="flex w-full max-w-5xl flex-col gap-6 px-5 py-6 sm:px-8" data-testid="settings-model-routing-panel">
+    <header>
       <h2 class="text-2xl font-semibold leading-tight text-gray-900">{{ t('settings.modelRouting.title') }}</h2>
       <ModelRoutingStatusStrip :status="status" :node-name="nodeName" :own-node="ownNode" :setup-link="activeTab !== 'setup'" @show-setup="select('setup')" />
     </header>
 
     <div class="border-b border-slate-100" role="tablist" :aria-label="t('settings.modelRouting.tabs.label')">
-      <div class="flex gap-7 overflow-x-auto px-1">
+      <div class="flex gap-7 overflow-x-auto">
         <button
           v-for="tab in TABS"
           :id="`model-routing-tab-${tab}`"
@@ -16,7 +16,7 @@
           :aria-selected="activeTab === tab"
           :aria-controls="`model-routing-panel-${tab}`"
           :tabindex="activeTab === tab ? 0 : -1"
-          class="whitespace-nowrap border-b-2 bg-transparent px-0.5 pb-[11px] pt-[3px] text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          class="whitespace-nowrap border-b-2 bg-transparent px-0 pb-[11px] pt-[3px] text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           :class="activeTab === tab ? 'border-blue-600 text-blue-700' : 'border-transparent text-slate-600 hover:text-slate-900'"
           :data-testid="`model-routing-tab-${tab}`"
           @click="select(tab)"

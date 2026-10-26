@@ -1,5 +1,5 @@
 <template>
-  <section class="px-1" data-testid="model-routing-setup" :aria-label="t('settings.modelRouting.setup.title')">
+  <section class="" data-testid="model-routing-setup" :aria-label="t('settings.modelRouting.setup.title')">
     <!-- 1. The switch -->
     <div class="flex items-start justify-between gap-4" data-testid="model-routing-switch-row">
       <span class="min-w-0">

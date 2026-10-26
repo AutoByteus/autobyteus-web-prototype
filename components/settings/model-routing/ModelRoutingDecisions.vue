@@ -1,5 +1,5 @@
 <template>
-  <section class="px-1" data-testid="model-routing-decisions" :aria-label="t('settings.modelRouting.decisions.title')">
+  <section class="" data-testid="model-routing-decisions" :aria-label="t('settings.modelRouting.decisions.title')">
     <div v-if="routing.delegations.length" class="flex items-center justify-end gap-3" data-testid="model-routing-decisions-filters">
       <select v-model="sourceFilter" class="h-9 flex-shrink-0 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30" :aria-label="t('settings.modelRouting.decisions.filterSource')" data-testid="model-routing-filter-source">
         <option value="">{{ t('settings.modelRouting.decisions.allSources') }}</option>
