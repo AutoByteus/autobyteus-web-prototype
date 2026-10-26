@@ -1,21 +1,5 @@
 <template>
   <section class="" data-testid="model-routing-overview" :aria-label="t('settings.modelRouting.overview.title')">
-    <div class="flex items-center justify-end gap-3">
-      <div class="flex flex-shrink-0 rounded-lg bg-slate-100 p-0.5" role="radiogroup" :aria-label="t('settings.modelRouting.overview.period')" data-testid="model-routing-period">
-        <button
-          v-for="option in PERIODS"
-          :key="option"
-          type="button"
-          role="radio"
-          :aria-checked="period === option"
-          class="rounded-md px-3 py-1 text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-          :class="period === option ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-800'"
-          :data-testid="`model-routing-period-${option}`"
-          @click="period = option"
-        >{{ t(`settings.modelRouting.overview.period.${option}`) }}</button>
-      </div>
-    </div>
-
     <!-- Empty -->
     <div v-if="!overview.total" class="mt-10 text-center" data-testid="model-routing-overview-empty">
       <p class="text-sm font-medium text-gray-700">{{ routing.delegations.length ? t('settings.modelRouting.overview.emptyPeriod') : t('settings.modelRouting.overview.empty') }}</p>
@@ -25,7 +9,7 @@
 
     <template v-else>
       <!-- Who chose the launches: one number, one bar -->
-      <div class="mt-6" data-testid="model-routing-overview-sources">
+      <div data-testid="model-routing-overview-sources">
         <p class="text-gray-900"><span class="text-3xl font-semibold tabular-nums" data-tile="total">{{ overview.total }}</span> <span class="text-base text-gray-600">{{ t('settings.modelRouting.overview.total') }}</span></p>
         <div class="mt-3 flex h-2.5 w-full gap-0.5" role="img" :aria-label="sourceSummary">
           <span v-for="part in sourceParts" :key="part.source" class="h-full min-w-[3px] first:rounded-l last:rounded-r" :style="{ flexGrow: part.count, backgroundColor: part.color }" :title="`${part.label} · ${part.count}`"></span>
@@ -87,15 +71,15 @@ import { routing, overviewFor, type KindStat, type Period, type RouterStatus } f
 import { RUNTIME_COLORS, type RoutingSource } from '~/prototype/model-routing/modelRoutingData'
 import { kindLabel, SOURCE_KEY } from './modelRoutingPresentation'
 
-defineProps<{ status: RouterStatus }>()
-const emit = defineEmits<{ (event: 'show-setup'): void }>()
+const props = defineProps<{ status: RouterStatus; period: string }>()
+const emit = defineEmits<{ (event: 'show-setup'): void; (event: 'update:period', value: string): void }>()
 const { t } = useLocalization()
 
 const PERIODS: Period[] = ['7d', '30d', 'all']
 // One colour per source. The router is the emphasis; the defaults are quiet greys; an inherited launch is the warm exception.
 const SOURCE_COLOR: Record<RoutingSource, string> = { router: '#1e293b', agent_default: '#94a3b8', team_default: '#cbd5e1', inherited: '#f59e0b' }
 
-const period = ref<Period>('30d')
+const period = computed(() => props.period as Period)
 const open = ref(new Set<string>())
 const toggle = (kind: string): void => { const next = new Set(open.value); next.has(kind) ? next.delete(kind) : next.add(kind); open.value = next }
 

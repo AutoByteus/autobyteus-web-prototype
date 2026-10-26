@@ -5,8 +5,8 @@
       <ModelRoutingStatusStrip :status="status" :node-name="nodeName" :own-node="ownNode" :setup-link="activeTab !== 'setup'" @show-setup="select('setup')" />
     </header>
 
-    <div class="border-b border-slate-100" role="tablist" :aria-label="t('settings.modelRouting.tabs.label')">
-      <div class="flex gap-7 overflow-x-auto">
+    <div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-2 border-b border-slate-100">
+      <div class="flex gap-7 overflow-x-auto" role="tablist" :aria-label="t('settings.modelRouting.tabs.label')">
         <button
           v-for="tab in TABS"
           :id="`model-routing-tab-${tab}`"
@@ -26,12 +26,17 @@
           {{ t(`settings.modelRouting.tabs.${tab}`) }}
         </button>
       </div>
+      <!-- The one control of a tab sits in the tab row, at the right. -->
+      <div class="ml-auto pb-1.5" data-testid="model-routing-tab-control">
+        <ModelRoutingSegmented v-if="activeTab === 'decisions' && routing.delegations.length" v-model="sourceFilter" :options="sourceOptions" :label="t('settings.modelRouting.decisions.filterSource')" testid="model-routing-filter" />
+        <ModelRoutingSegmented v-else-if="activeTab === 'overview'" v-model="period" :options="periodOptions" :label="t('settings.modelRouting.overview.period')" testid="model-routing-period" />
+      </div>
     </div>
 
     <div :id="`model-routing-panel-${activeTab}`" role="tabpanel" :aria-labelledby="`model-routing-tab-${activeTab}`" class="flex flex-col gap-5">
       <ModelRoutingSetup v-if="activeTab === 'setup'" :report="report" :status="status" :own-node="ownNode" @open-conversation="openConversation" />
-      <ModelRoutingDecisions v-else-if="activeTab === 'decisions'" :status="status" :focus-id="focusDecision" @show-setup="select('setup')" />
-      <ModelRoutingOverview v-else-if="activeTab === 'overview'" :status="status" @show-setup="select('setup')" />
+      <ModelRoutingDecisions v-else-if="activeTab === 'decisions'" v-model:source="sourceFilter" :status="status" :focus-id="focusDecision" @show-setup="select('setup')" />
+      <ModelRoutingOverview v-else-if="activeTab === 'overview'" v-model:period="period" :status="status" @show-setup="select('setup')" />
       <AgentRuntimesNowSection v-else />
     </div>
   </div>
@@ -51,6 +56,7 @@ import { routing, routerStatusOf } from '~/prototype/model-routing/modelRoutingS
 import { ROUTER_RUN_ID } from '~/prototype/model-routing/modelRoutingFixture'
 import AgentRuntimesNowSection from './AgentRuntimesNowSection.vue'
 import ModelRoutingStatusStrip from './ModelRoutingStatusStrip.vue'
+import ModelRoutingSegmented from './ModelRoutingSegmented.vue'
 import ModelRoutingSetup from './ModelRoutingSetup.vue'
 import ModelRoutingDecisions from './ModelRoutingDecisions.vue'
 import ModelRoutingOverview from './ModelRoutingOverview.vue'
@@ -80,6 +86,16 @@ onMounted(() => { void readReport() })
 watch(() => node.bindingRevision, () => { report.value = null; void readReport() })
 
 const status = computed(() => routerStatusOf(report.value))
+
+// The controls of Decisions and Overview live in the tab row.
+const sourceFilter = ref('')
+const period = ref('30d')
+const sourceOptions = computed(() => [
+  { value: '', label: t('settings.modelRouting.decisions.allSources') },
+  { value: 'router', label: t('settings.modelRouting.source.router') },
+  { value: 'not_router', label: t('settings.modelRouting.decisions.filterNotRouted') },
+])
+const periodOptions = computed(() => (['7d', '30d', 'all'] as const).map((value) => ({ value, label: t(`settings.modelRouting.overview.period.${value}`) })))
 
 const queryTab = (): Tab | null => {
   const value = String(route.query.tab ?? '').replace('knowledge', 'setup')

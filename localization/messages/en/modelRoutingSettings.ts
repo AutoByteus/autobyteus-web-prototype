@@ -83,7 +83,7 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.setup.router.internalLink": "Show internal agents",
   "settings.modelRouting.decisions.title": "Decisions",
   "settings.modelRouting.decisions.filterSource": "Filter by source",
-  "settings.modelRouting.decisions.allSources": "All sources",
+  "settings.modelRouting.decisions.allSources": "All",
   "settings.modelRouting.decisions.openRun": "Open run",
   "settings.modelRouting.decisions.failure": "The Model Router could not choose: {{reason}} The agents started on the delegating run's runtime and model.",
   "settings.modelRouting.decisions.shown": "Showing {{shown}} of {{total}} Tasks",
@@ -142,7 +142,7 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.overview.total": "delegated agents in this period",
   "settings.modelRouting.overview.failures": "{{count}} ran on the delegating run's launch after the router failed.",
   "settings.modelRouting.decisions.openRunTitle": "Open the run that delegated this ({{delegator}})",
-  "settings.modelRouting.decisions.filterNotRouted": "Defaults and inherited",
+  "settings.modelRouting.decisions.filterNotRouted": "Not routed",
 } satisfies TranslationCatalog;
 
 export default modelRoutingSettingsMessages;

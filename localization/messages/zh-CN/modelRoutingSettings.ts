@@ -83,7 +83,7 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.setup.router.internalLink": "显示内部智能体",
   "settings.modelRouting.decisions.title": "决策",
   "settings.modelRouting.decisions.filterSource": "按来源筛选",
-  "settings.modelRouting.decisions.allSources": "所有来源",
+  "settings.modelRouting.decisions.allSources": "全部",
   "settings.modelRouting.decisions.openRun": "打开运行",
   "settings.modelRouting.decisions.failure": "模型路由器未能做出选择：{{reason}} 这些智能体使用委派它们的运行的运行时和模型启动。",
   "settings.modelRouting.decisions.shown": "显示 {{shown}} / {{total}} 个任务",
@@ -142,7 +142,7 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.overview.total": "个委派智能体（此时间范围）",
   "settings.modelRouting.overview.failures": "其中 {{count}} 个因路由器失败而沿用了委派它的运行。",
   "settings.modelRouting.decisions.openRunTitle": "打开委派它的运行（{{delegator}}）",
-  "settings.modelRouting.decisions.filterNotRouted": "默认设置与沿用",
+  "settings.modelRouting.decisions.filterNotRouted": "未经路由",
 } satisfies TranslationCatalog;
 
 export default modelRoutingSettingsMessages;

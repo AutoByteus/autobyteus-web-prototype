@@ -79,3 +79,9 @@
 ### Round 7 — 2026-10-26: space around the content
 
 - The user's feedback: the page content sat directly against the Settings menu's divider line. The page now has its own margins (32 px at the sides, 24 px at the top, like Token Statistics), the tab labels start on the same line as the content, and each tab was checked again in the live tab with the screenshot tool.
+
+### Round 8 — 2026-10-26: one control per tab, in the tab row
+
+- The user's feedback: on Decisions the filter sat alone on its own row with the left side empty (the Overview period control did the same).
+- Change: the control of a tab sits at the right end of the tab row, the same segmented control on both tabs: Decisions "All · Model Router · Not routed", Overview "7 days · 30 days · All time". No row of its own; on a narrow window it wraps under the tabs, right-aligned. The first Task starts right under the tab line.
+  Checked in the live tab and at 1512 and 390 px.

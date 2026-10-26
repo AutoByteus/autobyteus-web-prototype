@@ -1,13 +1,5 @@
 <template>
   <section class="" data-testid="model-routing-decisions" :aria-label="t('settings.modelRouting.decisions.title')">
-    <div v-if="routing.delegations.length" class="flex items-center justify-end gap-3" data-testid="model-routing-decisions-filters">
-      <select v-model="sourceFilter" class="h-9 flex-shrink-0 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30" :aria-label="t('settings.modelRouting.decisions.filterSource')" data-testid="model-routing-filter-source">
-        <option value="">{{ t('settings.modelRouting.decisions.allSources') }}</option>
-        <option value="router">{{ t('settings.modelRouting.source.router') }}</option>
-        <option value="not_router">{{ t('settings.modelRouting.decisions.filterNotRouted') }}</option>
-      </select>
-    </div>
-
     <p v-if="!routing.enabled && routing.delegations.length" class="mt-4 text-sm text-gray-500" data-testid="model-routing-decisions-off-note">{{ t('settings.modelRouting.decisions.offNote') }}</p>
     <p v-else-if="routing.enabled && status.kind !== 'active' && status.kind !== 'off'" class="mt-4 text-sm text-amber-800" data-testid="model-routing-decisions-inactive-note">{{ t('settings.modelRouting.decisions.inactiveNote') }}</p>
 
@@ -20,16 +12,16 @@
 
     <div v-else-if="!tasks.length" class="mt-5 rounded-xl border border-dashed border-slate-200 px-4 py-8 text-center" data-testid="model-routing-decisions-no-match">
       <p class="text-sm text-gray-600">{{ t('settings.modelRouting.decisions.noMatch') }}</p>
-      <button type="button" class="mt-2 text-sm font-medium text-blue-700 hover:text-blue-800" @click="sourceFilter = ''">{{ t('settings.modelRouting.decisions.clearFilters') }}</button>
+      <button type="button" class="mt-2 text-sm font-medium text-blue-700 hover:text-blue-800" @click="emit('update:source', '')">{{ t('settings.modelRouting.decisions.clearFilters') }}</button>
     </div>
 
     <template v-else>
-      <ul class="mt-4" data-testid="model-routing-decisions-list" :aria-label="t('settings.modelRouting.decisions.title')">
+      <ul data-testid="model-routing-decisions-list" :aria-label="t('settings.modelRouting.decisions.title')">
         <li
           v-for="task in visible"
           :id="`decision-${task.delegations[0].delegation.id}`"
           :key="task.taskKey"
-          class="border-t border-slate-100 py-5 first:border-t-0 transition-colors"
+          class="border-t border-slate-100 py-5 first:border-t-0 first:pt-0 transition-colors"
           :class="task.delegations.some((item) => item.delegation.id === focusId) ? '-mx-3 rounded-xl bg-blue-50/60 px-3 ring-1 ring-blue-200' : ''"
           :data-testid="`model-routing-task-${task.taskKey}`"
         >
@@ -96,15 +88,15 @@ import TaskKey from '~/components/projects/TaskKey.vue'
 import RemoteNodeChip from '~/components/workspace/remote/RemoteNodeChip.vue'
 import { decisionTime, kindLabel, SOURCE_KEY } from './modelRoutingPresentation'
 
-const props = defineProps<{ status: RouterStatus; focusId: string | null }>()
-const emit = defineEmits<{ (event: 'show-setup'): void }>()
+const props = defineProps<{ status: RouterStatus; focusId: string | null; source: string }>()
+const emit = defineEmits<{ (event: 'show-setup'): void; (event: 'update:source', value: string): void }>()
 const { t, resolvedLocale } = useLocalization()
 const router = useRouter()
 const locale = computed(() => String(resolvedLocale.value || 'en'))
 
 const SOURCES: RoutingSource[] = ['router', 'agent_default', 'team_default', 'inherited']
 const PAGE = 8
-const sourceFilter = ref('')
+const sourceFilter = computed(() => props.source)
 const limit = ref(PAGE)
 
 
