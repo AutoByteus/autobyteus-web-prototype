@@ -1,13 +1,13 @@
 /**
  * delegated-runtime-model-routing (design-only): the Model Routing page's state, in the browser's memory.
- * In the product the node holds this (server settings, the decision records, the knowledge note); here a
+ * In the product the node holds this (server settings, the decision records); here a
  * reload resets it to the scenario. Nothing is persisted and nothing is sent anywhere.
  */
 import { reactive, computed } from 'vue'
 import type { AvailableAgentRuntimesReport, AvailableAgentRuntimeEntry, ExternalAgentRuntimeEntry, AvailableModel } from '~/types/availableAgentRuntimes'
 import {
   ANCHOR_MS, RUNTIME_NAMES, scenarioFor, incomingDelegations,
-  type KnowledgeVersion, type RoutingChoice, type RoutingDelegation, type RoutingSource,
+  type RoutingChoice, type RoutingDelegation, type RoutingSource,
 } from './modelRoutingData'
 
 export const routingScenarioName = (): string => {
@@ -16,7 +16,7 @@ export const routingScenarioName = (): string => {
 
 const peerWindow = (): boolean => { try { return localStorage.getItem('autobyteus.prototype.context') === 'electron_external' } catch { return false } }
 // A peer node's window shows that node's own page: what other nodes delegated to it (its router chose).
-const seed = peerWindow() ? { ...scenarioFor('routing_on_empty'), delegations: incomingDelegations(), knowledge: scenarioFor('populated').knowledge } : scenarioFor(routingScenarioName())
+const seed = peerWindow() ? { ...scenarioFor('routing_on_empty'), delegations: incomingDelegations() } : scenarioFor(routingScenarioName())
 
 export const routing = reactive({
   enabled: seed.enabled,
@@ -25,24 +25,12 @@ export const routing = reactive({
   delegations: seed.delegations.filter((item) => !item.node) as RoutingDelegation[],
   /** Copies this node's runs delegated to other nodes: the other node's router chose; only the run's Settings rows show them. */
   remoteCopies: seed.delegations.filter((item) => item.node) as RoutingDelegation[],
-  knowledge: seed.knowledge ? { current: { ...seed.knowledge.current }, previous: seed.knowledge.previous ? { ...seed.knowledge.previous } : null } : null as { current: KnowledgeVersion; previous: KnowledgeVersion | null } | null,
   /** A decision the user came to from a run (highlighted in the list). */
   focusDecisionId: null as string | null,
 })
 
 export const setEnabled = (value: boolean): void => { routing.enabled = value }
 export const setRouter = (runtime: string, model: string): void => { routing.router = runtime ? { runtime, model } : null }
-
-export const saveKnowledge = (text: string): void => {
-  const previous = routing.knowledge?.current ?? null
-  routing.knowledge = { current: { text, at: ANCHOR_MS + 5 * 60_000, by: 'user' }, previous }
-}
-/** Undo swaps the current and the previous note: a second Undo brings the newer one back. */
-export const undoKnowledge = (): void => {
-  const state = routing.knowledge
-  if (!state?.previous) return
-  routing.knowledge = { current: state.previous, previous: state.current }
-}
 
 // --- the router's status, from the node's runtime report -------------------------------------------------------
 

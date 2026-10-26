@@ -49,8 +49,8 @@ run's Settings (gear) → Delegated copies → View decision. (3) Overview: 7 da
 | Screen / element | Data it shows | Source in the server design |
 | --- | --- | --- |
 | Status line, Setup router dropdowns | enabled, router runtime/model, active, reason, runtimes and models with blocks | `modelRoutingStatus` (`reasonCode` + `reasonParams`, English `reasonText` fallback; the UI translates by code) + the runtime report |
-| Switch, router runtime/model, Open conversation | writes; the router's run | `setModelRoutingEnabled`, `setModelRouterLaunch`, `openModelRouterConversation` (enabled once the router's runtime and model are set) |
-| Text box (knowledge) | the note, who and when, undo | `modelRoutingKnowledge {text, updatedAt, updatedBy, hasPrevious}`, `updateModelRoutingKnowledge(text, expectedUpdatedAt)` (refused with `KNOWLEDGE_CHANGED`), `undoModelRoutingKnowledge` (swaps current and previous: a second Undo brings the newer note back) |
+| Switch, router runtime/model, Talk to the router | writes; the router's run | `setModelRoutingEnabled`, `setModelRouterLaunch`, `openModelRouterConversation` (enabled once Model Routing is on and the router's runtime and model are set) |
+| (no knowledge field on the page) | the router keeps its own knowledge file and the user teaches it by talking to it (user, round 19) | none on this page |
 | Decisions: Task | key (or "No Project Task") and title | the record's `taskKey`, `projectId`, `taskId`, `taskTitle`; Task groups, newest delegation first |
 | Decisions: delegation line | target, time, Open run | `copyAddress`, `recordedAt`, `delegatingRunId`. Only this node's own decisions are listed (the user, round 16): a copy that ran on another node was decided by that node's router and is on that node's page (without Open run: the delegating run is on the other node); on this node it shows only on the run's Settings rows and in the delegate_task result |
 | Decisions: per agent | agent, runtime, model, source, reason, kind, skipped default | `agentAddress`, `runtimeKind`, `llmModelIdentifier`, `source`, `choiceReason`, `taskKind?` (free text, 1–40 characters), `notes[]` |
@@ -58,8 +58,6 @@ run's Settings (gear) → Delegated copies → View decision. (3) Overview: 7 da
 | Overview | per kind runtimes/models/counts, source totals, failures, the "Not routed" group | `modelRoutingStatistics(period)` over this node's own records |
 | Run Settings rows | source "Model Router", kind, reason, skipped default; remote copies | `LaunchConfigurationSource` origin `model_router` + `choiceReason`, `taskKind`; the peer's answer; "View decision" finds the record by `delegatingRunId` + `copyAddress` + `agentAddress` |
 | Router conversation | an ordinary agent run (user round 18): requests arrive as the product's existing system notices, its tool calls are the existing tool cards | none: no special header, mark, strip or card; "Open conversation" opens the run by its ID |
-
-Not shown in the reference: the `KNOWLEDGE_CHANGED` refusal (a Save over a note the router rewrote meanwhile). The product shows it as a message under the text box ("The router changed this note while you were editing. Your text is kept; load its version to compare") and keeps the user's text.
 
 ## Assumptions to confirm (for the Solution Designer)
 

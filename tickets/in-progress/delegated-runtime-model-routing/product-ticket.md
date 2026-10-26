@@ -142,3 +142,9 @@
 
 - The user: the Model Router is a normal agent like any other; its conversation needs no decisions, knowledge links or customisation. Removed everything this design had added to it: the "Internal" mark and the "Model Router" header name, the strip with the Decisions and Knowledge links, and the special "Routing request" card and label. The files that carried them (`SystemTaskNotificationSegment.vue`, `AgentWorkspaceSurface.vue`) are identical to the baseline again.
   The only trace left of the router outside the page is its run (opened by "Open conversation"), which shows like any other run; the product's existing system notice carries each routing request. The "Undo" in Configuration is unchanged.
+
+### Round 19 — 2026-10-26: no knowledge on the page; the router is talked to
+
+- The user: the router is an ordinary agent; it consults a knowledge file it keeps up to date itself; the user configures it on this page and then simply talks to it; there is no knowledge area, and no Undo. The router may have its own workspace (a question for the Solution Designer; UI only needs "Talk to the router" to open the run).
+- Changes: the "What the router should know" text box, its Save, "Undo last change" and "last changed" line are removed; Configuration is now only the Model Router's runtime and model and one button, "Talk to the router" (was "Open conversation"), with one hint line ("Tell it what you prefer, for example "use Antigravity for writing". It remembers what it learns."). The switch, tabs and the other pages are unchanged.
+- Consequences for the requirements (sent to the Solution Designer): REQ-007's user view/edit/undo of the note on the page is withdrawn; the knowledge note becomes the router's own file; `updateModelRoutingKnowledge`, `undoModelRoutingKnowledge` and the versioned note are not needed by the page.

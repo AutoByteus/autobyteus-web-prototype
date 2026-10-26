@@ -5,8 +5,8 @@
  * - The anchor "now" is fixed (2026-10-26 09:40 UTC) so every screen is repeatable.
  * - Runtimes and models are the ones of the "Agent runtimes now" fixture (`node-settings-fixtures.mjs`).
  * - Scenarios (local-storage key `autobyteus.prototype.scenario`):
- *     `populated`        Model Routing on, router active, a month of decisions, a taught knowledge note
- *     `routing_off`      switched off after use: history and knowledge kept
+ *     `populated`        Model Routing on, router active, a month of decisions
+ *     `routing_off`      switched off after use: history kept
  *     `routing_fresh`    a node that never used it: off, nothing recorded
  *     `routing_on_empty` on and active, nothing recorded yet
  *     `routing_not_set`  on, the router has no runtime/model yet
@@ -205,18 +205,6 @@ export const allDelegations = (): RoutingDelegation[] => {
   })
 }
 
-export type KnowledgeVersion = Readonly<{ text: string; at: number; by: 'router' | 'user' }>
-
-export const KNOWLEDGE_CURRENT = `Writing goes to Antigravity. Design stays on Claude Sonnet; use Opus only when a Task asks for it. Research goes to the AutoByteus provider (it reads the web, no code).
-
-Codex is best for backend code, but its weekly limit is the tight one (41% left on Oct 26, resets Oct 30); its 5-hour limit refills overnight. Opus is used up until Oct 28, 09:00. Antigravity reports no limits, so treat it as available when signed in. Haiku reviews small diffs well.
-`
-
-export const KNOWLEDGE_PREVIOUS = `Writing goes to Antigravity. Design stays on Claude Sonnet; use Opus only when a Task asks for it.
-
-Codex's weekly limit is the tight one (41% left on Oct 26, resets Oct 30). Opus is used up until Oct 28, 09:00.
-`
-
 /** What another node (office-mac) delegated to this node: this node's router chose; the delegating run is on the other node. */
 const incoming = (): RoutingDelegation[] => [
   { id: 'inc-001', at: ANCHOR_MS - 3 * HOUR, taskKey: null, taskTitle: 'Plan the 1.6 launch campaign across email, social and the website', targetAddress: '/marketing_team', targetName: 'marketing team',
@@ -235,7 +223,6 @@ export type RoutingScenario = Readonly<{
   enabled: boolean
   router: Readonly<{ runtime: string; model: string }> | null
   delegations: readonly RoutingDelegation[]
-  knowledge: Readonly<{ current: KnowledgeVersion; previous: KnowledgeVersion | null }> | null
 }>
 
 const CLAUDE_ROUTER = { runtime: 'claude_agent_sdk', model: 'prototype-sonnet' }
@@ -244,17 +231,13 @@ export const incomingDelegations = incoming
 
 export const scenarioFor = (name: string): RoutingScenario => {
   const full = allDelegations()
-  const knowledge = {
-    current: { text: KNOWLEDGE_CURRENT, at: ANCHOR_MS - 2 * HOUR - 25 * MIN, by: 'router' as const },
-    previous: { text: KNOWLEDGE_PREVIOUS, at: ANCHOR_MS - 1 * DAY - 6 * HOUR, by: 'router' as const },
-  }
-  const none = { delegations: [], knowledge: null }
+  const none = { delegations: [] }
   switch (name) {
-    case 'routing_off': return { enabled: false, router: CLAUDE_ROUTER, delegations: full, knowledge }
+    case 'routing_off': return { enabled: false, router: CLAUDE_ROUTER, delegations: full }
     case 'routing_fresh': return { enabled: false, router: null, ...none }
     case 'routing_on_empty': return { enabled: true, router: CLAUDE_ROUTER, ...none }
     case 'routing_not_set': return { enabled: true, router: null, ...none }
-    case 'routing_blocked': return { enabled: true, router: { runtime: 'codex_app_server', model: 'gpt-prototype-codex-mini' }, delegations: full, knowledge }
-    default: return { enabled: true, router: CLAUDE_ROUTER, delegations: full, knowledge }
+    case 'routing_blocked': return { enabled: true, router: { runtime: 'codex_app_server', model: 'gpt-prototype-codex-mini' }, delegations: full }
+    default: return { enabled: true, router: CLAUDE_ROUTER, delegations: full }
   }
 }

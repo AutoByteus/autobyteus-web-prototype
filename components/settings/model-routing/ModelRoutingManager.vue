@@ -113,7 +113,7 @@ const sourceOptions = computed(() => [
 const periodOptions = computed(() => (['7d', '30d', 'all'] as const).map((value) => ({ value, label: t(`settings.modelRouting.overview.period.${value}`) })))
 
 const queryTab = (): Tab | null => {
-  const value = String(route.query.tab ?? '').replace('knowledge', 'setup')
+  const value = String(route.query.tab ?? '')
   return (TABS as readonly string[]).includes(value) ? value as Tab : null
 }
 const activeTab = ref<Tab>(queryTab() ?? (routing.enabled && routing.router ? 'decisions' : 'setup'))
