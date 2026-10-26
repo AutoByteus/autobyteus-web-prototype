@@ -27,7 +27,7 @@
       </div>
     </header>
 
-    <div class="space-y-5">
+    <div>
       <ol class="grid gap-4 xl:grid-cols-4" :aria-label="$t('memory.index.pipeline')" data-test="memory-index-pipeline">
         <li
           v-for="(step, i) in index.steps"
@@ -60,15 +60,6 @@
           </span>
         </li>
       </ol>
-
-      <dl class="grid gap-4 sm:grid-cols-2" data-test="memory-index-capabilities">
-        <div v-for="item in capabilities" :key="item.id" class="flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white px-5 py-3">
-          <dt class="text-sm font-semibold text-gray-700">{{ item.name }}</dt>
-          <dd class="flex items-center gap-1.5 text-sm" :class="item.state.ready ? 'font-semibold text-emerald-700' : 'text-gray-600'">
-            <Icon v-if="item.state.ready" icon="heroicons:check-circle-20-solid" class="h-4 w-4" aria-hidden="true" />{{ item.state.label }}
-          </dd>
-        </div>
-      </dl>
     </div>
 
     <footer class="flex flex-col gap-1 text-xs text-gray-500 md:flex-row md:items-center md:justify-between">
@@ -88,16 +79,11 @@ import { useLocalization } from '~/composables/useLocalization';
 import { useMemoryIndexView } from '~/composables/useMemoryIndexView';
 
 const { t } = useLocalization();
-const { store, index, status, capability, percent, stepCount } = useMemoryIndexView();
+const { store, index, status, percent, stepCount } = useMemoryIndexView();
 
 const confirming = ref(false);
 const canRebuild = computed(() => index.value?.phase === 'ready' || index.value?.phase === 'failed');
 const confirmRebuild = () => { confirming.value = false; store.rebuild(); };
-
-const capabilities = computed(() => [
-  { id: 'text', name: t('memory.index.works.words'), state: capability('text') },
-  { id: 'meaning', name: t('memory.index.works.meaning'), state: capability('meaning') },
-]);
 
 const primaryAction = computed(() => {
   const value = index.value;

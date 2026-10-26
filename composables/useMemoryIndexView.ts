@@ -64,13 +64,5 @@ export function useMemoryIndexView() {
     return null;
   });
 
-  /** What search can use now, from steps 3 and 4. */
-  const capability = (id: 'text' | 'meaning') => {
-    const step = store.step(id);
-    if (!step || step.done === 0) return { ready: false, label: t('memory.index.works.not_yet') };
-    if (step.done >= step.total) return { ready: true, label: t('memory.index.works.ready') };
-    return { ready: false, label: t('memory.index.works.covers', { percent: percent(step) }) };
-  };
-
-  return { store, index, status, badge, capability, percent, stepCount, formatTimestamp, fmt };
+  return { store, index, status, badge, percent, stepCount, formatTimestamp, fmt };
 }
