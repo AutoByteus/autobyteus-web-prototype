@@ -138,6 +138,9 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.decisions.taskGone": "此任务已不存在。",
   "settings.modelRouting.switchLabel": "使用模型路由器",
   "settings.modelRouting.setup.router.teachHint": "告诉它你的偏好，例如“写作任务用 Antigravity”。它会记住学到的内容。",
+  "settings.modelRouting.setup.visibility.label": "显示内部智能体",
+  "settings.modelRouting.setup.visibility.explanation": "在侧边栏和“智能体”中像其他智能体一样显示模型路由器和其他内部智能体。关闭时，请用“和路由器对话”打开它。",
+  "settings.modelRouting.setup.visibility.saveFailed": "无法保存此设置，请重试。",
 } satisfies TranslationCatalog;
 
 export default modelRoutingSettingsMessages;

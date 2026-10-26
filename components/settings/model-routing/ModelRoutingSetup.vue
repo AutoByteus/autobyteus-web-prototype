@@ -32,11 +32,36 @@
       >{{ t('settings.modelRouting.setup.router.openConversation') }}</button>
       <p class="mt-2 text-sm text-gray-500">{{ t('settings.modelRouting.setup.router.teachHint') }}</p>
     </div>
+
+    <!-- The existing server setting "Show internal agents" (autobyteus-308): the router is an internal agent. -->
+    <div class="mt-8 flex items-start justify-between gap-4 border-t border-slate-100 pt-6" data-testid="model-routing-visibility-row">
+      <span class="min-w-0">
+        <span class="block text-sm font-semibold text-gray-900">{{ t('settings.modelRouting.setup.visibility.label') }}</span>
+        <span class="mt-1 block text-sm text-gray-500">{{ t('settings.modelRouting.setup.visibility.explanation') }}</span>
+        <span v-if="visibilityError" class="mt-1 block text-sm text-red-600" role="alert" data-testid="model-routing-visibility-error">{{ visibilityError }}</span>
+      </span>
+      <button
+        type="button"
+        role="switch"
+        class="relative mt-1 inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-60"
+        :class="visible ? 'bg-blue-600' : 'bg-slate-300'"
+        :aria-checked="visible"
+        :aria-label="t('settings.modelRouting.setup.visibility.label')"
+        :disabled="savingVisibility"
+        data-testid="model-routing-visibility-switch"
+        @click="toggleVisibility"
+      >
+        <span aria-hidden="true" class="inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform" :class="visible ? 'translate-x-5' : 'translate-x-0.5'" />
+      </button>
+    </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useServerSettingsStore } from '~/stores/serverSettings'
+import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
+import { useRunHistoryStore } from '~/stores/runHistoryStore'
 import type { AvailableAgentRuntimesReport, AvailableModel } from '~/types/availableAgentRuntimes'
 import { routing, setRouter, modelsOf, type RouterStatus } from '~/prototype/model-routing/modelRoutingState'
 import { RUNTIME_NAMES } from '~/prototype/model-routing/modelRoutingData'
@@ -54,6 +79,32 @@ const modelOptions = computed(() => {
 const blockedText = (model: AvailableModel): string => model.blocked?.until
   ? t('settings.modelRouting.setup.router.blockedUntil', { time: shortDate(Date.parse(model.blocked.until), locale.value) })
   : t('settings.modelRouting.setup.router.blocked')
+
+// "Show internal agents" is the server setting autobyteus-308 added (ShowInternalAgentsCard.vue in Server Settings → Basics); this row reads and writes the same setting.
+const SHOW_INTERNAL_AGENTS_KEY = 'AUTOBYTEUS_SHOW_INTERNAL_AGENTS'
+const serverSettings = useServerSettingsStore()
+const isOn = (value: unknown): boolean => typeof value === 'string' && value.trim().toLowerCase() === 'true'
+const visible = ref(isOn(serverSettings.getSettingByKey(SHOW_INTERNAL_AGENTS_KEY)?.value))
+const savingVisibility = ref(false)
+const visibilityError = ref('')
+watch(() => serverSettings.settings, () => { if (!savingVisibility.value) visible.value = isOn(serverSettings.getSettingByKey(SHOW_INTERNAL_AGENTS_KEY)?.value) }, { deep: true })
+void serverSettings.fetchServerSettings?.().catch(() => undefined)
+const toggleVisibility = async (): Promise<void> => {
+  if (savingVisibility.value) return
+  const previous = visible.value
+  visible.value = !previous
+  savingVisibility.value = true
+  visibilityError.value = ''
+  try {
+    await serverSettings.updateServerSetting(SHOW_INTERNAL_AGENTS_KEY, visible.value ? 'true' : 'false')
+    await Promise.allSettled([useAgentDefinitionStore().reloadAllAgentDefinitions(), useRunHistoryStore().refreshTreeQuietly()])
+  } catch (error: any) {
+    visible.value = previous
+    visibilityError.value = error?.message || t('settings.modelRouting.setup.visibility.saveFailed')
+  } finally {
+    savingVisibility.value = false
+  }
+}
 
 const chooseRuntime = (runtime: string): void => setRouter(runtime, '')
 const chooseModel = (model: string): void => { if (routing.router) routing.router = { runtime: routing.router.runtime, model } }

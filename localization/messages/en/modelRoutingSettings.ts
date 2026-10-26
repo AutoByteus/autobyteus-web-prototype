@@ -138,6 +138,9 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.decisions.taskGone": "This Task no longer exists.",
   "settings.modelRouting.switchLabel": "Use the Model Router",
   "settings.modelRouting.setup.router.teachHint": "Tell it what you prefer, for example \"use Antigravity for writing\". It remembers what it learns.",
+  "settings.modelRouting.setup.visibility.label": "Show internal agents",
+  "settings.modelRouting.setup.visibility.explanation": "Shows the Model Router, and the other internal agents, in the sidebar and in Agents like any other agent. While off, open it with Talk to the router.",
+  "settings.modelRouting.setup.visibility.saveFailed": "Couldn't save this setting. Try again.",
 } satisfies TranslationCatalog;
 
 export default modelRoutingSettingsMessages;
