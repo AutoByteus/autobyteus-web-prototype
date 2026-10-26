@@ -21,7 +21,10 @@ const seed = peerWindow() ? { ...scenarioFor('routing_on_empty'), delegations: i
 export const routing = reactive({
   enabled: seed.enabled,
   router: seed.router ? { ...seed.router } : null as { runtime: string; model: string } | null,
-  delegations: [...seed.delegations] as RoutingDelegation[],
+  /** This node's decisions: copies its own router chose for. */
+  delegations: seed.delegations.filter((item) => !item.node) as RoutingDelegation[],
+  /** Copies this node's runs delegated to other nodes: the other node's router chose; only the run's Settings rows show them. */
+  remoteCopies: seed.delegations.filter((item) => item.node) as RoutingDelegation[],
   knowledge: seed.knowledge ? { current: { ...seed.knowledge.current }, previous: seed.knowledge.previous ? { ...seed.knowledge.previous } : null } : null as { current: KnowledgeVersion; previous: KnowledgeVersion | null } | null,
   /** A decision the user came to from a run (highlighted in the list). */
   focusDecisionId: null as string | null,
@@ -79,7 +82,7 @@ export type Period = '7d' | '30d' | 'all'
 const PERIOD_MS: Record<Period, number> = { '7d': 7 * 86_400_000, '30d': 30 * 86_400_000, all: Number.POSITIVE_INFINITY }
 
 export const delegationsIn = (period: Period): RoutingDelegation[] =>
-  routing.delegations.filter((item) => !item.node && ANCHOR_MS - item.at <= PERIOD_MS[period])
+  routing.delegations.filter((item) => ANCHOR_MS - item.at <= PERIOD_MS[period])
 
 export type KindStat = Readonly<{
   kind: string

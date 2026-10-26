@@ -52,10 +52,10 @@ run's Settings (gear) → Delegated copies → View decision. (3) Overview: 7 da
 | Switch, router runtime/model, Open conversation | writes; the router's run | `setModelRoutingEnabled`, `setModelRouterLaunch`, `openModelRouterConversation` (enabled once the router's runtime and model are set) |
 | Text box (knowledge) | the note, who and when, undo | `modelRoutingKnowledge {text, updatedAt, updatedBy, hasPrevious}`, `updateModelRoutingKnowledge(text, expectedUpdatedAt)` (refused with `KNOWLEDGE_CHANGED`), `undoModelRoutingKnowledge` (swaps current and previous: a second Undo brings the newer note back) |
 | Decisions: Task | key (or "No Project Task") and title | the record's `taskKey`, `projectId`, `taskId`, `taskTitle`; Task groups, newest delegation first |
-| Decisions: delegation line | target, node chip, time, Open run | `copyAddress`, node, `recordedAt`, `delegatingRunId` (a copy on another node is recorded on both nodes: here from the peer's answer, with the node chip and Open run; the peer's page shows it "from <node>" with no Open run) |
+| Decisions: delegation line | target, time, Open run | `copyAddress`, `recordedAt`, `delegatingRunId`. Only this node's own decisions are listed (the user, round 16): a copy that ran on another node was decided by that node's router and is on that node's page (without Open run: the delegating run is on the other node); on this node it shows only on the run's Settings rows and in the delegate_task result |
 | Decisions: per agent | agent, runtime, model, source, reason, kind, skipped default | `agentAddress`, `runtimeKind`, `llmModelIdentifier`, `source`, `choiceReason`, `taskKind?` (free text, 1–40 characters), `notes[]` |
 | Decisions: filter | All / Model Router / Not routed | `modelRoutingDecisions(before, limit, source: ROUTER | NOT_ROUTER)` |
-| Overview | per kind runtimes/models/counts, source totals, failures, the "Not routed" group | `modelRoutingStatistics(period)`; counts only records resolved on this node (copies resolved by a peer are not counted here) |
+| Overview | per kind runtimes/models/counts, source totals, failures, the "Not routed" group | `modelRoutingStatistics(period)` over this node's own records |
 | Run Settings rows | source "Model Router", kind, reason, skipped default; remote copies | `LaunchConfigurationSource` origin `model_router` + `choiceReason`, `taskKind`; the peer's answer; "View decision" finds the record by `delegatingRunId` + `copyAddress` + `agentAddress` |
 | Router conversation | requests, tool calls, answers | requests are posted with sender `system.model_router` and stored as a system notice; the header name and the Internal mark come from the run record |
 
@@ -65,7 +65,7 @@ Not shown in the reference: the `KNOWLEDGE_CHANGED` refusal (a Save over a note 
 
 - A1. The task kind is recorded only when the router decided; defaults and inherited launches have none ("Not routed").
 - A2. While Model Routing is off, nothing new is recorded; earlier decisions stay and the page says so.
-- A3. A delegation to a peer is recorded on both nodes (SD, round 11); each node's Overview counts only the records it resolved.
+- A3. Each node shows only the decisions its own router made. A copy delegated to a peer appears on the run's Settings rows (REQ-009) and in the delegate_task result, and in the peer's Decisions; not in this node's Decisions (user, round 16).
 - A4. Decisions load 8 Task groups at a time; Overview periods are 7 days, 30 days and all time (default 30 days).
 - A5. The router's run is never a row in the Workspaces tree.
 - A6. The fallback wait is 40 seconds (SD correction).

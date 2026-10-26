@@ -7,7 +7,6 @@
     <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
       <p class="min-w-0 text-sm text-gray-500" data-testid="agent-runtimes-now-node">
         <span class="font-medium text-gray-700">{{ nodeName }}</span>
-        <span class="mx-1.5 text-gray-300" aria-hidden="true">·</span>{{ ownNode ? t('settings.modelRouting.runtimesNow.node.own') : t('settings.modelRouting.runtimesNow.node.remote') }}
       </p>
       <div v-if="status !== 'loading'" class="flex flex-shrink-0 items-center gap-3">
         <p v-if="report && !reading" class="text-sm text-gray-400" data-testid="agent-runtimes-now-checked">{{ t('settings.modelRouting.runtimesNow.checkedAt', { time: localTime(report.checkedAt, locale) }) }}</p>

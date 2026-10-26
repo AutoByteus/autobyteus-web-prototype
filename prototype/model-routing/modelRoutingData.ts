@@ -220,13 +220,13 @@ Codex's weekly limit is the tight one (41% left on Oct 26, resets Oct 30). Opus 
 /** What another node (office-mac) delegated to this node: this node's router chose; the delegating run is on the other node. */
 const incoming = (): RoutingDelegation[] => [
   { id: 'inc-001', at: ANCHOR_MS - 3 * HOUR, taskKey: null, taskTitle: 'Plan the 1.6 launch campaign across email, social and the website', targetAddress: '/marketing_team', targetName: 'marketing team',
-    delegatorRunId: '', delegatorName: 'Project Task Manager', node: null, from: 'office-mac', failure: null, choices: [
+    delegatorRunId: '', delegatorName: 'Project Task Manager', node: null, from: null, failure: null, choices: [
       choice('campaign_lead', 'writing', AGY, 'router', 'Campaign copy is writing; Antigravity is preferred for writing.'),
       choice('copywriter', 'writing', AGY, 'router', 'Same Task kind, same runtime, so the copy stays consistent.'),
       choice('designer', 'design', SONNET, 'router', 'Layout notes need a strong design model; Claude Sonnet has limit left.'),
     ] },
   { id: 'inc-002', at: ANCHOR_MS - 1 * DAY - 6 * HOUR, taskKey: null, taskTitle: 'Compare competitor pricing pages for the desktop app', targetAddress: '/market_researcher', targetName: 'market researcher',
-    delegatorRunId: '', delegatorName: 'Project Task Manager', node: null, from: 'office-mac', failure: null, choices: [
+    delegatorRunId: '', delegatorName: 'Project Task Manager', node: null, from: null, failure: null, choices: [
       choice('market_researcher', 'research', LARGE, 'router', 'A research Task needs web reading, not code; the AutoByteus provider has balance and no limit.'),
     ] },
 ]

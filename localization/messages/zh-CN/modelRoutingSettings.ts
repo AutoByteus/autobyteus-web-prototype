@@ -145,7 +145,7 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.knowledge.updatedByRouter": "上次由模型路由器修改 · {{time}}",
   "settings.modelRouting.knowledge.updatedByYou": "上次由你修改 · {{time}}",
   "settings.modelRouting.setup.router.noConversation": "请先选择路由器的运行时和模型。",
-  "settings.modelRouting.decisions.noProjectTask": "没有项目任务",
+  "settings.modelRouting.decisions.noProjectTask": "无项目任务",
   "settings.modelRouting.decisions.agentCount": "{{count}} 个智能体",
   "settings.modelRouting.decisions.hasNotes": "有默认设置未被使用，或路由器失败。展开团队查看。",
   "settings.modelRouting.decisions.taskGone": "此任务已不存在。",

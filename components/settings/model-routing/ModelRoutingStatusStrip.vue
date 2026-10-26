@@ -11,9 +11,7 @@
       data-testid="model-routing-status-setup"
       @click="emit('show-setup')"
     >{{ t('settings.modelRouting.status.goToSetup') }}</button>
-    <span v-if="!ownNode" class="ml-auto text-gray-500" data-testid="model-routing-node">
-      <span class="font-medium text-gray-700">{{ nodeName }}</span><span class="mx-1.5 text-gray-300" aria-hidden="true">·</span>{{ t('settings.modelRouting.node.remote') }}
-    </span>
+    <span v-if="!ownNode" class="ml-auto font-medium text-gray-700" data-testid="model-routing-node">{{ nodeName }}</span>
   </p>
 </template>
 

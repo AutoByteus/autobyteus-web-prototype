@@ -126,3 +126,8 @@
   2. A team is one folded row (chevron, name, a coloured square per runtime used, "3 agents", an amber triangle when a default was skipped or the router failed); the members open on click. A Task opened from the Settings "View decision" link has its team open.
   3. Line 1: key, title, then the time and "Open run" together at the far right. A single agent has no folded row: its name and launch sit under the title. A Task delegated more than once (or with no Project Task) shows each delegation's time and Open run on its own line.
   4. The source of an agent ("Agent default", "Team default", "Inherited from the run") follows its model on the same line instead of a far-right column.
+
+### Round 16 — 2026-10-26: only this node's own decisions
+
+- The user: each node's Model Router decides for its own node, so the page must not list decisions of another node (a copy on `docker` was decided by docker's router). Removed: copies delegated to other nodes from this node's Decisions (they stay on the run's Settings rows and in the delegate_task result, REQ-009), the node chip and "from <node>" labels in Decisions, and "This computer" / "Remote node" wording on the Runtimes tab and the status line (the node's name is shown only in a peer's window).
+- This reverses the Solution Designer's round-11 request (A3, "recorded on both nodes"), on the user's say; the "Task key" row of the data table keeps `taskKey` etc. Statistics are unchanged (they never counted other nodes' copies).
