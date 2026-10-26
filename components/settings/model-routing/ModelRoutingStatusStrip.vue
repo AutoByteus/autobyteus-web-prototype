@@ -18,7 +18,7 @@
         <span class="font-medium text-gray-700">{{ nodeName }}</span><span class="mx-1.5 text-gray-300" aria-hidden="true">·</span>{{ t('settings.modelRouting.node.remote') }}
       </p>
       <button
-        v-if="status.kind !== 'active'"
+        v-if="setupLink && status.kind !== 'active'"
         type="button"
         class="whitespace-nowrap text-sm font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
         data-testid="model-routing-status-setup"
@@ -33,7 +33,7 @@ import { computed } from 'vue'
 import type { RouterStatus } from '~/prototype/model-routing/modelRoutingState'
 import { routerProblem } from './modelRoutingPresentation'
 
-const props = defineProps<{ status: RouterStatus; nodeName: string; ownNode: boolean }>()
+const props = defineProps<{ status: RouterStatus; nodeName: string; ownNode: boolean; setupLink: boolean }>()
 const emit = defineEmits<{ (event: 'show-setup'): void }>()
 const { t, resolvedLocale } = useLocalization()
 const locale = computed(() => String(resolvedLocale.value || 'en'))
