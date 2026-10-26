@@ -59,7 +59,7 @@
                 <span class="font-medium text-gray-800">{{ item.delegation.targetName }}</span>
                 <template v-if="isTeam(item.delegation) && !isOpen(item.delegation.id)">
                   <span class="inline-flex items-center gap-1" aria-hidden="true"><span v-for="runtime in runtimesOf(item.choices)" :key="runtime" class="inline-block h-2.5 w-2.5 rounded-[3px]" :style="{ backgroundColor: RUNTIME_COLORS[runtime] }"></span></span>
-                  <span class="text-gray-400">{{ t('settings.modelRouting.decisions.agentCount', { count: item.choices.length }) }}</span>
+                  <span class="text-gray-400">{{ t(item.choices.length === 1 ? 'settings.modelRouting.decisions.agentCountOne' : 'settings.modelRouting.decisions.agentCount', { count: item.choices.length }) }}</span>
                   <Icon v-if="hasNote(item)" icon="heroicons:exclamation-triangle" class="h-3.5 w-3.5 flex-shrink-0 text-amber-600" :title="t('settings.modelRouting.decisions.hasNotes')" />
                 </template>
               </component>

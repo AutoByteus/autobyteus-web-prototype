@@ -58,8 +58,8 @@ The promoted default product entries are:
   the runbook); the Notification Center opens on the right side of the window; Settings → Server Settings → Basics → Update checks;
   Settings → Updates. Spec: `tickets/done/update-checks-and-auto-updates/ui-ux-spec.md`.
 
-- Model Routing (`delegated-runtime-model-routing`, autobyteus-32, in review): <http://127.0.0.1:3210/settings?section=model-routing>; the router conversation `/chat?id=run-model-router`;
-  starting states in the runbook. Notes: `tickets/in-progress/delegated-runtime-model-routing/design-review-notes.md`.
+- Model Routing (`delegated-runtime-model-routing`, autobyteus-32): <http://127.0.0.1:3210/settings?section=model-routing> (tabs Configuration, Decisions, Overview, Runtimes; the router's run `/chat?id=run-model-router`);
+  starting states in the runbook. Spec: `tickets/done/delegated-runtime-model-routing/ui-ux-spec.md`.
 
 Normal navigation and launch/configuration journeys do not depend on
 `prototypeReview` or another preview-only route switch. Historical review URLs

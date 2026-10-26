@@ -138,6 +138,7 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.decisions.taskGone": "此任务已不存在。",
   "settings.modelRouting.switchLabel": "使用模型路由器",
   "settings.modelRouting.setup.router.teachHint": "告诉它你的偏好，例如“写作任务用 Antigravity”。它会记住学到的内容。",
+  "settings.modelRouting.decisions.agentCountOne": "1 个智能体",
 } satisfies TranslationCatalog;
 
 export default modelRoutingSettingsMessages;

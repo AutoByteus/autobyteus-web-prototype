@@ -5,7 +5,7 @@
 - Ticket / request ID: `delegated-runtime-model-routing` (the package identifier of Project Task autobyteus-32, Model Router).
 - Title: Model Routing: the Settings page, the router conversation, and where a routed choice shows.
 - Mode: `Product Experience Design` (evolves Settings → Model Routing, the run Settings "Delegated copies" rows, the run view of an agent, and the system-notice segment of a conversation).
-- Status: `Awaiting User Review` (round 1 sent through the Solution Designer, 2026-10-26)
+- Status: `Completed` (approved by the user 2026-10-26 after round 22; final artifacts committed)
 - Requester: Solution Designer (run `solution_designer_ab383b2a28394f6ba52dde1f7083f5bd`), 2026-10-26. The user's words: "i feel UI should be designed first. do you think so i think you can contact @Product Team to work on the UI design first".
 - Requirements (read in full): `/Users/normy/autobyteus_org/autobyteus-worktrees/delegated-runtime-model-routing/tickets/in-progress/delegated-runtime-model-routing/requirements-doc.md` (REQ-002…REQ-012, AC-008, AC-009, AC-012), `launch-selection-order.md` (SR-007), `product-design-request.md`.
 - Critical journeys:
@@ -164,3 +164,14 @@
 ### Round 22 — 2026-10-26: no "Show internal agents" row on this page
 
 - The user: "Show internal agents" is one global setting (Server Settings → Basics, autobyteus-308), so it need not appear in Model Routing. The row added in round 21 is removed. The router follows that global setting exactly like every internal agent (hidden by default; shown in the sidebar and Agents while it is on); "Talk to the router" opens its run either way. Configuration is again only the router's runtime and model, and "Talk to the router".
+
+## Final Check And Approval (2026-10-26)
+
+- User approval: after round 22 — "Perfect, I think the UI, now I think everything is working now. Or you want to do one self-validation, if everything is consistent, then we're done with this task, UI."
+- Self-validation, in the browser (disposable scripts outside the repository; nothing committed):
+  - every tab (Configuration, Decisions, Overview, Runtimes) × scenarios (`populated`, `routing_fresh`, `routing_off`, `routing_on_empty`, `routing_not_set`, `routing_blocked`, and `populated` in a peer node's window) × English and Simplified Chinese × 1440 and 390 px: 112 combinations, no page error, no raw message key, no horizontal scrolling;
+  - journeys: switch off/on (fields and "Talk to the router" disable/enable); a blocked model shows the problem line and a good one clears it; "Talk to the router" opens the router's run; a folded team opens; the filter (Model Router / Not routed) keeps only the right agents; "Open run" opens the delegating run; the Task key opens the Task's page; the periods differ (7 days 21, 30 days 30, all time 52 agents); Overview details open; the Runtimes list loads; run Settings rows show the router source and the remote copies; "Show internal agents" on lists the router in the sidebar, off hides it;
+  - the final screenshots VIS-001..026 were captured after approval from these states (a disposable script, not committed) and looked at.
+- Defects found and fixed during the check: "1 agents" for a team filtered to one agent (now "1 agent"); the router's conversation screenshot first showed the tree, not the run (re-captured).
+- Findings recorded in the spec (Open Decisions And Risks): the Reconnect "missing agent" mark must not apply to runs of internal agents hidden from the catalog.
+- Runtime: dev server on port 4840 stopped at the end; nothing else was started.
