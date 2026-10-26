@@ -2,10 +2,8 @@
   <div class="flex w-full flex-col gap-5" data-testid="settings-model-routing-panel">
     <header class="px-1">
       <h2 class="text-2xl font-semibold leading-tight text-gray-900">{{ t('settings.modelRouting.title') }}</h2>
-      <p class="mt-1 text-sm text-gray-500">{{ t('settings.modelRouting.description') }}</p>
+      <ModelRoutingStatusStrip :status="status" :node-name="nodeName" :own-node="ownNode" :setup-link="activeTab !== 'setup'" @show-setup="select('setup')" />
     </header>
-
-    <ModelRoutingStatusStrip :status="status" :node-name="nodeName" :own-node="ownNode" :setup-link="activeTab !== 'setup'" @show-setup="select('setup')" />
 
     <div class="border-b border-slate-100" role="tablist" :aria-label="t('settings.modelRouting.tabs.label')">
       <div class="flex gap-7 overflow-x-auto px-1">

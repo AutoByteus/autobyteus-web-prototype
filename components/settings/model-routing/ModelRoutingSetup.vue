@@ -1,11 +1,9 @@
 <template>
-  <section class="rounded-3xl border border-slate-200 bg-white px-6 py-5 shadow-sm" data-testid="model-routing-setup" aria-labelledby="model-routing-setup-heading">
-    <h3 id="model-routing-setup-heading" class="text-xl font-semibold leading-tight text-gray-900">{{ t('settings.modelRouting.setup.title') }}</h3>
-
+  <section class="max-w-3xl px-1" data-testid="model-routing-setup" :aria-label="t('settings.modelRouting.setup.title')">
     <!-- 1. The switch -->
-    <div class="mt-4 flex items-start justify-between gap-4" data-testid="model-routing-switch-row">
+    <div class="flex items-start justify-between gap-4" data-testid="model-routing-switch-row">
       <span class="min-w-0">
-        <span class="block text-sm font-semibold text-gray-900">{{ t('settings.modelRouting.setup.switch.label') }}</span>
+        <span class="block text-base font-semibold text-gray-900">{{ t('settings.modelRouting.setup.switch.label') }}</span>
         <span class="mt-1 block text-sm text-gray-600">{{ t('settings.modelRouting.setup.switch.explanation') }}</span>
         <span v-if="!ownNode" class="mt-1 block text-sm text-gray-600" data-testid="model-routing-peer-note">{{ t('settings.modelRouting.setup.switch.peerNote') }}</span>
       </span>
@@ -25,18 +23,20 @@
 
     <template v-if="routing.enabled">
       <!-- 2. The router -->
-      <div class="mt-5 border-t border-slate-100 pt-5" data-testid="model-routing-router-row">
+      <div class="mt-8" data-testid="model-routing-router-row">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div class="min-w-0">
-            <p class="text-sm font-semibold text-gray-900">{{ t('settings.modelRouting.setup.router.label') }}</p>
-            <p class="mt-1 text-sm text-gray-600">{{ t('settings.modelRouting.setup.router.explanation') }}</p>
+            <p class="text-base font-semibold text-gray-900">{{ t('settings.modelRouting.setup.router.label') }}</p>
           </div>
-          <button
-            type="button"
-            class="inline-flex min-h-9 flex-shrink-0 items-center whitespace-nowrap rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
-            data-testid="model-routing-open-conversation"
-            @click="emit('open-conversation')"
-          >{{ t('settings.modelRouting.setup.router.openConversation') }}</button>
+          <div class="flex flex-shrink-0 items-center gap-4">
+            <NuxtLink to="/settings?section=server-settings&mode=quick" class="text-xs text-gray-400 hover:text-blue-700" data-testid="model-routing-internal-note" :title="t('settings.modelRouting.setup.router.internalNote')">{{ t('settings.modelRouting.setup.router.internalLink') }}</NuxtLink>
+            <button
+              type="button"
+              class="inline-flex min-h-9 items-center whitespace-nowrap rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+              data-testid="model-routing-open-conversation"
+              @click="emit('open-conversation')"
+            >{{ t('settings.modelRouting.setup.router.openConversation') }}</button>
+          </div>
         </div>
 
         <div class="mt-3 grid gap-3 sm:grid-cols-2">
@@ -56,24 +56,20 @@
           </label>
         </div>
 
-        <p class="mt-3 flex items-start gap-2 text-sm" :class="status.kind === 'active' ? 'text-gray-600' : 'text-amber-800'" data-testid="model-routing-router-status" role="status">
-          <span class="mt-1.5 inline-block h-2 w-2 flex-shrink-0 rounded-full" :class="status.kind === 'active' ? 'bg-emerald-500' : 'bg-amber-500'" aria-hidden="true"></span>
+        <p v-if="status.kind !== 'active'" class="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-amber-800" data-testid="model-routing-router-status" role="status">
+          <span class="mt-1.5 inline-block h-2 w-2 flex-shrink-0 rounded-full bg-amber-500" aria-hidden="true"></span>
           <span>{{ statusLine }}</span>
-        </p>
-        <p class="mt-1 pl-4 text-xs text-gray-500" data-testid="model-routing-internal-note">
-          {{ t('settings.modelRouting.setup.router.internalNote') }}
-          <NuxtLink to="/settings?section=server-settings&mode=quick" class="font-medium text-blue-700 hover:text-blue-800">{{ t('settings.modelRouting.setup.router.internalLink') }}</NuxtLink>
         </p>
       </div>
 
       <!-- 3. What the router should know: one text box -->
-      <div class="mt-5 border-t border-slate-100 pt-5" data-testid="model-routing-knowledge">
-        <label for="model-routing-knowledge-text" class="text-sm font-semibold text-gray-900">{{ t('settings.modelRouting.knowledge.label') }}</label>
+      <div class="mt-8" data-testid="model-routing-knowledge">
+        <label for="model-routing-knowledge-text" class="text-base font-semibold text-gray-900">{{ t('settings.modelRouting.knowledge.label') }}</label>
         <p class="mt-1 text-sm text-gray-600">{{ t('settings.modelRouting.knowledge.explanation') }}</p>
         <textarea
           id="model-routing-knowledge-text"
           v-model="draft"
-          rows="9"
+          rows="6"
           class="mt-3 w-full resize-y rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm leading-6 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
           :placeholder="t('settings.modelRouting.knowledge.placeholder')"
           data-testid="model-routing-knowledge-textarea"

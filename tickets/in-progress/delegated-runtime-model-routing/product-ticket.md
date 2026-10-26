@@ -50,3 +50,14 @@
 - Answer and change: yes. Decisions is now one block per Project Task: its key and title (for example `autobyteus-59 Image context files …`), then each delegation of that Task
   ("Delegated to software engineering team by Project Task Manager · Today, 10:12 · Open run"), then one line per agent: name, runtime · model, who chose it, and under it the task kind and the reason.
   The column headings and the separate task-kind column are gone. A Task delegated more than once lists each delegation under the same block.
+
+### Round 4 — 2026-10-26: cleaner layout on every tab
+
+- The user's feedback: the page looks busy on Setup, Decisions, Overview and Agent runtimes now; look at the UI while working (a screenshot of each page after each change).
+- Changes (each checked in a screenshot): the green status box became one quiet line under the title ("On · Claude · prototype-sonnet chooses for agents no default covers.");
+  no card, no repeated tab heading and no boxed sections inside any tab (content sits on the page in a narrower column: 48 rem on Setup, 56 rem on Decisions and Overview, 64 rem on Agent runtimes now);
+  Setup has three sections (switch, router, one text box) with whitespace instead of borders, and the router's "active" line is only shown when something is wrong;
+  Decisions: Tasks separated by a hairline, no grey headers, the source is quiet text, one "All sources" filter;
+  Overview: one number and one bar (router vs defaults) instead of four tiles, then one thin bar per task kind, no table header, Details by clicking the row;
+  Agent runtimes now: no card, one gray line (node · read live · checked time · Check again), runtimes separated by hairlines.
+- A raw message key that showed in the Overview table header (found in a screenshot) was removed with the table header.
