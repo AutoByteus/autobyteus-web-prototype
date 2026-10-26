@@ -148,3 +148,9 @@
 - The user: the router is an ordinary agent; it consults a knowledge file it keeps up to date itself; the user configures it on this page and then simply talks to it; there is no knowledge area, and no Undo. The router may have its own workspace (a question for the Solution Designer; UI only needs "Talk to the router" to open the run).
 - Changes: the "What the router should know" text box, its Save, "Undo last change" and "last changed" line are removed; Configuration is now only the Model Router's runtime and model and one button, "Talk to the router" (was "Open conversation"), with one hint line ("Tell it what you prefer, for example "use Antigravity for writing". It remembers what it learns."). The switch, tabs and the other pages are unchanged.
 - Consequences for the requirements (sent to the Solution Designer): REQ-007's user view/edit/undo of the note on the page is withdrawn; the knowledge note becomes the router's own file; `updateModelRoutingKnowledge`, `undoModelRoutingKnowledge` and the versioned note are not needed by the page.
+
+### Round 20 — 2026-10-26: the router follows "Show internal agents", nothing else
+
+- The user: for now, show the router like any other agent when the front end shows internal agents; hidden otherwise; no custom logic.
+- Change in the reference: the special rule that always hid the router's run was removed. With "Show internal agents" off (default) the router is in no list; with it on (Settings → Server Settings → Basics) it appears in the Agents list with the "Internal" badge (the product's own badge) and its run appears in the Workspaces tree like any other agent's run. "Talk to the router" opens the run in both cases. Verified in the live reference by toggling the setting.
+- The server side of a router workspace (listed only while internal agents are shown) is the Solution Designer's DEC-023 (the user's decision on whether it gets its own workspace is still open).

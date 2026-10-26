@@ -1,4 +1,3 @@
-import { ROUTER_DEFINITION_ID } from '~/prototype/model-routing/modelRoutingFixture';
 import type { Conversation } from '~/types/conversation';
 import { AgentStatus } from '~/types/agent/AgentStatus';
 import type { AgentTeamContext } from '~/types/agent/AgentTeamContext';
@@ -246,8 +245,6 @@ export const buildRunHistoryTreeNodes = (params: {
 
   const localRuns: LocalRunSnapshot[] = [];
   for (const [runId, context] of params.agentContexts.entries()) {
-    // delegated-runtime-model-routing (design-only): the Model Router is an internal agent; its run opens by ID, never as a tree row.
-    if (context.config.agentDefinitionId === ROUTER_DEFINITION_ID) continue;
     const workspaceRootPath =
       context.config.workspaceMetadata?.workspaceRootPath ||
       resolveWorkspaceRootPath(

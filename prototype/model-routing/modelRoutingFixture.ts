@@ -93,9 +93,27 @@ const historyRun = (template: Record<string, any>) => ({
 })
 
 /** The router's conversation, answered like any stored run (it is never listed in the Workspaces tree: it is an internal agent). */
-export const withModelRouting = (name: string, variables: Record<string, any>, data: any): any => {
+/** The server lists the runs of an internal agent only while "Show internal agents" is on (autobyteus-308): the router is no exception. */
+const showsInternalAgents = (state: Record<string, any>): boolean =>
+  (state.serverSettings ?? []).some((setting: any) => setting.key === 'AUTOBYTEUS_SHOW_INTERNAL_AGENTS' && String(setting.value).trim().toLowerCase() === 'true')
+
+export const withModelRouting = (name: string, variables: Record<string, any>, data: any, state: Record<string, any> = {}): any => {
   if (!data) return data
   switch (name) {
+    case 'ListWorkspaceRunHistory': {
+      const entry = showsInternalAgents(state) ? data.listWorkspaceRunHistory?.find((item: any) => item.workspaceRootPath === workspace.workspaceRootPath) : null
+      if (entry && !entry.agentDefinitions.some((item: any) => item.agentDefinitionId === ROUTER_DEFINITION_ID)) {
+        entry.agentDefinitions = [...entry.agentDefinitions, { agentDefinitionId: ROUTER_DEFINITION_ID, agentName: 'Model Router', runs: [historyRun(entry.agentDefinitions?.[0]?.runs?.[0] ?? {})] }]
+      }
+      return data
+    }
+    case 'GetWorkspaceRunHistory': {
+      const entry = showsInternalAgents(state) ? data.workspaceRunHistory : null
+      if (entry && entry.workspaceRootPath === workspace.workspaceRootPath && entry.agentDefinitions?.length && !entry.agentDefinitions.some((item: any) => item.agentDefinitionId === ROUTER_DEFINITION_ID)) {
+        entry.agentDefinitions = [...entry.agentDefinitions, { agentDefinitionId: ROUTER_DEFINITION_ID, agentName: 'Model Router', runs: [historyRun(entry.agentDefinitions[0].runs[0])] }]
+      }
+      return data
+    }
     case 'GetRunProjection':
       return variables.runId === ROUTER_RUN_ID
         ? { getRunProjection: { runId: ROUTER_RUN_ID, summary: 'Model Router', lastActivityAt: new Date(ANCHOR_MS - 26 * 60_000).toISOString(), conversation: entries(), activities: toolActivities(entries()), hasEarlierActiveTraceEvents: false } }

@@ -987,11 +987,17 @@ const internalAgent = {
   description: 'The system\'s own helper that drafts agent definitions.', instructions: 'Draft an agent definition from the request.',
   toolNames: ['read_file'], skillNames: [], skillScope: 'CONFIGURED', ownerPackageId: null, defaultLaunchConfig: null, internal: true,
 }
+// delegated-runtime-model-routing: the built-in Model Router is an internal agent like the one above; it is listed only while "Show internal agents" is on.
+const modelRouterAgent = {
+  ...internalAgent, id: 'autobyteus-model-router', name: 'Model Router', role: 'Chooses the runtime and model for delegated agents.',
+  description: 'The built-in agent that chooses a runtime and model for delegated agents that have no default.', instructions: 'Choose a runtime and model for each agent you are asked about.',
+  toolNames: ['list_available_agent_runtimes', 'read_routing_knowledge', 'update_routing_knowledge', 'submit_launch_choices'],
+}
 export function fixtureContext(state) {
   const empty = state.scenario === 'empty'
   const appsEnabled = state.scenario === 'apps_disabled' ? false : state.applicationsEnabled
   const showInternal = serverSettingsOf(state).some(setting => setting.key === SHOW_INTERNAL_AGENTS_KEY && String(setting.value).trim().toLowerCase() === 'true')
-  const agents = empty ? [] : withDefinitionIssues(state, 'agents', [agent, secondAgent, dailyAssistant, ...(showInternal ? [internalAgent] : [])])
+  const agents = empty ? [] : withDefinitionIssues(state, 'agents', [agent, secondAgent, dailyAssistant, ...(showInternal ? [internalAgent, modelRouterAgent] : [])])
   const teams = empty ? [] : withDefinitionIssues(state, 'teams', [team])
   const applications = empty ? [] : [application]
   const workspaces = empty ? [] : [workspace, tempWorkspace]
