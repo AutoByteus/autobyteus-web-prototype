@@ -17,7 +17,7 @@
       <div class="flex flex-shrink-0 flex-col items-start gap-2 md:items-end">
         <div class="flex flex-wrap items-center gap-2">
           <button v-if="primaryAction" type="button" class="rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white hover:bg-blue-700" :data-test="primaryAction.test" @click="primaryAction.run">{{ primaryAction.label }}</button>
-          <button v-if="canRebuild && !confirming" type="button" class="rounded-lg px-5 py-2 text-sm font-medium" :class="store.modelChanged ? 'bg-blue-600 text-white hover:bg-blue-700' : 'border border-gray-200 bg-white text-gray-700 hover:bg-gray-50'" data-test="memory-index-rebuild" @click="confirming = true">{{ $t('memory.index.rebuild') }}</button>
+          <button v-if="canRebuild && !confirming" type="button" :disabled="store.isBuilding" :title="store.isBuilding ? $t('memory.index.rebuild_busy') : undefined" class="rounded-lg px-5 py-2 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50" :class="store.modelChanged ? 'bg-blue-600 text-white hover:bg-blue-700' : 'border border-gray-200 bg-white text-gray-700 hover:bg-gray-50'" data-test="memory-index-rebuild" @click="confirming = true">{{ $t('memory.index.rebuild') }}</button>
         </div>
         <div v-if="confirming" class="flex max-w-sm flex-wrap items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2" role="alertdialog" aria-label="Rebuild the memory index" data-test="memory-index-rebuild-confirm">
           <span class="text-xs text-gray-700">{{ $t('memory.index.rebuild_confirm') }}</span>
@@ -82,7 +82,8 @@ const { t } = useLocalization();
 const { store, index, status, percent, stepCount } = useMemoryIndexView();
 
 const confirming = ref(false);
-const canRebuild = computed(() => index.value?.phase === 'ready' || index.value?.phase === 'failed');
+/** Rebuild is always offered once there is something to rebuild; it waits while a build is running. */
+const canRebuild = computed(() => !!index.value && index.value.phase !== 'needs_index');
 const confirmRebuild = () => { confirming.value = false; store.rebuild(); };
 
 const primaryAction = computed(() => {
