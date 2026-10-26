@@ -26,22 +26,29 @@
           :data-testid="`model-routing-task-${task.taskKey ?? NO_TASK}`"
         >
           <!-- The Task: its key and title -->
-          <div class="flex items-baseline gap-2">
-            <span v-if="task.taskKey" class="flex-shrink-0 text-sm text-gray-400"><TaskKey :task-key="task.taskKey" /></span>
-            <p class="min-w-0 break-words text-base font-semibold text-gray-900" :title="task.taskTitle">{{ task.taskKey ? task.taskTitle : t('settings.modelRouting.decisions.noProjectTask') }}</p>
+          <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5">
+            <div class="flex min-w-0 flex-1 basis-64 flex-wrap items-baseline gap-x-2">
+              <span v-if="task.taskKey" class="flex-shrink-0 text-sm text-gray-400"><TaskKey :task-key="task.taskKey" /></span>
+              <p class="min-w-0 break-words text-base font-semibold text-gray-900" :title="task.taskTitle">{{ task.taskKey ? task.taskTitle : t('settings.modelRouting.decisions.noProjectTask') }}</p>
+            </div>
+            <span v-if="task.delegations.length === 1 && task.taskKey" class="flex-shrink-0 whitespace-nowrap text-sm text-gray-400">{{ decisionTime(task.delegations[0].delegation.at, locale, t) }}</span>
           </div>
 
           <!-- Each delegation of the Task: to whom, by whom, when; then what each agent runs on -->
-          <div v-for="item in task.delegations" :id="`decision-${item.delegation.id}`" :key="item.delegation.id" class="mt-2" :data-testid="`model-routing-decision-${item.delegation.id}`">
+          <div v-for="item in task.delegations" :id="`decision-${item.delegation.id}`" :key="item.delegation.id" class="mt-1.5" :data-testid="`model-routing-decision-${item.delegation.id}`">
             <p v-if="!task.taskKey" class="mb-1 break-words text-sm font-medium text-gray-900">{{ item.delegation.taskTitle }}</p>
-            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-600">
-              <span class="text-gray-700">{{ item.delegation.targetName }}</span>
-              <RemoteNodeChip v-if="item.delegation.node" :node-name="item.delegation.node" size="header" />
-              <span v-if="item.delegation.from" class="text-gray-500">{{ t('settings.modelRouting.decisions.fromNode', { node: item.delegation.from }) }}</span>
-              <span class="text-gray-400">{{ decisionTime(item.delegation.at, locale, t) }}</span>
-              <button v-if="item.delegation.delegatorRunId" type="button" class="ml-auto inline-flex flex-shrink-0 items-center gap-1 whitespace-nowrap font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" data-testid="model-routing-decision-open-run" :title="t('settings.modelRouting.decisions.openRunTitle', { delegator: item.delegation.delegatorName })" @click="openRun(item.delegation.delegatorRunId)">
-                {{ t('settings.modelRouting.decisions.openRun') }}<Icon icon="heroicons:arrow-top-right-on-square" class="h-3.5 w-3.5" aria-hidden="true" />
-              </button>
+            <div class="flex items-center justify-between gap-4 text-sm text-gray-600">
+              <p class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+                <span class="text-gray-700">{{ item.delegation.targetName }}</span>
+                <RemoteNodeChip v-if="item.delegation.node" :node-name="item.delegation.node" size="header" />
+                <span v-if="item.delegation.from" class="text-gray-500">{{ t('settings.modelRouting.decisions.fromNode', { node: item.delegation.from }) }}</span>
+              </p>
+              <p class="flex flex-shrink-0 items-center gap-4">
+                <span v-if="task.delegations.length > 1 || !task.taskKey" class="whitespace-nowrap text-gray-400">{{ decisionTime(item.delegation.at, locale, t) }}</span>
+                <button v-if="item.delegation.delegatorRunId" type="button" class="inline-flex flex-shrink-0 items-center gap-1 whitespace-nowrap font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" data-testid="model-routing-decision-open-run" :title="t('settings.modelRouting.decisions.openRunTitle', { delegator: item.delegation.delegatorName })" @click="openRun(item.delegation.delegatorRunId)">
+                  {{ t('settings.modelRouting.decisions.openRun') }}<Icon icon="heroicons:arrow-top-right-on-square" class="h-3.5 w-3.5" aria-hidden="true" />
+                </button>
+              </p>
             </div>
             <p v-if="item.delegation.failure" class="mt-2 flex items-start gap-1.5 text-xs text-amber-800" data-testid="model-routing-decision-failure">
               <Icon icon="heroicons:exclamation-triangle" class="mt-px h-3.5 w-3.5 flex-shrink-0" aria-hidden="true" />

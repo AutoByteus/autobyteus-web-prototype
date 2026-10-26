@@ -113,3 +113,7 @@
 ### Round 13 — 2026-10-26: no task kind under the agent name in Decisions
 
 - The user: the grey "Implementation" under implementation_engineer and "Code review" under code_reviewer only repeat the agent's name. The task kind is the router's own label per agent; it is kept in the record and shown where it helps (Overview groups by it; run Settings rows say "Model Router · implementation"; the delegate_task result names it), and no longer in Decisions rows.
+
+### Round 14 — 2026-10-26: the Task card header
+
+- The user: the time beside the team name crowded the line. Now: line 1 is the Task key and title with the time at the far right; line 2 is the team (or agent, with the node chip) with "Open run" at the far right. When a Task has several delegations, or no Project Task, each delegation's time sits on its own line 2 beside "Open run". On a narrow window the time drops under the title.
