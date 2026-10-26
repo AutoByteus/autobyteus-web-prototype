@@ -1,6 +1,6 @@
 <template>
   <section
-    class="max-w-5xl px-1"
+    class="px-1"
     data-testid="agent-runtimes-now"
     :aria-label="t('settings.modelRouting.runtimesNow.title')"
   >

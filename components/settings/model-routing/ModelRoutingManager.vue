@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full flex-col gap-5" data-testid="settings-model-routing-panel">
+  <div class="flex w-full max-w-5xl flex-col gap-5" data-testid="settings-model-routing-panel">
     <header class="px-1">
       <h2 class="text-2xl font-semibold leading-tight text-gray-900">{{ t('settings.modelRouting.title') }}</h2>
       <ModelRoutingStatusStrip :status="status" :node-name="nodeName" :own-node="ownNode" :setup-link="activeTab !== 'setup'" @show-setup="select('setup')" />

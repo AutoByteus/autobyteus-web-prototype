@@ -1,5 +1,5 @@
 <template>
-  <section class="max-w-4xl px-1" data-testid="model-routing-decisions" :aria-label="t('settings.modelRouting.decisions.title')">
+  <section class="px-1" data-testid="model-routing-decisions" :aria-label="t('settings.modelRouting.decisions.title')">
     <div v-if="routing.delegations.length" class="flex items-center justify-between gap-3" data-testid="model-routing-decisions-filters">
       <p class="text-sm text-gray-500">{{ t('settings.modelRouting.decisions.description') }}</p>
       <select v-model="sourceFilter" class="h-9 flex-shrink-0 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30" :aria-label="t('settings.modelRouting.decisions.filterSource')" data-testid="model-routing-filter-source">
@@ -36,19 +36,16 @@
           <!-- The Task: its key and title -->
           <div class="flex items-baseline gap-2">
             <span class="flex-shrink-0 text-sm text-gray-400"><TaskKey :task-key="task.taskKey" /></span>
-            <p class="min-w-0 break-words text-base font-semibold text-gray-900 sm:truncate" :title="task.taskTitle">{{ task.taskTitle }}</p>
+            <p class="min-w-0 break-words text-base font-semibold text-gray-900" :title="task.taskTitle">{{ task.taskTitle }}</p>
           </div>
 
           <!-- Each delegation of the Task: to whom, by whom, when; then what each agent runs on -->
           <div v-for="item in task.delegations" :id="`decision-${item.delegation.id}`" :key="item.delegation.id" class="mt-2" :data-testid="`model-routing-decision-${item.delegation.id}`">
-            <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
-              <p class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-600">
-                <span>{{ t('settings.modelRouting.decisions.delegatedTo', { target: item.delegation.targetName, delegator: item.delegation.delegatorName }) }}</span>
-                <RemoteNodeChip v-if="item.delegation.node" :node-name="item.delegation.node" size="header" />
-                <span class="text-gray-400" aria-hidden="true">·</span>
-                <span>{{ decisionTime(item.delegation.at, locale, t) }}</span>
-              </p>
-              <button type="button" class="inline-flex flex-shrink-0 items-center gap-1 self-start whitespace-nowrap text-sm font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 sm:self-center" data-testid="model-routing-decision-open-run" @click="openRun(item.delegation.delegatorRunId)">
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-600">
+              <span>{{ t('settings.modelRouting.decisions.delegatedTo', { target: item.delegation.targetName, delegator: item.delegation.delegatorName }) }}</span>
+              <RemoteNodeChip v-if="item.delegation.node" :node-name="item.delegation.node" size="header" />
+              <span class="text-gray-400">{{ decisionTime(item.delegation.at, locale, t) }}</span>
+              <button type="button" class="ml-auto inline-flex flex-shrink-0 items-center gap-1 whitespace-nowrap font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" data-testid="model-routing-decision-open-run" @click="openRun(item.delegation.delegatorRunId)">
                 {{ t('settings.modelRouting.decisions.openRun') }}<Icon icon="heroicons:arrow-top-right-on-square" class="h-3.5 w-3.5" aria-hidden="true" />
               </button>
             </div>

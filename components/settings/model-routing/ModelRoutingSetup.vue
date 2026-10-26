@@ -1,5 +1,5 @@
 <template>
-  <section class="max-w-3xl px-1" data-testid="model-routing-setup" :aria-label="t('settings.modelRouting.setup.title')">
+  <section class="px-1" data-testid="model-routing-setup" :aria-label="t('settings.modelRouting.setup.title')">
     <!-- 1. The switch -->
     <div class="flex items-start justify-between gap-4" data-testid="model-routing-switch-row">
       <span class="min-w-0">
@@ -70,6 +70,7 @@
           id="model-routing-knowledge-text"
           v-model="draft"
           rows="6"
+          style="field-sizing: content; min-height: 9rem; max-height: 26rem;"
           class="mt-3 w-full resize-y rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm leading-6 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
           :placeholder="t('settings.modelRouting.knowledge.placeholder')"
           data-testid="model-routing-knowledge-textarea"

@@ -61,3 +61,9 @@
   Overview: one number and one bar (router vs defaults) instead of four tiles, then one thin bar per task kind, no table header, Details by clicking the row;
   Agent runtimes now: no card, one gray line (node · read live · checked time · Check again), runtimes separated by hairlines.
 - A raw message key that showed in the Overview table header (found in a screenshot) was removed with the table header.
+
+### Round 5 — 2026-10-26: responsive check of every tab
+
+- The user's window is wider than the 1440 px the earlier screenshots used, and the user saw a layout problem. Earlier rounds looked at each tab at 1440 px only; this round checked every tab at 1512, 1180, 900 and 390 px (screenshots, and no horizontal scrolling at any width).
+- Fixed: one content width for the title, tabs and every tab (64 rem), so the tab bar and the content line up and the empty area on the right is small on wide windows; Setup's text box grows with its text (it clipped its last line at 900 px);
+  Task titles wrap instead of being cut; the delegation line (to whom, by whom, when, Open run) wraps cleanly at 900 and 390 px.
