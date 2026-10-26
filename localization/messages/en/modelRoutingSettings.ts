@@ -143,6 +143,8 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.overview.failures": "{{count}} ran on the delegating run's launch after the router failed.",
   "settings.modelRouting.decisions.openRunTitle": "Open the run that delegated this ({{delegator}})",
   "settings.modelRouting.decisions.filterNotRouted": "Not routed",
+  "settings.modelRouting.overview.agentOne": "agent",
+  "settings.modelRouting.overview.agentMany": "agents",
 } satisfies TranslationCatalog;
 
 export default modelRoutingSettingsMessages;

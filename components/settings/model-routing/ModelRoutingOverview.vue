@@ -43,7 +43,7 @@
                 <span class="flex h-2 gap-0.5" role="img" :aria-label="runtimeSummary(kind)" :style="{ width: `${Math.max(8, Math.round((kind.total / maxKindTotal) * 70))}%` }">
                   <span v-for="runtime in kind.runtimes" :key="runtime.runtime" class="h-full min-w-[3px] first:rounded-l last:rounded-r" :style="{ flexGrow: runtime.count, backgroundColor: RUNTIME_COLORS[runtime.runtime] }" :title="`${runtime.name} · ${runtime.count}`"></span>
                 </span>
-                <span class="flex-shrink-0 text-sm font-medium tabular-nums text-gray-700">{{ kind.total }}</span>
+                <span class="flex-shrink-0 text-sm text-gray-500"><span class="font-medium tabular-nums text-gray-800">{{ kind.total }}</span> {{ t(kind.total === 1 ? 'settings.modelRouting.overview.agentOne' : 'settings.modelRouting.overview.agentMany') }}</span>
               </span>
               <Icon icon="heroicons:chevron-down" class="hidden h-4 w-4 text-gray-400 transition-transform sm:block" :class="open.has(kind.kind) ? 'rotate-180' : ''" aria-hidden="true" />
             </button>

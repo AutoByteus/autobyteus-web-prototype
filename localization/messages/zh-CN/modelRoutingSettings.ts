@@ -143,6 +143,8 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.overview.failures": "其中 {{count}} 个因路由器失败而沿用了委派它的运行。",
   "settings.modelRouting.decisions.openRunTitle": "打开委派它的运行（{{delegator}}）",
   "settings.modelRouting.decisions.filterNotRouted": "未经路由",
+  "settings.modelRouting.overview.agentOne": "个智能体",
+  "settings.modelRouting.overview.agentMany": "个智能体",
 } satisfies TranslationCatalog;
 
 export default modelRoutingSettingsMessages;

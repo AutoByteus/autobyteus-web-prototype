@@ -89,3 +89,9 @@
 ### Round 9 — 2026-10-26: the tab "Agent runtimes now" is called "Runtimes"
 
 - The user asked what "Agent runtimes now" means. It is the name of the existing section (autobyteus-303): the runtimes available on this node at this moment. Inside Model Routing "agent" and "now" add nothing and the name sounds like Settings → Agent Runtimes (install, sign in), so the tab is "Runtimes" (zh-CN 运行时). The section itself (limits, models, blocked, Check again) is unchanged.
+
+### Round 10 — 2026-10-26: what the Overview counts
+
+- The user asked how the counts on Overview are decided. Every number counts AGENTS (the members of delegated copies), not Tasks: the total is every agent started in a delegated copy in the period; a task-kind row is the agents the Model Router labelled with that kind
+  (the router writes the label per agent, from the Task text and the agent's role, and it is stored in the decision record); "Not routed" is the agents on a default or the delegating run's launch (no router decision, so no kind); the source bar splits the same total by who chose the launch.
+  One Task can appear under several kinds (designer, engineer, reviewer). The rows now read "6 agents" so a count is not taken for a Task count. A count of distinct Tasks per kind was not chosen because a Task has no single kind.
