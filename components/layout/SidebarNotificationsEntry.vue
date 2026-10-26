@@ -1,7 +1,8 @@
 <template>
-  <!-- The entry to the Notification Center while updates wait. `inline`: the word pill ("3 updates") on the right of
-       the Settings row (solid while any is unread, soft once all are read). `strip`: the icon with a count badge
-       above the cog in the collapsed strip. A click toggles the panel next to the entry. -->
+  <!-- The entry to the Notification Center while updates wait or an automatic update is unread. `inline`: the word pill
+       ("3 updates", or "1 updated" when nothing waits) on the right of the Settings row (solid while any is unread, soft
+       once all are read). `strip`: the icon with a count badge above the cog in the collapsed strip. A click toggles the
+       panel on the right side of the window. -->
   <template v-if="notifications.hasEntry || (center.isOpen && count > 0)">
     <button
       v-if="variant === 'inline'"
@@ -60,7 +61,6 @@ const center = useNotificationCenterStore()
 const outcomes = computed(() => notifications.rows.filter((row) => row.state === 'handled' && row.kind !== 'app' && row.outcome === 'AUTO_UPDATED' && (row.unread || center.isNew(row.id))))
 const outcomeOnly = computed(() => notifications.waitingCount === 0)
 const count = computed(() => outcomeOnly.value ? outcomes.value.length : notifications.waitingCount)
-const EDGE = 8
 const plural = (key: string, count: number) => t(`${key}.${count === 1 ? 'one' : 'other'}`, { count })
 /** "3 updates available", or "1 update applied automatically" when nothing waits. */
 const summary = computed(() => outcomeOnly.value
@@ -79,6 +79,6 @@ const description = computed(() => t('settings.notifications.sidebar.description
 /** Opens (or closes) the panel on the right side of the whole window, whichever entry was pressed. */
 const toggle = () => {
   if (center.isOpen) { center.close(); return }
-  center.open({ right: EDGE, top: EDGE })
+  center.open()
 }
 </script>

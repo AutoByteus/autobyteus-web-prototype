@@ -260,3 +260,19 @@ Collaboration. Their design-only simulations (`plugins/99.update-notifications.c
 | A peer's Agents and Agent Teams, and its state | `stores/remoteCollaborationOffersStore.ts` answers from `prototype/remote-collaboration/offersScript.ts` after a scripted delay (0.8 s to 20 s); invented names, descriptions and delays | This node's server asks the peer; the window never contacts it; only name, kind and description travel |
 | Peer refusal reasons | Four scripted codes mapped to localized sentences | The server's refusal code (REMOTE_COLLABORATION_OFF, PEER_NOT_REGISTERED, PEER_UNREACHABLE, PEER_IDENTITY_MISMATCH) |
 | Timing | Scripted `setTimeout`; no polling | Each peer bounded by the 20 s request bound; asked on open, on add and on Refresh only |
+
+## Nodes, remote runs, Model Routing and updates (WEB-BASELINE-REFRESH-013, source `d74f75a`)
+
+The source now ships Manage Nodes, runs on other nodes, Model Routing and automatic updates. Their own components, stores, connectors and
+presentation code run unchanged; only what sits under them is simulated:
+
+| Production capability | Visible experience preserved | Local implementation | Intentionally absent |
+| --- | --- | --- | --- |
+| Other nodes (identity probe, settings API, peers, offers, availability) | Every row state, line, confirmation, step, failure text, the Docker hint | `prototype/nodes/network-world.mjs` (state of all nodes) answered through `utils/apolloClient.ts` for this node and `prototype/shared/node-network-fetch.js` for direct requests | Any network request to a node |
+| Runs on other nodes | Rows, titles, statuses, opened view, composer, panel notes, Stop, Retry | `remote_task_executions` and summary events from `prototype/remote-runs/remoteRunsFixture.ts` through the local WebSocket | The delegating node's server and the other nodes |
+| Available agent runtimes (Model Routing) | Limits, models, blocked models, unknown values, check again | `AvailableAgentRuntimes` answered from `node-settings-fixtures.mjs` | Reading each runtime live |
+| Automatic updates, check intervals, runtime sign-in on a remote node | Switches, confirmation, outcomes, applying notes, interval validation | `node-settings-fixtures.mjs` (scripted passes) | Background checks, vendor updates |
+| Server settings (Show internal agents, Claude one-hour cache) | Switch, saving, error | In-memory settings in `fixtures.mjs`; the server's rule that hides internal agents is a line in the agent list fixture | Persistence |
+| Phone Access REST | Switch, addresses, devices, pairing QR | `prototype/source-observation/rest-fixtures.mjs` through an axios adapter | Pairing, device storage |
+
+The pinned source runs for comparison against `prototype/source-observation/mock-node.mjs`, which uses the same fixtures and the same world.

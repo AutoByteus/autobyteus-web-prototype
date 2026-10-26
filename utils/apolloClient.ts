@@ -16,7 +16,7 @@ import { operationFixture, baseState, DELEGATED_MUTATIONS, PROJECT_MUTATIONS, SK
 import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/launchedTeamFixture'
 import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/prototype/run-settings/launchedOrgFixture'
 import { withAgentReconnect } from '~/prototype/agent-reconnect/agentReconnectFixture'
-import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
+import { designOnlyLayersEnabled, reconnectLayerEnabled } from '~/prototype/shared/design-only-layers'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { remoteStopResult } from '~/prototype/remote-runs/remoteRunsFixture'
 import { seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
@@ -51,16 +51,23 @@ const fixtureState = (): Record<string, any> => {
     localFixtureState.delegatedSelections = null
     localFixtureState.embedding = null
     localFixtureState.nodeSettings = null
+    // one-nodes-tab (shipped): the simulated network of nodes starts again with the scenario.
+    localFixtureState.world = null
+    localFixtureState.serverSettings = null
+    localFixtureState.restState = null
     // skill-sources-dialog-redesign (design-only): representative skill sources for the redesigned dialog.
     if (designOnlyLayersEnabled()) localFixtureState.skillSourceData = designSkillSourceData(scenario)
   }
   localFixtureState.scenario = scenario
+  localFixtureState.hostContext = (() => { try { return localStorage.getItem('autobyteus.prototype.context') || 'desktop' } catch { return 'desktop' } })()
   // delegated-copy-task-locator (design-only): the Project Task Manager run's Tasks.
   if (designOnlyLayersEnabled()) seedDelegatedCopyTasks(localFixtureState, scenario)
   // task-keys-and-dependencies (design-only): Task keys and "depends on" for the example Projects.
   if (designOnlyLayersEnabled()) { seedTaskKeys(localFixtureState, scenario); seedTaskParts(localFixtureState, scenario) }
   return localFixtureState
 }
+
+export const currentFixtureState = (): Record<string, any> => fixtureState()
 
 // WEB-BASELINE-REFRESH-009: a local answer arrives on a later task, as a network response does, so the
 // source's busy states (a disabled Reload button, a disabled add input) render before the answer and
@@ -77,7 +84,10 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (scenario === 'error') return { data: null, errors: [{ message: 'Synthetic recoverable GraphQL failure.' }] }
   if (scenario === 'permission_denied') return { data: null, errors: [{ message: 'Synthetic permission denied.' }] }
   const state = fixtureState()
+  state.lastDelayMs = 0
   let data = operationFixture(name, request.variables || {}, state)
+  // The simulated nodes answer after their own delay (prototype/nodes/network-world.mjs).
+  if (state.lastDelayMs) await new Promise(done => setTimeout(done, state.lastDelayMs))
   // run-settings-ui-unification: a Team launched from New chat opens its own run, whichever Team it is.
   if (state.launchedTeamRun) {
     const catalog = (operation: string, key: string) =>
@@ -94,7 +104,7 @@ const resolveLocally = async (request: OperationRequest = {}) => {
     return { orgs: catalog('GetAgentOrgDefinitions', 'agentOrgDefinitions'), teams: catalog('GetAgentTeamDefinitions', 'agentTeamDefinitions') }
   })
   // agent-definition-reconnect-ui (design-only): runs whose agent folder was renamed, and the Video Team run.
-  if (designOnlyLayersEnabled()) data = data ? withAgentReconnect(name, request.variables || {}, structuredClone(data), scenario) : data
+  if (reconnectLayerEnabled()) data = data ? withAgentReconnect(name, request.variables || {}, structuredClone(data), scenario) : data
   // delegated-copy-task-locator (design-only): a Project Task Manager run with look-alike delegated copies.
   if (designOnlyLayersEnabled()) data = data ? withDelegatedCopyTasks(name, request.variables || {}, structuredClone(data), scenario) : data
   // skill-sources-dialog-redesign (design-only): the registry-error scenario.
@@ -110,7 +120,7 @@ const resolveLocally = async (request: OperationRequest = {}) => {
 // Project/Task mutations back the Projects pages (0a32261); the skill-source
 // mutations back the Skill Sources dialog (4dee901); ReloadAgentPackageDefinitions backs the
 // Agents, Teams and Orgs Reload buttons (f7fcf90).
-const LOCAL_MUTATIONS = new Set([...EMBEDDING_MUTATIONS, ...NODE_SETTINGS_MUTATIONS, ...DELEGATED_MUTATIONS, 'ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', 'ImportMcpServerConfigs', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
+const LOCAL_MUTATIONS = new Set(['UpdateServerSetting', 'DeleteServerSetting', 'SetRemoteCollaborationEnabled', 'AddPeerNode', 'RenamePeerNode', 'RemovePeerNode', 'ChangePeerAddress', 'AddProjectTaskComment', ...EMBEDDING_MUTATIONS, ...NODE_SETTINGS_MUTATIONS, ...DELEGATED_MUTATIONS, 'ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', 'ImportMcpServerConfigs', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
 
 const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const definition = request.mutation?.definitions?.find((entry: any) => entry.kind === 'OperationDefinition')
@@ -137,7 +147,9 @@ const resolveMutationLocally = async (request: OperationRequest = {}) => {
       return { data: structuredClone(remote) }
     }
   }
+  state.lastDelayMs = 0
   let data = operationFixture(name, request.variables || {}, state)
+  if (state.lastDelayMs) await new Promise<void>(done => setTimeout(done, state.lastDelayMs))
   // run-settings-ui-unification: each Team launch is its own run (launchedTeamFixture.ts).
   if (name === 'CreateAgentTeamRun') { state.launchedTeamRun = true; data = recordTeamLaunch(request.variables || {}, data) }
   if (data?.__projectError) return { data: null, errors: [data.__projectError] }

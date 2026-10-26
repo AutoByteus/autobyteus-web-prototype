@@ -1,0 +1,115 @@
+[
+ {
+  "id": "UPD-040",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   24,
+   24
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-041",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   42,
+   42
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-042",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   22,
+   22
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('button[aria-label*=\"menu\" i], button[title*=\"menu\" i]').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('button[aria-label*=\"menu\" i], button[title*=\"menu\" i]').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "UPD-043",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   22,
+   22
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('button[aria-label*=\"menu\" i], button[title*=\"menu\" i]').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('button[aria-label*=\"menu\" i], button[title*=\"menu\" i]').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "UPD-044",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   29,
+   29
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

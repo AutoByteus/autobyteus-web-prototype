@@ -28,7 +28,7 @@
         />
       </button>
     </div>
-    <p :id="explainId" class="mt-0.5 text-xs leading-5" :class="variant === 'card' ? 'text-gray-600 sm:text-[13px] sm:leading-5' : 'text-gray-500'" :data-testid="`auto-update-${kind}-explanation`">{{ $t(`settings.notifications.auto.${enabled ? 'explainOn' : 'explain'}.${kind}`) }}</p>
+    <p :id="explainId" class="mt-0.5 text-xs leading-5" :class="variant === 'card' ? 'text-gray-600 sm:text-[0.8125rem] sm:leading-5' : 'text-gray-500'" :data-testid="`auto-update-${kind}-explanation`">{{ $t(`settings.notifications.auto.${enabled ? 'explainOn' : 'explain'}.${kind}`) }}</p>
     <p v-if="enabled && checksOff" :id="noEffectId" class="mt-1.5 flex items-start gap-1.5 text-xs leading-5 text-amber-800" :data-testid="`auto-update-${kind}-no-effect`">
       <Icon icon="heroicons:pause-circle-20-solid" class="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-600" aria-hidden="true" />{{ $t('settings.notifications.auto.noEffect') }}
     </p>
@@ -63,7 +63,7 @@ import ConfirmationModal from '~/components/common/ConfirmationModal.vue'
 import { useNotificationCenterStore } from '~/stores/notificationCenterStore'
 import { useUpdateAutomationStore } from '~/stores/updateAutomationStore'
 import { useUpdateChecksCapabilityStore } from '~/stores/capabilities/updateChecksCapabilityStore'
-import type { UpdateAutomationSwitch } from '~/types/updateNotifications'
+import { SETTINGS_FIELD_OF } from '~/types/updateNotifications'
 
 const props = defineProps<{
   kind: 'agent_package' | 'skill_source' | 'agent_runtime'
@@ -80,10 +80,7 @@ const labelId = `auto-update-label-${useId()}`
 const explainId = `auto-update-explain-${useId()}`
 const noEffectId = `auto-update-note-${useId()}`
 
-const SETTING: Record<typeof props.kind, UpdateAutomationSwitch> = {
-  agent_package: 'autoUpdatePackages', skill_source: 'autoUpdateSkills', agent_runtime: 'autoUpdateRuntimes',
-}
-const enabled = computed(() => settings.resolved?.[SETTING[props.kind]] === true)
+const enabled = computed(() => settings.resolved?.automaticUpdates[SETTINGS_FIELD_OF[props.kind]] === true)
 const checksOff = computed(() => updateChecks.status === 'resolved' && !updateChecks.isEnabled)
 const applyingCount = computed(() => props.applyingCount ?? 0)
 const label = computed(() => props.variant === 'panel' ? t('settings.notifications.auto.label') : t(`settings.notifications.auto.kind.${props.kind}`))
@@ -97,7 +94,7 @@ const save = async (value: boolean) => {
   saving.value = true
   failed.value = false
   try {
-    await settings.save({ [SETTING[props.kind]]: value })
+    await settings.setAutomatic(props.kind, value)
   } catch {
     failed.value = true
   } finally {

@@ -1,0 +1,436 @@
+[
+ {
+  "id": "RUN-010",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-011",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-012",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   55,
+   55
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-013",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-014",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-015",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-016",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-017",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-018",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-019",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   55,
+   55
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-020",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   53,
+   53
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-021",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   54,
+   54
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "console: Failed to send message via activeContextStore: Error: office-mac is not reachable. The request timed out after 20 seconds.\n    at AgentRunCollaborationStreamingService.acknowledge (http://127.0.0.1:4822/_nuxt/services/agentCollaboration/agentRunCollaborationStreamingService.ts:210:72)\n    at AgentRu",
+   "console: Error sending requirement: Error: office-mac is not reachable. The request timed out after 20 seconds.\n    at AgentRunCollaborationStreamingService.acknowledge (http://127.0.0.1:4822/_nuxt/services/agentCollaboration/agentRunCollaborationStreamingService.ts:210:72)\n    at AgentRunCollaborationStream"
+  ],
+  "baseErr": [
+   "console: Failed to send message via activeContextStore: Error: office-mac is not reachable. The request timed out after 20 seconds.\n    at AgentRunCollaborationStreamingService.acknowledge (http://127.0.0.1:4820/_nuxt/services/agentCollaboration/agentRunCollaborationStreamingService.ts?t=1792995630526:211:72",
+   "console: Error sending requirement: Error: office-mac is not reachable. The request timed out after 20 seconds.\n    at AgentRunCollaborationStreamingService.acknowledge (http://127.0.0.1:4820/_nuxt/services/agentCollaboration/agentRunCollaborationStreamingService.ts?t=1792995630526:211:72)\n    at AgentRunCol"
+  ],
+  "pass": false
+ },
+ {
+  "id": "RUN-022",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-023",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-024",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   55,
+   55
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-025",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   55,
+   55
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-026",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   48,
+   48
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-027",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Expand marketing team', exact: true }).first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('button', { name: 'Expand marketing team', exact: true }).first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "RUN-028",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByText('prototype-workspace', { exact: true }).first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByText('prototype-workspace', { exact: true }).first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "RUN-029",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

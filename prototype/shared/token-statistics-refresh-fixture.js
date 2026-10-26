@@ -53,6 +53,8 @@ const aggregate = ({
   input,
   cached = 0,
   cacheCreated = 0,
+  cacheCreated5m = 0,
+  cacheCreated1h = 0,
   output,
   reasoning = 0,
   inputCost = null,
@@ -73,6 +75,8 @@ const aggregate = ({
     cacheMissInputTokens: standard,
     cacheReadInputTokens: cached,
     cacheCreationInputTokens: cacheCreated,
+    cacheCreation5mInputTokens: cacheCreated5m,
+    cacheCreation1hInputTokens: cacheCreated1h,
     outputTokens: output,
     reasoningOutputTokens: reasoning,
     billableOutputTokens: output,
@@ -85,8 +89,9 @@ const aggregate = ({
     estimatedApiStandardInputCost: inputCost == null ? null : inputCost * (standard / Math.max(input, 1)),
     estimatedApiCacheReadInputCost: inputCost == null ? null : inputCost * (cached / Math.max(input, 1)),
     estimatedApiCacheCreationInputCost: inputCost == null ? null : inputCost * (cacheCreated / Math.max(input, 1)),
-    estimatedApiCacheCreation5mInputCost: 0,
-    estimatedApiCacheCreation1hInputCost: 0,
+    // claude-agent-sdk writes: the 5-minute and 1-hour cache writes are priced apart (the cost breakdown lists them as rows).
+    estimatedApiCacheCreation5mInputCost: inputCost == null || !cacheCreated5m ? 0 : inputCost * (cacheCreated5m / Math.max(input, 1)) * 1.25,
+    estimatedApiCacheCreation1hInputCost: inputCost == null || !cacheCreated1h ? 0 : inputCost * (cacheCreated1h / Math.max(input, 1)) * 2,
     estimatedApiOutputCost: outputCost,
     estimatedApiReasoningOutputCost: reasoning && outputCost != null ? outputCost * reasoning / Math.max(output, 1) : 0,
     estimatedApiTotalCost: totalCost,
@@ -366,7 +371,7 @@ export const createTokenUsageAnalyticsResult = (input = {}, scenario = 'populate
 
 const teamAggregate = aggregate({ input: 88_000, cached: 16_000, cacheCreated: 3_000, output: 27_000, reasoning: 7_000, inputCost: 0.31, outputCost: 0.68, totalCost: 0.99, reports: 12, runtime: 'codex_app_server', model: 'gpt-5.6-sol', provider: 'openai' })
 const researcherAggregate = aggregate({ input: 52_000, cached: 10_000, output: 17_000, reasoning: 5_000, inputCost: 0.19, outputCost: 0.43, totalCost: 0.62, reports: 7, runtime: 'codex_app_server', model: 'gpt-5.6-sol', provider: 'openai' })
-const writerAggregate = aggregate({ input: 36_000, cached: 6_000, cacheCreated: 3_000, output: 10_000, reasoning: 2_000, inputCost: 0.12, outputCost: 0.25, totalCost: 0.37, reports: 5, runtime: 'claude_agent_sdk', model: 'claude-sonnet-4.5', provider: 'anthropic' })
+const writerAggregate = aggregate({ input: 36_000, cached: 6_000, cacheCreated: 3_000, cacheCreated5m: 1_800, cacheCreated1h: 1_000, output: 10_000, reasoning: 2_000, inputCost: 0.12, outputCost: 0.25, totalCost: 0.37, reports: 5, runtime: 'claude_agent_sdk', model: 'claude-sonnet-4.5', provider: 'anthropic' })
 const agentAggregate = aggregate({ input: 21_000, cached: 2_500, output: 6_500, reasoning: 1_200, inputCost: 0.08, outputCost: 0.16, totalCost: 0.24, reports: 3, runtime: 'autobyteus', model: 'gpt-prototype', provider: 'mock' })
 
 export const createTokenUsageRunStatistics = (scenario = 'populated') => {

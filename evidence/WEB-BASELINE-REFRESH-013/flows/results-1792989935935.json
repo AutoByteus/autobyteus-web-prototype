@@ -1,0 +1,44 @@
+[
+ {
+  "id": "NOD-001",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-002",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   84,
+   84
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

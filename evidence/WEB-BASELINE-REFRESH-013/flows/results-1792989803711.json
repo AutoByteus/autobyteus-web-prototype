@@ -1,0 +1,111 @@
+[
+ {
+  "id": "MR-001",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 5,
+   "max": 2
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-001",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": false,
+  "textMaskedEq": false,
+  "elsEq": false,
+  "els": [
+   32,
+   31
+  ],
+  "elsOnlySrc": [
+   "button|switch|Let agents work with docker|1239|540|44|24|rgb(0, 0, 0)|rgb(16, 185, 129)|16px|400|0",
+   "button||# Agents · # Agent Teams Build Runner, Code Reviewer, Data Cleaner, Log Analyst,|400|589|987|28|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|14px|400|0"
+  ],
+  "elsOnlyBase": [
+   "button|switch|Let agents work with docker|1239|540|44|24|rgb(0, 0, 0)|rgb(16, 185, 129)|16px|400|1"
+  ],
+  "pix": {
+   "changed": 19929,
+   "max": 239
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "7 Agents · 2 Agent Teams",
+   "Build Runner, Code Reviewer, Data Cleaner, Log Analyst, Release Crew, Release Notes Writer, Review Panel, Test Author, Translator"
+  ],
+  "baseOnly": [
+   "Checking docker… up to 20 seconds."
+  ],
+  "pass": false
+ },
+ {
+  "id": "NOD-002",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": false,
+  "textMaskedEq": false,
+  "elsEq": false,
+  "els": [
+   84,
+   61
+  ],
+  "elsOnlySrc": [
+   "button|switch|Let agents work with docker|1239|540|44|24|rgb(0, 0, 0)|rgb(16, 185, 129)|16px|400|0",
+   "button||# Agents · # Agent Teams Build Runner, Code Reviewer, Data Cleaner, Log Analyst,|400|589|987|28|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||studio|396|653|70|20|rgb(15, 23, 42)|rgba(0, 0, 0, 0)|14px|600|0",
+   "button|switch|Let agents work with studio|1239|659|44|24|rgb(0, 0, 0)|rgb(16, 185, 129)|16px|400|0",
+   "button||Open studio in its own window|1295|651|40|40|rgb(71, 85, 105)|rgb(255, 255, 255)|16px|400|0",
+   "button||Remove studio|1347|651|40|40|rgb(100, 116, 139)|rgb(255, 255, 255)|16px|400|0"
+  ],
+  "elsOnlyBase": [
+   "button|switch|Let agents work with docker|1239|540|44|24|rgb(0, 0, 0)|rgb(16, 185, 129)|16px|400|1",
+   "button||studio|396|645|70|20|rgb(15, 23, 42)|rgba(0, 0, 0, 0)|14px|600|0",
+   "button|switch|Let agents work with studio|1239|651|44|24|rgb(0, 0, 0)|rgb(203, 213, 225)|16px|400|0",
+   "button||Open studio in its own window|1295|643|40|40|rgb(71, 85, 105)|rgb(255, 255, 255)|16px|400|0",
+   "button||Remove studio|1347|643|40|40|rgb(100, 116, 139)|rgb(255, 255, 255)|16px|400|0",
+   "button||Turn on|1299|708|76|30|rgb(51, 65, 85)|rgb(255, 255, 255)|14px|500|0"
+  ],
+  "pix": {
+   "changed": 69842,
+   "max": 250
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "7 Agents · 2 Agent Teams",
+   "Build Runner, Code Reviewer, Data Cleaner, Log Analyst, Release Crew, Release Notes Writer, Review Panel, Test Author, Translator",
+   "⚠ Remote collaboration is off on studio.",
+   "Turn on there",
+   "Connection details",
+   "laptop",
+   "192.168.2.40:29695",
+   "⚠ laptop doesn't know this node yet.",
+   "Register this node there",
+   "Connection details"
+  ],
+  "baseOnly": [
+   "Checking docker… up to 20 seconds.",
+   "ⓘ Agents here can't work with studio yet."
+  ],
+  "pass": false
+ }
+]

@@ -42,7 +42,12 @@
           <span aria-hidden="true" class="inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform" :class="draft.collaborate ? 'translate-x-5' : 'translate-x-0.5'" />
         </button>
       </span>
-      <button type="submit" class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:opacity-50" :disabled="busy" data-testid="add-node-submit">
+      <button
+        type="submit"
+        class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 disabled:opacity-50"
+        :disabled="busy"
+        data-testid="add-node-submit"
+      >
         {{ busy ? t(k('add.checking')) : t(k('add.submit')) }}
       </button>
     </div>
@@ -54,13 +59,17 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import RemoteCollaborationIcon from '~/components/settings/nodes/RemoteCollaborationIcon.vue'
-import { useNodeText } from '~/composables/useNodeText'
+import { useLocalization } from '~/composables/useLocalization'
+import { useNodeChangeDialogStore } from '~/stores/nodeChangeDialogStore'
 import { useNodeListStore } from '~/stores/nodeListStore'
+import { NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
 
-const { t, k } = useNodeText()
+/** The always-open add form (UIS-003): Address, Name, the collaboration switch (on by default), Add node. */
+const { t } = useLocalization()
+const k = (key: string): string => `${NODES_PAGE_KEY}${key}`
 const store = useNodeListStore()
+const dialog = useNodeChangeDialogStore()
 
-// The form is always there: type an address and a name, press Enter or Add node.
 const draft = reactive({ address: '', name: '', collaborate: true })
 const errors = reactive({ address: '', name: '' })
 const duplicate = ref('')
@@ -72,17 +81,23 @@ const submit = async (): Promise<void> => {
   errors.name = ''
   duplicate.value = ''
   busy.value = true
-  const result = await store.addNode({ address: draft.address, name: draft.name, collaborate: draft.collaborate })
-  busy.value = false
-  if (result.ok) {
-    draft.address = ''
-    draft.name = ''
-    draft.collaborate = true
-    return
+  try {
+    const result = await store.addNode({ address: draft.address, name: draft.name, collaborate: draft.collaborate })
+    if (result.ok) {
+      // Success is silent: the row appears and is highlighted; the form is ready for the next node.
+      draft.address = ''
+      draft.name = ''
+      draft.collaborate = true
+      // Reachable with the switch on: the one confirmation opens; nothing changes on any node before it (REQ-704).
+      if (result.confirm) void dialog.request('connect', result.key)
+    } else if (result.error === 'invalid') {
+      if (result.address) errors.address = t(k('add.errorAddress'))
+      if (result.name) errors.name = t(k('add.errorName'))
+    } else {
+      duplicate.value = result.existing
+    }
+  } finally {
+    busy.value = false
   }
-  if (result.error === 'invalid') {
-    if (result.address) errors.address = t(k('add.errorAddress'))
-    if (result.name) errors.name = t(k('add.errorName'))
-  } else duplicate.value = result.existing ?? ''
 }
 </script>

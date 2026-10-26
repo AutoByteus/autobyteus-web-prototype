@@ -1,0 +1,128 @@
+[
+ {
+  "id": "RUN-030",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   62,
+   62
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-031",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   62,
+   62
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-032",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   44,
+   44
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "HST-001",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   40,
+   40
+  ],
+  "pix": {
+   "changed": 1,
+   "max": 6
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "HST-002",
+  "route": [
+   "/chat?id=run-research-001",
+   "/chat?id=run-research-001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   48,
+   48
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "HST-003",
+  "route": [
+   "/chat?id=run-research-001",
+   "/chat?id=run-research-001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   48,
+   48
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

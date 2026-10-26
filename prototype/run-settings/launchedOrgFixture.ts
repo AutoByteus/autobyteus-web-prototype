@@ -158,7 +158,7 @@ export const withLaunchedOrg = (
         getAgentOrgRunInspection: {
           root_subject_kind: 'agent_org', root_run_id: run.orgRunId,
           root_org: {
-            base_change_sequence: 1, is_active: !run.stopped, execution_tree: tree, closed_task_executions: [],
+            base_change_sequence: 1, is_active: !run.stopped, execution_tree: tree, closed_task_executions: [], remote_task_executions: [],
             communication_messages: { schemaVersion: 1, subjectKind: 'agent_org', orgRunId: run.orgRunId, messages: [] },
             // A stopped (inactive) root reports no live AgentRun statuses.
             agent_statuses: run.stopped ? [] : idleStatuses(tree.rootOrg.members as Array<Record<string, any>>),

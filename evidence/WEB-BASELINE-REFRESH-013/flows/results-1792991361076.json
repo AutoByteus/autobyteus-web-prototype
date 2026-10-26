@@ -1,0 +1,308 @@
+[
+ {
+  "id": "MR-001",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MR-002",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   14,
+   14
+  ],
+  "pix": {
+   "changed": 8,
+   "max": 9
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MR-003",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   15,
+   15
+  ],
+  "pix": {
+   "changed": 8,
+   "max": 9
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MR-004",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MR-005",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MR-006",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   15,
+   15
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MR-007",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   15,
+   15
+  ],
+  "pix": {
+   "changed": 8,
+   "max": 9
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MR-008",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "Checked 05:07 AM"
+  ],
+  "baseOnly": [
+   "Checked 05:08 AM"
+  ],
+  "pass": true
+ },
+ {
+  "id": "MR-009",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MR-010",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 5,
+   "max": 2
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MR-011",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MR-012",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MR-013",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 293,
+   "max": 127
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "Checked 05:08 AM"
+  ],
+  "baseOnly": [
+   "Checked 05:09 AM"
+  ],
+  "pass": false
+ },
+ {
+  "id": "MR-014",
+  "route": [
+   "/settings?section=api-keys",
+   "/settings?section=api-keys"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

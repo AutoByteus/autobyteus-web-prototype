@@ -162,7 +162,8 @@ export const embeddingMutation = (e, operationName, variables, projects) => {
 export const searchTasks = (tasks, query) => {
   const q = String(query || '').trim().toLocaleLowerCase()
   const words = new Set(q.split(/[^a-z0-9]+/).filter(word => word.length >= 4))
-  const exact = tasks.filter(task => task.description.toLocaleLowerCase().includes(q))
-  const meaning = tasks.filter(task => !exact.includes(task) && task.description.toLocaleLowerCase().split(/[^a-z0-9]+/).some(word => word.length >= 4 && [...words].some(other => word.slice(0, 4) === other.slice(0, 4))))
+  const textOf = task => `${task.title ?? ''} ${task.description}`.toLocaleLowerCase()
+  const exact = tasks.filter(task => textOf(task).includes(q))
+  const meaning = tasks.filter(task => !exact.includes(task) && textOf(task).split(/[^a-z0-9]+/).some(word => word.length >= 4 && [...words].some(other => word.slice(0, 4) === other.slice(0, 4))))
   return [...exact.map(task => ({ __typename: 'ProjectTaskSearchMatch', taskId: task.taskId, match: 'EXACT' })), ...meaning.map(task => ({ __typename: 'ProjectTaskSearchMatch', taskId: task.taskId, match: 'MEANING' }))]
 }

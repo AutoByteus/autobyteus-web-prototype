@@ -1,0 +1,23 @@
+[
+ {
+  "id": "RUN-010",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

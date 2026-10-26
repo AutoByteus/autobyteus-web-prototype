@@ -1,0 +1,661 @@
+[
+ {
+  "id": "UPD-001",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   47,
+   47
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-002",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   57,
+   57
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-003",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   50,
+   50
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-004",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   34,
+   34
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-005",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   47,
+   47
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-006",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-007",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   49,
+   49
+  ],
+  "pix": {
+   "changed": 4,
+   "max": 10
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-008",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   47,
+   47
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-009",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   49,
+   49
+  ],
+  "pix": {
+   "changed": 4,
+   "max": 10
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"confirmation-modal-confirm\"]').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"confirmation-modal-confirm\"]').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "UPD-010",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": false,
+  "textMaskedEq": false,
+  "elsEq": false,
+  "els": [
+   47,
+   47
+  ],
+  "elsOnlySrc": [
+   "button|switch||1366|232|36|20|rgb(0, 0, 0)|rgb(16, 185, 129)|16px|400|0",
+   "button||New: Codex #.#.# #.#.# · # hr. ago|1094|361|229|40|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||Update|1335|370|67|24|rgb(255, 255, 255)|rgb(3, 105, 161)|12px|600|0",
+   "button||Claude #.#.# #.#.# · # hr. ago|1094|422|229|40|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||Update|1335|431|67|24|rgb(255, 255, 255)|rgb(3, 105, 161)|12px|600|0",
+   "button|switch||1366|550|36|20|rgb(0, 0, 0)|rgb(203, 213, 225)|16px|400|0"
+  ],
+  "elsOnlyBase": [
+   "button|switch||1366|232|36|20|rgb(0, 0, 0)|rgb(203, 213, 225)|16px|400|0",
+   "button||New: Research Pack a#b#c#d #f#e#d# · # hr. ago|1094|335|229|40|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||Update|1335|344|67|24|rgb(255, 255, 255)|rgb(3, 105, 161)|12px|600|0",
+   "button||Docs Pack With A Rather Long Name For A Package #a#b#c# e#f#a#b · yesterday|1094|396|229|40|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||Update|1335|405|67|24|rgb(255, 255, 255)|rgb(3, 105, 161)|12px|600|0",
+   "button|switch||1366|500|36|20|rgb(0, 0, 0)|rgb(203, 213, 225)|16px|400|0"
+  ],
+  "pix": {
+   "changed": 73029,
+   "max": 253
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "6 updates",
+   "1 waiting update will be installed within about a minute.",
+   "0.163.0",
+   "0.164.0",
+   "Update unavailable while 2 agents are running."
+  ],
+  "baseOnly": [
+   "5 updates",
+   "Update unavailable while 2 agents are running. It will be updated automatically once no agent is running.",
+   "Updated automatically to 0.164.0",
+   "this minute",
+   "From 0.163.0"
+  ],
+  "pass": false
+ },
+ {
+  "id": "UPD-011",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-012",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 77174,
+   "max": 1
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "GitHub asked this node to wait until 06:24 AM."
+  ],
+  "baseOnly": [
+   "GitHub asked this node to wait until 06:25 AM."
+  ]
+ },
+ {
+  "id": "UPD-013",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-014",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.fill: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid=\"update-interval-agent_package-value\"]').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.fill: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid=\"update-interval-agent_package-value\"]').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "UPD-015",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.fill: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid=\"update-interval-agent_package-value\"]').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.fill: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid=\"update-interval-agent_package-value\"]').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "UPD-016",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   71,
+   71
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-017",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-018",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 9,
+   "max": 8
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-019",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-020",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 8,
+   "max": 1
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-021",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 314,
+   "max": 229
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "10/26/2026, 5:53:46 AM"
+  ],
+  "baseOnly": [
+   "10/26/2026, 5:53:52 AM"
+  ],
+  "pass": false
+ },
+ {
+  "id": "UPD-022",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 474,
+   "max": 229
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "10/26/2026, 5:41:57 AM"
+  ],
+  "baseOnly": [
+   "10/26/2026, 5:42:03 AM"
+  ],
+  "pass": false
+ },
+ {
+  "id": "UPD-023",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 8,
+   "max": 1
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-024",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 233,
+   "max": 229
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "10/26/2026, 5:54:20 AM"
+  ],
+  "baseOnly": [
+   "10/26/2026, 5:54:27 AM"
+  ],
+  "pass": false
+ },
+ {
+  "id": "UPD-025",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 300,
+   "max": 229
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "10/26/2026, 6:06:39 AM"
+  ],
+  "baseOnly": [
+   "10/26/2026, 6:06:47 AM"
+  ],
+  "pass": false
+ },
+ {
+  "id": "UPD-026",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-027",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   47,
+   47
+  ],
+  "pix": {
+   "changed": 17,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-028",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

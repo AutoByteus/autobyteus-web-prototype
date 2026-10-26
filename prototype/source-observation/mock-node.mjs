@@ -3,9 +3,14 @@ import http from 'node:http'
 import { URL } from 'node:url'
 import { WebSocketServer } from 'ws'
 import { liveStreamFrames } from './live-streams.mjs'
-import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, baseState, operationFixture, scenarioCatalog, syntheticApplicationHtml, taskContextUpload } from './fixtures.mjs'
+import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, baseState, networkWorldOf, operationFixture, scenarioCatalog, syntheticApplicationHtml, taskContextUpload } from './fixtures.mjs'
 import { createSchemaFiller } from './schema-filler.mjs'
+import { restFixture } from './rest-fixtures.mjs'
+import { subscribeNotificationChanges } from './node-settings-fixtures.mjs'
 
+// Optional comparison hook (disposable scaffolding): a module that adds what the baseline's design layers answer, so the pinned source
+// can show the same data. `graphqlHook(name, variables, data, state)` and `wsHook(ws, pathname, state)`.
+const hookModule = process.env.PROTOTYPE_MOCK_HOOK ? await import(process.env.PROTOTYPE_MOCK_HOOK) : null
 const port = Number(process.env.PROTOTYPE_MOCK_PORT || 4310)
 const host = process.env.PROTOTYPE_MOCK_HOST || '127.0.0.1'
 const state = baseState()
@@ -24,6 +29,10 @@ function applyScenario(name) {
   state.delegatedSelections = null
   state.embedding = null
   state.nodeSettings = null
+  state.world = null
+  state.serverSettings = null
+  state.network = null
+  state.restState = null
 }
 
 applyScenario(process.env.PROTOTYPE_SCENARIO || 'populated')
@@ -56,12 +65,19 @@ const server = http.createServer(async (req, res) => {
     return send(res, 200, { ok: true, adapter: 'autobyteus-prototype-mock-node', state, scenarios: scenarioCatalog, requestCount: requestLog.length })
   }
   if (url.pathname === '/__prototype/requests') return send(res, 200, { requests: requestLog.slice(-500) })
+  // one-nodes-tab: the browser harness forwards what its window asks another node's address to the simulated network.
+  if (url.pathname === '/__network/request' && req.method === 'POST') {
+    const input = await readBody(req)
+    return send(res, 200, networkWorldOf(state).windowRequest(input.url, input.request || {}))
+  }
   if (url.pathname === '/__prototype/scenario') {
     if (req.method === 'GET') return send(res, 200, { state, scenarios: scenarioCatalog })
     try {
       const input = await readBody(req)
       if (input.scenario) applyScenario(input.scenario)
       if (Number.isFinite(input.requestDelayMs)) state.requestDelayMs = Math.max(0, Number(input.requestDelayMs))
+      if (typeof input.designLayers === 'string') state.designLayers = input.designLayers
+      if (typeof input.hostContext === 'string') { state.hostContext = input.hostContext; state.world = null }
       if (typeof input.applicationsEnabled === 'boolean') state.applicationsEnabled = input.applicationsEnabled
       if (typeof input.managedGatewayEnabled === 'boolean') state.managedGatewayEnabled = input.managedGatewayEnabled
       if (input.operationFailures && typeof input.operationFailures === 'object') state.operationFailures = { ...input.operationFailures }
@@ -98,7 +114,10 @@ const server = http.createServer(async (req, res) => {
       const order = ['autobyteus', 'codex_app_server', 'claude_agent_sdk', 'antigravity_cli'].indexOf(payload.variables?.runtimeKind)
       await new Promise(resolve => setTimeout(resolve, 40 * Math.max(0, order)))
     }
-    const fixture = operationFixture(operationName, payload.variables || {}, state)
+    state.lastDelayMs = 0
+    let fixture = operationFixture(operationName, payload.variables || {}, state)
+    if (hookModule?.graphqlHook) fixture = hookModule.graphqlHook(operationName, payload.variables || {}, fixture, state)
+    if (state.lastDelayMs) await new Promise(resolve => setTimeout(resolve, state.lastDelayMs))
     if (fixture?.__projectError) return send(res, 200, { data: null, errors: [fixture.__projectError] })
     // Like the real node, a created TeamRun appears as active in later history reads.
     if (operationName === 'CreateAgentTeamRun') state.launchedTeamRun = true
@@ -112,8 +131,14 @@ const server = http.createServer(async (req, res) => {
 
   if (url.pathname.startsWith('/rest/')) requestLog.push({ at: new Date().toISOString(), method: req.method, path: url.pathname, scenario: state.scenario })
 
+  if (url.pathname.startsWith('/rest/') && url.pathname !== '/rest/remote-access/status' && url.pathname !== '/rest/remote-access/pairing-exchanges') {
+    const body = req.method === 'GET' ? {} : await readBody(req)
+    const answer = restFixture(req.method, url.pathname.slice('/rest'.length), body, state)
+    if (answer) return send(res, answer.status, answer.json)
+  }
   if (url.pathname === '/rest/remote-access/status') {
-    return send(res, 200, { phoneAccessEnabled: true, pairingAvailable: true, compatibilityVersion: 1, serverInstanceId: 'prototype-node', serverName: 'Prototype Node' })
+    const world = networkWorldOf(state)
+    return send(res, 200, { phoneAccessEnabled: true, pairingAvailable: true, nodeId: world.boundNodeId, serverName: world.nodes[world.boundNodeId].selfName })
   }
   if (url.pathname === '/rest/remote-access/pairing-exchanges' && req.method === 'POST') {
     const input = await readBody(req)
@@ -176,9 +201,14 @@ wss.on('connection', (ws, req) => {
   // WEB-BASELINE-REFRESH-010: a live stored run's stream (live_runs scenario) answers with its view.
   // WEB-BASELINE-REFRESH-012: the update-notifications feed greets every connection; the greeting makes the
   // window read its notifications (the baseline's local WebSocket plays the same greeting).
-  if (pathname === '/ws/update-notifications') setTimeout(() => ws.send(JSON.stringify({ type: 'connected' })), 20)
+  if (pathname === '/ws/update-notifications') {
+    setTimeout(() => ws.send(JSON.stringify({ type: 'connected' })), 20)
+    const stop = subscribeNotificationChanges(() => { if (ws.readyState === 1) ws.send(JSON.stringify({ type: 'update_notifications_changed' })) })
+    ws.on('close', stop)
+  }
   const liveFrames = liveStreamFrames(state, pathname)
   if (liveFrames) setTimeout(() => { for (const frame of liveFrames) ws.send(JSON.stringify(frame)) }, 20)
+  hookModule?.wsHook?.(ws, pathname, state)
   if (pathname.startsWith('/ws/file-explorer/')) {
     ws.send(JSON.stringify({ type: 'CONNECTED', payload: { session_id: `fixture-${pathname.split('/').pop() || 'workspace'}` } }))
   }

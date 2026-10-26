@@ -1,0 +1,204 @@
+[
+ {
+  "id": "NOD-031",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   35,
+   35
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-032",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   37,
+   37
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-033",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   27,
+   27
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-034",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   38,
+   38
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-035",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   38,
+   38
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-036",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   35,
+   35
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "Checked 05:47 AM"
+  ],
+  "baseOnly": [
+   "Checked 05:48 AM"
+  ]
+ },
+ {
+  "id": "NOD-037",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   35,
+   35
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-042",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   84,
+   84
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'old-box' }).first().locator('button[aria-expanded]').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'old-box' }).first().locator('button[aria-expanded]').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "NOD-043",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   84,
+   84
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'nas' }).first().locator('button[aria-expanded]').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'nas' }).first().locator('button[aria-expanded]').first()\n"
+  ],
+  "pass": false
+ }
+]

@@ -1,0 +1,281 @@
+[
+ {
+  "id": "BAS-001",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 9,
+   "max": 8
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "BAS-002",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4822/_nuxt/stores/serverSettings.ts:283:48)\n    at async persist (http://127.0.0.1:4822/_nuxt/components/settings/ShowInternalAgen"
+  ],
+  "baseErr": [
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4820/_nuxt/stores/serverSettings.ts?t=1792994885639:283:48)\n    at async persist (http://127.0.0.1:4820/_nuxt/components/settings/"
+  ],
+  "pass": false
+ },
+ {
+  "id": "BAS-003",
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": false,
+  "els": [
+   25,
+   25
+  ],
+  "elsOnlySrc": [
+   "button|||284|389|24|24|rgb(128, 128, 128)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||prototype-workspace|4|421|284|32|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Remove from Workspaces|288|425|24|24|rgb(153, 153, 153)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Temp Workspace|4|457|312|32|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|400|0"
+  ],
+  "elsOnlyBase": [
+   "button|||284|349|24|24|rgb(128, 128, 128)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||prototype-workspace|4|381|284|32|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Remove from Workspaces|288|385|24|24|rgb(153, 153, 153)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Temp Workspace|4|417|312|32|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|400|0"
+  ],
+  "pix": {
+   "changed": 6042,
+   "max": 178
+  },
+  "srcErr": [
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4822/_nuxt/stores/serverSettings.ts:283:48)\n    at async persist (http://127.0.0.1:4822/_nuxt/components/settings/ShowInternalAgen"
+  ],
+  "baseErr": [
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4820/_nuxt/stores/serverSettings.ts?t=1792994885639:283:48)\n    at async persist (http://127.0.0.1:4820/_nuxt/components/settings/"
+  ],
+  "pass": false
+ },
+ {
+  "id": "BAS-004",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4822/_nuxt/stores/serverSettings.ts:283:48)\n    at async persist (http://127.0.0.1:4822/_nuxt/components/settings/ShowInternalAgen",
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4822/_nuxt/stores/serverSettings.ts:283:48)\n    at async persist (http://127.0.0.1:4822/_nuxt/components/settings/ShowInternalAgen"
+  ],
+  "baseErr": [
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4820/_nuxt/stores/serverSettings.ts?t=1792994885639:283:48)\n    at async persist (http://127.0.0.1:4820/_nuxt/components/settings/",
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4820/_nuxt/stores/serverSettings.ts?t=1792994885639:283:48)\n    at async persist (http://127.0.0.1:4820/_nuxt/components/settings/"
+  ],
+  "pass": false
+ },
+ {
+  "id": "BAS-005",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "console: Failed to update server setting CLAUDE_AGENT_SDK_ONE_HOUR_PROMPT_CACHE: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4822/_nuxt/stores/serverSettings.ts:283:48)\n    at async persistOneHourCache (http://127.0.0.1:4822/_nuxt/components/settin"
+  ],
+  "baseErr": [
+   "console: Failed to update server setting CLAUDE_AGENT_SDK_ONE_HOUR_PROMPT_CACHE: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4820/_nuxt/stores/serverSettings.ts?t=1792994885639:283:48)\n    at async persistOneHourCache (http://127.0.0.1:4820/_nuxt/c"
+  ],
+  "pass": false
+ },
+ {
+  "id": "BAS-006",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: ApolloError: Synthetic server setting save failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql"
+  ],
+  "baseErr": [
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: Error: Synthetic server setting save failure.\n    at Proxy.updateServerSetting (http://127.0.0.1:4820/_nuxt/stores/serverSettings.ts?t=1792994885639:280:17)\n    at async persist (http://127.0.0.1:4820/_nuxt/components/settings/ShowInte"
+  ],
+  "pass": false
+ },
+ {
+  "id": "BAS-007",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "console: Failed to update server setting CLAUDE_AGENT_SDK_ONE_HOUR_PROMPT_CACHE: ApolloError: Synthetic server setting save failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_"
+  ],
+  "baseErr": [
+   "console: Failed to update server setting CLAUDE_AGENT_SDK_ONE_HOUR_PROMPT_CACHE: Error: Synthetic server setting save failure.\n    at Proxy.updateServerSetting (http://127.0.0.1:4820/_nuxt/stores/serverSettings.ts?t=1792994885639:280:17)\n    at async persistOneHourCache (http://127.0.0.1:4820/_nuxt/component"
+  ],
+  "pass": false
+ },
+ {
+  "id": "BAS-008",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "BAS-009",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 2960,
+   "max": 1
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "BAS-010",
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4822/_nuxt/stores/serverSettings.ts:283:48)\n    at async persist (http://127.0.0.1:4822/_nuxt/components/settings/ShowInternalAgen"
+  ],
+  "baseErr": [
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4820/_nuxt/stores/serverSettings.ts?t=1792994885639:283:48)\n    at async persist (http://127.0.0.1:4820/_nuxt/components/settings/"
+  ],
+  "pass": false
+ },
+ {
+  "id": "BAS-011",
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4822/_nuxt/stores/serverSettings.ts:283:48)\n    at async persist (http://127.0.0.1:4822/_nuxt/components/settings/ShowInternalAgen",
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByText('Agent Architect').first()\n"
+  ],
+  "baseErr": [
+   "console: Failed to update server setting AUTOBYTEUS_SHOW_INTERNAL_AGENTS: TypeError: responseMessage.includes is not a function\n    at Proxy.updateServerSetting (http://127.0.0.1:4820/_nuxt/stores/serverSettings.ts?t=1792994885639:283:48)\n    at async persist (http://127.0.0.1:4820/_nuxt/components/settings/",
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByText('Agent Architect').first()\n"
+  ],
+  "pass": false
+ }
+]

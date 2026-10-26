@@ -84,6 +84,7 @@ import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
 
 const { t } = useLocalization();
 
+/** The Nodes page's tabs (one-nodes-tab REQ-701): Remote Collaboration is part of Manage Nodes. */
 type NodeManagerTabId = 'manage' | 'memorySync' | 'phoneSetup' | 'dockerGuide' | 'nfsGuide';
 
 const nodeStore = useNodeStore();
@@ -97,7 +98,7 @@ const initialActiveTab = (): NodeManagerTabId => {
 };
 const activeTab = ref<NodeManagerTabId>(initialActiveTab());
 
-const currentNode = computed(() => nodeStore.getNodeById(windowNodeContextStore.nodeId));
+const currentNode = computed(() => nodeStore.getEntryById(windowNodeContextStore.entryId));
 const nodeTypeLabel = (nodeType: string | undefined) =>
   t(`settings.components.settings.NodeManager.nodeType.${nodeType ?? 'unknown'}` as const);
 const currentNodeTypeLabel = computed(() => nodeTypeLabel(currentNode.value?.nodeType));

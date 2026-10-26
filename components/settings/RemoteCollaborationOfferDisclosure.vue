@@ -15,7 +15,6 @@
     </button>
     <div v-if="open" class="mt-3 pl-6">
       <RemoteCollaborationOfferList v-if="entries.length" :entries="entries" :test-id="`${testId}-list`" />
-      <p v-if="footer" class="mt-3 text-xs text-slate-400">{{ footer }}</p>
       <div v-if="$slots.default" :class="entries.length ? 'mt-4 border-t border-slate-200 pt-4' : ''"><slot /></div>
     </div>
   </div>
@@ -25,17 +24,16 @@
 import { computed, ref } from 'vue'
 import RemoteCollaborationOfferList from '~/components/settings/RemoteCollaborationOfferList.vue'
 import { useLocalization } from '~/composables/useLocalization'
-import type { OfferEntry } from '~/prototype/remote-collaboration/offersScript'
+import type { PeerOfferEntry } from '~/stores/remoteCollaborationOffersStore'
 
-const props = defineProps<{
-  entries: OfferEntry[]
-  testId: string
-  /** Replaces the "7 Agents · 2 Agent Teams" counts, for a list that is already named (for example "11 ready"). */
+const props = withDefaults(defineProps<{
+  entries: PeerOfferEntry[]
+  /** Replaces the "7 Agents · 2 Agent Teams" counts (one-nodes-tab: "Connection details", or an empty offer). */
   label?: string
-  footer?: string
-  /** Optional: lets the page open the details itself (for example "Change address"). */
+  testId: string
+  /** Optional: lets the page open the details itself (one-nodes-tab: Change address from the row's line). */
   modelValue?: boolean
-}>()
+}>(), { label: undefined, modelValue: undefined })
 const emit = defineEmits<{ 'update:modelValue': [value: boolean] }>()
 
 const { t } = useLocalization()
@@ -46,8 +44,8 @@ const open = computed({
 })
 
 const base = 'settings.components.settings.RemoteCollaboration.offer.'
-const agents = computed(() => props.entries.filter((entry) => entry.kind === 'AGENT').length)
-const teams = computed(() => props.entries.filter((entry) => entry.kind === 'AGENT_TEAM').length)
+const agents = computed(() => props.entries.filter((entry) => entry.kind === 'agent').length)
+const teams = computed(() => props.entries.filter((entry) => entry.kind === 'agent_team').length)
 
 const summary = computed(() => {
   if (props.label) return props.label

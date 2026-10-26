@@ -31,7 +31,7 @@
         </h4>
         <p v-if="group.items.length === 0" class="py-2 text-sm text-slate-400">{{ group.emptyLabel }}</p>
         <ul v-else class="divide-y divide-slate-100">
-          <li v-for="entry in group.items" :key="entry.key" class="py-2" :data-testid="`${testId}-entry`">
+          <li v-for="(entry, index) in group.items" :key="`${index}:${entry.name}`" class="py-2" :data-testid="`${testId}-entry`">
             <p class="text-sm font-medium text-slate-900 break-words">{{ entry.name }}</p>
             <p v-if="entry.description" class="mt-0.5 text-xs text-slate-500">{{ entry.description }}</p>
           </li>
@@ -44,29 +44,29 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useLocalization } from '~/composables/useLocalization'
-import type { OfferEntry } from '~/prototype/remote-collaboration/offersScript'
+import type { PeerOfferEntry } from '~/stores/remoteCollaborationOffersStore'
 
 /** The search box appears once either kind has more entries than this. */
 const SEARCH_FROM = 6
 
-const props = defineProps<{ entries: OfferEntry[]; testId: string }>()
+const props = defineProps<{ entries: PeerOfferEntry[]; testId: string }>()
 
 const { t } = useLocalization()
 const query = ref('')
 const needle = computed(() => query.value.trim().toLowerCase())
 
 const countOf = (kind: string): number => props.entries.filter((entry) => entry.kind === kind).length
-const showSearch = computed(() => countOf('AGENT') > SEARCH_FROM || countOf('AGENT_TEAM') > SEARCH_FROM)
-const twoColumns = computed(() => countOf('AGENT') > 0 && countOf('AGENT_TEAM') > 0)
+const showSearch = computed(() => countOf('agent') > SEARCH_FROM || countOf('agent_team') > SEARCH_FROM)
+const twoColumns = computed(() => countOf('agent') > 0 && countOf('agent_team') > 0)
 
-const matches = (entry: OfferEntry): boolean => !needle.value || entry.name.toLowerCase().includes(needle.value)
+const matches = (entry: PeerOfferEntry): boolean => !needle.value || entry.name.toLowerCase().includes(needle.value)
 const matchCount = computed(() => props.entries.filter(matches).length)
 
-const groups = computed(() => (['AGENT', 'AGENT_TEAM'] as const)
+const groups = computed(() => (['agent', 'agent_team'] as const)
   .map((kind) => {
     const all = props.entries.filter((entry) => entry.kind === kind)
     const items = all.filter(matches).sort((a, b) => a.name.localeCompare(b.name))
-    const isAgent = kind === 'AGENT'
+    const isAgent = kind === 'agent'
     return {
       kind, all: all.length, items,
       testKey: isAgent ? 'agents' : 'teams',

@@ -1,474 +1,305 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
+import type { NodeEntry } from '~/types/node'
 import { useNodeStore } from '~/stores/nodeStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
-import type { OfferEntry } from '~/prototype/remote-collaboration/offersScript'
-import {
-  buildWorld, hostPort, inspect, isValidName, NODE_IDS, reach, registrationName, resolveAddress,
-  type Cause, type DirState, type Inspection, type WorldNode, type WorldPeer,
-} from '~/prototype/nodes/nodeWorld'
+import { useRemoteCollaborationStore, type PeerNode } from '~/stores/remoteCollaborationStore'
+import { useRemoteCollaborationOffersStore } from '~/stores/remoteCollaborationOffersStore'
+import { useRemoteCollaborationCapabilityStore } from '~/stores/remoteCollaborationCapabilityStore'
+import { rowViewOf, type NodeRow, type RowFacts, type RowView } from '~/stores/nodeRowStatus'
+import { createNodeCollaborationApi } from '~/services/nodeCollaboration/nodeCollaborationApi'
+import { useNodeCollaborationConnector } from '~/services/nodeCollaboration/windowNodeCollaborationConnector'
+import type { NodeChangePlan, NodeChangeStep, NodeChangeTarget } from '~/services/nodeCollaboration/nodeChangePlan'
+import { normalizeNodeBaseUrl } from '~/utils/nodeEndpoints'
+import { hostOf, probeNodeIdentity, type NodeIdentityProbeResult } from '~/utils/nodeIdentityProbe'
+import { asSettingsFailure, type NodeSettingsFailure } from '~/utils/nodeSettingsError'
 
-/**
- * Manage Nodes: one list of nodes, each once (design one-nodes-tab).
- * UI-reference state: the nodes' answers are scripted in prototype/nodes/nodeWorld.ts; in the product this node's server
- * and the other nodes' servers answer. Nothing here polls: a node is asked when the tab opens, when it is added, when
- * collaboration turns on and when the owner asks again.
- */
 
-export interface NodeRow {
-  /** The node ID (`srv_…`) when known; `d:<desktop id>` for a node this desktop has never reached. */
-  key: string
-  nodeId: string | null
-  desktopId: string | null
-  name: string
-  /** Where this desktop opens the node (its list entry), or the address this node uses when only the peer list has it. */
-  url: string
-  isEmbedded: boolean
-  collaborating: boolean
+/** The add button waits at most this long for the node to say who it is (UI/UX spec TR-702). */
+export const ADD_PROBE_WAIT_MS = 1_500
+const FLASH_MS = 2_500
+const NAME_RULE = /^[A-Za-z0-9][A-Za-z0-9 _.-]{0,63}$/
+
+export const isValidNodeName = (name: string): boolean => NAME_RULE.test(name.trim())
+
+/** `host:port` with an optional `http://`/`https://`, no path (UI/UX spec § Form And Input Validation). */
+export const normalizeTypedAddress = (address: string): string | null => {
+  const text = address.trim().replace(/\/+$/, '')
+  const withScheme = /^[a-z][a-z0-9+.-]*:\/\//i.test(text) ? text : `http://${text}`
+  if (!/^https?:\/\/[^\s/?#]+$/i.test(withScheme)) return null
+  try { return normalizeNodeBaseUrl(withScheme) } catch { return null }
 }
 
-export type RowPhase = { phase: 'checking'; token: number } | { phase: 'settled'; inspection: Inspection; checkedAt: string }
+const sameAddress = (a: string | null | undefined, b: string): boolean => Boolean(a) && hostOf(a!).toLowerCase() === hostOf(b).toLowerCase()
 
-export type StepId =
-  | 'turnOnHere' | 'registerHere' | 'turnOnThere' | 'registerThere'
-  | 'unregisterHere' | 'unregisterThere' | 'removeFromList'
-
-export type StepError =
-  | { kind: 'unreachable'; cause: Cause; host: string }
-  | { kind: 'noAddress'; firstTried: string; loopbackInContainer: boolean; suggestion: string | null }
-
-export interface PlanLine {
-  id: StepId
-  name?: string
-  /** The name the node would like; `name` differs when it was already taken and got a number. */
-  wanted?: string
-  /** `registerThere`: the address the other node will use for this node, when it can be shown now. */
-  address?: string | null
-  /** The other node finds the address once collaboration is on there (DEC-709, recommended option b). */
-  findsLater?: boolean
-  addressPending?: boolean
-  status: 'todo' | 'running' | 'done' | 'failed' | 'notRun'
-  error?: StepError
-}
-
-export type PlanKind = 'on' | 'off' | 'remove' | 'fix'
-
-export interface Plan {
-  kind: PlanKind
-  rowKey: string
-  nodeName: string
-  thisName: string
-  lines: PlanLine[]
-  phase: 'confirm' | 'running' | 'done' | 'failed'
-  /** First address to try when the owner picks the suggested one ("Use this"). */
-  firstAddress?: string
-}
-
-export interface LastRun { kind: PlanKind; lines: PlanLine[] }
-
-const wait = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms))
+/** `confirm`: the node answered and the form's switch was on, so the one confirmation opens next (REQ-704). */
+export type AddNodeResult =
+  | { ok: true; key: string; confirm: boolean }
+  | { ok: false; error: 'invalid'; address: boolean; name: boolean }
+  | { ok: false; error: 'duplicate'; existing: string }
 
 let nextToken = 1
 
+/**
+ * Manage Nodes: one list of nodes, each once (one-nodes-tab DS-001, DS-002, DS-004). The rows join the desktop's
+ * entries (`nodeStore`) with this node's peers (`remoteCollaborationStore`) by node ID; neither list is changed by
+ * joining them. A row's node is asked when the tab opens, when it is added, when this node's switch turns on and on
+ * Check again (DEC-708); nothing polls. Each ask takes a token per row, and an answer whose token is no longer current
+ * is ignored. It keeps each row's unfinished step (a connect or finish run that stopped; TR-704/705/712) and runs the
+ * changes that have no confirmation (rename, change address) through the connector; the change dialog uses it.
+ */
 export const useNodeListStore = defineStore('nodeList', () => {
   const nodeStore = useNodeStore()
   const windowNode = useWindowNodeContextStore()
+  const peerStore = useRemoteCollaborationStore()
+  const offers = useRemoteCollaborationOffersStore()
+  const capability = useRemoteCollaborationCapabilityStore()
 
-  let world: Record<string, WorldNode> | null = null
-  const thisId = ref<string>(NODE_IDS.E)
-  const switchOn = ref(false)
-  const switchBusy = ref(false)
-  const peers = ref<WorldPeer[]>([])
-  const runtime = ref<Record<string, RowPhase>>({})
-  const lastRuns = ref<Record<string, LastRun>>({})
-  const plan = ref<Plan | null>(null)
+  const facts = ref<Record<string, RowFacts>>({})
+  const tokens: Record<string, number> = {}
+  const thisNodeId = ref<string | null>(null)
   const flashKey = ref<string | null>(null)
-  /** Rows the owner has expanded; a row opens by itself once collaboration with it has been set up, so its result is visible. */
   const expanded = ref<Record<string, boolean>>({})
-  const opened = ref(false)
+  /** The step a connect or finish run could not do, per row, until a later run finishes it (the "not finished" line). */
+  const unfinished = ref<Record<string, NodeChangeStep>>({})
+  let flashTimer: ReturnType<typeof setTimeout> | null = null
 
-  const currentNode = computed(() => nodeStore.getNodeById(windowNode.nodeId))
-  const thisName = computed(() => currentNode.value?.name ?? 'Node')
-  const hasOpen = computed(() => typeof window !== 'undefined' && Boolean((window as any).electronAPI?.openNodeWindow))
+  const currentNode = computed<NodeEntry | null>(() => nodeStore.getEntryById(windowNode.entryId))
+  const thisName = computed(() => currentNode.value?.name ?? '')
+  const switchOn = computed(() => capability.isEnabled)
+  const switchBusy = computed(() => capability.status === 'loading')
+  const hasOpen = computed(() => typeof window !== 'undefined' && Boolean(window.electronAPI?.openNodeWindow))
 
-  const syncPeers = (): void => { peers.value = world ? structuredClone(world[thisId.value].peers) : [] }
-
-  const scenarioName = (): string => {
-    try { return localStorage.getItem('autobyteus.prototype.scenario') || 'populated' } catch { return 'populated' }
-  }
-
-  /** One world per page load; the window's node decides which node is "this node". */
-  const ensureWorld = (): void => {
-    if (world) return
-    world = buildWorld(scenarioName())
-    const entry = currentNode.value
-    thisId.value = entry?.serverInstanceId ?? NODE_IDS.E
-    switchOn.value = world[thisId.value].switchOn
-    syncPeers()
-  }
-
-  // ------------------------------------------------------------ rows (one per node)
   const rows = computed<NodeRow[]>(() => {
-    const own = currentNode.value
-    const result: NodeRow[] = []
-    const matched = new Set<string>()
-    for (const entry of nodeStore.nodes) {
-      if (entry.id === own?.id) continue
-      const nodeId = entry.serverInstanceId ?? null
-      const peer = nodeId ? peers.value.find((p) => p.nodeId === nodeId) : undefined
-      if (nodeId) matched.add(nodeId)
-      result.push({
-        key: nodeId ?? `d:${entry.id}`, nodeId, desktopId: entry.id,
-        name: peer?.name ?? entry.name, url: entry.baseUrl, isEmbedded: entry.nodeType === 'embedded', collaborating: Boolean(peer),
-      })
+    const ownId = currentNode.value?.id
+    const groups = new Map<string, NodeEntry[]>()
+    const entries = [...nodeStore.nodes].sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+    for (const entry of entries) {
+      if (entry.id === ownId || (entry.nodeId && entry.nodeId === thisNodeId.value)) continue
+      const key = entry.nodeId ?? `d:${entry.id}`
+      groups.set(key, [...(groups.get(key) ?? []), entry])
     }
-    for (const peer of peers.value) {
-      if (matched.has(peer.nodeId)) continue
-      result.push({ key: peer.nodeId, nodeId: peer.nodeId, desktopId: null, name: peer.name, url: peer.baseUrl, isEmbedded: false, collaborating: true })
+    const peers = new Map<string, PeerNode>(peerStore.peers.map((peer) => [peer.nodeId, peer]))
+    const result: NodeRow[] = [...groups.entries()].map(([key, group]) => {
+      const first = group[0]!
+      const peer = first.nodeId ? peers.get(first.nodeId) ?? null : null
+      return {
+        key, nodeId: first.nodeId ?? null, entryIds: group.map((entry) => entry.id),
+        windowAddress: first.baseUrl, peer, name: peer?.name ?? first.name, isEmbedded: first.nodeType === 'embedded',
+      }
+    })
+    // DEC-706: the peers of this node that are not in the desktop's list.
+    for (const peer of peerStore.peers) {
+      if (groups.has(peer.nodeId) || peer.nodeId === thisNodeId.value) continue
+      result.push({ key: peer.nodeId, nodeId: peer.nodeId, entryIds: [], windowAddress: null, peer, name: peer.name, isEmbedded: false })
     }
     return result
   })
 
-  const rowByKey = (key: string): NodeRow | undefined => rows.value.find((r) => r.key === key)
+  const rowByKey = (key: string): NodeRow | undefined => rows.value.find((row) => row.key === key)
 
-  // ------------------------------------------------------------ asking a node (tab opens, node added, switch on, owner asks)
-  const ask = (row: NodeRow): void => {
-    if (!world) return
-    const token = nextToken++
-    runtime.value[row.key] = { phase: 'checking', token }
-    const delay = inspect(world, thisId.value, row.nodeId, row.url).delayMs
-    setTimeout(() => {
-      const current = runtime.value[row.key]
-      if (!world || !current || current.phase !== 'checking' || current.token !== token) return
-      const inspection = inspect(world, thisId.value, row.nodeId, row.url)
-      runtime.value[row.key] = { phase: 'settled', inspection, checkedAt: new Date().toISOString() }
-    }, delay)
+  const views = computed<Record<string, RowView>>(() => Object.fromEntries(rows.value.map((row) => [row.key, rowViewOf({
+    row, switchOn: switchOn.value, thisNodeId: thisNodeId.value, facts: facts.value[row.key],
+    offer: row.nodeId ? offers.peers[row.nodeId] : undefined, unfinishedStep: unfinished.value[row.key] ?? null,
+  })])))
+
+  const unfinishedStepOf = (key: string): NodeChangeStep | null => unfinished.value[key] ?? null
+  const setUnfinishedStep = (key: string, step: NodeChangeStep | null): void => {
+    if (step) unfinished.value[key] = step
+    else delete unfinished.value[key]
   }
 
-  const open = async (): Promise<void> => {
-    await nodeStore.initializeRegistry()
-    ensureWorld()
-    if (opened.value) return
-    opened.value = true
-    rows.value.forEach(ask)
+  /** The address at which this window asks the row's node: its desktop entry's, or this node's for a node only this node knows. */
+  const probeAddressOf = (row: NodeRow): string | null => row.windowAddress ?? row.peer?.baseUrl ?? null
+  /** Where this window reaches the row's node now, when it does (the probe answered with the row's node). */
+  const reachedAddressOf = (row: NodeRow): string | null => {
+    const probe = facts.value[row.key]?.probe
+    return probe?.ok && (!row.nodeId || probe.nodeId === row.nodeId) ? probeAddressOf(row) : null
   }
 
-  const askAgain = (key: string): void => {
-    const row = rowByKey(key)
-    if (row) ask(row)
-  }
-
-  const askAll = (): void => rows.value.forEach(ask)
-
-  // ------------------------------------------------------------ this node's switch (REQ-709)
-  const setSwitch = async (on: boolean): Promise<void> => {
-    ensureWorld()
-    if (switchBusy.value) return
-    switchBusy.value = true
-    await wait(350)
-    world![thisId.value].switchOn = on
-    switchOn.value = on
-    switchBusy.value = false
-    askAll()
-  }
-
-  // ------------------------------------------------------------ row view: what the row says and what fixes it
-  const inspectionOf = (key: string): Inspection | null => {
-    const state = runtime.value[key]
-    return state?.phase === 'settled' ? state.inspection : null
-  }
-
-  const isChecking = (key: string): boolean => runtime.value[key]?.phase !== 'settled'
-
-  type Fix = 'turnOnThere' | 'registerThere' | 'changeAddress' | 'checkAgain' | 'tryAgain'
-  interface RowLine { tone: 'warn' | 'error' | 'info'; kind: DirState['state'] | 'partial' | 'notRegisteredHereInfo' | 'agentsOff'; dir?: DirState; cause?: Cause; host?: string; fix?: Fix; partialError?: StepError }
-
-  /** One line under a row, only when something needs the owner, with the one action that fixes it. */
-  const lineOf = (row: NodeRow): RowLine | null => {
-    const ins = inspectionOf(row.key)
-    if (!ins) return null
-    // A step that did not finish is a row state of its own, with the button that finishes it (even while the node is away).
-    const run = lastRuns.value[row.key]
-    if (run && run.kind !== 'off' && run.kind !== 'remove' && row.collaborating && switchOn.value) {
-      const unfinished = ins.thisToIt.state !== 'working' || ins.itToThis.state !== 'working'
-      const failed = run.lines.find((l) => l.status === 'failed')
-      if (unfinished && failed?.error) return { tone: 'warn', kind: 'partial', partialError: failed.error, fix: 'tryAgain' }
-    }
-    if (!ins.windowReach.ok) return { tone: 'info', kind: 'unreachable', dir: ins.thisToIt, cause: ins.windowReach.cause, host: ins.windowReach.host, fix: 'checkAgain' }
-    if (ins.thisToIt.state === 'different') return { tone: 'error', kind: 'different', dir: ins.thisToIt, fix: 'changeAddress' }
-    if (!row.collaborating) {
-      // The other node has registered this node, but this node has not registered it.
-      if (ins.registeredThere && ins.itSwitchOn) return { tone: 'info', kind: 'notRegisteredHereInfo', dir: ins.itToThis }
-      // Reachable, but agents are not connected yet: say so in plain words, with the button that connects them.
-      return { tone: 'info', kind: 'agentsOff', fix: 'turnOn' as any }
-    }
-    if (!switchOn.value) return null
-    const dir = ins.thisToIt
-    if (dir.state === 'unreachable') return { tone: 'info', kind: 'unreachable', dir, cause: dir.cause, host: dir.host, fix: 'checkAgain' }
-    if (dir.state === 'offThere') return { tone: 'warn', kind: 'offThere', dir, fix: 'turnOnThere' }
-    if (dir.state === 'notRegisteredThere') return { tone: 'warn', kind: 'notRegisteredThere', dir, fix: 'registerThere' }
-    return null
-  }
-
-  // ------------------------------------------------------------ plans: every change on both nodes, confirmed once
-  const w = (): Record<string, WorldNode> => world!
-
-  const planOn = (row: NodeRow, kind: PlanKind): Plan => {
-    const T = w()[thisId.value]
-    const B = w()[row.nodeId!]
-    const peerOnT = T.peers.find((p) => p.nodeId === B.id)
-    const peerOnB = B.peers.find((p) => p.nodeId === T.id)
-    const lines: PlanLine[] = []
-    if (!T.switchOn) lines.push({ id: 'turnOnHere', status: 'todo' })
-    if (!peerOnT) {
-      lines.push({ id: 'registerHere', name: registrationName(row.name, T.peers.map((p) => p.name)), wanted: row.name, status: 'todo' })
-    }
-    if (!B.switchOn) lines.push({ id: 'turnOnThere', status: 'todo' })
-    if (!peerOnB) {
-      const line: PlanLine = {
-        id: 'registerThere', name: registrationName(thisName.value, B.peers.map((p) => p.name)), wanted: thisName.value, status: 'todo',
-        findsLater: !B.switchOn, addressPending: B.switchOn, address: null,
-      }
-      lines.push(line)
-    }
-    return { kind, rowKey: row.key, nodeName: row.name, thisName: thisName.value, lines, phase: 'confirm' }
-  }
-
-  const planOff = (row: NodeRow, kind: 'off' | 'remove'): Plan => {
-    const lines: PlanLine[] = []
-    if (row.collaborating) {
-      lines.push({ id: 'unregisterHere', name: row.name, status: 'todo' })
-      lines.push({ id: 'unregisterThere', name: thisName.value, status: 'todo' })
-    }
-    if (kind === 'remove') lines.push({ id: 'removeFromList', name: row.name, status: 'todo' })
-    return { kind, rowKey: row.key, nodeName: row.name, thisName: thisName.value, lines, phase: 'confirm' }
-  }
-
-  /** The other node's address for this node is shown in the confirmation once found, when its switch is already on. */
-  const showAddressWhenFound = (p: Plan, row: NodeRow): void => {
-    const B = w()[row.nodeId!]
-    const line = p.lines.find((l) => l.id === 'registerThere' && l.addressPending)
-    if (!line) return
-    const resolved = resolveAddress(w(), B.id, thisId.value)
-    setTimeout(() => {
-      const current = plan.value?.lines.find((l) => l.id === 'registerThere')
-      if (!current || plan.value?.rowKey !== row.key) return
-      current.addressPending = false
-      current.address = resolved.ok ? resolved.url : null
-    }, resolved.delayMs)
-  }
-  const requestOn = (key: string): void => {
-    const row = rowByKey(key)
-    if (!row || !row.nodeId) return
-    ensureWorld()
-    plan.value = planOn(row, 'on')
-    showAddressWhenFound(plan.value, row)
-  }
-  const requestFix = (key: string): void => {
-    const row = rowByKey(key)
-    if (!row || !row.nodeId) return
-    plan.value = planOn(row, 'fix')
-    showAddressWhenFound(plan.value, row)
-  }
-  const requestOff = (key: string): void => {
-    const row = rowByKey(key)
-    if (row) plan.value = planOff(row, 'off')
-  }
-  const requestRemove = (key: string): void => {
-    const row = rowByKey(key)
-    if (row) plan.value = planOff(row, 'remove')
-  }
-  const cancelPlan = (): void => { plan.value = null }
-
-  const failWith = (line: PlanLine, error: StepError): false => { line.status = 'failed'; line.error = error; return false }
-
-  /** B-side writes come from this window to the other node's server; a node that is away refuses them. */
-  const writeToOther = (line: PlanLine, B: WorldNode): boolean => {
-    if (B.failOnce) {
-      B.failOnce = false
-      B.downUntil = Date.now() + 8000
-      return failWith(line, { kind: 'unreachable', cause: 'refused', host: hostPort(w()[thisId.value].peers.find((p) => p.nodeId === B.id)?.baseUrl ?? '') })
-    }
-    if (B.downUntil && Date.now() < B.downUntil) return failWith(line, { kind: 'unreachable', cause: 'refused', host: '' })
+  // ---------------------------------------------------------------- asking a node (DS-001, DS-004)
+  const update = (key: string, token: number, change: Partial<RowFacts>): boolean => {
+    if (tokens[key] !== token) return false
+    facts.value[key] = { ...facts.value[key]!, ...change }
     return true
   }
 
-  const perform = (p: Plan, line: PlanLine, row: NodeRow): boolean => {
-    const T = w()[thisId.value]
-    const B = row.nodeId ? w()[row.nodeId] : undefined
-    switch (line.id) {
-      case 'turnOnHere': T.switchOn = true; switchOn.value = true; return true
-      case 'registerHere': {
-        const resolved = resolveAddress(w(), T.id, B!.id)
-        if (!resolved.ok) return failWith(line, { kind: 'noAddress', firstTried: resolved.firstTried, loopbackInContainer: resolved.loopbackInContainer, suggestion: resolved.suggestion })
-        T.peers.push({ nodeId: B!.id, name: line.name!, baseUrl: resolved.url })
-        return true
-      }
-      case 'turnOnThere': if (!writeToOther(line, B!)) return false; B!.switchOn = true; return true
-      case 'registerThere': {
-        if (!writeToOther(line, B!)) return false
-        const resolved = resolveAddress(w(), B!.id, T.id, p.firstAddress)
-        if (!resolved.ok) return failWith(line, { kind: 'noAddress', firstTried: resolved.firstTried, loopbackInContainer: resolved.loopbackInContainer, suggestion: resolved.suggestion })
-        B!.peers.push({ nodeId: T.id, name: line.name!, baseUrl: resolved.url })
-        line.address = resolved.url
-        return true
-      }
-      case 'unregisterHere': T.peers = T.peers.filter((peer) => peer.nodeId !== B!.id); return true
-      case 'unregisterThere': {
-        if (!writeToOther(line, B!)) return false
-        B!.peers = B!.peers.filter((peer) => peer.nodeId !== T.id)
-        return true
-      }
-      case 'removeFromList': {
-        if (row.desktopId) void nodeStore.removeRemoteNode(row.desktopId)
-        return true
-      }
-    }
+  /** The window learned the node ID of a desktop entry: it is stored, and the row moves to its node's key. */
+  const learn = async (row: NodeRow, result: NodeIdentityProbeResult, token: number): Promise<string> => {
+    if (!result.ok || !row.entryIds.length || row.nodeId === result.nodeId) return row.key
+    await Promise.all(row.entryIds.map((entryId) => nodeStore.identifyNode(entryId, result.nodeId)))
+    if (tokens[row.key] === token) { delete facts.value[row.key]; delete tokens[row.key] }
+    return result.nodeId
   }
 
-  const confirmPlan = async (firstAddress?: string): Promise<void> => {
-    const p = plan.value
-    if (!p) return
-    const row = rowByKey(p.rowKey)
-    if (!row || !world) { plan.value = null; return }
-    p.firstAddress = firstAddress ?? p.firstAddress
-    p.phase = 'running'
-    // A retry runs only what is left; steps that were done stay done.
-    p.lines.forEach((line) => { if (line.status === 'failed' || line.status === 'notRun') { line.status = 'todo'; line.error = undefined } })
-    let anyFailed = false
-    for (const line of p.lines) {
-      if (line.status === 'done') continue
-      if (anyFailed && p.kind !== 'remove') { line.status = 'notRun'; continue }
-      line.status = 'running'
-      await wait(550)
-      const ok = perform(p, line, row)
-      if (ok) line.status = 'done'
-      else anyFailed = true
-      syncPeers()
-    }
-    syncPeers()
-    p.phase = anyFailed ? 'failed' : 'done'
-    lastRuns.value[row.key] = { kind: p.kind, lines: JSON.parse(JSON.stringify(p.lines)) as PlanLine[] }
-    if (p.kind === 'remove') {
-      delete runtime.value[row.key]
-      delete lastRuns.value[row.key]
-    } else {
-      ask(rowByKey(row.key) ?? row)
-    }
-    if (!anyFailed) {
-      if (p.kind === 'on' || p.kind === 'fix') delete lastRuns.value[row.key]
-      await wait(700) // the last step shows done before the dialog closes
-      plan.value = null
-    }
+  const ask = async (row: NodeRow): Promise<void> => {
+    const token = nextToken++
+    tokens[row.key] = token
+    facts.value[row.key] = { probe: null, remote: undefined, availability: undefined, checkedAt: null }
+    const offerAsked = row.peer && switchOn.value ? offers.ask(row.peer.nodeId) : Promise.resolve()
+    const address = probeAddressOf(row)
+    const probe: NodeIdentityProbeResult = address ? await probeNodeIdentity(address) : { ok: false, cause: 'unreachable' }
+    if (!update(row.key, token, { probe, checkedAt: new Date().toISOString() })) return
+    const key = await learn(row, probe, token)
+    // The entry's node ID was just learned: the row is now the node's row (perhaps joined with its peer); ask that.
+    if (key !== row.key) { askAgain(key); return }
+    // A desktop entry's own address is authoritative for it (learned above); a peer's address must answer as that peer.
+    const reached = probe.ok && (row.entryIds.length > 0 || probe.nodeId === row.nodeId)
+    if (!reached || !address) { update(key, token, { remote: null, availability: null }); return }
+    const api = createNodeCollaborationApi(address)
+    const remote = await Promise.all([api.capability(), api.peers()])
+      .then(([state, peers]) => ({ switchOn: state.enabled, peers }), () => null)
+    if (!update(key, token, { remote })) return
+    await offerAsked
+    const offer = row.nodeId ? offers.peers[row.nodeId] : undefined
+    if (!remote || offer?.phase !== 'available' || !thisNodeId.value) { update(key, token, { availability: null }); return }
+    const availability = await api.peerNodeAvailability(thisNodeId.value).catch(() => null)
+    update(key, token, { availability })
   }
 
-  // ------------------------------------------------------------ add, rename, change address
-  type AddResult =
-    | { ok: true; key: string }
-    | { ok: false; error: 'invalid'; address: boolean; name: boolean }
-    | { ok: false; error: 'duplicate'; existing?: string }
+  const askAll = (): void => { rows.value.forEach((row) => { void ask(row) }) }
+  const askAgain = (key: string): void => { const row = rowByKey(key); if (row) void ask(row) }
 
-  const normalizeUrl = (address: string): string | null => {
-    const text = address.trim().replace(/\/+$/, '')
-    if (!text) return null
-    const withScheme = /^[a-z]+:\/\//i.test(text) ? text : `http://${text}`
-    return /^https?:\/\/[^\s/:]+(:\d{1,5})?$/i.test(withScheme) ? withScheme : null
+  /** This node's own node ID, from its own address (the window's probe), so its row is "this node". */
+  const identifyThisNode = async (): Promise<void> => {
+    const own = currentNode.value
+    if (!own) return
+    const probe = await probeNodeIdentity(own.baseUrl)
+    if (!probe.ok) return
+    thisNodeId.value = probe.nodeId
+    await nodeStore.identifyNode(own.id, probe.nodeId)
   }
 
-  const addNode = async (input: { address: string; name: string; collaborate: boolean }): Promise<AddResult> => {
-    ensureWorld()
-    const url = normalizeUrl(input.address)
-    const nameOk = isValidName(input.name)
-    if (!url || !nameOk) return { ok: false, error: 'invalid', address: !url, name: !nameOk }
-    const name = input.name.trim()
-    const sameUrl = rows.value.find((r) => hostPort(r.url) === hostPort(url))
-    if (sameUrl) { flash(sameUrl.key); return { ok: false, error: 'duplicate', existing: sameUrl.name } }
-    // The window checks who answers, for at most 1.5 s; a slower node is added and keeps checking in its row.
-    const probe = reach(w(), url, 'window')
-    await wait(Math.min(probe.delayMs, 1500))
-    if (probe.ok) {
-      const sameNode = rows.value.find((r) => r.nodeId === probe.nodeId)
-      if (sameNode) { flash(sameNode.key); return { ok: false, error: 'duplicate', existing: sameNode.name } }
-    }
-    const added = await nodeStore.addRemoteNode({
-      name, baseUrl: url, serverInstanceId: probe.ok ? probe.nodeId : undefined, openWindow: false,
-    })
-    const key = probe.ok ? probe.nodeId : `d:${added.id}`
-    flash(key)
-    ask(rowByKey(key) ?? { key, nodeId: probe.ok ? probe.nodeId : null, desktopId: added.id, name, url, isEmbedded: false, collaborating: false })
-    // No notice: the row itself shows the node, its cause when it does not answer, and the collaboration confirmation follows.
-    if (probe.ok && input.collaborate) requestOn(key)
-    return { ok: true, key }
+  /** The tab opened: every row is asked once (TR-701), whatever this node's switch says. */
+  const open = async (): Promise<void> => {
+    await nodeStore.initializeRegistry()
+    // Peers that cannot be read now stay as last read; their rows say what is reachable.
+    await Promise.all([capability.ensureResolved().catch(() => undefined), peerStore.load().catch(() => undefined), identifyThisNode()])
+    offers.clear()
+    askAll()
   }
 
-  let flashTimer: ReturnType<typeof setTimeout> | null = null
+  /** The tab was left: answers on their way are ignored. */
+  const close = (): void => {
+    for (const key of Object.keys(tokens)) delete tokens[key]
+    facts.value = {}
+    offers.clear()
+  }
+
+  // ---------------------------------------------------------------- this node's switch (REQ-709, TR-713)
+  const setSwitch = async (on: boolean): Promise<void> => {
+    if (switchBusy.value) return
+    await capability.setEnabled(on).catch(() => undefined)
+    offers.clear()
+    askAll()
+  }
+
+  // ---------------------------------------------------------------- add (DS-002)
   const flash = (key: string): void => {
     flashKey.value = key
     if (flashTimer) clearTimeout(flashTimer)
-    flashTimer = setTimeout(() => { flashKey.value = null }, 2500)
+    flashTimer = setTimeout(() => { flashKey.value = null }, FLASH_MS)
   }
 
-  const renameNode = async (key: string, next: string): Promise<{ ok: true } | { ok: false; error: 'name' | 'taken' }> => {
-    const row = rowByKey(key)
-    const name = next.trim()
-    if (!row) return { ok: false, error: 'name' }
-    if (!isValidName(name)) return { ok: false, error: 'name' }
-    if (rows.value.some((r) => r.key !== key && r.name.toLowerCase() === name.toLowerCase())) return { ok: false, error: 'taken' }
-    await wait(150)
-    if (row.desktopId && !row.isEmbedded) await nodeStore.renameNode(row.desktopId, name)
-    const peer = world?.[thisId.value].peers.find((p) => p.nodeId === row.nodeId)
-    if (peer) peer.name = name
-    syncPeers()
-    return { ok: true }
-  }
-
-  type ChangeResult =
-    | { ok: true }
-    | { ok: false; error: StepError | { kind: 'different' } }
-
-  /** Change the address this node uses for a node: this node checks who answers there, and keeps it only when the node ID matches. */
-  const changeAddress = async (key: string, address: string): Promise<ChangeResult> => {
-    const row = rowByKey(key)
-    const url = normalizeUrl(address)
-    if (!row || !url) return { ok: false, error: { kind: 'unreachable', cause: 'refused', host: address.trim() } }
-    const T = w()[thisId.value]
-    const r = reach(w(), url, T.id)
-    await wait(Math.min(r.delayMs, 900))
-    if (!r.ok) {
-      const suggestion = r.loopbackInContainer ? `http://host.docker.internal:${url.split(':').pop()}` : null
-      return {
-        ok: false,
-        error: r.loopbackInContainer
-          ? { kind: 'noAddress', firstTried: url, loopbackInContainer: true, suggestion }
-          : { kind: 'unreachable', cause: r.cause, host: r.host },
-      }
+  const addNode = async (input: { address: string; name: string; collaborate: boolean }): Promise<AddNodeResult> => {
+    const address = normalizeTypedAddress(input.address)
+    const nameOk = isValidNodeName(input.name)
+    if (!address || !nameOk) return { ok: false, error: 'invalid', address: !address, name: !nameOk }
+    // AR-008: the address of every row, whatever its node's state, even when it is down.
+    const listed = rows.value.find((row) => sameAddress(probeAddressOf(row), address))
+    if (listed) { flash(listed.key); return { ok: false, error: 'duplicate', existing: listed.name } }
+    if (sameAddress(currentNode.value?.baseUrl, address)) return { ok: false, error: 'duplicate', existing: thisName.value }
+    const probe = await Promise.race([
+      probeNodeIdentity(address),
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), ADD_PROBE_WAIT_MS)),
+    ])
+    if (probe?.ok) {
+      if (probe.nodeId === thisNodeId.value) return { ok: false, error: 'duplicate', existing: thisName.value }
+      const sameNode = rows.value.find((row) => row.nodeId === probe.nodeId)
+      if (sameNode) { flash(sameNode.key); return { ok: false, error: 'duplicate', existing: sameNode.name } }
     }
-    if (r.nodeId !== row.nodeId) return { ok: false, error: { kind: 'different' } }
-    const peer = T.peers.find((p) => p.nodeId === row.nodeId)
-    if (peer) peer.baseUrl = url
-    syncPeers()
-    askAgain(key)
-    return { ok: true }
+    const added = await nodeStore.addRemoteNode({ name: input.name.trim(), baseUrl: address, nodeId: probe?.ok ? probe.nodeId : undefined })
+    const key = added.nodeId ?? `d:${added.id}`
+    flash(key)
+    const row = rowByKey(key)
+    if (row) void ask(row)
+    // With the switch on and the node reachable, the one confirmation opens (REQ-704); nothing changes before it.
+    return { ok: true, key, confirm: Boolean(row && probe?.ok && input.collaborate) }
+  }
+
+  // ---------------------------------------------------------------- open (TR-714, DEC-706)
+  const canOpen = (key: string): boolean => {
+    const row = rowByKey(key)
+    if (!row || !hasOpen.value) return false
+    return row.entryIds.length > 0 || Boolean(reachedAddressOf(row))
   }
 
   const openNode = async (key: string): Promise<void> => {
     const row = rowByKey(key)
-    const api = (window as any).electronAPI
-    if (!row || !api?.openNodeWindow) return
-    // A node only this node knows (a peer) gets a desktop entry at its first Open, once this window has reached it.
-    if (!row.desktopId && row.nodeId) {
-      await nodeStore.addRemoteNode({ name: row.name, baseUrl: row.url, serverInstanceId: row.nodeId, openWindow: true })
-      return
+    if (!row || !window.electronAPI?.openNodeWindow) return
+    let entryId = row.entryIds[0]
+    if (!entryId) {
+      // A node only this node knows gets a desktop entry at its first Open, at the address this window reached.
+      const address = reachedAddressOf(row)
+      if (!address) return
+      entryId = (await nodeStore.addRemoteNode({ name: row.name, baseUrl: address, nodeId: row.nodeId ?? undefined })).id
     }
-    if (row.desktopId) await api.openNodeWindow(row.desktopId)
+    await window.electronAPI.openNodeWindow(entryId)
   }
 
-  const offersOf = (key: string): OfferEntry[] | null => inspectionOf(key)?.offers ?? null
+  // ---------------------------------------------------------------- the changes of a row (DS-003)
+  /** The row's node and this node, as a plan needs them; `null` for a row no longer listed. */
+  const changeSubjectOf = (key: string): { target: NodeChangeTarget; here: NodeChangePlan['here'] } | null => {
+    const row = rowByKey(key)
+    if (!row) return null
+    return {
+      // Where this window reaches the node: its desktop entry's address, or for a node only this node knows, the
+      // address this window reached it at.
+      target: { rowKey: row.key, name: row.name, nodeId: row.nodeId, entryIds: row.entryIds,
+        windowAddress: row.windowAddress ?? reachedAddressOf(row) },
+      here: { name: thisName.value, nodeId: thisNodeId.value, windowAddress: currentNode.value?.baseUrl ?? '' },
+    }
+  }
+
+  /** Rename and change address have no confirmation (UXJ-706, TR-711): the connector runs them, and the row shows the result. */
+  const runWithoutConfirmation = async (kind: 'rename' | 'changeAddress', key: string, input: { name?: string; address?: string }):
+    Promise<{ ok: true } | { ok: false; failure: NodeSettingsFailure }> => {
+    const subject = changeSubjectOf(key)
+    if (!subject) return { ok: false, failure: { code: 'PEER_NOT_FOUND', message: key } }
+    try {
+      const connector = useNodeCollaborationConnector()
+      const plan = await connector.plan(kind, subject.target, subject.here, input)
+      await connector.run(plan)
+      const failed = plan.steps.find((entry) => entry.status === 'failed')
+      return failed?.error ? { ok: false, failure: failed.error } : { ok: true }
+    } catch (error) {
+      return { ok: false, failure: asSettingsFailure(error) }
+    }
+  }
+
+  const renameNode = async (key: string, next: string): Promise<{ ok: true } | { ok: false; error: 'name' | 'taken'; failure?: NodeSettingsFailure }> => {
+    const row = rowByKey(key)
+    const name = next.trim()
+    if (!row || !isValidNodeName(name)) return { ok: false, error: 'name' }
+    const taken = rows.value.some((other) => other.key !== key && other.name.toLowerCase() === name.toLowerCase())
+      || thisName.value.toLowerCase() === name.toLowerCase()
+    if (taken) return { ok: false, error: 'taken' }
+    const result = await runWithoutConfirmation('rename', key, { name })
+    if (result.ok) return { ok: true }
+    return { ok: false, error: result.failure.code === 'PEER_NAME_TAKEN' ? 'taken' : 'name', failure: result.failure }
+  }
+
+  const changeAddress = async (key: string, typed: string): Promise<{ ok: true } | { ok: false; failure: NodeSettingsFailure }> => {
+    const address = normalizeTypedAddress(typed)
+    if (!address) return { ok: false, failure: { code: 'PEER_URL_INVALID', message: typed } }
+    const result = await runWithoutConfirmation('changeAddress', key, { address })
+    if (result.ok) askAgain(key)
+    return result
+  }
 
   return {
-    thisId, switchOn, switchBusy, peers, rows, plan, flashKey, expanded, lastRuns, hasOpen, thisName, currentNode,
-    open, ensureWorld, askAgain, setSwitch, inspectionOf, isChecking, lineOf, offersOf, runtime,
-    requestOn, requestFix, requestOff, requestRemove, cancelPlan, confirmPlan,
-    addNode, renameNode, changeAddress, openNode, rowByKey,
+    rows, views, facts, thisNodeId, thisName, currentNode, switchOn, switchBusy, hasOpen, flashKey, expanded,
+    rowByKey, reachedAddressOf, open, close, askAgain, askAll, setSwitch, addNode, canOpen, openNode, renameNode, changeAddress,
+    changeSubjectOf, unfinishedStepOf, setUnfinishedStep,
   }
 })

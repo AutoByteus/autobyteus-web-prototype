@@ -1,4 +1,3 @@
-import { remoteRunInfo } from '~/prototype/remote-runs/remoteRunsFixture'
 import {
   teamCopyAgentLaunch,
   teamMemberLaunchSource,
@@ -17,6 +16,8 @@ import {
   type UserLaunchSelectionDto as CamelSelectionDto,
 } from '@autobyteus/collaboration-stream-contracts'
 import type { TaskExecutionReference } from '~/utils/collaboration/taskExecutionClosure'
+import { memberDisplayName } from '~/utils/collaboration/memberDisplayName'
+import { teamMemberName } from '~/services/teamExecution/teamExecutionTreeSelectors'
 import { MEMBER_RUN_SETTING_FIELDS, type RunSettingFlags, type RunSettingsValues } from '~/types/runSettings/RunSettings'
 import {
   memberNode,
@@ -73,7 +74,6 @@ const MODEL_EDITABLE: RunSettingFlags = { workspace: true, model: false, thinkin
 
 const referenceKey = (reference: TaskExecutionReference): string =>
   'agentRunId' in reference ? `agent:${reference.agentRunId}` : `team:${reference.teamRunId}`
-const nameAt = (address: string): string => address.split('/').filter(Boolean).at(-1) ?? address
 const valuesOf = (launch: Launch): RunSettingsValues => ({
   workspace: null,
   runtimeKind: launch?.runtimeKind ?? '',
@@ -136,8 +136,11 @@ type RowInput = Readonly<{
   facts: RunMemberLaunchFacts
 }>
 
-/** Nodes from neutral facts (both DTO casings), shaped like the run's own Members: a Team shows its settings card, then its agents. */
-const builders = (deps: RunMemberTreeDeps, control: DelegatedRowControl, rule: LaunchRule) => {
+/**
+ * Nodes from neutral facts (both DTO casings), shaped like the run's own Members: a Team shows its settings card, then its agents.
+ * `nameOf` is the root's naming rule, so a row is named as the sidebar and the conversation name the copy.
+ */
+const builders = (deps: RunMemberTreeDeps, control: DelegatedRowControl, rule: LaunchRule, nameOf: (address: string) => string) => {
   const rowFacts = (input: RowInput, isTeam: boolean) => {
     const recordedTeam = input.recorded.team ?? null
     const recordedAgent = isTeam ? null : input.recorded.agent ?? null
@@ -166,12 +169,12 @@ const builders = (deps: RunMemberTreeDeps, control: DelegatedRowControl, rule: L
   return {
     agent: (input: RowInput, isCoordinator = false): RunMemberNode => {
       const { values, ...rest } = rowFacts(input, false)
-      return memberNode({ key: input.key, kind: 'agent', name: nameAt(input.address), isCoordinator, values, parentValues: values,
+      return memberNode({ key: input.key, kind: 'agent', name: nameOf(input.address), isCoordinator, values, parentValues: values,
         fields: MEMBER_RUN_SETTING_FIELDS, ...rest }, deps)
     },
     team: (input: RowInput, children: readonly RunMemberNode[]): RunMemberNode => {
       const { values, ...rest } = rowFacts(input, true)
-      return memberNode({ key: input.key, kind: 'team', name: nameAt(input.address), values, parentValues: values,
+      return memberNode({ key: input.key, kind: 'team', name: nameOf(input.address), values, parentValues: values,
         fields: MEMBER_RUN_SETTING_FIELDS, children, ...rest }, deps)
     },
   }
@@ -199,7 +202,7 @@ export const teamDelegatedLaunchNodes = (
   deps: RunMemberTreeDeps,
   control: DelegatedRowControl = NO_CONTROL,
 ): RunMemberNode[] => {
-  const build = builders(deps, control, snakeRule)
+  const build = builders(deps, control, snakeRule, (address) => teamMemberName(tree, address))
   const live = (ids: readonly string[]) => ids.some((id) => control.isAgentLive(id))
   const closedKeys = new Set(closed.map(referenceKey))
   const result: RunMemberNode[] = []
@@ -260,7 +263,7 @@ export const collaborationDelegatedLaunchNodes = (input: Readonly<{
   taskExecutions: readonly CollaborationTaskExecutionDto[]
   closed?: readonly TaskExecutionReference[]
 }>, deps: RunMemberTreeDeps, control: DelegatedRowControl = NO_CONTROL): RunMemberNode[] => {
-  const build = builders(deps, control, camelRule)
+  const build = builders(deps, control, camelRule, memberDisplayName)
   const live = (ids: readonly string[]) => ids.some((id) => control.isAgentLive(id))
   const closedKeys = new Set((input.closed ?? []).map(referenceKey))
   const result: RunMemberNode[] = []
@@ -268,8 +271,6 @@ export const collaborationDelegatedLaunchNodes = (input: Readonly<{
     for (const task of tasks) {
       if ('agentRunId' in task) {
         if (closedKeys.has(`agent:${task.agentRunId}`)) continue
-        // remote-runs-in-tree: a copy another node runs keeps its model and settings on that node; they are not listed here.
-        if (remoteRunInfo(task.agentRunId)) continue
         result.push(build.agent({ key: `${task.address}@${task.agentRunId}`, address: task.address,
           started: camelLaunch(task.source.launchConfiguration),
           recorded: { agent: camelChoice(task.userLaunchSelection) },
@@ -278,7 +279,6 @@ export const collaborationDelegatedLaunchNodes = (input: Readonly<{
         continue
       }
       if (closedKeys.has(`team:${task.teamRunId}`)) continue
-      if (remoteRunInfo(task.teamRunId)) continue
       const source = task.source
       const teamStarted = camelLaunch(source.defaultLaunchConfiguration)
       const teamChoice = camelChoice(task.userTeamLaunchSelection)

@@ -1,10 +1,8 @@
 <template>
   <section class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" data-testid="node-list-card">
     <div class="border-b border-slate-200 bg-slate-50 px-5 py-4">
-      <div class="min-w-0">
-        <h3 class="text-sm font-semibold text-gray-900">{{ t(k('list.title')) }}</h3>
-        <p class="mt-0.5 text-xs text-gray-500">{{ t(k('list.description')) }}</p>
-      </div>
+      <h3 class="text-sm font-semibold text-gray-900">{{ t(k('list.title')) }}</h3>
+      <p class="mt-0.5 text-xs text-gray-500">{{ t(k('list.description')) }}</p>
     </div>
 
     <AddNodePanel />
@@ -19,16 +17,23 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onBeforeUnmount, onMounted } from 'vue'
 import AddNodePanel from '~/components/settings/nodes/AddNodePanel.vue'
 import NodeChangeDialog from '~/components/settings/nodes/NodeChangeDialog.vue'
 import NodeRow from '~/components/settings/nodes/NodeRow.vue'
-import { useNodeText } from '~/composables/useNodeText'
+import { useLocalization } from '~/composables/useLocalization'
+import { useNodeChangeDialogStore } from '~/stores/nodeChangeDialogStore'
 import { useNodeListStore } from '~/stores/nodeListStore'
+import { NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
 
+/** The "Nodes" card (UIS-001): every node once, the add form above them; each row is asked when the tab opens. */
 const emit = defineEmits<{ guide: [] }>()
-const { t, k } = useNodeText()
+const { t } = useLocalization()
+const k = (key: string): string => `${NODES_PAGE_KEY}${key}`
 const store = useNodeListStore()
+const dialog = useNodeChangeDialogStore()
 
-onMounted(() => store.open())
+onMounted(() => { void store.open() })
+// Leaving the tab: answers on their way are ignored and a confirmation not running closes.
+onBeforeUnmount(() => { store.close(); dialog.cancel() })
 </script>

@@ -9,10 +9,14 @@ import { defineNuxtPlugin } from '#app'
 import { installHostScenario } from '~/prototype/shared/install-host-scenario.js'
 import { applyExperienceScenario } from '~/prototype/shared/apply-experience-scenario.js'
 import { applicationAvailableExecutionResources, applicationLaunchConfigurationView, taskContextUpload } from '~/prototype/source-observation/fixtures.mjs'
-import { getApolloClient, localFixtureState } from '~/utils/apolloClient'
+import { currentFixtureState, getApolloClient, localFixtureState } from '~/utils/apolloClient'
+import { networkWorldOf } from '~/prototype/source-observation/fixtures.mjs'
+import { createNodeNetworkFetch } from '~/prototype/shared/node-network-fetch.js'
+import { restFixture } from '~/prototype/source-observation/rest-fixtures.mjs'
+import axios from 'axios'
 import { liveStreamFrames } from '~/prototype/source-observation/live-streams.mjs'
 // remote-runs-in-tree (design-only): the live stream of a run that delegated copies to another node.
-import { PTM_HOST_RUN_ID, remoteInterruptReply, remoteSendReply, remoteStopFrames, remoteStreamIsLive, remoteTimeline } from '~/prototype/remote-runs/remoteRunsFixture'
+import { PTM_HOST_RUN_ID, remoteInterruptReply, remoteSendReply, remoteStopFrames, remoteStreamIsLive, remoteSummaryFrames, remoteTimeline } from '~/prototype/remote-runs/remoteRunsFixture'
 import { collaborationView } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
 import { GetAgentOrgRunInspection } from '~/graphql/queries/runHistoryQueries'
@@ -25,6 +29,7 @@ const CONTEXT_KEY = 'autobyteus.prototype.context'
 const DEFAULT_SCENARIO = 'populated'
 const DEFAULT_CONTEXT = 'desktop'
 const navigationOverlayStores = new Set(['agentRunConfig', 'agentSelection', 'teamRunConfig'])
+const overlayAfterActions: Record<string, string[]> = { agentDefinition: ['reloadAllAgentDefinitions'], serverSettings: ['fetchServerSettings', 'reloadServerSettings', 'updateServerSetting', 'deleteServerSetting', 'fetchSearchConfig'] }
 // Projects and Tasks (0a32261) run the source's own stores unchanged: reads and
 // saves are answered by utils/apolloClient.ts from the local fixtures, and
 // their client cache is never reset by route snapshots. Skill sources and the
@@ -35,7 +40,9 @@ const navigationOverlayStores = new Set(['agentRunConfig', 'agentSelection', 'te
 // WEB-BASELINE-REFRESH-010 (3126536): a run's delegated copies' model options, Save and Stop, too.
 // WEB-BASELINE-REFRESH-012 (origin/personal@9e7a458): the Notification Center, the "Update checks" setting, Remote
 // Collaboration and their stores run the source's own code against the local fixtures too.
-const sourceLoadedStores = new Set(['nodeList', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft'])
+// WEB-BASELINE-REFRESH-013 (origin/personal@d74f75a): Manage Nodes (its list, peers, offers, switch and change dialog) and the remote runs run
+// the source's own code against the simulated network of nodes (prototype/nodes/network-world.mjs).
+const sourceLoadedStores = new Set(['phoneAccess', 'nodeList', 'remoteCollaborationStore', 'remoteCollaborationOffers', 'remoteCollaborationCapability', 'nodeChangeDialog', 'remoteRuns', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),
@@ -112,8 +119,11 @@ const localActions: Record<string, Set<string>> = {
   // WEB-BASELINE-REFRESH-011 (df15c43): the bulk MCP import runs the source action (its busy state disables the
   // Import button, as in the source) against the local ImportMcpServerConfigs answer.
   toolManagement: new Set(['clearError', 'clearPreviewResult', 'importMcpServerConfigs']),
-  agentDefinition: new Set(['clearDeleteResult', 'invalidateAgentDefinitions']),
-  nodeStore: new Set(['replaceSnapshot', 'persistSnapshotToLocalStorage', 'persistCurrentSnapshotToLocalStorage', 'applyRegistrySnapshot', 'ensureBrowserEmbeddedNodePresent', 'initializeRegistry', 'getNodeById', 'getNodeBaseUrl', 'upsertRegistry', 'addRemoteNode', 'removeRemoteNode', 'renameNode', 'teardownRegistryListener']),
+  // autobyteus-308: "Show internal agents" saves a server setting and reloads the agent list through the source's own actions
+  // (the local fixtures apply the setting, as the server does).
+  agentDefinition: new Set(['clearDeleteResult', 'invalidateAgentDefinitions', 'reloadAllAgentDefinitions']),
+  serverSettings: new Set(['fetchServerSettings', 'reloadServerSettings', 'updateServerSetting', 'deleteServerSetting', 'fetchSearchConfig']),
+  nodeStore: new Set(['replaceSnapshot', 'persistSnapshotToLocalStorage', 'persistCurrentSnapshotToLocalStorage', 'applyRegistrySnapshot', 'ensureBrowserEmbeddedNodePresent', 'initializeRegistry', 'getEntryById', 'getEntryBaseUrl', 'identifyNode', 'upsertRegistry', 'addRemoteNode', 'removeRemoteNode', 'renameNode', 'teardownRegistryListener']),
   windowNodeContext: new Set(['initializeFromWindowContext', 'bindNodeContext', 'getBoundEndpoints', 'waitForBoundBackendReady']),
   server: new Set(['initialize', 'waitForServerReady', 'handleElectronServerInitialization', 'handleBrowserServerConnection', 'attemptServerConnection', 'updateServerStatus', 'restartServer', 'resetServerDataAndRestart', 'checkServerHealth']),
   // WEB-BASELINE-REFRESH-012: the Notification Center marks the app update read and clears it through the host bridge.
@@ -460,14 +470,16 @@ export default defineNuxtPlugin({
     // selected snapshot (capability-gated routes resolve first).
     // WEB-BASELINE-REFRESH-009: only where the left panel is docked (md and wider), as captured; a
     // narrow window mounts the panel when its drawer opens and measures it then, as the source does.
-    if (!localStorage.getItem('autobyteus.app-left-panel.primary-nav-height') && window.matchMedia('(min-width: 768px)').matches) {
+    // WEB-BASELINE-REFRESH-013: where the left panel is not part of the entry route (Settings), the source measures it when a later
+    // in-app navigation mounts it. Its Applications entry is there at that moment only when the Applications capability was already
+    // read, which Server Settings → Basics does (its Applications card); from any other Settings section the split is the one of the
+    // workspace route (the entry is not there yet). A docked panel (md and wider) only.
+    const NAV_HEIGHT_KEY = 'autobyteus.app-left-panel.primary-nav-height'
+    const isBasicsRoute = (path: string, query: Record<string, any>): boolean => path === '/settings' && query.section === 'server-settings' && (!query.mode || query.mode === 'quick')
+    let applicationsCapabilityRead = isBasicsRoute(window.location.pathname, Object.fromEntries(new URLSearchParams(window.location.search)))
+    if (!localStorage.getItem(NAV_HEIGHT_KEY) && window.matchMedia('(min-width: 768px)').matches) {
       const [, initialSnapshot] = findSnapshot()
-      // WEB-BASELINE-REFRESH-011: an entry route without the docked panel (Settings) records no split. The source
-      // measures the panel when a later in-app navigation mounts it, after the capabilities resolved, as on its
-      // workspace route; use that scenario's workspace split.
-      const mountedLater = initialSnapshot?.primaryNavHeight ? null : Object.values(snapshots).find(value =>
-        value.item.scenario === scenario() && (value.item.mobile || 'desktop') === context() && canonicalPath(value.item.path) === '/workspace')
-      localStorage.setItem('autobyteus.app-left-panel.primary-nav-height', initialSnapshot?.primaryNavHeight || mountedLater?.primaryNavHeight || '300')
+      if (initialSnapshot?.primaryNavHeight) localStorage.setItem(NAV_HEIGHT_KEY, initialSnapshot.primaryNavHeight)
     }
     const pinia = nuxtApp.$pinia as PrototypePinia
     const router = nuxtApp.$router as Router
@@ -629,6 +641,13 @@ export default defineNuxtPlugin({
           if (name === 'launch') after(() => { liveRunSession = true })
         })
       }
+      // A setting the user changed, and the lists it changes, keep their result across route snapshots.
+      const overlayAfter = overlayAfterActions[store.$id]
+      if (overlayAfter) {
+        store.$onAction(({ name, after }) => {
+          if (overlayAfter.includes(name)) after(() => stateOverlays.set(store.$id, clone(store.$state)))
+        })
+      }
       if (navigationOverlayStores.has(store.$id)) {
         store.$onAction(({ name, after }) => {
           if (safe.has(name)) after(() => stateOverlays.set(store.$id, clone(store.$state)))
@@ -726,9 +745,44 @@ export default defineNuxtPlugin({
     }
 
     nuxtApp.hook('page:finish', applyCurrentSnapshot)
-    router.afterEach(() => queueMicrotask(applyCurrentSnapshot))
+    router.afterEach((to) => {
+      if (isBasicsRoute(to.path, to.query as Record<string, any>)) applicationsCapabilityRead = true
+      if (!localStorage.getItem(NAV_HEIGHT_KEY) && window.matchMedia('(min-width: 768px)').matches && to.path !== '/settings') {
+        const workspaceSplit = Object.values(snapshots).find(value =>
+          value.item.scenario === scenario() && (value.item.mobile || 'desktop') === context() && canonicalPath(value.item.path) === '/workspace')?.primaryNavHeight || '340'
+        const withApplications = applicationsCapabilityRead && !['apps_disabled'].includes(scenario())
+        localStorage.setItem(NAV_HEIGHT_KEY, withApplications ? String(Number(workspaceSplit) + 40) : workspaceSplit)
+      }
+      queueMicrotask(applyCurrentSnapshot)
+    })
 
+    // The node's REST answers that retained screens read through the axios service (Phone Setup) come from the local fixtures.
+    const originalAdapter = axios.getAdapter(axios.defaults.adapter as any)
+    axios.defaults.adapter = (async (config: any) => {
+      const base = new URL(String(config.baseURL ?? ''), window.location.origin)
+      const resolved = new URL(String(config.url ?? ''), `${base.origin}${base.pathname.replace(/\/+$/, '')}/`)
+      const pathname = resolved.pathname.startsWith(base.pathname.replace(/\/+$/, '')) ? resolved.pathname.slice(base.pathname.replace(/\/+$/, '').length) : resolved.pathname
+      let body: any = config.data
+      if (typeof body === 'string') { try { body = JSON.parse(body) } catch { body = {} } }
+      const answer = restFixture(String(config.method ?? 'get').toUpperCase(), pathname, body, currentFixtureState())
+      if (!answer) return originalAdapter(config)
+      await new Promise<void>(done => setTimeout(done, 40))
+      return { data: structuredClone(answer.json), status: answer.status, statusText: 'OK', headers: {}, config, request: {} }
+    }) as any
     const nativeFetch = window.fetch.bind(window)
+    // one-nodes-tab (shipped): another node's address answers from the simulated network of nodes (prototype/nodes/network-world.mjs);
+    // this window's own node answers its identity from the same network.
+    const networkFetch = createNodeNetworkFetch(nativeFetch, (url, request) => {
+      const resolved = new URL(url, window.location.href)
+      const state = currentFixtureState()
+      if (resolved.origin === window.location.origin) {
+        return resolved.pathname === '/rest/remote-access/status'
+          ? networkWorldOf(state).windowRequest('http://localhost:8000/rest/remote-access/status', request)
+          : { failure: 'refused', delayMs: 0 }
+      }
+      if (['api.iconify.design', 'api.simplesvg.com', 'api.unisvg.com'].includes(resolved.hostname)) return null
+      return networkWorldOf(state).windowRequest(resolved.href, request)
+    })
     window.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
       const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url
       const resolved = new URL(url, window.location.href)
@@ -759,9 +813,7 @@ export default defineNuxtPlugin({
           ? new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'content-type': 'application/json' } })
           : new Response('<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect width="64" height="64" fill="#dbeafe"/></svg>', { status: 200, headers: { 'content-type': 'image/svg+xml' } }))
       }
-      if (resolved.origin !== window.location.origin || /^\/(graphql|rest)(\/|$)/.test(resolved.pathname)) {
-        return Promise.reject(new Error(`Prototype boundary blocked external request: ${resolved.href}`))
-      }
+      if (resolved.origin !== window.location.origin || /^\/(graphql|rest)(\/|$)/.test(resolved.pathname)) return networkFetch(input, init) as Promise<Response>
       return nativeFetch(input, init)
     }) as typeof window.fetch
 
@@ -809,6 +861,8 @@ export default defineNuxtPlugin({
         setTimeout(() => {
           this.emit({ type: 'CONNECTED', payload: { root_subject_kind: 'agent', root_run_id: PTM_HOST_RUN_ID, session_id: 'prototype-remote-runs-session' } })
           this.emit({ type: 'ROOT_EXECUTION_VIEW_SNAPSHOT', payload: collaborationView(scenario) })
+          // The delegating node asked the other nodes for their runs' titles and statuses; their answers follow the view.
+          setTimeout(() => { for (const frame of remoteSummaryFrames(scenario)) this.emit(frame) }, 300)
         }, 20)
         // The working coordinator carries on once its view is opened (the first projection read of its conversation).
         const onOpened = () => { window.removeEventListener('prototype-remote-opened', onOpened); this.playLater(remoteTimeline()) }
@@ -839,7 +893,7 @@ export default defineNuxtPlugin({
               : [])
         this.emit({ type: 'CONNECTED', payload: { session_id: 'prototype-team-session', root_team_run_id: runId } })
         this.emit({ type: 'TEAM_EXECUTION_VIEW_SNAPSHOT', payload: {
-          root_team_run_id: runId, base_change_sequence: 1, execution_tree: tree, closed_task_executions: [], messages: [],
+          root_team_run_id: runId, base_change_sequence: 1, execution_tree: tree, closed_task_executions: [], remote_task_executions: [], messages: [],
           agent_statuses: statuses(tree.root_team.members ?? []), agent_input_states: [],
         } })
       }
@@ -864,6 +918,12 @@ export default defineNuxtPlugin({
         let message: { type?: string; payload?: { message_id?: string; dedupe_key?: string; mentions?: unknown[]; agent_run_id?: string; content?: string; context_file_paths?: string[] } }
         try { message = JSON.parse(data) } catch { return }
         // remote-runs-in-tree: a message or an interrupt for a run on another node is answered by that node.
+        if (this.remoteScenario && message.type === 'REFRESH_REMOTE_TASK_EXECUTIONS') {
+          // Retry: the delegating node asks the other nodes again; each answers after a moment (1.5 s while one waits).
+          const scenarioNow = this.remoteScenario
+          setTimeout(() => { for (const frame of remoteSummaryFrames(scenarioNow)) this.emit(frame) }, 1500)
+          return
+        }
         if (this.remoteScenario && message.payload) {
           if (message.type === 'SEND_MESSAGE') { const frames = remoteSendReply(this.remoteScenario, message.payload as Record<string, any>); if (frames.length) { this.playLater(frames); return } }
           if (message.type === 'INTERRUPT_GENERATION') { const frames = remoteInterruptReply(message.payload as Record<string, any>); if (frames.length) { this.playLater(frames); return } }

@@ -20,14 +20,14 @@ const sha = (seed) => (seed.repeat(10) + '00000000000000000000000000000000000000
 const failure = (message, code) => ({ __projectError: { message, extensions: { code } } })
 
 export const NODE_SETTINGS_MUTATIONS = new Set([
-  'MarkUpdateNotificationsRead', 'ClearUpdateNotification', 'SetUpdateChecksEnabled', 'SetUpdateAutomationSettings', 'UpdateAgentPackage',
+  'MarkUpdateNotificationsRead', 'ClearUpdateNotification', 'SetUpdateChecksEnabled', 'SetUpdateCheckInterval', 'SetAutomaticUpdates', 'UpdateAgentPackage',
   'CheckAgentRuntimes', 'UpdateAgentRuntime', 'StartAgentRuntimeSignIn', 'CancelAgentRuntimeSignIn',
 ])
 
 // ---------------------------------------------------------------- Notification Center
 const notification = (fields) => ({
   __typename: 'UpdateNotification', defaultBranch: 'main', read: false, state: 'WAITING', handledRevision: null, handledAt: null,
-  outcome: null, outcomeReason: null, runningAgentCount: 0, autoScript: 'updated', ...fields,
+  outcome: null, outcomeReason: null, outcomeAt: null, runningAgentCount: 0, autoScript: 'updated', ...fields,
 })
 const source = (kind, sourceId, name, repo, seed, latest, hours, extra = {}) => notification({
   kind, sourceId, name, repositoryUrl: `https://github.com/synthetic-org/${repo}`, installedRevision: sha(seed), latestRevision: sha(latest), foundAt: hoursAgo(hours), ...extra,
@@ -120,6 +120,8 @@ const runtimeRows = (scenario) => {
   }
   if (scenario === 'runtimes_update_fails') Object.assign(row('claude_agent_sdk'), { updateFails: true })
   if (scenario === 'runtimes_sign_in_fails') Object.assign(row('codex_app_server'), { account: 'SIGNED_OUT', signInFails: true })
+  // A remote node whose server can open a browser on its own desktop: Codex is signed out there, and Sign in finishes.
+  if (scenario === 'runtimes_remote_desktop') Object.assign(row('codex_app_server'), { account: 'SIGNED_OUT' })
   return rows
 }
 const failedUpdateOutput = (kind) => `${UPDATE_COMMAND[kind]}: step 3 of 3 failed\nThe installer exited with code 1.\nNothing was changed.`
@@ -208,7 +210,13 @@ const nodeSettingsState = (state) => {
   return state.nodeSettings
 }
 /** The window reads again (the product's change feed: `update_notifications_changed`). */
-const notifyChanged = () => { if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('prototype-update-notifications-changed')) }
+const changeListeners = new Set()
+/** The observation node tells each connected window (`/ws/update-notifications`) to read again, as the product's change feed does. */
+export const subscribeNotificationChanges = (listener) => { changeListeners.add(listener); return () => changeListeners.delete(listener) }
+const notifyChanged = () => {
+  if (typeof window !== 'undefined') window.dispatchEvent(new CustomEvent('prototype-update-notifications-changed'))
+  for (const listener of changeListeners) listener()
+}
 const find = (ns, kind, sourceId) => ns.notifications.find(item => item.kind === kind && item.sourceId === sourceId)
 /** An update of a package or skill source ran (their existing mutations): its waiting notification is handled. */
 export const markNotificationHandled = (state, kind, sourceId) => {
@@ -254,11 +262,53 @@ export const agentPackageUpdate = (state, packageId, packages) => {
 
 const RUNTIME_ID = 'runtimeKind'
 
+// ---------------------------------------------------------------- Settings → Model Routing
+// What can run on this node now (every runtime, limit, model, balance and time below is invented; the node reads each
+// runtime live in the product, and "Reading spends no tokens").
+const model = (id, name, contextTokens, blocked) => ({ id, name, ...(contextTokens ? { contextTokens } : {}), ...(blocked ? { blocked } : {}) })
+const availableRuntimesReport = (scenario) => {
+  if (scenario === 'routing_empty') return { checkedAt: new Date().toISOString(), agentRuntimes: [] }
+  const autobyteus = { runtime: 'autobyteus', name: 'AutoByteus', providers: scenario === 'routing_unknown' ? [] : [
+    { provider: 'OpenAI', balance: '$12.40', models: [model('gpt-prototype-large', 'GPT Prototype Large', 128000), model('gpt-prototype-mini', 'GPT Prototype Mini', 128000)] },
+    { provider: 'Anthropic', blocked: 'The account has no credit left.', models: [] },
+    { provider: 'LM Studio', limits: 'not reported', models: [model('local/prototype-7b', 'Prototype 7B', 32000)] },
+    { provider: 'Custom endpoint', limits: 'unknown: the endpoint did not answer', models: 'unknown: the endpoint did not answer' },
+  ] }
+  if (scenario === 'routing_unknown') return { checkedAt: new Date().toISOString(), agentRuntimes: [
+    { runtime: 'codex_app_server', name: 'Codex', limits: 'unknown: the runtime did not answer', models: 'unknown: the runtime did not answer' },
+    { runtime: 'claude_agent_sdk', name: 'Claude', signIn: 'not checked', limits: 'not reported', models: 'unknown: sign-in could not be checked' },
+    autobyteus,
+  ] }
+  return { checkedAt: new Date().toISOString(), agentRuntimes: [
+    { runtime: 'codex_app_server', name: 'Codex',
+      limits: [{ name: '5 hours', remainingPercent: 88, resetsAt: '2026-10-27T01:10:00.000Z' }, { name: 'Weekly', remainingPercent: 41, resetsAt: '2026-10-30T20:57:00.000Z' }],
+      models: [model('gpt-prototype-codex', 'GPT Prototype Codex', 400000), model('gpt-prototype-codex-mini', 'GPT Prototype Codex Mini', 200000, { until: '2026-10-27T03:00:00.000Z', by: '5 hours' })] },
+    { runtime: 'claude_agent_sdk', name: 'Claude',
+      limits: [{ name: 'Claude and GPT models · weekly', remainingPercent: 12, resetsAt: '2026-10-29T08:00:00.000Z' }, { name: 'Opus · weekly', remainingPercent: 0, resetsAt: '2026-10-28T08:00:00.000Z' }],
+      limitsNote: 'Opus is limited separately from the other models.',
+      models: [model('prototype-sonnet', 'Prototype Sonnet', 1000000), model('prototype-opus', 'Prototype Opus', 200000, { until: '2026-10-28T08:00:00.000Z', by: 'Opus · weekly' }), model('prototype-haiku', 'Prototype Haiku', 200000)] },
+    { runtime: 'antigravity_cli', name: 'Antigravity', signIn: 'not checked', limits: 'not reported', models: [model('prototype-agy', 'Prototype AGY')] },
+    { runtime: 'grok_build', name: 'Grok', limits: [{ name: 'Daily', remainingPercent: null, resetsAt: null }], models: [] },
+    autobyteus,
+  ] }
+}
+const INTERVAL_FIELD_OF = { AGENT_PACKAGE: 'packageIntervalMinutes', SKILL_SOURCE: 'skillIntervalMinutes', AGENT_RUNTIME: 'runtimeIntervalMinutes' }
+const AUTO_FIELD_OF = { AGENT_PACKAGE: 'autoUpdatePackages', SKILL_SOURCE: 'autoUpdateSkills', AGENT_RUNTIME: 'autoUpdateRuntimes' }
+/** The node's settings as GraphQL names them. Only the desktop's own node reports agent runtime checks (`desktopEmbeddedNode`). */
+const automationView = (ns, state) => ({
+  __typename: 'UpdateAutomationSettings',
+  intervals: { __typename: 'UpdateKindIntervals', agentPackages: ns.automation.packageIntervalMinutes, skillSources: ns.automation.skillIntervalMinutes, agentRuntimes: ns.automation.runtimeIntervalMinutes },
+  automaticUpdates: { __typename: 'UpdateKindSwitches', agentPackages: ns.automation.autoUpdatePackages, skillSources: ns.automation.autoUpdateSkills, agentRuntimes: ns.automation.autoUpdateRuntimes },
+  githubWaitUntil: ns.automation.waitUntil,
+  desktopEmbeddedNode: state.hostContext === 'electron_internal',
+})
+
 /** The Settings answers of this file, or `undefined` when the operation is not one of them. */
 export const nodeSettingsOperation = (operationName, variables, state) => {
   const ns = (() => { switch (operationName) {
     case 'GetUpdateNotifications': case 'MarkUpdateNotificationsRead': case 'ClearUpdateNotification': case 'GetUpdateChecksCapability': case 'SetUpdateChecksEnabled':
-    case 'GetUpdateAutomationSettings': case 'SetUpdateAutomationSettings':
+    case 'GetUpdateAutomationSettings': case 'SetUpdateCheckInterval': case 'SetAutomaticUpdates':
+    case 'AvailableAgentRuntimes':
     case 'AgentRuntimes': case 'CheckAgentRuntimes': case 'UpdateAgentRuntime': case 'StartAgentRuntimeSignIn': case 'CancelAgentRuntimeSignIn':
       return nodeSettingsState(state)
     default: return null
@@ -280,26 +330,35 @@ export const nodeSettingsOperation = (operationName, variables, state) => {
       if (ns.updateChecksEnabled) for (const [setting, kind] of Object.entries(KIND_OF_SETTING)) if (ns.automation[setting]) scheduleAutomatic(ns, kind)
       return { setUpdateChecksEnabled: { __typename: 'UpdateChecksCapability', enabled: ns.updateChecksEnabled, settingKey: 'ENABLE_UPDATE_CHECKS', source: 'SERVER_SETTING' } }
 
-    case 'GetUpdateAutomationSettings': return { updateAutomationSettings: { __typename: 'UpdateAutomationSettings', ...ns.automation } }
-    case 'SetUpdateAutomationSettings': {
-      const input = variables.input || {}
-      for (const key of ['packageIntervalMinutes', 'skillIntervalMinutes', 'runtimeIntervalMinutes']) {
-        if (input[key] !== undefined && !(Number.isInteger(input[key]) && input[key] >= 15 && input[key] <= 1440)) return failure('Enter an interval from 15 minutes to 24 hours.', 'INVALID_UPDATE_INTERVAL')
-      }
-      const before = { ...ns.automation }
-      Object.assign(ns.automation, Object.fromEntries(Object.entries(input).filter(([key, value]) => key in before && value !== undefined)))
-      for (const [setting, kind] of Object.entries(KIND_OF_SETTING)) {
-        if (ns.automation[setting] && !before[setting]) scheduleAutomatic(ns, kind)
-        if (!ns.automation[setting] && before[setting]) clearTimeout(ns.timers[kind])
-      }
-      return { setUpdateAutomationSettings: { __typename: 'UpdateAutomationSettings', ...ns.automation } }
+    case 'GetUpdateAutomationSettings': return { updateAutomationSettings: automationView(ns, state) }
+    case 'SetUpdateCheckInterval': {
+      const field = INTERVAL_FIELD_OF[variables.kind]
+      if (!field || !(Number.isInteger(variables.minutes) && variables.minutes >= 15 && variables.minutes <= 1440)) return failure('Enter an interval from 15 minutes to 24 hours.', 'INVALID_UPDATE_INTERVAL')
+      ns.automation[field] = variables.minutes
+      return { setUpdateCheckInterval: automationView(ns, state) }
+    }
+    case 'SetAutomaticUpdates': {
+      const setting = AUTO_FIELD_OF[variables.kind]
+      if (!setting) return failure('Unknown update kind.', 'INVALID_UPDATE_KIND')
+      const was = ns.automation[setting]
+      ns.automation[setting] = Boolean(variables.enabled)
+      if (ns.automation[setting] && !was) scheduleAutomatic(ns, variables.kind)
+      if (!ns.automation[setting] && was) clearTimeout(ns.timers[variables.kind])
+      return { setAutomaticUpdates: automationView(ns, state) }
+    }
+    case 'AvailableAgentRuntimes': {
+      // Settings → Model Routing → "Agent runtimes now" (autobyteus-303): what can run on this node now, read live.
+      ns.availableReads = (ns.availableReads ?? 0) + 1
+      if (state.scenario === 'routing_load_failed' && ns.availableReads === 1) return failure('Synthetic available agent runtimes read failure.', 'AVAILABLE_AGENT_RUNTIMES_FAILED')
+      if (state.scenario === 'routing_check_fails' && ns.availableReads > 1) return failure('Synthetic available agent runtimes read failure.', 'AVAILABLE_AGENT_RUNTIMES_FAILED')
+      return { availableAgentRuntimes: availableRuntimesReport(state.scenario) }
     }
     case 'AgentRuntimes': {
       const rt = ns.runtimes
       rt.reads += 1
       if (state.scenario === 'runtimes_load_failed' && rt.reads === 1) return failure('Synthetic agent runtimes read failure.', 'AGENT_RUNTIMES_READ_FAILED')
       advanceRuntimes(ns)
-      return { agentRuntimes: RUNTIME_ORDER.map(kind => runtimeView(rt.rows.find(item => item.kind === kind))) }
+      return { agentRuntimes: RUNTIME_ORDER.map(kind => runtimeView(rt.rows.find(item => item.kind === kind))), agentRuntimeSignInBrowserAvailable: state.scenario === 'runtimes_remote_desktop' }
     }
     case 'CheckAgentRuntimes':
       for (const item of ns.runtimes.rows) if (item.installed && item.checking === 0 && item.operation?.state !== 'RUNNING') item.checking = CHECK_READS[item.kind]

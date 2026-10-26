@@ -1,0 +1,23 @@
+[
+ {
+  "id": "SET-002",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

@@ -1,0 +1,447 @@
+[
+ {
+  "id": "PRJ-001",
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   30,
+   30
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-002",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   26,
+   26
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-010",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   26,
+   26
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-011",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-1",
+   "/projects/project-prototype-launch/tasks/prototype-launch-1"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   28,
+   28
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid=\"task-comment-add\"]').first()\n    - locator resolved to <button disabled type=\"submit\" data-testid=\"task-comment-add\" class=\"inline-flex min-h-9 items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50\">Add comment</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n      - waiting 100ms\n    58 × waiting for element to be visible, enabled and stable\n       - element is not enabled\n     - retrying click action\n       - waiting 500ms\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid=\"task-comment-add\"]').first()\n    - locator resolved to <button disabled type=\"submit\" data-testid=\"task-comment-add\" class=\"inline-flex min-h-9 items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50\">Add comment</button>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n      - waiting 100ms\n    58 × waiting for element to be visible, enabled and stable\n       - element is not enabled\n     - retrying click action\n       - waiting 500ms\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "PRJ-012",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-1",
+   "/projects/project-prototype-launch/tasks/prototype-launch-1"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   28,
+   28
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-020",
+  "route": [
+   "/projects/project-prototype-launch/tasks/new",
+   "/projects/project-prototype-launch/tasks/new"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-021",
+  "route": [
+   "/projects/project-prototype-launch/tasks/new",
+   "/projects/project-prototype-launch/tasks/new"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-022",
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   31,
+   31
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-023",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2/edit",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2/edit"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   26,
+   26
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-024",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   26,
+   26
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-025",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2/edit",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2/edit"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   26,
+   26
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-030",
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   26,
+   26
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-031",
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   26,
+   26
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-032",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   28,
+   28
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-033",
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   28,
+   28
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-040",
+  "route": [
+   "/projects/temp-tasks",
+   "/projects/temp-tasks"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   23,
+   23
+  ],
+  "pix": {
+   "changed": 7,
+   "max": 7
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-041",
+  "route": [
+   "/projects/temp-tasks/tasks/temp-task-links",
+   "/projects/temp-tasks/tasks/temp-task-links"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   18,
+   18
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-042",
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   30,
+   30
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-043",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   26,
+   26
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-044",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-050",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   35,
+   35
+  ],
+  "pix": {
+   "changed": 13,
+   "max": 6
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

@@ -1,0 +1,65 @@
+[
+ {
+  "id": "TOK-001",
+  "route": [
+   "/settings?section=token-usage",
+   "/settings?section=token-usage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "TOK-002",
+  "route": [
+   "/settings?section=token-usage",
+   "/settings?section=token-usage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   30,
+   30
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "TOK-003",
+  "route": [
+   "/settings?section=token-usage",
+   "/settings?section=token-usage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

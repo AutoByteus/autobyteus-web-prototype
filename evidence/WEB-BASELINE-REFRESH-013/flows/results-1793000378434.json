@@ -1,0 +1,44 @@
+[
+ {
+  "id": "RUN-027",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   56,
+   56
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "RUN-028",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   24,
+   24
+  ],
+  "pix": {
+   "changed": 390,
+   "max": 1
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

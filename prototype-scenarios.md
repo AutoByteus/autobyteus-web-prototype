@@ -144,3 +144,27 @@ Workspace and mobile scenarios populate real Pinia presentation objects and the 
 ## Representative Fixture Values
 
 `Research Assistant`, `Documentation Writer`, `Product Review Team`, `Prototype Workspace`, `Brief Studio`, `mock/gpt-prototype`, `/synthetic/prototype-workspace`, deterministic token/cost values, fixture files and fixed timestamps. These values exist only to give the runnable source and prototype identical visible content.
+
+## Scenarios added or changed by WEB-BASELINE-REFRESH-013 (source `d74f75a`)
+
+Selected with `autobyteus.prototype.scenario` (and `autobyteus.prototype.context` for a desktop window), as in the runbook.
+
+| Scenario | What it seeds |
+| --- | --- |
+| `routing_empty`, `routing_load_failed`, `routing_check_fails`, `routing_unknown` | Settings → Model Routing: no runtime; the first read fails (Check again then works); Check again fails after a good read; limits and models unknown and no API provider |
+| `runtimes_remote_desktop` | Agent Runtimes of a remote node whose server can open a browser on its own desktop (Codex signed out; Sign in finishes) |
+| `settings_save_fails` | Saving a server setting fails (the switches in Server Settings → Basics show their error) |
+| `nodes_user`, `nodes_states` | unchanged names; now answered by `prototype/nodes/network-world.mjs` (see below) |
+| `updates_*`, `update_*` | unchanged names; the node's answers follow the shipped GraphQL (`SetUpdateCheckInterval`, `SetAutomaticUpdates`) |
+
+- `prototype/nodes/network-world.mjs` is the state of a small network of nodes (the desktop's own node, Docker 8001–8005, a studio, a laptop,
+  a NAS and more): each node's remote-collaboration switch, peers, address candidates, offers, delays and failures. A node's server
+  answers its settings operations (`GetPeerNodeOffer`, `AddPeerNode`, …) from it; the window's direct requests to another address
+  (`/rest/remote-access/status`, the other node's GraphQL) are answered by `prototype/shared/node-network-fetch.js`, as a response after the node's
+  delay or as a failed request. The observation node and the baseline use the same world.
+- `prototype/source-observation/rest-fixtures.mjs`: the node's REST answers for Phone Setup (Phone Access switch, addresses, paired devices, a
+  pairing QR). The baseline answers them from an axios adapter in `plugins/00.prototype-state.client.ts`.
+- Remote runs: `prototype/remote-runs/remoteRunsFixture.ts` now produces the shipped shapes (`remote_task_executions` in the root's view, and
+  `remote_task_execution_summary` events after it; `REFRESH_REMOTE_TASK_EXECUTIONS` answers Retry after 1.5 s).
+- Project Tasks have a title and a comment thread (`AddProjectTaskComment`); Tasks seeded by earlier designs get their description's first line as title.
+- Server settings are held in memory; "Show internal agents" on lists one internal agent (Agent Architect) in Agents.

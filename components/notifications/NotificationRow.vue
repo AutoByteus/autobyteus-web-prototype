@@ -58,7 +58,7 @@
     </p>
     <p v-if="row.kind === 'agent_runtime' && row.state !== 'handled' && row.runningAgentCount > 0 && row.state !== 'updating'" :id="blockedId" class="mt-1 text-xs leading-5 text-gray-600" data-testid="notification-row-blocked">
       {{ $t(`settings.notifications.runtime.blocked.${row.runningAgentCount === 1 ? 'one' : 'other'}`, { count: row.runningAgentCount }) }}
-      <template v-if="row.outcome === 'AUTO_WAITING'"> {{ $t('settings.notifications.runtime.blockedAuto') }}</template>
+      <template v-if="row.outcome === 'AUTO_WAITING' && runtimeAutomatic"> {{ $t('settings.notifications.runtime.blockedAuto') }}</template>
     </p>
     <p v-if="row.state === 'waiting' && row.outcome === 'AUTO_FAILED'" class="mt-1.5 rounded-md bg-red-50 px-2.5 py-1.5 text-xs leading-5 text-red-800" role="alert" data-testid="notification-row-auto-failed">
       {{ $t('settings.notifications.outcome.failed') }}
@@ -105,6 +105,7 @@ import { computed, ref, useId } from 'vue'
 import { Icon } from '@iconify/vue'
 import { useAppUpdateStore } from '~/stores/appUpdateStore'
 import { useNotificationCenterStore } from '~/stores/notificationCenterStore'
+import { useUpdateAutomationStore } from '~/stores/updateAutomationStore'
 import { compareUrlOf, shortRevision, useUpdateNotificationsStore, type NotificationRow } from '~/stores/updateNotificationsStore'
 import { fullLocalTime, shortRelativeTime } from '~/utils/notificationTime'
 
@@ -113,6 +114,9 @@ const emit = defineEmits<{ (event: 'update', row: NotificationRow): void }>()
 const { t, resolvedLocale } = useLocalization()
 const notifications = useUpdateNotificationsStore()
 const center = useNotificationCenterStore()
+const automation = useUpdateAutomationStore()
+/** The automatic retry is promised only while the agent-runtime switch is on: the pass stops acting once it is off. */
+const runtimeAutomatic = computed(() => automation.resolved?.automaticUpdates.agentRuntimes === true)
 const appUpdate = useAppUpdateStore()
 const expanded = ref(false)
 const detailsId = `notification-row-details-${useId()}`
@@ -136,7 +140,7 @@ const blockedByAgents = computed(() => props.row.kind === 'agent_runtime' && pro
 const blockedId = `notification-row-blocked-${useId()}`
 const repositoryLine = computed(() => {
   if (props.row.kind === 'app') return ''
-  const repository = props.row.repositoryUrl.replace(/^https:\/\/github\.com\//i, '')
+  const repository = (props.row.repositoryUrl ?? '').replace(/^https:\/\/github\.com\//i, '')
   return props.row.branch ? `${repository} · ${props.row.branch}` : repository
 })
 const downloadPercent = computed(() => Math.max(0, Math.min(100, Math.round(appUpdate.downloadPercent ?? 0))))

@@ -1,17 +1,21 @@
 # AutoByteus Web Design
 
 Independently runnable, browser-only UI/UX baseline for pinned AutoByteus Web
-commit `9e7a45880865912442f4188e6d2a58d99b10a54c` (`origin/personal`, refreshed
-by `WEB-BASELINE-REFRESH-012`; previous pin
-`9227d61597fd7ef8f6324fc9092be24ed1684c8a`). The refresh brings in the
-source's Notification Center and "Update checks" setting (the shipped version of
-the approved `settings-update-notifications` design), Settings → Agent Runtimes
-(the shipped `runtime-lifecycle-review` design), Nodes → Remote Collaboration,
-the shared skill-source update confirmation, and the removal of Skill
-Improvement and of the self-opening app-update card. The accepted design-only
-Reconnect change (`agent-definition-reconnect-ui`) is preserved. See
-[ui-baseline-report.md](ui-baseline-report.md) for the refresh scope,
-evidence, and known gaps.
+commit `d74f75a51ab7dc47d42a13f33e0f943c3a230ad7` (`origin/personal`, refreshed
+by `WEB-BASELINE-REFRESH-013`; previous pin
+`9e7a45880865912442f4188e6d2a58d99b10a54c`). The refresh brings in Settings →
+Model Routing ("Agent runtimes now"), the "Show internal agents" and Claude
+one-hour cache cards of Server Settings → Basics, the Nodes page as it ships
+(one list of nodes, Remote Collaboration merged into it, a Docker address hint, an NFS
+Guide tab), runs on other nodes in the Workspaces tree, automatic updates and
+check intervals in the Update checks card and the Notification Center, Project
+Task titles and comments, and the remote-node variants of Agent Runtimes. The
+source's own components replace the design-only versions of `one-nodes-tab`,
+`remote-runs-in-tree` and `update-checks-and-auto-updates`; the accepted
+design-only Reconnect change (`agent-definition-reconnect-ui`) and the example
+data of the earlier designs are preserved. See
+[ui-baseline-report.md](ui-baseline-report.md) for the refresh scope, evidence,
+and known gaps.
 
 The repository is the cumulative accepted Product baseline. Approved
 Product tickets are integrated here and promoted to normal/default product

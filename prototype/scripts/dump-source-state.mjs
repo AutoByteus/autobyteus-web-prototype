@@ -14,7 +14,7 @@ const routes = [
   '/agent-orgs?view=org-list', '/agent-orgs?view=org-create', '/agent-orgs?view=org-detail&id=org-product-launch', '/agent-orgs?view=org-edit&id=org-product-launch',
   '/applications', '/applications/sample-app', '/skills', '/skills?skill=prototype-research',
   '/memory?view=home&tab=agents', '/memory?view=home&tab=teams', '/memory?view=home&tab=orgs', '/memory?view=agent-detail&agentDefinitionId=agent-researcher&agentName=Research%20Assistant', '/memory?view=team-detail&teamDefinitionId=team-product&teamName=Product%20Review%20Team', '/memory?view=org-detail&orgDefinitionId=org-product-launch&orgName=Product%20Launch%20Org', '/memory?view=unsupported',
-  '/nodes?tab=manage', '/nodes?tab=memorySync', '/nodes?tab=remoteCollaboration', '/nodes?tab=phoneSetup', '/nodes?tab=dockerGuide',
+  '/nodes?nodeTab=manage', '/nodes?nodeTab=memorySync', '/nodes?nodeTab=phoneSetup', '/nodes?nodeTab=dockerGuide', '/nodes?nodeTab=nfsGuide',
   '/projects', '/projects/project-prototype-launch',
   // WEB-BASELINE-REFRESH-004 (0a32261): Project and Task authoring pages.
   '/projects/new', '/projects/project-prototype-launch/edit', '/projects/project-prototype-launch/tasks/new',
@@ -22,7 +22,7 @@ const routes = [
   // WEB-BASELINE-REFRESH-008 (4d469b0): a Task page with its root, and the Temp tasks pages.
   '/projects/project-prototype-launch/tasks/task-review', '/projects/temp-tasks', '/projects/temp-tasks/tasks/temp-task-links',
   '/workspace', '/tools', '/media',
-  ...['api-keys', 'agent-runtimes', 'token-usage', 'display', 'language', 'local-tools', 'mcp-servers', 'application-packages', 'agent-packages', 'server-settings&mode=quick', 'server-settings&mode=embedding', 'server-settings&mode=advanced', 'server-settings&mode=migrations', 'extensions', 'updates'].map(section => `/settings?section=${section}`),
+  ...['api-keys', 'agent-runtimes', 'model-routing', 'token-usage', 'display', 'language', 'local-tools', 'mcp-servers', 'application-packages', 'agent-packages', 'server-settings&mode=quick', 'server-settings&mode=embedding', 'server-settings&mode=advanced', 'server-settings&mode=migrations', 'extensions', 'updates'].map(section => `/settings?section=${section}`),
 ]
 
 const scenarios = routes.map(path => ({ path, scenario: 'populated', locale: 'en' }))
@@ -76,8 +76,8 @@ try {
       localStorage.clear()
       localStorage.setItem('autobyteus.localization.preference-mode', locale)
       if (mobile === 'paired') {
-        localStorage.setItem('autobyteus.remote_access.mobile_session.v1', JSON.stringify({
-          version: 1, nodeId: 'mobile-paired-node', serverBaseUrl: mock, credential: 'prototype_mobile_session',
+        localStorage.setItem('autobyteus.remote_access.mobile_session', JSON.stringify({
+          entryId: 'mobile-paired-node', serverBaseUrl: mock, credential: 'prototype_mobile_session',
           device: { deviceId: 'prototype-phone', displayName: 'Prototype phone', clientFacingBaseUrl: mock, createdAt: '2026-08-22T04:00:00.000Z', lastSeenAt: '2026-08-22T04:00:00.000Z', revokedAt: null },
           pairedAt: '2026-08-22T04:00:00.000Z',
         }))

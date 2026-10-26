@@ -1,180 +1,197 @@
 # UI Baseline Report
 
-Whole-frontend refresh of the AutoByteus Web current-experience baseline from `origin/personal@9227d61` to
-`origin/personal@9e7a458`, for Product ticket `WEB-BASELINE-REFRESH-012`. The previous report
-(`WEB-BASELINE-REFRESH-011`, pin `9227d61`) is kept in Git history at accepted base `288ef06`.
+Whole-frontend refresh of the AutoByteus Web current-experience baseline from `origin/personal@9e7a458` to
+`origin/personal@d74f75a51ab7dc47d42a13f33e0f943c3a230ad7`, for Product ticket `WEB-BASELINE-REFRESH-013`. The previous report
+(`WEB-BASELINE-REFRESH-012`, pin `9e7a458`) is kept in Git history at accepted base `5f5fb4c`.
 
 ## Status
 
 - Status: `Completed`
 - Request type: `Refresh`
-- Refresh request: the Product UI/UX Designer selected
-  `origin/personal@9e7a45880865912442f4188e6d2a58d99b10a54c` as the single pin for the whole selected frontend
-  (previous pin `9227d61597fd7ef8f6324fc9092be24ed1684c8a`).
-- Refresh policy: where the source implements a surface the design had changed, the source wins; accepted design-only
-  changes with no source equivalent are preserved.
+- Refresh request: the Product UI/UX Designer selected `origin/personal@d74f75a51ab7dc47d42a13f33e0f943c3a230ad7` as the single pin for the
+  whole selected frontend (previous pin `9e7a45880865912442f4188e6d2a58d99b10a54c`).
+- Refresh policy: where the source implements a surface the design had changed, the source wins; accepted design-only changes with no source
+  equivalent are preserved (same as `WEB-BASELINE-REFRESH-012`).
 - Result:
-  - The baseline mirrors `9e7a458` and runs on its own in a browser with synthetic data.
-  - The source now ships three things the design had designed or simulated. Its own components replace the design-only ones: the
-    Notification Center with its "Update checks" setting (`settings-update-notifications`), Settings → Agent Runtimes
-    (`runtime-lifecycle-review`), and the skill-source update confirmation.
-  - New in the source and added: Nodes → Remote Collaboration.
-  - Removed by the source and removed here: Skill Improvement (the Basics card and the composer button) and the self-opening app-update card.
+  - The baseline mirrors `d74f75a` and runs on its own in a browser with synthetic data.
+  - New in the source and added: **Settings → Model Routing** ("Agent runtimes now"), the **"Show internal agents"** and **Claude one-hour
+    cache** cards (Server Settings → Basics), Project **Task titles and comments**, the **NFS Guide** tab, runs on other nodes in the Workspaces tree
+    with their conversation, composer and panel notes, and the remote-node variant of Agent Runtimes (Sign in where a desktop browser can open).
+  - Shipped by the source, so its own components replace the design-only ones: `one-nodes-tab` (Nodes → Manage Nodes), `remote-runs-in-tree`
+    (remote rows and views) and `update-checks-and-auto-updates` (check intervals, automatic-update switches, outcomes, app check).
+  - Changed by the diff and carried: the changed delegated-copy rows (`utils/runSettings/delegatedLaunchRows.ts`), the Token cost breakdown's
+    5-minute / 1-hour cache-write rows, the Phone Setup tab's node ID, internal-agent badge on Agent cards, run titles from the stored title.
+  - Removed by the source and removed here: Nodes → Remote Collaboration (now inside Manage Nodes), `CurrentWindowNodeCard`,
+    `RemoteCollaborationCard`, `RemoteCollaborationPeersSection`, `utils/projects/taskSummary.ts`.
   - Every new or changed surface was compared in the browser against the pinned source, with no known UI parity difference.
-- Integration: this is a candidate (uncommitted changes in the ticket worktree, `HEAD` `216257f`). The design project
-  (`personal`, at `288ef06`) carries it only after the Product UI/UX Designer accepts it and integrates it into the default branch.
-- Next expected action: the Product UI/UX Designer reviews the candidate and decides the reference questions below, then
-  integrates it into `personal` and records that in the baseline ticket.
+- Integration: this is a candidate (uncommitted changes in the ticket worktree, `HEAD` `a01ecb8`, the Product ticket-open commit). The design
+  project (`personal`, at `5f5fb4c`) carries it only after the Product UI/UX Designer accepts it and integrates it into the default branch.
+- Next expected action: the Product UI/UX Designer reviews the candidate and decides the reference questions below, integrates it into
+  `personal`, records that in the baseline ticket; the design `delegated-runtime-model-routing` then merges `personal`.
 
 ## Source Identity
 
-- Source project: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`
-- Selected frontend: `autobyteus-web`
-- Source root: `autobyteus-web/` (the `autobyteus-*-contracts` packages are read only for what the frontend imports)
-- Governing revision authority: the explicit pin in the request (`origin/personal`)
-- Pinned revision: `9e7a45880865912442f4188e6d2a58d99b10a54c`
-- Previous pin: `9227d61597fd7ef8f6324fc9092be24ed1684c8a`. Range `9227d61..9e7a458`: 145 changed files under `autobyteus-web`.
+- Source project: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo`; selected frontend `autobyteus-web`.
+- Governing revision authority: the explicit pin in the request (`origin/personal`). Pinned revision `d74f75a51ab7dc47d42a13f33e0f943c3a230ad7`;
+  previous pin `9e7a45880865912442f4188e6d2a58d99b10a54c`. Range `9e7a458..d74f75a`: 407 changed files under `autobyteus-web` (126 added,
+  269 modified, 10 deleted, 2 renamed); of the contract packages only `autobyteus-agent-presentation-contracts`,
+  `autobyteus-collaboration-stream-contracts` and `autobyteus-team-stream-contracts` changed (remote task executions), and they are updated in `vendor/`.
 - The source checkout was neither used for observation nor modified, and nothing was pulled.
-- Applicable repository instructions: the superrepo `AGENTS.md` (`DESIGN.md`, `TESTING.md`, `RELEASE.md`; nothing is merged,
-  tagged or released here), the design repository `README.md`, and `ui-reference-runbook.md`.
-- Source observation: an exact `git archive` export of the pin at `/tmp/r012/src/` (`autobyteus-web` and the contract packages), with
+- Applicable repository instructions: the superrepo `AGENTS.md`, the design repository `README.md` and `ui-reference-runbook.md`.
+- Source observation: an exact `git archive` export of the pin at `/tmp/r013/src/` (`autobyteus-web` and the contract packages), with
   `node_modules` linked read-only to the existing source install, served with
   `BACKEND_NODE_BASE_URL=http://127.0.0.1:4823 ENABLE_APPLICATIONS=true nuxt dev --host 127.0.0.1 --port 4822`, backed by
   `PROTOTYPE_MOCK_PORT=4823 node prototype/source-observation/mock-node.mjs` (synthetic fixtures only).
 
 ## Baseline & Repository Identity
 
-- Design repository/root (separate Git repository): `/Users/normy/autobyteus_org/autobyteus-web-design`
-- Product ticket: `WEB-BASELINE-REFRESH-012`
-- Product ticket branch: `design/web-baseline-refresh-012`
-- Product-owned target worktree: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-012`
-- Accepted design base revision: `288ef06f5ed49e4bc636a6560fd6ca6b4f92d5b9`. Worktree `HEAD` `216257f` is the Product ticket-open commit.
-- Bootstrap candidate: uncommitted working-tree changes; the Bootstrapper made no commit. `package.json` and `pnpm-lock.yaml` are unchanged.
+- Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design`
+- Product ticket: `WEB-BASELINE-REFRESH-013`; branch `design/web-baseline-refresh-013`
+- Product-owned target worktree: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-013`
+- Accepted design base revision: `5f5fb4c9d1f0f1c6477653359d3952363ea728a7`. Worktree `HEAD` `a01ecb8` is the Product ticket-open commit.
+- Bootstrap candidate: uncommitted working-tree changes; the Bootstrapper made no commit. `package.json`, `pnpm-lock.yaml`, `nuxt.config.ts`
+  and `tsconfig.json` are unchanged (design-owned). The source's `xlsx` dependency moved to a vendor tarball; the baseline keeps `xlsx@0.18.5`
+  (the viewer's code is unchanged and renders the same).
 - Install command: `corepack pnpm install --ignore-workspace --frozen-lockfile`
 - Start command: `corepack pnpm dev --port 4820`
-- Review URL: `http://127.0.0.1:4820/workspace` (and the entries in `ui-reference-runbook.md`, section `WEB-BASELINE-REFRESH-012`)
+- Review URL: `http://127.0.0.1:4820/settings?section=model-routing` and the entries in `ui-reference-runbook.md`, section `WEB-BASELINE-REFRESH-013`
 - Built preview: `corepack pnpm build && PORT=4821 HOST=127.0.0.1 node .output/server/index.mjs`
 - Framework, language, styling: Nuxt 3, Vue 3, TypeScript, Tailwind (the source's own).
 - Scenario selection and reset: local-storage keys `autobyteus.prototype.scenario` (fixture set) and `autobyteus.prototype.context`
-  (`desktop`; `electron_internal` = the desktop's own node; `electron_external` = a remote-node window). A reload resets all in-memory
-  state. Comparison runs also set `autobyteus.prototype.designOnlyLayers=off`.
-- New scenarios: `updates_waiting`, `updates_many`, `updates_one`, `updates_off`, `runtimes_mixed`, `runtimes_blocked`,
-  `runtimes_update_fails`, `runtimes_sign_in_fails`, `runtimes_load_failed`, `collab_peers`. The default (`populated`) has no waiting
-  update notification, so the sidebar and every earlier route look as before.
-- Ports used: 4820 (baseline dev), 4821 (built preview), 4822 (source), 4823 (observation node). 3210 and 4781–4789 were not used.
-  All are released. I stopped only processes I started, by recorded PID.
+  (`desktop`; `electron_internal` = the desktop's own node; `electron_external` = a window opened on Docker 8001). A reload resets all in-memory
+  state. Comparison runs set `autobyteus.prototype.designOnlyLayers` to `off` (all design-only data off) or `no-reconnect` (the earlier designs' example data on).
+- New scenarios: `routing_empty`, `routing_load_failed`, `routing_check_fails`, `routing_unknown`, `runtimes_remote_desktop`, `settings_save_fails`;
+  `updates_auto_on`, `updates_outcomes_only`, `updates_backoff`, `updates_discover`, `update_*` are now listed in the observation node as well.
+- Ports used: 4820 (baseline dev), 4821 (built preview), 4822 (source), 4823 (observation node). 3210 and 4781–4790 were not used.
+  I stopped only processes I started.
 
 ## Experience Boundary
 
 - Included UI boundary: the whole `autobyteus-web` frontend. This refresh worked from the diff.
-- Surfaces added or changed by the diff:
-  - the sidebar Notification Center entry and panel;
-  - Settings → Server Settings → Basics ("Update checks" replaces "Skill improvement");
-  - Settings → Agent Runtimes;
-  - Nodes → Remote Collaboration;
-  - the Skill Sources dialog (shared update confirmation; Update stays offered after a failed check);
-  - the app-update card is gone, and the composer has no Skill improvement button.
-- Materially different contexts: browser window; the desktop's own node (adds the Software update row, and working runtime Update and
-  Sign in); a remote-node window (runtimes are status only); left panel docked, collapsed (strip) and in the narrow drawer; zh-CN; 390 px.
-- Excluded: nothing new. Electron, the server, and the real update and runtime mechanisms are not part of a UI reference.
+- Surfaces added or changed by the diff: Settings → Model Routing; Server Settings → Basics (two cards, Update checks with intervals and automatic
+  updates); Notification Center (automatic-update switches, outcomes, runtime rows, no-effect and applying notes, confirmation); Settings → Updates
+  (automatic check, failure note); Settings → Agent Runtimes (remote node access); Nodes → Manage Nodes (This node card, node list, add form, rows,
+  connection details, change address, the change dialog, rename, remove, Docker address hint), Phone Setup, NFS Guide; Workspaces tree rows,
+  opened view, composer, right panel notes and Stop for runs on other nodes; Run settings' delegated copies; Agents (Internal badge);
+  Projects (Task title, comments, validation, search); Token Statistics cost breakdown.
+- Materially different contexts: browser window; the desktop's own node; a window opened on a remote node (Docker 8001); left panel docked,
+  collapsed (strip) and in the narrow drawer; zh-CN; 390 px.
+- Excluded: Electron, the server, other nodes, real update and runtime mechanisms, real pairing. They are not part of a UI reference.
 
 ## UI Experience Inventory
 
-All rows were compared in headless Chrome, source against baseline, under matched viewport, locale, UTC time zone, light theme,
-reduced motion and the same synthetic scenario, each side starting fresh. Domain values (names, versions, counts, times, error
-reasons) are illustrative synthetic fixtures. UI-controlled text, including the template text around values, is exact.
-Evidence: `evidence/WEB-BASELINE-REFRESH-012/flows/` and `matrix/` (source and baseline screenshots, results JSON).
+All rows were compared in headless Chrome, source against baseline, under matched viewport, locale, UTC time zone, light theme, reduced
+motion and the same synthetic scenario, each side starting fresh. Domain values (names, versions, counts, times, node IDs, offers) are
+illustrative synthetic fixtures; UI-controlled text, including the template text around values, is exact.
+Evidence: `evidence/WEB-BASELINE-REFRESH-013/flows/` and `matrix/` (source and baseline screenshots, results JSON; `results-latest.json` is the
+latest result per ID).
 
-A row passes when the text, route and a per-component element probe (computed styles, geometry, focus) match, the screenshot differs at
-most by edge anti-aliasing, the baseline shows no browser error or non-local request, and the flow's own state is on screen on both
-sides. The results files also hold first runs that failed and were then fixed, so the result per flow is the latest one (`-ntf2`, `-rcl`,
-`-rtm2`, `-loading`, and the rest).
+A row passes when the visible text, route and a per-component element probe (tag, role, text, geometry, computed color, background, font size and
+weight, disabled) match, the screenshot differs at most by edge anti-aliasing or by a live clock time, the baseline shows no browser error or
+non-local request, and the flow's own state is on screen on both sides. The results files also hold first runs that failed and were then fixed; the
+result per flow is the latest one.
 
 | ID | Route / surface | Exact obligations | States / operations / outcomes | Scenario / fixture (illustrative values) | Result |
 | --- | --- | --- | --- | --- | --- |
-| NTF-001–027 | Sidebar entry and Notification Center (browser window) | "N updates" pill (solid while unread, soft once read) and its tooltip lines; panel with sections, rows, "New" dots, Show N more / Show less, row details with the compare link; Update, Updating, Try again with the failure text, "Updated to …" with Clear; empty text (checks on / off); strip icon with count badge; ✕, Esc, outside click and the entry again close it | package Update (success; fails once, then succeeds); skill source Update with its confirmation (Cancel, confirm); Clear; collapsed strip; zh-CN; 390 px | `updates_waiting`, `updates_many`, `updates_one`, `updates_off`; invented packages, skill sources, revisions and times | `Pass` |
-| NTF-030–037 | Notification Center in a desktop window | "Software update" row, release notes and release page, Download → progress → Install and restart → installing; the pill counts the app update; Settings → Updates; no floating update card | `updates_waiting` with `electron_internal`; `update_available` | the host bridge's invented app update (0.1.0 → 0.2.0 "prototype") | `Pass` |
-| UCK-001–005 | Settings → Server Settings → Basics | "Update checks" card (on, off, toggle); no "Skill improvement" card; zh-CN; 390 px | the toggle saves in memory | default, `updates_off` | `Pass` |
-| RTM-001–020 | Settings → Agent Runtimes | list (table at width, stacked at 390), Installed, Updates, Account, Check again and "Checked just now"; Update, progress line and result; failed update with its output and Try again; Update blocked by running agents (one / several); Install instructions; Sign in (waiting, Cancel, did not finish, completes); "Sign in from its command line."; load error with Retry; remote-node window is status only; zh-CN; Settings menu entry | default, mixed, blocked, update fails, sign-in fails, load failed | `runtimes_*`; invented versions, counts and failure output; work advances one step per read | `Pass` |
-| RCL-001–012 | Nodes → Remote Collaboration | the tab in the Nodes tab list; switch (off by default, on); peer list; add, rename, remove; refusal text; hint while off; availability note; zh-CN; 390 px | `/nodes?nodeTab=remoteCollaboration`; a peer URL containing `unreachable` is refused | default, `collab_peers`; invented peers | `Pass` |
-| SKC-001–004 | Skills → Sources | the shared "Update entire skill source?" confirmation with source and revisions, Cancel; Update offered after a failed check when a newer revision is known | | `skill_source_issues` (one new invented source), `populated` | `Pass` |
-| MTX-001–083 | Every route and scenario of the earlier matrix (desktop, en), load-and-look | unchanged surfaces still match the pin, including the removal of "Skill improvement" and of the update card | 83 captured route and scenario pairs | MTX-069 (`error` scenario) is pixel and text identical; my strict check failed it only because the baseline logs its console error line in a different order. The other 82 passed. | `Pass` |
-| MOB-001–004, UPD-001–006 | Mobile (unpaired, paired); Settings → Updates and Extensions in a desktop window | unchanged | | | `Pass` |
+| MR-001–014, NAR-001, ZH-001 | Settings → Model Routing | title, description, "Agent runtimes now", node line ("This computer" / "Remote node"), Checked time, Check again, runtime rows with limits (bars, "% left", "resets …"), model lists (count, blocked, context), sign-in note, AutoByteus providers (balance, cannot run, unknown), loading, read error, "Couldn't check again" note, empty text | open; Check again; the first read fails then Check again; Check again fails after a good read; unknown; empty; remote node; 390 px; zh-CN; entry from the Settings menu | default, `routing_*`; invented runtimes, limits, models, balances, times | `Pass` |
+| NOD-001–057, NAR-002, NOD-052/053 | Nodes → Manage Nodes | This node card with the collaboration switch and the rules; node list; add form (validation, duplicate, unreachable, slow, not AutoByteus, checking); each row's dot, line, fix button, Agents/Teams counts, offers; Connection details (directions, steps, Check again, change address); the change dialog (turn on, finish, turn off, remove; steps, partial failure, Try again); rename (valid, taken, invalid); remove; Open; the Docker hint and Docker Guide link; the switch off and on | all of the above in `nodes_user` and `nodes_states`; the desktop's own window, the Docker window, a browser; zh-CN; 390 px | the simulated network of nodes `prototype/nodes/network-world.mjs` (invented nodes, addresses, IDs, offers, delays) | `Pass` |
+| PHN-001–002, NAR-006, MEM-001, NFS-001, NAR-007, ZH-002 | Phone Setup, Memory Sync and NFS Guide tabs | tab content and the new NFS Guide tab | load; 390 px; zh-CN | default; invented Phone Access settings, addresses and a paired device | `Pass` |
+| RUN-010–032, HST-001–003, NAR/RUN-028 | Workspaces tree, run views for runs on other nodes | node chip, titles, "Couldn't reach …", Retry ("Checking …"), expand a remote Team, opened view of a working member (a new tool call and message arrive), idle and offline, composer placeholder and text-only box, panel notes in Files, Terminal, Artifacts and VNC, file path note, send and the answer, send to an unreachable node (error block), Stop (and its failure), Run settings listing local copies only, `@` offers nothing in a remote run | default (design example data), `remote_states`; zh-CN; narrow strip | invented nodes `docker`, `office-mac`, runs, conversations, timings | `Pass` |
+| BAS-001–011 | Server Settings → Basics | "Show internal agents" and Claude one-hour cache cards (switch, saving, error), internal agent in Agents with its badge and details, the card order and Update checks width | on, off, save fails, then the Agents list; zh-CN; 390 px | default, `settings_save_fails`; invented Agent Architect | `Pass` |
+| UPD-001–044 | Notification Center, Update checks card, Settings → Updates | sidebar pill and tooltip, panel sections (software, runtimes, packages, skills), the automatic-update switch per section, its confirmation (turn on, Cancel, Esc), applying and no-effect notes, outcome rows (updated, failed, waiting for agents), Clear, intervals (saved, refused), GitHub wait, checks off, remote-node and browser windows, the app check rows | `updates_*` (waiting, many, one, off, auto on, outcomes only, backoff, discover), `update_*`; strip and narrow drawer; zh-CN; 390 px | invented packages, skill sources, runtimes, versions, times | `Pass` |
+| RTM-030–039 | Settings → Agent Runtimes | node access (own, remote with a desktop browser, status only), Sign in on a remote node and its wording, the existing states | `runtimes_*`, `runtimes_remote_desktop` | invented versions | `Pass` |
+| PRJ-001–050, NAR-004, ZH-003 | Projects: board, Task page, Task editor, Temp tasks | Task title (required, validation) and description, comment thread (numbered, times, add, empty), search over titles, delete, the right-panel Projects tab | create, edit, comment, validation, search, delete; zh-CN; 390 px | default; invented Tasks | `Pass` |
+| TOK-001–003 | Token Statistics | cost breakdown with 5-minute and 1-hour cache-write rows | analytics, Run details, expanded rows | one invented writer aggregate carries the split | `Pass` |
+| MTX-001–088 | Every route and scenario of the earlier matrix, load-and-look | unchanged surfaces still match the pin | 88 captured route and scenario pairs (desktop en; mobile paired and unpaired) | | `Pass` (see note) |
+
+Note on the matrix: MTX-046 differs in two anti-aliased pixels (value 9 of 255). MTX-070 (the `error` scenario) is text and pixel identical; my
+strict check reports a failure only because the two sides log their console error lines differently. MTX-017/018 (Applications) first failed because
+my source export lacked one contract package build; after fixing the export they pass. Flows reported as `fail` in the results files for
+clock times (`Checked 05:08`, `10/26/2026, 5:53:46 AM`, the GitHub wait time) differ only in a live clock value on both sides.
 
 ## Journey Inventory
 
 | Journey | Starting scenario | Source and baseline outcome | Evidence | Result |
 | --- | --- | --- | --- | --- |
-| A waiting update is read and updated | `updates_waiting` | pill → panel → details → Update → "Updated to …" → Clear; a failing package's Try again succeeds | NTF-003–013 | `Pass` |
-| A skill source update is confirmed | `updates_waiting` | Update → confirmation → Cancel (nothing changes) or confirm (updated) | NTF-010–012, SKC-001–004 | `Pass` |
-| The desktop app update | `updates_waiting` + `electron_internal` | Download → progress → Install and restart → installing | NTF-030–034 | `Pass` |
-| A runtime is updated or signed in | default, `runtimes_*` | Update → steps → "Updated from … to …" or the failure; Sign in → waiting → signed in / Cancel / did not finish | RTM-004–014 | `Pass` |
-| A peer is registered | `collab_peers` | switch on → add → rename → remove; an unreachable peer is refused | RCL-002–009 | `Pass` |
+| A node is added and connected (including a node that fails halfway and is finished with Try again) | `nodes_user` | add → confirmation → steps → connected; `8005` stops answering on its first write, then Try again finishes | NOD-015–019 | `Pass` |
+| A node is renamed, its address changed, removed | `nodes_user` | rename (valid, taken, invalid), change address (refused, same), remove with the dialog | NOD-027–037 | `Pass` |
+| A state of a node is fixed from its row | `nodes_states` | Turn on there, Register this node there, Check again, Turn on | NOD-040–047 | `Pass` |
+| A run on another node is opened, answered, stopped, retried | default | open, live update, send and answer, Stop, Retry, unreachable send | RUN-012–025 | `Pass` |
+| An automatic update is switched on | `updates_waiting` | switch → confirmation → applying → outcomes (packages; runtimes without confirmation) | UPD-007–010 | `Pass` |
+| "Show internal agents" is turned on | default | switch → Agents lists the internal agent | BAS-002–004, BAS-010–011 | `Pass` |
+| A Task is created, edited, commented | default | title and description validation → saved → comment added | PRJ-010–025 | `Pass` |
+| A remote runtime is signed in | `runtimes_remote_desktop` | Sign in → waiting → signed in | RTM-032–033 | `Pass` |
 
 ## Exact Visual Fidelity Comparison
 
-Each flow above is a visual comparison: source and baseline screenshot, element probe and text, under the matched conditions listed before
-the inventory. Remaining difference: `None`. Raw differences were at most edge anti-aliasing or compositing rounding (a handful to a few
-thousand pixels, at most 19 of 255 in value; the Settings menu page differs by at most 9 inside a gradient).
+Each flow above is a visual comparison: source and baseline screenshot, element probe and text under the matched conditions listed before the
+inventory. Remaining difference: `None`. Raw differences were 0 pixels on all but a few rows; the rest are edge anti-aliasing (at most 19 of 255),
+a live clock value, or a transition caught at a different frame (at most a few hundred pixels).
 
 ## Implementation Simplifications
 
 | Visible capability | Visible experience preserved | Baseline simulation | Production mechanism intentionally absent |
 | --- | --- | --- | --- |
-| Update notifications and "Update checks" | every row state, counts, read and cleared state, the setting | `node-settings-fixtures.mjs`: in-memory notifications; the source's package and skill-source update mutations also mark the notification handled; one package's first update fails (scripted) | background checks, GitHub, the server |
-| The desktop app update | row, progress, install | the host bridge's record (`install-host-scenario.js`): read, clear; Download plays progress in steps | Electron updater, downloads, restart |
-| Agent Runtimes | every check, update and sign-in state and result | in-memory runtimes; each read of `AgentRuntimes` advances checks, updates and sign-ins one step | runtime CLIs, updaters, logins, version sources |
-| Remote Collaboration | switch, peers, refusals | in-memory switch and peers | contacting a peer node |
+| Other nodes (identity, settings, peers, offers, availability, failures) | every row state, line, step, confirmation, failure text, the Docker hint | `prototype/nodes/network-world.mjs` (in-memory state of all nodes) answered through `utils/apolloClient.ts` and, for direct requests to another address, `prototype/shared/node-network-fetch.js` | any request to a node |
+| Runs on other nodes | rows, titles, statuses, views, composer, notes, Stop, Retry | `remote_task_executions` in the Project Task Manager run's view and `remote_task_execution_summary` events (`prototype/remote-runs/remoteRunsFixture.ts`) through the local WebSocket | the delegating node's server |
+| Available agent runtimes | limits, models, blocked, unknown | `AvailableAgentRuntimes` from `node-settings-fixtures.mjs` | reading each runtime live |
+| Update automation | switches, confirmation, outcomes, intervals, applying | `node-settings-fixtures.mjs` (scripted passes after a few seconds; the product: within about a minute) | background checks, vendor updates |
+| Server settings | the two switches and the internal agent | in-memory settings (`fixtures.mjs`) | persistence |
+| Phone Setup REST | switch, addresses, devices, QR | `prototype/source-observation/rest-fixtures.mjs` through an axios adapter in `plugins/00.prototype-state.client.ts` | pairing |
 
-- Presentation code reused: all of the source's components, stores, composables, styles and messages for these surfaces, unchanged.
-  1078 design files that also exist in the source are byte-identical to the pin. The ones that differ are Reconnect (10 files),
-  `utils/apolloClient.ts` and the two localization index files (they add the Reconnect messages). `nuxt.config.ts`, `package.json` and
-  `tsconfig.json` are design-owned.
-- UI code recreated: none.
+- Presentation code reused: all of the source's components, stores, composables, styles, messages and connectors for these surfaces, unchanged.
+  A byte audit against the pin: 1122 presentation files are identical; the ones that differ are the Reconnect design-only change (7 component
+  files with its hook, 2 localization index files, and its own files) and `utils/apolloClient.ts` (answers the mutations and queries locally).
+  `package.json`, `pnpm-lock.yaml`, `nuxt.config.ts` and `tsconfig.json` are design-owned and unchanged.
 - Baseline-owned changes in this refresh:
-  - `prototype/source-observation/node-settings-fixtures.mjs` (new); `fixtures.mjs` (the scenarios, the update hooks, one new skill source in
-    `skill_source_issues`); `mock-node.mjs` (resets the new state, greets `/ws/update-notifications`, no longer stops when a browser aborts a request).
-  - `utils/apolloClient.ts` (answers the new mutations locally); `plugins/00.prototype-state.client.ts` (the new stores run the source's own
-    code, `agentPackages.updateAgentPackage` and `appUpdate.markNotificationRead` / `clearNotification` run, and the local WebSocket greets the
-    notifications feed); `prototype/shared/install-host-scenario.js` (app-update record, staged Download).
-  - `prototype/scripts/dump-source-state.mjs` and `build-runtime-fixtures.mjs` (the new routes, the new pin). The 87 snapshots in
-    `prototype/fixtures/` were re-captured from the pinned source on the synthetic node; the runtime availability of all of them matches the
-    accepted base.
-  - Removed design-only parts that the source now ships: `plugins/99.update-notifications.client.ts`, `components/notifications/NotificationEntry.vue`,
-    `NotificationCard.vue`, `notificationTime.ts`, `components/settings/AiRuntimesManager.vue`, `prototype/ai-runtimes/`.
-  - Docs: `README.md`, `mock-boundaries.md`, `ui-reference-runbook.md`.
-- No test suite, check script or `validate:*` / `capture:*` script was added. The comparison harness is disposable and lives outside the
-  repository (`/tmp/r012/scripts`); only its screenshots and result files are kept as evidence. I did not run the repository's lint, unit
-  tests or boundary check; I ran `vue-tsc` once early on (exit 0).
-- Mock data origin: every new value is invented and written by hand (packages, skill sources, revisions, times, runtimes, versions, peers,
-  failure texts). The 87 snapshots are captured only from the pinned source running on the synthetic node. No real source or customer
-  content, credential or live service is used, and a reload resets every in-memory change. I checked the origin of what this refresh added;
-  I did not re-audit the older snapshot content beyond that.
-- Scripted asynchronous behavior: local mutations answer after 40 ms; runtime checks, updates and sign-ins move one step per read (every 2 s
-  while busy); the app Download plays five steps over 2.5 s.
+  - New: `prototype/nodes/network-world.mjs`, `prototype/shared/node-network-fetch.js`, `prototype/source-observation/rest-fixtures.mjs`.
+  - Updated: `prototype/source-observation/fixtures.mjs` (scenarios, Task titles and comments, server settings, internal agent, network, renamed memory-sync fields),
+    `node-settings-fixtures.mjs` (shipped update-automation operations, `AvailableAgentRuntimes`, remote sign-in), `mock-node.mjs` (network, REST,
+    the optional comparison hook, change feed), `embedding-fixtures.mjs` (search over titles), `prototype/shared/install-host-scenario.js`
+    (entries, `nodeId`), `prototype/shared/token-statistics-refresh-fixture.js` (cache-write split), `prototype/shared/design-only-layers.ts`
+    (Reconnect layer on its own), `prototype/remote-runs/remoteRunsFixture.ts`, `prototype/delegated-copy-tasks/delegatedCopyTasksFixture.ts`,
+    `prototype/agent-reconnect/agentReconnectFixture.ts`, `prototype/run-settings/launchedOrgFixture.ts` (`remote_task_executions`),
+    `utils/apolloClient.ts`, `plugins/00.prototype-state.client.ts`, `plugins/10.prototype-host-bootstrap.client.ts`, `plugins/97.agent-reconnect.client.ts`.
+  - Design-only hooks kept on top of the copied source files: Reconnect (the notice and dialog in `AgentEventMonitor.vue`, `ExistingRunConfigEditor.vue`,
+    `ExistingRunSettings.vue`, `RunMemberRow.vue`, `WorkspaceHistoryWorkspaceSection.vue`, `WorkspaceStableExecutionRow.vue`, `ErrorSegment.vue`, and the `reconnect`
+    messages in both localization indexes); the example data layers are in `prototype/` and `plugins/`, not in the source files. The earlier `remote-runs-in-tree` hooks in source files
+    (`useRemoteRun` filters in `AgentWorkspaceView`, `AgentUserInputForm`, `useComposerTarget`, `RightSideTabs`, `AgentRunCollaborationContext`,
+    `delegatedLaunchRows`) are gone: the source ships them.
+  - Removed design-only or superseded parts: `composables/useNodeText.ts`, `prototype/nodes/nodeWorld.ts`, `prototype/remote-collaboration/offersScript.ts`.
+  - Vendor: the three changed contract packages (`src` and `dist`) replaced from the pin.
+  - Fixtures: `prototype/fixtures/source-state-snapshots.json` and `runtime-state.json` re-captured from the pinned source on the synthetic node (88 snapshots).
+  - Docs: `README.md`, `mock-boundaries.md`, `prototype-scenarios.md`, `ui-reference-runbook.md`.
+- No test suite, check script or `validate:*` / `capture:*` script was added. The comparison harness is disposable and lives outside the repository
+  (`/tmp/r013/scripts`, `/tmp/r013/hook`); only its screenshots and result files are kept as evidence. I did not run the repository's lint, unit tests or typecheck.
+- Mock data origin: every new value is invented and written by hand (nodes, addresses, node IDs, offers, runtimes, limits, models, Task titles
+  and comments, internal agent, devices). The 88 snapshots are captured only from the pinned source running on the synthetic node. No real source or
+  customer content, credential or live service is used, and a reload resets every in-memory change. I checked the origin of what this refresh
+  added; I did not re-audit the older snapshot content beyond that.
+- Scripted asynchronous behavior: local answers after 40 ms; each node answers after its own scripted delay (0.3–1.4 s; 20 s for a node that does
+  not answer); Retry on a remote run answers after 1.5 s; automatic updates apply 3.5 s after the switch is turned on.
 - Browser simulation of host contexts: `electron_internal` and `electron_external` are the synthetic host bridge; no Electron is bundled.
-- Retained production store, client, protocol or runtime: none beyond the source's own presentation stores.
+- Retained production store, client, protocol or runtime: none beyond the source's own presentation stores, connectors and services, which run
+  against the local fixtures (the node-to-node connector calls the simulated network, not a protocol).
 
 ## Validation
 
-- Browser: Google Chrome (headless, playwright-core). Viewports 1440×900 and 390×844; locales en and zh-CN (sampled).
+- Browser: Google Chrome (headless, playwright-core). Viewports 1440×900 and 390×844; locales en and zh-CN.
 - Source observation: as above. Baseline start command: `corepack pnpm dev --port 4820`.
-- New surfaces: **76/76** paired flows pass (NTF 35, UCK 5, RCL 12, RTM 20, SKC 4). Found and fixed on the way: the baseline did not mark the
-  app update read (the pill stayed solid), the host's Download jumped straight to "downloaded", and my first Remote Collaboration route was
-  wrong (`nodeTab`, not `tab`).
-- Unchanged surfaces, load-and-look: the earlier route and state matrix, 83 desktop routes and scenarios, all equal (see MTX-069 above);
-  mobile 4/4; Settings → Updates and Extensions 6/6.
-- Preserved design-only layers re-run: Reconnect review scripts 7/7, delegated-copy example DCE-001–004; no browser error.
-- **Independent run:** the built preview (`pnpm build` exit 0) on `:4821`, with the source and the observation node stopped and only 4821
-  listening: 6/6 pass (IND-050–055: Notification Center and package Update, desktop app Download, runtime Update to the end, Remote
-  Collaboration add a peer, "Update checks" card, skill source confirmation), zero browser errors, zero non-local requests.
+- New and changed surfaces: about 280 paired flows (see the inventory). Found and fixed on the way: the host bridge still used the old node model;
+  Phone Setup read a field the source renamed; the Settings → Basics entry changes the left panel's split (the Applications entry is already
+  there); server-setting saves answered without the confirmation text; Retry and live updates of remote runs; clock-independent text.
+- Unchanged surfaces, load-and-look: the earlier route and state matrix, 88 desktop routes and scenarios, all equal (see the note under the inventory).
+- Preserved design-only layers re-run: Reconnect review scripts 7/7; delegated-copy example DCE-001–004; skill-sources dialog review checks 20/20;
+  task-keys and part-of example data load with no browser error.
+- **Independent run:** the built preview (`pnpm build` exit 0) on `:4821`, with the source and the observation node stopped: 8/8 journeys pass
+  (IND-001–008: Model Routing, add and connect a node, a remote run's view, "Show internal agents", a Task comment, Phone Setup, the
+  Notification Center, NFS Guide), zero browser errors, zero non-local requests.
 - Approved design checks were not re-run and no reference screenshot was changed: finished designs are a record of what the user approved.
-- Evidence: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-012/evidence/WEB-BASELINE-REFRESH-012/`
-  (`flows/`, `matrix/`; 26 MB).
-- Scenario reset and isolation: a fresh browser context and a reset of the observation node's scenario before every flow; a reload resets
-  the baseline.
-- Limitations: runtime and notification work advances by read count, not time (a screenshot compares a moment between two reads); "Checked
-  N min ago" and relative times ("3 hr. ago") use the real clock on both sides.
+  I did put the baseline beside ten approved reference screenshots (`evidence/WEB-BASELINE-REFRESH-013/refcmp/`); see the reference questions.
+- Evidence: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-013/evidence/WEB-BASELINE-REFRESH-013/` (`flows/`, `matrix/`, `refcmp/`,
+  `reconnect-preserved/`, `design-only-delegated-copy/`, `design-only/`; about 23 MB).
+- Scenario reset and isolation: a fresh browser context and a reset of the observation node's scenario before every flow; a reload resets the baseline.
+- Limitations: automatic updates apply after 3.5 s, not within about a minute; "Checked N min ago", relative times and the last-checked times use the real clock on both sides.
 
 ## Completion Check
 
@@ -195,35 +212,40 @@ thousand pixels, at most 19 of 255 in value; the Settings menu page differs by a
 
 ## Refresh Reconciliation
 
-- Previous and new source pins: `9227d61` → `9e7a458`.
-- Surfaces added, changed, or removed by the source diff: see "Experience Boundary". Also changed, with no effect on the baseline: the
-  Electron updater, the server runtime environment, the localization audit and the e2e probes.
+- Previous and new source pins: `9e7a458` → `d74f75a`.
+- Surfaces added, changed, or removed by the source diff: see "Experience Boundary" and the status list. Also changed, with no effect on the
+  baseline: the Electron updater and main process, the server runtime environment, `client-data-migrations` (a browser-storage key rename the baseline
+  does not need: a fresh browser has nothing to migrate), the localization audits and the e2e probes.
 - **Accepted design changes superseded by the source version:**
-  - `settings-update-notifications`: the source's panel, rows, sidebar entry (a pill on the Settings row, a count badge on the strip) and
-    "Update checks" card run unchanged. The design's own components, plugin and demo scenarios were removed.
-  - `runtime-lifecycle-review`: the source's Agent Runtimes components run unchanged. The design's component and timeline simulation were removed.
-- **Accepted design-only changes preserved:** `agent-definition-reconnect-ui`, and the delegated-copy, task-keys, task-part-of and
-  skill-sources example data. All stay off with `designOnlyLayers=off`.
+  - `one-nodes-tab`: the source's Manage Nodes components, stores and connector run unchanged. The design's own components, `useNodeText` and the page's
+    simulation were removed; its simulation of the network is kept as the world under the source's own code (`network-world.mjs`).
+  - `remote-runs-in-tree`: the source's remote rows, views, composer and panel notes run unchanged; the design's component hooks were removed. The design's
+    example run (the Project Task Manager with its remote copies) is kept as example data, now in the shipped shapes.
+  - `update-checks-and-auto-updates`: the source's Update checks card, automatic-update switches, outcomes and Notification Center run unchanged.
+- **Accepted design-only changes preserved:** `agent-definition-reconnect-ui`, and the delegated-copy, task-keys, task-part-of and skill-sources
+  example data. All stay off with `designOnlyLayers=off`.
 - **Surfaces where it is hard to tell which policy applies** (for Product to decide):
-  1. **The two approved reference sets the source now ships** (`settings-update-notifications` VIS-001–028 and `runtime-lifecycle-review`
-     VIS-001–023). I did not re-check or recapture them. Opened side by side in a sample, the shipped Notification Center panel and the
-     shipped runtime list look like the references (same layout, rows, text and states). One difference I noticed: Antigravity shows "Sign in
-     from its command line." with no Sign in button, where the design's Sign in opened an in-row terminal. Product should decide whether those
+  1. **Approved reference screenshots of the three shipped designs** (`one-nodes-tab` VIS-001–031, `remote-runs-in-tree` VIS-001–021,
+     `update-checks-and-auto-updates` VIS-001–037). I did not recapture them. Ten of them were placed beside the shipped surface
+     (`evidence/WEB-BASELINE-REFRESH-013/refcmp/*.baseline.png`, same viewport) and I looked at three of them. The pixels differ there because the
+     shipped pages have since gained more cards (the Update checks card sits lower in Basics; the Settings menu has the new Model Routing entry), and the
+     remote-run tree shows the shipped row layout. I did not check the other seven by eye or compare their wording. Product should decide whether those
      references stay as the design's record or are re-captured on the shipped surfaces.
-  2. **Default state.** The design showed waiting notifications by default. The baseline's default has none, so earlier routes are
-     unchanged; the notification states are in the `updates_*` scenarios.
-  3. Carried over, still open: Reconnect's collaborator case shows on delegated copies.
-- Unchanged surfaces given a load-and-look pass: the full route and state matrix, mobile, and the host-context routes.
+  2. **Default state of the remote-run example.** Source default data has no remote runs; the baseline keeps the design's example (the Project Task
+     Manager run with `docker` and `office-mac` copies) as before, so a reviewer finds the remote rows without setup.
+  3. **Applying time.** The design simulated automatic updates after about 3.5 s; the product applies them within about a minute.
+  4. Carried over, still open: Reconnect's collaborator case shows on delegated copies.
+- Unchanged surfaces given a load-and-look pass: the full route and state matrix (88), mobile, and the host-context routes.
 
 ## Known Gaps And Next Action
 
 - Blocked or incomplete UI inventory IDs: none.
 - User-facing differences or omissions: none known inside the verified scope.
 - Illustrative fixture content or production mechanisms intentionally simplified without changing presentation: see Implementation
-  Simplifications. Not simulated: real update checks, downloads and installs; runtime updaters and sign-ins; contacting a peer node; status
-  events after a run's snapshot (carried over).
+  Simplifications. Not simulated: real node-to-node requests, update checks and installs, runtime logins, pairing, status events after a run's snapshot
+  other than the scripted ones (carried over).
 - Source reachability or evidence limitations: none. The source ran from an exact export of the pin.
 - Required correction: none.
 - Optional data cleanup: none.
 - Recommended next action for `product_ui_ux_designer`: decide the reference questions above, then accept, commit on
-  `design/web-baseline-refresh-012`, integrate into `personal`, and record the integration in the baseline ticket.
+  `design/web-baseline-refresh-013`, integrate into `personal`, and record the integration in the baseline ticket.

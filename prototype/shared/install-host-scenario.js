@@ -30,9 +30,9 @@ export function installHostScenario(options = {}) {
   // one-nodes-tab: the Nodes scenarios seed this desktop's list with the nodes of the simulated network
   // (prototype/nodes/nodeWorld.ts). The window's node is the embedded node, or Docker 8001 in an external window.
   const nodesScenario = scenario.startsWith('nodes_')
-  const entry = (id, name, baseUrl, serverInstanceId) => ({ id, name, baseUrl, nodeType: 'remote', serverInstanceId, isSystem: false, createdAt: '2026-10-20T09:00:00.000Z', updatedAt: '2026-10-20T09:00:00.000Z' })
+  const entry = (id, name, baseUrl, nodeId) => ({ id, name, baseUrl, nodeType: 'remote', nodeId, createdAt: '2026-10-20T09:00:00.000Z', updatedAt: '2026-10-20T09:00:00.000Z' })
   const nodesRegistry = [
-    { id: 'embedded-local', name: 'Embedded Node', baseUrl: 'http://127.0.0.1:29695', nodeType: 'embedded', serverInstanceId: 'srv_m9VFq2Lw', isSystem: true, createdAt: '2026-10-20T09:00:00.000Z', updatedAt: '2026-10-20T09:00:00.000Z' },
+    { id: 'embedded-local', name: 'Embedded Node', baseUrl: 'http://127.0.0.1:29695', nodeType: 'embedded', nodeId: 'srv_m9VFq2Lw', createdAt: '2026-10-20T09:00:00.000Z', updatedAt: '2026-10-20T09:00:00.000Z' },
     entry('remote-docker', 'docker', 'http://localhost:8001', 'srv_ibJioK7n'),
     ...(scenario === 'nodes_states' ? [
       entry('remote-studio', 'studio', 'http://192.168.2.31:29695', 'srv_stUd10Ka9'),
@@ -46,8 +46,8 @@ export function installHostScenario(options = {}) {
   let registry = nodesScenario ? { version: 3, nodes: nodesRegistry } : {
     version: 3,
     nodes: [
-      { id: 'embedded-local', name: 'Embedded Node', baseUrl, nodeType: 'embedded', capabilities: { terminal: true, fileExplorerStreaming: true }, capabilityProbeState: 'ready', isSystem: true, createdAt: '2026-08-22T04:00:00.000Z', updatedAt: '2026-08-22T04:00:00.000Z' },
-      { id: 'remote-prototype', name: 'Prototype Remote Node', baseUrl, nodeType: 'remote', capabilities: { terminal: true, fileExplorerStreaming: true }, capabilityProbeState: 'ready', isSystem: false, createdAt: '2026-08-22T04:00:00.000Z', updatedAt: '2026-08-22T04:00:00.000Z' },
+      { id: 'embedded-local', name: 'Embedded Node', baseUrl, nodeType: 'embedded', createdAt: '2026-08-22T04:00:00.000Z', updatedAt: '2026-08-22T04:00:00.000Z' },
+      { id: 'remote-prototype', name: 'Prototype Remote Node', baseUrl, nodeType: 'remote', createdAt: '2026-08-22T04:00:00.000Z', updatedAt: '2026-08-22T04:00:00.000Z' },
     ],
   }
   let extensions = [{
@@ -95,11 +95,12 @@ export function installHostScenario(options = {}) {
     onServerStatus: callback => cleanup(listeners.server, callback),
     checkServerHealth: async () => server.status === 'running' ? { status: 'ok', data: { status: 'healthy' } } : server.status === 'error' ? { status: 'error', message: server.message } : { status: 'starting', message: 'Synthetic server is starting.' },
     openNodeWindow: async () => ({ windowId: 22, created: true }), focusNodeWindow: async () => ({ focused: true }), listNodeWindows: async () => [],
-    getWindowContext: async () => ({ windowId: embedded ? 1 : 2, nodeId: embedded ? 'embedded-local' : nodesScenario ? 'remote-docker' : 'remote-prototype' }),
+    getWindowContext: async () => ({ windowId: embedded ? 1 : 2, entryId: embedded ? 'embedded-local' : nodesScenario ? 'remote-docker' : 'remote-prototype' }),
     upsertNodeRegistry: async change => {
       if (change.type === 'add') registry = { version: registry.version + 1, nodes: [...registry.nodes, change.node] }
-      if (change.type === 'remove') registry = { version: registry.version + 1, nodes: registry.nodes.filter(node => node.id !== change.nodeId) }
-      if (change.type === 'rename') registry = { version: registry.version + 1, nodes: registry.nodes.map(node => node.id === change.nodeId ? { ...node, name: change.name, updatedAt: '2026-08-22T04:10:00.000Z' } : node) }
+      if (change.type === 'remove') registry = { version: registry.version + 1, nodes: registry.nodes.filter(node => node.id !== change.entryId) }
+      if (change.type === 'rename') registry = { version: registry.version + 1, nodes: registry.nodes.map(node => node.id === change.entryId ? { ...node, name: change.name, updatedAt: '2026-08-22T04:10:00.000Z' } : node) }
+      if (change.type === 'identify') registry = { version: registry.version + 1, nodes: registry.nodes.map(node => node.id === change.entryId ? { ...node, nodeId: change.nodeId } : node) }
       emit('node', registry); return structuredClone(registry)
     },
     getNodeRegistrySnapshot: async () => structuredClone(registry), onNodeRegistryUpdated: callback => cleanup(listeners.node, callback),

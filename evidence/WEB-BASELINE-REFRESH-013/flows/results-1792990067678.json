@@ -1,0 +1,287 @@
+[
+ {
+  "id": "SET-001",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "SET-002",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": false,
+  "textMaskedEq": false,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "Secret changes are unavailable: healthy."
+  ],
+  "baseOnly": [
+   "Secret changes are unavailable: SECRET_VAULT_UNAVAILABLE."
+  ],
+  "pass": false
+ },
+ {
+  "id": "SET-003",
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   17,
+   17
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "SET-004",
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   16,
+   16
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "SET-005",
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   16,
+   16
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "SET-006",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 301,
+   "max": 229
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "10/26/2026, 4:16:37 AM"
+  ],
+  "baseOnly": [
+   "10/26/2026, 4:16:42 AM"
+  ],
+  "pass": false
+ },
+ {
+  "id": "AGT-001",
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NFS-001",
+  "route": [
+   "/nodes?nodeTab=nfsGuide",
+   "/nodes?nodeTab=nfsGuide"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   31,
+   31
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MEM-001",
+  "route": [
+   "/nodes?nodeTab=memorySync",
+   "/nodes?nodeTab=memorySync"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   37,
+   37
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-001",
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   30,
+   30
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-002",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   26,
+   26
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-003",
+  "route": [
+   "/projects/project-prototype-launch/tasks/new",
+   "/projects/project-prototype-launch/tasks/new"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "PRJ-004",
+  "route": [
+   "/projects/temp-tasks",
+   "/projects/temp-tasks"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   23,
+   23
+  ],
+  "pix": {
+   "changed": 16,
+   "max": 7
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

@@ -29,7 +29,7 @@
           <div>
             <dt class="text-gray-500">{{ $t('settings.components.settings.AboutSettingsManager.last_checked') }}</dt>
             <dd class="font-medium text-gray-900" data-testid="settings-updates-last-checked">{{ lastCheckedLabel }}</dd>
-            <dd v-if="!updatesDisabled && appUpdateStore.isElectron" class="mt-0.5 text-xs font-normal text-gray-500" data-testid="settings-updates-auto-state">{{ autoCheckStateLabel }}</dd>
+            <dd v-if="appUpdateStore.autoCheck" class="mt-0.5 text-xs font-normal text-gray-500" data-testid="settings-updates-auto-state">{{ autoCheckStateLabel }}</dd>
           </div>
         </dl>
 
@@ -43,9 +43,9 @@
           data-testid="settings-updates-auto-failed-note"
         >{{ $t('settings.components.settings.AboutSettingsManager.autoCheck.failedNote') }}</p>
 
-        <!-- update-checks-and-auto-updates (REQ-012/013/016): the app's own periodic check, its interval, and what it contacts. -->
+        <!-- The app's own automatic check (REQ-012/013/016): its switch, its interval, and what it contacts. -->
         <div
-          v-if="!updatesDisabled"
+          v-if="appUpdateStore.autoCheck"
           class="mt-4 border-t border-gray-100 pt-4"
           data-testid="settings-updates-auto-check"
         >
@@ -67,7 +67,6 @@
               :aria-checked="autoCheckEnabled"
               aria-labelledby="settings-updates-auto-check-label"
               aria-describedby="settings-updates-auto-check-description"
-              :disabled="!appUpdateStore.isElectron"
               @click="toggleAutoCheck"
             >
               <span
@@ -188,11 +187,12 @@ onMounted(() => {
 
 const updatesDisabled = computed(() => appUpdateStore.status === 'disabled');
 
-/** The app's own periodic check (REQ-012/013/015): its switch, its interval, and what the last check said. */
-const autoCheckEnabled = computed(() => appUpdateStore.autoCheck.enabled);
-const isCheckError = computed(() => ['startup-check', 'manual-check', 'auto-check'].includes(appUpdateStore.errorOperation ?? ''));
-const autoCheckFailedNote = computed(() => appUpdateStore.status === 'error' && appUpdateStore.errorOperation === 'auto-check' && autoCheckEnabled.value);
-const autoCheckStateLabel = computed(() => autoCheckEnabled.value
+/** The app's own automatic check (REQ-012/013/015): its switch, its interval, and what the last check said. */
+const autoCheckEnabled = computed(() => appUpdateStore.autoCheck?.enabled === true);
+const CHECK_OPERATIONS: ReadonlyArray<string> = ['startup-check', 'periodic-check', 'manual-check'];
+const isCheckError = computed(() => CHECK_OPERATIONS.includes(appUpdateStore.errorOperation ?? ''));
+const autoCheckFailedNote = computed(() => appUpdateStore.status === 'error' && appUpdateStore.errorOperation === 'periodic-check' && autoCheckEnabled.value);
+const autoCheckStateLabel = computed(() => autoCheckEnabled.value && appUpdateStore.autoCheck
   ? t('settings.components.settings.AboutSettingsManager.autoCheck.stateEvery', { interval: describeInterval(appUpdateStore.autoCheck.intervalMinutes, t) })
   : t('settings.components.settings.AboutSettingsManager.autoCheck.stateOff'));
 const toggleAutoCheck = async (): Promise<void> => {
@@ -227,7 +227,7 @@ const statusLabel = computed(() => {
     case 'disabled':
       return t('settings.components.settings.AboutSettingsManager.status.disabled');
     default:
-      return !autoCheckEnabled.value && appUpdateStore.isElectron
+      return appUpdateStore.autoCheck && !autoCheckEnabled.value
         ? t('settings.components.settings.AboutSettingsManager.status.checksOff')
         : t('settings.components.settings.AboutSettingsManager.status.idle');
   }

@@ -1,7 +1,6 @@
 import type {
-  AppUpdateChannel,
   AppUpdateAutoCheck,
-  AppUpdateAutoCheckChangeResult,
+  AppUpdateChannel,
   AppUpdateChannelChangeResult,
   AppUpdateState,
 } from '../shared/appUpdateTypes';
@@ -42,9 +41,9 @@ declare global {
       onServerStatus: (callback: (status: ServerStatusSnapshot) => void) => Cleanup;
       checkServerHealth: () => Promise<ServerHealthResult>;
 
-      openNodeWindow: (nodeId: string) => Promise<{ windowId: number; created: boolean }>;
-      focusNodeWindow: (nodeId: string) => Promise<{ focused: boolean; reason?: string }>;
-      listNodeWindows: () => Promise<Array<{ windowId: number; nodeId: string }>>;
+      openNodeWindow: (entryId: string) => Promise<{ windowId: number; created: boolean }>;
+      focusNodeWindow: (entryId: string) => Promise<{ focused: boolean; reason?: string }>;
+      listNodeWindows: () => Promise<Array<{ windowId: number; entryId: string }>>;
       getWindowContext: () => Promise<WindowNodeContext>;
       upsertNodeRegistry: (change: NodeRegistryChange) => Promise<NodeRegistrySnapshot>;
       getNodeRegistrySnapshot: () => Promise<NodeRegistrySnapshot>;
@@ -66,9 +65,9 @@ declare global {
       downloadAppUpdate: () => Promise<AppUpdateState>;
       installAppUpdateAndRestart: () => Promise<{ accepted: boolean }>;
       setAppUpdateChannel: (channel: AppUpdateChannel) => Promise<AppUpdateChannelChangeResult>;
-      setAppUpdateAutoCheck: (settings: Partial<AppUpdateAutoCheck>) => Promise<AppUpdateAutoCheckChangeResult>;
       markAppUpdateNotificationRead: () => Promise<AppUpdateState>;
       clearAppUpdateNotification: () => Promise<AppUpdateState>;
+      setAppUpdateAutoCheck: (settings: AppUpdateAutoCheck) => Promise<AppUpdateState>;
       onAppUpdateState: (callback: (updateState: AppUpdateState) => void) => Cleanup;
 
       getLogFilePath: () => Promise<string>;

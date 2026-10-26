@@ -1,0 +1,46 @@
+[
+ {
+  "id": "RUN-010",
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ],
+  "textEq": false,
+  "textMaskedEq": false,
+  "elsEq": false,
+  "els": [
+   53,
+   56
+  ],
+  "elsOnlySrc": [
+   "button||Expand marketing team|58|725|14|14|rgb(153, 153, 153)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Expand support team|58|789|14|14|rgb(153, 153, 153)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||RA Research Assistant (#)|20|819|236|20|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Archive all runs|264|819|20|20|rgb(153, 153, 153)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button|||288|819|20|20|rgb(153, 153, 153)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Product Review Team (#)|20|878|260|20|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|400|0"
+  ],
+  "elsOnlyBase": [
+   "button||Expand marketing team|58|733|14|14|rgb(153, 153, 153)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Stop marketing team|288|728|24|24|rgb(239, 68, 68)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Stop market researcher|288|776|24|24|rgb(239, 68, 68)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Expand support team|58|833|14|14|rgb(153, 153, 153)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Retry|260|839|37|24|rgb(185, 28, 28)|rgba(0, 0, 0, 0)|11px|500|0",
+   "button||RA Research Assistant (#)|20|875|236|20|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|400|0"
+  ],
+  "pix": {
+   "changed": 10074,
+   "max": 221
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [],
+  "baseOnly": [
+   "Plan the 1.6 launch campaign across email, social and the website",
+   "Compare competitor pricing pages for the desktop app",
+   "Couldn't reach office-mac.",
+   "Retry"
+  ],
+  "pass": false
+ }
+]

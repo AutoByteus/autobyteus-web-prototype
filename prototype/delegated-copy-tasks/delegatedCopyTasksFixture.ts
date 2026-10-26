@@ -14,7 +14,7 @@
  */
 import { exposedFixtures, projectData } from '~/prototype/source-observation/fixtures.mjs'
 // remote-runs-in-tree (design-only): copies on another node, under the same run.
-import { hostIsLive, isRemoteScenario, keepsLocalCopies, remoteAgentStatuses, remoteMemberProjection, remoteTaskExecutions } from '~/prototype/remote-runs/remoteRunsFixture'
+import { hostIsLive, isRemoteScenario, keepsLocalCopies, remoteMemberProjection, remoteTaskExecutionDtos } from '~/prototype/remote-runs/remoteRunsFixture'
 
 /** The scenarios whose catalog is the populated one plus the Project Task Manager run. */
 const appliesTo = (scenario: string): boolean => scenario === 'populated' || isRemoteScenario(scenario)
@@ -73,13 +73,14 @@ export const collaborationView = (scenario = 'populated') => ({
       host: { address: '/project_task_manager', agentRunId: PTM_RUN_ID, agentDefinitionId: PTM_DEFINITION_ID },
       taskExecutions: [
         ...(keepsLocalCopies(scenario) ? COPIES.map(taskExecution) : []),
-        ...remoteTaskExecutions(scenario, workspace.workspaceRootPath, PTM_RUN_ID),
       ],
     },
     closed_task_executions: [],
     communication_messages: { schemaVersion: 1, subjectKind: 'agent', hostRunId: PTM_RUN_ID, messages: [] },
-    agent_statuses: remoteAgentStatuses(scenario),
+    agent_statuses: [],
     agent_input_states: [],
+    // remote-runs-in-tree (shipped): the runs this root delegated to other nodes; their summaries arrive as events.
+    remote_task_executions: remoteTaskExecutionDtos(scenario, PTM_RUN_ID),
   },
 })
 const collaboration = collaborationView

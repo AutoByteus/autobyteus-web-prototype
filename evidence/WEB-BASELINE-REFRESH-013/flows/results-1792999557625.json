@@ -1,0 +1,614 @@
+[
+ {
+  "id": "UPD-001",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   47,
+   47
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-002",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   57,
+   57
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-003",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   50,
+   50
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-004",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   34,
+   34
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-005",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   47,
+   47
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-006",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-007",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   49,
+   49
+  ],
+  "pix": {
+   "changed": 4,
+   "max": 10
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-008",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   47,
+   47
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-009",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   48,
+   48
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-010",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   47,
+   47
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-011",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 9,
+   "max": 8
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-012",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 9,
+   "max": 8
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-013",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-014",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-015",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-016",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   71,
+   71
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-017",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-018",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-019",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-020",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 8,
+   "max": 1
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-021",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 198,
+   "max": 229
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "10/26/2026, 7:12:15 AM"
+  ],
+  "baseOnly": [
+   "10/26/2026, 7:12:21 AM"
+  ],
+  "pass": true
+ },
+ {
+  "id": "UPD-022",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 258,
+   "max": 229
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "10/26/2026, 7:00:26 AM"
+  ],
+  "baseOnly": [
+   "10/26/2026, 7:00:33 AM"
+  ],
+  "pass": true
+ },
+ {
+  "id": "UPD-023",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 8,
+   "max": 1
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-024",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 317,
+   "max": 229
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "10/26/2026, 7:12:49 AM"
+  ],
+  "baseOnly": [
+   "10/26/2026, 7:12:57 AM"
+  ],
+  "pass": true
+ },
+ {
+  "id": "UPD-025",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 376,
+   "max": 229
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "10/26/2026, 7:25:09 AM"
+  ],
+  "baseOnly": [
+   "10/26/2026, 7:25:17 AM"
+  ],
+  "pass": true
+ },
+ {
+  "id": "UPD-026",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-027",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   47,
+   47
+  ],
+  "pix": {
+   "changed": 17,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-028",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   69,
+   69
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, shallowRef, watch, type Ref } from 'vue'
 import { getApolloClient } from '~/utils/apolloClient'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 import { useAppUpdateStore } from '~/stores/appUpdateStore'
@@ -7,25 +7,34 @@ import { useAgentPackagesStore } from '~/stores/agentPackagesStore'
 import { useSkillSourcesStore } from '~/stores/skillSourcesStore'
 import { useSkillStore } from '~/stores/skillStore'
 import { useSkillNamesStore } from '~/stores/skillNamesStore'
-import { AgentRuntimes } from '~/graphql/queries/agentRuntimesQueries'
-import { UpdateAgentRuntime } from '~/graphql/mutations/agentRuntimesMutations'
+import { useUpdateAutomationStore } from '~/stores/updateAutomationStore'
+import { runtimeName } from '~/components/settings/agent-runtimes/agentRuntimesPresentation'
+import { showsAgentRuntimeUpdates } from '~/utils/ownNodeWindow'
 import type { AgentRuntime } from '~/types/agentRuntimes'
 import {
   CLEAR_UPDATE_NOTIFICATION,
   GET_UPDATE_NOTIFICATIONS,
   MARK_UPDATE_NOTIFICATIONS_READ,
 } from '~/graphql/updateNotifications'
-import type { NodeUpdateNotification, NodeUpdateNotificationKind, UpdateNotificationKind, UpdateNotificationOutcome } from '~/types/updateNotifications'
+import {
+  NODE_KIND_OF,
+  type NodeSourceKind,
+  type NodeUpdateNotification,
+  type NodeUpdateNotificationKind,
+  type UpdateNotificationKind,
+  type UpdateNotificationOutcome,
+} from '~/types/updateNotifications'
 
-type SourceKind = Exclude<UpdateNotificationKind, 'app'>
+type SourceKind = NodeSourceKind
 
-/** One package or skill source update in the Notification Center. */
+/** One package, skill source or agent runtime update in the Notification Center. */
 export interface SourceNotificationRow {
   id: string
   kind: SourceKind
   sourceId: string
   name: string
-  repositoryUrl: string
+  /** Null for agent runtimes. */
+  repositoryUrl: string | null
   branch: string | null
   installedRevision: string
   latestRevision: string
@@ -37,9 +46,9 @@ export interface SourceNotificationRow {
   error: string | null
   /** What an automatic update did (update-checks-and-auto-updates); null for a plain waiting or manually handled row. */
   outcome: UpdateNotificationOutcome | null
-  /** The reason of an automatic failure (the node's or the vendor's message). */
+  /** The reason of an automatic failure or wait (the node's or the vendor's message). */
   outcomeReason: string | null
-  /** Runtimes: agents of that runtime running now. */
+  /** Runtimes: agents of that runtime running now (read while the panel is open); 0 otherwise. */
   runningAgentCount: number
 }
 
@@ -61,10 +70,17 @@ export type NotificationRow = SourceNotificationRow | AppNotificationRow
 export type NotificationSection = { kind: UpdateNotificationKind; rows: NotificationRow[] }
 
 const SOURCE_KINDS: Record<NodeUpdateNotificationKind, SourceKind> = { AGENT_PACKAGE: 'agent_package', SKILL_SOURCE: 'skill_source', AGENT_RUNTIME: 'agent_runtime' }
-const NODE_KINDS: Record<SourceKind, NodeUpdateNotificationKind> = { agent_package: 'AGENT_PACKAGE', skill_source: 'SKILL_SOURCE', agent_runtime: 'AGENT_RUNTIME' }
-/** How often a runtime's own update is read while the row says "Updating…". */
-const RUNTIME_POLL_MS = 1000
-type RowAction = { state: 'updating' | 'failed'; error: string | null }
+/**
+ * A row's own action. For a runtime update, `before` is the runtime reading current when the update had started (unset
+ * while it is being started): only a later reading tells how it ended.
+ */
+type RowAction = { state: 'updating' | 'failed'; error: string | null; before?: AgentRuntime[] | null }
+/** The runtimes' state and update as the open panel reads them (`useAgentRuntimes`). */
+export type RuntimeStatusesSource = Readonly<{
+  runtimes: Readonly<Ref<AgentRuntime[] | null>>
+  /** Starts the runtime's update; false when the node refused or could not be reached. */
+  update: (runtimeKind: string) => Promise<boolean>
+}>
 
 const errorMessage = (cause: unknown): string => cause instanceof Error ? cause.message : String(cause)
 const graphqlErrors = (errors: ReadonlyArray<{ message: string }> | undefined): void => {
@@ -73,42 +89,61 @@ const graphqlErrors = (errors: ReadonlyArray<{ message: string }> | undefined): 
 export const shortRevision = (revision: string): string => revision.slice(0, 7)
 /** GitHub's compare page for the two revisions: what changed, without an API call (DEC-005). */
 export const compareUrlOf = (row: SourceNotificationRow): string =>
-  `${row.repositoryUrl}/compare/${row.installedRevision}...${row.latestRevision}`
+  `${row.repositoryUrl ?? ''}/compare/${row.installedRevision}...${row.latestRevision}`
+const isUnreadOutcome = (entry: Pick<NodeUpdateNotification, 'read' | 'state' | 'outcome'>): boolean =>
+  !entry.read && entry.state === 'HANDLED' && entry.outcome === 'AUTO_UPDATED'
 
 /**
- * The window's update notifications: the bound node's package and skill source records (GraphQL,
- * re-read on every feed frame) combined with the app record from the desktop shell. Owns counts,
- * order and each row's transient Update state; row actions run the existing explicit update of
- * their kind.
+ * The window's update notifications: the bound node's package, skill source and agent runtime
+ * records (GraphQL, re-read on every feed frame) combined with the app record from the desktop
+ * shell. Owns counts, order and each row's transient Update state; row actions run the existing
+ * explicit update of their kind. Agent runtime rows show only in the node's own window of the
+ * desktop's embedded node (DEC-020, AR-005).
  */
 export const useUpdateNotificationsStore = defineStore('updateNotifications', () => {
   const node = useWindowNodeContextStore()
   const app = useAppUpdateStore()
+  const automation = useUpdateAutomationStore()
   const nodeNotifications = ref<NodeUpdateNotification[]>([])
   const rowActions = ref<Record<string, RowAction>>({})
+  const runtimeStatuses = shallowRef<RuntimeStatusesSource | null>(null)
 
   watch(() => node.bindingRevision, () => {
     nodeNotifications.value = []
     rowActions.value = {}
   })
 
-  /** Agent runtimes exist only in windows of the desktop's own node (DEC-017); other windows never show the category. */
-  const showsRuntimes = computed(() => node.isEmbeddedWindow)
+  const showsRuntimes = computed(() => showsAgentRuntimeUpdates(node, automation.resolved))
+  const runtimeReading = computed(() => runtimeStatuses.value?.runtimes.value ?? null)
+  const runtimeOf = (runtimeKind: string): AgentRuntime | null =>
+    runtimeReading.value?.find((runtime) => runtime.runtimeKind === runtimeKind) ?? null
+
+  /** A runtime row without an action of its own still shows an update running elsewhere (Settings, automatic). */
+  const runtimeState = (sourceId: string, action: RowAction | undefined): SourceNotificationRow['state'] => {
+    if (action) return action.state
+    const operation = runtimeOf(sourceId)?.operation
+    return operation?.kind === 'UPDATE' && operation.state === 'RUNNING' ? 'updating' : 'waiting'
+  }
+
   const sourceRows = computed<SourceNotificationRow[]>(() => nodeNotifications.value
     .filter((entry) => entry.kind !== 'AGENT_RUNTIME' || showsRuntimes.value)
     .map((entry) => {
-    const kind = SOURCE_KINDS[entry.kind]
-    const id = `${kind}:${entry.sourceId}`
-    const action = rowActions.value[id]
-    const waiting = entry.state === 'WAITING'
-    return {
-      id, kind, sourceId: entry.sourceId, name: entry.name, repositoryUrl: entry.repositoryUrl, branch: entry.defaultBranch,
-      installedRevision: entry.installedRevision, latestRevision: entry.latestRevision, foundAt: entry.foundAt,
-      unread: !entry.read && (waiting || entry.outcome === 'AUTO_UPDATED'), state: !waiting ? 'handled' : action?.state ?? 'waiting',
-      handledRevision: entry.handledRevision, handledAt: entry.handledAt, error: waiting ? action?.error ?? null : null,
-      outcome: entry.outcome ?? null, outcomeReason: entry.outcomeReason ?? null, runningAgentCount: entry.runningAgentCount ?? 0,
-    }
-  }))
+      const kind = SOURCE_KINDS[entry.kind]
+      const id = `${kind}:${entry.sourceId}`
+      const action = rowActions.value[id]
+      const waiting = entry.state === 'WAITING'
+      const runtime = kind === 'agent_runtime'
+      return {
+        id, kind, sourceId: entry.sourceId, name: runtime ? runtimeName(entry.name) : entry.name,
+        repositoryUrl: entry.repositoryUrl, branch: entry.defaultBranch,
+        installedRevision: entry.installedRevision, latestRevision: entry.latestRevision, foundAt: entry.foundAt,
+        unread: !entry.read && (waiting || entry.outcome === 'AUTO_UPDATED'),
+        state: !waiting ? 'handled' : runtime ? runtimeState(entry.sourceId, action) : action?.state ?? 'waiting',
+        handledRevision: entry.handledRevision, handledAt: entry.handledAt, error: waiting ? action?.error ?? null : null,
+        outcome: entry.outcome ?? null, outcomeReason: entry.outcomeReason ?? null,
+        runningAgentCount: runtime ? runtimeOf(entry.sourceId)?.runningAgentCount ?? 0 : 0,
+      }
+    }))
 
   /** Shown while the shell has a record, or while a download or install is in progress. */
   const appRow = computed<AppNotificationRow | null>(() => {
@@ -164,10 +199,10 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
     }
   }
 
-  /** The user opened the Notification Center: every waiting row is read, on the node and in the shell. */
+  /** The user opened the Notification Center: every waiting row and automatic update is read, on the node and in the shell. */
   async function markAllRead(): Promise<void> {
     const appRead = app.markNotificationRead().catch((cause) => console.warn('Failed to mark the app update read:', cause))
-    if (nodeNotifications.value.some((entry) => entry.state === 'WAITING' && !entry.read)) {
+    if (nodeNotifications.value.some((entry) => (entry.state === 'WAITING' && !entry.read) || isUnreadOutcome(entry))) {
       const revision = node.bindingRevision
       try {
         const { data, errors } = await getApolloClient().mutate({ mutation: MARK_UPDATE_NOTIFICATIONS_READ })
@@ -200,36 +235,45 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
     }
   }
 
+  /** The open panel lends its runtime readings (running agents, a running or failed update); null when it closes. */
+  function attachRuntimeStatuses(source: RuntimeStatusesSource | null): void {
+    runtimeStatuses.value = source
+  }
+
+  const setAction = (id: string, action: RowAction | null): void => {
+    const { [id]: _previous, ...rest } = rowActions.value
+    rowActions.value = action ? { ...rest, [id]: action } : rest
+  }
+
   /**
-   * A runtime's Update runs the vendor update of Settings → Agent Runtimes (REQ-021): refused by the node while that runtime
-   * has running agents; otherwise the row says "Updating…" until the update's own state is finished.
+   * A runtime's Update runs the vendor update of Settings → Agent Runtimes (REQ-021, DS-003) through the open panel's
+   * runtime readings. A refusal (agents running, busy) shows through the next reading. The row says "Updating…" until a
+   * reading after the start shows how the update ended.
    */
   async function updateRuntime(row: SourceNotificationRow): Promise<void> {
-    if (row.state === 'updating' || row.state === 'handled' || row.runningAgentCount > 0) return
-    rowActions.value = { ...rowActions.value, [row.id]: { state: 'updating', error: null } }
-    const finish = (next: RowAction | null) => {
-      const { [row.id]: _done, ...rest } = rowActions.value
-      rowActions.value = next ? { ...rest, [row.id]: next } : rest
-    }
-    try {
-      const { data, errors } = await getApolloClient().mutate({ mutation: UpdateAgentRuntime, variables: { runtimeKind: row.sourceId } })
-      graphqlErrors(errors)
-      if (!data?.updateAgentRuntime) throw new Error('refused')
-      for (;;) {
-        await new Promise<void>((done) => setTimeout(done, RUNTIME_POLL_MS))
-        const read = await getApolloClient().query({ query: AgentRuntimes, fetchPolicy: 'network-only' })
-        const runtime = (read.data?.agentRuntimes as AgentRuntime[] | undefined)?.find((entry) => entry.runtimeKind === row.sourceId)
-        const operation = runtime?.operation
-        if (operation?.kind === 'UPDATE' && operation.state === 'RUNNING') continue
-        if (operation?.kind === 'UPDATE' && operation.state === 'FAILED') { finish({ state: 'failed', error: operation.error }); return }
-        break
-      }
-      await reload()
-      finish(null)
-    } catch (cause) {
-      finish({ state: 'failed', error: errorMessage(cause) === 'refused' ? null : errorMessage(cause) })
-    }
+    const source = runtimeStatuses.value
+    if (!source || row.kind !== 'agent_runtime' || row.state === 'updating' || row.state === 'handled' || row.runningAgentCount > 0) return
+    setAction(row.id, { state: 'updating', error: null })
+    const started = await source.update(row.sourceId)
+    setAction(row.id, started ? { state: 'updating', error: null, before: runtimeReading.value } : null)
   }
+
+  watch(runtimeReading, (reading) => {
+    if (!reading) return
+    for (const [id, action] of Object.entries(rowActions.value)) {
+      // Readings taken while the update is being started (`before` unset) or before it started say nothing about it.
+      if (!id.startsWith('agent_runtime:') || action.state !== 'updating' || action.before === undefined || reading === action.before) continue
+      const operation = runtimeOf(id.slice('agent_runtime:'.length))?.operation
+      if (operation?.kind === 'UPDATE' && operation.state === 'RUNNING') continue
+      if (operation?.kind === 'UPDATE' && operation.state === 'FAILED') {
+        setAction(id, { state: 'failed', error: operation.error })
+      } else {
+        // Updated (the record turns handled through the feed; read it now as well) or nothing to report.
+        setAction(id, null)
+        void reload()
+      }
+    }
+  })
 
   /** Download (it re-checks first after a restart); a failure shows its message in the row. */
   async function downloadApp(): Promise<void> {
@@ -247,7 +291,7 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
         return
       }
       const { data, errors } = await getApolloClient().mutate({
-        mutation: CLEAR_UPDATE_NOTIFICATION, variables: { kind: NODE_KINDS[row.kind], sourceId: row.sourceId },
+        mutation: CLEAR_UPDATE_NOTIFICATION, variables: { kind: NODE_KIND_OF[row.kind], sourceId: row.sourceId },
       })
       graphqlErrors(errors)
       if (data?.clearUpdateNotification) nodeNotifications.value = data.clearUpdateNotification
@@ -258,6 +302,7 @@ export const useUpdateNotificationsStore = defineStore('updateNotifications', ()
 
   return {
     sections, rows, waitingCount, hasUnread, hasEntry, unreadOutcomeRows, waitingByKind, isEmpty,
-    reload, markAllRead, updateSource, updateRuntime, downloadApp, installApp: () => app.installUpdateAndRestart(), clear,
+    reload, markAllRead, updateSource, updateRuntime, attachRuntimeStatuses, downloadApp,
+    installApp: () => app.installUpdateAndRestart(), clear,
   }
 })

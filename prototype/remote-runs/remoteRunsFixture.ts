@@ -70,26 +70,24 @@ export const keepsLocalCopies = (scenario: string): boolean => scenario !== 'rem
 /** The Project Task Manager run is live in both remote scenarios (it delegated them). */
 export const hostIsLive = (scenario: string): boolean => isRemoteScenario(scenario)
 
-const launch = (workspaceRootPath: string) => ({ runtimeKind: 'autobyteus', llmModelIdentifier: 'mock/gpt-prototype', llmConfig: { temperature: 0.2 }, autoExecuteTools: true, workspaceRootPath })
+const OFFICE_MAC_NODE_ID = 'srv_offMac4Bq7Tn2Kp9Xs5Wd1Jr8Lf3GhYa0Ve'
+const NODE_IDS_BY_NAME: Record<string, string> = { docker: 'srv_ibJioK7nDockerP5Rt8Zr3Wq8Mv5Tn2Bc7Hy', 'office-mac': OFFICE_MAC_NODE_ID }
 const createdAt = '2026-10-11T07:30:00.000Z'
 
-export const remoteTaskExecutions = (scenario: string, workspaceRootPath: string, delegatorRunId: string): any[] => copiesFor(scenario).map((copy) => copy.kind === 'agent'
-  ? { address: copy.address, agentRunId: copy.agentRunId, platformAgentRunId: null, delegatorAgentRunId: delegatorRunId, startedAt: createdAt,
-      source: { kind: 'agent', agentDefinitionId: 'agent-researcher', launchConfiguration: launch(workspaceRootPath) } }
-  : { address: copy.address, teamRunId: copy.teamRunId, delegatorAgentRunId: delegatorRunId, startedAt: createdAt,
-      source: { kind: 'agent_team', teamDefinitionId: 'team-product', coordinatorAddress: `${copy.address}/${copy.members[0]!.name}`,
-        members: copy.members.map((member) => ({ address: `${copy.address}/${member.name}`, agentDefinitionId: 'agent-researcher', launchConfiguration: launch(workspaceRootPath), followsTeam: true })),
-        handoffs: [], defaultLaunchConfiguration: launch(workspaceRootPath) },
-      members: copy.members.map((member) => ({ address: `${copy.address}/${member.name}`, agentRunId: member.agentRunId, platformAgentRunId: null })),
-      taskExecutions: [] })
+/** The runs the root delegated to other nodes, as the root's stream and its stored view carry them (`remote_task_executions`). */
+export const remoteTaskExecutionDtos = (scenario: string, delegatorRunId: string): any[] => copiesFor(scenario).map((copy) => copy.kind === 'agent'
+  ? { kind: 'agent', address: copy.address, agent_run_id: copy.agentRunId, node_id: NODE_IDS_BY_NAME[copy.node], node_name: copy.node, delegator_agent_run_id: delegatorRunId, started_at: createdAt }
+  : { kind: 'agent_team', address: copy.address, team_run_id: copy.teamRunId, node_id: NODE_IDS_BY_NAME[copy.node], node_name: copy.node,
+      coordinator_address: `${copy.address}/${copy.members[0]!.name}`,
+      members: copy.members.map((member) => ({ address: `${copy.address}/${member.name}`, agent_run_id: member.agentRunId })),
+      delegator_agent_run_id: delegatorRunId, started_at: createdAt })
 
-const statusRecord = (agentRunId: string, memberAddress: string, status: Status) => ({
-  member_address: memberAddress, agent_run_id: agentRunId, status, trigger: null, tool_name: null, error_message: null, error_details: null, recoverableBlock: null,
+/** What each run's node answered (autobyteus-278): reachable with its title and its agents' statuses, or not reachable. */
+export const remoteSummaries = (scenario: string): any[] => copiesFor(scenario).map((copy) => {
+  const reachable = NODES[copy.node]?.reachable !== false
+  const statuses = copy.kind === 'agent' ? [{ agent_run_id: copy.agentRunId, status: copy.status }] : copy.members.map((member) => ({ agent_run_id: member.agentRunId, status: member.status }))
+  return { node_id: NODE_IDS_BY_NAME[copy.node], run_id: copy.kind === 'agent' ? copy.agentRunId : copy.teamRunId, reachable, title: reachable ? copy.title : null, statuses: reachable ? statuses : [] }
 })
-/** The agents' statuses as the other node reports them (offline for an unreachable node). */
-export const remoteAgentStatuses = (scenario: string): any[] => copiesFor(scenario).flatMap((copy) => copy.kind === 'agent'
-  ? [statusRecord(copy.agentRunId, copy.address, copy.status)]
-  : copy.members.map((member) => statusRecord(member.agentRunId, `${copy.address}/${member.name}`, member.status)))
 
 // --- What the tree and the views know about a remote run ---------------------------------------
 
@@ -164,6 +162,8 @@ const CONVERSATIONS: Record<string, any[]> = {
 
 /** The open view of a run on another node, or an error when that node is not reachable; null for a local run. */
 let timelineStarted = false
+/** A new page load plays the working coordinator's next steps again (the comparison harness calls this when a stream connects). */
+export const resetRemoteTimeline = (): void => { timelineStarted = false; sequence = 1 }
 export const remoteMemberProjection = (agentRunId: string, summary: string, lastActivityAt: string): any | null => {
   const info = remoteRunInfo(agentRunId)
   if (!info) return null
@@ -257,12 +257,21 @@ export const remoteInterruptReply = (payload: Record<string, any>): { delay: num
   ]
 }
 
+const summaryEvent = (summary: Record<string, unknown>): Frame => ({
+  type: 'ROOT_EXECUTION_EVENT',
+  payload: { root_subject_kind: 'agent', root_run_id: PTM_HOST_RUN_ID, change_sequence: nextSequence(), event: { kind: 'remote_task_execution_summary', ...summary } },
+})
+/** What the other nodes answered about their runs, one summary event each (after the view, and again after Retry). */
+export const remoteSummaryFrames = (scenario: string): Frame[] => remoteSummaries(scenario).map(summaryEvent)
+
 /** After a Stop of a remote copy from this window: the other node reports its agents offline. */
 export const remoteStopFrames = (scenario: string, reference: { agentRunId?: string | null; teamRunId?: string | null }): Frame[] => {
   const copy = copiesFor(scenario).find((item) => item.kind === 'agent' ? item.agentRunId === reference.agentRunId : item.teamRunId === reference.teamRunId)
   if (!copy) return []
-  const records = copy.kind === 'agent' ? [[copy.agentRunId, copy.address]] : copy.members.map((member) => [member.agentRunId, `${copy.address}/${member.name}`])
-  return records.map(([id, address]) => statusEvent(id!, address!, 'offline'))
+  const runId = copy.kind === 'agent' ? copy.agentRunId : copy.teamRunId
+  const summary = remoteSummaries(scenario).find((item) => item.run_id === runId)
+  if (!summary) return []
+  return [summaryEvent({ ...summary, statuses: summary.statuses.map((status: Record<string, unknown>) => ({ ...status, status: 'offline' })) })]
 }
 export const remoteAgentIdsOf = agentIdsOf
 

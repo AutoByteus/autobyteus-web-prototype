@@ -1,5 +1,34 @@
 # UI Reference Runbook
 
+## WEB-BASELINE-REFRESH-013 (source pin `d74f75a`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4820
+```
+
+Set a starting state in the browser console and reload (remove the key to reset; a reload resets all in-memory state):
+`localStorage.setItem('autobyteus.prototype.scenario', '<scenario>')`, and for a desktop window
+`localStorage.setItem('autobyteus.prototype.context', 'electron_internal')` (the desktop's own node) or `'electron_external'` (a window opened on Docker 8001).
+
+| New in this refresh | Entry | Starting state |
+| --- | --- | --- |
+| Settings → Model Routing, "Agent runtimes now" | `/settings?section=model-routing` | default; `routing_empty`, `routing_load_failed` (first read fails; Check again), `routing_check_fails` (Check again fails), `routing_unknown`; `electron_external` says "Remote node" |
+| "Show internal agents" and Claude one-hour cache cards | `/settings?section=server-settings&mode=quick` | default; `settings_save_fails`. Turning "Show internal agents" on lists Agent Architect (Internal) in Agents |
+| Nodes → Manage Nodes (as shipped), NFS Guide tab | `/nodes?nodeTab=manage` | `nodes_user` + `electron_internal`; `nodes_states` (one row in each state); `electron_external` (the Docker window); no context = a browser (no Open) |
+| Phone Setup tab (its data is local now) | `/nodes?nodeTab=phoneSetup` | default |
+| Runs on other nodes in the Workspaces tree | `/workspace` → prototype-workspace → Project Task Manager → the run | default (design example data: node `docker` reachable, `office-mac` not); `remote_states` |
+| Update checks card with intervals and automatic updates, Notification Center switches and outcomes | `/settings?section=server-settings&mode=quick`, the Settings pill in the sidebar | `electron_internal` + `updates_waiting`, `updates_many`, `updates_one`, `updates_off`, `updates_auto_on`, `updates_outcomes_only`, `updates_backoff`, `updates_discover` |
+| Agent Runtimes on a remote node whose desktop browser can sign in | `/settings?section=agent-runtimes` | `electron_external` + `runtimes_remote_desktop` |
+| Project Task titles, comments, validation | `/projects/project-prototype-launch/tasks/task-review` | default |
+
+- The simulated network of nodes is `prototype/nodes/network-world.mjs`: the Nodes page's switch, peers, addresses, offers and failures. Add these addresses:
+  `http://localhost:8003` (off, reachable), `localhost:8004` (a Docker node that cannot find an address for this node: the hint),
+  `localhost:8005` (goes away on its first write, back after 8 s: the partial state), a host containing `slow` (no answer), `nohost` (name not found),
+  `notab` (not an AutoByteus node); any other unknown address is refused.
+- Nothing is contacted: every other node answers from the world in the page (`prototype/shared/node-network-fetch.js`).
+- The source observation node accepts the same scenarios: `PROTOTYPE_MOCK_PORT=4823 node prototype/source-observation/mock-node.mjs`.
+
 ## remote-runs-in-tree (runs another node runs, under their delegator in the run tree; source pin `9e7a458`, engineering base `3b09fbe308`)
 
 ```bash

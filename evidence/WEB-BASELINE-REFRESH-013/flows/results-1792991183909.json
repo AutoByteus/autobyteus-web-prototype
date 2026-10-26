@@ -1,0 +1,115 @@
+[
+ {
+  "id": "MTX-017",
+  "route": [
+   "/applications",
+   "/applications"
+  ],
+  "textEq": false,
+  "textMaskedEq": false,
+  "elsEq": false,
+  "els": [
+   18,
+   15
+  ],
+  "elsOnlySrc": [
+   "button|||284|389|24|24|rgb(128, 128, 128)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||prototype-workspace|4|421|284|32|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Remove from Workspaces|288|425|24|24|rgb(153, 153, 153)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Temp Workspace|4|457|312|32|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||BS Brief Studio A synthetic embedded application for current-shell parity valida|355|108|340|175|rgb(0, 0, 0)|rgb(255, 255, 255)|16px|400|0"
+  ],
+  "elsOnlyBase": [
+   "button|||284|349|24|24|rgb(128, 128, 128)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||prototype-workspace|4|381|312|32|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|400|0"
+  ],
+  "pix": {
+   "changed": 154638,
+   "max": 240
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "Temp Workspace",
+   "BS",
+   "Brief Studio",
+   "A synthetic embedded application for current-shell parity validation.",
+   "Open app →"
+  ],
+  "baseOnly": [
+   "No applications found",
+   "Import or add an application bundle under an application package root to populate this catalog."
+  ],
+  "pass": false
+ },
+ {
+  "id": "MTX-018",
+  "route": [
+   "/applications/sample-app",
+   "/applications/sample-app"
+  ],
+  "textEq": false,
+  "textMaskedEq": false,
+  "elsEq": false,
+  "els": [
+   25,
+   15
+  ],
+  "elsOnlySrc": [
+   "button|||284|389|24|24|rgb(128, 128, 128)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||prototype-workspace|4|421|284|32|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Remove from Workspaces|288|425|24|24|rgb(153, 153, 153)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Temp Workspace|4|457|312|32|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|400|0",
+   "button||Show technical details|991|238|174|38|rgb(51, 65, 85)|rgb(255, 255, 255)|14px|500|0",
+   "button||Refresh setup|1249|433|126|38|rgb(51, 65, 85)|rgb(255, 255, 255)|14px|500|0"
+  ],
+  "elsOnlyBase": [
+   "button|||284|349|24|24|rgb(128, 128, 128)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||prototype-workspace|4|381|312|32|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|400|0"
+  ],
+  "pix": {
+   "changed": 624677,
+   "max": 238
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "Temp Workspace",
+   "Launch setup",
+   "Brief Studio",
+   "A synthetic embedded application for current-shell parity validation.",
+   "The generic host now boots only the application backend and iframe. Runtime runs are created from inside the application through its own orchestration flows.",
+   "Enter the app when setup is ready. Technical metadata stays hidden unless you explicitly open it.",
+   "Show technical details",
+   "Launch setup",
+   "Saved resource and launch defaults",
+   "Choose app-declared execution resources plus any supported runtime, model, or workspace defaults for later app-owned runs. Saving this form never starts a run."
+  ],
+  "baseOnly": [
+   "Application not found",
+   "No application exists for id sample-app."
+  ],
+  "pass": false
+ },
+ {
+  "id": "MTX-046",
+  "route": [
+   "/settings?section=api-keys",
+   "/settings?section=api-keys"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 9128,
+   "max": 9
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": false
+ }
+]

@@ -1,7 +1,7 @@
 <template>
-  <!-- The node's update checks (REQ-013/014 of 209; autobyteus-210): the background-check switch with an honest list of
-       what goes over the network, how often each kind is checked, and the automatic-update switches, the full home of the
-       same settings the Notification Center offers at each category. -->
+  <!-- The node's update checks: the background-check switch with an honest list of what goes over the network, how often
+       each kind is checked, and the automatic-update switches, the full home of the same settings the Notification Center
+       offers at each category. The runtime parts show only in the own window of the desktop's embedded node. -->
   <section class="rounded-3xl border border-slate-200 bg-white px-6 py-5 shadow-sm" data-testid="update-checks-card">
     <div class="mb-4 min-w-0">
       <h3 class="text-2xl font-semibold leading-tight text-gray-900">{{ $t('settings.notifications.setting.title') }}</h3>
@@ -32,7 +32,7 @@
 
       <div class="mt-2.5 border-t border-slate-200 pt-2.5" data-testid="update-checks-network">
         <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">{{ $t('settings.notifications.setting.network.title') }}</p>
-        <ul class="mt-1 space-y-0.5 text-[13px] leading-5 text-gray-600">
+        <ul class="mt-1 space-y-0.5 text-[0.8125rem] leading-5 text-gray-600">
           <li class="flex gap-2"><span class="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-gray-400" aria-hidden="true" />{{ $t('settings.notifications.setting.network.packages') }}</li>
           <li v-if="ownsRuntimes" class="flex gap-2" data-testid="update-checks-network-runtimes"><span class="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-gray-400" aria-hidden="true" />{{ $t('settings.notifications.setting.network.runtimes') }}</li>
           <li class="flex gap-2"><span class="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-gray-400" aria-hidden="true" />{{ $t('settings.notifications.setting.network.updates') }}</li>
@@ -51,9 +51,9 @@
     <div class="mt-5" data-testid="update-checks-intervals">
       <h4 class="text-base font-semibold text-gray-900">{{ $t('settings.notifications.setting.interval.title') }}</h4>
       <div class="mt-2 divide-y divide-slate-100 rounded-2xl border border-slate-200 px-4" :class="enabled ? '' : 'bg-slate-50/40'">
-        <UpdateIntervalField class="py-3" test-key="packages" :minutes="automation.resolved?.packageIntervalMinutes ?? null" :save="(minutes) => automation.save({ packageIntervalMinutes: minutes })" :label="$t('settings.notifications.interval.agent_package')" :muted="!enabled" />
-        <UpdateIntervalField class="py-3" test-key="skills" :minutes="automation.resolved?.skillIntervalMinutes ?? null" :save="(minutes) => automation.save({ skillIntervalMinutes: minutes })" :label="$t('settings.notifications.interval.skill_source')" :muted="!enabled" />
-        <UpdateIntervalField v-if="ownsRuntimes" class="py-3" test-key="runtimes" :minutes="automation.resolved?.runtimeIntervalMinutes ?? null" :save="(minutes) => automation.save({ runtimeIntervalMinutes: minutes })" :label="$t('settings.notifications.interval.agent_runtime')" :muted="!enabled" />
+        <UpdateIntervalField class="py-3" test-key="packages" :minutes="automation.resolved?.intervals.agentPackages ?? null" :save="(minutes) => automation.setInterval('agent_package', minutes)" :label="$t('settings.notifications.interval.agent_package')" :muted="!enabled" />
+        <UpdateIntervalField class="py-3" test-key="skills" :minutes="automation.resolved?.intervals.skillSources ?? null" :save="(minutes) => automation.setInterval('skill_source', minutes)" :label="$t('settings.notifications.interval.skill_source')" :muted="!enabled" />
+        <UpdateIntervalField v-if="ownsRuntimes" class="py-3" test-key="runtimes" :minutes="automation.resolved?.intervals.agentRuntimes ?? null" :save="(minutes) => automation.setInterval('agent_runtime', minutes)" :label="$t('settings.notifications.interval.agent_runtime')" :muted="!enabled" />
       </div>
       <p class="mt-2 text-xs leading-5 text-gray-500" data-testid="update-checks-github-note">{{ $t('settings.notifications.interval.range') }} {{ $t('settings.notifications.setting.interval.githubNote') }}</p>
     </div>
@@ -76,13 +76,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, useId } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, useId } from 'vue'
 import { Icon } from '@iconify/vue'
 import AutoUpdateSwitch from '~/components/notifications/AutoUpdateSwitch.vue'
 import UpdateIntervalField from '~/components/settings/UpdateIntervalField.vue'
 import { useUpdateChecksCapabilityStore } from '~/stores/capabilities/updateChecksCapabilityStore'
 import { useUpdateAutomationStore } from '~/stores/updateAutomationStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
+import { showsAgentRuntimeUpdates } from '~/utils/ownNodeWindow'
 
 const capability = useUpdateChecksCapabilityStore()
 const automation = useUpdateAutomationStore()
@@ -92,15 +93,19 @@ const labelId = `update-checks-label-${useId()}`
 const descriptionId = `update-checks-description-${useId()}`
 const saving = ref(false)
 const enabled = computed(() => capability.isEnabled)
-/** Agent runtimes are checked and updated on the desktop's own node only (DEC-017). */
-const ownsRuntimes = computed(() => node.isEmbeddedWindow)
+/** Agent runtimes are checked and updated on the desktop's own node only (DEC-020, AR-005). */
+const ownsRuntimes = computed(() => showsAgentRuntimeUpdates(node, automation.resolved))
+
+/** Re-reads the time now and then, so the wait banner goes when the wait ends. */
+const now = ref(Date.now())
+let clock: ReturnType<typeof setInterval> | null = null
 
 /** "14:35" in the user's locale, with the day when it is not today (GitHub's wait can outlive midnight or a restart). */
 const waitUntilLabel = computed(() => {
-  const until = automation.resolved?.waitUntil
+  const until = automation.resolved?.githubWaitUntil
   if (!until) return null
   const at = new Date(until)
-  if (Number.isNaN(at.getTime()) || at.getTime() <= Date.now()) return null
+  if (Number.isNaN(at.getTime()) || at.getTime() <= now.value) return null
   const locale = String(resolvedLocale.value || 'en')
   const time = new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(at)
   return at.toDateString() === new Date().toDateString() ? time : `${new Intl.DateTimeFormat(locale, { weekday: 'short' }).format(at)} ${time}`
@@ -120,6 +125,9 @@ const toggle = async () => {
 
 onMounted(() => {
   void capability.ensureResolved().catch(() => undefined)
-  void automation.ensureResolved()
+  // GitHub's wait changes no record and no setting, so nothing announces it: read the node's current settings on open.
+  void (automation.status === 'resolved' ? automation.refresh() : automation.ensureResolved())
+  clock = setInterval(() => { now.value = Date.now() }, 30_000)
 })
+onBeforeUnmount(() => { if (clock) clearInterval(clock) })
 </script>

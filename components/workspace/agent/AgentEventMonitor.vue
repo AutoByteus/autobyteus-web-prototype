@@ -78,7 +78,6 @@ const props = defineProps<{
 }>();
 
 const activityStore = useAgentActivityStore();
-const { t } = useLocalization();
 const effectiveRunId = computed(() => props.runId || props.conversation.id);
 const compactionActivities = computed(() => activityStore.getCompactionActivities(effectiveRunId.value));
 const filePreviewStatus = ref('');
@@ -91,8 +90,9 @@ const browse = useEventMonitorActiveTraceBrowse({
   presentationRevision: () => props.presentationRevision ?? 0,
 });
 
-// remote-runs-in-tree: a file path in a remote run's conversation names a file on the other node.
+// autobyteus-278: a file path in a remote run's conversation names a file on the other node.
 const remote = useRemoteRun(() => effectiveRunId.value);
+const { t } = useLocalization();
 const handleFilePathAction = async (action: AbsoluteFilePathAction): Promise<void> => {
   if (remote.value) { filePreviewStatus.value = t('remote.filePath', { node: remote.value.nodeName }); return; }
   // Keep the launcher effect boundary out of Markdown rendering and passive

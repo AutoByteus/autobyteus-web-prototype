@@ -4,7 +4,7 @@
     :class="hasMenus ? 'relative' : 'overflow-hidden'"
   >
     <!-- With a `/` or `@` menu, only the Context Files area clips, so the menu can open above the box. -->
-    <!-- remote-runs-in-tree: a run another node runs takes text only (attachments across nodes come later). -->
+    <!-- autobyteus-278: a run another node runs takes text only (attachments across nodes come later). -->
     <div v-if="!remote" :class="hasMenus ? 'overflow-hidden rounded-t-xl' : ''">
       <ContextFilePathInputArea :target="target" />
     </div>
@@ -23,10 +23,10 @@
 
 <script setup lang="ts">
 import ContextFilePathInputArea from '~/components/agentInput/ContextFilePathInputArea.vue';
+import { useRemoteRun } from '~/composables/remoteRuns/useRemoteRun';
 import AgentUserInputTextArea from '~/components/agentInput/AgentUserInputTextArea.vue';
 import SkillTagChips from '~/components/chat/SkillTagChips.vue';
 import { computed } from 'vue';
-import { useRemoteRun } from '~/composables/remoteRuns/useRemoteRun';
 import { useComposerTarget } from '~/composables/agentInput/useComposerTarget';
 import type { SkillTaggingCapability } from '~/composables/agentInput/useSkillTagMenu';
 

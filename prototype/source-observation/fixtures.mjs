@@ -1,4 +1,5 @@
 import { createTokenUsageSummary } from '../shared/token-usage-fixture.js'
+import { createNetworkWorld, NODE_IDS } from '../nodes/network-world.mjs'
 import { NODE_SETTINGS_MUTATIONS, agentPackageUpdate, markNotificationHandled, nodeSettingsOperation } from './node-settings-fixtures.mjs'
 import { EMBEDDING_MUTATIONS, embeddingExtraProjects, advanceEmbedding, embeddingMutation, embeddingState, embeddingStatusOf, meaningSearchOf, searchTasks } from './embedding-fixtures.mjs'
 import {
@@ -45,7 +46,24 @@ export const scenarioCatalog = Object.freeze({
   runtimes_update_fails: 'Populated data where the Claude runtime update fails (Try again fails again).',
   runtimes_sign_in_fails: 'Populated data where Codex is signed out and its browser sign-in does not finish.',
   runtimes_load_failed: 'Populated data where the first Agent Runtimes read fails, so the section offers Retry.',
-  // one-nodes-tab: Nodes → Manage Nodes (one list of nodes). The simulated network is prototype/nodes/nodeWorld.ts.
+  // update-checks-and-auto-updates (shipped by autobyteus-210): outcomes of automatic updates, check intervals, and the app's own check.
+  updates_auto_on: 'Populated data where every automatic-update switch is on and each outcome row is there: updated automatically, failed, and a runtime waiting for its agents.',
+  updates_outcomes_only: 'Populated data where nothing waits and one automatic update has not been seen yet.',
+  updates_backoff: 'Populated data where GitHub asked this node to wait before checking again.',
+  updates_discover: 'Populated data where a package update appears by itself a few seconds after the page opened.',
+  update_available: 'Desktop window where the app check found a software update.',
+  update_up_to_date: 'Desktop window where the app check ran and the app is current.',
+  update_check_failed: 'Desktop window where the app\'s periodic check failed.',
+  update_checks_off: 'Desktop window where the app\'s own periodic check is off.',
+  update_error: 'Desktop window where a pressed Check for updates failed.',
+  // Settings → Model Routing (autobyteus-303) and the Agent Runtimes page of a remote node whose desktop browser can sign in.
+  settings_save_fails: 'Populated data where saving a server setting fails (the switches of Server Settings → Basics show their error).',
+  routing_empty: 'Populated data where no agent runtime is available on this node.',
+  routing_load_failed: 'Populated data where the first read of the available agent runtimes fails, so Model Routing offers Retry.',
+  routing_check_fails: 'Populated data where the first read of the available agent runtimes works and Check again then fails.',
+  routing_unknown: 'Populated data where the runtimes could not be read: limits and models are unknown, and no API provider has a key.',
+  runtimes_remote_desktop: 'Populated data where a remote node can open a browser on its own desktop: its Agent Runtimes page offers Sign in.',
+  // one-nodes-tab: Nodes → Manage Nodes (one list of nodes). The simulated network is prototype/nodes/network-world.mjs.
   nodes_user: 'Populated data where this desktop lists the embedded node and Docker 8001 (collaborating); Docker 8003, 8004 and 8005 are running and can be added.',
   nodes_states: 'Nodes scenario with one row in each state: working, off there, not registered there, a different node, not reachable, still checking, registered only by the other node, and one not collaborating.',
   // remote-runs-in-tree: runs the Project Task Manager delegated to another node (prototype/remote-runs/remoteRunsFixture.ts).
@@ -54,6 +72,19 @@ export const scenarioCatalog = Object.freeze({
   live_runs: 'Populated data where the stored Research Assistant run and the stored Product Review Team run are live: a delegated copy is running, a copy Team has an agent in error, and the Team run is busy.',
   definition_issues: 'Populated data where some agent package definitions could not be read: card load-issue badges, list problem notices and package auto-refresh states.',
 })
+
+/** The node this window is bound to: the embedded node, or Docker 8001 in the external window of the Nodes scenarios. */
+export const boundNodeIdOf = (state) => state.hostContext === 'electron_external' && String(state.scenario).startsWith('nodes_') ? NODE_IDS.D1 : NODE_IDS.E
+/** The simulated network of nodes (prototype/nodes/network-world.mjs), one per caller and scenario, reset with the scenario. */
+export const networkWorldOf = (state) => {
+  if (!state.world) {
+    const bound = boundNodeIdOf(state)
+    // The addresses at which this window reaches its own node (the observation node, the dev servers, the desktop's address).
+    const own = Object.fromEntries(['localhost:8000', '127.0.0.1:8000', 'localhost:4823', '127.0.0.1:4823', 'localhost:4820', '127.0.0.1:4820', 'localhost:4822', '127.0.0.1:4822', 'localhost:4391', '127.0.0.1:4391'].map(key => [key, bound]))
+    state.world = createNetworkWorld(state.scenario, { boundNodeId: bound, extraListeners: own })
+  }
+  return state.world
+}
 
 export const baseState = () => ({
   scenario: 'populated',
@@ -264,6 +295,7 @@ const agentRootCollaboration = {
       ],
     },
     closed_task_executions: [{ teamRunId: 'worker-team-publish-001' }],
+    remote_task_executions: [],
     communication_messages: { schemaVersion: 1, subjectKind: 'agent', hostRunId: run.runId, messages: [
       { messageId: 'collab-message-001', senderAgentRunId: 'worker-writer-001', receiverAgentRunId: run.runId, content: 'The navigation notes are drafted.', messageType: 'direct_message', referenceFiles: [], createdAt: fixedNow },
     ] },
@@ -434,16 +466,17 @@ const project = {
 const taskRoot = (fields) => ({ __typename: 'TaskRoot', kind: 'agent', recipientAddress: null, teamRunId: null, hostRoot: { __typename: 'TaskRootHost', kind: 'agent', runId: run.runId }, start: 'started', startError: null, closed: false, status: 'idle', ...fields })
 
 const projectTasks = [
-  { __typename: 'ProjectTask', taskId: 'task-outline', taskKey: 'prototype-launch-1', dependsOnTaskIds: ['task-retire'], projectId: project.projectId, description: 'Outline the launch checklist.', status: 'TODO', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [], root: null },
-  { __typename: 'ProjectTask', taskId: 'task-review', taskKey: 'prototype-launch-2', dependsOnTaskIds: ['task-publish'], projectId: project.projectId, description: 'Review the synthetic navigation baseline.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+  { __typename: 'ProjectTask', taskId: 'task-outline', taskKey: 'prototype-launch-1', dependsOnTaskIds: ['task-retire'], projectId: project.projectId, title: 'Launch checklist', description: 'Outline the launch checklist.', status: 'TODO', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [], root: null },
+  { __typename: 'ProjectTask', taskId: 'task-review', taskKey: 'prototype-launch-2', dependsOnTaskIds: ['task-publish'], projectId: project.projectId, title: 'Navigation baseline review', description: 'Review the synthetic navigation baseline.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+    comments: [{ __typename: 'ProjectTaskComment', id: 1, createdAt: '2026-08-22T04:10:00.000Z', text: 'Started with the left navigation; the sidebar order matches.' }, { __typename: 'ProjectTaskComment', id: 2, createdAt: '2026-08-22T04:30:00.000Z', text: 'Settings still to check.\nThen the Nodes page.' }],
     root: taskRoot({ recipientAddress: '/documentation_writer', ingressAgentRunId: 'worker-writer-001', status: 'running' }) },
-  { __typename: 'ProjectTask', taskId: 'task-translate', taskKey: 'prototype-launch-3', dependsOnTaskIds: ['task-review', 'task-outline'], partOfTaskId: 'task-outline', projectId: project.projectId, description: 'Translate the release summary.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+  { __typename: 'ProjectTask', taskId: 'task-translate', taskKey: 'prototype-launch-3', dependsOnTaskIds: ['task-review', 'task-outline'], partOfTaskId: 'task-outline', projectId: project.projectId, title: 'Release summary translation', description: 'Translate the release summary.', status: 'IN_PROGRESS', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
     root: taskRoot({ recipientAddress: '/translator', ingressAgentRunId: 'worker-translator-001', start: 'failed', startError: { __typename: 'TaskRootStartError', code: 'AGENT_DEFINITION_NOT_FOUND', message: 'No agent is available at /translator.' }, status: 'offline' }) },
-  { __typename: 'ProjectTask', taskId: 'task-publish', taskKey: 'prototype-launch-4', dependsOnTaskIds: [], partOfTaskId: 'task-outline', projectId: project.projectId, description: 'Publish the deterministic evidence summary.', status: 'DONE', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+  { __typename: 'ProjectTask', taskId: 'task-publish', taskKey: 'prototype-launch-4', dependsOnTaskIds: [], partOfTaskId: 'task-outline', projectId: project.projectId, title: 'Evidence summary', description: 'Publish the deterministic evidence summary.', status: 'DONE', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
     root: taskRoot({ kind: 'team', recipientAddress: '/release_team', ingressAgentRunId: 'worker-team-publish-researcher-001', teamRunId: 'worker-team-publish-001', closed: true, status: 'offline' }) },
   // delegated-copy-task-locator refresh (17e4299, 814e41a, 7f7b2c8): a Task dropped as not needed
   // (CANCELLED) is hidden until the board's "Cancelled (N)" toggle shows its lane.
-  { __typename: 'ProjectTask', taskId: 'task-retire', taskKey: 'prototype-launch-5', dependsOnTaskIds: [], partOfTaskId: 'task-outline', projectId: project.projectId, description: 'Retire the unused synthetic welcome banner.', status: 'CANCELLED', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
+  { __typename: 'ProjectTask', taskId: 'task-retire', taskKey: 'prototype-launch-5', dependsOnTaskIds: [], partOfTaskId: 'task-outline', projectId: project.projectId, title: 'Welcome banner cleanup', description: 'Retire the unused synthetic welcome banner.', status: 'CANCELLED', createdAt: fixedNow, updatedAt: fixedNow, contextFiles: [],
     root: taskRoot({ recipientAddress: '/documentation_writer', ingressAgentRunId: 'worker-writer-002', closed: true, status: 'offline' }) },
 ]
 
@@ -492,11 +525,23 @@ export const ensureTaskKeys = (data) => {
     data.taskKeySeq[item.projectId] = seq
   }
 }
+// task-comments, task titles: every Project Task has a title (its one-line name) and a comment thread. A Task seeded
+// without a title (the design's example data) gets its description's first line, bounded.
+const ensureTaskText = (data) => {
+  for (const task of data.tasks) {
+    task.comments ??= []
+    if (typeof task.title !== 'string' || !task.title.trim()) {
+      const line = String(task.description ?? '').split(/\r?\n/).map(part => part.trim()).find(part => part) ?? ''
+      task.title = line.length > 60 ? `${line.slice(0, 59).trimEnd()}…` : line.replace(/[.]$/, '')
+    }
+  }
+}
 export const projectData = (state) => {
   if (!state.projectData) {
     state.projectData = { projects: [structuredClone(project)], tasks: structuredClone(projectTasks), tasksWithoutProject: structuredClone(tasksWithoutProject), seq: 0 }
   }
   ensureTaskKeys(state.projectData)
+  ensureTaskText(state.projectData)
   return state.projectData
 }
 const projectError = (message, code) => ({ __projectError: { message, extensions: { code } } })
@@ -560,8 +605,9 @@ export function projectMutationFixture(operationName, variables = {}, state) {
       return { [field]: withCounts(data, current) }
     }
     case 'CreateProjectTask': {
+      if (!String(input.title || '').trim()) return projectError('Task title is required.', 'TASK_TITLE_REQUIRED')
       if (!String(input.description || '').trim()) return projectError('Task description is required.', 'TASK_DESCRIPTION_REQUIRED')
-      const task = { __typename: 'ProjectTask', taskId: `task-created-${++data.seq}`, projectId: input.projectId, description: input.description.trim(), status: 'TODO', createdAt: fixedNow, updatedAt: `2026-08-22T05:${String(data.seq).padStart(2, '0')}:00.000Z`, contextFiles: contextFilesFrom(state, input.contextDraft?.storedFilenames), root: null,
+      const task = { __typename: 'ProjectTask', taskId: `task-created-${++data.seq}`, projectId: input.projectId, title: input.title.trim(), comments: [], description: input.description.trim(), status: 'TODO', createdAt: fixedNow, updatedAt: `2026-08-22T05:${String(data.seq).padStart(2, '0')}:00.000Z`, contextFiles: contextFilesFrom(state, input.contextDraft?.storedFilenames), root: null,
         dependsOnTaskIds: Array.isArray(input.dependsOnTaskIds) ? [...input.dependsOnTaskIds] : [], partOfTaskId: input.partOfTaskId || null }
       data.tasks.push(task)
       ensureTaskKeys(data)
@@ -571,6 +617,8 @@ export function projectMutationFixture(operationName, variables = {}, state) {
       const task = data.tasks.find(item => item.projectId === input.projectId && item.taskId === input.taskId)
       if (!task) return projectError('Task not found.', 'TASK_NOT_FOUND')
       const changes = input.contextChanges || {}
+      if (!String(input.title || '').trim()) return projectError('Task title is required.', 'TASK_TITLE_REQUIRED')
+      task.title = input.title.trim()
       task.description = input.description.trim()
       task.updatedAt = `2026-08-22T05:${String(++data.seq).padStart(2, '0')}:00.000Z`
       task.contextFiles = [...task.contextFiles.filter(file => !(changes.removeStoredFilenames || []).includes(file.storedFilename)), ...contextFilesFrom(state, changes.addStoredFilenames)]
@@ -578,6 +626,13 @@ export function projectMutationFixture(operationName, variables = {}, state) {
       // task-part-of: a supplied parent replaces it, null clears it, omitted keeps it (the server's one-level rules are not modelled).
       if (input.partOfTaskId !== undefined) task.partOfTaskId = input.partOfTaskId && input.partOfTaskId !== task.taskId ? input.partOfTaskId : null
       return { updateProjectTask: task }
+    }
+    case 'AddProjectTaskComment': {
+      const task = data.tasks.find(item => item.projectId === input.projectId && item.taskId === input.taskId)
+      if (!task) return projectError('Task not found.', 'TASK_NOT_FOUND')
+      // The server sets the comment's number and time; the Task is returned with its thread (a comment is only added).
+      task.comments.push({ __typename: 'ProjectTaskComment', id: task.comments.length + 1, createdAt: new Date().toISOString(), text: String(input.text).trim() })
+      return { addProjectTaskComment: task }
     }
     case 'DeleteProjectTask': {
       data.tasks = data.tasks.filter(item => !(item.projectId === input.projectId && item.taskId === input.taskId))
@@ -661,7 +716,7 @@ export function skillSourceMutationFixture(operationName, variables = {}, state)
 export const SKILL_SOURCE_MUTATIONS = new Set(['AddSkillSource', 'RemoveSkillSource', 'ImportGitHubSkillSource', 'CheckGitHubSkillSourceUpdates', 'UpdateGitHubSkillSource', 'RemoveGitHubSkillSource'])
 // WEB-BASELINE-REFRESH-010 (3126536): Stop and model change of a run's delegated copies.
 export const DELEGATED_MUTATIONS = new Set(['StopDelegatedExecution', 'UpdateDelegatedLaunchSelections'])
-export const PROJECT_MUTATIONS = new Set(['CreateProject', 'UpdateProject', 'DeleteProject', 'AddProjectWorkspace', 'UpdateProjectWorkspace', 'RemoveProjectWorkspace', 'CreateProjectTask', 'UpdateProjectTask', 'DeleteProjectTask'])
+export const PROJECT_MUTATIONS = new Set(['CreateProject', 'UpdateProject', 'DeleteProject', 'AddProjectWorkspace', 'UpdateProjectWorkspace', 'RemoveProjectWorkspace', 'CreateProjectTask', 'UpdateProjectTask', 'AddProjectTaskComment', 'DeleteProjectTask'])
 
 // History row for the deterministic TeamRun created by CreateAgentTeamRun.
 const launchedTeamRunHistoryItem = {
@@ -807,7 +862,7 @@ const memoryFlags = {
 
 const memoryStatus = {
   hub: { enabled: false, advertisedHubBaseUrl: 'http://127.0.0.1:4310', updatedAt: fixedNow },
-  source: { enabled: false, sourceNodeId: 'prototype-node', displayName: 'Prototype Node', hubBaseUrl: '', hubTokenConfigured: false, hubTokenPreview: null, backgroundEnabled: false, intervalMs: 60000, batchSize: 50, updatedAt: fixedNow },
+  source: { enabled: false, memorySyncSourceId: 'prototype-node', displayName: 'Prototype Node', hubBaseUrl: '', hubTokenConfigured: false, hubTokenPreview: null, backgroundEnabled: false, intervalMs: 60000, batchSize: 50, updatedAt: fixedNow },
   connectionInfo: { hubEnabled: false, advertisedHubBaseUrl: 'http://127.0.0.1:4310', ingestEndpointUrl: 'http://127.0.0.1:4310/rest/memory-sync/ingest', healthEndpointUrl: 'http://127.0.0.1:4310/rest/health', secureTransportWarning: null, credentials: [] },
   sourceState: { jobState: 'IDLE', lastSuccessfulSyncAt: null, lastError: null, trackedFileCount: 0 },
   imports: [],
@@ -916,13 +971,27 @@ const currentTaskOf = (state, matches) => {
   const tasks = [...data.tasks, ...data.tasksWithoutProject].filter(task => task.root && matches(task.root))
   const open = tasks.filter(task => task.status === 'TODO' || task.status === 'IN_PROGRESS')
   const task = [...(open.length ? open : tasks)].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))[0]
-  return task ? { __typename: 'TaskWorkerTaskRef', taskId: task.taskId, projectId: task.projectId ?? null, description: task.description, status: task.status } : null
+  return task ? { __typename: 'TaskWorkerTaskRef', taskId: task.taskId, projectId: task.projectId ?? null, title: task.projectId ? task.title : null, description: task.description, status: task.status } : null
 }
 
+// Server settings as this caller's node holds them (`state.serverSettings`, reset with the scenario): the card switches
+// ("Show internal agents", the Claude one-hour cache) write them and read them back.
+const serverSettingsOf = (state) => (state.serverSettings ??= [
+  { __typename: 'ServerSetting', key: 'LOG_LEVEL', value: 'INFO', description: 'Synthetic log verbosity.', isEditable: true, isDeletable: true },
+  { __typename: 'ServerSetting', key: 'DATA_DIR', value: '/synthetic/prototype-data', description: 'Isolated synthetic data directory.', isEditable: false, isDeletable: false },
+])
+const SHOW_INTERNAL_AGENTS_KEY = 'AUTOBYTEUS_SHOW_INTERNAL_AGENTS'
+// autobyteus-308: the system's own helper agent. The server lists it only while "Show internal agents" is on.
+const internalAgent = {
+  ...agent, id: 'autobyteus-agent-architect', name: 'Agent Architect', role: 'Drafts agent definitions for the system.',
+  description: 'The system\'s own helper that drafts agent definitions.', instructions: 'Draft an agent definition from the request.',
+  toolNames: ['read_file'], skillNames: [], skillScope: 'CONFIGURED', ownerPackageId: null, defaultLaunchConfig: null, internal: true,
+}
 export function fixtureContext(state) {
   const empty = state.scenario === 'empty'
   const appsEnabled = state.scenario === 'apps_disabled' ? false : state.applicationsEnabled
-  const agents = empty ? [] : withDefinitionIssues(state, 'agents', [agent, secondAgent, dailyAssistant])
+  const showInternal = serverSettingsOf(state).some(setting => setting.key === SHOW_INTERNAL_AGENTS_KEY && String(setting.value).trim().toLowerCase() === 'true')
+  const agents = empty ? [] : withDefinitionIssues(state, 'agents', [agent, secondAgent, dailyAssistant, ...(showInternal ? [internalAgent] : [])])
   const teams = empty ? [] : withDefinitionIssues(state, 'teams', [team])
   const applications = empty ? [] : [application]
   const workspaces = empty ? [] : [workspace, tempWorkspace]
@@ -1022,9 +1091,17 @@ export const mcpImportResult = (jsonString) => {
 }
 
 export function operationFixture(operationName, variables = {}, state) {
+  // one-nodes-tab (shipped): this node's remote-collaboration settings; the other nodes answer through the same world.
+  const world = networkWorldOf(state)
+  if (world.OPERATIONS.has(operationName)) {
+    const { answer, delayMs } = world.graphql(world.boundNodeId, operationName, variables)
+    state.lastDelayMs = delayMs
+    return answer.errors ? { __projectError: answer.errors[0] } : answer.data
+  }
   // WEB-BASELINE-REFRESH-012: Notification Center, Agent Runtimes and Remote Collaboration (node-settings-fixtures.mjs).
   const nodeSettings = nodeSettingsOperation(operationName, variables, state)
   if (nodeSettings !== undefined) return nodeSettings
+  if (operationName === 'UpdateServerSetting' && state.scenario === 'settings_save_fails') return { __projectError: { message: 'Synthetic server setting save failure.', extensions: { code: 'SETTING_SAVE_FAILED' } } }
   if (EMBEDDING_MUTATIONS.has(operationName)) return embeddingMutation(embeddingOf(state), operationName, variables, embeddingProjects(state))
   if (operationName === 'EmbeddingSettingsStatus') {
     const e = embeddingOf(state)
@@ -1219,13 +1296,14 @@ export function operationFixture(operationName, variables = {}, state) {
     GetRunEventMonitorActiveTracePage: { getRunEventMonitorActiveTracePage: { beforeCursor: null, hasEarlier: false, loadedEarlierCount: 0, activeGeneration: 0, cursorStatus: 'IDLE', events: [] } },
     GetTeamMemberEventMonitorActiveTracePage: { getTeamMemberEventMonitorActiveTracePage: { beforeCursor: null, hasEarlier: false, loadedEarlierCount: 0, activeGeneration: 0, cursorStatus: 'IDLE', events: [] } },
     GetTeamRunResumeConfig: { getTeamRunResumeConfig: variables.teamRunId === createdTeamRunId
-      ? { teamRunId: createdTeamRunId, isActive: true, executionTree: createdTeamExecutionTree, closedTaskExecutions: [], modelConfigEditability: { editable: false, reason: null } }
-      : { teamRunId: teamRun.teamRunId, isActive: false, executionTree: storedTeamExecutionTree, closedTaskExecutions: [], modelConfigEditability: { editable: true, reason: null } } },
+      ? { teamRunId: createdTeamRunId, isActive: true, executionTree: createdTeamExecutionTree, closedTaskExecutions: [], remoteTaskExecutions: [], modelConfigEditability: { editable: false, reason: null } }
+      : { teamRunId: teamRun.teamRunId, isActive: false, executionTree: storedTeamExecutionTree, closedTaskExecutions: [], remoteTaskExecutions: [], modelConfigEditability: { editable: true, reason: null } } },
     GetAgentOrgRunInspection: { getAgentOrgRunInspection: {
       root_subject_kind: 'agent_org', root_run_id: orgRunId,
       root_org: {
         base_change_sequence: 1, is_active: false, execution_tree: orgExecutionTree,
         closed_task_executions: [],
+        remote_task_executions: [],
         communication_messages: { schemaVersion: 1, subjectKind: 'agent_org', orgRunId, messages: [] },
         // A stored (inactive) root reports no live AgentRun statuses.
         agent_statuses: [],
@@ -1255,15 +1333,21 @@ export function operationFixture(operationName, variables = {}, state) {
     CreateAgentDefinition: { createAgentDefinition: { ...agent, ...agentInput, id: agentInput.id || 'agent-created-fixture' } }, UpdateAgentDefinition: { updateAgentDefinition: { ...agent, ...agentInput } }, DeleteAgentDefinition: { deleteAgentDefinition: success },
     CreateAgentTeamDefinition: { createAgentTeamDefinition: { ...team, ...teamInput, id: teamInput.id || 'team-created-fixture' } }, UpdateAgentTeamDefinition: { updateAgentTeamDefinition: { ...team, ...teamInput } }, DeleteAgentTeamDefinition: { deleteAgentTeamDefinition: success },
     GetServerSettings: {
-      getServerSettings: [
-        { __typename: 'ServerSetting', key: 'LOG_LEVEL', value: 'INFO', description: 'Synthetic log verbosity.', isEditable: true, isDeletable: true },
-        { __typename: 'ServerSetting', key: 'DATA_DIR', value: '/synthetic/prototype-data', description: 'Isolated synthetic data directory.', isEditable: false, isDeletable: false },
-      ],
+      getServerSettings: structuredClone(serverSettingsOf(state)),
       getEffectiveWorkingContextCompactionStrategyId: 'default',
       getEffectiveStreamingContentFlushIntervalMs: 50,
     },
     GetSearchConfig: { getSearchConfig: { provider: 'none', vaultHealth: 'healthy', instructionCode: null, serperStorageState: 'NOT_CONFIGURED', serpapiStorageState: 'NOT_CONFIGURED', vertexAiSearchStorageState: 'NOT_CONFIGURED', vertexAiSearchServingConfig: '' } },
-    UpdateServerSetting: { updateServerSetting: true }, DeleteServerSetting: { deleteServerSetting: true }, SetSearchConfig: { setSearchConfig: true },
+    UpdateServerSetting: { updateServerSetting: (() => {
+      if (operationName !== 'UpdateServerSetting') return 'Server setting updated successfully.'
+      const settings = serverSettingsOf(state)
+      const existing = settings.find(setting => setting.key === variables.key)
+      if (existing) existing.value = variables.value
+      else settings.push({ __typename: 'ServerSetting', key: variables.key, value: variables.value, description: '', isEditable: true, isDeletable: true })
+      return 'Server setting updated successfully.'
+    })() },
+    DeleteServerSetting: { deleteServerSetting: (() => { if (operationName === 'DeleteServerSetting') state.serverSettings = serverSettingsOf(state).filter(setting => setting.key !== variables.key); return 'Server setting deleted successfully.' })() },
+    SetSearchConfig: { setSearchConfig: true },
     GetAppDataMigrations: { getAppDataMigrations: c.empty ? [] : [{ migrationId: 'prototype-migration', displayName: 'Prototype fixture migration', description: 'No production data is touched.', status: 'COMPLETED', requiredOnStartup: false, recoveryAction: null, canRetry: false, attempts: 1, startedAt: fixedNow, completedAt: fixedNow, summary: 'Synthetic migration already complete.', errorMessage: null, logPath: null }] },
     RunAppDataMigration: { runAppDataMigration: { migrationId: variables.migrationId, status: 'COMPLETED', summary: 'Synthetic migration completed.' } },
     ManagedMessagingGatewayStatus: { managedMessagingGatewayStatus: gatewayStatus(state) },
@@ -1276,12 +1360,12 @@ export function operationFixture(operationName, variables = {}, state) {
     UpsertExternalChannelBinding: { upsertExternalChannelBinding: { __typename: 'ExternalChannelBinding', id: 'binding-updated-fixture', ...(variables.input || {}), updatedAt: fixedNow } }, DeleteExternalChannelBinding: { deleteExternalChannelBinding: success },
     GetMemorySyncStatus: { getMemorySyncStatus: memoryStatus }, ListMemoryHubUrlCandidates: { listMemoryHubUrlCandidates: [{ id: 'current', kind: 'current', label: 'Current prototype node', baseUrl: 'http://127.0.0.1:4310', source: 'fixture' }] }, GetMemoryHubConnectionInfo: { getMemoryHubConnectionInfo: memoryStatus.connectionInfo },
     UpdateMemoryHubConfig: { updateMemoryHubConfig: memoryStatus }, UpdateMemorySyncSourceConfig: { updateMemorySyncSourceConfig: memoryStatus },
-    CreateMemoryHubSourceCredential: { createMemoryHubSourceCredential: { plaintextToken: 'prototype_fixture_token', credential: { credentialId: 'credential-fixture', label: 'Prototype', boundSourceNodeId: 'prototype-node', createdAt: fixedNow, lastUsedAt: null, revokedAt: null, status: 'ACTIVE' } } },
-    RegenerateMemoryHubSourceCredential: { regenerateMemoryHubSourceCredential: { plaintextToken: 'prototype_fixture_token_regenerated', credential: { credentialId: variables.credentialId, label: 'Prototype', boundSourceNodeId: 'prototype-node', createdAt: fixedNow, lastUsedAt: null, revokedAt: null, status: 'ACTIVE' } } },
-    RevokeMemoryHubSourceCredential: { revokeMemoryHubSourceCredential: { credentialId: variables.credentialId, label: 'Prototype', boundSourceNodeId: 'prototype-node', createdAt: fixedNow, lastUsedAt: null, revokedAt: fixedNow, status: 'REVOKED' } },
-    TestMemoryHubConnection: { testMemoryHubConnection: { ok: true, hubEnabled: false, sourceNodeId: 'prototype-node', authenticated: true, message: 'Deterministic fixture connection succeeded.' } },
+    CreateMemoryHubSourceCredential: { createMemoryHubSourceCredential: { plaintextToken: 'prototype_fixture_token', credential: { credentialId: 'credential-fixture', label: 'Prototype', boundMemorySyncSourceId: 'prototype-node', createdAt: fixedNow, lastUsedAt: null, revokedAt: null, status: 'ACTIVE' } } },
+    RegenerateMemoryHubSourceCredential: { regenerateMemoryHubSourceCredential: { plaintextToken: 'prototype_fixture_token_regenerated', credential: { credentialId: variables.credentialId, label: 'Prototype', boundMemorySyncSourceId: 'prototype-node', createdAt: fixedNow, lastUsedAt: null, revokedAt: null, status: 'ACTIVE' } } },
+    RevokeMemoryHubSourceCredential: { revokeMemoryHubSourceCredential: { credentialId: variables.credentialId, label: 'Prototype', boundMemorySyncSourceId: 'prototype-node', createdAt: fixedNow, lastUsedAt: null, revokedAt: fixedNow, status: 'REVOKED' } },
+    TestMemoryHubConnection: { testMemoryHubConnection: { ok: true, hubEnabled: false, memorySyncSourceId: 'prototype-node', authenticated: true, message: 'Deterministic fixture connection succeeded.' } },
     StartMemorySync: { startMemorySync: { startedAt: fixedNow, finishedAt: fixedNow, scannedFiles: 2, changedFiles: 1, unchangedFiles: 1, deferredFiles: 0, committedBatches: 1, duplicateBatches: 0 } },
-    ListMemoryExplorerSources: { listMemoryExplorerSources: [{ key: 'local', type: 'local', label: 'This node', sourceNodeId: 'prototype-node', displayName: 'Prototype Node', readOnly: false, lastImportedAt: null, lastSyncStatus: null }] },
+    ListMemoryExplorerSources: { listMemoryExplorerSources: [{ key: 'local', type: 'local', label: 'This node', memorySyncSourceId: 'prototype-node', displayName: 'Prototype Node', readOnly: false, lastImportedAt: null, lastSyncStatus: null }] },
     ListAgentsWithMemory: { listAgentsWithMemory: paged(c.empty ? [] : [{ attribution: 'local', agentDefinitionId: agent.id, displayName: agent.name, stableId: agent.id, runCount: 1, latestMemoryAt: fixedNow, memory: memoryFlags }]) },
     ListAgentRunsWithMemory: { listAgentRunsWithMemory: paged(c.empty ? [] : [{ ...run, memory: memoryFlags }]) },
     ListAgentTeamsWithMemory: { listAgentTeamsWithMemory: paged(c.empty ? [] : [{ teamDefinitionId: team.id, teamDefinitionName: team.name, teamRunCount: 1, memberMemoryCount: 2, latestMemoryAt: fixedNow, memory: memoryFlags }]) },

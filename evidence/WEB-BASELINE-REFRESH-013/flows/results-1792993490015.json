@@ -1,0 +1,962 @@
+[
+ {
+  "id": "NOD-010",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-011",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-012",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-013",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-014",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-015",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   39,
+   39
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-016",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   37,
+   37
+  ],
+  "pix": {
+   "changed": 3,
+   "max": 7
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-017",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   37,
+   37
+  ],
+  "pix": {
+   "changed": 3,
+   "max": 7
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-018",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   40,
+   40
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-019",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   40,
+   40
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-020",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   37,
+   37
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-021",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   37,
+   37
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-022",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   37,
+   37
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-023",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   39,
+   39
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-024",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   37,
+   37
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-025",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   34,
+   34
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-026",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-027",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-028",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-029",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 1,
+   "max": 7
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-030",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 1,
+   "max": 7
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-031",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "NOD-032",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "NOD-033",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "NOD-034",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "NOD-035",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "NOD-036",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "NOD-037",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'docker' }).first().getByText('Connection details').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "NOD-040",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   86,
+   86
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-041",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   86,
+   86
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-042",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   84,
+   84
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'old-box' }).first().getByText('Connection details').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'old-box' }).first().getByText('Connection details').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "NOD-043",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   84,
+   84
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'nas' }).first().getByText('Connection details').first()\n"
+  ],
+  "baseErr": [
+   "step: locator.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('[data-testid^=\"node-row-\"]').filter({ hasText: 'nas' }).first().getByText('Connection details').first()\n"
+  ],
+  "pass": false
+ },
+ {
+  "id": "NOD-044",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   86,
+   86
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-045",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   83,
+   83
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-046",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   83,
+   83
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-047",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   83,
+   83
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-050",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   30,
+   30
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-051",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   31,
+   31
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-052",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   84,
+   84
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-053",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   79,
+   79
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-054",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   35,
+   35
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-055",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-056",
+  "route": [
+   "/nodes?nodeTab=dockerGuide",
+   "/nodes?nodeTab=dockerGuide"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   35,
+   35
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "NOD-057",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

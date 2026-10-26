@@ -1,0 +1,1884 @@
+[
+ {
+  "id": "MTX-001",
+  "route": [
+   "/chat",
+   "/chat"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 1,
+   "max": 2
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-002",
+  "route": [
+   "/chat",
+   "/chat"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 1,
+   "max": 2
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-003",
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-004",
+  "route": [
+   "/agents?view=create",
+   "/agents?view=create"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   36,
+   36
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-005",
+  "route": [
+   "/agents?view=detail&id=agent-researcher",
+   "/agents?view=detail&id=agent-researcher"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-006",
+  "route": [
+   "/agents?view=edit&id=agent-researcher",
+   "/agents?view=edit&id=agent-researcher"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   42,
+   42
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-007",
+  "route": [
+   "/agents?view=unsupported",
+   "/agents?view=unsupported"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-008",
+  "route": [
+   "/agent-teams?view=team-list",
+   "/agent-teams?view=team-list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   21,
+   21
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-009",
+  "route": [
+   "/agent-teams?view=team-create",
+   "/agent-teams?view=team-create"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-010",
+  "route": [
+   "/agent-teams?view=team-detail&id=team-product",
+   "/agent-teams?view=team-detail&id=team-product"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   22,
+   22
+  ],
+  "pix": {
+   "changed": 8,
+   "max": 1
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-011",
+  "route": [
+   "/agent-teams?view=team-edit&id=team-product",
+   "/agent-teams?view=team-edit&id=team-product"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   38,
+   38
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-012",
+  "route": [
+   "/agent-teams?view=unsupported",
+   "/agent-teams?view=unsupported"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   21,
+   21
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-013",
+  "route": [
+   "/agent-orgs?view=org-list",
+   "/agent-orgs?view=org-list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   21,
+   21
+  ],
+  "pix": {
+   "changed": 2,
+   "max": 2
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-014",
+  "route": [
+   "/agent-orgs?view=org-create",
+   "/agent-orgs?view=org-create"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   26,
+   26
+  ],
+  "pix": {
+   "changed": 11,
+   "max": 11
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-015",
+  "route": [
+   "/agent-orgs?view=org-detail&id=org-product-launch",
+   "/agent-orgs?view=org-detail&id=org-product-launch"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   21,
+   21
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-016",
+  "route": [
+   "/agent-orgs?view=org-edit&id=org-product-launch",
+   "/agent-orgs?view=org-edit&id=org-product-launch"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   31,
+   31
+  ],
+  "pix": {
+   "changed": 42,
+   "max": 14
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-017",
+  "route": [
+   "/applications",
+   "/applications"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   18,
+   18
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-018",
+  "route": [
+   "/applications/sample-app",
+   "/applications/sample-app"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-019",
+  "route": [
+   "/skills",
+   "/skills"
+  ],
+  "textEq": false,
+  "textMaskedEq": false,
+  "elsEq": false,
+  "els": [
+   23,
+   0
+  ],
+  "elsOnlySrc": [
+   "button||Chat|8|12|304|36|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|500|0",
+   "button||New chat|238|13|34|34|rgb(153, 153, 153)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button|||272|13|34|34|rgb(153, 153, 153)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||Agents|8|52|304|36|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|500|0",
+   "button||Agent Teams|8|92|304|36|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|500|0",
+   "button||Agent Orgs|8|132|304|36|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|500|0"
+  ],
+  "elsOnlyBase": [],
+  "pix": {
+   "changed": 911473,
+   "max": 238
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "Chat",
+   "Agents",
+   "Agent Teams",
+   "Agent Orgs",
+   "Projects",
+   "Applications",
+   "Skills",
+   "Memory",
+   "Nodes",
+   "Workspaces"
+  ],
+  "baseOnly": [],
+  "pass": false
+ },
+ {
+  "id": "MTX-020",
+  "route": [
+   "/skills?skill=prototype-research",
+   "/skills?skill=prototype-research"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   23,
+   23
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-021",
+  "route": [
+   "/memory?view=home&tab=agents",
+   "/memory?view=home&tab=agents"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 5,
+   "max": 9
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-022",
+  "route": [
+   "/memory?view=home&tab=teams",
+   "/memory?view=home&tab=teams"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 5,
+   "max": 9
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-023",
+  "route": [
+   "/memory?view=home&tab=orgs",
+   "/memory?view=home&tab=orgs"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 5,
+   "max": 9
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-024",
+  "route": [
+   "/memory?view=agent-detail&agentDefinitionId=agent-researcher&agentName=Research+Assistant",
+   "/memory?view=agent-detail&agentDefinitionId=agent-researcher&agentName=Research+Assistant"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   22,
+   22
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-025",
+  "route": [
+   "/memory?view=team-detail&teamDefinitionId=team-product&teamName=Product+Review+Team",
+   "/memory?view=team-detail&teamDefinitionId=team-product&teamName=Product+Review+Team"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   23,
+   23
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-026",
+  "route": [
+   "/memory?view=org-detail&orgDefinitionId=org-product-launch&orgName=Product+Launch+Org",
+   "/memory?view=org-detail&orgDefinitionId=org-product-launch&orgName=Product+Launch+Org"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   24,
+   24
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-027",
+  "route": [
+   "/memory?view=unsupported",
+   "/memory?view=unsupported"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 5,
+   "max": 9
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-028",
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   31,
+   31
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-029",
+  "route": [
+   "/nodes?nodeTab=memorySync",
+   "/nodes?nodeTab=memorySync"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   37,
+   37
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-030",
+  "route": [
+   "/nodes?nodeTab=phoneSetup",
+   "/nodes?nodeTab=phoneSetup"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   37,
+   37
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-031",
+  "route": [
+   "/nodes?nodeTab=dockerGuide",
+   "/nodes?nodeTab=dockerGuide"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   35,
+   35
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-032",
+  "route": [
+   "/nodes?nodeTab=nfsGuide",
+   "/nodes?nodeTab=nfsGuide"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   31,
+   31
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-033",
+  "route": [
+   "/projects",
+   "/projects"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-034",
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   30,
+   30
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-035",
+  "route": [
+   "/projects/new",
+   "/projects/new"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   22,
+   22
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-036",
+  "route": [
+   "/projects/project-prototype-launch/edit",
+   "/projects/project-prototype-launch/edit"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   27,
+   27
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-037",
+  "route": [
+   "/projects/project-prototype-launch/tasks/new",
+   "/projects/project-prototype-launch/tasks/new"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-038",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-1",
+   "/projects/project-prototype-launch/tasks/prototype-launch-1"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   28,
+   28
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-039",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-1/edit",
+   "/projects/project-prototype-launch/tasks/prototype-launch-1/edit"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-040",
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   26,
+   26
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-041",
+  "route": [
+   "/projects/temp-tasks",
+   "/projects/temp-tasks"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   23,
+   23
+  ],
+  "pix": {
+   "changed": 1,
+   "max": 2
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-042",
+  "route": [
+   "/projects/temp-tasks/tasks/temp-task-links",
+   "/projects/temp-tasks/tasks/temp-task-links"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   18,
+   18
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-043",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   27,
+   27
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-044",
+  "route": [
+   "/tools",
+   "/tools"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-045",
+  "route": [
+   "/media",
+   "/media"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   23,
+   23
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-046",
+  "route": [
+   "/settings?section=api-keys",
+   "/settings?section=api-keys"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 9128,
+   "max": 9
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-047",
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   17,
+   17
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-048",
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 5,
+   "max": 2
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-049",
+  "route": [
+   "/settings?section=token-usage",
+   "/settings?section=token-usage"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-050",
+  "route": [
+   "/settings?section=display",
+   "/settings?section=display"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   18,
+   18
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-051",
+  "route": [
+   "/settings?section=language",
+   "/settings?section=language"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   15,
+   15
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-052",
+  "route": [
+   "/settings?section=local-tools",
+   "/settings?section=local-tools"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   16,
+   16
+  ],
+  "pix": {
+   "changed": 1,
+   "max": 4
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-053",
+  "route": [
+   "/settings?section=mcp-servers",
+   "/settings?section=mcp-servers"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   22,
+   22
+  ],
+  "pix": {
+   "changed": 16,
+   "max": 14
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-054",
+  "route": [
+   "/settings?section=application-packages",
+   "/settings?section=application-packages"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   17,
+   17
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-055",
+  "route": [
+   "/settings?section=agent-packages",
+   "/settings?section=agent-packages"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   17,
+   17
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-056",
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   66,
+   66
+  ],
+  "pix": {
+   "changed": 9,
+   "max": 8
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-057",
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   29,
+   29
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-058",
+  "route": [
+   "/settings?section=server-settings&mode=advanced",
+   "/settings?section=server-settings&mode=advanced"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   27,
+   27
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-059",
+  "route": [
+   "/settings?section=server-settings&mode=migrations",
+   "/settings?section=server-settings&mode=migrations"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   20,
+   20
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-060",
+  "route": [
+   "/settings?section=extensions",
+   "/settings?section=extensions"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   14,
+   14
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-061",
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   16,
+   16
+  ],
+  "pix": {
+   "changed": 8,
+   "max": 1
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-062",
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   16,
+   16
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-063",
+  "route": [
+   "/applications",
+   "/applications"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   14,
+   14
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-064",
+  "route": [
+   "/memory",
+   "/memory"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   21,
+   21
+  ],
+  "pix": {
+   "changed": 5,
+   "max": 9
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-065",
+  "route": [
+   "/skills",
+   "/skills"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   17,
+   17
+  ],
+  "pix": {
+   "changed": 2,
+   "max": 2
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-066",
+  "route": [
+   "/chat",
+   "/chat"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   24,
+   24
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-067",
+  "route": [
+   "/projects",
+   "/projects"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   15,
+   15
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-068",
+  "route": [
+   "/agent-orgs?view=org-list",
+   "/agent-orgs?view=org-list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   16,
+   16
+  ],
+  "pix": {
+   "changed": 60,
+   "max": 45
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-069",
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   12,
+   12
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-070",
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   15,
+   15
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "console: Failed to fetch all workspace metadata: ApolloError: Synthetic recoverable GraphQL failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websoc",
+   "console: Failed to fetch all workspace metadata: ApolloError: Synthetic recoverable GraphQL failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websoc",
+   "console: Failed to fetch initial data for agents page: ApolloError: Synthetic recoverable GraphQL failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+",
+   "console: Failed to fetch agent definitions: ApolloError: Synthetic recoverable GraphQL failure.\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+websocket@1"
+  ],
+  "baseErr": [
+   "console: Failed to reload AGENT definition problems: Error: Synthetic recoverable GraphQL failure.\n    at http://127.0.0.1:4820/_nuxt/stores/definitionProblemsStore.ts?t=1792998370290:19:33\n    at async run (http://127.0.0.1:4820/_nuxt/utils/agentPackages/loadedListReloader.ts:9:9)\n    at async Proxy.ensureL",
+   "console: Failed to fetch server settings: Error: Server did not return an effective live response update interval\n    at Proxy.fetchServerSettings (http://127.0.0.1:4820/_nuxt/stores/serverSettings.ts?t=1792998370290:147:17)"
+  ],
+  "pass": false
+ },
+ {
+  "id": "MTX-071",
+  "route": [
+   "/skills",
+   "/skills"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   24,
+   24
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-072",
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   28,
+   28
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-073",
+  "route": [
+   "/agent-teams?view=team-list",
+   "/agent-teams?view=team-list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   23,
+   23
+  ],
+  "pix": {
+   "changed": 3,
+   "max": 2
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-074",
+  "route": [
+   "/agent-orgs?view=org-list",
+   "/agent-orgs?view=org-list"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   23,
+   23
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-075",
+  "route": [
+   "/settings?section=agent-packages",
+   "/settings?section=agent-packages"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-076",
+  "route": [
+   "/chat",
+   "/chat"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 1,
+   "max": 2
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-077",
+  "route": [
+   "/chat",
+   "/chat"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 1,
+   "max": 2
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-078",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   27,
+   27
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-079",
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   30,
+   30
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-080",
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   25,
+   25
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-081",
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   19,
+   19
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-082",
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   29,
+   29
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-083",
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   41,
+   41
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-084",
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   24,
+   24
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-085",
+  "route": [
+   "/mobile",
+   "/mobile"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   6,
+   6
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-086",
+  "route": [
+   "/mobile",
+   "/mobile"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   8,
+   8
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-087",
+  "route": [
+   "/mobile?unsupported=desktopSettings",
+   "/mobile?unsupported=desktopSettings"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   8,
+   8
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "MTX-088",
+  "route": [
+   "/mobile",
+   "/mobile"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   6,
+   6
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [
+   "console: Failed to fetch agent definitions: ApolloError: Response not successful: Received status code 403\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fastify+",
+   "console: Failed to fetch agent team definitions: ApolloError: Response not successful: Received status code 403\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fas",
+   "console: Failed to fetch all workspace metadata: ApolloError: Response not successful: Received status code 403\n    at new ApolloError (http://127.0.0.1:4822/_nuxt/@fs/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/node_modules/.pnpm/@apollo+client@3.14.0_@types+react@19.2.14_graphql-ws@6.0.7_@fas"
+  ],
+  "baseErr": [],
+  "pass": true
+ }
+]

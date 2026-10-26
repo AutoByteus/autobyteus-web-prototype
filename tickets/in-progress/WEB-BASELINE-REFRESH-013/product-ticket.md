@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `WEB-BASELINE-REFRESH-013` (baseline ticket)
 - Title: Refresh the AutoByteus Web baseline to `origin/personal@d74f75a51a` (adds Settings → Model Routing, "Show internal agents", delegated-copy rows)
-- Status: `Baseline Needed` (request sent to the UI Baseline Bootstrapper 2026-10-26)
+- Status: `Completed` (accepted by Product 2026-10-26)
 - Requester: Product UI/UX Designer, 2026-10-26, for the design `delegated-runtime-model-routing` (engineering Task autobyteus-32, Model Router).
 - Reason, verified with git: the Model Routing page (`components/settings/model-routing/*`, source merge `eac8ee6dfc`, autobyteus-303),
   the "Show internal agents" card (`components/settings/ShowInternalAgentsCard.vue`, merge `e34321789d`, autobyteus-308) and the
@@ -30,3 +30,18 @@
 
 - Next expected action: the Bootstrapper returns `Completed` or `Blocked`; the Product UI/UX Designer reviews, accepts and
   integrates the refresh into `personal`; the design `delegated-runtime-model-routing` then merges `personal`.
+
+## Product Acceptance (2026-10-26)
+
+- Bootstrapper result: `Completed` (Refresh), report `ui-baseline-report.md`, evidence `evidence/WEB-BASELINE-REFRESH-013/`, pin `d74f75a51ab7dc47d42a13f33e0f943c3a230ad7`.
+- Sync check (Product): `components/settings/model-routing/*` (5 files), `ShowInternalAgentsCard.vue`, `utils/runSettings/delegatedLaunchRows.ts`, and the en and zh-CN
+  `modelRoutingSettings.ts` compared byte for byte with `d74f75a51a:autobyteus-web/…`: all identical.
+- Data origin (Product): the Model Routing runtimes, limits, models and balances (`prototype/source-observation/fixtures.mjs`, scenarios `routing_*`) are hand-written
+  and invented; the node network, remote runs and update fixtures are invented as in earlier refreshes. No real data. No test, `validate:*` or `capture:*` script was added;
+  `package.json` and the lockfile are unchanged.
+- Browser (Product, port 4820): `/settings?section=model-routing` shows the Model Routing page with "Agent runtimes now", the Embedded Node line, Check again, and the Codex
+  limits (88% / 41% left, reset times) and "2 models · 1 blocked".
+- Decisions on the Bootstrapper's questions: (1) the approved references of `one-nodes-tab`, `remote-runs-in-tree` and `update-checks-and-auto-updates` stay as those designs'
+  record and are not recaptured (a finished design is a record of what the user approved); (2) the design example data for remote runs stays in the default scenario;
+  (3) the 3.5 s automatic-update delay stays (a design simplification); (4) Reconnect's collaborator case on delegated copies stays open and is out of scope.
+- Runtime: dev server 4820 stopped.

@@ -17,7 +17,11 @@
       <div class="flex flex-wrap items-start justify-between gap-x-4 gap-y-3">
         <div class="min-w-0 flex-1 basis-80">
           <h4 class="flex items-center gap-2.5 text-sm font-semibold text-slate-900">
-            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg" :class="store.switchOn ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'" data-testid="this-node-collab-icon">
+            <span
+              class="inline-flex h-8 w-8 items-center justify-center rounded-lg"
+              :class="store.switchOn ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'"
+              data-testid="this-node-collab-icon"
+            >
               <RemoteCollaborationIcon size-class="h-5 w-5" />
             </span>
             {{ t(k('collab.title')) }}
@@ -25,7 +29,11 @@
           <p class="mt-2 text-sm text-gray-500">{{ t(k('collab.description')) }}</p>
         </div>
         <div class="inline-flex items-center gap-3">
-          <span class="text-sm font-medium" :class="store.switchBusy ? 'text-slate-600' : store.switchOn ? 'text-emerald-700' : 'text-amber-700'" data-testid="this-node-switch-status">
+          <span
+            class="text-sm font-medium"
+            :class="store.switchBusy ? 'text-slate-600' : store.switchOn ? 'text-emerald-700' : 'text-amber-700'"
+            data-testid="this-node-switch-status"
+          >
             {{ store.switchBusy ? t(k('collab.saving')) : store.switchOn ? t(k('collab.on')) : t(k('collab.off')) }}
           </span>
           <button
@@ -43,7 +51,7 @@
           </button>
         </div>
       </div>
-      <p v-if="!store.switchOn" class="mt-3 text-sm text-slate-600" data-testid="this-node-off-note">{{ t(k('collab.offNote')) }}</p>
+      <p v-if="!store.switchOn && !store.switchBusy" class="mt-3 text-sm text-slate-600" data-testid="this-node-off-note">{{ t(k('collab.offNote')) }}</p>
 
       <div class="mt-3">
         <button
@@ -73,12 +81,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import RemoteCollaborationIcon from '~/components/settings/nodes/RemoteCollaborationIcon.vue'
-import { useNodeText } from '~/composables/useNodeText'
+import { useLocalization } from '~/composables/useLocalization'
 import { useNodeListStore } from '~/stores/nodeListStore'
+import { NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
 
+/** "This node": its name, type and address, and its remote collaboration switch with the rules (REQ-701, REQ-709). */
 defineProps<{ nodeName: string; nodeTypeLabel: string; baseUrl?: string }>()
 
-const { t, k } = useNodeText()
+const { t } = useLocalization()
+const k = (key: string): string => `${NODES_PAGE_KEY}${key}`
 const store = useNodeListStore()
 const rulesOpen = ref(false)
 </script>

@@ -13,9 +13,12 @@ export type UpdateNotificationOutcome = 'AUTO_UPDATED' | 'AUTO_FAILED' | 'AUTO_W
 export interface NodeUpdateNotification {
   kind: NodeUpdateNotificationKind
   sourceId: string
+  /** For agent runtimes the runtime kind (`codex_app_server`); the web names it as Settings → Agent Runtimes does. */
   name: string
-  repositoryUrl: string
+  /** Null for agent runtimes. */
+  repositoryUrl: string | null
   defaultBranch: string | null
+  /** A commit SHA, or a version for agent runtimes. */
   installedRevision: string
   latestRevision: string
   foundAt: string
@@ -24,33 +27,43 @@ export interface NodeUpdateNotification {
   handledRevision: string | null
   handledAt: string | null
   outcome: UpdateNotificationOutcome | null
-  /** The reason of `AUTO_FAILED` (the node's or the vendor's message). */
+  /** The reason of `AUTO_FAILED` / `AUTO_WAITING` (the node's or the vendor's message). */
   outcomeReason: string | null
-  /** Runtimes only: agents of that runtime running now (Update is unavailable while any run). */
-  runningAgentCount: number
+  outcomeAt: string | null
 }
 
 /** The kinds the Notification Center shows; a section, its icon and its strings per kind. */
 export type UpdateNotificationKind = 'app' | 'agent_package' | 'skill_source' | 'agent_runtime'
+/** The node's kinds, as the Notification Center names them. */
+export type NodeSourceKind = Exclude<UpdateNotificationKind, 'app'>
 
-/** `/ws/update-notifications` frames (server → client); every frame means "re-read". */
+export const NODE_KIND_OF: Readonly<Record<NodeSourceKind, NodeUpdateNotificationKind>> = {
+  agent_package: 'AGENT_PACKAGE', skill_source: 'SKILL_SOURCE', agent_runtime: 'AGENT_RUNTIME',
+}
+
+/** `/ws/update-notifications` frames (server → client); every frame means "re-read" (the notifications or the settings). */
 export type UpdateNotificationChangeMessage =
   | { type: 'connected' }
   | { type: 'update_notifications_changed' }
+  | { type: 'update_settings_changed' }
 
-/** The node's check intervals and automatic-update switches ("Update checks" card; the same switches in the Notification Center). */
+type PerKind<T> = { agentPackages: T; skillSources: T; agentRuntimes: T }
+
+/** The node's check intervals and automatic-update switches (GraphQL `UpdateAutomationSettings`). */
 export interface UpdateAutomationSettings {
-  packageIntervalMinutes: number
-  skillIntervalMinutes: number
-  /** Runtime fields apply on the desktop's own node only. */
-  runtimeIntervalMinutes: number
-  autoUpdatePackages: boolean
-  autoUpdateSkills: boolean
-  autoUpdateRuntimes: boolean
+  /** Minutes, 15..1440. */
+  intervals: PerKind<number>
+  automaticUpdates: PerKind<boolean>
   /** ISO time until which GitHub asked this node to wait; null when it did not. */
-  waitUntil: string | null
+  githubWaitUntil: string | null
+  /** The node is the desktop's own node: the only one with agent runtime checks and updates. */
+  desktopEmbeddedNode: boolean
 }
-export type UpdateAutomationSwitch = 'autoUpdatePackages' | 'autoUpdateSkills' | 'autoUpdateRuntimes'
-export type UpdateIntervalField = 'packageIntervalMinutes' | 'skillIntervalMinutes' | 'runtimeIntervalMinutes'
+
+/** The settings' field of each node kind. */
+export const SETTINGS_FIELD_OF: Readonly<Record<NodeSourceKind, keyof PerKind<unknown>>> = {
+  agent_package: 'agentPackages', skill_source: 'skillSources', agent_runtime: 'agentRuntimes',
+}
+
 export const MIN_UPDATE_INTERVAL_MINUTES = 15
 export const MAX_UPDATE_INTERVAL_MINUTES = 24 * 60

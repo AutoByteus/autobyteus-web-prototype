@@ -1,0 +1,328 @@
+[
+ {
+  "id": "UPD-001",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   47,
+   47
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-002",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   57,
+   57
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-003",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": false,
+  "textMaskedEq": false,
+  "elsEq": false,
+  "els": [
+   53,
+   50
+  ],
+  "elsOnlySrc": [
+   "button||Settings|8|856|211|36|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|500|0",
+   "button||# updates|225|860|87|28|rgb(7, 89, 133)|rgb(186, 230, 253)|12px|600|0",
+   "button|switch||1366|232|36|20|rgb(0, 0, 0)|rgb(203, 213, 225)|16px|400|0",
+   "button||Codex #.#.# #.#.# · # hr. ago|1094|335|229|40|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||Update|1335|344|67|24|rgb(255, 255, 255)|rgb(3, 105, 161)|12px|600|0",
+   "button||Claude #.#.# #.#.# · # hr. ago|1094|396|229|40|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|16px|400|0"
+  ],
+  "elsOnlyBase": [
+   "button||Settings|8|856|215|36|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|500|0",
+   "button||# updates|229|860|83|28|rgb(7, 89, 133)|rgb(186, 230, 253)|12px|600|0",
+   "button|switch||1366|232|36|20|rgb(0, 0, 0)|rgb(16, 185, 129)|16px|400|0",
+   "button||New: Docs Pack With A Rather Long Name For A Package #a#b#c# e#f#a#b · # hr. ago|1094|315|229|40|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||Update|1335|324|67|24|rgb(255, 255, 255)|rgb(3, 105, 161)|12px|600|0",
+   "button||New: Research Pack Updated automatically to #f#e#d#|1094|454|241|40|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|16px|400|0"
+  ],
+  "pix": {
+   "changed": 98310,
+   "max": 252
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "11 updates",
+   "Runs the vendor's own update, which downloads from the vendor, when no agent of that runtime is running. New versions can change how your agents work.",
+   "Codex",
+   "0.163.0",
+   "0.164.0",
+   "Update unavailable while 2 agents are running.",
+   "Downloads new revisions from GitHub and installs them without asking. They can change what your agents do. Local changes are replaced.",
+   "a1b2c3d",
+   "9f8e7d6",
+   "data-wrangling-pack"
+  ],
+  "baseOnly": [
+   "4 updates",
+   "Installs new revisions on its own, replacing local changes. Switch off to update by hand.",
+   "Docs Pack With A Rather Long Name For A Package",
+   "0a1b2c3",
+   "e8f9a0b",
+   "Automatic update failed. Nothing was changed.",
+   "GitHub answered 502 while downloading the repository archive.",
+   "Updated automatically to 9f8e7d6",
+   "Clear",
+   "1 hr. ago"
+  ],
+  "pass": false
+ },
+ {
+  "id": "UPD-004",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": false,
+  "textMaskedEq": false,
+  "elsEq": false,
+  "els": [
+   51,
+   34
+  ],
+  "elsOnlySrc": [
+   "button||Settings|8|856|209|36|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|500|0",
+   "button||# updates|223|860|89|28|rgb(7, 89, 133)|rgb(186, 230, 253)|12px|600|0",
+   "button|switch||1366|102|36|20|rgb(0, 0, 0)|rgb(203, 213, 225)|16px|400|0",
+   "button||Codex #.#.# #.#.# · # hr. ago|1094|205|229|40|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||Update|1335|214|67|24|rgb(255, 255, 255)|rgb(3, 105, 161)|12px|600|0",
+   "button||Claude #.#.# #.#.# · # hr. ago|1094|266|229|40|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|16px|400|0"
+  ],
+  "elsOnlyBase": [
+   "button||Settings|8|856|216|36|rgb(77, 77, 77)|rgba(0, 0, 0, 0)|14px|500|0",
+   "button||# updated|230|860|82|28|rgb(7, 89, 133)|rgb(186, 230, 253)|12px|600|0",
+   "button|switch||1366|102|36|20|rgb(0, 0, 0)|rgb(16, 185, 129)|16px|400|0",
+   "button||New: Research Pack Updated automatically to #f#e#d#|1094|185|241|40|rgb(0, 0, 0)|rgba(0, 0, 0, 0)|16px|400|0",
+   "button||Clear|1347|194|55|24|rgb(102, 102, 102)|rgba(0, 0, 0, 0)|12px|600|0",
+   "a||See changes on GitHub|1157|227|153|20|rgb(3, 105, 161)|rgba(0, 0, 0, 0)|12px|500|0"
+  ],
+  "pix": {
+   "changed": 140342,
+   "max": 252
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "srcOnly": [
+   "10 updates",
+   "Agent runtime updates",
+   "Runs the vendor's own update, which downloads from the vendor, when no agent of that runtime is running. New versions can change how your agents work.",
+   "Codex",
+   "0.163.0",
+   "0.164.0",
+   "2 hr. ago",
+   "Update",
+   "Claude",
+   "2.1.302"
+  ],
+  "baseOnly": [
+   "1 updated",
+   "Agent package update",
+   "Installs new revisions on its own, replacing local changes. Switch off to update by hand.",
+   "New:",
+   "Updated automatically to 9f8e7d6",
+   "Clear",
+   "1 hr. ago",
+   "See changes on GitHub"
+  ],
+  "pass": false
+ },
+ {
+  "id": "UPD-005",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   47,
+   47
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-006",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   32,
+   32
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-007",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   49,
+   49
+  ],
+  "pix": {
+   "changed": 4,
+   "max": 10
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-008",
+  "route": [
+   "/workspace",
+   "/workspace"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   47,
+   47
+  ],
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ },
+ {
+  "id": "UPD-009",
+  "error": "page.waitForTimeout: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-010",
+  "error": "browserContext.newPage: Target page, context or browser has been closed\nBrowser logs:\n\n[pid=45133][err] [45140:83800687:1026/065518.338820:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065518.338961:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065518.338999:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065518.339092:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065518.339133:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45133:83800608:1026/065525.471612:ERROR:base/process/process_mac.cc:45] task_policy_set TASK_CATEGORY_POLICY: (os/kern) invalid argument (4)\n[pid=45133][err] [45133:83800608:1026/065525.471635:ERROR:base/process/process_mac.cc:90] task_policy_set TASK_SUPPRESSION_POLICY: (os/kern) invalid argument (4)\n[pid=45133][err] [45140:83800610:1026/065525.564521:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065525.564596:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065525.565533:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065525.565578:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065525.565995:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065525.566050:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065525.566203:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065525.566243:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065525.566370:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065525.566405:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45133:83800608:1026/065532.557760:ERROR:base/process/process_mac.cc:45] task_policy_set TASK_CATEGORY_POLICY: (os/kern) invalid argument (4)\n[pid=45133][err] [45133:83800608:1026/065532.557782:ERROR:base/process/process_mac.cc:90] task_policy_set TASK_SUPPRESSION_POLICY: (ipc/send) invalid destination port (0x10000003)\n[pid=45133][err] [45140:83800610:1026/065532.636628:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065532.636694:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065532.638946:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065532.638995:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065532.639126:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065532.639169:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065532.639268:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065532.639301:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065532.639389:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065532.639463:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45133:83800608:1026/065539.721842:ERROR:base/process/process_mac.cc:45] task_policy_set TASK_CATEGORY_POLICY: (os/kern) invalid argument (4)\n[pid=45133][err] [45133:83800608:1026/065539.721865:ERROR:base/process/process_mac.cc:90] task_policy_set TASK_SUPPRESSION_POLICY: (os/kern) invalid argument (4)\n[pid=45133][err] [45140:83800610:1026/065539.798492:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065539.798551:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065539.799916:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065539.799980:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065539.801010:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065539.801060:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065539.801264:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065539.801324:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065539.801473:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065539.801510:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065546.878954:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065546.880714:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065546.880874:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065546.880913:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065546.881023:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065546.881055:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065546.881150:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065546.881185:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065546.881288:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065546.881318:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45133:83800608:1026/065553.945163:ERROR:base/process/process_mac.cc:45] task_policy_set TASK_CATEGORY_POLICY: (os/kern) invalid argument (4)\n[pid=45133][err] [45133:83800608:1026/065553.945191:ERROR:base/process/process_mac.cc:90] task_policy_set TASK_SUPPRESSION_POLICY: (os/kern) invalid argument (4)\n[pid=45133][err] [45140:83800610:1026/065554.066862:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065554.066961:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065554.067196:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065554.067260:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065554.067427:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065554.067467:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065554.067575:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065554.067610:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065554.067760:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065554.067813:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065601.332934:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065601.333032:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065601.333337:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065601.333397:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065601.333557:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065601.333623:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065601.333818:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065601.333877:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065601.334046:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065601.334101:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065612.625998:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065612.626062:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065612.627015:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065612.627050:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065612.627663:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065612.627703:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065612.627816:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065612.627857:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065612.628029:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065612.628089:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065623.873082:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065623.873156:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065623.874269:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065623.874312:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065623.874775:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065623.874807:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065623.874914:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065623.874955:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065623.875054:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065623.875085:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065632.385528:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065632.385588:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065632.386903:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065632.386954:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065632.387641:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065632.389432:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065632.389574:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065632.389611:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065632.389708:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065632.389736:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45133:83800608:1026/065640.810772:ERROR:base/process/process_mac.cc:45] task_policy_set TASK_CATEGORY_POLICY: (os/kern) invalid argument (4)\n[pid=45133][err] [45133:83800608:1026/065640.810797:ERROR:base/process/process_mac.cc:90] task_policy_set TASK_SUPPRESSION_POLICY: (os/kern) invalid argument (4)\n[pid=45133][err] [45140:83800610:1026/065640.884878:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065640.884930:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065640.885965:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065640.886010:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065640.886504:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065640.886565:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065640.886751:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065640.886787:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065640.886906:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065640.886950:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065650.385022:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065650.385091:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065650.386011:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065650.386058:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065650.386328:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065650.386360:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065650.386507:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065650.386549:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065650.386652:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065650.386681:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45133:83800608:1026/065659.712681:ERROR:base/process/process_mac.cc:45] task_policy_set TASK_CATEGORY_POLICY: (os/kern) invalid argument (4)\n[pid=45133][err] [45133:83800608:1026/065659.712712:ERROR:base/process/process_mac.cc:90] task_policy_set TASK_SUPPRESSION_POLICY: (os/kern) invalid argument (4)\n[pid=45133][err] [45140:83800610:1026/065659.816808:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065659.816861:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065659.818094:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065659.818137:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065659.818628:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065659.818701:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065659.818829:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065659.818907:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065659.819016:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065659.819062:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065738.478140:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065738.478231:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065738.478913:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065738.478960:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065738.479429:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065738.479471:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065738.479583:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065738.479625:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800610:1026/065738.479746:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133][err] [45140:83800687:1026/065738.479779:ERROR:ui/display/mac/cv_display_link_mac.mm:188] CVDisplayLinkCreateWithCGDisplay failed. CVReturn: -6670\n[pid=45133] <gracefully close start>\n[pid=45133][err] [45133:83800608:1026/065739.283041:ERROR:base/process/process_mac.cc:45] task_policy_set TASK_CATEGORY_POLICY: (os/kern) invalid argument (4)\n[pid=45133][err] [45133:83800608:1026/065739.283057:ERROR:base/process/process_mac.cc:90] task_policy_set TASK_SUPPRESSION_POLICY: (os/kern) invalid argument (4)"
+ },
+ {
+  "id": "UPD-011",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-012",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-013",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-014",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-015",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-016",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-017",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-018",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-019",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-020",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-021",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-022",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-023",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-024",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-025",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-026",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-027",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ },
+ {
+  "id": "UPD-028",
+  "error": "browser.newContext: Target page, context or browser has been closed"
+ }
+]

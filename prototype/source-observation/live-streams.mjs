@@ -20,7 +20,7 @@ export const liveStreamFrames = (state, pathname) => {
     return [
       { type: 'CONNECTED', payload: { session_id: 'prototype-live-team-session', root_team_run_id: id } },
       { type: 'TEAM_EXECUTION_VIEW_SNAPSHOT', payload: {
-        root_team_run_id: id, base_change_sequence: 1, execution_tree: tree, closed_task_executions: [], messages: [],
+        root_team_run_id: id, base_change_sequence: 1, execution_tree: tree, closed_task_executions: [], remote_task_executions: [], messages: [],
         agent_statuses: structuredClone(LIVE_TEAM_STATUSES), agent_input_states: [],
       } },
     ]

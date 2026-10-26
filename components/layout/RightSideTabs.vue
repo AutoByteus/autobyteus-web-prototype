@@ -29,7 +29,7 @@
       <div v-if="effectiveActiveTab === 'projects'" class="h-full min-h-0" data-test="right-side-projects-panel">
         <ProjectsPanel />
       </div>
-      <!-- remote-runs-in-tree: tools that read the other node's disk, processes or screen say where the run is. -->
+      <!-- autobyteus-278: tools that read the other node's disk, processes or screen say where the run is. -->
       <RemoteRunPanelNote
         v-if="remoteNode && remotePanel"
         :node-name="remoteNode.nodeName"
@@ -133,8 +133,8 @@ const activeMessagesView = computed(() => {
   const target = activeContextStore.activeWorkspaceTarget;
   return target && 'collaborationMessages' in target ? target.collaborationMessages : null;
 });
-// remote-runs-in-tree: for a run another node runs, Files, Terminal, Artifacts and the screen are on that node.
-const remoteNode = useRemoteRun(() => activeContextStore.activeWorkspaceTarget?.context.state.runId);
+// autobyteus-278: for a run another node runs, Files, Terminal, Artifacts and the screen are on that node.
+const remoteNode = useRemoteRun(() => activeContextStore.activeWorkspaceTarget?.context?.state?.runId);
 const remotePanel = computed<'files' | 'terminal' | 'artifacts' | 'vnc' | null>(() => {
   const tab = effectiveActiveTab.value;
   return remoteNode.value && (tab === 'files' || tab === 'terminal' || tab === 'artifacts' || tab === 'vnc') ? tab : null;

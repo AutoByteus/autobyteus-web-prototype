@@ -1,0 +1,23 @@
+[
+ {
+  "id": "MTX-019",
+  "route": [
+   "/skills",
+   "/skills"
+  ],
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "els": [
+   23,
+   23
+  ],
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "srcErr": [],
+  "baseErr": [],
+  "pass": true
+ }
+]

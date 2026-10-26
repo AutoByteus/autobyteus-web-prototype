@@ -1,0 +1,3950 @@
+{
+ "flows/MR-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/NOD-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-002": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/SET-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/SET-002": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/SET-003": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/SET-004": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/SET-005": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/SET-006": {
+  "pass": false,
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 301,
+   "max": 229
+  },
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ]
+ },
+ "flows/AGT-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ]
+ },
+ "flows/NFS-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=nfsGuide",
+   "/nodes?nodeTab=nfsGuide"
+  ]
+ },
+ "flows/MEM-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=memorySync",
+   "/nodes?nodeTab=memorySync"
+  ]
+ },
+ "flows/PRJ-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ]
+ },
+ "flows/PRJ-002": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ]
+ },
+ "flows/PRJ-003": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/new",
+   "/projects/project-prototype-launch/tasks/new"
+  ]
+ },
+ "flows/PRJ-004": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 16,
+   "max": 7
+  },
+  "route": [
+   "/projects/temp-tasks",
+   "/projects/temp-tasks"
+  ]
+ },
+ "flows/RUN-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/RUN-010": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/PHN-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=phoneSetup",
+   "/nodes?nodeTab=phoneSetup"
+  ]
+ },
+ "flows/PHN-002": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=phoneSetup",
+   "/nodes?nodeTab=phoneSetup"
+  ]
+ },
+ "flows/MTX-017": {
+  "pass": false,
+  "textEq": false,
+  "textMaskedEq": false,
+  "elsEq": false,
+  "pix": {
+   "changed": 154638,
+   "max": 240
+  },
+  "route": [
+   "/applications",
+   "/applications"
+  ]
+ },
+ "flows/MTX-018": {
+  "pass": false,
+  "textEq": false,
+  "textMaskedEq": false,
+  "elsEq": false,
+  "pix": {
+   "changed": 624677,
+   "max": 238
+  },
+  "route": [
+   "/applications/sample-app",
+   "/applications/sample-app"
+  ]
+ },
+ "flows/MTX-046": {
+  "pass": false,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 9128,
+   "max": 9
+  },
+  "route": [
+   "/settings?section=api-keys",
+   "/settings?section=api-keys"
+  ]
+ },
+ "flows/MTX-068": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 2,
+   "max": 2
+  },
+  "route": [
+   "/agent-orgs?view=org-list",
+   "/agent-orgs?view=org-list"
+  ]
+ },
+ "flows/MR-002": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 8,
+   "max": 9
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/MR-003": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 8,
+   "max": 9
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/MR-004": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/MR-005": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/MR-006": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/MR-007": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 8,
+   "max": 9
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/MR-008": {
+  "pass": true,
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/MR-009": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/MR-010": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 5,
+   "max": 2
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/MR-011": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/MR-012": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/MR-013": {
+  "pass": false,
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 293,
+   "max": 127
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/MR-014": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=api-keys",
+   "/settings?section=api-keys"
+  ]
+ },
+ "flows/NOD-010": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-011": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-012": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-013": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-014": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-015": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-016": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 3,
+   "max": 7
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-017": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 3,
+   "max": 7
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-018": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-019": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-020": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-021": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-022": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-023": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-024": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-025": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-026": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-027": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-028": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-029": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 1,
+   "max": 7
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-030": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 1,
+   "max": 7
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-031": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-032": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-033": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-034": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-035": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-036": {
+  "pass": null,
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-037": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-040": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-041": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-042": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-043": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-044": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-045": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-046": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-047": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-050": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-051": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-052": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-053": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-054": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-055": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NOD-056": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=dockerGuide",
+   "/nodes?nodeTab=dockerGuide"
+  ]
+ },
+ "flows/NOD-057": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/UPD-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-002": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-003": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-004": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-005": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-006": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-007": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 4,
+   "max": 10
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-008": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-009": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-010": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-011": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 9,
+   "max": 8
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/UPD-012": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 9,
+   "max": 8
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/UPD-013": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/UPD-014": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/UPD-015": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/UPD-016": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/UPD-017": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/UPD-018": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/UPD-019": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/UPD-020": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 8,
+   "max": 1
+  },
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ]
+ },
+ "flows/UPD-021": {
+  "pass": true,
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 198,
+   "max": 229
+  },
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ]
+ },
+ "flows/UPD-022": {
+  "pass": true,
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 258,
+   "max": 229
+  },
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ]
+ },
+ "flows/UPD-023": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 8,
+   "max": 1
+  },
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ]
+ },
+ "flows/UPD-024": {
+  "pass": true,
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 317,
+   "max": 229
+  },
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ]
+ },
+ "flows/UPD-025": {
+  "pass": true,
+  "textEq": false,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 376,
+   "max": 229
+  },
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ]
+ },
+ "flows/UPD-026": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/UPD-027": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 17,
+   "max": 19
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-028": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/BAS-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 9,
+   "max": 8
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/BAS-002": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/BAS-003": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ]
+ },
+ "flows/BAS-004": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/BAS-005": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/BAS-006": {
+  "pass": false,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/BAS-007": {
+  "pass": false,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/BAS-008": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/BAS-009": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/BAS-010": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ]
+ },
+ "flows/BAS-011": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 190,
+   "max": 19
+  },
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ]
+ },
+ "flows/RTM-030": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/RTM-031": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/RTM-032": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/RTM-033": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/RTM-034": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/RTM-035": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/RTM-036": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/RTM-037": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/RTM-038": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 8,
+   "max": 9
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/RTM-039": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/PRJ-010": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ]
+ },
+ "flows/PRJ-011": {
+  "pass": false,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-1",
+   "/projects/project-prototype-launch/tasks/prototype-launch-1"
+  ]
+ },
+ "flows/PRJ-012": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-1",
+   "/projects/project-prototype-launch/tasks/prototype-launch-1"
+  ]
+ },
+ "flows/PRJ-020": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/new",
+   "/projects/project-prototype-launch/tasks/new"
+  ]
+ },
+ "flows/PRJ-021": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/new",
+   "/projects/project-prototype-launch/tasks/new"
+  ]
+ },
+ "flows/PRJ-022": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ]
+ },
+ "flows/PRJ-023": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2/edit",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2/edit"
+  ]
+ },
+ "flows/PRJ-024": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ]
+ },
+ "flows/PRJ-025": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2/edit",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2/edit"
+  ]
+ },
+ "flows/PRJ-030": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ]
+ },
+ "flows/PRJ-031": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ]
+ },
+ "flows/PRJ-032": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ]
+ },
+ "flows/PRJ-033": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ]
+ },
+ "flows/PRJ-040": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 7,
+   "max": 7
+  },
+  "route": [
+   "/projects/temp-tasks",
+   "/projects/temp-tasks"
+  ]
+ },
+ "flows/PRJ-041": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/temp-tasks/tasks/temp-task-links",
+   "/projects/temp-tasks/tasks/temp-task-links"
+  ]
+ },
+ "flows/PRJ-042": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ]
+ },
+ "flows/PRJ-043": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ]
+ },
+ "flows/PRJ-044": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ]
+ },
+ "flows/PRJ-050": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 13,
+   "max": 6
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/RUN-011": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-012": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-013": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-014": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-015": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-016": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-017": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-018": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-019": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-020": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-021": {
+  "pass": false,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-022": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-023": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-024": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-025": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-026": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-027": {
+  "pass": false,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-028": {
+  "pass": false,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/RUN-029": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/TOK-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=token-usage",
+   "/settings?section=token-usage"
+  ]
+ },
+ "flows/TOK-002": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=token-usage",
+   "/settings?section=token-usage"
+  ]
+ },
+ "flows/TOK-003": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=token-usage",
+   "/settings?section=token-usage"
+  ]
+ },
+ "matrix/MTX-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 1,
+   "max": 2
+  },
+  "route": [
+   "/chat",
+   "/chat"
+  ]
+ },
+ "matrix/MTX-002": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 1,
+   "max": 2
+  },
+  "route": [
+   "/chat",
+   "/chat"
+  ]
+ },
+ "matrix/MTX-003": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ]
+ },
+ "matrix/MTX-004": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agents?view=create",
+   "/agents?view=create"
+  ]
+ },
+ "matrix/MTX-005": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agents?view=detail&id=agent-researcher",
+   "/agents?view=detail&id=agent-researcher"
+  ]
+ },
+ "matrix/MTX-006": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agents?view=edit&id=agent-researcher",
+   "/agents?view=edit&id=agent-researcher"
+  ]
+ },
+ "matrix/MTX-007": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agents?view=unsupported",
+   "/agents?view=unsupported"
+  ]
+ },
+ "matrix/MTX-008": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agent-teams?view=team-list",
+   "/agent-teams?view=team-list"
+  ]
+ },
+ "matrix/MTX-009": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agent-teams?view=team-create",
+   "/agent-teams?view=team-create"
+  ]
+ },
+ "matrix/MTX-010": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 8,
+   "max": 1
+  },
+  "route": [
+   "/agent-teams?view=team-detail&id=team-product",
+   "/agent-teams?view=team-detail&id=team-product"
+  ]
+ },
+ "matrix/MTX-011": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agent-teams?view=team-edit&id=team-product",
+   "/agent-teams?view=team-edit&id=team-product"
+  ]
+ },
+ "matrix/MTX-012": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agent-teams?view=unsupported",
+   "/agent-teams?view=unsupported"
+  ]
+ },
+ "matrix/MTX-013": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 2,
+   "max": 2
+  },
+  "route": [
+   "/agent-orgs?view=org-list",
+   "/agent-orgs?view=org-list"
+  ]
+ },
+ "matrix/MTX-014": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 11,
+   "max": 11
+  },
+  "route": [
+   "/agent-orgs?view=org-create",
+   "/agent-orgs?view=org-create"
+  ]
+ },
+ "matrix/MTX-015": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agent-orgs?view=org-detail&id=org-product-launch",
+   "/agent-orgs?view=org-detail&id=org-product-launch"
+  ]
+ },
+ "matrix/MTX-016": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 42,
+   "max": 14
+  },
+  "route": [
+   "/agent-orgs?view=org-edit&id=org-product-launch",
+   "/agent-orgs?view=org-edit&id=org-product-launch"
+  ]
+ },
+ "matrix/MTX-017": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/applications",
+   "/applications"
+  ]
+ },
+ "matrix/MTX-018": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/applications/sample-app",
+   "/applications/sample-app"
+  ]
+ },
+ "matrix/MTX-019": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/skills",
+   "/skills"
+  ]
+ },
+ "matrix/MTX-020": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/skills?skill=prototype-research",
+   "/skills?skill=prototype-research"
+  ]
+ },
+ "matrix/MTX-021": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 5,
+   "max": 9
+  },
+  "route": [
+   "/memory?view=home&tab=agents",
+   "/memory?view=home&tab=agents"
+  ]
+ },
+ "matrix/MTX-022": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 5,
+   "max": 9
+  },
+  "route": [
+   "/memory?view=home&tab=teams",
+   "/memory?view=home&tab=teams"
+  ]
+ },
+ "matrix/MTX-023": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 5,
+   "max": 9
+  },
+  "route": [
+   "/memory?view=home&tab=orgs",
+   "/memory?view=home&tab=orgs"
+  ]
+ },
+ "matrix/MTX-024": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/memory?view=agent-detail&agentDefinitionId=agent-researcher&agentName=Research+Assistant",
+   "/memory?view=agent-detail&agentDefinitionId=agent-researcher&agentName=Research+Assistant"
+  ]
+ },
+ "matrix/MTX-025": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/memory?view=team-detail&teamDefinitionId=team-product&teamName=Product+Review+Team",
+   "/memory?view=team-detail&teamDefinitionId=team-product&teamName=Product+Review+Team"
+  ]
+ },
+ "matrix/MTX-026": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/memory?view=org-detail&orgDefinitionId=org-product-launch&orgName=Product+Launch+Org",
+   "/memory?view=org-detail&orgDefinitionId=org-product-launch&orgName=Product+Launch+Org"
+  ]
+ },
+ "matrix/MTX-027": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 5,
+   "max": 9
+  },
+  "route": [
+   "/memory?view=unsupported",
+   "/memory?view=unsupported"
+  ]
+ },
+ "matrix/MTX-028": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "matrix/MTX-029": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=memorySync",
+   "/nodes?nodeTab=memorySync"
+  ]
+ },
+ "matrix/MTX-030": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=phoneSetup",
+   "/nodes?nodeTab=phoneSetup"
+  ]
+ },
+ "matrix/MTX-031": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=dockerGuide",
+   "/nodes?nodeTab=dockerGuide"
+  ]
+ },
+ "matrix/MTX-032": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=nfsGuide",
+   "/nodes?nodeTab=nfsGuide"
+  ]
+ },
+ "matrix/MTX-033": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects",
+   "/projects"
+  ]
+ },
+ "matrix/MTX-034": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch",
+   "/projects/project-prototype-launch"
+  ]
+ },
+ "matrix/MTX-035": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/new",
+   "/projects/new"
+  ]
+ },
+ "matrix/MTX-036": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/edit",
+   "/projects/project-prototype-launch/edit"
+  ]
+ },
+ "matrix/MTX-037": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/new",
+   "/projects/project-prototype-launch/tasks/new"
+  ]
+ },
+ "matrix/MTX-038": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-1",
+   "/projects/project-prototype-launch/tasks/prototype-launch-1"
+  ]
+ },
+ "matrix/MTX-039": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-1/edit",
+   "/projects/project-prototype-launch/tasks/prototype-launch-1/edit"
+  ]
+ },
+ "matrix/MTX-040": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ]
+ },
+ "matrix/MTX-041": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 1,
+   "max": 2
+  },
+  "route": [
+   "/projects/temp-tasks",
+   "/projects/temp-tasks"
+  ]
+ },
+ "matrix/MTX-042": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/temp-tasks/tasks/temp-task-links",
+   "/projects/temp-tasks/tasks/temp-task-links"
+  ]
+ },
+ "matrix/MTX-043": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "matrix/MTX-044": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/tools",
+   "/tools"
+  ]
+ },
+ "matrix/MTX-045": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/media",
+   "/media"
+  ]
+ },
+ "matrix/MTX-046": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 9128,
+   "max": 9
+  },
+  "route": [
+   "/settings?section=api-keys",
+   "/settings?section=api-keys"
+  ]
+ },
+ "matrix/MTX-047": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "matrix/MTX-048": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 5,
+   "max": 2
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "matrix/MTX-049": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=token-usage",
+   "/settings?section=token-usage"
+  ]
+ },
+ "matrix/MTX-050": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=display",
+   "/settings?section=display"
+  ]
+ },
+ "matrix/MTX-051": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=language",
+   "/settings?section=language"
+  ]
+ },
+ "matrix/MTX-052": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 1,
+   "max": 4
+  },
+  "route": [
+   "/settings?section=local-tools",
+   "/settings?section=local-tools"
+  ]
+ },
+ "matrix/MTX-053": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 16,
+   "max": 14
+  },
+  "route": [
+   "/settings?section=mcp-servers",
+   "/settings?section=mcp-servers"
+  ]
+ },
+ "matrix/MTX-054": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=application-packages",
+   "/settings?section=application-packages"
+  ]
+ },
+ "matrix/MTX-055": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-packages",
+   "/settings?section=agent-packages"
+  ]
+ },
+ "matrix/MTX-056": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 9,
+   "max": 8
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "matrix/MTX-057": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ]
+ },
+ "matrix/MTX-058": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=advanced",
+   "/settings?section=server-settings&mode=advanced"
+  ]
+ },
+ "matrix/MTX-059": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=migrations",
+   "/settings?section=server-settings&mode=migrations"
+  ]
+ },
+ "matrix/MTX-060": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=extensions",
+   "/settings?section=extensions"
+  ]
+ },
+ "matrix/MTX-061": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 8,
+   "max": 1
+  },
+  "route": [
+   "/settings?section=updates",
+   "/settings?section=updates"
+  ]
+ },
+ "matrix/MTX-062": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ]
+ },
+ "matrix/MTX-063": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/applications",
+   "/applications"
+  ]
+ },
+ "matrix/MTX-064": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 5,
+   "max": 9
+  },
+  "route": [
+   "/memory",
+   "/memory"
+  ]
+ },
+ "matrix/MTX-065": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 2,
+   "max": 2
+  },
+  "route": [
+   "/skills",
+   "/skills"
+  ]
+ },
+ "matrix/MTX-066": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat",
+   "/chat"
+  ]
+ },
+ "matrix/MTX-067": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects",
+   "/projects"
+  ]
+ },
+ "matrix/MTX-068": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 60,
+   "max": 45
+  },
+  "route": [
+   "/agent-orgs?view=org-list",
+   "/agent-orgs?view=org-list"
+  ]
+ },
+ "matrix/MTX-069": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ]
+ },
+ "matrix/MTX-070": {
+  "pass": false,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ]
+ },
+ "matrix/MTX-071": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/skills",
+   "/skills"
+  ]
+ },
+ "matrix/MTX-072": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agents?view=list",
+   "/agents?view=list"
+  ]
+ },
+ "matrix/MTX-073": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 3,
+   "max": 2
+  },
+  "route": [
+   "/agent-teams?view=team-list",
+   "/agent-teams?view=team-list"
+  ]
+ },
+ "matrix/MTX-074": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/agent-orgs?view=org-list",
+   "/agent-orgs?view=org-list"
+  ]
+ },
+ "matrix/MTX-075": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-packages",
+   "/settings?section=agent-packages"
+  ]
+ },
+ "matrix/MTX-076": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 1,
+   "max": 2
+  },
+  "route": [
+   "/chat",
+   "/chat"
+  ]
+ },
+ "matrix/MTX-077": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 1,
+   "max": 2
+  },
+  "route": [
+   "/chat",
+   "/chat"
+  ]
+ },
+ "matrix/MTX-078": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "matrix/MTX-079": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ]
+ },
+ "matrix/MTX-080": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ]
+ },
+ "matrix/MTX-081": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ]
+ },
+ "matrix/MTX-082": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ]
+ },
+ "matrix/MTX-083": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ]
+ },
+ "matrix/MTX-084": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=embedding",
+   "/settings?section=server-settings&mode=embedding"
+  ]
+ },
+ "matrix/MTX-085": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/mobile",
+   "/mobile"
+  ]
+ },
+ "matrix/MTX-086": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/mobile",
+   "/mobile"
+  ]
+ },
+ "matrix/MTX-087": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/mobile?unsupported=desktopSettings",
+   "/mobile?unsupported=desktopSettings"
+  ]
+ },
+ "matrix/MTX-088": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/mobile",
+   "/mobile"
+  ]
+ },
+ "flows/MTX-019": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/skills",
+   "/skills"
+  ]
+ },
+ "flows/RUN-030": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-031": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/RUN-032": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-ptm-0001",
+   "/chat?id=run-ptm-0001"
+  ]
+ },
+ "flows/HST-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 1,
+   "max": 6
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/HST-002": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-research-001",
+   "/chat?id=run-research-001"
+  ]
+ },
+ "flows/HST-003": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/chat?id=run-research-001",
+   "/chat?id=run-research-001"
+  ]
+ },
+ "flows/UPD-040": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-041": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-042": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-043": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/UPD-044": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 14,
+   "max": 19
+  },
+  "route": [
+   "/workspace",
+   "/workspace"
+  ]
+ },
+ "flows/NAR-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/NAR-002": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=manage",
+   "/nodes?nodeTab=manage"
+  ]
+ },
+ "flows/NAR-003": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=agent-runtimes",
+   "/settings?section=agent-runtimes"
+  ]
+ },
+ "flows/NAR-004": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ]
+ },
+ "flows/NAR-005": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ },
+ "flows/NAR-006": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=phoneSetup",
+   "/nodes?nodeTab=phoneSetup"
+  ]
+ },
+ "flows/NAR-007": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=nfsGuide",
+   "/nodes?nodeTab=nfsGuide"
+  ]
+ },
+ "flows/ZH-001": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=model-routing",
+   "/settings?section=model-routing"
+  ]
+ },
+ "flows/ZH-002": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/nodes?nodeTab=nfsGuide",
+   "/nodes?nodeTab=nfsGuide"
+  ]
+ },
+ "flows/ZH-003": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/projects/project-prototype-launch/tasks/prototype-launch-2",
+   "/projects/project-prototype-launch/tasks/prototype-launch-2"
+  ]
+ },
+ "flows/ZH-004": {
+  "pass": true,
+  "textEq": true,
+  "textMaskedEq": true,
+  "elsEq": true,
+  "pix": {
+   "changed": 0,
+   "max": 0
+  },
+  "route": [
+   "/settings?section=server-settings&mode=quick",
+   "/settings?section=server-settings&mode=quick"
+  ]
+ }
+}
