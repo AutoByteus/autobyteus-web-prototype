@@ -10,9 +10,9 @@ corepack pnpm install --ignore-workspace --frozen-lockfile   # once
 corepack pnpm dev --port 4930
 ```
 
-## What changed on the page (round 2: three tabs)
+## What changed on the page (round 3: flat, like the Skills page)
 
-The page has no title of its own (the left menu already says Memory). It opens on three tabs: **Browse · Search · Index**.
+The page has no title of its own (the left menu already says Memory). One toolbar row on the grey page holds a segmented control **Browse · Search · Index**; the content is cards straight on the page, with no tab line and no big box around them (the Skills page's pattern: toolbar, search box with icon, blue primary button, white cards with a light border). On Browse the lists have a second, quiet row (Agents · Agent Teams · Agent Orgs) and a filter box that applies as you type.
 
 1. **Browse** (the entry; today's lists). Agents / Agent Teams / Agent Orgs as before. The name filter is kept and relabelled **Filter**, so "Search" only means memory search.
 2. **Search.** One memory search box ("Describe what you remember, in any words or language…"). Results replace nothing else on the tab; **Clear search** empties them. Results survive a hop to another tab.

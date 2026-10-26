@@ -108,6 +108,7 @@ const memoryMessages = {
   'memory.search.not_indexed_title': 'Memory is not indexed yet',
   'memory.search.not_indexed_body': 'Index your memory once to search what your agents did before. Search by words is ready after about 5 minutes on a large memory.',
   'memory.search.view_index': 'View the index',
+  'memory.browse.filter_label': 'Filter',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;

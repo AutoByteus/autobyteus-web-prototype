@@ -1,6 +1,6 @@
 <template>
-  <section v-if="index" class="rounded-xl border border-gray-200 bg-white shadow-sm" data-test="memory-index">
-    <header class="flex flex-col gap-4 border-b border-gray-100 p-5 md:flex-row md:items-start md:justify-between">
+  <section v-if="index" class="space-y-5" data-test="memory-index">
+    <header class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
       <div class="min-w-0">
         <h2 class="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-lg">
           <Icon v-if="status.spinner" icon="svg-spinners:ring-resize" class="h-4 w-4 flex-shrink-0 text-blue-600" aria-hidden="true" />
@@ -16,24 +16,24 @@
 
       <div class="flex flex-shrink-0 flex-col items-start gap-2 md:items-end">
         <div class="flex flex-wrap items-center gap-2">
-          <button v-if="primaryAction" type="button" class="rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800" :data-test="primaryAction.test" @click="primaryAction.run">{{ primaryAction.label }}</button>
-          <button v-if="canRebuild && !confirming" type="button" class="rounded-lg px-4 py-2 text-sm font-semibold" :class="store.modelChanged ? 'bg-gray-900 text-white hover:bg-gray-800' : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'" data-test="memory-index-rebuild" @click="confirming = true">{{ $t('memory.index.rebuild') }}</button>
+          <button v-if="primaryAction" type="button" class="rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white hover:bg-blue-700" :data-test="primaryAction.test" @click="primaryAction.run">{{ primaryAction.label }}</button>
+          <button v-if="canRebuild && !confirming" type="button" class="rounded-lg px-5 py-2 text-sm font-medium" :class="store.modelChanged ? 'bg-blue-600 text-white hover:bg-blue-700' : 'border border-gray-200 bg-white text-gray-700 hover:bg-gray-50'" data-test="memory-index-rebuild" @click="confirming = true">{{ $t('memory.index.rebuild') }}</button>
         </div>
-        <div v-if="confirming" class="flex max-w-sm flex-wrap items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2" role="alertdialog" aria-label="Rebuild the memory index" data-test="memory-index-rebuild-confirm">
+        <div v-if="confirming" class="flex max-w-sm flex-wrap items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-2" role="alertdialog" aria-label="Rebuild the memory index" data-test="memory-index-rebuild-confirm">
           <span class="text-xs text-gray-700">{{ $t('memory.index.rebuild_confirm') }}</span>
-          <button type="button" class="rounded-md bg-gray-900 px-3 py-1 text-xs font-semibold text-white hover:bg-gray-800" data-test="memory-index-rebuild-yes" @click="confirmRebuild">{{ $t('memory.index.rebuild') }}</button>
+          <button type="button" class="rounded-md bg-blue-600 px-3 py-1 text-xs font-medium text-white hover:bg-blue-700" data-test="memory-index-rebuild-yes" @click="confirmRebuild">{{ $t('memory.index.rebuild') }}</button>
           <button type="button" class="rounded-md border border-gray-300 bg-white px-3 py-1 text-xs font-semibold text-gray-700 hover:bg-gray-50" @click="confirming = false">{{ $t('memory.index.cancel') }}</button>
         </div>
       </div>
     </header>
 
-    <div class="p-5">
-      <ol class="grid gap-3 xl:grid-cols-4" :aria-label="$t('memory.index.pipeline')" data-test="memory-index-pipeline">
+    <div class="space-y-5">
+      <ol class="grid gap-4 xl:grid-cols-4" :aria-label="$t('memory.index.pipeline')" data-test="memory-index-pipeline">
         <li
           v-for="(step, i) in index.steps"
           :key="step.id"
-          class="relative flex flex-col rounded-lg border p-4"
-          :class="step.state === 'running' ? 'border-blue-200 bg-blue-50/40' : step.state === 'failed' ? 'border-red-200 bg-red-50/40' : 'border-gray-200'"
+          class="relative flex flex-col rounded-lg border bg-white p-5"
+          :class="step.state === 'running' ? 'border-blue-300' : step.state === 'failed' ? 'border-red-300' : 'border-gray-200'"
           :data-step="step.id"
           :data-state="step.state"
         >
@@ -61,8 +61,8 @@
         </li>
       </ol>
 
-      <dl class="mt-5 grid gap-3 sm:grid-cols-2" data-test="memory-index-capabilities">
-        <div v-for="item in capabilities" :key="item.id" class="flex items-center justify-between gap-3 rounded-lg bg-gray-50 px-4 py-3">
+      <dl class="grid gap-4 sm:grid-cols-2" data-test="memory-index-capabilities">
+        <div v-for="item in capabilities" :key="item.id" class="flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white px-5 py-3">
           <dt class="text-sm font-semibold text-gray-700">{{ item.name }}</dt>
           <dd class="flex items-center gap-1.5 text-sm" :class="item.state.ready ? 'font-semibold text-emerald-700' : 'text-gray-600'">
             <Icon v-if="item.state.ready" icon="heroicons:check-circle-20-solid" class="h-4 w-4" aria-hidden="true" />{{ item.state.label }}
@@ -71,7 +71,7 @@
       </dl>
     </div>
 
-    <footer class="flex flex-col gap-1 border-t border-gray-100 px-5 py-3 text-xs text-gray-500 md:flex-row md:items-center md:justify-between">
+    <footer class="flex flex-col gap-1 text-xs text-gray-500 md:flex-row md:items-center md:justify-between">
       <p>
         {{ $t('memory.index.model_note', { model: index.activeModel }) }}
         <NuxtLink to="/settings?section=server-settings&mode=embedding" class="font-semibold text-blue-600 hover:underline">{{ $t('memory.index.model_link') }}</NuxtLink>

@@ -108,6 +108,7 @@ const memoryMessages = {
   'memory.search.not_indexed_title': '记忆尚未建立索引',
   'memory.search.not_indexed_body': '只需为记忆建立一次索引，就能搜索智能体以前做过的事。大型记忆约 5 分钟后即可按文字搜索。',
   'memory.search.view_index': '查看索引',
+  'memory.browse.filter_label': '筛选',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;
