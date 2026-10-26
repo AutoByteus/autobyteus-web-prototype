@@ -6,10 +6,6 @@
         <p class="mt-1 text-sm text-gray-500">{{ t('settings.modelRouting.decisions.description') }}</p>
       </div>
       <div v-if="routing.delegations.length" class="flex flex-shrink-0 flex-wrap items-center gap-2" data-testid="model-routing-decisions-filters">
-        <select v-model="kindFilter" class="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30" :aria-label="t('settings.modelRouting.decisions.filterKind')" data-testid="model-routing-filter-kind">
-          <option value="">{{ t('settings.modelRouting.decisions.allKinds') }}</option>
-          <option v-for="kind in kindOptions" :key="kind" :value="kind">{{ kindLabel(kind, t) }}</option>
-        </select>
         <select v-model="sourceFilter" class="h-9 rounded-md border border-gray-300 bg-white px-3 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30" :aria-label="t('settings.modelRouting.decisions.filterSource')" data-testid="model-routing-filter-source">
           <option value="">{{ t('settings.modelRouting.decisions.allSources') }}</option>
           <option v-for="source in SOURCES" :key="source" :value="source">{{ t(SOURCE_KEY[source]) }}</option>
@@ -29,7 +25,7 @@
 
     <div v-else-if="!groups.length" class="mt-5 rounded-xl border border-dashed border-slate-200 px-4 py-8 text-center" data-testid="model-routing-decisions-no-match">
       <p class="text-sm text-gray-600">{{ t('settings.modelRouting.decisions.noMatch') }}</p>
-      <button type="button" class="mt-2 text-sm font-medium text-blue-700 hover:text-blue-800" @click="kindFilter = ''; sourceFilter = ''">{{ t('settings.modelRouting.decisions.clearFilters') }}</button>
+      <button type="button" class="mt-2 text-sm font-medium text-blue-700 hover:text-blue-800" @click="sourceFilter = ''">{{ t('settings.modelRouting.decisions.clearFilters') }}</button>
     </div>
 
     <template v-else>
@@ -108,19 +104,14 @@ const locale = computed(() => String(resolvedLocale.value || 'en'))
 
 const SOURCES: RoutingSource[] = ['router', 'agent_default', 'team_default', 'inherited']
 const PAGE = 8
-const kindFilter = ref('')
 const sourceFilter = ref('')
 const limit = ref(PAGE)
 
-const kindOptions = computed(() => {
-  const used = new Set(routing.delegations.flatMap((item) => item.choices.map((choice) => choice.kind).filter(Boolean) as string[]))
-  return [...new Set([...routing.taskKinds, ...used])]
-})
 
 const groups = computed<{ delegation: RoutingDelegation; choices: RoutingChoice[] }[]>(() => routing.delegations
   .map((delegation) => ({
     delegation,
-    choices: delegation.choices.filter((choice) => (!kindFilter.value || choice.kind === kindFilter.value) && (!sourceFilter.value || choice.source === sourceFilter.value)),
+    choices: delegation.choices.filter((choice) => (!sourceFilter.value || choice.source === sourceFilter.value)),
   }))
   .filter((group) => group.choices.length > 0))
 

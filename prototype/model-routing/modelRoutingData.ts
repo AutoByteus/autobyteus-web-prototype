@@ -50,8 +50,6 @@ export type RoutingDelegation = Readonly<{
   choices: readonly RoutingChoice[]
 }>
 
-export const DEFAULT_TASK_KINDS = ['design', 'implementation', 'code review', 'testing', 'writing', 'research', 'computer use', 'other'] as const
-
 export const RUNTIME_NAMES: Readonly<Record<string, string>> = {
   codex_app_server: 'Codex', claude_agent_sdk: 'Claude', antigravity_cli: 'Antigravity', grok_build: 'Grok', autobyteus: 'AutoByteus',
 }
@@ -181,29 +179,14 @@ export const allDelegations = (): RoutingDelegation[] => [...recent(), ...older(
 
 export type KnowledgeVersion = Readonly<{ text: string; at: number; by: 'router' | 'user' }>
 
-export const KNOWLEDGE_CURRENT = `# What I know about this node
+export const KNOWLEDGE_CURRENT = `Writing goes to Antigravity. Design stays on Claude Sonnet; use Opus only when a Task asks for it. Research goes to the AutoByteus provider (it reads the web, no code).
 
-## Preferences you taught me
-- Writing Tasks go to Antigravity (prototype-agy). Taught Oct 24.
-- Design stays on Claude Sonnet. Use Opus only when the Task asks for it.
-- Research Tasks go to the AutoByteus provider (web reading, no code).
-
-## Observations
-- Codex: the weekly limit is the tight one (41% left on Oct 26, resets Oct 30). The 5-hour limit refills overnight.
-- Claude: Opus is used up until Oct 28, 09:00. Sonnet and Haiku are fine.
-- Antigravity reports no limits. Treat it as available when signed in.
-- A Task that only touches docs does not need Codex; Haiku reviews small diffs well.
+Codex is best for backend code, but its weekly limit is the tight one (41% left on Oct 26, resets Oct 30); its 5-hour limit refills overnight. Opus is used up until Oct 28, 09:00. Antigravity reports no limits, so treat it as available when signed in. Haiku reviews small diffs well.
 `
 
-export const KNOWLEDGE_PREVIOUS = `# What I know about this node
+export const KNOWLEDGE_PREVIOUS = `Writing goes to Antigravity. Design stays on Claude Sonnet; use Opus only when a Task asks for it.
 
-## Preferences you taught me
-- Writing Tasks go to Antigravity (prototype-agy). Taught Oct 24.
-- Design stays on Claude Sonnet. Use Opus only when the Task asks for it.
-
-## Observations
-- Codex: the weekly limit is the tight one (41% left on Oct 26, resets Oct 30).
-- Claude: Opus is used up until Oct 28, 09:00.
+Codex's weekly limit is the tight one (41% left on Oct 26, resets Oct 30). Opus is used up until Oct 28, 09:00.
 `
 
 export type RoutingScenario = Readonly<{
@@ -211,7 +194,6 @@ export type RoutingScenario = Readonly<{
   router: Readonly<{ runtime: string; model: string }> | null
   delegations: readonly RoutingDelegation[]
   knowledge: Readonly<{ current: KnowledgeVersion; previous: KnowledgeVersion | null }> | null
-  taskKinds: readonly string[]
 }>
 
 const CLAUDE_ROUTER = { runtime: 'claude_agent_sdk', model: 'prototype-sonnet' }
@@ -223,11 +205,11 @@ export const scenarioFor = (name: string): RoutingScenario => {
     previous: { text: KNOWLEDGE_PREVIOUS, at: ANCHOR_MS - 1 * DAY - 6 * HOUR, by: 'router' as const },
   }
   switch (name) {
-    case 'routing_off': return { enabled: false, router: CLAUDE_ROUTER, delegations: full, knowledge, taskKinds: DEFAULT_TASK_KINDS }
-    case 'routing_fresh': return { enabled: false, router: null, delegations: [], knowledge: null, taskKinds: DEFAULT_TASK_KINDS }
-    case 'routing_on_empty': return { enabled: true, router: CLAUDE_ROUTER, delegations: [], knowledge: null, taskKinds: DEFAULT_TASK_KINDS }
-    case 'routing_not_set': return { enabled: true, router: null, delegations: [], knowledge: null, taskKinds: DEFAULT_TASK_KINDS }
-    case 'routing_blocked': return { enabled: true, router: { runtime: 'codex_app_server', model: 'gpt-prototype-codex-mini' }, delegations: full, knowledge, taskKinds: DEFAULT_TASK_KINDS }
-    default: return { enabled: true, router: CLAUDE_ROUTER, delegations: full, knowledge, taskKinds: DEFAULT_TASK_KINDS }
+    case 'routing_off': return { enabled: false, router: CLAUDE_ROUTER, delegations: full, knowledge }
+    case 'routing_fresh': return { enabled: false, router: null, delegations: [], knowledge: null }
+    case 'routing_on_empty': return { enabled: true, router: CLAUDE_ROUTER, delegations: [], knowledge: null }
+    case 'routing_not_set': return { enabled: true, router: null, delegations: [], knowledge: null }
+    case 'routing_blocked': return { enabled: true, router: { runtime: 'codex_app_server', model: 'gpt-prototype-codex-mini' }, delegations: full, knowledge }
+    default: return { enabled: true, router: CLAUDE_ROUTER, delegations: full, knowledge }
   }
 }

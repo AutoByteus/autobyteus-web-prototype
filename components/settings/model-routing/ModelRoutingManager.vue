@@ -34,7 +34,6 @@
       <ModelRoutingSetup v-if="activeTab === 'setup'" :report="report" :status="status" :own-node="ownNode" @open-conversation="openConversation" />
       <ModelRoutingDecisions v-else-if="activeTab === 'decisions'" :status="status" :focus-id="focusDecision" @show-setup="select('setup')" />
       <ModelRoutingOverview v-else-if="activeTab === 'overview'" :status="status" @show-setup="select('setup')" />
-      <ModelRoutingKnowledge v-else-if="activeTab === 'knowledge'" @open-conversation="openConversation" />
       <AgentRuntimesNowSection v-else />
     </div>
   </div>
@@ -57,9 +56,8 @@ import ModelRoutingStatusStrip from './ModelRoutingStatusStrip.vue'
 import ModelRoutingSetup from './ModelRoutingSetup.vue'
 import ModelRoutingDecisions from './ModelRoutingDecisions.vue'
 import ModelRoutingOverview from './ModelRoutingOverview.vue'
-import ModelRoutingKnowledge from './ModelRoutingKnowledge.vue'
 
-const TABS = ['setup', 'decisions', 'overview', 'knowledge', 'runtimes'] as const
+const TABS = ['setup', 'decisions', 'overview', 'runtimes'] as const
 type Tab = typeof TABS[number]
 
 const { t } = useLocalization()
@@ -86,7 +84,7 @@ watch(() => node.bindingRevision, () => { report.value = null; void readReport()
 const status = computed(() => routerStatusOf(report.value))
 
 const queryTab = (): Tab | null => {
-  const value = String(route.query.tab ?? '')
+  const value = String(route.query.tab ?? '').replace('knowledge', 'setup')
   return (TABS as readonly string[]).includes(value) ? value as Tab : null
 }
 const activeTab = ref<Tab>(queryTab() ?? (routing.enabled && routing.router ? 'decisions' : 'setup'))

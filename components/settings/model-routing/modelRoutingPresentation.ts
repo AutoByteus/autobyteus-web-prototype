@@ -39,13 +39,5 @@ export const SOURCE_KEY: Readonly<Record<RoutingSource, string>> = {
   inherited: 'settings.modelRouting.source.inherited',
 }
 
-const BUILT_IN_KIND_KEY: Readonly<Record<string, string>> = {
-  design: 'design', implementation: 'implementation', 'code review': 'codeReview', testing: 'testing',
-  writing: 'writing', research: 'research', 'computer use': 'computerUse', other: 'other',
-}
-/** The name of a task kind: the initial kinds are translated; a kind the user added is shown as typed. "implementation" → "Implementation". */
-export const kindLabel = (kind: string | null, t: T): string => {
-  if (!kind) return t('settings.modelRouting.kind.none')
-  const key = BUILT_IN_KIND_KEY[kind]
-  return key ? t(`settings.modelRouting.kind.${key}`) : kind
-}
+/** The router's own label for the kind of Task ("implementation" → "Implementation"); there is no list to manage. */
+export const kindLabel = (kind: string | null, t: T): string => kind ? kind.charAt(0).toUpperCase() + kind.slice(1) : t('settings.modelRouting.kind.none')

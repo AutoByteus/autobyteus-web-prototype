@@ -9,9 +9,9 @@
 - Requester: Solution Designer (run `solution_designer_ab383b2a28394f6ba52dde1f7083f5bd`), 2026-10-26. The user's words: "i feel UI should be designed first. do you think so i think you can contact @Product Team to work on the UI design first".
 - Requirements (read in full): `/Users/normy/autobyteus_org/autobyteus-worktrees/delegated-runtime-model-routing/tickets/in-progress/delegated-runtime-model-routing/requirements-doc.md` (REQ-002…REQ-012, AC-008, AC-009, AC-012), `launch-selection-order.md` (SR-007), `product-design-request.md`.
 - Critical journeys:
-  1. Turn Model Routing on, choose the router's runtime and model, see why it is (not) active.
+  1. Turn Model Routing on, choose the router's runtime and model, type what the router should know, see why it is (not) active.
   2. Watch it: Decisions (with the delegating run), Overview (7 days / 30 days / all), then open a decision's run.
-  3. Teach it: Open conversation → write → Knowledge changes → Undo.
+  3. Teach it: type in the one text box on Setup, or Open conversation → write → the box shows what the router saved → Undo.
   4. See a choice where it was made: the `delegate_task` result, the run's Settings rows (local and remote copies), then View decision.
 - Non-goals: learning from outcomes (REQ-013), model settings (reasoning effort).
 
@@ -32,3 +32,14 @@
 
 - Review entry: `http://127.0.0.1:4840/settings?section=model-routing` (scenario `populated`: on, router active, a month of decisions). Other starting states: see `ui-reference-runbook.md`, section `delegated-runtime-model-routing`.
 - Design decisions: `design-review-notes.md`.
+
+### Round 2 — 2026-10-26: the user simplified the page (Requirement Impact)
+
+- The user's feedback (in the Product UI/UX Designer conversation, 2026-10-26): "I remove this. This task kind is too complicated. … Why does the user have to edit those? … we should make the
+  configuration page UI very, very easy … the knowledge area or user inputs, there's one user input area where user just inputs [text], that's it … the agents is able to learn, but the user just gives them
+  some kind of professional knowledge … clean means that when user sees it, they feel it's very easy to see. It's not like a huge abundance of information."
+- Changes: (1) the editable task-kind list is gone (REQ-011 as written no longer applies: the router still labels each choice with a short kind of its own; nothing to manage);
+  (2) Knowledge is no longer a tab: it is the one text box on Setup ("What the router should know", plain text, Save, Undo last change);
+  (3) while the switch is off, Setup shows only the switch and one sentence; the router and the text box appear once it is on; (4) shorter texts; the Decisions kind filter is gone;
+  (5) tabs: Setup · Decisions · Overview · Agent runtimes now.
+- Routed to the Solution Designer as a requirement impact (REQ-007 box in Setup, REQ-010, REQ-011, REQ-012 grouping by the router's own labels).

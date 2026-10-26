@@ -6,7 +6,7 @@
 import { reactive, computed } from 'vue'
 import type { AvailableAgentRuntimesReport, AvailableAgentRuntimeEntry, ExternalAgentRuntimeEntry, AvailableModel } from '~/types/availableAgentRuntimes'
 import {
-  ANCHOR_MS, DEFAULT_TASK_KINDS, RUNTIME_NAMES, scenarioFor,
+  ANCHOR_MS, RUNTIME_NAMES, scenarioFor,
   type KnowledgeVersion, type RoutingChoice, type RoutingDelegation, type RoutingSource,
 } from './modelRoutingData'
 
@@ -23,15 +23,12 @@ export const routing = reactive({
   knowledge: seed.knowledge ? { current: { ...seed.knowledge.current }, previous: seed.knowledge.previous ? { ...seed.knowledge.previous } : null } : null as { current: KnowledgeVersion; previous: KnowledgeVersion | null } | null,
   /** After an undo the replaced text can be restored once. */
   redo: null as KnowledgeVersion | null,
-  taskKinds: [...seed.taskKinds] as string[],
   /** A decision the user came to from a run (highlighted in the list). */
   focusDecisionId: null as string | null,
 })
 
 export const setEnabled = (value: boolean): void => { routing.enabled = value }
 export const setRouter = (runtime: string, model: string): void => { routing.router = runtime ? { runtime, model } : null }
-export const saveTaskKinds = (kinds: string[]): void => { routing.taskKinds = [...kinds] }
-export const resetTaskKinds = (): string[] => [...DEFAULT_TASK_KINDS]
 
 export const saveKnowledge = (text: string): void => {
   const previous = routing.knowledge?.current ?? null
@@ -129,9 +126,8 @@ export const overviewFor = (period: Period): Overview => {
       kinds.set(key, kind)
     }
   }
-  const order = (kind: string) => { const index = routing.taskKinds.indexOf(kind); return index < 0 ? 999 : index }
   const list: KindStat[] = [...kinds.entries()]
-    .sort((a, b) => (a[0] === NO_KIND ? 1 : b[0] === NO_KIND ? -1 : b[1].total - a[1].total || order(a[0]) - order(b[0])))
+    .sort((a, b) => (a[0] === NO_KIND ? 1 : b[0] === NO_KIND ? -1 : b[1].total - a[1].total))
     .map(([kind, value]) => ({
       kind, total: value.total, routed: value.routed,
       runtimes: [...value.runtimes.entries()].sort((a, b) => b[1].count - a[1].count)

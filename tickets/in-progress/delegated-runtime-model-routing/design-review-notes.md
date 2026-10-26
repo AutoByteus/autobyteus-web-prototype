@@ -15,14 +15,14 @@ browser console with `localStorage.setItem('autobyteus.prototype.scenario', '<na
 | `routing_blocked` | On, the router's model is blocked by a used-up limit |
 | `autobyteus.prototype.context` = `electron_external` | The window of a peer node |
 
-Journeys to click: (1) `routing_fresh` → Setup → the switch → the router's runtime and model → Edit task kinds. (2) Decisions → Open run → the
-run's Settings (gear) → Delegated copies → View decision. (3) Overview: 7 days / 30 days / All time, Details. (4) Knowledge → Edit, Undo; Open conversation.
+Journeys to click: (1) `routing_fresh` → Setup → the switch → the router's runtime and model → type into "What the router should know" → Save. (2) Decisions → Open run → the
+run's Settings (gear) → Delegated copies → View decision. (3) Overview: 7 days / 30 days / All time, Details. (4) Setup → the text box, Undo last change; Open conversation.
 (5) The Project Task Manager run (Workspaces → prototype-workspace → Project Task Manager): the three `delegate_task` calls, Activity → Result.
 
 ## Answers to the four open questions
 
 1. **One page with tabs, in the Token Statistics pattern.** A status line is always on top (on / off / not active and why), then five tabs:
-   Setup, Decisions, Overview, Knowledge, Agent runtimes now. One long page would put the 30-row list between the switch and the knowledge note; sub-pages
+   Setup, Decisions, Overview, Agent runtimes now (round 2: Knowledge became the one text box on Setup). One long page would put the 30-row list between the switch and the knowledge note; sub-pages
    would hide the status. The existing "Agent runtimes now" section is unchanged and is the last tab. The page opens on Decisions once the router works, and on
    Setup when it is off or not set.
 2. **Statistics: summary tiles, one stacked bar for router versus defaults, then a row per task kind** with a stacked bar of runtimes (one colour per runtime,
@@ -53,3 +53,9 @@ run's Settings (gear) → Delegated copies → View decision. (3) Overview: 7 da
 - A5. "Open conversation" is disabled until the router has been used (switch on once); the router's run is never a row in the Workspaces tree (internal agent).
 - A6. The decision list shows up to 8 delegations, then "Show more"; Overview periods are 7 days, 30 days and all time (default 30 days).
 - A7. Undo restores the previous knowledge note once; then "Redo" restores the newer one (the router's rewrite and the user's edit both keep one previous version).
+
+## Round 2 (user feedback: simpler)
+
+The user asked for a clean page where the only thing to type is one text box. Done: no task-kind list to edit (the router labels each choice itself; Decisions and Overview show its labels),
+no Knowledge tab (the note is the text box on Setup, the router's rewrites appear in it, "Undo last change" restores the previous version), and the off state shows only the switch.
+Assumption A4 (translated initial kinds) and the kind filter are removed; A7 now describes the box.

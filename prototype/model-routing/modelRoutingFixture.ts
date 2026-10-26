@@ -69,7 +69,7 @@ const entries = () => {
   return [
     { kind: 'message', role: 'user', content: 'From now on, writing Tasks go to Antigravity. Keep design on Claude Sonnet, and use Opus only when the Task asks for it.', ts: at(-1800) },
     { kind: 'tool_call', invocationId: 'mr-t1', toolName: 'read_routing_knowledge', toolArgs: {}, toolResult: 'Codex: the weekly limit is the tight one (41% left on Oct 26, resets Oct 30).\nClaude: Opus is used up until Oct 28, 09:00.', ts: at(-1799) },
-    { kind: 'tool_call', invocationId: 'mr-t2', toolName: 'update_routing_knowledge', toolArgs: { note: '# What I know about this node\n\n## Preferences you taught me\n- Writing Tasks go to Antigravity (prototype-agy). …' }, toolResult: 'Saved. The previous version is kept.', ts: at(-1798) },
+    { kind: 'tool_call', invocationId: 'mr-t2', toolName: 'update_routing_knowledge', toolArgs: { note: 'Writing goes to Antigravity. Design stays on Claude Sonnet; use Opus only when a Task asks for it. …' }, toolResult: 'Saved. The previous version is kept.', ts: at(-1798) },
     { kind: 'message', role: 'assistant', content: 'Saved. Writing Tasks now go to Antigravity, design stays on Claude Sonnet, and Opus only when a Task asks for it.', ts: at(-1797) },
     { kind: 'system_task_notification', senderId: ROUTING_REQUEST_SENDER, content: requestFor(d3, s3.covered, s3.asked), ts: at(-340) },
     { kind: 'tool_call', invocationId: 'mr-t3', toolName: 'list_available_agent_runtimes', toolArgs: {}, toolResult: 'Codex: 5 hours 88% left, weekly 41% left. gpt-prototype-codex ok; gpt-prototype-codex-mini blocked until 03:00.\nClaude: weekly 12% left; Opus blocked until Oct 28. Sonnet and Haiku ok.\nAntigravity: signed in, limits not reported.', ts: at(-339) },

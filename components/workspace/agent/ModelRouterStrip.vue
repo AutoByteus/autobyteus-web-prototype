@@ -12,8 +12,8 @@
 import { useRouter } from 'vue-router'
 import { useLocalization } from '~/composables/useLocalization'
 
-const LINKS = ['decisions', 'knowledge', 'setup'] as const
+const LINKS = ['decisions', 'knowledge'] as const
 const { t } = useLocalization()
 const router = useRouter()
-const open = (tab: typeof LINKS[number]): void => { void router.push({ path: '/settings', query: { section: 'model-routing', tab } }) }
+const open = (tab: typeof LINKS[number]): void => { void router.push({ path: '/settings', query: { section: 'model-routing', tab: tab === 'knowledge' ? 'setup' : tab } }) }
 </script>
