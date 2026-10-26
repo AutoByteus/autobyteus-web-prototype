@@ -117,3 +117,12 @@
 ### Round 14 — 2026-10-26: the Task card header
 
 - The user: the time beside the team name crowded the line. Now: line 1 is the Task key and title with the time at the far right; line 2 is the team (or agent, with the node chip) with "Open run" at the far right. When a Task has several delegations, or no Project Task, each delegation's time sits on its own line 2 beside "Open run". On a narrow window the time drops under the title.
+
+### Round 15 — 2026-10-26: Decisions as a calm list (Task key links, folded teams, time and Open run together)
+
+- The user: the Task key looked clickable but was not; a team's members were always open, which made the page crowded; "Open run" belongs at the right of the time.
+- Changes (each checked in the live tab and at 1512 and 390 px, English and zh-CN):
+  1. The Task key is a link to the Task's page (`/projects/<project>/tasks/<key>`, the product's existing Task page; verified by clicking it) while the Task exists; for a Task since deleted the key is plain grey text with a tooltip. The decision record therefore needs `projectId` and `taskId` (SR-013 has them).
+  2. A team is one folded row (chevron, name, a coloured square per runtime used, "3 agents", an amber triangle when a default was skipped or the router failed); the members open on click. A Task opened from the Settings "View decision" link has its team open.
+  3. Line 1: key, title, then the time and "Open run" together at the far right. A single agent has no folded row: its name and launch sit under the title. A Task delegated more than once (or with no Project Task) shows each delegation's time and Open run on its own line.
+  4. The source of an agent ("Agent default", "Team default", "Inherited from the run") follows its model on the same line instead of a far-right column.

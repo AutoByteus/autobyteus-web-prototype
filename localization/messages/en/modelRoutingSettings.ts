@@ -146,6 +146,9 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.knowledge.updatedByYou": "Last changed by you · {{time}}",
   "settings.modelRouting.setup.router.noConversation": "Choose the router's runtime and model first.",
   "settings.modelRouting.decisions.noProjectTask": "No Project Task",
+  "settings.modelRouting.decisions.agentCount": "{{count}} agents",
+  "settings.modelRouting.decisions.hasNotes": "A default was not used, or the router failed. Open the team to see.",
+  "settings.modelRouting.decisions.taskGone": "This Task no longer exists.",
 } satisfies TranslationCatalog;
 
 export default modelRoutingSettingsMessages;

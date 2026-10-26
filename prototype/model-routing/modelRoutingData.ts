@@ -41,6 +41,8 @@ export type RoutingDelegation = Readonly<{
   /** The Project Task this copy works on (its key and title). */
   /** The Project Task's key; null when the delegation is not for a saved Project Task (it is then grouped as "No Project Task"; the title is the first line of the description). */
   taskKey: string | null
+  /** The Task's place in Projects when it still exists (its key then links to its page); null when it was deleted. */
+  taskLink?: Readonly<{ projectId: string; taskId: string }> | null
   taskTitle: string
   targetAddress: string
   targetName: string
@@ -74,7 +76,7 @@ const choice = (agent: string, kind: string | null, on: typeof CODEX, source: Ro
   ({ agent, agentRunId: null, kind: source === 'router' ? kind : null, ...on, source, reason, ...extra })
 
 const delegation = (n: number, ago: number, title: string, targetAddress: string, choices: RoutingChoice[], extra: Partial<RoutingDelegation> = {}): RoutingDelegation => ({
-  id: `dec-${String(n).padStart(3, '0')}`, at: ANCHOR_MS - ago, taskKey: `autobyteus-${n < 100 ? 60 - n : 143 - n}`, taskTitle: title, targetAddress,
+  id: `dec-${String(n).padStart(3, '0')}`, at: ANCHOR_MS - ago, taskKey: null, taskTitle: title, targetAddress,
   targetName: targetAddress.slice(1).replace(/_/g, ' '), delegatorRunId: 'run-ptm-0001', delegatorName: 'Project Task Manager',
   node: null, failure: null, choices, ...extra,
 })
@@ -177,10 +179,31 @@ export const COPY_RUN_IDS: Readonly<Record<string, Readonly<Record<string, strin
   'dec-003': { solution_designer: 'ptm-set-0001-solution_designer', implementation_engineer: 'ptm-set-0001-implementation_engineer', code_reviewer: 'ptm-set-0001-code_reviewer' },
 }
 
-export const allDelegations = (): RoutingDelegation[] => [...recent(), ...older()].map((item) => ({
-  ...item,
-  choices: item.choices.map((entry) => ({ ...entry, agentRunId: COPY_RUN_IDS[item.id]?.[entry.agent] ?? null })),
-}))
+/** The Projects Tasks these delegations were made for (keys as the Projects pages show them). The others were for Tasks since deleted: the record keeps the key and the title, the key is plain text. */
+const DESKTOP = 'project-desktop-app'
+const REAL_TASKS: Readonly<Record<string, Readonly<{ key: string; projectId: string; taskId: string }>>> = {
+  'dec-001': { key: 'autobyteus-32', projectId: DESKTOP, taskId: 'dct-image-context' },
+  'dec-002': { key: 'autobyteus-30', projectId: DESKTOP, taskId: 'dct-member-reach' },
+  'dec-003': { key: 'autobyteus-29', projectId: DESKTOP, taskId: 'dct-token-meter' },
+  'dec-004': { key: 'autobyteus-34', projectId: DESKTOP, taskId: 'dct-release-notes' },
+  'dec-007': { key: 'autobyteus-28', projectId: DESKTOP, taskId: 'dct-base-tests' },
+  'dec-009': { key: 'autobyteus-33', projectId: DESKTOP, taskId: 'dct-work-journal' },
+  'dec-010': { key: 'autobyteus-31', projectId: DESKTOP, taskId: 'dct-cancelled-tooltip' },
+  'dec-012': { key: 'prototype-launch-6', projectId: 'project-prototype-launch', taskId: 'dct-release-agent' },
+}
+const NO_PROJECT_TASK = new Set(['dec-013'])
+
+export const allDelegations = (): RoutingDelegation[] => {
+  let deleted = 27
+  return [...recent(), ...older()].map((item) => {
+    const real = REAL_TASKS[item.id]
+    const taskKey = NO_PROJECT_TASK.has(item.id) ? null : real ? real.key : `autobyteus-${deleted--}`
+    return {
+      ...item, taskKey, taskLink: real ? { projectId: real.projectId, taskId: real.taskId } : null,
+      choices: item.choices.map((entry) => ({ ...entry, agentRunId: COPY_RUN_IDS[item.id]?.[entry.agent] ?? null })),
+    }
+  })
+}
 
 export type KnowledgeVersion = Readonly<{ text: string; at: number; by: 'router' | 'user' }>
 
