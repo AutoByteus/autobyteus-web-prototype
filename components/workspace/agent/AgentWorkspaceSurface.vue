@@ -13,6 +13,8 @@
           <span v-else class="text-[0.625rem] font-semibold tracking-wide text-slate-600">{{ initials }}</span>
         </div>
         <h4 class="truncate text-base font-medium text-gray-800" :title="headerFullTitle" data-test="agent-workspace-title">{{ headerTitle }}</h4>
+        <!-- delegated-runtime-model-routing: the router is an internal agent, marked like the Agents list marks one. -->
+        <span v-if="isRouter" class="flex-shrink-0 rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-800" data-testid="model-router-internal-badge" :title="$t('agents.components.agents.AgentCard.internalBadgeTitle')">{{ $t('agents.components.agents.AgentCard.internalBadge') }}</span>
         <!-- autobyteus-278: the node that runs this run, next to its name. -->
         <RemoteNodeChip v-if="remote" :node-name="remote.nodeName" size="header" />
         <AgentStatusDisplay :status="target.context.state.currentStatus" />
@@ -24,6 +26,7 @@
         @edit-config="$emit('edit-config')"
       />
     </div>
+    <ModelRouterStrip v-if="isRouter" />
     <RemoteRunNotice v-if="remote && remoteView.unreachable.value" :node-name="remote.nodeName" @retry="remoteView.retry()" />
     <WorkspaceRecoveryNotice
       v-if="recoveryNotice"
@@ -56,6 +59,8 @@ import AgentStatusDisplay from '~/components/workspace/agent/AgentStatusDisplay.
 import WorkspaceHeaderActions from '~/components/workspace/common/WorkspaceHeaderActions.vue'
 import WorkspaceRecoveryNotice from '~/components/workspace/common/WorkspaceRecoveryNotice.vue'
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore'
+import ModelRouterStrip from '~/components/workspace/agent/ModelRouterStrip.vue'
+import { ROUTER_DEFINITION_ID } from '~/prototype/model-routing/modelRoutingFixture'
 import RemoteNodeChip from '~/components/workspace/remote/RemoteNodeChip.vue'
 import RemoteRunNotice from '~/components/workspace/remote/RemoteRunNotice.vue'
 import { useRemoteRunView } from '~/composables/remoteRuns/useRemoteRunView'
@@ -77,7 +82,8 @@ defineEmits<{ (event: 'new-agent'): void; (event: 'edit-config'): void }>()
 
 const definitions = useAgentDefinitionStore()
 const avatarFailed = ref(false)
-const agentName = computed(() => props.target.context.config.agentDefinitionName || 'Agent')
+const isRouter = computed(() => props.target.context.config.agentDefinitionId === ROUTER_DEFINITION_ID)
+const agentName = computed(() => isRouter.value ? 'Model Router' : props.target.context.config.agentDefinitionName || 'Agent')
 // autobyteus-278: a run another node runs shows its node, has no ⚙ or ＋, a notice when its node did not answer, and a box naming it.
 const remoteView = useRemoteRunView({ agentRunId: () => props.target.context.state.runId, agentName })
 const remote = remoteView.remote
@@ -97,8 +103,8 @@ const fallbackTitle = computed(() => {
 })
 // A task child of a standalone run is titled by its name.
 const isRunChild = computed(() => props.target.kind === 'agent_run_task_agent' || props.target.kind === 'agent_run_task_team_member')
-const headerTitle = computed(() => isRunChild.value ? agentName.value : standaloneRunTitle.title.value ?? fallbackTitle.value)
-const headerFullTitle = computed(() => isRunChild.value ? agentName.value : standaloneRunTitle.fullTitle.value ?? fallbackTitle.value)
+const headerTitle = computed(() => isRunChild.value || isRouter.value ? agentName.value : standaloneRunTitle.title.value ?? fallbackTitle.value)
+const headerFullTitle = computed(() => isRunChild.value || isRouter.value ? agentName.value : standaloneRunTitle.fullTitle.value ?? fallbackTitle.value)
 const senderNameByAgentRunId = computed(() => 'collaborationMessages' in props.target
   ? Object.freeze(Object.fromEntries(Object.entries(
       props.target.collaborationMessages.memberIdentityByAgentRunId(),

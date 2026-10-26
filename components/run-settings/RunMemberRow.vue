@@ -34,6 +34,8 @@
             <span class="truncate text-sm font-medium text-gray-900">{{ node.name }}</span>
             <span v-if="node.isCoordinator" class="flex-shrink-0 rounded-full bg-gray-100 px-1.5 py-px text-[0.6875rem] font-medium text-gray-600">{{ $t('runSettings.members.coordinator') }}</span>
             <span v-if="node.badge" class="flex-shrink-0 rounded-full bg-gray-100 px-1.5 py-px text-[0.6875rem] font-medium text-gray-600" data-test="run-member-badge">{{ t(BADGE_KEY[node.badge]) }}</span>
+            <!-- delegated-runtime-model-routing: the node that runs this copy, when it is not this one. -->
+            <RemoteNodeChip v-if="node.remoteNode" :node-name="node.remoteNode" />
           </span>
           <span class="mt-0.5 flex min-w-0 items-center gap-1 text-xs" data-test="run-member-summary">
             <span v-if="node.modelRequired" class="truncate font-medium text-amber-700">{{ $t('chat.model.chooseModel') }}</span>
@@ -46,6 +48,18 @@
               <span v-if="customized || childCustomizedCount" class="flex-shrink-0 text-gray-300" aria-hidden="true">·</span>
               <span class="truncate text-gray-600">{{ summary }}</span>
             </template>
+          </span>
+          <!-- delegated-runtime-model-routing: why the Model Router chose this launch, and where the decision is recorded. -->
+          <span v-if="node.routing && node.routing.reason" class="mt-0.5 block text-xs text-gray-500" data-test="run-member-routing-reason">
+            {{ node.routing.reason }}
+            <span
+              role="link"
+              tabindex="0"
+              class="ml-1 cursor-pointer whitespace-nowrap font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus-visible:underline"
+              data-test="run-member-view-decision"
+              @click.stop="openDecision"
+              @keydown.enter.stop.prevent="openDecision"
+            >{{ $t('runSettings.delegated.viewDecision') }}</span>
           </span>
           <template v-if="!notesInDetail">
             <span
@@ -163,6 +177,7 @@
 
 <script setup lang="ts">
 import { computed, inject } from 'vue'
+import { useRouter } from 'vue-router'
 import { MISSING_MEMBER_ADDRESSES } from '~/composables/agentReconnect/useAgentReconnect'
 import { Icon } from '@iconify/vue'
 import { useLocalization } from '~/composables/useLocalization'
@@ -181,6 +196,7 @@ import {
   type RunMemberDelegatedFacts,
 } from '~/utils/runSettings/runMemberTree'
 import type { MemberLaunchNote } from '~/utils/runSettings/memberLaunchDefaults'
+import RemoteNodeChip from '~/components/workspace/remote/RemoteNodeChip.vue'
 import RunSettingsCard from './RunSettingsCard.vue'
 import { useRunSettingsPresentation } from './useRunSettingsPresentation'
 
@@ -205,6 +221,11 @@ const emit = defineEmits<{
 }>()
 
 const presentation = useRunSettingsPresentation()
+const router = useRouter()
+/** Opens the Model Routing page on this copy's decision. */
+const openDecision = (): void => {
+  if (props.node.routing) void router.push({ path: '/settings', query: { section: 'model-routing', tab: 'decisions', decision: props.node.routing.decisionId } })
+}
 const { t } = useLocalization()
 const UNUSABLE_REASON_KEY: Readonly<Record<MemberLaunchNote['reason'], string>> = {
   incomplete: 'runSettings.members.defaultUnusable.incomplete',
@@ -215,6 +236,7 @@ const BADGE_KEY: Readonly<Record<NonNullable<RunMemberNode['badge']>, string>> =
   delegated_copy: 'runSettings.delegated.copy',
 }
 const SOURCE_LABEL_KEY: Readonly<Record<RunMemberLaunchSource, string>> = {
+  model_router: 'runSettings.delegated.source.model_router',
   agent_default: 'runSettings.delegated.source.agent_default',
   team_default: 'runSettings.delegated.source.team_default',
   inherited: 'runSettings.delegated.source.inherited',
@@ -256,6 +278,7 @@ const summary = computed(() => {
   parts.push(...setModelOptionLabels(presentation.modelOptions(values)))
   parts.push(presentation.approvalLabel(values))
   if (props.node.sourceKey) parts.push(t(SOURCE_LABEL_KEY[props.node.sourceKey]))
+  if (props.node.routing?.taskKind) parts.push(props.node.routing.taskKind)
   return parts.filter(Boolean).join(' · ')
 })
 </script>

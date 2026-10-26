@@ -18,6 +18,7 @@ import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/protot
 import { withAgentReconnect } from '~/prototype/agent-reconnect/agentReconnectFixture'
 import { designOnlyLayersEnabled, reconnectLayerEnabled } from '~/prototype/shared/design-only-layers'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
+import { withModelRouting } from '~/prototype/model-routing/modelRoutingFixture'
 import { remoteStopResult } from '~/prototype/remote-runs/remoteRunsFixture'
 import { seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
 import { seedTaskParts } from '~/prototype/task-part-of/taskPartOfFixture'
@@ -107,6 +108,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (reconnectLayerEnabled()) data = data ? withAgentReconnect(name, request.variables || {}, structuredClone(data), scenario) : data
   // delegated-copy-task-locator (design-only): a Project Task Manager run with look-alike delegated copies.
   if (designOnlyLayersEnabled()) data = data ? withDelegatedCopyTasks(name, request.variables || {}, structuredClone(data), scenario) : data
+  // delegated-runtime-model-routing (design-only): the Model Router's conversation (an internal agent's run opened by its ID).
+  if (designOnlyLayersEnabled()) data = data ? withModelRouting(name, request.variables || {}, structuredClone(data)) : data
   // skill-sources-dialog-redesign (design-only): the registry-error scenario.
   if (designOnlyLayersEnabled() && name === 'GetSkillSources' && data) data = { ...data, skillSourceRegistryError: designRegistryError(scenario) ?? data.skillSourceRegistryError }
   // WEB-BASELINE-REFRESH-011: a scripted read failure (for example the Embedding status) answers as GraphQL errors.

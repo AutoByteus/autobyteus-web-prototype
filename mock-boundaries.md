@@ -276,3 +276,13 @@ presentation code run unchanged; only what sits under them is simulated:
 | Phone Access REST | Switch, addresses, devices, pairing QR | `prototype/source-observation/rest-fixtures.mjs` through an axios adapter | Pairing, device storage |
 
 The pinned source runs for comparison against `prototype/source-observation/mock-node.mjs`, which uses the same fixtures and the same world.
+
+## Model Routing (delegated-runtime-model-routing)
+
+| Production capability | Visible experience preserved | Local implementation | Intentionally absent |
+| --- | --- | --- | --- |
+| The node's Model Routing switch, router runtime/model, task kinds, knowledge note (and its previous version) | Setup, Knowledge (edit, undo, redo), status line | `prototype/model-routing/modelRoutingState.ts` (in memory, reset by a reload; scenario in local storage) | Server settings, persistence, the router agent |
+| Decision records and statistics | Decisions, Overview (periods, bars, models), links to runs | The same state, derived from invented delegations in `modelRoutingData.ts` | Recording at delegation time |
+| The router's own run | Its conversation (requests, tool cards, a rejected answer, teaching), Internal mark and strip | A stored run `run-model-router` answered through `withModelRouting` in the mock GraphQL layer | A live router, its tools, the 60 s limit |
+| A routed copy's recorded source | Settings rows: "Model Router · kind", reason, View decision, remote copies with their node | Rows are overlaid from the decision records (`routingRows.ts`); the recorded origin stays a valid existing one. The product records `model_router` with its reason and task kind | The contract change itself |
+| `delegate_task` result lines | Activity → Result text | `delegationResult` in `modelRoutingFixture.ts` | The tool |
