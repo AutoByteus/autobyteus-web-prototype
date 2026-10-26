@@ -14,6 +14,8 @@ import {
  * index steps advance on a timer. The page depends only on the result fields and the step states shown.
  */
 export type SearchStatus = 'idle' | 'loading' | 'ready' | 'error';
+/** The three tabs of the Memory page. */
+export type MemorySection = 'search' | 'browse' | 'index';
 
 interface MemorySearchState {
   query: string;

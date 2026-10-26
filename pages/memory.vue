@@ -2,6 +2,8 @@
   <div class="h-full overflow-auto bg-gray-50">
     <MemoryHome
       v-if="currentView === 'home'"
+      :section="routeSection()"
+      @change-section="changeSection"
       @search="searchMemory"
       @clear-search="clearMemorySearch"
       @open-result="openSearchResult"
@@ -56,7 +58,7 @@ import MemoryInspector from '~/components/memory/MemoryInspector.vue';
 import { useMemoryExplorerStore, type MemoryHomeTab } from '~/stores/memoryExplorerStore';
 import { useMemoryInspectorStore } from '~/stores/memoryInspectorStore';
 import { useMemoryJournalStore, type JournalFocus } from '~/stores/memoryJournalStore';
-import { useMemorySearchStore } from '~/stores/memorySearchStore';
+import { useMemorySearchStore, type MemorySection } from '~/stores/memorySearchStore';
 import type { SearchMatch, SearchResult } from '~/prototype/memory-search/memoryDesignFixture';
 import type {
   AgentOrgWithMemorySummary,
@@ -102,6 +104,13 @@ const currentAgentSelector = computed((): AgentWithMemorySelector | null => {
 
 const currentTeamDefinitionId = computed(() => queryValue('teamDefinitionId') ?? null);
 const currentOrgDefinitionId = computed(() => queryValue('orgDefinitionId') ?? null);
+
+/** The Memory page's tabs: Browse (the entry), Search, Index. */
+const routeSection = (): MemorySection => {
+  const section = queryValue('section');
+  if (section === 'browse' || section === 'index' || section === 'search') return section;
+  return 'browse';
+};
 
 const routeHomeTab = (): MemoryHomeTab => {
   const tab = queryValue('tab');
@@ -202,10 +211,10 @@ async function syncRouteState() {
     journalStore.clear();
     // Memory search: the cue is in the address, so Back from a Work Journal returns to the same results.
     const cue = queryValue('q');
-    if (cue) void searchStore.runSearch(cue);
+    if (cue) { if (!(searchStore.query === cue && searchStore.status === 'ready')) void searchStore.runSearch(cue); }
     else searchStore.clearSearch();
     void refreshSourcesForHome();
-    await explorerStore.fetchHomeTab(routeHomeTab());
+    if (routeSection() === 'browse') await explorerStore.fetchHomeTab(routeHomeTab());
     return;
   }
 
@@ -300,12 +309,20 @@ function buildTargetFromRoute(): MemoryInspectTarget | null {
 const pushMemory = (query: Record<string, string | null | undefined>) =>
   router.push({ path: '/memory', query: cleanQuery({ source: sourceQuery(), ...query }) });
 
-const pushHome = (tab: MemoryHomeTab = explorerStore.homeTab) => pushMemory({ view: 'home', tab });
+const pushHome = (tab: MemoryHomeTab = explorerStore.homeTab) => pushMemory({ view: 'home', section: 'browse', tab, q: searchStore.query || undefined });
 const goHome = pushHome;
 const changeHomeTab = pushHome;
 
-const searchMemory = (query: string) => pushMemory({ view: 'home', tab: explorerStore.homeTab, q: query });
-const clearMemorySearch = () => pushHome();
+const searchMemory = (query: string) => pushMemory({ view: 'home', section: 'search', q: query });
+const clearMemorySearch = () => pushMemory({ view: 'home', section: 'search' });
+
+/** Switching tabs keeps the search in the address, so its results are still there when the user comes back. */
+const changeSection = (section: MemorySection) => pushMemory({
+  view: 'home',
+  section,
+  tab: section === 'browse' ? explorerStore.homeTab : undefined,
+  q: searchStore.query || undefined,
+});
 
 /** A result opens the run's Work Journal at the matched lines (the run detail, Work Journal tab). */
 const openSearchResult = (result: SearchResult, match: SearchMatch) => {
@@ -328,7 +345,7 @@ const openSearchResult = (result: SearchResult, match: SearchMatch) => {
 
 const changeSource = async (sourceKey: string) => {
   explorerStore.setSelectedSourceByKey(sourceKey);
-  await pushMemory({ view: 'home', tab: explorerStore.homeTab });
+  await pushMemory({ view: 'home', section: 'browse', tab: explorerStore.homeTab });
 };
 
 const agentDetailQuery = (agent: { attribution?: string | null; agentDefinitionId?: string | null; displayName?: string | null }) => ({
@@ -413,7 +430,7 @@ const inspectCollaborationMember = (runId: string, member: CollaborationMemberMe
 function backFromInspector() {
   const target = inspectorStore.target;
   const cue = queryValue('q');
-  if (cue) return pushMemory({ view: 'home', tab: explorerStore.homeTab, q: cue });
+  if (cue) return pushMemory({ view: 'home', section: 'search', q: cue });
   if (!target) return goHome('agents');
   if (target.kind === 'agent_run') {
     return pushMemory(agentDetailQuery({

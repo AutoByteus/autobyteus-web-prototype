@@ -1,25 +1,44 @@
 <template>
   <div class="mx-auto max-w-6xl space-y-4 p-6">
-    <header>
-      <h1 class="text-2xl font-bold text-gray-900">{{ $t('memory.page.title') }}</h1>
-      <p class="mt-1 text-sm text-gray-600">{{ $t('memory.page.subtitle') }}</p>
-    </header>
+    <nav class="flex gap-1 border-b border-gray-200" role="tablist" :aria-label="$t('memory.page.title')">
+      <button
+        v-for="item in sections"
+        :key="item.id"
+        type="button"
+        role="tab"
+        :aria-selected="section === item.id"
+        class="-mb-px flex items-center gap-2 border-b-2 px-4 py-2.5 text-sm font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        :class="section === item.id ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'"
+        :data-test="`memory-section-${item.id}`"
+        @click="$emit('changeSection', item.id)"
+      >
+        {{ item.label }}
+        <template v-if="item.id === 'index' && indexBadge">
+          <Icon v-if="indexBadge.spinner" icon="svg-spinners:ring-resize" class="h-3.5 w-3.5 text-blue-600" aria-hidden="true" />
+          <span v-else class="h-2 w-2 rounded-full" :class="indexBadge.dot" aria-hidden="true" />
+          <span v-if="indexBadge.text" class="text-xs font-semibold text-blue-600" data-test="memory-index-tab-badge">{{ indexBadge.text }}</span>
+        </template>
+      </button>
+    </nav>
 
-    <MemorySearchPanel @search="(query) => $emit('search', query)" />
+    <template v-if="section === 'search'">
+      <MemorySearchPanel @search="(query) => $emit('search', query)" @open-index="$emit('changeSection', 'index')" />
+      <MemorySearchResults
+        v-if="search.status !== 'idle'"
+        :query="search.query"
+        :status="search.status"
+        :outcome="search.outcome"
+        :error="search.error"
+        :coverage="search.coverage"
+        @clear="$emit('clearSearch')"
+        @retry="search.runSearch(search.query)"
+        @open="(result, match) => $emit('openResult', result, match)"
+      />
+    </template>
 
-    <MemorySearchResults
-      v-if="search.status !== 'idle'"
-      :query="search.query"
-      :status="search.status"
-      :outcome="search.outcome"
-      :error="search.error"
-      :coverage="search.coverage"
-      @clear="$emit('clearSearch')"
-      @retry="search.runSearch(search.query)"
-      @open="(result, match) => $emit('openResult', result, match)"
-    />
+    <MemoryIndexPanel v-else-if="section === 'index'" />
 
-    <section v-else class="rounded-xl border border-gray-200 bg-white shadow-sm">
+    <section v-else class="rounded-xl border border-gray-200 bg-white shadow-sm" data-test="memory-browse">
       <div class="border-b border-gray-100 p-4">
         <div v-if="store.sources.length > 1" class="mb-4 rounded-lg border border-slate-200 bg-slate-50 p-3">
           <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
@@ -121,14 +140,20 @@
 import { computed, ref, watch } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useMemoryExplorerStore, type MemoryHomeTab } from '~/stores/memoryExplorerStore';
+import type { MemorySection } from '~/stores/memorySearchStore';
 import type { AgentOrgWithMemorySummary, AgentTeamWithMemorySummary, AgentWithMemorySummary } from '~/types/memory';
 import { useMemorySearchStore } from '~/stores/memorySearchStore';
 import type { SearchMatch, SearchResult } from '~/prototype/memory-search/memoryDesignFixture';
 import MemoryBadges from './MemoryBadges.vue';
 import MemorySearchPanel from './MemorySearchPanel.vue';
 import MemorySearchResults from './MemorySearchResults.vue';
+import MemoryIndexPanel from './MemoryIndexPanel.vue';
+import { useMemoryIndexView } from '~/composables/useMemoryIndexView';
+import { useLocalization } from '~/composables/useLocalization';
 
+const props = defineProps<{ section: MemorySection }>();
 const emit = defineEmits<{
+  changeSection: [section: MemorySection];
   search: [query: string];
   clearSearch: [];
   openResult: [result: SearchResult, match: SearchMatch];
@@ -139,6 +164,13 @@ const emit = defineEmits<{
   selectOrg: [org: AgentOrgWithMemorySummary];
 }>();
 
+const { t } = useLocalization();
+const { badge: indexBadge } = useMemoryIndexView();
+const sections: Array<{ id: MemorySection; label: string }> = [
+  { id: 'browse', label: t('memory.tabs.browse') },
+  { id: 'search', label: t('memory.tabs.search') },
+  { id: 'index', label: t('memory.tabs.index') },
+];
 const store = useMemoryExplorerStore();
 const search = useMemorySearchStore();
 const searchInput = ref('');

@@ -10,19 +10,20 @@ corepack pnpm install --ignore-workspace --frozen-lockfile   # once
 corepack pnpm dev --port 4930
 ```
 
-## What changed on the page
+## What changed on the page (round 2: three tabs)
 
-1. **One memory search box at the top**, with the memory index right under it.
-   - The old name filter stays, but only inside the browse card, relabelled **Filter** (and "Filter agents by name, title or run ID…"), so "Search" means memory search everywhere.
-   - While a search is active its results replace the browse card; **Clear search** brings the lists back. Browse still works while the memory is not indexed.
-2. **Memory index** (the pipeline) is a slim line under the search box: *Up to date · 3,654 runs · updated …*. It opens on its own when something needs attention (not indexed, building, failed, model changed) and any time you click it.
-   - Four steps, each a row with its own state, a progress bar and "X of Y": **1 Find runs, 2 Journals, 3 Text index, 4 Meaning index** (each with its one-line description).
-   - **Index now** (first build, only by the click), **Try again** (after a failure), **Rebuild** (with an inline confirmation).
-   - The embedding model is named in the panel with a link to Server Settings → Embedding; the page never chooses it.
-3. **Results**: one card per run, best first. The card header shows agent, `team · member`, run ID, workspace and *Mentioned first – latest day*. Under it 1–2 matches, newest first, each with the journal file, lines, day, a 2–3 line snippet, **Words / Meaning** and a three-level strength (**Strong / Fair / Weak**, dots plus text). Clicking the header or a match opens the run's **Work Journal at those lines**.
-4. **Run detail tabs**: **Work Journal** (the default), Working Context, Raw Traces. **Episodic and Semantic are gone** (tabs, badges, strings). The run badges now say **Work Journal**.
-5. **Work Journal view**: a file list on the left (name, days, lines, size; *Active*; *Matched lines* marker), a line-numbered reader on the right with the matched lines highlighted and scrolled into view, a banner with the cue and *Match 1 / Match 2* buttons, **Jump to day**, **Go to line**, and *Show 300 earlier / later lines* at the edges of the loaded part so a 48,000-line file stays light.
-6. **Task teams** are listed in Agent Teams like any team, with a small dashed *Task team* tag (the same dashed-indigo language the team detail already uses for task teams). Runs of retired or renamed agents are named as recorded (*Server Helper*, *Release Notes Writer*); a run with no metadata is named by its folder (*Unattributed runs* → `claude_7d21c0e4`).
+The page has no title of its own (the left menu already says Memory). It opens on three tabs: **Browse · Search · Index**.
+
+1. **Browse** (the entry; today's lists). Agents / Agent Teams / Agent Orgs as before. The name filter is kept and relabelled **Filter**, so "Search" only means memory search.
+2. **Search.** One memory search box ("Describe what you remember, in any words or language…"). Results replace nothing else on the tab; **Clear search** empties them. Results survive a hop to another tab.
+   - One card per run, best first: agent, `team · member`, run ID, workspace, *Mentioned first – latest day*; 1–2 matches, newest first, each with file, lines, day, a 2–3 line snippet, **Words / Meaning** and **Strong / Fair / Weak**. A card or a match opens the run's **Work Journal at those lines**.
+   - If the index needs attention, a one-line notice above the results says so with **View the index**; if the memory was never indexed, the tab says so and offers **Index now**, which starts the build and takes you to the Index tab.
+3. **Index** (the pipeline, with room to breathe). A headline status (*Up to date · 3,654 runs · updated …*, *Not indexed yet*, *Step 3 of 4 · Text index 43%*, *Stopped at Journals*, *Embedding model changed*), then four connected step cards: **1 Find runs → 2 Journals → 3 Text index → 4 Meaning index**, each with state icon, progress bar and "X of Y". Under them, what works now: **Search by words** and **Search by meaning** (*Ready / Covers 38% so far / Not yet*).
+   - **Index now** (first build, only by the click), **Try again** (after a failure), **Rebuild** (inline confirmation). The embedding model is named with a link to Server Settings → Embedding.
+   - The **Index tab label carries a small badge** so progress is visible from the other tabs: a spinner and percent while it builds, an amber or red dot when it needs you, nothing when it is fine.
+4. **Run detail tabs**: **Work Journal** (the default), Working Context, Raw Traces. **Episodic and Semantic are gone** (tabs, badges, strings). The run badges say **Work Journal**.
+5. **Work Journal view**: file list on the left (name, days, lines, size; *Active*; *Matched lines* marker), a line-numbered reader with the matched lines highlighted and scrolled into view, a banner with the cue and *Match 1 / Match 2* buttons, **Jump to day**, **Go to line**, and *Show 300 earlier / later lines* at the edges of the loaded part so a 48,000-line file stays light. Back returns to the search results (or the Browse list).
+6. **Task teams** are listed in Agent Teams like any team, with a small dashed *Task team* tag. Runs of retired or renamed agents are named as recorded (*Server Helper*, *Release Notes Writer*); a run without metadata is named by its folder (*Unattributed runs* → `claude_7d21c0e4`).
 
 ## Honest states (what you can see and how to reach it)
 
@@ -32,7 +33,7 @@ Scenarios only choose the starting state; every outcome is reached through the p
 | Starting state | Scenario | Try |
 | --- | --- | --- |
 | Index ready (default) | `populated` | search `ddns updater for the home domain`; `bunny and tortoise`; Chinese `域名 自动更新`; open a match |
-| First time, not indexed | `memory_not_indexed` | the box is disabled with "Index your memory to search it…"; **Index now**; watch the four rows run (accelerated: about 80 s instead of an hour); search while step 3 runs: the page says how much the Text index covers |
+| First time, not indexed | `memory_not_indexed` | the Index tab shows the first-time page; the Search box is disabled with "Index your memory to search it…"; **Index now**; watch the four steps run (accelerated: about 80 s instead of an hour); search while step 3 runs: the page says how much the Text index covers |
 | Text ready, Meaning index running | `memory_meaning_running` | the status line says "Meaning index 38%"; a search says the Meaning index covers 38% |
 | A step failed | `memory_index_failed` | **Try again** |
 | Embedding model changed | `memory_model_changed` | **Rebuild** → inline confirmation |
@@ -43,9 +44,10 @@ Scenarios only choose the starting state; every outcome is reached through the p
 
 ## Decisions I made (and the alternatives, in words)
 
-- *One search or two?* One memory search box on top; the name filter stays as a quiet "Filter" inside the browse card. Alternative: a single box that does both — rejected, because a name filter and a content search answer different questions and mixing their results hides which one the user got.
-- *Where does the pipeline live?* Next to the search box, as a collapsed status line that opens itself when needed. Alternatives: a separate "Index" tab (hides the status where the user needs it) or a modal (blocks the page during a one-hour build) — rejected.
-- *Results replace the browse lists* while a search is active, instead of sitting above them: keeps one thing on screen.
+- *One search or two?* One memory search box, on its own tab; the name filter stays as a quiet "Filter" on Browse. Alternative: a single box that does both — rejected, because a name filter and a content search answer different questions and mixing their results hides which one the user got.
+- *Where does the pipeline live?* On its own **Index** tab (the user's suggestion, round 2), so it can be shown as a real pipeline; the tab label carries a progress badge and the Search tab shows a one-line notice, so nothing is hidden. Alternatives: a strip under the search box (round 1: too cramped for four steps) or a modal (blocks the page during a one-hour build) — rejected.
+- *Entry tab:* Browse, because it is today's page and needs no index; Search and Index follow.
+- *No page title or subtitle,* and no repeated explanations: the left menu already says Memory.
 - *Strength is three words, not a number.* The evaluation report found no usable absolute score (off-topic and true matches overlap), so the page shows Strong / Fair / Weak.
 - *Work Journal is the default run tab; Working Context stays* (it is the live context window, not an old per-run file).
 - *Work Journal windows, not endless scroll:* a 3 MB file is read in 300-line parts around the jump.

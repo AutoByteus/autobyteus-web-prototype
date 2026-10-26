@@ -7,7 +7,7 @@ corepack pnpm install --ignore-workspace --frozen-lockfile
 corepack pnpm dev --port 4930
 ```
 
-- Entry: `/memory` (no setup). Starting states (browser console, reload; remove the key to reset):
+- Entry: `/memory` opens Browse (no setup); tabs Browse · Search · Index (`?view=home&section=search|index`). Starting states (browser console, reload; remove the key to reset):
   `localStorage.setItem('autobyteus.prototype.scenario', '<scenario>')` with `memory_not_indexed`, `memory_meaning_running`, `memory_index_failed`,
   `memory_model_changed`, `memory_search_fails` (default = index ready).
 - Try: search `ddns updater for the home domain` (strong, with two matches), `bunny and tortoise`, `域名 自动更新`, `purple elephant` (only weak matches); open a match.
