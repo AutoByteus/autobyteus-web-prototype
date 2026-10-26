@@ -131,3 +131,9 @@
 
 - The user: each node's Model Router decides for its own node, so the page must not list decisions of another node (a copy on `docker` was decided by docker's router). Removed: copies delegated to other nodes from this node's Decisions (they stay on the run's Settings rows and in the delegate_task result, REQ-009), the node chip and "from <node>" labels in Decisions, and "This computer" / "Remote node" wording on the Runtimes tab and the status line (the node's name is shown only in a peer's window).
 - This reverses the Solution Designer's round-11 request (A3, "recorded on both nodes"), on the user's say; the "Task key" row of the data table keeps `taskKey` etc. Statistics are unchanged (they never counted other nodes' copies).
+
+### Round 17 — 2026-10-26: a simpler Configuration tab and header
+
+- The user: Setup is too complicated; call it Configuration; the switch belongs at the top right with the description under the title; the runtime and model need no extra "On · Claude · …" line because they are shown below.
+- Changes: the tab is "Configuration" (zh 配置). The switch sits at the top right of the page header, on the title's line, for every tab; the one-sentence description is directly under the title. The "On · Claude · prototype-sonnet" status line is gone; a line appears under the description only when the router is on but cannot answer (for example "Codex · gpt-prototype-codex-mini is blocked until Oct 27, 04:00 AM (5 hours)." with a "Go to Configuration" link from the other tabs), and a peer's window shows its node name there.
+  Configuration is now only: Model Router (runtime, model, Open conversation) and "What the router should know" (the text box). While the switch is off the router fields are disabled and the text box stays editable. The "Use the Model Router" row and the "Show internal agents" link are removed.

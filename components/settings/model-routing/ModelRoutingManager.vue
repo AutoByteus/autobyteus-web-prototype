@@ -1,7 +1,22 @@
 <template>
   <div class="flex w-full max-w-5xl flex-col gap-6 px-5 py-6 sm:px-8" data-testid="settings-model-routing-panel">
     <header>
-      <h2 class="text-2xl font-semibold leading-tight text-gray-900">{{ t('settings.modelRouting.title') }}</h2>
+      <div class="flex items-start justify-between gap-4">
+        <h2 class="text-2xl font-semibold leading-tight text-gray-900">{{ t('settings.modelRouting.title') }}</h2>
+        <button
+          type="button"
+          role="switch"
+          class="relative mt-1 inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+          :class="routing.enabled ? 'bg-blue-600' : 'bg-slate-300'"
+          :aria-checked="routing.enabled"
+          :aria-label="t('settings.modelRouting.switchLabel')"
+          data-testid="model-routing-switch"
+          @click="setEnabled(!routing.enabled)"
+        >
+          <span aria-hidden="true" class="inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform" :class="routing.enabled ? 'translate-x-5' : 'translate-x-0.5'" />
+        </button>
+      </div>
+      <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ t('settings.modelRouting.description') }}</p>
       <ModelRoutingStatusStrip :status="status" :node-name="nodeName" :own-node="ownNode" :setup-link="activeTab !== 'setup'" @show-setup="select('setup')" />
     </header>
 
@@ -52,7 +67,7 @@ import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 import { AvailableAgentRuntimes } from '~/graphql/queries/availableAgentRuntimesQueries'
 import type { AvailableAgentRuntimesReport } from '~/types/availableAgentRuntimes'
 import { buildAgentRunChatRoute } from '~/services/workspace/workspaceNavigationService'
-import { routing, routerStatusOf } from '~/prototype/model-routing/modelRoutingState'
+import { routing, routerStatusOf, setEnabled } from '~/prototype/model-routing/modelRoutingState'
 import { ROUTER_RUN_ID } from '~/prototype/model-routing/modelRoutingFixture'
 import AgentRuntimesNowSection from './AgentRuntimesNowSection.vue'
 import ModelRoutingStatusStrip from './ModelRoutingStatusStrip.vue'
