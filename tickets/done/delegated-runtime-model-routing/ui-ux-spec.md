@@ -19,7 +19,7 @@
 - Pinned source commit or revision: `d74f75a51ab7dc47d42a13f33e0f943c3a230ad7` (`origin/personal`, the engineering base of autobyteus-32). The design baseline was refreshed to it first (`WEB-BASELINE-REFRESH-013`, integrated before this design started).
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`)
 - UI reference revision or commit: recorded in `product-ticket.md` (Delivery And Validation) after integration; accepted base `01290bf`; ticket branch `design/delegated-runtime-model-routing`.
-- Ticket folder: `tickets/done/delegated-runtime-model-routing/` (moved there when the ticket closed; during review `tickets/done/delegated-runtime-model-routing/`).
+- Ticket folder: `tickets/done/delegated-runtime-model-routing/` (moved there when the ticket closed; during review `tickets/in-progress/delegated-runtime-model-routing/`).
 - Baseline report path: `ui-baseline-report.md` at the design repository root (`WEB-BASELINE-REFRESH-013`).
 
 ## Problem And Design Rationale

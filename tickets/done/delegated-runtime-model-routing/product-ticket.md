@@ -24,7 +24,7 @@
 - Runtime isolation: dev server on port `4840` (this ticket), log `/tmp/dmr-dev.log`; disposable review aids in `/tmp/dmr-tools` (not committed); screenshots in `/tmp/dmr-shots`.
 - Data origin: every value is invented (runtimes, limits, models, Tasks, reasons, times, node names). The anchor "now" is fixed (2026-10-26 09:40 UTC). Nothing is read from a real node.
 - Integration: `Pending`. Cleanup: `Pending`.
-- Ticket folder: `tickets/in-progress/delegated-runtime-model-routing/`
+- Ticket folder: `tickets/done/delegated-runtime-model-routing/` (during review `tickets/in-progress/delegated-runtime-model-routing/`)
 
 ## Review Rounds
 
