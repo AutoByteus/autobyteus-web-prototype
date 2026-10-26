@@ -175,3 +175,10 @@
 - Defects found and fixed during the check: "1 agents" for a team filtered to one agent (now "1 agent"); the router's conversation screenshot first showed the tree, not the run (re-captured).
 - Findings recorded in the spec (Open Decisions And Risks): the Reconnect "missing agent" mark must not apply to runs of internal agents hidden from the catalog.
 - Runtime: dev server on port 4840 stopped at the end; nothing else was started.
+
+## Integration (2026-10-26)
+
+- Accepted result `ce3e417` pushed to `origin/personal` as a fast-forward from the accepted base `01290bf` (the default branch had not advanced); the canonical checkout `/Users/normy/autobyteus_org/autobyteus-web-design` fast-forwarded to it. UI reference revision: `ce3e417`.
+- Default-entry check: from the canonical checkout (`corepack pnpm dev --port 4827`) `/settings?section=model-routing` shows the approved page (title, switch, Configuration · Decisions · Overview · Runtimes, Task blocks) with no page error, through the product's normal entry point and no preview-only state.
+- Result: `Completed`. Cleanup: dev servers 4840 and 4827 stopped; the worktree and the branch `design/delegated-runtime-model-routing` are removed after this record.
+- Local and remote default branch: `personal` = `origin/personal` (final revision recorded in the message to the Solution Designer).
