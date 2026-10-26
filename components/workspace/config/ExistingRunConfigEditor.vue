@@ -88,6 +88,7 @@ import {
   toWorkspaceSelection,
 } from '~/services/workspace/runWorkspaceChoice'
 import type { RunMemberSettingChange, RunSettingsValues } from '~/types/runSettings/RunSettings'
+import { withRoutingRows } from '~/prototype/model-routing/routingRows'
 import type { ExistingRunModelChoice } from '~/types/agent/ExistingRunModelConfigDraft'
 import { buildSavedRunMemberTree, type RunMemberNode } from '~/utils/runSettings/runMemberTree'
 import {
@@ -256,6 +257,11 @@ const delegatedControl = computed<DelegatedRowControl>(() => {
  */
 const delegatedRows = computed<readonly RunMemberNode[]>(() => {
   const current = draft.value
+  // delegated-runtime-model-routing (design-only): the router's decisions over the rows, and the rows of copies another node runs.
+  return withRoutingRows(current?.kind === 'agent' ? current.runId : null, delegatedRowsOfRun(), { schemaFor, sameWorkspace: sameRunWorkspaceChoice })
+})
+const delegatedRowsOfRun = (): readonly RunMemberNode[] => {
+  const current = draft.value
   if (!current) return []
   const deps = { schemaFor, sameWorkspace: sameRunWorkspaceChoice }
   if (current.kind === 'team') {
@@ -273,7 +279,7 @@ const delegatedRows = computed<readonly RunMemberNode[]>(() => {
     closed: current.kind === 'agent_org' ? history.agentOrgHistory.find((run) => run.rootRunId === current.orgRunId)?.closedTaskExecutions ?? []
       : view!.closed_task_executions,
   }, deps, delegatedControl.value)
-})
+}
 const delegatedByKey = computed(() => delegatedRowsByKey(delegatedRows.value))
 const delegatedNotice = computed(() => delegatedDraft.stopFeedback
   ? { tone: delegatedDraft.stopFeedback.kind, text: delegatedDraft.stopFeedback.message } : null)

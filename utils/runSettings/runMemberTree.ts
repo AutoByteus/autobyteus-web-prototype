@@ -48,6 +48,10 @@ export interface RunMemberNode {
   badge?: 'delegated_copy'
   /** A delegated copy: where its launch came from (absent once the user chose its model). */
   sourceKey?: RunMemberLaunchSource
+  /** delegated-runtime-model-routing: the Model Router's choice for this copy agent (its reason, task kind and decision). */
+  routing?: RunMemberRouting
+  /** delegated-runtime-model-routing: the other node that runs this copy (a remote copy's row). */
+  remoteNode?: string
   /** A delegated copy row: what the user can stop and change on it (SR-007). */
   delegated?: RunMemberDelegatedFacts
   /** This row's own locks; when set they replace its section's. */
@@ -70,7 +74,10 @@ export type RunMemberDelegatedFacts = Readonly<{
 }>
 
 /** Where a delegated copy's launch came from (`configured`: a copy of an in-run placement). */
-export type RunMemberLaunchSource = 'agent_default' | 'team_default' | 'inherited' | 'configured' | 'not_recorded'
+export type RunMemberLaunchSource = 'agent_default' | 'team_default' | 'model_router' | 'inherited' | 'configured' | 'not_recorded'
+
+/** A copy agent the Model Router chose for: why, for which kind of Task, and where its decision is recorded. */
+export type RunMemberRouting = Readonly<{ decisionId: string | null; taskKind: string | null; reason: string | null }>
 
 /** A recorded configured layer a copy skipped, with the server's reason. */
 export type RunMemberLaunchFallback = Readonly<{

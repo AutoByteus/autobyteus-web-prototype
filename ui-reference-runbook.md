@@ -17,6 +17,21 @@ corepack pnpm dev --port 4930
   `utils/apolloClient.ts`. Nothing is read from a real node, run or journal. State is in memory: reload resets it.
 - Spec: `tickets/in-progress/work-journal-search/ui-ux-spec.md` (once approved).
 
+## delegated-runtime-model-routing (Settings → Model Routing, the router conversation, routed choices in run Settings; source pin `d74f75a`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4840
+```
+
+- Entry: `/settings?section=model-routing` (tabs Configuration, Decisions, Overview, Runtimes; `&tab=setup|decisions|overview|runtimes` and `&decision=` select one). Spec: `tickets/done/delegated-runtime-model-routing/ui-ux-spec.md`.
+- Starting states (browser console, then reload; remove the key to reset): `localStorage.setItem('autobyteus.prototype.scenario', '<name>')` with `populated` (default: on, active, history),
+  `routing_fresh` (off, nothing recorded), `routing_off` (off, history kept), `routing_on_empty`, `routing_not_set`, `routing_blocked`. Window context `autobyteus.prototype.context` = `electron_external`
+  shows a peer node's page. Chinese: `localStorage['autobyteus.localization.preference-mode']='zh-CN'`.
+- The router's conversation: Configuration → Talk to the router (or `/chat?id=run-model-router`). The router is listed in the sidebar and in Agents only while Settings → Server Settings → Basics → Show internal agents is on. The Project Task Manager run (`/chat?id=run-ptm-0001`) has three `delegate_task` calls (open Activity → Result) and
+  its Settings (gear) lists the copies with their routed choices.
+- State is in memory: a reload resets it. Data is invented in `prototype/model-routing/modelRoutingData.ts`; the page's state is `modelRoutingState.ts`; the router's conversation `modelRoutingFixture.ts`.
+
 ## WEB-BASELINE-REFRESH-013 (source pin `d74f75a`)
 
 ```bash

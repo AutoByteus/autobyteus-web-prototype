@@ -20,6 +20,7 @@ import { designOnlyLayersEnabled, reconnectLayerEnabled } from '~/prototype/shar
 // work-journal-search (design-only): the Memory page's lists.
 import { withMemoryDesign } from '~/prototype/memory-search/memoryDesignFixture'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
+import { withModelRouting } from '~/prototype/model-routing/modelRoutingFixture'
 import { remoteStopResult } from '~/prototype/remote-runs/remoteRunsFixture'
 import { seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
 import { seedTaskParts } from '~/prototype/task-part-of/taskPartOfFixture'
@@ -109,6 +110,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (reconnectLayerEnabled()) data = data ? withAgentReconnect(name, request.variables || {}, structuredClone(data), scenario) : data
   // delegated-copy-task-locator (design-only): a Project Task Manager run with look-alike delegated copies.
   if (designOnlyLayersEnabled()) data = data ? withDelegatedCopyTasks(name, request.variables || {}, structuredClone(data), scenario) : data
+  // delegated-runtime-model-routing (design-only): the Model Router's conversation (an internal agent's run opened by its ID).
+  if (designOnlyLayersEnabled()) data = data ? withModelRouting(name, request.variables || {}, structuredClone(data), state) : data
   // work-journal-search (design-only): agents, runs, teams (task teams too) and orgs of the Memory page.
   if (designOnlyLayersEnabled()) data = withMemoryDesign(name, request.variables || {}, data, scenario)
   // skill-sources-dialog-redesign (design-only): the registry-error scenario.

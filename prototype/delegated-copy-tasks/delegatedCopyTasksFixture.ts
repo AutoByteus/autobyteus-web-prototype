@@ -13,6 +13,10 @@
  * Turned off with the other design-only layers (`autobyteus.prototype.designOnlyLayers=off`).
  */
 import { exposedFixtures, projectData } from '~/prototype/source-observation/fixtures.mjs'
+// delegated-runtime-model-routing (design-only): each copy agent's recorded launch and its router decision.
+import { COPY_RUN_IDS, scenarioFor } from '~/prototype/model-routing/modelRoutingData'
+import { routingScenarioName } from '~/prototype/model-routing/modelRoutingState'
+import { delegationResult, toolActivities } from '~/prototype/model-routing/modelRoutingFixture'
 // remote-runs-in-tree (design-only): copies on another node, under the same run.
 import { hostIsLive, isRemoteScenario, keepsLocalCopies, remoteMemberProjection, remoteTaskExecutionDtos } from '~/prototype/remote-runs/remoteRunsFixture'
 
@@ -53,13 +57,40 @@ export const COPIES: readonly Copy[] = [
 
 const agentSourceFor = (address: string) => ({ kind: 'agent', agentDefinitionId: address.includes('package') ? 'agent-writer' : 'agent-researcher', launchConfiguration: launch })
 
+/** A member's recorded launch: what its decision chose (runtime, model) and the layers it skipped; otherwise the run's launch. */
+const decisionOf = (agentRunId: string) => {
+  for (const delegation of scenarioFor(routingScenarioName()).delegations) {
+    if (COPY_RUN_IDS[delegation.id] && Object.values(COPY_RUN_IDS[delegation.id]).includes(agentRunId)) {
+      return delegation.choices.find((choice) => choice.agentRunId === agentRunId) ?? null
+    }
+  }
+  return null
+}
+const RUNTIME_KIND: Record<string, string> = { codex_app_server: 'codex_app_server', claude_agent_sdk: 'claude_agent_sdk', antigravity_cli: 'antigravity_cli', autobyteus: 'autobyteus' }
+const memberSource = (copy: Extract<Copy, { kind: 'team' }>, member: { name: string; agentRunId: string }) => {
+  const choice = decisionOf(member.agentRunId)
+  if (!choice) return { address: `${copy.address}/${member.name}`, agentDefinitionId: 'agent-researcher', launchConfiguration: launch, followsTeam: true }
+  // The product records the router as an origin of its own (with its reason and task kind); the UI reference keeps a valid
+  // origin here and lays the decision over the row (`prototype/model-routing/routingRows.ts`).
+  return {
+    address: `${copy.address}/${member.name}`, agentDefinitionId: 'agent-researcher', followsTeam: false,
+    launchConfiguration: { ...launch, runtimeKind: RUNTIME_KIND[choice.runtime] ?? choice.runtime, llmModelIdentifier: choice.model },
+    launchSource: {
+      origin: choice.source === 'router' ? 'inherited' : choice.source,
+      fallbacks: choice.skipped ? [{ layer: choice.skipped.layer, runtimeKind: choice.skipped.runtime, llmModelIdentifier: choice.skipped.model, reason: 'model_unavailable', detail: choice.skipped.detail }] : [],
+    },
+  }
+}
+
 const taskExecution = (copy: Copy) => copy.kind === 'agent'
   ? { address: copy.address, agentRunId: copy.agentRunId, platformAgentRunId: null, delegatorAgentRunId: PTM_RUN_ID, startedAt: createdAt, source: agentSourceFor(copy.address) }
   : {
       address: copy.address, teamRunId: copy.teamRunId, delegatorAgentRunId: PTM_RUN_ID, startedAt: createdAt,
       source: { kind: 'agent_team', teamDefinitionId: 'team-product', coordinatorAddress: `${copy.address}/solution_designer`,
-        members: copy.members.map((member) => ({ address: `${copy.address}/${member.name}`, agentDefinitionId: 'agent-researcher', launchConfiguration: launch, followsTeam: true })),
-        handoffs: [], defaultLaunchConfiguration: launch },
+        members: copy.members.map((member) => memberSource(copy, member)),
+        handoffs: [], defaultLaunchConfiguration: launch,
+        // delegated-runtime-model-routing: a copy whose members have recorded choices says its own launch is the run's.
+        ...(copy.members.some((member) => decisionOf(member.agentRunId)) ? { defaultLaunchSource: { origin: 'inherited', fallbacks: [] } } : {}) },
       members: copy.members.map((member) => ({ address: `${copy.address}/${member.name}`, agentRunId: member.agentRunId, platformAgentRunId: null })),
       taskExecutions: [],
     }
@@ -149,8 +180,17 @@ const historyRun = (template: Record<string, any>, scenario = 'populated') => ({
   workspaceRootPath: workspace.workspaceRootPath, hasCollaboration: true,
 })
 
-const hostConversation = [
+/** The delegations the run's conversation shows: the `delegate_task` calls and their results (REQ-009). */
+const delegateCall = (id: string, delegationId: string, address: string, task: string, minutes: number) => {
+  const scenario = scenarioFor(routingScenarioName())
+  const delegation = scenario.delegations.find((item) => item.id === delegationId)
+  return delegation ? [{ kind: 'tool_call', invocationId: id, toolName: 'delegate_task', toolArgs: { recipient_address: address, description: task, ...(delegation.node ? { node: delegation.node } : {}) }, toolResult: delegationResult(delegation), ts: at(minutes) }] : []
+}
+const hostConversation = () => [
   { kind: 'message', role: 'user', content: 'Dispatch the approved desktop app Tasks.', ts: at(1) },
+  ...delegateCall('ptm-d1', 'dec-001', '/software_engineering_team', 'Image context files don\'t reach the model on the first turn', 1.2),
+  ...delegateCall('ptm-d2', 'dec-006', '/marketing_team', 'Plan the 1.6 launch campaign across email, social and the website', 1.4),
+  ...delegateCall('ptm-d3', 'dec-008', '/support_team', 'Triage the open desktop support threads', 1.6),
   { kind: 'message', role: 'assistant', content: 'Delegated five Tasks: three to copies of the Software Engineering Team and two to copies of the Agent Package Creator. Copy 3 finished the base-branch test fix and now has the image context follow-up.', ts: at(2) },
 ]
 
@@ -178,7 +218,7 @@ export const withDelegatedCopyTasks = (name: string, variables: Record<string, a
     }
     case 'GetRunProjection':
       return variables.runId === PTM_RUN_ID
-        ? { getRunProjection: { runId: PTM_RUN_ID, summary: historyRun({}).summary, lastActivityAt: updatedAt, conversation: hostConversation, activities: [], hasEarlierActiveTraceEvents: false } }
+        ? { getRunProjection: { runId: PTM_RUN_ID, summary: historyRun({}).summary, lastActivityAt: updatedAt, conversation: hostConversation(), activities: toolActivities(hostConversation()), hasEarlierActiveTraceEvents: false } }
         : data
     case 'GetAgentRunResumeConfig':
       return variables.runId === PTM_RUN_ID
