@@ -57,7 +57,7 @@ run's Settings (gear) → Delegated copies → View decision. (3) Overview: 7 da
 | Decisions: filter | All / Model Router / Not routed | `modelRoutingDecisions(before, limit, source: ROUTER | NOT_ROUTER)` |
 | Overview | per kind runtimes/models/counts, source totals, failures, the "Not routed" group | `modelRoutingStatistics(period)` over this node's own records |
 | Run Settings rows | source "Model Router", kind, reason, skipped default; remote copies | `LaunchConfigurationSource` origin `model_router` + `choiceReason`, `taskKind`; the peer's answer; "View decision" finds the record by `delegatingRunId` + `copyAddress` + `agentAddress` |
-| Router conversation | requests, tool calls, answers | requests are posted with sender `system.model_router` and stored as a system notice; the header name and the Internal mark come from the run record |
+| Router conversation | an ordinary agent run (user round 18): requests arrive as the product's existing system notices, its tool calls are the existing tool cards | none: no special header, mark, strip or card; "Open conversation" opens the run by its ID |
 
 Not shown in the reference: the `KNOWLEDGE_CHANGED` refusal (a Save over a note the router rewrote meanwhile). The product shows it as a message under the text box ("The router changed this note while you were editing. Your text is kept; load its version to compare") and keeps the user's text.
 
@@ -67,7 +67,7 @@ Not shown in the reference: the `KNOWLEDGE_CHANGED` refusal (a Save over a note 
 - A2. While Model Routing is off, nothing new is recorded; earlier decisions stay and the page says so.
 - A3. Each node shows only the decisions its own router made. A copy delegated to a peer appears on the run's Settings rows (REQ-009) and in the delegate_task result, and in the peer's Decisions; not in this node's Decisions (user, round 16).
 - A4. Decisions load 8 Task groups at a time; Overview periods are 7 days, 30 days and all time (default 30 days).
-- A5. The router's run is never a row in the Workspaces tree.
+- A5. The router's run is an ordinary agent run with no special screen elements; it is not a row in the Workspaces tree (an internal agent), and "Open conversation" opens it by ID.
 - A6. The fallback wait is 40 seconds (SD correction).
 
 ## Round 2 (user feedback: simpler)
