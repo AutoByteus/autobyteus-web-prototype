@@ -80,7 +80,7 @@ const entries = () => {
     { kind: 'tool_call', invocationId: 'mr-t6', toolName: 'submit_launch_choices', toolArgs: answer(d1), toolResult: `Accepted: ${s1.asked.length} agents.`, ts: at(-27) },
     { kind: 'message', role: 'assistant', content: 'Chose Codex / gpt-prototype-codex for implementation_engineer (its Opus default is blocked until Oct 28) and Claude Sonnet for code_reviewer.', ts: at(-26) },
     { kind: 'system_task_notification', senderId: ROUTING_REQUEST_SENDER, content: `**Task:** ${d8.taskTitle}\n**Delegated by:** ${d8.delegatorName} (Claude / prototype-sonnet) · **to:** ${d8.targetName}\n\n**Choose a runtime and model for these agents**\n- **triage_lead** — no usable default\n- **answer_writer** — no usable default\n\nAnswer with \`submit_launch_choices\`.`, ts: at(-5100) },
-    { kind: 'system_task_notification', senderId: 'system', content: 'No valid answer within 60 seconds. The agents started on the delegating run\'s runtime and model, with a note.', ts: at(-5099) },
+    { kind: 'system_task_notification', senderId: 'system', content: 'No valid answer within 40 seconds. The agents started on the delegating run\'s runtime and model, with a note.', ts: at(-5099) },
   ].sort((a, b) => a.ts - b.ts)
 }
 

@@ -126,7 +126,7 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.overview.emptyPeriodHint": "选择更长的时间范围可查看更早的决策。",
   "settings.modelRouting.knowledge.undo": "撤销上次修改",
   "settings.modelRouting.knowledge.saved": "已保存。上一个版本已保留，可撤销。",
-  "settings.modelRouting.knowledge.undone": "已恢复上一个版本。",
+  "settings.modelRouting.knowledge.undone": "已切换到另一个版本。",
   "modelRouter.strip.text": "为委派的智能体选择运行时和模型。在这里写下内容即可教它。",
   "modelRouter.strip.label": "模型路由页面",
   "modelRouter.strip.decisions": "决策",
@@ -141,8 +141,11 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.decisions.filterNotRouted": "未经路由",
   "settings.modelRouting.overview.agentOne": "个智能体",
   "settings.modelRouting.overview.agentMany": "个智能体",
-  "settings.modelRouting.knowledge.updated": "上次修改 {{time}}",
   "settings.modelRouting.decisions.fromNode": "来自 {{node}}",
+  "settings.modelRouting.knowledge.updatedByRouter": "上次由模型路由器修改 · {{time}}",
+  "settings.modelRouting.knowledge.updatedByYou": "上次由你修改 · {{time}}",
+  "settings.modelRouting.setup.router.noConversation": "请先选择路由器的运行时和模型。",
+  "settings.modelRouting.decisions.noProjectTask": "没有项目任务",
 } satisfies TranslationCatalog;
 
 export default modelRoutingSettingsMessages;

@@ -39,7 +39,7 @@ export type RoutingDelegation = Readonly<{
   id: string
   at: number
   /** The Project Task this copy works on (its key and title). */
-  /** The Project Task's key; absent when the delegation is not for a saved Project Task. */
+  /** The Project Task's key; null when the delegation is not for a saved Project Task (it is then grouped as "No Project Task"; the title is the first line of the description). */
   taskKey: string | null
   taskTitle: string
   targetAddress: string
@@ -113,9 +113,9 @@ const recent = (): RoutingDelegation[] => [
     choice('code_reviewer', 'code review', SONNET, 'team_default', null),
   ]),
   delegation(8, 3 * DAY + 4 * HOUR, 'Triage the open desktop support threads', '/support_team', [
-    choice('triage_lead', 'other', SONNET, 'inherited', 'The Model Router could not choose (no valid answer in 60 s); this agent runs on the delegating run\'s Claude · prototype-sonnet.'),
-    choice('answer_writer', 'other', SONNET, 'inherited', 'The Model Router could not choose (no valid answer in 60 s); this agent runs on the delegating run\'s Claude · prototype-sonnet.'),
-  ], { failure: 'no valid answer within 60 seconds.', node: null }),
+    choice('triage_lead', 'other', SONNET, 'inherited', 'The Model Router could not choose (no valid answer in 40 s); this agent runs on the delegating run\'s Claude · prototype-sonnet.'),
+    choice('answer_writer', 'other', SONNET, 'inherited', 'The Model Router could not choose (no valid answer in 40 s); this agent runs on the delegating run\'s Claude · prototype-sonnet.'),
+  ], { failure: 'no valid answer within 40 seconds.', node: null }),
   delegation(9, 4 * DAY + 1 * HOUR, 'Work Journal: a readable, runtime-independent record of each run', SET, [
     choice('solution_designer', 'design', SONNET, 'agent_default', null),
     choice('implementation_engineer', 'implementation', CODEX, 'router', 'Codex has the most limit left; the Task is a server and web change.'),
@@ -134,7 +134,7 @@ const recent = (): RoutingDelegation[] => [
   ]),
   delegation(13, 12 * DAY + 3 * HOUR, 'Research how other tools show usage limits', '/market_researcher', [
     choice('market_researcher', 'research', LARGE, 'router', 'Web research; the AutoByteus provider has balance.'),
-  ]),
+  ], { taskKey: null }),
   delegation(14, 15 * DAY + 8 * HOUR, 'Update the NFS guide for the new Docker commands', SET, [
     choice('solution_designer', 'design', SONNET, 'agent_default', null),
     choice('implementation_engineer', 'implementation', CODEX, 'router', 'Codex is the default choice for code and docs in the repo.'),
@@ -182,7 +182,7 @@ export const allDelegations = (): RoutingDelegation[] => [...recent(), ...older(
   choices: item.choices.map((entry) => ({ ...entry, agentRunId: COPY_RUN_IDS[item.id]?.[entry.agent] ?? null })),
 }))
 
-export type KnowledgeVersion = Readonly<{ text: string; at: number }>
+export type KnowledgeVersion = Readonly<{ text: string; at: number; by: 'router' | 'user' }>
 
 export const KNOWLEDGE_CURRENT = `Writing goes to Antigravity. Design stays on Claude Sonnet; use Opus only when a Task asks for it. Research goes to the AutoByteus provider (it reads the web, no code).
 
@@ -212,8 +212,6 @@ export type RoutingScenario = Readonly<{
   enabled: boolean
   router: Readonly<{ runtime: string; model: string }> | null
   delegations: readonly RoutingDelegation[]
-  /** Copies this node's runs delegated to other nodes (shown on the run's Settings rows and in the delegate_task result; their decisions are on those nodes). */
-  outgoing: readonly RoutingDelegation[]
   knowledge: Readonly<{ current: KnowledgeVersion; previous: KnowledgeVersion | null }> | null
 }>
 
@@ -223,19 +221,17 @@ export const incomingDelegations = incoming
 
 export const scenarioFor = (name: string): RoutingScenario => {
   const full = allDelegations()
-  const local = full.filter((item) => !item.node)
-  const outgoing = full.filter((item) => item.node)
   const knowledge = {
-    current: { text: KNOWLEDGE_CURRENT, at: ANCHOR_MS - 2 * HOUR - 25 * MIN },
-    previous: { text: KNOWLEDGE_PREVIOUS, at: ANCHOR_MS - 1 * DAY - 6 * HOUR },
+    current: { text: KNOWLEDGE_CURRENT, at: ANCHOR_MS - 2 * HOUR - 25 * MIN, by: 'router' as const },
+    previous: { text: KNOWLEDGE_PREVIOUS, at: ANCHOR_MS - 1 * DAY - 6 * HOUR, by: 'router' as const },
   }
-  const none = { delegations: [], outgoing: [], knowledge: null }
+  const none = { delegations: [], knowledge: null }
   switch (name) {
-    case 'routing_off': return { enabled: false, router: CLAUDE_ROUTER, delegations: local, outgoing, knowledge }
+    case 'routing_off': return { enabled: false, router: CLAUDE_ROUTER, delegations: full, knowledge }
     case 'routing_fresh': return { enabled: false, router: null, ...none }
     case 'routing_on_empty': return { enabled: true, router: CLAUDE_ROUTER, ...none }
     case 'routing_not_set': return { enabled: true, router: null, ...none }
-    case 'routing_blocked': return { enabled: true, router: { runtime: 'codex_app_server', model: 'gpt-prototype-codex-mini' }, delegations: local, outgoing, knowledge }
-    default: return { enabled: true, router: CLAUDE_ROUTER, delegations: local, outgoing, knowledge }
+    case 'routing_blocked': return { enabled: true, router: { runtime: 'codex_app_server', model: 'gpt-prototype-codex-mini' }, delegations: full, knowledge }
+    default: return { enabled: true, router: CLAUDE_ROUTER, delegations: full, knowledge }
   }
 }

@@ -20,21 +20,23 @@
         <li
           v-for="task in visible"
           :id="`decision-${task.delegations[0].delegation.id}`"
-          :key="task.taskKey ?? task.delegations[0].delegation.id"
+          :key="task.taskKey ?? NO_TASK"
           class="border-t border-slate-100 py-5 first:border-t-0 first:pt-0 transition-colors"
           :class="task.delegations.some((item) => item.delegation.id === focusId) ? '-mx-3 rounded-xl bg-blue-50/60 px-3 ring-1 ring-blue-200' : ''"
-          :data-testid="`model-routing-task-${task.taskKey ?? task.delegations[0].delegation.id}`"
+          :data-testid="`model-routing-task-${task.taskKey ?? NO_TASK}`"
         >
           <!-- The Task: its key and title -->
           <div class="flex items-baseline gap-2">
             <span v-if="task.taskKey" class="flex-shrink-0 text-sm text-gray-400"><TaskKey :task-key="task.taskKey" /></span>
-            <p class="min-w-0 break-words text-base font-semibold text-gray-900" :title="task.taskTitle">{{ task.taskTitle }}</p>
+            <p class="min-w-0 break-words text-base font-semibold text-gray-900" :title="task.taskTitle">{{ task.taskKey ? task.taskTitle : t('settings.modelRouting.decisions.noProjectTask') }}</p>
           </div>
 
           <!-- Each delegation of the Task: to whom, by whom, when; then what each agent runs on -->
           <div v-for="item in task.delegations" :id="`decision-${item.delegation.id}`" :key="item.delegation.id" class="mt-2" :data-testid="`model-routing-decision-${item.delegation.id}`">
+            <p v-if="!task.taskKey" class="mb-1 break-words text-sm font-medium text-gray-900">{{ item.delegation.taskTitle }}</p>
             <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-gray-600">
               <span class="text-gray-700">{{ item.delegation.targetName }}</span>
+              <RemoteNodeChip v-if="item.delegation.node" :node-name="item.delegation.node" size="header" />
               <span v-if="item.delegation.from" class="text-gray-500">{{ t('settings.modelRouting.decisions.fromNode', { node: item.delegation.from }) }}</span>
               <span class="text-gray-400">{{ decisionTime(item.delegation.at, locale, t) }}</span>
               <button v-if="item.delegation.delegatorRunId" type="button" class="ml-auto inline-flex flex-shrink-0 items-center gap-1 whitespace-nowrap font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" data-testid="model-routing-decision-open-run" :title="t('settings.modelRouting.decisions.openRunTitle', { delegator: item.delegation.delegatorName })" @click="openRun(item.delegation.delegatorRunId)">
@@ -100,6 +102,7 @@ const sourceFilter = computed(() => props.source)
 const limit = ref(PAGE)
 
 
+const NO_TASK = '__no_project_task__'
 type TaskGroup = { taskKey: string | null; taskTitle: string; delegations: { delegation: RoutingDelegation; choices: RoutingChoice[] }[] }
 /** One block per Project Task (its key), newest first; a Task delegated more than once lists each delegation under it. */
 const tasks = computed<TaskGroup[]>(() => {
@@ -107,7 +110,7 @@ const tasks = computed<TaskGroup[]>(() => {
   for (const delegation of routing.delegations) {
     const choices = delegation.choices.filter((choice) => !sourceFilter.value || (sourceFilter.value === 'router') === (choice.source === 'router'))
     if (!choices.length) continue
-    const key = delegation.taskKey ?? `title:${delegation.taskTitle}:${delegation.id}`
+    const key = delegation.taskKey ?? NO_TASK
     const group = byKey.get(key) ?? { taskKey: delegation.taskKey, taskTitle: delegation.taskTitle, delegations: [] }
     group.delegations.push({ delegation, choices })
     byKey.set(key, group)

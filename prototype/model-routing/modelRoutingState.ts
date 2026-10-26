@@ -22,8 +22,6 @@ export const routing = reactive({
   enabled: seed.enabled,
   router: seed.router ? { ...seed.router } : null as { runtime: string; model: string } | null,
   delegations: [...seed.delegations] as RoutingDelegation[],
-  /** Copies this node's runs delegated to other nodes (their decisions are on those nodes). */
-  outgoing: [...seed.outgoing] as RoutingDelegation[],
   knowledge: seed.knowledge ? { current: { ...seed.knowledge.current }, previous: seed.knowledge.previous ? { ...seed.knowledge.previous } : null } : null as { current: KnowledgeVersion; previous: KnowledgeVersion | null } | null,
   /** A decision the user came to from a run (highlighted in the list). */
   focusDecisionId: null as string | null,
@@ -34,13 +32,13 @@ export const setRouter = (runtime: string, model: string): void => { routing.rou
 
 export const saveKnowledge = (text: string): void => {
   const previous = routing.knowledge?.current ?? null
-  routing.knowledge = { current: { text, at: ANCHOR_MS + 5 * 60_000 }, previous }
+  routing.knowledge = { current: { text, at: ANCHOR_MS + 5 * 60_000, by: 'user' }, previous }
 }
-/** Undo restores the previous version once; the version it replaces is not kept (the node keeps the current note and one previous). */
+/** Undo swaps the current and the previous note: a second Undo brings the newer one back. */
 export const undoKnowledge = (): void => {
   const state = routing.knowledge
   if (!state?.previous) return
-  routing.knowledge = { current: { ...state.previous, at: ANCHOR_MS + 5 * 60_000 }, previous: null }
+  routing.knowledge = { current: state.previous, previous: state.current }
 }
 
 // --- the router's status, from the node's runtime report -------------------------------------------------------
@@ -81,7 +79,7 @@ export type Period = '7d' | '30d' | 'all'
 const PERIOD_MS: Record<Period, number> = { '7d': 7 * 86_400_000, '30d': 30 * 86_400_000, all: Number.POSITIVE_INFINITY }
 
 export const delegationsIn = (period: Period): RoutingDelegation[] =>
-  routing.delegations.filter((item) => ANCHOR_MS - item.at <= PERIOD_MS[period])
+  routing.delegations.filter((item) => !item.node && ANCHOR_MS - item.at <= PERIOD_MS[period])
 
 export type KindStat = Readonly<{
   kind: string

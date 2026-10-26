@@ -126,7 +126,7 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.overview.emptyPeriodHint": "Choose a longer period to see earlier decisions.",
   "settings.modelRouting.knowledge.undo": "Undo last change",
   "settings.modelRouting.knowledge.saved": "Saved. The previous version is kept for Undo.",
-  "settings.modelRouting.knowledge.undone": "Restored the previous version.",
+  "settings.modelRouting.knowledge.undone": "Restored the other version.",
   "modelRouter.strip.text": "Chooses runtimes and models for delegated agents. Write here to teach it.",
   "modelRouter.strip.label": "Model Routing pages",
   "modelRouter.strip.decisions": "Decisions",
@@ -141,8 +141,11 @@ const modelRoutingSettingsMessages = {
   "settings.modelRouting.decisions.filterNotRouted": "Not routed",
   "settings.modelRouting.overview.agentOne": "agent",
   "settings.modelRouting.overview.agentMany": "agents",
-  "settings.modelRouting.knowledge.updated": "Last changed {{time}}",
   "settings.modelRouting.decisions.fromNode": "from {{node}}",
+  "settings.modelRouting.knowledge.updatedByRouter": "Last changed by the Model Router · {{time}}",
+  "settings.modelRouting.knowledge.updatedByYou": "Last changed by you · {{time}}",
+  "settings.modelRouting.setup.router.noConversation": "Choose the router's runtime and model first.",
+  "settings.modelRouting.decisions.noProjectTask": "No Project Task",
 } satisfies TranslationCatalog;
 
 export default modelRoutingSettingsMessages;

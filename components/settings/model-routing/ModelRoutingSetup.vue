@@ -32,7 +32,9 @@
             <NuxtLink to="/settings?section=server-settings&mode=quick" class="text-xs text-gray-400 hover:text-blue-700" data-testid="model-routing-internal-note" :title="t('settings.modelRouting.setup.router.internalNote')">{{ t('settings.modelRouting.setup.router.internalLink') }}</NuxtLink>
             <button
               type="button"
-              class="inline-flex min-h-9 items-center whitespace-nowrap rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+              class="inline-flex min-h-9 items-center whitespace-nowrap rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+              :disabled="!routing.router?.model"
+              :title="routing.router?.model ? undefined : t('settings.modelRouting.setup.router.noConversation')"
               data-testid="model-routing-open-conversation"
               @click="emit('open-conversation')"
             >{{ t('settings.modelRouting.setup.router.openConversation') }}</button>
@@ -79,7 +81,7 @@
         ></textarea>
         <div class="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <p class="text-xs text-gray-500" data-testid="model-routing-knowledge-meta">
-            <template v-if="note">{{ t('settings.modelRouting.knowledge.updated', { time: decisionTime(note.at, locale, t) }) }}</template>
+            <template v-if="note">{{ t(note.by === 'router' ? 'settings.modelRouting.knowledge.updatedByRouter' : 'settings.modelRouting.knowledge.updatedByYou', { time: decisionTime(note.at, locale, t) }) }}</template>
             <span v-if="message" class="ml-2 text-emerald-700" role="status" data-testid="model-routing-knowledge-message">{{ message }}</span>
           </p>
           <div class="flex items-center gap-3">

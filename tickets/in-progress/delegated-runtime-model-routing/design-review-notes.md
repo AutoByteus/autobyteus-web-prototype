@@ -44,30 +44,31 @@ run's Settings (gear) → Delegated copies → View decision. (3) Overview: 7 da
 - Router conversation: a routing request is a system notice with the label "Routing request" in a bordered card; the router's calls are the existing tool cards (its
   rejected answer is the red card); the user's teaching is an ordinary message.
 
-## Data each screen needs, checked against the server design (`design-spec.md` SR-012 and the requirements)
+## Data each screen needs, checked against the server design (`design-spec.md` SR-013, answered by the Solution Designer in round 11)
 
-| Screen / element | Data it shows | Source in the server design | Status |
-| --- | --- | --- | --- |
-| Status line, Setup router dropdowns | enabled, router runtime/model, active, reason, runtimes and models with blocks | `modelRoutingStatus {enabled, routerLaunch, active, reason?, conversationRunId?}` + the runtime report (autobyteus-303) | Matches. The reason is the server's text (English; localizing server texts is out of scope, 303 FU-004): the UI shows it as given (the reference composes it from the report and translates it, which the product cannot do without reason codes). |
-| Switch, router runtime/model | writes | `setModelRoutingEnabled`, `setModelRouterLaunch` | Matches |
-| Text box (knowledge) | current note, time, undo | `modelRoutingKnowledge`, `updateModelRoutingKnowledge`, `undoModelRoutingKnowledge`; the node keeps the current and one previous note | Matches after round 11: one Undo, no Redo, no author (only the file's time). **Needs:** a version/time with the note, so a Save over a note the router rewrote meanwhile is refused with a message |
-| Open conversation | the router's run | `openModelRouterConversation` (ensures it, returns the run ID) | Matches |
-| Decisions: Task key and title | key, title | record has `taskTitle` only | **Needs `taskKey` (null for a delegation that is not for a saved Project Task)**; the delegate_task call must know the Task (the resolution runs before the Task text exists, A-03) |
-| Decisions: delegated to, time, Open run | target, time, delegating run | `copyAddress`, `recordedAt`, `delegatingRunId` | Matches |
-| Decisions: per agent | agent, runtime, model, source, reason, task kind, skipped default | `agentAddress`, `runtimeKind`, `llmModelIdentifier`, `source`, `choiceReason`, `taskKind?`, `notes[]` | Matches. The task kind is the router's own short label (REQ-011 changed by the user: no list to manage) |
-| Decisions: filter (All / Model Router / Not routed) | records by source | `modelRoutingDecisions(before, limit)` has no filter | **Needs an optional `source` filter** (or the filter is dropped); grouping by Task is done in the page over the loaded records |
-| Decisions: copies on another node | — | the peer records them in its own log; this node keeps them on the run's link | Matches after round 11: this node's Decisions list only this node's decisions; a peer's page lists what other nodes delegated to it ("from office-mac", no Open run: that run is on the other node) |
-| Overview | per kind: runtimes, models, counts; source totals; failures | `modelRoutingStatistics(period)` derived from the log | Matches if it also returns the records with no kind (the "Not routed" row), the source totals and the count of router failures (`router_failed` notes) |
-| Run Settings rows | source "Model Router", task kind, reason, skipped default; remote copies | `LaunchConfigurationSource` origin `model_router` + `choiceReason`, `taskKind`; peer answer carries launches | Matches. "View decision" finds its record by the delegating run, the copy address and the agent address (all in the record); no new ID |
-| Router conversation | requests, tool calls, answers | the router's own run | **Needs:** a routing request is stored with a marker the UI can recognise (the reference uses sender `system.model_router`, like `system.skill_update_notifier`); the run's header name "Model Router" and the Internal mark come from the run record, not the agent catalog (internal agents are hidden from it) |
+| Screen / element | Data it shows | Source in the server design |
+| --- | --- | --- |
+| Status line, Setup router dropdowns | enabled, router runtime/model, active, reason, runtimes and models with blocks | `modelRoutingStatus` (`reasonCode` + `reasonParams`, English `reasonText` fallback; the UI translates by code) + the runtime report |
+| Switch, router runtime/model, Open conversation | writes; the router's run | `setModelRoutingEnabled`, `setModelRouterLaunch`, `openModelRouterConversation` (enabled once the router's runtime and model are set) |
+| Text box (knowledge) | the note, who and when, undo | `modelRoutingKnowledge {text, updatedAt, updatedBy, hasPrevious}`, `updateModelRoutingKnowledge(text, expectedUpdatedAt)` (refused with `KNOWLEDGE_CHANGED`), `undoModelRoutingKnowledge` (swaps current and previous: a second Undo brings the newer note back) |
+| Decisions: Task | key (or "No Project Task") and title | the record's `taskKey`, `projectId`, `taskId`, `taskTitle`; Task groups, newest delegation first |
+| Decisions: delegation line | target, node chip, time, Open run | `copyAddress`, node, `recordedAt`, `delegatingRunId` (a copy on another node is recorded on both nodes: here from the peer's answer, with the node chip and Open run; the peer's page shows it "from <node>" with no Open run) |
+| Decisions: per agent | agent, runtime, model, source, reason, kind, skipped default | `agentAddress`, `runtimeKind`, `llmModelIdentifier`, `source`, `choiceReason`, `taskKind?` (free text, 1–40 characters), `notes[]` |
+| Decisions: filter | All / Model Router / Not routed | `modelRoutingDecisions(before, limit, source: ROUTER | NOT_ROUTER)` |
+| Overview | per kind runtimes/models/counts, source totals, failures, the "Not routed" group | `modelRoutingStatistics(period)`; counts only records resolved on this node (copies resolved by a peer are not counted here) |
+| Run Settings rows | source "Model Router", kind, reason, skipped default; remote copies | `LaunchConfigurationSource` origin `model_router` + `choiceReason`, `taskKind`; the peer's answer; "View decision" finds the record by `delegatingRunId` + `copyAddress` + `agentAddress` |
+| Router conversation | requests, tool calls, answers | requests are posted with sender `system.model_router` and stored as a system notice; the header name and the Internal mark come from the run record |
+
+Not shown in the reference: the `KNOWLEDGE_CHANGED` refusal (a Save over a note the router rewrote meanwhile). The product shows it as a message under the text box ("The router changed this note while you were editing. Your text is kept; load its version to compare") and keeps the user's text.
 
 ## Assumptions to confirm (for the Solution Designer)
 
 - A1. The task kind is recorded only when the router decided; defaults and inherited launches have none ("Not routed").
-- A2. While Model Routing is off, nothing new is recorded (`design-spec.md`: records only while on); earlier decisions stay and the page says so.
-- A3. Each node shows its own decisions; copies delegated to a peer are shown on the run's Settings rows and in the delegate_task result, the peer's page lists them.
-- A4. Decisions load 8 Tasks at a time and "Show more" asks for the next records; Overview periods are 7 days, 30 days and all time (default 30 days).
+- A2. While Model Routing is off, nothing new is recorded; earlier decisions stay and the page says so.
+- A3. A delegation to a peer is recorded on both nodes (SD, round 11); each node's Overview counts only the records it resolved.
+- A4. Decisions load 8 Task groups at a time; Overview periods are 7 days, 30 days and all time (default 30 days).
 - A5. The router's run is never a row in the Workspaces tree.
+- A6. The fallback wait is 40 seconds (SD correction).
 
 ## Round 2 (user feedback: simpler)
 

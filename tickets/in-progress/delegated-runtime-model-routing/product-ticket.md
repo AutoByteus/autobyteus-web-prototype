@@ -103,3 +103,9 @@
   a "View decision" link for a remote copy (its decision is on the peer), and a decision ID in "View decision" (the record is found by delegating run, copy address and agent address).
 - A peer's own page now lists what other nodes delegated to it ("from office-mac", no Open run).
 - Needs from the server side (sent to the Solution Designer): `taskKey` in the decision record; an optional `source` filter on `modelRoutingDecisions`; a version with the knowledge note; statistics including the "Not routed" group and the failure count; a recognisable marker on a routing request; the router run's name and Internal mark from the run record.
+
+### Round 12 — 2026-10-26: the Solution Designer's answers to the data audit (SR-013)
+
+- All seven needs accepted. Applied in the UI: the "changed by the router / by you" label is back (the server gives `updatedBy`); Undo swaps the current and the previous note (a second Undo brings the newer one back; there is still no Redo); the "No Project Task" group for a delegation that has no saved Project Task;
+  copies delegated to another node are listed again in this node's Decisions (node chip, Open run) and not counted in Overview; "Open conversation" is enabled as soon as the router's runtime and model are set (the SD's recommendation, A5 of the earlier notes, still to be confirmed by the user);
+  the fallback notice says 40 seconds (a correction).
