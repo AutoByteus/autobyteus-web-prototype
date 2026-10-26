@@ -5,7 +5,7 @@
         <span class="font-semibold"><template v-if="focus.cue">{{ $t('memory.journal.found_from', { cue: focus.cue }) }}</template><template v-else>{{ $t('memory.journal.found_lines') }}</template></span>
         <span class="text-amber-800"> · {{ matchedLabel }}</span>
       </p>
-      <div v-if="siblingMatches.length > 1" class="flex flex-shrink-0 flex-wrap gap-1.5">
+      <div v-if="siblingMatches.length > 1" class="flex min-w-0 flex-wrap gap-1.5 md:flex-shrink-0">
         <button
           v-for="(match, index) in siblingMatches"
           :key="`${match.file}:${match.fromLine}`"
