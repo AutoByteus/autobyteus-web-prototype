@@ -24,7 +24,7 @@
     </div>
 
     <template v-if="section === 'search'">
-      <MemorySearchPanel :show-notice="!resultsCarryCoverage" @search="(query) => $emit('search', query)" @open-index="$emit('changeSection', 'index')" />
+      <MemorySearchPanel :show-notice="!resultsCarryCoverage" :centered="search.status === 'idle'" @search="(query) => $emit('search', query)" @open-index="$emit('changeSection', 'index')" />
       <MemorySearchResults
         v-if="search.status !== 'idle'"
         :query="search.query"
