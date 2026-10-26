@@ -39,14 +39,17 @@ export type RoutingDelegation = Readonly<{
   id: string
   at: number
   /** The Project Task this copy works on (its key and title). */
-  taskKey: string
+  /** The Project Task's key; absent when the delegation is not for a saved Project Task. */
+  taskKey: string | null
   taskTitle: string
   targetAddress: string
   targetName: string
   delegatorRunId: string
   delegatorName: string
-  /** The node that runs the copy when it is not this one (the peer's own router decided). */
+  /** The node that runs the copy when it is not this one (its own router decided; the choice is recorded there, and shown here on the run's link). */
   node: string | null
+  /** A delegation another node made to this node: the node it came from (its run is on that node, so it cannot be opened here). */
+  from?: string | null
   /** The router failed or was not active: the note shown with the inherited launches. */
   failure: string | null
   choices: readonly RoutingChoice[]
@@ -179,7 +182,7 @@ export const allDelegations = (): RoutingDelegation[] => [...recent(), ...older(
   choices: item.choices.map((entry) => ({ ...entry, agentRunId: COPY_RUN_IDS[item.id]?.[entry.agent] ?? null })),
 }))
 
-export type KnowledgeVersion = Readonly<{ text: string; at: number; by: 'router' | 'user' }>
+export type KnowledgeVersion = Readonly<{ text: string; at: number }>
 
 export const KNOWLEDGE_CURRENT = `Writing goes to Antigravity. Design stays on Claude Sonnet; use Opus only when a Task asks for it. Research goes to the AutoByteus provider (it reads the web, no code).
 
@@ -191,27 +194,48 @@ export const KNOWLEDGE_PREVIOUS = `Writing goes to Antigravity. Design stays on 
 Codex's weekly limit is the tight one (41% left on Oct 26, resets Oct 30). Opus is used up until Oct 28, 09:00.
 `
 
+/** What another node (office-mac) delegated to this node: this node's router chose; the delegating run is on the other node. */
+const incoming = (): RoutingDelegation[] => [
+  { id: 'inc-001', at: ANCHOR_MS - 3 * HOUR, taskKey: null, taskTitle: 'Plan the 1.6 launch campaign across email, social and the website', targetAddress: '/marketing_team', targetName: 'marketing team',
+    delegatorRunId: '', delegatorName: 'Project Task Manager', node: null, from: 'office-mac', failure: null, choices: [
+      choice('campaign_lead', 'writing', AGY, 'router', 'Campaign copy is writing; Antigravity is preferred for writing.'),
+      choice('copywriter', 'writing', AGY, 'router', 'Same Task kind, same runtime, so the copy stays consistent.'),
+      choice('designer', 'design', SONNET, 'router', 'Layout notes need a strong design model; Claude Sonnet has limit left.'),
+    ] },
+  { id: 'inc-002', at: ANCHOR_MS - 1 * DAY - 6 * HOUR, taskKey: null, taskTitle: 'Compare competitor pricing pages for the desktop app', targetAddress: '/market_researcher', targetName: 'market researcher',
+    delegatorRunId: '', delegatorName: 'Project Task Manager', node: null, from: 'office-mac', failure: null, choices: [
+      choice('market_researcher', 'research', LARGE, 'router', 'A research Task needs web reading, not code; the AutoByteus provider has balance and no limit.'),
+    ] },
+]
+
 export type RoutingScenario = Readonly<{
   enabled: boolean
   router: Readonly<{ runtime: string; model: string }> | null
   delegations: readonly RoutingDelegation[]
+  /** Copies this node's runs delegated to other nodes (shown on the run's Settings rows and in the delegate_task result; their decisions are on those nodes). */
+  outgoing: readonly RoutingDelegation[]
   knowledge: Readonly<{ current: KnowledgeVersion; previous: KnowledgeVersion | null }> | null
 }>
 
 const CLAUDE_ROUTER = { runtime: 'claude_agent_sdk', model: 'prototype-sonnet' }
 
+export const incomingDelegations = incoming
+
 export const scenarioFor = (name: string): RoutingScenario => {
   const full = allDelegations()
+  const local = full.filter((item) => !item.node)
+  const outgoing = full.filter((item) => item.node)
   const knowledge = {
-    current: { text: KNOWLEDGE_CURRENT, at: ANCHOR_MS - 2 * HOUR - 25 * MIN, by: 'router' as const },
-    previous: { text: KNOWLEDGE_PREVIOUS, at: ANCHOR_MS - 1 * DAY - 6 * HOUR, by: 'router' as const },
+    current: { text: KNOWLEDGE_CURRENT, at: ANCHOR_MS - 2 * HOUR - 25 * MIN },
+    previous: { text: KNOWLEDGE_PREVIOUS, at: ANCHOR_MS - 1 * DAY - 6 * HOUR },
   }
+  const none = { delegations: [], outgoing: [], knowledge: null }
   switch (name) {
-    case 'routing_off': return { enabled: false, router: CLAUDE_ROUTER, delegations: full, knowledge }
-    case 'routing_fresh': return { enabled: false, router: null, delegations: [], knowledge: null }
-    case 'routing_on_empty': return { enabled: true, router: CLAUDE_ROUTER, delegations: [], knowledge: null }
-    case 'routing_not_set': return { enabled: true, router: null, delegations: [], knowledge: null }
-    case 'routing_blocked': return { enabled: true, router: { runtime: 'codex_app_server', model: 'gpt-prototype-codex-mini' }, delegations: full, knowledge }
-    default: return { enabled: true, router: CLAUDE_ROUTER, delegations: full, knowledge }
+    case 'routing_off': return { enabled: false, router: CLAUDE_ROUTER, delegations: local, outgoing, knowledge }
+    case 'routing_fresh': return { enabled: false, router: null, ...none }
+    case 'routing_on_empty': return { enabled: true, router: CLAUDE_ROUTER, ...none }
+    case 'routing_not_set': return { enabled: true, router: null, ...none }
+    case 'routing_blocked': return { enabled: true, router: { runtime: 'codex_app_server', model: 'gpt-prototype-codex-mini' }, delegations: local, outgoing, knowledge }
+    default: return { enabled: true, router: CLAUDE_ROUTER, delegations: local, outgoing, knowledge }
   }
 }

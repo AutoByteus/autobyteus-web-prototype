@@ -77,7 +77,7 @@ export type RunMemberDelegatedFacts = Readonly<{
 export type RunMemberLaunchSource = 'agent_default' | 'team_default' | 'model_router' | 'inherited' | 'configured' | 'not_recorded'
 
 /** A copy agent the Model Router chose for: why, for which kind of Task, and where its decision is recorded. */
-export type RunMemberRouting = Readonly<{ decisionId: string; taskKind: string | null; reason: string | null }>
+export type RunMemberRouting = Readonly<{ decisionId: string | null; taskKind: string | null; reason: string | null }>
 
 /** A recorded configured layer a copy skipped, with the server's reason. */
 export type RunMemberLaunchFallback = Readonly<{

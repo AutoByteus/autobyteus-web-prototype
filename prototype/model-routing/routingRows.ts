@@ -40,7 +40,7 @@ const RUNTIME_KIND: Record<string, string> = { codex_app_server: 'codex_app_serv
 const remoteRows = (hostRunId: string, template: RunMemberNode | undefined, deps: RunMemberTreeDeps): RunMemberNode[] => {
   if (!template) return []
   const rows: RunMemberNode[] = []
-  for (const delegation of routing.delegations) {
+  for (const delegation of routing.outgoing) {
     if (!delegation.node || delegation.delegatorRunId !== hostRunId) continue
     const agentRows = delegation.choices.map((choice) => {
       const values = { ...template.values, runtimeKind: RUNTIME_KIND[choice.runtime] ?? choice.runtime, llmModelIdentifier: choice.model, llmConfig: null, autoExecuteTools: true }
@@ -51,7 +51,7 @@ const remoteRows = (hostRunId: string, template: RunMemberNode | undefined, deps
       }, deps)
       return Object.freeze({
         ...node, remoteNode: delegation.node!,
-        ...(choice.source === 'router' ? { routing: { decisionId: delegation.id, taskKind: choice.kind, reason: choice.reason } } : {}),
+        ...(choice.source === 'router' ? { routing: { decisionId: null, taskKind: choice.kind, reason: choice.reason } } : {}),
       }) as RunMemberNode
     })
     if (delegation.choices.length === 1) { rows.push(agentRows[0]); continue }

@@ -182,7 +182,8 @@ const historyRun = (template: Record<string, any>, scenario = 'populated') => ({
 
 /** The delegations the run's conversation shows: the `delegate_task` calls and their results (REQ-009). */
 const delegateCall = (id: string, delegationId: string, address: string, task: string, minutes: number) => {
-  const delegation = scenarioFor(routingScenarioName()).delegations.find((item) => item.id === delegationId)
+  const scenario = scenarioFor(routingScenarioName())
+  const delegation = [...scenario.delegations, ...scenario.outgoing].find((item) => item.id === delegationId)
   return delegation ? [{ kind: 'tool_call', invocationId: id, toolName: 'delegate_task', toolArgs: { recipient_address: address, description: task, ...(delegation.node ? { node: delegation.node } : {}) }, toolResult: delegationResult(delegation), ts: at(minutes) }] : []
 }
 const hostConversation = () => [

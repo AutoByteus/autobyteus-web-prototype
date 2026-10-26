@@ -79,13 +79,12 @@
         ></textarea>
         <div class="mt-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <p class="text-xs text-gray-500" data-testid="model-routing-knowledge-meta">
-            <template v-if="note">{{ t(note.by === 'router' ? 'settings.modelRouting.knowledge.updatedByRouter' : 'settings.modelRouting.knowledge.updatedByYou', { time: decisionTime(note.at, locale, t) }) }}</template>
+            <template v-if="note">{{ t('settings.modelRouting.knowledge.updated', { time: decisionTime(note.at, locale, t) }) }}</template>
             <span v-if="message" class="ml-2 text-emerald-700" role="status" data-testid="model-routing-knowledge-message">{{ message }}</span>
           </p>
           <div class="flex items-center gap-3">
             <button v-if="canUndo" type="button" class="text-sm font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="model-routing-knowledge-undo" @click="undo">{{ t('settings.modelRouting.knowledge.undo') }}</button>
-            <button v-else-if="routing.redo" type="button" class="text-sm font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="model-routing-knowledge-redo" @click="redo">{{ t('settings.modelRouting.knowledge.redo') }}</button>
-            <button type="button" class="inline-flex min-h-9 items-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50" :disabled="!dirty" data-testid="model-routing-knowledge-save" @click="save">{{ t('settings.modelRouting.knowledge.save') }}</button>
+                        <button type="button" class="inline-flex min-h-9 items-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50" :disabled="!dirty" data-testid="model-routing-knowledge-save" @click="save">{{ t('settings.modelRouting.knowledge.save') }}</button>
           </div>
         </div>
       </div>
@@ -96,7 +95,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import type { AvailableAgentRuntimesReport, AvailableModel } from '~/types/availableAgentRuntimes'
-import { routing, setEnabled, setRouter, saveKnowledge, undoKnowledge, redoKnowledge, modelsOf, type RouterStatus } from '~/prototype/model-routing/modelRoutingState'
+import { routing, setEnabled, setRouter, saveKnowledge, undoKnowledge, modelsOf, type RouterStatus } from '~/prototype/model-routing/modelRoutingState'
 import { RUNTIME_NAMES } from '~/prototype/model-routing/modelRoutingData'
 import { decisionTime, routerProblem, shortDate } from './modelRoutingPresentation'
 
@@ -132,5 +131,4 @@ const dirty = computed(() => draft.value.trim() !== (note.value?.text ?? '').tri
 watch(note, (next) => { draft.value = next?.text ?? '' })
 const save = (): void => { saveKnowledge(draft.value.trim() + '\n'); message.value = t('settings.modelRouting.knowledge.saved') }
 const undo = (): void => { undoKnowledge(); message.value = t('settings.modelRouting.knowledge.undone') }
-const redo = (): void => { redoKnowledge(); message.value = t('settings.modelRouting.knowledge.redone') }
 </script>

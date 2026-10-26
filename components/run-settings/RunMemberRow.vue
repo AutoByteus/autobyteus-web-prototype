@@ -53,6 +53,7 @@
           <span v-if="node.routing && node.routing.reason" class="mt-0.5 block text-xs text-gray-500" data-test="run-member-routing-reason">
             {{ node.routing.reason }}
             <span
+              v-if="node.routing.decisionId"
               role="link"
               tabindex="0"
               class="ml-1 cursor-pointer whitespace-nowrap font-medium text-blue-700 hover:text-blue-800 focus:outline-none focus-visible:underline"
@@ -224,7 +225,7 @@ const presentation = useRunSettingsPresentation()
 const router = useRouter()
 /** Opens the Model Routing page on this copy's decision. */
 const openDecision = (): void => {
-  if (props.node.routing) void router.push({ path: '/settings', query: { section: 'model-routing', tab: 'decisions', decision: props.node.routing.decisionId } })
+  if (props.node.routing?.decisionId) void router.push({ path: '/settings', query: { section: 'model-routing', tab: 'decisions', decision: props.node.routing.decisionId } })
 }
 const { t } = useLocalization()
 const UNUSABLE_REASON_KEY: Readonly<Record<MemberLaunchNote['reason'], string>> = {

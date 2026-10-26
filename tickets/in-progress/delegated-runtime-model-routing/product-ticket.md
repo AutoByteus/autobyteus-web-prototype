@@ -95,3 +95,11 @@
 - The user asked how the counts on Overview are decided. Every number counts AGENTS (the members of delegated copies), not Tasks: the total is every agent started in a delegated copy in the period; a task-kind row is the agents the Model Router labelled with that kind
   (the router writes the label per agent, from the Task text and the agent's role, and it is stored in the decision record); "Not routed" is the agents on a default or the delegating run's launch (no router decision, so no kind); the source bar splits the same total by who chose the launch.
   One Task can appear under several kinds (designer, engineer, reviewer). The rows now read "6 agents" so a count is not taken for a Task count. A count of distinct Tasks per kind was not chosen because a Task has no single kind.
+
+### Round 11 — 2026-10-26: the design checked against the server design
+
+- The user: validate that the UI is consistent with what can be built, not hallucinated. Every element was checked against `design-spec.md` and the requirements (table in `design-review-notes.md`).
+- Removed because the server cannot provide it: Redo of the knowledge note, "changed by the router / by you" (the node keeps the current and one previous note, no author), copies delegated to a peer in this node's Decisions list (the peer records them; this node shows them on the run's link),
+  a "View decision" link for a remote copy (its decision is on the peer), and a decision ID in "View decision" (the record is found by delegating run, copy address and agent address).
+- A peer's own page now lists what other nodes delegated to it ("from office-mac", no Open run).
+- Needs from the server side (sent to the Solution Designer): `taskKey` in the decision record; an optional `source` filter on `modelRoutingDecisions`; a version with the knowledge note; statistics including the "Not routed" group and the failure count; a recognisable marker on a routing request; the router run's name and Internal mark from the run record.

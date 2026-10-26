@@ -6,7 +6,7 @@
 import { reactive, computed } from 'vue'
 import type { AvailableAgentRuntimesReport, AvailableAgentRuntimeEntry, ExternalAgentRuntimeEntry, AvailableModel } from '~/types/availableAgentRuntimes'
 import {
-  ANCHOR_MS, RUNTIME_NAMES, scenarioFor,
+  ANCHOR_MS, RUNTIME_NAMES, scenarioFor, incomingDelegations,
   type KnowledgeVersion, type RoutingChoice, type RoutingDelegation, type RoutingSource,
 } from './modelRoutingData'
 
@@ -14,15 +14,17 @@ export const routingScenarioName = (): string => {
   try { return localStorage.getItem('autobyteus.prototype.scenario') || 'populated' } catch { return 'populated' }
 }
 
-const seed = scenarioFor(routingScenarioName())
+const peerWindow = (): boolean => { try { return localStorage.getItem('autobyteus.prototype.context') === 'electron_external' } catch { return false } }
+// A peer node's window shows that node's own page: what other nodes delegated to it (its router chose).
+const seed = peerWindow() ? { ...scenarioFor('routing_on_empty'), delegations: incomingDelegations(), knowledge: scenarioFor('populated').knowledge } : scenarioFor(routingScenarioName())
 
 export const routing = reactive({
   enabled: seed.enabled,
   router: seed.router ? { ...seed.router } : null as { runtime: string; model: string } | null,
   delegations: [...seed.delegations] as RoutingDelegation[],
+  /** Copies this node's runs delegated to other nodes (their decisions are on those nodes). */
+  outgoing: [...seed.outgoing] as RoutingDelegation[],
   knowledge: seed.knowledge ? { current: { ...seed.knowledge.current }, previous: seed.knowledge.previous ? { ...seed.knowledge.previous } : null } : null as { current: KnowledgeVersion; previous: KnowledgeVersion | null } | null,
-  /** After an undo the replaced text can be restored once. */
-  redo: null as KnowledgeVersion | null,
   /** A decision the user came to from a run (highlighted in the list). */
   focusDecisionId: null as string | null,
 })
@@ -32,20 +34,13 @@ export const setRouter = (runtime: string, model: string): void => { routing.rou
 
 export const saveKnowledge = (text: string): void => {
   const previous = routing.knowledge?.current ?? null
-  routing.knowledge = { current: { text, at: ANCHOR_MS + 5 * 60_000, by: 'user' }, previous }
-  routing.redo = null
+  routing.knowledge = { current: { text, at: ANCHOR_MS + 5 * 60_000 }, previous }
 }
+/** Undo restores the previous version once; the version it replaces is not kept (the node keeps the current note and one previous). */
 export const undoKnowledge = (): void => {
   const state = routing.knowledge
   if (!state?.previous) return
-  routing.redo = state.current
-  routing.knowledge = { current: { ...state.previous, at: ANCHOR_MS + 5 * 60_000, by: 'user' }, previous: null }
-}
-export const redoKnowledge = (): void => {
-  const state = routing.knowledge
-  if (!routing.redo || !state) return
-  routing.knowledge = { current: routing.redo, previous: state.current }
-  routing.redo = null
+  routing.knowledge = { current: { ...state.previous, at: ANCHOR_MS + 5 * 60_000 }, previous: null }
 }
 
 // --- the router's status, from the node's runtime report -------------------------------------------------------
