@@ -8,7 +8,7 @@
         <span v-if="readOnly" class="rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">{{ $t('memory.components.memory.common.importedReadOnly') }}</span>
         <div class="flex gap-2">
           <input v-model="searchInput" type="text" :placeholder="$t('memory.components.memory.CollaborationMemoryDetail.search_runs')" class="min-w-[260px] rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" @keyup.enter="applySearch" />
-          <button class="rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800" @click="applySearch">Search</button>
+          <button class="rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800" @click="applySearch">{{ $t('memory.browse.filter_button') }}</button>
         </div>
       </div>
 

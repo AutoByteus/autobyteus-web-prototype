@@ -383,8 +383,7 @@ export const useMemoryExplorerStore = defineStore('memoryExplorerStore', {
       return {
         latestMemoryAt: null,
         hasWorkingContext: false,
-        hasEpisodic: false,
-        hasSemantic: false,
+        hasWorkJournal: false,
         hasRawTraces: false,
         hasRawArchive: false,
       };

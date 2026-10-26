@@ -1,8 +1,27 @@
 <template>
-  <div class="mx-auto max-w-6xl p-6">
-    <section class="rounded-xl border border-gray-200 bg-white shadow-sm">
+  <div class="mx-auto max-w-6xl space-y-4 p-6">
+    <header>
+      <h1 class="text-2xl font-bold text-gray-900">{{ $t('memory.page.title') }}</h1>
+      <p class="mt-1 text-sm text-gray-600">{{ $t('memory.page.subtitle') }}</p>
+    </header>
+
+    <MemorySearchPanel @search="(query) => $emit('search', query)" />
+
+    <MemorySearchResults
+      v-if="search.status !== 'idle'"
+      :query="search.query"
+      :status="search.status"
+      :outcome="search.outcome"
+      :error="search.error"
+      :coverage="search.coverage"
+      @clear="$emit('clearSearch')"
+      @retry="search.runSearch(search.query)"
+      @open="(result, match) => $emit('openResult', result, match)"
+    />
+
+    <section v-else class="rounded-xl border border-gray-200 bg-white shadow-sm">
       <div class="border-b border-gray-100 p-4">
-        <div class="mb-4 rounded-lg border border-slate-200 bg-slate-50 p-3">
+        <div v-if="store.sources.length > 1" class="mb-4 rounded-lg border border-slate-200 bg-slate-50 p-3">
           <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <div>
               <label class="text-xs font-semibold uppercase tracking-wide text-slate-500" for="memory-source-select">{{ $t('memory.components.memory.MemoryHome.memorySource') }}</label>
@@ -18,15 +37,15 @@
           </div>
           <p v-if="store.sourceError" class="mt-2 text-xs text-red-600">{{ store.sourceError }}</p>
         </div>
-        <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div class="flex gap-2">
-            <button class="rounded-lg px-4 py-2 text-sm font-semibold" :class="tabClass('agents')" @click="selectTab('agents')">{{ $t('memory.components.memory.MemoryHome.agents') }}</button>
-            <button class="rounded-lg px-4 py-2 text-sm font-semibold" :class="tabClass('teams')" @click="selectTab('teams')">{{ $t('memory.components.memory.MemoryHome.agent_teams') }}</button>
-            <button class="rounded-lg px-4 py-2 text-sm font-semibold" :class="tabClass('orgs')" @click="selectTab('orgs')">{{ $t('memory.components.memory.MemoryHome.agent_orgs') }}</button>
+        <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div class="flex flex-wrap gap-2 lg:flex-shrink-0">
+            <button class="whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold" :class="tabClass('agents')" @click="selectTab('agents')">{{ $t('memory.components.memory.MemoryHome.agents') }}</button>
+            <button class="whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold" :class="tabClass('teams')" @click="selectTab('teams')">{{ $t('memory.components.memory.MemoryHome.agent_teams') }}</button>
+            <button class="whitespace-nowrap rounded-lg px-4 py-2 text-sm font-semibold" :class="tabClass('orgs')" @click="selectTab('orgs')">{{ $t('memory.components.memory.MemoryHome.agent_orgs') }}</button>
           </div>
-          <div class="flex gap-2">
-            <input v-model="searchInput" type="text" :placeholder="$t(tabText[store.homeTab].search)" class="w-full min-w-[260px] rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" @keyup.enter="applySearch" />
-            <button class="rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800" @click="applySearch">Search</button>
+          <div class="flex min-w-0 flex-1 gap-2 lg:max-w-md">
+            <input v-model="searchInput" type="text" :placeholder="$t(tabText[store.homeTab].search)" class="w-full min-w-0 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" @keyup.enter="applySearch" />
+            <button class="flex-shrink-0 rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800" @click="applySearch">{{ $t('memory.browse.filter_button') }}</button>
           </div>
         </div>
       </div>
@@ -43,7 +62,7 @@
 
         <div v-else class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           <template v-if="store.homeTab === 'agents'">
-          <button v-for="agent in store.agents.entries" :key="agent.stableId" class="rounded-xl border border-gray-200 p-4 text-left transition hover:border-blue-300 hover:bg-blue-50/40" @click="$emit('selectAgent', agent)">
+          <button v-for="agent in store.agents.entries" :key="agent.stableId" class="flex flex-col justify-start rounded-xl border border-gray-200 p-4 text-left transition hover:border-blue-300 hover:bg-blue-50/40" @click="$emit('selectAgent', agent)">
             <div class="flex items-start justify-between gap-3">
               <div>
                 <h2 class="font-semibold text-gray-900">{{ agent.displayName }}</h2>
@@ -57,13 +76,16 @@
           </template>
 
           <template v-else-if="store.homeTab === 'teams'">
-          <button v-for="team in store.teams.entries" :key="team.teamDefinitionId" class="rounded-xl border border-gray-200 p-4 text-left transition hover:border-blue-300 hover:bg-blue-50/40" @click="$emit('selectTeam', team)">
+          <button v-for="team in store.teams.entries" :key="team.teamDefinitionId" class="flex flex-col justify-start rounded-xl border border-gray-200 p-4 text-left transition hover:border-blue-300 hover:bg-blue-50/40" @click="$emit('selectTeam', team)">
             <div class="flex items-start justify-between gap-3">
-              <div>
+              <div class="min-w-0">
                 <h2 class="font-semibold text-gray-900">{{ team.teamDefinitionName }}</h2>
                 <p class="mt-1 font-mono text-xs text-gray-500">{{ team.teamDefinitionId }}</p>
+                <p v-if="team.isTaskTeam" class="mt-1.5 inline-flex items-center gap-1 rounded-[0.2rem] border border-dashed border-indigo-300 px-1.5 py-0.5 text-[11px] font-semibold text-indigo-700" :title="team.startedByAgentName ? $t('memory.browse.task_team_started_by', { name: team.startedByAgentName }) : undefined" data-test="memory-task-team-tag">
+                  <Icon icon="heroicons:user-group-20-solid" class="h-3 w-3" aria-hidden="true" />{{ $t('memory.browse.task_team') }}
+                </p>
               </div>
-              <span class="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600">{{ team.teamRunCount }} runs</span>
+              <span class="flex-shrink-0 whitespace-nowrap rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600">{{ team.teamRunCount }} runs</span>
             </div>
             <p class="mt-3 text-xs text-gray-500">{{ team.memberMemoryCount }} {{ $t('memory.components.memory.MemoryHome.members') }}<span v-if="team.latestMemoryAt"> · {{ $t('memory.components.memory.MemoryHome.updated') }} {{ formatTimestamp(team.latestMemoryAt) }}</span></p>
             <MemoryBadges class="mt-3" :memory="team.memory" />
@@ -71,7 +93,7 @@
           </template>
 
           <template v-else>
-          <button v-for="org in store.orgs.entries" :key="org.orgDefinitionId" class="rounded-xl border border-gray-200 p-4 text-left transition hover:border-blue-300 hover:bg-blue-50/40" @click="$emit('selectOrg', org)">
+          <button v-for="org in store.orgs.entries" :key="org.orgDefinitionId" class="flex flex-col justify-start rounded-xl border border-gray-200 p-4 text-left transition hover:border-blue-300 hover:bg-blue-50/40" @click="$emit('selectOrg', org)">
             <div class="flex items-start justify-between gap-3">
               <div>
                 <h2 class="font-semibold text-gray-900">{{ org.orgDefinitionName }}</h2>
@@ -97,11 +119,19 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { Icon } from '@iconify/vue';
 import { useMemoryExplorerStore, type MemoryHomeTab } from '~/stores/memoryExplorerStore';
 import type { AgentOrgWithMemorySummary, AgentTeamWithMemorySummary, AgentWithMemorySummary } from '~/types/memory';
+import { useMemorySearchStore } from '~/stores/memorySearchStore';
+import type { SearchMatch, SearchResult } from '~/prototype/memory-search/memoryDesignFixture';
 import MemoryBadges from './MemoryBadges.vue';
+import MemorySearchPanel from './MemorySearchPanel.vue';
+import MemorySearchResults from './MemorySearchResults.vue';
 
 const emit = defineEmits<{
+  search: [query: string];
+  clearSearch: [];
+  openResult: [result: SearchResult, match: SearchMatch];
   changeTab: [tab: MemoryHomeTab];
   changeSource: [sourceKey: string];
   selectAgent: [agent: AgentWithMemorySummary];
@@ -110,6 +140,7 @@ const emit = defineEmits<{
 }>();
 
 const store = useMemoryExplorerStore();
+const search = useMemorySearchStore();
 const searchInput = ref('');
 
 const tabText: Record<MemoryHomeTab, { search: string; empty: string }> = {

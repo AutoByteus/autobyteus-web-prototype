@@ -1,5 +1,22 @@
 # UI Reference Runbook
 
+## work-journal-search (Memory page: memory search, Work Journal, memory index; source pin `d74f75a`, base `01290bf`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4930
+```
+
+- Entry: `/memory` (no setup). Starting states (browser console, reload; remove the key to reset):
+  `localStorage.setItem('autobyteus.prototype.scenario', '<scenario>')` with `memory_not_indexed`, `memory_meaning_running`, `memory_index_failed`,
+  `memory_model_changed`, `memory_search_fails` (default = index ready).
+- Try: search `ddns updater for the home domain` (strong, with two matches), `bunny and tortoise`, `域名 自动更新`, `purple elephant` (only weak matches); open a match.
+  With `memory_not_indexed`: **Index now**, watch the four steps (accelerated), search while the Text index is still running.
+- The memory index, search results and journal files are invented and scripted in `prototype/memory-search/memoryDesignFixture.ts`; the stores are
+  `stores/memorySearchStore.ts` (search and the pipeline timer) and `stores/memoryJournalStore.ts` (windows of lines); the Memory lists are answered through
+  `utils/apolloClient.ts`. Nothing is read from a real node, run or journal. State is in memory: reload resets it.
+- Spec: `tickets/in-progress/work-journal-search/ui-ux-spec.md` (once approved).
+
 ## WEB-BASELINE-REFRESH-013 (source pin `d74f75a`)
 
 ```bash

@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto max-w-5xl p-6">
+  <div class="mx-auto max-w-6xl p-6">
     <button class="mb-4 text-sm font-semibold text-blue-600 hover:underline" @click="$emit('back')">← {{ backLabel }}</button>
     <section class="rounded-xl border border-gray-200 bg-white shadow-sm">
       <header class="border-b border-gray-100 p-5">
@@ -20,10 +20,9 @@
         </nav>
 
         <div class="min-h-[360px] p-5">
-          <div v-if="store.loading && !store.memoryView" class="py-12 text-center text-sm text-gray-500">{{ $t('memory.components.memory.MemoryInspector.loading_memory_view') }}</div>
+          <div v-if="store.loading && !store.memoryView && store.activeTab !== 'journal'" class="py-12 text-center text-sm text-gray-500">{{ $t('memory.components.memory.MemoryInspector.loading_memory_view') }}</div>
+          <WorkJournalTab v-else-if="store.activeTab === 'journal'" />
           <WorkingContextTab v-else-if="store.activeTab === 'working'" :messages="store.memoryView?.workingContext ?? null" />
-          <EpisodicTab v-else-if="store.activeTab === 'episodic'" :items="store.memoryView?.episodic ?? null" />
-          <SemanticTab v-else-if="store.activeTab === 'semantic'" :items="store.memoryView?.semantic ?? null" />
           <RawTracesTab
             v-else
             :traces="store.memoryView?.rawTraces ?? null"
@@ -45,8 +44,7 @@ import { computed } from 'vue';
 import { useMemoryInspectorStore } from '~/stores/memoryInspectorStore';
 import type { MemoryInspectorTab } from '~/types/memory';
 import WorkingContextTab from './WorkingContextTab.vue';
-import EpisodicTab from './EpisodicTab.vue';
-import SemanticTab from './SemanticTab.vue';
+import WorkJournalTab from './WorkJournalTab.vue';
 import RawTracesTab from './RawTracesTab.vue';
 
 withDefaults(defineProps<{ backLabel?: string }>(), { backLabel: 'Back to Memory' });
@@ -54,9 +52,8 @@ defineEmits<{ back: [] }>();
 
 const store = useMemoryInspectorStore();
 const tabs: Array<{ id: MemoryInspectorTab; label: string }> = [
+  { id: 'journal', label: 'Work Journal' },
   { id: 'working', label: 'Working Context' },
-  { id: 'episodic', label: 'Episodic' },
-  { id: 'semantic', label: 'Semantic' },
   { id: 'raw', label: 'Raw Traces' },
 ];
 

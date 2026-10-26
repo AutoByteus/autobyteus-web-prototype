@@ -5,8 +5,6 @@ export const GET_AGENT_RUN_MEMORY_VIEW = gql`
     $runId: String!
     $source: MemoryExplorerSourceInput
     $includeWorkingContext: Boolean
-    $includeEpisodic: Boolean
-    $includeSemantic: Boolean
     $includeRawTraces: Boolean
     $includeRawTraceFiles: Boolean
     $includeArchive: Boolean
@@ -17,8 +15,6 @@ export const GET_AGENT_RUN_MEMORY_VIEW = gql`
       runId: $runId
       source: $source
       includeWorkingContext: $includeWorkingContext
-      includeEpisodic: $includeEpisodic
-      includeSemantic: $includeSemantic
       includeRawTraces: $includeRawTraces
       includeRawTraceFiles: $includeRawTraceFiles
       includeArchive: $includeArchive
@@ -33,8 +29,6 @@ export const GET_AGENT_RUN_MEMORY_VIEW = gql`
         toolPayload
         ts
       }
-      episodic
-      semantic
       rawTraceFiles {
         fileName
         kind
@@ -71,8 +65,6 @@ export const GET_TEAM_MEMBER_RUN_MEMORY_VIEW = gql`
     $agentRunId: String!
     $source: MemoryExplorerSourceInput
     $includeWorkingContext: Boolean
-    $includeEpisodic: Boolean
-    $includeSemantic: Boolean
     $includeRawTraces: Boolean
     $includeRawTraceFiles: Boolean
     $includeArchive: Boolean
@@ -84,8 +76,6 @@ export const GET_TEAM_MEMBER_RUN_MEMORY_VIEW = gql`
       agentRunId: $agentRunId
       source: $source
       includeWorkingContext: $includeWorkingContext
-      includeEpisodic: $includeEpisodic
-      includeSemantic: $includeSemantic
       includeRawTraces: $includeRawTraces
       includeRawTraceFiles: $includeRawTraceFiles
       includeArchive: $includeArchive
@@ -100,8 +90,6 @@ export const GET_TEAM_MEMBER_RUN_MEMORY_VIEW = gql`
         toolPayload
         ts
       }
-      episodic
-      semantic
       rawTraceFiles {
         fileName
         kind
@@ -138,8 +126,6 @@ export const GET_AGENT_ORG_MEMBER_RUN_MEMORY_VIEW = gql`
     $agentRunId: String!
     $source: MemoryExplorerSourceInput
     $includeWorkingContext: Boolean
-    $includeEpisodic: Boolean
-    $includeSemantic: Boolean
     $includeRawTraces: Boolean
     $includeRawTraceFiles: Boolean
     $includeArchive: Boolean
@@ -151,8 +137,6 @@ export const GET_AGENT_ORG_MEMBER_RUN_MEMORY_VIEW = gql`
       agentRunId: $agentRunId
       source: $source
       includeWorkingContext: $includeWorkingContext
-      includeEpisodic: $includeEpisodic
-      includeSemantic: $includeSemantic
       includeRawTraces: $includeRawTraces
       includeRawTraceFiles: $includeRawTraceFiles
       includeArchive: $includeArchive
@@ -167,8 +151,6 @@ export const GET_AGENT_ORG_MEMBER_RUN_MEMORY_VIEW = gql`
         toolPayload
         ts
       }
-      episodic
-      semantic
       rawTraceFiles {
         fileName
         kind

@@ -20,8 +20,7 @@ export interface MemoryExplorerSourceOption {
 export interface MemoryAvailabilitySummary {
   latestMemoryAt?: string | null;
   hasWorkingContext: boolean;
-  hasEpisodic: boolean;
-  hasSemantic: boolean;
+  hasWorkJournal: boolean;
   hasRawTraces: boolean;
   hasRawArchive: boolean;
 }
@@ -59,6 +58,9 @@ export interface AgentTeamWithMemorySummary {
   memberMemoryCount: number;
   latestMemoryAt?: string | null;
   memory: MemoryAvailabilitySummary;
+  /** A team an agent started (a task team) rather than one launched from a team definition. */
+  isTaskTeam?: boolean | null;
+  startedByAgentName?: string | null;
 }
 
 export type CollaborationMemberExecutionKind = 'CONFIGURED' | 'TASK_AGENT' | 'TASK_TEAM_MEMBER';
@@ -175,14 +177,12 @@ export interface RawTraceFileSummary {
 export interface RunMemoryView {
   runId: string;
   workingContext?: MemoryMessage[] | null;
-  episodic?: Array<Record<string, unknown>> | null;
-  semantic?: Array<Record<string, unknown>> | null;
   rawTraces?: MemoryTraceEvent[] | null;
   rawTraceFiles?: RawTraceFileSummary[] | null;
   selectedRawTraceFileName?: string | null;
 }
 
-export type MemoryInspectorTab = 'working' | 'episodic' | 'semantic' | 'raw';
+export type MemoryInspectorTab = 'journal' | 'working' | 'raw';
 
 export type MemoryInspectTarget =
   | {

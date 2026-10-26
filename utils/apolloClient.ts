@@ -17,6 +17,8 @@ import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/lau
 import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/prototype/run-settings/launchedOrgFixture'
 import { withAgentReconnect } from '~/prototype/agent-reconnect/agentReconnectFixture'
 import { designOnlyLayersEnabled, reconnectLayerEnabled } from '~/prototype/shared/design-only-layers'
+// work-journal-search (design-only): the Memory page's lists.
+import { withMemoryDesign } from '~/prototype/memory-search/memoryDesignFixture'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { remoteStopResult } from '~/prototype/remote-runs/remoteRunsFixture'
 import { seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
@@ -107,6 +109,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (reconnectLayerEnabled()) data = data ? withAgentReconnect(name, request.variables || {}, structuredClone(data), scenario) : data
   // delegated-copy-task-locator (design-only): a Project Task Manager run with look-alike delegated copies.
   if (designOnlyLayersEnabled()) data = data ? withDelegatedCopyTasks(name, request.variables || {}, structuredClone(data), scenario) : data
+  // work-journal-search (design-only): agents, runs, teams (task teams too) and orgs of the Memory page.
+  if (designOnlyLayersEnabled()) data = withMemoryDesign(name, request.variables || {}, data, scenario)
   // skill-sources-dialog-redesign (design-only): the registry-error scenario.
   if (designOnlyLayersEnabled() && name === 'GetSkillSources' && data) data = { ...data, skillSourceRegistryError: designRegistryError(scenario) ?? data.skillSourceRegistryError }
   // WEB-BASELINE-REFRESH-011: a scripted read failure (for example the Embedding status) answers as GraphQL errors.
