@@ -99,7 +99,6 @@ const memoryMessages = {
   'memory.badges.no_work_journal': '没有工作日志',
   'memory.badges.no_raw_traces': '没有原始轨迹',
   'memory.results.words_label': '词：{{words}}',
-  'memory.results.related_by_meaning': '语义相关',
   'memory.results.word_separator': '、',
   'memory.results.none_found': '你的记忆中没有出现这些词：{{words}}。下面的结果只是语义相关。',
   'memory.results.some_not_found': '你的记忆中未找到：{{words}}。',

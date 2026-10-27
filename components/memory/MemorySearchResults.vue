@@ -50,7 +50,6 @@
                   <span>· {{ $t('memory.results.lines', { from: match.fromLine, to: match.toLine }) }}</span>
                   <span>· {{ formatDay(match.day) }}</span>
                   <span v-if="match.kind === 'text'" class="ml-auto min-w-0 max-w-full rounded-full border border-gray-200 px-2 py-0.5 text-[11px] font-medium text-gray-600" data-test="memory-match-words">{{ $t('memory.results.words_label', { words: match.matchedWords.join($t('memory.results.word_separator')) }) }}</span>
-                  <span v-else class="ml-auto rounded-full border border-gray-200 px-2 py-0.5 text-[11px] font-medium text-gray-600" data-test="memory-match-meaning">{{ $t('memory.results.related_by_meaning') }}</span>
                 </div>
                 <div class="mt-2 rounded-md bg-gray-50 px-3 py-2 font-mono text-xs leading-5 text-gray-700 group-hover:bg-white" data-test="memory-snippet"><div v-for="(line, i) in match.snippet" :key="i" class="truncate whitespace-pre">{{ line }}</div></div>
                 <p class="mt-1.5 text-xs font-medium text-blue-600 group-hover:underline">{{ $t('memory.results.open_at', { from: match.fromLine, to: match.toLine }) }} →</p>

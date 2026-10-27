@@ -99,7 +99,6 @@ const memoryMessages = {
   'memory.badges.no_work_journal': 'No Work Journal',
   'memory.badges.no_raw_traces': 'No Raw traces',
   'memory.results.words_label': 'Words: {{words}}',
-  'memory.results.related_by_meaning': 'Related by meaning',
   'memory.results.word_separator': ', ',
   'memory.results.none_found': 'None of these words appear in your memory: {{words}}. The results below are only related by meaning.',
   'memory.results.some_not_found': 'Not found in your memory: {{words}}.',

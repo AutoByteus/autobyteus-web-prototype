@@ -10,7 +10,7 @@ corepack pnpm dev --port 4930
 - Entry: `/memory` opens Browse (no setup); tabs Browse · Search · Index (`?view=home&section=search|index`). Starting states (browser console, reload; remove the key to reset):
   `localStorage.setItem('autobyteus.prototype.scenario', '<scenario>')` with `memory_not_indexed`, `memory_meaning_running`, `memory_index_failed`,
   `memory_model_changed`, `memory_search_fails` (default = index ready).
-- Try: search `ddns updater for the home domain` (strong, with two matches), `bunny and tortoise`, `域名 自动更新`, `purple elephant` (none of the words occur in any journal: results only related by meaning), `ddns updater cloudflare` (some words not found); open a match.
+- Try: search `ddns updater for the home domain` (strong, with two matches), `bunny and tortoise`, `域名 自动更新`, `purple elephant` (none of the words occur in any journal), `ddns updater cloudflare` (some words not found); open a match.
   With `memory_not_indexed`: **Index now**, watch the four steps (accelerated), search while the Text index is still running.
 - The memory index, search results and journal files are invented and scripted in `prototype/memory-search/memoryDesignFixture.ts`; the stores are
   `stores/memorySearchStore.ts` (search and the pipeline timer) and `stores/memoryJournalStore.ts` (windows of lines); the Memory lists are answered through

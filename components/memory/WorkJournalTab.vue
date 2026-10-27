@@ -136,7 +136,6 @@ const matchedLabel = computed(() => {
   if (!own) return '';
   const lines = t('memory.results.lines', { from: own.fromLine, to: own.toLine });
   if (own.kind === 'text' && own.words?.length) return `${lines} · ${t('memory.results.words_label', { words: own.words.join(t('memory.results.word_separator')) })}`;
-  if (own.kind === 'meaning') return `${lines} · ${t('memory.results.related_by_meaning')}`;
   return lines;
 });
 
