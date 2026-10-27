@@ -36,8 +36,7 @@
             <div class="flex flex-col gap-1 md:flex-row md:items-start md:justify-between md:gap-3">
               <div class="min-w-0">
                 <h3 class="break-words text-base font-semibold text-gray-900">{{ result.agentName }}<span v-if="result.team" class="font-normal text-gray-500"> · {{ result.team.name }}<template v-if="result.member"> / {{ result.member }}</template></span></h3>
-                <p class="mt-1 break-all font-mono text-xs text-gray-500">{{ result.runId }}</p>
-                <p v-if="result.workspace" class="mt-0.5 break-all text-xs text-gray-500">{{ result.workspace }}</p>
+                <p class="mt-1 break-all text-xs text-gray-500"><span class="font-mono">{{ result.runId }}</span><template v-if="result.workspace"> · {{ result.workspace }}</template></p>
               </div>
               <p class="flex-shrink-0 text-xs text-gray-500" data-test="memory-result-days">{{ days(result) }}</p>
             </div>
@@ -48,11 +47,13 @@
                 <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500">
                   <span class="font-mono text-gray-700">{{ match.file }}</span>
                   <span>· {{ $t('memory.results.lines', { from: match.fromLine, to: match.toLine }) }}</span>
-                  <span>· {{ formatDay(match.day) }}</span>
-                  <span v-if="match.kind === 'text'" class="ml-auto min-w-0 max-w-full rounded-full border border-gray-200 px-2 py-0.5 text-[11px] font-medium text-gray-600" data-test="memory-match-words">{{ $t('memory.results.words_label', { words: match.matchedWords.join($t('memory.results.word_separator')) }) }}</span>
+                  <span v-if="showMatchDay(result, match)">· {{ formatDay(match.day) }}</span>
+                  <span class="ml-auto flex min-w-0 max-w-full items-center gap-2">
+                    <span class="flex-shrink-0 text-xs font-medium text-blue-600 opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100">{{ $t('memory.results.open') }} →</span>
+                    <span v-if="match.kind === 'text'" class="min-w-0 rounded-full border border-gray-200 px-2 py-0.5 text-[11px] font-medium text-gray-600" data-test="memory-match-words">{{ $t('memory.results.words_label', { words: match.matchedWords.join($t('memory.results.word_separator')) }) }}</span>
+                  </span>
                 </div>
                 <div class="mt-2 rounded-md bg-gray-50 px-3 py-2 font-mono text-xs leading-5 text-gray-700 group-hover:bg-white" data-test="memory-snippet"><div v-for="(line, i) in match.snippet" :key="i" class="truncate whitespace-pre">{{ line }}</div></div>
-                <p class="mt-1.5 text-xs font-medium text-blue-600 group-hover:underline">{{ $t('memory.results.open_at', { from: match.fromLine, to: match.toLine }) }} →</p>
               </button>
             </li>
           </ul>
@@ -84,6 +85,8 @@ const formatDay = (day: string) => {
   const date = new Date(`${day}T12:00:00Z`);
   return Number.isNaN(date.getTime()) ? day : date.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 };
+/** A match's own day is shown only when the card's date does not already say it. */
+const showMatchDay = (result: SearchResult, match: SearchMatch) => result.firstDay !== result.latestDay || match.day !== result.latestDay;
 const days = (result: SearchResult) => (result.firstDay === result.latestDay
   ? t('memory.results.mentioned_one', { day: formatDay(result.latestDay) })
   : t('memory.results.mentioned_range', { first: formatDay(result.firstDay), latest: formatDay(result.latestDay) }));

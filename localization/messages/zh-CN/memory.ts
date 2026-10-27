@@ -46,7 +46,7 @@ const memoryMessages = {
   'memory.index.cancel': '取消',
   'memory.index.rebuild_confirm': '重建会重新执行每一步。运行期间搜索覆盖的记忆会减少。',
   'memory.results.title': '“{{cue}}”的结果',
-  'memory.results.count': '{{count}} 个运行，最佳匹配在前',
+  'memory.results.count': '{{count}} 个运行',
   'memory.results.pointers': '这是需要在工作日志中核对的线索，不是事实',
   'memory.results.clear': '清除搜索',
   'memory.results.searching': '正在搜索…',
@@ -54,10 +54,9 @@ const memoryMessages = {
   'memory.results.retry': '重试',
   'memory.results.coverage_text': '仍在建立索引：文本索引只覆盖了 {{percent}}% 的日志，较早的工作可能缺失。',
   'memory.results.coverage_meaning': '仍在建立索引：语义索引只覆盖了 {{percent}}% 的日志，之后可能出现更多语义匹配。',
-  'memory.results.mentioned_one': '提到于 {{day}}',
-  'memory.results.mentioned_range': '提到于 {{first}} – {{latest}}',
+  'memory.results.mentioned_one': '{{day}}',
+  'memory.results.mentioned_range': '{{first}} – {{latest}}',
   'memory.results.lines': '第 {{from}}–{{to}} 行',
-  'memory.results.open_at': '打开第 {{from}}–{{to}} 行',
   'memory.journal.found_from': '来自你的搜索“{{cue}}”',
   'memory.journal.found_lines': '匹配的行',
   'memory.journal.match_n': '匹配 {{number}}',
@@ -100,8 +99,9 @@ const memoryMessages = {
   'memory.badges.no_raw_traces': '没有原始轨迹',
   'memory.results.words_label': '词：{{words}}',
   'memory.results.word_separator': '、',
-  'memory.results.none_found': '你的记忆中没有出现这些词：{{words}}。下面的结果只是语义相关。',
+  'memory.results.none_found': '你的记忆中没有出现这些词：{{words}}。',
   'memory.results.some_not_found': '你的记忆中未找到：{{words}}。',
+  'memory.results.open': '打开',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;

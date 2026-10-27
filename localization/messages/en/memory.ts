@@ -46,7 +46,7 @@ const memoryMessages = {
   'memory.index.cancel': 'Cancel',
   'memory.index.rebuild_confirm': 'Rebuild starts every step again. Search covers less of your memory while it runs.',
   'memory.results.title': 'Results for “{{cue}}”',
-  'memory.results.count': '{{count}} runs, best match first',
+  'memory.results.count': '{{count}} runs',
   'memory.results.pointers': 'Pointers to check in the Work Journal, not facts',
   'memory.results.clear': 'Clear search',
   'memory.results.searching': 'Searching…',
@@ -54,10 +54,9 @@ const memoryMessages = {
   'memory.results.retry': 'Retry',
   'memory.results.coverage_text': 'Still indexing: the Text index covers {{percent}}% of your journals, so older work may be missing.',
   'memory.results.coverage_meaning': 'Still indexing: the Meaning index covers {{percent}}% of your journals, so more matches by meaning may appear.',
-  'memory.results.mentioned_one': 'Mentioned {{day}}',
-  'memory.results.mentioned_range': 'Mentioned {{first}} – {{latest}}',
+  'memory.results.mentioned_one': '{{day}}',
+  'memory.results.mentioned_range': '{{first}} – {{latest}}',
   'memory.results.lines': 'lines {{from}}–{{to}}',
-  'memory.results.open_at': 'Open at lines {{from}}–{{to}}',
   'memory.journal.found_from': 'From your search “{{cue}}”',
   'memory.journal.found_lines': 'Matched lines',
   'memory.journal.match_n': 'Match {{number}}',
@@ -100,8 +99,9 @@ const memoryMessages = {
   'memory.badges.no_raw_traces': 'No Raw traces',
   'memory.results.words_label': 'Words: {{words}}',
   'memory.results.word_separator': ', ',
-  'memory.results.none_found': 'None of these words appear in your memory: {{words}}. The results below are only related by meaning.',
+  'memory.results.none_found': 'None of these words appear in your memory: {{words}}.',
   'memory.results.some_not_found': 'Not found in your memory: {{words}}.',
+  'memory.results.open': 'Open',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;
