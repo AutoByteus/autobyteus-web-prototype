@@ -101,7 +101,6 @@ const memoryMessages = {
   'memory.results.word_separator': '、',
   'memory.results.none_found': '你的记忆中没有出现这些词：{{words}}。',
   'memory.results.some_not_found': '你的记忆中未找到：{{words}}。',
-  'memory.results.open': '打开',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;

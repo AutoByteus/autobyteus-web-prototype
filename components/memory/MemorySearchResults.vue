@@ -43,17 +43,16 @@
           </button>
           <ul class="space-y-1 px-2 pb-2">
             <li v-for="match in result.matches" :key="`${match.file}:${match.fromLine}`">
-              <button type="button" class="group block w-full rounded-md px-3 py-2.5 text-left transition hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500" data-test="memory-match" @click="$emit('open', result, match)">
+              <button type="button" class="group block w-full cursor-pointer rounded-md border border-transparent px-3 py-2.5 text-left transition hover:border-gray-200 hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-blue-500" data-test="memory-match" @click="$emit('open', result, match)">
                 <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500">
                   <span class="font-mono text-gray-700">{{ match.file }}</span>
                   <span>· {{ $t('memory.results.lines', { from: match.fromLine, to: match.toLine }) }}</span>
                   <span v-if="showMatchDay(result, match)">· {{ formatDay(match.day) }}</span>
                   <span class="ml-auto flex min-w-0 max-w-full items-center gap-2">
-                    <span class="flex-shrink-0 text-xs font-medium text-blue-600 opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100">{{ $t('memory.results.open') }} →</span>
                     <span v-if="match.kind === 'text'" class="min-w-0 rounded-full border border-gray-200 px-2 py-0.5 text-[11px] font-medium text-gray-600" data-test="memory-match-words">{{ $t('memory.results.words_label', { words: match.matchedWords.join($t('memory.results.word_separator')) }) }}</span>
                   </span>
                 </div>
-                <div class="mt-2 rounded-md bg-gray-50 px-3 py-2 font-mono text-xs leading-5 text-gray-700 group-hover:bg-white" data-test="memory-snippet"><div v-for="(line, i) in match.snippet" :key="i" class="truncate whitespace-pre">{{ line }}</div></div>
+                <div class="mt-2 rounded-md bg-gray-50 px-3 py-2 font-mono text-xs leading-5 text-gray-700 group-hover:bg-white group-hover:ring-1 group-hover:ring-gray-200" data-test="memory-snippet"><div v-for="(line, i) in match.snippet" :key="i" class="truncate whitespace-pre">{{ line }}</div></div>
               </button>
             </li>
           </ul>

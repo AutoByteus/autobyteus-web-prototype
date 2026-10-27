@@ -101,7 +101,6 @@ const memoryMessages = {
   'memory.results.word_separator': ', ',
   'memory.results.none_found': 'None of these words appear in your memory: {{words}}.',
   'memory.results.some_not_found': 'Not found in your memory: {{words}}.',
-  'memory.results.open': 'Open',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;
