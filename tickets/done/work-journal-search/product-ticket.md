@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `work-journal-search` (Project Task `autobyteus-185`, "Agent search over Work Journals across all agents"; first step of the memory work `autobyteus-233`)
 - Title: The Memory page as the home of memory: memory search, the Work Journal view, the memory index pipeline
-- Status: `Awaiting User Review` — revision SR-006 (2026-10-27, no strength labels, UD-020) of the design approved on 2026-10-26; the first approval is integrated on `personal` at `d011922`
+- Status: `Completed` — revision SR-006 (2026-10-27, no strength labels, UD-020) approved by the user ("its done"); the first approval of 2026-10-26 was integrated at `d011922`
 - Mode: Product Experience Design (changes the existing Memory page, so it evolved the accepted baseline in place)
 - Requester: Solution Designer (run `solution_designer_80624588913d473bac3ef7d8c3d4d305`), Software Engineering Team
 - Requirements basis (approved, SR-001): R-009, R-010, R-012, R-013, R-014, R-015; acceptance AC-008, AC-011 (UC-007, UC-008)
@@ -44,4 +44,5 @@ All data is invented: agents, runs, teams (including the task team), workspaces,
 - Reopened on worktree `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/work-journal-search-sr006`, branch `design/work-journal-search-sr006`, from `origin/personal` `d01192275ca34c648cd0364144796daadae01a19`; ticket folder moved back to `tickets/in-progress/`.
 - Runtime: dev server on port 4932; recapture script outside the repository (`/tmp/wjs-tools`, not committed).
 - Changed: the match label and journal banner, the notes for missing words, the scripted cues and fixtures, strings (en, zh-CN), spec text; recaptured VIS-006, 007, 008, 017, 022, 024; new VIS-025, VIS-026.
-- Next: the user reviews; after approval, finalize (merge `personal`, push, ticket to `tickets/done/`, close) and return `Design Completed` to the Solution Designer.
+- User changes during the review of the revision: no "Related by meaning" label anywhere; the not-found note is only the fact; no "Mentioned" prefix; run ID and workspace on one line; a match's day only when needed; no Open button (the match lifts on hover).
+- Approved by the user, 2026-10-27 ("its done"). Data origin unchanged: all fixtures invented; the facts (found words, words not found) are computed from the invented journals' text.

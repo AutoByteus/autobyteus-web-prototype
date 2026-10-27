@@ -4,14 +4,14 @@ Canonical contract for the Memory page of AutoByteus Web: memory search, the mem
 
 ## Status And User Confirmation
 
-- Status: `Approved` — revision SR-006 (2026-10-27) pending the user's approval; the approved base text of 2026-10-26 is superseded only where this revision says so
+- Status: `Approved` (2026-10-26); revision SR-006 (2026-10-27) `Approved` by the user ("its done")
 - Request / ticket: `work-journal-search` (Project Task `autobyteus-185`, "Agent search over Work Journals across all agents"; first step of `autobyteus-233`)
 - Related requirements revision ID: SR-001 (`requirements-doc.md`, approved 2026-10-26); revision SR-006 (UD-020, 2026-10-27: no Strong / Fair / Weak labels; results state facts)
 - Related requirement, behavior, acceptance-criteria, and decision IDs: R-009, R-010, R-012, R-013, R-014, R-015; AC-008, AC-011; UC-007, UC-008; UD-002, UD-008, UD-010, UD-013, UD-014, UD-020
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`)
 - Review URL: the product's normal entry point, `http://127.0.0.1:4930/memory` while the ticket was in review (no preview switch)
-- Explicit user-confirmation reference: the user, 2026-10-26, after four review rounds: "Oh, I think that the UI is correct now. I feel it's good." Decisions he gave during review are listed under Key UX decisions.
-- Final check date: 2026-10-26
+- Explicit user-confirmation reference: revision SR-006: the user, 2026-10-27, "its done" after the match-fact changes and card tidying. Original: the user, 2026-10-26, after four review rounds: "Oh, I think that the UI is correct now. I feel it's good." Decisions he gave during review are listed under Key UX decisions.
+- Final check date: 2026-10-27
 
 ## Repository And Baseline Provenance
 
@@ -20,7 +20,7 @@ Canonical contract for the Memory page of AutoByteus Web: memory search, the mem
 - Pinned source commit or revision: `origin/personal@d74f75a51ab7dc47d42a13f33e0f943c3a230ad7` (baseline `WEB-BASELINE-REFRESH-013`)
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design`
 - Accepted design base: `01290bf990342efc48918ce75d4dbffd05fffc59`
-- UI reference revision or commit: `5dedfcd84d7f32457192dfa8f81198479574d956` on ticket branch `design/work-journal-search` (the integrated revision is recorded in `product-ticket.md`)
+- UI reference revision or commit: the integrated revision recorded in `product-ticket.md` (first approval `d011922`; revision SR-006 on branch `design/work-journal-search-sr006`)
 - Ticket folder: `tickets/done/work-journal-search/` (the working copy was `tickets/in-progress/work-journal-search/`)
 - Baseline report path: `ui-baseline-report.md` (repository root)
 
