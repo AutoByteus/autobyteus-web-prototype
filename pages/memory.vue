@@ -247,7 +247,7 @@ async function syncRouteState() {
         toLine: Number(queryValue('to')) || from,
         cue: queryValue('q') ?? null,
         kind: queryValue('kind') === 'meaning' ? 'meaning' : queryValue('kind') === 'text' ? 'text' : null,
-        strength: (['strong', 'fair', 'weak'] as const).find(value => value === queryValue('strength')) ?? null,
+        words: (queryValue('words') ?? '').split(',').filter(Boolean),
       }
       : null;
     void journalStore.open(target.kind === 'agent_run' ? target.runId : target.agentRunId, focus);
@@ -326,7 +326,7 @@ const changeSection = (section: MemorySection) => pushMemory({
 
 /** A result opens the run's Work Journal at the matched lines (the run detail, Work Journal tab). */
 const openSearchResult = (result: SearchResult, match: SearchMatch) => {
-  const lines = { q: searchStore.query, file: match.file, from: String(match.fromLine), to: String(match.toLine), kind: match.kind, strength: match.strength };
+  const lines = { q: searchStore.query, file: match.file, from: String(match.fromLine), to: String(match.toLine), kind: match.kind, words: match.matchedWords.join(',') || undefined };
   if (result.team) {
     const family = result.team.kind === 'org' ? { view: 'org-inspector', orgName: result.team.name, orgRunId: result.team.runId } : { view: 'team-inspector', teamName: result.team.name, teamRunId: result.team.runId };
     return pushMemory({ ...family, agentRunId: result.runId, memberName: result.member, ...lines });

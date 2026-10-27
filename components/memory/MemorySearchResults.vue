@@ -20,12 +20,9 @@
     </div>
 
     <template v-else-if="outcome">
-      <div v-if="outcome.weakOnly" class="flex gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900" data-test="memory-search-weak">
-        <Icon icon="heroicons:exclamation-triangle-20-solid" class="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-500" aria-hidden="true" />
-        <div>
-          <p class="font-semibold">{{ $t('memory.results.weak_title') }}</p>
-          <p class="mt-0.5 text-amber-800">{{ $t('memory.results.weak_body') }}</p>
-        </div>
+      <div v-if="wordsNote" class="flex gap-3 rounded-lg border p-3 text-sm" :class="wordsNote.all ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-gray-200 bg-white text-gray-700'" data-test="memory-search-words-note">
+        <Icon icon="heroicons:exclamation-triangle-20-solid" class="mt-0.5 h-5 w-5 flex-shrink-0" :class="wordsNote.all ? 'text-amber-500' : 'text-gray-400'" aria-hidden="true" />
+        <p>{{ wordsNote.text }}</p>
       </div>
 
       <div v-if="coverageNotice" class="flex gap-3 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-900" data-test="memory-search-coverage">
@@ -52,13 +49,8 @@
                   <span class="font-mono text-gray-700">{{ match.file }}</span>
                   <span>· {{ $t('memory.results.lines', { from: match.fromLine, to: match.toLine }) }}</span>
                   <span>· {{ formatDay(match.day) }}</span>
-                  <span class="ml-auto inline-flex items-center gap-2">
-                    <span class="rounded-full border border-gray-200 px-2 py-0.5 text-[11px] font-medium text-gray-600" :aria-label="$t(`memory.results.kind_label.${match.kind}`)">{{ $t(`memory.results.kind.${match.kind}`) }}</span>
-                    <span class="inline-flex items-center gap-1 text-[11px] font-medium" :class="strengthText[match.strength]" :aria-label="$t(`memory.results.strength.${match.strength}`)">
-                      <span class="flex gap-0.5" aria-hidden="true"><span v-for="dot in 3" :key="dot" class="h-1.5 w-1.5 rounded-full" :class="dot <= strengthDots[match.strength] ? strengthDot[match.strength] : 'bg-gray-200'" /></span>
-                      {{ $t(`memory.results.strength.${match.strength}`) }}
-                    </span>
-                  </span>
+                  <span v-if="match.kind === 'text'" class="ml-auto min-w-0 max-w-full rounded-full border border-gray-200 px-2 py-0.5 text-[11px] font-medium text-gray-600" data-test="memory-match-words">{{ $t('memory.results.words_label', { words: match.matchedWords.join($t('memory.results.word_separator')) }) }}</span>
+                  <span v-else class="ml-auto rounded-full border border-gray-200 px-2 py-0.5 text-[11px] font-medium text-gray-600" data-test="memory-match-meaning">{{ $t('memory.results.related_by_meaning') }}</span>
                 </div>
                 <div class="mt-2 rounded-md bg-gray-50 px-3 py-2 font-mono text-xs leading-5 text-gray-700 group-hover:bg-white" data-test="memory-snippet"><div v-for="(line, i) in match.snippet" :key="i" class="truncate whitespace-pre">{{ line }}</div></div>
                 <p class="mt-1.5 text-xs font-medium text-blue-600 group-hover:underline">{{ $t('memory.results.open_at', { from: match.fromLine, to: match.toLine }) }} →</p>
@@ -75,7 +67,7 @@
 import { computed } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useLocalization } from '~/composables/useLocalization';
-import type { SearchMatch, SearchOutcome, SearchResult, Strength } from '~/prototype/memory-search/memoryDesignFixture';
+import type { SearchMatch, SearchOutcome, SearchResult } from '~/prototype/memory-search/memoryDesignFixture';
 import type { SearchStatus } from '~/stores/memorySearchStore';
 
 const props = defineProps<{
@@ -89,10 +81,6 @@ defineEmits<{ clear: []; retry: []; open: [result: SearchResult, match: SearchMa
 
 const { t } = useLocalization();
 
-const strengthDots: Record<Strength, number> = { strong: 3, fair: 2, weak: 1 };
-const strengthDot: Record<Strength, string> = { strong: 'bg-emerald-500', fair: 'bg-gray-500', weak: 'bg-amber-500' };
-const strengthText: Record<Strength, string> = { strong: 'text-emerald-700', fair: 'text-gray-600', weak: 'text-amber-700' };
-
 const formatDay = (day: string) => {
   const date = new Date(`${day}T12:00:00Z`);
   return Number.isNaN(date.getTime()) ? day : date.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
@@ -100,6 +88,15 @@ const formatDay = (day: string) => {
 const days = (result: SearchResult) => (result.firstDay === result.latestDay
   ? t('memory.results.mentioned_one', { day: formatDay(result.latestDay) })
   : t('memory.results.mentioned_range', { first: formatDay(result.firstDay), latest: formatDay(result.latestDay) }));
+
+/** The query's words that occur in no journal, as a fact. Absent while the Text index is incomplete (the server sends none then). */
+const wordsNote = computed(() => {
+  const outcome = props.outcome;
+  if (!outcome || !outcome.wordsNotFound.length || !outcome.results.length) return null;
+  const words = outcome.wordsNotFound.join(t('memory.results.word_separator'));
+  const all = outcome.results.every(result => result.matches.every(match => match.kind === 'meaning'));
+  return all ? { all, text: t('memory.results.none_found', { words }) } : { all, text: t('memory.results.some_not_found', { words }) };
+});
 
 /** The search only reads the indexes: while a step is incomplete, it says how much of memory it covered. */
 const coverageNotice = computed(() => {

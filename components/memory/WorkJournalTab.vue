@@ -125,8 +125,8 @@ const siblingMatches = computed(() => {
   const own = focus.value;
   if (!own) return [];
   const result = searchStore.outcome?.results.find(r => r.runId === store.runId);
-  const found = result?.matches.map(m => ({ file: m.file, fromLine: m.fromLine, toLine: m.toLine, kind: m.kind, strength: m.strength, day: m.day })) ?? [];
-  return found.length ? found : [{ file: own.file, fromLine: own.fromLine, toLine: own.toLine, kind: own.kind ?? null, strength: own.strength ?? null, day: '' }];
+  const found = result?.matches.map(m => ({ file: m.file, fromLine: m.fromLine, toLine: m.toLine, kind: m.kind, words: m.matchedWords, day: m.day })) ?? [];
+  return found.length ? found : [{ file: own.file, fromLine: own.fromLine, toLine: own.toLine, kind: own.kind ?? null, words: own.words ?? [], day: '' }];
 });
 
 const isFocused = (match: { file: string; fromLine: number }) => focus.value?.file === match.file && focus.value?.fromLine === match.fromLine;
@@ -135,15 +135,16 @@ const matchedLabel = computed(() => {
   const own = focus.value;
   if (!own) return '';
   const lines = t('memory.results.lines', { from: own.fromLine, to: own.toLine });
-  if (own.kind && own.strength) return `${lines} · ${t(`memory.results.kind_label.${own.kind}`)}, ${t(`memory.results.strength.${own.strength}`).toLowerCase()}`;
+  if (own.kind === 'text' && own.words?.length) return `${lines} · ${t('memory.results.words_label', { words: own.words.join(t('memory.results.word_separator')) })}`;
+  if (own.kind === 'meaning') return `${lines} · ${t('memory.results.related_by_meaning')}`;
   return lines;
 });
 
 const matchCount = (name: string) => siblingMatches.value.filter(m => focus.value && m.file === name).length;
 
-const goToMatch = (match: { file: string; fromLine: number; toLine: number; kind: any; strength: any }) => {
+const goToMatch = (match: { file: string; fromLine: number; toLine: number; kind: any; words: string[] }) => {
   if (!store.focus) return;
-  store.focus = { ...store.focus, file: match.file, fromLine: match.fromLine, toLine: match.toLine, kind: match.kind, strength: match.strength };
+  store.focus = { ...store.focus, file: match.file, fromLine: match.fromLine, toLine: match.toLine, kind: match.kind, words: match.words };
   if (store.selectedFile !== match.file) store.selectFile(match.file, match.fromLine);
   else store.gotoLine(match.fromLine);
 };

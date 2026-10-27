@@ -66,3 +66,13 @@ Also needed, beyond the brief (open for the Solution Designer):
 4. During **Rebuild** the page says "search covers less while it runs"; if the old index keeps answering until the new one is ready, the sentence changes.
 5. A list entry may carry `isTaskTeam` and `startedByAgentName` for the *Task team* tag; the page works without them.
 6. The First-time copy quotes measured times ("about 5 minutes", "about an hour"); they are static text, not from the server.
+
+
+## Revision SR-006 (2026-10-27): no strength labels (UD-020)
+
+Requested by the Solution Designer on the user's decision (embedding scores cannot grade a match reliably). Changes:
+- Each match shows facts: a text match lists the search words found in it (`Words: ddns, home`), a meaning match says `Related by meaning`. No Strong / Fair / Weak, no dots, no numbers.
+- The amber "Only weak matches" note is replaced by facts about missing words: gray `Not found in your memory: <words>.` when some search words occur in no journal; amber `None of these words appear in your memory: <words>. The results below are only related by meaning.` when none do. Never "nothing in memory" while results exist. While the Text index is incomplete these notes are not shown (absence is not certain); only the coverage note is.
+- The Work Journal banner says the same (`lines a–b · Words: ddns, home` / `· Related by meaning`).
+- The scripted reference derives each match's kind and words from its snippet and computes the missing words from the invented journals, so the facts are consistent. Cues: `purple elephant` (none found), `ddns updater cloudflare` (some not found).
+- Recaptured: VIS-006, 007, 008, 017, 022, 024; new: VIS-025, VIS-026. All others are unchanged.

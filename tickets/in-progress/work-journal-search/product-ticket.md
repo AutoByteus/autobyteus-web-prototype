@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `work-journal-search` (Project Task `autobyteus-185`, "Agent search over Work Journals across all agents"; first step of the memory work `autobyteus-233`)
 - Title: The Memory page as the home of memory: memory search, the Work Journal view, the memory index pipeline
-- Status: `Completed` (approved by the user 2026-10-26)
+- Status: `Awaiting User Review` — revision SR-006 (2026-10-27, no strength labels, UD-020) of the design approved on 2026-10-26; the first approval is integrated on `personal` at `d011922`
 - Mode: Product Experience Design (changes the existing Memory page, so it evolved the accepted baseline in place)
 - Requester: Solution Designer (run `solution_designer_80624588913d473bac3ef7d8c3d4d305`), Software Engineering Team
 - Requirements basis (approved, SR-001): R-009, R-010, R-012, R-013, R-014, R-015; acceptance AC-008, AC-011 (UC-007, UC-008)
@@ -37,3 +37,11 @@ All data is invented: agents, runs, teams (including the task team), workspaces,
 - Result commit (spec, 24 references, ticket record): `c315ca9bb1b08eb16bed9f175f20d65f8d7bcf40`, pushed to `origin/personal` as a fast-forward (`205aff6..c315ca9`) and fast-forwarded into the canonical checkout.
 - Default-entry check after integration: the canonical checkout (`personal`) was run on its own port and opened at `/memory`: tabs Browse · Search · Index; Browse cards; the Search tab centred; a search returned 8 results; a match opened the Work Journal with the banner `From your search “ddns updater” · lines 5353–5355 · Matched by words, strong`; the run tabs were Work Journal and Raw Traces; Back returned the 8 results; the Index tab showed "Up to date" with four steps; no page errors.
 - Ticket moved to `tickets/done/work-journal-search/` in the closing commit; dev servers on 4930 and 4931 stopped; the ticket worktree and branch removed after the push. The final local and remote `personal` revisions are recorded in the closing commit message and the result sent to the Solution Designer.
+
+## Revision SR-006 (2026-10-27)
+
+- Requested by: the Solution Designer, on the user's decision UD-020 (remove Strong / Fair / Weak; show facts). Request: `product-design-revision-request.md` in the engineering ticket folder.
+- Reopened on worktree `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/work-journal-search-sr006`, branch `design/work-journal-search-sr006`, from `origin/personal` `d01192275ca34c648cd0364144796daadae01a19`; ticket folder moved back to `tickets/in-progress/`.
+- Runtime: dev server on port 4932; recapture script outside the repository (`/tmp/wjs-tools`, not committed).
+- Changed: the match label and journal banner, the notes for missing words, the scripted cues and fixtures, strings (en, zh-CN), spec text; recaptured VIS-006, 007, 008, 017, 022, 024; new VIS-025, VIS-026.
+- Next: the user reviews; after approval, finalize (merge `personal`, push, ticket to `tickets/done/`, close) and return `Design Completed` to the Solution Designer.

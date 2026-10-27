@@ -106,7 +106,6 @@ const memberRunId = (teamRunId: string, name: string) => `${name.split('_')[0].s
 
 /* ------------------------------------------------------------------ runs the scripted search can point at */
 
-export type Strength = 'strong' | 'fair' | 'weak'
 export type MatchKind = 'text' | 'meaning'
 
 interface JournalFileSpec { name: string; lines: number; kb: number; days: string[]; open?: boolean }
@@ -415,8 +414,9 @@ export interface SearchMatch {
   toLine: number
   day: string
   snippet: string[]
+  /** `text`: the search words found in this part of the journal; `meaning`: related by meaning, no words and no grade. */
   kind: MatchKind
-  strength: Strength
+  matchedWords: string[]
 }
 export interface SearchResult {
   runId: string
@@ -429,7 +429,8 @@ export interface SearchResult {
   latestDay: string
   matches: SearchMatch[]
 }
-export interface SearchOutcome { cue: string; results: SearchResult[]; weakOnly: boolean }
+/** `wordsNotFound`: the search words that occur in no journal; empty while the Text index is incomplete (absence is not yet certain). */
+export interface SearchOutcome { cue: string; results: SearchResult[]; wordsNotFound: string[] }
 
 const dayStarts = (spec: JournalFileSpec): number[] => spec.days.map((_, i) => 9 + Math.floor((i * (spec.lines - 9)) / spec.days.length))
 
@@ -440,13 +441,15 @@ const plantedRange = (spec: RunSpec, planted: Planted): [number, number] => {
   return [from, from + planted.lines.length - 1]
 }
 
-const makeResult = (runId: string, picks: Array<{ file: string; kind: MatchKind; strength: Strength }>): SearchResult => {
+const makeResult = (runId: string, files: string[], terms: string[]): SearchResult => {
   const spec = runById.get(runId)!
-  const matches: SearchMatch[] = picks.map((pick) => {
-    const planted = spec.planted.find(p => p.file === pick.file) ?? spec.planted[0]
+  const matches: SearchMatch[] = files.map((file) => {
+    const planted = spec.planted.find(p => p.file === file) ?? spec.planted[0]
     const [fromLine] = plantedRange(spec, planted)
     const snippet = planted.lines.filter(line => !/\[↗\]/.test(line))
-    return { file: planted.file, fromLine, toLine: fromLine + snippet.length - 1, day: planted.day, snippet, kind: pick.kind, strength: pick.strength }
+    // As the server does: a match whose text holds search words is a text match and lists them; any other is related by meaning.
+    const matchedWords = termsIn(snippet.join('\n'), terms)
+    return { file: planted.file, fromLine, toLine: fromLine + snippet.length - 1, day: planted.day, snippet, kind: matchedWords.length ? 'text' : 'meaning', matchedWords }
   })
   matches.sort((a, b) => b.day.localeCompare(a.day))
   const days = spec.planted.map(p => p.day).sort()
@@ -457,41 +460,73 @@ const makeResult = (runId: string, picks: Array<{ file: string; kind: MatchKind;
   }
 }
 
-const ddnsResults = (): SearchResult[] => [
-  makeResult(SERVER_HELPER, [{ file: 'work_journal_000004.md', kind: 'text', strength: 'strong' }, { file: 'work_journal_000002.md', kind: 'meaning', strength: 'strong' }]),
-  makeResult(memberRunId(SET_RUN, 'implementation_engineer'), [{ file: 'work_journal_active.md', kind: 'text', strength: 'strong' }]),
-  makeResult(PTM_RUN, [{ file: 'work_journal_000001.md', kind: 'text', strength: 'fair' }]),
-  makeResult(DAILY_DDNS, [{ file: 'work_journal_000001.md', kind: 'text', strength: 'fair' }]),
-  makeResult(NOTES_RUN, [{ file: 'work_journal_active.md', kind: 'text', strength: 'fair' }]),
-  makeResult(RESEARCH_DNS, [{ file: 'work_journal_active.md', kind: 'meaning', strength: 'fair' }]),
-  makeResult(memberRunId(ORG_RUN, 'analyst'), [{ file: 'work_journal_active.md', kind: 'meaning', strength: 'weak' }]),
-  makeResult(UNATTRIBUTED_RUN, [{ file: 'work_journal_active.md', kind: 'meaning', strength: 'weak' }]),
+/** Illustrative stop words (the real list is the server's). */
+const STOP = new Set(['a', 'an', 'the', 'and', 'or', 'of', 'to', 'for', 'in', 'on', 'we', 'you', 'i', 'me', 'my', 'do', 'did', 'does', 'is', 'it', 'that', 'this', 'where', 'remember', 'earlier', 'set', 'up', 'how', 'what', 'when', 'with', 'about', 'was', 'were', 'our', 'can', 'please'])
+const CJK = /[\u4e00-\u9fff]+/g
+
+/** The query's search words: stop words removed; a run of ideographs becomes overlapping two-character pairs. */
+export const searchTerms = (cue: string): string[] => {
+  const terms: string[] = []
+  const lower = cue.toLowerCase()
+  for (const run of lower.match(CJK) ?? []) {
+    if (run.length === 1) terms.push(run)
+    for (let i = 0; i + 1 < run.length; i++) terms.push(run.slice(i, i + 2))
+  }
+  for (const word of lower.replace(CJK, ' ').split(/[^a-z0-9]+/)) if (word && !STOP.has(word) && !terms.includes(word)) terms.push(word)
+  return [...new Set(terms)]
+}
+
+const hasTerm = (text: string, term: string): boolean => {
+  const lower = text.toLowerCase()
+  if (/[\u4e00-\u9fff]/.test(term)) return lower.includes(term)
+  return new RegExp(`(^|[^a-z0-9])${term}([^a-z0-9]|$)`).test(lower)
+}
+const termsIn = (text: string, terms: string[]): string[] => terms.filter(term => hasTerm(text, term))
+
+/** Everything the invented journals say, for "words found in no journal": the planted passages and the word pools of the generated lines. */
+const corpus = () => [...RUNS.flatMap(run => run.planted.flatMap(p => p.lines)), ...REQUESTS, ...REPLIES, ...PATHS, ...COMMANDS, ...DETAIL].join('\n')
+
+const ddnsResults = (t: string[]): SearchResult[] => [
+  makeResult(SERVER_HELPER, ['work_journal_000004.md', 'work_journal_000002.md'], t),
+  makeResult(memberRunId(SET_RUN, 'implementation_engineer'), ['work_journal_active.md'], t),
+  makeResult(PTM_RUN, ['work_journal_000001.md'], t),
+  makeResult(DAILY_DDNS, ['work_journal_000001.md'], t),
+  makeResult(NOTES_RUN, ['work_journal_active.md'], t),
+  makeResult(RESEARCH_DNS, ['work_journal_active.md'], t),
+  makeResult(memberRunId(ORG_RUN, 'analyst'), ['work_journal_active.md'], t),
+  makeResult(UNATTRIBUTED_RUN, ['work_journal_active.md'], t),
 ]
-const gameResults = (): SearchResult[] => [
-  makeResult(DAILY_GAME, [{ file: 'work_journal_active.md', kind: 'text', strength: 'strong' }, { file: 'work_journal_000001.md', kind: 'text', strength: 'strong' }]),
-  makeResult(RESEARCH_GAME, [{ file: 'work_journal_active.md', kind: 'meaning', strength: 'fair' }]),
+const gameResults = (t: string[]): SearchResult[] => [
+  makeResult(DAILY_GAME, ['work_journal_active.md', 'work_journal_000001.md'], t),
+  makeResult(RESEARCH_GAME, ['work_journal_active.md'], t),
 ]
-const chineseResults = (): SearchResult[] => [
-  makeResult(DAILY_ZH, [{ file: 'work_journal_active.md', kind: 'text', strength: 'strong' }]),
-  makeResult(SERVER_HELPER, [{ file: 'work_journal_000002.md', kind: 'meaning', strength: 'strong' }]),
-  makeResult(UNATTRIBUTED_RUN, [{ file: 'work_journal_active.md', kind: 'meaning', strength: 'fair' }]),
+const chineseResults = (t: string[]): SearchResult[] => [
+  makeResult(DAILY_ZH, ['work_journal_active.md'], t),
+  makeResult(SERVER_HELPER, ['work_journal_000002.md'], t),
+  makeResult(UNATTRIBUTED_RUN, ['work_journal_active.md'], t),
 ]
-const weakResults = (): SearchResult[] => [
-  makeResult(RESEARCH_GAME, [{ file: 'work_journal_active.md', kind: 'meaning', strength: 'weak' }]),
-  makeResult(NOTES_RUN, [{ file: 'work_journal_active.md', kind: 'meaning', strength: 'weak' }]),
-  makeResult(DAILY_DDNS, [{ file: 'work_journal_000001.md', kind: 'meaning', strength: 'weak' }]),
+/** A cue with no known topic still gets the nearest runs by meaning. */
+const relatedResults = (t: string[]): SearchResult[] => [
+  makeResult(RESEARCH_GAME, ['work_journal_active.md'], t),
+  makeResult(NOTES_RUN, ['work_journal_active.md'], t),
+  makeResult(DAILY_DDNS, ['work_journal_000001.md'], t),
 ]
 
-/** The scripted answer to a cue: a few topics matched by keywords; anything else gets only weak matches. */
-export const scriptedSearch = (cue: string, limit = 10): SearchOutcome => {
+/**
+ * The scripted answer to a cue: a few topics matched by keywords. Match kinds and found words follow from the snippet text;
+ * `wordsNotFound` is every search word that occurs in no invented journal, and stays empty while the Text index is incomplete.
+ */
+export const scriptedSearch = (cue: string, limit = 10, textIndexComplete = true): SearchOutcome => {
   const text = cue.trim().toLowerCase()
+  const terms = searchTerms(text)
   let results: SearchResult[]
-  if (/[一-鿿]/.test(text)) results = chineseResults()
-  else if (/ddns|dns|domain|router|dynamic/.test(text)) results = ddnsResults()
-  else if (/bunny|tortoise|rabbit|turtle|race|game/.test(text)) results = gameResults()
-  else results = weakResults()
-  const weakOnly = results.every(result => result.matches.every(match => match.strength === 'weak'))
-  return { cue: cue.trim(), results: results.slice(0, limit), weakOnly }
+  if (/[\u4e00-\u9fff]/.test(text)) results = chineseResults(terms)
+  else if (/ddns|dns|domain|router|dynamic/.test(text)) results = ddnsResults(terms)
+  else if (/bunny|tortoise|rabbit|turtle|race|game/.test(text)) results = gameResults(terms)
+  else results = relatedResults(terms)
+  const all = corpus()
+  const wordsNotFound = textIndexComplete ? terms.filter(term => !hasTerm(all, term)) : []
+  return { cue: cue.trim(), results: results.slice(0, limit), wordsNotFound }
 }
 
 /* ------------------------------------------------------------------ Work Journal files and lines */

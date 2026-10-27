@@ -118,7 +118,7 @@ export const useMemorySearchStore = defineStore('memorySearchStore', {
         this.error = 'The search could not be completed.';
         return;
       }
-      this.outcome = scriptedSearch(query, 10);
+      this.outcome = scriptedSearch(query, 10, this.textPct >= 100);
       this.coverage = { textPct: this.textPct, meaningPct: this.meaningPct };
       this.status = 'ready';
     },
