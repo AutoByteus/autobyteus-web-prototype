@@ -46,3 +46,9 @@ All data is invented: agents, runs, teams (including the task team), workspaces,
 - Changed: the match label and journal banner, the notes for missing words, the scripted cues and fixtures, strings (en, zh-CN), spec text; recaptured VIS-006, 007, 008, 017, 022, 024; new VIS-025, VIS-026.
 - User changes during the review of the revision: no "Related by meaning" label anywhere; the not-found note is only the fact; no "Mentioned" prefix; run ID and workspace on one line; a match's day only when needed; no Open button (the match lifts on hover).
 - Approved by the user, 2026-10-27 ("its done"). Data origin unchanged: all fixtures invented; the facts (found words, words not found) are computed from the invented journals' text.
+
+## Integration Record — Revision SR-006
+
+- Revision commit `a55923a3f26622ed7b347a33c567797974eac97c` pushed to `origin/personal` as a fast-forward (`d011922..a55923a`) and fast-forwarded into the canonical checkout; local and remote `personal` are the same revision. The default branch had not moved since the branch point (no merge needed).
+- Default-entry check after integration (canonical checkout run on its own port, `/memory`): tabs Browse · Search · Index; `purple elephant` shows `None of these words appear in your memory: purple, elephant.` and no `Words:` label; `ddns updater cloudflare` shows `Not found in your memory: cloudflare.`, the first match `Words: ddns`, and the Work Journal banner `lines 5353–5355 · Words: ddns`; no Strong / Fair / Weak / Related by meaning text anywhere; no page errors.
+- Dev servers (4932, 4933) stopped; the revision worktree and branch removed.
