@@ -64,3 +64,9 @@
 - Checked in the browser: model preparing (Gemma downloading, after Use this model + Index all): all three Projects read "Waiting…"; model ready (scenario `embedding_busy`, Release Notes): "Waiting…"; Index now on Prototype Launch: "Waiting…" then "Indexing 2 of 5"; zh-CN: "等待中…"; no other state changed.
 - Limitations (recorded, not introduced here): the Embedding section's reference screenshots VIS-001…VIS-021 other than VIS-007 and VIS-010 were captured at ticket time and are not recaptured (the surrounding Settings sidebar and the default Projects list have since changed through other accepted tickets; this revision changes only the waiting text). `visual-references/final-validation.mjs` and `capture-references.mjs` use the ticket-time test ids (`search-*`) and no longer run against the current section (see `ui-reference-runbook.md`); only the one expectation that named the old wording was updated.
 - Data origin: unchanged; all fixtures are invented.
+
+## Integration Record — Revision RV-001
+
+- Revision commit `a4e5674eb605324f323e93e51142d8ee115e9b4a` pushed to `origin/personal` as a fast-forward (`a0b6410..a4e5674`) and fast-forwarded into the canonical checkout; the default branch had not moved since the branch point (no merge needed).
+- Default-entry check after integration (canonical checkout `personal`, `corepack pnpm dev --port 4941`, `/settings?section=server-settings&mode=embedding`, no preview-only state): model preparing + Index all → every Project "Waiting…"; `embedding_busy` → "Waiting…" with the model ready; Index now → "Waiting…" then "Indexing 2 of 5"; zh-CN → "等待中…"; no page errors. Neither "Waiting to start…" nor "Waiting for the model…" appears anywhere.
+- Dev servers (4940, 4941) stopped; the revision worktree and branch removed. The final revision of the default branch is recorded in the result sent to the Solution Designer.
