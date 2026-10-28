@@ -202,7 +202,7 @@ const G = 'search-model-granite-embedding-small-english-r2', L = 'search-model-m
   await t(p, `${M}-retry`).click(); await tick(p, 2000);
   ok('SRCH-017b', (await state(p, M)) === 'active-preparing');
   await t(p, 'search-index-all').click(); await tick(p, 100);
-  ok('SRCH-017c', (await text(p, 'search-project-marketing-site-status')) === 'Waiting for the model…', 'Index all while the model prepares waits for it');
+  ok('SRCH-017c', (await text(p, 'search-project-marketing-site-status')) === 'Waiting…', 'Index all while the model prepares shows the same single Waiting… state');
   await tick(p, 40000);
   ok('SRCH-017d', (await state(p, M)) === 'active-ready' && ['indexing', 'ready'].includes(await state(p, 'search-project-desktop-app')), 'indexing starts once the model is ready');
   await tick(p, 120000);

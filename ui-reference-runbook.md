@@ -256,6 +256,7 @@ corepack pnpm dev --port 4691
   `search_many_projects`, `search_empty`, `search_load_failed`. Remove the key to reset to `populated`. Locale: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`.
 - Validation: `BASE=http://127.0.0.1:4691 node tickets/done/search-model-settings/visual-references/final-validation.mjs` (SRCH-001-019, 87 checks; the page clock is paused and driven by the script).
   Final references: `BASE=... OUT=tickets/done/search-model-settings/visual-references/ node tickets/done/search-model-settings/visual-references/capture-references.mjs`.
+- RV-001 (2026-10-28, one "Waiting…" state): `BASE=http://127.0.0.1:4940 OUT=tickets/done/search-model-settings/visual-references/ node tickets/done/search-model-settings/visual-references/capture-waiting-references.mjs` recaptures VIS-007, VIS-010 and VIS-022 against the current section (scenario `embedding_busy`).
 - Reset: reload the page (in-memory state). Spec: `tickets/done/search-model-settings/ui-ux-spec.md`.
 
 ## task-part-of ("part of" between Project Tasks; source pin unchanged `2f21134`)

@@ -59,7 +59,7 @@ Scenarios (seed the start state only; set `localStorage['autobyteus.prototype.sc
   meaning search for that Project is exact-only until it finishes. Reason: a mistaken Remove of EmbeddingGemma 2 costs a 346 MB re-download. Easy to drop.
 - **D-2 "Use this model" is also offered on a model that is not downloaded** (the download then happens as part of switching, shown on the Active row). It is hidden while that model is
   downloading ahead. The active model's own preparing download has no Cancel (the user can choose another model).
-- **D-3 A Project can show "Waiting…"** (waiting for the model, or for its turn) before "Indexing N of M". "Index all Projects" is therefore usable right after a switch.
+- **D-3 A Project can show "Waiting…"** (RV-001, 2026-10-28: one wording, whatever the model's state; the model card shows the model's state) before "Indexing N of M". "Index all Projects" is therefore usable right after a switch.
 - **D-4 "Index all Projects" means "Index now" for every Project that is Not indexed or Needs update**; it is disabled when nothing needs it and when the model is unavailable.
   "Needs update" progress counts the changed Tasks ("Indexing 1 of 3").
 - **D-5 Unavailable model:** every Project shows Unavailable, its actions are hidden, and a note points to Retry on the model.

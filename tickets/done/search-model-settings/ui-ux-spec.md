@@ -2,7 +2,7 @@
 
 ## Status And User Confirmation
 
-- Status: `Approved`
+- Status: `Approved` (revision RV-001, 2026-10-28)
 - Request / ticket: Product ticket `search-model-settings`; Project Task `autobyteus-146` (follow-up FU-1 of `autobyteus-71`), requested by the Solution Designer (`solution_designer_80624588913d473bac3ef7d8c3d4d305`) for the user.
 - Related requirements revision ID: `SR-001` (`requirements-doc.md` in `/Users/normy/autobyteus_org/autobyteus-worktrees/search-model-settings/tickets/in-progress/search-model-settings/`). **This design changes that revision; see "Requirement Impact" below.**
 - Related IDs: UC-001–UC-004; REQ-001–REQ-009; AC-001–AC-009; SCN-001–SCN-004; DEC-003, DEC-005 (resolved here), DEC-006, DEC-007, DEC-008; QR-003. Checks SRCH-001 to SRCH-019 in `visual-references/final-validation.mjs`.
@@ -18,6 +18,14 @@
 3. **REQ-004 / DEC-008 cost is narrowed:** the switch dialog states the **download size only** ("346 MB, not downloaded yet" or "Already downloaded"). It no longer states time per Task or memory.
 4. **Copy is deliberately minimal.** Sentences in the sketch and the earlier candidates (what embeddings are, "applies to this node", "one model at a time", "indexing starts when…", "only the active model's index is kept", "No partial files", "Exact-match search still works", completion notices) were removed on purpose. They are not required copy.
 5. Everything else in REQ-001–REQ-009 is covered as specified below. Design additions beyond the requirement text that the user approved: D-1…D-5 (see "Open Decisions And Risks", which records them as decided).
+
+### Revision RV-001 (2026-10-28): one "Waiting…" state
+
+- Requested by the Solution Designer (Project Task `autobyteus-320`, web UI cleanup round, item 3, was `autobyteus-196`; requirements REQ-005, REQ-006, AC-007, AC-008 of package `web-ui-cleanup-round`). Approved by the user, 2026-10-28: "That's also fine if you want to change" (requirements DEC-004). No new design decision was made here.
+- Changed: a Project whose indexing is requested but not started shows **one** state, **"Waiting…"** (zh-CN **"等待中…"**), whatever the model's state. It replaces "Waiting to start…" (model ready) and "Waiting for the model…" (model not ready); since `autobyteus-146` a Project is indexed right after a Task is saved, so the first appeared only for a moment. Nothing is lost: the "Embedding model" card directly above still shows the model's own state ("Preparing…", "Downloading the model: N of M MB", "Ready").
+- Unchanged: "Indexing N of M" and every other Project state, the model card, the dot style (hollow grey dot, `text-gray-500`), Index all, filters, rebuild.
+- Changed in the spec: UXJ-005, TR-013, the states table row "Project: Waiting", the copy list, VIS-007 and VIS-010 text; VIS-007 and VIS-010 recaptured; VIS-022 added (zh-CN). Changed in the UI reference: `components/settings/embedding/ProjectIndexesCard.vue` (one text, `modelReady` removed), `localization/messages/{en,zh-CN}/embeddingSettings.ts` (`settings.search.projects.state.waiting` is the single key; `…waitingModel` removed).
+- Interim copy shown elsewhere in this specification before RV-001 ("Waiting to start…", "Waiting for the model…") is superseded by the above.
 
 ## Repository And Baseline Provenance
 
@@ -117,7 +125,7 @@ The `Search*` file names and `search-*` test ids are historical; the product nam
 
 **UXJ-004 Switch.** **Use this model** opens the dialog (VIS-004 not downloaded, VIS-005 downloaded). **Cancel** or Esc closes it and changes nothing. **Use this model** (confirm) writes the setting: the chosen row becomes Active, the previous model becomes Downloaded, the "Project indexes" subtitle names the new model, and every Project shows **Not indexed** (VIS-006). If the model was not downloaded the Active row shows "Preparing…" with "Downloading the model: N of M MB · P%", then a short "Loading the model…" bar, then "Ready" (VIS-007). Focus lands on the new Active row. Search on the board keeps working with exact matches meanwhile (existing behavior).
 
-**UXJ-005 Index.** **Index all Projects** starts every Project that is Not indexed or Needs update. A Project shows "Waiting to start…" (or "Waiting for the model…" while the model prepares), then "Indexing N of M" with a thin bar, then "Ready · M Tasks". Per Project, **Index now** appears on Not indexed and Needs update Projects (Needs update indexes only the changed Tasks: "Indexing N of K"). Index all is disabled when nothing needs indexing and when the model is unavailable (its `title` says why). (VIS-007, VIS-010)
+**UXJ-005 Index.** **Index all Projects** starts every Project that is Not indexed or Needs update. A Project shows "Waiting…" (one wording, whether the model is ready or still preparing; the model card above shows the model's own state and download progress), then "Indexing N of M" with a thin bar, then "Ready · M Tasks". Per Project, **Index now** appears on Not indexed and Needs update Projects (Needs update indexes only the changed Tasks: "Indexing N of K"). Index all is disabled when nothing needs indexing and when the model is unavailable (its `title` says why). (VIS-007, VIS-010)
 
 **UXJ-006 Rebuild.** **Rebuild** (Ready and Needs update Projects) opens an inline confirmation: "Rebuild “<name>” from scratch? Meaning search is exact-only until it finishes." with **Rebuild** (blue) and **Cancel**. Confirming re-indexes every Task of that Project; the row shows Waiting, then Indexing N of M, then Ready. (VIS-009)
 
@@ -151,7 +159,7 @@ The `Search*` file names and `search-*` test ids are historical; the product nam
 | TR-010 | Dialog | Cancel / Esc | Dialog closes, focus returns to the opener | Unchanged | Nothing changes | — |
 | TR-011 | Dialog | Confirm | New Active row; previous Downloaded; Projects Not indexed; focus on the new row | Active preparing (or ready when Downloaded) | Setting `AUTOBYTEUS_EMBEDDING_MODEL` written; model prepared (downloaded if needed) | Retry (if it fails), Index now, Index all |
 | TR-012 | Active preparing | Download then load complete | Status "Ready" (announced) | Active ready | Waiting Projects start | all |
-| TR-013 | Project Not indexed / Needs update | Index now | "Waiting to start…" then "Indexing N of M" | Indexing | Background indexing; model prepared if needed | — |
+| TR-013 | Project Not indexed / Needs update | Index now | "Waiting…" then "Indexing N of M" | Indexing | Background indexing; model prepared if needed | — |
 | TR-014 | Projects needing work | Index all Projects | Each shows Waiting then Indexing | Indexing | One at a time in list order (UI reference); scheduling is the server's | — |
 | TR-015 | Indexing | Progress tick | "Indexing N of M" and bar advance | Indexing | — | — |
 | TR-016 | Indexing | Completed | "Ready · M Tasks" (announced) | Ready | Vectors stored for the active model | Rebuild |
@@ -173,7 +181,7 @@ The `Search*` file names and `search-*` test ids are historical; the product nam
 | Model: download failed | Failure | Red "Download failed: <reason>" under the facts | Retry, Use this model | Retry | VIS-003 |
 | Model: Remove confirmation | Remove | Grey strip "Remove <name>? This frees <size> MB." | Remove, Cancel | Cancel / Esc | VIS-008 |
 | Project: Not indexed | Default | Grey dot "Not indexed" | Index now | — | VIS-001 |
-| Project: Waiting | Queued | Hollow dot "Waiting to start…" or "Waiting for the model…" | none | — | VIS-007 |
+| Project: Waiting | Queued | Hollow dot "Waiting…" (zh-CN "等待中…"): one state, the same whether the model is ready or still preparing | none | — | VIS-007, VIS-010, VIS-022 |
 | Project: Indexing | Running | Spinner "Indexing N of M" + 4 px bar | none | — | VIS-001, VIS-010 |
 | Project: Ready | Done | Green dot "Ready · M Tasks" ("Ready · 1 Task" for one) | Rebuild | — | VIS-001 |
 | Project: Needs update | Changed Tasks | Amber dot "Needs update · K changed" | Index now, Rebuild | — | VIS-001, VIS-010 |
@@ -194,7 +202,7 @@ The `Search*` file names and `search-*` test ids are historical; the product nam
   - Model description: "Used for meaning search. Downloaded from Hugging Face." ("Hugging Face" is the link). Total: "On disk: N MB". "Default".
   - Status: Active · Ready / Preparing… / Unavailable; Downloaded; Not downloaded; Downloading. Facts: language label (English / 100+ languages) · "N MB".
   - Actions: Download, Cancel, Use this model, Remove, Retry; Index now, Rebuild, Index all Projects.
-  - Progress: "N of M MB", "Downloading the model: N of M MB", "Loading the model…"; "Indexing N of M", "Waiting to start…", "Waiting for the model…".
+  - Progress: "N of M MB", "Downloading the model: N of M MB", "Loading the model…"; "Indexing N of M", "Waiting…" (zh-CN "等待中…").
   - Project states: "Not indexed", "Ready · M Tasks", "Ready · 1 Task", "Needs update · K changed", "Unavailable". Card subtitle: "Using <model name>."
   - Filter tabs: All · Needs indexing · Indexing · Ready (each with a count); placeholder "Filter Projects".
   - Dialog: title "Use <model name>?"; lead "Every Project has to be indexed again with this model."; bullet "Until then, meaning search finds exact matches only."; line "Download: 346 MB, not downloaded yet" / "Download: Already downloaded"; buttons "Cancel", "Use this model".
@@ -259,10 +267,10 @@ All images are in `visual-references/`, captured by `capture-references.mjs` aft
 | VIS-004 | UXJ-004; dialog, not downloaded | 1440×1180 | `…/VIS-004-switch-dialog-not-downloaded-1440x1180.png` | Dialog title, lead, bullet, "Download: 346 MB, not downloaded yet", buttons | — |
 | VIS-005 | UXJ-004; dialog, downloaded | 1440×1180 | `…/VIS-005-switch-dialog-downloaded-1440x1180.png` | "Download: Already downloaded" | — |
 | VIS-006 | UXJ-004; after a switch to a downloaded model | 1440×1180 | `…/VIS-006-after-switch-all-projects-not-indexed-1440x1180.png` | New Active row, previous Downloaded, subtitle names the new model, every Project Not indexed, Index all enabled | — |
-| VIS-007 | UXJ-004, UXJ-005; preparing and Index all | 1440×1180 | `…/VIS-007-switch-preparing-index-all-waiting-1440x1180.png` | Active · Preparing… with download bar, "Waiting for the model…" rows, Index all disabled | Progress values |
+| VIS-007 | UXJ-004, UXJ-005; preparing and Index all | 1440×1180 | `…/VIS-007-switch-preparing-index-all-waiting-1440x1180.png` | Active · Preparing… with download bar, every Project row "Waiting…", Index all disabled | Progress values |
 | VIS-008 | UXJ-003; Remove confirmation | 1440×1180 | `…/VIS-008-remove-confirmation-1440x1180.png` | Inline strip and buttons | — |
 | VIS-009 | UXJ-006; Rebuild confirmation | 1440×1180 | `…/VIS-009-rebuild-confirmation-1440x1180.png` | Inline strip under the Project row | — |
-| VIS-010 | UXJ-005; Needs update indexing | 1440×1180 | `…/VIS-010-needs-update-indexing-1440x1180.png` | "Indexing N of K" for a Needs update Project, others waiting | Progress values |
+| VIS-010 | UXJ-005; Needs update indexing | 1440×1180 | `…/VIS-010-needs-update-indexing-1440x1180.png` | "Indexing N of K" for a Needs update Project, another Project "Waiting…" | Progress values |
 | VIS-011 | UXJ-008; model unavailable | 1440×1180 | `…/VIS-011-model-unavailable-1440x1180.png` | Active · Unavailable, reason, Retry, grey "Unavailable" rows, filter tabs hidden, Index all disabled | The reason wording |
 | VIS-012 | UXJ-001; many Projects | 1440×2000 | `…/VIS-012-many-projects-1440x2000.png` | Filter field beside the tabs, 24 rows | Names and counts |
 | VIS-013 | Many Projects, filtered | 1440×1500 | `…/VIS-013-many-projects-filtered-1440x1500.png` | Selected tab with counts unchanged by the name filter, filtered list | Names and counts |
@@ -274,13 +282,14 @@ All images are in `visual-references/`, captured by `capture-references.mjs` aft
 | VIS-019 | zh-CN download failed | 1440×1180 | `…/VIS-019-zh-CN-download-failed-1440x1180.png` | zh-CN failure copy naming huggingface.co | — |
 | VIS-020a–c | Narrow layout, scrolled | 390×1100 (scroll 0 / 700 / 1400) | `…/VIS-020a-narrow-390x1100-scroll-0.png`, `…/VIS-020b-narrow-390x1100-scroll-700.png`, `…/VIS-020c-narrow-390x1100-scroll-1400.png` | Stacked header, wrapped facts, stacked rows | The Settings navigation block above is the existing product behavior |
 | VIS-021 | Narrow dialog | 390×1100 | `…/VIS-021-narrow-switch-dialog-390x1100.png` | Dialog at narrow width | — |
+| VIS-022 | Project: Waiting, zh-CN (revision RV-001) | 1440×1180 | `…/VIS-022-zh-CN-waiting-1440x1180.png` | "等待中…" on a waiting Project row, beside the other zh-CN Project states | Project names, counts, progress values |
 
 ## Linked UI Reference Evidence
 
 - Runnable UI reference: the design repository root on `personal` after integration (`corepack pnpm install --ignore-workspace --frozen-lockfile`, `corepack pnpm dev --port <port>`), route `/settings?section=server-settings&mode=embedding`.
-- Ticket record: `tickets/done/search-model-settings/product-ticket.md`
+- Ticket record: `tickets/done/search-model-settings/product-ticket.md` (revision RV-001 recorded there)
 - Run instructions: `ui-reference-runbook.md` (repository root), section "search-model-settings".
-- Relevant supporting artifacts: `design-review-notes.md` (revision history, findings, self-validation round); `visual-references/final-validation.mjs` (SRCH-001…SRCH-019); `visual-references/capture-references.mjs`.
+- Relevant supporting artifacts: `design-review-notes.md` (revision history, findings, self-validation round); `visual-references/final-validation.mjs` (SRCH-001…SRCH-019); `visual-references/capture-references.mjs`; `visual-references/capture-waiting-references.mjs` (RV-001: VIS-007, VIS-010, VIS-022 against the current Embedding section).
 - Relevant journey, transition, or scenario IDs: UXJ-001…UXJ-008, TR-001…TR-020; scenarios listed above.
 - Mocked boundaries and limitations: see Data, Contract, And Mock Boundaries. Not modelled: the Advanced table and the raw setting (REQ-009), real downloads, cancel and verification, real indexing and scheduling, the board's status line, Electron external-link handling.
 

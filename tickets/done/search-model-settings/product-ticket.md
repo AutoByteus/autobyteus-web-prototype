@@ -6,7 +6,7 @@
   ("Search model settings: choose, download and index the embedding model from Settings"), follow-up FU-1 of `autobyteus-71`. There is no second ID.
 - Title: Settings → Server Settings → Embedding: choose, download and index the embedding model.
 - Mode: `Product Experience Design`. It evolves the accepted AutoByteus Web baseline in place: Server Settings gets one new sub-section, **Embedding** (the user's direction, 2026-10-19: under Server Settings, technical wording).
-- Status: `Completed`
+- Status: `Completed` (revision RV-001, 2026-10-28, one "Waiting…" state, approved by the user; see "Revision RV-001")
 - Requester: the Solution Designer (`solution_designer_80624588913d473bac3ef7d8c3d4d305`), for the user, 2026-10-19.
 - Related requirements: `requirements-doc.md` `SR-001` (`/Users/normy/autobyteus_org/autobyteus-worktrees/search-model-settings/tickets/in-progress/search-model-settings/`):
   UC-001–UC-004, REQ-001–REQ-009, AC-001–AC-009, SCN-001–SCN-004, DEC-001–DEC-008 (open: DEC-005).
@@ -52,3 +52,15 @@
 
 - Next expected action: the Solution Designer reconciles the approved package with the requirements (next solution revision, including the requirement impact above) and starts the architecture design.
 - Handoff: `get_handoff_rules` returned only the Baseline Needed route, so the result goes back to the requester (see the message sent).
+
+## Revision RV-001 (2026-10-28): one "Waiting…" state
+
+- Requested by: the Solution Designer (run `solution_designer_8dc321539e5e490ea700d6e7f58d14ff`), Project Task `autobyteus-320` (web UI cleanup round, item 3, was `autobyteus-196`; package `web-ui-cleanup-round`, REQ-005, REQ-006, AC-007, AC-008). App ticket folder: `/Users/normy/autobyteus_org/autobyteus-worktrees/web-ui-cleanup-round/tickets/in-progress/web-ui-cleanup-round/` (`requirements-doc.md`).
+- Approval: the user, 2026-10-28 ("That's also fine if you want to change"; requirements DEC-004). No new design decision; recorded as an approved state change.
+- Mode: Product Experience Design, evolving the accepted Embedding section in place.
+- Worktree / branch: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/search-model-settings-waiting`, `design/search-model-settings-waiting`, from `origin/personal` `a0b6410395513288e453af5904fd0a9fa88f78ac`; the ticket folder was moved back to `tickets/in-progress/` while open.
+- Runtime: dev server on port 4940 (stopped at closure); capture scripts and scratch output in `/tmp/sms-waiting/` (not committed except `visual-references/capture-waiting-references.mjs`); in-memory state, reset by reload. `node_modules` was a temporary symlink to the canonical checkout's, removed before the commit.
+- Changed: the states table row "Project: Waiting" is one state, "Waiting…" (zh-CN "等待中…"); UXJ-005, TR-013, the copy list and the VIS-007/VIS-010 text follow. UI reference: `ProjectIndexesCard.vue`, `localization/messages/{en,zh-CN}/embeddingSettings.ts`. VIS-007 and VIS-010 recaptured; VIS-022 (zh-CN Waiting) added.
+- Checked in the browser: model preparing (Gemma downloading, after Use this model + Index all): all three Projects read "Waiting…"; model ready (scenario `embedding_busy`, Release Notes): "Waiting…"; Index now on Prototype Launch: "Waiting…" then "Indexing 2 of 5"; zh-CN: "等待中…"; no other state changed.
+- Limitations (recorded, not introduced here): the Embedding section's reference screenshots VIS-001…VIS-021 other than VIS-007 and VIS-010 were captured at ticket time and are not recaptured (the surrounding Settings sidebar and the default Projects list have since changed through other accepted tickets; this revision changes only the waiting text). `visual-references/final-validation.mjs` and `capture-references.mjs` use the ticket-time test ids (`search-*`) and no longer run against the current section (see `ui-reference-runbook.md`); only the one expectation that named the old wording was updated.
+- Data origin: unchanged; all fixtures are invented.
