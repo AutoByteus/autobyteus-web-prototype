@@ -23,11 +23,10 @@
           :aria-selected="projectsTree.mode === option"
           aria-controls="run-section-panel"
           :tabindex="projectsTree.mode === option ? 0 : -1"
-          class="flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium leading-5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          class="flex min-w-0 flex-1 items-center justify-center rounded-md px-2 py-1.5 text-sm font-medium leading-5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
           :class="projectsTree.mode === option ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'"
           @click="chooseMode(option)"
         >
-          <Icon :icon="option === 'workspaces' ? 'heroicons:folder' : 'heroicons:briefcase'" class="h-4 w-4 flex-shrink-0" aria-hidden="true" />
           <span class="truncate">{{ t(option === 'workspaces' ? 'shell.navigation.workspaces' : 'shell.navigation.projects') }}</span>
         </button>
       </div>
