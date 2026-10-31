@@ -41,6 +41,8 @@ export interface ChatDraft {
   workspace: RunWorkspaceChoice
   /** projects-left-navigation: the Project this run is started under (REQ-004), or null for a plain New chat. */
   projectId: string | null
+  /** The user picked the folder themselves; choosing a Project then leaves it alone. */
+  workspaceChosen: boolean
   autoExecuteTools: boolean
   /** Team target only: each customized member's own settings, by member address (REQ-009). */
   teamAgentOverrides: Record<AgentTeamAddress, AgentConfigOverride>
@@ -177,6 +179,7 @@ export const useChatDraftStore = defineStore('chatDraft', () => {
       target,
       workspace,
       projectId: null,
+      workspaceChosen: false,
       autoExecuteTools,
       teamAgentOverrides: {},
       pinnedMemberAddresses: [],
@@ -513,6 +516,18 @@ export const useChatDraftStore = defineStore('chatDraft', () => {
   const setWorkspace = (workspace: RunWorkspaceChoice) => {
     if (!draft.value) return
     draft.value.workspace = workspace
+    draft.value.workspaceChosen = true
+  }
+
+  /**
+   * projects-left-navigation (REQ-004, REQ-005): the Project chip on New chat. Choosing a Project preselects its first linked
+   * folder (the temp workspace when it has none) unless the user already chose a folder; "No project" (null) keeps the folder.
+   */
+  const setProject = (projectId: string | null, folderRootPath: string | null = null) => {
+    const current = draft.value
+    if (!current || current.starting) return
+    current.projectId = projectId
+    if (projectId && !current.workspaceChosen) current.workspace = runWorkspaceChoiceFromRootPath(folderRootPath) ?? tempWorkspace()
   }
 
   const setAutoExecuteTools = (autoExecuteTools: boolean) => {
@@ -550,6 +565,7 @@ export const useChatDraftStore = defineStore('chatDraft', () => {
     resetTeamMember,
     resetTeamMembers,
     setWorkspace,
+    setProject,
     setAutoExecuteTools,
     setModel,
     setModelConfig,

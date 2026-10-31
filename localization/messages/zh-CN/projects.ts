@@ -17,6 +17,8 @@ const projectMessages = {
   'projectsTree.emptyTitle': '还没有项目',
   'projectsTree.emptyHelp': '创建项目后，可在此为它运行智能体和团队，并跟进它们的工作。',
   'projectsTree.chipLabel': '项目',
+  'projectsTree.noProject': '无项目',
+  'projectsTree.menuAria': '项目',
   'projectsTree.stripLabel': '项目',
   'projectsTree.chipTitle': '此运行将在项目 {{name}} 下启动。',
   'projectsTree.chipAria': '项目：{{name}}',

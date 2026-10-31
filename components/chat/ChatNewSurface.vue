@@ -41,18 +41,13 @@
           autofocus
         >
           <template #footer-left>
-            <!-- projects-left-navigation: the Project this run starts under. It is the context of the run, not a choice here. -->
-            <span
-              v-if="startProject"
-              class="inline-flex max-w-[16rem] items-center gap-1.5 rounded-md bg-indigo-50 px-2 py-1 text-[0.8125rem] leading-5 text-indigo-700"
-              data-test="chat-new-project"
-              role="group"
-              :aria-label="t('projectsTree.chipAria', { name: startProject.name })"
-              :title="t('projectsTree.chipTitle', { name: startProject.name })"
-            >
-              <span class="flex-shrink-0 text-indigo-400">{{ t('projectsTree.chipLabel') }}</span>
-              <span class="truncate font-medium">{{ startProject.name }}</span>
-            </span>
+            <!-- projects-left-navigation (REQ-004): the Project this run starts under; shown when the node has Projects. -->
+            <ChatProjectMenu
+              v-if="projectsTree.projects.length > 0"
+              :projects="projectsTree.projects"
+              :project-id="draft.projectId"
+              @select="chooseProject"
+            />
             <ChatWorkspaceMenu :workspace="draft.workspace" :project-folder="startProject ? firstFolderOf(startProject) : null" @select="chatDraftStore.setWorkspace" />
             <ChatApprovalToggle
               :model-value="effectiveAutoExecuteTools(controls.runtimeKind.value, draft.autoExecuteTools)"
@@ -115,6 +110,7 @@ import { Icon } from '@iconify/vue'
 import { useProjectsTreeStore, firstFolderOf } from '~/stores/projectsTreeStore'
 import ChatComposer from '~/components/chat/ChatComposer.vue'
 import ChatWorkspaceMenu from '~/components/chat/ChatWorkspaceMenu.vue'
+import ChatProjectMenu from '~/components/chat/ChatProjectMenu.vue'
 import ChatApprovalToggle from '~/components/chat/ChatApprovalToggle.vue'
 import ChatModelMenu from '~/components/chat/ChatModelMenu.vue'
 import ChatThinkingControl from '~/components/chat/ChatThinkingControl.vue'
@@ -151,7 +147,9 @@ const composerRef = ref<InstanceType<typeof ChatComposer> | null>(null)
 
 const draft = computed(() => chatDraftStore.draft)
 // projects-left-navigation: the Project the open draft starts under (REQ-004).
-const startProject = computed(() => (draft.value?.projectId ? useProjectsTreeStore().projectById(draft.value.projectId) : null))
+const projectsTree = useProjectsTreeStore()
+const startProject = computed(() => (draft.value?.projectId ? projectsTree.projectById(draft.value.projectId) : null))
+const chooseProject = (projectId: string | null) => chatDraftStore.setProject(projectId, firstFolderOf(projectId ? projectsTree.projectById(projectId) : null))
 const draftContext = computed(() => draft.value?.context ?? null)
 // One composer target per draft identity; a reset draft gets a fresh target.
 const target = computed(() => (draft.value

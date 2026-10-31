@@ -17,6 +17,8 @@ const projectMessages = {
   'projectsTree.emptyTitle': 'No Projects yet',
   'projectsTree.emptyHelp': 'Create a Project to run agents and teams for it and follow their work here.',
   'projectsTree.chipLabel': 'Project',
+  'projectsTree.noProject': 'No project',
+  'projectsTree.menuAria': 'Projects',
   'projectsTree.stripLabel': 'Projects',
   'projectsTree.chipTitle': 'This run is started under the Project {{name}}.',
   'projectsTree.chipAria': 'Project: {{name}}',
