@@ -1,5 +1,17 @@
 # UI Reference Runbook
 
+## integrations-page (Integrations page; source pin `d74f75a`, Settings surfaces `e4bebdc858`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4940
+```
+
+- Entry: `/integrations` (menu item Integrations, last, after Nodes). Default: one GitHub card, Not installed. Install on the card, then Connect (dialog): a token containing `bad`, `reject` or `revoked` is rejected, `offline` cannot be checked, anything else connects as `@alex-dev`.
+- Starting states (browser console, reload; remove the key to reset): `localStorage.setItem('autobyteus.prototype.scenario', '<name>')` with `integrations_connected`, `integrations_several` (GitHub, Jira "Needs a newer AutoByteus", SSH), `integrations_tool_missing`, `integrations_install_clash`, `integrations_token_revoked`, `integrations_offline` (the first Retry fails again), `integrations_offline_installed`, `integrations_empty`.
+- After Install the skill is on `/skills` and the source in Skills → Sources. Server Settings → Basics has no GitHub card.
+- Data is invented in `prototype/integrations/integrationsDesignFixture.ts`; state is in `stores/integrationsStore.ts`; in memory, a reload resets it. Spec: `tickets/done/integrations-page/ui-ux-spec.md`.
+
 ## WEB-BASELINE-REFRESH-014 (scoped refresh: Settings menu and the GitHub card; those two surfaces reflect `e4bebdc858`, the rest `d74f75a`)
 
 ```bash
