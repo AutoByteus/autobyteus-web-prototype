@@ -23,5 +23,6 @@ for (const s of stepsArg.split(';').filter(Boolean)) {
   else if (k === 'js') console.log(JSON.stringify(await page.evaluate(v)))
   await page.waitForTimeout(700)
 }
-await page.screenshot({ path: out })
+const clip = process.env.CLIP ? (([x, y, w, h]) => ({ x, y, width: w, height: h }))(process.env.CLIP.split(',').map(Number)) : undefined
+await page.screenshot({ path: out, clip })
 await browser.close()

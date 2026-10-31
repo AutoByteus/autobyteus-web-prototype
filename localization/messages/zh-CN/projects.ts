@@ -12,7 +12,7 @@ const projectMessages = {
   'projectsTree.noRuns': '还没有运行。点击 + 为此项目运行智能体或团队。',
   'projectsTree.loading': '正在加载项目…',
   'projectsTree.error': '无法加载项目。',
-  'projectsTree.staleError': '无法刷新项目，显示的是上次加载的内容。',
+  'projectsTree.staleError': '无法刷新项目。',
   'projectsTree.retry': '重试',
   'projectsTree.emptyTitle': '还没有项目',
   'projectsTree.emptyHelp': '创建项目后，可在此为它运行智能体和团队，并跟进它们的工作。',

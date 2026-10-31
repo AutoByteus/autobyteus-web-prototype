@@ -165,7 +165,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router';
 import { Icon } from '@iconify/vue';
@@ -354,6 +354,7 @@ const {
   showGroupArchiveConfirmation,
   groupArchiveConfirmationMessage,
   onArchiveAgentGroup,
+  onArchiveAgentGroupRuns,
   onArchiveTeamGroup,
   onArchiveAgentOrgGroup,
   closeGroupArchiveConfirmation,
@@ -362,6 +363,14 @@ const {
   archiveAgentRunGroup: (workspaceRootPath, agentDefinitionId) =>
     runHistoryStore.archiveAgentRunGroup(workspaceRootPath, agentDefinitionId),
   archiveTeamRuns: (teamRunIds) => runHistoryStore.archiveTeamRuns(teamRunIds),
+  archiveAgentRuns: async (runIds) => {
+    const archivedRunIds: string[] = [];
+    const failedRunIds: string[] = [];
+    for (const runId of runIds) {
+      try { await runHistoryStore.archiveRun(runId); archivedRunIds.push(runId); } catch { failedRunIds.push(runId); }
+    }
+    return { archivedRunIds, failedRunIds };
+  },
   archiveAgentOrgRuns: (orgRunIds) => runHistoryStore.archiveAgentOrgRuns(orgRunIds),
   onAgentOrgArchived: leaveRemovedAgentOrgRoute,
   addToast: addWorkspaceToast,
@@ -562,6 +571,31 @@ const onHeaderAdd = (): void => {
   onCreateWorkspace();
 };
 
+// REQ-012: the open run is revealed in the Project that lists it (the board's Project first) and marked there.
+const revealOpenRunInProjects = (): void => {
+  if (projectsTree.mode !== 'projects') return;
+  const runId = sectionState.selectedRunId;
+  const teamRunId = selectionStore.selectedType === 'team' ? selectionStore.selectedRunId : null;
+  if (!runId && !teamRunId) return;
+  const entries = [...projectsTree.projectNodes].sort((a, b) =>
+    Number(b.project.projectId === projectsTree.selectedProjectId) - Number(a.project.projectId === projectsTree.selectedProjectId));
+  for (const entry of entries) {
+    const key = entry.node.stableKey;
+    const agent = runId ? entry.node.agents.find((candidate) => candidate.runs.some((run) => run.runId === runId)) : undefined;
+    const team = teamRunId ? entry.teams.find((candidate) => candidate.teamRunId === teamRunId) : undefined;
+    if (!agent && !team) continue;
+    treeState.setWorkspaceExpanded(key, true);
+    if (agent) treeState.setAgentExpanded(key, agent.agentDefinitionId, true);
+    if (team) treeState.setTeamDefinitionExpanded(key, team.teamDefinitionId?.trim() || team.teamDefinitionName?.trim() || 'team', true);
+    return;
+  }
+};
+watch(
+  () => [projectsTree.mode, sectionState.selectedRunId, selectionStore.selectedRunId, projectsTree.projectNodes.map((entry) => entry.runCount).join(',')],
+  revealOpenRunInProjects,
+  { immediate: true },
+);
+
 /** A Project's section: its expansion is the Project's own; it never reads a folder's history. */
 const projectSectionState: WorkspaceHistorySectionState = Object.create(sectionState, {
   toggleWorkspace: { value: (node: RunTreeWorkspaceNode) => treeState.toggleWorkspace(String((node as { stableKey?: string }).stableKey ?? node.workspaceId)) },
@@ -585,9 +619,8 @@ const projectSectionActions: WorkspaceHistorySectionActions = {
   },
   onCreateProjectRun: startUnderProject,
   // Opening a run from under a Project makes that Project the board's Project; the open itself is the same as in Workspaces.
-  onArchiveAgentGroup: undefined,
-  onArchiveTeamGroup: undefined,
-  onArchiveAgentOrgGroup: undefined,
+  // REQ-014: "Archive all runs" in a Project touches only the runs listed under that Project.
+  onArchiveAgentGroup: (workspaceNode, agentNode) => onArchiveAgentGroupRuns(workspaceNode.stableKey, agentNode),
 };
 
 let refreshTimerId: ReturnType<typeof setInterval> | null = null;

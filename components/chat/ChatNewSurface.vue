@@ -44,7 +44,7 @@
             <!-- projects-left-navigation: the Project this run starts under. It is the context of the run, not a choice here. -->
             <span
               v-if="startProject"
-              class="inline-flex max-w-[12rem] items-center gap-1.5 rounded-md bg-indigo-50 px-2 py-1 text-[0.8125rem] leading-5 text-indigo-700"
+              class="inline-flex max-w-[16rem] items-center gap-1.5 rounded-md bg-indigo-50 px-2 py-1 text-[0.8125rem] leading-5 text-indigo-700"
               data-test="chat-new-project"
               role="group"
               :aria-label="t('projectsTree.chipAria', { name: startProject.name })"

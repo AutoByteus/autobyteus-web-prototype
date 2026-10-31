@@ -71,7 +71,8 @@ export const useProjectsTreeStore = defineStore('projectsTree', () => {
   const read = ref<ProjectsTreeRead>(seed === 'loading' ? 'loading' : 'ready')
   const errorMessage = ref<string | null>(null)
   const hasLoaded = ref(false)
-  let failuresLeft = seed === 'error' || seed === 'stale-error' ? 1 : 0
+  // `error`: reads fail until Retry. `stale-error`: once the tree has loaded, refreshes fail until Retry.
+  let failing = seed === 'error' || seed === 'stale-error'
   let reads = 0
   let inFlight: Promise<void> | null = null
 
@@ -83,9 +84,7 @@ export const useProjectsTreeStore = defineStore('projectsTree', () => {
       try {
         if (seed === 'loading' && readNumber === 1) await wait(6000)
         else await wait(350)
-        // `error`: the first read fails. `stale-error`: the read after the first one fails.
-        const failsNow = failuresLeft > 0 && (seed === 'error' ? readNumber === 1 : readNumber === 2)
-        if (failsNow) { failuresLeft -= 1; throw new Error('Synthetic read failure.') }
+        if (failing && (seed === 'error' || hasLoaded.value)) throw new Error('Synthetic read failure.')
         await Promise.all([projectStore.fetchProjects(true).catch(() => undefined), runHistory.fetchTree().catch(() => undefined)])
         hasLoaded.value = true
         errorMessage.value = null
@@ -99,7 +98,7 @@ export const useProjectsTreeStore = defineStore('projectsTree', () => {
     })()
     return inFlight
   }
-  const retry = () => load()
+  const retry = () => { failing = false; return load({ quiet: hasLoaded.value }) }
 
   // --- Runs started under a Project in this session (REQ-004): listed at once, and in Workspaces under their folder. ---
   const startedUnderLinks = ref<Record<string, ProjectRunLink[]>>({})

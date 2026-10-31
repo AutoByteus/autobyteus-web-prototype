@@ -155,7 +155,7 @@
             class="inline-flex h-5 w-5 items-center justify-center rounded text-gray-400 transition-[opacity,color,background-color] duration-150 hover:bg-amber-50 hover:text-amber-600 focus:opacity-100 md:opacity-0 md:group-hover/agent-header:opacity-100 md:group-focus-within/agent-header:opacity-100 disabled:cursor-not-allowed disabled:opacity-50"
             :title="$t('workspace.history.groupArchive.archiveAll')"
             :aria-label="$t('workspace.history.groupArchive.archiveAll')"
-            :disabled="isGroupArchiving(agentGroupArchiveKey(workspaceNode.workspaceRootPath, agentNode.agentDefinitionId))"
+            :disabled="isGroupArchiving(projectScope ? `agent_runs:${workspaceNode.stableKey}:${agentNode.agentDefinitionId}` : agentGroupArchiveKey(workspaceNode.workspaceRootPath, agentNode.agentDefinitionId))"
             @click.stop="actions.onArchiveAgentGroup(workspaceNode, agentNode)"
           >
             <Icon icon="heroicons:archive-box-20-solid" class="h-3.5 w-3.5" />
@@ -304,17 +304,6 @@
             <span class="ml-1 text-xs text-gray-400">({{ group.runs.length }})</span>
           </button>
           <button
-            v-if="projectScope && actions.onCreateProjectRun"
-            type="button"
-            :data-test="`project-team-group-add-${group.key}`"
-            class="ml-2 inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-            :title="t('projectsTree.newTeamRun')"
-            :aria-label="t('projectsTree.newTeamRun')"
-            @click.stop="actions.onCreateProjectRun(projectScope.projectId, { kind: 'team', definitionId: group.teamDefinitionId })"
-          >
-            <Icon icon="heroicons:plus-20-solid" class="h-4 w-4" aria-hidden="true" />
-          </button>
-          <button
             v-if="actions.onArchiveTeamGroup"
             type="button"
             :data-test="`workspace-team-group-archive-${group.key}`"
@@ -325,6 +314,17 @@
             @click.stop="actions.onArchiveTeamGroup(workspacePresentationId, group)"
           >
             <Icon icon="heroicons:archive-box-20-solid" class="h-3.5 w-3.5" />
+          </button>
+          <button
+            v-if="projectScope && actions.onCreateProjectRun"
+            type="button"
+            :data-test="`project-team-group-add-${group.key}`"
+            class="ml-1 inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            :title="t('projectsTree.newTeamRun')"
+            :aria-label="t('projectsTree.newTeamRun')"
+            @click.stop="actions.onCreateProjectRun(projectScope.projectId, { kind: 'team', definitionId: group.teamDefinitionId })"
+          >
+            <Icon icon="heroicons:plus-20-solid" class="h-4 w-4" aria-hidden="true" />
           </button>
           </div>
 

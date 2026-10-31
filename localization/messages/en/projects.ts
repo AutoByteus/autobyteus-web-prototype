@@ -12,7 +12,7 @@ const projectMessages = {
   'projectsTree.noRuns': 'No runs yet. Use + to run an agent or team for this Project.',
   'projectsTree.loading': 'Loading Projects…',
   'projectsTree.error': 'Couldn’t load Projects.',
-  'projectsTree.staleError': 'Couldn’t refresh Projects. Showing what was loaded.',
+  'projectsTree.staleError': 'Couldn’t refresh Projects.',
   'projectsTree.retry': 'Retry',
   'projectsTree.emptyTitle': 'No Projects yet',
   'projectsTree.emptyHelp': 'Create a Project to run agents and teams for it and follow their work here.',

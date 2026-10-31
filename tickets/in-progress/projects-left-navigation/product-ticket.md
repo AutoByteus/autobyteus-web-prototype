@@ -5,7 +5,7 @@
 - Ticket / request ID: `projects-left-navigation` (Project Task `autobyteus-347`, Project `project_a1377344-25db-482a-97cc-ecfdb0fb495a`). No second ID.
 - Title: A Projects view beside Workspaces in the left panel.
 - Mode: **Product Experience Design** (it changes the left panel's run section, the New chat start surface and the right Projects board's coupling; all exist in the baseline).
-- Status: **In Progress**
+- Status: **Awaiting User Review** (review URL `http://127.0.0.1:4960/workspace`; open the **Projects** tab in the left panel)
 - Date: 2026-10-31
 - Requester: Solution Designer (`solution_designer_7591e3d191704d25a3396b3020a41127`), at the user's request ("i think we could first work on the UI? you can task @Product Team to work on the UI").
 - Requirements: `/Users/normy/autobyteus_org/autobyteus-worktrees/projects-left-navigation/tickets/in-progress/projects-left-navigation/requirements-doc.md` at SR-002 (REQ-001…015, AC-001…014), request `product-design-request.md`, evidence `investigation-notes.md`.
@@ -25,3 +25,4 @@
 ## Status Log
 
 - 2026-10-31 In Progress: worktree created; baseline checked; design built in the reference.
+- 2026-10-31 Awaiting User Review: first review round sent to the user in the Product UI/UX Designer's conversation.
