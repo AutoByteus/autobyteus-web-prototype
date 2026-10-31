@@ -46,3 +46,10 @@ The GitHub card is the element this design removes, so its current look must be 
 - Open decisions kept open in the spec: DEC-001, DEC-002; the chip wording "Installed, needs a token" (for the Solution Designer).
 - Handoff recipient: Solution Designer, run `solution_designer_9a83b5676cdb4488a7e25094626f527c`.
 - Data origin: all data invented (`prototype/integrations/integrationsDesignFixture.ts`); no test, `validate:*` or `capture:*` script was added; `package.json` and the lockfile are unchanged. Final references were captured with a disposable script outside the repository (`/tmp/integ-tools`, not committed).
+
+## Integration Record
+
+- Result commit (spec, 19 references, UI reference, ticket record): `365a8ac0b9b06076d051f734839784c8d2813555`, pushed to `origin/personal` as a fast-forward (`e9d5a22..365a8ac`) and fast-forwarded into the canonical checkout. The UI reference code revision is that commit.
+- Accepted design base: `e9d5a22` (after `WEB-BASELINE-REFRESH-014`, integrated at `345a439`/`e9d5a22`); `origin/personal` had not moved before the push.
+- Default-entry check after integration: the canonical checkout (`personal`) was run on its own port (4941) and opened at `/integrations`: the menu shows Integrations after Nodes; Install, then Connect opened the dialog with the help link, token field and three steps; no page errors.
+- Dev servers (4940, 4941) stopped; the ticket worktree and branch removed. The record commit that carries this note is the final `personal` revision.
