@@ -2,11 +2,11 @@
   <div class="workspace-history-panel flex h-full flex-col bg-white">
     <!-- projects-left-navigation: the run section shows Workspaces (today's tree) or Projects. The choice only changes
          the tree (REQ-001); "+" adds what the shown mode lists. -->
-    <div class="flex items-center justify-between border-t border-gray-200 px-3 py-2">
+    <div class="flex items-center gap-1.5 border-t border-gray-200 px-2 py-2">
       <div
         role="tablist"
         :aria-label="t('projectsTree.switchLabel')"
-        class="inline-flex min-w-0 rounded-md bg-gray-100 p-0.5"
+        class="flex min-w-0 flex-1 rounded-lg bg-gray-100 p-0.5"
         data-test="run-section-switch"
         @keydown.left.prevent="moveMode(-1)"
         @keydown.right.prevent="moveMode(1)"
@@ -23,14 +23,17 @@
           :aria-selected="projectsTree.mode === option"
           aria-controls="run-section-panel"
           :tabindex="projectsTree.mode === option ? 0 : -1"
-          class="truncate rounded px-2.5 py-1 text-xs font-medium leading-4 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-          :class="projectsTree.mode === option ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'"
+          class="flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium leading-5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          :class="projectsTree.mode === option ? 'bg-white text-gray-900 shadow-sm ring-1 ring-gray-200' : 'text-gray-500 hover:text-gray-700'"
           @click="chooseMode(option)"
-        >{{ t(option === 'workspaces' ? 'shell.navigation.workspaces' : 'shell.navigation.projects') }}</button>
+        >
+          <Icon :icon="option === 'workspaces' ? 'heroicons:folder' : 'heroicons:briefcase'" class="h-4 w-4 flex-shrink-0" aria-hidden="true" />
+          <span class="truncate">{{ t(option === 'workspaces' ? 'shell.navigation.workspaces' : 'shell.navigation.projects') }}</span>
+        </button>
       </div>
       <button
         type="button"
-        class="inline-flex h-6 w-6 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
         :data-test="projectsTree.mode === 'projects' ? 'run-section-new-project' : 'run-section-add-workspace'"
         :title="projectsTree.mode === 'projects' ? t('projectsTree.newProject') : $t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.add_workspace')"
         :aria-label="projectsTree.mode === 'projects' ? t('projectsTree.newProject') : $t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.add_workspace')"

@@ -49,7 +49,7 @@
         class="px-3 py-5 text-center"
         data-test="projects-tree-empty"
       >
-        <Icon icon="heroicons:folder" class="mx-auto h-6 w-6 text-gray-300" aria-hidden="true" />
+        <Icon icon="heroicons:briefcase" class="mx-auto h-6 w-6 text-gray-300" aria-hidden="true" />
         <p class="mt-2 text-sm font-medium text-gray-700">{{ t('projectsTree.emptyTitle') }}</p>
         <p class="mt-1 text-xs leading-5 text-gray-500">{{ t('projectsTree.emptyHelp') }}</p>
         <NuxtLink

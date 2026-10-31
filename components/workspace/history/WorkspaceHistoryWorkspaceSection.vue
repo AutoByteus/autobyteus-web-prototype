@@ -33,7 +33,7 @@
         :title="t('projectsTree.selectProject', { name: projectScope.name })"
         @click="actions.onSelectProject?.(projectScope.projectId)"
       >
-        <Icon icon="heroicons:folder" class="mr-1.5 h-4 w-4 flex-shrink-0 text-gray-500" aria-hidden="true" />
+        <Icon icon="heroicons:briefcase" class="mr-1.5 h-4 w-4 flex-shrink-0 text-gray-500" aria-hidden="true" />
         <span class="truncate" :class="projectScope.selected ? 'font-semibold' : ''">{{ projectScope.name }}</span>
       </button>
       <button
