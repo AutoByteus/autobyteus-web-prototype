@@ -37,6 +37,18 @@
         </button>
       </div>
 
+      <!-- The repository is reachable and lists no integration. -->
+      <div
+        v-else-if="!store.repositoryUnreachable && store.items.length === 0"
+        class="rounded-3xl border border-slate-200 bg-white px-6 py-10 text-center shadow-sm"
+        data-testid="integrations-empty"
+      >
+        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-500">
+          <Icon icon="heroicons:puzzle-piece" class="h-6 w-6" aria-hidden="true" />
+        </div>
+        <h2 class="mt-4 text-lg font-semibold text-gray-900">{{ t('integrations.empty.title') }}</h2>
+      </div>
+
       <template v-else>
         <!-- The repository cannot be reached, but installed integrations still show. -->
         <div

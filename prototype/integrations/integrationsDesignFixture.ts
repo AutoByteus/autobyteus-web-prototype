@@ -13,6 +13,7 @@
  * - `integrations_install_clash`: Install fails on a skill name clash.
  * - `integrations_token_revoked`: GitHub connected; Test is refused by GitHub.
  * - `integrations_offline`: the repository cannot be reached and nothing is installed (the first Retry fails again).
+ * - `integrations_empty`: the repository is reachable and lists no integration.
  * - `integrations_offline_installed`: GitHub connected, the repository cannot be reached.
  *
  * Scripted outcomes under the product's own controls (typed into the token field):
@@ -110,6 +111,7 @@ const build = (scenario: string): IntegrationsWorld => {
     world.ids = ['github', 'jira', 'ssh']
     world.state.github = connected('2026-10-24T09:12:00.000Z')
   }
+  if (scenario === 'integrations_empty') world.ids = []
   if (scenario === 'integrations_tool_missing') world.missingTools.add('jq')
   if (scenario === 'integrations_offline') { world.repository = 'unreachable'; world.retryFailuresLeft = 1 }
   if (scenario === 'integrations_offline_installed') { world.repository = 'unreachable'; world.state.github = connected('2026-10-24T09:12:00.000Z') }

@@ -44,7 +44,10 @@ export const useIntegrationsStore = defineStore('integrations', () => {
 
   function project(): void {
     const world = integrationsWorld()
-    const visible = world.ids.filter(id => world.repository === 'reachable' || world.state[id].installed)
+    // Everything the repository lists plus everything installed, alphabetical by name, no grouping by state.
+    const visible = world.ids
+      .filter(id => world.repository === 'reachable' || world.state[id].installed)
+      .sort((a, b) => definitionOf(a).name.localeCompare(definitionOf(b).name))
     items.value = visible.map((id) => {
       const definition = definitionOf(id)
       const state = world.state[id]

@@ -31,3 +31,9 @@ GitHub's description and token help (and the link in it), the account `@alex-dev
 
 ## Data origin
 All data is invented (`prototype/integrations/integrationsDesignFixture.ts`); nothing is read from GitHub or a node. State is in memory: a reload resets it. No test, `validate:*` or `capture:*` script was added.
+
+## Revision 2 (2026-10-31): the Solution Designer's answers (DEC-007…DEC-010)
+- **Empty page (DEC-007):** the repository is reachable but lists no valid integration -> a plain card, "No integrations are available yet." (scenario `integrations_empty`). Unreachable and nothing installed -> the Retry message (unchanged). Unreachable with something installed -> the installed cards plus a note: "Couldn't check github.com/AutoByteus/autobyteus-integrations for new integrations. Showing the integrations you have installed." with Retry (reworded).
+- **Order (DEC-008, DEC-009):** alphabetical by name, no grouping by state; the page lists everything in the repository plus everything installed (an installed integration that left the repository still shows as a normal card). An integration the app has no definition for shows name, description and icon with "Needs a newer AutoByteus", no Install and no connect step. No icon -> the letter tile.
+- **Step 2 is a general "Connect" step (DEC-010):** its title and general texts no longer say "token" ("Connect GitHub", "Connect your GitHub account. AutoByteus keeps what it needs on this node.", "Connected to GitHub"). The word "token" stays inside the GitHub token form (label, placeholder, hint, "Replace token") only. Only that form is designed.
+- **To confirm:** the status chip text **Installed, needs a token** is the wording in the brief (REQ-002), so it still says "token". If other integrations will not use a token, a neutral wording such as "Installed, needs connecting" is better; the Solution Designer decides.
