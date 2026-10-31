@@ -25,6 +25,8 @@ import { withModelRouting } from '~/prototype/model-routing/modelRoutingFixture'
 import { remoteStopResult } from '~/prototype/remote-runs/remoteRunsFixture'
 import { seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
 import { seedTaskParts } from '~/prototype/task-part-of/taskPartOfFixture'
+// integrations-page (design-only): an installed integration adds its source to Skills -> Sources.
+import { withIntegrationSource } from '~/prototype/integrations/integrationsDesignFixture'
 import { designSkillSourceData, designRegistryError, designSkillSourceMutation } from '~/prototype/skill-sources/skillSourcesDesignFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
@@ -118,6 +120,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (designOnlyLayersEnabled()) data = withMemoryDesign(name, request.variables || {}, data, scenario)
   // skill-sources-dialog-redesign (design-only): the registry-error scenario.
   if (designOnlyLayersEnabled() && name === 'GetSkillSources' && data) data = { ...data, skillSourceRegistryError: designRegistryError(scenario) ?? data.skillSourceRegistryError }
+  // integrations-page (design-only): the official integrations repository, once installed, is a managed source.
+  if (designOnlyLayersEnabled()) data = withIntegrationSource(name, data)
   // WEB-BASELINE-REFRESH-011: a scripted read failure (for example the Embedding status) answers as GraphQL errors.
   if (data?.__projectError) return { data: null, errors: [data.__projectError] }
   return { data: data ? structuredClone(data) : {} }

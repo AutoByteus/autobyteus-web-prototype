@@ -23,6 +23,8 @@ import { GetAgentOrgRunInspection } from '~/graphql/queries/runHistoryQueries'
 import { isLaunchedOrgRunId } from '~/prototype/run-settings/launchedOrgFixture'
 import { isLaunchedTeamRunId } from '~/prototype/run-settings/launchedTeamFixture'
 import { GetTeamRunResumeConfig } from '~/graphql/queries/runHistoryQueries'
+// integrations-page (design-only): installed integrations put their skills in the skill catalog.
+import { integrationSkills, integrationSkillNames } from '~/prototype/integrations/integrationsDesignFixture'
 
 const SCENARIO_KEY = 'autobyteus.prototype.scenario'
 const CONTEXT_KEY = 'autobyteus.prototype.context'
@@ -44,7 +46,7 @@ const overlayAfterActions: Record<string, string[]> = { agentDefinition: ['reloa
 // (utils/apolloClient.ts, prototype/memory-search/memoryDesignFixture.ts), so lists, search and the Work Journal respond for real.
 // WEB-BASELINE-REFRESH-013 (origin/personal@d74f75a): Manage Nodes (its list, peers, offers, switch and change dialog) and the remote runs run
 // the source's own code against the simulated network of nodes (prototype/nodes/network-world.mjs).
-const sourceLoadedStores = new Set(['phoneAccess', 'nodeList', 'remoteCollaborationStore', 'remoteCollaborationOffers', 'remoteCollaborationCapability', 'nodeChangeDialog', 'remoteRuns', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft', 'memoryExplorerStore', 'memoryInspectorStore', 'memorySearchStore', 'memoryJournalStore', 'githubIntegration'])
+const sourceLoadedStores = new Set(['phoneAccess', 'nodeList', 'remoteCollaborationStore', 'remoteCollaborationOffers', 'remoteCollaborationCapability', 'nodeChangeDialog', 'remoteRuns', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft', 'memoryExplorerStore', 'memoryInspectorStore', 'memorySearchStore', 'memoryJournalStore', 'integrations'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),
@@ -373,7 +375,13 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
     fileState.nodeIdToNode = { root, 'node-docs': docs, 'node-evidence': evidence, 'node-requirements': requirements }
     return undefined
   }
-  if (action === 'fetchAllSkills') return store.skills || []
+  if (action === 'fetchAllSkills') {
+    if (designOnlyLayersEnabled()) {
+      const own = new Set(integrationSkillNames())
+      store.skills = [...(store.skills || []).filter((skill: { name?: string }) => !own.has(String(skill.name))), ...integrationSkills()]
+    }
+    return store.skills || []
+  }
   if (action === 'fetchSkill') {
     const selected = (store.skills || []).find((skill: { name?: string }) => skill.name === args[0]) || null
     store.currentSkill = selected
