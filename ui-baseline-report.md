@@ -1,5 +1,82 @@
 # UI Baseline Report
 
+## Scoped refresh `WEB-BASELINE-REFRESH-014` (read this first)
+
+**The baseline pin is `d74f75a51ab7dc47d42a13f33e0f943c3a230ad7` for the whole frontend, except two surfaces, which reflect
+`e4bebdc8585e070ab63992e4b427c41a11aabfa9` (`origin/personal` as checked out in the selected frontend's worktree
+`/Users/normy/autobyteus_org/autobyteus-worktrees/integrations-page`, read only).** The whole-frontend pin did not move. Everything below this
+section (the `WEB-BASELINE-REFRESH-013` report) still describes `d74f75a`, except where this section says otherwise.
+
+- Request: Refresh (scoped), selected by the Product UI/UX Designer. Ticket `WEB-BASELINE-REFRESH-014`, branch `design/web-baseline-refresh-014`,
+  worktree `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-014`, accepted design base
+  `752b6b816c01350280f87cbd994146b8ff03832b`. Design repository `/Users/normy/autobyteus_org/autobyteus-web-design`.
+- Status: `Completed` (a candidate: uncommitted changes in the ticket worktree; the Bootstrapper made no commit; integration into the default branch follows the Product UI/UX Designer's acceptance).
+- Scope (only surfaces whose UI files changed in `d74f75a..e4bebdc858` and that a coming design touches):
+  1. **Settings → Server Settings → Basics → GitHub card** (`components/settings/GitHubIntegrationCard.vue`, new, mounted in `ServerSettingsBasicsPanel.vue` after the web-search card).
+  2. **Settings left menu** (`pages/settings.vue`): the icons beside the section names are gone; the Server Settings sub-list indent moved from `ml-10` to `ml-2`.
+- Not refreshed, though the range changed them (the request excluded them): the Server Settings → Advanced table's Save button lost its check icon
+  (`ServerSettingsManager.vue`); the NFS Guide card's texts were shortened (`NfsGuideCard`, `settings.ts` NfsGuideCard keys; the Advanced/deferred/limitations
+  notes were removed); all other changes of the 341 files in the range (Memory, MCP forms, Tools, voice input removal, and others). These surfaces still show `d74f75a`.
+
+### What was done
+
+- Copied unchanged from `e4bebdc858` (byte-identical, checked with `cmp`): `pages/settings.vue`, `components/settings/GitHubIntegrationCard.vue`,
+  `components/settings/ServerSettingsBasicsPanel.vue`, `stores/githubIntegrationStore.ts`, `graphql/queries/githubIntegrationQueries.ts`,
+  `graphql/mutations/githubIntegrationMutations.ts`. The 29 `GitHubIntegrationCard.*` strings of `localization/messages/en/settings.ts` and `zh-CN/settings.ts`
+  were added (identical to the source's).
+- The source's own store runs against the local fixture layer (`githubIntegration` joins `sourceLoadedStores` in `plugins/00.prototype-state.client.ts`;
+  `utils/apolloClient.ts` answers the GitHub query and mutations locally).
+- New fixture module `prototype/source-observation/github-integration-fixtures.mjs` (hand-written, invented values; no GitHub contact, no vault, no real
+  account; in-memory per browser load, reset by a reload and by switching scenario). The account (`synthetic-octocat`), the connection date (20 Aug 2026)
+  and the agent names are illustrative. The observation node (`mock-node.mjs`) answers from the same module, so source and baseline show the same outcome.
+  `mock-node.mjs` also accepts `PROTOTYPE_SCHEMA_PATH` (the schema file of the source being observed, since the repository's `generated/graphql.ts` is the older pin's).
+- `fixtureState`/`applyScenario` reset `state.github`; the plugin's replaced `fetchAllAgentDefinitions` empties the agents in the `empty` scenario (the card's "No agents yet." state).
+- `package.json`, `pnpm-lock.yaml`, `nuxt.config.ts`, `tsconfig.json` unchanged.
+
+### Scripted outcomes (the card's actions; the UI reference has no backend)
+
+- Save with a token containing `reject` → "GitHub rejected the token." (red); containing `offline` → "The token could not be checked with GitHub. Try again.";
+  any other token → connected as `@synthetic-octocat`, the field clears, "GitHub connected as @synthetic-octocat.", the label becomes "Replace token", Test/Remove and "Connected since …" appear. Enter in the field saves too.
+- Test → "The token works: @synthetic-octocat." Remove → "GitHub token removed. The agent choices are kept." and the card goes back to Not connected. Ticking or unticking an agent changes the list (no message).
+- Starting states (browser console, then reload; remove the key to reset): `localStorage.setItem('autobyteus.prototype.scenario', '<scenario>')`:
+  default = not connected, agents listed; `github_connected` (connected, two agents ticked); `github_load_failed` ("Failed to load the GitHub connection."); `github_test_rejected` (connected; Test shows "GitHub rejected the token.");
+  `github_vault_unavailable` (Save and Remove refused: "The secret vault is unavailable, so the token cannot be changed."); `github_agents_fail` (connected; a tick shows "Failed to save the agent choice."); `empty` ("No agents yet.").
+
+### Inventory and comparison (source `e4bebdc858` vs baseline, matched: desktop frame 1440×900, narrow 656 px, English and zh-CN, design-only layers off in the baseline so the agent catalog is the same three invented agents)
+
+| ID | Surface / state | Result |
+| --- | --- | --- |
+| GH-01 | Settings menu, all 12 items and the Server Settings sub-list (no icons, sub-list indent), 1440 and 656 px, en and zh-CN | pass: row text, rectangles, padding, font, colors identical |
+| GH-02 | GitHub card, not connected (title, description, chip, token field, hint, Save disabled, agent list) | pass: component tree, geometry, computed styles identical |
+| GH-03 | Card, connected (chip green, "Replace token", Test, Remove, "Connected since", ticks) | pass: identical |
+| GH-04 | Save: typed (enabled), busy, rejected token, token check failed, accepted by button and by Enter | pass: every settled state identical; the 5 ms busy snapshot differs only because the observation node answers faster than the baseline's deliberate 40 ms delay (the busy markup is the card's own: spinner, disabled field and button, checked in the baseline) |
+| GH-05 | Test (busy "Testing…", passed), Test rejected | pass |
+| GH-06 | Remove, replace-typed, agent tick/untick, agents-save failure | pass |
+| GH-07 | Load failed; vault unavailable on Save; no agents | pass (after one fix: the baseline's `empty` scenario now empties the agents) |
+| GH-08 | zh-CN card text, 656 px card | pass |
+
+Evidence (screenshots, 1440 wide frame, connected state and menu): `evidence/WEB-BASELINE-REFRESH-014/` (`source-e4bebdc-*`, `baseline-*`). Comparison was done in the browser through
+same-origin 1440×900 frames (the browser tool's own window is 717 px wide) with disposable in-page scripts; nothing was added to the repository for it.
+
+### Run
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4830
+```
+
+Review URL `http://127.0.0.1:4830/settings?section=server-settings&mode=quick` (the GitHub card is below the web-search card). Source observation: an exact `git archive` of `e4bebdc858`
+(`autobyteus-web` and the contract packages, scratch under `/tmp/r014/src`) served with `BACKEND_NODE_BASE_URL=http://127.0.0.1:4833 nuxt dev --port 4832`, backed by
+`PROTOTYPE_MOCK_PORT=4833 PROTOTYPE_SCHEMA_PATH=<source>/autobyteus-web/generated/graphql.ts node prototype/source-observation/mock-node.mjs` (synthetic fixtures only; scenario changed with a POST to `/__prototype/scenario`).
+The source checkout was only read. All processes I started were stopped.
+
+### Known gaps
+
+- Surfaces listed under "Not refreshed" show `d74f75a`, not `e4bebdc858`. No other known UI parity difference for the two surfaces.
+- With the design-only example layers on (the default), the agent tick list shows the design examples' larger catalog (scrolling at 224 px); illustrative data only.
+
+---
+
 Whole-frontend refresh of the AutoByteus Web current-experience baseline from `origin/personal@9e7a458` to
 `origin/personal@d74f75a51ab7dc47d42a13f33e0f943c3a230ad7`, for Product ticket `WEB-BASELINE-REFRESH-013`. The previous report
 (`WEB-BASELINE-REFRESH-012`, pin `9e7a458`) is kept in Git history at accepted base `5f5fb4c`.

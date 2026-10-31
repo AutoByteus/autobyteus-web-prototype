@@ -11,6 +11,7 @@
  * subscriptions stay inert.
  */
 import { NODE_SETTINGS_MUTATIONS } from '~/prototype/source-observation/node-settings-fixtures.mjs'
+import { GITHUB_MUTATIONS } from '~/prototype/source-observation/github-integration-fixtures.mjs'
 import { EMBEDDING_MUTATIONS } from '~/prototype/source-observation/embedding-fixtures.mjs'
 import { operationFixture, baseState, DELEGATED_MUTATIONS, PROJECT_MUTATIONS, SKILL_SOURCE_MUTATIONS } from '~/prototype/source-observation/fixtures.mjs'
 import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/launchedTeamFixture'
@@ -54,6 +55,7 @@ const fixtureState = (): Record<string, any> => {
     localFixtureState.delegatedSelections = null
     localFixtureState.embedding = null
     localFixtureState.nodeSettings = null
+    localFixtureState.github = null
     // one-nodes-tab (shipped): the simulated network of nodes starts again with the scenario.
     localFixtureState.world = null
     localFixtureState.serverSettings = null
@@ -127,7 +129,7 @@ const resolveLocally = async (request: OperationRequest = {}) => {
 // Project/Task mutations back the Projects pages (0a32261); the skill-source
 // mutations back the Skill Sources dialog (4dee901); ReloadAgentPackageDefinitions backs the
 // Agents, Teams and Orgs Reload buttons (f7fcf90).
-const LOCAL_MUTATIONS = new Set(['UpdateServerSetting', 'DeleteServerSetting', 'SetRemoteCollaborationEnabled', 'AddPeerNode', 'RenamePeerNode', 'RemovePeerNode', 'ChangePeerAddress', 'AddProjectTaskComment', ...EMBEDDING_MUTATIONS, ...NODE_SETTINGS_MUTATIONS, ...DELEGATED_MUTATIONS, 'ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', 'ImportMcpServerConfigs', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
+const LOCAL_MUTATIONS = new Set([...GITHUB_MUTATIONS, 'UpdateServerSetting', 'DeleteServerSetting', 'SetRemoteCollaborationEnabled', 'AddPeerNode', 'RenamePeerNode', 'RemovePeerNode', 'ChangePeerAddress', 'AddProjectTaskComment', ...EMBEDDING_MUTATIONS, ...NODE_SETTINGS_MUTATIONS, ...DELEGATED_MUTATIONS, 'ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', 'ImportMcpServerConfigs', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
 
 const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const definition = request.mutation?.definitions?.find((entry: any) => entry.kind === 'OperationDefinition')

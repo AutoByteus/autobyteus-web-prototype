@@ -1,5 +1,18 @@
 # UI Reference Runbook
 
+## WEB-BASELINE-REFRESH-014 (scoped refresh: Settings menu and the GitHub card; those two surfaces reflect `e4bebdc858`, the rest `d74f75a`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4830
+```
+
+- Entry: `/settings?section=server-settings&mode=quick` (the GitHub card is below the web-search card); the left menu is on every Settings section.
+- Starting states (browser console, then reload; remove the key to reset): `localStorage.setItem('autobyteus.prototype.scenario', '<name>')` with default (not connected),
+  `github_connected`, `github_load_failed`, `github_test_rejected`, `github_vault_unavailable`, `github_agents_fail`, `empty` (no agents).
+- Scripted outcomes: Save with a token containing `reject` is refused ("GitHub rejected the token."), containing `offline` cannot be checked, any other token connects as the invented `@synthetic-octocat`; Test passes; Remove disconnects and keeps the ticks.
+  Data is invented in `prototype/source-observation/github-integration-fixtures.mjs`; state is in memory and a reload resets it.
+
 ## work-journal-search (Memory page: memory search, Work Journal, memory index; source pin `d74f75a`, design base `205aff6`)
 
 ```bash
