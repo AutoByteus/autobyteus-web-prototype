@@ -17,6 +17,31 @@ corepack pnpm dev --port 4960
 - Not playable here: a Task closing live and its delegated rows leaving (existing mechanism; see the spec).
 - Spec: `tickets/done/projects-left-navigation/ui-ux-spec.md`.
 
+## integrations-page (Integrations page; source pin `d74f75a`, Settings surfaces `e4bebdc858`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4940
+```
+
+- Entry: `/integrations` (menu item Integrations, last, after Nodes). Default: one GitHub card, Not installed. Install on the card, then Connect (dialog): a token containing `bad`, `reject` or `revoked` is rejected, `offline` cannot be checked, anything else connects as `@alex-dev`.
+- Starting states (browser console, reload; remove the key to reset): `localStorage.setItem('autobyteus.prototype.scenario', '<name>')` with `integrations_connected`, `integrations_several` (GitHub, Jira "Needs a newer AutoByteus", SSH), `integrations_tool_missing`, `integrations_install_clash`, `integrations_token_revoked`, `integrations_offline` (the first Retry fails again), `integrations_offline_installed`, `integrations_empty`.
+- After Install the skill is on `/skills` and the source in Skills → Sources. Server Settings → Basics has no GitHub card.
+- Data is invented in `prototype/integrations/integrationsDesignFixture.ts`; state is in `stores/integrationsStore.ts`; in memory, a reload resets it. Spec: `tickets/done/integrations-page/ui-ux-spec.md`.
+
+## WEB-BASELINE-REFRESH-014 (scoped refresh: Settings menu and the GitHub card; those two surfaces reflect `e4bebdc858`, the rest `d74f75a`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4830
+```
+
+- Entry: `/settings?section=server-settings&mode=quick` (the GitHub card is below the web-search card); the left menu is on every Settings section.
+- Starting states (browser console, then reload; remove the key to reset): `localStorage.setItem('autobyteus.prototype.scenario', '<name>')` with default (not connected),
+  `github_connected`, `github_load_failed`, `github_test_rejected`, `github_vault_unavailable`, `github_agents_fail`, `empty` (no agents).
+- Scripted outcomes: Save with a token containing `reject` is refused ("GitHub rejected the token."), containing `offline` cannot be checked, any other token connects as the invented `@synthetic-octocat`; Test passes; Remove disconnects and keeps the ticks.
+  Data is invented in `prototype/source-observation/github-integration-fixtures.mjs`; state is in memory and a reload resets it.
+
 ## work-journal-search (Memory page: memory search, Work Journal, memory index; source pin `d74f75a`, design base `205aff6`)
 
 ```bash

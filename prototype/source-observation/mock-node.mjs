@@ -15,7 +15,7 @@ const port = Number(process.env.PROTOTYPE_MOCK_PORT || 4310)
 const host = process.env.PROTOTYPE_MOCK_HOST || '127.0.0.1'
 const state = baseState()
 const requestLog = []
-const completeWithSchema = createSchemaFiller(new URL('../../generated/graphql.ts', import.meta.url).pathname)
+const completeWithSchema = createSchemaFiller(process.env.PROTOTYPE_SCHEMA_PATH || new URL('../../generated/graphql.ts', import.meta.url).pathname)
 
 function applyScenario(name) {
   if (!scenarioCatalog[name]) throw new Error(`Unknown scenario: ${name}`)
@@ -29,6 +29,7 @@ function applyScenario(name) {
   state.delegatedSelections = null
   state.embedding = null
   state.nodeSettings = null
+  state.github = null
   state.world = null
   state.serverSettings = null
   state.network = null

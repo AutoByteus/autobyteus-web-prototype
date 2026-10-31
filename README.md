@@ -66,6 +66,8 @@ The promoted default product entries are:
 - Memory (memory search, the memory index pipeline and the Work Journal view; `work-journal-search`, autobyteus-185): <http://127.0.0.1:3210/memory>
   (tabs Browse · Search · Index; starting states in the runbook). Spec: `tickets/done/work-journal-search/ui-ux-spec.md`.
 
+- Integrations (`integrations-page`, autobyteus-337): <http://127.0.0.1:3210/integrations> (starting states in the runbook). Spec: `tickets/done/integrations-page/ui-ux-spec.md`.
+
 Normal navigation and launch/configuration journeys do not depend on
 `prototypeReview` or another preview-only route switch. Historical review URLs
 remain evidence only and may still expose deterministic comparison controls.

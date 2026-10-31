@@ -1,6 +1,7 @@
 import { createTokenUsageSummary } from '../shared/token-usage-fixture.js'
 import { createNetworkWorld, NODE_IDS } from '../nodes/network-world.mjs'
 import { NODE_SETTINGS_MUTATIONS, agentPackageUpdate, markNotificationHandled, nodeSettingsOperation } from './node-settings-fixtures.mjs'
+import { githubOperation } from './github-integration-fixtures.mjs'
 import { EMBEDDING_MUTATIONS, embeddingExtraProjects, advanceEmbedding, embeddingMutation, embeddingState, embeddingStatusOf, meaningSearchOf, searchTasks } from './embedding-fixtures.mjs'
 import {
   createTokenUsageAnalyticsResult,
@@ -58,6 +59,11 @@ export const scenarioCatalog = Object.freeze({
   update_error: 'Desktop window where a pressed Check for updates failed.',
   // Settings → Model Routing (autobyteus-303) and the Agent Runtimes page of a remote node whose desktop browser can sign in.
   settings_save_fails: 'Populated data where saving a server setting fails (the switches of Server Settings → Basics show their error).',
+  github_connected: 'Populated data where GitHub is connected (as an invented account) and two agents are ticked (Server Settings → Basics → GitHub).',
+  github_load_failed: 'Populated data where the first read of the GitHub connection fails.',
+  github_test_rejected: 'Populated data where GitHub is connected and Test is refused (the token no longer works).',
+  github_vault_unavailable: 'Populated data where Save and Remove of the GitHub token are refused (the secret vault is unavailable).',
+  github_agents_fail: 'Populated data where GitHub is connected and ticking an agent fails.',
   routing_empty: 'Populated data where no agent runtime is available on this node.',
   routing_load_failed: 'Populated data where the first read of the available agent runtimes fails, so Model Routing offers Retry.',
   routing_check_fails: 'Populated data where the first read of the available agent runtimes works and Check again then fails.',
@@ -1107,6 +1113,9 @@ export function operationFixture(operationName, variables = {}, state) {
   // WEB-BASELINE-REFRESH-012: Notification Center, Agent Runtimes and Remote Collaboration (node-settings-fixtures.mjs).
   const nodeSettings = nodeSettingsOperation(operationName, variables, state)
   if (nodeSettings !== undefined) return nodeSettings
+  // WEB-BASELINE-REFRESH-014: Server Settings → Basics → GitHub (github-integration-fixtures.mjs).
+  const github = githubOperation(operationName, variables, state)
+  if (github !== undefined) return github
   if (operationName === 'UpdateServerSetting' && state.scenario === 'settings_save_fails') return { __projectError: { message: 'Synthetic server setting save failure.', extensions: { code: 'SETTING_SAVE_FAILED' } } }
   if (EMBEDDING_MUTATIONS.has(operationName)) return embeddingMutation(embeddingOf(state), operationName, variables, embeddingProjects(state))
   if (operationName === 'EmbeddingSettingsStatus') {
