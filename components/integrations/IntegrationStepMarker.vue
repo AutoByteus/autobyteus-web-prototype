@@ -1,6 +1,6 @@
 <template>
   <span
-    class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-semibold"
+    class="relative z-10 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-semibold"
     :class="{
       'bg-green-50 text-green-700 ring-1 ring-green-200': state === 'done',
       'bg-blue-600 text-white': state === 'active',

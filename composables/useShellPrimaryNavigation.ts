@@ -38,9 +38,9 @@ const allShellPrimaryNavItems: readonly ShellPrimaryNavItem[] = [
   { key: 'projects', labelKey: 'shell.navigation.projects', icon: 'heroicons:folder' },
   { key: 'applications', labelKey: 'shell.navigation.applications', icon: 'heroicons:squares-2x2' },
   { key: 'skills', labelKey: 'shell.navigation.skills', icon: 'heroicons:sparkles' },
-  { key: 'integrations', labelKey: 'shell.navigation.integrations', icon: 'heroicons:puzzle-piece' },
   { key: 'memory', labelKey: 'shell.navigation.memory', icon: 'ph:brain' },
   { key: 'nodes', labelKey: 'shell.navigation.nodes', icon: SHELL_NODES_NETWORK_ICON },
+  { key: 'integrations', labelKey: 'shell.navigation.integrations', icon: 'heroicons:puzzle-piece' },
 ];
 
 export function resolveShellPrimaryRoute(key: ShellPrimaryNavKey): RouteLocationRaw {

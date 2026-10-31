@@ -1,8 +1,6 @@
 import type { TranslationCatalog } from '../../runtime/types';
 
 const integrationsMessages = {
-  'integrations.page.title': 'Integrations',
-  'integrations.page.description': 'Connect AutoByteus to outside services. Each integration installs a skill; an agent gets access when you add that skill to it.',
   'integrations.page.loading': 'Loading integrations…',
   'integrations.page.listLabel': 'Integrations',
   'integrations.offline.title': 'Can\'t reach the integrations repository',
@@ -19,7 +17,7 @@ const integrationsMessages = {
   'integrations.card.iconAlt': '{{name}} icon',
   'integrations.install.title': 'Install',
   'integrations.install.titleDone': 'Installed',
-  'integrations.install.text': 'Adds the {{skill}} skill to AutoByteus.',
+  'integrations.install.text': 'Adds the {{skill}} skill.',
   'integrations.install.textDone': 'The {{skill}} skill is in your skills.',
   'integrations.install.button': 'Install',
   'integrations.install.installing': 'Installing…',
@@ -52,7 +50,7 @@ const integrationsMessages = {
   'integrations.connect.testFailed': 'Failed to test the {{name}} token.',
   'integrations.connect.removeFailed': 'Failed to remove the {{name}} token.',
   'integrations.access.title': 'Give agents access',
-  'integrations.access.text': 'An agent gets access when the {{skill}} skill is added to it. Open an agent and add {{skill}} under Skills.',
+  'integrations.access.text': 'Add the {{skill}} skill to an agent\'s Skills.',
   'integrations.access.allInstalledNote': 'Agents set to use all installed skills do not get access automatically.',
   'integrations.access.openAgents': 'Go to Agents',
   'integrations.tools.title': 'Tools on this node',

@@ -1,36 +1,38 @@
 <template>
   <section
-    class="rounded-3xl border border-slate-200 bg-white px-6 py-5 shadow-sm"
+    class="rounded-3xl border border-slate-200 bg-white px-6 py-6 shadow-sm"
     :data-testid="`integration-card-${item.id}`"
     :aria-labelledby="`integration-${item.id}-title`"
   >
-    <header class="flex flex-wrap items-start gap-4">
+    <header class="flex items-start gap-4">
       <div
-        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50"
+        class="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50"
         :data-testid="`integration-icon-${item.id}`"
       >
-        <img v-if="item.icon" :src="`/integrations-icons-${item.icon}.svg`" alt="" class="h-7 w-7" aria-hidden="true">
-        <span v-else class="text-lg font-semibold text-slate-500" aria-hidden="true">{{ item.name.charAt(0).toUpperCase() }}</span>
+        <img v-if="item.icon" :src="`/integrations-icons-${item.icon}.svg`" alt="" class="h-6 w-6" aria-hidden="true">
+        <span v-else class="text-base font-semibold text-slate-500" aria-hidden="true">{{ item.name.charAt(0).toUpperCase() }}</span>
       </div>
-      <div class="min-w-0 flex-1 basis-60">
-        <h3 :id="`integration-${item.id}-title`" class="text-2xl font-semibold leading-tight text-gray-900">{{ item.name }}</h3>
-        <p class="mt-1 text-sm text-gray-500">{{ item.description }}</p>
+      <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+          <h3 :id="`integration-${item.id}-title`" class="text-xl font-semibold leading-7 text-gray-900">{{ item.name }}</h3>
+          <span
+            class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium"
+            :class="chip.class"
+            :data-testid="`integration-status-${item.id}`"
+          >
+            <Icon v-if="chip.icon" :icon="chip.icon" class="h-4 w-4" aria-hidden="true" />
+            <span v-else class="h-2 w-2 rounded-full" :class="chip.dot" aria-hidden="true" />
+            {{ chip.text }}
+          </span>
+        </div>
+        <p class="mt-0.5 text-sm text-gray-500">{{ item.description }}</p>
       </div>
-      <span
-        class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium"
-        :class="chip.class"
-        :data-testid="`integration-status-${item.id}`"
-      >
-        <Icon v-if="chip.icon" :icon="chip.icon" class="h-4 w-4" aria-hidden="true" />
-        <span v-else class="h-2 w-2 rounded-full" :class="chip.dot" aria-hidden="true" />
-        {{ chip.text }}
-      </span>
     </header>
 
     <!-- Needs a newer AutoByteus (DEC-001): nothing to do on the card but update the app. -->
     <div
       v-if="item.phase === 'needs_newer'"
-      class="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-slate-50/60 p-4"
+      class="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-slate-50 px-4 py-3"
       :data-testid="`integration-newer-${item.id}`"
     >
       <p class="min-w-0 flex-1 basis-72 text-sm text-gray-600">{{ t('integrations.newer.text') }}</p>
@@ -43,20 +45,18 @@
     </div>
 
     <template v-else>
-      <ol class="mt-5">
+      <ol class="mt-6">
         <!-- 1. Install -->
-        <li class="flex gap-4" :data-testid="`integration-step-install-${item.id}`">
-          <div class="flex flex-col items-center">
-            <StepMarker :number="1" :state="installed ? 'done' : 'active'" />
-            <span class="mt-1 w-px flex-1 bg-slate-200" aria-hidden="true" />
-          </div>
-          <div class="min-w-0 flex-1 pb-5">
+        <li class="relative flex gap-4 pb-6" :data-testid="`integration-step-install-${item.id}`">
+          <span class="absolute bottom-1 left-3.5 top-9 w-px bg-slate-200" aria-hidden="true" />
+          <StepMarker :number="1" :state="installed ? 'done' : 'active'" />
+          <div class="min-w-0 flex-1">
             <h4 class="text-sm font-semibold leading-7 text-gray-900">{{ installed ? t('integrations.install.titleDone') : t('integrations.install.title') }}</h4>
             <p class="text-sm text-gray-600">
               <template v-for="(part, index) in withSkillName(installed
                 ? t('integrations.install.textDone', { skill: item.skillName })
                 : t('integrations.install.text', { skill: item.skillName }))" :key="index">
-                <code v-if="part.skill" class="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[0.8125rem] text-slate-800">{{ part.text }}</code>
+                <code v-if="part.skill" class="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs text-slate-800">{{ part.text }}</code>
                 <template v-else>{{ part.text }}</template>
               </template>
             </p>
@@ -73,8 +73,7 @@
             </button>
             <p
               v-if="message && message.step === 'install'"
-              class="mt-3 text-sm"
-              :class="message.kind === 'error' ? 'text-red-600' : 'text-green-700'"
+              class="mt-3 text-sm text-red-600"
               role="status"
               :data-testid="`integration-message-${item.id}`"
             >
@@ -84,19 +83,17 @@
         </li>
 
         <!-- 2. Connect -->
-        <li class="flex gap-4" :data-testid="`integration-step-connect-${item.id}`">
-          <div class="flex flex-col items-center">
-            <StepMarker :number="2" :state="connected ? 'done' : installed ? 'active' : 'upcoming'" />
-            <span class="mt-1 w-px flex-1 bg-slate-200" aria-hidden="true" />
-          </div>
-          <div class="min-w-0 flex-1 pb-5">
-            <h4 class="text-sm font-semibold leading-7" :class="installed ? 'text-gray-900' : 'text-gray-500'">
+        <li class="relative flex gap-4 pb-6" :data-testid="`integration-step-connect-${item.id}`">
+          <span class="absolute bottom-1 left-3.5 top-9 w-px bg-slate-200" aria-hidden="true" />
+          <StepMarker :number="2" :state="connected ? 'done' : installed ? 'active' : 'upcoming'" />
+          <div class="min-w-0 flex-1">
+            <h4 class="text-sm font-semibold leading-7" :class="installed ? 'text-gray-900' : 'text-gray-400'">
               {{ connected
                 ? t('integrations.connect.titleConnected', { name: item.name })
                 : t('integrations.connect.title', { name: item.name }) }}
             </h4>
 
-            <p v-if="!installed" class="text-sm text-gray-500">{{ t('integrations.connect.textUpcoming', { name: item.name }) }}</p>
+            <p v-if="!installed" class="text-sm text-gray-400">{{ t('integrations.connect.textUpcoming', { name: item.name }) }}</p>
 
             <template v-else>
               <p v-if="connected" class="text-sm text-gray-600">
@@ -110,24 +107,24 @@
                     :href="part.href"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-blue-600 underline-offset-2 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                    class="break-all text-blue-600 underline-offset-2 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                   >{{ part.text }}</a>
                   <template v-else>{{ part.text }}</template>
                 </template>
               </p>
 
-              <div v-if="showTokenField" class="mt-3 space-y-2">
+              <div v-if="showTokenField" class="mt-3">
                 <label class="block text-sm font-medium text-gray-900" :for="`integration-token-${item.id}`">
                   {{ connected ? t('integrations.connect.replaceTokenLabel', { name: item.name }) : t('integrations.connect.tokenLabel', { name: item.name }) }}
                 </label>
-                <div class="flex gap-2">
+                <div class="mt-1.5 flex gap-2">
                   <input
                     :id="`integration-token-${item.id}`"
                     v-model="tokenDraft"
                     type="password"
                     autocomplete="off"
                     spellcheck="false"
-                    class="h-11 min-w-0 flex-1 rounded-lg border border-gray-300 bg-white px-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                    class="h-10 min-w-0 flex-1 rounded-lg border border-gray-300 bg-white px-3 text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                     :placeholder="t('integrations.connect.tokenPlaceholder', { name: item.name })"
                     :disabled="busy !== undefined"
                     :data-testid="`integration-token-input-${item.id}`"
@@ -135,7 +132,7 @@
                   >
                   <button
                     type="button"
-                    class="inline-flex h-11 shrink-0 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none"
+                    class="inline-flex h-10 shrink-0 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none"
                     :disabled="!tokenDraft.trim() || busy !== undefined"
                     :data-testid="`integration-connect-${item.id}`"
                     @click="runConnect"
@@ -146,14 +143,14 @@
                   <button
                     v-if="connected"
                     type="button"
-                    class="inline-flex h-11 shrink-0 items-center rounded-lg border border-slate-300 bg-white px-4 text-sm font-medium text-gray-700 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
+                    class="inline-flex h-10 shrink-0 items-center rounded-lg border border-slate-300 bg-white px-4 text-sm font-medium text-gray-700 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
                     :disabled="busy !== undefined"
                     @click="cancelReplace"
                   >
                     {{ t('integrations.connect.cancel') }}
                   </button>
                 </div>
-                <p class="text-xs text-gray-500">{{ t('integrations.connect.hint', { name: item.name }) }}</p>
+                <p class="mt-1.5 text-xs text-gray-500">{{ t('integrations.connect.hint', { name: item.name }) }}</p>
               </div>
 
               <div v-if="connected && !showTokenField" class="mt-3 flex flex-wrap items-center gap-2">
@@ -199,19 +196,17 @@
         </li>
 
         <!-- 3. Give agents access -->
-        <li class="flex gap-4" :data-testid="`integration-step-access-${item.id}`">
-          <div class="flex flex-col items-center">
-            <StepMarker :number="3" :state="connected ? 'active' : 'upcoming'" />
-          </div>
+        <li class="relative flex gap-4" :data-testid="`integration-step-access-${item.id}`">
+          <StepMarker :number="3" :state="connected ? 'active' : 'upcoming'" />
           <div class="min-w-0 flex-1">
-            <h4 class="text-sm font-semibold leading-7" :class="connected ? 'text-gray-900' : 'text-gray-500'">{{ t('integrations.access.title') }}</h4>
-            <p class="text-sm" :class="connected ? 'text-gray-600' : 'text-gray-500'">
+            <h4 class="text-sm font-semibold leading-7" :class="connected ? 'text-gray-900' : 'text-gray-400'">{{ t('integrations.access.title') }}</h4>
+            <p class="text-sm" :class="connected ? 'text-gray-600' : 'text-gray-400'">
               <template v-for="(part, index) in withSkillName(t('integrations.access.text', { skill: item.skillName }))" :key="index">
-                <code v-if="part.skill" class="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[0.8125rem] text-slate-800">{{ part.text }}</code>
+                <code v-if="part.skill" class="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs" :class="connected ? 'text-slate-800' : 'text-slate-500'">{{ part.text }}</code>
                 <template v-else>{{ part.text }}</template>
               </template>
             </p>
-            <p class="mt-1 text-xs text-gray-500" :data-testid="`integration-all-installed-note-${item.id}`">{{ t('integrations.access.allInstalledNote') }}</p>
+            <p class="mt-1 text-xs text-gray-400" :data-testid="`integration-all-installed-note-${item.id}`">{{ t('integrations.access.allInstalledNote') }}</p>
             <NuxtLink
               v-if="connected"
               :to="{ path: '/agents', query: { view: 'list' } }"
@@ -225,14 +220,14 @@
         </li>
       </ol>
 
-      <div class="mt-5 border-t border-slate-100 pt-4" :data-testid="`integration-tools-${item.id}`">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <h4 class="text-sm font-semibold text-gray-900">{{ t('integrations.tools.title') }}</h4>
+      <div class="mt-6 border-t border-slate-100 pt-4" :data-testid="`integration-tools-${item.id}`">
+        <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          <h4 class="text-sm font-medium text-gray-700">{{ t('integrations.tools.title') }}</h4>
           <ul class="flex flex-wrap items-center gap-2" role="list">
             <li
               v-for="tool in item.tools"
               :key="tool.name"
-              class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
+              class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs"
               :class="tool.found ? 'bg-slate-100 text-slate-700' : 'bg-amber-50 text-amber-800 ring-1 ring-amber-200'"
               :data-testid="`integration-tool-${item.id}-${tool.name}`"
             >
@@ -242,13 +237,13 @@
                 :class="tool.found ? 'text-green-600' : 'text-amber-600'"
                 aria-hidden="true"
               />
+              <span class="sr-only">{{ tool.found ? t('integrations.tools.found') : '' }}</span>
               <span class="font-mono">{{ tool.name }}</span>
-              <span class="font-normal" :class="tool.found ? 'text-slate-500' : 'text-amber-700'">{{ tool.found ? t('integrations.tools.found') : t('integrations.tools.missing') }}</span>
+              <span v-if="!tool.found" class="text-amber-700">{{ t('integrations.tools.missing') }}</span>
             </li>
           </ul>
         </div>
-        <p v-if="missingTools.length === 0" class="mt-2 text-xs text-gray-500">{{ t('integrations.tools.caption') }}</p>
-        <div v-else class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+        <div v-if="missingTools.length > 0" class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
           <p class="text-xs text-amber-800" :data-testid="`integration-tools-missing-${item.id}`">
             {{ missingTools.length === 1
               ? t('integrations.tools.missingText', { tools: missingTools.join(', ') })

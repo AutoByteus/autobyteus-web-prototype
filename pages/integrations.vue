@@ -1,11 +1,6 @@
 <template>
   <div class="h-full overflow-auto bg-gray-50">
-    <div class="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 lg:px-8" data-testid="integrations-page">
-      <header class="mb-6">
-        <h1 class="text-3xl font-semibold text-slate-900">{{ t('integrations.page.title') }}</h1>
-        <p class="mt-1 text-sm text-slate-600">{{ t('integrations.page.description') }}</p>
-      </header>
-
+    <div class="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 lg:px-8" data-testid="integrations-page">
       <div v-if="!store.loaded" class="flex flex-col items-center gap-3 py-16 text-gray-500" data-testid="integrations-loading">
         <div class="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600" aria-hidden="true" />
         <p class="text-sm">{{ t('integrations.page.loading') }}</p>

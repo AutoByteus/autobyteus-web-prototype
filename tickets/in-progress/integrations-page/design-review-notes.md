@@ -16,7 +16,7 @@ One full-width card per integration, laid out as the path the user described: **
 ## Decisions I made (and the alternatives, in words)
 - **Steps on the card, not a form.** The alternative was a Settings-style card with a token field always visible. The steps teach the model the user asked for (install, connect, then add the skill to an agent) and let the same card serve all four states.
 - **One column.** Cards are tall and carry text, so a grid would make one card look half-empty now and cramped later.
-- **Menu position:** after Skills (an integration installs a skill); icon `heroicons:puzzle-piece`.
+- **Menu position:** last, after Nodes (the user's choice, revision 3); icon `heroicons:puzzle-piece`.
 - **"Replace token"** is a button that reveals the field, so a connected card is calm. Remove has no confirmation (as today).
 - **Tools** show in every state but "Needs a newer AutoByteus"; a missing tool is amber with text, a "Check again" link, and no install action.
 - **Agent access** lives on the card (the sentence, with the skill name highlighted) plus a "Go to Agents" button once connected.
@@ -37,3 +37,12 @@ All data is invented (`prototype/integrations/integrationsDesignFixture.ts`); no
 - **Order (DEC-008, DEC-009):** alphabetical by name, no grouping by state; the page lists everything in the repository plus everything installed (an installed integration that left the repository still shows as a normal card). An integration the app has no definition for shows name, description and icon with "Needs a newer AutoByteus", no Install and no connect step. No icon -> the letter tile.
 - **Step 2 is a general "Connect" step (DEC-010):** its title and general texts no longer say "token" ("Connect GitHub", "Connect your GitHub account. AutoByteus keeps what it needs on this node.", "Connected to GitHub"). The word "token" stays inside the GitHub token form (label, placeholder, hint, "Replace token") only. Only that form is designed.
 - **To confirm:** the status chip text **Installed, needs a token** is the wording in the brief (REQ-002), so it still says "token". If other integrations will not use a token, a neutral wording such as "Installed, needs connecting" is better; the Solution Designer decides.
+
+## Revision 3 (2026-10-31)
+- Integrations moves to the end of the main menu, after Nodes (the user's request). Order: Chat, Agents, Agent Teams, Agent Orgs, Projects, Applications, Skills, Memory, Nodes, Integrations.
+
+## Revision 3 (2026-10-31, the user's feedback: cleaner, no page header, after Nodes)
+- **Menu:** Integrations is last, after Nodes. Design fix outside the page: the left panel's menu section was sized once at mount, so a late item (Nodes, Integrations) was cut off for a user who had not dragged the divider. Until the user drags the divider, the section now follows the menu's own height (`composables/useAppLeftPanelSectionResize.ts`). Engineering needs the same behavior, or the new item can be hidden below the fold.
+- **No page title or subtitle:** the page opens straight on the cards, like Skills and Projects; the menu item already names the page. (The user asked: "do we really need these integrations words?")
+- **Cleaner card:** smaller name (text-xl), name and status chip on one line; one connector line per step, ending at step 3; shorter copy (the skill name is no longer repeated three times; "Add the `github-integration` skill to an agent's Skills."); tools row shows a check and the name only (the caption appears only when a tool is missing).
+- View several cards with scenario `integrations_several`.

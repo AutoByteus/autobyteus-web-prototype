@@ -1,8 +1,6 @@
 import type { TranslationCatalog } from '../../runtime/types';
 
 const integrationsMessages = {
-  'integrations.page.title': '集成',
-  'integrations.page.description': '将 AutoByteus 连接到外部服务。每个集成会安装一个技能；把该技能添加到智能体后，智能体即可使用该集成。',
   'integrations.page.loading': '正在加载集成…',
   'integrations.page.listLabel': '集成',
   'integrations.offline.title': '无法访问集成仓库',
@@ -19,7 +17,7 @@ const integrationsMessages = {
   'integrations.card.iconAlt': '{{name}} 图标',
   'integrations.install.title': '安装',
   'integrations.install.titleDone': '已安装',
-  'integrations.install.text': '将 {{skill}} 技能添加到 AutoByteus。',
+  'integrations.install.text': '添加 {{skill}} 技能。',
   'integrations.install.textDone': '{{skill}} 技能已在你的技能中。',
   'integrations.install.button': '安装',
   'integrations.install.installing': '正在安装…',
@@ -52,7 +50,7 @@ const integrationsMessages = {
   'integrations.connect.testFailed': '测试 {{name}} 令牌失败。',
   'integrations.connect.removeFailed': '移除 {{name}} 令牌失败。',
   'integrations.access.title': '授予智能体访问权限',
-  'integrations.access.text': '把 {{skill}} 技能添加到智能体后，该智能体即可使用此集成。打开智能体，在“技能”中添加 {{skill}}。',
+  'integrations.access.text': '在智能体的“技能”中添加 {{skill}} 技能。',
   'integrations.access.allInstalledNote': '设置为使用全部已安装技能的智能体不会自动获得访问权限。',
   'integrations.access.openAgents': '前往智能体',
   'integrations.tools.title': '此节点上的工具',
