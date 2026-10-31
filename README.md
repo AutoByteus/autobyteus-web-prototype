@@ -61,6 +61,8 @@ The promoted default product entries are:
 - Model Routing (`delegated-runtime-model-routing`, autobyteus-32): <http://127.0.0.1:3210/settings?section=model-routing> (tabs Configuration, Decisions, Overview, Runtimes; the router's run `/chat?id=run-model-router`);
   starting states in the runbook. Spec: `tickets/done/delegated-runtime-model-routing/ui-ux-spec.md`.
 
+- Projects mode in the left panel and the Project choice on New chat (`projects-left-navigation`, autobyteus-347): <http://127.0.0.1:3210/workspace>, left panel → **Projects**; the chip in New chat's footer → **Projects**. Starting states in the runbook. Spec: `tickets/done/projects-left-navigation/ui-ux-spec.md`.
+
 - Memory (memory search, the memory index pipeline and the Work Journal view; `work-journal-search`, autobyteus-185): <http://127.0.0.1:3210/memory>
   (tabs Browse · Search · Index; starting states in the runbook). Spec: `tickets/done/work-journal-search/ui-ux-spec.md`.
 

@@ -64,8 +64,8 @@
         :aria-current="isWorkspacesActive ? 'location' : undefined"
         @click="handleWorkspacesClick($event)"
       >
-        <!-- projects-left-navigation: the strip entry is the run tree of the mode the panel is in. -->
-        <Icon :icon="projectsTree.mode === 'projects' ? 'heroicons:briefcase' : 'ph:tree-view'" class="h-5 w-5" />
+        <!-- projects-left-navigation: the strip entry is the run tree (one icon in both modes, so it is not mistaken for the Projects page entry above); its name says the mode. -->
+        <Icon icon="ph:tree-view" class="h-5 w-5" />
 
         <div class="absolute left-full ml-2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 invisible transition-all group-hover:opacity-100 group-hover:visible z-50">
           {{ runSectionLabel }}

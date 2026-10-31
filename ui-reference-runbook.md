@@ -1,5 +1,22 @@
 # UI Reference Runbook
 
+## projects-left-navigation (Projects mode in the left panel; source pin `d74f75a`, design base `752b6b8`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4960
+```
+
+- Entry: `/workspace`; left panel → **Projects** (the flat tab next to Workspaces). The choice is remembered in local storage (`autobyteus.leftPanel.runSectionMode.embedded-local`).
+- Projects (illustrative): *AutoByteus* (folder prototype-workspace; the Project Task Manager run with delegated copies and a Product Review Team), *Customer Onboarding Experience Redesign* (no runs, no folder), *Prototype Launch* (the same Project Task Manager run with only its own delegated row, a Research Assistant, a Tutorial Video Producer, a Video Team, the Product Launch Org). Example links: `prototype/projects-left-navigation/projectRunLinks.ts`.
+- Start under a Project: a Project's "+" (hover), a group's "+", or Chat's pencil → the footer chip → **Projects** tab. Sending lists the run under the Project (in memory; reload resets).
+- Right board: with the right panel on **Projects**, selecting a Project on the left changes its board.
+- Starting states (browser console, then reload; remove the key to reset): `localStorage['autobyteus.prototype.projectsTree']` = `loading` | `error` | `stale-error` | `none`.
+- Chinese: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`.
+- Final screenshots: `PROTOTYPE_BASE_URL=http://127.0.0.1:4960 node prototype/scripts/capture-projects-left-navigation-final.mjs` (writes `visual-references/`; `ONLY=VIS-001,VIS-002` limits it).
+- Not playable here: a Task closing live and its delegated rows leaving (existing mechanism; see the spec).
+- Spec: `tickets/done/projects-left-navigation/ui-ux-spec.md`.
+
 ## work-journal-search (Memory page: memory search, Work Journal, memory index; source pin `d74f75a`, design base `205aff6`)
 
 ```bash

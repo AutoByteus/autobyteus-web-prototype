@@ -5,10 +5,10 @@
 - Ticket / request ID: `projects-left-navigation` (Project Task `autobyteus-347`, Project `project_a1377344-25db-482a-97cc-ecfdb0fb495a`). No second ID.
 - Title: A Projects view beside Workspaces in the left panel.
 - Mode: **Product Experience Design** (it changes the left panel's run section, the New chat start surface and the right Projects board's coupling; all exist in the baseline).
-- Status: **Awaiting User Review** (review URL `http://127.0.0.1:4960/workspace`; open the **Projects** tab in the left panel)
+- Status: **Completed** (finalization in progress until the integration record below says `Completed`)
 - Date: 2026-10-31
 - Requester: Solution Designer (`solution_designer_7591e3d191704d25a3396b3020a41127`), at the user's request ("i think we could first work on the UI? you can task @Product Team to work on the UI").
-- Requirements: `/Users/normy/autobyteus_org/autobyteus-worktrees/projects-left-navigation/tickets/in-progress/projects-left-navigation/requirements-doc.md` at SR-002 (REQ-001…015, AC-001…014), request `product-design-request.md`, evidence `investigation-notes.md`.
+- Requirements: `/Users/normy/autobyteus_org/autobyteus-worktrees/projects-left-navigation/tickets/in-progress/projects-left-navigation/requirements-doc.md` at SR-004 (R3: REQ-001…015, AC-001…015, DEC-014, SCN-011; the Project choice on the start surface was added during this review and accepted by the Solution Designer, commit `97b4b6cbcf`), request `product-design-request.md`, evidence `investigation-notes.md`.
 - Critical journey: Workspaces | Projects switch → a Project in the tree → "+" → New chat under the Project with its folder → the run listed under the Project → delegated work nested with its Task line → the right board follows the Project → closing a Task removes the delegated work.
 - Decision questions: the five questions of the request (switch and collapsed strip; Project rows, groups and "+"; start surface; right-board coupling; states).
 - Non-goals: production implementation, a Task list in the left panel, Agent Orgs started under a Project, moving runs between Projects, closed Tasks' conversations, mobile.
@@ -26,3 +26,14 @@
 
 - 2026-10-31 In Progress: worktree created; baseline checked; design built in the reference.
 - 2026-10-31 Awaiting User Review: first review round sent to the user in the Product UI/UX Designer's conversation.
+- 2026-10-31 Requirement Impact: the user asked for a Project choice on plain New chat; sent to the Solution Designer, accepted as SR-004.
+- 2026-10-31 Approved: the user, after eight review rounds ("cool. i am satisfied. lets go", "approved"). Final check done; final screenshots captured (`visual-references/`, VIS-001…VIS-025); spec and change log written.
+
+## Result
+
+- UI/UX specification: `ui-ux-spec.md`; change log: `design-change-log.md`; run instructions: `ui-reference-runbook.md` (repository root), section `projects-left-navigation`.
+- Final screenshots: `visual-references/` (VIS-001…VIS-025), captured by `prototype/scripts/capture-projects-left-navigation-final.mjs`.
+- Reviewed state of the UI reference: `885c2186` (and the strip-icon correction `DC-010` found in the final check, in the finalization commit).
+- Open for the Solution Designer: a Project icon and color picker (follow-up, not designed); production decision for remote delegated rows' Project (REQ-008); Task closure leaving the tree is not playable in the reference (existing mechanism).
+- Accepted defaults the user agreed to: opening a run does not change the board's Project; the team group's "+" is in Projects mode only; no live Task-closure demo.
+- Integration / cleanup: see the final record below (written at finalization).
