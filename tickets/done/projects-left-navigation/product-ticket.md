@@ -38,3 +38,10 @@
 - Accepted defaults the user agreed to: opening a run does not change the board's Project; the team group's "+" is in Projects mode only; no live Task-closure demo.
 - Integration / cleanup: see the final record below (written at finalization).
 - 2026-10-31 Base advanced: `origin/personal` moved to `31fc0bc` (integrations-page, WEB-BASELINE-REFRESH-014) during the review; merged into the ticket branch (conflicts only in the icon bundle, regenerated, and the runbook, both sections kept); the left panel, switch, tree, strip, drawer and start surface were looked at again; all 25 screenshots recaptured.
+
+## Integration Record
+
+- Integration: `Completed` (2026-10-31). Ticket result `0675adcaf73642b513dcdbc7d6e98474d260a057` pushed as a fast-forward to `origin/personal` (it carried the merge of `origin/personal@31fc0bc`); the canonical checkout `/Users/normy/autobyteus_org/autobyteus-web-design` fast-forwarded to it. Default branch `personal`; local and `origin` revisions equal at that point (finalization commit below follows the same sequence).
+- Default-entry-point check: the canonical checkout ran on its own dev server (port 4961); `/workspace` → left panel → **Projects** → a Project → its run and delegated row opened with no preview URL or preview-only state.
+- Runtime: the ticket's dev server (port 4960) and the canonical check server (port 4961) are stopped; no state outside the browser's local storage.
+- Cleanup: worktree `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/projects-left-navigation` and branch `design/projects-left-navigation` removed after this record is pushed. The parked blocked ticket `project-centric-execution` (worktree `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/project-centric-execution`, branch `design/project-centric-execution`, Blocked since 2026-10-13, an earlier version of this request) was left untouched; the user is asked whether to finish, keep or close it.
