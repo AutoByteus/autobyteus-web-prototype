@@ -1,6 +1,6 @@
 <template>
   <div class="h-full overflow-auto bg-gray-50">
-    <div class="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 lg:px-8" data-testid="integrations-page">
+    <div class="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 lg:px-8" data-testid="integrations-page">
       <div v-if="!store.loaded" class="flex flex-col items-center gap-3 py-16 text-gray-500" data-testid="integrations-loading">
         <div class="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600" aria-hidden="true" />
         <p class="text-sm">{{ t('integrations.page.loading') }}</p>
@@ -68,26 +68,31 @@
           </button>
         </div>
 
-        <ul class="space-y-5" role="list" :aria-label="t('integrations.page.listLabel')">
+        <ul class="grid grid-cols-1 gap-4 lg:grid-cols-2" role="list" :aria-label="t('integrations.page.listLabel')">
           <li v-for="item in store.items" :key="item.id">
-            <IntegrationCard :item="item" />
+            <IntegrationTile :item="item" @open="openId = $event" />
           </li>
         </ul>
+
+        <IntegrationDialog v-if="openItem" :item="openItem" @close="openId = null" />
       </template>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { Icon } from '@iconify/vue'
-import IntegrationCard from '~/components/integrations/IntegrationCard.vue'
+import IntegrationDialog from '~/components/integrations/IntegrationDialog.vue'
+import IntegrationTile from '~/components/integrations/IntegrationTile.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { OFFICIAL_REPOSITORY } from '~/prototype/integrations/integrationsDesignFixture'
 import { useIntegrationsStore } from '~/stores/integrationsStore'
 
 const store = useIntegrationsStore()
 const { t } = useLocalization()
+const openId = ref<string | null>(null)
+const openItem = computed(() => store.items.find(item => item.id === openId.value) ?? null)
 
 onMounted(() => { void store.load() })
 </script>
