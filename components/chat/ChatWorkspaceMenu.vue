@@ -8,12 +8,12 @@
       :class="popover.open.value ? 'bg-gray-100' : ''"
       :aria-expanded="popover.open.value ? 'true' : 'false'"
       aria-haspopup="listbox"
-      :aria-label="$t('chat.workspace.triggerAria', { name: selectedName })"
-      :title="selectedPath"
+      :aria-label="selectedProject ? t('projectsTree.chipAria', { name: triggerLabel }) : $t('chat.workspace.triggerAria', { name: selectedName })"
+      :title="selectedProject ? t('projectsTree.chipTitle', { name: selectedProject.name }) : selectedPath"
       @click="toggle"
     >
-      <Icon icon="heroicons:folder" class="h-4 w-4 flex-shrink-0 text-gray-500" aria-hidden="true" />
-      <span class="truncate">{{ selectedName }}</span>
+      <Icon :icon="selectedProject ? 'heroicons:briefcase' : 'heroicons:folder'" class="h-4 w-4 flex-shrink-0 text-gray-500" aria-hidden="true" />
+      <span class="truncate">{{ triggerLabel }}</span>
       <Icon icon="heroicons:chevron-down" class="h-3.5 w-3.5 flex-shrink-0 text-gray-400" aria-hidden="true" />
     </button>
 
@@ -28,7 +28,21 @@
         : ['absolute left-0 w-96 max-w-[calc(100vw-1.5rem)]', popover.placement.value === 'above' ? 'bottom-full mb-1.5' : 'top-full mt-1.5']"
       :style="popover.narrow.value ? undefined : { maxHeight: `${popover.maxHeight.value}px`, ...inBoundary.style.value }"
     >
-      <div class="flex flex-shrink-0 items-center gap-2 border-b border-gray-100 px-3 py-2">
+      <!-- projects-left-navigation (REQ-004): the same flat Workspaces | Projects switch as the left panel; the chip shows one of them. -->
+      <div v-if="hasProjects" role="tablist" :aria-label="t('projectsTree.switchLabel')" class="flex flex-shrink-0 items-center gap-1 px-2 pb-0.5 pt-2" data-test="chat-target-switch">
+        <button
+          v-for="option in (['workspaces', 'projects'] as const)"
+          :key="option"
+          type="button"
+          role="tab"
+          :data-test="`chat-target-tab-${option}`"
+          :aria-selected="view === option"
+          class="cursor-pointer rounded-md px-2 py-1 text-sm leading-5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40"
+          :class="view === option ? 'font-semibold text-gray-900' : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
+          @click="view = option"
+        >{{ t(option === 'workspaces' ? 'shell.navigation.workspaces' : 'shell.navigation.projects') }}</button>
+      </div>
+      <div v-if="view === 'workspaces'" class="flex flex-shrink-0 items-center gap-2 border-b border-gray-100 px-3 py-2">
         <Icon icon="heroicons:magnifying-glass" class="h-3.5 w-3.5 flex-shrink-0 text-gray-400" aria-hidden="true" />
         <input
           ref="searchRef"
@@ -42,7 +56,39 @@
           @keydown.enter="chooseFirstMatch"
         >
       </div>
-      <div ref="listRef" role="listbox" :aria-label="$t('chat.workspace.menuAria')" class="min-h-0 flex-1 overflow-y-auto pb-1 pt-1.5" @keydown="onKeydown">
+      <div v-if="view === 'projects'" ref="projectListRef" role="listbox" :aria-label="t('projectsTree.menuAria')" class="min-h-0 flex-1 overflow-y-auto py-1" @keydown="onProjectKeydown">
+        <button
+          type="button"
+          role="option"
+          data-option
+          data-test="chat-project-option-none"
+          :aria-selected="!selectedProject ? 'true' : 'false'"
+          class="flex w-full items-center gap-2.5 px-3 py-1.5 text-left hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+          @click="chooseProject(null)"
+        >
+          <span class="min-w-0 flex-1 truncate text-sm" :class="!selectedProject ? 'font-medium text-blue-700' : 'text-gray-700'">{{ t('projectsTree.noProject') }}</span>
+          <Icon v-if="!selectedProject" icon="heroicons:check" class="h-4 w-4 flex-shrink-0 text-blue-600" aria-hidden="true" />
+        </button>
+        <button
+          v-for="project in projects"
+          :key="project.projectId"
+          type="button"
+          role="option"
+          data-option
+          :data-test="`chat-project-option-${project.projectId}`"
+          :aria-selected="projectId === project.projectId ? 'true' : 'false'"
+          class="flex w-full items-start gap-2.5 px-3 py-1.5 text-left hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+          @click="chooseProject(project.projectId)"
+        >
+          <Icon icon="heroicons:briefcase" class="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-500" aria-hidden="true" />
+          <span class="min-w-0 flex-1">
+            <span class="block truncate text-sm font-medium" :class="projectId === project.projectId ? 'text-blue-700' : 'text-gray-900'">{{ project.name }}</span>
+            <span class="block truncate text-xs text-gray-500">{{ projectFolderName(project) }}</span>
+          </span>
+          <Icon v-if="projectId === project.projectId" icon="heroicons:check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600" aria-hidden="true" />
+        </button>
+      </div>
+      <div v-else ref="listRef" role="listbox" :aria-label="$t('chat.workspace.menuAria')" class="min-h-0 flex-1 overflow-y-auto pb-1 pt-1.5" @keydown="onKeydown">
         <button
           v-if="tempVisible && tempWorkspace"
           type="button"
@@ -112,7 +158,7 @@
         </p>
       </div>
 
-      <form v-if="adding" class="space-y-2 border-t border-gray-100 px-3 py-2.5" data-test="chat-workspace-folder-form" @submit.prevent="confirmFolder">
+      <form v-if="adding && view === 'workspaces'" class="space-y-2 border-t border-gray-100 px-3 py-2.5" data-test="chat-workspace-folder-form" @submit.prevent="confirmFolder">
         <label for="chat-workspace-path" class="text-xs font-medium text-gray-600">{{ $t('chat.workspace.folderPath') }}</label>
         <div class="flex items-center gap-2">
           <input
@@ -146,7 +192,7 @@
           <button type="submit" :disabled="picking" class="rounded-md border border-blue-200 bg-white px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-50 disabled:opacity-50">{{ $t('chat.workspace.useFolder') }}</button>
         </div>
       </form>
-      <footer v-else class="border-t border-gray-100 p-1">
+      <footer v-else-if="view === 'workspaces'" class="border-t border-gray-100 p-1">
         <button type="button" data-test="chat-workspace-open-folder" class="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none" @click="startFolder">
           <Icon icon="heroicons:plus" class="h-4 w-4 text-gray-500" aria-hidden="true" /> {{ $t('chat.workspace.openAnotherFolder') }}
         </button>
@@ -167,6 +213,8 @@ import type { RunWorkspaceChoice } from '~/types/runSettings/RunWorkspaceChoice'
 import { isAbsoluteFolderPath } from '~/utils/chat/chatDefaults'
 import { useLocalization } from '~/composables/useLocalization'
 import { filterWorkspaceOptions } from '~/components/chat/chatComposerMenus'
+import { firstFolderOf } from '~/stores/projectsTreeStore'
+import type { Project } from '~/types/project'
 
 const props = withDefaults(defineProps<{
   workspace: RunWorkspaceChoice
@@ -174,8 +222,11 @@ const props = withDefaults(defineProps<{
   placement?: 'above' | 'auto'
   /** projects-left-navigation: the first linked folder of the Project this run starts under; it takes the default mark. */
   projectFolder?: string | null
-}>(), { placement: 'above', projectFolder: null })
-const emit = defineEmits<{ (event: 'select', value: RunWorkspaceChoice): void }>()
+  /** projects-left-navigation: the node's Projects and the one this run starts under; the menu offers the choice when there are Projects. */
+  projects?: Project[]
+  projectId?: string | null
+}>(), { placement: 'above', projectFolder: null, projects: () => [], projectId: null })
+const emit = defineEmits<{ (event: 'select', value: RunWorkspaceChoice): void; (event: 'select-project', projectId: string | null): void }>()
 
 const { t } = useLocalization()
 const workspaceStore = useWorkspaceStore()
@@ -217,6 +268,25 @@ const userWorkspaces = computed(() => workspaceStore.allWorkspaces
 
 const isProjectFolder = (workspace: { absolutePath?: string | null }) =>
   Boolean(props.projectFolder) && (workspace.absolutePath ?? '').replace(/[/\\]+$/, '') === props.projectFolder!.replace(/[/\\]+$/, '')
+const hasProjects = computed(() => props.projects.length > 0)
+const selectedProject = computed(() => props.projects.find((project) => project.projectId === props.projectId) ?? null)
+const view = ref<'workspaces' | 'projects'>('workspaces')
+const projectListRef = ref<HTMLElement | null>(null)
+const projectFolderName = (project: Project): string => {
+  const folder = firstFolderOf(project)
+  return folder ? folder.replace(/[/\\]+$/, '').split(/[/\\]/).pop() || folder : t('chat.workspace.temp')
+}
+const chooseProject = (next: string | null) => {
+  emit('select-project', next)
+  popover.close(true)
+}
+const onProjectKeydown = (event: KeyboardEvent) => {
+  if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return
+  const items = Array.from(projectListRef.value?.querySelectorAll<HTMLElement>('[data-option]') ?? [])
+  const index = items.indexOf(document.activeElement as HTMLElement)
+  event.preventDefault()
+  items[event.key === 'ArrowDown' ? Math.min(items.length - 1, index + 1) : Math.max(0, index - 1)]?.focus()
+}
 const folderName = (rootPath: string) => rootPath.replace(/[/\\]+$/, '').split(/[/\\]/).pop() || rootPath
 const pendingFolder = computed(() => (props.workspace.kind === 'folder' ? props.workspace.rootPath : null))
 const matches = (candidates: { name: string; path: string }[]) => filterWorkspaceOptions(candidates, query.value).length > 0
@@ -241,13 +311,25 @@ const selectedPath = computed(() => (props.workspace.kind === 'folder'
   ? props.workspace.rootPath
   : workspaceStore.workspaces[props.workspace.workspaceId]?.absolutePath ?? ''))
 
+/** One thing at a time: the Project's name when the run is under a Project (with the folder only when it differs from the Project's), else the folder. */
+const triggerLabel = computed(() => {
+  const project = selectedProject.value
+  if (!project) return selectedName.value
+  const projectFolder = firstFolderOf(project)
+  const expected = projectFolder ? projectFolder.replace(/[/\\]+$/, '') : null
+  const current = selectedPath.value.replace(/[/\\]+$/, '')
+  const same = expected ? current === expected : props.workspace.kind === 'existing' && (workspaceStore.workspaces[props.workspace.workspaceId]?.isTemp || props.workspace.workspaceId === tempWorkspace.value?.workspaceId)
+  return same ? project.name : `${project.name} · ${selectedName.value}`
+})
+
 const toggle = async () => {
   adding.value = false
-  if (!popover.open.value) query.value = ''
+  if (!popover.open.value) { query.value = ''; view.value = selectedProject.value ? 'projects' : 'workspaces' }
   await popover.toggle()
   if (popover.open.value) {
     await nextTick()
-    searchRef.value?.focus()
+    if (view.value === 'workspaces') searchRef.value?.focus()
+    else (projectListRef.value?.querySelector<HTMLElement>('[aria-selected="true"]') ?? projectListRef.value?.querySelector<HTMLElement>('[data-option]'))?.focus()
   }
 }
 

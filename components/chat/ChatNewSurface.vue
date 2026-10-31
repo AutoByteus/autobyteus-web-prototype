@@ -41,14 +41,15 @@
           autofocus
         >
           <template #footer-left>
-            <!-- projects-left-navigation (REQ-004): the Project this run starts under; shown when the node has Projects. -->
-            <ChatProjectMenu
-              v-if="projectsTree.projects.length > 0"
+            <!-- projects-left-navigation (REQ-004): one chip, the folder or the Project the run starts under; its menu switches between them. -->
+            <ChatWorkspaceMenu
+              :workspace="draft.workspace"
+              :project-folder="startProject ? firstFolderOf(startProject) : null"
               :projects="projectsTree.projects"
               :project-id="draft.projectId"
-              @select="chooseProject"
+              @select="chatDraftStore.setWorkspace"
+              @select-project="chooseProject"
             />
-            <ChatWorkspaceMenu :workspace="draft.workspace" :project-folder="startProject ? firstFolderOf(startProject) : null" @select="chatDraftStore.setWorkspace" />
             <ChatApprovalToggle
               :model-value="effectiveAutoExecuteTools(controls.runtimeKind.value, draft.autoExecuteTools)"
               :locked="isAutoApproveLockedForRuntime(controls.runtimeKind.value)"
@@ -110,7 +111,6 @@ import { Icon } from '@iconify/vue'
 import { useProjectsTreeStore, firstFolderOf } from '~/stores/projectsTreeStore'
 import ChatComposer from '~/components/chat/ChatComposer.vue'
 import ChatWorkspaceMenu from '~/components/chat/ChatWorkspaceMenu.vue'
-import ChatProjectMenu from '~/components/chat/ChatProjectMenu.vue'
 import ChatApprovalToggle from '~/components/chat/ChatApprovalToggle.vue'
 import ChatModelMenu from '~/components/chat/ChatModelMenu.vue'
 import ChatThinkingControl from '~/components/chat/ChatThinkingControl.vue'
