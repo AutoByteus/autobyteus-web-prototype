@@ -1,19 +1,47 @@
 <template>
   <div class="workspace-history-panel flex h-full flex-col bg-white">
+    <!-- projects-left-navigation: the run section shows Workspaces (today's tree) or Projects. The choice only changes
+         the tree (REQ-001); "+" adds what the shown mode lists. -->
     <div class="flex items-center justify-between border-t border-gray-200 px-3 py-2">
-      <h3 class="text-sm font-semibold text-gray-700">Workspaces</h3>
+      <div
+        role="tablist"
+        :aria-label="t('projectsTree.switchLabel')"
+        class="inline-flex min-w-0 rounded-md bg-gray-100 p-0.5"
+        data-test="run-section-switch"
+        @keydown.left.prevent="moveMode(-1)"
+        @keydown.right.prevent="moveMode(1)"
+        @keydown.home.prevent="chooseMode('workspaces', true)"
+        @keydown.end.prevent="chooseMode('projects', true)"
+      >
+        <button
+          v-for="option in runSectionModes"
+          :id="`run-section-tab-${option}`"
+          :key="option"
+          type="button"
+          role="tab"
+          :data-test="`run-section-tab-${option}`"
+          :aria-selected="projectsTree.mode === option"
+          aria-controls="run-section-panel"
+          :tabindex="projectsTree.mode === option ? 0 : -1"
+          class="truncate rounded px-2.5 py-1 text-xs font-medium leading-4 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          :class="projectsTree.mode === option ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'"
+          @click="chooseMode(option)"
+        >{{ t(option === 'workspaces' ? 'shell.navigation.workspaces' : 'shell.navigation.projects') }}</button>
+      </div>
       <button
         type="button"
-        class="inline-flex h-6 w-6 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600"
-        :title="$t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.add_workspace')"
-        @click="onCreateWorkspace"
+        class="inline-flex h-6 w-6 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        :data-test="projectsTree.mode === 'projects' ? 'run-section-new-project' : 'run-section-add-workspace'"
+        :title="projectsTree.mode === 'projects' ? t('projectsTree.newProject') : $t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.add_workspace')"
+        :aria-label="projectsTree.mode === 'projects' ? t('projectsTree.newProject') : $t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.add_workspace')"
+        @click="onHeaderAdd"
       >
         <Icon icon="heroicons:plus-20-solid" class="h-4 w-4" />
       </button>
     </div>
 
     <form
-      v-if="showCreateWorkspaceInline"
+      v-if="showCreateWorkspaceInline && projectsTree.mode === 'workspaces'"
       class="border-t border-gray-100 px-3 py-2"
       data-test="create-workspace-form"
       @submit.prevent="confirmCreateWorkspace"
@@ -57,7 +85,21 @@
       </div>
     </form>
 
-    <div ref="treeScrollRef" class="min-h-0 flex-1 overflow-y-auto px-1 pb-2" data-test="workspace-history-tree-scroll">
+    <div
+      ref="treeScrollRef"
+      id="run-section-panel"
+      role="tabpanel"
+      :aria-labelledby="`run-section-tab-${projectsTree.mode}`"
+      class="min-h-0 flex-1 overflow-y-auto px-1 pb-2"
+      data-test="workspace-history-tree-scroll"
+    >
+      <ProjectsRunsTree
+        v-if="projectsTree.mode === 'projects'"
+        :state="projectSectionState"
+        :avatars="sectionAvatarBindings"
+        :actions="projectSectionActions"
+      />
+      <template v-else>
       <div v-if="runHistoryStore.loading" class="px-3 py-4 text-xs text-gray-500">{{ $t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.loading_task_history') }}</div>
 
       <div v-if="runHistoryStore.historyFamilyErrors?.workspace" class="px-3 py-2 text-xs text-red-600">
@@ -84,6 +126,7 @@
           :actions="sectionActions"
         />
       </div>
+      </template>
     </div>
 
     <ConfirmationModal
@@ -122,11 +165,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router';
 import { Icon } from '@iconify/vue';
 import ConfirmationModal from '~/components/common/ConfirmationModal.vue';
+import ProjectsRunsTree from '~/components/workspace/history/ProjectsRunsTree.vue';
+import { useProjectsTreeStore, firstFolderOf, type RunSectionMode } from '~/stores/projectsTreeStore';
+import { useProjectStore } from '~/stores/projectStore';
 import WorkspaceHistoryWorkspaceSection from '~/components/workspace/history/WorkspaceHistoryWorkspaceSection.vue';
 import type {
   WorkspaceHistoryAvatarBindings,
@@ -495,18 +541,69 @@ const sectionActions: WorkspaceHistorySectionActions = {
   }).catch(() => undefined),
 };
 
+// --- projects-left-navigation: Projects mode --------------------------------------------------
+const projectsTree = useProjectsTreeStore();
+const projectStore = useProjectStore();
+const runSectionModes: readonly RunSectionMode[] = ['workspaces', 'projects'];
+const chooseMode = (next: RunSectionMode, focus = false): void => {
+  projectsTree.setMode(next);
+  if (focus) void nextTick(() => document.getElementById(`run-section-tab-${next}`)?.focus());
+};
+const moveMode = (step: number): void => {
+  const index = runSectionModes.indexOf(projectsTree.mode);
+  chooseMode(runSectionModes[(index + step + runSectionModes.length) % runSectionModes.length]!, true);
+};
+// "+" in Projects mode creates a Project on the Projects page; opening it never starts or stops a run (REQ-001).
+const onHeaderAdd = (): void => {
+  if (projectsTree.mode === 'projects') {
+    void router.push('/projects/new');
+    return;
+  }
+  onCreateWorkspace();
+};
+
+/** A Project's section: its expansion is the Project's own; it never reads a folder's history. */
+const projectSectionState: WorkspaceHistorySectionState = Object.create(sectionState, {
+  toggleWorkspace: { value: (node: RunTreeWorkspaceNode) => treeState.toggleWorkspace(String((node as { stableKey?: string }).stableKey ?? node.workspaceId)) },
+});
+
+/** The Project's runs start on the New chat start surface, with the Project and its folder (REQ-004, REQ-005). */
+const startUnderProject = async (projectId: string, target: { kind: 'agent' | 'team'; definitionId: string } | null): Promise<void> => {
+  projectsTree.selectProject(projectId);
+  treeState.setWorkspaceExpanded(`project:${projectId}`, true);
+  await runStart.newChatUnderProject({
+    projectId,
+    workspaceRootPath: firstFolderOf(projectStore.projects.find((project) => project.projectId === projectId)),
+    target,
+  });
+};
+const projectSectionActions: WorkspaceHistorySectionActions = {
+  ...sectionActions,
+  onSelectProject: (projectId: string) => {
+    projectsTree.selectProject(projectId);
+    treeState.setWorkspaceExpanded(`project:${projectId}`, true);
+  },
+  onCreateProjectRun: startUnderProject,
+  // Opening a run from under a Project makes that Project the board's Project; the open itself is the same as in Workspaces.
+  onArchiveAgentGroup: undefined,
+  onArchiveTeamGroup: undefined,
+  onArchiveAgentOrgGroup: undefined,
+};
+
 let refreshTimerId: ReturnType<typeof setInterval> | null = null;
 
 onMounted(async () => {
   await Promise.all([
     runHistoryStore.loadWorkspaceCatalogForNavigation().catch(() => undefined),
     runHistoryStore.fetchTree().catch(() => undefined),
+    projectsTree.load(),
     agentDefinitionStore.fetchAllAgentDefinitions().catch(() => undefined),
     agentTeamDefinitionStore.fetchAllAgentTeamDefinitions().catch(() => undefined),
     agentOrgDefinitionStore.fetchAll().catch(() => undefined),
   ]);
   refreshTimerId = setInterval(() => {
     void runHistoryStore.refreshTreeQuietly();
+    if (projectsTree.mode === 'projects') void projectsTree.load({ quiet: true });
   }, HISTORY_REFRESH_INTERVAL_MS);
 });
 

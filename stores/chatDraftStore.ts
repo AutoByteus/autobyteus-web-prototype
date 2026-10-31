@@ -39,6 +39,8 @@ export interface ChatDraft {
   context: AgentContext
   target: ChatTarget
   workspace: RunWorkspaceChoice
+  /** projects-left-navigation: the Project this run is started under (REQ-004), or null for a plain New chat. */
+  projectId: string | null
   autoExecuteTools: boolean
   /** Team target only: each customized member's own settings, by member address (REQ-009). */
   teamAgentOverrides: Record<AgentTeamAddress, AgentConfigOverride>
@@ -174,6 +176,7 @@ export const useChatDraftStore = defineStore('chatDraft', () => {
       context: buildDraftContext(agentIdentity(contextAgentFor(target))),
       target,
       workspace,
+      projectId: null,
       autoExecuteTools,
       teamAgentOverrides: {},
       pinnedMemberAddresses: [],
@@ -245,6 +248,20 @@ export const useChatDraftStore = defineStore('chatDraft', () => {
         'llmConfig' in provisional ? provisional.llmConfig ?? null : null)
     }
     void resolveDefinitionDefaultModel(next, modelChoiceOf(next))
+    return next
+  }
+
+  /**
+   * projects-left-navigation (REQ-004, REQ-005): "+" on a Project or on one of its groups. The same New chat as a workspace's
+   * "+", addressed to the chosen agent or team (else the default agent, as a plain New chat), under the Project, on the Project's
+   * first linked folder (the temp workspace when it has none); the folder stays changeable.
+   */
+  const startUnderProject = (input: { projectId: string; workspaceRootPath: string | null; target: ChatTarget | null }): ChatDraft => {
+    const next = input.target?.kind === 'team'
+      ? startForDefinition(input.target)
+      : startNewChat({ agentDefinitionId: input.target?.agentDefinitionId, workspaceRootPath: input.workspaceRootPath ?? undefined })
+    next.projectId = input.projectId
+    next.workspace = runWorkspaceChoiceFromRootPath(input.workspaceRootPath) ?? tempWorkspace()
     return next
   }
 
@@ -522,6 +539,7 @@ export const useChatDraftStore = defineStore('chatDraft', () => {
     /** The open draft, which New chat shows. */
     draft,
     startNewChat,
+    startUnderProject,
     startForDefinition,
     ensureDraft,
     openDraft,

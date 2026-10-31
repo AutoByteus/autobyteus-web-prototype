@@ -111,5 +111,9 @@ export interface WorkspaceHistorySectionActions {
   onDeleteAgentOrg?: (run: AgentOrgRunHistoryItem) => void;
   onArchiveAgentGroup?: (workspaceNode: WorkspaceHistoryWorkspaceNode, agentNode: WorkspaceHistoryWorkspaceNode['agents'][number]) => void;
   onArchiveTeamGroup?: (workspacePresentationId: string, group: WorkspaceHistoryTeamDefinitionDisplayGroup) => void;
+  /** projects-left-navigation: Projects mode. The Project's row selects it (the right board follows). */
+  onSelectProject?: (projectId: string) => void;
+  /** "+" on a Project (`target` null: choose in the start surface) or on one of its groups (that agent or team). */
+  onCreateProjectRun?: (projectId: string, target: { kind: 'agent' | 'team'; definitionId: string } | null) => void;
   onArchiveAgentOrgGroup?: (workspacePresentationId: string, group: AgentOrgHistoryDefinitionGroup) => void;
 }

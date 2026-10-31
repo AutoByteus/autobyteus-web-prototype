@@ -1,6 +1,54 @@
 <template>
   <section class="rounded-md">
+    <!-- projects-left-navigation: a Project's row. The chevron only opens or closes it; the name selects it (the
+         right Projects board follows) and opens it when closed; "+" runs an agent or team under it. -->
     <div
+      v-if="projectScope"
+      class="group/project-row flex items-center rounded-md text-sm transition-colors focus-within:bg-gray-50"
+      :class="projectScope.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-50'"
+      data-test="project-row"
+      :data-project-id="projectScope.projectId"
+    >
+      <button
+        type="button"
+        class="flex flex-shrink-0 items-center self-stretch rounded-l-md py-1.5 pl-2 pr-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500"
+        data-test="project-row-disclosure"
+        :aria-expanded="state.isWorkspaceExpanded(workspacePresentationId)"
+        :aria-label="t(state.isWorkspaceExpanded(workspacePresentationId) ? 'projectsTree.collapseProject' : 'projectsTree.expandProject', { name: projectScope.name })"
+        :title="t(state.isWorkspaceExpanded(workspacePresentationId) ? 'projectsTree.collapseProject' : 'projectsTree.expandProject', { name: projectScope.name })"
+        @click="state.toggleWorkspace(workspaceNode)"
+      >
+        <Icon
+          icon="heroicons:chevron-down-20-solid"
+          class="h-4 w-4 text-gray-400 transition-transform"
+          :class="state.isWorkspaceExpanded(workspacePresentationId) ? 'rotate-0' : '-rotate-90'"
+          aria-hidden="true"
+        />
+      </button>
+      <button
+        type="button"
+        class="flex min-w-0 flex-1 items-center py-1.5 pr-2 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-indigo-500"
+        data-test="project-row-select"
+        :aria-current="projectScope.selected ? 'true' : undefined"
+        :title="t('projectsTree.selectProject', { name: projectScope.name })"
+        @click="actions.onSelectProject?.(projectScope.projectId)"
+      >
+        <Icon icon="heroicons:folder" class="mr-1.5 h-4 w-4 flex-shrink-0 text-gray-500" aria-hidden="true" />
+        <span class="truncate" :class="projectScope.selected ? 'font-semibold' : ''">{{ projectScope.name }}</span>
+      </button>
+      <button
+        type="button"
+        class="mr-2 inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        data-test="project-run-add"
+        :title="t('projectsTree.runUnderProject', { name: projectScope.name })"
+        :aria-label="t('projectsTree.runUnderProject', { name: projectScope.name })"
+        @click="actions.onCreateProjectRun?.(projectScope.projectId, null)"
+      >
+        <Icon icon="heroicons:plus-20-solid" class="h-4 w-4" aria-hidden="true" />
+      </button>
+    </div>
+    <div
+      v-else
       class="group/workspace-row flex items-center rounded-md text-sm text-gray-700 transition-colors hover:bg-gray-50 focus-within:bg-gray-50"
       data-test="workspace-row"
       :data-workspace-id="workspaceNode.workspaceId"
@@ -36,11 +84,11 @@
 
     <div v-if="state.isWorkspaceExpanded(workspacePresentationId)" class="ml-2 mt-0.5 space-y-1">
       <div
-        v-if="state.isWorkspaceHistoryLoading(workspaceNode.workspaceId)"
+        v-if="!projectScope && state.isWorkspaceHistoryLoading(workspaceNode.workspaceId)"
         class="px-3 py-1 text-xs text-gray-400"
       >{{$t('workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.loading_workspace_history')}}</div>
       <div
-        v-if="state.workspaceHistoryError(workspaceNode.workspaceId)"
+        v-if="!projectScope && state.workspaceHistoryError(workspaceNode.workspaceId)"
         class="px-3 py-1 text-xs text-red-500"
       >{{ state.workspaceHistoryError(workspaceNode.workspaceId) }}</div>
       <div
@@ -50,7 +98,7 @@
           && workspaceTeams.length === 0
           && !(workspaceNode.agentOrgDefinitions?.length)"
         class="px-3 py-1 text-xs text-gray-400"
-      >{{ $t('workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.no_task_history_in_this_workspace') }}</div>
+      >{{ projectScope ? t('projectsTree.noRuns') : $t('workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.no_task_history_in_this_workspace') }}</div>
 
       <div
         v-for="agentNode in workspaceNode.agents"
@@ -118,7 +166,7 @@
             type="button"
             class="inline-flex h-5 w-5 items-center justify-center rounded text-gray-400 transition-colors hover:bg-indigo-50 hover:text-indigo-600"
             :title="$t('workspace.components.workspace.history.WorkspaceHistoryWorkspaceSection.new_run_with_this_agent')"
-            @click="actions.onCreateRun(workspaceNode.workspaceRootPath, agentNode.agentDefinitionId)"
+            @click="createGroupRun(agentNode.agentDefinitionId)"
           >
             <Icon icon="heroicons:plus-20-solid" class="h-4 w-4" />
           </button>
@@ -202,6 +250,7 @@
             :label="formatRunLabel(run.summary)"
             :run-selected="state.selectedRunId === run.runId"
             :has-collaboration="run.hasCollaboration === true"
+            :project-scope="projectScope ? { projectId: projectScope.projectId, startedUnder: projectScope.isStartedUnder(run.runId) } : null"
             @select-run="actions.onSelectRun(run)"
             @open-run="selectAgentRun(run)"
           />
@@ -253,6 +302,17 @@
             </span>
             <span class="truncate font-medium">{{ group.teamDefinitionName }}</span>
             <span class="ml-1 text-xs text-gray-400">({{ group.runs.length }})</span>
+          </button>
+          <button
+            v-if="projectScope && actions.onCreateProjectRun"
+            type="button"
+            :data-test="`project-team-group-add-${group.key}`"
+            class="ml-2 inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+            :title="t('projectsTree.newTeamRun')"
+            :aria-label="t('projectsTree.newTeamRun')"
+            @click.stop="actions.onCreateProjectRun(projectScope.projectId, { kind: 'team', definitionId: group.teamDefinitionId })"
+          >
+            <Icon icon="heroicons:plus-20-solid" class="h-4 w-4" aria-hidden="true" />
           </button>
           <button
             v-if="actions.onArchiveTeamGroup"
@@ -407,6 +467,8 @@ const props = defineProps<{
   state: WorkspaceHistorySectionState;
   avatars: WorkspaceHistoryAvatarBindings;
   actions: WorkspaceHistorySectionActions;
+  /** projects-left-navigation: set in Projects mode; the node is then a Project, not a folder. */
+  projectScope?: { projectId: string; name: string; selected: boolean; isStartedUnder: (runId: string) => boolean } | null;
 }>();
 const { t } = useLocalization();
 const reconnect = useAgentReconnect();
@@ -417,6 +479,10 @@ const selectAgentRun = (run: Parameters<typeof props.actions.onSelectRun>[0]) =>
   return props.actions.onSelectRun(run);
 };
 const workspacePresentationId = computed(() => props.workspaceNode.stableKey);
+/** "+" on an agent group: another run of that agent, in the folder (Workspaces) or under the Project (Projects). */
+const createGroupRun = (agentDefinitionId: string) => props.projectScope
+  ? props.actions.onCreateProjectRun?.(props.projectScope.projectId, { kind: 'agent', definitionId: agentDefinitionId })
+  : props.actions.onCreateRun(props.workspaceNode.workspaceRootPath, agentDefinitionId);
 const workspaceDisplayName = computed(() => props.workspaceNode.workspaceRootPath === NO_WORKSPACE_HISTORY_ROOT
   ? t('workspace.agentOrg.history.noWorkspace')
   : props.workspaceNode.workspaceName);

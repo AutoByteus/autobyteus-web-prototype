@@ -14,7 +14,7 @@
     @leave-cancelled="onRowLeaveSettled"
   >
     <WorkspaceTransientExecutionRow
-      v-for="display in rows"
+      v-for="display in visibleRows"
       :key="display.row.rowKey"
       :row="display.row"
       :team-status="display.teamStatus ?? undefined"
@@ -49,6 +49,11 @@ const props = defineProps<{
   runSelected: boolean
   /** The run has a stored collaboration package. */
   hasCollaboration: boolean
+  /**
+   * projects-left-navigation (REQ-008): in Projects mode under Project P, only the run's delegated work for P's Tasks,
+   * plus work that belongs to no Project Task (Temp tasks) when the run was started under P. Null in Workspaces.
+   */
+  projectScope?: { projectId: string; startedUnder: boolean } | null
 }>()
 /**
  * `select-run` opens the run with its last selected child; `open-run` opens the run's own conversation, as
@@ -68,16 +73,38 @@ watch(() => props.hasCollaboration, loadStored)
 const rows = computed(() => collaboration.taskRows(props.runId))
 // Task workers show their current Task's summary; it locates the Task in Projects.
 const { taskOf, locate } = useTaskWorkerTasks(() => rows.value.map((display) => display.row))
+// Projects mode: a top-level worker is listed under Project P when its Task is P's, or has no Project and the run was
+// started under P; its members and sub-work follow it. Connectors are recomputed for the rows that remain.
+const visibleRows = computed(() => {
+  const scope = props.projectScope
+  if (!scope) return rows.value
+  let keepGroup = false
+  const kept = rows.value.filter((display) => {
+    if (display.row.depth === 0) {
+      const task = taskOf(display.row)
+      keepGroup = task ? task.projectId === scope.projectId || (task.projectId === null && scope.startedUnder) : scope.startedUnder
+    }
+    return keepGroup
+  })
+  const lastTop = kept.map((display) => display.row.depth).lastIndexOf(0)
+  return kept.map((display, index) => {
+    if (display.row.depth === 0) return { ...display, hasFollowingSibling: index < lastTop }
+    // A deeper row keeps its ancestors' connector at depth 0 only while another top-level row follows.
+    let nextTopFollows = false
+    for (let ahead = index + 1; ahead < kept.length; ahead += 1) if (kept[ahead].row.depth === 0) { nextTopFollows = true; break }
+    return { ...display, continuingAncestorDepths: display.continuingAncestorDepths.filter((depth) => depth !== 0 || nextTopFollows) }
+  })
+})
 // The run row directly precedes this tree.
 const { leaving, onBeforeLeave, onLeaveSettled } = useLeavingTreeRows(
   (tree) => tree.previousElementSibling instanceof HTMLElement ? tree.previousElementSibling : null)
 // The tree stays mounted while its last rows leave (their leave hooks need the group); once they
 // have settled, the empty list is not rendered.
 const rendered = ref(false)
-watch(() => rows.value.length > 0, (hasRows) => { if (hasRows) rendered.value = true }, { immediate: true })
+watch(() => visibleRows.value.length > 0, (hasRows) => { if (hasRows) rendered.value = true }, { immediate: true })
 const onRowLeaveSettled = (): void => {
   onLeaveSettled()
-  if (leaving.value === 0 && rows.value.length === 0) rendered.value = false
+  if (leaving.value === 0 && visibleRows.value.length === 0) rendered.value = false
 }
 const isExpanded = (row: RunHistoryTransientExecutionRow): boolean =>
   Boolean(row.teamRunIdForNode && collaboration.isTaskTeamExpanded(props.runId, row.teamRunIdForNode))

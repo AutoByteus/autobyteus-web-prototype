@@ -57,7 +57,7 @@
           <span class="min-w-0 flex-1">
             <span class="flex items-center gap-1.5 text-sm font-medium" :class="isSelected(tempWorkspace.workspaceId) ? 'text-blue-700' : 'text-gray-900'">
               <span class="truncate">{{ $t('chat.workspace.temp') }}</span>
-              <span class="rounded bg-gray-100 px-1.5 py-px text-[0.625rem] font-medium uppercase tracking-wide text-gray-500">{{ $t('chat.workspace.defaultBadge') }}</span>
+              <span v-if="!projectFolder" class="rounded bg-gray-100 px-1.5 py-px text-[0.625rem] font-medium uppercase tracking-wide text-gray-500">{{ $t('chat.workspace.defaultBadge') }}</span>
             </span>
             <span class="block truncate text-xs text-gray-500">{{ $t('chat.workspace.tempDescription') }}</span>
           </span>
@@ -79,7 +79,11 @@
           >
             <Icon icon="heroicons:folder" class="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-500" aria-hidden="true" />
             <span class="min-w-0 flex-1">
-              <span class="block truncate text-sm font-medium" :class="isSelected(item.workspaceId) ? 'text-blue-700' : 'text-gray-900'">{{ item.name }}</span>
+              <span class="flex items-center gap-1.5 text-sm font-medium" :class="isSelected(item.workspaceId) ? 'text-blue-700' : 'text-gray-900'">
+                <span class="truncate">{{ item.name }}</span>
+                <!-- projects-left-navigation: the folder a run under a Project starts in (REQ-005). -->
+                <span v-if="isProjectFolder(item)" class="rounded bg-gray-100 px-1.5 py-px text-[0.625rem] font-medium uppercase tracking-wide text-gray-500" data-test="chat-workspace-project-badge">{{ t('projectsTree.folderProject') }}</span>
+              </span>
               <span class="block truncate text-xs text-gray-500">{{ item.absolutePath }}</span>
             </span>
             <Icon v-if="isSelected(item.workspaceId)" icon="heroicons:check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600" aria-hidden="true" />
@@ -168,7 +172,9 @@ const props = withDefaults(defineProps<{
   workspace: RunWorkspaceChoice
   /** Run-settings rows open the menu where it fits. */
   placement?: 'above' | 'auto'
-}>(), { placement: 'above' })
+  /** projects-left-navigation: the first linked folder of the Project this run starts under; it takes the default mark. */
+  projectFolder?: string | null
+}>(), { placement: 'above', projectFolder: null })
 const emit = defineEmits<{ (event: 'select', value: RunWorkspaceChoice): void }>()
 
 const { t } = useLocalization()
@@ -209,6 +215,8 @@ const userWorkspaces = computed(() => workspaceStore.allWorkspaces
   .slice()
   .sort((left, right) => left.name.localeCompare(right.name)))
 
+const isProjectFolder = (workspace: { absolutePath?: string | null }) =>
+  Boolean(props.projectFolder) && (workspace.absolutePath ?? '').replace(/[/\\]+$/, '') === props.projectFolder!.replace(/[/\\]+$/, '')
 const folderName = (rootPath: string) => rootPath.replace(/[/\\]+$/, '').split(/[/\\]/).pop() || rootPath
 const pendingFolder = computed(() => (props.workspace.kind === 'folder' ? props.workspace.rootPath : null))
 const matches = (candidates: { name: string; path: string }[]) => filterWorkspaceOptions(candidates, query.value).length > 0

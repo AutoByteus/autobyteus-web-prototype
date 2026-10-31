@@ -13,6 +13,7 @@
           :avatar-url="identity.avatarUrl"
           :current-key="currentTargetKey"
           :disabled="Boolean(draft?.starting)"
+          :no-orgs="Boolean(draft?.projectId)"
           @choose="chooseTarget"
         />
       </div>
@@ -40,7 +41,19 @@
           autofocus
         >
           <template #footer-left>
-            <ChatWorkspaceMenu :workspace="draft.workspace" @select="chatDraftStore.setWorkspace" />
+            <!-- projects-left-navigation: the Project this run starts under. It is the context of the run, not a choice here. -->
+            <span
+              v-if="startProject"
+              class="inline-flex max-w-[12rem] items-center gap-1.5 rounded-md bg-indigo-50 px-2 py-1 text-[0.8125rem] leading-5 text-indigo-700"
+              data-test="chat-new-project"
+              role="group"
+              :aria-label="t('projectsTree.chipAria', { name: startProject.name })"
+              :title="t('projectsTree.chipTitle', { name: startProject.name })"
+            >
+              <span class="flex-shrink-0 text-indigo-400">{{ t('projectsTree.chipLabel') }}</span>
+              <span class="truncate font-medium">{{ startProject.name }}</span>
+            </span>
+            <ChatWorkspaceMenu :workspace="draft.workspace" :project-folder="startProject ? firstFolderOf(startProject) : null" @select="chatDraftStore.setWorkspace" />
             <ChatApprovalToggle
               :model-value="effectiveAutoExecuteTools(controls.runtimeKind.value, draft.autoExecuteTools)"
               :locked="isAutoApproveLockedForRuntime(controls.runtimeKind.value)"
@@ -98,6 +111,8 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { Icon } from '@iconify/vue'
+import { useProjectsTreeStore, firstFolderOf } from '~/stores/projectsTreeStore'
 import ChatComposer from '~/components/chat/ChatComposer.vue'
 import ChatWorkspaceMenu from '~/components/chat/ChatWorkspaceMenu.vue'
 import ChatApprovalToggle from '~/components/chat/ChatApprovalToggle.vue'
@@ -135,6 +150,8 @@ const runStart = useRunStart()
 const composerRef = ref<InstanceType<typeof ChatComposer> | null>(null)
 
 const draft = computed(() => chatDraftStore.draft)
+// projects-left-navigation: the Project the open draft starts under (REQ-004).
+const startProject = computed(() => (draft.value?.projectId ? useProjectsTreeStore().projectById(draft.value.projectId) : null))
 const draftContext = computed(() => draft.value?.context ?? null)
 // One composer target per draft identity; a reset draft gets a fresh target.
 const target = computed(() => (draft.value

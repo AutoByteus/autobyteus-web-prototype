@@ -140,5 +140,15 @@ export function useRunStart() {
     await router.push('/chat')
   }
 
-  return { runAgent, runTeam, runOrg, copyAgentFromConfig, copyTeamRun, copyOrgRun, switchTarget, newChat, newChatInWorkspace, openChatDraft }
+  /** projects-left-navigation: "+" on a Project or one of its groups: New chat under that Project (the chat's heading chooses any agent or team). */
+  const newChatUnderProject = async (input: Readonly<{ projectId: string; workspaceRootPath: string | null; target: { kind: 'agent' | 'team'; definitionId: string } | null }>) => {
+    chatDraftStore.startUnderProject({
+      projectId: input.projectId,
+      workspaceRootPath: input.workspaceRootPath,
+      target: input.target ? (input.target.kind === 'team' ? { kind: 'team', teamDefinitionId: input.target.definitionId } : { kind: 'agent', agentDefinitionId: input.target.definitionId }) : null,
+    })
+    await router.push('/chat')
+  }
+
+  return { runAgent, runTeam, runOrg, copyAgentFromConfig, copyTeamRun, copyOrgRun, switchTarget, newChat, newChatInWorkspace, newChatUnderProject, openChatDraft }
 }

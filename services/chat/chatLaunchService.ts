@@ -8,6 +8,7 @@ import { useAgentTeamRunStore } from '~/stores/agentTeamRunStore'
 import { useTeamRunConfigStore } from '~/stores/teamRunConfigStore'
 import { useLLMProviderConfigStore } from '~/stores/llmProviderConfig'
 import { useChatDraftStore, type ChatDraft } from '~/stores/chatDraftStore'
+import { useProjectsTreeStore } from '~/stores/projectsTreeStore'
 import { useRuntimeAvailabilityStore } from '~/stores/runtimeAvailabilityStore'
 import { effectiveAutoExecuteTools } from '~/utils/agentRunRuntimeDraftPolicy'
 import { useWorkspaceCenterViewStore } from '~/stores/workspaceCenterViewStore'
@@ -131,6 +132,8 @@ export const launchAgentChat = async (
       llmModelIdentifier: context.config.llmModelIdentifier,
     })
   }
+  // projects-left-navigation (REQ-004): a run started under a Project is recorded there at once.
+  if (draft.projectId) useProjectsTreeStore().recordStartedUnder(draft.projectId, { kind: 'agent', runId })
   await deps.navigate(buildAgentRunChatRoute(runId))
   // The context now belongs to agentContextsStore.
   chatDraftStore.finishSentDraft(draft)
@@ -221,6 +224,8 @@ export const launchTeamChat = async (
       llmModelIdentifier: context.config.llmModelIdentifier,
     })
   }
+  // projects-left-navigation (REQ-004): a team run started under a Project is recorded there at once.
+  if (draft.projectId && teamRunId) useProjectsTreeStore().recordStartedUnder(draft.projectId, { kind: 'team', runId: teamRunId })
   await deps.navigate('/workspace')
   chatDraftStore.finishSentDraft(draft)
   return { teamRunId }
