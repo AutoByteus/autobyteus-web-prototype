@@ -6,7 +6,7 @@
       <div
         role="tablist"
         :aria-label="t('projectsTree.switchLabel')"
-        class="flex min-w-0 flex-1 items-center gap-4 pl-1"
+        class="-ml-1 flex min-w-0 flex-1 items-center gap-1"
         data-test="run-section-switch"
         @keydown.left.prevent="moveMode(-1)"
         @keydown.right.prevent="moveMode(1)"
@@ -23,8 +23,8 @@
           :aria-selected="projectsTree.mode === option"
           aria-controls="run-section-panel"
           :tabindex="projectsTree.mode === option ? 0 : -1"
-          class="truncate rounded px-1 py-1 text-sm leading-5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-          :class="projectsTree.mode === option ? 'font-semibold text-gray-900' : 'font-medium text-gray-400 hover:text-gray-600'"
+          class="cursor-pointer truncate rounded-md px-2 py-1 text-sm leading-5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+          :class="projectsTree.mode === option ? 'font-semibold text-gray-900' : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
           @click="chooseMode(option)"
         >
           <span class="truncate">{{ t(option === 'workspaces' ? 'shell.navigation.workspaces' : 'shell.navigation.projects') }}</span>
