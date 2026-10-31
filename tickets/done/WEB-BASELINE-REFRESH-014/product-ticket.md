@@ -1,7 +1,7 @@
 # Product Ticket — WEB-BASELINE-REFRESH-014
 
 - Ticket / request ID: `WEB-BASELINE-REFRESH-014` (baseline ticket for design ticket `integrations-page`)
-- Status: `Baseline Needed` (2026-10-31)
+- Status: `Completed` (accepted 2026-10-31; integrated into personal at 345a439)
 - Mode: Scoped refresh of two surfaces
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design`; worktree `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-014`; branch `design/web-baseline-refresh-014`
 - Accepted design base: `752b6b816c01350280f87cbd994146b8ff03832b`
