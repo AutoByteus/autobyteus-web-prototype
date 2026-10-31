@@ -37,3 +37,4 @@
 - Open for the Solution Designer: a Project icon and color picker (follow-up, not designed); production decision for remote delegated rows' Project (REQ-008); Task closure leaving the tree is not playable in the reference (existing mechanism).
 - Accepted defaults the user agreed to: opening a run does not change the board's Project; the team group's "+" is in Projects mode only; no live Task-closure demo.
 - Integration / cleanup: see the final record below (written at finalization).
+- 2026-10-31 Base advanced: `origin/personal` moved to `31fc0bc` (integrations-page, WEB-BASELINE-REFRESH-014) during the review; merged into the ticket branch (conflicts only in the icon bundle, regenerated, and the runbook, both sections kept); the left panel, switch, tree, strip, drawer and start surface were looked at again; all 25 screenshots recaptured.
