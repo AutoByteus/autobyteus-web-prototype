@@ -5,7 +5,7 @@
     <div
       v-if="projectScope"
       class="group/project-row flex items-center rounded-md text-sm transition-colors focus-within:bg-gray-50"
-      :class="projectScope.selected ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-50'"
+      :class="projectScope.selected ? 'text-gray-900' : 'text-gray-700 hover:bg-gray-50'"
       data-test="project-row"
       :data-project-id="projectScope.projectId"
     >
@@ -33,12 +33,13 @@
         :title="t('projectsTree.selectProject', { name: projectScope.name })"
         @click="actions.onSelectProject?.(projectScope.projectId)"
       >
-        <Icon icon="heroicons:briefcase" class="mr-1.5 h-4 w-4 flex-shrink-0 text-gray-500" aria-hidden="true" />
+        <Icon icon="heroicons:briefcase" class="mr-1.5 h-4 w-4 flex-shrink-0" :class="projectScope.selected ? 'text-gray-700' : 'text-gray-400'" aria-hidden="true" />
         <span class="truncate" :class="projectScope.selected ? 'font-semibold' : ''">{{ projectScope.name }}</span>
       </button>
       <button
         type="button"
-        class="mr-2 inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+        class="mr-2 inline-flex h-5 w-5 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-[opacity,color,background-color] duration-150 hover:bg-indigo-50 hover:text-indigo-600 focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 md:opacity-0 md:group-hover/project-row:opacity-100 md:group-focus-within/project-row:opacity-100"
+        :class="projectScope.selected ? 'md:opacity-100' : ''"
         data-test="project-run-add"
         :title="t('projectsTree.runUnderProject', { name: projectScope.name })"
         :aria-label="t('projectsTree.runUnderProject', { name: projectScope.name })"

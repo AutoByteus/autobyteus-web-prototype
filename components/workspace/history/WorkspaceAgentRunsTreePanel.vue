@@ -2,7 +2,7 @@
   <div class="workspace-history-panel flex h-full flex-col bg-white">
     <!-- projects-left-navigation: the run section shows Workspaces (today's tree) or Projects. The choice only changes
          the tree (REQ-001); "+" adds what the shown mode lists. -->
-    <div class="flex items-center gap-1.5 border-t border-gray-200 px-2 py-2">
+    <div class="flex items-center gap-1 border-t border-gray-200 px-2 pb-1.5 pt-2.5">
       <div
         role="tablist"
         :aria-label="t('projectsTree.switchLabel')"
@@ -24,7 +24,7 @@
           aria-controls="run-section-panel"
           :tabindex="projectsTree.mode === option ? 0 : -1"
           class="flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium leading-5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-          :class="projectsTree.mode === option ? 'bg-white text-gray-900 shadow-sm ring-1 ring-gray-200' : 'text-gray-500 hover:text-gray-700'"
+          :class="projectsTree.mode === option ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'"
           @click="chooseMode(option)"
         >
           <Icon :icon="option === 'workspaces' ? 'heroicons:folder' : 'heroicons:briefcase'" class="h-4 w-4 flex-shrink-0" aria-hidden="true" />
