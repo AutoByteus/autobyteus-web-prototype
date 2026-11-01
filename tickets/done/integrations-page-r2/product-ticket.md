@@ -36,3 +36,10 @@
 - Open decisions: none. The user did not answer two small questions; the build he approved has the "Integration" label on the Skills page and the page action named "Manage sources".
 - Data origin: all data invented (`prototype/integrations/integrationsDesignFixture.ts`); no test, `validate:*` or `capture:*` script added; `package.json` and the lockfile unchanged. Final references captured with a disposable script outside the repository (`/tmp/integ-r2-tools`, not committed).
 - Handoff recipient: Solution Designer, run `solution_designer_9a83b5676cdb4488a7e25094626f527c`.
+
+## Integration Record
+
+- Result commit (spec, 35 references, UI reference, ticket record, runbook, README): `6ad06427f11506441ae40d0522a740fd2e0ce26e`, pushed to `origin/personal` as a fast-forward (`1988a503..6ad06427`) and fast-forwarded into the canonical checkout. The UI reference code revision is that commit.
+- Accepted design base: `1988a5031b144c7f7ec9def7187d79dcd1562d42`; `origin/personal` had not moved before the push.
+- Default-entry check after integration: the canonical checkout (`personal`) was run on its own port (4951) and opened at `/integrations`: the empty page, Import with a repository link, the notice and card, and Connect opened the dialog with "Imported from AutoByteus/autobyteus-integrations", the help link and the token field; no page errors.
+- Dev servers (4950, 4951) stopped; the ticket worktree and branch removed. The record commit that carries this note is the final `personal` revision.
