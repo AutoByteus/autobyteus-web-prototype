@@ -1,56 +1,33 @@
 <template>
   <div :data-testid="`integration-detail-${item.id}`">
   <ol>
-    <!-- 1. Install -->
-    <li class="relative flex gap-4 pb-6" :data-testid="`integration-step-install-${item.id}`">
+    <!-- 1. Imported -->
+    <li class="relative flex gap-4 pb-6" :data-testid="`integration-step-import-${item.id}`">
       <span class="absolute bottom-1 left-3.5 top-9 w-px bg-slate-200" aria-hidden="true" />
-      <StepMarker :number="1" :state="installed ? 'done' : 'active'" />
+      <StepMarker :number="1" state="done" />
       <div class="min-w-0 flex-1">
-        <h4 class="text-sm font-semibold leading-7 text-gray-900">{{ installed ? t('integrations.install.titleDone') : t('integrations.install.title') }}</h4>
+        <h4 class="text-sm font-semibold leading-7 text-gray-900">{{ t('integrations.install.titleDone') }}</h4>
         <p class="text-sm text-gray-600">
-          <template v-for="(part, index) in withSkillName(installed
-            ? t('integrations.install.textDone', { skill: item.skillName })
-            : t('integrations.install.text', { skill: item.skillName }))" :key="index">
+          <template v-for="(part, index) in withSkillName(t('integrations.install.textDone', { skill: item.skillName }))" :key="index">
             <code v-if="part.skill" class="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-xs text-slate-800">{{ part.text }}</code>
             <template v-else>{{ part.text }}</template>
           </template>
         </p>
-        <button
-          v-if="!installed"
-          type="button"
-          class="mt-3 inline-flex h-9 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none"
-          :disabled="busy !== undefined"
-          :data-testid="`integration-install-${item.id}`"
-          @click="runInstall"
-        >
-          <span v-if="busy === 'install'" class="inline-block h-4 w-4 animate-spin rounded-full border-b-2 border-white" aria-hidden="true" />
-          {{ busy === 'install' ? t('integrations.install.installing') : t('integrations.install.button') }}
-        </button>
-        <p
-          v-if="message && message.step === 'install'"
-          class="mt-3 text-sm text-red-600"
-          role="status"
-          :data-testid="`integration-message-${item.id}`"
-        >
-          {{ message.text }}
-        </p>
+        <p class="mt-0.5 text-xs text-gray-500" :data-testid="`integration-source-${item.id}`">{{ t('integrations.install.from', { repository: item.sourceName }) }}</p>
       </div>
     </li>
 
     <!-- 2. Connect -->
     <li class="relative flex gap-4 pb-6" :data-testid="`integration-step-connect-${item.id}`">
       <span class="absolute bottom-1 left-3.5 top-9 w-px bg-slate-200" aria-hidden="true" />
-      <StepMarker :number="2" :state="connected ? 'done' : installed ? 'active' : 'upcoming'" />
+      <StepMarker :number="2" :state="connected ? 'done' : 'active'" />
       <div class="min-w-0 flex-1">
-        <h4 class="text-sm font-semibold leading-7" :class="installed ? 'text-gray-900' : 'text-gray-400'">
+        <h4 class="text-sm font-semibold leading-7 text-gray-900">
           {{ connected
             ? t('integrations.connect.titleConnected', { name: item.name })
             : t('integrations.connect.title', { name: item.name }) }}
         </h4>
 
-        <p v-if="!installed" class="text-sm text-gray-400">{{ t('integrations.connect.textUpcoming', { name: item.name }) }}</p>
-
-        <template v-else>
           <p v-if="connected" class="text-sm text-gray-600">
             {{ t('integrations.connect.connectedText') }}
             <span v-if="connectedSince" :data-testid="`integration-connected-at-${item.id}`">{{ t('integrations.connect.connectedSince', { date: connectedSince }) }}</span>
@@ -137,9 +114,8 @@
               {{ busy === 'remove' ? t('integrations.connect.removing') : t('integrations.connect.remove') }}
             </button>
           </div>
-        </template>
         <p
-          v-if="message && message.step === 'connect'"
+          v-if="message"
           class="mt-3 text-sm"
           :class="message.kind === 'error' ? 'text-red-600' : 'text-green-700'"
           role="status"
@@ -161,7 +137,6 @@
             <template v-else>{{ part.text }}</template>
           </template>
         </p>
-        <p class="mt-1 text-xs text-gray-400" :data-testid="`integration-all-installed-note-${item.id}`">{{ t('integrations.access.allInstalledNote') }}</p>
         <NuxtLink
           v-if="connected"
           :to="{ path: '/agents', query: { view: 'list' } }"
@@ -221,7 +196,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Icon } from '@iconify/vue'
-import { useIntegrationInstall } from '~/composables/useIntegrationInstall'
 import { useLocalization } from '~/composables/useLocalization'
 import { IntegrationError, useIntegrationsStore, type IntegrationView } from '~/stores/integrationsStore'
 import StepMarker from '~/components/integrations/IntegrationStepMarker.vue'
@@ -234,11 +208,10 @@ const { t } = useLocalization()
 const tokenDraft = ref('')
 const replacing = ref(false)
 
-const installed = computed(() => props.item.phase === 'needs_token' || props.item.phase === 'connected')
 const connected = computed(() => props.item.phase === 'connected')
-const { busy, runInstall } = useIntegrationInstall(() => props.item)
+const busy = computed(() => store.busy[props.item.id])
 const message = computed(() => store.messages[props.item.id])
-const showTokenField = computed(() => installed.value && (!connected.value || replacing.value))
+const showTokenField = computed(() => !connected.value || replacing.value)
 const missingTools = computed(() => props.item.tools.filter(tool => !tool.found).map(tool => tool.name))
 const connectedSince = computed(() => (props.item.connectedAt ? new Date(props.item.connectedAt).toLocaleDateString() : ''))
 
@@ -256,7 +229,7 @@ const withSkillName = (text: string) => text
     : [{ text: piece, skill: false }]))
   .filter(part => part.text !== '')
 
-const say = (step: 'install' | 'connect', kind: 'success' | 'error', text: string) => store.setMessage(props.item.id, { kind, text, step })
+const say = (kind: 'success' | 'error', text: string) => store.setMessage(props.item.id, { kind, text })
 
 const errorText = (cause: unknown, fallbackKey: string): string => {
   const code = cause instanceof IntegrationError ? cause.code : ''
@@ -275,17 +248,17 @@ const runConnect = async () => {
       replacing.value = false
     }
   } catch (cause) {
-    say('connect', 'error', errorText(cause, 'integrations.connect.saveFailed'))
+    say('error', errorText(cause, 'integrations.connect.saveFailed'))
   }
 }
 
 const runTest = async () => {
   try {
     const login = await store.test(props.item.id)
-    if (login !== null) say('connect', 'success', t('integrations.connect.testPassed', { login }))
+    if (login !== null) say('success', t('integrations.connect.testPassed', { login }))
   } catch (cause) {
     const rejected = cause instanceof IntegrationError && cause.code === 'TOKEN_REJECTED'
-    say('connect', 'error', rejected
+    say('error', rejected
       ? t('integrations.connect.errorStoredTokenRejected', { name: props.item.name })
       : errorText(cause, 'integrations.connect.testFailed'))
   }
@@ -295,9 +268,9 @@ const runRemove = async () => {
   try {
     await store.remove(props.item.id)
     replacing.value = false
-    say('connect', 'success', t('integrations.connect.removed', { name: props.item.name }))
+    say('success', t('integrations.connect.removed', { name: props.item.name }))
   } catch (cause) {
-    say('connect', 'error', errorText(cause, 'integrations.connect.removeFailed'))
+    say('error', errorText(cause, 'integrations.connect.removeFailed'))
   }
 }
 

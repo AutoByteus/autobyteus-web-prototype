@@ -1,98 +1,115 @@
 <template>
   <div class="h-full overflow-auto bg-gray-50">
     <div class="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 lg:px-8" data-testid="integrations-page">
+      <div v-if="store.loaded && store.items.length > 0" class="mb-4 flex flex-wrap items-center justify-end gap-3" data-testid="integrations-toolbar">
+        <button
+          type="button"
+          class="inline-flex h-9 items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 text-sm font-medium text-gray-700 hover:bg-slate-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          data-testid="integrations-manage-sources"
+          @click="dialog = 'sources'"
+        >
+          <Icon icon="heroicons:cog-6-tooth" class="h-4 w-4" aria-hidden="true" />
+          {{ t('integrations.toolbar.manage') }}
+        </button>
+        <button
+          type="button"
+          class="inline-flex h-9 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          data-testid="integrations-import"
+          @click="dialog = 'import'"
+        >
+          <Icon icon="heroicons:plus" class="h-4 w-4" aria-hidden="true" />
+          {{ t('integrations.toolbar.import') }}
+        </button>
+      </div>
+      <p
+        v-if="notice && store.loaded"
+        class="mb-4 flex items-start gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900"
+        role="status"
+        data-testid="integrations-notice"
+      >
+        <Icon icon="heroicons:check-circle-20-solid" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" aria-hidden="true" />
+        <span class="min-w-0 flex-1">{{ notice }}</span>
+        <button type="button" class="-my-1 -mr-1 rounded-md p-1 text-emerald-700 hover:bg-emerald-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500" :aria-label="t('integrations.imported.dismiss')" @click="notice = ''">
+          <Icon icon="heroicons:x-mark" class="h-4 w-4" aria-hidden="true" />
+        </button>
+      </p>
+
       <div v-if="!store.loaded" class="flex flex-col items-center gap-3 py-16 text-gray-500" data-testid="integrations-loading">
         <div class="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600" aria-hidden="true" />
         <p class="text-sm">{{ t('integrations.page.loading') }}</p>
       </div>
 
-      <!-- The official repository cannot be reached and nothing is installed (REQ-009). -->
-      <div
-        v-else-if="store.repositoryUnreachable && store.items.length === 0"
-        class="rounded-3xl border border-slate-200 bg-white px-6 py-10 text-center shadow-sm"
-        data-testid="integrations-offline"
-      >
-        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 text-amber-600">
-          <Icon icon="heroicons:exclamation-triangle" class="h-6 w-6" aria-hidden="true" />
-        </div>
-        <h2 class="mt-4 text-lg font-semibold text-gray-900">{{ t('integrations.offline.title') }}</h2>
-        <p class="mx-auto mt-1 max-w-md text-sm text-gray-500">{{ t('integrations.offline.body', { repository: OFFICIAL_REPOSITORY }) }}</p>
-        <p v-if="store.retryFailed" class="mt-3 text-sm text-red-600" role="status" data-testid="integrations-still-failing">
-          {{ t('integrations.offline.stillFailing', { repository: OFFICIAL_REPOSITORY }) }}
-        </p>
-        <button
-          type="button"
-          class="mt-5 inline-flex h-9 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none"
-          :disabled="store.retrying"
-          data-testid="integrations-retry"
-          @click="store.retry()"
-        >
-          <span v-if="store.retrying" class="inline-block h-4 w-4 animate-spin rounded-full border-b-2 border-white" aria-hidden="true" />
-          {{ store.retrying ? t('integrations.offline.retrying') : t('integrations.offline.retry') }}
-        </button>
-      </div>
-
-      <!-- The repository is reachable and lists no integration. -->
-      <div
-        v-else-if="!store.repositoryUnreachable && store.items.length === 0"
-        class="rounded-3xl border border-slate-200 bg-white px-6 py-10 text-center shadow-sm"
-        data-testid="integrations-empty"
-      >
-        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-500">
-          <Icon icon="heroicons:puzzle-piece" class="h-6 w-6" aria-hidden="true" />
-        </div>
-        <h2 class="mt-4 text-lg font-semibold text-gray-900">{{ t('integrations.empty.title') }}</h2>
-      </div>
-
-      <template v-else>
-        <!-- The repository cannot be reached, but installed integrations still show. -->
-        <div
-          v-if="store.repositoryUnreachable"
-          class="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3"
-          role="status"
-          data-testid="integrations-offline-banner"
-        >
-          <p class="flex min-w-0 flex-1 basis-72 items-start gap-2 text-sm text-amber-900">
-            <Icon icon="heroicons:exclamation-triangle" class="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-600" aria-hidden="true" />
-            <span>{{ t('integrations.offline.banner', { repository: OFFICIAL_REPOSITORY }) }}</span>
-          </p>
+      <!-- Nothing imported yet: the page invites Import. -->
+      <template v-else-if="store.items.length === 0">
+        <div class="rounded-3xl border border-slate-200 bg-white px-6 py-12 text-center shadow-sm" data-testid="integrations-empty">
+          <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-500">
+            <Icon icon="heroicons:puzzle-piece" class="h-6 w-6" aria-hidden="true" />
+          </div>
+          <h2 class="mt-4 text-lg font-semibold text-gray-900">{{ t('integrations.empty.title') }}</h2>
+          <p class="mx-auto mt-1 max-w-md text-sm text-gray-500">{{ t('integrations.empty.body') }}</p>
           <button
             type="button"
-            class="inline-flex h-8 items-center gap-2 rounded-lg border border-amber-300 bg-white px-3 text-sm font-medium text-amber-900 hover:bg-amber-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:cursor-not-allowed disabled:opacity-60"
-            :disabled="store.retrying"
-            data-testid="integrations-retry"
-            @click="store.retry()"
+            class="mt-5 inline-flex h-9 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            data-testid="integrations-empty-import"
+            @click="dialog = 'import'"
           >
-            <span v-if="store.retrying" class="inline-block h-3.5 w-3.5 animate-spin rounded-full border-b-2 border-amber-700" aria-hidden="true" />
-            {{ store.retrying ? t('integrations.offline.retrying') : t('integrations.offline.retry') }}
+            <Icon icon="heroicons:plus" class="h-4 w-4" aria-hidden="true" />
+            {{ t('integrations.empty.import') }}
           </button>
         </div>
+      </template>
 
+      <template v-else>
         <ul class="grid grid-cols-1 gap-4 lg:grid-cols-2" role="list" :aria-label="t('integrations.page.listLabel')">
           <li v-for="item in store.items" :key="item.id">
             <IntegrationTile :item="item" @open="openId = $event" />
           </li>
         </ul>
-
-        <IntegrationDialog v-if="openItem" :item="openItem" @close="openId = null" />
       </template>
+
+      <IntegrationDialog v-if="openItem" :item="openItem" @close="openId = null" />
+      <IntegrationImportDialog v-if="dialog === 'import'" @close="dialog = null" @imported="onImported" />
+      <IntegrationSourcesDialog v-if="dialog === 'sources'" @close="dialog = null" @notice="notice = $event" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { Icon } from '@iconify/vue'
 import IntegrationDialog from '~/components/integrations/IntegrationDialog.vue'
+import IntegrationImportDialog from '~/components/integrations/IntegrationImportDialog.vue'
+import IntegrationSourcesDialog from '~/components/integrations/IntegrationSourcesDialog.vue'
 import IntegrationTile from '~/components/integrations/IntegrationTile.vue'
 import { useLocalization } from '~/composables/useLocalization'
-import { OFFICIAL_REPOSITORY } from '~/prototype/integrations/integrationsDesignFixture'
 import { useIntegrationsStore } from '~/stores/integrationsStore'
 
 const store = useIntegrationsStore()
+const route = useRoute()
 const { t } = useLocalization()
 const openId = ref<string | null>(null)
+const dialog = ref<'import' | 'sources' | null>(null)
+const notice = ref('')
 const openItem = computed(() => store.items.find(item => item.id === openId.value) ?? null)
 
-onMounted(() => { void store.load() })
+const onImported = ({ names, repository }: { names: string[]; repository: string }) => {
+  dialog.value = null
+  notice.value = t('integrations.imported.notice', { names: names.join(', '), repository })
+}
+
+// The Skills page links a skill to its card: /integrations#integration-<id> scrolls to the card and focuses it.
+const focusLinkedCard = async () => {
+  const hash = route.hash
+  if (!hash.startsWith('#integration-')) return
+  await nextTick()
+  const card = document.getElementById(hash.slice(1))
+  card?.scrollIntoView({ block: 'center' })
+  card?.focus({ preventScroll: true })
+}
+
+onMounted(async () => {
+  await store.load()
+  await focusLinkedCard()
+})
+watch(() => route.hash, () => { void focusLinkedCard() })
 </script>

@@ -26,7 +26,7 @@ import { remoteStopResult } from '~/prototype/remote-runs/remoteRunsFixture'
 import { seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
 import { seedTaskParts } from '~/prototype/task-part-of/taskPartOfFixture'
 // integrations-page (design-only): an installed integration adds its source to Skills -> Sources.
-import { withIntegrationSource } from '~/prototype/integrations/integrationsDesignFixture'
+import { withIntegrationSource, withIntegrationSourceInMutation } from '~/prototype/integrations/integrationsDesignFixture'
 import { designSkillSourceData, designRegistryError, designSkillSourceMutation } from '~/prototype/skill-sources/skillSourcesDesignFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
@@ -148,7 +148,7 @@ const resolveMutationLocally = async (request: OperationRequest = {}) => {
   // skill-sources-dialog-redesign (design-only): timed, scripted skill-source outcomes.
   if (designOnlyLayersEnabled()) {
     const scripted = await designSkillSourceMutation(name, request.variables || {}, state)
-    if (scripted) return scripted
+    if (scripted) return withIntegrationSourceInMutation(name, request.variables || {}, scripted)
   }
   // remote-runs-in-tree (design-only): a Stop of a copy on another node goes through this node to that node.
   if (designOnlyLayersEnabled() && name === 'StopDelegatedExecution') {
@@ -166,6 +166,8 @@ const resolveMutationLocally = async (request: OperationRequest = {}) => {
   // run-settings-ui-unification: each Team launch is its own run (launchedTeamFixture.ts).
   if (name === 'CreateAgentTeamRun') { state.launchedTeamRun = true; data = recordTeamLaunch(request.variables || {}, data) }
   if (data?.__projectError) return { data: null, errors: [data.__projectError] }
+  // integrations-page (design-only): the Skills page's source list carries the imported integration sources.
+  if (designOnlyLayersEnabled() && SKILL_SOURCE_MUTATIONS.has(name)) return withIntegrationSourceInMutation(name, request.variables || {}, { data: structuredClone(data) })
   return { data: data ? structuredClone(data) : {} }
 }
 

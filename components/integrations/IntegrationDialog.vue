@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import IntegrationDetail from '~/components/integrations/IntegrationDetail.vue'
 import IntegrationIcon from '~/components/integrations/IntegrationIcon.vue'
@@ -49,5 +49,11 @@ defineEmits<{ close: [] }>()
 
 const { t } = useLocalization()
 const panelRef = ref<HTMLElement | null>(null)
-onMounted(() => panelRef.value?.focus())
+let returnFocus: HTMLElement | null = null
+onMounted(() => {
+  returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null
+  panelRef.value?.focus()
+})
+// Focus returns to the Connect or Manage button that opened the dialog.
+onBeforeUnmount(() => { if (returnFocus?.isConnected) returnFocus.focus() })
 </script>

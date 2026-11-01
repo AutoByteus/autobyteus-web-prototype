@@ -1,6 +1,8 @@
 <template>
   <article
-    class="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+    :id="`integration-${item.id}`"
+    tabindex="-1"
+    class="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-50"
     :data-testid="`integration-card-${item.id}`"
     :aria-labelledby="`integration-${item.id}-title`"
   >
@@ -24,24 +26,11 @@
       </template>
     </p>
 
-    <p v-if="installError" class="mt-3 text-sm text-red-600" role="status" :data-testid="`integration-message-${item.id}`">{{ installError }}</p>
-
     <div class="mt-auto flex flex-wrap items-center justify-between gap-x-3 gap-y-2 pt-4">
       <IntegrationStatusChip :item="item" />
 
       <button
-        v-if="item.phase === 'not_installed'"
-        type="button"
-        class="inline-flex h-9 items-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none"
-        :disabled="busy !== undefined"
-        :data-testid="`integration-install-${item.id}`"
-        @click="runInstall"
-      >
-        <span v-if="busy === 'install'" class="inline-block h-4 w-4 animate-spin rounded-full border-b-2 border-white" aria-hidden="true" />
-        {{ busy === 'install' ? t('integrations.install.installing') : t('integrations.install.button') }}
-      </button>
-      <button
-        v-else-if="item.phase === 'needs_token'"
+        v-if="item.phase === 'needs_token'"
         type="button"
         class="inline-flex h-9 items-center rounded-lg bg-blue-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
         :data-testid="`integration-open-${item.id}`"
@@ -75,7 +64,6 @@ import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import IntegrationIcon from '~/components/integrations/IntegrationIcon.vue'
 import IntegrationStatusChip from '~/components/integrations/IntegrationStatusChip.vue'
-import { useIntegrationInstall } from '~/composables/useIntegrationInstall'
 import { useLocalization } from '~/composables/useLocalization'
 import type { IntegrationView } from '~/stores/integrationsStore'
 
@@ -83,7 +71,6 @@ const props = defineProps<{ item: IntegrationView }>()
 defineEmits<{ open: [id: string] }>()
 
 const { t } = useLocalization()
-const { busy, installError, runInstall } = useIntegrationInstall(() => props.item)
 const missingTools = computed(() => props.item.tools.filter(tool => !tool.found).map(tool => tool.name))
 
 const withSkillName = (text: string) => text

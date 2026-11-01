@@ -25,10 +25,8 @@ const chip = computed(() => {
       return { text: t('integrations.status.connectedAs', { login: props.item.login ?? '' }), class: 'bg-green-50 text-green-700 ring-1 ring-green-200', dot: 'bg-green-500', icon: null }
     case 'needs_token':
       return { text: t('integrations.status.needsToken'), class: 'bg-amber-50 text-amber-800 ring-1 ring-amber-200', dot: 'bg-amber-500', icon: null }
-    case 'needs_newer':
-      return { text: t('integrations.status.needsNewer'), class: 'bg-slate-100 text-slate-600 ring-1 ring-slate-200', dot: '', icon: 'heroicons:arrow-up-circle' }
     default:
-      return { text: t('integrations.status.notInstalled'), class: 'bg-slate-100 text-slate-600', dot: 'bg-slate-400', icon: null }
+      return { text: t('integrations.status.needsNewer'), class: 'bg-slate-100 text-slate-600 ring-1 ring-slate-200', dot: '', icon: 'heroicons:arrow-up-circle' }
   }
 })
 </script>

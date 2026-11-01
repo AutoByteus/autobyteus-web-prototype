@@ -17,17 +17,19 @@ corepack pnpm dev --port 4960
 - Not playable here: a Task closing live and its delegated rows leaving (existing mechanism; see the spec).
 - Spec: `tickets/done/projects-left-navigation/ui-ux-spec.md`.
 
-## integrations-page (Integrations page; source pin `d74f75a`, Settings surfaces `e4bebdc858`)
+## integrations-page (Integrations page, import from a link or a folder; revision `integrations-page-r2`; source pin `d74f75a`, Settings surfaces `e4bebdc858`)
 
 ```bash
 corepack pnpm install --ignore-workspace --frozen-lockfile
-corepack pnpm dev --port 4940
+corepack pnpm dev --port 4950
 ```
 
-- Entry: `/integrations` (menu item Integrations, last, after Nodes). Default: one GitHub card, Not installed. Install on the card, then Connect (dialog): a token containing `bad`, `reject` or `revoked` is rejected, `offline` cannot be checked, anything else connects as `@alex-dev`.
-- Starting states (browser console, reload; remove the key to reset): `localStorage.setItem('autobyteus.prototype.scenario', '<name>')` with `integrations_connected`, `integrations_several` (GitHub, Jira "Needs a newer AutoByteus", SSH), `integrations_tool_missing`, `integrations_install_clash`, `integrations_token_revoked`, `integrations_offline` (the first Retry fails again), `integrations_offline_installed`, `integrations_empty`.
-- After Install the skill is on `/skills` and the source in Skills → Sources. Server Settings → Basics has no GitHub card.
-- Data is invented in `prototype/integrations/integrationsDesignFixture.ts`; state is in `stores/integrationsStore.ts`; in memory, a reload resets it. Spec: `tickets/done/integrations-page/ui-ux-spec.md`.
+- Entry: `/integrations` (menu item Integrations, last, after Nodes). Default: nothing imported, the empty state. **Import** takes a GitHub repository link or a folder path (typed, or Browse… where the native picker exists); a web address is a repository, anything else a folder.
+- Scripted outcomes (typed into the Import field): a link or path containing `empty` → "No integrations in this repository/folder"; `clash` → skill-name clash; a link containing `offline` → GitHub unreachable with the reason; a path containing `missing` → "Directory not found"; an already-imported link or path → "already imported"; a link containing `ops` → imports SSH and Jira (Jira "Needs a newer AutoByteus"); any other link → imports GitHub; any other folder → imports SSH; neither a GitHub link nor an absolute path → "Enter a GitHub repository link … or the full path of a folder." Importing a second source that holds an already-imported integration is a skill-name clash.
+- Connect (dialog): a token containing `bad`, `reject` or `revoked` is rejected, `offline` cannot be checked, anything else connects as `@alex-dev`.
+- Starting states (browser console, reload; remove the key to reset): `localStorage.setItem('autobyteus.prototype.scenario', '<name>')` with `integrations_connected`, `integrations_several` (two sources: GitHub; SSH and Jira from an ops repository), `integrations_local_folder` (GitHub from a repository, SSH from the folder `/Users/alex/Projects/my-integrations`), `integrations_tool_missing`, `integrations_token_revoked`, `integrations_update_available`, `integrations_update_offline` (Update cannot reach GitHub).
+- After Import the skills are on `/skills` (an "Integration" label links to the card) and the sources in Skills → Sources; removing a source there removes its card. Server Settings → Basics has no GitHub card.
+- Data is invented in `prototype/integrations/integrationsDesignFixture.ts`; state is in `stores/integrationsStore.ts`; in memory, a reload resets it. Spec: `tickets/done/integrations-page-r2/ui-ux-spec.md`; the first approved design: `tickets/done/integrations-page/ui-ux-spec.md`.
 
 ## WEB-BASELINE-REFRESH-014 (scoped refresh: Settings menu and the GitHub card; those two surfaces reflect `e4bebdc858`, the rest `d74f75a`)
 
