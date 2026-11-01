@@ -72,6 +72,15 @@ export const scenarioCatalog = Object.freeze({
   // one-nodes-tab: Nodes → Manage Nodes (one list of nodes). The simulated network is prototype/nodes/network-world.mjs.
   nodes_user: 'Populated data where this desktop lists the embedded node and Docker 8001 (collaborating); Docker 8003, 8004 and 8005 are running and can be added.',
   nodes_states: 'Nodes scenario with one row in each state: working, off there, not registered there, a different node, not reachable, still checking, registered only by the other node, and one not collaborating.',
+  // Manage Nodes, server version and in-place update of a remote node (source 3b9dc912a1; scripts in prototype/nodes/network-world.mjs).
+  // Docker 8001 is older than this app in every one of them (nodes_user and nodes_states too): it offers "Update to 0.1.0-prototype".
+  nodes_update_refused: 'Nodes scenario where Docker 8001 refuses the requested update (it runs an image that cannot update itself): the notice with Copy command.',
+  nodes_update_failed: 'Nodes scenario where the requested update on Docker 8001 stops while downloading: the notice that the update did not happen.',
+  nodes_update_lost: 'Nodes scenario where Docker 8001 goes away while restarting after the requested update and does not come back (Restarting…, then Not reachable after 5 minutes).',
+  nodes_update_undelivered: 'Nodes scenario where the update request to Docker 8001 is answered with an error that carries no message (HTTP 500).',
+  nodes_update_running: 'Nodes scenario where an update of Docker 8001 was started from another window and is running when the page opens.',
+  nodes_update_error: 'Nodes scenario where the update service of Docker 8001 answers that it has an error (its own message under the version).',
+  nodes_update_unknown: 'Nodes scenario where Docker 8001 cannot update in place and does not know its server version.',
   // remote-runs-in-tree: runs the Project Task Manager delegated to another node (prototype/remote-runs/remoteRunsFixture.ts).
   remote_runs: 'Populated data where the Project Task Manager run is live and delegated a Marketing Team (working) and a market researcher (idle) to the node "docker", next to its five local copies.',
   remote_states: 'Populated data where the Project Task Manager run is live with one run on another node in every state: working, idle, waiting, offline and not reachable.',

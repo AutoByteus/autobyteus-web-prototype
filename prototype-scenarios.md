@@ -154,14 +154,16 @@ Selected with `autobyteus.prototype.scenario` (and `autobyteus.prototype.context
 | `routing_empty`, `routing_load_failed`, `routing_check_fails`, `routing_unknown` | Settings → Model Routing: no runtime; the first read fails (Check again then works); Check again fails after a good read; limits and models unknown and no API provider |
 | `runtimes_remote_desktop` | Agent Runtimes of a remote node whose server can open a browser on its own desktop (Codex signed out; Sign in finishes) |
 | `settings_save_fails` | Saving a server setting fails (the switches in Server Settings → Basics show their error) |
-| `nodes_user`, `nodes_states` | unchanged names; now answered by `prototype/nodes/network-world.mjs` (see below) |
+| `nodes_user`, `nodes_states` | unchanged names; now answered by `prototype/nodes/network-world.mjs` (see below); each node also reports its server version (`nodes_states` has a row in each state) |
+| `nodes_update_refused`, `nodes_update_failed`, `nodes_update_lost`, `nodes_update_undelivered`, `nodes_update_running`, `nodes_update_error`, `nodes_update_unknown` | Manage Nodes (source `3b9dc912a1`): how Docker 8001's in-place update goes or what it reports (see the runbook, `WEB-BASELINE-REFRESH-015`) |
 | `updates_*`, `update_*` | unchanged names; the node's answers follow the shipped GraphQL (`SetUpdateCheckInterval`, `SetAutomaticUpdates`) |
 
 - `prototype/nodes/network-world.mjs` is the state of a small network of nodes (the desktop's own node, Docker 8001–8005, a studio, a laptop,
   a NAS and more): each node's remote-collaboration switch, peers, address candidates, offers, delays and failures. A node's server
   answers its settings operations (`GetPeerNodeOffer`, `AddPeerNode`, …) from it; the window's direct requests to another address
   (`/rest/remote-access/status`, the other node's GraphQL) are answered by `prototype/shared/node-network-fetch.js`, as a response after the node's
-  delay or as a failed request. The observation node and the baseline use the same world.
+  delay or as a failed request. The observation node and the baseline use the same world. Each node's `server` entry answers `GET/POST /rest/node-update` (its version, whether it can
+  update in place, a requested update's scripted steps over about 20 s).
 - `prototype/source-observation/rest-fixtures.mjs`: the node's REST answers for Phone Setup (Phone Access switch, addresses, paired devices, a
   pairing QR). The baseline answers them from an axios adapter in `plugins/00.prototype-state.client.ts`.
 - Remote runs: `prototype/remote-runs/remoteRunsFixture.ts` now produces the shipped shapes (`remote_task_executions` in the root's view, and

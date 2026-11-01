@@ -75,9 +75,44 @@ const LISTENERS = {
 const addedAt = '2026-10-20T09:00:00.000Z'
 const peer = (nodeId, name, baseUrl) => ({ nodeId, name, baseUrl, addedAt })
 
+// What each node's server says about its own version and in-place update (`GET /rest/node-update`), and what happens when this
+// window asks it to update (`POST`). Every value is scripted and invented. `APP_VERSION` is the version of this app in the
+// simulated desktop (installHostScenario); the node's `relation` is where that version stands: `newer` = this app is newer
+// than the node (the node can be offered the update).
+//   mode: 'available' | 'unavailable' | 'error' (the answer's `inPlaceUpdate`) | 'noEndpoint' (an older server that has no such endpoint)
+//   run: how a requested update goes: 'success' | 'failed' | 'refused' | 'undelivered' | 'lost' (the node never comes back);
+//   running: the update was already started by another window when the page opens.
+export const APP_VERSION = '0.1.0-prototype'
+const SAME = { version: APP_VERSION, relation: 'same', mode: 'available' }
+const OLDER = { version: '0.0.9-prototype', relation: 'newer', mode: 'available', run: 'success' }
+const UPDATE_SCENARIOS = {
+  nodes_update_refused: { run: 'refused' },
+  nodes_update_failed: { run: 'failed' },
+  nodes_update_lost: { run: 'lost' },
+  nodes_update_undelivered: { run: 'undelivered' },
+  nodes_update_running: { running: true },
+  nodes_update_error: { mode: 'error', message: 'The update service of this node did not answer.' },
+  nodes_update_unknown: { version: null, relation: 'same', mode: 'unavailable' },
+}
+const serverOf = (scenario, nodeId) => {
+  const states = scenario === 'nodes_states'
+  if (nodeId === N.D1) return { ...OLDER, ...(UPDATE_SCENARIOS[scenario] ?? {}) }
+  if (states && nodeId === N.LAP) return { version: '0.2.0-prototype', relation: 'older', mode: 'available' }
+  if (states && nodeId === N.NAS) return { version: null, relation: 'same', mode: 'noEndpoint' }
+  if (states && nodeId === N.D3) {
+    return { ...OLDER, run: undefined, blocker: { code: 'AGENTS_RUNNING', message: 'Agents are running on this node. Update it when they have finished.' } }
+  }
+  return { ...SAME }
+}
+
 /** The nodes of a scenario. `nodes_states` adds a row in every state; every other scenario is the small network. */
 export const buildNodes = (scenario) => {
   const states = scenario === 'nodes_states'
+  const nodes = buildNodeList(scenario, states)
+  for (const [nodeId, entry] of Object.entries(nodes)) entry.server = serverOf(scenario, nodeId)
+  return nodes
+}
+const buildNodeList = (scenario, states) => {
   return {
     [N.E]: node({
       id: N.E, selfName: 'Embedded Node', switchOn: true, switchSet: true, delayMs: 300, offers: EMBEDDED_OFFER,
@@ -286,6 +321,58 @@ export const createNetworkWorld = (scenario, options = {}) => {
   const OPERATIONS = new Set(['GetRemoteCollaborationCapability', 'SetRemoteCollaborationEnabled', 'GetRemoteCollaborationSettings', 'GetPeerAddressCandidates',
     'ResolvePeerAddress', 'AddPeerNode', 'RenamePeerNode', 'RemovePeerNode', 'ChangePeerAddress', 'GetPeerNodeAvailability', 'GetPeerNodeOffer'])
 
+  // A requested update plays on a timeline from the request (seconds): checking, downloading, preparing, restarting, then the
+  // node does not answer while it restarts, then it answers with the new version. 'failed' stops after downloading; 'lost' never answers again.
+  const UPDATE_STEPS = [[0, 'checking'], [3, 'downloading'], [7, 'preparing'], [10, 'restarting']]
+  const RESTART_ENDS = 19
+  const idle = { state: 'idle', targetVersion: null, step: null, code: null, message: null }
+  const nodeUpdate = (target, parsed, request, delayMs) => {
+    const server = target?.server
+    // the node answers its update endpoint quickly (a status line, unlike the offer's list)
+    delayMs = 120
+    if (!server || server.mode === 'noEndpoint') return { status: 404, text: '<html>Not Found</html>', delayMs }
+    const wanted = parsed.searchParams.get('target')
+    if ((request.method || 'GET').toUpperCase() === 'POST') {
+      let body = request.body
+      if (typeof body === 'string') { try { body = JSON.parse(body) } catch { body = {} } }
+      if (server.run === 'refused') {
+        return { status: 409, json: { refused: 'NEEDS_NEW_IMAGE', message: 'This node runs an image that cannot update itself.' }, delayMs: delayMs + 100 }
+      }
+      if (server.run === 'undelivered') return { status: 500, text: '', delayMs: delayMs + 100 }
+      server.startedAt = Date.now()
+      server.targetVersion = body?.version ?? wanted ?? APP_VERSION
+      return { status: 202, json: { accepted: true }, delayMs: delayMs + 100 }
+    }
+    if (server.running) { server.running = false; server.startedAt = Date.now() - 1000; server.targetVersion = APP_VERSION }
+    const answer = { inPlaceUpdate: server.mode, version: server.version, ...(server.message ? { message: server.message } : {}), update: idle }
+    if (server.blocker) answer.updateBlocker = server.blocker
+    const seconds = server.startedAt ? (Date.now() - server.startedAt) / 1000 : -1
+    if (seconds >= 0) {
+      const step = [...UPDATE_STEPS].reverse().find(([from]) => seconds >= from)[1]
+      const running = { state: 'running', targetVersion: server.targetVersion, step, code: null, message: null }
+      if (server.run === 'failed' && seconds >= 7) {
+        answer.update = { state: 'failed', targetVersion: server.targetVersion, step: 'downloading', code: 'DOWNLOAD_FAILED', message: 'The download stopped before it finished.' }
+      } else if (server.run === 'lost' && seconds >= 13) {
+        return { failure: 'refused', delayMs: 500 }
+      } else if (seconds < 13) {
+        answer.update = running
+      } else if (seconds < RESTART_ENDS) {
+        return { failure: 'refused', delayMs: 500 }
+      } else {
+        answer.version = server.targetVersion
+        server.version = server.targetVersion
+        server.relation = 'same'
+        server.startedAt = null
+        answer.update = { state: 'succeeded', targetVersion: server.targetVersion, step: null, code: null, message: null }
+      }
+    }
+    if (wanted) {
+      answer.target = { version: wanted, relation: server.relation }
+      if (answer.update.state === 'succeeded') answer.target.relation = 'same'
+    }
+    return { status: 200, json: answer, delayMs: delayMs }
+  }
+
   /**
    * This window asks an address directly. Returns `{ failure: cause, delayMs }` when the request gets no answer (the
    * browser reports only that it failed), or `{ status, json, text, delayMs }`.
@@ -303,6 +390,7 @@ export const createNetworkWorld = (scenario, options = {}) => {
       if (r.nodeId === N.SPARE_OTHER) return { status: 200, json: { phoneAccessEnabled: true, pairingAvailable: true, nodeId: N.SPARE_OTHER, serverName: 'spare' }, delayMs: r.delayMs }
       return { status: 200, json: { phoneAccessEnabled: true, pairingAvailable: true, nodeId: r.nodeId, serverName: target?.selfName ?? 'node' }, delayMs: r.delayMs }
     }
+    if (parsed.pathname === '/rest/node-update') return nodeUpdate(r.nodeId === N.SPARE_OTHER ? { server: { ...SAME } } : target, parsed, request, r.delayMs)
     if (r.nodeId === boundNodeId && parsed.pathname !== '/graphql') return { proxy: true, delayMs: 0 }
     if (parsed.pathname === '/graphql') {
       let body = request.body

@@ -46,7 +46,7 @@ const overlayAfterActions: Record<string, string[]> = { agentDefinition: ['reloa
 // (utils/apolloClient.ts, prototype/memory-search/memoryDesignFixture.ts), so lists, search and the Work Journal respond for real.
 // WEB-BASELINE-REFRESH-013 (origin/personal@d74f75a): Manage Nodes (its list, peers, offers, switch and change dialog) and the remote runs run
 // the source's own code against the simulated network of nodes (prototype/nodes/network-world.mjs).
-const sourceLoadedStores = new Set(['phoneAccess', 'nodeList', 'remoteCollaborationStore', 'remoteCollaborationOffers', 'remoteCollaborationCapability', 'nodeChangeDialog', 'remoteRuns', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft', 'memoryExplorerStore', 'memoryInspectorStore', 'memorySearchStore', 'memoryJournalStore', 'integrations'])
+const sourceLoadedStores = new Set(['phoneAccess', 'nodeList', 'nodeServerUpdate', 'remoteCollaborationStore', 'remoteCollaborationOffers', 'remoteCollaborationCapability', 'nodeChangeDialog', 'remoteRuns', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft', 'memoryExplorerStore', 'memoryInspectorStore', 'memorySearchStore', 'memoryJournalStore', 'integrations'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),

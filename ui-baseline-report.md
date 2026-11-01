@@ -1,6 +1,111 @@
 # UI Baseline Report
 
-## Scoped refresh `WEB-BASELINE-REFRESH-014` (read this first)
+## Scoped refresh `WEB-BASELINE-REFRESH-015` (read this first)
+
+**The baseline pin is still `d74f75a51ab7dc47d42a13f33e0f943c3a230ad7` for the whole frontend, with two further scoped exceptions: Settings menu and GitHub card
+(`e4bebdc858`, see the next section) and now Nodes → Manage Nodes, which reflects `3b9dc912a14a19029db500c7e6bde1eb30725fd4` (beta v1.5.11-beta.10, branch
+`codex/manage-nodes-professional`, checked out read only at `/Users/normy/autobyteus_org/autobyteus-worktrees/manage-nodes-professional/autobyteus-web`).**
+The whole-frontend pin did not move. Everything below this section still describes `d74f75a` (or `e4bebdc858` where the next section says so), except Manage Nodes.
+
+- Request: Refresh (scoped), selected by the Product UI/UX Designer, ticket `WEB-BASELINE-REFRESH-015`, branch `design/web-baseline-refresh-015`, worktree
+  `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/WEB-BASELINE-REFRESH-015`, accepted design base `2f31380eb93ff5e22f1fc1594ed3c052cb988b2b`
+  (worktree `HEAD` `2f31380e`). Design repository `/Users/normy/autobyteus_org/autobyteus-web-design`.
+- Status: `Completed` (a candidate: uncommitted changes in the ticket worktree; the Bootstrapper made no commit; integration into the default branch follows the Product UI/UX Designer's acceptance).
+- Scope: the Nodes → Manage Nodes surface (`/nodes?nodeTab=manage`) only. `git diff d74f75a51a 3b9dc912a1` touches these UI files of it: `components/settings/nodes/NodeRow.vue`,
+  `components/settings/nodes/NodeServerUpdate.vue` (new), `stores/nodeServerUpdateStore.ts` (new), `localization/messages/{en,zh-CN}/nodesPage.ts` (18 new `update.*` strings each).
+  What is new for the user: under the row of each remote node this window reaches, its **server version** ("Server 0.0.9-prototype"), an **"Update to <version>"** button
+  when the node is older than this app and can update in place, the update's progress (checking, downloading, preparing, restarting), "Restarting…" and "Not reachable.", the result,
+  and warning notices (a blocker, a refusal, a failure) with a **Copy command** button where the node needs a new image.
+- Not refreshed, though the range changed it (outside the selected surface; it still shows `d74f75a`): the **Docker Guide** tab got one more command (`direct-update-all`, "Update the server in all
+  Docker nodes": `utils/dockerNodeLauncherCommands.ts`, `DockerNodeStartGuideCard.*.commands.updateAll.*` strings of `settings.ts`) and the **NFS Guide** tab's texts were shortened
+  (`NfsGuideCard`, `settings.ts`). Both tabs are on the same page but are other surfaces; they are a decision for the Product UI/UX Designer (one more refresh request if wanted).
+  Also unrefreshed: all other changes of the 454 files in the range.
+
+### What was done
+
+- Copied unchanged from `3b9dc912a1` (byte-identical, checked with `cmp`): `components/settings/nodes/NodeRow.vue`, `components/settings/nodes/NodeServerUpdate.vue`,
+  `stores/nodeServerUpdateStore.ts`, `localization/messages/en/nodesPage.ts`, `localization/messages/zh-CN/nodesPage.ts`. No accepted design-only change touches these files (before the copy the baseline's
+  `NodeRow.vue` and `nodesPage.ts` were the `d74f75a` ones), so nothing was reconciled and nothing was added to the design.
+- `plugins/00.prototype-state.client.ts`: `nodeServerUpdate` joins `sourceLoadedStores` (the source's own store runs; the plugin must not stub its actions), exactly like `nodeList`.
+- **Simulation of the node's `GET/POST /rest/node-update`** (the production capability: each node's server reports its version and updates itself in place), in the existing simulated node network
+  `prototype/nodes/network-world.mjs` (`windowRequest`, path `/rest/node-update`). The store's own `fetch` goes through the existing `node-network-fetch.js`, so nothing else changed. Each node
+  carries a scripted `server` entry (version, whether this app is newer than the node, `available` / `unavailable` / `error` / no endpoint, optional blocker, how a requested update goes). A requested update plays on a
+  fixed timeline from the request: checking 0–3 s, downloading 3–7 s, preparing 7–10 s, restarting 10–13 s, then no answer until 19 s, then the node answers with the new version and a
+  succeeded result. `failed` stops at 7 s; `lost` stops answering at 13 s for good; `refused` answers HTTP 409 with `NEEDS_NEW_IMAGE`; `undelivered` answers HTTP 500 with no message. No process is started, nothing is
+  downloaded, nothing is contacted; state is in memory and a reload resets it.
+- This app's version for the offer is the simulated desktop's (`0.1.0-prototype`, `install-host-scenario.js`, unchanged). In a plain browser window (no desktop host) the app has no version, so nodes answer without a target
+  and show only "Server <version>" with no offer (same in the source). All versions, notices and messages the node supplies ("Agents are running on this node…", "The download stopped…") are invented and illustrative.
+- `prototype/source-observation/fixtures.mjs`: seven new scenario names in `scenarioCatalog` (the observation node and the baseline share the world). `package.json`, `pnpm-lock.yaml`, `nuxt.config.ts`, `tsconfig.json` unchanged.
+
+### Scripted outcomes (the update button; the UI reference has no backend)
+
+- Docker 8001 ("docker") is older than the app in every Nodes scenario: it shows "Server 0.0.9-prototype", **Update to 0.1.0-prototype**, "Same version as this app". Click: "Starting the update…", then
+  "Checking the update to 0.1.0-prototype…", "Downloading 0.1.0-prototype…", "Preparing 0.1.0-prototype…", "Restarting…" (twice: while the node still answers, then while it does not), and finally "Server 0.1.0-prototype" with the green
+  "Updated to 0.1.0-prototype." (about 20 s in all). A node added after (8003, 8004, 8005) shows "Server 0.1.0-prototype".
+- The other scenarios change only Docker 8001's script (below). **Copy command** copies `autobyteus-docker upgrade --all --tag 0.1.0-prototype` and reads "Copied" for 2 s.
+
+### Starting-state selection (scenarios)
+
+Set in the browser console, then reload (remove the keys to reset): `localStorage.setItem('autobyteus.prototype.scenario', '<name>')` and `localStorage.setItem('autobyteus.prototype.context', 'electron_internal')`
+(a desktop window on the embedded node; `electron_external` = a window opened on Docker 8001; remove the context key = a browser). Chinese: `localStorage['autobyteus.localization.preference-mode']='zh-CN'`.
+
+| Scenario | Starting state of Manage Nodes |
+| --- | --- |
+| `nodes_user` | the happy path above (Docker 8001 older, offer, a full update) |
+| `nodes_states` | one row in each collaboration state plus each server state: docker (offer), studio ("Server 0.1.0-prototype" only), spare (different node answering: "Server 0.1.0-prototype"), nas (an older server with no update endpoint: "Not reachable."), 8003 (blocker notice in amber, no button), laptop (a node newer than the app: "Newer than this app. Update this app.") |
+| `nodes_update_refused` | the click is refused: "The update to 0.1.0-prototype did not happen. This node runs an image that cannot update itself." + Copy command |
+| `nodes_update_failed` | the update stops while downloading: "The update to 0.1.0-prototype did not happen. The download stopped before it finished." and the button is offered again |
+| `nodes_update_lost` | the node goes away while restarting: "Restarting…"; after 5 minutes "Not reachable. Last known: updating to 0.1.0-prototype." |
+| `nodes_update_undelivered` | the request is answered with an error without a message: "… did not happen. HTTP 500" |
+| `nodes_update_running` | an update started from another window is already running at page open ("Checking the update to 0.1.0-prototype…"), then the result is shown |
+| `nodes_update_error` | the node's update service reports an error: its own message under the version, no button |
+| `nodes_update_unknown` | "Server version unknown", no button |
+
+The embedded node's row (This node card) shows no server line (the source has none: `v-if="!row.isEmbedded"`); a row whose node this window does not reach shows none either.
+
+### Inventory and comparison (source `3b9dc912a1` vs baseline, matched)
+
+Conditions: both run in the same browser; each compared state is a fresh 1440×900 same-origin frame (and 656×900 for narrow), same scenario, same simulated desktop context and, for zh-CN, same locale preference; the pinned source is an exact
+`git archive` export of `3b9dc912a1` (scratch `/tmp/r015/src`) with a disposable harness plugin that installs the same host bridge and the same node-network fetch, served by the observation node (`mock-node.mjs`) that answers from the same
+`network-world.mjs`. Compared per component: the server block's element tree, own text, rectangle relative to its row, 23 computed style properties of every element, titles and disabled state, spinner rotation ignored. "Identical" below means no difference in any of these.
+
+| ID | Surface / state | Result |
+| --- | --- | --- |
+| NU-01 | Server version + offer (button, "Same version as this app"), 1440 | pass: identical |
+| NU-02 | Click: "Starting the update…" (busy button), checking, downloading, preparing, "Restarting…" while answering, "Restarting…" with no answer, result "Updated to …" (green) with the new version | pass: every state identical (the 'starting' instant is one request long and was checked by its markup, which is the copied component's own) |
+| NU-03 | Rows of `nodes_states`: version only; different node; no endpoint ("Not reachable."); blocker notice (amber); node newer than the app, 1440 and 656 px | pass: identical |
+| NU-04 | Refusal notice with **Copy command**; Copy → "Copied" → "Copy command" after 2 s (the clipboard write stubbed in both frames, because an unfocused frame refuses it), 1440 and 656 px | pass: identical, the copied text is the same |
+| NU-05 | Failed update notice + button offered again; undelivered ("HTTP 500"); node error message; "Server version unknown" | pass: identical |
+| NU-06 | Update already running at page open, then success | pass: identical |
+| NU-07 | Node lost: "Restarting…", then "Not reachable. Last known: updating to …" (the clock of the frame advanced by 6 minutes in both) | pass: identical |
+| NU-08 | Browser window (no desktop host): "Server <version>" only; embedded window `electron_external`: no server lines | pass: identical |
+| NU-09 | zh-CN: all of the above strings (offer, steps, "无法访问。", "比本应用新。请更新本应用。", refusal and failure notices with "复制命令", success "已更新到 …。") | pass: identical (the node-supplied messages stay English in both) |
+| NU-10 | The rest of the Manage Nodes page (This node card, Add node, rows' other parts) | unchanged: `pages/nodes.vue`, `NodeManager.vue`, `NodeList.vue`, `ThisNodeCard.vue`, `AddNodePanel.vue`, `NodeConnectionDetails.vue`, `nodeListStore.ts` and the other node files are byte-identical to `3b9dc912a1`; one load-and-look pass |
+
+Evidence (screenshots, the 717 px browser window: the narrow layout, the same scenario `nodes_states`, English): `evidence/WEB-BASELINE-REFRESH-015/source-3b9dc91-manage-nodes-states-narrow.png` and `baseline-manage-nodes-states-narrow.png`.
+Comparison was done in the browser with disposable in-page scripts and a disposable receiver under `/tmp/r015`; nothing was added to the repository for it.
+
+### Run
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4960
+```
+
+Review URL `http://127.0.0.1:4960/nodes?nodeTab=manage` with `nodes_user` + `electron_internal` (see the scenario table). Source observation (all disposable): `git archive` of `3b9dc912a1` (`autobyteus-web` and the four contract packages, the contract packages rebuilt with `tsc`),
+`BACKEND_NODE_BASE_URL=http://127.0.0.1:4963 ENABLE_APPLICATIONS=true nuxt dev --port 4962`, backed by `PROTOTYPE_MOCK_PORT=4963 PROTOTYPE_SCHEMA_PATH=<source>/autobyteus-web/generated/graphql.ts node prototype/source-observation/mock-node.mjs`
+(synthetic fixtures only; scenario and context changed with a POST to `/__prototype/scenario`). The source checkout was only read. All processes I started were stopped.
+
+### Known gaps
+
+- Docker Guide's new "Update the server in all Docker nodes" command and the NFS Guide's shortened texts are not refreshed (see Scope).
+- The real update takes minutes and depends on the node's image; here it plays in about 20 s and is scripted. Nothing about the production update (download, restart, rollback, the node's starter) was validated.
+- The 5-minute wait before "Not reachable. Last known: …" is the source's; it was checked by advancing the frame's clock, not by waiting.
+- No other known UI parity difference for the Manage Nodes surface.
+
+---
+
+## Scoped refresh `WEB-BASELINE-REFRESH-014`
 
 **The baseline pin is `d74f75a51ab7dc47d42a13f33e0f943c3a230ad7` for the whole frontend, except two surfaces, which reflect
 `e4bebdc8585e070ab63992e4b427c41a11aabfa9` (`origin/personal` as checked out in the selected frontend's worktree

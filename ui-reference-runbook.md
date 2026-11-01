@@ -31,6 +31,22 @@ corepack pnpm dev --port 4950
 - After Import the skills are on `/skills` (an "Integration" label links to the card) and the sources in Skills → Sources; removing a source there removes its card. Server Settings → Basics has no GitHub card.
 - Data is invented in `prototype/integrations/integrationsDesignFixture.ts`; state is in `stores/integrationsStore.ts`; in memory, a reload resets it. Spec: `tickets/done/integrations-page-r2/ui-ux-spec.md`; the first approved design: `tickets/done/integrations-page/ui-ux-spec.md`.
 
+## WEB-BASELINE-REFRESH-015 (scoped refresh: Nodes → Manage Nodes, the server version and in-place update of remote nodes; this surface reflects `3b9dc912a1`, the rest `d74f75a`/`e4bebdc858`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4960
+```
+
+- Entry: `/nodes?nodeTab=manage`. Select the starting state in the browser console and reload (remove the keys to reset; a reload resets all in-memory state):
+  `localStorage.setItem('autobyteus.prototype.scenario','<scenario>'); localStorage.setItem('autobyteus.prototype.context','electron_internal')`
+  (`electron_external` = a window opened on Docker 8001, which lists no server lines; remove the context key = a browser, which shows the versions but offers no update). Chinese: `localStorage['autobyteus.localization.preference-mode']='zh-CN'`.
+- Starting states (scenarios): `nodes_user` (Docker 8001 older than the app: **Update to 0.1.0-prototype**; click it to watch a whole update, about 20 s); `nodes_states` (one row in each state: offer, version only, no update endpoint
+  "Not reachable.", a blocker notice, a node newer than the app); `nodes_update_refused` (the click is refused; Copy command), `nodes_update_failed`, `nodes_update_lost` (Restarting…, then after 5 minutes "Not reachable. Last known: …"),
+  `nodes_update_undelivered` (HTTP 500), `nodes_update_running` (an update from another window is running at page open), `nodes_update_error`, `nodes_update_unknown` ("Server version unknown").
+- The nodes' update answers are scripted in `prototype/nodes/network-world.mjs` (`serverOf`, `nodeUpdate`); the page's own store (`stores/nodeServerUpdateStore.ts`, copied) asks them through the existing simulated network. The embedded node's row never shows a server line.
+- Not in this refresh: the Docker Guide tab's new "Update the server in all Docker nodes" command and the NFS Guide's shorter texts (they still show `d74f75a`).
+
 ## WEB-BASELINE-REFRESH-014 (scoped refresh: Settings menu and the GitHub card; those two surfaces reflect `e4bebdc858`, the rest `d74f75a`)
 
 ```bash
