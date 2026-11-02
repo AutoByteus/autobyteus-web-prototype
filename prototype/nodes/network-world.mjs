@@ -110,6 +110,8 @@ export const buildNodes = (scenario) => {
   const states = scenario === 'nodes_states'
   const nodes = buildNodeList(scenario, states)
   for (const [nodeId, entry] of Object.entries(nodes)) entry.server = serverOf(scenario, nodeId)
+  // nodes_empty_offer: the docker node shares no Agents or Agent Teams (the empty offer).
+  if (scenario === 'nodes_empty_offer') nodes[N.D1].offers = []
   return nodes
 }
 const buildNodeList = (scenario, states) => {

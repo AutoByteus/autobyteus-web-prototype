@@ -31,6 +31,23 @@ corepack pnpm dev --port 4950
 - After Import the skills are on `/skills` (an "Integration" label links to the card) and the sources in Skills → Sources; removing a source there removes its card. Server Settings → Basics has no GitHub card.
 - Data is invented in `prototype/integrations/integrationsDesignFixture.ts`; state is in `stores/integrationsStore.ts`; in memory, a reload resets it. Spec: `tickets/done/integrations-page-r2/ui-ux-spec.md`; the first approved design: `tickets/done/integrations-page/ui-ux-spec.md`.
 
+## manage-nodes-professional (Nodes → Manage Nodes, a professional look; autobyteus-363; design `tickets/done/manage-nodes-professional/ui-ux-spec.md`, source pin `3b9dc912a1`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4950
+```
+
+- Entry: `/nodes?nodeTab=manage` (the product's normal entry; no review control). Set a starting state in the browser console and reload (remove a key to reset; a reload resets all in-memory state):
+  - desktop window on the embedded node: `localStorage.setItem('autobyteus.prototype.scenario','nodes_user'); localStorage.setItem('autobyteus.prototype.context','electron_internal')`
+  - one row in every state: scenario `nodes_states`
+  - a window opened on Docker 8001: context `electron_external`
+  - a browser (no Open; a node known only as a registration leaves the list when turned off, as in the product): remove the `autobyteus.prototype.context` key
+  - Chinese: `localStorage['autobyteus.localization.preference-mode']='zh-CN'`
+  - update states (Docker 8001): `nodes_update_refused`, `nodes_update_failed`, `nodes_update_lost`, `nodes_update_undelivered`, `nodes_update_running`, `nodes_update_error`, `nodes_update_unknown`; the empty offer: `nodes_empty_offer`.
+- Try: Update to 0.1.0-prototype on docker (about 20 s); add `http://localhost:8003` and `localhost:8005` (partial); click the offer button; this node's switch; rename; resize the window or use a 390 px viewport (the row reflows by the width of the Nodes card).
+- Nothing is contacted; the nodes answer from `prototype/nodes/network-world.mjs`.
+
 ## WEB-BASELINE-REFRESH-015 (scoped refresh: Nodes → Manage Nodes, the server version and in-place update of remote nodes; this surface reflects `3b9dc912a1`, the rest `d74f75a`/`e4bebdc858`)
 
 ```bash

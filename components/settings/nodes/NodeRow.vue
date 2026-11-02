@@ -86,7 +86,7 @@
         >
           <svg class="h-[18px] w-[18px]" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M11 3.5h5.5V9M16.2 3.8 9.5 10.5M8 4.5H5.5A2 2 0 0 0 3.5 6.5v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V12" stroke-linecap="round" stroke-linejoin="round" /></svg>
         </button>
-        <span v-else class="inline-block h-8 w-8" aria-hidden="true" />
+        <span v-else-if="store.hasOpen" class="inline-block h-8 w-8" aria-hidden="true" />
         <button
           v-if="!row.isEmbedded"
           type="button"
@@ -142,7 +142,7 @@
 .nr-server { grid-area: server; padding-left: 1.5rem; padding-top: 0.125rem; }
 .nr-offer { grid-area: offer; padding-left: 1.5rem; padding-top: 0.375rem; }
 .nr-collab { grid-area: collab; justify-self: start; margin-left: 1.5rem; }
-.nr-actions { grid-area: actions; width: 4.25rem; height: 2.25rem; }
+.nr-actions { grid-area: actions; min-width: 2rem; height: 2.25rem; }
 .nr-server:empty, .nr-offer:empty { display: none; }
 @container (min-width: 38rem) {
   .nr-collab { justify-self: end; margin-left: 0; }
@@ -150,7 +150,7 @@
   .nr-offer { padding-left: 0; }
 }
 @container (min-width: 64rem) {
-  .nr-grid { grid-template-columns: minmax(0, 1.3fr) 16rem minmax(0, 1fr) auto 4.25rem; grid-template-areas: 'name server offer collab actions'; }
+  .nr-grid { grid-template-columns: minmax(0, 1.3fr) 16rem minmax(0, 1fr) auto auto; grid-template-areas: 'name server offer collab actions'; }
   .nr-server { padding-left: 0; padding-top: 0.125rem; }
   .nr-server:empty, .nr-offer:empty { display: block; }
 }

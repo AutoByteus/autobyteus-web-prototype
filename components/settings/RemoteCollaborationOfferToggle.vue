@@ -1,16 +1,16 @@
 <template>
   <button
     type="button"
-    class="-ml-1.5 inline-flex max-w-full min-w-0 items-center gap-1.5 rounded-md px-1.5 py-1 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+    class="-ml-1.5 inline-flex max-w-full min-w-0 items-start gap-1.5 rounded-md px-1.5 py-1 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
     :aria-expanded="open"
     :title="preview"
     :data-testid="`${testId}-toggle`"
     @click="emit('update:open', !open)"
   >
-    <svg class="h-4 w-4 flex-shrink-0 text-slate-400 transition-transform" :class="open ? 'rotate-90' : ''" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <svg class="mt-0.5 h-4 w-4 flex-shrink-0 text-slate-400 transition-transform" :class="open ? 'rotate-90' : ''" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
       <path d="m7.5 4.5 5.5 5.5-5.5 5.5" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
-    <span class="truncate" :data-testid="`${testId}-summary`">{{ summary }}</span>
+    <span class="min-w-0 leading-5" :data-testid="`${testId}-summary`">{{ summary }}</span>
   </button>
 </template>
 

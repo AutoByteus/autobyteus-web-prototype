@@ -155,6 +155,7 @@ Selected with `autobyteus.prototype.scenario` (and `autobyteus.prototype.context
 | `runtimes_remote_desktop` | Agent Runtimes of a remote node whose server can open a browser on its own desktop (Codex signed out; Sign in finishes) |
 | `settings_save_fails` | Saving a server setting fails (the switches in Server Settings → Basics show their error) |
 | `nodes_user`, `nodes_states` | unchanged names; now answered by `prototype/nodes/network-world.mjs` (see below); each node also reports its server version (`nodes_states` has a row in each state) |
+| `nodes_empty_offer` | Manage Nodes (`manage-nodes-professional`): Docker 8001 shares no Agents or Agent Teams (the empty offer) |
 | `nodes_update_refused`, `nodes_update_failed`, `nodes_update_lost`, `nodes_update_undelivered`, `nodes_update_running`, `nodes_update_error`, `nodes_update_unknown` | Manage Nodes (source `3b9dc912a1`): how Docker 8001's in-place update goes or what it reports (see the runbook, `WEB-BASELINE-REFRESH-015`) |
 | `updates_*`, `update_*` | unchanged names; the node's answers follow the shipped GraphQL (`SetUpdateCheckInterval`, `SetAutomaticUpdates`) |
 
