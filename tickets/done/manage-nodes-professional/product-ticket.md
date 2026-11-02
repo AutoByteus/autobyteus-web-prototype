@@ -43,4 +43,8 @@
 
 ## Final Integration
 
-- Integration: `Pending` until the finalization commit below records it.
+- Ticket commit: `07fdfcfc04ee74b618210f7ebf96fa93df332e2c` (on `design/manage-nodes-professional`, which also holds the review commit `4bc11623`); UI reference revision = the same commit.
+- Integration: `Completed`. Pushed `design/manage-nodes-professional:personal` as a fast-forward (`8a71c842..07fdfcfc`); the canonical checkout `/Users/normy/autobyteus_org/autobyteus-web-design` (branch `personal`, clean) fast-forwarded to it.
+- Default-entry-point check (2026-11-02): the canonical checkout's dev server (port 4962, stopped) served `/nodes?nodeTab=manage` with scenario `nodes_user` + `electron_internal`; the page matched VIS-001 (a 34×2 px text-edge difference only) and the narrow all-states view rendered; no preview URL or preview-only state.
+- Default branch revisions: local `personal` = `origin/personal` = the commit recorded in the integration record commit that follows this text (checked after the push).
+- Cleanup: the ticket's dev server (4950) and the checks' server (4962) are stopped; the ticket worktree and branch are removed after this record is pushed.
