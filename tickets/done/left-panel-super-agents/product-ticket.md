@@ -38,4 +38,7 @@
 
 ## Integration Record
 
-(written at finalization)
+- Integration: `Completed` (2026-11-03). Ticket result `1f6bac29316e5d250a9c5a94552e464025aaa5ec` pushed as a fast-forward to `origin/personal` (base unchanged at `88e0e322`, so no merge was needed); the canonical checkout `/Users/normy/autobyteus_org/autobyteus-web-design` fast-forwarded to it. Default branch `personal`; local and `origin` revisions equal at that point (the finalization commit below follows the same sequence).
+- Default-entry-point check: the canonical checkout ran on its own dev server (port 4971); `/workspace` showed the run section with its runs, newest first, the Project Task Manager run with its delegated copies, and no preview URL or preview-only state.
+- Runtime: the ticket's dev server (port 4970) and the canonical check server (port 4971) are stopped; no state outside the browser's local storage.
+- Cleanup: worktree `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/left-panel-super-agents` and branch `design/left-panel-super-agents` removed after this record is pushed.
