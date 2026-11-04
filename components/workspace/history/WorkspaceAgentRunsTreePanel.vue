@@ -1,134 +1,27 @@
 <template>
   <div class="workspace-history-panel flex h-full flex-col bg-white">
-    <!-- projects-left-navigation: the run section shows Workspaces (today's tree) or Projects. The choice only changes
-         the tree (REQ-001); "+" adds what the shown mode lists. -->
-    <div class="flex items-center justify-between border-t border-gray-200 px-3 py-2">
-      <div
-        role="tablist"
-        :aria-label="t('projectsTree.switchLabel')"
-        class="-ml-1 flex min-w-0 flex-1 items-center gap-1"
-        data-test="run-section-switch"
-        @keydown.left.prevent="moveMode(-1)"
-        @keydown.right.prevent="moveMode(1)"
-        @keydown.home.prevent="chooseMode('workspaces', true)"
-        @keydown.end.prevent="chooseMode('projects', true)"
-      >
-        <button
-          v-for="option in runSectionModes"
-          :id="`run-section-tab-${option}`"
-          :key="option"
-          type="button"
-          role="tab"
-          :data-test="`run-section-tab-${option}`"
-          :aria-selected="projectsTree.mode === option"
-          aria-controls="run-section-panel"
-          :tabindex="projectsTree.mode === option ? 0 : -1"
-          class="cursor-pointer truncate rounded-md px-2 py-1 text-sm leading-5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-          :class="projectsTree.mode === option ? 'font-semibold text-gray-900' : 'font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
-          @click="chooseMode(option)"
-        >
-          <span class="truncate">{{ t(option === 'workspaces' ? 'shell.navigation.workspaces' : 'shell.navigation.projects') }}</span>
-        </button>
-      </div>
-      <button
-        type="button"
-        class="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-        :data-test="projectsTree.mode === 'projects' ? 'run-section-new-project' : 'run-section-add-workspace'"
-        :title="projectsTree.mode === 'projects' ? t('projectsTree.newProject') : $t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.add_workspace')"
-        :aria-label="projectsTree.mode === 'projects' ? t('projectsTree.newProject') : $t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.add_workspace')"
-        @click="onHeaderAdd"
-      >
-        <Icon icon="heroicons:plus-20-solid" class="h-4 w-4" />
-      </button>
-    </div>
-
-    <form
-      v-if="showCreateWorkspaceInline && projectsTree.mode === 'workspaces'"
-      class="border-t border-gray-100 px-3 py-2"
-      data-test="create-workspace-form"
-      @submit.prevent="confirmCreateWorkspace"
-    >
-      <div class="space-y-2">
-        <input
-          id="workspace-path-input"
-          ref="workspacePathInputRef"
-          v-model="workspacePathDraft"
-          data-test="workspace-path-input"
-          type="text"
-          class="w-full rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-900 focus:border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-200 disabled:cursor-not-allowed disabled:bg-gray-100"
-          :class="workspacePathError ? 'border-red-300 focus:border-red-300 focus:ring-red-200' : ''"
-          :placeholder="$t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.users_you_project')"
-          :disabled="creatingWorkspace"
-          @keydown.enter.prevent="confirmCreateWorkspace"
-          @keydown.esc.prevent="closeCreateWorkspaceInput"
-        >
-        <p v-if="workspacePathError" class="text-xs text-red-600">
-          {{ workspacePathError }}
-        </p>
-        <div class="flex items-center justify-end gap-2">
-          <button
-            data-test="cancel-create-workspace"
-            type="button"
-            class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
-            :disabled="creatingWorkspace"
-            @click="closeCreateWorkspaceInput"
-          >
-            Cancel
-          </button>
-          <button
-            data-test="confirm-create-workspace"
-            type="submit"
-            class="rounded-md border border-indigo-200 bg-white px-3 py-1.5 text-xs font-medium text-indigo-700 transition-colors hover:bg-indigo-50 disabled:cursor-not-allowed disabled:opacity-60"
-            :disabled="creatingWorkspace"
-          >
-            {{ creatingWorkspace ? 'Adding...' : 'Add' }}
-          </button>
-        </div>
-      </div>
-    </form>
-
+    <!-- left-panel-super-agents: the run section is your runs, newest first, each with the work it delegated nested underneath,
+         live. No Workspaces or Projects view and no tabs; usually it is one run, because an agent with orchestration tools does the rest. -->
+    <div class="border-t border-gray-200 pt-2" aria-hidden="true"></div>
     <div
       ref="treeScrollRef"
       id="run-section-panel"
-      role="tabpanel"
-      :aria-labelledby="`run-section-tab-${projectsTree.mode}`"
+      role="region"
+      :aria-label="t('conversations.title')"
       class="min-h-0 flex-1 overflow-y-auto px-1 pb-2"
       data-test="workspace-history-tree-scroll"
     >
-      <ProjectsRunsTree
-        v-if="projectsTree.mode === 'projects'"
-        :state="projectSectionState"
+      <ConversationsList
+        :workspace-nodes="workspaceNodes"
+        :teams-of="workspaceTeams"
+        :team-groups-of="workspaceTeamHistoryGroups"
+        :loading="runHistoryStore.loading"
+        :load-error="runHistoryStore.historyFamilyErrors?.workspace || runHistoryStore.agentOrgHistoryError || null"
+        :on-retry="retryRunHistory"
+        :state="sectionState"
         :avatars="sectionAvatarBindings"
-        :actions="projectSectionActions"
+        :actions="sectionActions"
       />
-      <template v-else>
-      <div v-if="runHistoryStore.loading" class="px-3 py-4 text-xs text-gray-500">{{ $t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.loading_task_history') }}</div>
-
-      <div v-if="runHistoryStore.historyFamilyErrors?.workspace" class="px-3 py-2 text-xs text-red-600">
-        {{ runHistoryStore.historyFamilyErrors?.workspace }}
-      </div>
-      <div v-if="runHistoryStore.agentOrgHistoryError" class="px-3 py-2 text-xs text-red-600">
-        {{ runHistoryStore.agentOrgHistoryError }}
-      </div>
-
-      <div
-        v-if="!runHistoryStore.loading && workspaceNodes.length === 0"
-        class="px-3 py-4 text-xs text-gray-500"
-      >{{ $t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.no_run_history_yet') }}</div>
-
-      <div v-if="workspaceNodes.length > 0" class="space-y-1">
-        <WorkspaceHistoryWorkspaceSection
-          v-for="workspaceNode in workspaceNodes"
-          :key="workspaceNode.stableKey"
-          :workspace-node="workspaceNode"
-          :workspace-teams="workspaceTeams(workspaceNode.workspaceRootPath)"
-          :workspace-team-history-groups="workspaceTeamHistoryGroups(workspaceNode.workspaceRootPath)"
-          :state="sectionState"
-          :avatars="sectionAvatarBindings"
-          :actions="sectionActions"
-        />
-      </div>
-      </template>
     </div>
 
     <ConfirmationModal
@@ -142,47 +35,21 @@
       @cancel="closeDeleteConfirmation"
     />
 
-    <ConfirmationModal
-      :show="showGroupArchiveConfirmation"
-      :title="$t('workspace.history.groupArchive.confirmTitle')"
-      :message="groupArchiveConfirmationMessage"
-      :confirm-button-text="$t('workspace.history.groupArchive.confirmButton')"
-      variant="primary"
-      typography-size="large"
-      @confirm="confirmGroupArchive"
-      @cancel="closeGroupArchiveConfirmation"
-    />
-
-    <ConfirmationModal
-      :show="showRemoveWorkspaceConfirmation"
-      :title="$t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.remove_workspace_title')"
-      :message="removeWorkspaceConfirmationMessage"
-      :confirm-button-text="$t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.remove_workspace_confirm')"
-      variant="danger"
-      typography-size="large"
-      @confirm="confirmRemoveWorkspace"
-      @cancel="closeRemoveWorkspaceConfirmation"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router';
-import { Icon } from '@iconify/vue';
 import ConfirmationModal from '~/components/common/ConfirmationModal.vue';
-import ProjectsRunsTree from '~/components/workspace/history/ProjectsRunsTree.vue';
-import { useProjectsTreeStore, firstFolderOf, type RunSectionMode } from '~/stores/projectsTreeStore';
-import { useProjectStore } from '~/stores/projectStore';
-import WorkspaceHistoryWorkspaceSection from '~/components/workspace/history/WorkspaceHistoryWorkspaceSection.vue';
+import ConversationsList from '~/components/workspace/history/ConversationsList.vue';
 import type {
   WorkspaceHistoryAvatarBindings,
   WorkspaceHistorySectionActions,
   WorkspaceHistorySectionState,
 } from '~/components/workspace/history/workspaceHistorySectionContracts';
 import { useRunHistoryStore } from '~/stores/runHistoryStore';
-import { useWorkspaceStore } from '~/stores/workspace';
 import { useAgentSelectionStore } from '~/stores/agentSelectionStore';
 import { useAgentRunStore } from '~/stores/agentRunStore';
 import { useAgentTeamRunStore } from '~/stores/agentTeamRunStore';
@@ -191,23 +58,15 @@ import { useAgentOrgContextsStore } from '~/stores/agentOrgContextsStore';
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore';
 import { useAgentOrgDefinitionStore } from '~/stores/agentOrgDefinitionStore';
 import { useAgentTeamDefinitionStore } from '~/stores/agentTeamDefinitionStore';
-import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
 import { useToasts } from '~/composables/useToasts';
-import { pickFolderPath } from '~/composables/useNativeFolderDialog';
 import { useRunHistoryAvatarState } from '~/composables/useRunHistoryAvatarState';
 import { useWorkspaceHistorySelectionActions } from '~/composables/useWorkspaceHistorySelectionActions';
 import { useWorkspaceHistoryTreeState } from '~/composables/useWorkspaceHistoryTreeState';
 import { useRevealSelectedTreeRow } from '~/components/workspace/history/useRevealSelectedTreeRow';
 import { chatRouteRunId } from '~/services/workspace/workspaceNavigationService';
-import { useWorkspaceHistoryWorkspaceCreation } from '~/composables/useWorkspaceHistoryWorkspaceCreation';
-import { useWorkspaceHistoryWorkspaceRemoval } from '~/composables/useWorkspaceHistoryWorkspaceRemoval';
 import { useWorkspaceHistoryMutations } from '~/composables/useWorkspaceHistoryMutations';
-import { useWorkspaceHistoryGroupArchive } from '~/composables/useWorkspaceHistoryGroupArchive';
 import { useWorkspaceHistorySubjectActions } from '~/composables/useWorkspaceHistorySubjectActions';
 import { useLocalization } from '~/composables/useLocalization';
-import { useRunStart } from '~/composables/runSettings/useRunStart';
-import type { RunTreeWorkspaceNode } from '~/utils/runTreeProjection';
-import { escapeHtml } from '~/utils/escapeHtml';
 
 const props = withDefaults(defineProps<{
   /** Whether the center shows a run (`useShellPrimaryNavigation().isWorkspacesActive`); gates the reveal. */
@@ -226,8 +85,6 @@ const agentOrgRunStore = useAgentOrgRunStore();
 const agentOrgContextsStore = useAgentOrgContextsStore();
 const route = useRoute() as ReturnType<typeof useRoute> | undefined;
 const router = useRouter();
-const runStart = useRunStart();
-const workspaceStore = useWorkspaceStore();
 const selectionStore = useAgentSelectionStore();
 const agentRunStore = useAgentRunStore();
 const teamRunStore = useAgentTeamRunStore();
@@ -235,8 +92,6 @@ const { stopPendingTeamIds } = storeToRefs(teamRunStore);
 const agentDefinitionStore = useAgentDefinitionStore();
 const agentTeamDefinitionStore = useAgentTeamDefinitionStore();
 const agentOrgDefinitionStore = useAgentOrgDefinitionStore();
-const windowNodeContextStore = useWindowNodeContextStore();
-const { isEmbeddedWindow } = storeToRefs(windowNodeContextStore);
 const { addToast } = useToasts();
 const { t } = useLocalization();
 const addWorkspaceToast = (message: string, type: 'success' | 'error' | 'warning' | 'info'): void => {
@@ -258,8 +113,8 @@ const treeState = useWorkspaceHistoryTreeState({
   selectionStore,
   selectedAgentOrg,
 });
-// When the panel appears, the open run's row is brought into view (REQ-003), only while a run is
-// shown in the center (`runShown`: the shell's Workspaces highlight, passed by the host panel).
+// When the panel appears, the open run's row is brought into view, only while a run is shown in the center
+// (`runShown`: the shell's run highlight, passed by the host panel).
 const treeScrollRef = ref<HTMLElement | null>(null);
 useRevealSelectedTreeRow(treeScrollRef, computed(() => props.runShown));
 const { workspaceNodes, workspaceTeams, workspaceTeamHistoryGroups } = treeState;
@@ -284,25 +139,6 @@ const {
   agentDefinitions: computed(() => agentDefinitionStore.agentDefinitions),
   teamDefinitions: computed(() => agentTeamDefinitionStore.agentTeamDefinitions),
   orgDefinitions: computed(() => agentOrgDefinitionStore.definitions),
-});
-
-const {
-  showCreateWorkspaceInline,
-  workspacePathDraft,
-  workspacePathError,
-  creatingWorkspace,
-  workspacePathInputRef,
-  onCreateWorkspace,
-  closeCreateWorkspaceInput,
-  confirmCreateWorkspace,
-} = useWorkspaceHistoryWorkspaceCreation({
-  isEmbeddedWindow,
-  createWorkspace: (rootPath: string) => runHistoryStore.createWorkspace(rootPath),
-  fetchAllWorkspaces: () => workspaceStore.fetchAllWorkspaces(),
-  pickFolderPath,
-  onWorkspaceCreated: (workspaceRootPath: string) => {
-    treeState.setWorkspaceExpandedByRootPath(workspaceRootPath, true);
-  },
 });
 
 /** Leaves the Agent Org route when the open Org run was archived or deleted. */
@@ -352,55 +188,10 @@ const {
 });
 
 const {
-  isGroupArchiving,
-  showGroupArchiveConfirmation,
-  groupArchiveConfirmationMessage,
-  onArchiveAgentGroup,
-  onArchiveAgentGroupRuns,
-  onArchiveTeamGroup,
-  onArchiveAgentOrgGroup,
-  closeGroupArchiveConfirmation,
-  confirmGroupArchive,
-} = useWorkspaceHistoryGroupArchive({
-  archiveAgentRunGroup: (workspaceRootPath, agentDefinitionId) =>
-    runHistoryStore.archiveAgentRunGroup(workspaceRootPath, agentDefinitionId),
-  archiveTeamRuns: (teamRunIds) => runHistoryStore.archiveTeamRuns(teamRunIds),
-  archiveAgentRuns: async (runIds) => {
-    const archivedRunIds: string[] = [];
-    const failedRunIds: string[] = [];
-    for (const runId of runIds) {
-      try { await runHistoryStore.archiveRun(runId); archivedRunIds.push(runId); } catch { failedRunIds.push(runId); }
-    }
-    return { archivedRunIds, failedRunIds };
-  },
-  archiveAgentOrgRuns: (orgRunIds) => runHistoryStore.archiveAgentOrgRuns(orgRunIds),
-  onAgentOrgArchived: leaveRemovedAgentOrgRoute,
-  addToast: addWorkspaceToast,
-});
-
-const {
-  pendingWorkspace,
-  removingWorkspaceIds,
-  showRemoveConfirmation: showRemoveWorkspaceConfirmation,
-  onRemoveWorkspace,
-  closeRemoveConfirmation: closeRemoveWorkspaceConfirmation,
-  confirmRemoveWorkspace,
-} = useWorkspaceHistoryWorkspaceRemoval({
-  removeWorkspace: (workspaceId: string) => workspaceStore.removeWorkspace(workspaceId),
-  pruneWorkspaceHistory: (workspaceId, rootPath) => runHistoryStore.pruneWorkspace(workspaceId, rootPath),
-  pruneWorkspaceExpansion: (workspaceId) => {
-    const node = treeState.workspaceNodes.value.find((candidate) => candidate.workspaceId === workspaceId);
-    treeState.pruneWorkspace(node?.stableKey ?? workspaceId);
-  },
-  addToast: addWorkspaceToast,
-});
-
-const {
   onSelectRun,
   onSelectTeam,
   onOpenTeamRun,
   onSelectTeamMember,
-  onCreateRun,
 } = useWorkspaceHistorySelectionActions({
   runHistoryStore,
   selectionStore,
@@ -414,47 +205,13 @@ const {
     }
     emit('run-selected', { type: 'team', runId: payload.runId });
   },
-  startPresetChat: async (preset) => {
-    await runStart.newChatInWorkspace(preset);
-  },
+  startPresetChat: async () => undefined,
   presentTeamStreamRecoveryFeedback: (feedback) => {
     const key = feedback === 'wait'
       ? 'workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.stream_recovery_wait'
       : 'workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.stream_recovery_retry';
     addToast(t(key), 'info');
   },
-});
-
-const onToggleWorkspace = async (workspaceNode: RunTreeWorkspaceNode): Promise<void> => {
-  const presentationId = 'stableKey' in workspaceNode
-    ? String(workspaceNode.stableKey)
-    : workspaceNode.workspaceId;
-  const wasExpanded = treeState.isWorkspaceExpanded(presentationId);
-  treeState.toggleWorkspace(presentationId);
-  if (!wasExpanded) {
-    if (!workspaceNode.workspaceId.startsWith('history:')) {
-      await runHistoryStore.fetchWorkspaceHistory(workspaceNode.workspaceId).catch(() => undefined);
-    }
-  }
-};
-
-const removeWorkspaceConfirmationMessage = computed(() => {
-  const workspace = pendingWorkspace.value;
-  if (!workspace) return '';
-  const name = escapeHtml(workspace.workspaceName || t(
-    'workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.this_workspace',
-  ));
-  const root = escapeHtml(workspace.workspaceRootPath);
-  const questionPrefix = escapeHtml(t(
-    'workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.remove_workspace_question_prefix',
-  ));
-  const questionSuffix = escapeHtml(t(
-    'workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.remove_workspace_question_suffix',
-  ));
-  const body = escapeHtml(t(
-    'workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.remove_workspace_non_destructive_body',
-  ));
-  return `${questionPrefix} <strong>${name}</strong> ${questionSuffix}<br><br>${body}<br><br><span class="break-all text-xs text-gray-500">${root}</span>`;
 });
 
 const sectionState: WorkspaceHistorySectionState = {
@@ -471,21 +228,10 @@ const sectionState: WorkspaceHistorySectionState = {
   isTeamDeleting: (teamRunId: string) => Boolean(deletingTeamIds.value[teamRunId]),
   isRunArchiving: (runId: string) => Boolean(archivingRunIds.value[runId]),
   isTeamArchiving: (teamRunId: string) => Boolean(archivingTeamIds.value[teamRunId]),
-  isWorkspaceRemoving: (workspaceId: string) => Boolean(removingWorkspaceIds.value[workspaceId]),
-  isWorkspaceHistoryLoading: (workspaceId: string) => Boolean(runHistoryStore.workspaceHistoryLoadingById[workspaceId]),
-  workspaceHistoryError: (workspaceId: string) => runHistoryStore.workspaceHistoryErrorById[workspaceId] || null,
   formatRelativeTime: (isoTime: string) => runHistoryStore.formatRelativeTime(isoTime),
-  isWorkspaceExpanded: treeState.isWorkspaceExpanded,
-  toggleWorkspace: onToggleWorkspace,
-  isAgentExpanded: treeState.isAgentExpanded,
-  toggleAgent: treeState.toggleAgent,
-  isTeamDefinitionExpanded: treeState.isTeamDefinitionExpanded,
-  toggleTeamDefinition: treeState.toggleTeamDefinition,
   isTeamExpanded: treeState.isTeamExpanded,
   isTeamMemberExpanded: treeState.isTeamMemberExpanded,
   toggleTeamMember: treeState.toggleTeamMember,
-  isAgentOrgDefinitionExpanded: treeState.isAgentOrgDefinitionExpanded,
-  toggleAgentOrgDefinition: treeState.toggleAgentOrgDefinition,
   isAgentOrgRunExpanded: treeState.isAgentOrgRunExpanded,
   toggleAgentOrgRun: treeState.toggleAgentOrgRun,
   isAgentOrgTeamExpanded: treeState.isAgentOrgTeamExpanded,
@@ -494,14 +240,12 @@ const sectionState: WorkspaceHistorySectionState = {
   toggleAgentOrgTaskTeam: treeState.toggleAgentOrgTaskTeam,
   isAgentOrgRunSelected: treeState.isAgentOrgRunSelected,
   isAgentOrgMemberSelected: treeState.isAgentOrgMemberSelected,
+  agentOrgTerminationError: (rootRunId: string) => agentOrgRunStore.terminationErrors[rootRunId] ?? agentOrgContextsStore.errorFor(rootRunId),
+  agentOrgContextFor: (rootRunId: string) => agentOrgContextsStore.contextFor(rootRunId),
   isAgentOrgTerminating: (rootRunId: string) => Boolean(agentOrgContextsStore.operations[rootRunId]) || agentOrgRunStore.terminatingRunIds.has(rootRunId),
   isAgentOrgDeleting: (rootRunId: string) => Boolean(deletingAgentOrgIds.value[rootRunId]),
   isAgentOrgArchiving: (rootRunId: string) => Boolean(archivingAgentOrgIds.value[rootRunId]),
-  agentOrgTerminationError: (rootRunId: string) => agentOrgRunStore.terminationErrors[rootRunId] ?? agentOrgContextsStore.errorFor(rootRunId),
-  agentOrgContextFor: (rootRunId: string) => agentOrgContextsStore.contextFor(rootRunId),
-  isGroupArchiving,
 };
-
 
 const sectionAvatarBindings: WorkspaceHistoryAvatarBindings = {
   showAgentAvatar,
@@ -521,8 +265,6 @@ const sectionAvatarBindings: WorkspaceHistoryAvatarBindings = {
 };
 
 const sectionActions: WorkspaceHistorySectionActions = {
-  onRemoveWorkspace,
-  onCreateRun,
   onSelectRun,
   onTerminateRun,
   onArchiveRun,
@@ -544,86 +286,12 @@ const sectionActions: WorkspaceHistorySectionActions = {
   }),
   onArchiveAgentOrg,
   onDeleteAgentOrg,
-  onArchiveAgentGroup,
-  onArchiveTeamGroup,
-  onArchiveAgentOrgGroup,
   onTerminateAgentOrg: (run) => executeSubjectAction({
     rootSubjectKind: 'agent_org', rootRunId: run.rootRunId, action: 'stop',
   }).catch(() => undefined),
 };
 
-// --- projects-left-navigation: Projects mode --------------------------------------------------
-const projectsTree = useProjectsTreeStore();
-const projectStore = useProjectStore();
-const runSectionModes: readonly RunSectionMode[] = ['workspaces', 'projects'];
-const chooseMode = (next: RunSectionMode, focus = false): void => {
-  projectsTree.setMode(next);
-  if (focus) void nextTick(() => document.getElementById(`run-section-tab-${next}`)?.focus());
-};
-const moveMode = (step: number): void => {
-  const index = runSectionModes.indexOf(projectsTree.mode);
-  chooseMode(runSectionModes[(index + step + runSectionModes.length) % runSectionModes.length]!, true);
-};
-// "+" in Projects mode creates a Project on the Projects page; opening it never starts or stops a run (REQ-001).
-const onHeaderAdd = (): void => {
-  if (projectsTree.mode === 'projects') {
-    void router.push('/projects/new');
-    return;
-  }
-  onCreateWorkspace();
-};
-
-// REQ-012: the open run is revealed in the Project that lists it (the board's Project first) and marked there.
-const revealOpenRunInProjects = (): void => {
-  if (projectsTree.mode !== 'projects') return;
-  const runId = sectionState.selectedRunId;
-  const teamRunId = selectionStore.selectedType === 'team' ? selectionStore.selectedRunId : null;
-  if (!runId && !teamRunId) return;
-  const entries = [...projectsTree.projectNodes].sort((a, b) =>
-    Number(b.project.projectId === projectsTree.selectedProjectId) - Number(a.project.projectId === projectsTree.selectedProjectId));
-  for (const entry of entries) {
-    const key = entry.node.stableKey;
-    const agent = runId ? entry.node.agents.find((candidate) => candidate.runs.some((run) => run.runId === runId)) : undefined;
-    const team = teamRunId ? entry.teams.find((candidate) => candidate.teamRunId === teamRunId) : undefined;
-    if (!agent && !team) continue;
-    treeState.setWorkspaceExpanded(key, true);
-    if (agent) treeState.setAgentExpanded(key, agent.agentDefinitionId, true);
-    if (team) treeState.setTeamDefinitionExpanded(key, team.teamDefinitionId?.trim() || team.teamDefinitionName?.trim() || 'team', true);
-    return;
-  }
-};
-watch(
-  () => [projectsTree.mode, sectionState.selectedRunId, selectionStore.selectedRunId, projectsTree.projectNodes.map((entry) => entry.runCount).join(',')],
-  revealOpenRunInProjects,
-  { immediate: true },
-);
-
-/** A Project's section: its expansion is the Project's own; it never reads a folder's history. */
-const projectSectionState: WorkspaceHistorySectionState = Object.create(sectionState, {
-  toggleWorkspace: { value: (node: RunTreeWorkspaceNode) => treeState.toggleWorkspace(String((node as { stableKey?: string }).stableKey ?? node.workspaceId)) },
-});
-
-/** The Project's runs start on the New chat start surface, with the Project and its folder (REQ-004, REQ-005). */
-const startUnderProject = async (projectId: string, target: { kind: 'agent' | 'team'; definitionId: string } | null): Promise<void> => {
-  projectsTree.selectProject(projectId);
-  treeState.setWorkspaceExpanded(`project:${projectId}`, true);
-  await runStart.newChatUnderProject({
-    projectId,
-    workspaceRootPath: firstFolderOf(projectStore.projects.find((project) => project.projectId === projectId)),
-    target,
-  });
-};
-const projectSectionActions: WorkspaceHistorySectionActions = {
-  ...sectionActions,
-  onSelectProject: (projectId: string) => {
-    projectsTree.selectProject(projectId);
-    treeState.setWorkspaceExpanded(`project:${projectId}`, true);
-  },
-  onCreateProjectRun: startUnderProject,
-  // Opening a run from under a Project makes that Project the board's Project; the open itself is the same as in Workspaces.
-  // REQ-014: "Archive all runs" in a Project touches only the runs listed under that Project.
-  onArchiveAgentGroup: (workspaceNode, agentNode) => onArchiveAgentGroupRuns(workspaceNode.stableKey, agentNode),
-};
+const retryRunHistory = (): void => { void runHistoryStore.fetchTree().catch(() => undefined); };
 
 let refreshTimerId: ReturnType<typeof setInterval> | null = null;
 
@@ -631,14 +299,12 @@ onMounted(async () => {
   await Promise.all([
     runHistoryStore.loadWorkspaceCatalogForNavigation().catch(() => undefined),
     runHistoryStore.fetchTree().catch(() => undefined),
-    projectsTree.load(),
     agentDefinitionStore.fetchAllAgentDefinitions().catch(() => undefined),
     agentTeamDefinitionStore.fetchAllAgentTeamDefinitions().catch(() => undefined),
     agentOrgDefinitionStore.fetchAll().catch(() => undefined),
   ]);
   refreshTimerId = setInterval(() => {
     void runHistoryStore.refreshTreeQuietly();
-    if (projectsTree.mode === 'projects') void projectsTree.load({ quiet: true });
   }, HISTORY_REFRESH_INTERVAL_MS);
 });
 

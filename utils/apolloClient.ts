@@ -22,6 +22,7 @@ import { designOnlyLayersEnabled, reconnectLayerEnabled } from '~/prototype/shar
 import { withMemoryDesign } from '~/prototype/memory-search/memoryDesignFixture'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { withModelRouting } from '~/prototype/model-routing/modelRoutingFixture'
+import { RUN_REMOVAL_MUTATIONS, answerRunRemoval, withConversationsList } from '~/prototype/conversations-list/conversationsFixture'
 import { remoteStopResult } from '~/prototype/remote-runs/remoteRunsFixture'
 import { seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
 import { seedTaskParts } from '~/prototype/task-part-of/taskPartOfFixture'
@@ -114,6 +115,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (reconnectLayerEnabled()) data = data ? withAgentReconnect(name, request.variables || {}, structuredClone(data), scenario) : data
   // delegated-copy-task-locator (design-only): a Project Task Manager run with look-alike delegated copies.
   if (designOnlyLayersEnabled()) data = data ? withDelegatedCopyTasks(name, request.variables || {}, structuredClone(data), scenario) : data
+  // left-panel-super-agents (design-only): more runs, so the Conversations list has parallel conversations, several folders and older runs.
+  if (designOnlyLayersEnabled()) data = data ? withConversationsList(name, request.variables || {}, structuredClone(data), scenario) : data
   // delegated-runtime-model-routing (design-only): the Model Router's conversation (an internal agent's run opened by its ID).
   if (designOnlyLayersEnabled()) data = data ? withModelRouting(name, request.variables || {}, structuredClone(data), state) : data
   // work-journal-search (design-only): agents, runs, teams (task teams too) and orgs of the Memory page.
@@ -133,7 +136,7 @@ const resolveLocally = async (request: OperationRequest = {}) => {
 // Project/Task mutations back the Projects pages (0a32261); the skill-source
 // mutations back the Skill Sources dialog (4dee901); ReloadAgentPackageDefinitions backs the
 // Agents, Teams and Orgs Reload buttons (f7fcf90).
-const LOCAL_MUTATIONS = new Set([...GITHUB_MUTATIONS, 'UpdateServerSetting', 'DeleteServerSetting', 'SetRemoteCollaborationEnabled', 'AddPeerNode', 'RenamePeerNode', 'RemovePeerNode', 'ChangePeerAddress', 'AddProjectTaskComment', ...EMBEDDING_MUTATIONS, ...NODE_SETTINGS_MUTATIONS, ...DELEGATED_MUTATIONS, 'ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', 'ImportMcpServerConfigs', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
+const LOCAL_MUTATIONS = new Set([...RUN_REMOVAL_MUTATIONS, ...GITHUB_MUTATIONS, 'UpdateServerSetting', 'DeleteServerSetting', 'SetRemoteCollaborationEnabled', 'AddPeerNode', 'RenamePeerNode', 'RemovePeerNode', 'ChangePeerAddress', 'AddProjectTaskComment', ...EMBEDDING_MUTATIONS, ...NODE_SETTINGS_MUTATIONS, ...DELEGATED_MUTATIONS, 'ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', 'ImportMcpServerConfigs', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
 
 const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const definition = request.mutation?.definitions?.find((entry: any) => entry.kind === 'OperationDefinition')
@@ -143,6 +146,8 @@ const resolveMutationLocally = async (request: OperationRequest = {}) => {
   // like the replaced store actions, so a control disabled while it waits loses focus as in the source.
   await new Promise<void>(done => setTimeout(done, 40))
   const state = fixtureState()
+  // left-panel-super-agents (design-only): an archived or deleted run stays gone for the session.
+  if (designOnlyLayersEnabled()) { const removed = answerRunRemoval(name, request.variables || {}); if (removed) return { data: removed } }
   if (name === 'CreateAgentOrgRun') return { data: recordOrgLaunch(request.variables || {}) }
   if (name === 'TerminateAgentOrgRun') return { data: recordOrgTermination(request.variables || {}) }
   // skill-sources-dialog-redesign (design-only): timed, scripted skill-source outcomes.

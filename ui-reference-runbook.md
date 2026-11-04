@@ -1,3 +1,18 @@
+## left-panel-super-agents (the run section is your runs with their delegated work; source pin `d74f75a`, design base `88e0e32`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4970
+```
+
+- Entry: `/workspace`. The left panel's run section lists the runs (newest first); nothing to switch.
+- Example runs (invented): about 26 stored runs from `prototype/conversations-list/conversationsFixture.ts` plus the baseline's Project Task Manager run with delegated copies (also on `docker` and `office-mac`), the Research Assistant, teams and the Product Launch Org. Times are offsets from page load.
+- Try: open a run, a delegated copy, a team and the Org; fold the Project Task Manager's tree (chevron); Archive or Delete a stored run (it stays gone until a reload); "Show older (N)", then "Archive all older".
+- Starting states (browser console, then reload; remove the key to reset): `localStorage.setItem('autobyteus.prototype.scenario', 'empty' | 'loading' | 'error')`. Chinese: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`.
+- Final screenshots: `tickets/done/left-panel-super-agents/visual-references/` (VIS-001…017), captured with a disposable browser script against `http://127.0.0.1:4970/workspace` (not kept).
+- Not playable here: a Task closing live and its copies leaving (existing mechanism); Stop actually stopping a run.
+- Spec: `tickets/done/left-panel-super-agents/ui-ux-spec.md`.
+
 # UI Reference Runbook
 
 ## projects-left-navigation (Projects mode in the left panel; source pin `d74f75a`, design base `752b6b8`)
