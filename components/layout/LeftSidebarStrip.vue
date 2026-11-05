@@ -64,8 +64,8 @@
         :aria-current="isWorkspacesActive ? 'location' : undefined"
         @click="handleWorkspacesClick($event)"
       >
-        <!-- left-panel-super-agents: the strip entry is the run section (one icon in every view, so it is not mistaken for the Chat or Projects page entry above); its name says the view. -->
-        <Icon icon="heroicons:queue-list" class="h-5 w-5" />
+        <!-- projects-left-navigation: the strip entry is the run tree (one icon in both modes, so it is not mistaken for the Projects page entry above); its name says the mode. -->
+        <Icon icon="ph:tree-view" class="h-5 w-5" />
 
         <div class="absolute left-full ml-2 whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-xs text-white opacity-0 invisible transition-all group-hover:opacity-100 group-hover:visible z-50">
           {{ runSectionLabel }}
@@ -100,6 +100,7 @@ import { Icon } from '@iconify/vue';
 import { computed, nextTick, onMounted } from 'vue';
 import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router';
 import { useAppLayoutStore } from '~/stores/appLayoutStore';
+import { useProjectsTreeStore } from '~/stores/projectsTreeStore';
 import SidebarNotificationsEntry from '~/components/layout/SidebarNotificationsEntry.vue';
 import { rememberDrawerTrigger } from '~/composables/useAccessibleDrawer';
 import { useShellPrimaryNavigation, type ShellPrimaryNavKey } from '~/composables/useShellPrimaryNavigation';
@@ -107,7 +108,8 @@ import { isFeatureAvailableInRuntime } from '~/utils/mobileFeatureGates';
 import type { StripBehavior, StripActivation } from '~/utils/layout/responsiveLayoutPolicy';
 
 const { t } = useLocalization();
-const runSectionLabel = computed(() => t('conversations.title'));
+const projectsTree = useProjectsTreeStore();
+const runSectionLabel = computed(() => t(projectsTree.mode === 'projects' ? 'shell.navigation.projects' : 'shell.navigation.workspaces'));
 const {
   primaryNavItems,
   resolvePrimaryRoute,

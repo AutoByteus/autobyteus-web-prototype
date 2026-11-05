@@ -165,10 +165,6 @@ const localActions: Record<string, Set<string>> = {
     // WEB-BASELINE-REFRESH-008 (39d0e99): adding a folder from the Workspaces header creates it
     // through the source's own action (workspace.createWorkspace, answered locally).
     'createWorkspace',
-    // left-panel-super-agents (design-only): Archive and Delete on a run row, and "Archive all older", run the source's own
-    // actions; utils/apolloClient.ts answers the mutations locally and remembers them for the session.
-    'archiveRun', 'deleteRun', 'archiveTeamRun', 'deleteTeamRun', 'archiveAgentOrgRun', 'deleteAgentOrgRun',
-    'archiveTeamRuns', 'archiveAgentOrgRuns',
   ]),
   // Projects (0a32261): a new-workspace row creates its workspace through the
   // source's own action; utils/apolloClient.ts answers CreateWorkspace locally.

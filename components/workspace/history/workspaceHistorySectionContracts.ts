@@ -20,16 +20,16 @@ export interface WorkspaceHistorySectionState {
   isTeamDeleting: (teamRunId: string) => boolean;
   isRunArchiving: (runId: string) => boolean;
   isTeamArchiving: (teamRunId: string) => boolean;
-  isWorkspaceRemoving?: (workspaceId: string) => boolean;
-  isWorkspaceHistoryLoading?: (workspaceId: string) => boolean;
-  workspaceHistoryError?: (workspaceId: string) => string | null;
+  isWorkspaceRemoving: (workspaceId: string) => boolean;
+  isWorkspaceHistoryLoading: (workspaceId: string) => boolean;
+  workspaceHistoryError: (workspaceId: string) => string | null;
   formatRelativeTime: (isoTime: string) => string;
-  isWorkspaceExpanded?: (workspaceId: string) => boolean;
-  toggleWorkspace?: (workspaceNode: RunTreeWorkspaceNode) => Promise<void> | void;
-  isAgentExpanded?: (workspaceId: string, agentDefinitionId: string) => boolean;
-  toggleAgent?: (workspaceId: string, agentDefinitionId: string) => void;
-  isTeamDefinitionExpanded?: (workspaceId: string, groupKey: string) => boolean;
-  toggleTeamDefinition?: (workspaceId: string, groupKey: string) => void;
+  isWorkspaceExpanded: (workspaceId: string) => boolean;
+  toggleWorkspace: (workspaceNode: RunTreeWorkspaceNode) => Promise<void> | void;
+  isAgentExpanded: (workspaceId: string, agentDefinitionId: string) => boolean;
+  toggleAgent: (workspaceId: string, agentDefinitionId: string) => void;
+  isTeamDefinitionExpanded: (workspaceId: string, groupKey: string) => boolean;
+  toggleTeamDefinition: (workspaceId: string, groupKey: string) => void;
   isTeamExpanded: (teamRunId: string) => boolean;
   isTeamMemberExpanded: (
     workspaceId: string,
@@ -87,8 +87,8 @@ export interface WorkspaceHistoryAvatarBindings {
 }
 
 export interface WorkspaceHistorySectionActions {
-  onRemoveWorkspace?: (workspace: RunTreeWorkspaceNode) => Promise<void> | void;
-  onCreateRun?: (workspaceRootPath: string, agentDefinitionId: string) => Promise<void> | void;
+  onRemoveWorkspace: (workspace: RunTreeWorkspaceNode) => Promise<void> | void;
+  onCreateRun: (workspaceRootPath: string, agentDefinitionId: string) => Promise<void> | void;
   onSelectRun: (run: RunTreeRow) => Promise<void> | void;
   onTerminateRun: (runId: string) => Promise<void> | void;
   onArchiveRun: (run: RunTreeRow) => Promise<void> | void;
