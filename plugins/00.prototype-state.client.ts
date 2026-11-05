@@ -46,7 +46,7 @@ const overlayAfterActions: Record<string, string[]> = { agentDefinition: ['reloa
 // (utils/apolloClient.ts, prototype/memory-search/memoryDesignFixture.ts), so lists, search and the Work Journal respond for real.
 // WEB-BASELINE-REFRESH-013 (origin/personal@d74f75a): Manage Nodes (its list, peers, offers, switch and change dialog) and the remote runs run
 // the source's own code against the simulated network of nodes (prototype/nodes/network-world.mjs).
-const sourceLoadedStores = new Set(['phoneAccess', 'nodeList', 'nodeServerUpdate', 'remoteCollaborationStore', 'remoteCollaborationOffers', 'remoteCollaborationCapability', 'nodeChangeDialog', 'remoteRuns', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft', 'memoryExplorerStore', 'memoryInspectorStore', 'memorySearchStore', 'memoryJournalStore', 'integrations'])
+const sourceLoadedStores = new Set(['phoneAccess', 'nodeList', 'nodeServerUpdate', 'remoteCollaborationStore', 'remoteCollaborationOffers', 'remoteCollaborationCapability', 'nodeChangeDialog', 'remoteRuns', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft', 'memoryExplorerStore', 'memoryInspectorStore', 'memorySearchStore', 'memoryJournalStore', 'integrations', 'workspaceFolders'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),
@@ -165,6 +165,10 @@ const localActions: Record<string, Set<string>> = {
     // WEB-BASELINE-REFRESH-008 (39d0e99): adding a folder from the Workspaces header creates it
     // through the source's own action (workspace.createWorkspace, answered locally).
     'createWorkspace',
+    // left-panel-super-agents (design-only): Archive and Delete on a run row, and "Archive all older", run the source's own
+    // actions; utils/apolloClient.ts answers the mutations locally and remembers them for the session.
+    'archiveRun', 'deleteRun', 'archiveTeamRun', 'deleteTeamRun', 'archiveAgentOrgRun', 'deleteAgentOrgRun',
+    'archiveTeamRuns', 'archiveAgentOrgRuns',
   ]),
   // Projects (0a32261): a new-workspace row creates its workspace through the
   // source's own action; utils/apolloClient.ts answers CreateWorkspace locally.

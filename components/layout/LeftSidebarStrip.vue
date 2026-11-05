@@ -109,7 +109,7 @@ import type { StripBehavior, StripActivation } from '~/utils/layout/responsiveLa
 
 const { t } = useLocalization();
 const projectsTree = useProjectsTreeStore();
-const runSectionLabel = computed(() => t(projectsTree.mode === 'projects' ? 'shell.navigation.projects' : 'shell.navigation.workspaces'));
+const runSectionLabel = computed(() => t(projectsTree.mode === 'runs' ? 'conversations.title' : projectsTree.mode === 'projects' ? 'shell.navigation.projects' : 'shell.navigation.workspaces'));
 const {
   primaryNavItems,
   resolvePrimaryRoute,

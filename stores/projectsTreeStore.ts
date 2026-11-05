@@ -15,8 +15,8 @@ import type { RunTreeAgentNode } from '~/utils/runTreeProjection'
 import type { Project } from '~/types/project'
 import { PROJECT_RUN_LINKS, type ProjectRunLink } from '~/prototype/projects-left-navigation/projectRunLinks'
 
-/** What the left panel's run section shows: today's Workspaces tree, or the Projects tree. */
-export type RunSectionMode = 'workspaces' | 'projects'
+/** What the left panel's run section shows: today's Workspaces tree, the Projects tree, or your runs with no grouping. */
+export type RunSectionMode = 'workspaces' | 'projects' | 'runs'
 export type ProjectsTreeRead = 'loading' | 'ready' | 'error'
 
 export const RUN_SECTION_MODE_STORAGE_PREFIX = 'autobyteus.leftPanel.runSectionMode.'
@@ -59,7 +59,7 @@ export const useProjectsTreeStore = defineStore('projectsTree', () => {
   // --- Mode (REQ-001): remembered per node; switching changes only the tree. ---
   const storageKey = () => `${RUN_SECTION_MODE_STORAGE_PREFIX}${node.entryId}`
   const mode = ref<RunSectionMode>('workspaces')
-  const readMode = () => { mode.value = storage()?.getItem(storageKey()) === 'projects' ? 'projects' : 'workspaces' }
+  const readMode = () => { const saved = storage()?.getItem(storageKey()); mode.value = saved === 'projects' || saved === 'runs' ? saved : 'workspaces' }
   readMode()
   watch(() => node.entryId, readMode)
   const setMode = (next: RunSectionMode) => {

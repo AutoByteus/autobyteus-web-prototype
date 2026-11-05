@@ -112,28 +112,43 @@
 
         <template v-if="filteredUserWorkspaces.length">
           <h4 class="px-3 pb-1 pt-2 text-[0.6875rem] font-semibold uppercase tracking-wide text-gray-400">{{ $t('chat.workspace.yourWorkspaces') }}</h4>
-          <button
+          <!-- workspace-tree-vs-chooser: every folder is offered, hidden ones too. "Remove" (hover or focus) takes a folder out of every list. -->
+          <div
             v-for="item in filteredUserWorkspaces"
             :key="item.workspaceId"
-            type="button"
-            role="option"
-            data-option
-            :aria-selected="isSelected(item.workspaceId) ? 'true' : 'false'"
-            :data-test="`chat-workspace-option-${item.workspaceId}`"
-            class="flex w-full items-start gap-2.5 px-3 py-1.5 text-left hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
-            @click="chooseExisting(item.workspaceId)"
+            class="group/folder-row flex items-start hover:bg-gray-100 focus-within:bg-gray-100"
           >
-            <Icon icon="heroicons:folder" class="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-500" aria-hidden="true" />
-            <span class="min-w-0 flex-1">
-              <span class="flex items-center gap-1.5 text-sm font-medium" :class="isSelected(item.workspaceId) ? 'text-blue-700' : 'text-gray-900'">
-                <span class="truncate">{{ item.name }}</span>
-                <!-- projects-left-navigation: the folder a run under a Project starts in (REQ-005). -->
-                <span v-if="isProjectFolder(item)" class="rounded bg-gray-100 px-1.5 py-px text-[0.625rem] font-medium uppercase tracking-wide text-gray-500" data-test="chat-workspace-project-badge">{{ t('projectsTree.folderProject') }}</span>
+            <button
+              type="button"
+              role="option"
+              data-option
+              :aria-selected="isSelected(item.workspaceId) ? 'true' : 'false'"
+              :data-test="`chat-workspace-option-${item.workspaceId}`"
+              class="flex min-w-0 flex-1 items-start gap-2.5 py-1.5 pl-3 pr-2 text-left focus:outline-none"
+              @click="chooseExisting(item.workspaceId)"
+            >
+              <Icon icon="heroicons:folder" class="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-500" aria-hidden="true" />
+              <span class="min-w-0 flex-1">
+                <span class="flex items-center gap-1.5 text-sm font-medium" :class="isSelected(item.workspaceId) ? 'text-blue-700' : 'text-gray-900'">
+                  <span class="truncate">{{ item.name }}</span>
+                  <!-- projects-left-navigation: the folder a run under a Project starts in (REQ-005). -->
+                  <span v-if="isProjectFolder(item)" class="rounded bg-gray-100 px-1.5 py-px text-[0.625rem] font-medium uppercase tracking-wide text-gray-500" data-test="chat-workspace-project-badge">{{ t('projectsTree.folderProject') }}</span>
+                </span>
+                <span class="block truncate text-xs text-gray-500">{{ item.absolutePath }}</span>
               </span>
-              <span class="block truncate text-xs text-gray-500">{{ item.absolutePath }}</span>
-            </span>
-            <Icon v-if="isSelected(item.workspaceId)" icon="heroicons:check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600" aria-hidden="true" />
-          </button>
+              <Icon v-if="isSelected(item.workspaceId)" icon="heroicons:check" class="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              class="mr-2 mt-1 inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-[opacity,color,background-color] duration-150 hover:bg-red-50 hover:text-red-600 focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 md:opacity-0 md:group-hover/folder-row:opacity-100 md:group-focus-within/folder-row:opacity-100"
+              :data-test="`chat-workspace-remove-${item.workspaceId}`"
+              :title="t('workspaceFolders.chooserRemove', { name: item.name })"
+              :aria-label="t('workspaceFolders.chooserRemove', { name: item.name })"
+              @click.stop="askRemove(item)"
+            >
+              <Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
         </template>
 
         <button
@@ -198,6 +213,17 @@
         </button>
       </footer>
     </div>
+
+    <ConfirmationModal
+      :show="removing !== null"
+      :title="t('workspaceFolders.removeTitle')"
+      :message="removeMessage"
+      :confirm-button-text="t('workspaceFolders.removeConfirm')"
+      variant="danger"
+      typography-size="large"
+      @confirm="confirmRemove"
+      @cancel="removing = null"
+    />
   </div>
 </template>
 
@@ -212,6 +238,11 @@ import { useMenuInBoundary } from '~/composables/popover/useMenuInBoundary'
 import type { RunWorkspaceChoice } from '~/types/runSettings/RunWorkspaceChoice'
 import { isAbsoluteFolderPath } from '~/utils/chat/chatDefaults'
 import { useLocalization } from '~/composables/useLocalization'
+import ConfirmationModal from '~/components/common/ConfirmationModal.vue'
+import { useToasts } from '~/composables/useToasts'
+import { useRunHistoryStore } from '~/stores/runHistoryStore'
+import { useWorkspaceFoldersStore } from '~/stores/workspaceFoldersStore'
+import { escapeHtml } from '~/utils/escapeHtml'
 import { filterWorkspaceOptions } from '~/components/chat/chatComposerMenus'
 import { firstFolderOf } from '~/stores/projectsTreeStore'
 import type { Project } from '~/types/project'
@@ -230,6 +261,45 @@ const emit = defineEmits<{ (event: 'select', value: RunWorkspaceChoice): void; (
 
 const { t } = useLocalization()
 const workspaceStore = useWorkspaceStore()
+const folders = useWorkspaceFoldersStore()
+const runHistoryStore = useRunHistoryStore()
+const { addToast } = useToasts()
+
+// workspace-tree-vs-chooser: "Remove" unregisters the folder from every list (today's removal). It deletes nothing, and the
+// server refuses it while a run is running in the folder.
+const removing = ref<{ workspaceId: string, name: string, absolutePath: string | null } | null>(null)
+const removeMessage = computed(() => {
+  const folder = removing.value
+  if (!folder) return ''
+  const question = escapeHtml(t('workspaceFolders.removeQuestion', { name: '\u0000' })).replace('\u0000', `<strong>${escapeHtml(folder.name)}</strong>`)
+  return `${question}<br><br>${escapeHtml(t('workspaceFolders.removeBody'))}<br><br><span class="break-all text-xs text-gray-500">${escapeHtml(folder.absolutePath ?? '')}</span>`
+})
+const askRemove = (item: { workspaceId: string, name: string, absolutePath: string | null }) => {
+  removing.value = { workspaceId: item.workspaceId, name: item.name, absolutePath: item.absolutePath }
+}
+const folderHasActiveRun = (workspaceId: string): boolean => {
+  const rootPath = workspaceStore.workspaces[workspaceId]?.absolutePath
+  const group = (runHistoryStore.workspaceGroups ?? []).find((candidate: any) => candidate.workspaceRootPath === rootPath)
+  return Boolean(group?.agentDefinitions?.some((definition: any) => definition.runs?.some((run: any) => run.isActive))
+    || group?.teamDefinitions?.some((definition: any) => definition.runs?.some((run: any) => run.isActive)))
+}
+const confirmRemove = () => {
+  const folder = removing.value
+  removing.value = null
+  if (!folder) return
+  const result = folders.remove(folder.workspaceId, folderHasActiveRun(folder.workspaceId))
+  if (!result.success) {
+    addToast(result.message, 'error')
+    return
+  }
+  const wasSelected = isSelected(folder.workspaceId)
+  runHistoryStore.pruneWorkspace(folder.workspaceId, folder.absolutePath)
+  workspaceStore.removeWorkspaceEntryById(folder.workspaceId)
+  void runHistoryStore.refreshTreeQuietly()
+  // A removed folder cannot stay the chosen place for the run: the chat falls back to the Temp workspace.
+  if (wasSelected && tempWorkspace.value) emit('select', { kind: 'existing', workspaceId: tempWorkspace.value.workspaceId })
+  addToast(t('workspaceFolders.removedToast', { name: folder.name }), 'success')
+}
 const rootRef = ref<HTMLElement | null>(null)
 const triggerRef = ref<HTMLElement | null>(null)
 const listRef = ref<HTMLElement | null>(null)

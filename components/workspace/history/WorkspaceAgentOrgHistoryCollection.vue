@@ -1,10 +1,10 @@
 <template>
-  <div v-if="groups.length" class="mt-1 space-y-0.5" data-test="workspace-agent-orgs">
-    <div class="px-2 py-1 text-[0.6875rem] font-semibold uppercase tracking-wide text-gray-400">
+  <div v-if="groups.length" :class="bare ? '' : 'mt-1 space-y-0.5'" data-test="workspace-agent-orgs">
+    <div v-if="!bare" class="px-2 py-1 text-[0.6875rem] font-semibold uppercase tracking-wide text-gray-400">
       {{ t('workspace.agentOrg.history.collectionLabel') }}
     </div>
     <div v-for="group in groups" :key="group.stableKey" class="rounded-md">
-      <div class="group/org-header flex items-center rounded-md px-2 py-1 text-sm text-gray-700 transition-colors hover:bg-gray-50">
+      <div v-if="!bare" class="group/org-header flex items-center rounded-md px-2 py-1 text-sm text-gray-700 transition-colors hover:bg-gray-50">
       <button
         type="button"
         class="flex min-w-0 flex-1 items-center text-left"
@@ -36,9 +36,9 @@
       </button>
       </div>
 
-      <div v-if="isDefinitionExpanded(group.definitionId)" class="ml-3 mt-0.5 space-y-0.5">
+      <div v-if="bare || isDefinitionExpanded(group.definitionId)" :class="bare ? '' : 'ml-3 mt-0.5 space-y-0.5'">
         <div v-for="run in group.runs" :key="run.stableKey" class="rounded-md">
-          <div class="group/org-row flex items-center justify-between rounded-md px-2 py-1 text-sm text-gray-700 hover:bg-gray-50">
+          <div v-if="!bare" class="group/org-row flex items-center justify-between rounded-md px-2 py-1 text-sm text-gray-700 hover:bg-gray-50">
             <button
               type="button"
               :data-test="`agent-org-run-open-${run.rootRunId}`"
@@ -218,6 +218,8 @@ const props = defineProps<{
   state: WorkspaceHistorySectionState
   avatars: Pick<WorkspaceHistoryAvatarBindings, 'getOrgAvatarUrl' | 'showOrgAvatar' | 'onOrgAvatarError'>
   actions: WorkspaceHistorySectionActions
+  /** left-panel-super-agents: only the open Org run's member tree; the host row (the conversation row) is the Org run's own row. */
+  bare?: boolean
 }>()
 const { t } = useLocalization()
 // The Org run's open button sits in the row above this tree.
