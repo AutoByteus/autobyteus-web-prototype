@@ -23,7 +23,7 @@ export const RUN_SECTION_MODE_STORAGE_PREFIX = 'autobyteus.leftPanel.runSectionM
 /**
  * Design-only starting state of the Projects tree (a local-storage seed, read once; no visible control sets it):
  * `loading` (the first read takes a few seconds), `error` (the first read fails; Retry succeeds), `stale-error`
- * (the first read works; the next refresh fails once; Retry succeeds), `none` (the node has no Projects).
+ * (the first read works; the next refresh fails once; Retry succeeds), `none` (the node has no Projects), `no-runs` (the Projects have no runs yet).
  */
 export const PROJECTS_TREE_SEED_KEY = 'autobyteus.prototype.projectsTree'
 
@@ -107,7 +107,8 @@ export const useProjectsTreeStore = defineStore('projectsTree', () => {
     if (current.some((entry) => entry.runId === link.runId)) return
     startedUnderLinks.value = { ...startedUnderLinks.value, [projectId]: [...current, { ...link, startedUnder: true }] }
   }
-  const linksOf = (projectId: string): ProjectRunLink[] => [...(PROJECT_RUN_LINKS[projectId] ?? []), ...(startedUnderLinks.value[projectId] ?? [])]
+  // Starting state `no-runs` (workspace-tree-vs-chooser): the example Projects have no runs yet.
+  const linksOf = (projectId: string): ProjectRunLink[] => [...(seed === 'no-runs' ? [] : PROJECT_RUN_LINKS[projectId] ?? []), ...(startedUnderLinks.value[projectId] ?? [])]
   /** Whether the run was started under the Project (its Temp-task work then belongs there too, REQ-008). */
   const isStartedUnder = (projectId: string, runId: string): boolean => linksOf(projectId).some((link) => link.runId === runId && link.startedUnder)
 

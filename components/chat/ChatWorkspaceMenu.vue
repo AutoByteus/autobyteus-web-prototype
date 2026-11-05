@@ -140,13 +140,13 @@
             </button>
             <button
               type="button"
-              class="mr-2 mt-1 inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded text-gray-400 transition-[opacity,color,background-color] duration-150 hover:bg-red-50 hover:text-red-600 focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 md:opacity-0 md:group-hover/folder-row:opacity-100 md:group-focus-within/folder-row:opacity-100"
+              class="mr-2 inline-flex flex-shrink-0 self-center h-7 w-7 items-center justify-center rounded text-gray-400 transition-[opacity,color,background-color] duration-150 hover:bg-red-50 hover:text-red-600 focus:opacity-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40 md:opacity-0 md:group-hover/folder-row:opacity-100 md:group-focus-within/folder-row:opacity-100"
               :data-test="`chat-workspace-remove-${item.workspaceId}`"
               :title="t('workspaceFolders.chooserRemove', { name: item.name })"
               :aria-label="t('workspaceFolders.chooserRemove', { name: item.name })"
               @click.stop="askRemove(item)"
             >
-              <Icon icon="heroicons:x-mark-20-solid" class="h-4 w-4" aria-hidden="true" />
+              <Icon icon="heroicons:x-mark-20-solid" class="h-5 w-5" aria-hidden="true" />
             </button>
           </div>
         </template>

@@ -766,5 +766,6 @@ Use one terminal per long-running process and stop it with `Ctrl-C`. Evidence po
 
 - Run: `corepack pnpm install --ignore-workspace --frozen-lockfile && corepack pnpm dev --port 3385`; open <http://127.0.0.1:3385/workspace>.
 - View menu: the `⋯` button in the left panel's run section. The chosen view is `autobyteus.leftPanel.runSectionMode.embedded-local` (`runs` | `workspaces` | `projects`; remove it to return to Workspaces).
+- Starting states: `autobyteus.prototype.scenario` = `empty` (no folder has a run); `autobyteus.prototype.projectsTree` = `none` | `no-runs`. A folder or Project is listed only while it has a run; try New chat, choose `docs-site`, send a message.
 - Chooser "Remove": New chat (`/chat`), the folder chip, hover a folder. Removed folders are kept in `autobyteus.prototype.removedFolders` (remove the key and reload to reset). Refusal: scenario `live_runs` (`autobyteus.prototype.scenario`), remove `prototype-workspace`.
 - Spec: `tickets/in-progress/workspace-tree-vs-chooser/ui-ux-spec.md` (moves to `tickets/done/` when integrated).

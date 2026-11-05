@@ -15,7 +15,7 @@ const projectMessages = {
   'projectsTree.staleError': 'Couldn’t refresh Projects.',
   'projectsTree.retry': 'Retry',
   'projectsTree.emptyTitle': 'No Projects yet',
-  'projectsTree.emptyHelp': 'Create a Project to run agents and teams for it and follow their work here.',
+  'projectsTree.emptyHelp': 'Create a Project on the Projects page to run agents and teams for it and follow their work here.',
   'projectsTree.chipLabel': 'Project',
   'projectsTree.noProject': 'No project',
   'projectsTree.menuAria': 'Projects',

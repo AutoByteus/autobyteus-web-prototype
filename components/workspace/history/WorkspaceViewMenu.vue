@@ -41,19 +41,6 @@
         <span class="min-w-0 flex-1 truncate">{{ option.label }}</span>
         <Icon v-if="mode === option.mode" icon="heroicons:check-20-solid" class="h-4 w-4 flex-shrink-0 text-indigo-600" aria-hidden="true" />
       </button>
-      <template v-if="mode !== 'runs'">
-        <div class="my-1 border-t border-gray-100" role="separator"></div>
-        <button
-          type="button"
-          role="menuitem"
-          class="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
-          :data-test="mode === 'projects' ? 'run-section-new-project' : 'run-section-add-workspace'"
-          @click="chooseAdd"
-        >
-          <Icon icon="heroicons:plus-20-solid" class="h-4 w-4 flex-shrink-0 text-gray-500" aria-hidden="true" />
-          {{ mode === 'projects' ? $t('projectsTree.newProject') : $t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.add_workspace') }}
-        </button>
-      </template>
     </div>
   </div>
 </template>
@@ -65,7 +52,7 @@ import { useLocalization } from '~/composables/useLocalization';
 import type { RunSectionMode } from '~/stores/projectsTreeStore';
 
 const props = defineProps<{ mode: RunSectionMode }>();
-const emit = defineEmits<{ (event: 'select-view', mode: RunSectionMode): void; (event: 'add'): void }>();
+const emit = defineEmits<{ (event: 'select-view', mode: RunSectionMode): void }>();
 const { t } = useLocalization();
 
 const views = computed<{ mode: RunSectionMode; label: string; icon: string }[]>(() => [
@@ -96,10 +83,6 @@ const toggle = (): void => {
 const chooseView = (next: RunSectionMode): void => {
   close(true);
   if (next !== props.mode) emit('select-view', next);
-};
-const chooseAdd = (): void => {
-  close();
-  emit('add');
 };
 const onKeydown = (event: KeyboardEvent): void => {
   if (event.key === 'Escape') { event.preventDefault(); close(true); return; }

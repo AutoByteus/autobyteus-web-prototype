@@ -15,7 +15,7 @@ const projectMessages = {
   'projectsTree.staleError': '无法刷新项目。',
   'projectsTree.retry': '重试',
   'projectsTree.emptyTitle': '还没有项目',
-  'projectsTree.emptyHelp': '创建项目后，可在此为它运行智能体和团队，并跟进它们的工作。',
+  'projectsTree.emptyHelp': '在“项目”页面创建项目后，可在此为它运行智能体和团队，并跟进它们的工作。',
   'projectsTree.chipLabel': '项目',
   'projectsTree.noProject': '无项目',
   'projectsTree.menuAria': '项目',

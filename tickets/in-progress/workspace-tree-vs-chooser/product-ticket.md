@@ -1,6 +1,6 @@
 # Product Ticket: workspace-tree-vs-chooser (Project Task autobyteus-385)
 
-- Status: `Design Completed` (user-approved 2026-11-05: "I'll approve this. I think this is the ones we want."); integration `Pending`
+- Status: `Design Completed` (user-approved 2026-11-05; the Result Correction round re-approved the same day: "now everything is good now. approved"); integration `Pending`
 - Mode: Product Experience Design (evolves the accepted baseline)
 - Requested by: Solution Designer run `solution_designer_8dc321539e5e490ea700d6e7f58d14ff`, at the user's request
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/workspace-tree-vs-chooser/tickets/in-progress/workspace-tree-vs-chooser/product-design-request.md`
@@ -28,7 +28,11 @@ REQ-001, REQ-003, REQ-005, AC-001, AC-003, AC-004, AC-006, AC-008 and DEC-003, D
 ## Result
 
 - UI/UX spec: `tickets/in-progress/workspace-tree-vs-chooser/ui-ux-spec.md`; final screenshots `visual-references/VIS-001…VIS-013`; runbook section in `ui-reference-runbook.md`.
-- Ticket commit: `48fc230f` on `design/workspace-tree-vs-chooser`, base `a0e18abb`.
+- Ticket commits: first round `48fc230f`, `34fa3b8f`; Result Correction round: see the latest commit of `design/workspace-tree-vs-chooser` (base `a0e18abb`). Final screenshots `visual-references/VIS-001…VIS-017`.
 - Integration: `Pending`, by the user's standing decision (2026-11-04, left-panel-super-agents): an approved design stays on its ticket branch until it is implemented, so `personal` keeps mirroring the shipped product. The branch is pushed to `origin`; it is merged into `personal` only after the Solution Designer reports it implemented and the user confirms. Worktree and branch are kept on purpose; the UI reference process was stopped.
 - Default branch `personal`: local and `origin` at `a0e18abb` (unchanged).
 - Note: this design reuses the approved `left-panel-super-agents` Runs list (copied files, not a merge).
+
+## Result Correction round (2026-11-05)
+
+DEC-010 / REQ-009: the Workspaces and Projects views list a folder or Project only while it has a run. The user also removed "Add workspace" / "New Project" from the view menu and the empty states (the inline add-folder form and its composable are deleted), asked for the chooser's X to be centered and larger, and approved.

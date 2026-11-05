@@ -8,53 +8,8 @@
         class="-ml-1 min-w-0 flex-1 truncate px-2 py-1 text-sm font-semibold leading-5 text-gray-900"
         data-test="run-section-title"
       >{{ viewTitle }}</h2>
-      <WorkspaceViewMenu :mode="projectsTree.mode" @select-view="chooseMode" @add="onHeaderAdd" />
+      <WorkspaceViewMenu :mode="projectsTree.mode" @select-view="chooseMode" />
     </div>
-
-    <form
-      v-if="showCreateWorkspaceInline && projectsTree.mode === 'workspaces'"
-      class="border-t border-gray-100 px-3 py-2"
-      data-test="create-workspace-form"
-      @submit.prevent="confirmCreateWorkspace"
-    >
-      <div class="space-y-2">
-        <input
-          id="workspace-path-input"
-          ref="workspacePathInputRef"
-          v-model="workspacePathDraft"
-          data-test="workspace-path-input"
-          type="text"
-          class="w-full rounded-md border border-gray-200 px-3 py-2 text-sm text-gray-900 focus:border-gray-300 focus:outline-none focus:ring-1 focus:ring-gray-200 disabled:cursor-not-allowed disabled:bg-gray-100"
-          :class="workspacePathError ? 'border-red-300 focus:border-red-300 focus:ring-red-200' : ''"
-          :placeholder="$t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.users_you_project')"
-          :disabled="creatingWorkspace"
-          @keydown.enter.prevent="confirmCreateWorkspace"
-          @keydown.esc.prevent="closeCreateWorkspaceInput"
-        >
-        <p v-if="workspacePathError" class="text-xs text-red-600">
-          {{ workspacePathError }}
-        </p>
-        <div class="flex items-center justify-end gap-2">
-          <button
-            data-test="cancel-create-workspace"
-            type="button"
-            class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
-            :disabled="creatingWorkspace"
-            @click="closeCreateWorkspaceInput"
-          >
-            Cancel
-          </button>
-          <button
-            data-test="confirm-create-workspace"
-            type="submit"
-            class="rounded-md border border-indigo-200 bg-white px-3 py-1.5 text-xs font-medium text-indigo-700 transition-colors hover:bg-indigo-50 disabled:cursor-not-allowed disabled:opacity-60"
-            :disabled="creatingWorkspace"
-          >
-            {{ creatingWorkspace ? 'Adding...' : 'Add' }}
-          </button>
-        </div>
-      </div>
-    </form>
 
     <div
       ref="treeScrollRef"
@@ -92,14 +47,21 @@
         {{ runHistoryStore.agentOrgHistoryError }}
       </div>
 
+      <!-- workspace-tree-vs-chooser: a folder is listed only while it has a run this tree lists (any status, not archived). The chat's
+           folder chooser still lists every folder; starting a run in one makes it appear here. -->
       <div
-        v-if="!runHistoryStore.loading && workspaceNodes.length === 0"
-        class="px-3 py-4 text-xs text-gray-500"
-      >{{ $t('workspace.components.workspace.history.WorkspaceAgentRunsTreePanel.no_run_history_yet') }}</div>
+        v-if="!runHistoryStore.loading && shownWorkspaceNodes.length === 0"
+        class="px-3 py-5 text-center"
+        data-test="workspaces-tree-empty"
+      >
+        <Icon icon="heroicons:folder" class="mx-auto h-6 w-6 text-gray-300" aria-hidden="true" />
+        <p class="mt-2 text-sm font-medium text-gray-700">{{ t('workspaceFolders.emptyTitle') }}</p>
+        <p class="mt-1 text-xs leading-5 text-gray-500">{{ t('workspaceFolders.emptyHelp') }}</p>
+      </div>
 
-      <div v-if="workspaceNodes.length > 0" class="space-y-1">
+      <div v-if="shownWorkspaceNodes.length > 0" class="space-y-1">
         <WorkspaceHistoryWorkspaceSection
-          v-for="workspaceNode in workspaceNodes"
+          v-for="workspaceNode in shownWorkspaceNodes"
           :key="workspaceNode.stableKey"
           :workspace-node="workspaceNode"
           :workspace-teams="workspaceTeams(workspaceNode.workspaceRootPath)"
@@ -164,15 +126,12 @@ import { useAgentOrgContextsStore } from '~/stores/agentOrgContextsStore';
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore';
 import { useAgentOrgDefinitionStore } from '~/stores/agentOrgDefinitionStore';
 import { useAgentTeamDefinitionStore } from '~/stores/agentTeamDefinitionStore';
-import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
 import { useToasts } from '~/composables/useToasts';
-import { pickFolderPath } from '~/composables/useNativeFolderDialog';
 import { useRunHistoryAvatarState } from '~/composables/useRunHistoryAvatarState';
 import { useWorkspaceHistorySelectionActions } from '~/composables/useWorkspaceHistorySelectionActions';
 import { useWorkspaceHistoryTreeState } from '~/composables/useWorkspaceHistoryTreeState';
 import { useRevealSelectedTreeRow } from '~/components/workspace/history/useRevealSelectedTreeRow';
 import { chatRouteRunId } from '~/services/workspace/workspaceNavigationService';
-import { useWorkspaceHistoryWorkspaceCreation } from '~/composables/useWorkspaceHistoryWorkspaceCreation';
 import { useWorkspaceHistoryMutations } from '~/composables/useWorkspaceHistoryMutations';
 import { useWorkspaceHistoryGroupArchive } from '~/composables/useWorkspaceHistoryGroupArchive';
 import { useWorkspaceHistorySubjectActions } from '~/composables/useWorkspaceHistorySubjectActions';
@@ -206,8 +165,6 @@ const { stopPendingTeamIds } = storeToRefs(teamRunStore);
 const agentDefinitionStore = useAgentDefinitionStore();
 const agentTeamDefinitionStore = useAgentTeamDefinitionStore();
 const agentOrgDefinitionStore = useAgentOrgDefinitionStore();
-const windowNodeContextStore = useWindowNodeContextStore();
-const { isEmbeddedWindow } = storeToRefs(windowNodeContextStore);
 const { addToast } = useToasts();
 const { t } = useLocalization();
 const addWorkspaceToast = (message: string, type: 'success' | 'error' | 'warning' | 'info'): void => {
@@ -234,6 +191,12 @@ const treeState = useWorkspaceHistoryTreeState({
 const treeScrollRef = ref<HTMLElement | null>(null);
 useRevealSelectedTreeRow(treeScrollRef, computed(() => props.runShown));
 const { workspaceNodes, workspaceTeams, workspaceTeamHistoryGroups } = treeState;
+/** The runs a folder's section lists: agent runs, team runs and Org runs (drafts included, archived ones are not in the tree). */
+const folderRunCount = (node: RunTreeWorkspaceNode & { agentOrgDefinitions?: { runs: unknown[] }[] }): number =>
+  node.agents.reduce((sum, agent) => sum + agent.runs.length, 0)
+  + workspaceTeams(node.workspaceRootPath).length
+  + (node.agentOrgDefinitions ?? []).reduce((sum, group) => sum + group.runs.length, 0);
+const shownWorkspaceNodes = computed(() => workspaceNodes.value.filter((node) => folderRunCount(node) > 0));
 const { execute: executeSubjectAction } = useWorkspaceHistorySubjectActions();
 const {
   getOrgAvatarUrl,
@@ -255,25 +218,6 @@ const {
   agentDefinitions: computed(() => agentDefinitionStore.agentDefinitions),
   teamDefinitions: computed(() => agentTeamDefinitionStore.agentTeamDefinitions),
   orgDefinitions: computed(() => agentOrgDefinitionStore.definitions),
-});
-
-const {
-  showCreateWorkspaceInline,
-  workspacePathDraft,
-  workspacePathError,
-  creatingWorkspace,
-  workspacePathInputRef,
-  onCreateWorkspace,
-  closeCreateWorkspaceInput,
-  confirmCreateWorkspace,
-} = useWorkspaceHistoryWorkspaceCreation({
-  isEmbeddedWindow,
-  createWorkspace: (rootPath: string) => runHistoryStore.createWorkspace(rootPath),
-  fetchAllWorkspaces: () => workspaceStore.fetchAllWorkspaces(),
-  pickFolderPath,
-  onWorkspaceCreated: (workspaceRootPath: string) => {
-    treeState.setWorkspaceExpandedByRootPath(workspaceRootPath, true);
-  },
 });
 
 /** Leaves the Agent Org route when the open Org run was archived or deleted. */
@@ -496,15 +440,6 @@ const viewTitle = computed(() => t(projectsTree.mode === 'runs'
 const chooseMode = (next: RunSectionMode): void => {
   projectsTree.setMode(next);
 };
-// "+" in Projects mode creates a Project on the Projects page; opening it never starts or stops a run (REQ-001).
-const onHeaderAdd = (): void => {
-  if (projectsTree.mode === 'projects') {
-    void router.push('/projects/new');
-    return;
-  }
-  onCreateWorkspace();
-};
-
 // REQ-012: the open run is revealed in the Project that lists it (the board's Project first) and marked there.
 const revealOpenRunInProjects = (): void => {
   if (projectsTree.mode !== 'projects') return;

@@ -52,16 +52,22 @@
         <Icon icon="heroicons:briefcase" class="mx-auto h-6 w-6 text-gray-300" aria-hidden="true" />
         <p class="mt-2 text-sm font-medium text-gray-700">{{ t('projectsTree.emptyTitle') }}</p>
         <p class="mt-1 text-xs leading-5 text-gray-500">{{ t('projectsTree.emptyHelp') }}</p>
-        <NuxtLink
-          to="/projects/new"
-          class="mt-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
-          data-test="projects-tree-empty-new"
-        >{{ t('projectsTree.newProject') }}</NuxtLink>
+      </div>
+
+      <!-- workspace-tree-vs-chooser: Projects exist, but none has a run this tree lists. -->
+      <div
+        v-else-if="shownProjects.length === 0"
+        class="px-3 py-5 text-center"
+        data-test="projects-tree-no-runs"
+      >
+        <Icon icon="heroicons:briefcase" class="mx-auto h-6 w-6 text-gray-300" aria-hidden="true" />
+        <p class="mt-2 text-sm font-medium text-gray-700">{{ t('workspaceFolders.projectsNoRunsTitle') }}</p>
+        <p class="mt-1 text-xs leading-5 text-gray-500">{{ t('workspaceFolders.projectsNoRunsHelp') }}</p>
       </div>
 
       <div v-else class="space-y-1">
         <WorkspaceHistoryWorkspaceSection
-          v-for="entry in tree.projectNodes"
+          v-for="entry in shownProjects"
           :key="entry.node.stableKey"
           :workspace-node="entry.node"
           :workspace-teams="entry.teams"
@@ -82,6 +88,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import { Icon } from '@iconify/vue';
 import WorkspaceHistoryWorkspaceSection from '~/components/workspace/history/WorkspaceHistoryWorkspaceSection.vue';
 import type {
@@ -100,4 +107,6 @@ defineProps<{
 
 const { t } = useLocalization();
 const tree = useProjectsTreeStore();
+// workspace-tree-vs-chooser: a Project is listed only while it has a run this tree lists; the Projects page lists every Project.
+const shownProjects = computed(() => tree.projectNodes.filter((entry) => entry.runCount > 0));
 </script>
