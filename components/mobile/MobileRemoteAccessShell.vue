@@ -205,6 +205,8 @@ async function openConversation(node: MobileRunNode): Promise<void> {
   if (agentContextsStore.getRun(node.id)) {
     selectMobileRun(node.id, 'agent');
   } else {
+    // A run that is still the selected one but has lost its conversation is opened again from the start.
+    clearMobileRunSelection();
     await runHistoryStore.openRun(node.id, { selectionMode: 'mobile' });
   }
 }
@@ -281,6 +283,14 @@ function onPopState(event: PopStateEvent): void {
   resultsOpen.value = Boolean(state?.results);
   showConnection.value = false;
 }
+
+// The run screen always shows a conversation: if the open run has lost it (Back and Forward, a switch), attach it again.
+let reattaching = false;
+watch([screen, currentNode, () => agentContextsStore.getRun(currentNode.value?.id ?? '')], async ([current, node, context]) => {
+  if (current !== 'run' || !node || context || reattaching || !runTreeStore.isNodeReachable(node.node)) return;
+  reattaching = true;
+  try { await openConversation(node); } finally { reattaching = false; }
+});
 
 function unpairPhone(): void {
   showUnpairConfirm.value = false;

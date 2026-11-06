@@ -64,3 +64,9 @@ Pending the user's confirmation.
 - The user: the Activity screen is ugly and strange: it mixes "Messages" and "Activity" behind two chips. Message is message, activity is activity: make them separate items in the menu, under Files.
 - Change: the ⋮ menu is Switch agent, Back to <delegator>, then Artifacts, Files, Messages, Activity. Messages and Activity are two screens with the same bar (← and the title), no chips or counters, no cards: a flat list of rows with hairlines. Messages (the team's messages: the sender or receiver, the time and the text) shows only for a member of a team or Org. The empty states are one line: "No messages yet", "No activity yet". The combined Activity screen is removed.
 - Design-only simulation: the reference carries no team context or run stream, so the invented Messages (`sampleTeamMessages`) and Activity (`sampleToolActivities`) are supplied by `prototype/mobile-runs/mobileRunsFixture.ts`.
+
+## Review round 8 (2026-11-06)
+
+- The user saw a card ("CHAT / Opening conversation / The run is selected. Messages will appear here when hydration finishes." with "Choose work" and "Open Runs") in the middle of the Project Task Manager's run screen, and asked what its logic is.
+- Finding: it was the old Chat tab's fallback for "the conversation is not attached yet"; its buttons pointed at screens that no longer exist. The run screen could reach it when a run kept its selection but lost its conversation (browser Back then Forward, a quick switch).
+- Change: the fallback is a quiet one-line "Opening…" (no title, no buttons, no internal word); and an open run whose conversation is not attached is attached again on its own, so the state does not stay. Requirement for engineering: the run screen never shows a state with navigation buttons; while the conversation loads it shows "Opening…".
