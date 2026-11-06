@@ -111,3 +111,8 @@ Pending the user's confirmation.
 
 - The user: the start button should be just a plus in the middle, without the words; that is a common experience.
 - Change: the "New run" pill is a 56px round button with a centered plus (accessible name "New run"), bottom right (thumb reach).
+
+## Review round 14 (2026-11-06)
+
+- The user: the number next to a task team (its member count, "3 >") is distracting.
+- Change: a row with delegated work or members shows only the chevron (48×48 target); the count is removed (the desktop shows none).

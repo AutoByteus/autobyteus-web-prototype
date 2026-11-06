@@ -67,7 +67,6 @@
         data-testid="mobile-run-toggle"
         @click="store.toggle(node)"
       >
-        <span v-if="!expanded" class="text-xs font-semibold text-slate-500">{{ node.children?.length }}</span>
         <span v-if="!expanded && hiddenNeedsYou" class="absolute right-2 top-2 h-2 w-2 rounded-full bg-amber-500 ring-2 ring-white" aria-hidden="true" />
         <Icon icon="heroicons:chevron-down-20-solid" class="h-5 w-5 transition-transform" :class="expanded ? 'rotate-0' : '-rotate-90'" aria-hidden="true" />
       </button>
