@@ -106,3 +106,8 @@ Pending the user's confirmation.
 - The user: do we need filters on Files? The desktop has none.
 - Finding: the desktop Files panel (`components/fileExplorer/FileExplorer.vue`) has the tree and one search field, no filters. Recent, Attached, Markdown/code and "Search full workspace" were mobile-only controls (the user's rule: no mobile-only controls the desktop does not have).
 - Change: the filter icon, the "Show" sheet and the whole-workspace switch are removed. Files is one bar (←, "Files", a search icon); search is one field that looks through the whole workspace; the path shows under a result's name only in a search. The reference has no search service, so it searches the files of the tree it has loaded (the product searches on the node).
+
+## Review round 13 (2026-11-06)
+
+- The user: the start button should be just a plus in the middle, without the words; that is a common experience.
+- Change: the "New run" pill is a 56px round button with a centered plus (accessible name "New run"), bottom right (thumb reach).

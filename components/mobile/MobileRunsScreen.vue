@@ -71,13 +71,14 @@
 
     <button
       type="button"
-      class="fixed right-4 z-10 flex h-14 items-center gap-2 rounded-full bg-blue-600 pl-4 pr-5 text-base font-semibold text-white shadow-lg shadow-blue-900/20 active:bg-blue-700"
+      class="fixed right-4 z-10 flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg shadow-blue-900/25 active:bg-blue-700"
       style="bottom: max(1rem, env(safe-area-inset-bottom))"
+      aria-label="New run"
+      title="New run"
       data-testid="mobile-start-run"
       @click="$emit('new-run')"
     >
-      <Icon icon="heroicons:plus-20-solid" class="h-6 w-6" aria-hidden="true" />
-      New run
+      <Icon icon="heroicons:plus-20-solid" class="h-7 w-7" aria-hidden="true" />
     </button>
   </section>
 </template>
