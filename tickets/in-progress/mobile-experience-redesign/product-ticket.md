@@ -100,3 +100,9 @@ Pending the user's confirmation.
 
 - The user: on Files, a fixed search box and a "Filters" button take space for rarely used controls; the filters (four counters plus "Search full workspace" as pills) are a bad experience; rows in boxes show the name twice.
 - Change: Files is one 48px bar (←, "Files", a search icon, a filter icon). Search opens in the bar on tap (the title becomes a field with a close ✕, focused) and closes back. The filter icon opens a bottom sheet "Show": Folder, Recent, Attached, Markdown/code as one-choice rows (the count on the right, the chosen one checked) and a switch "Search the whole workspace"; a dot on the icon says a filter is on. Where you are is one scrolling line ("workspace › folder"; the last part bold; every part tappable) in place of the heading and chips. Rows are flat 56px (the icon, the name, a chevron on folders); the path shows only in a search or a filter.
+
+## Review round 12 (2026-11-06)
+
+- The user: do we need filters on Files? The desktop has none.
+- Finding: the desktop Files panel (`components/fileExplorer/FileExplorer.vue`) has the tree and one search field, no filters. Recent, Attached, Markdown/code and "Search full workspace" were mobile-only controls (the user's rule: no mobile-only controls the desktop does not have).
+- Change: the filter icon, the "Show" sheet and the whole-workspace switch are removed. Files is one bar (←, "Files", a search icon); search is one field that looks through the whole workspace; the path shows under a result's name only in a search. The reference has no search service, so it searches the files of the tree it has loaded (the product searches on the node).

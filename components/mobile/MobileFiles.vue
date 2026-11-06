@@ -24,10 +24,6 @@
           <button type="button" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-slate-600 active:bg-slate-100" aria-label="Search files" data-testid="mobile-files-search-open" @click="openSearch">
             <svg viewBox="0 0 20 20" class="h-6 w-6" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM2 8a6 6 0 1 1 10.89 3.48l4.31 4.3a1 1 0 0 1-1.4 1.42l-4.32-4.3A6 6 0 0 1 2 8Z" /></svg>
           </button>
-          <button type="button" class="relative flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-slate-600 active:bg-slate-100" aria-label="Filter files" data-testid="mobile-files-filters-toggle" @click="showFilters = true">
-            <svg viewBox="0 0 20 20" class="h-6 w-6" fill="currentColor" aria-hidden="true"><path d="M3 5.5A.75.75 0 0 1 3.75 5h12.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 5.5Zm2.5 4.5a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 5.5 10Zm2.5 4.5a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z" /></svg>
-            <span v-if="activeDiscoveryFilter !== 'all' || deepSearch" class="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-blue-600 ring-2 ring-white" aria-label="Filter on" />
-          </button>
         </template>
       </template>
     </header>
@@ -66,7 +62,7 @@
               <svg v-else viewBox="0 0 20 20" class="h-6 w-6 flex-shrink-0 text-amber-400" fill="currentColor" aria-hidden="true"><path d="M2 6a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Z" /></svg>
               <span class="min-w-0 flex-1">
                 <span class="block truncate text-[0.9375rem] font-medium text-slate-900">{{ node.name }}</span>
-                <span v-if="node.path && node.path !== node.name && (search || deepSearch || activeDiscoveryFilter !== 'all')" class="block truncate text-xs text-slate-500">{{ node.path }}</span>
+                <span v-if="node.path && node.path !== node.name && search" class="block truncate text-xs text-slate-500">{{ node.path }}</span>
                 <span v-if="!node.is_file && isFolderLoading(node.path)" class="block text-xs text-blue-700">Loading…</span>
                 <span v-else-if="!node.is_file && getFolderError(node.path)" class="block text-xs text-red-700">{{ getFolderError(node.path) }}</span>
               </span>
@@ -78,52 +74,6 @@
       </template>
     </div>
 
-    <Teleport to="body">
-      <div v-if="showFilters" class="fixed inset-0 z-50 flex flex-col justify-end" data-testid="mobile-files-advanced-filters">
-        <button type="button" class="absolute inset-0 bg-slate-900/40" aria-label="Close" @click="showFilters = false" />
-        <div class="relative flex max-h-[85dvh] flex-col rounded-t-2xl bg-white shadow-xl" role="dialog" aria-modal="true" aria-label="Filter files">
-          <div class="mx-auto mt-2 h-1 w-10 flex-shrink-0 rounded-full bg-slate-300" aria-hidden="true" />
-          <header class="flex h-14 flex-shrink-0 items-center justify-between pl-4 pr-2">
-            <h2 class="text-lg font-semibold">Show</h2>
-            <button type="button" class="flex h-12 w-12 items-center justify-center rounded-full text-slate-500 active:bg-slate-100" aria-label="Close" @click="showFilters = false">
-              <Icon icon="heroicons:x-mark-20-solid" class="h-6 w-6" aria-hidden="true" />
-            </button>
-          </header>
-          <div class="overflow-y-auto pb-[max(1rem,env(safe-area-inset-bottom))]">
-            <button
-              v-for="filter in discoveryFilters"
-              :key="filter.id"
-              type="button"
-              class="flex min-h-[3.5rem] w-full items-center gap-3 px-4 text-left active:bg-slate-100"
-              :class="activeDiscoveryFilter === filter.id ? 'bg-blue-50' : ''"
-              :aria-current="activeDiscoveryFilter === filter.id ? 'true' : undefined"
-              :data-testid="`mobile-files-filter-${filter.id}`"
-              @click="activeDiscoveryFilter = filter.id; showFilters = false"
-            >
-              <span class="min-w-0 flex-1 text-base text-slate-900">{{ filter.label }}</span>
-              <span class="text-sm text-slate-400">{{ filter.count }}</span>
-              <Icon v-if="activeDiscoveryFilter === filter.id" icon="heroicons:check-circle-20-solid" class="h-6 w-6 flex-shrink-0 text-blue-600" aria-hidden="true" />
-            </button>
-            <div class="mx-4 my-1 border-t border-slate-100" />
-            <div class="flex h-14 items-center gap-3 px-4">
-              <span id="mobile-files-deep-label" class="flex-1 text-base text-slate-900">Search the whole workspace</span>
-              <button
-                type="button"
-                role="switch"
-                :aria-checked="deepSearch ? 'true' : 'false'"
-                aria-labelledby="mobile-files-deep-label"
-                class="relative inline-flex h-8 w-14 flex-shrink-0 items-center rounded-full transition"
-                :class="deepSearch ? 'bg-blue-600' : 'bg-slate-300'"
-                data-testid="mobile-files-deep-search"
-                @click="deepSearch = !deepSearch"
-              >
-                <span class="inline-block h-6 w-6 rounded-full bg-white shadow transition" :class="deepSearch ? 'translate-x-7' : 'translate-x-1'" aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Teleport>
 
     <MobileFileViewer
       v-if="previewNode && activeWorkspace"
@@ -182,8 +132,7 @@ const previewPresentation = ref<'fullscreen' | 'inline'>('fullscreen');
 const previewAllowAttach = ref(true);
 const previewRequestInFlightRevision = ref<number | null>(null);
 const lastAttachmentCount = ref(0);
-const deepSearch = ref(false);
-const showFilters = ref(false);
+const deepSearch = ref(true); // the desktop's one search field looks through the whole workspace
 const activeDiscoveryFilter = ref<'all' | 'recent' | 'attached' | 'markdown-code'>('all');
 let searchDebounce: ReturnType<typeof setTimeout> | null = null;
 
@@ -211,12 +160,9 @@ const attachedFileNodes = computed<MobileWorkspaceFileNode[]>(() => getVisibleCo
     children: [],
     childrenLoaded: true,
   })));
-const workspaceSearchMode = computed(() => (
-  deepSearch.value
-  && search.value.trim().length > 0
-  && activeDiscoveryFilter.value !== 'recent'
-  && activeDiscoveryFilter.value !== 'attached'
-));
+// Design-only: the product searches the whole workspace on the node (server search); this reference has no search service,
+// so the search looks through the files of the tree it has loaded.
+const workspaceSearchMode = computed(() => false);
 const sourceNodes = computed<MobileWorkspaceFileNode[]>(() => {
   if (activeDiscoveryFilter.value === 'attached') {
     return attachedFileNodes.value;
@@ -250,9 +196,7 @@ const discoveryFilters = computed(() => {
     { id: 'markdown-code' as const, label: 'Markdown/code', count: base.filter((child) => child.is_file && isMarkdownOrCodePath(child.path || child.name)).length },
   ];
 });
-const searchPlaceholder = computed(() => deepSearch.value
-  ? 'Search full workspace files'
-  : 'Filter current folder');
+const searchPlaceholder = computed(() => 'Search files');
 const attachNotice = computed(() => {
   const count = getVisibleContextAttachments(props.context).length;
   if (count <= lastAttachmentCount.value) return null;
@@ -284,7 +228,7 @@ const canChooseWorkspace = computed(() => mobileExplorer.resolutionStatus.value 
 const canRetryWorkspaceResolution = computed(() => mobileExplorer.resolutionStatus.value === 'unresolved');
 const emptyMessage = computed(() => {
   if (workspaceSearchMode.value) return 'No files matched the workspace search.';
-  if (search.value.trim() || activeDiscoveryFilter.value !== 'all') return 'No files match this view.';
+  if (search.value.trim() || activeDiscoveryFilter.value !== 'all') return 'No files match.';
   return 'This folder is empty.';
 });
 const previewFileState = computed(() => previewNode.value ? mobileExplorer.getOpenFileState(previewNode.value.path) : null);
@@ -420,7 +364,6 @@ watch(
 watch(() => activeWorkspace.value?.workspaceId, () => {
   folderStack.value = [];
   previewNode.value = null;
-  deepSearch.value = false;
   activeDiscoveryFilter.value = 'all';
 });
 
