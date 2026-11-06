@@ -129,3 +129,9 @@ Pending the user's confirmation.
 - The user confirmed the experience: "Perfect, I think I just experienced it and the user experience is really nice. … I'm fine with the user experience now."
 - UI/UX spec: `ui-ux-spec.md`; final screenshots `visual-references/VIS-001…VIS-028` (390×844, and 360×800 for VIS-025…028); runbook section "mobile-experience-redesign".
 - Integration: by the user's standing decision (2026-11-04, left-panel-super-agents) an approved design stays on its ticket branch until it is implemented, so `personal` keeps mirroring the shipped product. The branch is pushed to `origin`; the worktree and branch are kept on purpose; the UI reference process stays up while the user may still review.
+
+## Review round 16 (2026-11-06)
+
+- The user: "Why do we have one attached button here? That's so strange. What is that for?" (the opened file's "Attach" button, a boxed viewer with a "Back" pill, the sentence "Loading file content through the authorized workspace file API…" and a banner "evidence.md added to current run Chat context").
+- Finding: a leftover of the old Files screen. "Attach" added the open file to the run's Chat context for the next message (an earlier mobile ticket). The desktop's file panel has no such control and the composer has its own "+". The viewer was also in the old style.
+- Change: no Attach, no banner; an opened file is a 48px bar (← and the file name) and the file full screen; short states ("Opening…", "Couldn’t open this file.", "This file can’t be shown on the phone."). VIS-029 added; "Attach to chat context" is on the not-on-the-phone list.

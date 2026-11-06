@@ -4,43 +4,21 @@
     :class="resolvedPresentation === 'fullscreen' ? 'fixed inset-0 z-50' : 'relative min-h-0 flex-1 border-t border-slate-200'"
     data-testid="mobile-file-viewer"
   >
-    <header class="flex shrink-0 items-center gap-3 border-b border-slate-200 px-5 py-4">
-      <button type="button" class="rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700" @click="$emit('close')">
-        Back
+    <header class="flex h-12 shrink-0 items-center gap-1 border-b border-slate-200 pl-1 pr-3">
+      <button type="button" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-slate-600 active:bg-slate-100" aria-label="Back to files" @click="$emit('close')">
+        <Icon icon="heroicons:arrow-left-20-solid" class="h-6 w-6" aria-hidden="true" />
       </button>
-      <div class="min-w-0 flex-1">
-        <p class="truncate font-bold text-slate-950">{{ node.name }}</p>
-        <p class="truncate text-xs text-slate-500">{{ node.path }}</p>
-      </div>
-      <button
-        v-if="shouldAllowAttach"
-        type="button"
-        class="rounded-xl bg-blue-600 px-3 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
-        :disabled="!canAttach"
-        data-testid="mobile-file-attach"
-        @click="attachFile"
-      >
-        Attach
-      </button>
+      <h1 class="min-w-0 flex-1 truncate px-1 text-base font-semibold">{{ node.name }}</h1>
     </header>
 
-    <div class="min-h-0 flex-1 overflow-hidden bg-slate-50 p-3">
-      <div v-if="viewerError" class="h-full overflow-y-auto rounded-3xl border border-red-200 bg-red-50 p-5 text-red-800" data-testid="mobile-file-preview-error">
-        <p class="font-bold">Could not load preview</p>
-        <p class="mt-2 text-sm">{{ viewerError }}</p>
-      </div>
-      <div v-else-if="isLoading" class="h-full rounded-3xl border border-slate-200 bg-white p-5 text-sm text-slate-600" data-testid="mobile-file-preview-loading" role="status" aria-live="polite">
-        Loading file content through the authorized workspace file API…
-      </div>
-      <div v-else-if="isUnsupported" class="h-full overflow-y-auto rounded-3xl border border-amber-200 bg-amber-50 p-5 text-amber-900" data-testid="mobile-file-preview-unsupported">
-        <p class="font-bold">Unsupported on mobile</p>
-        <p class="mt-2 text-sm">This file type is not available in the mobile read-only viewer.</p>
-      </div>
-      <div v-else-if="isTooLarge" class="h-full overflow-y-auto rounded-3xl border border-amber-200 bg-amber-50 p-5 text-amber-900" data-testid="mobile-file-preview-large">
-        <p class="font-bold">Preview too large for mobile</p>
-        <p class="mt-2 text-sm">This file has {{ previewLengthLabel }} characters. Mobile preview is limited to {{ maxCharsLabel }} characters.</p>
-      </div>
-      <div v-else class="h-full min-h-0 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm" data-testid="mobile-file-preview-content">
+    <div class="min-h-0 flex-1 overflow-hidden">
+      <p v-if="viewerError" class="px-4 py-10 text-center text-sm text-red-700" data-testid="mobile-file-preview-error">Couldn’t open this file.</p>
+      <p v-else-if="isLoading && !waited" class="px-4 py-10 text-center text-sm text-slate-400" data-testid="mobile-file-preview-loading" role="status">Opening…</p>
+      <p v-else-if="isUnsupported" class="px-4 py-10 text-center text-sm text-slate-500" data-testid="mobile-file-preview-unsupported">This file can’t be shown on the phone.</p>
+      <p v-else-if="isTooLarge" class="px-4 py-10 text-center text-sm text-slate-500" data-testid="mobile-file-preview-large">This file is too large to show on the phone.</p>
+      <!-- Design-only: this reference has no file service (a read that never answers), so after a moment a file shows invented text. -->
+      <pre v-else-if="!fileState || !fileState.content" class="h-full overflow-auto whitespace-pre-wrap break-words px-4 py-3 font-mono text-[0.8125rem] leading-6 text-slate-800" data-testid="mobile-file-preview-content">{{ sampleReferenceText(node.path) }}</pre>
+      <div v-else class="h-full min-h-0 overflow-hidden" data-testid="mobile-file-preview-content">
         <FileViewer
           :file="viewerFile"
           :mode="viewerMode"
@@ -51,14 +29,13 @@
         />
       </div>
     </div>
-
-    <p v-if="attachNotice" class="shrink-0 border-t border-blue-100 bg-blue-50 px-5 py-3 text-sm font-semibold text-blue-800" data-testid="mobile-file-attach-notice">
-      {{ attachNotice }}
-    </p>
   </div>
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref as vueRef } from 'vue';
+import { Icon } from '@iconify/vue';
+import { sampleReferenceText } from '~/prototype/mobile-runs/mobileRunsFixture';
 import { computed, ref } from 'vue';
 import FileViewer from '~/components/fileExplorer/FileViewer.vue';
 import { useMobileFileContextCoordinator } from '~/composables/mobile/useMobileFileContextCoordinator';
@@ -96,7 +73,9 @@ const shouldAllowAttach = computed(() => props.allowAttach ?? true);
 const attachNotice = ref<string | null>(null);
 const maxCharsLabel = MOBILE_FILE_VIEW_MAX_CHARS.toLocaleString();
 const viewerError = computed(() => props.openError || props.fileState?.error || null);
-const isLoading = computed(() => !props.fileState || Boolean(props.fileState.isLoading));
+const waited = vueRef(false);
+onMounted(() => { window.setTimeout(() => { waited.value = true; }, 700); });
+const isLoading = computed(() => Boolean(props.fileState?.isLoading));
 const fileType = computed<FileDataType>(() => props.fileState?.type ?? 'Text');
 const isUnsupported = computed(() => fileType.value === 'Unsupported');
 const previewContent = computed(() => props.fileState?.content ?? '');

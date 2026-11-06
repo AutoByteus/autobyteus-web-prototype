@@ -47,7 +47,7 @@ Canonical contract for the AutoByteus mobile web shell (`/mobile`, wrapped by th
   4. **New run is for agents only** (the user: "For new run we only support to create a simple agent run"), five uniform rows and one button; every choice opens the same bottom sheet.
   5. **Start work is one round "+" button** (bottom right, within thumb reach, no words).
   6. **Connection, pairing status, peers and unpair are one bottom sheet** opened from the node name in the top bar (the old Home status card and Troubleshoot page are gone).
-  7. **Nothing the desktop does not have** (the user's rule): no Files filters, no run counts, no mobile-only labels.
+  7. **Nothing the desktop does not have** (the user's rule): no Files filters, no "Attach" button on a file, no run counts, no mobile-only labels.
   8. **Optional, marked: "needs you"** (OPT-001). An amber line on a row waiting for an answer or an approval, and an amber dot on a folded parent. Unproven for runs the phone does not stream (DEC-005, investigation U-003); engineering checks it before it becomes a requirement.
 - **Alternatives considered and why they were rejected.**
   - Five bottom tabs plus a Home screen: rejected by the user; three copies of the run list.
@@ -71,7 +71,7 @@ Canonical contract for the AutoByteus mobile web shell (`/mobile`, wrapped by th
 The user's direction (2026-11-06): the phone shows the runs view only, no Workspaces or Projects views; New run only creates an agent run; Files has no filters; no explanatory text for an absent feature. The approved list:
 
 - **On the phone:** runs with their delegation tree (local and remote); the agent's conversation (talk, answer, approve, stop through the shared composer); New run (an agent); Artifacts, Files (read, search), Messages, Activity of the open agent; the connection sheet (status, check, read-only peers, unpair); pairing and its troubleshooting as today.
-- **Not on the phone (simply absent, no filler):** the Workspaces and Projects groupings and any view switch; editing agent, team or Org definitions; starting a Team or an Org run; Archive, Delete and Stop on rows; settings and updates; terminal, VNC, browser, applications; the folder picker (a folder is chosen from the list or opened by path); Files filters (Recent, Attached, Markdown/code); a Home screen; a "Switch work" sheet.
+- **Not on the phone (simply absent, no filler):** the Workspaces and Projects groupings and any view switch; editing agent, team or Org definitions; starting a Team or an Org run; Archive, Delete and Stop on rows; settings and updates; terminal, VNC, browser, applications; the folder picker (a folder is chosen from the list or opened by path); Files filters (Recent, Attached, Markdown/code); an "Attach to chat context" button on an opened file (the desktop's file panel has none; the composer's own + attaches); a Home screen; a "Switch work" sheet.
 - A desktop route opened on the phone keeps today's notice (`?unsupported=…`), shown above the run list.
 
 ## Related Requirements And Acceptance Criteria
@@ -165,7 +165,7 @@ Removed (no longer in the product's phone shell): Home, the work shell with its 
 ### UXJ-005 — Read results
 
 1. On a run, ⋮ → Artifacts, Files, Messages (members of a team or Org) or Activity. Each opens its own screen with a 48px bar (← and the title). ← returns to the conversation. VIS-006…013.
-2. Artifacts: the artifacts of that agent (one: no list, the viewer's bar shows the name; several: 44px one-line rows). Files: the tree, one search field over the workspace, no filters. Messages: the team messages with their file references; tapping a reference opens the file full screen (← closes it). Activity: the agent's tool calls. Empty: one line ("No Artifacts yet", "No messages yet", "No activity yet").
+2. Artifacts: the artifacts of that agent (one: no list, the viewer's bar shows the name; several: 44px one-line rows). Files: the tree, one search field over the workspace, no filters; a tapped file opens full screen on a 48px bar (← and the name) with nothing else. Messages: the team messages with their file references; tapping a reference opens the file full screen (← closes it). Activity: the agent's tool calls. Empty: one line ("No Artifacts yet", "No messages yet", "No activity yet").
 
 ### UXJ-006 — Connection
 
@@ -189,7 +189,7 @@ The same screens at 360×800: no horizontal scrolling (checked: the document is 
 | UIS-002 | Run screen | tap a row | Talk to that agent | Bar, conversation, composer | VIS-005, 014, 020 |
 | UIS-003 | ⋮ menu | ⋮ on the run screen | Open the agent's views | Popup, 3–4 items | VIS-006, 026 |
 | UIS-004 | Artifacts | ⋮ → Artifacts | Read the agent's artifacts | 48px bar, viewer | VIS-007 |
-| UIS-005 | Files | ⋮ → Files | Browse and search files | 48px bar, path line, rows | VIS-008, 009 |
+| UIS-005 | Files and an opened file | ⋮ → Files | Browse, search and read files | 48px bar, path line, rows; an opened file: a 48px bar (← and the name) and the file full screen | VIS-008, 009, 029 |
 | UIS-006 | Messages and a reference file | ⋮ → Messages | Read team messages and their files | 48px bar, rows, references; file viewer | VIS-010, 011, 027 |
 | UIS-007 | Activity | ⋮ → Activity | Read the agent's tool calls | 48px bar, rows | VIS-012, 013 |
 | UIS-008 | New run | "+" | Start an agent run | 48px bar, five rows, Create run | VIS-015, 028 |
@@ -213,10 +213,12 @@ The same screens at 360×800: no horizontal scrolling (checked: the document is 
 | TR-011 | Files | A folder row or a path part | Path line updates | That folder | — |
 | TR-012 | New run | A row | A bottom sheet | The sheet | one tap picks and closes |
 | TR-013 | New run | Create run | "Creating…" | The new run's screen; listed at the top | first message |
-| TR-014 | Run screen | First message of a new run | The conversation continues | The run keeps its place with its permanent id | — |
+| TR-014 | Run screen | An opened file | Files | After a moment the viewer shows invented text (`sampleReferenceText`; the reference has no file service) | The file read through the authorized workspace file API; "Opening…" while it loads; "Couldn’t open this file." on an error; "This file can’t be shown on the phone." / "too large" |
+| First message of a new run | The conversation continues | The run keeps its place with its permanent id | — |
 | TR-015 | Run on an unreachable node | Open | The remote notice | Retry (re-checks) | ← |
 | TR-016 | Run screen | The conversation is not attached | "Opening…" | Attached automatically | — |
 | TR-017 | Run list, read error | Retry | Loading rows | The list | — |
+| TR-019 | Files | A file row | "Opening…" until it loads | The file full screen on a 48px bar (← and the file name), no Attach button, no card; ← returns to the folder | — |
 | TR-018 | Connection sheet | Unpair this phone | Confirmation | The pairing screen | — |
 
 ## State Behavior
@@ -275,6 +277,7 @@ The same screens at 360×800: no horizontal scrolling (checked: the document is 
 | OPT-001 "needs you" | An amber line and dot | Two invented rows | **Unproven** for runs the phone does not stream (DEC-005): engineering checks before it becomes a requirement |
 | Messages, Activity, a reference file | Screens | Invented rows and file texts (`sampleTeamMessages`, `sampleToolActivities`, `sampleReferenceText`) | The team context and the run's stream; the file read through the team's message |
 | Files search | Files | Looks through the files of the loaded tree | The workspace search on the node |
+| An opened file | Files | After a moment the viewer shows invented text (`sampleReferenceText`; the reference has no file service) | The file read through the authorized workspace file API; "Opening…" while it loads; "Couldn’t open this file." on an error; "This file can’t be shown on the phone." / "too large" |
 | First message of a new run | Run keeps its place | Re-keyed by the shell | The run's id changes at its first message; the phone's selection must follow it |
 | Node name "Embedded Node" | Bar, sheet | The baseline's sample value | The paired node's own name ("AutoByteus Desktop") |
 | Scenario starting states | Review | `autobyteus.prototype.scenario`: `mobile_runs_loading`, `mobile_runs_empty`, `mobile_runs_error`, `mobile_runs_node_offline`; the first visit installs an inert paired session (`autobyteus.prototype.mobileSeeded`) | — |
@@ -322,6 +325,7 @@ All images are in this ticket's `visual-references/`; 390×844 at 2× unless not
 | VIS-026 | `VIS-026-run-menu-phone-360x800.png` | 360×800 | ⋮ menu | UXJ-008 | — |
 | VIS-027 | `VIS-027-messages-phone-360x800.png` | 360×800 | Messages | UXJ-008 | — |
 | VIS-028 | `VIS-028-new-run-phone-360x800.png` | 360×800 | New run | UXJ-008 | — |
+| VIS-029 | `VIS-029-file-open-phone-390x844.png` | 390×844 | An opened file (Files) | TR-019 | File text illustrative |
 
 ## Linked UI Reference Evidence
 
