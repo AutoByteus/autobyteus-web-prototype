@@ -6,7 +6,7 @@ Canonical contract for the AutoByteus mobile web shell (`/mobile`, wrapped by th
 
 - Status: `Approved` (2026-11-06): "okayyy. everything is good now. i approve". DEC-003 and the composer row were not answered separately; they are recorded under Decisions as approved through the design as built.
 - Request / ticket: `mobile-experience-redesign` (Project Task `autobyteus-277`, Project `project_a1377344-25db-482a-97cc-ecfdb0fb495a`). No second ID.
-- Related requirements revision ID: `SR-001` (`requirements-doc.md` Draft).
+- Related requirements revision ID: `SR-003` (the user-approved requirements of `requirements-doc.md`; this design was first written against `SR-001`).
 - Related IDs: REQ-001…REQ-009; BEH-001…BEH-006; AC-001…AC-010; DEC-001…DEC-006; follow-up FU-001 = Project Task `autobyteus-391`.
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`).
 - Review URL: the product's normal entry point, `http://127.0.0.1:3277/mobile` (the user's phone: `http://100.127.30.107:3277/mobile` over Tailscale). No preview switch.
@@ -212,13 +212,12 @@ The same screens at 360×800: no horizontal scrolling (checked: the document is 
 | TR-011 | Files | A folder row or a path part | Path line updates | That folder | — |
 | TR-012 | New run | A row | A bottom sheet | The sheet | one tap picks and closes |
 | TR-013 | New run | Create run | "Creating…" | The new run's screen; listed at the top | first message |
-| TR-014 | Run screen | An opened file | Files | After a moment the viewer shows invented text (`sampleReferenceText`; the reference has no file service) | The file read through the authorized workspace file API; "Opening…" while it loads; "Couldn’t open this file." on an error; "This file can’t be shown on the phone." / "too large" |
-| First message of a new run | The conversation continues | The run keeps its place with its permanent id | — |
+| TR-014 | Run screen | First message of a new run | The conversation continues | The run keeps its place with its permanent id | — |
 | TR-015 | Run on an unreachable node | Open | The remote notice | Retry (re-checks) | ← |
 | TR-016 | Run screen | The conversation is not attached | "Opening…" | Attached automatically | — |
 | TR-017 | Run list, read error | Retry | Loading rows | The list | — |
-| TR-019 | Files | A file row | "Opening…" until it loads | The file full screen on a 48px bar (← and the file name), no Attach button, no card; ← returns to the folder | — |
 | TR-018 | Connection sheet | Unpair this phone | Confirmation | The pairing screen | — |
+| TR-019 | Files | A file row | "Opening…" until it loads | The file full screen on a 48px bar (← and the file name), no Attach button, no card; ← returns to the folder | — |
 
 ## State Behavior
 
