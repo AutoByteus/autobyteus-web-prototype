@@ -16,37 +16,7 @@
       </div>
     </header>
 
-    <div v-if="!context" class="min-h-0 flex-1 overflow-y-auto p-5">
-      <article class="rounded-3xl border border-dashed border-slate-300 bg-white p-6 text-center" data-testid="mobile-artifacts-no-context">
-        <p class="font-semibold text-slate-900">Choose work to see Artifacts</p>
-        <p class="mt-2 text-sm text-slate-500">Open an agent or team run to inspect generated files and outputs.</p>
-        <button type="button" class="mt-4 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white" @click="$emit('chooseWork')">
-          Choose work
-        </button>
-      </article>
-    </div>
-
-    <div v-else-if="!isRunContext" class="min-h-0 flex-1 overflow-y-auto p-5">
-      <article class="rounded-3xl border border-dashed border-slate-300 bg-white p-6 text-center" data-testid="mobile-artifacts-no-run-context">
-        <p class="font-semibold text-slate-900">Open a run to see Artifacts</p>
-        <p class="mt-2 text-sm text-slate-500">Artifacts are scoped to an agent run or the focused member of a team run.</p>
-        <button type="button" class="mt-4 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white" @click="$emit('chooseWork')">
-          Choose run
-        </button>
-      </article>
-    </div>
-
-    <div v-else-if="!focusedRunId" class="min-h-0 flex-1 overflow-y-auto p-5">
-      <article class="rounded-3xl border border-dashed border-slate-300 bg-white p-6 text-center" data-testid="mobile-artifacts-no-run-id">
-        <p class="font-semibold text-slate-900">Select an active run</p>
-        <p class="mt-2 text-sm text-slate-500">The current mobile context no longer matches the selected run or focused team member.</p>
-        <button type="button" class="mt-4 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white" @click="$emit('chooseWork')">
-          Choose run
-        </button>
-      </article>
-    </div>
-
-    <div v-else-if="!artifacts.length" class="min-h-0 flex-1 overflow-y-auto p-5">
+    <div v-if="!artifacts.length" class="min-h-0 flex-1 overflow-y-auto p-5">
       <article class="rounded-3xl border border-dashed border-slate-300 bg-white p-6 text-center" data-testid="mobile-artifacts-empty">
         <p class="font-semibold text-slate-900">No Artifacts yet</p>
         <p class="mt-2 text-sm text-slate-500">Generated or edited files for this run will appear here as they become available.</p>

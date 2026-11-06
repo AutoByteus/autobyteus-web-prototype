@@ -37,3 +37,8 @@ Pending the user's confirmation.
 
 - The user: the run screen's static strip (sibling chips) under the top bar takes space from the conversation and is rarely used; the event monitor should be as large as possible; selecting another agent and the other controls belong behind a dropdown or a ⋯ menu that opens on demand ("you don't want to make those static things which are always on screen because they are not used very often").
 - Change: the strip is removed. The run screen is one slim bar (back, the agent's name as a dropdown that opens the run tree to switch agent, ⋯ menu with Results and "Back to <delegator>") and the conversation below it.
+
+## Review round 3 (2026-11-06)
+
+- The user: the ⌄ plus the ⋮ with only "Results" is two controls where one will do; "Results" is unclear (it is just the current agent's artifacts, files and activity); and Artifacts should not ask "select an active run" since the screen always belongs to the current agent.
+- Change: one control, the ⋮ menu: Switch agent (opens the run tree), Back to <delegator>, then Artifacts, Files, Activity, each opening its own screen for the current agent (no tabs, no "Results"). The title is plain text. The "choose work / select an active run" states are removed from Artifacts and Activity.

@@ -43,7 +43,7 @@
         :context="mobileWorkStore.currentContext"
         @back="goBack"
         @open="switchNode"
-        @open-results="openResults"
+        @open-view="openView"
         @retry-node="retryNode"
       />
 
@@ -58,6 +58,7 @@
 
       <MobileResults
         v-if="resultsOpen && currentNode"
+        :kind="runView"
         :node="currentNode"
         :context="mobileWorkStore.currentContext"
         @back="goBack"
@@ -92,7 +93,7 @@ import { useRoute } from 'vue-router';
 import MobileConnectionSheet from '~/components/mobile/MobileConnectionSheet.vue';
 import MobileNewRun from '~/components/mobile/MobileNewRun.vue';
 import MobilePairingBootstrap from '~/components/mobile/MobilePairingBootstrap.vue';
-import MobileResults from '~/components/mobile/MobileResults.vue';
+import MobileResults, { type MobileRunView } from '~/components/mobile/MobileResults.vue';
 import MobileRunScreen from '~/components/mobile/MobileRunScreen.vue';
 import MobileRunsScreen from '~/components/mobile/MobileRunsScreen.vue';
 import MobileUnpairConfirm from '~/components/mobile/MobileUnpairConfirm.vue';
@@ -124,6 +125,7 @@ type MobileScreen = 'runs' | 'run' | 'new-run';
 // One list, one run screen, one New run page. The system Back key walks them in order (history entries).
 const screen = ref<MobileScreen>('runs');
 const resultsOpen = ref(false);
+const runView = ref<MobileRunView>('artifacts');
 const showConnection = ref(false);
 const showUnpairConfirm = ref(false);
 const isPostPairChecking = ref(false);
@@ -239,7 +241,8 @@ function onLaunched(context: MobileWorkContext): void {
   navigate('run', { replace: true });
 }
 
-function openResults(): void {
+function openView(view: MobileRunView): void {
+  runView.value = view;
   history.pushState({ mx: 'run', results: true }, '');
   resultsOpen.value = true;
 }

@@ -44,13 +44,6 @@
       <MobileRunActivityList :context="context" class="mt-3" />
     </article>
 
-    <article v-if="!context" class="rounded-3xl border border-dashed border-slate-300 p-6 text-center">
-      <p class="font-semibold text-slate-900">No work context selected</p>
-      <p class="mt-2 text-sm text-slate-500">Choose work to see relevant activity.</p>
-      <button type="button" class="mt-4 rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white" @click="$emit('chooseWork')">
-        Choose work
-      </button>
-    </article>
   </div>
 </template>
 
