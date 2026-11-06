@@ -116,3 +116,9 @@ Pending the user's confirmation.
 
 - The user: the number next to a task team (its member count, "3 >") is distracting.
 - Change: a row with delegated work or members shows only the chevron (48×48 target); the count is removed (the desktop shows none).
+
+## Review round 15 (2026-11-06)
+
+- The user: why is there a border between runs (for example between Daily Assistant and Product Launch Org)? Also confirmed: "I think I just experienced it and the user experience is really nice … I'm fine with the user experience now."
+- Finding: the separators were only meant to mark where a run's tree ends; two borders stacked (a thick line), and the vertical line beside delegated work already shows the group.
+- Change: no separators between runs; spacing only.

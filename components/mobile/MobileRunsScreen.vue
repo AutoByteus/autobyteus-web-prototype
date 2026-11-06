@@ -50,14 +50,13 @@
       </div>
 
       <template v-else>
-        <ul role="tree" aria-label="Your runs" class="divide-y divide-slate-100" data-testid="mobile-runs-list">
+        <ul role="tree" aria-label="Your runs" data-testid="mobile-runs-list">
           <MobileRunRow
             v-for="run in store.visibleRuns"
             :key="run.id"
             :node="run"
             :depth="0"
             :selected-id="store.selectedId"
-            class="border-b border-slate-100"
             @open="$emit('open-run', $event)"
           />
         </ul>
