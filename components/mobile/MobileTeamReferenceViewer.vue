@@ -1,30 +1,20 @@
 <template>
   <div class="fixed inset-0 z-50 flex flex-col bg-white" data-testid="mobile-team-reference-viewer">
-    <header class="flex shrink-0 items-center gap-3 border-b border-slate-200 px-5 py-4">
-      <button
-        type="button"
-        class="rounded-full border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700"
-        data-testid="mobile-team-reference-back"
-        @click="$emit('close')"
-      >
-        Back
+    <header class="flex h-12 shrink-0 items-center gap-2 border-b border-slate-200 pl-1 pr-3">
+      <button type="button" class="flex h-12 w-12 items-center justify-center rounded-full text-slate-600 active:bg-slate-100" aria-label="Back to messages" data-testid="mobile-team-reference-back" @click="$emit('close')">
+        <Icon icon="heroicons:arrow-left-20-solid" class="h-6 w-6" aria-hidden="true" />
       </button>
       <Icon :icon="referenceFileIcon(reference)" class="h-5 w-5 shrink-0" aria-hidden="true" />
-      <div class="min-w-0 flex-1">
-        <p class="truncate font-bold text-slate-950">{{ referenceFileName(reference.path) }}</p>
-        <p class="truncate text-xs text-slate-500">{{ reference.path }}</p>
-      </div>
+      <h1 class="min-w-0 flex-1 truncate text-base font-semibold">{{ referenceFileName(reference.path) }}</h1>
     </header>
-
-    <div class="min-h-0 flex-1 overflow-hidden bg-slate-50 p-3">
-      <div class="h-full min-h-0 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-        <CollaborationMessageReferenceViewer
-          :content-path="contentPath"
-          :reference="reference"
-          :refresh-signal="refreshSignal"
-          :disable-rich-text-preview="true"
-        />
-      </div>
+    <pre v-if="previewText !== undefined" class="min-h-0 flex-1 overflow-auto whitespace-pre-wrap break-words px-4 py-3 font-mono text-[0.8125rem] leading-6 text-slate-800" data-testid="mobile-team-reference-text">{{ previewText }}</pre>
+    <div v-else class="min-h-0 flex-1 overflow-hidden bg-white">
+      <CollaborationMessageReferenceViewer
+        :content-path="contentPath"
+        :reference="reference"
+        :refresh-signal="refreshSignal"
+        :disable-rich-text-preview="true"
+      />
     </div>
   </div>
 </template>
@@ -44,6 +34,8 @@ const props = defineProps<{
   messageId: string;
   reference: TeamReferenceFile;
   refreshSignal?: number;
+  /** Design-only: shown instead of the file read through the team's message. */
+  previewText?: string;
 }>();
 
 const contentPath = computed(() =>

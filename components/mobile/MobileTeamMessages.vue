@@ -14,12 +14,12 @@
         </div>
         <p class="mt-1 whitespace-pre-wrap break-words text-[0.9375rem] leading-6 text-slate-700">{{ message.content }}</p>
 
-        <div v-if="message.referenceFiles.length" class="mt-2" data-testid="mobile-team-reference-list">
+        <div v-if="message.referenceFiles.length" class="mt-1" data-testid="mobile-team-reference-list">
           <button
             v-for="reference in message.referenceFiles"
             :key="reference.referenceId"
             type="button"
-            class="flex h-12 w-full items-center gap-3 text-left active:bg-slate-50"
+            class="flex h-11 w-full items-center gap-3 text-left active:bg-slate-50"
             data-testid="mobile-team-reference-row"
             @click="openReference(message, reference)"
           >
@@ -31,11 +31,12 @@
     </template>
 
     <MobileTeamReferenceViewer
-      v-if="selectedReferenceContext && activeTeamContext"
-      :team-run-id="activeTeamContext.view.getRootTeamRunId()"
+      v-if="selectedReferenceContext"
+      :team-run-id="activeTeamContext ? activeTeamContext.view.getRootTeamRunId() : ''"
       :message-id="selectedReferenceContext.message.messageId"
       :reference="selectedReferenceContext.reference"
       :refresh-signal="referenceRefreshSignal"
+      :preview-text="activeTeamContext ? undefined : sampleReferenceText(selectedReferenceContext.reference.path)"
       @close="selectedReferenceContext = null"
     />
   </section>
@@ -44,7 +45,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Icon } from '@iconify/vue';
-import { sampleTeamMessages } from '~/prototype/mobile-runs/mobileRunsFixture';
+import { sampleReferenceText, sampleTeamMessages } from '~/prototype/mobile-runs/mobileRunsFixture';
 import MobileTeamReferenceViewer from '~/components/mobile/MobileTeamReferenceViewer.vue';
 import { useAgentTeamContextsStore } from '~/stores/agentTeamContextsStore';
 import { useAgentSelectionStore } from '~/stores/agentSelectionStore';

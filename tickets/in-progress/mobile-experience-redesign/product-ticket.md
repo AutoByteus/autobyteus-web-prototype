@@ -75,3 +75,9 @@ Pending the user's confirmation.
 
 - The user: "Switch agent" and "Back to <delegator>" are not needed: ← already goes back, and the first screen (the run list) is already clear.
 - Change: both items and the run-tree sheet are removed. The ⋮ menu is Artifacts, Files, Messages (team members only) and Activity. Moving to another agent or to the delegator is ← to the run list (which keeps its scroll position and marks the open run) and one tap on the row.
+
+## Review round 10 (2026-11-06)
+
+- The user: the Messages screen shows no file references, but the desktop has them: messages carry files, like artifacts.
+- Finding: the screen supports references (the source's component lists them and opens them); the reference's invented messages had none.
+- Change: sample messages carry references (requirements.md, design-spec.md, upload.ts). A reference is one 44px row (the file's icon and name) under its message; a tap opens the file full screen with the same 48px bar (← and the file name), no boxes. In the reference the file text is invented (`sampleReferenceText`); the product reads it through the team's message.

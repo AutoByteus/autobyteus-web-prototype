@@ -180,16 +180,27 @@ export const sampleTeamMessages = (runId: string): Array<Record<string, any>> =>
   const node = NODE_BY_ID.get(runId)
   if (!node || node.kind !== 'member') return []
   const at = Date.now() - node.minutes * 60_000
-  const row = (n: number, direction: 'sent' | 'received', counterpartLabel: string, content: string) => ({
+  const ref = (n: number, path: string, type = 'file') => ({
+    referenceId: `${runId}-r${n}-${path}`, path, type, createdAt: new Date(at).toISOString(), updatedAt: new Date(at).toISOString(),
+  })
+  const row = (n: number, direction: 'sent' | 'received', counterpartLabel: string, content: string, referenceFiles: unknown[] = []) => ({
     messageId: `${runId}-m${n}`, messageType: 'direct_message', direction, counterpartLabel, content,
-    createdAt: new Date(at + n * 90_000).toISOString(), referenceFiles: [],
+    createdAt: new Date(at + n * 90_000).toISOString(), referenceFiles,
   })
   return [
-    row(1, 'received', 'solution_designer', 'Requirements are approved. Start with the first-turn upload path and keep the change small.'),
-    row(2, 'sent', 'solution_designer', 'Found it: the context files are attached after the first send. I am moving the attach step before it.'),
+    row(1, 'received', 'solution_designer', 'Requirements are approved. Start with the first-turn upload path and keep the change small.', [ref(1, 'docs/requirements.md'), ref(2, 'docs/design-spec.md')]),
+    row(2, 'sent', 'solution_designer', 'Found it: the context files are attached after the first send. I am moving the attach step before it.', [ref(3, 'src/context/upload.ts')]),
     row(3, 'received', 'code_reviewer', 'Please add a test for the first-turn case before you hand over.'),
   ]
 }
+
+/** Design-only: what an opened reference file shows (the product reads the file through the team's message). Invented. */
+export const sampleReferenceText = (path: string): string => path.endsWith('.ts')
+  ? "export function attachContextFiles(run: Run, files: ContextFile[]): void {\n  // Attach before the first send so the model sees them on turn one.\n  for (const file of files) run.context.add(file)\n}\n"
+  : path.includes('design')
+    ? '# Design: first-turn context files\n\nAttach the context files while the run is created, not after the first message is sent.\n\n## Changes\n- Move the attach step before the first send.\n- Keep the files when the run is promoted to its permanent id.\n'
+    : '# Requirements: first-turn context files\n\n- A context file added before the first message reaches the model on that message.\n- A failed upload is shown on the run, not silently dropped.\n'
+
 
 /** Design-only: what the run's Activity screen lists (the product records it from the run's stream). Invented. */
 export const sampleToolActivities = (runId: string): Array<Record<string, any>> => {
