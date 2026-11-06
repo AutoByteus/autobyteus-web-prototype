@@ -1,9 +1,11 @@
 <template>
   <section class="flex h-full flex-col overflow-hidden" data-testid="mobile-files">
-    <header class="shrink-0 border-b border-slate-200 bg-white px-5 py-4">
-      <h2 class="text-xl font-bold text-slate-950">{{ workspaceTitle }}</h2>
-      <p class="mt-1 truncate text-sm text-slate-500">{{ workspaceSubtitle }}</p>
-      <div v-if="activeWorkspace" class="mt-3 flex items-center gap-2" data-testid="mobile-files-primary-controls">
+    <header v-if="!embedded || activeWorkspace" class="shrink-0 border-b border-slate-200 bg-white px-4 py-3">
+      <template v-if="!embedded">
+        <h2 class="text-xl font-bold text-slate-950">{{ workspaceTitle }}</h2>
+        <p class="mt-1 truncate text-sm text-slate-500">{{ workspaceSubtitle }}</p>
+      </template>
+      <div v-if="activeWorkspace" class="flex items-center gap-2" data-testid="mobile-files-primary-controls">
         <input
           v-model="search"
           class="min-w-0 flex-1 rounded-2xl border border-slate-300 px-4 py-3 text-sm shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
@@ -155,6 +157,8 @@ import { useMobileWorkStore } from '~/stores/mobileWorkStore';
 
 const props = defineProps<{
   context: MobileWorkContext | null;
+  /** Inside Results, which carries the title. */
+  embedded?: boolean;
 }>();
 
 defineEmits<{

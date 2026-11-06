@@ -1,16 +1,16 @@
 <template>
-  <form class="space-y-4 rounded-3xl border border-blue-200 bg-blue-50 p-4" data-testid="mobile-run-setup" :inert="creating" :aria-busy="creating" @submit.prevent="createRun">
-    <div class="flex justify-end">
+  <form :class="plain ? 'space-y-4' : 'space-y-4 rounded-3xl border border-blue-200 bg-blue-50 p-4'" data-testid="mobile-run-setup" :inert="creating" :aria-busy="creating" @submit.prevent="createRun">
+    <div v-if="!plain" class="flex justify-end">
       <button type="button" class="rounded-lg border border-blue-200 px-3 py-1.5 text-xs font-semibold text-blue-700" @click="$emit('cancel')">
         Hide
       </button>
     </div>
 
-    <div class="grid grid-cols-2 gap-2">
+    <div class="grid grid-cols-2 gap-1 rounded-full bg-slate-100 p-1">
       <button
         type="button"
-        class="rounded-2xl px-3 py-2 text-sm font-semibold"
-        :class="mode === 'agent' ? 'bg-blue-600 text-white' : 'bg-white text-blue-800'"
+        class="h-11 rounded-full text-sm font-semibold"
+        :class="mode === 'agent' ? 'bg-blue-600 text-white' : 'text-slate-600'"
         data-testid="mobile-run-setup-agent-mode"
         @click="setMode('agent')"
       >
@@ -18,8 +18,8 @@
       </button>
       <button
         type="button"
-        class="rounded-2xl px-3 py-2 text-sm font-semibold"
-        :class="mode === 'team' ? 'bg-blue-600 text-white' : 'bg-white text-blue-800'"
+        class="h-11 rounded-full text-sm font-semibold"
+        :class="mode === 'team' ? 'bg-blue-600 text-white' : 'text-slate-600'"
         data-testid="mobile-run-setup-team-mode"
         @click="setMode('team')"
       >
@@ -84,8 +84,8 @@
       @update:auto-execute-tools="setAutoExecuteTools"
     />
 
-    <section class="rounded-2xl border border-blue-200 bg-white p-3 text-sm" data-testid="mobile-run-setup-readiness">
-      <p class="font-semibold" :class="canLaunch ? 'text-emerald-700' : 'text-amber-700'">
+    <section class="text-sm" data-testid="mobile-run-setup-readiness">
+      <p v-if="!plain || !canLaunch" class="font-semibold" :class="canLaunch ? 'text-emerald-700' : 'text-amber-700'">
         {{ canLaunch ? 'Ready to create the run. Chat opens next.' : blockingIssue }}
       </p>
       <div v-if="draftAttachments.length" class="mt-3 rounded-xl bg-blue-50 px-3 py-2" data-testid="mobile-run-setup-context-count">
@@ -110,14 +110,17 @@
       {{ error }}
     </p>
 
+    <div :class="plain ? 'sticky bottom-0 -mx-4 bg-white px-4 pb-1 pt-2' : ''">
     <button
       type="submit"
-      class="w-full rounded-2xl bg-blue-600 px-4 py-3 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
+      class="w-full rounded-2xl bg-blue-600 px-4 text-base font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
+      :class="plain ? 'h-14' : 'py-3'"
       :disabled="!canLaunch || creating"
       data-testid="mobile-run-launch"
     >
       {{ creating ? 'Creating…' : 'Create run' }}
     </button>
+    </div>
   </form>
 </template>
 
@@ -133,6 +136,8 @@ import type { MobileRunSetupIntent, MobileWorkContext } from '~/types/mobileWork
 const props = defineProps<{
   context: MobileWorkContext | null
   setupIntent?: MobileRunSetupIntent | null
+  /** Full-screen New run: no card around the form and no Hide button. */
+  plain?: boolean
 }>()
 
 const emit = defineEmits<{

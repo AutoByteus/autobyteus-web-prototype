@@ -1,6 +1,6 @@
 <template>
   <section class="flex h-full min-h-0 flex-col overflow-hidden bg-slate-50" data-testid="mobile-artifacts">
-    <header class="shrink-0 border-b border-slate-200 bg-white px-5 py-4">
+    <header v-if="!embedded" class="shrink-0 border-b border-slate-200 bg-white px-5 py-4">
       <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
           <h2 class="text-xl font-bold text-slate-950">Artifacts</h2>
@@ -96,6 +96,8 @@ import type { MobileWorkContext } from '~/types/mobileWork';
 
 const props = defineProps<{
   context: MobileWorkContext | null;
+  /** Inside Results, which carries the title. */
+  embedded?: boolean;
 }>();
 
 defineEmits<{

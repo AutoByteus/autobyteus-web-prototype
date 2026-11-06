@@ -472,6 +472,21 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
 export default defineNuxtPlugin({
   name: 'prototype-state',
   setup(nuxtApp) {
+    // mobile-experience-redesign (design-only): the first visit to /mobile in a browser starts as an already paired phone
+    // (an inert fixture session), so the review needs no setup on the phone. Unpair still shows the pairing screen; the
+    // `unpaired` scenario or `autobyteus.prototype.mobileSeeded` removed starts unpaired/paired again.
+    if (window.location.pathname === '/mobile' && !localStorage.getItem('autobyteus.prototype.mobileSeeded')) {
+      localStorage.setItem('autobyteus.prototype.mobileSeeded', '1')
+      if (!localStorage.getItem(CONTEXT_KEY)) localStorage.setItem(CONTEXT_KEY, 'paired')
+      if (!localStorage.getItem('autobyteus.remote_access.mobile_session.v1') && localStorage.getItem(CONTEXT_KEY) === 'paired') {
+        const now = '2026-11-06T08:00:00.000Z'
+        localStorage.setItem('autobyteus.remote_access.mobile_session.v1', JSON.stringify({
+          version: 1, nodeId: 'mobile-paired-node', serverBaseUrl: window.location.origin, credential: 'prototype_mobile_session',
+          device: { deviceId: 'prototype-phone', displayName: 'Prototype phone', clientFacingBaseUrl: window.location.origin, createdAt: now, lastSeenAt: now, revokedAt: null },
+          pairedAt: now,
+        }))
+      }
+    }
     installHostScenario({ context: context(), scenario: scenario() })
     // The retained source editor defaults to jsDelivr. Ordinary prototype
     // review must remain network-independent, so use the checked-in mirror.

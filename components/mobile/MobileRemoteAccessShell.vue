@@ -21,57 +21,60 @@
           <p class="text-xs font-bold uppercase tracking-[0.18em] text-blue-600">Pairing complete</p>
           <h1 class="mt-3 text-2xl font-bold text-slate-950">Checking your desktop</h1>
           <p class="mt-3 text-sm text-slate-600">
-            Refreshing Phone Access status and mobile work choices before Home opens.
+            Refreshing Phone Access status and mobile work choices before your runs open.
           </p>
           <p class="mt-4 text-sm font-semibold text-blue-700">Checking status…</p>
         </div>
       </section>
 
-      <MobileHome
-        v-else-if="screen === 'home'"
-        :server-base-url="sessionStore.serverBaseUrl"
-        :status="sessionStore.lastStatus"
-        :is-refreshing="sessionStore.isCheckingStatus"
-        :diagnostic="sessionStore.lastDiagnostic"
-        :authorized-api-reachable="sessionStore.authorizedApiReachable"
-        :notice-message="unsupportedMessage"
-        :current-context="mobileWorkStore.currentContext"
-        :recent-items="recentWorkItems"
-        @refresh-status="checkStatus"
-        @select-context="openContext"
-        @open-work-picker="openContextSwitcher"
-        @open-files="openFiles"
-        @open-troubleshooting="screen = 'troubleshooting'"
-        @request-unpair="showUnpairConfirm = true"
-      />
-
-      <MobileWorkShell
-        v-else-if="screen === 'work'"
-        :context="mobileWorkStore.currentContext"
-        :active-tab="mobileWorkStore.activeTab"
-        @home="screen = 'home'"
-        @switch-context="openContextSwitcher"
-        @select-context="openContext"
-        @update:active-tab="mobileWorkStore.setActiveTab"
-      />
-
-      <MobileTroubleshooting
+      <MobileRunsScreen
         v-else
+        :node-name="nodeName"
+        :connected="connected"
+        :notice="unsupportedMessage"
+        @open-run="openNode"
+        @new-run="openNewRun"
+        @open-connection="showConnection = true"
+      />
+
+      <MobileRunScreen
+        v-if="screen === 'run' && currentNode"
+        :node="currentNode"
+        :context="mobileWorkStore.currentContext"
+        @back="goBack"
+        @open="switchNode"
+        @open-results="openResults"
+        @retry-node="retryNode"
+      />
+
+      <MobileNewRun
+        v-if="screen === 'new-run'"
+        :context="mobileWorkStore.currentContext"
+        :setup-intent="mobileWorkStore.runSetupIntent"
+        @close="goBack"
+        @launched="onLaunched"
+        @setup-intent-consumed="mobileWorkStore.consumeRunSetupIntent"
+      />
+
+      <MobileResults
+        v-if="resultsOpen && currentNode"
+        :node="currentNode"
+        :context="mobileWorkStore.currentContext"
+        @back="goBack"
+      />
+
+      <MobileConnectionSheet
+        v-if="showConnection"
+        :node-name="nodeName"
         :server-base-url="sessionStore.serverBaseUrl"
+        :connected="connected"
+        :status-label="connectionStatusLabel"
         :is-checking="sessionStore.isCheckingStatus"
         :diagnostic="sessionStore.lastDiagnostic"
-        :status="sessionStore.lastStatus"
-        @home="screen = 'home'"
-        @check-status="checkStatus"
-      />
-
-      <MobileContextSwitcher
-        v-if="showContextSwitcher"
-        :segments="catalogSegments"
-        :selected-context="mobileWorkStore.currentContext"
-        @close="showContextSwitcher = false"
-        @select-context="openContext"
-        @retry-segment="retryCatalogSegment"
+        :peers="runTreeStore.peers"
+        @close="showConnection = false"
+        @check="checkStatus"
+        @unpair="showConnection = false; showUnpairConfirm = true"
       />
 
       <MobileUnpairConfirm
@@ -84,24 +87,25 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import MobileContextSwitcher from '~/components/mobile/MobileContextSwitcher.vue';
-import MobileHome from '~/components/mobile/MobileHome.vue';
+import MobileConnectionSheet from '~/components/mobile/MobileConnectionSheet.vue';
+import MobileNewRun from '~/components/mobile/MobileNewRun.vue';
 import MobilePairingBootstrap from '~/components/mobile/MobilePairingBootstrap.vue';
-import MobileTroubleshooting from '~/components/mobile/MobileTroubleshooting.vue';
+import MobileResults from '~/components/mobile/MobileResults.vue';
+import MobileRunScreen from '~/components/mobile/MobileRunScreen.vue';
+import MobileRunsScreen from '~/components/mobile/MobileRunsScreen.vue';
 import MobileUnpairConfirm from '~/components/mobile/MobileUnpairConfirm.vue';
 import MobileUnsupportedFeatureNotice from '~/components/mobile/MobileUnsupportedFeatureNotice.vue';
-import MobileWorkShell from '~/components/mobile/MobileWorkShell.vue';
-import { useMobileWorkCatalog } from '~/composables/mobile/useMobileWorkCatalog';
+import type { MobileRunNode } from '~/prototype/mobile-runs/mobileRunsFixture';
 import { useAgentContextsStore } from '~/stores/agentContextsStore';
-import { useAgentTeamContextsStore } from '~/stores/agentTeamContextsStore';
 import { useMobileNodeSessionStore } from '~/stores/mobileNodeSessionStore';
+import { useMobileRunTreeStore } from '~/stores/mobileRunTreeStore';
 import { useMobileWorkStore } from '~/stores/mobileWorkStore';
 import { useRunHistoryStore } from '~/stores/runHistoryStore';
+import { useAgentSelectionStore } from '~/stores/agentSelectionStore';
 import type { MobileFeatureId } from '~/utils/mobileFeatureGates';
-import type { MobileCatalogSegmentId, MobileTaskTab, MobileWorkContext } from '~/types/mobileWork';
-import { preferredTabForMobileContext } from '~/types/mobileWork';
+import type { MobileWorkContext } from '~/types/mobileWork';
 import { clearMobileRunSelection, selectMobileRun } from '~/utils/mobile/mobileSelectionAdapter';
 
 // Keep the component name in the compiled chunk stable for existing page tests.
@@ -109,29 +113,27 @@ defineOptions({ name: 'MobileRemoteAccessShell' });
 
 const sessionStore = useMobileNodeSessionStore();
 const mobileWorkStore = useMobileWorkStore();
+const runTreeStore = useMobileRunTreeStore();
 const runHistoryStore = useRunHistoryStore();
 const agentContextsStore = useAgentContextsStore();
-const teamContextsStore = useAgentTeamContextsStore();
 const route = useRoute();
-const {
-  recentWorkItems,
-  catalogSegments,
-  refreshMobileCatalogSegment,
-  refreshMobileWorkCatalog,
-} = useMobileWorkCatalog();
+const selectionStore = useAgentSelectionStore();
 
-type MobileScreen = 'home' | 'work' | 'troubleshooting';
+type MobileScreen = 'runs' | 'run' | 'new-run';
 
-const screen = ref<MobileScreen>('home');
-const showContextSwitcher = ref(false);
+// One list, one run screen, one New run page. The system Back key walks them in order (history entries).
+const screen = ref<MobileScreen>('runs');
+const resultsOpen = ref(false);
+const showConnection = ref(false);
 const showUnpairConfirm = ref(false);
 const isPostPairChecking = ref(false);
 const pendingPostPairRefresh = ref(false);
 const postPairRefreshPromise = ref<Promise<void> | null>(null);
 const routePairingConsumed = ref(false);
+const launchedNode = ref<MobileRunNode | null>(null);
 
 const unsupportedFeatureMessages: Partial<Record<MobileFeatureId, string>> = {
-  desktopWorkspace: 'The desktop workspace route is replaced by the phone-first mobile work shell. Use Home, Switch work, and Chat/Runs/Files/Artifacts/Activity instead.',
+  desktopWorkspace: 'The desktop workspace isn’t on the phone. Your runs are here.',
   desktopSettings: 'Desktop settings are managed from the desktop app. Phone Access exposes only phone connection controls.',
   desktopUpdates: 'Desktop update controls are not available from the phone client.',
   localFolderPicker: 'Local folder picking is not available from the phone client.',
@@ -151,96 +153,140 @@ const routePairingParam = computed(() => {
 });
 const hasRoutePairingParam = computed(() => Boolean(routePairingParam.value) && !routePairingConsumed.value);
 const shellClass = computed(() => [
-  'bg-slate-100 text-slate-900',
-  screen.value === 'work'
-    ? 'fixed inset-0 h-screen h-[100dvh] overflow-hidden overscroll-none'
-    : 'min-h-screen',
+  'bg-white text-slate-900',
+  sessionStore.isPaired && !hasRoutePairingParam.value ? 'fixed inset-0 h-[100dvh] overflow-hidden overscroll-none' : 'min-h-screen bg-slate-100',
 ]);
 
+const nodeName = computed(() => sessionStore.lastStatus?.serverName || new URL(sessionStore.serverBaseUrl || 'http://localhost', 'http://localhost').host);
+const connected = computed(() => runTreeStore.listState !== 'node-offline' && !sessionStore.lastDiagnostic);
+const connectionStatusLabel = computed(() => {
+  if (sessionStore.isCheckingStatus) return 'Checking…';
+  if (!connected.value) return 'Not reachable';
+  return sessionStore.lastStatus && !sessionStore.lastStatus.phoneAccessEnabled ? 'Phone Access disabled' : 'Connected';
+});
+const currentNode = computed<MobileRunNode | null>(() => runTreeStore.byId(runTreeStore.selectedId) ?? (launchedNode.value?.id === runTreeStore.selectedId ? launchedNode.value : null));
+
 async function checkStatus(): Promise<void> {
-  const [statusResult, catalogResult] = await Promise.allSettled([
-    sessionStore.fetchStatus(),
-    refreshMobileWorkCatalog(),
-  ]);
-  const statusReachable = statusResult.status === 'fulfilled' && Boolean(statusResult.value);
-  const catalogReachable = catalogResult.status === 'fulfilled' && catalogResult.value.hadSuccess;
-  const catalogAuthFailed = catalogResult.status === 'fulfilled' && catalogResult.value.hadAuthFailure && !catalogReachable;
-  if (catalogAuthFailed) {
-    sessionStore.rejectLocalSessionForAuthFailure();
+  try {
+    const status = await sessionStore.fetchStatus();
+    sessionStore.recordAuthorizedApiReachability(Boolean(status));
+  } catch {
+    sessionStore.recordAuthorizedApiReachability(false);
+  }
+}
+
+function contextFor(node: MobileRunNode): MobileWorkContext {
+  return {
+    kind: 'agent-run',
+    runId: node.id,
+    agentDefinitionId: 'agent-researcher',
+    title: node.name,
+    summary: node.summary,
+    workspaceRootPath: '/synthetic/prototype-workspace',
+    isActive: node.status === 'running',
+    lastActivityAt: new Date().toISOString(),
+    statusLabel: node.status,
+  };
+}
+
+async function openConversation(node: MobileRunNode): Promise<void> {
+  if (!runTreeStore.isNodeReachable(node.node)) {
+    clearMobileRunSelection();
     return;
   }
-  sessionStore.recordAuthorizedApiReachability(catalogReachable || statusReachable);
-}
-
-async function openRunContext(context: MobileWorkContext): Promise<void> {
-  if (context.kind === 'agent-run') {
-    if (agentContextsStore.getRun(context.runId)) {
-      selectMobileRun(context.runId, 'agent');
-    } else {
-      await runHistoryStore.openRun(context.runId, { selectionMode: 'mobile' });
-    }
-  } else if (context.kind === 'team-run') {
-    if (teamContextsStore.getTeamContextById(context.teamRunId)) {
-      const result = await runHistoryStore.inspectTeamMember(
-        context.teamRunId,
-        context.focusedAgentRunId,
-        { selectionMode: 'mobile' },
-      );
-      if (result.disposition === 'rejected') throw new Error(result.message);
-    } else {
-      await runHistoryStore.openTeamMemberRun(context.teamRunId, context.focusedAgentRunId, { selectionMode: 'mobile' });
-      selectMobileRun(context.teamRunId, 'team');
-    }
+  if (agentContextsStore.getRun(node.id)) {
+    selectMobileRun(node.id, 'agent');
   } else {
-    clearMobileRunSelection();
+    await runHistoryStore.openRun(node.id, { selectionMode: 'mobile' });
   }
 }
 
-async function openContext(context: MobileWorkContext, tab?: MobileTaskTab): Promise<void> {
-  showContextSwitcher.value = false;
-  const targetTab = tab ?? preferredTabForMobileContext(context);
+/** Any row opens that agent's conversation: a team opens its coordinator, a member or a delegated child its own. */
+async function openNode(row: MobileRunNode, replace = false): Promise<void> {
+  const node = runTreeStore.targetOf(row);
   try {
-    await openRunContext(context);
-    mobileWorkStore.selectContext(context, targetTab);
-    if (context.kind === 'agent-definition') {
-      mobileWorkStore.requestRunSetup({ kind: 'agent', agentDefinitionId: context.agentDefinitionId });
-    } else if (context.kind === 'team-definition') {
-      mobileWorkStore.requestRunSetup({ kind: 'team', teamDefinitionId: context.teamDefinitionId });
-    }
-    screen.value = 'work';
+    await openConversation(node);
   } catch (error) {
-    console.warn('[MobileRemoteAccessShell] Failed to open selected mobile context.', error);
+    console.warn('[MobileRemoteAccessShell] Failed to open the run.', error);
+    return;
   }
+  runTreeStore.select(node.id);
+  mobileWorkStore.selectContext(contextFor(node), 'chat');
+  navigate('run', { replace: replace || screen.value === 'run' });
 }
 
-async function retryCatalogSegment(segmentId: MobileCatalogSegmentId): Promise<void> {
-  const success = await refreshMobileCatalogSegment(segmentId);
-  if (success) {
-    sessionStore.recordAuthorizedApiReachability(true);
-  }
+function switchNode(row: MobileRunNode): void {
+  resultsOpen.value = false;
+  void openNode(row, true);
 }
 
-function openFiles(): void {
-  mobileWorkStore.setActiveTab('files');
-  screen.value = 'work';
+function retryNode(): void {
+  // The reference's remote node stays down: the row keeps its state, as it does on the desktop.
 }
 
-function openContextSwitcher(): void {
-  showContextSwitcher.value = true;
+function openNewRun(): void {
+  navigate('new-run');
+}
+
+function onLaunched(context: MobileWorkContext): void {
+  if (context.kind !== 'agent-run' && context.kind !== 'team-run') return;
+  const id = context.kind === 'agent-run' ? context.runId : context.teamRunId;
+  const node: MobileRunNode = { id, kind: 'agent', name: context.title, summary: context.summary || 'New run', status: 'idle', minutes: 0 };
+  launchedNode.value = node;
+  runTreeStore.addLaunched(node);
+  runTreeStore.select(id);
+  mobileWorkStore.selectContext(context, 'chat');
+  navigate('run', { replace: true });
+}
+
+function openResults(): void {
+  history.pushState({ mx: 'run', results: true }, '');
+  resultsOpen.value = true;
+}
+
+function navigate(next: MobileScreen, options: { replace?: boolean } = {}): void {
+  const state = { mx: next, results: false };
+  if (options.replace) history.replaceState(state, '');
+  else history.pushState(state, '');
+  screen.value = next;
+  resultsOpen.value = false;
+}
+
+// A new run is sent its first message from the run screen; that gives it its permanent id and the run must stay open.
+watch(() => selectionStore.selectedRunId, (nextId) => {
+  const context = mobileWorkStore.currentContext;
+  if (context?.kind !== 'agent-run' || selectionStore.selectedType !== 'agent' || !nextId || nextId === context.runId) return;
+  if (launchedNode.value?.id !== context.runId) return;
+  runTreeStore.renameLaunched(context.runId, nextId);
+  launchedNode.value = { ...launchedNode.value, id: nextId };
+  mobileWorkStore.selectContext({ ...context, runId: nextId }, 'chat');
+});
+
+function goBack(): void {
+  history.back();
+}
+
+function onPopState(event: PopStateEvent): void {
+  const state = event.state as { mx?: MobileScreen; results?: boolean } | null;
+  screen.value = state?.mx ?? 'runs';
+  resultsOpen.value = Boolean(state?.results);
+  showConnection.value = false;
 }
 
 function unpairPhone(): void {
   showUnpairConfirm.value = false;
   mobileWorkStore.clearContext();
+  clearMobileRunSelection();
   sessionStore.deleteLocalSession();
-  screen.value = 'home';
+  screen.value = 'runs';
+  resultsOpen.value = false;
   pendingPostPairRefresh.value = false;
   isPostPairChecking.value = false;
   postPairRefreshPromise.value = null;
 }
 
 function beginPostPairRefresh(): void {
-  screen.value = 'home';
+  screen.value = 'runs';
   pendingPostPairRefresh.value = true;
   isPostPairChecking.value = true;
 }
@@ -299,10 +345,14 @@ watch(() => sessionStore.isPaired, (isPaired, wasPaired) => {
 });
 
 onMounted(async () => {
+  window.addEventListener('popstate', onPopState);
+  history.replaceState({ mx: 'runs', results: false }, '');
   sessionStore.initializeFromStorage();
   if (!sessionStore.isPaired) {
     return;
   }
   await checkStatus();
 });
+
+onBeforeUnmount(() => window.removeEventListener('popstate', onPopState));
 </script>

@@ -10,15 +10,12 @@
       @update:model-value="$emit('update:modelValue', $event)"
     />
 
-    <section class="rounded-2xl border border-blue-200 bg-white p-3 text-sm" data-testid="mobile-run-workspace-path-card">
+    <section class="border-b border-slate-200 py-3 text-sm" data-testid="mobile-run-workspace-path-card">
       <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
-          <label class="font-bold text-blue-950" for="mobile-run-workspace-path-input">
-            Load workspace by server path
+          <label class="font-semibold text-slate-500" for="mobile-run-workspace-path-input">
+            Folder path on the node
           </label>
-          <p class="mt-1 text-xs leading-relaxed text-slate-500">
-            Enter an absolute path on the paired AutoByteus node, not this phone.
-          </p>
         </div>
         <span v-if="isRefreshing" class="shrink-0 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-700">
           Refreshing…
@@ -29,7 +26,7 @@
         <input
           id="mobile-run-workspace-path-input"
           v-model="pathDraft"
-          class="min-w-0 flex-1 rounded-xl border border-blue-200 bg-white px-3 py-2 text-sm"
+          class="h-11 min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-3 text-sm"
           data-testid="mobile-run-workspace-path-input"
           placeholder="/srv/autobyteus/project"
           autocomplete="off"
@@ -38,7 +35,7 @@
         />
         <button
           type="button"
-          class="rounded-xl bg-blue-600 px-3 py-2 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
+          class="h-11 rounded-xl bg-blue-600 px-4 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
           data-testid="mobile-run-workspace-load"
           :disabled="!pathDraft.trim() || isLoadingPath"
           @click="submitLoadPath"

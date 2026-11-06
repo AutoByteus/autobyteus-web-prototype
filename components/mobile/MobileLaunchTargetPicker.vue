@@ -1,13 +1,13 @@
 <template>
   <section
-    class="rounded-2xl border border-blue-200 bg-white"
-    :class="toggleVariant === 'chevron' ? 'p-2.5' : 'p-3'"
+    class="border-b border-slate-200 bg-white"
+    :class="toggleVariant === 'chevron' ? 'py-2' : 'py-3'"
     :data-testid="testId"
     :aria-label="label"
   >
     <div class="flex items-center justify-between gap-3">
       <div class="min-w-0">
-        <p v-if="showLabel" class="text-sm font-bold text-blue-950">{{ label }}</p>
+        <p v-if="showLabel" class="text-sm font-semibold text-slate-500">{{ label }}</p>
         <p class="truncate text-sm" :class="[showLabel ? 'mt-1' : '', selectedItem ? 'text-slate-700' : 'text-slate-500']">
           {{ selectedItem ? selectedItem.label : placeholder }}
         </p>
@@ -16,8 +16,8 @@
         type="button"
         class="shrink-0 border font-semibold transition"
         :class="toggleVariant === 'chevron'
-          ? 'flex h-9 w-9 items-center justify-center rounded-full border-blue-100 bg-blue-50 text-lg leading-none text-blue-700'
-          : 'rounded-xl border-blue-200 px-3 py-2 text-sm text-blue-700'"
+          ? 'flex h-11 w-11 items-center justify-center rounded-full border-blue-100 bg-blue-50 text-lg leading-none text-blue-700'
+          : 'h-11 rounded-xl border-slate-300 px-4 text-sm text-blue-700'"
         :data-testid="`${testId}-toggle`"
         :aria-label="toggleAccessibleLabel"
         :title="toggleAccessibleLabel"

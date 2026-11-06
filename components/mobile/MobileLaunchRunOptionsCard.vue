@@ -1,8 +1,8 @@
 <template>
-  <section class="rounded-3xl border border-blue-200 bg-white p-4" data-testid="mobile-launch-run-options-card">
+  <section class="border-b border-slate-200 py-3" data-testid="mobile-launch-run-options-card">
     <div class="flex items-start justify-between gap-3" data-testid="mobile-run-auto-approve-tools">
       <div class="min-w-0">
-        <p class="text-sm font-bold text-blue-950">Auto approve tools</p>
+        <p class="text-[0.9375rem] font-semibold text-slate-900">Auto approve tools</p>
         <p class="mt-1 text-xs leading-relaxed text-slate-500" data-testid="mobile-run-auto-approve-tools-help">
           <template v-if="locked">Antigravity always runs with auto-approve, so it can't be turned off.</template>
           <template v-else>High-trust mode: automatically allows tool calls and Codex access/permission requests for this run.</template>

@@ -1,7 +1,7 @@
 <template>
-  <section class="rounded-3xl border border-blue-200 bg-white p-4" data-testid="mobile-launch-runtime-model-card">
+  <section class="border-b border-slate-200 py-3" data-testid="mobile-launch-runtime-model-card">
     <div class="mb-3">
-      <p class="text-sm font-bold text-blue-950">Runtime and model</p>
+      <p class="text-sm font-semibold text-slate-500">Runtime and model</p>
     </div>
 
     <RuntimeModelConfigFields
