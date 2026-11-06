@@ -7,11 +7,14 @@
       <h1 class="min-w-0 flex-1 truncate px-2 text-base font-semibold">{{ title }}</h1>
     </header>
 
-    <p v-if="remoteNote && kind !== 'activity'" class="m-4 rounded-xl bg-slate-50 p-4 text-sm text-slate-600" data-testid="mobile-results-remote-note">{{ remoteNote }}</p>
+    <p v-if="remoteNote && (kind === 'artifacts' || kind === 'files')" class="m-4 rounded-xl bg-slate-50 p-4 text-sm text-slate-600" data-testid="mobile-results-remote-note">{{ remoteNote }}</p>
     <div v-else class="min-h-0 flex-1 overflow-hidden">
       <MobileArtifacts v-if="kind === 'artifacts'" :context="context" embedded />
       <MobileFiles v-else-if="kind === 'files'" :context="context" embedded />
-      <MobileActivity v-else :context="context" />
+      <div v-else class="h-full overflow-y-auto overscroll-contain">
+        <MobileTeamMessages v-if="kind === 'messages'" :context="context" />
+        <MobileRunActivityList v-else :context="context" />
+      </div>
     </div>
   </section>
 </template>
@@ -19,19 +22,20 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
-import MobileActivity from '~/components/mobile/MobileActivity.vue'
+import MobileRunActivityList from '~/components/mobile/MobileRunActivityList.vue'
+import MobileTeamMessages from '~/components/mobile/MobileTeamMessages.vue'
 import MobileArtifacts from '~/components/mobile/MobileArtifacts.vue'
 import MobileFiles from '~/components/mobile/MobileFiles.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import type { MobileRunNode } from '~/prototype/mobile-runs/mobileRunsFixture'
 import type { MobileWorkContext } from '~/types/mobileWork'
 
-export type MobileRunView = 'artifacts' | 'files' | 'activity'
+export type MobileRunView = 'artifacts' | 'files' | 'messages' | 'activity'
 const props = defineProps<{ node: MobileRunNode; context: MobileWorkContext | null; kind: MobileRunView }>()
 defineEmits<{ (event: 'back'): void }>()
 const { t } = useLocalization()
 
-const TITLES: Record<MobileRunView, string> = { artifacts: 'Artifacts', files: 'Files', activity: 'Activity' }
+const TITLES: Record<MobileRunView, string> = { artifacts: 'Artifacts', files: 'Files', messages: 'Messages', activity: 'Activity' }
 const title = computed(() => TITLES[props.kind])
 /** A run on another node keeps its files there (autobyteus-278): the phone says so, as the desktop does. */
 const remoteNote = computed(() => {

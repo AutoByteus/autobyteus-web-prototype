@@ -115,14 +115,17 @@ export const UNREACHABLE_NODES: ReadonlySet<string> = new Set(['office-mac'])
 export const flattenRunIds = (nodes: MobileRunNode[]): MobileRunNode[] => nodes.flatMap((node) => [node, ...flattenRunIds(node.children ?? [])])
 
 import { exposedFixtures } from '~/prototype/source-observation/fixtures.mjs'
+import { toolActivities } from '~/prototype/model-routing/modelRoutingFixture'
 const AGENT_DEFINITION_BY_NAME: Record<string, string> = { 'Project Task Manager': 'project-task-manager', 'Daily Assistant': String((exposedFixtures as Record<string, any>).dailyAssistant?.id ?? 'agent-researcher') }
 
 /** The invented conversation a run opens with. */
-const conversationFor = (node: MobileRunNode, at: number): Array<Record<string, unknown>> => {
+const conversationFor = (node: MobileRunNode, at: number): Array<Record<string, any>> => {
   const stamp = (offset: number) => new Date(at + offset).toISOString()
   if (node.id === 'mx-ptm-0001') {
     return [
       { kind: 'message', role: 'user', content: 'Dispatch the approved desktop app Tasks.', ts: stamp(0) },
+      { kind: 'tool_call', invocationId: 'mx-ptm-d1', toolName: 'delegate_task', toolArgs: { recipient_address: '/software_engineering_team', description: 'Image context files don’t reach the model on the first turn' }, toolResult: 'Started Software Engineering Team.', ts: stamp(10_000) },
+      { kind: 'tool_call', invocationId: 'mx-ptm-d2', toolName: 'delegate_task', toolArgs: { recipient_address: '/marketing_team', node: 'docker', description: 'Plan the 1.6 launch campaign' }, toolResult: 'Started Marketing Team on node docker.', ts: stamp(20_000) },
       { kind: 'message', role: 'assistant', content: 'Delegated six Tasks: two to copies of the Software Engineering Team, one to the Agent Package Creator, two to the Marketing Team and the Market Researcher on docker, and one to the Support Team on office-mac. I will report when they finish.', ts: stamp(40_000) },
     ]
   }
@@ -142,6 +145,7 @@ const conversationFor = (node: MobileRunNode, at: number): Array<Record<string, 
   }
   return [
     { kind: 'message', role: 'user', content: node.summary, ts: stamp(0) },
+    ...(node.kind === 'member' ? [{ kind: 'tool_call', invocationId: `${node.id}-t1`, toolName: 'read_file', toolArgs: { path: 'src/context/upload.ts' }, toolResult: 'Read 84 lines.', ts: stamp(15_000) }] : []),
     { kind: 'message', role: 'assistant', content: 'Here is a first pass. Tell me what to change and I will keep this conversation as the one place we work on it.', ts: stamp(40_000) },
   ]
 }
@@ -156,7 +160,7 @@ export const withMobileRuns = (name: string, variables: Record<string, any>, dat
   if (!node) return data
   const at = Date.now() - node.minutes * 60_000
   if (name === 'GetRunProjection' && data.getRunProjection) {
-    data.getRunProjection = { ...data.getRunProjection, runId: node.id, summary: node.summary, lastActivityAt: new Date(at).toISOString(), conversation: conversationFor(node, at), activities: [] }
+    data.getRunProjection = { ...data.getRunProjection, runId: node.id, summary: node.summary, lastActivityAt: new Date(at).toISOString(), conversation: conversationFor(node, at), activities: toolActivities(conversationFor(node, at)) }
   }
   if (name === 'GetAgentRunResumeConfig' && data.getAgentRunResumeConfig) {
     const definitionId = AGENT_DEFINITION_BY_NAME[node.name]
@@ -166,4 +170,49 @@ export const withMobileRuns = (name: string, variables: Record<string, any>, dat
     }
   }
   return data
+}
+
+/**
+ * Design-only: the messages a team member's run shows under Messages (the product reads them from the team's context,
+ * which this reference does not carry). Invented and illustrative.
+ */
+export const sampleTeamMessages = (runId: string): Array<Record<string, any>> => {
+  const node = NODE_BY_ID.get(runId)
+  if (!node || node.kind !== 'member') return []
+  const at = Date.now() - node.minutes * 60_000
+  const row = (n: number, direction: 'sent' | 'received', counterpartLabel: string, content: string) => ({
+    messageId: `${runId}-m${n}`, messageType: 'direct_message', direction, counterpartLabel, content,
+    createdAt: new Date(at + n * 90_000).toISOString(), referenceFiles: [],
+  })
+  return [
+    row(1, 'received', 'solution_designer', 'Requirements are approved. Start with the first-turn upload path and keep the change small.'),
+    row(2, 'sent', 'solution_designer', 'Found it: the context files are attached after the first send. I am moving the attach step before it.'),
+    row(3, 'received', 'code_reviewer', 'Please add a test for the first-turn case before you hand over.'),
+  ]
+}
+
+/** Design-only: what the run's Activity screen lists (the product records it from the run's stream). Invented. */
+export const sampleToolActivities = (runId: string): Array<Record<string, any>> => {
+  const node = NODE_BY_ID.get(runId)
+  if (!node || node.status === 'offline') return []
+  const at = Date.now() - node.minutes * 60_000
+  const tool = (n: number, toolName: string, type: string, contextText: string, status: string, args: Record<string, unknown>) => ({
+    kind: 'tool', activityId: `${runId}-a${n}`, invocationId: `${runId}-a${n}`, timestamp: new Date(at + n * 20_000), toolName, type, status,
+    contextText, arguments: args, logs: [], result: status === 'success' ? 'ok' : null, error: null,
+  })
+  if (node.id === 'mx-ptm-0001') {
+    return [
+      tool(1, 'delegate_task', 'tool_call', '/software_engineering_team', 'success', { recipient_address: '/software_engineering_team' }),
+      tool(2, 'delegate_task', 'tool_call', '/marketing_team on docker', 'success', { recipient_address: '/marketing_team', node: 'docker' }),
+      tool(3, 'delegate_task', 'tool_call', '/support_team on office-mac', 'success', { recipient_address: '/support_team', node: 'office-mac' }),
+    ]
+  }
+  if (node.kind === 'member' || node.kind === 'agent') {
+    return [
+      tool(1, 'read_file', 'tool_call', 'src/context/upload.ts', 'success', { path: 'src/context/upload.ts' }),
+      tool(2, 'edit_file', 'edit_file', 'src/context/upload.ts', 'success', { path: 'src/context/upload.ts' }),
+      tool(3, 'run_terminal_command', 'terminal_command', 'pnpm test upload', node.status === 'running' ? 'executing' : 'success', { command: 'pnpm test upload' }),
+    ]
+  }
+  return []
 }

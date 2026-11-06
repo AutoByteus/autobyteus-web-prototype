@@ -37,7 +37,7 @@
             <span class="min-w-0 truncate">Back to {{ delegator.name }}</span>
           </button>
           <div v-if="hasRelations" class="my-1 border-t border-slate-100" role="separator" />
-          <button v-for="view in VIEWS" :key="view.id" type="button" role="menuitem" class="flex h-12 w-full items-center gap-3 px-4 text-left text-[0.9375rem] text-slate-800 active:bg-slate-100" :data-testid="`mobile-run-menu-${view.id}`" @click="menuOpen = false; $emit('open-view', view.id)">
+          <button v-for="view in views" :key="view.id" type="button" role="menuitem" class="flex h-12 w-full items-center gap-3 px-4 text-left text-[0.9375rem] text-slate-800 active:bg-slate-100" :data-testid="`mobile-run-menu-${view.id}`" @click="menuOpen = false; $emit('open-view', view.id)">
             <span class="h-5 w-5 text-slate-500" aria-hidden="true" v-html="view.icon" />
             {{ view.label }}
           </button>
@@ -73,7 +73,7 @@ const props = defineProps<{ node: MobileRunNode; context: MobileWorkContext | nu
 const emit = defineEmits<{
   (event: 'back'): void
   (event: 'open', node: MobileRunNode): void
-  (event: 'open-view', view: 'artifacts' | 'files' | 'activity'): void
+  (event: 'open-view', view: 'artifacts' | 'files' | 'messages' | 'activity'): void
   (event: 'retry-node'): void
 }>()
 
@@ -81,10 +81,12 @@ const store = useMobileRunTreeStore()
 const treeOpen = ref(false)
 const menuOpen = ref(false)
 const hasRelations = computed(() => path.value.length > 1 || Boolean(props.node.children?.length))
+const inTeam = computed(() => path.value.slice(0, -1).some((item) => item.kind === 'team' || item.kind === 'org'))
 const ICON = (d: string) => `<svg viewBox="0 0 20 20" class="h-5 w-5" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="${d}"/></svg>`
 const VIEWS = [
   { id: 'artifacts' as const, label: 'Artifacts', icon: ICON('M4 2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6.41a2 2 0 0 0-.59-1.41l-2.41-2.41A2 2 0 0 0 13.59 2H4Zm2 5a1 1 0 0 1 1-1h6a1 1 0 1 1 0 2H7a1 1 0 0 1-1-1Zm1 3a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H7Z') },
   { id: 'files' as const, label: 'Files', icon: ICON('M3 4.5A1.5 1.5 0 0 1 4.5 3h3.19a1.5 1.5 0 0 1 1.06.44l.81.81c.28.28.66.44 1.06.44H15.5A1.5 1.5 0 0 1 17 5.19V15.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 3 15.5v-11Z') },
+  { id: 'messages' as const, label: 'Messages', icon: ICON('M2 5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9l-4 3v-3H4a2 2 0 0 1-2-2V5Z') },
   { id: 'activity' as const, label: 'Activity', icon: ICON('M11.3 1.05a.75.75 0 0 1 .4.8L10.9 7.5h4.35a.75.75 0 0 1 .6 1.2l-6.5 8.5a.75.75 0 0 1-1.35-.55l.8-5.65H4.75a.75.75 0 0 1-.6-1.2l6.5-8.5a.75.75 0 0 1 .65-.25Z') },
 ]
 const unreachable = computed(() => !store.isNodeReachable(props.node.node))
@@ -92,6 +94,8 @@ const dotClass = computed(() => agentStatusDotClass(unreachable.value ? 'error' 
 const path = computed(() => store.pathTo(props.node.id))
 /** The nearest run above that is an agent: the one that delegated this work (a team or Org is skipped). */
 const delegator = computed(() => [...path.value].slice(0, -1).reverse().find((item) => item.kind === 'agent') ?? null)
+/** Messages are the team's messages: only a member of a team (or Org) has them. */
+const views = computed(() => VIEWS.filter((view) => view.id !== 'messages' || inTeam.value))
 const STATUS_LABEL: Record<string, string> = { running: 'Running', idle: 'Idle', initializing: 'Starting', error: 'Error', offline: 'Stopped' }
 const subtitle = computed(() => {
   if (unreachable.value) return 'Not reachable'

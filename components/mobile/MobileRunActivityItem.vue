@@ -1,7 +1,7 @@
 <template>
   <article
     v-if="dispatchKind === 'tool' && activity.kind === 'tool'"
-    class="rounded-2xl border border-slate-200 bg-slate-50 p-3"
+    class="border-b border-slate-100 px-4 py-3"
     data-testid="mobile-run-activity-row"
   >
     <div class="flex items-start justify-between gap-3">
@@ -22,7 +22,7 @@
 
   <article
     v-else-if="dispatchKind === 'compaction' && activity.kind === 'compaction'"
-    class="rounded-2xl border border-slate-200 bg-slate-50 p-3"
+    class="border-b border-slate-100 px-4 py-3"
     data-testid="mobile-run-activity-row"
   >
     <div class="flex items-start justify-between gap-3">

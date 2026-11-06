@@ -98,8 +98,9 @@ import MobileRunScreen from '~/components/mobile/MobileRunScreen.vue';
 import MobileRunsScreen from '~/components/mobile/MobileRunsScreen.vue';
 import MobileUnpairConfirm from '~/components/mobile/MobileUnpairConfirm.vue';
 import MobileUnsupportedFeatureNotice from '~/components/mobile/MobileUnsupportedFeatureNotice.vue';
-import type { MobileRunNode } from '~/prototype/mobile-runs/mobileRunsFixture';
+import { sampleToolActivities, type MobileRunNode } from '~/prototype/mobile-runs/mobileRunsFixture';
 import { useAgentContextsStore } from '~/stores/agentContextsStore';
+import { useAgentActivityStore } from '~/stores/agentActivityStore';
 import { useMobileNodeSessionStore } from '~/stores/mobileNodeSessionStore';
 import { useMobileRunTreeStore } from '~/stores/mobileRunTreeStore';
 import { useMobileWorkStore } from '~/stores/mobileWorkStore';
@@ -118,6 +119,7 @@ const runTreeStore = useMobileRunTreeStore();
 const runHistoryStore = useRunHistoryStore();
 const agentContextsStore = useAgentContextsStore();
 const route = useRoute();
+const activityStore = useAgentActivityStore();
 const selectionStore = useAgentSelectionStore();
 
 type MobileScreen = 'runs' | 'run' | 'new-run';
@@ -195,6 +197,10 @@ async function openConversation(node: MobileRunNode): Promise<void> {
   if (!runTreeStore.isNodeReachable(node.node)) {
     clearMobileRunSelection();
     return;
+  }
+  // Design-only: the activity the run's stream would have recorded.
+  if (!activityStore.getActivities(node.id).length) {
+    for (const activity of sampleToolActivities(node.id)) activityStore.addToolActivity(node.id, activity as never);
   }
   if (agentContextsStore.getRun(node.id)) {
     selectMobileRun(node.id, 'agent');

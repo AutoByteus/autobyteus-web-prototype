@@ -58,3 +58,9 @@ Pending the user's confirmation.
 
 - The user: New run's UI is weird and not clean: different row styles ("Run", "Folder", "More options", "Runtime and model", a system dropdown, grey help text); the selection boxes and their styling are not good on a phone. He also stated that New run only supports a simple agent run (no team).
 - Change: New run is agents only. One list of five rows with one pattern (label left, value right, chevron; 56px; hairlines; no captions or help text): Agent, Folder, Runtime, Model, Auto approve tools (a switch). Every choice (agent, folder, runtime, model) opens the same bottom sheet (no system dropdown); the sheet is as tall as its list (at most 85% of the screen) and the open-by-path field lives in the Folder sheet's footer. No "More options", no "Runtime and model" heading, no "This model has no adjustable settings", no auto-approve help text.
+
+## Review round 7 (2026-11-06)
+
+- The user: the Activity screen is ugly and strange: it mixes "Messages" and "Activity" behind two chips. Message is message, activity is activity: make them separate items in the menu, under Files.
+- Change: the ⋮ menu is Switch agent, Back to <delegator>, then Artifacts, Files, Messages, Activity. Messages and Activity are two screens with the same bar (← and the title), no chips or counters, no cards: a flat list of rows with hairlines. Messages (the team's messages: the sender or receiver, the time and the text) shows only for a member of a team or Org. The empty states are one line: "No messages yet", "No activity yet". The combined Activity screen is removed.
+- Design-only simulation: the reference carries no team context or run stream, so the invented Messages (`sampleTeamMessages`) and Activity (`sampleToolActivities`) are supplied by `prototype/mobile-runs/mobileRunsFixture.ts`.

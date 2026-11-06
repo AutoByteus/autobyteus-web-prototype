@@ -1,43 +1,30 @@
 <template>
-  <section class="space-y-2" data-testid="mobile-team-messages-detail">
-    <article v-if="!activeTeamContext" class="rounded-2xl border border-dashed border-slate-300 p-4 text-sm text-slate-600">
-      Select a team run to see team messages.
-    </article>
-    <article v-else-if="!messages.length" class="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
-      No team messages yet for the focused member.
-    </article>
+  <section data-testid="mobile-team-messages-detail">
+    <p v-if="!messages.length" class="px-4 py-10 text-center text-sm text-slate-500" data-testid="mobile-team-messages-empty">No messages yet</p>
     <template v-else>
       <article
-        v-for="message in messages.slice(0, 8)"
+        v-for="message in messages.slice(0, 20)"
         :key="message.messageId"
-        class="rounded-2xl border border-slate-200 bg-slate-50 p-3"
+        class="border-b border-slate-100 px-4 py-3"
         data-testid="mobile-team-message-row"
       >
-        <div class="flex items-start justify-between gap-3">
-          <p class="font-semibold text-slate-900">{{ messageLabel(message) }}</p>
-          <span class="shrink-0 text-xs text-slate-500">{{ formatTime(message.createdAt) }}</span>
+        <div class="flex items-baseline justify-between gap-3">
+          <p class="min-w-0 truncate text-[0.9375rem] font-semibold text-slate-900">{{ counterpart(message) }}</p>
+          <span class="shrink-0 text-xs text-slate-400">{{ formatTime(message.createdAt) }}</span>
         </div>
-        <p class="mt-1 text-xs font-semibold text-slate-500">{{ counterpart(message) }}</p>
-        <p class="mt-2 line-clamp-4 whitespace-pre-wrap break-words text-sm text-slate-700">{{ message.content }}</p>
+        <p class="mt-1 whitespace-pre-wrap break-words text-[0.9375rem] leading-6 text-slate-700">{{ message.content }}</p>
 
-        <div v-if="message.referenceFiles.length" class="mt-3 space-y-2" data-testid="mobile-team-reference-list">
-          <p class="text-xs font-semibold uppercase tracking-wide text-blue-700">
-            {{ message.referenceFiles.length }} reference file{{ message.referenceFiles.length === 1 ? '' : 's' }}
-          </p>
+        <div v-if="message.referenceFiles.length" class="mt-2" data-testid="mobile-team-reference-list">
           <button
             v-for="reference in message.referenceFiles"
             :key="reference.referenceId"
             type="button"
-            class="flex w-full items-center gap-3 rounded-2xl border border-blue-100 bg-white px-3 py-3 text-left shadow-sm transition hover:border-blue-200 hover:bg-blue-50"
+            class="flex h-12 w-full items-center gap-3 text-left active:bg-slate-50"
             data-testid="mobile-team-reference-row"
             @click="openReference(message, reference)"
           >
             <Icon :icon="referenceFileIcon(reference)" class="h-5 w-5 shrink-0" aria-hidden="true" />
-            <span class="min-w-0 flex-1">
-              <span class="block truncate text-sm font-bold text-slate-900">{{ referenceFileName(reference.path) }}</span>
-              <span class="block truncate text-xs text-slate-500">{{ reference.path }}</span>
-            </span>
-            <span class="shrink-0 text-xs font-semibold text-blue-700">Open</span>
+            <span class="min-w-0 flex-1 truncate text-sm font-medium text-slate-900">{{ referenceFileName(reference.path) }}</span>
           </button>
         </div>
       </article>
@@ -57,6 +44,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Icon } from '@iconify/vue';
+import { sampleTeamMessages } from '~/prototype/mobile-runs/mobileRunsFixture';
 import MobileTeamReferenceViewer from '~/components/mobile/MobileTeamReferenceViewer.vue';
 import { useAgentTeamContextsStore } from '~/stores/agentTeamContextsStore';
 import { useAgentSelectionStore } from '~/stores/agentSelectionStore';
@@ -86,9 +74,10 @@ const activeTeamContext = computed(() => {
   if (selectionStore.selectedType !== 'team' || selectionStore.selectedRunId !== props.context.teamRunId) return null;
   return teamContextsStore.getTeamContextById(props.context.teamRunId) ?? null;
 });
-const messages = computed(() => {
+const messages = computed<CollaborationMessagePerspectiveRow[]>(() => {
   const team = activeTeamContext.value;
-  if (!team) return [];
+  // Design-only: the reference carries no team context, so a member's run shows invented messages.
+  if (!team) return props.context?.kind === 'agent-run' ? (sampleTeamMessages(props.context.runId) as CollaborationMessagePerspectiveRow[]) : [];
   return projectTeamCommunicationPerspective({
     view: team.view,
     messages: team.view.listCommunicationMessages(),
