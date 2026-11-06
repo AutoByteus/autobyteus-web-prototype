@@ -1,6 +1,6 @@
 <template>
   <section class="fixed inset-0 flex h-[100dvh] flex-col bg-white text-slate-900" data-testid="mobile-run-screen">
-    <header class="flex h-14 flex-shrink-0 items-center border-b border-slate-200 bg-white pl-1 pr-2">
+    <header class="relative flex h-14 flex-shrink-0 items-center border-b border-slate-200 bg-white pl-1 pr-1">
       <button type="button" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-slate-600 active:bg-slate-100" aria-label="Back to runs" data-testid="mobile-run-back" @click="$emit('back')">
         <Icon icon="heroicons:arrow-left-20-solid" class="h-6 w-6" aria-hidden="true" />
       </button>
@@ -21,38 +21,32 @@
         </span>
         <Icon v-if="path.length > 1 || node.children?.length" icon="heroicons:chevron-down-20-solid" class="h-4 w-4 flex-shrink-0 text-slate-400" aria-hidden="true" />
       </button>
-      <button type="button" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-slate-600 active:bg-slate-100" aria-label="Results: artifacts, files and activity" title="Results" data-testid="mobile-results-button" @click="$emit('open-results')">
-        <svg viewBox="0 0 20 20" class="h-6 w-6" fill="currentColor" aria-hidden="true"><path d="M3 4.5A1.5 1.5 0 0 1 4.5 3h3.19a1.5 1.5 0 0 1 1.06.44l.81.81c.28.28.66.44 1.06.44H15.5A1.5 1.5 0 0 1 17 5.19V15.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 3 15.5v-11Z" /></svg>
+      <button
+        type="button"
+        class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-slate-600 active:bg-slate-100"
+        aria-label="More"
+        aria-haspopup="menu"
+        :aria-expanded="menuOpen"
+        data-testid="mobile-run-menu-button"
+        @click="menuOpen = !menuOpen"
+      >
+        <svg viewBox="0 0 20 20" class="h-6 w-6" fill="currentColor" aria-hidden="true"><circle cx="10" cy="4" r="1.6" /><circle cx="10" cy="10" r="1.6" /><circle cx="10" cy="16" r="1.6" /></svg>
       </button>
+      <template v-if="menuOpen">
+        <button type="button" class="fixed inset-0 z-20 cursor-default" aria-label="Close menu" @click="menuOpen = false" />
+        <div class="absolute right-2 top-12 z-30 w-64 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg" role="menu" data-testid="mobile-run-menu">
+          <button type="button" role="menuitem" class="flex h-12 w-full items-center gap-3 px-4 text-left text-[0.9375rem] text-slate-800 active:bg-slate-100" data-testid="mobile-run-menu-results" @click="menuOpen = false; $emit('open-results')">
+            <svg viewBox="0 0 20 20" class="h-5 w-5 text-slate-500" fill="currentColor" aria-hidden="true"><path d="M3 4.5A1.5 1.5 0 0 1 4.5 3h3.19a1.5 1.5 0 0 1 1.06.44l.81.81c.28.28.66.44 1.06.44H15.5A1.5 1.5 0 0 1 17 5.19V15.5a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 3 15.5v-11Z" /></svg>
+            Results
+          </button>
+          <button v-if="delegator" type="button" role="menuitem" class="flex h-12 w-full items-center gap-3 px-4 text-left text-[0.9375rem] text-slate-800 active:bg-slate-100" data-testid="mobile-run-menu-up" @click="menuOpen = false; $emit('open', delegator)">
+            <Icon icon="heroicons:arrow-up-20-solid" class="h-5 w-5 text-slate-500" aria-hidden="true" />
+            <span class="min-w-0 truncate">Back to {{ delegator.name }}</span>
+          </button>
+        </div>
+      </template>
     </header>
 
-    <nav v-if="chips.length || delegator" class="flex h-14 flex-shrink-0 items-center gap-2 overflow-x-auto border-b border-slate-100 bg-slate-50 px-3" aria-label="Runs around this one" data-testid="mobile-run-strip">
-      <button
-        v-if="delegator"
-        type="button"
-        class="flex h-11 flex-shrink-0 items-center gap-1.5 rounded-full border border-slate-200 bg-white pl-3 pr-3.5 text-sm font-medium text-slate-700 active:bg-slate-100"
-        :aria-label="`Back to ${delegator.name}, which delegated this`"
-        data-testid="mobile-run-up"
-        @click="$emit('open', delegator)"
-      >
-        <Icon icon="heroicons:arrow-up-20-solid" class="h-4 w-4 text-slate-400" aria-hidden="true" />
-        <span class="max-w-[9rem] truncate">{{ delegator.name }}</span>
-      </button>
-      <button
-        v-for="chip in chips"
-        :key="chip.id"
-        type="button"
-        class="flex h-11 flex-shrink-0 items-center gap-2 rounded-full pl-3 pr-3.5 text-sm font-medium"
-        :class="chipTarget(chip).id === node.id ? 'bg-blue-600 text-white' : 'border border-slate-200 bg-white text-slate-700 active:bg-slate-100'"
-        :aria-current="chipTarget(chip).id === node.id ? 'true' : undefined"
-        data-testid="mobile-run-chip"
-        @click="$emit('open', chip)"
-      >
-        <span class="h-2 w-2 flex-shrink-0 rounded-full" :class="chipTarget(chip).id === node.id ? 'bg-white' : chipDot(chip)" aria-hidden="true" />
-        <span class="max-w-[9rem] truncate">{{ chip.name }}</span>
-        <span v-if="chip.needsYou" class="h-2 w-2 rounded-full bg-amber-500" aria-label="Waiting for you" />
-      </button>
-    </nav>
 
     <div v-if="unreachable" class="min-h-0 flex-1 overflow-y-auto" data-testid="mobile-run-unreachable">
       <RemoteRunNotice :node-name="node.node ?? ''" @retry="$emit('retry-node')" />
@@ -87,18 +81,12 @@ const emit = defineEmits<{
 
 const store = useMobileRunTreeStore()
 const treeOpen = ref(false)
+const menuOpen = ref(false)
 const unreachable = computed(() => !store.isNodeReachable(props.node.node))
 const dotClass = computed(() => agentStatusDotClass(unreachable.value ? 'error' : props.node.status))
 const path = computed(() => store.pathTo(props.node.id))
 /** The nearest run above that is an agent: the one that delegated this work (a team or Org is skipped). */
 const delegator = computed(() => [...path.value].slice(0, -1).reverse().find((item) => item.kind === 'agent') ?? null)
-/** What the strip offers: the work this run delegated, else this run's siblings (a team's members, for example). */
-const chips = computed<MobileRunNode[]>(() => {
-  if (props.node.children?.length) return props.node.children
-  return store.parentOf(props.node.id)?.children ?? []
-})
-const chipTarget = (chip: MobileRunNode): MobileRunNode => store.targetOf(chip)
-const chipDot = (chip: MobileRunNode): string => agentStatusDotClass(store.isNodeReachable(chip.node) ? chip.status : 'error')
 const STATUS_LABEL: Record<string, string> = { running: 'Running', idle: 'Idle', initializing: 'Starting', error: 'Error', offline: 'Stopped' }
 const subtitle = computed(() => {
   if (unreachable.value) return 'Not reachable'

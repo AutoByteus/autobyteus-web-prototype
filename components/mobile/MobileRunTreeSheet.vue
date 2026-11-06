@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, onMounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import MobileRunRow from '~/components/mobile/MobileRunRow.vue'
 import type { MobileRunNode } from '~/prototype/mobile-runs/mobileRunsFixture'
@@ -27,4 +27,5 @@ const props = defineProps<{ node: MobileRunNode }>()
 defineEmits<{ (event: 'close'): void; (event: 'open', node: MobileRunNode): void }>()
 const store = useMobileRunTreeStore()
 const root = computed(() => store.rootOf(props.node.id))
+onMounted(() => { void nextTick(() => document.querySelector('[data-testid=mobile-run-tree-sheet] [aria-current=true]')?.scrollIntoView({ block: 'center' })) })
 </script>

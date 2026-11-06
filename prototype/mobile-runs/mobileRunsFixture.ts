@@ -136,7 +136,7 @@ const conversationFor = (node: MobileRunNode, at: number): Array<Record<string, 
   }
   if (node.kind === 'member') {
     return [
-      { kind: 'inter_agent_message', role: 'user', content: 'You received a message from sender name: project task manager, sender address: /project_task_manager, sender id: mx-ptm-0001\nmessage:\nPlease work on the Task you were assigned.', ts: stamp(0) },
+      { kind: 'inter_agent_message', role: 'user', content: 'You received a message from sender name: project task manager, sender address: /project_task_manager, sender id: project_task_manager\nmessage:\nPlease work on the Task you were assigned.', ts: stamp(0) },
       { kind: 'message', role: 'assistant', content: `${node.summary}. I will post the result here when it is ready.`, ts: stamp(40_000) },
     ]
   }

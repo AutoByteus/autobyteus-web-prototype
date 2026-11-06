@@ -21,6 +21,8 @@
 - 2026-11-06 (request): "currently the mobile experience is really bad. for example, i can not see the task agent or agent team, many problems, ui experience also not good enough."
 - 2026-11-06 (first design review, on the current Home header, screenshot): "Do we really need this like we have two words. We also like remote access blah blah blah. Do we really need they take quite a lot of the header, in general, this way should make the UI much better, cleaner, redundant words should be removed."
 
+- 2026-11-06 (DEC-004 direction, in the review conversation): "on the mobile version … there's no need to switch between like a different workspace or project or something like that. We only show the existing, like the runs view. … a lot of times, users will simply talk to the project task manager, I mean the super agent or whatsoever, and they delegate tasks, which means under the screen … that's the majority of views, not just on the mobile, but also on desktop as well. So on mobile view, I feel like we don't have to have this kind of different workspace, project views switch, what do you think?" The Product Designer agreed (answer given in the same conversation); awaiting his explicit confirmation of the full DEC-004 list.
+
 ## Decisions asked of the user
 
 - DEC-003 (remote nodes on the phone): open. The design builds A.
@@ -30,3 +32,8 @@
 ## Result
 
 Pending the user's confirmation.
+
+## Review round 2 (2026-11-06)
+
+- The user: the run screen's static strip (sibling chips) under the top bar takes space from the conversation and is rarely used; the event monitor should be as large as possible; selecting another agent and the other controls belong behind a dropdown or a ⋯ menu that opens on demand ("you don't want to make those static things which are always on screen because they are not used very often").
+- Change: the strip is removed. The run screen is one slim bar (back, the agent's name as a dropdown that opens the run tree to switch agent, ⋯ menu with Results and "Back to <delegator>") and the conversation below it.
