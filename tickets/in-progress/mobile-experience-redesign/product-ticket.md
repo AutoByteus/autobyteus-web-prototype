@@ -139,8 +139,16 @@ Pending the user's confirmation.
 
 ## Approval and result (2026-11-06)
 
-- The user: "okayyy. everything is good now. i approve". DEC-003 (built: A; B = autobyteus-391), OPT-001 ("needs you", optional) and the composer (unchanged) were not answered separately and are recorded as approved through the design as built.
+- The user: "okayyy. everything is good now. i approve". DEC-003 (built: A; B = autobyteus-391) and the composer (unchanged) were not answered separately and are recorded as approved through the design as built. The optional "needs you" marker was later removed at his request (round 17).
 - Ticket commits: see `git log design/mobile-experience-redesign` (base `a0e18abb`); the final revision is in the result message and the ui-ux-spec.
 - The user's own screenshots: `evidence/user-screenshots/` (index in its README).
 - Integration: `Pending` by the user's standing decision (2026-11-04): an approved design stays on its ticket branch until it is implemented, so `personal` keeps mirroring the shipped product. The branch is pushed to `origin` and is merged into `personal` only after the Solution Designer reports it implemented and the user confirms. Worktree and branch are kept on purpose; the UI reference process is stopped (restart: the runbook section).
 - Default branch `personal`: local and `origin` at `a0e18abb` (unchanged).
+
+
+## Review round 17 (2026-11-06) — the "needs you" marker is removed
+
+- The user asked what the "needs you" marker is, and why rows say "Waiting for your answer" and "Asks which sample prompt to include". Answer given: the Product Designer invented those texts in the reference's sample data to show how a marker might look; the product has nothing like it.
+- The user: "I suggest that don't like hallucinate and invent things up, remove those, please, thanks a lot. Remove those. Those are not possible in the application, I think."
+- Change: the marker is removed completely: the amber line on rows, the amber dot on a folded parent, the `needsYou` fixture data and the invented question in those runs' conversations. Screenshots VIS-001, 002, 003, 004, 024 and 025 were retaken. DEC-005 is closed as "dropped" in the spec; the spec no longer mentions OPT-001 as a feature.
+- Lesson recorded for later work: do not put invented copy or invented product behavior in front of the user; every visible element needs a source (a product path or his words).

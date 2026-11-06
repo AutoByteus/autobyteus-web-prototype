@@ -29,8 +29,6 @@ export type MobileRunNode = {
   minutes: number
   /** The node a run on another node runs on; absent for runs on the paired node. */
   node?: string
-  /** OPTIONAL element OPT-001 ("needs you"): a run waiting for an answer or an approval. */
-  needsYou?: string
   children?: MobileRunNode[]
 }
 
@@ -57,7 +55,7 @@ export const MOBILE_RUNS: MobileRunNode[] = [
           },
         }),
       },
-      { id: 'mx-apc-0001', kind: 'agent', name: 'Agent Package Creator', summary: 'Package the release-notes agent for the agent store', status: 'idle', minutes: 9, needsYou: 'Asks which sample prompt to include' },
+      { id: 'mx-apc-0001', kind: 'agent', name: 'Agent Package Creator', summary: 'Package the release-notes agent for the agent store', status: 'idle', minutes: 9 },
       {
         id: 'mx-set-0002', kind: 'team', name: 'Software Engineering Team', summary: 'Members of a delegated team can’t reach the package creator', status: 'idle', minutes: 18,
         children: SET_MEMBERS('0002', 'idle', 'idle', 'idle'),
@@ -80,7 +78,7 @@ export const MOBILE_RUNS: MobileRunNode[] = [
       },
     ],
   },
-  { id: 'mx-da-0001', kind: 'agent', name: 'Daily Assistant', summary: 'Draft the reply to the pilot customers about the new date', status: 'idle', minutes: 6, needsYou: 'Waiting for your answer' },
+  { id: 'mx-da-0001', kind: 'agent', name: 'Daily Assistant', summary: 'Draft the reply to the pilot customers about the new date', status: 'idle', minutes: 6 },
   {
     id: 'mx-org-0001', kind: 'org', name: 'Product Launch Org', summary: 'Prepare the 1.6 launch', status: 'running', minutes: 24,
     children: [
@@ -127,14 +125,6 @@ const conversationFor = (node: MobileRunNode, at: number): Array<Record<string, 
       { kind: 'tool_call', invocationId: 'mx-ptm-d1', toolName: 'delegate_task', toolArgs: { recipient_address: '/software_engineering_team', description: 'Image context files don’t reach the model on the first turn' }, toolResult: 'Started Software Engineering Team.', ts: stamp(10_000) },
       { kind: 'tool_call', invocationId: 'mx-ptm-d2', toolName: 'delegate_task', toolArgs: { recipient_address: '/marketing_team', node: 'docker', description: 'Plan the 1.6 launch campaign' }, toolResult: 'Started Marketing Team on node docker.', ts: stamp(20_000) },
       { kind: 'message', role: 'assistant', content: 'Delegated six Tasks: two to copies of the Software Engineering Team, one to the Agent Package Creator, two to the Marketing Team and the Market Researcher on docker, and one to the Support Team on office-mac. I will report when they finish.', ts: stamp(40_000) },
-    ]
-  }
-  if (node.needsYou) {
-    return [
-      { kind: 'message', role: 'user', content: node.summary, ts: stamp(0) },
-      { kind: 'message', role: 'assistant', content: node.id === 'mx-da-0001'
-        ? 'Here is a draft for the 12 pilot customers: “Thank you for your patience. The new date is the 24th, and we will confirm the schedule on the 10th.” Should I send it to all 12, or only to the five who asked?'
-        : 'I packaged the release-notes agent. Which sample prompt should I include: the short one or the one with a worked example?', ts: stamp(40_000) },
     ]
   }
   if (node.kind === 'member') {

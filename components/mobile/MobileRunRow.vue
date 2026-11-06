@@ -49,11 +49,6 @@
               data-testid="mobile-run-unreachable"
             >Not reachable</span>
           </span>
-          <span
-            v-if="node.needsYou && !unreachable"
-            class="mt-0.5 flex items-center gap-1 text-xs font-semibold text-amber-700"
-            data-testid="mobile-run-needs-you"
-          ><span class="h-1.5 w-1.5 rounded-full bg-amber-500" aria-hidden="true" />{{ node.needsYou }}</span>
         </span>
         <span v-if="depth === 0" class="mt-0.5 flex-shrink-0 text-xs text-slate-400" data-testid="mobile-run-age">{{ age }}</span>
       </button>
@@ -67,7 +62,6 @@
         data-testid="mobile-run-toggle"
         @click="store.toggle(node)"
       >
-        <span v-if="!expanded && hiddenNeedsYou" class="absolute right-2 top-2 h-2 w-2 rounded-full bg-amber-500 ring-2 ring-white" aria-hidden="true" />
         <Icon icon="heroicons:chevron-down-20-solid" class="h-5 w-5 transition-transform" :class="expanded ? 'rotate-0' : '-rotate-90'" aria-hidden="true" />
       </button>
     </div>
@@ -106,7 +100,6 @@ const hasChildren = computed(() => Boolean(props.node.children?.length))
 const expanded = computed(() => store.isExpanded(props.node))
 const isSelected = computed(() => props.selectedId === props.node.id)
 const unreachable = computed(() => !store.isNodeReachable(props.node.node))
-const hiddenNeedsYou = computed(() => store.needsYouBelow(props.node) > 0)
 const disclosureNoun = computed(() => (props.node.kind === 'team' || props.node.kind === 'org' ? 'members' : 'delegated work'))
 const dotClass = computed(() => agentStatusDotClass(unreachable.value ? 'error' : props.node.status))
 const initials = computed(() => props.node.name.replace(/_/g, ' ').split(' ').filter(Boolean).slice(0, 2).map((word) => word[0]?.toUpperCase()).join(''))
@@ -118,5 +111,5 @@ const age = computed(() => {
   if (minutes < 7 * 24 * 60) return `${Math.floor(minutes / (24 * 60))}d`
   return `${Math.floor(minutes / (7 * 24 * 60))}w`
 })
-const accessibleLabel = computed(() => [props.node.name, props.node.summary, props.node.node ? `on ${props.node.node}` : '', props.node.needsYou ?? '', props.node.status].filter(Boolean).join(', '))
+const accessibleLabel = computed(() => [props.node.name, props.node.summary, props.node.node ? `on ${props.node.node}` : '', props.node.status].filter(Boolean).join(', '))
 </script>

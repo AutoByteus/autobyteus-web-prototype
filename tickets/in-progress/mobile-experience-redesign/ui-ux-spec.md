@@ -4,7 +4,7 @@ Canonical contract for the AutoByteus mobile web shell (`/mobile`, wrapped by th
 
 ## Status And User Confirmation
 
-- Status: `Approved` (2026-11-06): "okayyy. everything is good now. i approve". The three open items (DEC-003, OPT-001, the composer row) were not answered separately; they are recorded under Decisions as approved through the design as built, and flagged for the Solution Designer to confirm with him if he wants a different answer.
+- Status: `Approved` (2026-11-06): "okayyy. everything is good now. i approve". DEC-003 and the composer row were not answered separately; they are recorded under Decisions as approved through the design as built.
 - Request / ticket: `mobile-experience-redesign` (Project Task `autobyteus-277`, Project `project_a1377344-25db-482a-97cc-ecfdb0fb495a`). No second ID.
 - Related requirements revision ID: `SR-001` (`requirements-doc.md` Draft).
 - Related IDs: REQ-001…REQ-009; BEH-001…BEH-006; AC-001…AC-010; DEC-001…DEC-006; follow-up FU-001 = Project Task `autobyteus-391`.
@@ -48,7 +48,6 @@ Canonical contract for the AutoByteus mobile web shell (`/mobile`, wrapped by th
   5. **Start work is one round "+" button** (bottom right, within thumb reach, no words).
   6. **Connection, pairing status, peers and unpair are one bottom sheet** opened from the node name in the top bar (the old Home status card and Troubleshoot page are gone).
   7. **Nothing the desktop does not have** (the user's rule): no Files filters, no "Attach" button on a file, no run counts, no mobile-only labels.
-  8. **Optional, marked: "needs you"** (OPT-001). An amber line on a row waiting for an answer or an approval, and an amber dot on a folded parent. Unproven for runs the phone does not stream (DEC-005, investigation U-003); engineering checks it before it becomes a requirement.
 - **Alternatives considered and why they were rejected.**
   - Five bottom tabs plus a Home screen: rejected by the user; three copies of the run list.
   - A sibling strip and a tree sheet on the run screen (built, shown in review, removed by the user): static or rarely used controls on the conversation.
@@ -96,8 +95,8 @@ Existing language preserved: the mobile shell's slate neutrals with blue-600 as 
 
 - **Layout.** Every screen is a full-viewport column (`100dvh`): a bar, a scrolling body, nothing else fixed except the "+" button on the run list, the composer on the run screen, and "Create run" on New run. Safe-area insets are respected (`env(safe-area-inset-bottom)`).
 - **Bars.** Run list bar 56px (white, 1px `slate-200` bottom border): the node button (32px circle `slate-100` with a computer icon and a 10px status dot with a 2px white ring; name 16px/600; state 12px `slate-500`, amber-700 when not reachable; a 16px chevron `slate-400`), 48px tall target. Run screen bar 56px: ← (48×48), a 10px status dot, the name 16px/600 (one line, truncated), the line below 12px `slate-500` (state · "in <parent>"; for a run on another node the node chip first), ⋮ (48×48). Artifacts, Messages, Activity and the reference viewer bars 48px: ← and the title 16px/600. Files bar 48px: ←, "Files", a search icon (48×48).
-- **Run row.** Top-level row min-height 64px (padding 12px 0 12px 16px); delegated row 56px. Left: an avatar (top-level 36px, delegated 28px; agents and members: initials in a `slate-200` circle, 12px/11px 600 `slate-600`; teams: the people icon in a `slate-100` circle; Org: the building icon in a `slate-100` rounded square) with a status dot at its bottom right (10px, 2px ring white, or `blue-50` when the row is the open run): `blue-500` pulsing running, `green-500` idle, `amber-500` pulsing starting, `red-500` error and a run on an unreachable node, `gray-400` stopped. Text: the name 15px/500 (teams and Orgs 600) `slate-900`, one line; the title or Task line 13px `slate-500`, one line; for a run on another node a third line with the node chip (`RemoteNodeChip`, 10px text, `slate-100`) and, when unreachable, "Not reachable" 12px/500 `red-700`; for OPT-001 a third line with a 6px amber-500 dot and the text 12px/600 `amber-700`. The age (top-level rows only) 12px `slate-400`, top right ("now", "6m", "2h", "3d", "1w"). The open run's row is `blue-50`.
-- **Tree.** A run's delegated work and members are a nested list: a 1px `slate-200` vertical rail with its left margin 34px under a top-level row (aligned to the avatar's center) and 20px at deeper levels; no separators between rows or runs; no counts. A chevron button (48×48, `slate-400`, 20px, rotated −90° when folded) at the right of a row that has children; tapping the row's body opens the conversation, tapping the chevron folds or unfolds. Default: a run with delegated work and an Org run are unfolded, a team's members are folded. Folding never stops anything. On a folded parent with a waiting descendant, an 8px amber-500 dot (2px white ring) sits at the chevron's top right (OPT-001).
+- **Run row.** Top-level row min-height 64px (padding 12px 0 12px 16px); delegated row 56px. Left: an avatar (top-level 36px, delegated 28px; agents and members: initials in a `slate-200` circle, 12px/11px 600 `slate-600`; teams: the people icon in a `slate-100` circle; Org: the building icon in a `slate-100` rounded square) with a status dot at its bottom right (10px, 2px ring white, or `blue-50` when the row is the open run): `blue-500` pulsing running, `green-500` idle, `amber-500` pulsing starting, `red-500` error and a run on an unreachable node, `gray-400` stopped. Text: the name 15px/500 (teams and Orgs 600) `slate-900`, one line; the title or Task line 13px `slate-500`, one line; for a run on another node a third line with the node chip (`RemoteNodeChip`, 10px text, `slate-100`) and, when unreachable, "Not reachable" 12px/500 `red-700`;. The age (top-level rows only) 12px `slate-400`, top right ("now", "6m", "2h", "3d", "1w"). The open run's row is `blue-50`.
+- **Tree.** A run's delegated work and members are a nested list: a 1px `slate-200` vertical rail with its left margin 34px under a top-level row (aligned to the avatar's center) and 20px at deeper levels; no separators between rows or runs; no counts. A chevron button (48×48, `slate-400`, 20px, rotated −90° when folded) at the right of a row that has children; tapping the row's body opens the conversation, tapping the chevron folds or unfolds. Default: a run with delegated work and an Org run are unfolded, a team's members are folded. Folding never stops anything. 
 - **"+" button.** 56px circle `blue-600` (pressed `blue-700`), a 28px white plus, `shadow-lg` tinted blue-900/25, fixed 16px from the right and `max(16px, safe-area)` from the bottom; accessible name "New run". The list has 112px bottom padding so the last row clears it.
 - **Fold row.** "Show older (N)" / "Show fewer": a 48px tall centered button, 14px/600 `blue-700`, under the list.
 - **⋮ menu.** A popup under the ⋮ at the right edge: 288px wide, `rounded-xl`, 1px `slate-200` border, `shadow-lg`, white; items 48px tall, 15px `slate-800`, a 20px `slate-500` icon, 16px side padding; a click outside closes it. Items in this order: Artifacts, Files, Messages (only for a member of a team or Org), Activity.
@@ -113,7 +112,7 @@ Existing language preserved: the mobile shell's slate neutrals with blue-600 as 
 | Component | Purpose | Variants And States | UI Reference Location |
 | --- | --- | --- | --- |
 | Run list screen | The only main screen | populated, loading, empty, read error, node not reachable, notice (unsupported route) | `components/mobile/MobileRunsScreen.vue` |
-| Run row (recursive) | A run or a delegated child with its tree | agent, team, Org, member; idle, running, starting, error, stopped; folded, unfolded; open; remote (reachable, not reachable); waiting (OPT-001) | `MobileRunRow.vue`, `stores/mobileRunTreeStore.ts` |
+| Run row (recursive) | A run or a delegated child with its tree | agent, team, Org, member; idle, running, starting, error, stopped; folded, unfolded; open; remote (reachable, not reachable) | `MobileRunRow.vue`, `stores/mobileRunTreeStore.ts` |
 | Run screen | One agent's conversation | root run, delegated child, team member, remote not reachable, "Opening…" | `MobileRunScreen.vue`, `MobileChat.vue` |
 | ⋮ menu | The agent's other views | with or without Messages | `MobileRunScreen.vue` |
 | View screens | Artifacts, Files, Messages, Activity, a reference file | populated, empty, remote note | `MobileResults.vue`, `MobileArtifacts.vue`, `MobileFiles.vue`, `MobileTeamMessages.vue`, `MobileRunActivityList.vue`, `MobileTeamReferenceViewer.vue` |
@@ -142,7 +141,7 @@ Removed (no longer in the product's phone shell): Home, the work shell with its 
 
 1. Open the app (paired): the run list is the first screen. Top bar: the node's name and its state. Rows newest first by last activity; the newest 5 runs show, then "Show older (N)".
 2. A run with delegated work is unfolded: its task agents and task teams are nested under it (rail, no counts); a task team shows folded (chevron); tap the chevron to see its members; a member's own delegated work nests under it. A run on another node carries its node's chip.
-3. Each row shows its live state as a dot. A row waiting for the user shows OPT-001. VIS-001, 002.
+3. Each row shows its live state as a dot. VIS-001, 002.
 4. "Show older (N)" opens the rest in the same list ("Show fewer" closes). VIS-003, 004.
 
 ### UXJ-002 — Open any run
@@ -274,7 +273,6 @@ The same screens at 360×800: no horizontal scrolling (checked: the document is 
 | An opened run's conversation | Run screen | An invented stored conversation per run; the real conversation view and composer | The desktop's target resolver (`activeContextStore.activeWorkspaceTarget`) for any child, local or remote |
 | Remote runs | Chip, not-reachable state, notice | Fixture: `docker` reachable, `office-mac` not | 278: the paired node relays; the composer is text-only for a remote run (the reference shows the shared composer unchanged: a known gap of the reference) |
 | Peer nodes list | Connection sheet | Fixture (`docker` 6 agents · 3 teams, `office-mac` not reachable) | The paired node's `peerNodeOffer`, availability |
-| OPT-001 "needs you" | An amber line and dot | Two invented rows | **Unproven** for runs the phone does not stream (DEC-005): engineering checks before it becomes a requirement |
 | Messages, Activity, a reference file | Screens | Invented rows and file texts (`sampleTeamMessages`, `sampleToolActivities`, `sampleReferenceText`) | The team context and the run's stream; the file read through the team's message |
 | Files search | Files | Looks through the files of the loaded tree | The workspace search on the node |
 | An opened file | Files | After a moment the viewer shows invented text (`sampleReferenceText`; the reference has no file service) | The file read through the authorized workspace file API; "Opening…" while it loads; "Couldn’t open this file." on an error; "This file can’t be shown on the phone." / "too large" |
@@ -288,7 +286,7 @@ The same screens at 360×800: no horizontal scrolling (checked: the document is 
 | --- | --- | --- | --- |
 | DEC-003 | How far remote nodes go on the phone | Not stated separately. Approved through the design as built: **A** (the paired node only: remote delegated runs under their delegator, see and talk, a read-only peer list). His interest in B, in his words: "if we are able to pair with multiple ones, we can just switch between different nodes, right? That would be very convenient." **B** (switch between several paired nodes inside the page) is the follow-up Task **autobyteus-391** (FU-001; not started; it waits for his word). One phone can already be paired with several nodes (one session per node origin); the missing piece is a "Switch node" entry in the web shell, a small Android bridge, no new permission. **C** (start a run on a peer) has no API. | Answered by the approval (A); B waits as autobyteus-391 |
 | DEC-004 | What is not on the phone | His direction in the review, in his words: "on the mobile version … there's no need to switch between … a different workspace or project"; "For new run we only support to create a simple agent run"; no filters on Files ("we do not have any filter" on the desktop); the Attach button removed. The list under "What Is Not On The Phone" is approved with the design. | Answered |
-| DEC-005 / OPT-001 | A "needs you" marker | Not stated separately. It is shown in the approved screenshots (VIS-001, 002) as an **optional** element; it stays optional and unproven (engineering confirms it for runs the phone does not stream before it becomes a requirement). | Approved as optional |
+| DEC-005 | A "needs you" marker on runs waiting for an answer or approval | The user, 2026-11-06, after seeing it: "I suggest that don't like hallucinate and invent things up, remove those, please … Those are not possible in the application, I think." **Removed from the design** (it was an optional, unproven idea with invented texts); the screenshots were retaken without it. If it is ever wanted, it needs its own Task: the app has no status for a run waiting on the user. | Dropped |
 | — | Compact composer | Not designed; the shared composer is unchanged (approved as shown). | Unchanged |
 
 ## Final Visual Reference Inventory
@@ -345,7 +343,6 @@ The desktop and its left panel (385); pairing screens; Android and iOS shell cha
 ## Open Decisions And Risks
 
 1. **DEC-003** — approved as built (A); autobyteus-391 (B) waits for the user's word; C would be its own Task.
-2. **OPT-001 / DEC-005** — the "needs you" marker stays optional; engineering must prove it for runs the phone does not stream.
-3. **Compact composer** — unchanged (not designed).
-4. **Read window and polling** (R-001, QR-003): the run list needs the complete history window; engineering measures it on his real history over Tailscale.
-5. **The reference's invented content** (messages, activity, file texts, node names) is illustrative; it is not real data.
+2. **Compact composer** — unchanged (not designed).
+3. **Read window and polling** (R-001, QR-003): the run list needs the complete history window; engineering measures it on his real history over Tailscale.
+4. **The reference's invented content** (messages, activity, file texts, node names) is illustrative; it is not real data.

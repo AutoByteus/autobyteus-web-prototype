@@ -65,10 +65,6 @@ export const useMobileRunTreeStore = defineStore('mobileRunTree', () => {
   const targetOf = (node: MobileRunNode): MobileRunNode =>
     (node.kind === 'team' || node.kind === 'org') && node.children?.length ? node.children[0] : node
 
-  /** Descendants that wait for the user (optional element OPT-001), shown on a folded parent. */
-  const needsYouBelow = (node: MobileRunNode): number =>
-    flattenRunIds(node.children ?? []).filter((child) => child.needsYou).length
-
   function select(id: string | null): void { selectedId.value = id }
   /** The first message gives a new run its permanent id; the run keeps its place and stays open. */
   function renameLaunched(oldId: string, newId: string): void {
@@ -83,6 +79,6 @@ export const useMobileRunTreeStore = defineStore('mobileRunTree', () => {
 
   return {
     listState, runs, visibleRuns, olderCount, showOlder, selectedId, peers, checkedAt, all,
-    byId, addLaunched, renameLaunched, parentOf, pathTo, rootOf, isExpanded, toggle, isNodeReachable, targetOf, needsYouBelow, select, retry,
+    byId, addLaunched, renameLaunched, parentOf, pathTo, rootOf, isExpanded, toggle, isNodeReachable, targetOf, select, retry,
   }
 })
