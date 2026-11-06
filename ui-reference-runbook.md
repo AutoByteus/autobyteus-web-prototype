@@ -764,7 +764,7 @@ Use one terminal per long-running process and stop it with `Ctrl-C`. Evidence po
 
 ## mobile-experience-redesign (autobyteus-277)
 
-The phone (`/mobile`): the run list with its delegation tree, the run screen, New run, the connection sheet. Spec: `tickets/in-progress/mobile-experience-redesign/ui-ux-spec.md` (moves to `tickets/done/` when the ticket closes).
+The phone (`/mobile`): the run list with its delegation tree, the run screen, New run, the connection sheet. Spec: `tickets/done/mobile-experience-redesign/ui-ux-spec.md`.
 
 ```bash
 corepack pnpm install --ignore-workspace --frozen-lockfile

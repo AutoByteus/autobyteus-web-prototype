@@ -10,13 +10,13 @@
     >
       <button
         type="button"
-        class="flex min-w-0 flex-1 items-start gap-3 text-left active:bg-slate-100"
-        :class="[depth === 0 ? 'min-h-[4rem] py-3 pl-4' : 'min-h-[3.5rem] py-2.5 pl-2', hasChildren ? 'pr-0' : 'pr-4']"
+        class="flex min-w-0 flex-1 gap-3 text-left active:bg-slate-100"
+        :class="[depth === 0 ? 'min-h-[4rem] py-3 pl-4' : 'min-h-[3.5rem] py-2.5 pl-2', hasChildren ? 'pr-0' : 'pr-4', node.summary || node.node ? 'items-start' : 'items-center']"
         :aria-label="accessibleLabel"
         data-testid="mobile-run-open"
         @click="$emit('open', node)"
       >
-        <span class="relative mt-0.5 flex-shrink-0" aria-hidden="true">
+        <span class="relative flex-shrink-0" :class="node.summary || node.node ? 'mt-0.5' : ''" aria-hidden="true">
           <span
             class="flex items-center justify-center font-semibold text-slate-600"
             :class="[
@@ -39,7 +39,7 @@
           <span class="flex items-center gap-1.5">
             <span class="truncate text-[0.9375rem] leading-5" :class="node.kind === 'agent' || node.kind === 'member' ? 'font-medium text-slate-900' : 'font-semibold text-slate-900'">{{ node.name }}</span>
           </span>
-          <span class="block truncate text-[0.8125rem] leading-[1.125rem] text-slate-500">{{ node.summary }}</span>
+          <span v-if="node.summary" class="block truncate text-[0.8125rem] leading-[1.125rem] text-slate-500">{{ node.summary }}</span>
           <span v-if="node.node" class="mt-1 flex items-center gap-2" data-testid="mobile-run-remote-line">
             <RemoteNodeChip :node-name="node.node" />
             <span

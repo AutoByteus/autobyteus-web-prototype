@@ -32,8 +32,9 @@ export type MobileRunNode = {
   children?: MobileRunNode[]
 }
 
-const member = (id: string, name: string, status: MobileRunStatus, summary: string, extra: Partial<MobileRunNode> = {}): MobileRunNode =>
-  ({ id, kind: 'member', name, status, summary, minutes: 3, ...extra })
+/** A member shows only its name: a second line is only ever real data (a Task's summary, a remote run's title). */
+const member = (id: string, name: string, status: MobileRunStatus, _summary: string, extra: Partial<MobileRunNode> = {}): MobileRunNode =>
+  ({ id, kind: 'member', name, status, summary: '', minutes: 3, ...extra })
 
 const SET_MEMBERS = (n: string, designerStatus: MobileRunStatus, engineerStatus: MobileRunStatus, reviewerStatus: MobileRunStatus, extra: Record<string, Partial<MobileRunNode>> = {}): MobileRunNode[] => [
   member(`mx-set-${n}-solution_designer`, 'solution_designer', designerStatus, 'Writes the requirements and the design', extra.solution_designer),
@@ -48,12 +49,11 @@ export const MOBILE_RUNS: MobileRunNode[] = [
     children: [
       {
         id: 'mx-set-0001', kind: 'team', name: 'Software Engineering Team', summary: 'Image context files don’t reach the model on the first turn', status: 'running', minutes: 4,
-        children: SET_MEMBERS('0001', 'idle', 'running', 'idle', {
-          implementation_engineer: {
-            summary: 'Fixes the first-turn context upload',
-            children: [{ id: 'mx-set-0001-code-searcher', kind: 'agent', name: 'Code Searcher', summary: 'Finds where context files are attached', status: 'running', minutes: 1 }],
-          },
-        }),
+        children: [
+          ...SET_MEMBERS('0001', 'idle', 'running', 'idle'),
+          // A task agent started by a team member sits at the member's level, as on the desktop (DEC-009).
+          { id: 'mx-set-0001-code-searcher', kind: 'agent', name: 'Code Searcher', summary: 'Find where context files are attached', status: 'running', minutes: 1 },
+        ],
       },
       { id: 'mx-apc-0001', kind: 'agent', name: 'Agent Package Creator', summary: 'Package the release-notes agent for the agent store', status: 'idle', minutes: 9 },
       {
@@ -130,7 +130,7 @@ const conversationFor = (node: MobileRunNode, at: number): Array<Record<string, 
   if (node.kind === 'member') {
     return [
       { kind: 'inter_agent_message', role: 'user', content: 'You received a message from sender name: project task manager, sender address: /project_task_manager, sender id: project_task_manager\nmessage:\nPlease work on the Task you were assigned.', ts: stamp(0) },
-      { kind: 'message', role: 'assistant', content: `${node.summary}. I will post the result here when it is ready.`, ts: stamp(40_000) },
+      { kind: 'message', role: 'assistant', content: 'I will post the result here when it is ready.', ts: stamp(40_000) },
     ]
   }
   return [

@@ -53,7 +53,7 @@ The promoted default product entries are:
 - Token Statistics: <http://127.0.0.1:3210/settings?section=token-usage>
 - Nodes (one Manage Nodes list, Remote Collaboration merged in; `one-nodes-tab`): <http://127.0.0.1:3210/nodes?nodeTab=manage> (scenarios `nodes_user`, `nodes_states`, `nodes_update_*`, `nodes_empty_offer`; the page's current look is `manage-nodes-professional`, see the runbook)
 
-- The phone (`mobile-experience-redesign`, autobyteus-277): <http://127.0.0.1:3210/mobile> (run list with its delegation tree, run screen, New run; the first visit opens a paired phone). Spec: `tickets/in-progress/mobile-experience-redesign/ui-ux-spec.md`; starting states in the runbook.
+- The phone (`mobile-experience-redesign`, autobyteus-277): <http://127.0.0.1:3210/mobile> (run list with its delegation tree, run screen, New run; the first visit opens a paired phone). Spec: `tickets/done/mobile-experience-redesign/ui-ux-spec.md`; starting states in the runbook.
 
 - Update checks, agent runtimes and automatic updates (`update-checks-and-auto-updates`, autobyteus-210): <http://127.0.0.1:3210/workspace>
   with `autobyteus.prototype.context` = `electron_internal` and `autobyteus.prototype.scenario` = `updates_waiting` (other scenarios in

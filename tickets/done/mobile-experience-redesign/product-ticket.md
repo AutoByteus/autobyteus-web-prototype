@@ -1,6 +1,6 @@
 # Product Ticket: mobile-experience-redesign (Project Task autobyteus-277)
 
-- Status: `Design Completed` (user-approved 2026-11-06: "okayyy. everything is good now. i approve"); integration `Pending` by the user's standing decision
+- Status: `Completed` (user-approved 2026-11-06: "okayyy. everything is good now. i approve"; implemented and released; integrated into `personal` on 2026-11-07)
 - Mode: Product Experience Design (evolves the accepted `/mobile` baseline)
 - Requested by: Solution Designer run `solution_designer_acd8b3385f2a491897565fc9f80b0a97`, at the user's request (2026-11-06)
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/mobile-experience-redesign/tickets/in-progress/mobile-experience-redesign/product-design-request.md` (with `requirements-doc.md` Draft SR-001 and `investigation-notes.md` in the same folder)
@@ -152,3 +152,12 @@ Pending the user's confirmation.
 - The user: "I suggest that don't like hallucinate and invent things up, remove those, please, thanks a lot. Remove those. Those are not possible in the application, I think."
 - Change: the marker is removed completely: the amber line on rows, the amber dot on a folded parent, the `needsYou` fixture data and the invented question in those runs' conversations. Screenshots VIS-001, 002, 003, 004, 024 and 025 were retaken. DEC-005 is closed as "dropped" in the spec; the spec no longer mentions OPT-001 as a feature.
 - Lesson recorded for later work: do not put invented copy or invented product behavior in front of the user; every visible element needs a source (a product path or his words).
+
+
+## As shipped; alignment and integration (2026-11-07)
+
+- Implemented by engineering, merged into `personal` (`562c7a2333`), released in `v1.5.12-beta.4` (Solution Designer's message). Two points differ from the first approved screenshots, decided by the user during engineering: DEC-009 (a task agent started by a team member sits at the member's level) and DEC-010 (a row's second line shows only real data; members show just their name).
+- The user, after the Product Designer explained why the ticket was still open: "ahhh. okayyy go ahead" (finish the alignment and integrate).
+- Done: the reference's sample data and row follow DEC-009/DEC-010; the spec says so; VIS-001…006, 024…026 retaken.
+
+- Integration (2026-11-07): after the implementation shipped and the user said "go ahead", the ticket branch was fast-forwarded into `personal`; the ticket folder moved to `tickets/done/mobile-experience-redesign/`; the worktree and the ticket branch were removed.
