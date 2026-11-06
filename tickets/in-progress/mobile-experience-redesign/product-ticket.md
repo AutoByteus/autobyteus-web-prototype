@@ -95,3 +95,8 @@ Pending the user's confirmation.
 - Follow-up FU-001 is in `follow-ups.md` (software ticket folder); the Project Task Manager was asked to create the Task and send its key. The spec references FU-001 until the key arrives.
 
 - Follow-up Task key (from `/project_task_manager`, 2026-11-06): **autobyteus-391**, "switch between paired nodes inside the /mobile web shell" (DEC-003 option B). Not dispatched; it waits for the user's word and his DEC-003 choice. FU-001 = autobyteus-391 in the spec.
+
+## Review round 11 (2026-11-06)
+
+- The user: on Files, a fixed search box and a "Filters" button take space for rarely used controls; the filters (four counters plus "Search full workspace" as pills) are a bad experience; rows in boxes show the name twice.
+- Change: Files is one 48px bar (←, "Files", a search icon, a filter icon). Search opens in the bar on tap (the title becomes a field with a close ✕, focused) and closes back. The filter icon opens a bottom sheet "Show": Folder, Recent, Attached, Markdown/code as one-choice rows (the count on the right, the chosen one checked) and a switch "Search the whole workspace"; a dot on the icon says a filter is on. Where you are is one scrolling line ("workspace › folder"; the last part bold; every part tappable) in place of the heading and chips. Rows are flat 56px (the icon, the name, a chevron on folders); the path shows only in a search or a filter.

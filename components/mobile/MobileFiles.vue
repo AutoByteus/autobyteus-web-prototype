@@ -1,133 +1,129 @@
 <template>
-  <section class="flex h-full flex-col overflow-hidden" data-testid="mobile-files">
-    <header v-if="!embedded || activeWorkspace" class="shrink-0 border-b border-slate-200 bg-white px-4 py-3">
-      <template v-if="!embedded">
-        <h2 class="text-xl font-bold text-slate-950">{{ workspaceTitle }}</h2>
-        <p class="mt-1 truncate text-sm text-slate-500">{{ workspaceSubtitle }}</p>
-      </template>
-      <div v-if="activeWorkspace" class="flex items-center gap-2" data-testid="mobile-files-primary-controls">
+  <section class="flex h-full flex-col overflow-hidden bg-white" data-testid="mobile-files">
+    <!-- One bar: back, the title, and two icons. Search and filters are on demand, not a fixed block. -->
+    <header class="flex h-12 shrink-0 items-center border-b border-slate-200 pl-1 pr-1" data-testid="mobile-files-bar">
+      <button type="button" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-slate-600 active:bg-slate-100" aria-label="Back to the conversation" data-testid="mobile-results-back" @click="$emit('back')">
+        <Icon icon="heroicons:arrow-left-20-solid" class="h-6 w-6" aria-hidden="true" />
+      </button>
+      <template v-if="searching">
         <input
+          ref="searchInput"
           v-model="search"
-          class="min-w-0 flex-1 rounded-2xl border border-slate-300 px-4 py-3 text-sm shadow-sm focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+          type="search"
+          class="h-10 min-w-0 flex-1 rounded-lg bg-slate-100 px-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-200"
           :placeholder="searchPlaceholder"
           data-testid="mobile-files-search"
         />
-        <button
-          type="button"
-          class="shrink-0 rounded-2xl border border-slate-300 px-3 py-3 text-sm font-bold text-slate-700"
-          data-testid="mobile-files-filters-toggle"
-          @click="showFilters = !showFilters"
-        >
-          Filters
+        <button type="button" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-slate-500 active:bg-slate-100" aria-label="Close search" @click="closeSearch">
+          <Icon icon="heroicons:x-mark-20-solid" class="h-6 w-6" aria-hidden="true" />
         </button>
-      </div>
-      <div v-if="activeWorkspace && showFilters" class="mt-3 grid grid-cols-2 gap-2 rounded-2xl bg-slate-50 p-3" data-testid="mobile-files-advanced-filters">
-        <button
-          v-for="filter in discoveryFilters"
-          :key="filter.id"
-          type="button"
-          class="rounded-full px-3 py-1.5 text-xs font-bold"
-          :class="activeDiscoveryFilter === filter.id ? 'bg-blue-600 text-white' : 'bg-white text-slate-600'"
-          :data-testid="`mobile-files-filter-${filter.id}`"
-          @click="activeDiscoveryFilter = filter.id"
-        >
-          {{ filter.label }} · {{ filter.count }}
-        </button>
-        <button
-          type="button"
-          class="col-span-2 rounded-full px-3 py-1.5 text-xs font-bold"
-          :class="deepSearch ? 'bg-blue-600 text-white' : 'bg-white text-slate-600'"
-          data-testid="mobile-files-deep-search"
-          @click="deepSearch = !deepSearch"
-        >
-          {{ deepSearch ? 'Workspace search on' : 'Search full workspace' }}
-        </button>
-      </div>
-      <p v-if="activeWorkspace && attachNotice" class="mt-3 rounded-2xl border border-blue-100 bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-800" data-testid="mobile-files-attach-notice">
-        {{ attachNotice }}
-      </p>
+      </template>
+      <template v-else>
+        <h1 class="min-w-0 flex-1 truncate px-2 text-base font-semibold">Files</h1>
+        <template v-if="activeWorkspace">
+          <button type="button" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-slate-600 active:bg-slate-100" aria-label="Search files" data-testid="mobile-files-search-open" @click="openSearch">
+            <svg viewBox="0 0 20 20" class="h-6 w-6" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM2 8a6 6 0 1 1 10.89 3.48l4.31 4.3a1 1 0 0 1-1.4 1.42l-4.32-4.3A6 6 0 0 1 2 8Z" /></svg>
+          </button>
+          <button type="button" class="relative flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-slate-600 active:bg-slate-100" aria-label="Filter files" data-testid="mobile-files-filters-toggle" @click="showFilters = true">
+            <svg viewBox="0 0 20 20" class="h-6 w-6" fill="currentColor" aria-hidden="true"><path d="M3 5.5A.75.75 0 0 1 3.75 5h12.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 5.5Zm2.5 4.5a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5A.75.75 0 0 1 5.5 10Zm2.5 4.5a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z" /></svg>
+            <span v-if="activeDiscoveryFilter !== 'all' || deepSearch" class="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-blue-600 ring-2 ring-white" aria-label="Filter on" />
+          </button>
+        </template>
+      </template>
     </header>
 
-    <div class="min-h-0 flex-1 overflow-y-auto p-5">
-      <div v-if="!activeWorkspace" class="rounded-3xl border border-dashed border-slate-300 bg-white p-6 text-center shadow-sm" data-testid="mobile-files-no-workspace">
-        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-2xl" aria-hidden="true">
-          {{ unavailableIcon }}
-        </div>
-        <p class="mt-4 font-semibold text-slate-900">{{ unavailableTitle }}</p>
-        <p class="mt-2 break-words text-sm text-slate-500">{{ unavailableDetail }}</p>
-        <div class="mt-4 flex flex-wrap justify-center gap-2">
-          <button
-            v-if="canChooseWorkspace"
-            type="button"
-            class="rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white"
-            @click="$emit('chooseWork')"
-          >
-            Choose workspace
-          </button>
-          <button
-            v-if="canRetryWorkspaceResolution"
-            type="button"
-            class="rounded-xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-700"
-            data-testid="mobile-files-retry-workspace"
-            @click="resolveWorkspaceForContext"
-          >
-            Retry
-          </button>
-        </div>
-      </div>
+    <p v-if="activeWorkspace && attachNotice" class="shrink-0 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-800" data-testid="mobile-files-attach-notice">{{ attachNotice }}</p>
+
+    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+      <p v-if="!activeWorkspace" class="px-4 py-10 text-center text-sm text-slate-500" data-testid="mobile-files-no-workspace">
+        {{ unavailableTitle }}
+        <button v-if="canRetryWorkspaceResolution" type="button" class="ml-1 h-11 font-semibold text-blue-700 underline" data-testid="mobile-files-retry-workspace" @click="resolveWorkspaceForContext">Retry</button>
+      </p>
 
       <template v-else>
-        <div class="sticky top-0 z-10 -mx-5 mb-3 border-b border-slate-100 bg-white/95 px-5 py-3 backdrop-blur" data-testid="mobile-files-sticky-context">
-          <p class="break-words text-sm font-semibold text-slate-900">{{ currentFolderLabel }}</p>
-          <div v-if="breadcrumb.length > 1" class="mt-2 flex flex-wrap gap-2 text-sm">
-            <button
-              v-for="(crumb, index) in breadcrumb"
-              :key="crumb.path || 'root'"
-              type="button"
-              class="rounded-full border border-slate-200 px-3 py-1.5 font-semibold text-slate-600"
-              @click="openCrumb(index)"
-            >
-              {{ crumb.name }}
+        <!-- Where you are: one scrolling line, the last part is the current folder. -->
+        <nav class="sticky top-0 z-10 flex h-11 items-center gap-1 overflow-x-auto whitespace-nowrap border-b border-slate-100 bg-white px-4 text-sm" aria-label="Folder" data-testid="mobile-files-sticky-context">
+          <template v-for="(crumb, index) in breadcrumb" :key="crumb.path || 'root'">
+            <Icon v-if="index > 0" icon="heroicons:chevron-right-20-solid" class="h-4 w-4 flex-shrink-0 text-slate-300" aria-hidden="true" />
+            <button type="button" class="h-11 flex-shrink-0 px-1" :class="index === breadcrumb.length - 1 ? 'font-semibold text-slate-900' : 'text-slate-500'" @click="openCrumb(index)">
+              {{ index === 0 ? workspaceTitle : crumb.name }}
             </button>
-          </div>
-          <p v-if="isSearchLoading" class="mt-2 text-xs font-semibold text-blue-700" data-testid="mobile-files-search-loading">
-            Searching the full workspace…
-          </p>
-          <p v-else-if="searchError" class="mt-2 text-xs font-semibold text-red-700" data-testid="mobile-files-search-error">
-            {{ searchError }}
-          </p>
-        </div>
+          </template>
+          <span v-if="isSearchLoading" class="ml-2 flex-shrink-0 text-xs text-blue-700" data-testid="mobile-files-search-loading">Searching…</span>
+          <span v-else-if="searchError" class="ml-2 flex-shrink-0 text-xs text-red-700" data-testid="mobile-files-search-error">{{ searchError }}</span>
+        </nav>
 
-        <div v-if="visibleChildren.length" class="space-y-2" data-testid="mobile-files-list">
-          <button
-            v-for="node in visibleChildren"
-            :key="node.id || node.path || node.name"
-            type="button"
-            class="flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:border-blue-200 hover:bg-blue-50 disabled:cursor-wait disabled:opacity-70"
-            :disabled="isNodeBusy(node)"
-            @click="openNode(node)"
-          >
-            <span class="text-xl">{{ node.is_file ? '📄' : '📁' }}</span>
-            <span class="min-w-0 flex-1">
-              <span class="block break-words font-semibold text-slate-950">{{ node.name }}</span>
-              <span class="block break-words text-sm text-slate-500">{{ node.path || (node.is_file ? 'File' : 'Folder') }}</span>
-              <span v-if="!node.is_file && isFolderLoading(node.path)" class="mt-1 block text-xs font-semibold text-blue-700">
-                Loading folder…
+        <ul v-if="visibleChildren.length" data-testid="mobile-files-list">
+          <li v-for="node in visibleChildren" :key="node.id || node.path || node.name">
+            <button
+              type="button"
+              class="flex min-h-[3.5rem] w-full items-center gap-3 border-b border-slate-100 px-4 py-2 text-left active:bg-slate-50 disabled:opacity-60"
+              :class="previewNode && previewNode.path === node.path ? 'bg-blue-50' : ''"
+              :disabled="isNodeBusy(node)"
+              @click="openNode(node)"
+            >
+              <svg v-if="node.is_file" viewBox="0 0 20 20" class="h-6 w-6 flex-shrink-0 text-slate-400" fill="currentColor" aria-hidden="true"><path d="M4 4a2 2 0 0 1 2-2h4.59A2 2 0 0 1 12 2.59L15.41 6A2 2 0 0 1 16 7.41V16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4Z" /></svg>
+              <svg v-else viewBox="0 0 20 20" class="h-6 w-6 flex-shrink-0 text-amber-400" fill="currentColor" aria-hidden="true"><path d="M2 6a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Z" /></svg>
+              <span class="min-w-0 flex-1">
+                <span class="block truncate text-[0.9375rem] font-medium text-slate-900">{{ node.name }}</span>
+                <span v-if="node.path && node.path !== node.name && (search || deepSearch || activeDiscoveryFilter !== 'all')" class="block truncate text-xs text-slate-500">{{ node.path }}</span>
+                <span v-if="!node.is_file && isFolderLoading(node.path)" class="block text-xs text-blue-700">Loading…</span>
+                <span v-else-if="!node.is_file && getFolderError(node.path)" class="block text-xs text-red-700">{{ getFolderError(node.path) }}</span>
               </span>
-              <span v-else-if="!node.is_file && getFolderError(node.path)" class="mt-1 block text-xs font-semibold text-red-700">
-                {{ getFolderError(node.path) }}
-              </span>
-              <span v-else-if="!node.is_file && !node.childrenLoaded" class="mt-1 block text-xs font-semibold text-slate-500">
-                Tap to load folder contents
-              </span>
-            </span>
-          </button>
-        </div>
-        <div v-else class="rounded-3xl border border-dashed border-slate-300 bg-white p-6 text-center text-sm text-slate-500 shadow-sm" data-testid="mobile-files-empty">
-          {{ emptyMessage }}
-        </div>
+              <Icon v-if="!node.is_file" icon="heroicons:chevron-right-20-solid" class="h-5 w-5 flex-shrink-0 text-slate-300" aria-hidden="true" />
+            </button>
+          </li>
+        </ul>
+        <p v-else class="px-4 py-10 text-center text-sm text-slate-500" data-testid="mobile-files-empty">{{ emptyMessage }}</p>
       </template>
     </div>
+
+    <Teleport to="body">
+      <div v-if="showFilters" class="fixed inset-0 z-50 flex flex-col justify-end" data-testid="mobile-files-advanced-filters">
+        <button type="button" class="absolute inset-0 bg-slate-900/40" aria-label="Close" @click="showFilters = false" />
+        <div class="relative flex max-h-[85dvh] flex-col rounded-t-2xl bg-white shadow-xl" role="dialog" aria-modal="true" aria-label="Filter files">
+          <div class="mx-auto mt-2 h-1 w-10 flex-shrink-0 rounded-full bg-slate-300" aria-hidden="true" />
+          <header class="flex h-14 flex-shrink-0 items-center justify-between pl-4 pr-2">
+            <h2 class="text-lg font-semibold">Show</h2>
+            <button type="button" class="flex h-12 w-12 items-center justify-center rounded-full text-slate-500 active:bg-slate-100" aria-label="Close" @click="showFilters = false">
+              <Icon icon="heroicons:x-mark-20-solid" class="h-6 w-6" aria-hidden="true" />
+            </button>
+          </header>
+          <div class="overflow-y-auto pb-[max(1rem,env(safe-area-inset-bottom))]">
+            <button
+              v-for="filter in discoveryFilters"
+              :key="filter.id"
+              type="button"
+              class="flex min-h-[3.5rem] w-full items-center gap-3 px-4 text-left active:bg-slate-100"
+              :class="activeDiscoveryFilter === filter.id ? 'bg-blue-50' : ''"
+              :aria-current="activeDiscoveryFilter === filter.id ? 'true' : undefined"
+              :data-testid="`mobile-files-filter-${filter.id}`"
+              @click="activeDiscoveryFilter = filter.id; showFilters = false"
+            >
+              <span class="min-w-0 flex-1 text-base text-slate-900">{{ filter.label }}</span>
+              <span class="text-sm text-slate-400">{{ filter.count }}</span>
+              <Icon v-if="activeDiscoveryFilter === filter.id" icon="heroicons:check-circle-20-solid" class="h-6 w-6 flex-shrink-0 text-blue-600" aria-hidden="true" />
+            </button>
+            <div class="mx-4 my-1 border-t border-slate-100" />
+            <div class="flex h-14 items-center gap-3 px-4">
+              <span id="mobile-files-deep-label" class="flex-1 text-base text-slate-900">Search the whole workspace</span>
+              <button
+                type="button"
+                role="switch"
+                :aria-checked="deepSearch ? 'true' : 'false'"
+                aria-labelledby="mobile-files-deep-label"
+                class="relative inline-flex h-8 w-14 flex-shrink-0 items-center rounded-full transition"
+                :class="deepSearch ? 'bg-blue-600' : 'bg-slate-300'"
+                data-testid="mobile-files-deep-search"
+                @click="deepSearch = !deepSearch"
+              >
+                <span class="inline-block h-6 w-6 rounded-full bg-white shadow transition" :class="deepSearch ? 'translate-x-7' : 'translate-x-1'" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Teleport>
 
     <MobileFileViewer
       v-if="previewNode && activeWorkspace"
@@ -144,7 +140,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, toRef, watch } from 'vue';
+import { computed, nextTick, onBeforeUnmount, ref, toRef, watch } from 'vue';
+import { Icon } from '@iconify/vue';
 import MobileFileViewer from '~/components/mobile/MobileFileViewer.vue';
 import { useMobileFileContextCoordinator } from '~/composables/mobile/useMobileFileContextCoordinator';
 import {
@@ -162,8 +159,19 @@ const props = defineProps<{
 }>();
 
 defineEmits<{
-  chooseWork: [];
+  back: [];
 }>();
+
+const searching = ref(false);
+const searchInput = ref<HTMLInputElement | null>(null);
+function openSearch(): void {
+  searching.value = true;
+  void nextTick(() => searchInput.value?.focus());
+}
+function closeSearch(): void {
+  searching.value = false;
+  search.value = '';
+}
 
 const mobileExplorer = useMobileWorkspaceFileExplorer(toRef(props, 'context'));
 const { getVisibleContextAttachments } = useMobileFileContextCoordinator();
