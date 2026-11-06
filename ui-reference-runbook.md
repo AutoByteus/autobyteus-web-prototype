@@ -761,3 +761,21 @@ Expected result: `VIS-001`–`VIS-017` capture without browser errors or externa
 ## Process Isolation
 
 Use one terminal per long-running process and stop it with `Ctrl-C`. Evidence ports are correction-only. Ordinary prototype review needs only the prototype. Mutable state is browser-local and resettable; the source observer accepts only loopback synthetic requests; no process writes to production services.
+
+## mobile-experience-redesign (autobyteus-277)
+
+The phone (`/mobile`): the run list with its delegation tree, the run screen, New run, the connection sheet. Spec: `tickets/in-progress/mobile-experience-redesign/ui-ux-spec.md` (moves to `tickets/done/` when the ticket closes).
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm exec nuxt dev --host 0.0.0.0 --port 3277
+```
+
+Open <http://127.0.0.1:3277/mobile> (a phone on Tailscale: `http://<this machine's tailnet IP>:3277/mobile`). The first visit in a browser installs an inert paired session, so the page opens on the run list; the cold first compile after a cache wipe can take about 20 seconds (a blank page: wait and reload).
+
+Starting states (local storage, then reload; no visible control):
+
+- `autobyteus.prototype.scenario` = `mobile_runs_loading` | `mobile_runs_empty` | `mobile_runs_error` | `mobile_runs_node_offline` (default: the populated list, with `docker` reachable and `office-mac` not).
+- Reset: remove `autobyteus.prototype.mobileSeeded`, `autobyteus.remote_access.mobile_session.v1`, `autobyteus.prototype.context` and the scenario key, then reload. "Unpair this phone" shows the pairing screen.
+
+Design-only layers (turned off with `autobyteus.prototype.designOnlyLayers=off`): `prototype/mobile-runs/mobileRunsFixture.ts` (runs, delegation tree, an opened run's conversation, messages, activity, file texts, peers), `stores/mobileRunTreeStore.ts`. Simulated under the interface: the node's run history and tree, the stream (the activity is seeded when a run opens), the team context behind Messages, the workspace search (Files searches the loaded tree), the peers.

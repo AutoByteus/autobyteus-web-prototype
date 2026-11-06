@@ -5,7 +5,7 @@
         v-model="selectedAgentId"
         label="Agent"
         placeholder="Choose"
-        :items="agentChoices"
+        :items="agentChoices.map((item) => ({ ...item, group: undefined }))"
         test-id="mobile-run-target-select"
         item-noun="agents"
       />

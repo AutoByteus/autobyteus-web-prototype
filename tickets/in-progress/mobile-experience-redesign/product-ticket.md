@@ -1,6 +1,6 @@
 # Product Ticket: mobile-experience-redesign (Project Task autobyteus-277)
 
-- Status: `Awaiting User Review`
+- Status: `Awaiting User Review` (the experience is approved; DEC-003, OPT-001 and the compact composer are still to be answered in his words before handoff)
 - Mode: Product Experience Design (evolves the accepted `/mobile` baseline)
 - Requested by: Solution Designer run `solution_designer_acd8b3385f2a491897565fc9f80b0a97`, at the user's request (2026-11-06)
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/mobile-experience-redesign/tickets/in-progress/mobile-experience-redesign/product-design-request.md` (with `requirements-doc.md` Draft SR-001 and `investigation-notes.md` in the same folder)
@@ -122,3 +122,10 @@ Pending the user's confirmation.
 - The user: why is there a border between runs (for example between Daily Assistant and Product Launch Org)? Also confirmed: "I think I just experienced it and the user experience is really nice … I'm fine with the user experience now."
 - Finding: the separators were only meant to mark where a run's tree ends; two borders stacked (a thick line), and the vertical line beside delegated work already shows the group.
 - Change: no separators between runs; spacing only.
+
+
+## Final package (2026-11-06)
+
+- The user confirmed the experience: "Perfect, I think I just experienced it and the user experience is really nice. … I'm fine with the user experience now."
+- UI/UX spec: `ui-ux-spec.md`; final screenshots `visual-references/VIS-001…VIS-028` (390×844, and 360×800 for VIS-025…028); runbook section "mobile-experience-redesign".
+- Integration: by the user's standing decision (2026-11-04, left-panel-super-agents) an approved design stays on its ticket branch until it is implemented, so `personal` keeps mirroring the shipped product. The branch is pushed to `origin`; the worktree and branch are kept on purpose; the UI reference process stays up while the user may still review.

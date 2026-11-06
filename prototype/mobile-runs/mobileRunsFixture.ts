@@ -116,7 +116,7 @@ export const flattenRunIds = (nodes: MobileRunNode[]): MobileRunNode[] => nodes.
 
 import { exposedFixtures } from '~/prototype/source-observation/fixtures.mjs'
 import { toolActivities } from '~/prototype/model-routing/modelRoutingFixture'
-const AGENT_DEFINITION_BY_NAME: Record<string, string> = { 'Project Task Manager': 'project-task-manager', 'Daily Assistant': String((exposedFixtures as Record<string, any>).dailyAssistant?.id ?? 'agent-researcher') }
+export const AGENT_DEFINITION_BY_NAME: Record<string, string> = { 'Project Task Manager': 'project-task-manager', 'Daily Assistant': String((exposedFixtures as Record<string, any>).dailyAssistant?.id ?? 'agent-researcher') }
 
 /** The invented conversation a run opens with. */
 const conversationFor = (node: MobileRunNode, at: number): Array<Record<string, any>> => {
@@ -183,14 +183,15 @@ export const sampleTeamMessages = (runId: string): Array<Record<string, any>> =>
   const ref = (n: number, path: string, type = 'file') => ({
     referenceId: `${runId}-r${n}-${path}`, path, type, createdAt: new Date(at).toISOString(), updatedAt: new Date(at).toISOString(),
   })
+  const others = ['solution_designer', 'implementation_engineer', 'code_reviewer'].filter((name) => name !== node.name)
   const row = (n: number, direction: 'sent' | 'received', counterpartLabel: string, content: string, referenceFiles: unknown[] = []) => ({
     messageId: `${runId}-m${n}`, messageType: 'direct_message', direction, counterpartLabel, content,
     createdAt: new Date(at + n * 90_000).toISOString(), referenceFiles,
   })
   return [
-    row(1, 'received', 'solution_designer', 'Requirements are approved. Start with the first-turn upload path and keep the change small.', [ref(1, 'docs/requirements.md'), ref(2, 'docs/design-spec.md')]),
-    row(2, 'sent', 'solution_designer', 'Found it: the context files are attached after the first send. I am moving the attach step before it.', [ref(3, 'src/context/upload.ts')]),
-    row(3, 'received', 'code_reviewer', 'Please add a test for the first-turn case before you hand over.'),
+    row(1, 'received', others[0], 'Requirements are approved. Start with the first-turn upload path and keep the change small.', [ref(1, 'docs/requirements.md'), ref(2, 'docs/design-spec.md')]),
+    row(2, 'sent', others[0], 'Found it: the context files are attached after the first send. I am moving the attach step before it.', [ref(3, 'src/context/upload.ts')]),
+    row(3, 'received', others[1], 'Please add a test for the first-turn case before you hand over.'),
   ]
 }
 

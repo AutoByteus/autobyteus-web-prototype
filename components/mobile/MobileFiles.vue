@@ -173,7 +173,7 @@ const sourceNodes = computed<MobileWorkspaceFileNode[]>(() => {
   if (workspaceSearchMode.value) {
     return mobileExplorer.searchResults.value;
   }
-  if (deepSearch.value) {
+  if (deepSearch.value && search.value.trim()) {
     return loadedWorkspaceFiles.value;
   }
   return currentFolder.value?.children ?? [];

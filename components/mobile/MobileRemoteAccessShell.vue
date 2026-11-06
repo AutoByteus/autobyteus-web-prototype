@@ -97,7 +97,7 @@ import MobileRunScreen from '~/components/mobile/MobileRunScreen.vue';
 import MobileRunsScreen from '~/components/mobile/MobileRunsScreen.vue';
 import MobileUnpairConfirm from '~/components/mobile/MobileUnpairConfirm.vue';
 import MobileUnsupportedFeatureNotice from '~/components/mobile/MobileUnsupportedFeatureNotice.vue';
-import { sampleToolActivities, type MobileRunNode } from '~/prototype/mobile-runs/mobileRunsFixture';
+import { AGENT_DEFINITION_BY_NAME, sampleToolActivities, type MobileRunNode } from '~/prototype/mobile-runs/mobileRunsFixture';
 import { useAgentContextsStore } from '~/stores/agentContextsStore';
 import { useAgentActivityStore } from '~/stores/agentActivityStore';
 import { useMobileNodeSessionStore } from '~/stores/mobileNodeSessionStore';
@@ -182,7 +182,7 @@ function contextFor(node: MobileRunNode): MobileWorkContext {
   return {
     kind: 'agent-run',
     runId: node.id,
-    agentDefinitionId: 'agent-researcher',
+    agentDefinitionId: AGENT_DEFINITION_BY_NAME[node.name] ?? 'agent-researcher',
     title: node.name,
     summary: node.summary,
     workspaceRootPath: '/synthetic/prototype-workspace',
