@@ -81,3 +81,9 @@ Pending the user's confirmation.
 - The user: the Messages screen shows no file references, but the desktop has them: messages carry files, like artifacts.
 - Finding: the screen supports references (the source's component lists them and opens them); the reference's invented messages had none.
 - Change: sample messages carry references (requirements.md, design-spec.md, upload.ts). A reference is one 44px row (the file's icon and name) under its message; a tap opens the file full screen with the same 48px bar (← and the file name), no boxes. In the reference the file text is invented (`sampleReferenceText`); the product reads it through the team's message.
+
+## Question to the Solution Designer (2026-11-06)
+
+- The user: "Can we pair with multiple nodes at the same time? … if we are able to pair with multiple ones, we can just switch between different nodes … That would be very convenient. Ask the solution designer whether it's possible or not. If it doesn't support it … we need to create a follow-up."
+- Sent to the Solution Designer (run `solution_designer_acd8b3385f2a491897565fc9f80b0a97`): is pairing one phone with several nodes possible today, and if not, create the follow-up Task and return its key. Product's evidence: the web shell keeps one session (`mobileNodeSessionStore`); the Android shell keeps a saved-node list with one selected (`SavedNodeStore.kt`); the server-side pairing was not traced.
+- Status: waiting for the answer and the follow-up Task key. DEC-003 stays the user's decision; the design builds option A and records B as the follow-up.
