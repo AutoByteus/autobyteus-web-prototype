@@ -93,3 +93,5 @@ Pending the user's confirmation.
 - One phone CAN be paired with several nodes at the same time today: each node serves `/mobile` from its own origin, and the session is kept per origin (`mobileCredentialStorage.ts`); each server keeps its own paired devices; the Android app saves one entry per origin. Switching today: Back from the web shell to the app's node list, then Open another node.
 - Missing: a "Switch node" entry inside the web shell (the page cannot read the app's saved nodes or another origin's storage; the app opens another origin outside the WebView). It needs a small bridge the Android app offers only to its trusted origins, no new permission; iOS later. That is DEC-003 option B.
 - Follow-up FU-001 is in `follow-ups.md` (software ticket folder); the Project Task Manager was asked to create the Task and send its key. The spec references FU-001 until the key arrives.
+
+- Follow-up Task key (from `/project_task_manager`, 2026-11-06): **autobyteus-391**, "switch between paired nodes inside the /mobile web shell" (DEC-003 option B). Not dispatched; it waits for the user's word and his DEC-003 choice. FU-001 = autobyteus-391 in the spec.
