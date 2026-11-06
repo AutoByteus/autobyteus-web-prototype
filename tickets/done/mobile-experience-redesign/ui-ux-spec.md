@@ -21,7 +21,7 @@ Canonical contract for the AutoByteus mobile web shell (`/mobile`, wrapped by th
 - Pinned source revision: baseline `origin/personal@d74f75a51a`; checked against `e00581d485` for the phone shell (see the ticket record): the shell files match except the Team messages screen's loading and unavailable states (autobyteus-358), a known baseline gap on a screen this design keeps. Engineering keeps the source's behavior there.
 - Accepted design base: `a0e18abb49320c8f3c4ad5cfad830863ca6684df`.
 - UI reference revision: ticket branch `design/mobile-experience-redesign` (the committed revision is in `product-ticket.md`).
-- Ticket folder: `tickets/in-progress/mobile-experience-redesign/` (design repository).
+- Ticket folder: `tickets/done/mobile-experience-redesign/` (design repository).
 - Baseline report: `ui-baseline-report.md` (repository root).
 
 ## Problem And Design Rationale
