@@ -70,3 +70,8 @@ Pending the user's confirmation.
 - The user saw a card ("CHAT / Opening conversation / The run is selected. Messages will appear here when hydration finishes." with "Choose work" and "Open Runs") in the middle of the Project Task Manager's run screen, and asked what its logic is.
 - Finding: it was the old Chat tab's fallback for "the conversation is not attached yet"; its buttons pointed at screens that no longer exist. The run screen could reach it when a run kept its selection but lost its conversation (browser Back then Forward, a quick switch).
 - Change: the fallback is a quiet one-line "Opening…" (no title, no buttons, no internal word); and an open run whose conversation is not attached is attached again on its own, so the state does not stay. Requirement for engineering: the run screen never shows a state with navigation buttons; while the conversation loads it shows "Opening…".
+
+## Review round 9 (2026-11-06)
+
+- The user: "Switch agent" and "Back to <delegator>" are not needed: ← already goes back, and the first screen (the run list) is already clear.
+- Change: both items and the run-tree sheet are removed. The ⋮ menu is Artifacts, Files, Messages (team members only) and Activity. Moving to another agent or to the delegator is ← to the run list (which keeps its scroll position and marks the open run) and one tap on the row.

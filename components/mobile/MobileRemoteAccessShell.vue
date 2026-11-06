@@ -42,7 +42,6 @@
         :node="currentNode"
         :context="mobileWorkStore.currentContext"
         @back="goBack"
-        @open="switchNode"
         @open-view="openView"
         @retry-node="retryNode"
       />
@@ -225,10 +224,6 @@ async function openNode(row: MobileRunNode, replace = false): Promise<void> {
   navigate('run', { replace: replace || screen.value === 'run' });
 }
 
-function switchNode(row: MobileRunNode): void {
-  resultsOpen.value = false;
-  void openNode(row, true);
-}
 
 function retryNode(): void {
   // The reference's remote node stays down: the row keeps its state, as it does on the desktop.

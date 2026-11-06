@@ -28,15 +28,6 @@
       <template v-if="menuOpen">
         <button type="button" class="fixed inset-0 z-20 cursor-default" aria-label="Close menu" @click="menuOpen = false" />
         <div class="absolute right-2 top-12 z-30 w-72 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg" role="menu" data-testid="mobile-run-menu">
-          <button v-if="hasRelations" type="button" role="menuitem" class="flex h-12 w-full items-center gap-3 px-4 text-left text-[0.9375rem] text-slate-800 active:bg-slate-100" data-testid="mobile-run-menu-switch" @click="menuOpen = false; treeOpen = true">
-            <Icon icon="heroicons:user-group-20-solid" class="h-5 w-5 text-slate-500" aria-hidden="true" />
-            Switch agent
-          </button>
-          <button v-if="delegator" type="button" role="menuitem" class="flex h-12 w-full items-center gap-3 px-4 text-left text-[0.9375rem] text-slate-800 active:bg-slate-100" data-testid="mobile-run-menu-up" @click="menuOpen = false; $emit('open', delegator)">
-            <Icon icon="heroicons:arrow-up-20-solid" class="h-5 w-5 text-slate-500" aria-hidden="true" />
-            <span class="min-w-0 truncate">Back to {{ delegator.name }}</span>
-          </button>
-          <div v-if="hasRelations" class="my-1 border-t border-slate-100" role="separator" />
           <button v-for="view in views" :key="view.id" type="button" role="menuitem" class="flex h-12 w-full items-center gap-3 px-4 text-left text-[0.9375rem] text-slate-800 active:bg-slate-100" :data-testid="`mobile-run-menu-${view.id}`" @click="menuOpen = false; $emit('open-view', view.id)">
             <span class="h-5 w-5 text-slate-500" aria-hidden="true" v-html="view.icon" />
             {{ view.label }}
@@ -51,9 +42,6 @@
     </div>
     <MobileChat v-else :context="context" class="min-h-0 flex-1" />
 
-    <Teleport to="body">
-      <MobileRunTreeSheet v-if="treeOpen" :node="node" @close="treeOpen = false" @open="onTreeOpen" />
-    </Teleport>
   </section>
 </template>
 
@@ -61,7 +49,6 @@
 import { computed, ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import MobileChat from '~/components/mobile/MobileChat.vue'
-import MobileRunTreeSheet from '~/components/mobile/MobileRunTreeSheet.vue'
 import RemoteNodeChip from '~/components/workspace/remote/RemoteNodeChip.vue'
 import RemoteRunNotice from '~/components/workspace/remote/RemoteRunNotice.vue'
 import type { MobileRunNode } from '~/prototype/mobile-runs/mobileRunsFixture'
@@ -72,15 +59,12 @@ import { agentStatusDotClass } from '~/utils/workspaceStatusDotPresentation'
 const props = defineProps<{ node: MobileRunNode; context: MobileWorkContext | null }>()
 const emit = defineEmits<{
   (event: 'back'): void
-  (event: 'open', node: MobileRunNode): void
   (event: 'open-view', view: 'artifacts' | 'files' | 'messages' | 'activity'): void
   (event: 'retry-node'): void
 }>()
 
 const store = useMobileRunTreeStore()
-const treeOpen = ref(false)
 const menuOpen = ref(false)
-const hasRelations = computed(() => path.value.length > 1 || Boolean(props.node.children?.length))
 const inTeam = computed(() => path.value.slice(0, -1).some((item) => item.kind === 'team' || item.kind === 'org'))
 const ICON = (d: string) => `<svg viewBox="0 0 20 20" class="h-5 w-5" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="${d}"/></svg>`
 const VIEWS = [
@@ -92,8 +76,6 @@ const VIEWS = [
 const unreachable = computed(() => !store.isNodeReachable(props.node.node))
 const dotClass = computed(() => agentStatusDotClass(unreachable.value ? 'error' : props.node.status))
 const path = computed(() => store.pathTo(props.node.id))
-/** The nearest run above that is an agent: the one that delegated this work (a team or Org is skipped). */
-const delegator = computed(() => [...path.value].slice(0, -1).reverse().find((item) => item.kind === 'agent') ?? null)
 /** Messages are the team's messages: only a member of a team (or Org) has them. */
 const views = computed(() => VIEWS.filter((view) => view.id !== 'messages' || inTeam.value))
 const STATUS_LABEL: Record<string, string> = { running: 'Running', idle: 'Idle', initializing: 'Starting', error: 'Error', offline: 'Stopped' }
@@ -104,8 +86,4 @@ const subtitle = computed(() => {
   return `${STATUS_LABEL[props.node.status] ?? ''} · in ${above[above.length - 1].name}`
 })
 
-function onTreeOpen(next: MobileRunNode): void {
-  treeOpen.value = false
-  emit('open', next)
-}
 </script>
