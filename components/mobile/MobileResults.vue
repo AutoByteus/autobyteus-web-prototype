@@ -1,13 +1,10 @@
 <template>
   <section class="fixed inset-0 z-30 flex h-[100dvh] flex-col bg-white text-slate-900" :data-testid="`mobile-${kind}-screen`">
-    <header class="flex h-14 flex-shrink-0 items-center border-b border-slate-200 pl-1 pr-3">
+    <header class="flex h-12 flex-shrink-0 items-center border-b border-slate-200 pl-1 pr-3">
       <button type="button" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-slate-600 active:bg-slate-100" aria-label="Back to the conversation" data-testid="mobile-results-back" @click="$emit('back')">
         <Icon icon="heroicons:arrow-left-20-solid" class="h-6 w-6" aria-hidden="true" />
       </button>
-      <div class="min-w-0 flex-1 px-2">
-        <h1 class="truncate text-base font-semibold leading-5">{{ title }}</h1>
-        <p class="truncate text-xs leading-4 text-slate-500">{{ node.name }}</p>
-      </div>
+      <h1 class="min-w-0 flex-1 truncate px-2 text-base font-semibold">{{ title }}</h1>
     </header>
 
     <p v-if="remoteNote && kind !== 'activity'" class="m-4 rounded-xl bg-slate-50 p-4 text-sm text-slate-600" data-testid="mobile-results-remote-note">{{ remoteNote }}</p>

@@ -42,3 +42,9 @@ Pending the user's confirmation.
 
 - The user: the ⌄ plus the ⋮ with only "Results" is two controls where one will do; "Results" is unclear (it is just the current agent's artifacts, files and activity); and Artifacts should not ask "select an active run" since the screen always belongs to the current agent.
 - Change: one control, the ⋮ menu: Switch agent (opens the run tree), Back to <delegator>, then Artifacts, Files, Activity, each opening its own screen for the current agent (no tabs, no "Results"). The title is plain text. The "choose work / select an active run" states are removed from Artifacts and Activity.
+
+## Review round 4 (2026-11-06)
+
+- The user: the Artifacts screen wastes vertical space at the top (a tall static header that also names the agent, a tall artifact card); "vertical space is a treasure on the phone"; the agent's name under "Artifacts" is not needed.
+- Change: the Artifacts, Files and Activity screens have one 48px bar (← and the title, no agent name). A single artifact shows no list (its name is in the viewer's bar); several artifacts are 44px one-line rows (icon, name, status).
+- Known fixture limit: the sample artifact opens with the baseline's "Content not available yet" placeholder; its content is illustrative.

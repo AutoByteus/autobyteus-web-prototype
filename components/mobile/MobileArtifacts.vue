@@ -24,25 +24,20 @@
     </div>
 
     <div v-else class="flex min-h-0 flex-1 flex-col overflow-hidden" data-testid="mobile-artifacts-content">
-      <div class="max-h-[42%] shrink-0 overflow-y-auto border-b border-slate-200 bg-white p-3" data-testid="mobile-artifacts-list">
+      <!-- One artifact: its name is already in the viewer's bar, so no list. Several: one 44px row each. -->
+      <div v-if="artifacts.length > 1" class="max-h-[35%] shrink-0 overflow-y-auto border-b border-slate-200 bg-white" data-testid="mobile-artifacts-list">
         <button
           v-for="artifact in artifacts"
           :key="artifact.itemId"
           type="button"
-          class="mb-2 flex w-full items-start gap-3 rounded-2xl border p-3 text-left shadow-sm transition last:mb-0"
-          :class="artifact.itemId === selectedArtifactId ? 'border-blue-300 bg-blue-50' : 'border-slate-200 bg-white hover:border-blue-200 hover:bg-slate-50'"
+          class="flex h-11 w-full items-center gap-2.5 border-b border-slate-100 px-4 text-left text-sm last:border-b-0"
+          :class="artifact.itemId === selectedArtifactId ? 'bg-blue-50 font-semibold text-blue-900' : 'text-slate-800 active:bg-slate-100'"
           data-testid="mobile-artifact-row"
           @click="selectArtifact(artifact)"
         >
-          <span class="mt-0.5 shrink-0 text-xl" aria-hidden="true">{{ artifactIcon(artifact.type) }}</span>
-          <span class="min-w-0 flex-1">
-            <span class="block truncate text-sm font-bold text-slate-950">{{ fileName(artifact.path) }}</span>
-            <span class="mt-0.5 block truncate text-xs text-slate-500">{{ artifact.path }}</span>
-            <span class="mt-2 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-wide">
-              <span class="rounded-full bg-slate-100 px-2 py-0.5 text-slate-600">{{ artifact.type }}</span>
-              <span class="rounded-full px-2 py-0.5" :class="statusClass(artifact.status)">{{ artifact.status }}</span>
-            </span>
-          </span>
+          <span class="shrink-0 text-base" aria-hidden="true">{{ artifactIcon(artifact.type) }}</span>
+          <span class="min-w-0 flex-1 truncate">{{ fileName(artifact.path) }}</span>
+          <span class="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide" :class="statusClass(artifact.status)">{{ artifact.status }}</span>
         </button>
       </div>
 
