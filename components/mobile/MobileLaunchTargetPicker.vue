@@ -1,25 +1,23 @@
 <template>
-  <section class="border-b border-slate-200 bg-white" :data-testid="testId" :aria-label="label">
+  <section class="border-b border-slate-100 bg-white" :data-testid="testId" :aria-label="label">
     <button
       type="button"
-      class="flex min-h-[4.25rem] w-full items-center gap-3 py-2 text-left active:bg-slate-50"
+      class="flex h-14 w-full items-center gap-3 text-left active:bg-slate-50 disabled:opacity-50"
+      :disabled="disabled"
       :data-testid="`${testId}-toggle`"
       aria-haspopup="dialog"
       :aria-expanded="isOpen"
       @click="open"
     >
-      <span class="min-w-0 flex-1">
-        <span v-if="showLabel" class="block text-xs font-semibold text-slate-500">{{ label }}</span>
-        <span class="block truncate text-base font-medium" :class="selectedItem ? 'text-slate-900' : 'text-slate-500'">{{ selectedItem ? selectedItem.label : placeholder }}</span>
-        <span v-if="selectedItem?.detail" class="block truncate text-[0.8125rem] text-slate-500">{{ selectedItem.detail }}</span>
-      </span>
-      <Icon icon="heroicons:chevron-right-20-solid" class="h-5 w-5 flex-shrink-0 text-slate-400" aria-hidden="true" />
+      <span class="w-24 flex-shrink-0 text-[0.9375rem] text-slate-500">{{ label }}</span>
+      <span class="min-w-0 flex-1 truncate text-right text-base" :class="selectedItem || selectedLabel ? 'font-medium text-slate-900' : 'text-blue-700'">{{ selectedItem ? selectedItem.label : (selectedLabel || placeholder) }}</span>
+      <Icon icon="heroicons:chevron-right-20-solid" class="h-5 w-5 flex-shrink-0 text-slate-300" aria-hidden="true" />
     </button>
 
     <Teleport to="body">
       <div v-if="isOpen" class="fixed inset-0 z-50 flex flex-col justify-end" :data-testid="`${testId}-sheet`">
         <button type="button" class="absolute inset-0 bg-slate-900/40" aria-label="Close" @click="close" />
-        <div class="relative flex h-[85dvh] flex-col rounded-t-2xl bg-white shadow-xl" role="dialog" aria-modal="true" :aria-label="label">
+        <div class="relative flex max-h-[85dvh] flex-col rounded-t-2xl bg-white shadow-xl" role="dialog" aria-modal="true" :aria-label="label">
           <div class="mx-auto mt-2 h-1 w-10 flex-shrink-0 rounded-full bg-slate-300" aria-hidden="true" />
           <header class="flex h-14 flex-shrink-0 items-center justify-between pl-4 pr-2">
             <h2 class="text-lg font-semibold">{{ label }}</h2>
@@ -60,6 +58,9 @@
             </template>
             <p v-else class="px-4 py-6 text-sm text-slate-500">Nothing matches.</p>
           </div>
+          <div v-if="$slots.footer" class="flex-shrink-0 border-t border-slate-200 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3">
+            <slot name="footer" />
+          </div>
         </div>
       </div>
     </Teleport>
@@ -67,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, ref, watch } from 'vue';
 import { Icon } from '@iconify/vue';
 import type { MobileLaunchPickerItem } from '~/types/mobileLaunch';
 
@@ -79,6 +80,9 @@ const props = withDefaults(defineProps<{
   testId: string;
   showLabel?: boolean;
   itemNoun?: string;
+  disabled?: boolean;
+  /** Shown as the value when it is not one of the items (a seeded model). */
+  selectedLabel?: string;
 }>(), {
   showLabel: true,
   itemNoun: '',
@@ -106,6 +110,9 @@ const groupedItems = computed(() => {
   }
   return Array.from(groups.entries()).map(([label, items]) => ({ label, items }));
 });
+
+// A choice made from outside the list (a folder loaded by path in the footer) closes it too.
+watch(() => props.modelValue, () => { if (isOpen.value) close(); });
 
 function open(): void {
   isOpen.value = true;

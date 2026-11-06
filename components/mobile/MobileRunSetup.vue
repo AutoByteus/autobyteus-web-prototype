@@ -2,15 +2,14 @@
   <form class="flex min-h-full flex-col" data-testid="mobile-run-setup" :inert="creating" :aria-busy="creating" @submit.prevent="createRun">
     <div class="flex-1">
       <MobileLaunchTargetPicker
-        v-model="runChoice"
-        label="Run"
-        placeholder="Choose an agent or team"
-        :items="runChoices"
+        v-model="selectedAgentId"
+        label="Agent"
+        placeholder="Choose"
+        :items="agentChoices"
         test-id="mobile-run-target-select"
-        item-noun="agents and teams"
+        item-noun="agents"
       />
       <MobileLaunchWorkspacePicker
-        section="picker"
         :model-value="selectedWorkspaceId"
         :items="workspaceChoices"
         :is-refreshing="workspaceRefreshing"
@@ -19,56 +18,23 @@
         @update:model-value="selectWorkspace"
         @load-path="loadWorkspacePath"
       />
-
-      <button
-        type="button"
-        class="flex h-14 w-full items-center justify-between text-left text-[0.9375rem] font-semibold text-slate-700 active:bg-slate-50"
-        :aria-expanded="moreOpen"
-        data-testid="mobile-run-more-options"
-        @click="moreOpen = !moreOpen"
-      >
-        More options
-        <Icon icon="heroicons:chevron-down-20-solid" class="h-5 w-5 text-slate-400 transition-transform" :class="moreOpen ? 'rotate-180' : ''" aria-hidden="true" />
-      </button>
-      <div v-if="moreOpen" data-testid="mobile-run-more-options-panel">
-        <MobileLaunchRuntimeModelCard
-          v-if="mode === 'agent' && agentConfigForSelectedTarget"
-          variant="agent"
-          :runtime-kind="agentConfigForSelectedTarget.runtimeKind"
-          :llm-model-identifier="agentConfigForSelectedTarget.llmModelIdentifier"
-          :seed-model-identifier="agentSeedModelIdentifier"
-          :llm-config="agentConfigForSelectedTarget.llmConfig"
-          @update:runtime-kind="updateRuntimeKind"
-          @update:llm-model-identifier="updateLlmModelIdentifier"
-          @update:llm-config="updateLlmConfig"
-        />
-        <MobileLaunchRuntimeModelCard
-          v-else-if="mode === 'team' && teamConfigForSelectedTarget"
-          variant="team"
-          :runtime-kind="teamConfigForSelectedTarget.rootConfig.runtimeKind"
-          :llm-model-identifier="teamConfigForSelectedTarget.rootConfig.llmModelIdentifier"
-          :seed-model-identifier="teamSeedModelIdentifier"
-          :llm-config="teamConfigForSelectedTarget.rootConfig.llmConfig"
-          @update:runtime-kind="updateRuntimeKind"
-          @update:llm-model-identifier="updateLlmModelIdentifier"
-          @update:llm-config="updateLlmConfig"
-        />
-        <MobileLaunchRunOptionsCard
-          v-if="activeConfig"
-          :auto-execute-tools="autoExecuteTools"
-          :runtime-kind="'rootConfig' in activeConfig ? activeConfig.rootConfig.runtimeKind : activeConfig.runtimeKind"
-          @update:auto-execute-tools="setAutoExecuteTools"
-        />
-        <MobileLaunchWorkspacePicker
-          section="path"
-          :model-value="selectedWorkspaceId"
-          :items="workspaceChoices"
-          :is-refreshing="workspaceRefreshing"
-          :is-loading-path="workspacePathLoading"
-          :error-message="workspaceError"
-          @load-path="loadWorkspacePath"
-        />
-      </div>
+      <MobileLaunchRuntimeModelCard
+        v-if="agentConfigForSelectedTarget"
+        variant="agent"
+        :runtime-kind="agentConfigForSelectedTarget.runtimeKind"
+        :llm-model-identifier="agentConfigForSelectedTarget.llmModelIdentifier"
+        :seed-model-identifier="agentSeedModelIdentifier"
+        :llm-config="agentConfigForSelectedTarget.llmConfig"
+        @update:runtime-kind="updateRuntimeKind"
+        @update:llm-model-identifier="updateLlmModelIdentifier"
+        @update:llm-config="updateLlmConfig"
+      />
+      <MobileLaunchRunOptionsCard
+        v-if="activeConfig"
+        :auto-execute-tools="autoExecuteTools"
+        :runtime-kind="'rootConfig' in activeConfig ? activeConfig.rootConfig.runtimeKind : activeConfig.runtimeKind"
+        @update:auto-execute-tools="setAutoExecuteTools"
+      />
 
       <div v-if="draftAttachments.length" class="mt-3 flex flex-wrap gap-1.5" data-testid="mobile-run-setup-context-count">
         <span
@@ -96,8 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, toRef, watch } from 'vue'
-import { Icon } from '@iconify/vue'
+import { toRef, watch } from 'vue'
 import MobileLaunchRunOptionsCard from '~/components/mobile/MobileLaunchRunOptionsCard.vue'
 import MobileLaunchRuntimeModelCard from '~/components/mobile/MobileLaunchRuntimeModelCard.vue'
 import MobileLaunchTargetPicker from '~/components/mobile/MobileLaunchTargetPicker.vue'
@@ -153,29 +118,7 @@ const {
   onSetupIntentConsumed: (revision) => emit('setupIntentConsumed', revision),
 })
 
-const moreOpen = ref(false)
-
-/** One list for starting: agents and teams together (a team is one more thing you can start). */
-const runChoices = computed(() => [
-  ...agentChoices.value.map((item) => ({ ...item, id: `agent:${item.id}`, group: 'Agents' })),
-  ...teamChoices.value.map((item) => ({ ...item, id: `team:${item.id}`, group: 'Teams' })),
-])
-const runChoice = computed({
-  get: () => (mode.value === 'agent' ? (selectedAgentId.value ? `agent:${selectedAgentId.value}` : '') : (selectedTeamId.value ? `team:${selectedTeamId.value}` : '')),
-  set: (value: string) => {
-    const [kind, ...rest] = value.split(':')
-    const id = rest.join(':')
-    if (kind === 'team') {
-      setMode('team')
-      selectedTeamId.value = id
-      selectedAgentId.value = ''
-    } else {
-      setMode('agent')
-      selectedAgentId.value = id
-      selectedTeamId.value = ''
-    }
-  },
-})
+setMode('agent')
 
 // Start from what is most likely: the Project Task Manager (else the first agent) and the first folder.
 watch([agentChoices, workspaceChoices], () => {

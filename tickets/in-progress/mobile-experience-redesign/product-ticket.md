@@ -53,3 +53,8 @@ Pending the user's confirmation.
 
 - The user: New run is "extremely hard to select new agents" (a tiny inline list, a lot of scrolling) for both agent and team; a phone wants a big overlay from the bottom or a fly-out; clean and easy to navigate.
 - Change: New run is two rows plus one button. "Run" (agent or team, one list with sections Agents and Teams, preselected: the Project Task Manager) and "Folder" (preselected: the first folder) each open a bottom sheet (85% of the screen height, search when the list is long, 60px rows, the chosen one marked and scrolled into view). The Agent|Team toggle, the inline lists and the path form are gone from the first view; Runtime and model, Auto approve tools and "Folder path on the node" sit under "More options" (closed). "Create run" is anchored at the bottom.
+
+## Review round 6 (2026-11-06)
+
+- The user: New run's UI is weird and not clean: different row styles ("Run", "Folder", "More options", "Runtime and model", a system dropdown, grey help text); the selection boxes and their styling are not good on a phone. He also stated that New run only supports a simple agent run (no team).
+- Change: New run is agents only. One list of five rows with one pattern (label left, value right, chevron; 56px; hairlines; no captions or help text): Agent, Folder, Runtime, Model, Auto approve tools (a switch). Every choice (agent, folder, runtime, model) opens the same bottom sheet (no system dropdown); the sheet is as tall as its list (at most 85% of the screen) and the open-by-path field lives in the Folder sheet's footer. No "More options", no "Runtime and model" heading, no "This model has no adjustable settings", no auto-approve help text.

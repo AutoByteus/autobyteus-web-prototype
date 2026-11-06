@@ -1,32 +1,20 @@
 <template>
-  <section class="border-b border-slate-200 py-3" data-testid="mobile-launch-run-options-card">
-    <div class="flex items-start justify-between gap-3" data-testid="mobile-run-auto-approve-tools">
-      <div class="min-w-0">
-        <p class="text-[0.9375rem] font-semibold text-slate-900">Auto approve tools</p>
-        <p class="mt-1 text-xs leading-relaxed text-slate-500" data-testid="mobile-run-auto-approve-tools-help">
-          <template v-if="locked">Antigravity always runs with auto-approve, so it can't be turned off.</template>
-          <template v-else>High-trust mode: automatically allows tool calls and Codex access/permission requests for this run.</template>
-        </p>
-      </div>
-      <button
-        type="button"
-        class="relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
-        :class="checked ? 'border-blue-600 bg-blue-600' : 'border-slate-300 bg-slate-200'"
-        role="switch"
-        :aria-checked="checked ? 'true' : 'false'"
-        aria-label="Auto approve tools"
-        data-testid="mobile-run-auto-approve-tools-switch"
-        :disabled="disabled || locked"
-        @click="$emit('update:autoExecuteTools', !autoExecuteTools)"
-      >
-        <span
-          class="inline-block h-5 w-5 rounded-full bg-white shadow transition"
-          :class="checked ? 'translate-x-5' : 'translate-x-1'"
-          aria-hidden="true"
-        />
-      </button>
-    </div>
-  </section>
+  <div class="flex h-14 items-center gap-3 border-b border-slate-100" data-testid="mobile-launch-run-options-card">
+    <span class="flex-1 text-[0.9375rem] text-slate-500" id="mobile-run-auto-approve-label">Auto approve tools</span>
+    <button
+      type="button"
+      class="relative inline-flex h-8 w-14 shrink-0 items-center rounded-full transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 disabled:opacity-60"
+      :class="checked ? 'bg-blue-600' : 'bg-slate-300'"
+      role="switch"
+      :aria-checked="checked ? 'true' : 'false'"
+      aria-labelledby="mobile-run-auto-approve-label"
+      data-testid="mobile-run-auto-approve-tools-switch"
+      :disabled="disabled || locked"
+      @click="$emit('update:autoExecuteTools', !autoExecuteTools)"
+    >
+      <span class="inline-block h-6 w-6 rounded-full bg-white shadow transition" :class="checked ? 'translate-x-7' : 'translate-x-1'" aria-hidden="true" />
+    </button>
+  </div>
 </template>
 
 <script setup lang="ts">

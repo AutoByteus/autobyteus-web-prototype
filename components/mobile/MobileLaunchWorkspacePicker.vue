@@ -1,55 +1,35 @@
 <template>
-  <div class="space-y-3">
-    <MobileLaunchTargetPicker
-      v-if="section !== 'path'"
-      :model-value="modelValue"
-      label="Folder"
-      placeholder="Choose a folder"
-      :items="items"
-      test-id="mobile-run-workspace-select"
-      item-noun="workspace"
-      @update:model-value="$emit('update:modelValue', $event)"
-    />
-
-    <section v-if="section !== 'picker'" class="py-3 text-sm" data-testid="mobile-run-workspace-path-card">
-      <div class="flex items-start justify-between gap-3">
-        <div class="min-w-0">
-          <label class="font-semibold text-slate-500" for="mobile-run-workspace-path-input">
-            Folder path on the node
-          </label>
-        </div>
-        <span v-if="isRefreshing" class="shrink-0 rounded-full bg-blue-50 px-2 py-1 text-xs font-semibold text-blue-700">
-          Refreshing…
-        </span>
-      </div>
-
-      <div class="mt-3 flex gap-2">
+  <MobileLaunchTargetPicker
+    :model-value="modelValue"
+    label="Folder"
+    placeholder="Choose"
+    :items="items.map((item) => ({ ...item, group: undefined }))"
+    test-id="mobile-run-workspace-select"
+    item-noun="folders"
+    @update:model-value="$emit('update:modelValue', $event)"
+  >
+    <template #footer>
+      <form class="flex gap-2" data-testid="mobile-run-workspace-path-card" @submit.prevent="submitLoadPath">
         <input
           id="mobile-run-workspace-path-input"
           v-model="pathDraft"
-          class="h-11 min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-3 text-sm"
+          class="h-12 min-w-0 flex-1 rounded-xl border border-slate-300 bg-white px-4 text-base"
           data-testid="mobile-run-workspace-path-input"
-          placeholder="/srv/autobyteus/project"
+          placeholder="Open a folder by path"
+          aria-label="Open a folder by path"
           autocomplete="off"
           :disabled="isLoadingPath"
-          @keydown.enter.prevent="submitLoadPath"
         />
         <button
-          type="button"
-          class="h-11 rounded-xl bg-blue-600 px-4 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
+          type="submit"
+          class="h-12 rounded-xl bg-blue-600 px-5 text-base font-semibold text-white disabled:opacity-50"
           data-testid="mobile-run-workspace-load"
           :disabled="!pathDraft.trim() || isLoadingPath"
-          @click="submitLoadPath"
-        >
-          {{ isLoadingPath ? 'Loading…' : 'Load' }}
-        </button>
-      </div>
-
-      <p v-if="errorMessage" class="mt-3 rounded-xl border border-red-200 bg-red-50 p-2 text-sm text-red-700" data-testid="mobile-run-workspace-error">
-        {{ errorMessage }}
-      </p>
-    </section>
-  </div>
+        >{{ isLoadingPath ? 'Loading…' : 'Open' }}</button>
+      </form>
+      <p v-if="errorMessage" class="mt-2 text-sm text-red-700" data-testid="mobile-run-workspace-error">{{ errorMessage }}</p>
+    </template>
+  </MobileLaunchTargetPicker>
 </template>
 
 <script setup lang="ts">
@@ -57,20 +37,13 @@ import { ref } from 'vue'
 import MobileLaunchTargetPicker from '~/components/mobile/MobileLaunchTargetPicker.vue'
 import type { MobileLaunchPickerItem } from '~/types/mobileLaunch'
 
-withDefaults(defineProps<{
+defineProps<{
   modelValue: string
   items: MobileLaunchPickerItem[]
   isRefreshing?: boolean
   isLoadingPath?: boolean
   errorMessage?: string | null
-  /** Which part to show: the folder row, the load-by-path field, or both. */
-  section?: 'picker' | 'path' | 'both'
-}>(), {
-  section: 'both',
-  isRefreshing: false,
-  isLoadingPath: false,
-  errorMessage: null,
-})
+}>()
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
@@ -78,12 +51,10 @@ const emit = defineEmits<{
 }>()
 
 const pathDraft = ref('')
-
 function submitLoadPath(): void {
   const path = pathDraft.value.trim()
-  if (!path) {
-    return
-  }
+  if (!path) return
   emit('load-path', path)
+  pathDraft.value = ''
 }
 </script>
