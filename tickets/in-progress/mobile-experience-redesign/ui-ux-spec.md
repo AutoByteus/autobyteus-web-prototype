@@ -4,13 +4,13 @@ Canonical contract for the AutoByteus mobile web shell (`/mobile`, wrapped by th
 
 ## Status And User Confirmation
 
-- Status: `Approved` for the experience (2026-11-06). Three decisions are still to be given by the user in his own words and are recorded as open under Decisions (DEC-003, OPT-001, the composer row). They do not change what is built here.
+- Status: `Approved` (2026-11-06): "okayyy. everything is good now. i approve". The three open items (DEC-003, OPT-001, the composer row) were not answered separately; they are recorded under Decisions as approved through the design as built, and flagged for the Solution Designer to confirm with him if he wants a different answer.
 - Request / ticket: `mobile-experience-redesign` (Project Task `autobyteus-277`, Project `project_a1377344-25db-482a-97cc-ecfdb0fb495a`). No second ID.
 - Related requirements revision ID: `SR-001` (`requirements-doc.md` Draft).
 - Related IDs: REQ-001…REQ-009; BEH-001…BEH-006; AC-001…AC-010; DEC-001…DEC-006; follow-up FU-001 = Project Task `autobyteus-391`.
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`).
 - Review URL: the product's normal entry point, `http://127.0.0.1:3277/mobile` (the user's phone: `http://100.127.30.107:3277/mobile` over Tailscale). No preview switch.
-- Explicit user-confirmation reference (the user, in the Product UI/UX Designer's conversation, 2026-11-06): "Perfect, I think I just experienced it and the user experience is really nice. … I'm fine with the user experience now." His design decisions during the review are under Key UX decisions.
+- Explicit user-confirmation reference (the user, in the Product UI/UX Designer's conversation, 2026-11-06): final approval "okayyy. everything is good now. i approve", after "Perfect, I think I just experienced it and the user experience is really nice. … I'm fine with the user experience now." His design decisions during the review are under Key UX decisions.
 - Final check date: 2026-11-06.
 
 ## Repository And Baseline Provenance
@@ -286,10 +286,10 @@ The same screens at 360×800: no horizontal scrolling (checked: the document is 
 
 | ID | Question | The user's answer | Status |
 | --- | --- | --- | --- |
-| DEC-003 | How far remote nodes go on the phone | Pending his words. Built: **A** (the paired node only: remote delegated runs under their delegator, see/talk, a read-only peer list). **B** (switch between several paired nodes inside the page) = follow-up Task **autobyteus-391** (FU-001; the Solution Designer found one phone can already be paired with several nodes, one session per node origin; the missing piece is a "Switch node" entry in the web shell, a small Android bridge, no new permission). **C** (start a run on a peer) has no API. | Open |
-| DEC-004 | What is not on the phone | His direction in the review (see "What is not on the phone"); his explicit confirmation of the whole list is part of "I'm fine with the user experience now". | Answered through the design |
-| DEC-005 / OPT-001 | A "needs you" marker | Pending: keep as an optional element or drop. It is shown in the screenshots (VIS-001, 002) and is **optional and unproven**. | Open |
-| — | Compact composer (the "Context Files (0) (drag, paste, or upload)" row folded into one row with the + button) | Pending yes or no. Not designed: the shared composer is unchanged. | Open |
+| DEC-003 | How far remote nodes go on the phone | Not stated separately. Approved through the design as built: **A** (the paired node only: remote delegated runs under their delegator, see and talk, a read-only peer list). His interest in B, in his words: "if we are able to pair with multiple ones, we can just switch between different nodes, right? That would be very convenient." **B** (switch between several paired nodes inside the page) is the follow-up Task **autobyteus-391** (FU-001; not started; it waits for his word). One phone can already be paired with several nodes (one session per node origin); the missing piece is a "Switch node" entry in the web shell, a small Android bridge, no new permission. **C** (start a run on a peer) has no API. | Answered by the approval (A); B waits as autobyteus-391 |
+| DEC-004 | What is not on the phone | His direction in the review, in his words: "on the mobile version … there's no need to switch between … a different workspace or project"; "For new run we only support to create a simple agent run"; no filters on Files ("we do not have any filter" on the desktop); the Attach button removed. The list under "What Is Not On The Phone" is approved with the design. | Answered |
+| DEC-005 / OPT-001 | A "needs you" marker | Not stated separately. It is shown in the approved screenshots (VIS-001, 002) as an **optional** element; it stays optional and unproven (engineering confirms it for runs the phone does not stream before it becomes a requirement). | Approved as optional |
+| — | Compact composer | Not designed; the shared composer is unchanged (approved as shown). | Unchanged |
 
 ## Final Visual Reference Inventory
 
@@ -344,8 +344,8 @@ The desktop and its left panel (385); pairing screens; Android and iOS shell cha
 
 ## Open Decisions And Risks
 
-1. **DEC-003** — the user's choice in his words (A; A plus B, which brings autobyteus-391 into this ticket; A now and C later).
-2. **OPT-001 / DEC-005** — keep or drop the "needs you" marker; engineering must prove it for runs the phone does not stream.
-3. **Compact composer** — yes or no (not designed).
+1. **DEC-003** — approved as built (A); autobyteus-391 (B) waits for the user's word; C would be its own Task.
+2. **OPT-001 / DEC-005** — the "needs you" marker stays optional; engineering must prove it for runs the phone does not stream.
+3. **Compact composer** — unchanged (not designed).
 4. **Read window and polling** (R-001, QR-003): the run list needs the complete history window; engineering measures it on his real history over Tailscale.
 5. **The reference's invented content** (messages, activity, file texts, node names) is illustrative; it is not real data.

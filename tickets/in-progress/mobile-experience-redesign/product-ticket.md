@@ -1,6 +1,6 @@
 # Product Ticket: mobile-experience-redesign (Project Task autobyteus-277)
 
-- Status: `Awaiting User Review` (the experience is approved; DEC-003, OPT-001 and the compact composer are still to be answered in his words before handoff)
+- Status: `Design Completed` (user-approved 2026-11-06: "okayyy. everything is good now. i approve"); integration `Pending` by the user's standing decision
 - Mode: Product Experience Design (evolves the accepted `/mobile` baseline)
 - Requested by: Solution Designer run `solution_designer_acd8b3385f2a491897565fc9f80b0a97`, at the user's request (2026-11-06)
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/mobile-experience-redesign/tickets/in-progress/mobile-experience-redesign/product-design-request.md` (with `requirements-doc.md` Draft SR-001 and `investigation-notes.md` in the same folder)
@@ -135,3 +135,12 @@ Pending the user's confirmation.
 - The user: "Why do we have one attached button here? That's so strange. What is that for?" (the opened file's "Attach" button, a boxed viewer with a "Back" pill, the sentence "Loading file content through the authorized workspace file API…" and a banner "evidence.md added to current run Chat context").
 - Finding: a leftover of the old Files screen. "Attach" added the open file to the run's Chat context for the next message (an earlier mobile ticket). The desktop's file panel has no such control and the composer has its own "+". The viewer was also in the old style.
 - Change: no Attach, no banner; an opened file is a 48px bar (← and the file name) and the file full screen; short states ("Opening…", "Couldn’t open this file.", "This file can’t be shown on the phone."). VIS-029 added; "Attach to chat context" is on the not-on-the-phone list.
+
+
+## Approval and result (2026-11-06)
+
+- The user: "okayyy. everything is good now. i approve". DEC-003 (built: A; B = autobyteus-391), OPT-001 ("needs you", optional) and the composer (unchanged) were not answered separately and are recorded as approved through the design as built.
+- Ticket commits: see `git log design/mobile-experience-redesign` (base `a0e18abb`); the final revision is in the result message and the ui-ux-spec.
+- The user's own screenshots: `evidence/user-screenshots/` (index in its README).
+- Integration: `Pending` by the user's standing decision (2026-11-04): an approved design stays on its ticket branch until it is implemented, so `personal` keeps mirroring the shipped product. The branch is pushed to `origin` and is merged into `personal` only after the Solution Designer reports it implemented and the user confirms. Worktree and branch are kept on purpose; the UI reference process is stopped (restart: the runbook section).
+- Default branch `personal`: local and `origin` at `a0e18abb` (unchanged).
