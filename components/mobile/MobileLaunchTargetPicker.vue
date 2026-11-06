@@ -1,68 +1,74 @@
 <template>
-  <section
-    class="border-b border-slate-200 bg-white"
-    :class="toggleVariant === 'chevron' ? 'py-2' : 'py-3'"
-    :data-testid="testId"
-    :aria-label="label"
-  >
-    <div class="flex items-center justify-between gap-3">
-      <div class="min-w-0">
-        <p v-if="showLabel" class="text-sm font-semibold text-slate-500">{{ label }}</p>
-        <p class="truncate text-sm" :class="[showLabel ? 'mt-1' : '', selectedItem ? 'text-slate-700' : 'text-slate-500']">
-          {{ selectedItem ? selectedItem.label : placeholder }}
-        </p>
-      </div>
-      <button
-        type="button"
-        class="shrink-0 border font-semibold transition"
-        :class="toggleVariant === 'chevron'
-          ? 'flex h-11 w-11 items-center justify-center rounded-full border-blue-100 bg-blue-50 text-lg leading-none text-blue-700'
-          : 'h-11 rounded-xl border-slate-300 px-4 text-sm text-blue-700'"
-        :data-testid="`${testId}-toggle`"
-        :aria-label="toggleAccessibleLabel"
-        :title="toggleAccessibleLabel"
-        :aria-expanded="isOpen"
-        aria-haspopup="listbox"
-        @click="isOpen = !isOpen"
-      >
-        <span v-if="toggleVariant === 'chevron'" aria-hidden="true">⌄</span>
-        <span v-else>{{ selectedItem ? 'Change' : 'Choose' }}</span>
-      </button>
-    </div>
+  <section class="border-b border-slate-200 bg-white" :data-testid="testId" :aria-label="label">
+    <button
+      type="button"
+      class="flex min-h-[4.25rem] w-full items-center gap-3 py-2 text-left active:bg-slate-50"
+      :data-testid="`${testId}-toggle`"
+      aria-haspopup="dialog"
+      :aria-expanded="isOpen"
+      @click="open"
+    >
+      <span class="min-w-0 flex-1">
+        <span v-if="showLabel" class="block text-xs font-semibold text-slate-500">{{ label }}</span>
+        <span class="block truncate text-base font-medium" :class="selectedItem ? 'text-slate-900' : 'text-slate-500'">{{ selectedItem ? selectedItem.label : placeholder }}</span>
+        <span v-if="selectedItem?.detail" class="block truncate text-[0.8125rem] text-slate-500">{{ selectedItem.detail }}</span>
+      </span>
+      <Icon icon="heroicons:chevron-right-20-solid" class="h-5 w-5 flex-shrink-0 text-slate-400" aria-hidden="true" />
+    </button>
 
-    <div v-if="isOpen" class="mt-3 rounded-2xl border border-blue-100 bg-blue-50 p-3" :data-testid="`${testId}-sheet`">
-      <input
-        v-model="query"
-        class="w-full rounded-xl border border-blue-200 bg-white px-3 py-2 text-sm"
-        :placeholder="`Search ${searchNoun}`"
-        :data-testid="`${testId}-search`"
-      />
-      <div v-if="groupedItems.length" class="mt-3 max-h-64 space-y-3 overflow-y-auto">
-        <section v-for="group in groupedItems" :key="group.label">
-          <p class="mb-1 text-xs font-bold uppercase tracking-[0.14em] text-blue-700">{{ group.label }}</p>
-          <button
-            v-for="item in group.items"
-            :key="item.id"
-            type="button"
-            class="mb-1 w-full rounded-xl border bg-white p-3 text-left text-sm transition hover:border-blue-300"
-            :class="item.id === modelValue ? 'border-blue-400 ring-2 ring-blue-100' : 'border-blue-100'"
-            :data-testid="`${testId}-option`"
-            @click="selectItem(item.id)"
-          >
-            <span class="block font-semibold text-slate-950">{{ item.label }}</span>
-            <span v-if="item.detail" class="mt-0.5 block break-words text-xs text-slate-500">{{ item.detail }}</span>
-          </button>
-        </section>
+    <Teleport to="body">
+      <div v-if="isOpen" class="fixed inset-0 z-50 flex flex-col justify-end" :data-testid="`${testId}-sheet`">
+        <button type="button" class="absolute inset-0 bg-slate-900/40" aria-label="Close" @click="close" />
+        <div class="relative flex h-[85dvh] flex-col rounded-t-2xl bg-white shadow-xl" role="dialog" aria-modal="true" :aria-label="label">
+          <div class="mx-auto mt-2 h-1 w-10 flex-shrink-0 rounded-full bg-slate-300" aria-hidden="true" />
+          <header class="flex h-14 flex-shrink-0 items-center justify-between pl-4 pr-2">
+            <h2 class="text-lg font-semibold">{{ label }}</h2>
+            <button type="button" class="flex h-12 w-12 items-center justify-center rounded-full text-slate-500 active:bg-slate-100" aria-label="Close" @click="close">
+              <Icon icon="heroicons:x-mark-20-solid" class="h-6 w-6" aria-hidden="true" />
+            </button>
+          </header>
+          <div v-if="items.length > 6" class="flex-shrink-0 px-4 pb-2">
+            <input
+              v-model="query"
+              type="search"
+              class="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-base"
+              :placeholder="`Search ${searchNoun}`"
+              :data-testid="`${testId}-search`"
+            />
+          </div>
+          <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-[max(1rem,env(safe-area-inset-bottom))]">
+            <template v-if="groupedItems.length">
+              <section v-for="group in groupedItems" :key="group.label">
+                <p v-if="groupedItems.length > 1 || group.label !== 'All'" class="sticky top-0 bg-white px-4 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-slate-500">{{ group.label }}</p>
+                <button
+                  v-for="item in group.items"
+                  :key="item.id"
+                  type="button"
+                  class="flex min-h-[3.75rem] w-full items-center gap-3 px-4 py-2 text-left active:bg-slate-100"
+                  :class="item.id === modelValue ? 'bg-blue-50' : ''"
+                  :aria-current="item.id === modelValue ? 'true' : undefined"
+                  :data-testid="`${testId}-option`"
+                  @click="selectItem(item.id)"
+                >
+                  <span class="min-w-0 flex-1">
+                    <span class="block truncate text-base font-medium text-slate-900">{{ item.label }}</span>
+                    <span v-if="item.detail" class="block truncate text-[0.8125rem] text-slate-500">{{ item.detail }}</span>
+                  </span>
+                  <Icon v-if="item.id === modelValue" icon="heroicons:check-circle-20-solid" class="h-6 w-6 flex-shrink-0 text-blue-600" aria-hidden="true" />
+                </button>
+              </section>
+            </template>
+            <p v-else class="px-4 py-6 text-sm text-slate-500">Nothing matches.</p>
+          </div>
+        </div>
       </div>
-      <p v-else class="mt-3 rounded-xl border border-dashed border-blue-200 bg-white p-3 text-sm text-slate-500">
-        No matching {{ searchNoun }}.
-      </p>
-    </div>
+    </Teleport>
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
+import { Icon } from '@iconify/vue';
 import type { MobileLaunchPickerItem } from '~/types/mobileLaunch';
 
 const props = withDefaults(defineProps<{
@@ -73,11 +79,9 @@ const props = withDefaults(defineProps<{
   testId: string;
   showLabel?: boolean;
   itemNoun?: string;
-  toggleVariant?: 'button' | 'chevron';
 }>(), {
   showLabel: true,
   itemNoun: '',
-  toggleVariant: 'button',
 });
 
 const emit = defineEmits<{
@@ -89,10 +93,6 @@ const query = ref('');
 
 const searchNoun = computed(() => props.itemNoun || props.label.toLowerCase());
 const selectedItem = computed(() => props.items.find((item) => item.id === props.modelValue) ?? null);
-const toggleAccessibleLabel = computed(() => {
-  const label = props.label.toLowerCase();
-  return `${selectedItem.value ? 'Change' : 'Choose'} ${label}`;
-});
 const filteredItems = computed(() => {
   const normalizedQuery = query.value.trim().toLowerCase();
   if (!normalizedQuery) return props.items;
@@ -107,9 +107,16 @@ const groupedItems = computed(() => {
   return Array.from(groups.entries()).map(([label, items]) => ({ label, items }));
 });
 
-function selectItem(value: string): void {
-  emit('update:modelValue', value);
+function open(): void {
+  isOpen.value = true;
+  void nextTick(() => document.querySelector(`[data-testid="${props.testId}-sheet"] [aria-current=true]`)?.scrollIntoView({ block: 'center' }));
+}
+function close(): void {
   isOpen.value = false;
   query.value = '';
+}
+function selectItem(value: string): void {
+  emit('update:modelValue', value);
+  close();
 }
 </script>

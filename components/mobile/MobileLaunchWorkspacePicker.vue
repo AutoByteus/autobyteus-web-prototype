@@ -1,16 +1,17 @@
 <template>
   <div class="space-y-3">
     <MobileLaunchTargetPicker
+      v-if="section !== 'path'"
       :model-value="modelValue"
-      label="Workspace"
-      placeholder="Choose a workspace intentionally"
+      label="Folder"
+      placeholder="Choose a folder"
       :items="items"
       test-id="mobile-run-workspace-select"
       item-noun="workspace"
       @update:model-value="$emit('update:modelValue', $event)"
     />
 
-    <section class="border-b border-slate-200 py-3 text-sm" data-testid="mobile-run-workspace-path-card">
+    <section v-if="section !== 'picker'" class="py-3 text-sm" data-testid="mobile-run-workspace-path-card">
       <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
           <label class="font-semibold text-slate-500" for="mobile-run-workspace-path-input">
@@ -62,7 +63,10 @@ withDefaults(defineProps<{
   isRefreshing?: boolean
   isLoadingPath?: boolean
   errorMessage?: string | null
+  /** Which part to show: the folder row, the load-by-path field, or both. */
+  section?: 'picker' | 'path' | 'both'
 }>(), {
+  section: 'both',
   isRefreshing: false,
   isLoadingPath: false,
   errorMessage: null,

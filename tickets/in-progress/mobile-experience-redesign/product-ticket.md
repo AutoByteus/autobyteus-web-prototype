@@ -48,3 +48,8 @@ Pending the user's confirmation.
 - The user: the Artifacts screen wastes vertical space at the top (a tall static header that also names the agent, a tall artifact card); "vertical space is a treasure on the phone"; the agent's name under "Artifacts" is not needed.
 - Change: the Artifacts, Files and Activity screens have one 48px bar (← and the title, no agent name). A single artifact shows no list (its name is in the viewer's bar); several artifacts are 44px one-line rows (icon, name, status).
 - Known fixture limit: the sample artifact opens with the baseline's "Content not available yet" placeholder; its content is illustrative.
+
+## Review round 5 (2026-11-06)
+
+- The user: New run is "extremely hard to select new agents" (a tiny inline list, a lot of scrolling) for both agent and team; a phone wants a big overlay from the bottom or a fly-out; clean and easy to navigate.
+- Change: New run is two rows plus one button. "Run" (agent or team, one list with sections Agents and Teams, preselected: the Project Task Manager) and "Folder" (preselected: the first folder) each open a bottom sheet (85% of the screen height, search when the list is long, 60px rows, the chosen one marked and scrolled into view). The Agent|Team toggle, the inline lists and the path form are gone from the first view; Runtime and model, Auto approve tools and "Folder path on the node" sit under "More options" (closed). "Create run" is anchored at the bottom.

@@ -6,9 +6,8 @@
       </button>
       <h1 class="px-2 text-base font-semibold">New run</h1>
     </header>
-    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4">
+    <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-[max(0.5rem,env(safe-area-inset-bottom))]">
       <MobileRunSetup
-        plain
         :context="context"
         :setup-intent="setupIntent"
         @cancel="$emit('close')"
