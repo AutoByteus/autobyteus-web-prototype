@@ -39,6 +39,11 @@
 - The user: yes to the Tailscale download link, and "at least give users some kind of information … on the page, we don't even have a [guide], the user have no idea that they need to install tailscale".
 - Change: when Tailscale is not detected, the panel says so before any click: an information line under "Connect a phone" ("Phones connect over your home Wi-Fi. To connect from anywhere, install Tailscale on this computer and your phone."); "Tailscale" is a link to the download page, also in the hint under the Wi-Fi QR and after "Not now". When Tailscale works, there is no such line.
 
+## Review round 5 (2026-11-07)
+
+- The user: at home on the sofa Tailscale is not needed; away from home it is. Asked whether a separate section is better.
+- Change: no new section. The information line (shown when Tailscale is not detected) is split into the two cases: "At home, on this Wi-Fi: nothing to install." / "Away from home: install Tailscale on this computer and your phone, and sign in to the same account." The hint under a Wi-Fi QR reads "Away from home, install Tailscale … and sign in to the same account."
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).
