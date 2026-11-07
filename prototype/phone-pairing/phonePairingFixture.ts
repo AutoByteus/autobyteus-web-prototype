@@ -23,8 +23,9 @@ export function registerPhonePairingIcons(): void {
 export type DesktopPhoneScenario =
   | 'tailscale' // default: Tailscale with its secure web address
   | 'tailscale_no_https' // Tailscale on, the secure web address is not set up yet
-  | 'wifi_ask' // no Tailscale, home Wi-Fi not yet allowed on this computer
-  | 'wifi_allowed' // no Tailscale, home Wi-Fi allowed earlier
+  | 'company_address' // an admin set a fixed address for the node (company VPN)
+  | 'wifi_ask' // no Tailscale, this network not yet allowed on this computer
+  | 'wifi_allowed' // no Tailscale, this network allowed earlier
   | 'nothing' // no network the phone could use
   | 'docker_unpublished' // a Docker node whose port is not published on the network
   | 'expired' // a code was shown and its five minutes ran out
@@ -73,7 +74,9 @@ export function seedRevokedPhones(scenario: string): PairedPhone[] {
 
 /** The plain-words picture of the network around this computer (what the node worked out by itself). */
 export interface NetworkPicture {
-  kind: 'tailscale' | 'wifi' | 'nothing' | 'docker_unpublished'
+  kind: 'tailscale' | 'company' | 'wifi' | 'nothing' | 'docker_unpublished'
+  /** The fixed address an admin set for the node (illustrative `.example` name). */
+  companyAddress?: string
   tailscaleHttps: boolean
   /** Is Tailscale installed and running here? (decides the hint and the "secure web address" option) */
   tailscaleRunning: boolean
@@ -83,6 +86,8 @@ export function networkFor(scenario: string): NetworkPicture {
   switch (scenario) {
     case 'tailscale_no_https':
       return { kind: 'tailscale', tailscaleHttps: false, tailscaleRunning: true }
+    case 'company_address':
+      return { kind: 'company', tailscaleHttps: false, tailscaleRunning: false, companyAddress: 'autobyteus.example.com' }
     case 'wifi_ask':
     case 'wifi_allowed':
       return { kind: 'wifi', tailscaleHttps: false, tailscaleRunning: false }
@@ -137,7 +142,7 @@ export const SCAN_QUEUE = ['Desktop', 'Docker node 1', 'Docker node 2', 'Office 
 export const reasonText = (node: { name: string }, reason: 'no_network' | 'asleep' | 'expired' | 'used' | 'not_autobyteus'): string => {
   switch (reason) {
     case 'no_network':
-      return `Your phone isn’t on the same Wi-Fi as ${node.name}, and Tailscale isn’t on.`
+      return 'Connect to the same Wi-Fi or VPN as the computer, or turn on Tailscale.'
     case 'asleep':
       return `${node.name} didn’t answer. Check that the computer is on and awake.`
     case 'expired':

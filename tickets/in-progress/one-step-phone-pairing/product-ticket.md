@@ -54,12 +54,17 @@
 - The user: "At home, on this Wi-Fi: nothing to install" vs LAN / travelling / outside — which wording is more accurate?
 - Change (proposal): "Same Wi-Fi as this computer: nothing to install." / "Anywhere else: install Tailscale on this computer and your phone, and sign in to the same account." Hint under a Wi-Fi QR: "On another network, install Tailscale …". The remembered-answer row reads "Wi-Fi allowed" (no "home"; the SD's working term was "Home Wi-Fi allowed").
 
+## Review round 8 (2026-11-07) — Solution Designer SR-004 / DEC-012 (the user's VPN question)
+
+- The user (in the Solution Designer's conversation): "we will use VPN a lot of times in the future … a lot of companies will use VPN … do we also support that?" then "Maybe use different sections … you know the best."
+- Change: no sections per network. Result line is network-neutral: "Works anywhere through Tailscale" / "Works through <company address>" (new state, `company_address`) / "Works on this network". Question: "Use this network?" (button "Use this network"). Hint: "To connect away from this network, install Tailscale …". "Other options" is grouped by purpose: Network ("This network allowed"), Address (Secure web address, Enter an address by hand), Phone access ("Turn off phone access"). Android can't-reach body: "Connect to the same Wi-Fi or VPN as the computer, or turn on Tailscale."
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).
 - Android app start screen: `/android`; node page inside the app (with Switch node / Add a node): reached from `/android` by tapping a node.
 - Browser page for a phone without the app: `/mobile?pairing=<inert sample link>` (the QR on the desktop panel encodes one; scanning it with the phone camera opens it).
-- Starting states: local-storage key `autobyteus.prototype.phonePairing` = desktop: `tailscale` (default), `tailscale_no_https`, `wifi_ask`, `wifi_allowed`, `nothing`, `docker_unpublished`, `expired`, `no_phones`; Android: `android_several` (default), `android_first_launch`, `android_unreachable`, `android_scan_cant_reach`. Reset: remove the `autobyteus.prototype.*` keys and reload.
+- Starting states: local-storage key `autobyteus.prototype.phonePairing` = desktop: `tailscale` (default), `tailscale_no_https`, `company_address`, `wifi_ask`, `wifi_allowed`, `nothing`, `docker_unpublished`, `expired`, `no_phones`; Android: `android_several` (default), `android_first_launch`, `android_unreachable`, `android_scan_cant_reach`. Reset: remove the `autobyteus.prototype.*` keys and reload.
 
 ## Result
 

@@ -8,10 +8,10 @@
       <!-- Idle / blocked / asking -->
       <div v-if="phase === 'idle' || phase === 'blocked' || phase === 'asking'" class="mt-5">
         <div v-if="phase === 'asking'" class="max-w-xl rounded-xl border border-amber-200 bg-amber-50 p-4" role="group" aria-labelledby="wifi-question-title" data-testid="phone-wifi-question">
-          <h4 id="wifi-question-title" class="text-sm font-semibold text-amber-950">Use this Wi-Fi?</h4>
-          <p class="mt-1 text-sm leading-6 text-amber-900">Your phone will connect over this Wi-Fi without encryption. Only on a network you trust.</p>
+          <h4 id="wifi-question-title" class="text-sm font-semibold text-amber-950">Use this network?</h4>
+          <p class="mt-1 text-sm leading-6 text-amber-900">Your phone will connect over this network without encryption. Only on a network you trust.</p>
           <div class="mt-3 flex flex-wrap items-center gap-2">
-            <button type="button" class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" data-testid="phone-wifi-allow" @click="allowWifi">Use this Wi-Fi</button>
+            <button type="button" class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" data-testid="phone-wifi-allow" @click="allowWifi">Use this network</button>
             <button type="button" class="rounded-lg px-3 py-2.5 text-sm font-semibold text-amber-900 transition-colors hover:bg-amber-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500" data-testid="phone-wifi-not-now" @click="declineWifi">Not now</button>
           </div>
           <p class="mt-3 text-xs leading-5 text-amber-800">We ask this once on this computer. You can change it under Other options.</p>
@@ -27,13 +27,13 @@
               <Icon :icon="phase === 'blocked' ? 'heroicons:arrow-path-20-solid' : 'heroicons:qr-code-20-solid'" class="h-5 w-5" aria-hidden="true" />
               {{ phase === 'blocked' ? 'Try again' : 'Connect a phone' }}
             </button>
-            <p v-if="phase === 'idle' && declinedWifi" class="max-w-md text-sm leading-6 text-slate-600" data-testid="phone-wifi-declined-hint">Phones can’t connect until you use this Wi-Fi. Or install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone.</p>
+            <p v-if="phase === 'idle' && declinedWifi" class="max-w-md text-sm leading-6 text-slate-600" data-testid="phone-wifi-declined-hint">Phones can’t connect until you use this network. Or install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone.</p>
             <p v-else-if="phase === 'idle' && !accessOn" class="text-sm text-slate-500" data-testid="phone-access-off-note">Phone access is off. Connecting a phone turns it on.</p>
           </div>
-          <p v-if="phase === 'idle' && !declinedWifi && network.kind !== 'tailscale'" class="mt-4 flex max-w-xl items-start gap-2 text-sm leading-6 text-slate-600" data-testid="phone-tailscale-info">
+          <p v-if="phase === 'idle' && !declinedWifi && network.kind !== 'tailscale' && network.kind !== 'company'" class="mt-4 flex max-w-xl items-start gap-2 text-sm leading-6 text-slate-600" data-testid="phone-tailscale-info">
             <Icon icon="heroicons:information-circle-20-solid" class="mt-0.5 h-5 w-5 flex-shrink-0 text-slate-400" aria-hidden="true" />
             <span class="space-y-1">
-              <span class="block"><span class="font-medium text-slate-800">Same Wi-Fi as this computer:</span> nothing to install.</span>
+              <span class="block"><span class="font-medium text-slate-800">Same network as this computer:</span> nothing to install.</span>
               <span class="block"><span class="font-medium text-slate-800">Anywhere else:</span> install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone, and sign in to the same account.</span>
             </span>
           </p>
@@ -62,7 +62,7 @@
             Valid for {{ timeLeft }}
           </p>
 
-          <p v-if="hint && phase === 'qr'" class="mt-4 max-w-md rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm leading-5 text-slate-700" data-testid="phone-connect-hint">On another network, install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone, and sign in to the same account.</p>
+          <p v-if="hint && phase === 'qr'" class="mt-4 max-w-md rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm leading-5 text-slate-700" data-testid="phone-connect-hint">To connect away from this network, install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone, and sign in to the same account.</p>
 
           <div class="mt-5 flex flex-wrap items-center gap-2">
             <button v-if="phase === 'expired'" type="button" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" data-testid="phone-new-code" @click="showCode">
@@ -83,48 +83,54 @@
         Other options
       </button>
 
-      <div v-if="optionsOpen" id="phone-other-options-body" class="mt-2 space-y-5 pb-3 pl-1">
-        <div class="flex items-start justify-between gap-6" data-testid="phone-option-wifi">
-          <div class="min-w-0">
-            <p id="wifi-switch-label" class="text-sm font-medium text-slate-900">Wi-Fi allowed</p>
-            <p class="mt-0.5 text-sm leading-5 text-slate-500">Phones connect over this Wi-Fi without encryption, for every node on this computer. Only on a network you trust.</p>
-          </div>
-          <button type="button" role="switch" class="relative mt-0.5 inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" :class="wifiAllowed ? 'bg-emerald-500' : 'bg-slate-300'" :aria-checked="wifiAllowed" aria-labelledby="wifi-switch-label" data-testid="phone-wifi-switch" @click="toggleWifi">
-            <span aria-hidden="true" class="inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform" :class="wifiAllowed ? 'translate-x-5' : 'translate-x-0.5'" />
-          </button>
-        </div>
-
-        <div v-if="network.tailscaleRunning" data-testid="phone-option-secure-address">
-          <p class="text-sm font-medium text-slate-900">Secure web address</p>
-          <template v-if="!httpsReady">
-            <p class="mt-0.5 text-sm leading-5 text-slate-500">Optional. Run this once in a terminal on this computer to give {{ nodeName }} an https:// address on your Tailscale network.</p>
-            <div class="mt-2 flex items-center gap-2">
-              <code class="min-w-0 flex-1 truncate rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-xs text-slate-800" data-testid="phone-serve-command">{{ serveCommand }}</code>
-              <button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="phone-serve-copy" @click="copyCommand">
-                <Icon :icon="copied ? 'heroicons:check-20-solid' : 'heroicons:clipboard-document-20-solid'" class="h-4 w-4" aria-hidden="true" />
-                {{ copied ? 'Copied' : 'Copy' }}
-              </button>
-              <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60" :disabled="checkingHttps" data-testid="phone-serve-check" @click="checkAgain">
-                {{ checkingHttps ? 'Checking…' : 'Check again' }}
-              </button>
+      <div v-if="optionsOpen" id="phone-other-options-body" class="mt-3 space-y-6 pb-3 pl-1">
+        <div data-testid="phone-options-network">
+          <h5 class="text-xs font-semibold uppercase tracking-wide text-slate-500">Network</h5>
+          <div class="mt-2 flex items-start justify-between gap-6" data-testid="phone-option-wifi">
+            <div class="min-w-0">
+              <p id="wifi-switch-label" class="text-sm font-medium text-slate-900">This network allowed</p>
+              <p class="mt-0.5 text-sm leading-5 text-slate-500">Phones connect over this network without encryption, for every node on this computer. Only on a network you trust.</p>
             </div>
-          </template>
-          <p v-else class="mt-0.5 flex items-center gap-1.5 text-sm text-slate-500" data-testid="phone-serve-ready">
-            <Icon icon="heroicons:check-circle-20-solid" class="h-4 w-4 text-emerald-600" aria-hidden="true" />
-            Set up. Phones can use the https:// address.
-          </p>
-        </div>
-
-        <div data-testid="phone-option-address">
-          <label for="phone-manual-address" class="text-sm font-medium text-slate-900">Enter an address by hand</label>
-          <div class="mt-1.5 flex items-center gap-2">
-            <input id="phone-manual-address" v-model="manualAddress" type="text" inputmode="url" autocomplete="off" placeholder="https://node.example.com" class="min-w-0 flex-1 rounded-lg border border-slate-300 px-3 py-2 font-mono text-sm shadow-sm placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100" data-testid="phone-manual-address" @keydown.enter="useManualAddress" />
-            <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-50" :disabled="!manualAddress.trim()" data-testid="phone-manual-use" @click="useManualAddress">Use this address</button>
+            <button type="button" role="switch" class="relative mt-0.5 inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" :class="wifiAllowed ? 'bg-emerald-500' : 'bg-slate-300'" :aria-checked="wifiAllowed" aria-labelledby="wifi-switch-label" data-testid="phone-wifi-switch" @click="toggleWifi">
+              <span aria-hidden="true" class="inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform" :class="wifiAllowed ? 'translate-x-5' : 'translate-x-0.5'" />
+            </button>
           </div>
         </div>
 
-        <div v-if="accessOn" data-testid="phone-option-turn-off">
-          <button type="button" class="rounded-md py-1 text-sm font-medium text-red-700 transition-colors hover:text-red-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400" @click="turnOff">Turn off phone access</button>
+        <div data-testid="phone-options-address">
+          <h5 class="text-xs font-semibold uppercase tracking-wide text-slate-500">Address</h5>
+          <div v-if="network.tailscaleRunning" class="mt-2" data-testid="phone-option-secure-address">
+            <p class="text-sm font-medium text-slate-900">Secure web address</p>
+            <template v-if="!httpsReady">
+              <p class="mt-0.5 text-sm leading-5 text-slate-500">Optional. Run this once in a terminal on this computer to give {{ nodeName }} an https:// address on your Tailscale network.</p>
+              <div class="mt-2 flex items-center gap-2">
+                <code class="min-w-0 flex-1 truncate rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-xs text-slate-800" data-testid="phone-serve-command">{{ serveCommand }}</code>
+                <button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="phone-serve-copy" @click="copyCommand">
+                  <Icon :icon="copied ? 'heroicons:check-20-solid' : 'heroicons:clipboard-document-20-solid'" class="h-4 w-4" aria-hidden="true" />
+                  {{ copied ? 'Copied' : 'Copy' }}
+                </button>
+                <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60" :disabled="checkingHttps" data-testid="phone-serve-check" @click="checkAgain">
+                  {{ checkingHttps ? 'Checking…' : 'Check again' }}
+                </button>
+              </div>
+            </template>
+            <p v-else class="mt-0.5 flex items-center gap-1.5 text-sm text-slate-500" data-testid="phone-serve-ready">
+              <Icon icon="heroicons:check-circle-20-solid" class="h-4 w-4 text-emerald-600" aria-hidden="true" />
+              Set up. Phones can use the https:// address.
+            </p>
+          </div>
+          <div class="mt-4 first:mt-2" data-testid="phone-option-address">
+            <label for="phone-manual-address" class="text-sm font-medium text-slate-900">Enter an address by hand</label>
+            <div class="mt-1.5 flex items-center gap-2">
+              <input id="phone-manual-address" v-model="manualAddress" type="text" inputmode="url" autocomplete="off" placeholder="https://node.example.com" class="min-w-0 flex-1 rounded-lg border border-slate-300 px-3 py-2 font-mono text-sm shadow-sm placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100" data-testid="phone-manual-address" @keydown.enter="useManualAddress" />
+              <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-50" :disabled="!manualAddress.trim()" data-testid="phone-manual-use" @click="useManualAddress">Use this address</button>
+            </div>
+          </div>
+        </div>
+
+        <div v-if="accessOn" data-testid="phone-options-access">
+          <h5 class="text-xs font-semibold uppercase tracking-wide text-slate-500">Phone access</h5>
+          <button type="button" class="mt-1.5 rounded-md py-1 text-sm font-medium text-red-700 transition-colors hover:text-red-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400" data-testid="phone-option-turn-off" @click="turnOff">Turn off phone access</button>
         </div>
       </div>
     </div>
@@ -225,17 +231,19 @@ const timeLeft = computed(() => `${Math.floor(secondsLeft.value / 60)}:${String(
 const blockedMessage = computed(() =>
   network.kind === 'docker_unpublished'
     ? `${props.nodeName} isn’t reachable from other devices. Publish its port on this computer’s network, then try again.`
-    : 'This computer isn’t on a Wi-Fi or Tailscale network. Connect it to your Wi-Fi, then try again.',
+    : 'This computer isn’t on a network a phone could use. Connect it to your Wi-Fi or VPN, then try again.',
 )
 
 // How the phone will connect, in one plain line. The node worked this out; the user chose nothing.
 const connectLine = computed(() => {
   if (manualUsed.value) return 'Connects at the address you entered'
-  return network.kind === 'tailscale' ? 'Works anywhere through Tailscale' : 'Works on this Wi-Fi only'
+  if (network.kind === 'tailscale') return 'Works anywhere through Tailscale'
+  if (network.kind === 'company') return `Works through ${network.companyAddress}`
+  return 'Works on this network'
 })
-const lineDot = computed(() => (manualUsed.value || network.kind === 'tailscale' ? 'bg-emerald-500' : 'bg-amber-500'))
+const lineDot = computed(() => (manualUsed.value || network.kind === 'tailscale' || network.kind === 'company' ? 'bg-emerald-500' : 'bg-amber-500'))
 const hint = computed(() =>
-  network.kind === 'wifi' && !manualUsed.value ? 'To connect away from home, install Tailscale on this computer and your phone.' : '',
+  network.kind === 'wifi' && !manualUsed.value ? 'To connect away from this network, install Tailscale on this computer and your phone.' : '',
 )
 
 function stopTicker(): void {
