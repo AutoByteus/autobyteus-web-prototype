@@ -27,9 +27,13 @@
               <Icon :icon="phase === 'blocked' ? 'heroicons:arrow-path-20-solid' : 'heroicons:qr-code-20-solid'" class="h-5 w-5" aria-hidden="true" />
               {{ phase === 'blocked' ? 'Try again' : 'Connect a phone' }}
             </button>
-            <p v-if="phase === 'idle' && declinedWifi" class="max-w-md text-sm leading-6 text-slate-600" data-testid="phone-wifi-declined-hint">Phones can’t connect until you use this Wi-Fi. Or install Tailscale on this computer and your phone.</p>
+            <p v-if="phase === 'idle' && declinedWifi" class="max-w-md text-sm leading-6 text-slate-600" data-testid="phone-wifi-declined-hint">Phones can’t connect until you use this Wi-Fi. Or install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone.</p>
             <p v-else-if="phase === 'idle' && !accessOn" class="text-sm text-slate-500" data-testid="phone-access-off-note">Phone access is off. Connecting a phone turns it on.</p>
           </div>
+          <p v-if="phase === 'idle' && !declinedWifi && network.kind !== 'tailscale'" class="mt-4 flex max-w-xl items-start gap-2 text-sm leading-6 text-slate-600" data-testid="phone-tailscale-info">
+            <Icon icon="heroicons:information-circle-20-solid" class="mt-0.5 h-5 w-5 flex-shrink-0 text-slate-400" aria-hidden="true" />
+            <span>Phones connect over your home Wi-Fi. To connect from anywhere, install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone.</span>
+          </p>
         </template>
       </div>
 
@@ -55,7 +59,7 @@
             Valid for {{ timeLeft }}
           </p>
 
-          <p v-if="hint && phase === 'qr'" class="mt-4 max-w-md rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm leading-5 text-slate-700" data-testid="phone-connect-hint">{{ hint }}</p>
+          <p v-if="hint && phase === 'qr'" class="mt-4 max-w-md rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm leading-5 text-slate-700" data-testid="phone-connect-hint">To connect away from home, install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone.</p>
 
           <div class="mt-5 flex flex-wrap items-center gap-2">
             <button v-if="phase === 'expired'" type="button" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" data-testid="phone-new-code" @click="showCode">

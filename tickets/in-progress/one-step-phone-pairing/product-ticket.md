@@ -34,6 +34,11 @@
 - The user: the desktop Phone Setup tab was never designed before and is hard to understand (asked the Solution Designer how it is updated: message sent, answer pending); asked what button replaces "Check connection".
 - Change (proposal, awaiting his word): in the node sheet "Check connection" is a 48px refresh icon button (spins while checking) when the node is reachable, and the outlined word "Retry" when it is not. Industry pattern: icon refresh while healthy, a named action ("Retry"/"Reconnect") when something is wrong.
 
+## Review round 4 (2026-11-07)
+
+- The user: yes to the Tailscale download link, and "at least give users some kind of information … on the page, we don't even have a [guide], the user have no idea that they need to install tailscale".
+- Change: when Tailscale is not detected, the panel says so before any click: an information line under "Connect a phone" ("Phones connect over your home Wi-Fi. To connect from anywhere, install Tailscale on this computer and your phone."); "Tailscale" is a link to the download page, also in the hint under the Wi-Fi QR and after "Not now". When Tailscale works, there is no such line.
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).
