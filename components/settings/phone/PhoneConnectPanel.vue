@@ -14,7 +14,7 @@
             <button type="button" class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" data-testid="phone-wifi-allow" @click="allowWifi">Allow</button>
             <button type="button" class="rounded-lg px-3 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-200/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="phone-wifi-not-now" @click="declineWifi">Not now</button>
           </div>
-          <p class="mt-3 text-xs leading-5 text-slate-500">We ask this once on this computer. You can change it under Other options.</p>
+          <p class="mt-3 text-xs leading-5 text-slate-500">This network: {{ networkName }}. We ask once for each network. You can change it under Other options.</p>
         </div>
 
         <template v-else>
@@ -27,10 +27,10 @@
               <Icon :icon="phase === 'blocked' ? 'heroicons:arrow-path-20-solid' : 'heroicons:qr-code-20-solid'" class="h-5 w-5" aria-hidden="true" />
               {{ phase === 'blocked' ? 'Try again' : 'Connect a phone' }}
             </button>
-            <p v-if="phase === 'idle' && declinedWifi" class="max-w-md text-sm leading-6 text-slate-600" data-testid="phone-wifi-declined-hint">Phones can’t connect until you allow this network. Or install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone.</p>
+            <p v-if="phase === 'idle' && declinedWifi" class="max-w-md text-sm leading-6 text-slate-600" data-testid="phone-wifi-declined-hint">On this network, use <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> or your VPN.</p>
             <p v-else-if="phase === 'idle' && !accessOn" class="text-sm text-slate-500" data-testid="phone-access-off-note">Phone access is off. Connecting a phone turns it on.</p>
           </div>
-          <p v-if="phase === 'idle' && !declinedWifi && network.kind !== 'tailscale' && network.kind !== 'company'" class="mt-4 flex max-w-xl items-start gap-2 text-sm leading-6 text-slate-600" data-testid="phone-tailscale-info">
+          <p v-if="phase === 'idle' && !declinedWifi && network.kind !== 'tailscale' && network.kind !== 'company' && network.kind !== 'vpn'" class="mt-4 flex max-w-xl items-start gap-2 text-sm leading-6 text-slate-600" data-testid="phone-tailscale-info">
             <Icon icon="heroicons:information-circle-20-solid" class="mt-0.5 h-5 w-5 flex-shrink-0 text-slate-400" aria-hidden="true" />
             <span class="space-y-1">
               <span class="block"><span class="font-medium text-slate-800">Same network as this computer:</span> nothing to install.</span>
@@ -63,7 +63,7 @@
             Valid for {{ timeLeft }}
           </p>
 
-          <p v-if="hint && phase === 'qr'" class="mt-4 max-w-md rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm leading-5 text-slate-700" data-testid="phone-connect-hint">To connect away from this network, install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone, and sign in to the same account.</p>
+          <p v-if="hint && phase === 'qr'" class="mt-4 max-w-md rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm leading-5 text-slate-700" data-testid="phone-connect-hint"><template v-if="network.kind === 'vpn'">Turn the VPN on on your phone too.</template><template v-else>To connect away from this network, install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone, and sign in to the same account.</template></p>
 
           <div class="mt-5 flex flex-wrap items-center gap-2">
             <button v-if="phase === 'expired'" type="button" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" data-testid="phone-new-code" @click="showCode">
@@ -85,11 +85,12 @@
       </button>
 
       <div v-if="optionsOpen" id="phone-other-options-body" class="mt-3 space-y-6 pb-3 pl-1">
-        <div data-testid="phone-options-network">
+        <div v-if="network.kind === 'wifi'" data-testid="phone-options-network">
           <h5 class="text-xs font-semibold uppercase tracking-wide text-slate-500">Network</h5>
           <div class="mt-2 flex items-start justify-between gap-6" data-testid="phone-option-wifi">
             <div class="min-w-0">
-              <p id="wifi-switch-label" class="text-sm font-medium text-slate-900">This network allowed</p>
+              <p id="wifi-switch-label" class="text-sm font-medium text-slate-900">Local Wi-Fi allowed</p>
+              <p class="mt-0.5 text-sm leading-5 text-slate-700" data-testid="phone-network-state">{{ wifiAllowed ? `Allowed on this network, ${networkName}. We ask again on a new network.` : `Not allowed on this network, ${networkName}.` }}</p>
               <p class="mt-0.5 text-sm leading-5 text-slate-500">For home and office networks. Applies to every node on this computer.</p>
               <p class="mt-1 text-xs leading-5 text-slate-500" data-testid="phone-network-public-note">On public Wi-Fi (café, hotel, airport), use Tailscale instead: there, others on the network could see the connection.</p>
             </div>
@@ -209,9 +210,12 @@ const network = networkFor(scenario)
 
 const phase = ref<Phase>('idle')
 const accessOn = ref(true)
-const wifiAllowed = ref(
-  scenario === 'wifi_allowed' || (scenario !== 'wifi_ask' && localStorage.getItem(WIFI_ALLOWED_KEY) === '1'),
-)
+// The answer is remembered per local network (home, office); a new network asks again.
+const networkName = network.networkName ?? 'this network'
+if (scenario === 'wifi_allowed') localStorage.setItem(WIFI_ALLOWED_KEY, networkName)
+if (scenario === 'wifi_new_network') localStorage.setItem(WIFI_ALLOWED_KEY, 'Home-5G')
+if (scenario === 'wifi_ask') localStorage.removeItem(WIFI_ALLOWED_KEY)
+const wifiAllowed = ref(localStorage.getItem(WIFI_ALLOWED_KEY) === networkName)
 const declinedWifi = ref(false)
 const optionsOpen = ref(false)
 const historyOpen = ref(false)
@@ -241,11 +245,12 @@ const connectLine = computed(() => {
   if (manualUsed.value) return 'Connects at the address you entered'
   if (network.kind === 'tailscale') return 'Works anywhere through Tailscale'
   if (network.kind === 'company') return `Works through ${network.companyAddress}`
+  if (network.kind === 'vpn') return 'Works through your VPN'
   return 'Works on this network'
 })
-const lineDot = computed(() => (manualUsed.value || network.kind === 'tailscale' || network.kind === 'company' ? 'bg-emerald-500' : 'bg-amber-500'))
+const lineDot = computed(() => (manualUsed.value || network.kind === 'tailscale' || network.kind === 'company' || network.kind === 'vpn' ? 'bg-emerald-500' : 'bg-amber-500'))
 const hint = computed(() =>
-  network.kind === 'wifi' && !manualUsed.value ? 'To connect away from this network, install Tailscale on this computer and your phone.' : '',
+  network.kind === 'vpn' && !manualUsed.value ? 'Turn the VPN on on your phone too.' : network.kind === 'wifi' && !manualUsed.value ? 'To connect away from this network, install Tailscale on this computer and your phone.' : '',
 )
 
 /** The VPN line points to the address field: open "Other options", scroll to its Address group, focus the field. */
@@ -291,7 +296,7 @@ function connect(): void {
 
 function allowWifi(): void {
   wifiAllowed.value = true
-  localStorage.setItem(WIFI_ALLOWED_KEY, '1')
+  localStorage.setItem(WIFI_ALLOWED_KEY, networkName)
   void showCode()
 }
 
@@ -302,7 +307,7 @@ function declineWifi(): void {
 
 function toggleWifi(): void {
   wifiAllowed.value = !wifiAllowed.value
-  if (wifiAllowed.value) localStorage.setItem(WIFI_ALLOWED_KEY, '1')
+  if (wifiAllowed.value) localStorage.setItem(WIFI_ALLOWED_KEY, networkName)
   else localStorage.removeItem(WIFI_ALLOWED_KEY)
 }
 

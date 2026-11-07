@@ -11,7 +11,8 @@ export const ANDROID_NODES_KEY = 'autobyteus.prototype.androidNodes'
 export const ANDROID_SEEDED_KEY = 'autobyteus.prototype.androidSeededFor'
 export const ANDROID_ACTIVE_KEY = 'autobyteus.prototype.androidActiveNode'
 export const IN_APP_KEY = 'autobyteus.prototype.inAndroidApp'
-export const WIFI_ALLOWED_KEY = 'autobyteus.prototype.phoneWifiAllowed'
+/** The name of the one local network that was allowed on this computer (the answer is remembered per network). */
+export const WIFI_ALLOWED_KEY = 'autobyteus.prototype.phoneWifiAllowedNetwork'
 
 let iconsRegistered = false
 export function registerPhonePairingIcons(): void {
@@ -24,8 +25,10 @@ export type DesktopPhoneScenario =
   | 'tailscale' // default: Tailscale with its secure web address
   | 'tailscale_no_https' // Tailscale on, the secure web address is not set up yet
   | 'company_address' // an admin set a fixed address for the node (company VPN)
-  | 'wifi_ask' // no Tailscale, this network not yet allowed on this computer
-  | 'wifi_allowed' // no Tailscale, this network allowed earlier
+  | 'vpn' // a VPN tunnel is up on this computer (trusted like Tailscale)
+  | 'wifi_ask' // nothing installed, this local network not asked about yet
+  | 'wifi_allowed' // nothing installed, this local network allowed earlier
+  | 'wifi_new_network' // allowed on another network before; this one is new, so it asks again
   | 'nothing' // no network the phone could use
   | 'docker_unpublished' // a Docker node whose port is not published on the network
   | 'expired' // a code was shown and its five minutes ran out
@@ -74,7 +77,9 @@ export function seedRevokedPhones(scenario: string): PairedPhone[] {
 
 /** The plain-words picture of the network around this computer (what the node worked out by itself). */
 export interface NetworkPicture {
-  kind: 'tailscale' | 'company' | 'wifi' | 'nothing' | 'docker_unpublished'
+  kind: 'tailscale' | 'company' | 'vpn' | 'wifi' | 'nothing' | 'docker_unpublished'
+  /** The local network the computer is on (illustrative name). */
+  networkName?: string
   /** The fixed address an admin set for the node (illustrative `.example` name). */
   companyAddress?: string
   tailscaleHttps: boolean
@@ -88,9 +93,13 @@ export function networkFor(scenario: string): NetworkPicture {
       return { kind: 'tailscale', tailscaleHttps: false, tailscaleRunning: true }
     case 'company_address':
       return { kind: 'company', tailscaleHttps: false, tailscaleRunning: false, companyAddress: 'autobyteus.example.com' }
+    case 'vpn':
+      return { kind: 'vpn', tailscaleHttps: false, tailscaleRunning: false }
+    case 'wifi_new_network':
+      return { kind: 'wifi', tailscaleHttps: false, tailscaleRunning: false, networkName: 'Cafe-Guest' }
     case 'wifi_ask':
     case 'wifi_allowed':
-      return { kind: 'wifi', tailscaleHttps: false, tailscaleRunning: false }
+      return { kind: 'wifi', tailscaleHttps: false, tailscaleRunning: false, networkName: 'Home-5G' }
     case 'nothing':
       return { kind: 'nothing', tailscaleHttps: false, tailscaleRunning: false }
     case 'docker_unpublished':

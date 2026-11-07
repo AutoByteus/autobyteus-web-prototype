@@ -70,12 +70,18 @@
 - Change (copy decided by the Solution Designer, no "encryption", no warning colour): the one-time question is a neutral card "Allow phones on this network?" / "Fine for home and office networks. On public Wi-Fi, use Tailscale instead." / buttons "Allow", "Not now". The switch "This network allowed": "For home and office networks. Applies to every node on this computer." and, smaller: "On public Wi-Fi (café, hotel, airport), use Tailscale instead: there, others on the network could see the connection." The declined hint reads "Phones can't connect until you allow this network. Or install Tailscale …".
 - Not changed (flagged): the Android "Type an address" sheet still says "This address isn't encrypted. Only use it on a network you trust." for typed http addresses.
 
+## Review round 11 (2026-11-07) — Solution Designer SR-005 (the user: "you know the different network environments more than me")
+
+- Change: a VPN tunnel is trusted like Tailscale, no question; result line "Works through your VPN" (state `vpn`), with the plain hint "Turn the VPN on on your phone too." The switch covers only the local Wi-Fi/cable network: "Local Wi-Fi allowed", shown under Other options only when the computer is on a local network, with the remembered state "Allowed on this network, <network name>. We ask again on a new network." The question "Allow phones on this network?" is asked once per local network (footnote names it: "This network: Home-5G. We ask once for each network.") and again on a new one (state `wifi_new_network`, allowed earlier on another network). After "Not now": no QR and one line "On this network, use Tailscale or your VPN." (Tailscale is the download link). The company's fixed address, Tailscale, VPN, then allowed local Wi-Fi are tried in that order automatically; the user never selects an address.
+- DEC-004 is settled by the Solution Designer as "once per network" (user's choice still to be confirmed in his words).
+- Review states: home, nothing installed (`wifi_ask` → Allow); with Tailscale (`tailscale`); shared office with VPN (`vpn`); shared office with nothing (`wifi_new_network` → Not now); company fixed address (`company_address`).
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).
 - Android app start screen: `/android`; node page inside the app (with Switch node / Add a node): reached from `/android` by tapping a node.
 - Browser page for a phone without the app: `/mobile?pairing=<inert sample link>` (the QR on the desktop panel encodes one; scanning it with the phone camera opens it).
-- Starting states: local-storage key `autobyteus.prototype.phonePairing` = desktop: `tailscale` (default), `tailscale_no_https`, `company_address`, `wifi_ask`, `wifi_allowed`, `nothing`, `docker_unpublished`, `expired`, `no_phones`; Android: `android_several` (default), `android_first_launch`, `android_unreachable`, `android_scan_cant_reach`. Reset: remove the `autobyteus.prototype.*` keys and reload.
+- Starting states: local-storage key `autobyteus.prototype.phonePairing` = desktop: `tailscale` (default), `tailscale_no_https`, `company_address`, `vpn`, `wifi_new_network`, `wifi_ask`, `wifi_allowed`, `nothing`, `docker_unpublished`, `expired`, `no_phones`; Android: `android_several` (default), `android_first_launch`, `android_unreachable`, `android_scan_cant_reach`. Reset: remove the `autobyteus.prototype.*` keys and reload.
 
 ## Result
 
