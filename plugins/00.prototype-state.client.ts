@@ -251,7 +251,7 @@ const setAgentOrgRuntimePhase = (phase: 'config' | 'active', router?: Router): A
 }
 
 const scenario = (): string => agentOrgRuntimeRoute()?.scenario || agentTeamRuntimeRoute()?.scenario || localStorage.getItem(SCENARIO_KEY) || DEFAULT_SCENARIO
-const context = (): string => localStorage.getItem(CONTEXT_KEY) || (window.location.pathname === '/mobile' ? 'unpaired' : DEFAULT_CONTEXT)
+const context = (): string => localStorage.getItem(CONTEXT_KEY) || (window.location.pathname === '/mobile' || window.location.pathname === '/android' ? 'unpaired' : DEFAULT_CONTEXT)
 
 const findSnapshot = (): [string, RuntimeSnapshot] => {
   const path = normalizePath()
@@ -475,7 +475,7 @@ export default defineNuxtPlugin({
     // mobile-experience-redesign (design-only): the first visit to /mobile in a browser starts as an already paired phone
     // (an inert fixture session), so the review needs no setup on the phone. Unpair still shows the pairing screen; the
     // `unpaired` scenario or `autobyteus.prototype.mobileSeeded` removed starts unpaired/paired again.
-    if (window.location.pathname === '/mobile' && !localStorage.getItem('autobyteus.prototype.mobileSeeded')) {
+    if ((window.location.pathname === '/mobile' || window.location.pathname === '/android') && !localStorage.getItem('autobyteus.prototype.mobileSeeded')) {
       localStorage.setItem('autobyteus.prototype.mobileSeeded', '1')
       if (!localStorage.getItem(CONTEXT_KEY)) localStorage.setItem(CONTEXT_KEY, 'paired')
       if (!localStorage.getItem('autobyteus.remote_access.mobile_session.v1') && localStorage.getItem(CONTEXT_KEY) === 'paired') {

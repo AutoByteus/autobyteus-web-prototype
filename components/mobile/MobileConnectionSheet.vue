@@ -30,6 +30,30 @@
           <p class="mt-1 text-xs">{{ diagnostic.recoveryAction }}</p>
         </div>
 
+        <!-- one-step-phone-pairing (UIS-010): only in the Android app. A plain browser tab has no node list to switch in. -->
+        <ul v-if="inApp" class="mt-2 border-y border-slate-100" data-testid="mobile-node-actions">
+          <li>
+            <button type="button" class="flex min-h-[3.5rem] w-full items-center gap-3 text-left active:bg-slate-50" data-testid="mobile-switch-node" @click="$emit('switch-node')">
+              <Icon icon="heroicons:arrows-right-left-20-solid" class="h-5 w-5 flex-shrink-0 text-slate-500" aria-hidden="true" />
+              <span class="min-w-0 flex-1">
+                <span class="block text-base font-medium leading-5">Switch node</span>
+                <span class="block text-[0.8125rem] leading-5 text-slate-500">{{ nodeCount }} {{ nodeCount === 1 ? 'node' : 'nodes' }} on this phone</span>
+              </span>
+              <Icon icon="heroicons:chevron-right-20-solid" class="h-5 w-5 flex-shrink-0 text-slate-400" aria-hidden="true" />
+            </button>
+          </li>
+          <li class="border-t border-slate-100">
+            <button type="button" class="flex min-h-[3.5rem] w-full items-center gap-3 text-left active:bg-slate-50" data-testid="mobile-add-node" @click="$emit('add-node')">
+              <Icon icon="heroicons:qr-code-20-solid" class="h-5 w-5 flex-shrink-0 text-slate-500" aria-hidden="true" />
+              <span class="min-w-0 flex-1">
+                <span class="block text-base font-medium leading-5">Add a node</span>
+                <span class="block text-[0.8125rem] leading-5 text-slate-500">Scan another QR code</span>
+              </span>
+              <Icon icon="heroicons:chevron-right-20-solid" class="h-5 w-5 flex-shrink-0 text-slate-400" aria-hidden="true" />
+            </button>
+          </li>
+        </ul>
+
         <section v-if="peers.length" class="mt-4" aria-labelledby="mobile-peers-title" data-testid="mobile-peers">
           <h3 id="mobile-peers-title" class="text-sm font-semibold text-slate-500">Peer nodes</h3>
           <ul class="mt-1 divide-y divide-slate-100">
@@ -53,8 +77,11 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import { registerPhonePairingIcons } from '~/prototype/phone-pairing/phonePairingFixture'
 import type { MobilePeer } from '~/prototype/mobile-runs/mobileRunsFixture'
 import type { MobileConnectionDiagnostic } from '~/types/remoteAccess'
+
+registerPhonePairingIcons()
 
 defineProps<{
   nodeName: string
@@ -64,6 +91,9 @@ defineProps<{
   isChecking: boolean
   diagnostic: MobileConnectionDiagnostic | null
   peers: MobilePeer[]
+  /** The page runs inside the Android app (the app can show its node list). */
+  inApp?: boolean
+  nodeCount?: number
 }>()
-defineEmits<{ (event: 'close'): void; (event: 'check'): void; (event: 'unpair'): void }>()
+defineEmits<{ (event: 'close'): void; (event: 'check'): void; (event: 'unpair'): void; (event: 'switch-node'): void; (event: 'add-node'): void }>()
 </script>

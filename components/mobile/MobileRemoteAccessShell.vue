@@ -72,8 +72,12 @@
         :is-checking="sessionStore.isCheckingStatus"
         :diagnostic="sessionStore.lastDiagnostic"
         :peers="runTreeStore.peers"
+        :in-app="inAndroidApp"
+        :node-count="androidNodeCount"
         @close="showConnection = false"
         @check="checkStatus"
+        @switch-node="openNodeList(false)"
+        @add-node="openNodeList(true)"
         @unpair="showConnection = false; showUnpairConfirm = true"
       />
 
@@ -108,6 +112,7 @@ import { useAgentSelectionStore } from '~/stores/agentSelectionStore';
 import type { MobileFeatureId } from '~/utils/mobileFeatureGates';
 import type { MobileWorkContext } from '~/types/mobileWork';
 import { clearMobileRunSelection, selectMobileRun } from '~/utils/mobile/mobileSelectionAdapter';
+import { activeAndroidNodeName, isInAndroidApp, loadAndroidNodes } from '~/prototype/phone-pairing/phonePairingFixture';
 
 // Keep the component name in the compiled chunk stable for existing page tests.
 defineOptions({ name: 'MobileRemoteAccessShell' });
@@ -160,7 +165,10 @@ const shellClass = computed(() => [
   sessionStore.isPaired && !hasRoutePairingParam.value ? 'fixed inset-0 h-[100dvh] overflow-hidden overscroll-none' : 'min-h-screen bg-slate-100',
 ]);
 
-const nodeName = computed(() => sessionStore.lastStatus?.serverName || new URL(sessionStore.serverBaseUrl || 'http://localhost', 'http://localhost').host);
+// one-step-phone-pairing (design-only): inside the Android app the node's own name (from its QR) is shown; the app opened this page.
+const inAndroidApp = isInAndroidApp();
+const androidNodeCount = inAndroidApp ? loadAndroidNodes().length : 0;
+const nodeName = computed(() => activeAndroidNodeName() || sessionStore.lastStatus?.serverName || new URL(sessionStore.serverBaseUrl || 'http://localhost', 'http://localhost').host);
 const connected = computed(() => runTreeStore.listState !== 'node-offline' && !sessionStore.lastDiagnostic);
 const connectionStatusLabel = computed(() => {
   if (sessionStore.isCheckingStatus) return 'Checking…';
@@ -227,6 +235,11 @@ async function openNode(row: MobileRunNode, replace = false): Promise<void> {
 
 function retryNode(): void {
   // The reference's remote node stays down: the row keeps its state, as it does on the desktop.
+}
+
+/** The page asks the app for its node list (Switch node) or its scanner (Add a node). No credential crosses. */
+function openNodeList(scan: boolean): void {
+  window.location.assign(scan ? '/android?from=node&scan=1' : '/android?from=node');
 }
 
 function openNewRun(): void {
