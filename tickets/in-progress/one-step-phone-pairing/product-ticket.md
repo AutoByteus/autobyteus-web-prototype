@@ -64,6 +64,12 @@
 - The user: "maybe mention, in VPN envionrment, see addtional section how about that? or op other options section".
 - Change (Solution Designer's decision within DEC-012): a third parallel line under "Connect a phone": "Company VPN: turn the VPN on on your phone too. If your company gave this node its own address, enter it under Other options." — "Other options" is a link that opens the collapsed section, scrolls to its Address group and focuses "Enter an address by hand". Shown for the same cases as the other two lines (Tailscale not detected, no company address).
 
+## Review round 10 (2026-11-07) — Solution Designer relaying the user
+
+- The user: "what does this sentence mean, without encryption, people feel scared".
+- Change (copy decided by the Solution Designer, no "encryption", no warning colour): the one-time question is a neutral card "Allow phones on this network?" / "Fine for home and office networks. On public Wi-Fi, use Tailscale instead." / buttons "Allow", "Not now". The switch "This network allowed": "For home and office networks. Applies to every node on this computer." and, smaller: "On public Wi-Fi (café, hotel, airport), use Tailscale instead: there, others on the network could see the connection." The declined hint reads "Phones can't connect until you allow this network. Or install Tailscale …".
+- Not changed (flagged): the Android "Type an address" sheet still says "This address isn't encrypted. Only use it on a network you trust." for typed http addresses.
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).

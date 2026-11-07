@@ -7,14 +7,14 @@
 
       <!-- Idle / blocked / asking -->
       <div v-if="phase === 'idle' || phase === 'blocked' || phase === 'asking'" class="mt-5">
-        <div v-if="phase === 'asking'" class="max-w-xl rounded-xl border border-amber-200 bg-amber-50 p-4" role="group" aria-labelledby="wifi-question-title" data-testid="phone-wifi-question">
-          <h4 id="wifi-question-title" class="text-sm font-semibold text-amber-950">Use this network?</h4>
-          <p class="mt-1 text-sm leading-6 text-amber-900">Your phone will connect over this network without encryption. Only on a network you trust.</p>
+        <div v-if="phase === 'asking'" class="max-w-xl rounded-xl border border-slate-200 bg-slate-50 p-4" role="group" aria-labelledby="wifi-question-title" data-testid="phone-wifi-question">
+          <h4 id="wifi-question-title" class="text-sm font-semibold text-slate-900">Allow phones on this network?</h4>
+          <p class="mt-1 text-sm leading-6 text-slate-700">Fine for home and office networks. On public Wi-Fi, use Tailscale instead.</p>
           <div class="mt-3 flex flex-wrap items-center gap-2">
-            <button type="button" class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" data-testid="phone-wifi-allow" @click="allowWifi">Use this network</button>
-            <button type="button" class="rounded-lg px-3 py-2.5 text-sm font-semibold text-amber-900 transition-colors hover:bg-amber-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500" data-testid="phone-wifi-not-now" @click="declineWifi">Not now</button>
+            <button type="button" class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" data-testid="phone-wifi-allow" @click="allowWifi">Allow</button>
+            <button type="button" class="rounded-lg px-3 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-200/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="phone-wifi-not-now" @click="declineWifi">Not now</button>
           </div>
-          <p class="mt-3 text-xs leading-5 text-amber-800">We ask this once on this computer. You can change it under Other options.</p>
+          <p class="mt-3 text-xs leading-5 text-slate-500">We ask this once on this computer. You can change it under Other options.</p>
         </div>
 
         <template v-else>
@@ -27,7 +27,7 @@
               <Icon :icon="phase === 'blocked' ? 'heroicons:arrow-path-20-solid' : 'heroicons:qr-code-20-solid'" class="h-5 w-5" aria-hidden="true" />
               {{ phase === 'blocked' ? 'Try again' : 'Connect a phone' }}
             </button>
-            <p v-if="phase === 'idle' && declinedWifi" class="max-w-md text-sm leading-6 text-slate-600" data-testid="phone-wifi-declined-hint">Phones can’t connect until you use this network. Or install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone.</p>
+            <p v-if="phase === 'idle' && declinedWifi" class="max-w-md text-sm leading-6 text-slate-600" data-testid="phone-wifi-declined-hint">Phones can’t connect until you allow this network. Or install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone.</p>
             <p v-else-if="phase === 'idle' && !accessOn" class="text-sm text-slate-500" data-testid="phone-access-off-note">Phone access is off. Connecting a phone turns it on.</p>
           </div>
           <p v-if="phase === 'idle' && !declinedWifi && network.kind !== 'tailscale' && network.kind !== 'company'" class="mt-4 flex max-w-xl items-start gap-2 text-sm leading-6 text-slate-600" data-testid="phone-tailscale-info">
@@ -90,7 +90,8 @@
           <div class="mt-2 flex items-start justify-between gap-6" data-testid="phone-option-wifi">
             <div class="min-w-0">
               <p id="wifi-switch-label" class="text-sm font-medium text-slate-900">This network allowed</p>
-              <p class="mt-0.5 text-sm leading-5 text-slate-500">Phones connect over this network without encryption, for every node on this computer. Only on a network you trust.</p>
+              <p class="mt-0.5 text-sm leading-5 text-slate-500">For home and office networks. Applies to every node on this computer.</p>
+              <p class="mt-1 text-xs leading-5 text-slate-500" data-testid="phone-network-public-note">On public Wi-Fi (café, hotel, airport), use Tailscale instead: there, others on the network could see the connection.</p>
             </div>
             <button type="button" role="switch" class="relative mt-0.5 inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" :class="wifiAllowed ? 'bg-emerald-500' : 'bg-slate-300'" :aria-checked="wifiAllowed" aria-labelledby="wifi-switch-label" data-testid="phone-wifi-switch" @click="toggleWifi">
               <span aria-hidden="true" class="inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform" :class="wifiAllowed ? 'translate-x-5' : 'translate-x-0.5'" />
