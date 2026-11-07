@@ -76,6 +76,16 @@
 - DEC-004 is settled by the Solution Designer as "once per network" (user's choice still to be confirmed in his words).
 - Review states: home, nothing installed (`wifi_ask` → Allow); with Tailscale (`tailscale`); shared office with VPN (`vpn`); shared office with nothing (`wifi_new_network` → Not now); company fixed address (`company_address`).
 
+## Review round 12 (2026-11-07) — layout, Solution Designer relaying the user
+
+- The user: "Local Wi-Fi allowed" and "Enter an address by hand" side by side in Other options "seems to separate the options … do I have to do two both at the same time?"
+- Change: when a way works nothing is shown to set. When none works (local network not yet allowed) the panel shows one choice: [Allow this Wi-Fi] or [Use a different address] ("for home and office networks" / "for company setups"), no QR until one is chosen, "Not now" keeps the line "On this network, use Tailscale or your VPN." "Use a different address" leaves Other options: it is in that choice, in the blocked message, in the Company VPN line, and as a small link under the code ("Phone can't connect? Use a different address"). A plain http address typed by hand asks "Allow phones on this network?" once if the network is not yet allowed. Other options keeps only "Local Wi-Fi allowed", the optional secure web address (Tailscale command; the Solution Designer did not name it, kept under Other options per DEC-002 A) and "Turn off phone access".
+
+## Review round 13 (2026-11-07) — "How does this work?", Solution Designer relaying the user
+
+- The user: a hidden section that explains how everything works.
+- Change: collapsed "How does this work?" below Other options (five short points; wording refined: "Revoke it in the list below"); a small "How?" link beside the result line under the QR opens and scrolls to it.
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).
