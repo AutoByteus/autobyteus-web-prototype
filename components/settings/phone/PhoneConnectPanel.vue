@@ -168,13 +168,31 @@
         <Icon icon="heroicons:chevron-right-20-solid" class="h-4 w-4 text-slate-400 transition-transform" :class="howOpen ? 'rotate-90' : ''" aria-hidden="true" />
         How does this work?
       </button>
-      <ol v-if="howOpen" id="phone-how-body" class="mt-2 max-w-2xl list-decimal space-y-2.5 pb-3 pl-9 pr-2 text-sm leading-6 text-slate-600 marker:text-slate-400" data-testid="phone-how-body">
-        <li>Your phone needs a way to reach this computer. AutoByteus looks for one by itself, in this order: an address set up for this node (for example by your company’s IT), Tailscale, your VPN, then this Wi-Fi.</li>
-        <li>On the same Wi-Fi as this computer, nothing needs to be installed. This suits home and office networks.</li>
-        <li>Away from it, for example on mobile data or in a café, install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline">Tailscale</a> on this computer and your phone, and sign in to the same account. Or turn on your company VPN on the phone.</li>
-        <li>The QR code works once and only for 5 minutes. After scanning, the phone stays connected, and you don’t need the QR code again.</li>
-        <li>Lost a phone? Revoke it in the list below and it can no longer connect.</li>
-      </ol>
+<div v-if="howOpen" id="phone-how-body" class="mt-2 max-w-3xl pb-3 pl-1 pr-1" data-testid="phone-how-body">
+        <p class="text-sm leading-6 text-slate-600">Your phone needs a way to reach this computer. AutoByteus finds it by itself; you only scan. There are four ways.</p>
+        <ul class="mt-4 space-y-3">
+          <li v-for="way in ways" :key="way.id" class="rounded-xl border bg-white p-4" :class="inUse === way.id ? 'border-blue-200 ring-1 ring-blue-100' : 'border-slate-200'" :data-testid="`phone-how-${way.id}`">
+            <div class="flex flex-wrap items-center gap-2">
+              <h5 class="text-sm font-semibold text-slate-900">{{ way.title }}</h5>
+              <span v-if="way.tag" class="text-xs text-slate-500">{{ way.tag }}</span>
+              <span v-if="inUse === way.id" class="rounded-full bg-blue-50 px-2 py-0.5 text-xs font-semibold text-blue-700" data-testid="phone-how-in-use">In use</span>
+            </div>
+            <dl class="mt-2 space-y-1.5 text-sm leading-6 text-slate-600">
+              <div class="grid grid-cols-[4.25rem_1fr] gap-x-3"><dt class="font-medium text-slate-800">When</dt><dd>{{ way.when }}</dd></div>
+              <div class="grid grid-cols-[4.25rem_1fr] gap-x-3"><dt class="font-medium text-slate-800">Setup</dt><dd><template v-if="way.id === 'tailscale'">Install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> (free) on this computer and on your phone, sign in to the same account on both, and keep it on. AutoByteus finds it by itself.</template><template v-else>{{ way.setup }}</template></dd></div>
+              <div class="grid grid-cols-[4.25rem_1fr] gap-x-3"><dt class="font-medium text-slate-800">Safety</dt><dd>{{ way.safety }}</dd></div>
+            </dl>
+          </li>
+        </ul>
+        <div class="mt-5 border-t border-slate-100 pt-4" data-testid="phone-how-closing">
+          <h5 class="text-sm font-semibold text-slate-900">The QR code and your phones</h5>
+          <ul class="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-6 text-slate-600 marker:text-slate-400">
+            <li>The QR code works once and only for 5 minutes. It holds a one-time code, not a password. After scanning, the phone stays connected; you don’t need the QR code again.</li>
+            <li>Every connected phone is in the list below. Lost a phone? Revoke it and it can no longer connect.</li>
+            <li>AutoByteus never opens this computer to the public internet.</li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- Paired phones -->
@@ -258,6 +276,43 @@ const wifiAllowed = ref(localStorage.getItem(WIFI_ALLOWED_KEY) === networkName)
 const declinedWifi = ref(false)
 const optionsOpen = ref(false)
 const howOpen = ref(false)
+
+// "How does this work?": one card per way to connect. The card for the way the shown code uses is marked "In use".
+const ways = [
+  {
+    id: 'wifi',
+    title: 'Same Wi-Fi',
+    tag: 'home or office',
+    when: 'Your phone and this computer are on the same Wi-Fi or office network.',
+    setup: 'Nothing to install. The first time, AutoByteus asks “Allow phones on this network?”',
+    safety: 'The connection has no extra protection, so others on the same network could see it. Fine at home and in your office. On public Wi-Fi (café, hotel, airport) use Tailscale instead. Works only while the phone is on this network.',
+  },
+  {
+    id: 'tailscale',
+    title: 'Tailscale',
+    tag: 'works anywhere, recommended',
+    when: 'You want to use your phone away from home, on mobile data or any Wi-Fi.',
+    setup: '',
+    safety: 'The connection is encrypted between your phone and this computer, and only devices signed in to your Tailscale account can reach it.',
+  },
+  {
+    id: 'vpn',
+    title: 'Your own VPN',
+    tag: 'for example WireGuard',
+    when: 'You already use your own VPN that connects your phone and this computer.',
+    setup: 'Connect both to the VPN. AutoByteus finds it by itself.',
+    safety: 'As protected as your VPN: the connection is encrypted between your devices.',
+  },
+  {
+    id: 'company',
+    title: 'An address set up for this node',
+    tag: 'for example by your company',
+    when: 'The node runs on a company server and your IT gave it an address, such as autobyteus.company.com.',
+    setup: 'Your IT sets the address once on the node. On your phone, turn on the company VPN if your company uses one.',
+    safety: 'Protected by your company’s network: usually a secure (https) address reachable only inside the company or through its VPN.',
+  },
+]
+const inUse = computed(() => (phase.value === 'qr' || phase.value === 'expired') && !manualUsed.value ? (network.kind === 'wifi' ? 'wifi' : network.kind === 'tailscale' ? 'tailscale' : network.kind === 'vpn' ? 'vpn' : network.kind === 'company' ? 'company' : '') : '')
 const historyOpen = ref(false)
 const confirmingRevokeAll = ref(false)
 const manualAddress = ref('')

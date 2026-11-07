@@ -90,6 +90,11 @@
 
 - The user asked what "your company's address" means. Change: "How does this work?" point 1 says "an address set up for this node (for example by your company's IT)"; the result line reads "Works through the address set up for this node (<address>)". Meaning: a fixed address an admin configured on the node itself (e.g. `https://autobyteus.company.com`), used automatically, never typed by the phone user.
 
+## Review round 15 (2026-11-07) — "How does this work?" revised, Solution Designer relaying the user
+
+- The user: "it's better to be like for different types, … a separate section for each type, make it more detailed because the user really care about this, so they feel more secure … They also know how to set it up".
+- Change: replaces the five-point version. Collapsed at the bottom ("How?" link opens it); inside: a short intro, four cards (Same Wi-Fi; Tailscale; Your own VPN; An address set up for this node), each with When · Setup · Safety, an "In use" badge on the card the shown code uses, and a closing part "The QR code and your phones". The only link is "Tailscale". Wording refined only where the panel differs: "Every connected phone is in the list below".
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).
