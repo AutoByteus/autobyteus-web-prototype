@@ -26,3 +26,9 @@
 ## Final artifacts
 
 `ui-ux-spec.md` and `visual-references/VIS-001…009` in this folder (moved to `tickets/done/phone-setup-remote-node-wording/` on completion). Runbook: `ui-reference-runbook.md` at the repository root.
+
+## Integration record (2026-11-07)
+
+- Ticket commit pushed as a fast-forward to `origin/personal`: `34677c88..2041ce2e` (`git push origin design/phone-setup-remote-node-wording:personal`); the canonical checkout `/Users/normy/autobyteus_org/autobyteus-web-design` fast-forwarded to `2041ce2e`; local `personal` = `origin/personal` = `2041ce2e` (before this record's own commit, which follows the same push-then-update sequence).
+- Default-entry-point check: the canonical checkout's reference was run (`nuxt dev --port 3427`), and with `remote_vpn` the Same Wi-Fi or LAN tab read "Office Mac isn’t reachable on a Wi-Fi or LAN address from this computer." — no preview URL or preview-only state.
+- Cleanup: both review servers (ports 3426 and 3427) stopped; worktree and local branch removed after this record is integrated (see the result message).
