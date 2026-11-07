@@ -2,8 +2,22 @@
   <section class="mx-auto w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" data-testid="phone-connect-panel">
     <!-- Connect a phone: one tab per way to connect -->
     <div class="px-6 pb-6 pt-6" data-testid="phone-connect-section">
-      <h3 class="text-lg font-semibold leading-7 text-slate-900" data-testid="phone-connect-title">Phones</h3>
-      <p class="mt-0.5 text-sm leading-6 text-slate-500" data-testid="phone-connect-subtitle">Show a code, then scan it with the AutoByteus app to connect a phone to <span class="font-medium text-slate-700">{{ nodeName }}</span>.</p>
+      <div class="flex flex-wrap items-start justify-between gap-x-8 gap-y-3">
+        <div class="min-w-0 max-w-lg flex-1">
+          <h3 class="text-lg font-semibold leading-7 text-slate-900" data-testid="phone-connect-title">Phones</h3>
+          <p class="mt-0.5 text-sm leading-6 text-slate-500" data-testid="phone-connect-subtitle">Show a code, then scan it with the AutoByteus app to connect a phone to <span class="font-medium text-slate-700">{{ nodeName }}</span>.</p>
+        </div>
+        <div class="max-w-xs flex-shrink-0 sm:text-right" data-testid="phone-access">
+          <div class="flex items-center gap-3 sm:justify-end">
+            <span id="phone-access-label" class="text-sm font-medium text-slate-900">Phone access</span>
+            <span class="text-sm font-medium" :class="accessOn ? 'text-emerald-700' : 'text-slate-500'" data-testid="phone-access-state">{{ accessOn ? 'On' : 'Off' }}</span>
+            <button type="button" role="switch" class="relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" :class="accessOn ? 'bg-emerald-500' : 'bg-slate-300'" :aria-checked="accessOn" aria-labelledby="phone-access-label" data-testid="phone-access-switch" @click="toggleAccess">
+              <span aria-hidden="true" class="inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform" :class="accessOn ? 'translate-x-5' : 'translate-x-0.5'" />
+            </button>
+          </div>
+          <p class="mt-1 text-xs leading-5 text-slate-500" data-testid="phone-access-line">{{ accessOn ? 'Phones you connected can reach this node.' : 'No phone can reach this node. Your phones stay connected and work again when you turn it back on.' }}</p>
+        </div>
+      </div>
 
       <p v-if="ways.blocked" class="mt-4 flex max-w-2xl items-start gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm leading-6 text-slate-700" role="status" data-testid="phone-connect-blocked">
         <Icon icon="heroicons:exclamation-triangle-20-solid" class="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-500" aria-hidden="true" />
@@ -22,49 +36,24 @@
 
       <!-- The open tab -->
       <div :id="`phone-panel-${tab}`" role="tabpanel" :aria-labelledby="`phone-tab-${tab}`" class="mt-4 max-w-3xl rounded-xl border border-slate-200 p-5" :data-testid="`phone-panel-${tab}`">
-        <div class="flex flex-wrap items-center gap-2">
-          <h4 class="text-sm font-semibold text-slate-900">{{ current.title }}</h4>
-          <span class="text-xs text-slate-500">{{ current.tag }}</span>
-        </div>
-        <p class="mt-2 flex items-start gap-2 text-sm font-medium leading-6" :class="isReady(tab) ? 'text-emerald-700' : 'text-slate-700'" data-testid="phone-way-status">
+        <p class="flex items-start gap-2 text-sm font-medium leading-6" :class="isReady(tab) ? 'text-emerald-700' : 'text-slate-700'" data-testid="phone-way-status">
           <span class="mt-2 h-2 w-2 flex-shrink-0 rounded-full" :class="isReady(tab) ? 'bg-emerald-500' : 'bg-slate-300'" aria-hidden="true" />
           {{ statusLine }}
         </p>
         <p v-if="checkNote[tab]" class="mt-0.5 pl-4 text-sm leading-6 text-slate-500" data-testid="phone-check-note">{{ checkNote[tab] }}</p>
 
-        <dl class="mt-3 space-y-1.5 text-sm leading-6 text-slate-600">
-          <div class="grid grid-cols-[5.5rem_1fr] gap-x-3" data-testid="phone-how-it-works"><dt class="font-medium text-slate-800">How it works</dt><dd>{{ current.how }}</dd></div>
-          <div class="grid grid-cols-[5.5rem_1fr] gap-x-3"><dt class="font-medium text-slate-800">When</dt><dd>{{ current.when }}</dd></div>
-          <div class="grid grid-cols-[5.5rem_1fr] gap-x-3">
-            <dt class="font-medium text-slate-800">Setup</dt>
-            <dd>
-              <template v-if="tab === 'tailscale' && !isReady('tailscale')">
-                <ol class="list-decimal space-y-1 pl-5 marker:text-slate-400">
-                  <li>Install Tailscale (free) on this computer and on your phone. <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="phone-tailscale-link">Get Tailscale</a>.</li>
-                  <li>Sign in to the same account on both, and keep it on.</li>
-                </ol>
-              </template>
-              <template v-else-if="tab === 'tailscale'">Install Tailscale (free) on this computer and on your phone, sign in to the same account on both, and keep it on. AutoByteus finds it by itself.</template>
-              <template v-else>{{ current.setup }}</template>
-            </dd>
-          </div>
-          <div class="grid grid-cols-[5.5rem_1fr] gap-x-3"><dt class="font-medium text-slate-800">Safety</dt><dd>{{ current.safety }}</dd></div>
-        </dl>
-
         <!-- Same Wi-Fi: the first time on a network the button asks; afterwards a switch keeps the answer -->
         <div v-if="tab === 'wifi' && isReady('wifi') && !wifiAllowed" class="mt-4 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3" data-testid="phone-wifi-question">
           <p class="text-sm font-semibold text-slate-900">Allow phones on this network?</p>
-          <p class="mt-0.5 text-sm leading-5 text-slate-600">Fine for home and office networks. On public Wi-Fi, use Tailscale instead.</p>
-          <p class="mt-1.5 text-xs leading-5 text-slate-500">This network: {{ ways.wifi.networkName }}. We ask once for each network.</p>
+          <p class="mt-0.5 text-sm leading-5 text-slate-600">Fine for home and office networks. Not for public Wi-Fi.</p>
+          <p class="mt-1 text-xs leading-5 text-slate-500">This network. We ask once for each network.</p>
         </div>
-        <div v-if="tab === 'wifi' && isReady('wifi') && wifiAllowed" class="mt-4 flex items-start justify-between gap-6 border-t border-slate-100 pt-4" data-testid="phone-option-wifi">
+        <div v-if="tab === 'wifi' && isReady('wifi') && wifiAllowed" class="mt-4 flex items-center justify-between gap-6 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3" data-testid="phone-option-wifi">
           <div class="min-w-0">
             <p id="wifi-switch-label" class="text-sm font-medium text-slate-900">Wi-Fi/LAN allowed on this network</p>
-            <p class="mt-0.5 text-sm leading-5 text-slate-700" data-testid="phone-network-state">Allowed on this network, {{ ways.wifi.networkName }}. We ask again on a new network.</p>
-            <p class="mt-0.5 text-sm leading-5 text-slate-500">For home and office networks. Applies to every node on this computer.</p>
-            <p class="mt-1 text-xs leading-5 text-slate-500" data-testid="phone-network-public-note">On public Wi-Fi (café, hotel, airport), use Tailscale instead: there, others on the network could see the connection.</p>
+            <p class="mt-0.5 text-sm leading-5 text-slate-600" data-testid="phone-network-state">This network. Applies to every node on this computer. We ask again on a new network.</p>
           </div>
-          <button type="button" role="switch" class="relative mt-0.5 inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full bg-emerald-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" aria-checked="true" aria-labelledby="wifi-switch-label" data-testid="phone-wifi-switch" @click="toggleWifi">
+          <button type="button" role="switch" class="relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full bg-emerald-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" aria-checked="true" aria-labelledby="wifi-switch-label" data-testid="phone-wifi-switch" @click="toggleWifi">
             <span aria-hidden="true" class="inline-block h-5 w-5 translate-x-5 transform rounded-full bg-white shadow-sm transition-transform" />
           </button>
         </div>
@@ -90,7 +79,34 @@
           <button v-if="(tab === 'tailscale' || tab === 'vpn') && !isReady(tab)" type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60" :disabled="checking === tab" data-testid="phone-check-again" @click="checkWay(tab)">
             {{ checking === tab ? 'Checking…' : 'Check again' }}
           </button>
-          <p v-if="!accessOn" class="text-sm text-slate-500" data-testid="phone-access-off-note">Phone access is off. Showing a QR code turns it on.</p>
+        </div>
+
+        <!-- One fold per tab: How it works (opens by itself when the way is not ready yet) -->
+        <div class="mt-5 border-t border-slate-100" data-testid="phone-details">
+          <button type="button" class="flex w-full items-center justify-between gap-3 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-expanded="infoOpen" aria-controls="phone-info-body" data-testid="phone-info-toggle" @click="toggleInfo">
+            How it works
+            <Icon icon="heroicons:chevron-down-20-solid" class="h-4 w-4 flex-shrink-0 text-slate-400 transition-transform" :class="infoOpen ? 'rotate-180' : ''" aria-hidden="true" />
+          </button>
+          <div v-if="infoOpen" id="phone-info-body" class="pb-3 pr-6" data-testid="phone-info-body">
+            <p class="text-sm leading-6 text-slate-700" data-testid="phone-how-it-works">{{ current.how }}</p>
+            <dl class="mt-3 space-y-1.5 text-sm leading-6 text-slate-600">
+              <div class="grid grid-cols-[4.25rem_1fr] gap-x-3"><dt class="font-medium text-slate-800">When</dt><dd>{{ current.when }}</dd></div>
+              <div class="grid grid-cols-[4.25rem_1fr] gap-x-3">
+                <dt class="font-medium text-slate-800">Setup</dt>
+                <dd>
+                  <template v-if="tab === 'tailscale' && !isReady('tailscale')">
+                    <ol class="list-decimal space-y-1 pl-5 marker:text-slate-400">
+                      <li>Install Tailscale (free) on this computer and on your phone. <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="phone-tailscale-link">Get Tailscale</a>.</li>
+                      <li>Sign in to the same account on both, and keep it on.</li>
+                    </ol>
+                  </template>
+                  <template v-else-if="tab === 'tailscale'">Install Tailscale (free) on this computer and on your phone, sign in to the same account on both, and keep it on. AutoByteus finds it by itself.</template>
+                  <template v-else>{{ current.setup }}</template>
+                </dd>
+              </div>
+              <div class="grid grid-cols-[4.25rem_1fr] gap-x-3"><dt class="font-medium text-slate-800">Safety</dt><dd>{{ current.safety }}</dd></div>
+            </dl>
+          </div>
         </div>
 
         <!-- Tailscale: the optional secure web address, under Advanced -->
@@ -149,20 +165,13 @@
             </button>
             <button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60" data-testid="phone-code-close" @click="closeCode">Close</button>
           </div>
-          <p class="mt-4 text-xs leading-5 text-slate-500" data-testid="phone-code-footnote">The QR code works once and only for 5 minutes. It holds a one-time code, not a password. After scanning, the phone stays connected. Lost a phone? Revoke it below. AutoByteus never opens this computer to the public internet. No app yet? Scan with the phone’s camera to connect in the browser.</p>
+          <p class="mt-4 text-xs leading-5 text-slate-500" data-testid="phone-code-footnote">Works once, for 5 minutes. No app yet? Scan with the phone’s camera to connect in the browser.</p>
+          <button type="button" class="mt-1 flex items-center gap-1 rounded-md py-1 text-xs font-medium text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-expanded="aboutCodeOpen" data-testid="phone-about-code-toggle" @click="aboutCodeOpen = !aboutCodeOpen">
+            <Icon icon="heroicons:chevron-right-20-solid" class="h-3.5 w-3.5 text-slate-400 transition-transform" :class="aboutCodeOpen ? 'rotate-90' : ''" aria-hidden="true" />
+            About this code
+          </button>
+          <p v-if="aboutCodeOpen" class="mt-1 max-w-md text-xs leading-5 text-slate-500" data-testid="phone-about-code">The QR code holds a one-time code, not a password. After scanning, the phone stays connected and you don’t need the code again. Lost a phone? Revoke it below and it can no longer connect. AutoByteus never opens this computer to the public internet.</p>
         </div>
-      </div>
-    </div>
-
-    <!-- Other options -->
-    <div class="border-t border-slate-100 px-6 py-3" data-testid="phone-other-options">
-      <button type="button" class="-ml-2 flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-expanded="optionsOpen" aria-controls="phone-other-options-body" data-testid="phone-other-options-toggle" @click="optionsOpen = !optionsOpen">
-        <Icon icon="heroicons:chevron-right-20-solid" class="h-4 w-4 text-slate-400 transition-transform" :class="optionsOpen ? 'rotate-90' : ''" aria-hidden="true" />
-        Other options
-      </button>
-      <div v-if="optionsOpen" id="phone-other-options-body" class="mt-2 pb-2 pl-1">
-        <button v-if="accessOn" type="button" class="rounded-md py-1 text-sm font-medium text-red-700 transition-colors hover:text-red-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400" data-testid="phone-option-turn-off" @click="turnOff">Turn off phone access</button>
-        <p v-else class="text-sm text-slate-500">Phone access is off.</p>
       </div>
     </div>
 
@@ -237,7 +246,7 @@ type Phase = 'idle' | 'qr' | 'expired'
 const scenario = readPhoneState()
 const ways = reactive(waysFor(scenario))
 const phase = ref<Phase>('idle')
-const accessOn = ref(true)
+const accessOn = ref(scenario !== 'access_off')
 
 // The best ready way is selected when the panel opens (company address, Tailscale, your VPN, same Wi-Fi) and marked Recommended.
 const ORDER: WayId[] = ['company', 'tailscale', 'vpn', 'wifi']
@@ -287,13 +296,20 @@ const COPY: Record<WayId, { title: string; tag: string; how: string; when: strin
 }
 const current = computed(() => COPY[tab.value])
 
+// One fold per tab, closed until clicked; it opens by itself when the way is not ready yet (the user must set it up).
+const infoToggled = reactive<Record<string, boolean>>({})
+const infoOpen = computed(() => infoToggled[tab.value] ?? !isReady(tab.value))
+const toggleInfo = (): void => {
+  infoToggled[tab.value] = !infoOpen.value
+}
+
 // The Wi-Fi answer is remembered per local network (home, office); a new network asks again.
 if (scenario === 'wifi_allowed') localStorage.setItem(WIFI_ALLOWED_KEY, ways.wifi.networkName)
 if (scenario === 'wifi_new_network') localStorage.setItem(WIFI_ALLOWED_KEY, 'Home-5G')
 if (scenario === 'wifi_ask' || scenario === '' || scenario === 'tailscale') localStorage.removeItem(WIFI_ALLOWED_KEY)
 const wifiAllowed = ref(localStorage.getItem(WIFI_ALLOWED_KEY) === ways.wifi.networkName && ways.wifi.ready)
 
-const optionsOpen = ref(false)
+const aboutCodeOpen = ref(false)
 const advancedOpen = ref(false)
 const historyOpen = ref(false)
 const confirmingRevokeAll = ref(false)
@@ -323,7 +339,7 @@ const blockedMessage = computed(() =>
 const statusLine = computed(() => {
   switch (tab.value) {
     case 'wifi':
-      return isReady('wifi') ? `This computer is on a Wi-Fi or LAN network (${ways.wifi.networkName}).` : 'This computer isn’t on a Wi-Fi or LAN network.'
+      return isReady('wifi') ? 'This computer is on a Wi-Fi or LAN network.' : 'This computer isn’t on a Wi-Fi or LAN network.'
     case 'tailscale':
       return isReady('tailscale') ? 'Ready: Tailscale is on, on this computer.' : 'Not set up yet.'
     case 'vpn':
@@ -333,7 +349,11 @@ const statusLine = computed(() => {
   }
 })
 
-const qrButtonLabel = computed(() => (tab.value === 'wifi' && isReady('wifi') && !wifiAllowed.value ? 'Allow and show QR code' : 'Show QR code'))
+const qrButtonLabel = computed(() => {
+  const firstWifi = tab.value === 'wifi' && isReady('wifi') && !wifiAllowed.value
+  if (!accessOn.value) return firstWifi ? 'Turn on, allow and show QR code' : 'Turn on and show QR code'
+  return firstWifi ? 'Allow and show QR code' : 'Show QR code'
+})
 
 // How the phone will connect, in one plain line naming the way the code uses.
 const connectLine = computed(() => {
@@ -443,10 +463,10 @@ function checkAgain(): void {
   }, 900)
 }
 
-function turnOff(): void {
-  accessOn.value = false
-  closeCode()
-  optionsOpen.value = false
+/** Per node: off stops every phone from reaching this node and new codes; phones stay connected. */
+function toggleAccess(): void {
+  accessOn.value = !accessOn.value
+  if (!accessOn.value) closeCode()
 }
 
 function revokeOne(phone: PairedPhone): void {

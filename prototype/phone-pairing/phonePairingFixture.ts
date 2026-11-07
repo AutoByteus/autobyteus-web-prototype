@@ -33,6 +33,7 @@ export type DesktopPhoneScenario =
   | 'docker_unpublished' // a Docker node whose port is not published on the network
   | 'expired' // a code was shown and its five minutes ran out
   | 'no_phones' // nothing paired yet
+  | 'access_off' // phone access is switched off for this node
 
 export type AndroidScenario =
   | 'android_several' // default: three nodes, all online
