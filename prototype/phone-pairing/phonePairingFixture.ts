@@ -75,6 +75,38 @@ export function seedRevokedPhones(scenario: string): PairedPhone[] {
   }))
 }
 
+export interface WaysPicture {
+  company: { ready: boolean; address?: string }
+  tailscale: { ready: boolean; https: boolean }
+  vpn: { ready: boolean }
+  wifi: { ready: boolean; networkName: string }
+  blocked?: 'no_network' | 'docker_unpublished'
+}
+
+/** What detection finds on this computer for each of the four ways (synthetic, per starting state). */
+export function waysFor(scenario: string): WaysPicture {
+  const none: WaysPicture = { company: { ready: false }, tailscale: { ready: false, https: false }, vpn: { ready: false }, wifi: { ready: false, networkName: '' } }
+  switch (scenario) {
+    case 'tailscale_no_https':
+      return { ...none, tailscale: { ready: true, https: false }, wifi: { ready: true, networkName: 'Home-5G' } }
+    case 'company_address':
+      return { ...none, company: { ready: true, address: 'autobyteus.example.com' }, wifi: { ready: true, networkName: 'Home-5G' } }
+    case 'vpn':
+      return { ...none, vpn: { ready: true }, wifi: { ready: true, networkName: 'Office-Staff' } }
+    case 'wifi_ask':
+    case 'wifi_allowed':
+      return { ...none, wifi: { ready: true, networkName: 'Home-5G' } }
+    case 'wifi_new_network':
+      return { ...none, wifi: { ready: true, networkName: 'Cafe-Guest' } }
+    case 'nothing':
+      return { ...none, blocked: 'no_network' }
+    case 'docker_unpublished':
+      return { ...none, blocked: 'docker_unpublished' }
+    default:
+      return { ...none, tailscale: { ready: true, https: true }, wifi: { ready: true, networkName: 'Home-5G' } }
+  }
+}
+
 /** The plain-words picture of the network around this computer (what the node worked out by itself). */
 export interface NetworkPicture {
   kind: 'tailscale' | 'company' | 'vpn' | 'wifi' | 'nothing' | 'docker_unpublished'
