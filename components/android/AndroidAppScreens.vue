@@ -101,7 +101,7 @@
         </section>
 
         <!-- Other ways to connect -->
-        <section class="pb-4" data-testid="android-other-ways" :class="nodes.length === 0 ? 'mt-16' : ''">
+        <section class="pb-4" data-testid="android-other-ways" :class="nodes.length === 0 ? 'mt-10' : ''">
           <button type="button" class="flex h-14 w-full items-center justify-between px-4 text-left text-[0.9375rem] font-medium text-slate-600 active:bg-slate-50" :aria-expanded="otherOpen" aria-controls="android-other-ways-list" data-testid="android-other-toggle" @click="otherOpen = !otherOpen">
             Other ways to connect
             <Icon icon="heroicons:chevron-down-20-solid" class="h-5 w-5 text-slate-400 transition-transform" :class="otherOpen ? 'rotate-180' : ''" aria-hidden="true" />

@@ -107,6 +107,10 @@
 - Solution Designer relaying the user — "Turn off phone access … feels weird … put it somewhere on the main page": the panel header has a visible switch "Phone access [On/Off]" (per node) with one line: on "Phones you connected can reach this node."; off "No phone can reach this node. Your phones stay connected and work again when you turn it back on." While off, the button reads "Turn on and show QR code" ("Turn on, allow and show QR code" for a first-time Wi-Fi/LAN network). "Other options" is removed. Starting state `access_off`.
 - The Wi-Fi network name is not shown (macOS needs the Location permission to read it): status "This computer is on a Wi-Fi or LAN network."; "This network. We ask once for each network." The spec marks the network name as not shown. (The reference keeps an invented internal network id only to tell one network from another; it is never displayed.)
 
+## Design review pass (2026-11-07), at the user's request ("look at the UI and make sure it's clean … until you're satisfied")
+
+- Looked at every state of the three surfaces at 1440 wide, ~900 wide (desktop) and 390 wide (phone). Fixes: the shown code now sits inside its tab (the button gives way to it) instead of detached below; the tab box is full width; all folds (How it works, Advanced, About this code, History) share one style (left chevron, no hover pill); the status line hides while a code is shown (the result line says it); spacing between the Wi-Fi/LAN switch row or the company address and the code; tabs wrap on narrow widths; header text no longer orphans "Node."; first-launch "Other ways to connect" sits closer to the headline; the browser page's "Other ways to connect" has a chevron.
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).

@@ -3,7 +3,7 @@
     <!-- Connect a phone: one tab per way to connect -->
     <div class="px-6 pb-6 pt-6" data-testid="phone-connect-section">
       <div class="flex flex-wrap items-start justify-between gap-x-8 gap-y-3">
-        <div class="min-w-0 max-w-lg flex-1">
+        <div class="min-w-0 max-w-xl flex-1">
           <h3 class="text-lg font-semibold leading-7 text-slate-900" data-testid="phone-connect-title">Phones</h3>
           <p class="mt-0.5 text-sm leading-6 text-slate-500" data-testid="phone-connect-subtitle">Show a code, then scan it with the AutoByteus app to connect a phone to <span class="font-medium text-slate-700">{{ nodeName }}</span>.</p>
         </div>
@@ -24,8 +24,8 @@
         {{ blockedMessage }}
       </p>
 
-      <div class="mt-5 overflow-x-auto" data-testid="phone-way-tabs">
-        <div class="inline-flex w-fit gap-1 rounded-2xl border border-slate-200 bg-slate-100 p-1 md:rounded-full" role="tablist" aria-label="Ways to connect a phone">
+      <div class="mt-5" data-testid="phone-way-tabs">
+        <div class="inline-flex w-fit max-w-full flex-wrap gap-1 rounded-2xl border border-slate-200 bg-slate-100 p-1 md:rounded-full" role="tablist" aria-label="Ways to connect a phone">
           <button v-for="way in tabs" :id="`phone-tab-${way.id}`" :key="way.id" type="button" role="tab" :aria-selected="tab === way.id" :aria-controls="`phone-panel-${way.id}`" :tabindex="tab === way.id ? 0 : -1" class="flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-2 text-sm font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :class="tab === way.id ? 'bg-white text-blue-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'" :data-testid="`phone-tab-${way.id}`" @click="selectTab(way.id)" @keydown="tabKeys($event, way.id)">
             <span class="h-2 w-2 flex-shrink-0 rounded-full" :class="isReady(way.id) ? 'bg-emerald-500' : 'bg-slate-300'" aria-hidden="true" />
             {{ way.label }}
@@ -35,12 +35,12 @@
       </div>
 
       <!-- The open tab -->
-      <div :id="`phone-panel-${tab}`" role="tabpanel" :aria-labelledby="`phone-tab-${tab}`" class="mt-4 max-w-3xl rounded-xl border border-slate-200 p-5" :data-testid="`phone-panel-${tab}`">
-        <p class="flex items-start gap-2 text-sm font-medium leading-6" :class="isReady(tab) ? 'text-emerald-700' : 'text-slate-700'" data-testid="phone-way-status">
+      <div :id="`phone-panel-${tab}`" role="tabpanel" :aria-labelledby="`phone-tab-${tab}`" class="mt-4 rounded-xl border border-slate-200 p-5" :data-testid="`phone-panel-${tab}`">
+        <p v-if="phase === 'idle'" class="flex items-start gap-2 text-sm font-medium leading-6" :class="isReady(tab) ? 'text-emerald-700' : 'text-slate-700'" data-testid="phone-way-status">
           <span class="mt-2 h-2 w-2 flex-shrink-0 rounded-full" :class="isReady(tab) ? 'bg-emerald-500' : 'bg-slate-300'" aria-hidden="true" />
           {{ statusLine }}
         </p>
-        <p v-if="checkNote[tab]" class="mt-0.5 pl-4 text-sm leading-6 text-slate-500" data-testid="phone-check-note">{{ checkNote[tab] }}</p>
+        <p v-if="checkNote[tab] && phase === 'idle'" class="mt-0.5 pl-4 text-sm leading-6 text-slate-500" data-testid="phone-check-note">{{ checkNote[tab] }}</p>
 
         <!-- Same Wi-Fi: the first time on a network the button asks; afterwards a switch keeps the answer -->
         <div v-if="tab === 'wifi' && isReady('wifi') && !wifiAllowed" class="mt-4 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3" data-testid="phone-wifi-question">
@@ -71,7 +71,7 @@
         </div>
 
         <!-- Actions -->
-        <div class="mt-5 flex flex-wrap items-center gap-3">
+        <div v-if="phase === 'idle'" class="mt-5 flex flex-wrap items-center gap-3">
           <button v-if="!(tab === 'company' && !ways.company.ready)" type="button" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none" :disabled="!isReady(tab)" data-testid="phone-show-qr" @click="showQr">
             <Icon icon="heroicons:qr-code-20-solid" class="h-5 w-5" aria-hidden="true" />
             {{ qrButtonLabel }}
@@ -81,13 +81,51 @@
           </button>
         </div>
 
+        <!-- Code shown / expired -->
+        <div v-if="phase === 'qr' || phase === 'expired'" class="mt-4 flex flex-col gap-6 first:mt-0 sm:flex-row sm:items-start" data-testid="phone-connect-code">
+          <div class="relative h-[208px] w-[208px] flex-shrink-0 rounded-xl border border-slate-200 bg-white p-2.5">
+            <img v-if="qrDataUrl" :src="qrDataUrl" alt="Pairing QR code" class="h-full w-full transition-opacity" :class="phase === 'expired' ? 'opacity-10' : ''" data-testid="phone-qr-image" />
+            <div v-if="phase === 'expired'" class="absolute inset-0 flex flex-col items-center justify-center gap-1 text-center" data-testid="phone-qr-expired">
+              <Icon icon="heroicons:clock-20-solid" class="h-6 w-6 text-slate-400" aria-hidden="true" />
+              <p class="text-sm font-semibold text-slate-700">This code has expired</p>
+            </div>
+          </div>
+
+          <div class="min-w-0 flex-1">
+            <p class="flex items-center gap-2 text-base font-semibold leading-6 text-slate-900" data-testid="phone-connect-line">
+              <span class="h-2.5 w-2.5 flex-shrink-0 rounded-full" :class="lineDot" aria-hidden="true" />
+              {{ connectLine }}
+            </p>
+            <p class="mt-1 text-sm leading-6 text-slate-600">Open the AutoByteus app on your phone and scan this code.</p>
+
+            <p v-if="phase === 'qr'" class="mt-3 inline-flex items-center gap-1.5 text-sm tabular-nums" :class="secondsLeft <= 60 ? 'font-semibold text-amber-700' : 'text-slate-600'" role="timer" data-testid="phone-qr-timer">
+              <Icon icon="heroicons:clock-20-solid" class="h-4 w-4" aria-hidden="true" />
+              Valid for {{ timeLeft }}
+            </p>
+
+            <div class="mt-5 flex flex-wrap items-center gap-2">
+              <button v-if="phase === 'expired'" type="button" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none" data-testid="phone-new-code" @click="showCode(activeWay)">
+                <Icon icon="heroicons:arrow-path-20-solid" class="h-5 w-5" aria-hidden="true" />
+                New code
+              </button>
+              <button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60" data-testid="phone-code-close" @click="closeCode">Close</button>
+            </div>
+            <p class="mt-4 text-xs leading-5 text-slate-500" data-testid="phone-code-footnote">Works once, for 5 minutes. No app yet? Scan with the phone’s camera to connect in the browser.</p>
+            <button type="button" class="mt-1 flex items-center gap-1 rounded-md py-1 text-xs font-medium text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-expanded="aboutCodeOpen" data-testid="phone-about-code-toggle" @click="aboutCodeOpen = !aboutCodeOpen">
+              <Icon icon="heroicons:chevron-right-20-solid" class="h-3.5 w-3.5 text-slate-400 transition-transform" :class="aboutCodeOpen ? 'rotate-90' : ''" aria-hidden="true" />
+              About this code
+            </button>
+            <p v-if="aboutCodeOpen" class="mt-1 max-w-md text-xs leading-5 text-slate-500" data-testid="phone-about-code">The QR code holds a one-time code, not a password. After scanning, the phone stays connected and you don’t need the code again. Lost a phone? Revoke it below and it can no longer connect. AutoByteus never opens this computer to the public internet.</p>
+          </div>
+        </div>
+
         <!-- One fold per tab: How it works (opens by itself when the way is not ready yet) -->
         <div class="mt-5 border-t border-slate-100" data-testid="phone-details">
-          <button type="button" class="flex w-full items-center justify-between gap-3 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-expanded="infoOpen" aria-controls="phone-info-body" data-testid="phone-info-toggle" @click="toggleInfo">
+          <button type="button" class="flex w-full items-center gap-1.5 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-expanded="infoOpen" aria-controls="phone-info-body" data-testid="phone-info-toggle" @click="toggleInfo">
+            <Icon icon="heroicons:chevron-right-20-solid" class="h-4 w-4 flex-shrink-0 text-slate-400 transition-transform" :class="infoOpen ? 'rotate-90' : ''" aria-hidden="true" />
             How it works
-            <Icon icon="heroicons:chevron-down-20-solid" class="h-4 w-4 flex-shrink-0 text-slate-400 transition-transform" :class="infoOpen ? 'rotate-180' : ''" aria-hidden="true" />
           </button>
-          <div v-if="infoOpen" id="phone-info-body" class="pb-3 pr-6" data-testid="phone-info-body">
+          <div v-if="infoOpen" id="phone-info-body" class="max-w-2xl pb-3 pl-[1.375rem] pr-6" data-testid="phone-info-body">
             <p class="text-sm leading-6 text-slate-700" data-testid="phone-how-it-works">{{ current.how }}</p>
             <dl class="mt-3 space-y-1.5 text-sm leading-6 text-slate-600">
               <div class="grid grid-cols-[4.25rem_1fr] gap-x-3"><dt class="font-medium text-slate-800">When</dt><dd>{{ current.when }}</dd></div>
@@ -110,12 +148,12 @@
         </div>
 
         <!-- Tailscale: the optional secure web address, under Advanced -->
-        <div v-if="tab === 'tailscale' && isReady('tailscale')" class="mt-4 border-t border-slate-100 pt-3" data-testid="phone-option-secure-address">
-          <button type="button" class="-ml-2 flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-expanded="advancedOpen" aria-controls="phone-advanced-body" data-testid="phone-advanced-toggle" @click="advancedOpen = !advancedOpen">
+        <div v-if="tab === 'tailscale' && isReady('tailscale')" class="border-t border-slate-100" data-testid="phone-option-secure-address">
+          <button type="button" class="flex w-full items-center gap-1.5 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-expanded="advancedOpen" aria-controls="phone-advanced-body" data-testid="phone-advanced-toggle" @click="advancedOpen = !advancedOpen">
             <Icon icon="heroicons:chevron-right-20-solid" class="h-4 w-4 text-slate-400 transition-transform" :class="advancedOpen ? 'rotate-90' : ''" aria-hidden="true" />
             Advanced
           </button>
-          <div v-if="advancedOpen" id="phone-advanced-body" class="mt-2 pl-1">
+          <div v-if="advancedOpen" id="phone-advanced-body" class="max-w-2xl pb-3 pl-[1.375rem]">
             <p class="text-sm font-medium text-slate-900">Secure web address</p>
             <template v-if="!httpsReady">
               <p class="mt-0.5 text-sm leading-5 text-slate-500">Optional. Run this once in a terminal on this computer to give {{ nodeName }} an https:// address on your Tailscale network. AutoByteus shows it and does not run it.</p>
@@ -136,43 +174,6 @@
         </div>
       </div>
 
-      <!-- Code shown / expired -->
-      <div v-if="phase === 'qr' || phase === 'expired'" class="mt-5 flex max-w-3xl flex-col gap-6 sm:flex-row sm:items-start" data-testid="phone-connect-code">
-        <div class="relative h-[208px] w-[208px] flex-shrink-0 rounded-xl border border-slate-200 bg-white p-2.5">
-          <img v-if="qrDataUrl" :src="qrDataUrl" alt="Pairing QR code" class="h-full w-full transition-opacity" :class="phase === 'expired' ? 'opacity-10' : ''" data-testid="phone-qr-image" />
-          <div v-if="phase === 'expired'" class="absolute inset-0 flex flex-col items-center justify-center gap-1 text-center" data-testid="phone-qr-expired">
-            <Icon icon="heroicons:clock-20-solid" class="h-6 w-6 text-slate-400" aria-hidden="true" />
-            <p class="text-sm font-semibold text-slate-700">This code has expired</p>
-          </div>
-        </div>
-
-        <div class="min-w-0 flex-1">
-          <p class="flex items-center gap-2 text-base font-semibold leading-6 text-slate-900" data-testid="phone-connect-line">
-            <span class="h-2.5 w-2.5 flex-shrink-0 rounded-full" :class="lineDot" aria-hidden="true" />
-            {{ connectLine }}
-          </p>
-          <p class="mt-1 text-sm leading-6 text-slate-600">Open the AutoByteus app on your phone and scan this code.</p>
-
-          <p v-if="phase === 'qr'" class="mt-3 inline-flex items-center gap-1.5 text-sm tabular-nums" :class="secondsLeft <= 60 ? 'font-semibold text-amber-700' : 'text-slate-600'" role="timer" data-testid="phone-qr-timer">
-            <Icon icon="heroicons:clock-20-solid" class="h-4 w-4" aria-hidden="true" />
-            Valid for {{ timeLeft }}
-          </p>
-
-          <div class="mt-5 flex flex-wrap items-center gap-2">
-            <button v-if="phase === 'expired'" type="button" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500 disabled:shadow-none" data-testid="phone-new-code" @click="showCode(activeWay)">
-              <Icon icon="heroicons:arrow-path-20-solid" class="h-5 w-5" aria-hidden="true" />
-              New code
-            </button>
-            <button type="button" class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60" data-testid="phone-code-close" @click="closeCode">Close</button>
-          </div>
-          <p class="mt-4 text-xs leading-5 text-slate-500" data-testid="phone-code-footnote">Works once, for 5 minutes. No app yet? Scan with the phone’s camera to connect in the browser.</p>
-          <button type="button" class="mt-1 flex items-center gap-1 rounded-md py-1 text-xs font-medium text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-expanded="aboutCodeOpen" data-testid="phone-about-code-toggle" @click="aboutCodeOpen = !aboutCodeOpen">
-            <Icon icon="heroicons:chevron-right-20-solid" class="h-3.5 w-3.5 text-slate-400 transition-transform" :class="aboutCodeOpen ? 'rotate-90' : ''" aria-hidden="true" />
-            About this code
-          </button>
-          <p v-if="aboutCodeOpen" class="mt-1 max-w-md text-xs leading-5 text-slate-500" data-testid="phone-about-code">The QR code holds a one-time code, not a password. After scanning, the phone stays connected and you don’t need the code again. Lost a phone? Revoke it below and it can no longer connect. AutoByteus never opens this computer to the public internet.</p>
-        </div>
-      </div>
     </div>
 
     <!-- Paired phones -->
@@ -203,7 +204,7 @@
       </ul>
 
       <div v-if="revokedPhones.length > 0" class="mt-2 border-t border-slate-100 pt-2" data-testid="phone-history">
-        <button type="button" class="-ml-2 flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-expanded="historyOpen" aria-controls="phone-history-list" data-testid="phone-history-toggle" @click="historyOpen = !historyOpen">
+        <button type="button" class="flex w-full items-center gap-1.5 py-2 text-left text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-expanded="historyOpen" aria-controls="phone-history-list" data-testid="phone-history-toggle" @click="historyOpen = !historyOpen">
           <Icon icon="heroicons:chevron-right-20-solid" class="h-4 w-4 text-slate-400 transition-transform" :class="historyOpen ? 'rotate-90' : ''" aria-hidden="true" />
           History ({{ revokedPhones.length }})
         </button>

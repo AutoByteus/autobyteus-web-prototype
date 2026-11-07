@@ -38,8 +38,11 @@
         <Icon icon="heroicons:arrow-top-right-on-square-20-solid" class="h-4 w-4" aria-hidden="true" />
       </a>
 
-      <details v-if="!hasLink" class="mt-2 border-t border-slate-100 pt-3" data-testid="mobile-other-ways">
-        <summary class="flex min-h-[3rem] cursor-pointer items-center text-[0.9375rem] font-medium text-slate-600">Other ways to connect</summary>
+      <details v-if="!hasLink" class="group mt-2 border-t border-slate-100 pt-3" data-testid="mobile-other-ways">
+        <summary class="flex min-h-[3rem] cursor-pointer list-none items-center justify-between text-[0.9375rem] font-medium text-slate-600 [&::-webkit-details-marker]:hidden">
+          Other ways to connect
+          <Icon icon="heroicons:chevron-down-20-solid" class="h-5 w-5 text-slate-400 transition-transform group-open:rotate-180" aria-hidden="true" />
+        </summary>
         <label for="pairing-link" class="mt-2 block text-sm font-medium text-slate-700">Paste a pairing link</label>
         <textarea id="pairing-link" v-model="pairingText" class="mt-1.5 h-24 w-full rounded-xl border border-slate-300 p-3 font-mono text-sm shadow-sm placeholder:text-slate-400 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100" placeholder="Paste the link from your computer" data-testid="mobile-pairing-text" />
         <button type="button" class="mt-3 h-12 w-full rounded-xl border border-slate-300 text-[0.9375rem] font-semibold text-slate-700 active:bg-slate-100 disabled:opacity-50" :disabled="!pairingText.trim() || connecting" data-testid="mobile-paste-connect" @click="connect">Connect</button>
