@@ -71,13 +71,11 @@
         :status-label="connectionStatusLabel"
         :is-checking="sessionStore.isCheckingStatus"
         :diagnostic="sessionStore.lastDiagnostic"
-        :peers="runTreeStore.peers"
         :in-app="inAndroidApp"
         :node-count="androidNodeCount"
         @close="showConnection = false"
         @check="checkStatus"
-        @switch-node="openNodeList(false)"
-        @add-node="openNodeList(true)"
+        @switch-node="openNodeList"
         @unpair="showConnection = false; showUnpairConfirm = true"
       />
 
@@ -237,9 +235,9 @@ function retryNode(): void {
   // The reference's remote node stays down: the row keeps its state, as it does on the desktop.
 }
 
-/** The page asks the app for its node list (Switch node) or its scanner (Add a node). No credential crosses. */
-function openNodeList(scan: boolean): void {
-  window.location.assign(scan ? '/android?from=node&scan=1' : '/android?from=node');
+/** The page asks the app for its node list (Switch node; the list has the Scan button). No credential crosses. */
+function openNodeList(): void {
+  window.location.assign('/android?from=node');
 }
 
 function openNewRun(): void {

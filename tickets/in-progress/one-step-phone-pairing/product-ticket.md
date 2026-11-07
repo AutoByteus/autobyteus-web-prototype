@@ -24,6 +24,11 @@
 
 - The user (during the build): the start screen's primary button can say "Scan" instead of "Scan QR code", because it is clear. Changed: the button and the scanner's title say "Scan"; the first-launch headline keeps "Scan the QR code on your computer".
 
+## Review round 2 (2026-11-07)
+
+- The user (about the node sheet): the Switch node screen already has Scan, so "Add a node" under it is not needed; "Yeah, let's remove it. Make it cleaner." and, about Peer nodes: "remove peer nodes as well".
+- Change: the node sheet in the Android app is now status + Check connection, **Switch node** ("N nodes on this phone"), Unpair this phone. "Add a node" and the read-only "Peer nodes" list are gone from the sheet (also in a plain browser, where the sheet is otherwise unchanged). The "docker" / "office-mac" chips on runs stay. This removes part of the approved 277 sheet (UIS-010 / VIS-019, DEC-003 A peer list) at his word: recorded for the Solution Designer.
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).

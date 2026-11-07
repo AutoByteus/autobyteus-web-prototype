@@ -293,8 +293,7 @@ function startScan(): void {
 
 function closeScanner(): void {
   clearTimers()
-  if (route.query.scan === '1') backToPage()
-  else view.value = 'list'
+  view.value = 'list'
 }
 
 function cancelConnecting(): void {
@@ -332,7 +331,6 @@ onMounted(() => {
   nodes.value = loadAndroidNodes()
   currentId.value = localStorage.getItem(ANDROID_ACTIVE_KEY)
   // The app looks at each node as the list opens.
-  if (route.query.scan === '1') startScan()
   checkTimer = setTimeout(() => (checking.value = false), 900)
 })
 
