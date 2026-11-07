@@ -124,4 +124,8 @@ Approved. `ui-ux-spec.md` and 34 final screenshots (`visual-references/VIS-001�
 
 ## Integration record
 
-- Integration into `personal`: see the final entry below (filled by repository management at finalization).
+- Integration: `Completed` (2026-11-07). The approved UI reference and ticket (revision `d2e960cca2856724d8fdea4b7563fd602fc18f3f`) were pushed as a fast-forward to `origin/personal` and the canonical checkout `/Users/normy/autobyteus_org/autobyteus-web-design` was fast-forwarded to it. This record is the one later finalization commit on `personal`.
+- Default-entry-point check: from the canonical checkout (temporary dev server, port 3396, since stopped) the desktop panel `/nodes?nodeTab=phoneSetup` showed the four tabs with "Tailscale · Recommended" and "Works anywhere through Tailscale" after Show QR code; `/android` listed three nodes with the "Scan" button; tapping a node reached the node page, whose sheet shows "Switch node · 3 nodes on this phone". No preview URL or preview-only state was used.
+- Runtime: ticket server port 3395 and the temporary canonical check on 3396 are stopped; nothing else was started.
+- Source pin: `ui-baseline-report.md` pin `d74f75a51a`. Accepted design base: `e0a52bcfa554d474bcfc2ad5e58621e690c05499`. UI reference revision: `d2e960cca2856724d8fdea4b7563fd602fc18f3f`.
+- Cleanup: worktree `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/one-step-phone-pairing` and branch `design/one-step-phone-pairing` removed after this record is on `personal`.

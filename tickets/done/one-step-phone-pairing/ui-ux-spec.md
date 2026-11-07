@@ -18,7 +18,7 @@
 - Selected frontend application or product surface: Nodes › Phone Setup (desktop), the `/mobile` phone shell (connection sheet, pairing page), and the Android app's native start screen.
 - Pinned source commit or revision: baseline `ui-baseline-report.md` pin `d74f75a51a`; the `/mobile` shell as accepted by `tickets/done/mobile-experience-redesign` (autobyteus-277).
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design`; ticket branch `design/one-step-phone-pairing`; accepted design base `e0a52bcfa554d474bcfc2ad5e58621e690c05499` (`origin/personal`, 2026-11-07).
-- UI reference revision or commit: recorded in `product-ticket.md` (Integration record).
+- UI reference revision or commit: `d2e960cca2856724d8fdea4b7563fd602fc18f3f` (on `personal`; also in `product-ticket.md`, Integration record).
 - Ticket folder: `tickets/done/one-step-phone-pairing/` (while open: `tickets/in-progress/one-step-phone-pairing/`)
 - Baseline report path: `/Users/normy/autobyteus_org/autobyteus-web-design/ui-baseline-report.md`
 
