@@ -35,6 +35,7 @@
             <span class="space-y-1">
               <span class="block"><span class="font-medium text-slate-800">Same network as this computer:</span> nothing to install.</span>
               <span class="block"><span class="font-medium text-slate-800">Anywhere else:</span> install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone, and sign in to the same account.</span>
+              <span class="block" data-testid="phone-vpn-line"><span class="font-medium text-slate-800">Company VPN:</span> turn the VPN on on your phone too. If your company gave this node its own address, enter it under <button type="button" class="font-medium text-blue-700 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="phone-vpn-link" @click="openAddressOption">Other options</button>.</span>
             </span>
           </p>
         </template>
@@ -97,7 +98,7 @@
           </div>
         </div>
 
-        <div data-testid="phone-options-address">
+        <div id="phone-options-address" data-testid="phone-options-address">
           <h5 class="text-xs font-semibold uppercase tracking-wide text-slate-500">Address</h5>
           <div v-if="network.tailscaleRunning" class="mt-2" data-testid="phone-option-secure-address">
             <p class="text-sm font-medium text-slate-900">Secure web address</p>
@@ -183,7 +184,7 @@
 
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { toQrCodeDataUrl } from '~/services/qr/qrCodeDataUrlService'
 import {
   WIFI_ALLOWED_KEY,
@@ -245,6 +246,14 @@ const lineDot = computed(() => (manualUsed.value || network.kind === 'tailscale'
 const hint = computed(() =>
   network.kind === 'wifi' && !manualUsed.value ? 'To connect away from this network, install Tailscale on this computer and your phone.' : '',
 )
+
+/** The VPN line points to the address field: open "Other options", scroll to its Address group, focus the field. */
+async function openAddressOption(): Promise<void> {
+  optionsOpen.value = true
+  await nextTick()
+  document.getElementById('phone-options-address')?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+  document.getElementById('phone-manual-address')?.focus({ preventScroll: true })
+}
 
 function stopTicker(): void {
   if (ticker) clearInterval(ticker)

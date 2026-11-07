@@ -59,6 +59,11 @@
 - The user (in the Solution Designer's conversation): "we will use VPN a lot of times in the future … a lot of companies will use VPN … do we also support that?" then "Maybe use different sections … you know the best."
 - Change: no sections per network. Result line is network-neutral: "Works anywhere through Tailscale" / "Works through <company address>" (new state, `company_address`) / "Works on this network". Question: "Use this network?" (button "Use this network"). Hint: "To connect away from this network, install Tailscale …". "Other options" is grouped by purpose: Network ("This network allowed"), Address (Secure web address, Enter an address by hand), Phone access ("Turn off phone access"). Android can't-reach body: "Connect to the same Wi-Fi or VPN as the computer, or turn on Tailscale."
 
+## Review round 9 (2026-11-07) — Solution Designer relaying the user
+
+- The user: "maybe mention, in VPN envionrment, see addtional section how about that? or op other options section".
+- Change (Solution Designer's decision within DEC-012): a third parallel line under "Connect a phone": "Company VPN: turn the VPN on on your phone too. If your company gave this node its own address, enter it under Other options." — "Other options" is a link that opens the collapsed section, scrolls to its Address group and focuses "Enter an address by hand". Shown for the same cases as the other two lines (Tailscale not detected, no company address).
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).
