@@ -79,8 +79,8 @@
       <div v-if="optionsOpen" id="phone-other-options-body" class="mt-2 space-y-5 pb-3 pl-1">
         <div class="flex items-start justify-between gap-6" data-testid="phone-option-wifi">
           <div class="min-w-0">
-            <p id="wifi-switch-label" class="text-sm font-medium text-slate-900">Allow phones to connect over this Wi-Fi</p>
-            <p class="mt-0.5 text-sm leading-5 text-slate-500">Without encryption. Only on a network you trust.</p>
+            <p id="wifi-switch-label" class="text-sm font-medium text-slate-900">Home Wi-Fi allowed</p>
+            <p class="mt-0.5 text-sm leading-5 text-slate-500">Phones connect over this Wi-Fi without encryption, for every node on this computer. Only on a network you trust.</p>
           </div>
           <button type="button" role="switch" class="relative mt-0.5 inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" :class="wifiAllowed ? 'bg-emerald-500' : 'bg-slate-300'" :aria-checked="wifiAllowed" aria-labelledby="wifi-switch-label" data-testid="phone-wifi-switch" @click="toggleWifi">
             <span aria-hidden="true" class="inline-block h-5 w-5 transform rounded-full bg-white shadow-sm transition-transform" :class="wifiAllowed ? 'translate-x-5' : 'translate-x-0.5'" />
