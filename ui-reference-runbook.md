@@ -1,5 +1,16 @@
 # UI Reference Runbook
 
+## phone-setup-remote-node-wording (autobyteus-426 item 16: Phone Setup wording for a node on another computer; design base `34677c88`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 3426
+```
+
+- Entry: `/nodes?nodeTab=phoneSetup` in the external window: `localStorage` `autobyteus.prototype.scenario` = `nodes_user`, `autobyteus.prototype.context` = `electron_external`, then `autobyteus.prototype.phonePairing` = `remote_unreachable` | `remote_lan` | `remote_tailscale` | `remote_vpn` | `remote_nothing`; reload. The node shows as "Office Mac" (illustrative). Compare with `vpn`, `tailscale`, `docker_unpublished` (today's text).
+- Reset: remove `autobyteus.prototype.phonePairing` and `autobyteus.prototype.phoneWifiAllowedNetwork`, reload.
+- Spec: `tickets/done/phone-setup-remote-node-wording/ui-ux-spec.md`.
+
 ## one-step-phone-pairing (autobyteus-395: Nodes › Phone Setup, the Android start screen, the node sheet, the browser pairing page; source pin `d74f75a`, design base `e0a52bcf`)
 
 ```bash

@@ -1,6 +1,6 @@
 # Product Ticket: phone-setup-remote-node-wording (Project Task autobyteus-426, item 16)
 
-- Status: `Awaiting User Review` (review URL below; sent 2026-11-07)
+- Status: `Completed` (user approved 2026-11-07: "approved", covering DEC-A and DEC-B; integration record below)
 - Mode: Product Experience Design (evolves the accepted autobyteus-395 Phone Setup design; text only, no layout change)
 - Requested by: Solution Designer run `solution_designer_46519d6c265f4b23825027f460f14c1b` (package `small-follow-ups-batch-426`), at the user's word of 2026-11-07 ("Product UI/UX text first")
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/small-follow-ups-batch-426/tickets/in-progress/small-follow-ups-batch-426/product-design-request.md` (REQ-016, BEH-016, E-16; also `requirements-doc.md`, `investigation-notes.md` there)
@@ -12,7 +12,7 @@
 - Source pin (read only): `/Users/normy/autobyteus_org/autobyteus-worktrees/small-follow-ups-batch-426` branch `codex/small-follow-ups-batch-426` (`PhoneWayTab.vue`, `phoneConnectionWays.ts`, `phoneAccessStore.ts`).
 - Runtime: `corepack pnpm exec nuxt dev --host 127.0.0.1 --port 3426` from the worktree; pid in `/tmp/phone-text-426-dev.pid`, log `/tmp/phone-text-426-dev.log`; owned by this ticket. State: `localStorage` keys listed under Review URL; remove them and reload to reset.
 - Review URL: `http://127.0.0.1:3426/nodes?nodeTab=phoneSetup` after `localStorage.setItem('autobyteus.prototype.scenario','nodes_user'); localStorage.setItem('autobyteus.prototype.context','electron_external'); localStorage.setItem('autobyteus.prototype.phonePairing','<state>')` and a reload. States: `remote_unreachable`, `remote_lan`, `remote_tailscale`, `remote_vpn`, `remote_nothing` (node on another computer, shown as "Office Mac", illustrative); compare with `vpn`, `tailscale`, `docker_unpublished` (unchanged text).
-- Integration: Pending. Cleanup: Pending.
+- Integration: see the record at the end. Cleanup: see the record at the end.
 
 ## What changed in the UI reference
 
@@ -20,5 +20,9 @@
 
 ## Decisions asked of the user
 
-- DEC-A: the wording below (core scope of item 16).
-- DEC-B: the extension to How it works and the Wi-Fi-allowed note for a remote node (they show "this computer" for the phone's connection directly under the new status line). Recommended: yes, same panel, text only. If no, those lines stay as today for all kinds.
+- DEC-A: the wording of item 16 — approved.
+- DEC-B: the extension (approved, recommended yes) to How it works and the Wi-Fi-allowed note for a remote node (they show "this computer" for the phone's connection directly under the new status line). Recommended: yes, same panel, text only. (Would have left those lines as today for all kinds had it been refused.)
+
+## Final artifacts
+
+`ui-ux-spec.md` and `visual-references/VIS-001…009` in this folder (moved to `tickets/done/phone-setup-remote-node-wording/` on completion). Runbook: `ui-reference-runbook.md` at the repository root.
