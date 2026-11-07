@@ -1,5 +1,22 @@
 # UI Reference Runbook
 
+## one-step-phone-pairing (autobyteus-395: Nodes › Phone Setup, the Android start screen, the node sheet, the browser pairing page; source pin `d74f75a`, design base `e0a52bcf`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 3210
+```
+
+- Desktop panel: `/nodes?nodeTab=phoneSetup` (window of the desktop's own node: `localStorage` `autobyteus.prototype.scenario` = `nodes_user` and `autobyteus.prototype.context` = `electron_internal`; a Docker node window: context `electron_external`).
+- Android app start screen (design route, not the real launcher): `/android`. Tap **Scan** (the camera finds a code by itself), a node, a node's ⋮, or **Other ways to connect**. Tapping a connected node opens its page at `/mobile` inside the "app"; its top-bar node name opens the connection sheet with **Switch node** (only inside the app). A plain `/mobile` is a browser: no Switch node.
+- Browser pairing page: `/mobile?pairing=<sample link>`; the desktop panel's QR encodes one (an inert sample code), so scanning it with a phone camera opens it. Without a link the page shows the "Connect this phone" instructions.
+- Starting states: `localStorage.setItem('autobyteus.prototype.phonePairing', '<name>')`, reload; remove the key to reset (also remove `autobyteus.prototype.androidNodes`, `autobyteus.prototype.androidSeededFor`, `autobyteus.prototype.androidActiveNode`, `autobyteus.prototype.phoneWifiAllowedNetwork`, and `sessionStorage` `autobyteus.prototype.inAndroidApp`).
+  - Desktop: `tailscale` (default), `tailscale_no_https`, `company_address`, `vpn`, `wifi_ask` (nothing installed, first time), `wifi_allowed`, `wifi_new_network` (asks again), `nothing`, `docker_unpublished` (use with the Docker window), `expired`, `no_phones`, `access_off`.
+  - Android: `android_several` (default), `android_first_launch`, `android_unreachable`, `android_scan_cant_reach` (the next scan cannot reach its node). A node not reachable on the node sheet: `autobyteus.prototype.scenario` = `mobile_runs_node_offline` with the in-app flag.
+- Everything is synthetic: node and phone names, the company address `autobyteus.example.com`, the sample QR link, the scripted timeline (list check 0.9 s, scan found 2.2 s, connecting 1.5 s, connected 1.0 s). The QR timer counts down in real time; **Check again** keeps a way "not found" (the reference only shows the states).
+- Final screenshots: captured from the running reference with a disposable script (not kept in the repository); see the spec's inventory.
+- Spec: `tickets/done/one-step-phone-pairing/ui-ux-spec.md`.
+
 ## projects-left-navigation (Projects mode in the left panel; source pin `d74f75a`, design base `752b6b8`)
 
 ```bash

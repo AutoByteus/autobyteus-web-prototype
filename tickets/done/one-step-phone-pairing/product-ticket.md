@@ -1,9 +1,9 @@
 # Product Ticket: one-step-phone-pairing (Project Task autobyteus-395)
 
-- Status: `Awaiting User Review` (review round 1 sent 2026-11-07)
+- Status: `Completed` (user-approved 2026-11-07: "if things are consistant. then i approve"; integration: see the Integration record below)
 - Mode: Product Experience Design (evolves the accepted `/mobile` and Nodes › Phone Setup baseline; the Android app's native start screen is a design-only route)
 - Requested by: Solution Designer run `solution_designer_03f4f2aaf88941a0a3030151229dc1fa`, at the user's request on 2026-11-07 ("yes send to product team")
-- Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/one-step-phone-pairing/tickets/in-progress/one-step-phone-pairing/product-design-request.md` (with `requirements-doc.md` SR-002 and `investigation-notes.md` in the same folder)
+- Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/one-step-phone-pairing/tickets/done/one-step-phone-pairing/product-design-request.md` (with `requirements-doc.md` SR-002 and `investigation-notes.md` in the same folder)
 - Design repository: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`, remote `origin` = `AutoByteus/autobyteus-web-prototype`)
 - Ticket branch / worktree: `design/one-step-phone-pairing` / `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/one-step-phone-pairing`
 - Accepted design base: `e0a52bcfa554d474bcfc2ad5e58621e690c05499` (`origin/personal`, fetched 2026-11-07; local `personal` equal to it)
@@ -13,12 +13,12 @@
 
 ## Decisions asked of the user
 
-- DEC-004: show the home Wi-Fi warning once per computer (recommended; built) or never (described in the spec).
+- DEC-004: the home-network question. Built as asked once for each local network (the Solution Designer's decision under the user's standing word "you know the best"); the user did not say once/never in his own words, so the Solution Designer records DEC-004. The "never ask" variant is described in the spec.
 
 ## The user's words so far
 
 - 2026-11-06 / 2026-11-07: see the request. "no matter they connect tailscale or not. they just want to genreate a qrcode, and scan immediately you know. and they want to be able to connect multiple nodes so that they could switch between different nodes on phone"; today's setup is "complicated and ugly".
-- DEC-004 choice: not yet given.
+- DEC-004: not stated in his own words (see above). Approval: 2026-11-07, "if things are consistant. then i approve" (after a full design review pass). Node-sheet changes in his words: "Yeah, let's remove it. Make it cleaner. If you think like a pure note is not needed, let's remove pure notes as well." then "peer nodes". Start-screen button: "the SCan QRCode can be replaced by Scan directly right?".
 
 ## Review round 1 (2026-11-07)
 
@@ -120,4 +120,8 @@
 
 ## Result
 
-Pending the user's confirmation and his DEC-004 choice.
+Approved. `ui-ux-spec.md` and 34 final screenshots (`visual-references/VIS-001…VIS-034`) are in this folder; the runbook section and README entry are updated. The old Phone Access and Phone Setup guide cards (and their command util) are removed from the UI reference.
+
+## Integration record
+
+- Integration into `personal`: see the final entry below (filled by repository management at finalization).
