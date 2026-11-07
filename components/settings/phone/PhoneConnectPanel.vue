@@ -33,8 +33,8 @@
           <p v-if="phase === 'idle' && !declinedWifi && network.kind !== 'tailscale'" class="mt-4 flex max-w-xl items-start gap-2 text-sm leading-6 text-slate-600" data-testid="phone-tailscale-info">
             <Icon icon="heroicons:information-circle-20-solid" class="mt-0.5 h-5 w-5 flex-shrink-0 text-slate-400" aria-hidden="true" />
             <span class="space-y-1">
-              <span class="block"><span class="font-medium text-slate-800">At home, on this Wi-Fi:</span> nothing to install.</span>
-              <span class="block"><span class="font-medium text-slate-800">Away from home:</span> install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone, and sign in to the same account.</span>
+              <span class="block"><span class="font-medium text-slate-800">Same Wi-Fi as this computer:</span> nothing to install.</span>
+              <span class="block"><span class="font-medium text-slate-800">Anywhere else:</span> install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone, and sign in to the same account.</span>
             </span>
           </p>
         </template>
@@ -62,7 +62,7 @@
             Valid for {{ timeLeft }}
           </p>
 
-          <p v-if="hint && phase === 'qr'" class="mt-4 max-w-md rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm leading-5 text-slate-700" data-testid="phone-connect-hint">Away from home, install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone, and sign in to the same account.</p>
+          <p v-if="hint && phase === 'qr'" class="mt-4 max-w-md rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm leading-5 text-slate-700" data-testid="phone-connect-hint">On another network, install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline" data-testid="phone-tailscale-link">Tailscale</a> on this computer and your phone, and sign in to the same account.</p>
 
           <div class="mt-5 flex flex-wrap items-center gap-2">
             <button v-if="phase === 'expired'" type="button" class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" data-testid="phone-new-code" @click="showCode">
@@ -86,7 +86,7 @@
       <div v-if="optionsOpen" id="phone-other-options-body" class="mt-2 space-y-5 pb-3 pl-1">
         <div class="flex items-start justify-between gap-6" data-testid="phone-option-wifi">
           <div class="min-w-0">
-            <p id="wifi-switch-label" class="text-sm font-medium text-slate-900">Home Wi-Fi allowed</p>
+            <p id="wifi-switch-label" class="text-sm font-medium text-slate-900">Wi-Fi allowed</p>
             <p class="mt-0.5 text-sm leading-5 text-slate-500">Phones connect over this Wi-Fi without encryption, for every node on this computer. Only on a network you trust.</p>
           </div>
           <button type="button" role="switch" class="relative mt-0.5 inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" :class="wifiAllowed ? 'bg-emerald-500' : 'bg-slate-300'" :aria-checked="wifiAllowed" aria-labelledby="wifi-switch-label" data-testid="phone-wifi-switch" @click="toggleWifi">

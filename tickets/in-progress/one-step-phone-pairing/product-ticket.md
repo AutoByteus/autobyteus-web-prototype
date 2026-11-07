@@ -49,6 +49,11 @@
 - The user: "Phones for Embedded Node? or connected devices, what are the right words?"
 - Change (proposal): panel title "Phones"; the node's name moves into the line under it ("… to connect a phone to <node name>"); the list heading is "Connected phones".
 
+## Review round 7 (2026-11-07)
+
+- The user: "At home, on this Wi-Fi: nothing to install" vs LAN / travelling / outside — which wording is more accurate?
+- Change (proposal): "Same Wi-Fi as this computer: nothing to install." / "Anywhere else: install Tailscale on this computer and your phone, and sign in to the same account." Hint under a Wi-Fi QR: "On another network, install Tailscale …". The remembered-answer row reads "Wi-Fi allowed" (no "home"; the SD's working term was "Home Wi-Fi allowed").
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).
