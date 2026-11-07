@@ -3,7 +3,7 @@
 - Status: `Completed` (user-approved 2026-11-07: "if things are consistant. then i approve"; integration: see the Integration record below)
 - Mode: Product Experience Design (evolves the accepted `/mobile` and Nodes › Phone Setup baseline; the Android app's native start screen is a design-only route)
 - Requested by: Solution Designer run `solution_designer_03f4f2aaf88941a0a3030151229dc1fa`, at the user's request on 2026-11-07 ("yes send to product team")
-- Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/one-step-phone-pairing/tickets/done/one-step-phone-pairing/product-design-request.md` (with `requirements-doc.md` SR-002 and `investigation-notes.md` in the same folder)
+- Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/one-step-phone-pairing/tickets/in-progress/one-step-phone-pairing/product-design-request.md` (with `requirements-doc.md` SR-002 and `investigation-notes.md` in the same folder)
 - Design repository: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`, remote `origin` = `AutoByteus/autobyteus-web-prototype`)
 - Ticket branch / worktree: `design/one-step-phone-pairing` / `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/one-step-phone-pairing`
 - Accepted design base: `e0a52bcfa554d474bcfc2ad5e58621e690c05499` (`origin/personal`, fetched 2026-11-07; local `personal` equal to it)
