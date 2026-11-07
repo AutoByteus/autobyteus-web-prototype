@@ -86,6 +86,10 @@
 - The user: a hidden section that explains how everything works.
 - Change: collapsed "How does this work?" below Other options (five short points; wording refined: "Revoke it in the list below"); a small "How?" link beside the result line under the QR opens and scrolls to it.
 
+## Review round 14 (2026-11-07) — copy clarification, Solution Designer relaying the user
+
+- The user asked what "your company's address" means. Change: "How does this work?" point 1 says "an address set up for this node (for example by your company's IT)"; the result line reads "Works through the address set up for this node (<address>)". Meaning: a fixed address an admin configured on the node itself (e.g. `https://autobyteus.company.com`), used automatically, never typed by the phone user.
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).

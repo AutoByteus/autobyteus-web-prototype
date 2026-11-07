@@ -169,7 +169,7 @@
         How does this work?
       </button>
       <ol v-if="howOpen" id="phone-how-body" class="mt-2 max-w-2xl list-decimal space-y-2.5 pb-3 pl-9 pr-2 text-sm leading-6 text-slate-600 marker:text-slate-400" data-testid="phone-how-body">
-        <li>Your phone needs a way to reach this computer. AutoByteus looks for one by itself, in this order: your company’s address, Tailscale, your VPN, then this Wi-Fi.</li>
+        <li>Your phone needs a way to reach this computer. AutoByteus looks for one by itself, in this order: an address set up for this node (for example by your company’s IT), Tailscale, your VPN, then this Wi-Fi.</li>
         <li>On the same Wi-Fi as this computer, nothing needs to be installed. This suits home and office networks.</li>
         <li>Away from it, for example on mobile data or in a café, install <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline">Tailscale</a> on this computer and your phone, and sign in to the same account. Or turn on your company VPN on the phone.</li>
         <li>The QR code works once and only for 5 minutes. After scanning, the phone stays connected, and you don’t need the QR code again.</li>
@@ -284,7 +284,7 @@ const blockedMessage = computed(() =>
 const connectLine = computed(() => {
   if (manualUsed.value) return 'Connects at the address you entered'
   if (network.kind === 'tailscale') return 'Works anywhere through Tailscale'
-  if (network.kind === 'company') return `Works through ${network.companyAddress}`
+  if (network.kind === 'company') return `Works through the address set up for this node (${network.companyAddress})`
   if (network.kind === 'vpn') return 'Works through your VPN'
   return 'Works on this network'
 })
