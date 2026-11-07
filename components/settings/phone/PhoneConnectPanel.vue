@@ -5,7 +5,7 @@
       <div class="flex flex-wrap items-start justify-between gap-x-8 gap-y-3">
         <div class="min-w-0 max-w-xl flex-1">
           <h3 class="text-lg font-semibold leading-7 text-slate-900" data-testid="phone-connect-title">Phones</h3>
-          <p class="mt-0.5 text-sm leading-6 text-slate-500" data-testid="phone-connect-subtitle">Show a code, then scan it with the AutoByteus app to connect a phone to <span class="font-medium text-slate-700">{{ nodeName }}</span>.</p>
+          <p class="mt-0.5 text-sm leading-6 text-slate-500" data-testid="phone-connect-subtitle">Show a code, then scan it with the AutoByteus app to connect a phone to <span class="font-medium text-slate-700">{{ name }}</span>.</p>
         </div>
         <div class="max-w-xs flex-shrink-0 sm:text-right" data-testid="phone-access">
           <div class="flex items-center gap-3 sm:justify-end">
@@ -51,7 +51,7 @@
         <div v-if="tab === 'wifi' && isReady('wifi') && wifiAllowed" class="mt-4 flex items-center justify-between gap-6 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3" data-testid="phone-option-wifi">
           <div class="min-w-0">
             <p id="wifi-switch-label" class="text-sm font-medium text-slate-900">Wi-Fi/LAN allowed on this network</p>
-            <p class="mt-0.5 text-sm leading-5 text-slate-600" data-testid="phone-network-state">This network. Applies to every node on this computer. We ask again on a new network.</p>
+            <p class="mt-0.5 text-sm leading-5 text-slate-600" data-testid="phone-network-state">This network. {{ isRemote ? `${name} remembers it. We ask again on a new network.` : 'Applies to every node on this computer. We ask again on a new network.' }}</p>
           </div>
           <button type="button" role="switch" class="relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full bg-emerald-500 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" aria-checked="true" aria-labelledby="wifi-switch-label" data-testid="phone-wifi-switch" @click="toggleWifi">
             <span aria-hidden="true" class="inline-block h-5 w-5 translate-x-5 transform rounded-full bg-white shadow-sm transition-transform" />
@@ -134,11 +134,11 @@
                 <dd>
                   <template v-if="tab === 'tailscale' && !isReady('tailscale')">
                     <ol class="list-decimal space-y-1 pl-5 marker:text-slate-400">
-                      <li>Install Tailscale (free) on this computer and on your phone. <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="phone-tailscale-link">Get Tailscale</a>.</li>
-                      <li>Sign in to the same account on both, and keep it on.</li>
+                      <li>{{ isRemote ? `Install Tailscale (free) on ${name}, on this computer and on your phone.` : 'Install Tailscale (free) on this computer and on your phone.' }} <a href="https://tailscale.com/download" target="_blank" rel="noopener noreferrer" class="font-medium text-blue-700 underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="phone-tailscale-link">Get Tailscale</a>.</li>
+                      <li>{{ isRemote ? 'Sign in to the same account on all three, and keep it on.' : 'Sign in to the same account on both, and keep it on.' }}</li>
                     </ol>
                   </template>
-                  <template v-else-if="tab === 'tailscale'">Install Tailscale (free) on this computer and on your phone, sign in to the same account on both, and keep it on. AutoByteus finds it by itself.</template>
+                  <template v-else-if="tab === 'tailscale'">{{ isRemote ? `Install Tailscale (free) on ${name}, on this computer and on your phone, sign in to the same account on all three, and keep it on. AutoByteus finds it by itself.` : 'Install Tailscale (free) on this computer and on your phone, sign in to the same account on both, and keep it on. AutoByteus finds it by itself.' }}</template>
                   <template v-else>{{ current.setup }}</template>
                 </dd>
               </div>
@@ -148,7 +148,7 @@
         </div>
 
         <!-- Tailscale: the optional secure web address, under Advanced -->
-        <div v-if="tab === 'tailscale' && isReady('tailscale')" class="border-t border-slate-100" data-testid="phone-option-secure-address">
+        <div v-if="tab === 'tailscale' && isReady('tailscale') && !isRemote" class="border-t border-slate-100" data-testid="phone-option-secure-address">
           <button type="button" class="flex w-full items-center gap-1.5 py-2.5 text-left text-sm font-medium text-slate-700 transition-colors hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-expanded="advancedOpen" aria-controls="phone-advanced-body" data-testid="phone-advanced-toggle" @click="advancedOpen = !advancedOpen">
             <Icon icon="heroicons:chevron-right-20-solid" class="h-4 w-4 text-slate-400 transition-transform" :class="advancedOpen ? 'rotate-90' : ''" aria-hidden="true" />
             Advanced
@@ -156,7 +156,7 @@
           <div v-if="advancedOpen" id="phone-advanced-body" class="max-w-2xl pb-3 pl-[1.375rem]">
             <p class="text-sm font-medium text-slate-900">Secure web address</p>
             <template v-if="!httpsReady">
-              <p class="mt-0.5 text-sm leading-5 text-slate-500">Optional. Run this once in a terminal on this computer to give {{ nodeName }} an https:// address on your Tailscale network. AutoByteus shows it and does not run it.</p>
+              <p class="mt-0.5 text-sm leading-5 text-slate-500">Optional. Run this once in a terminal on this computer to give {{ name }} an https:// address on your Tailscale network. AutoByteus shows it and does not run it.</p>
               <div class="mt-2 flex items-center gap-2">
                 <code class="min-w-0 flex-1 truncate rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-xs text-slate-800" data-testid="phone-serve-command">{{ serveCommand }}</code>
                 <button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60 !px-3 !py-2" data-testid="phone-serve-copy" @click="copyCommand">
@@ -245,6 +245,10 @@ type WayId = 'company' | 'tailscale' | 'vpn' | 'wifi'
 type Phase = 'idle' | 'qr' | 'expired'
 
 const scenario = readPhoneState()
+// autobyteus-426 item 16: in the window of a node on another computer (`remote_*` starting states) the lines name that node,
+// not "this computer". The name is illustrative; the Advanced command is offered only for nodes on this computer.
+const isRemote = scenario.startsWith('remote_')
+const name = computed(() => (isRemote ? 'Office Mac' : props.nodeName))
 const ways = reactive(waysFor(scenario))
 const phase = ref<Phase>('idle')
 const accessOn = ref(scenario !== 'access_off')
@@ -295,7 +299,24 @@ const COPY: Record<WayId, { title: string; tag: string; how: string; when: strin
     safety: 'Protected by your company’s network: usually a secure (https) address reachable only inside the company or through its VPN.',
   },
 }
-const current = computed(() => COPY[tab.value])
+// A node on another computer is named in these lines; "this computer" there is only the desktop (autobyteus-426 item 16 extension).
+const REMOTE_COPY = (n: string): Partial<Record<WayId, Partial<(typeof COPY)[WayId]>>> => ({
+  wifi: {
+    how: `Your phone talks to ${n} directly over your local network, like two devices at home.`,
+    when: `Your phone and ${n} are on the same Wi-Fi or LAN, such as a home or office network.`,
+    safety: `The connection has no extra protection, so others on the same network could see it. Fine at home and in your office. On public Wi-Fi (café, hotel, airport) use Tailscale instead. Works only while the phone is on the same network as ${n}.`,
+  },
+  tailscale: {
+    how: `Tailscale builds a private, encrypted connection between your phone and ${n}, wherever they are.`,
+    safety: `The connection is encrypted between your phone and ${n}, and only devices signed in to your Tailscale account can reach it.`,
+  },
+  vpn: {
+    how: `Your VPN puts your phone and ${n} in the same private network.`,
+    when: `You already use your own VPN that connects your phone and ${n}.`,
+    setup: `Connect ${n}, this computer and your phone to the VPN. AutoByteus finds it by itself.`,
+  },
+})
+const current = computed(() => ({ ...COPY[tab.value], ...(isRemote ? REMOTE_COPY(name.value)[tab.value] : {}) }))
 
 // One fold per tab, closed until clicked; it opens by itself when the way is not ready yet (the user must set it up).
 const infoToggled = reactive<Record<string, boolean>>({})
@@ -330,20 +351,24 @@ let ticker: ReturnType<typeof setInterval> | null = null
 const serveCommand = computed(() => `tailscale serve --bg --https=8443 ${props.localPort ?? 29695}`)
 const timeLeft = computed(() => `${Math.floor(secondsLeft.value / 60)}:${String(secondsLeft.value % 60).padStart(2, '0')}`)
 
-const blockedMessage = computed(() =>
-  ways.blocked === 'docker_unpublished'
-    ? `${props.nodeName} isn’t reachable from other devices. Publish its port on this computer’s network, then try again.`
-    : 'This computer isn’t on a network a phone could use. Connect it to your Wi-Fi or VPN, then try again.',
-)
+const blockedMessage = computed(() => {
+  if (ways.blocked === 'docker_unpublished') return `${props.nodeName} isn’t reachable from other devices. Publish its port on this computer’s network, then try again.`
+  if (isRemote) return `${name.value} isn’t on a network a phone could use. Connect it to Wi-Fi or a VPN, then try again.`
+  return 'This computer isn’t on a network a phone could use. Connect it to your Wi-Fi or VPN, then try again.'
+})
 
-// Detection, in one plain line per tab.
+// Detection, in one plain line per tab. A node on another computer is named; "this computer" there is the desktop.
 const statusLine = computed(() => {
+  const n = name.value
   switch (tab.value) {
     case 'wifi':
+      if (isRemote) return isReady('wifi') ? `${n} is reachable on a Wi-Fi or LAN address from this computer.` : `${n} isn’t reachable on a Wi-Fi or LAN address from this computer.`
       return isReady('wifi') ? 'This computer is on a Wi-Fi or LAN network.' : 'This computer isn’t on a Wi-Fi or LAN network.'
     case 'tailscale':
+      if (isRemote) return isReady('tailscale') ? `Ready: ${n} is reachable through Tailscale from this computer.` : `${n} isn’t reachable through Tailscale from this computer.`
       return isReady('tailscale') ? 'Ready: Tailscale is on, on this computer.' : 'Not set up yet.'
     case 'vpn':
+      if (isRemote) return isReady('vpn') ? `Ready: ${n} is reachable through a VPN from this computer.` : `${n} isn’t reachable through a VPN from this computer. Connect both to your VPN, then Check again.`
       return isReady('vpn') ? 'Ready: a VPN is connected on this computer.' : 'No VPN found on this computer. Connect it, then Check again.'
     default:
       return isReady('company') ? 'Ready: an address is set up for this node.' : 'Not set up yet.'
@@ -398,7 +423,7 @@ async function showCode(way: WayId | 'manual'): Promise<void> {
   stopTicker()
   activeWay.value = way
   accessOn.value = true // showing a code is the consent (DEC-009)
-  qrDataUrl.value = await toQrCodeDataUrl(sampleQrPayload(props.nodeName))
+  qrDataUrl.value = await toQrCodeDataUrl(sampleQrPayload(name.value))
   secondsLeft.value = 300
   phase.value = 'qr'
   ticker = setInterval(() => {
@@ -442,7 +467,9 @@ function checkWay(id: WayId): void {
   checkNote[id] = ''
   setTimeout(() => {
     checking.value = null
-    checkNote[id] = id === 'tailscale' ? 'Still not found. Tailscale isn’t on, on this computer.' : 'Still no VPN found.'
+    checkNote[id] = isRemote
+      ? (id === 'tailscale' ? `Still not reachable. Tailscale must be on for ${name.value} and for this computer.` : 'Still not reachable through a VPN.')
+      : (id === 'tailscale' ? 'Still not found. Tailscale isn’t on, on this computer.' : 'Still no VPN found.')
   }, 900)
 }
 
@@ -483,7 +510,7 @@ function revokeAll(): void {
 
 onMounted(async () => {
   if (scenario === 'expired') {
-    qrDataUrl.value = await toQrCodeDataUrl(sampleQrPayload(props.nodeName))
+    qrDataUrl.value = await toQrCodeDataUrl(sampleQrPayload(name.value))
     activeWay.value = 'tailscale'
     secondsLeft.value = 0
     phase.value = 'expired'

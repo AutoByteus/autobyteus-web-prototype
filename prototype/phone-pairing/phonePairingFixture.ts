@@ -31,6 +31,11 @@ export type DesktopPhoneScenario =
   | 'wifi_new_network' // allowed on another network before; this one is new, so it asks again
   | 'nothing' // no network the phone could use
   | 'docker_unpublished' // a Docker node whose port is not published on the network
+  | 'remote_unreachable' // (426) a node on another computer: its addresses exist, none reaches this desktop
+  | 'remote_lan' // (426) a node on another computer reached on a Wi-Fi or LAN address
+  | 'remote_tailscale' // (426) a node on another computer reached through Tailscale
+  | 'remote_vpn' // (426) a node on another computer reached through a VPN
+  | 'remote_nothing' // (426) a node on another computer that reports no address a phone could use
   | 'expired' // a code was shown and its five minutes ran out
   | 'no_phones' // nothing paired yet
   | 'access_off' // phone access is switched off for this node
@@ -100,9 +105,18 @@ export function waysFor(scenario: string): WaysPicture {
     case 'wifi_new_network':
       return { ...none, wifi: { ready: true, networkName: 'Cafe-Guest' } }
     case 'nothing':
+    case 'remote_nothing':
       return { ...none, blocked: 'no_network' }
     case 'docker_unpublished':
       return { ...none, blocked: 'docker_unpublished' }
+    case 'remote_unreachable':
+      return none
+    case 'remote_lan':
+      return { ...none, wifi: { ready: true, networkName: 'Office-Staff' } }
+    case 'remote_tailscale':
+      return { ...none, tailscale: { ready: true, https: false } }
+    case 'remote_vpn':
+      return { ...none, vpn: { ready: true } }
     default:
       return { ...none, tailscale: { ready: true, https: true }, wifi: { ready: true, networkName: 'Home-5G' } }
   }
