@@ -44,6 +44,11 @@
 - The user: at home on the sofa Tailscale is not needed; away from home it is. Asked whether a separate section is better.
 - Change: no new section. The information line (shown when Tailscale is not detected) is split into the two cases: "At home, on this Wi-Fi: nothing to install." / "Away from home: install Tailscale on this computer and your phone, and sign in to the same account." The hint under a Wi-Fi QR reads "Away from home, install Tailscale … and sign in to the same account."
 
+## Review round 6 (2026-11-07)
+
+- The user: "Phones for Embedded Node? or connected devices, what are the right words?"
+- Change (proposal): panel title "Phones"; the node's name moves into the line under it ("… to connect a phone to <node name>"); the list heading is "Connected phones".
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).

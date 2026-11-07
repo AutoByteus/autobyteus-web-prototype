@@ -2,8 +2,8 @@
   <section class="mx-auto w-full max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" data-testid="phone-connect-panel">
     <!-- Connect a phone -->
     <div class="px-6 pb-6 pt-6" data-testid="phone-connect-section">
-      <h3 class="text-lg font-semibold leading-7 text-slate-900" data-testid="phone-connect-title">Phones for {{ nodeName }}</h3>
-      <p class="mt-0.5 text-sm leading-6 text-slate-500">Show a code, then scan it with the AutoByteus app on your phone.</p>
+      <h3 class="text-lg font-semibold leading-7 text-slate-900" data-testid="phone-connect-title">Phones</h3>
+      <p class="mt-0.5 text-sm leading-6 text-slate-500" data-testid="phone-connect-subtitle">Show a code, then scan it with the AutoByteus app to connect a phone to <span class="font-medium text-slate-700">{{ nodeName }}</span>.</p>
 
       <!-- Idle / blocked / asking -->
       <div v-if="phase === 'idle' || phase === 'blocked' || phase === 'asking'" class="mt-5">
@@ -132,7 +132,7 @@
     <!-- Paired phones -->
     <div class="border-t border-slate-100 px-6 py-5" data-testid="phone-paired-section">
       <div class="flex items-center justify-between gap-3">
-        <h4 class="text-xs font-semibold uppercase tracking-wide text-slate-500">Paired phones</h4>
+        <h4 class="text-xs font-semibold uppercase tracking-wide text-slate-500">Connected phones</h4>
         <button v-if="activePhones.length > 0 && !confirmingRevokeAll" type="button" class="rounded-md px-2 py-1 text-sm font-medium text-slate-500 transition-colors hover:bg-slate-100 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400" data-testid="phone-revoke-all" @click="confirmingRevokeAll = true">Revoke all</button>
       </div>
 
