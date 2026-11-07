@@ -29,6 +29,11 @@
 - The user (about the node sheet): the Switch node screen already has Scan, so "Add a node" under it is not needed; "Yeah, let's remove it. Make it cleaner." and, about Peer nodes: "remove peer nodes as well".
 - Change: the node sheet in the Android app is now status + Check connection, **Switch node** ("N nodes on this phone"), Unpair this phone. "Add a node" and the read-only "Peer nodes" list are gone from the sheet (also in a plain browser, where the sheet is otherwise unchanged). The "docker" / "office-mac" chips on runs stay. This removes part of the approved 277 sheet (UIS-010 / VIS-019, DEC-003 A peer list) at his word: recorded for the Solution Designer.
 
+## Review round 3 (2026-11-07)
+
+- The user: the desktop Phone Setup tab was never designed before and is hard to understand (asked the Solution Designer how it is updated: message sent, answer pending); asked what button replaces "Check connection".
+- Change (proposal, awaiting his word): in the node sheet "Check connection" is a 48px refresh icon button (spins while checking) when the node is reachable, and the outlined word "Retry" when it is not. Industry pattern: icon refresh while healthy, a named action ("Retry"/"Reconnect") when something is wrong.
+
 ## Review URLs (UI reference, port 3395, process owned by this ticket)
 
 - Desktop panel: `/nodes?nodeTab=phoneSetup` (starting states below; window on the desktop's own node: scenario `nodes_user` + context `electron_internal`; Docker node window: context `electron_external`).

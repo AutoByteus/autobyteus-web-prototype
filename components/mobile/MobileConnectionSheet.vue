@@ -14,13 +14,17 @@
       </header>
 
       <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
-        <div class="flex items-center justify-between gap-3 py-3">
+        <div class="flex min-h-[3.5rem] items-center justify-between gap-3">
           <span class="inline-flex items-center gap-2 text-sm font-semibold" :class="connected ? 'text-green-700' : 'text-amber-700'" data-testid="mobile-connection-status">
             <span class="h-2.5 w-2.5 rounded-full" :class="connected ? 'bg-green-500' : 'bg-amber-500'" aria-hidden="true" />
             {{ statusLabel }}
           </span>
-          <button type="button" class="h-11 rounded-xl border border-slate-300 px-4 text-sm font-semibold text-slate-700 active:bg-slate-100 disabled:opacity-50" :disabled="isChecking" data-testid="mobile-check-connection" @click="$emit('check')">
-            {{ isChecking ? 'Checking…' : 'Check connection' }}
+          <!-- one-step-phone-pairing: a refresh icon when all is well; the word "Retry" when it is not -->
+          <button v-if="connected" type="button" class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-slate-500 active:bg-slate-100 disabled:opacity-60" :disabled="isChecking" aria-label="Check connection" data-testid="mobile-check-connection" @click="$emit('check')">
+            <Icon icon="heroicons:arrow-path-20-solid" class="h-6 w-6" :class="isChecking ? 'animate-spin' : ''" aria-hidden="true" />
+          </button>
+          <button v-else type="button" class="h-11 rounded-xl border border-slate-300 px-4 text-sm font-semibold text-slate-700 active:bg-slate-100 disabled:opacity-50" :disabled="isChecking" data-testid="mobile-check-connection" @click="$emit('check')">
+            {{ isChecking ? 'Checking…' : 'Retry' }}
           </button>
         </div>
 
