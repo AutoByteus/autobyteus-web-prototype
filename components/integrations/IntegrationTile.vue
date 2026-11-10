@@ -71,7 +71,7 @@ const props = defineProps<{ item: IntegrationView }>()
 defineEmits<{ open: [id: string] }>()
 
 const { t } = useLocalization()
-const missingTools = computed(() => props.item.tools.filter(tool => !tool.found).map(tool => tool.name))
+const missingTools = computed(() => props.item.tools.filter(check => !check.found).map(check => check.tool))
 
 const withSkillName = (text: string) => text
   .split(props.item.skillName)

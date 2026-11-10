@@ -31,7 +31,7 @@ const CONTEXT_KEY = 'autobyteus.prototype.context'
 const DEFAULT_SCENARIO = 'populated'
 const DEFAULT_CONTEXT = 'desktop'
 const navigationOverlayStores = new Set(['agentRunConfig', 'agentSelection', 'teamRunConfig'])
-const overlayAfterActions: Record<string, string[]> = { agentDefinition: ['reloadAllAgentDefinitions'], serverSettings: ['fetchServerSettings', 'reloadServerSettings', 'updateServerSetting', 'deleteServerSetting', 'fetchSearchConfig'] }
+const overlayAfterActions: Record<string, string[]> = { agentDefinition: ['reloadAllAgentDefinitions', 'resetAgentPersonalSetting'], agentTeamDefinition: ['resetAgentTeamPersonalSetting'], agentOrgDefinition: ['resetPersonalSetting'], serverSettings: ['fetchServerSettings', 'reloadServerSettings', 'updateServerSetting', 'deleteServerSetting', 'fetchSearchConfig'] }
 // Projects and Tasks (0a32261) run the source's own stores unchanged: reads and
 // saves are answered by utils/apolloClient.ts from the local fixtures, and
 // their client cache is never reset by route snapshots. Skill sources and the
@@ -125,13 +125,17 @@ const localActions: Record<string, Set<string>> = {
   toolManagement: new Set(['clearError', 'clearPreviewResult', 'importMcpServerConfigs']),
   // autobyteus-308: "Show internal agents" saves a server setting and reloads the agent list through the source's own actions
   // (the local fixtures apply the setting, as the server does).
-  agentDefinition: new Set(['clearDeleteResult', 'invalidateAgentDefinitions', 'reloadAllAgentDefinitions']),
+  agentDefinition: new Set(['clearDeleteResult', 'invalidateAgentDefinitions', 'reloadAllAgentDefinitions', 'resetAgentPersonalSetting']),
+  // package-clone-auto-update-457: "Reset to the package's setting" runs the source's own action; the Reset answer comes from the local
+  // fixture (prototype/source-observation/personal-settings-fixtures.mjs through utils/apolloClient.ts).
+  agentTeamDefinition: new Set(['resetAgentTeamPersonalSetting']),
+  agentOrgDefinition: new Set(['resetPersonalSetting']),
   serverSettings: new Set(['fetchServerSettings', 'reloadServerSettings', 'updateServerSetting', 'deleteServerSetting', 'fetchSearchConfig']),
   nodeStore: new Set(['replaceSnapshot', 'persistSnapshotToLocalStorage', 'persistCurrentSnapshotToLocalStorage', 'applyRegistrySnapshot', 'ensureBrowserEmbeddedNodePresent', 'initializeRegistry', 'getEntryById', 'getEntryBaseUrl', 'identifyNode', 'upsertRegistry', 'addRemoteNode', 'removeRemoteNode', 'renameNode', 'teardownRegistryListener']),
   windowNodeContext: new Set(['initializeFromWindowContext', 'bindNodeContext', 'getBoundEndpoints', 'waitForBoundBackendReady']),
   server: new Set(['initialize', 'waitForServerReady', 'handleElectronServerInitialization', 'handleBrowserServerConnection', 'attemptServerConnection', 'updateServerStatus', 'restartServer', 'resetServerDataAndRestart', 'checkServerHealth']),
   // WEB-BASELINE-REFRESH-012: the Notification Center marks the app update read and clears it through the host bridge.
-  appUpdate: new Set(['initialize', 'checkForUpdates', 'downloadUpdate', 'installUpdateAndRestart', 'dismissNotice', 'applyRemoteState', 'markNotificationRead', 'clearNotification', 'setAutoCheck']),
+  appUpdate: new Set(['initialize', 'checkForUpdates', 'downloadUpdate', 'installUpdateAndRestart', 'dismissNotice', 'applyRemoteState', 'markNotificationRead', 'clearNotification', 'setAutoCheck', 'setAutomaticUpdate']),
   extensions: new Set(['startInstallPolling', 'stopInstallPolling', 'refreshInstallState', 'applyRemoteState', 'updateLocalExtension', 'initialize', 'installExtension', 'enableExtension', 'disableExtension', 'updateVoiceInputSettings', 'updateVoiceInputLanguageMode', 'updateVoiceInputAudioInputDevice', 'removeExtension', 'reinstallExtension', 'openExtensionFolder']),
   voiceInput: new Set(['setLatestResult', 'clearLatestResult', 'clearCaptureWatchdog', 'armCaptureWatchdog', 'handleCaptureStartupTimeout', 'initialize', 'queryMicrophonePermission', 'registerMediaDeviceListener', 'refreshAudioInputDevices', 'startRecording', 'stopRecording', 'cancelOperationForSource', 'cleanup']),
   browserShell: new Set(['initialize', 'openTab', 'navigateTab', 'reloadTab', 'focusSession', 'setActiveSession', 'updateHostBounds', 'setDeviceEmulation', 'closeSession']),
@@ -263,7 +267,15 @@ const findSnapshot = (): [string, RuntimeSnapshot] => {
     // A Temp task page (4d469b0) uses the captured Temp task page.
     : pathname.startsWith('/projects/temp-tasks/tasks/') ? '/projects/temp-tasks/tasks/temp-task-links'
       : pathname.replace(/^\/projects\/[^/]+/, '/projects/project-prototype-launch').replace(/\/tasks\/(?!new$)[^/]+/, '/tasks/task-outline')
-  const aliasedPath = projectReviewPath || defaultRouteAliases[path] || path
+  // package-clone-auto-update-457: the editor or detail page of another definition (the Daily Assistant, a hand-made agent) takes the shell
+  // snapshot of the captured one (the tool catalog and skill list load with it), as the same page type does for a created Project.
+  const definitionPageAlias = hasCapturedPath ? null : (() => {
+    const query = new URLSearchParams(window.location.search)
+    const view = query.get('view')
+    const stand = { '/agents': ['agent-researcher', ['edit', 'detail']], '/agent-teams': ['team-product', ['team-edit', 'team-detail']], '/agent-orgs': ['org-product-launch', ['org-edit', 'org-detail']] }[pathname] as [string, string[]] | undefined
+    return stand && view && stand[1].includes(view) && query.get('id') ? canonicalPath(`${pathname}?view=${view}&id=${stand[0]}`) : null
+  })()
+  const aliasedPath = projectReviewPath || definitionPageAlias || defaultRouteAliases[path] || path
   const wantedScenario = scenario()
   const wantedContext = context()
   const entries = Object.entries(snapshots)

@@ -1,5 +1,21 @@
 # UI Reference Runbook
 
+## package-clone-auto-update-457 (personal settings of package and built-in definitions, the automatic-update switch for Agent packages and Skill sources, the required-tools row; these surfaces reflect `origin/personal@f78b60dddd`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4570
+```
+
+- Personal settings: `/agents?view=edit&id=agent-researcher` (a package agent, all four settings personal), `agent-writer` (package, none personal), `autobyteus-daily-assistant` (built-in); `/agent-teams?view=team-edit&id=team-product`;
+  `/agent-orgs?view=org-edit&id=org-product-launch`. Each **Reset to the package's setting** / **Reset to the built-in setting** brings that setting's package value back and keeps your other unsaved edits; a reload restores the fixture.
+  Detail pages carry no marks. An agent made by hand: `localStorage.setItem('autobyteus.prototype.scenario', 'personal_settings')`, reload, `/agents?view=edit&id=agent-release-notes` (no note, no marks).
+  `personal_settings_reset_fails`: every Reset fails ("The setting could not be reset: The package files could not be read."). Data is invented in `prototype/source-observation/personal-settings-fixtures.mjs`.
+- Automatic updates: `localStorage.setItem('autobyteus.prototype.context', 'electron_internal')` and `'autobyteus.prototype.scenario'` = `updates_waiting` (switches off; turning Agent packages or Skill sources on opens the confirmation) or `updates_auto_on` (every outcome row);
+  open `/chat`, then the Settings row's "N updates" entry. The Update checks card: `/settings?section=server-settings`. Same scenarios as `update-checks-and-auto-updates`; Chinese: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`.
+- Required tools: `/integrations`, open a card (scenario `integrations_tool_missing`: **Check again**).
+- Comparison runs set `autobyteus.prototype.designOnlyLayers` to `off` on the baseline side. Evidence: `ui-baseline-report.md`, `evidence/package-clone-auto-update-457/`.
+
 ## phone-setup-remote-node-wording (autobyteus-426 item 16: Phone Setup wording for a node on another computer; design base `34677c88`)
 
 ```bash

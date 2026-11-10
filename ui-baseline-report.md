@@ -1,5 +1,96 @@
 # UI Baseline Report
 
+## Scoped refresh `package-clone-auto-update-457` (read this first)
+
+**The whole-frontend pin is still `d74f75a51ab7dc47d42a13f33e0f943c3a230ad7`; the Settings menu and GitHub card still reflect `e4bebdc858`, Manage Nodes `3b9dc912a1`. Three
+surfaces now reflect `origin/personal@f78b60dddd0d1a3db97dfbf8b4bced3b61549010`** (release 1.5.13-beta.2; selected frontend
+`/Users/normy/autobyteus_org/autobyteus-worktrees/package-clone-auto-update-457/autobyteus-web`, read only, `HEAD` = `f78b60dddd`, no uncommitted frontend change): (1) the Agents, Teams and
+Orgs editors' personal settings, (2) the automatic-update switch and update notifications of Agent packages and Skill sources, (3) the Integrations required-tools row. Everything outside them is
+unchanged. Everything below this section still describes the earlier pins.
+
+- Request: Refresh (scoped), ticket `package-clone-auto-update-457`, branch `design/package-clone-auto-update-457`, worktree
+  `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/package-clone-auto-update-457`, accepted design base `0341b3af9f1eca8b557765fea6a6ac00739edbae` (worktree `HEAD` `d1ed2987`, the ticket-open commit).
+  Design repository `/Users/normy/autobyteus_org/autobyteus-web-design`.
+- Status: `Completed`, a candidate: uncommitted changes in the ticket worktree; the Bootstrapper made no commit; integration into the default branch follows the Product UI/UX Designer's acceptance.
+- Run: `corepack pnpm install --ignore-workspace --frozen-lockfile`, `corepack pnpm dev --port 4570`; entries and scenarios in `ui-reference-runbook.md` ("package-clone-auto-update-457"). `package.json`, `pnpm-lock.yaml`, `nuxt.config.ts` unchanged.
+
+### What the source changed (range `d74f75a51a..f78b60dddd`, the scoped files) and what was done
+
+Copied unchanged from `f78b60dddd` (UI code; `cmp` identical to the source file): `components/definitions/PersonalSettingsNote.vue`, `PersonalSettingMark.vue` (new), `components/agentOrgs/AgentOrgPersonalSettings.vue` (new),
+`components/agents/AgentDefinitionForm.vue`, `AgentDetail.vue`, `AgentDefinitionDetailSections.vue`, `components/agentTeams/AgentTeamDefinitionForm.vue`, `components/agentOrgs/AgentOrgExperience.vue`,
+`components/launch-config/DefinitionLaunchPreferencesSection.vue` (the runtime/model mark and Reset; a consumer the request did not name), `composables/usePersonalSettingReset.ts`, `types/personalSettings.ts`,
+`localization/messages/{en,zh-CN}/personalSettings.ts` (+ one import and one spread line in each locale's `index.ts`), the three definition stores (`agentDefinitionStore`, `agentTeamDefinitionStore`, `agentOrgDefinitionStore`: the Reset actions) and the six
+GraphQL documents they use (`personalSettings`, `personalSettingsBase` fields; the three Reset mutations);
+`components/notifications/{AutoUpdateSwitch,NotificationRow,NotificationSection,NotificationCenter}.vue`, `components/skills/SkillSourceRow.vue`, `localization/messages/{en,zh-CN}/updateNotifications.ts`, `stores/updateNotificationsStore.ts`;
+`components/integrations/IntegrationToolsRow.vue` (new).
+Also copied because the files above need them (the same source change, **not asked for, the app's own switch**, autobyteus-356): `stores/appUpdateStore.ts`, `shared/appUpdateTypes.ts`, `types/electron.d.ts`, `components/layout/SidebarNotificationsEntry.vue`
+(counts the automatic outcomes of every kind). `vendor/autobyteus-agent-presentation-contracts` gets the source's `agentRuntimeName` (`src/agent-runtime-names.ts`, `dist/agent-runtime-names.*`, the index export) because `AgentDefinitionDetailSections.vue` and
+the store import it (the detail page now says "AutoByteus" where the baseline said `autobyteus`); the package's other change (remote task launches) is not taken.
+
+What changed for the user, from the source:
+- Editors (agent, Team, Org) of a definition from a package, and of a built-in agent: one note line under the title ("Tools, skills, avatar and runtime/model are your personal settings on this computer. Package updates keep them." /
+  "… Restarts and AutoByteus updates keep them." for a built-in agent / Teams and Orgs: "Avatar and runtime/model …"). A setting that is personal carries a **Personal** mark and a link, **Reset to the package's setting** (built-in agent: **Reset to the built-in setting**), next to
+  its label: agent Avatar, Skills, Tools and the Runtime/model block; Team Avatar and Runtime/model; Org Avatar (a mark under the avatar) and, when the runtime/model is personal, a line "Default runtime/model: <runtime> · <model>" with its mark. Reset saves at once, brings the
+  package's value back, keeps the user's other unsaved edits, and a failed Reset shows "The setting could not be reset: <reason>" under the note. An agent made by hand has no note and no marks (nor does a create page).
+- **The detail pages carry no personal marks in the source** (the diff of `AgentDetail.vue`, `AgentDefinitionDetailSections.vue`, and of the Team and Org detail views shows only the runtime's display name and the removal of broken `i-heroicons` spans of the three buttons); the request's "Personal marks on the detail page" has no source
+  counterpart and none was built.
+- Notifications: the switch's texts for Agent packages say that personal tools, skills, avatars and runtime/model are kept and the other local changes are replaced with a backup (explanation off/on, the confirmation dialog); `AUTO_UPDATED`/`AUTO_FAILED` rows now count for the sidebar entry for every kind; the time tooltip and layout of a handled row do not wrap. Skill sources' texts did not change.
+- Required tools row: the same row as the baseline's own, now one component the Integrations page uses.
+
+Simulation beneath the UI (the UI reference has no backend; every value is invented):
+- `prototype/source-observation/personal-settings-fixtures.mjs` (new): which fixture definitions come from a package (Research Assistant, Documentation Writer, Product Review Team, Product Launch Org) or are built in (Daily Assistant), which settings are personal at the start and the
+  package's own value that a Reset brings back; the three Reset mutations answer from it; a Reset of an unknown or non-personal setting changes nothing. Used by both the observation node (through `fixtures.mjs`) and the UI reference (`utils/apolloClient.ts`).
+- `plugins/96.personal-settings.client.ts` (new): fills the two fields in the Agents, Teams and Orgs stores (the captured route snapshots carry none); any other definition (the design layer's catalog agents) is made by hand and has none.
+- `plugins/00.prototype-state.client.ts`: the three Reset store actions run the source's own code (`localActions`) and their results survive navigation (`overlayAfterActions`); `appUpdate.setAutomaticUpdate` runs the source's action; the editor/detail page of another definition id takes the captured shell snapshot of the same page type (the tool catalog loads with it).
+- `utils/apolloClient.ts`: the Reset mutations are answered locally; a no-op `cache` (the Org store publishes to the client cache); the resets start again with the scenario. `prototype/shared/install-host-scenario.js`: `setAppUpdateAutomatic` and `automaticUpdate`/`automaticInstallPreparing` in the simulated desktop's update state.
+- Scenarios (new, in `scenarioCatalog`): `personal_settings` (Populated plus one more agent, "Release Notes Helper", made by hand), `personal_settings_reset_fails` (Reset answers an error). The notification scenarios (`updates_*`) are the existing ones.
+- Server-side outcomes are scripted, not computed: a Save does **not** change which settings are personal (the source's node decides that; see known gaps).
+
+### Reconciliation with accepted design-only changes (shared refresh policy)
+
+- `agent-definition-reconnect-ui` (design-only layer: about forty catalog agents, the Video Team): untouched; its catalog agents are "made by hand" (no note, no marks), as any agent without a package. `AgentDefinitionForm.vue` and the other copied files were byte-identical to `d74f75a` before the copy (no design edit in them).
+- `skill-sources-dialog-redesign`, `integrations-page-r2`: untouched, except the tools block of `integrations-page-r2` (below). `SkillSourceRow.vue` (copied; it only formats the check time in the interface language) is used by the redesigned dialog unchanged; the dialog opens and shows the same rows with the layers on.
+- `integrations-page-r2` required-tools block: the baseline page was designed without the component, with the same markup inline. Reconciled: `IntegrationDetail.vue` now renders the source's `IntegrationToolsRow` (the inline block is removed, as in the source); a tool of the fixture is `{ tool, found }` (was `{ name, found }`: the component reads `check.tool`), so
+  `IntegrationTile.vue` and `prototype/integrations/integrationsDesignFixture.ts` follow. The source's other Integrations changes (the source's own page, store, helper text, import errors) are outside this refresh and not taken; the page keeps its design. The page's tools block is SAME as before the refresh (old HEAD vs now, en and zh-CN).
+
+### Comparison (source `f78b60dddd` vs baseline; details and sample screenshots in `evidence/package-clone-auto-update-457/`)
+
+Conditions: the exact `git archive` of the pin served on :4572 beside the observation node :4573; the baseline on :4570 with design-only data off; fresh 1440×900 contexts (656 for narrow), same scenario, host context, locale. Per component: element tree, text, attributes, classes, geometry relative to the root, 29 computed
+style properties. Disposable scripts under `/tmp/r457`; nothing was added to the repository for it.
+
+| ID | Surface / state | Result |
+| --- | --- | --- |
+| PS-01 | Agent from a package, all four settings personal: note, Avatar / Skills / Tools / Runtime-model marks and Reset links (en, zh-CN, 656) | pass: identical |
+| PS-02 | Agent from a package, nothing personal (note only); built-in agent (built-in note and Reset text); agent made by hand (no note); agent create | pass: identical |
+| PS-03 | Team from a package (note, Avatar and Runtime/model marks); Team create | pass: identical (en, zh-CN) |
+| PS-04 | Org from a package (note, avatar mark, "Default runtime/model" line with mark); Org create | pass: identical (en, zh-CN, 656) |
+| PS-05 | Reset of each personal setting (agent tools with an unsaved Name edit kept, avatar, skills, runtime/model; built-in tools; Team avatar, runtime/model; Org avatar, runtime/model): mark gone, package value back | pass: identical |
+| PS-06 | Reset fails: "The setting could not be reset: <reason>", unsaved edit kept | pass: identical |
+| PS-07 | Agent, Team, Org detail pages (package and built-in agent) | pass: identical (no marks in the source either) |
+| AU-01 | Notification Center, Agent packages and Skill sources sections, switch off (waiting rows) (en, zh-CN, 656, browser window) | pass: identical |
+| AU-02 | Confirmation dialog for Agent packages and for Skill sources (en, zh-CN), Cancel/Esc | pass: identical |
+| AU-03 | Turned on: switch on, then the automatic outcomes arrive (updated; failed with its reason) | pass: identical |
+| AU-04 | Switch on with every outcome row (`updates_auto_on`): Updated automatically, Failed with a reason, Waiting; both kinds; en, zh-CN; browser window | pass: identical |
+| AU-05 | `updates_outcomes_only` ("1 updated" entry and panel), `updates_off` (no-effect line), switch turned off | pass: identical |
+| AU-06 | The app's own switch row (by-product) in the desktop window, on, zh-CN | pass: identical |
+| AU-07 | Update checks card (switch off/on, confirmation from the card for both kinds, zh-CN): reads the same switch | pass: identical (hidden `<option>` boxes aside) |
+| AU-08 | Skills → Sources dialog rows (SkillSourceRow): populated, `skill_source_issues`, zh-CN | pass: identical |
+| RT-01 | Required-tools row: tool found; tool missing + "Check again" ("Checking…", disabled, back); several tools; en, zh-CN | pass: the component is byte-identical to the source's and the page's block is identical to before the refresh |
+
+Quick load-and-look pass of the unchanged surfaces (agent, Team and Org lists, chat, workspace, skills, integrations, Nodes, Settings → Server Settings, About, Updates, Memory, Projects): no page error.
+Unchanged in source and not touched (verified identical to the baseline): `AgentPackagesManager.vue`, `SkillSourcesModal.vue`, `UpdateChecksCard.vue`, `AgentList.vue`, `AgentTeamDetail.vue`, `AgentTeamList.vue`, `pages/{agents,agent-teams,agent-orgs,skills,settings}.vue`.
+
+### Known gaps
+
+- **Not refreshed though the range changed it** (other surfaces; a decision for the Product UI/UX Designer): Settings → About / `AutoUpdateSwitch` variant `settings` (the app's switch on the About page, autobyteus-356, `AboutSettingsManager.vue`); `components/settings/nodes/NodeAutoUpdate.vue`
+  + `stores/nodeAutoUpdateStore.ts` (automatic update of remote nodes on Manage Nodes); `SystemTaskNotificationSegment.vue`; the source's own Integrations page and store; and all other changes of the range.
+- The app's own switch and its automatic outcome rows (autobyteus-356) come with the copied notification files: the switch works in the simulated desktop (accepted, saved), but the app's automatic install and its outcome rows ("Updated automatically", "not retried") have no scripted timeline and were not compared; the simulated app update only plays "Download".
+- A Save of an editor does not change which settings are personal (in the source the node decides, so the marks after a Save, and what a package update later does to them, are not simulated). Reset is the only scripted outcome.
+- The Agent runtime section of the Notification Center and the Update checks card's runtime lines were not compared (the source harness does not reproduce the desktop's own window, so they do not show there); the baseline's are the accepted ones of `WEB-BASELINE-REFRESH-012`.
+- The two new scenarios `personal_settings` and `personal_settings_reset_fails` are for review; the default Populated shows the notes and marks of the fixture's package and built-in definitions (the source shows them for any such definition).
+
+---
+
 ## Scoped refresh `WEB-BASELINE-REFRESH-015` (read this first)
 
 **The baseline pin is still `d74f75a51ab7dc47d42a13f33e0f943c3a230ad7` for the whole frontend, with two further scoped exceptions: Settings menu and GitHub card

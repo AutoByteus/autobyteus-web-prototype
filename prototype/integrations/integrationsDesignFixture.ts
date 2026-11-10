@@ -83,7 +83,7 @@ const CATALOG: IntegrationDefinition[] = [
   },
 ]
 
-export interface ToolCheck { name: string; found: boolean }
+export interface ToolCheck { tool: string; found: boolean }
 
 export type SourceStatus = 'UP_TO_DATE' | 'UPDATE_AVAILABLE'
 
@@ -216,7 +216,7 @@ export const phaseOf = (id: string): IntegrationPhase => {
 }
 
 export const toolsOf = (id: string): ToolCheck[] =>
-  definitionOf(id).prerequisites.map(name => ({ name, found: !integrationsWorld().missingTools.has(name) }))
+  definitionOf(id).prerequisites.map(tool => ({ tool, found: !integrationsWorld().missingTools.has(tool) }))
 
 export const wait = (ms: number) => new Promise<void>(done => setTimeout(done, ms))
 

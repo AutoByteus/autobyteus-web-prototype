@@ -57,6 +57,8 @@ control, CSV preparation/download path, or replacement export workflow.
 | `permission_denied` | `/mobile`, `paired` | Denied/offline mobile recovery guidance |
 | `skill_name_issues` | `/skills` | Skills page duplicate-name banner (D-19): one conflict and one ignored runtime-default copy, with Show/Hide details |
 | `agy_runtime` | `/chat` | The Antigravity runtime is also available; choosing it shows the locked (always-on) auto-approve control (`WEB-BASELINE-REFRESH-004`) |
+| `personal_settings` | `/agents?view=edit&id=agent-release-notes` | Populated plus one agent made by hand (no personal-settings note or marks); the package and built-in definitions carry notes and marks in every scenario (`package-clone-auto-update-457`) |
+| `personal_settings_reset_fails` | `/agents?view=edit&id=agent-researcher` | A Reset of a personal setting fails with the node's error |
 | `skill_source_issues` | `/skills` → Sources | One GitHub skill source whose update failed and one with an incomplete removal (Retry removal) (`WEB-BASELINE-REFRESH-006`) |
 
 The populated fixture also contains, since `WEB-BASELINE-REFRESH-002`, the

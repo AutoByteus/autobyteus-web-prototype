@@ -2,6 +2,8 @@ import { createTokenUsageSummary } from '../shared/token-usage-fixture.js'
 import { createNetworkWorld, NODE_IDS } from '../nodes/network-world.mjs'
 import { NODE_SETTINGS_MUTATIONS, agentPackageUpdate, markNotificationHandled, nodeSettingsOperation } from './node-settings-fixtures.mjs'
 import { githubOperation } from './github-integration-fixtures.mjs'
+// package-clone-auto-update-457: the personal settings of package and built-in definitions (personal-settings-fixtures.mjs).
+import { personalSettingsOperation } from './personal-settings-fixtures.mjs'
 import { EMBEDDING_MUTATIONS, embeddingExtraProjects, advanceEmbedding, embeddingMutation, embeddingState, embeddingStatusOf, meaningSearchOf, searchTasks } from './embedding-fixtures.mjs'
 import {
   createTokenUsageAnalyticsResult,
@@ -25,6 +27,9 @@ export const scenarioCatalog = Object.freeze({
   token_mixed_currency: 'Token Statistics contains exact rows in currencies that cannot be combined.',
   token_local: 'Token Statistics contains only local usage with no API bill.',
   agy_runtime: 'Populated data where the Antigravity runtime is also available (its auto-approve control is locked on).',
+  // package-clone-auto-update-457: an agent made by hand in the app's own storage, next to the package and built-in ones.
+  personal_settings: 'Populated data with one more agent, made by hand in the app\'s own storage (it has no personal-settings base).',
+  personal_settings_reset_fails: 'Populated data where a Reset of a personal setting fails (the node answers an error).',
   skill_source_issues: 'Populated data where one GitHub skill source failed to update and another has an incomplete removal.',
   skill_name_issues: 'Populated data where the skill catalog reports one duplicate-name conflict and one ignored runtime default copy (D-19 banner).',
   // WEB-BASELINE-REFRESH-009 (f7fcf90, bd4c637, 3cc1713): agent package definitions that could not be read.
@@ -1111,7 +1116,12 @@ export const mcpImportResult = (jsonString) => {
   return { __typename: 'McpImportResult', success: failures.length === 0, message: failures.length ? 'Some server configurations could not be imported.' : 'Synthetic operation completed.', importedCount, failedCount: failures.length, failures }
 }
 
+// package-clone-auto-update-457: the definition lists and the three Reset mutations carry the personal settings.
 export function operationFixture(operationName, variables = {}, state) {
+  return personalSettingsOperation(operationName, variables, baseOperationFixture(operationName, variables, state), state, name => baseOperationFixture(name, {}, state))
+}
+
+function baseOperationFixture(operationName, variables = {}, state) {
   // one-nodes-tab (shipped): this node's remote-collaboration settings; the other nodes answer through the same world.
   const world = networkWorldOf(state)
   if (world.OPERATIONS.has(operationName)) {

@@ -37,6 +37,7 @@ import generatedWorkspaceMessages from './workspace.generated';
 import workspaceMessages from './workspace';
 import runSettingsMessages from './runSettings';
 import reconnectMessages from './reconnect';
+import personalSettingsMessages from './personalSettings';
 import agentPackageDefinitionsMessages from './agentPackageDefinitions';
 import type { TranslationCatalog } from '../../runtime/types';
 
@@ -80,6 +81,7 @@ const enMessages: TranslationCatalog = {
   ...workspaceMessages,
   ...runSettingsMessages,
   ...reconnectMessages,
+  ...personalSettingsMessages,
   ...agentPackageDefinitionsMessages,
 };
 

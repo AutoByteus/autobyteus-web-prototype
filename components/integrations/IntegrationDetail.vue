@@ -150,52 +150,19 @@
     </li>
   </ol>
 
-  <div class="mt-6 border-t border-slate-100 pt-4" :data-testid="`integration-tools-${item.id}`">
-    <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-      <h4 class="text-sm font-medium text-gray-700">{{ t('integrations.tools.title') }}</h4>
-      <ul class="flex flex-wrap items-center gap-2" role="list">
-        <li
-          v-for="tool in item.tools"
-          :key="tool.name"
-          class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs"
-          :class="tool.found ? 'bg-slate-100 text-slate-700' : 'bg-amber-50 text-amber-800 ring-1 ring-amber-200'"
-          :data-testid="`integration-tool-${item.id}-${tool.name}`"
-        >
-          <Icon
-            :icon="tool.found ? 'heroicons:check-circle' : 'heroicons:exclamation-triangle'"
-            class="h-4 w-4"
-            :class="tool.found ? 'text-green-600' : 'text-amber-600'"
-            aria-hidden="true"
-          />
-          <span class="sr-only">{{ tool.found ? t('integrations.tools.found') : '' }}</span>
-          <span class="font-mono">{{ tool.name }}</span>
-          <span v-if="!tool.found" class="text-amber-700">{{ t('integrations.tools.missing') }}</span>
-        </li>
-      </ul>
-    </div>
-    <div v-if="missingTools.length > 0" class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
-      <p class="text-xs text-amber-800" :data-testid="`integration-tools-missing-${item.id}`">
-        {{ missingTools.length === 1
-          ? t('integrations.tools.missingText', { tools: missingTools.join(', ') })
-          : t('integrations.tools.missingTextMany', { tools: missingTools.join(', ') }) }}
-      </p>
-      <button
-        type="button"
-        class="text-xs font-medium text-blue-600 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60"
-        :disabled="busy !== undefined"
-        :data-testid="`integration-tools-recheck-${item.id}`"
-        @click="runRecheck"
-      >
-        {{ busy === 'tools' ? t('integrations.tools.checking') : t('integrations.tools.checkAgain') }}
-      </button>
-    </div>
-  </div>
+  <IntegrationToolsRow
+    :item="item"
+    :busy="busy !== undefined"
+    :checking="busy === 'tools'"
+    @recheck="runRecheck"
+  />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { Icon } from '@iconify/vue'
+import IntegrationToolsRow from '~/components/integrations/IntegrationToolsRow.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { IntegrationError, useIntegrationsStore, type IntegrationView } from '~/stores/integrationsStore'
 import StepMarker from '~/components/integrations/IntegrationStepMarker.vue'
@@ -212,7 +179,6 @@ const connected = computed(() => props.item.phase === 'connected')
 const busy = computed(() => store.busy[props.item.id])
 const message = computed(() => store.messages[props.item.id])
 const showTokenField = computed(() => !connected.value || replacing.value)
-const missingTools = computed(() => props.item.tools.filter(tool => !tool.found).map(tool => tool.name))
 const connectedSince = computed(() => (props.item.connectedAt ? new Date(props.item.connectedAt).toLocaleDateString() : ''))
 
 /** The integration's own help text; a web address in it becomes a link, nothing else is interpreted. */

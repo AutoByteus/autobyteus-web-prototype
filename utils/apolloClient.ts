@@ -28,6 +28,8 @@ import { seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
 import { seedTaskParts } from '~/prototype/task-part-of/taskPartOfFixture'
 // integrations-page (design-only): an installed integration adds its source to Skills -> Sources.
 import { withIntegrationSource, withIntegrationSourceInMutation } from '~/prototype/integrations/integrationsDesignFixture'
+// package-clone-auto-update-457: the three Reset mutations of personal settings answer from the fixture.
+import { PERSONAL_RESET_MUTATIONS, personalSettingsOperation } from '~/prototype/source-observation/personal-settings-fixtures.mjs'
 import { designSkillSourceData, designRegistryError, designSkillSourceMutation } from '~/prototype/skill-sources/skillSourcesDesignFixture'
 
 type OperationRequest = { query?: any, mutation?: any, variables?: Record<string, unknown> }
@@ -63,6 +65,8 @@ const fixtureState = (): Record<string, any> => {
     localFixtureState.world = null
     localFixtureState.serverSettings = null
     localFixtureState.restState = null
+    // package-clone-auto-update-457: the resets of personal settings start again with the scenario.
+    localFixtureState.personalResets = null
     // skill-sources-dialog-redesign (design-only): representative skill sources for the redesigned dialog.
     if (designOnlyLayersEnabled()) localFixtureState.skillSourceData = designSkillSourceData(scenario)
   }
@@ -125,6 +129,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (designOnlyLayersEnabled() && name === 'GetSkillSources' && data) data = { ...data, skillSourceRegistryError: designRegistryError(scenario) ?? data.skillSourceRegistryError }
   // integrations-page (design-only): the official integrations repository, once installed, is a managed source.
   if (designOnlyLayersEnabled()) data = withIntegrationSource(name, data)
+  // package-clone-auto-update-457: the definitions the design layers added (copies of another entry) are made by hand, not from a package.
+  if (data && ['GetAgentDefinitions', 'GetAgentTeamDefinitions', 'GetAgentOrgDefinitions'].includes(name)) data = personalSettingsOperation(name, {}, data, state, () => null)
   // WEB-BASELINE-REFRESH-011: a scripted read failure (for example the Embedding status) answers as GraphQL errors.
   if (data?.__projectError) return { data: null, errors: [data.__projectError] }
   return { data: data ? structuredClone(data) : {} }
@@ -136,7 +142,7 @@ const resolveLocally = async (request: OperationRequest = {}) => {
 // Project/Task mutations back the Projects pages (0a32261); the skill-source
 // mutations back the Skill Sources dialog (4dee901); ReloadAgentPackageDefinitions backs the
 // Agents, Teams and Orgs Reload buttons (f7fcf90).
-const LOCAL_MUTATIONS = new Set([...GITHUB_MUTATIONS, 'UpdateServerSetting', 'DeleteServerSetting', 'SetRemoteCollaborationEnabled', 'AddPeerNode', 'RenamePeerNode', 'RemovePeerNode', 'ChangePeerAddress', 'AddProjectTaskComment', ...EMBEDDING_MUTATIONS, ...NODE_SETTINGS_MUTATIONS, ...DELEGATED_MUTATIONS, 'ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', 'ImportMcpServerConfigs', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS])
+const LOCAL_MUTATIONS = new Set([...GITHUB_MUTATIONS, 'UpdateServerSetting', 'DeleteServerSetting', 'SetRemoteCollaborationEnabled', 'AddPeerNode', 'RenamePeerNode', 'RemovePeerNode', 'ChangePeerAddress', 'AddProjectTaskComment', ...EMBEDDING_MUTATIONS, ...NODE_SETTINGS_MUTATIONS, ...DELEGATED_MUTATIONS, 'ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', 'ImportMcpServerConfigs', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS, ...PERSONAL_RESET_MUTATIONS])
 
 const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const definition = request.mutation?.definitions?.find((entry: any) => entry.kind === 'OperationDefinition')
@@ -174,7 +180,11 @@ const resolveMutationLocally = async (request: OperationRequest = {}) => {
   return { data: data ? structuredClone(data) : {} }
 }
 
+// package-clone-auto-update-457: the Org store publishes a saved or reset definition to the client's cache; there is no cache here.
+const noCache = { updateQuery: () => undefined, identify: () => undefined, evict: () => false }
+
 export const getApolloClient = (_clientId = 'default') => ({
+  cache: noCache,
   query: resolveLocally,
   mutate: resolveMutationLocally,
   subscribe: () => ({ subscribe: () => ({ unsubscribe: () => undefined }) }),

@@ -34,6 +34,7 @@ function applyScenario(name) {
   state.serverSettings = null
   state.network = null
   state.restState = null
+  state.personalResets = null
 }
 
 applyScenario(process.env.PROTOTYPE_SCENARIO || 'populated')
