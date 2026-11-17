@@ -30,14 +30,18 @@
             :key="item.id"
             type="button"
             class="flex min-h-[3.75rem] w-full items-center gap-3 px-4 py-2 text-left active:bg-slate-100"
-            :class="item.id === modelValue ? 'bg-blue-50' : ''"
+            :class="[item.id === modelValue ? 'bg-blue-50' : '', item.unavailable ? 'cursor-not-allowed' : '']"
             :aria-current="item.id === modelValue ? 'true' : undefined"
+            :aria-disabled="item.unavailable ? 'true' : undefined"
             :data-testid="`${testId}-option`"
-            @click="pick(item.id)"
+            @click="item.unavailable ? undefined : pick(item.id)"
           >
             <span class="min-w-0 flex-1">
-              <span class="block truncate text-base font-medium text-slate-900">{{ item.label }}</span>
-              <span v-if="item.detail" class="block truncate text-[0.8125rem] text-slate-500">{{ item.detail }}</span>
+              <span class="block truncate text-base font-medium" :class="item.unavailable ? 'text-slate-400' : 'text-slate-900'">{{ item.label }}</span>
+              <span v-if="item.unavailable" class="mt-0.5 flex items-center gap-1 text-[0.8125rem] font-medium text-amber-700" data-testid="mobile-choice-limit-mark">
+                <Icon icon="heroicons:clock-20-solid" class="h-4 w-4 flex-shrink-0" aria-hidden="true" />{{ item.unavailable }}
+              </span>
+              <span v-else-if="item.detail" class="block truncate text-[0.8125rem] text-slate-500">{{ item.detail }}</span>
             </span>
             <Icon v-if="item.id === modelValue" icon="heroicons:check-circle-20-solid" class="h-6 w-6 flex-shrink-0 text-blue-600" aria-hidden="true" />
           </button>
