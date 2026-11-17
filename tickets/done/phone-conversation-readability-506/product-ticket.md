@@ -84,6 +84,10 @@ The founder: the runtime and model names in Settings are not the same as on the 
 
 The founder: why is Stop on its own row? Put it at the right of the agent's name, a little lower, just one icon like on the desktop. Change: the Stop run row is gone; a running run shows the desktop's small red stop icon (`heroicons:stop-20-solid`, red-500) at the right end of the name row, in a 44 px touch area, no visible text (accessible name and tooltip "Stop run"). The name row keeps a 44 px minimum height so nothing moves when the run stops. VIS-016 and VIS-017 re-captured.
 
+## Final confirmation (2026-11-17)
+
+The founder, after reviews 6 to 8: "the phone experience is much better now … I agree with the complete, I confirm."
+
 ## Questions for the user (all answered)
 
 1. 506: A, B or C? (recommendation B). 2. Text size default 17 px and the four steps. 3. (answered by review 4: no usage-limit marks at all) 4. Is one tap on Stop run without a confirmation right (the desktop does the same)?
