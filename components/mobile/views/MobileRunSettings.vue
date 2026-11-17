@@ -21,29 +21,16 @@
         @click="stopRun"
       >Stop run</button>
 
-      <MobileChoiceSheet
-        :model-value="draftRuntime"
-        label="Runtime"
-        :items="runtimeItems"
+      <MobileRuntimeModelRows
+        :runtime-kind="draftRuntime"
+        :llm-model-identifier="draftModel"
+        :seed-model-identifier="savedModel"
+        :llm-config="draftConfig"
         :disabled="working"
-        test-id="mobile-run-settings-runtime"
-        item-noun="runtimes"
-        @update:model-value="chooseRuntime"
+        @update:runtime-kind="chooseRuntime"
+        @update:llm-model-identifier="chooseModel"
+        @update:llm-config="draftConfig = $event"
       />
-      <MobileChoiceSheet
-        :model-value="draftModel"
-        label="Model"
-        placeholder="Choose"
-        :items="modelItems"
-        :disabled="working"
-        test-id="mobile-run-settings-model"
-        item-noun="models"
-        @update:model-value="chooseModel"
-      >
-        <template #footer>
-          <ModelListRefreshControl touch :refreshing="false" :failed="false" @refresh="refreshModels" />
-        </template>
-      </MobileChoiceSheet>
 
       <p v-if="error" class="mt-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700" role="alert" data-testid="mobile-run-settings-error">{{ error }}</p>
     </div>
@@ -62,11 +49,10 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { Icon } from '@iconify/vue';
 import MobileScreenBar from '~/components/mobile/MobileScreenBar.vue';
-import MobileChoiceSheet from '~/components/mobile/newRun/MobileChoiceSheet.vue';
-import ModelListRefreshControl from '~/components/common/ModelListRefreshControl.vue';
-import { RUN_RUNTIMES, markStopped, runtimeOf, useRunModelSelection } from '~/prototype/mobile-runs/runModelFixture';
+import MobileRuntimeModelRows from '~/components/mobile/newRun/MobileRuntimeModelRows.vue';
+import { agentRuntimeName } from '@autobyteus/agent-presentation-contracts';
+import { markStopped, saveIsRefused } from '~/prototype/mobile-runs/runSettingsFixture';
 import { useTargetConversation } from '~/composables/workspace/useTargetConversation';
 import { mobileRunStatusLabel } from '~/utils/mobile/mobileRunStatusLabel';
 import { agentStatusDotClass } from '~/utils/workspaceStatusDotPresentation';
@@ -76,7 +62,6 @@ const props = defineProps<{ target: ActiveAgentWorkspaceTarget; parentName: stri
 const emit = defineEmits<{ (event: 'back'): void }>();
 
 const { displayName } = useTargetConversation(() => props.target);
-const { current, save: saveSelection, refreshList, isOffered } = useRunModelSelection(() => props.target.context.state.runId);
 
 const status = computed(() => props.target.context.state.currentStatus);
 /** The node changes a stopped run only: a running or starting run answers "not editable". */
@@ -88,32 +73,31 @@ const subtitle = computed(() => {
 });
 const stopRun = (): void => { markStopped(props.target.context.state.runId); (props.target.context.state as { currentStatus: string }).currentStatus = 'offline'; };
 
-const draftRuntime = ref(current.value.runtime);
-const draftModel = ref(current.value.model);
+/** The run's saved selection is the run's own config (what the desktop's Settings of an existing run edits). */
+const config = computed(() => props.target.context.config as { runtimeKind: string; llmModelIdentifier: string; llmConfig?: Record<string, unknown> | null });
+const savedRuntime = computed(() => config.value.runtimeKind);
+const savedModel = computed(() => config.value.llmModelIdentifier);
+
+const draftRuntime = ref(savedRuntime.value);
+const draftModel = ref(savedModel.value);
+const draftConfig = ref<Record<string, unknown> | null>(config.value.llmConfig ?? null);
 const error = ref('');
-watch(() => props.target.context.state.runId, () => { draftRuntime.value = current.value.runtime; draftModel.value = current.value.model; error.value = ''; });
+watch(() => props.target.context.state.runId, () => {
+  draftRuntime.value = savedRuntime.value; draftModel.value = savedModel.value; draftConfig.value = config.value.llmConfig ?? null; error.value = '';
+});
 
-const runtimeItems = computed(() => RUN_RUNTIMES.map((runtime) => ({ id: runtime.id, label: runtime.name })));
-const modelItems = computed(() => (runtimeOf(draftRuntime.value)?.models ?? [])
-  .filter((model) => isOffered(draftRuntime.value, model))
-  .map((model) => ({ id: model.id, label: model.name, detail: model.detail })));
-
-const chooseRuntime = (id: string): void => {
-  draftRuntime.value = id;
-  draftModel.value = ''; // a runtime's own models: the model is chosen again
-  error.value = '';
-};
+// A runtime's own models: the rows clear the model when the runtime changes and the model is chosen again.
+const chooseRuntime = (kind: string): void => { draftRuntime.value = kind; error.value = ''; };
 const chooseModel = (id: string): void => { draftModel.value = id; error.value = ''; };
-const refreshModels = (): void => {
-  refreshList(draftRuntime.value);
-  if (draftModel.value && !modelItems.value.some((item) => item.id === draftModel.value)) draftModel.value = '';
-  error.value = '';
-};
 
-const changed = computed(() => draftRuntime.value !== current.value.runtime || draftModel.value !== current.value.model);
+const changed = computed(() => draftRuntime.value !== savedRuntime.value || draftModel.value !== savedModel.value);
 const canSave = computed(() => !working.value && changed.value && Boolean(draftModel.value));
 const save = (): void => {
-  const outcome = saveSelection(draftRuntime.value, draftModel.value);
-  if (outcome.ok) emit('back'); else error.value = outcome.message; // saved: back to the conversation, nothing else said
+  if (saveIsRefused()) {
+    error.value = `“${draftModel.value}” is not offered by ${agentRuntimeName(draftRuntime.value)} now. Refresh the model list and choose again.`;
+    return;
+  }
+  Object.assign(config.value, { runtimeKind: draftRuntime.value, llmModelIdentifier: draftModel.value, llmConfig: draftConfig.value });
+  emit('back'); // saved: back to the conversation, nothing else said
 };
 </script>

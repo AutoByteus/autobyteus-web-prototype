@@ -1,6 +1,6 @@
 import { useMobileNavigation } from '~/composables/mobile/useMobileNavigation'
 import { conversationOf, teamOfMember } from '~/prototype/mobile-runs/mobileRunsFixture'
-import { hasBeenStopped } from '~/prototype/mobile-runs/runModelFixture'
+import { hasBeenStopped } from '~/prototype/mobile-runs/runSettingsFixture'
 import { useAgentContextsStore } from '~/stores/agentContextsStore'
 import { useMobileRunOpeningStore } from '~/stores/mobileRunOpeningStore'
 import { useMobileRunTreeStore } from '~/stores/mobileRunTreeStore'

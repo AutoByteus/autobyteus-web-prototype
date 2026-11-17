@@ -30,7 +30,7 @@
   4. **One phone-wide Text size control, four steps** (15, 17, 19, 21 px), in the run's ⋮ menu, applying at once.
   5. **Tool cards, code blocks, tables and the error card use the whole column.**
   6. **A message from another agent is shown as it is** (no arrow, no message-type line) on the phone.
-  7. **Settings** is one ⋮ menu entry and one small screen (Runtime, Model, Save) reusing the New run rows and sheets; a running run shows one plain **Stop run** button above the rows (the node only changes a stopped run), as the desktop has one button. No explanatory or usage text anywhere on the screen.
+  7. **Settings** is one ⋮ menu entry and one small screen (Runtime, Model, Save) reusing the New run rows and sheets **and their data, so the runtime names, model names and lists are the same here, in New run and on the desktop**; a running run shows one plain **Stop run** button above the rows (the node only changes a stopped run), as the desktop has one button. No explanatory or usage text anywhere on the screen.
 - Alternatives considered and why rejected (both were built and shown, then not approved): **A** a slim 24 px avatar column (text 356 px, 86%): keeps a column of space, less gain. **C** no avatars, the founder's messages in a soft blue block (388 px): widest and leanest, but loses who-spoke at a glance in runs with several speakers. Also rejected: a runtime/model summary under the menu entry; usage-limit marks and notes (the desktop has no such information, the founder's word); a saved card and an "applies at the next message" line (the founder's word); a Text size section in the Settings screen (the founder prefers the menu).
 
 ## Scope And Experience Goal
@@ -78,7 +78,7 @@
 | --- | --- | --- | --- |
 | Conversation phone layout | full-width column, turn header, type scale, markdown, cards | the four text sizes; browse and live paths use the same turn markup | `assets/css/phone-conversation.css`; `components/conversation/AIMessage.vue`, `UserMessage.vue`; `components/workspace/agent/EventMonitorBrowseAssistantRow.vue`, `AgentConversationFeed.vue`, `AgentEventMonitor.vue` |
 | Text size (phone-wide) | the four steps, kept on the phone | Small, Standard, Large, Largest | `composables/mobile/usePhoneTextSize.ts`; `components/mobile/runScreen/MobileRunMenu.vue` |
-| Settings screen | runtime and model of the open run | stopped, running (Stop run card), refused | `components/mobile/views/MobileRunSettings.vue`; `prototype/mobile-runs/runModelFixture.ts` (invented) |
+| Settings screen | runtime and model of the open run | stopped, running (Stop run button), refused | `components/mobile/views/MobileRunSettings.vue` (uses `components/mobile/newRun/MobileRuntimeModelRows.vue`, the New run rows); `prototype/mobile-runs/runSettingsFixture.ts` (what the node would decide, scripted) |
 | Composer bottom corners | continuous 1 px border | none | `components/agentInput/AgentUserInputTextArea.vue` |
 
 ## Journey Inventory
@@ -181,9 +181,9 @@ Not the phone's: the node's refusal messages (`run-model-selection-refusal.ts`),
 
 | Boundary / Data | UI Dependency | UI Reference Behavior | Production Behavior Required Or Still Unknown |
 | --- | --- | --- | --- |
-| a run's runtime and model | rows and lists | `prototype/mobile-runs/runModelFixture.ts`: invented runtimes (Claude Code, Codex, AutoByteus, Gemini CLI) and models, the selection kept in memory/session per run | the node's lists and `agentRunModelOptions`/`teamRunModelOptions`, `updateStoppedAgentRunSelection`/`updateStoppedTeamRunSelections`/`updateStoppedAgentOrgRunConfig` as the desktop uses them (`ExistingRunConfigEditor.vue`, `services/runConfigEditing`) |
+| a run's runtime and model | rows and lists | **the product's own, the same as New run and the desktop**: the rows are New run's `MobileRuntimeModelRows` (runtime names from `agentRuntimeName`: AutoByteus, Codex App Server, Claude Agent SDK, …; the model lists, display names, grouping, model settings such as Thinking, and "Refresh models" come from the same stores); the current values are the run's own config (`runtimeKind`, `llmModelIdentifier`, `llmConfig`); Save writes them to the run's config in memory | the node's lists and `agentRunModelOptions`/`teamRunModelOptions`, `updateStoppedAgentRunSelection`/`updateStoppedTeamRunSelections`/`updateStoppedAgentOrgRunConfig` as the desktop uses them (`ExistingRunConfigEditor.vue`, `services/runConfigEditing`); one source of runtime and model names in every view |
 | stopped only | Stop run first | Stop run sets the run Stopped locally | the node answers `RUN_ACTIVE` to a running run; Stop uses the desktop's stop action |
-| the refusal | red card | one invented model ("Sonnet (earlier version)") is refused until "Refresh models" | the node's `MODEL_UNAVAILABLE` message in plain words |
+| the refusal | red card | the starting state `mobile_settings_refused` (`localStorage` `autobyteus.prototype.scenario`) makes Save answer with the refusal; no control in the UI | the node's `MODEL_UNAVAILABLE` message in plain words |
 | the phone key | Settings | allowed | DEC-001: allowed; autobyteus-441 must keep stop and change on the phone's allowed list |
 | Text size | the four steps | stored in `localStorage` key `autobyteus.phone.textSize` | stored on the phone |
 | running runs | the Stop run button | a run the list shows as running opens as Running | the node's live status |
@@ -212,7 +212,7 @@ All images: `visual-references/`, captured from the running UI reference after t
 | VIS-009 | Settings, stopped run | 412 | `VIS-009-settings-stopped-412.png` |
 | VIS-010 | Settings, model list | 412 | `VIS-010-settings-model-list-412.png` |
 | VIS-011 | Settings, model chosen (Save enabled) | 412 | `VIS-011-settings-model-chosen-412.png` |
-| VIS-012 | Settings, the node's refusal | 412 | `VIS-012-settings-refused-412.png` |
+| VIS-012 | Settings, the node's refusal (starting state `mobile_settings_refused`) | 412 | `VIS-012-settings-refused-412.png` |
 | VIS-013 | Settings, runtime list | 412 | `VIS-013-settings-runtime-list-412.png` |
 | VIS-014 | Settings, runtime changed (Model "Choose") | 412 | `VIS-014-settings-runtime-changed-412.png` |
 | VIS-015 | back in the conversation after Save | 412 | `VIS-015-after-save-conversation-412.png` |
@@ -225,7 +225,7 @@ Review evidence (not normative): `evidence/review-1/` (today versus options A, B
 
 ## Change Record (design changes from the baseline)
 
-DC-001 full-width text column and 12 px margins; DC-002 turn header (avatar and name once per speaker); DC-003 17 px / 1.5 type and the markdown and card values above; DC-004 four-step Text size in the ⋮ menu; DC-005 another agent's message without arrow or type line (phone only); DC-006 Settings entry and screen (458); DC-007 Stop run for a running run (458); DC-008 composer lower-corner fix; DC-009 a run the list shows as running opens as Running (UI reference only). Dropped after review: the amber "This run is working" card and its two sentences (the founder: one button, as on the desktop), usage-limit marks and notes, the runtime/model summary under Settings, the saved card, the next-message line, the member note, a Text size section in Settings.
+DC-001 full-width text column and 12 px margins; DC-002 turn header (avatar and name once per speaker); DC-003 17 px / 1.5 type and the markdown and card values above; DC-004 four-step Text size in the ⋮ menu; DC-005 another agent's message without arrow or type line (phone only); DC-006 Settings entry and screen (458); DC-007 Stop run for a running run (458); DC-008 composer lower-corner fix; DC-009 a run the list shows as running opens as Running (UI reference only); DC-010 Settings uses New run's Runtime and Model rows and the product's runtime and model names (review 7: the founder: the names must be the same as on the desktop everywhere). Dropped after review: the amber "This run is working" card and its two sentences (the founder: one button, as on the desktop), usage-limit marks and notes, the runtime/model summary under Settings, the saved card, the next-message line, the member note, a Text size section in Settings.
 
 ## Open Decisions
 

@@ -76,6 +76,10 @@ The founder: "I agree with your recommendation … I accepted your recommendatio
 
 The founder: far too unclean; follow the same cleaning principle: the desktop has just one button and now there are so many words. Change: the running state of Settings is one plain "Stop run" button under the run's name; the amber "This run is working" card and its two sentences are gone (keys `runningTitle`, `runningBody` removed). VIS-016 and VIS-017 re-captured. Evidence: `visual-references/VIS-016-settings-running-412.png`, `VIS-017-settings-after-stop-412.png`.
 
+## Review 7 (2026-11-17, the founder, after the approval)
+
+The founder: the runtime and model names in Settings are not the same as on the desktop; they must be consistent in every place, not only on the phone. Cause: my Settings used an invented list (Claude Code, Codex, Gemini CLI, Opus, Sonnet, …) instead of the product's. Change: Settings now uses New run's own Runtime and Model rows (`MobileRuntimeModelRows`), so runtime names (`agentRuntimeName`: AutoByteus, Codex App Server, Claude Agent SDK), model lists, display names and model settings are the product's, the same as New run and the desktop; the current values are the run's own config. The invented fixture was deleted (`runSettingsFixture.ts` keeps only the stop state and the scripted refusal, starting state `mobile_settings_refused`). VIS-009 to VIS-017 re-captured. Known baseline gap seen on the way: the UI reference's model sheet logs `llmStore.refreshCatalog is not a function` (the stand-in of the baseline refresh; not part of this design; the "Refresh models" button belongs to the product).
+
 ## Questions for the user (all answered)
 
 1. 506: A, B or C? (recommendation B). 2. Text size default 17 px and the four steps. 3. (answered by review 4: no usage-limit marks at all) 4. Is one tap on Stop run without a confirmation right (the desktop does the same)?
