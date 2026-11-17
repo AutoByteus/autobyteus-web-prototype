@@ -48,6 +48,10 @@ Common: side margin 12 px (was 24 + 32), text 17 px / line height 1.5 (was 16 px
 autobyteus-458: ⋮ menu entry "Runtime & model" (current value under it), a full view: Runtime and Model rows (the New run rows and sheets), "Stop run" first for a running run, usage-limit marks (clock, "Limit reached · back at <time>", not selectable), "applies when you send your next message", Save, saved and refused states.
 Evidence: `evidence/review-1/` (506 options screens 1 to 3; 458 flows 1 and 2; Stop run and text sizes).
 
+## Review 2 (2026-11-17, the founder on his phone, screenshot of the ⋮ menu)
+
+The founder: simplify it, use "Settings" instead of "Runtime & model", it looks not clean. Change: the ⋮ menu is back to one line per entry (Artifacts, Files, Messages, Activity, **Settings**); the two-line "Runtime & model / Claude Code · Opus" and the Text size block are gone from the menu. Settings is one screen with two sections: THIS RUN (Runtime, Model, usage-limit note, next-message note, Save; Stop run first for a running run) and TEXT SIZE (four steps, a sample line at the chosen size). Evidence: `evidence/review-2/`; the review-1 458 sheets were removed (they showed the old menu).
+
 ## Questions for the user
 
 1. 506: A, B or C? (recommendation B). 2. Text size default 17 px and the four steps. 3. 458: may a model/runtime marked "limit reached" be picked anyway? The design does not allow it. 4. Is one tap on Stop run without a confirmation right (the desktop does the same)?

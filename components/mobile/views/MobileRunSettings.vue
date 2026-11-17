@@ -1,11 +1,13 @@
 <template>
-  <!-- Runtime & model (autobyteus-458, UIS-011): the open run's runtime and model, changed while the run is stopped. A running
+  <!-- Settings (autobyteus-458 and 506, UIS-011): the open run's runtime and model, changed while the run is stopped, and the
+       phone's text size (one setting for every run). A running
        run says "Stop run" first; a model whose usage limit is out is marked in its list; the change applies when the next
        message is sent. A Team or Org member has its own settings: this screen is always the open member's. -->
   <section class="fixed inset-0 z-20 flex h-[100dvh] flex-col bg-white text-slate-900" data-testid="mobile-run-settings">
-    <MobileScreenBar title="Runtime & model" @back="$emit('back')" />
+    <MobileScreenBar title="Settings" @back="$emit('back')" />
 
     <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4">
+      <h2 class="pt-4 text-xs font-semibold uppercase tracking-wide text-slate-500">This run</h2>
       <div class="flex items-center gap-2 py-3" data-testid="mobile-run-settings-subject">
         <span class="h-2.5 w-2.5 flex-shrink-0 rounded-full" :class="dotClass" aria-hidden="true" />
         <span class="min-w-0 flex-1">
@@ -69,16 +71,35 @@
         <Icon icon="heroicons:information-circle-20-solid" class="mt-0.5 h-4 w-4 flex-shrink-0" aria-hidden="true" />
         A change applies when you send your next message.
       </p>
-    </div>
-
-    <div class="flex-shrink-0 border-t border-slate-100 bg-white px-4 pb-3 pt-2">
       <button
         type="button"
-        class="h-14 w-full rounded-2xl bg-blue-600 px-4 text-base font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
+        class="mt-4 h-12 w-full rounded-xl bg-blue-600 px-4 text-base font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2"
         :disabled="!canSave"
         data-testid="mobile-run-settings-save"
         @click="save"
       >Save</button>
+
+      <h2 class="mt-8 text-xs font-semibold uppercase tracking-wide text-slate-500">Text size</h2>
+      <p class="mt-1 text-[0.8125rem] leading-5 text-slate-500">For the conversation of every run on this phone.</p>
+      <div class="mt-3 grid grid-cols-4 gap-2" role="group" aria-label="Text size" data-testid="mobile-text-size">
+        <button
+          v-for="(size, index) in PHONE_TEXT_SIZES"
+          :key="size.id"
+          type="button"
+          class="flex h-14 flex-col items-center justify-center rounded-xl border leading-none focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          :class="textSize.sizeId.value === size.id ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-slate-200 bg-white text-slate-700 active:bg-slate-100'"
+          :aria-pressed="textSize.sizeId.value === size.id"
+          :data-testid="`mobile-text-size-${size.id}`"
+          @click="textSize.set(size.id)"
+        >
+          <span class="font-medium" :style="{ fontSize: `${14 + index * 4}px` }" aria-hidden="true">A</span>
+          <span class="mt-1.5 text-[0.6875rem]">{{ size.label }}</span>
+        </button>
+      </div>
+      <p class="mt-3 rounded-xl bg-slate-50 p-3 text-slate-800" :style="{ fontSize: `${textSize.px.value}px`, lineHeight: 1.5 }" data-testid="mobile-text-size-sample">
+        The pilot customers get three changes that matter to them, and one date that moved.
+      </p>
+      <div class="h-6" />
     </div>
   </section>
 </template>
@@ -86,6 +107,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { Icon } from '@iconify/vue';
+import { PHONE_TEXT_SIZES, usePhoneTextSize } from '~/composables/mobile/usePhoneTextSize';
 import MobileScreenBar from '~/components/mobile/MobileScreenBar.vue';
 import MobileChoiceSheet from '~/components/mobile/newRun/MobileChoiceSheet.vue';
 import ModelListRefreshControl from '~/components/common/ModelListRefreshControl.vue';
@@ -98,6 +120,7 @@ import type { ActiveAgentWorkspaceTarget } from '~/types/workspace/activeAgentWo
 const props = defineProps<{ target: ActiveAgentWorkspaceTarget; parentName: string | null }>();
 defineEmits<{ (event: 'back'): void }>();
 
+const textSize = usePhoneTextSize();
 const { displayName } = useTargetConversation(() => props.target);
 const { current, save: saveSelection, refreshList, isOffered } = useRunModelSelection(() => props.target.context.state.runId);
 
