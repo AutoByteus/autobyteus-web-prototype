@@ -22,30 +22,16 @@
 .phone-conversation .conv-body.conv-body { padding-top: 0; min-width: 0; }
 .phone-conversation .conv-speaker { display: none; font-size: 0.8125rem; line-height: 1.25rem; font-weight: 600; color: #475569; }
 
-/* identity "avatar": slim avatar column, the text beside it */
-.phone-conversation[data-identity="avatar"] .conv-turn.conv-turn { grid-template-columns: 24px minmax(0, 1fr); column-gap: 8px; }
-.phone-conversation[data-identity="avatar"] .conv-avatar.conv-avatar { width: 24px; height: 24px; font-size: 0.625rem; }
-.phone-conversation[data-identity="avatar"] .conv-avatar svg { width: 22px; height: 22px; }
-.phone-conversation[data-identity="avatar"] .conv-body { padding-top: 0; }
-/* a following turn of the same speaker keeps its column but shows no second avatar */
-.phone-conversation[data-identity="avatar"] [data-speaker="agent"] + [data-speaker="agent"] .conv-avatar { visibility: hidden; }
+/* a small avatar and the name once per speaker, then the text across the full width */
+.phone-conversation .conv-turn.conv-turn { grid-template-columns: 22px minmax(0, 1fr); column-gap: 8px; row-gap: 4px; }
+.phone-conversation .conv-avatar.conv-avatar { width: 22px; height: 22px; font-size: 0.5625rem; grid-column: 1; grid-row: 1; align-self: center; }
+.phone-conversation .conv-avatar svg { width: 20px; height: 20px; }
+.phone-conversation .conv-speaker { display: block; grid-column: 2; grid-row: 1; align-self: center; }
+.phone-conversation .conv-body.conv-body { grid-column: 1 / -1; grid-row: 2; }
+.phone-conversation [data-speaker="agent"] + [data-speaker="agent"] .conv-avatar,
+.phone-conversation [data-speaker="agent"] + [data-speaker="agent"] .conv-speaker { display: none; }
+.phone-conversation [data-speaker="agent"] + [data-speaker="agent"] .conv-body.conv-body { grid-row: 1; }
 
-/* identity "name": a small avatar and the name once per speaker, then the text across the full width */
-.phone-conversation[data-identity="name"] .conv-turn.conv-turn { grid-template-columns: 22px minmax(0, 1fr); column-gap: 8px; row-gap: 4px; }
-.phone-conversation[data-identity="name"] .conv-avatar.conv-avatar { width: 22px; height: 22px; font-size: 0.5625rem; grid-column: 1; grid-row: 1; align-self: center; }
-.phone-conversation[data-identity="name"] .conv-avatar svg { width: 20px; height: 20px; }
-.phone-conversation[data-identity="name"] .conv-speaker { display: block; grid-column: 2; grid-row: 1; align-self: center; }
-.phone-conversation[data-identity="name"] .conv-body.conv-body { grid-column: 1 / -1; grid-row: 2; }
-.phone-conversation[data-identity="name"] [data-speaker="agent"] + [data-speaker="agent"] .conv-avatar,
-.phone-conversation[data-identity="name"] [data-speaker="agent"] + [data-speaker="agent"] .conv-speaker { display: none; }
-.phone-conversation[data-identity="name"] [data-speaker="agent"] + [data-speaker="agent"] .conv-body.conv-body { grid-row: 1; }
-
-/* identity "none": no avatar, no name; your message sits in a soft block */
-.phone-conversation[data-identity="none"] .conv-turn.conv-turn { grid-template-columns: minmax(0, 1fr); }
-.phone-conversation[data-identity="none"] .conv-avatar { display: none; }
-.phone-conversation[data-identity="none"] .conv-turn-user .conv-body.conv-body {
-  background: #f0f7ff; border: 1px solid #dbeafe; border-radius: 14px; padding: 8px 12px;
-}
 
 /* ---- text (the user's message and every Tailwind text size inside the feed scale with the chosen size) ---- */
 .phone-conversation .conv-feed .leading-6 { line-height: var(--pc-lh); }

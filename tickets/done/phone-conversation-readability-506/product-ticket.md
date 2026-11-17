@@ -1,6 +1,6 @@
 # Product Ticket: phone-conversation-readability-506 (Project Task autobyteus-506)
 
-- Status: `Awaiting User Review` (review 1, 2026-11-17)
+- Status: `Completed` (user-approved 2026-11-17; integrated into `personal`, see the integration record)
 - Mode: Product Experience Design (evolves the accepted baseline of the phone run screen's conversation)
 - Requested by: Project Task Manager (`project_task_manager_7c8dce0c4a8b44f88e776a83809dee03`), at the founder's request (2026-11-17)
 - Design repository: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`)
@@ -68,10 +68,14 @@ The founder: do not show the runtime and model under the word Settings in the me
 
 The founder: also remove "A change applies when you send your next message"; make the UI as clean as possible. Change: Save on a stopped run takes the user straight back to the conversation (that is the feedback; opening Settings again shows the new values); no saved card, no next-message text anywhere, and the Team/Org member note is gone too (the header already says "<name> · Stopped · in <Team>"). What is left on the Settings screen: the run's name and status, Runtime, Model, Save; for a running run the "This run is working … Stop run" card; and the node's refusal in plain words when a Save is refused (the screen stays). This drops the stated "applies at the next message" wording of REQ-003 from the screen (requirement impact for 458: the behavior stays, the text goes). Evidence: `evidence/review-4/review-4-settings-clean.png` (menu, Settings, model list, back in the conversation after Save).
 
-## Questions for the user
+## Approval (2026-11-17)
+
+The founder: "I agree with your recommendation … I accepted your recommendation and I think the way neat is just stop run on the mobile phone we really need it." Approved: design B (speaker line once per speaker, full-width column), Standard 17 px with the four steps, Stop run on the phone (DEC-001 of 458: allowed). The alternatives A and C (branches and worktrees) were deleted; the live Tailscale entries 8444/8445/8446 were turned off (the status equals the one saved before: 443 and 8443 unchanged). Final artifacts: `ui-ux-spec.md` (VIS-001 to VIS-019 in `visual-references/`), `ui-reference-runbook.md`, `ui-text-inventory.md` (its table is the spec's "UI text").
+
+## Questions for the user (all answered)
 
 1. 506: A, B or C? (recommendation B). 2. Text size default 17 px and the four steps. 3. (answered by review 4: no usage-limit marks at all) 4. Is one tap on Stop run without a confirmation right (the desktop does the same)?
 
 ## Result
 
-Pending the user's choice.
+Design Completed: see `ui-ux-spec.md`. Integration record below.

@@ -4,7 +4,6 @@
     :class="{ 'phone-conversation': mobileNavigation }"
     :style="mobileNavigation ? { '--pc-size': `${phoneTextSize.px.value}px` } : undefined"
     :data-text-size="mobileNavigation ? phoneTextSize.sizeId.value : undefined"
-    :data-identity="mobileNavigation ? PHONE_IDENTITY : undefined"
     data-testid="agent-event-monitor"
   >
     <AgentConversationFeed
@@ -98,7 +97,6 @@ const revealTool = useWorkspaceToolReveal();
 // Taken in setup: it reads the route through inject, which the lazily created opener cannot (autobyteus-427).
 const mobileNavigation = isMobileRemoteAccessRuntime() ? useMobileNavigation() : null;
 const phoneTextSize = usePhoneTextSize();
-const PHONE_IDENTITY: 'avatar' | 'name' | 'none' = 'name';
 let isLive = true;
 onBeforeUnmount(() => { isLive = false; });
 const browse = useEventMonitorActiveTraceBrowse({

@@ -55,6 +55,8 @@ The promoted default product entries are:
 
 - The phone (`mobile-experience-redesign`, autobyteus-277): <http://127.0.0.1:3210/mobile> (run list with its delegation tree, run screen, New run; the first visit opens a paired phone). Spec: `tickets/done/mobile-experience-redesign/ui-ux-spec.md`; starting states in the runbook. **Refreshed to the source (`phone-run-screen-baseline-refresh-506`, `origin/personal@e4f4b3e176`): the screens are the source's own; see `ui-reference-runbook.md` (first section) and the report's first section.**
 
+- Phone conversation readability and Settings (`phone-conversation-readability-506`, autobyteus-506 and 458): <http://127.0.0.1:3210/mobile> → a run: the full-width conversation with the speaker line, ⋮ → Settings (runtime and model; Stop run for a running run) and Text size (four steps). Spec: `tickets/done/phone-conversation-readability-506/ui-ux-spec.md`.
+
 - Phone pairing (`one-step-phone-pairing`, autobyteus-395): Nodes › Phone Setup <http://127.0.0.1:3210/nodes?nodeTab=phoneSetup> (four tabs: Same Wi-Fi or LAN, Tailscale, Your VPN, Company address), the Android app's start screen <http://127.0.0.1:3210/android> (design route), the node sheet's Switch node, and the browser page for a phone without the app (`/mobile?pairing=…`). Starting states in the runbook. Spec: `tickets/done/one-step-phone-pairing/ui-ux-spec.md`.
 
 - Update checks, agent runtimes and automatic updates (`update-checks-and-auto-updates`, autobyteus-210): <http://127.0.0.1:3210/workspace>
