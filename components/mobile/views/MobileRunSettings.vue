@@ -1,25 +1,29 @@
 <template>
   <!-- Settings (autobyteus-458, UIS-011): the open run's runtime and model, changed while the run is stopped. A running
-       run shows one "Stop run" button first; a change applies at the next message (not said on the screen). A Team or Org member has its own settings: this screen is always the open member's. -->
+       run shows the stop icon at the right of its name; a change applies at the next message (not said on the screen). A Team or Org member has its own settings: this screen is always the open member's. -->
   <section class="fixed inset-0 z-20 flex h-[100dvh] flex-col bg-white text-slate-900" data-testid="mobile-run-settings">
     <MobileScreenBar title="Settings" @back="$emit('back')" />
 
     <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4">
-      <div class="flex items-center gap-2 py-3" data-testid="mobile-run-settings-subject">
+      <div class="flex min-h-[2.75rem] items-center gap-2 py-2" data-testid="mobile-run-settings-subject">
         <span class="h-2.5 w-2.5 flex-shrink-0 rounded-full" :class="dotClass" aria-hidden="true" />
         <span class="min-w-0 flex-1">
           <span class="block truncate text-base font-semibold leading-5">{{ displayName }}</span>
           <span class="block truncate text-xs leading-4 text-slate-500">{{ subtitle }}</span>
         </span>
+        <!-- A running run: the desktop's small red stop icon, here with a 44 px touch area; no text. -->
+        <button
+          v-if="working"
+          type="button"
+          class="-mr-2 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-red-500 active:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/40"
+          aria-label="Stop run"
+          title="Stop run"
+          data-testid="mobile-run-settings-stop"
+          @click="stopRun"
+        >
+          <Icon icon="heroicons:stop-20-solid" class="h-5 w-5" aria-hidden="true" />
+        </button>
       </div>
-
-      <button
-        v-if="working"
-        type="button"
-        class="mb-2 h-12 w-full rounded-xl border border-slate-300 bg-white text-base font-semibold text-slate-800 active:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-        data-testid="mobile-run-settings-stop"
-        @click="stopRun"
-      >Stop run</button>
 
       <MobileRuntimeModelRows
         :runtime-kind="draftRuntime"
@@ -49,6 +53,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
+import { Icon } from '@iconify/vue';
 import MobileScreenBar from '~/components/mobile/MobileScreenBar.vue';
 import MobileRuntimeModelRows from '~/components/mobile/newRun/MobileRuntimeModelRows.vue';
 import { agentRuntimeName } from '@autobyteus/agent-presentation-contracts';

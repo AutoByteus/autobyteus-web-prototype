@@ -9,7 +9,7 @@ Runtime, Model, Choose, Search runtimes/models; Refresh models) are the product'
 | --- | --- | --- | --- |
 | `mobile.settings.menuEntry` | Settings | ⋮ menu entry | the screen title is the same word: `mobile.settings.title` = Settings |
 | `mobile.settings.runtime` / `mobile.settings.model` | Runtime / Model | row labels | same words as New run: reuse its keys |
-| `mobile.settings.stopRun` | Stop run | the button (the only text of the running state) | |
+| `mobile.settings.stopRun` | Stop run | the stop icon's accessible name and tooltip (not visible text) | |
 | `mobile.settings.save` | Save | button | |
 | `mobile.settings.textSize` | Text size | label in the ⋮ menu above the four steps | |
 | `mobile.settings.textSize.small` / `.standard` / `.large` / `.largest` | Small / Standard / Large / Largest | accessible names of the four steps in the menu (the "A" glyphs are not text) | |
