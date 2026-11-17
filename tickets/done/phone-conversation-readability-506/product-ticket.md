@@ -72,6 +72,10 @@ The founder: also remove "A change applies when you send your next message"; mak
 
 The founder: "I agree with your recommendation … I accepted your recommendation and I think the way neat is just stop run on the mobile phone we really need it." Approved: design B (speaker line once per speaker, full-width column), Standard 17 px with the four steps, Stop run on the phone (DEC-001 of 458: allowed). The alternatives A and C (branches and worktrees) were deleted; the live Tailscale entries 8444/8445/8446 were turned off (the status equals the one saved before: 443 and 8443 unchanged). Final artifacts: `ui-ux-spec.md` (VIS-001 to VIS-019 in `visual-references/`), `ui-reference-runbook.md`, `ui-text-inventory.md` (its table is the spec's "UI text").
 
+## Review 6 (2026-11-17, the founder, after the approval, on the Stop run view, 9:48 screenshot)
+
+The founder: far too unclean; follow the same cleaning principle: the desktop has just one button and now there are so many words. Change: the running state of Settings is one plain "Stop run" button under the run's name; the amber "This run is working" card and its two sentences are gone (keys `runningTitle`, `runningBody` removed). VIS-016 and VIS-017 re-captured. Evidence: `visual-references/VIS-016-settings-running-412.png`, `VIS-017-settings-after-stop-412.png`.
+
 ## Questions for the user (all answered)
 
 1. 506: A, B or C? (recommendation B). 2. Text size default 17 px and the four steps. 3. (answered by review 4: no usage-limit marks at all) 4. Is one tap on Stop run without a confirmation right (the desktop does the same)?

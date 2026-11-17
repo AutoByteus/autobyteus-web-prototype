@@ -30,7 +30,7 @@
   4. **One phone-wide Text size control, four steps** (15, 17, 19, 21 px), in the run's ⋮ menu, applying at once.
   5. **Tool cards, code blocks, tables and the error card use the whole column.**
   6. **A message from another agent is shown as it is** (no arrow, no message-type line) on the phone.
-  7. **Settings** is one ⋮ menu entry and one small screen (Runtime, Model, Save) reusing the New run rows and sheets; a running run asks for Stop run first (the node only changes a stopped run). No explanatory or usage text: the screen stays as clean as the desktop's.
+  7. **Settings** is one ⋮ menu entry and one small screen (Runtime, Model, Save) reusing the New run rows and sheets; a running run shows one plain **Stop run** button above the rows (the node only changes a stopped run), as the desktop has one button. No explanatory or usage text anywhere on the screen.
 - Alternatives considered and why rejected (both were built and shown, then not approved): **A** a slim 24 px avatar column (text 356 px, 86%): keeps a column of space, less gain. **C** no avatars, the founder's messages in a soft blue block (388 px): widest and leanest, but loses who-spoke at a glance in runs with several speakers. Also rejected: a runtime/model summary under the menu entry; usage-limit marks and notes (the desktop has no such information, the founder's word); a saved card and an "applies at the next message" line (the founder's word); a Text size section in the Settings screen (the founder prefers the menu).
 
 ## Scope And Experience Goal
@@ -67,7 +67,7 @@
   - tool cards: full column width, at least 44 px tall.
   - code blocks and tables: full column width.
 - Typography: the conversation size `S` is the chosen step: Small 15, **Standard 17 (default)**, Large 19, Largest 21 px; line height 1.5 for everything in the conversation (`line-height: 1.5` on the feed). Inside the conversation: text-xs = 0.8 em (line 1.4), text-sm = 0.9 em (1.45), 0.9375 rem classes = 0.95 em, 0.6875 rem classes = 0.75 em. Speaker name: 13 px / 20 px, weight 600, `#475569` (not scaled). Markdown (all in em of `S`): paragraphs `margin 0 0 0.6em`; h1 1.4 em / 1.25, margin `0.9em 0 0.4em`; h2 1.25 em / 1.3, `0.9em 0 0.35em`; h3 and h4 1.1 em / 1.35, `0.8em 0 0.3em`; lists `padding-left 1.3em`, margin `0.4em 0 0.6em`, items `margin 0.2em 0`, `padding-left 0.15em`, nested lists margin `0.15em 0`; blockquote margin `0.7em 0`, `padding-left 0.8em`; code blocks `font-size 0.82em`, line 1.5, padding `0.65em 0.75em`, radius 8 px, margin `0.6em 0`; inline code 0.88 em; tables 0.9 em, cell padding `0.45em 0.6em`, margin `0.6em 0`. Text segments end with `margin-bottom 0.7em`. Other segments: the error card margin `0.6em 0`, padding `0.7em 0.8em`; the system notice `margin-bottom 0.7em`; the think segment margin `0.4em 0`, its content padding `0.7em 0.8em`; media margin `0.6em 0`.
-- Color values and semantic roles: unchanged from the baseline; new: speaker name `#475569`; Text size selected step `border-blue-600 / bg-blue-50 / text-blue-700`; running card `bg-amber-50`, border `amber-200`, text `amber-900`, Stop run button white with `amber-300` border and `amber-900` text; refusal card `bg-red-50`, border `red-200`, text `red-700`.
+- Color values and semantic roles: unchanged from the baseline; new: speaker name `#475569`; Text size selected step `border-blue-600 / bg-blue-50 / text-blue-700`; **Stop run** button white, 1 px `slate-300` border, `slate-800` semibold 16 px text, 48 px tall, radius 12 px, full width, 8 px above the rows (pressed `bg-slate-100`); refusal card `bg-red-50`, border `red-200`, text `red-700`.
 - Surfaces, borders, radii: composer box `rounded-xl` (12 px) with a 1 px `gray-200` border; **the text area's white background carries `rounded-b-[11px]`** so it no longer paints over the border at the two lower corners (see VIS-019 and Build notes). Menu card as the baseline (rounded-xl, border slate-200, shadow-lg, `w-72`). Settings cards `rounded-xl`; Save `rounded-2xl`.
 - Controls: the ⋮ menu gets **Settings** (a gear icon, 20 px, slate-500, same row as the others: 48 px tall, 15 px text) and, below a 1 px slate-200 divider, a **Text size** block: label 12 px medium slate-500; four buttons in a 4-column grid with 6 px gap, each 44 px tall, radius 8 px, 1 px border, the letter "A" at 13, 16, 19 and 22 px; the chosen one in the selected colors above.
 - Hover, active, focus, selected, disabled, validation, feedback: as the baseline's phone rows (active `bg-slate-100`, focus ring `blue-500`); Text size steps `aria-pressed`; Save disabled at 50% opacity; the running run's rows disabled at 50% (the New run row's disabled look).
@@ -99,7 +99,7 @@
 
 **UXJ-003.** ⋮ → Settings → Runtime and Model rows (value right, chevron; tap opens the sheet; one tap picks and closes, as New run). Choosing another runtime clears the model (it shows "Choose") and the model list is that runtime's; Save is enabled only when something changed and a model is chosen. Save → back to the conversation with nothing else said. ⋮ → Settings shows the new values. The next message the user sends runs on them (behavior of the node; not said on the screen). VIS-009, VIS-010, VIS-013 to VIS-015.
 
-**UXJ-004.** For a running (or starting) run the Settings screen shows the amber card "This run is working" with Stop run; Runtime and Model are disabled. Stop run (one tap, no confirmation: the founder: "stop run on the mobile phone we really need it") → the status line shows Stopped, the card disappears, the rows open. VIS-016, VIS-017.
+**UXJ-004.** For a running (or starting) run the Settings screen shows one **Stop run** button under the run's name (no card, no sentence); Runtime and Model are disabled. Stop run (one tap, no confirmation: the founder: "stop run on the mobile phone we really need it") → the status line shows Stopped, the card disappears, the rows open. VIS-016, VIS-017.
 
 **UXJ-005.** Save is refused (the chosen model is no longer offered): a red card under the rows with the node's words, "“<model>” is not offered by <runtime> now. Refresh the model list and choose again."; nothing changes; open the Model sheet, "Refresh models" drops the model, choose another, Save. VIS-012.
 
@@ -109,7 +109,7 @@
 | --- | --- | --- | --- | --- | --- |
 | UIS-001 | Run conversation (phone) | `/mobile` run screen | read and answer | bar (unchanged), conversation column, composer | VIS-001 to VIS-004, VIS-006 to VIS-008, VIS-015, VIS-018, VIS-019 |
 | UIS-002 | ⋮ menu | the bar's ⋮ | views and the text size | Artifacts, Files, Messages (members), Activity, **Settings**, divider, **Text size** | VIS-005 |
-| UIS-003 | Settings | `/mobile?screen=settings` (⋮ → Settings) | change the open run's runtime and model | 48 px bar "Settings" with ←; subject line (status dot, name, `<status> · in <Team>`); Runtime row; Model row; (running: the card first); refusal card under the rows; a footer with Save (56 px tall, full width, 16 px side margins, 12 px below a 1 px slate-100 line) | VIS-009 to VIS-014, VIS-016, VIS-017 |
+| UIS-003 | Settings | `/mobile?screen=settings` (⋮ → Settings) | change the open run's runtime and model | 48 px bar "Settings" with ←; subject line (status dot, name, `<status> · in <Team>`); Runtime row; Model row; (running: the Stop run button first); refusal card under the rows; a footer with Save (56 px tall, full width, 16 px side margins, 12 px below a 1 px slate-100 line) | VIS-009 to VIS-014, VIS-016, VIS-017 |
 
 ## Interaction And State Transitions
 
@@ -132,7 +132,7 @@
 | Settings, changed | picked | Save enabled | Save | ← | VIS-011 |
 | Settings, runtime changed | picked | Model "Choose" (blue), Save disabled | pick a model | ← | VIS-014 |
 | Settings, refused | Save refused | red card, node wording | Refresh models | | VIS-012 |
-| Settings, running/starting | open | amber card, rows disabled, Save disabled | Stop run | ← | VIS-016 |
+| Settings, running/starting | open | one Stop run button, rows disabled, Save disabled | Stop run | ← | VIS-016 |
 | Settings, after stop | Stop run | Stopped, rows open | choose | | VIS-017 |
 | Conversation, Small/Large/Largest | Text size | the whole conversation at 15/19/21 px | | | VIS-006 to VIS-008 |
 
@@ -151,9 +151,7 @@ Names follow the product's phone namespace (`mobile.nodeDesktop.title`): `mobile
 | --- | --- | --- |
 | `mobile.settings.menuEntry` / `mobile.settings.title` | Settings | ⋮ menu entry and the screen bar (one word; nothing under it) |
 | `mobile.settings.runtime` / `mobile.settings.model` | Runtime / Model | row labels: the New run keys |
-| `mobile.settings.runningTitle` | This run is working | amber card |
-| `mobile.settings.runningBody` | Stop it to change its runtime and model. Everything in the conversation stays. | amber card |
-| `mobile.settings.stopRun` | Stop run | button |
+| `mobile.settings.stopRun` | Stop run | the button (the only text of the running state) |
 | `mobile.settings.save` | Save | footer button |
 | `mobile.settings.textSize` | Text size | ⋮ menu label |
 | `mobile.settings.textSize.small` / `.standard` / `.large` / `.largest` | Small / Standard / Large / Largest | accessible names of the four steps (the "A" glyphs are not text) |
@@ -172,8 +170,8 @@ Not the phone's: the node's refusal messages (`run-model-selection-refusal.ts`),
 
 - Target: the phone's existing (WCAG AA contrast, 44 px targets, visible focus).
 - Focus: Settings opens with the screen bar's back button reachable first; sheets focus the current choice, return focus to the row on close (as New run). The ⋮ menu is unchanged and closes with Escape.
-- Roles: Text size block `role="group"` named "Text size", each step a button with `aria-pressed` and the step's name; the running card `role="status"`; the refusal `role="alert"`; the Save button's disabled state is real (`disabled`).
-- Contrast: speaker name `#475569` on white (7.6:1); amber and red cards use the product's 900/700 text on 50 backgrounds.
+- Roles: Text size block `role="group"` named "Text size", each step a button with `aria-pressed` and the step's name; the Stop run button is a plain button; the refusal `role="alert"`; the Save button's disabled state is real (`disabled`).
+- Contrast: speaker name `#475569` on white (7.6:1); the refusal card uses the product's red-700 text on red-50.
 
 ## Motion And Transitions
 
@@ -188,7 +186,7 @@ Not the phone's: the node's refusal messages (`run-model-selection-refusal.ts`),
 | the refusal | red card | one invented model ("Sonnet (earlier version)") is refused until "Refresh models" | the node's `MODEL_UNAVAILABLE` message in plain words |
 | the phone key | Settings | allowed | DEC-001: allowed; autobyteus-441 must keep stop and change on the phone's allowed list |
 | Text size | the four steps | stored in `localStorage` key `autobyteus.phone.textSize` | stored on the phone |
-| running runs | the card | a run the list shows as running opens as Running | the node's live status |
+| running runs | the Stop run button | a run the list shows as running opens as Running | the node's live status |
 
 Build notes (what engineering changes, in the product's `autobyteus-web`):
 - The phone styles are scoped to the phone runtime (`isMobileRemoteAccessRuntime()`, already used by the event monitor); the shared components stay as they are on the desktop. The speaker line (`conv-speaker`, hidden by default) and the turn grid are phone-only.
@@ -218,7 +216,7 @@ All images: `visual-references/`, captured from the running UI reference after t
 | VIS-013 | Settings, runtime list | 412 | `VIS-013-settings-runtime-list-412.png` |
 | VIS-014 | Settings, runtime changed (Model "Choose") | 412 | `VIS-014-settings-runtime-changed-412.png` |
 | VIS-015 | back in the conversation after Save | 412 | `VIS-015-after-save-conversation-412.png` |
-| VIS-016 | Settings, running run: Stop run | 412 | `VIS-016-settings-running-412.png` |
+| VIS-016 | Settings, running run: the Stop run button | 412 | `VIS-016-settings-running-412.png` |
 | VIS-017 | Settings, after Stop run | 412 | `VIS-017-settings-after-stop-412.png` |
 | VIS-018 | conversation at 360 px | 360 × 780 | `VIS-018-conversation-lists-360.png` |
 | VIS-019 | composer bottom edge, continuous corners (crop 412 × 155) | 412 | `VIS-019-composer-bottom-edge-412.png` |
@@ -227,7 +225,7 @@ Review evidence (not normative): `evidence/review-1/` (today versus options A, B
 
 ## Change Record (design changes from the baseline)
 
-DC-001 full-width text column and 12 px margins; DC-002 turn header (avatar and name once per speaker); DC-003 17 px / 1.5 type and the markdown and card values above; DC-004 four-step Text size in the ⋮ menu; DC-005 another agent's message without arrow or type line (phone only); DC-006 Settings entry and screen (458); DC-007 Stop run for a running run (458); DC-008 composer lower-corner fix; DC-009 a run the list shows as running opens as Running (UI reference only). Dropped after review: usage-limit marks and notes, the runtime/model summary under Settings, the saved card, the next-message line, the member note, a Text size section in Settings.
+DC-001 full-width text column and 12 px margins; DC-002 turn header (avatar and name once per speaker); DC-003 17 px / 1.5 type and the markdown and card values above; DC-004 four-step Text size in the ⋮ menu; DC-005 another agent's message without arrow or type line (phone only); DC-006 Settings entry and screen (458); DC-007 Stop run for a running run (458); DC-008 composer lower-corner fix; DC-009 a run the list shows as running opens as Running (UI reference only). Dropped after review: the amber "This run is working" card and its two sentences (the founder: one button, as on the desktop), usage-limit marks and notes, the runtime/model summary under Settings, the saved card, the next-message line, the member note, a Text size section in Settings.
 
 ## Open Decisions
 

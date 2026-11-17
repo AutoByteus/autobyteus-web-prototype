@@ -1,6 +1,6 @@
 <template>
   <!-- Settings (autobyteus-458, UIS-011): the open run's runtime and model, changed while the run is stopped. A running
-       run says "Stop run" first; a change applies at the next message (not said on the screen). A Team or Org member has its own settings: this screen is always the open member's. -->
+       run shows one "Stop run" button first; a change applies at the next message (not said on the screen). A Team or Org member has its own settings: this screen is always the open member's. -->
   <section class="fixed inset-0 z-20 flex h-[100dvh] flex-col bg-white text-slate-900" data-testid="mobile-run-settings">
     <MobileScreenBar title="Settings" @back="$emit('back')" />
 
@@ -13,16 +13,13 @@
         </span>
       </div>
 
-      <div v-if="working" class="mb-2 rounded-xl border border-amber-200 bg-amber-50 p-3" role="status" data-testid="mobile-run-settings-running">
-        <p class="text-[0.9375rem] font-semibold text-amber-900">This run is working</p>
-        <p class="mt-0.5 text-sm text-amber-900">Stop it to change its runtime and model. Everything in the conversation stays.</p>
-        <button
-          type="button"
-          class="mt-3 h-12 w-full rounded-xl border border-amber-300 bg-white text-base font-semibold text-amber-900 active:bg-amber-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-          data-testid="mobile-run-settings-stop"
-          @click="stopRun"
-        >Stop run</button>
-      </div>
+      <button
+        v-if="working"
+        type="button"
+        class="mb-2 h-12 w-full rounded-xl border border-slate-300 bg-white text-base font-semibold text-slate-800 active:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        data-testid="mobile-run-settings-stop"
+        @click="stopRun"
+      >Stop run</button>
 
       <MobileChoiceSheet
         :model-value="draftRuntime"
