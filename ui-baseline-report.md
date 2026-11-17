@@ -1,5 +1,96 @@
 # UI Baseline Report
 
+## Scoped refresh `phone-run-screen-baseline-refresh-506` (read this first)
+
+**The whole-frontend pin is still `d74f75a51ab7dc47d42a13f33e0f943c3a230ad7`, with the earlier scoped exceptions unchanged (Settings menu and GitHub card `e4bebdc858`, Manage Nodes `3b9dc912a1`, personal settings, update switch and required tools `f78b60dddd`).
+The phone (`/mobile`: the run list, the run screen, its ⋯ menu and views, New run, the connection sheet) now reflects `origin/personal@e4f4b3e1765669cf2c411652770199234ff6c214`** (release 1.5.13-beta.7; selected frontend
+`/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/autobyteus-web`, read only, `HEAD` = `origin/personal` = `e4f4b3e176`, the frontend directory clean). The browser pairing page (`MobilePairingBootstrap`) and the design's Android start screen (`/android`) keep their accepted state.
+
+- Request: Refresh (scoped), selected by the Product UI/UX Designer, ticket `phone-run-screen-baseline-refresh-506`, branch `design/phone-run-screen-baseline-refresh-506`, worktree
+  `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/phone-run-screen-baseline-refresh-506`, accepted design base `b017f0881e5e62551a1774dd40f95e00c6d655a4` (worktree `HEAD` the same). Design repository `/Users/normy/autobyteus_org/autobyteus-web-design`.
+- Status: `Completed`, a candidate: uncommitted changes in the ticket worktree; the Bootstrapper made no commit; integration into the default branch follows the Product UI/UX Designer's acceptance. Items the source side did not exercise are listed under "Known gaps"; none is a known UI parity difference.
+- Run: `corepack pnpm install --ignore-workspace --frozen-lockfile`, `corepack pnpm dev --port 4506`; entries and starting states in `ui-reference-runbook.md` ("phone-run-screen-baseline-refresh-506"). `package.json`, `pnpm-lock.yaml`, `nuxt.config.ts` unchanged.
+
+### What the source changed (range `d74f75a51a..e4f4b3e176` for the phone) and what was done
+
+The baseline's phone was the autobyteus-277 *design* (`MobileRunsScreen`, `MobileRunScreen`, `MobileChat`, `MobileResults`, … driven by `mobileRunTreeStore`). The source shipped the phone as `components/mobile/{runList,runScreen,views,newRun,connection}/*`, `MobilePairedShell`, `MobileBottomSheet`,
+`MobileScreenBar` and `pages/mobile.vue` (autobyteus-277, 407, 426, 432, 433, 435, 436, 437, 450, 461, 471, 472, 473), and changed the shared conversation, composer and file-viewer components. Where the source implements a surface the design had made, the source version wins (refresh policy).
+
+Copied unchanged from `e4f4b3e176` (UI code; `cmp` identical; 112 files, audit in the evidence folder): every `components/mobile/**` screen above (the old design screens are deleted), `MobileRemoteAccessShell`, `pages/mobile.vue`; the conversation and viewer components the diff touched
+(`UserMessage`, `InterAgentMessageSegment`, `SystemTaskNotificationSegment`, `MarkdownRenderer`, `MessageAttachmentThumbnail`, `FileViewer` and its viewers, `AgentConversationFeed`, `ArtifactContentViewer`, `CollaborationMessageReferenceViewer`, the composer's `ContextFilePathInputArea`/`ContextFileErrorLines`,
+`ModelListRefreshControl`, `SearchableGroupedSelect`, `SystemInstructionActivityItem`); the phone's composables (`useMobileNavigation`, `useMobileSubjectRestore`, `useMobileRouteRunSync`, `useMobileRunSetupController`, the file, attachment, download and zoom composables, the node-desktop composables, `useVncSession`,
+`useBackgroundTaskPanelView`, `useTargetConversation`, `useRemoteRun*`, `useContextAttachmentComposer`, `useMarkdownSegments`, `useEventMonitorFilePreview`, `useAuthorizedObjectUrl`), their utils and types, `stores/mobileNodeSessionStore`, `stores/mobileRunOpeningStore`, `stores/contextFileUploadStore`,
+`stores/agentBackgroundTaskStore`, `types/node.ts` and `utils/nodeEndpoints.ts` (the node desktop's stream endpoint), and the new localization keys (`mobileNodeDesktop.ts`, plus the keys the source added to `agentInput.generated`, `chat`, `workspace`, `workspace.generated`; existing keys keep their text).
+Nothing in the data layer of the desktop (run history, streaming, hydration, the run tree) was taken from the new source: the desktop surfaces keep their accepted state. The conversation, composer and file-viewer components are shared with the desktop's run screen, so they now show the source's current version there too.
+
+What changed for the user (from the source, shown by the copied components): the phone is **your runs with their delegated work** (a run row, its Team/agent/peer rows, "Show older (N)", the round "+"); a **run screen** with the status line ("Idle · in <parent>", "Not reachable"), the open run's conversation and composer; the **⋯ menu** (Artifacts, Files, Messages for a Team or Org member, Activity, VNC Viewer when the paired node has a node desktop);
+**Activity** with the run's background tasks above its tool calls (autobyteus-473); **Files** (folder tree, search, a file's viewer, node files, message attachments) and **Artifacts**; **Messages** with a reference's full-screen viewer; the **VNC Viewer** (View only / Control, Keyboard, Clipboard, Fit/Fill, Full screen); **New run** (Agent, Folder, Runtime, Model sheets, Thinking, Advanced, Auto approve tools);
+the **node sheet** (name, state, check, Switch node in the app, "Unpair from <node>") and the unpair confirmation; "Connected to <node> · Opening your runs…" after pairing; the run list's states (loading, empty, error, node not reachable, Phone access off, the unsupported notice).
+
+### Reconciliation with accepted design-only changes (shared refresh policy)
+
+- `mobile-experience-redesign` (the phone's design layer): its screens are replaced by the source's (the source version wins). Its data (`prototype/mobile-runs/mobileRunsFixture.ts`) is kept as the phone's synthetic world and moved to `prototype/source-observation/mobile-world.mjs` so the observation node can serve the same world to the pinned source.
+- `one-step-phone-pairing` (accepted design): the browser pairing page and the Android start screen are untouched (only the session's storage key and shape follow the source's: `autobyteus.remote_access.mobile_session`, `entryId`, `nodeName`). The source's connection sheet already carries the design's **Switch node** (through the app's `window.AutoByteusShell`); the design's `/android` route now installs a simulated bridge
+  (`plugins/11.android-shell-bridge.client.ts`), so the sheet shows it in the app and not in a plain tab, exactly as the source does.
+- `agent-definition-reconnect-ui` (design-only, no source equivalent): preserved; its two additions to shared files (`AgentReconnectComposerNotice` in `AgentEventMonitor.vue`, `AgentMissingErrorCard` in `ErrorSegment.vue`) were re-applied on top of the source's `AgentEventMonitor.vue` (`ErrorSegment.vue` is unchanged). New run's Agent sheet lists the design layer's catalog agents (about forty) where the source lists only the node's own: that is the accepted design layer, not a parity difference.
+- No other accepted design change touches the copied files (checked against `d74f75a` for each overwritten file).
+
+### Simulation beneath the UI (the UI reference has no backend; every value is invented)
+
+- The screens are the source's own components. Under them: `stores/mobileRunTreeStore.ts` (the world's runs as the phone's rows, folds, "Show older"), and stand-ins named like the product's stores and composables, so the copied screens import them unchanged: `stores/runListStore.ts`, `stores/runTreeStore.ts` (which agent runs another node runs),
+  `stores/runStatusStore.ts` (the peer Retry), `composables/mobile/useMobileRunTree.ts`, `composables/mobile/useMobileRunOpening.ts` (tap → pending "Opening…" → the run opens through the baseline's own stored-run open → commit or fail), `composables/runHistory/useRunHistorySectionLoad.ts` (the first read answers by the scenario), `services/liveStreamLifecycle/closeAllLiveStreams.ts`,
+  `utils/runListProjection.ts` and `utils/mobile/mobileRunListRows.ts` (row types and keys only). The product builds these from the node's run history and the server's run trees and run-status stream; none of that was ported.
+- `prototype/source-observation/mobile-world.mjs` (new, plain data and functions): the runs and their trees, the rich conversation (a `Conversation` built in the page: the node's stored run has no such mix), projections of the other runs, Activity, background tasks, a participant's Team messages, file changes (Artifacts), the workspace search, a Team's stored execution tree.
+  `prototype/mobile-runs/mobileRunsFixture.ts` answers the node's GraphQL reads for it from `utils/apolloClient.ts` (no longer a design-only layer; `designOnlyLayers` does not switch it off).
+- `prototype/mobile-runs/mobileNodeRest.ts`: the node's answers to the phone's credential check, its public status, its node desktop (`/rest/node-desktop`) and a media file, by scenario. `prototype/source-observation/fake-rfb.mjs`: a minimal VNC server (one frame of an invented desktop, no input) played by the local WebSocket (`plugins/00`), so the VNC Viewer connects and shows a picture.
+  `prototype/mobile-runs/mobileMessagesView.ts` + a one-line wrap in `stores/activeContextStore.ts`: a member's Messages rows (the product loads them with `collaborationParticipantMessages`).
+- `plugins/00.prototype-state.client.ts`: `mobileNodeSession` and `mobileRunOpening` run the source's own code; the phone's screens are routes of one page, so the snapshot of the page is not re-applied on a route change within `/mobile`; the phone reads an opened workspace file and runs the workspace search through the source's own actions; the node desktop's stream is the fake VNC server;
+  the seeded session follows the source's storage key. `components/mobile/MobilePairingBootstrap.vue` (the design's pairing page) writes that session and reloads the store.
+- Server-side outcomes are scripted: a draft's first send, Retry on a down peer (stays down), the node desktop (View only, never any input), Create run (a draft run on the node).
+
+### Starting-state selection (scenarios)
+
+Set in the browser console, then reload (see the runbook for the list): `localStorage.setItem('autobyteus.prototype.scenario', '<name>')` with `mobile_runs_loading`, `mobile_runs_empty`, `mobile_runs_error`, `mobile_runs_node_offline`, `mobile_phone_access_off`, `mobile_session_revoked`, `mobile_node_desktop`, `mobile_node_desktop_busy`. The default is the populated list with the rich run.
+
+### Inventory and comparison (source `e4f4b3e176` vs baseline, matched, 412×915 CSS px, device scale 2)
+
+Conditions: the same browser (Chrome driven by a disposable Playwright script under `/tmp`, nothing added to the repository), one fresh context per state, the same paired session (node name "Embedded Node"), the same world. The pinned source is an exact `git archive` export of `e4f4b3e176` (`autobyteus-web` and the four contract packages, their built `dist` copied;
+scratch `/tmp/r506/src`), served by `nuxt dev --port 4508` against the observation node (`mock-node.mjs`, `PROTOTYPE_MOCK_PORT=4507`, `PROTOTYPE_SCHEMA_PATH=<source>/generated/graphql.ts`) with a disposable hook (`PROTOTYPE_MOCK_HOOK=/tmp/r506/hook/hook.mjs`: it serves the same world as the node's GraphQL answers, run tree rows and `/ws/run-status`, `collaborationParticipantMessages`, file changes, the Team and Org inspections and the fake VNC server).
+Compared per component and state: the screenshots side by side and a pixel difference of each pair (a pair is "identical" when the difference is nothing but clock-dependent text: the ages "2m/6h", times of day, a spinner's rotation). Where the source needed a state its node harness cannot play, the way is named in the row.
+Evidence: `evidence/phone-run-screen-baseline-refresh-506/` (each image: baseline left, source right; `NN-name.png`; `pixel-differences.txt` has each pair's differing pixels, `copied-files-audit.txt` the byte audit). The rich conversation is set in the page on the source side (the observation node's stored run cannot carry the mix of segment types: `agentContexts` run's conversation, the same `Conversation` object the baseline's open sets).
+
+| ID | Surface / state | Result |
+| --- | --- | --- |
+| PH-01 | Run list, populated: a run with delegated work (Team, agent, peer Team and agent on `docker`, a Team on `office-mac` that does not answer), an Org with members, "Show older (8)" opened (13 listed runs, full height) | pass: identical (1,559 of 4.28 M px differ: the ages "2m/6h" and the like) |
+| PH-02 | Run list states: loading, empty ("No runs yet"), error ("Couldn't load your runs." + Retry) | pass: identical (the source's empty state is shown after setting `runHistory.loading` false in the page: in the observation node its history poll keeps `loading` set, the state itself is the same component; pixel difference 0) |
+| PH-03 | Node state: not reachable (banner "Can't reach Embedded Node." + Check), Phone access off, the unsupported-route notice | pass: identical |
+| PH-04 | Run screen header: name, status line ("Stopped", "Stopped · in <parent>" for a Team member), the ⋯ menu per target kind (Artifacts, Files, Activity; Messages for a member; VNC Viewer only with a node desktop) | pass: identical (agent run, Team member, Org member; the agent run's conversation sits 24 px lower on the source side only because its conversation was set in the page after the open) |
+| PH-05 | The conversation of the rich run, top to bottom (6 screens of 694 px): user message with three attachment chips, think, text, tool-call cards (success, error), terminal, edit-file, write-file, a running terminal card, markdown (headings, numbered and bulleted lists, inline code, three code blocks, table, quote), image, error segment with Show Details, user message, inter-agent message, system task notification, text | pass: pixel-identical (243 px of the spinner differ) |
+| PH-06 | The composer: placeholder, Context Files row, send button; "Type a message…" on a draft; typed text; after the first send | pass: identical |
+| PH-07 | Run screen "Opening…" and a row that cannot open (a Team on a node that does not answer stays on the list); reload on a run screen restores it | pass: same outcome both sides |
+| PH-08 | Activity: background tasks (Running, Completed, Failed, counts, times) above the tool calls (success, error with its text, terminal with Show details, executing) | pass: identical (task times differ by the clock) |
+| PH-09 | Artifacts: the list of the run's files; an opened markdown artifact | pass: identical |
+| PH-10 | Files: the folder, a subfolder with its breadcrumb, a file's viewer, the search with a result | pass: pixel-identical |
+| PH-11 | Messages (a Team member: From/To rows, times, reference files) and a reference's full-screen viewer | pass: identical (times differ by the clock) |
+| PH-12 | VNC Viewer: connected, View only (the picture); too many viewers (Retry) | pass: pixel-identical (connected); identical (refused) |
+| PH-13 | New run: the form with its defaults, the Agent, Folder and Model sheets, Create run (the draft's run screen), typed message, the first send (the user message shows) | pass: identical, except the Agent sheet's list (design catalog, see reconciliation) |
+| PH-14 | Connection sheet (Connected, check icon, Checking…, Unpair from <node>), the unpair confirmation, the pairing screen after Unpair | pass: identical |
+| PH-15 | In the Android app: the sheet's "Switch node · N nodes on this phone", the app's node name; Switch node returns to the app's node list | pass: the source's component with a simulated bridge (the real app is native) |
+| PH-16 | After pairing: "Connected to <node>" then the run list | pass: the source's component; played on the baseline ("Connected to Office Mac · Opening your runs…", then the list); the source's own pairing needs a real node |
+| PH-17 | The rest of the baseline (desktop routes, Android start screen, pairing page) | unchanged: load-and-look pass of ten routes (`/workspace`, `/chat`, `/agents`, `/agent-teams`, `/settings`, `/nodes`, `/integrations`, `/projects`, `/memory`, `/android`), no page error |
+
+### Known gaps
+
+- The reachable peer run's screen (the remote chip beside the run name, the other node's name in the composer placeholder) and the unreachable peer's notice with Retry are shown by the baseline only: the pinned source opens a peer's run on the peer-run stream (`/ws/peer-run`), which the observation node does not play. Both are copied components (`RemoteNodeChip`, `RemoteRunNotice`, `useRemoteRunView`).
+- An Org member's run screen was compared at its menu (Artifacts, Files, Messages, Activity). The source harness shows its own invented Org rows, whose "in <Org>" parent line did not appear for the harness's ids; the baseline shows the line. The Org member opens as a Team member in the baseline (the same screens).
+- Not exercised on the source side, because they are copied components with nothing simulated under them that differs: the VNC Viewer's Control mode, Keyboard, Clipboard, Fit/Fill and Full screen; the PDF and image zoom in the file viewer, Download; the composer's upload progress and refusals; a file a conversation names opening in the Files screen. The fake VNC server plays View only and a picture; it takes no input.
+- The pairing page is the design's, not the source's (`MobilePairingBootstrap`); it was out of this refresh's scope.
+- The agent catalog of New run's Agent sheet (design layer) and the Org rows' invented ids are illustrative. Names, titles, times, counts, the invented desktop picture and the media picture are illustrative.
+- The simulated run list, trees, statuses and opens are not the product's run history, run tree store or run-status stream; none of those was validated.
+- `typecheck`, `lint` and tests were not run (design work).
+
+---
+
 ## Scoped refresh `package-clone-auto-update-457` (read this first)
 
 **The whole-frontend pin is still `d74f75a51ab7dc47d42a13f33e0f943c3a230ad7`; the Settings menu and GitHub card still reflect `e4bebdc858`, Manage Nodes `3b9dc912a1`. Three

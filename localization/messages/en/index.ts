@@ -38,6 +38,7 @@ import workspaceMessages from './workspace';
 import runSettingsMessages from './runSettings';
 import reconnectMessages from './reconnect';
 import personalSettingsMessages from './personalSettings';
+import mobileNodeDesktopMessages from './mobileNodeDesktop';
 import agentPackageDefinitionsMessages from './agentPackageDefinitions';
 import type { TranslationCatalog } from '../../runtime/types';
 
@@ -82,6 +83,7 @@ const enMessages: TranslationCatalog = {
   ...runSettingsMessages,
   ...reconnectMessages,
   ...personalSettingsMessages,
+  ...mobileNodeDesktopMessages,
   ...agentPackageDefinitionsMessages,
 };
 

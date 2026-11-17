@@ -131,6 +131,7 @@ const messages = {
   'workspace.components.workspace.tools.VncViewer.loading_vnc_settings': 'Loading VNC settings...',
   'workspace.components.workspace.tools.VncViewer.localhost_6080_localhost_6081': 'localhost:6080,localhost:6081',
   'workspace.components.workspace.tools.VncViewer.no_vnc_hosts_configured': 'No VNC hosts configured.',
+  'workspace.components.workspace.history.RunSectionPanel.loading_task_history': 'Loading task history...',
 } satisfies TranslationCatalog;
 
 export default messages;

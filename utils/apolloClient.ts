@@ -119,8 +119,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (reconnectLayerEnabled()) data = data ? withAgentReconnect(name, request.variables || {}, structuredClone(data), scenario) : data
   // delegated-copy-task-locator (design-only): a Project Task Manager run with look-alike delegated copies.
   if (designOnlyLayersEnabled()) data = data ? withDelegatedCopyTasks(name, request.variables || {}, structuredClone(data), scenario) : data
-  // mobile-experience-redesign (design-only): the conversations the phone's run list opens.
-  if (designOnlyLayersEnabled()) data = data ? withMobileRuns(name, request.variables || {}, structuredClone(data)) : data
+  // The phone's synthetic world (prototype/source-observation/mobile-world.mjs): the runs its list opens.
+  data = withMobileRuns(name, request.variables || {}, data ? structuredClone(data) : data)
   // delegated-runtime-model-routing (design-only): the Model Router's conversation (an internal agent's run opened by its ID).
   if (designOnlyLayersEnabled()) data = data ? withModelRouting(name, request.variables || {}, structuredClone(data), state) : data
   // work-journal-search (design-only): agents, runs, teams (task teams too) and orgs of the Memory page.

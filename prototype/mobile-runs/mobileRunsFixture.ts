@@ -1,220 +1,91 @@
 /**
- * mobile-experience-redesign (design-only): the phone's run list with its delegation tree.
+ * The phone's synthetic world as the UI reference reads it: the data lives in
+ * `prototype/source-observation/mobile-world.mjs` (shared with the disposable observation node that serves the pinned
+ * source for comparison); this module adds the types and the links to the fixture agents.
  *
- * Everything here is invented and illustrative; nothing is read from a real node and no title is anyone's real
- * conversation. Times are offsets from the moment the page loads, so the ages ("2m", "6h", "3d") are the same on every
- * run. The product's own phone screens (the run list, the run screen, Results, New run) are the real components; what is
- * simulated sits under them:
- * - the delegating node's run history and delegation tree (this module; in the product the phone reads the same
- *   `runListStore` and collaboration store as the desktop Runs view);
- * - the answer of an opened run: a short invented conversation (`withMobileRuns`, answered like every other stored run);
- * - the peers the paired node knows, with reachability and what each offers (`PEERS`).
- *
- * Nodes (invented): `docker` is reachable, `office-mac` is not. Turned off with the other design-only layers
- * (`autobyteus.prototype.designOnlyLayers=off`).
+ * Everything is invented and illustrative; nothing is read from a real node. What is simulated sits under the phone's
+ * screens (which are the source's own components): the node's run list and delegation trees (`stores/mobileRunTreeStore.ts`
+ * and its stand-ins of the product's run list, run tree and run status stores), the answer of an opened run
+ * (`withMobileRuns`, answered like every other stored run), and the peers the paired node knows.
  */
+import { exposedFixtures } from '~/prototype/source-observation/fixtures.mjs'
+import {
+  MOBILE_RUNS, PEERS, UNREACHABLE_NODES, RICH_RUN_ID, flattenRuns, worldNode, isWorldRunId,
+  projectionEntriesFor, richConversation, teamResumeConfigFor, teamOfMember, activitiesFor, backgroundTasksFor, participantMessagesFor, referenceText, searchFilePaths, fileChangesFor, WORKSPACE_FILES,
+} from '~/prototype/source-observation/mobile-world.mjs'
 
 export type MobileRunStatus = 'running' | 'idle' | 'initializing' | 'error' | 'offline'
 export type MobileRunKind = 'agent' | 'team' | 'org' | 'member'
-
 export type MobileRunNode = {
   id: string
   kind: MobileRunKind
-  /** An agent's or team's name, or a member's name. */
   name: string
-  /** The run's title, or a delegated run's Task line. */
   summary: string
   status: MobileRunStatus
-  /** Minutes since the last activity (top-level runs and delegated runs). */
   minutes: number
-  /** The node a run on another node runs on; absent for runs on the paired node. */
   node?: string
   children?: MobileRunNode[]
 }
-
-/** A member shows only its name: a second line is only ever real data (a Task's summary, a remote run's title). */
-const member = (id: string, name: string, status: MobileRunStatus, _summary: string, extra: Partial<MobileRunNode> = {}): MobileRunNode =>
-  ({ id, kind: 'member', name, status, summary: '', minutes: 3, ...extra })
-
-const SET_MEMBERS = (n: string, designerStatus: MobileRunStatus, engineerStatus: MobileRunStatus, reviewerStatus: MobileRunStatus, extra: Record<string, Partial<MobileRunNode>> = {}): MobileRunNode[] => [
-  member(`mx-set-${n}-solution_designer`, 'solution_designer', designerStatus, 'Writes the requirements and the design', extra.solution_designer),
-  member(`mx-set-${n}-implementation_engineer`, 'implementation_engineer', engineerStatus, 'Builds the change', extra.implementation_engineer),
-  member(`mx-set-${n}-code_reviewer`, 'code_reviewer', reviewerStatus, 'Reviews the change', extra.code_reviewer),
-]
-
-/** Top-level runs, newest first (the order the product's Runs view settles: last activity). */
-export const MOBILE_RUNS: MobileRunNode[] = [
-  {
-    id: 'mx-ptm-0001', kind: 'agent', name: 'Project Task Manager', summary: 'Dispatch the approved desktop app Tasks', status: 'running', minutes: 2,
-    children: [
-      {
-        id: 'mx-set-0001', kind: 'team', name: 'Software Engineering Team', summary: 'Image context files don’t reach the model on the first turn', status: 'running', minutes: 4,
-        children: [
-          ...SET_MEMBERS('0001', 'idle', 'running', 'idle'),
-          // A task agent started by a team member sits at the member's level, as on the desktop (DEC-009).
-          { id: 'mx-set-0001-code-searcher', kind: 'agent', name: 'Code Searcher', summary: 'Find where context files are attached', status: 'running', minutes: 1 },
-        ],
-      },
-      { id: 'mx-apc-0001', kind: 'agent', name: 'Agent Package Creator', summary: 'Package the release-notes agent for the agent store', status: 'idle', minutes: 9 },
-      {
-        id: 'mx-set-0002', kind: 'team', name: 'Software Engineering Team', summary: 'Members of a delegated team can’t reach the package creator', status: 'idle', minutes: 18,
-        children: SET_MEMBERS('0002', 'idle', 'idle', 'idle'),
-      },
-      {
-        id: 'mx-mkt-0001', kind: 'team', name: 'Marketing Team', summary: 'Plan the 1.6 launch campaign across email, social and the website', status: 'running', minutes: 6, node: 'docker',
-        children: [
-          member('mx-mkt-0001-campaign_lead', 'campaign_lead', 'running', 'Plans the campaign', { node: 'docker' }),
-          member('mx-mkt-0001-copywriter', 'copywriter', 'idle', 'Writes the copy', { node: 'docker' }),
-          member('mx-mkt-0001-designer', 'designer', 'idle', 'Makes the visuals', { node: 'docker' }),
-        ],
-      },
-      { id: 'mx-mkr-0001', kind: 'agent', name: 'Market Researcher', summary: 'Compare competitor pricing pages for the desktop app', status: 'idle', minutes: 31, node: 'docker' },
-      {
-        id: 'mx-sup-0001', kind: 'team', name: 'Support Team', summary: 'Triage the open desktop support threads', status: 'offline', minutes: 45, node: 'office-mac',
-        children: [
-          member('mx-sup-0001-triage_lead', 'triage_lead', 'offline', 'Sorts the threads', { node: 'office-mac' }),
-          member('mx-sup-0001-answer_writer', 'answer_writer', 'offline', 'Drafts the answers', { node: 'office-mac' }),
-        ],
-      },
-    ],
-  },
-  { id: 'mx-da-0001', kind: 'agent', name: 'Daily Assistant', summary: 'Draft the reply to the pilot customers about the new date', status: 'idle', minutes: 6 },
-  {
-    id: 'mx-org-0001', kind: 'org', name: 'Product Launch Org', summary: 'Prepare the 1.6 launch', status: 'running', minutes: 24,
-    children: [
-      member('mx-org-0001-launch_lead', 'launch_lead', 'running', 'Coordinates the launch', { minutes: 24 }),
-      member('mx-org-0001-content_writer', 'content_writer', 'idle', 'Writes the announcement', { minutes: 40 }),
-      member('mx-org-0001-release_manager', 'release_manager', 'idle', 'Checks the release checklist', { minutes: 52 }),
-    ],
-  },
-  {
-    id: 'mx-set-0003', kind: 'team', name: 'Software Engineering Team', summary: 'Review the invoice export migration', status: 'idle', minutes: 26 * 60,
-    children: SET_MEMBERS('0003', 'offline', 'offline', 'offline'),
-  },
-  { id: 'mx-cdx-0001', kind: 'agent', name: 'Codex', summary: 'Fix the failing probe test on the base branch', status: 'offline', minutes: 5 * 60 },
-  { id: 'mx-da-0002', kind: 'agent', name: 'Daily Assistant', summary: 'Plan the week: school pickups, dentist, budget review', status: 'offline', minutes: 55 },
-  { id: 'mx-da-0003', kind: 'agent', name: 'Daily Assistant', summary: 'hello', status: 'offline', minutes: 9 * 60 },
-  { id: 'mx-ptm-0002', kind: 'agent', name: 'Project Task Manager', summary: 'Which Tasks are blocked this week?', status: 'offline', minutes: 2 * 24 * 60 },
-  { id: 'mx-apc-0002', kind: 'agent', name: 'Agent Package Creator', summary: 'Make a Product Video Producer package for the marketing team', status: 'offline', minutes: 3 * 24 * 60 },
-  { id: 'mx-da-0004', kind: 'agent', name: 'Daily Assistant', summary: 'Compare two flights to Berlin for the March trip', status: 'offline', minutes: 4 * 24 * 60 },
-  { id: 'mx-cdx-0002', kind: 'agent', name: 'Codex', summary: 'Rename the export helpers and update the imports', status: 'offline', minutes: 5 * 24 * 60 },
-  { id: 'mx-set-0004', kind: 'team', name: 'Software Engineering Team', summary: 'Simplify the NFS Guide and remove redundant steps', status: 'offline', minutes: 6 * 24 * 60, children: SET_MEMBERS('0004', 'offline', 'offline', 'offline') },
-  { id: 'mx-da-0005', kind: 'agent', name: 'Daily Assistant', summary: 'Summarize the lease renewal and list what to ask the landlord', status: 'offline', minutes: 8 * 24 * 60 },
-].sort((a, b) => a.minutes - b.minutes)
-
 export type MobilePeer = { name: string; reachable: boolean; agents: number; teams: number }
-/** The peer nodes the paired node knows (read-only list, DEC-003 option A). Invented. */
-export const PEERS: MobilePeer[] = [
-  { name: 'docker', reachable: true, agents: 6, teams: 3 },
-  { name: 'office-mac', reachable: false, agents: 4, teams: 2 },
-]
-export const UNREACHABLE_NODES: ReadonlySet<string> = new Set(['office-mac'])
 
-export const flattenRunIds = (nodes: MobileRunNode[]): MobileRunNode[] => nodes.flatMap((node) => [node, ...flattenRunIds(node.children ?? [])])
+export { MOBILE_RUNS, PEERS, UNREACHABLE_NODES, RICH_RUN_ID, WORKSPACE_FILES, referenceText }
+export const flattenRunIds = flattenRuns as (nodes: MobileRunNode[]) => MobileRunNode[]
+export const isMobileRunId = isWorldRunId as (id: unknown) => boolean
+export const mobileRunNode = worldNode as (id: unknown) => MobileRunNode | null
 
-import { exposedFixtures } from '~/prototype/source-observation/fixtures.mjs'
-import { toolActivities } from '~/prototype/model-routing/modelRoutingFixture'
-export const AGENT_DEFINITION_BY_NAME: Record<string, string> = { 'Project Task Manager': 'project-task-manager', 'Daily Assistant': String((exposedFixtures as Record<string, any>).dailyAssistant?.id ?? 'agent-researcher') }
-
-/** The invented conversation a run opens with. */
-const conversationFor = (node: MobileRunNode, at: number): Array<Record<string, any>> => {
-  const stamp = (offset: number) => new Date(at + offset).toISOString()
-  if (node.id === 'mx-ptm-0001') {
-    return [
-      { kind: 'message', role: 'user', content: 'Dispatch the approved desktop app Tasks.', ts: stamp(0) },
-      { kind: 'tool_call', invocationId: 'mx-ptm-d1', toolName: 'delegate_task', toolArgs: { recipient_address: '/software_engineering_team', description: 'Image context files don’t reach the model on the first turn' }, toolResult: 'Started Software Engineering Team.', ts: stamp(10_000) },
-      { kind: 'tool_call', invocationId: 'mx-ptm-d2', toolName: 'delegate_task', toolArgs: { recipient_address: '/marketing_team', node: 'docker', description: 'Plan the 1.6 launch campaign' }, toolResult: 'Started Marketing Team on node docker.', ts: stamp(20_000) },
-      { kind: 'message', role: 'assistant', content: 'Delegated six Tasks: two to copies of the Software Engineering Team, one to the Agent Package Creator, two to the Marketing Team and the Market Researcher on docker, and one to the Support Team on office-mac. I will report when they finish.', ts: stamp(40_000) },
-    ]
-  }
-  if (node.kind === 'member') {
-    return [
-      { kind: 'inter_agent_message', role: 'user', content: 'You received a message from sender name: project task manager, sender address: /project_task_manager, sender id: project_task_manager\nmessage:\nPlease work on the Task you were assigned.', ts: stamp(0) },
-      { kind: 'message', role: 'assistant', content: 'I will post the result here when it is ready.', ts: stamp(40_000) },
-    ]
-  }
-  return [
-    { kind: 'message', role: 'user', content: node.summary, ts: stamp(0) },
-    ...(node.kind === 'member' ? [{ kind: 'tool_call', invocationId: `${node.id}-t1`, toolName: 'read_file', toolArgs: { path: 'src/context/upload.ts' }, toolResult: 'Read 84 lines.', ts: stamp(15_000) }] : []),
-    { kind: 'message', role: 'assistant', content: 'Here is a first pass. Tell me what to change and I will keep this conversation as the one place we work on it.', ts: stamp(40_000) },
-  ]
+/** The fixture agent a run's name stands for (the definition the run was started from). */
+export const agentDefinitionIdFor = (name: string): string => {
+  const fixtures = exposedFixtures as Record<string, any>
+  if (name === 'Project Task Manager') return 'project-task-manager'
+  if (name === 'Daily Assistant') return String(fixtures.dailyAssistant?.id ?? 'agent-researcher')
+  return 'agent-researcher'
 }
-
-const NODE_BY_ID = new Map(flattenRunIds(MOBILE_RUNS).map((node) => [node.id, node]))
-export const isMobileRunId = (id: unknown): boolean => typeof id === 'string' && NODE_BY_ID.has(id)
 
 /** Answers an opened run like a stored run; other operations pass through unchanged. */
 export const withMobileRuns = (name: string, variables: Record<string, any>, data: any): any => {
-  if (!data) return data
-  const node = NODE_BY_ID.get(String(variables.runId ?? ''))
+  if (name === 'SearchFiles') return { ...(data ?? {}), searchFiles: searchFilePaths(variables.query) }
+  const node = worldNode(variables.runId ?? variables.agentRunId ?? variables.teamRunId)
   if (!node) return data
+  data = data ?? {}
   const at = Date.now() - node.minutes * 60_000
   if (name === 'GetRunProjection' && data.getRunProjection) {
-    data.getRunProjection = { ...data.getRunProjection, runId: node.id, summary: node.summary, lastActivityAt: new Date(at).toISOString(), conversation: conversationFor(node, at), activities: toolActivities(conversationFor(node, at)) }
+    data.getRunProjection = { ...data.getRunProjection, runId: node.id, summary: node.summary, lastActivityAt: new Date(at).toISOString(), conversation: projectionEntriesFor(node, at), activities: activitiesFor(node, at) }
   }
   if (name === 'GetAgentRunResumeConfig' && data.getAgentRunResumeConfig) {
-    const definitionId = AGENT_DEFINITION_BY_NAME[node.name]
     data.getAgentRunResumeConfig = {
       ...data.getAgentRunResumeConfig, runId: node.id, isActive: false,
-      ...(definitionId ? { metadataConfig: { ...data.getAgentRunResumeConfig.metadataConfig, agentDefinitionId: definitionId } } : {}),
+      metadataConfig: { ...data.getAgentRunResumeConfig.metadataConfig, agentDefinitionId: agentDefinitionIdFor(node.name) },
     }
+  }
+  if (name === 'GetRunFileChanges' && fileChangesFor(node, 0).length) data.getRunFileChanges = fileChangesFor(node, at)
+  if (name === 'GetTeamRunResumeConfig' && (node.kind === 'team' || node.kind === 'org')) {
+    const config = teamResumeConfigFor(node, at)
+    // The baseline's retained contracts still carry a Team's task executions (the pinned source's no longer do).
+    config.executionTree.root_team.task_executions = []
+    data.getTeamRunResumeConfig = config
+  }
+  if (name === 'GetTeamMemberRunProjection' && node.kind === 'member') {
+    data.getTeamMemberRunProjection = { ...(data.getTeamMemberRunProjection ?? {}), agentRunId: node.id, summary: node.name, lastActivityAt: new Date(at).toISOString(), conversation: projectionEntriesFor(node, at), activities: activitiesFor(node, at), hasEarlierActiveTraceEvents: false }
+  }
+  if (name === 'AgentBackgroundTaskView') {
+    data.agentBackgroundTaskView = { __typename: 'AgentBackgroundTaskEventStream', agentRunId: node.id, currentTasks: backgroundTasksFor(node, at) }
   }
   return data
 }
 
-/**
- * Design-only: the messages a team member's run shows under Messages (the product reads them from the team's context,
- * which this reference does not carry). Invented and illustrative.
- */
-export const sampleTeamMessages = (runId: string): Array<Record<string, any>> => {
-  const node = NODE_BY_ID.get(runId)
-  if (!node || node.kind !== 'member') return []
-  const at = Date.now() - node.minutes * 60_000
-  const ref = (n: number, path: string, type = 'file') => ({
-    referenceId: `${runId}-r${n}-${path}`, path, type, createdAt: new Date(at).toISOString(), updatedAt: new Date(at).toISOString(),
-  })
-  const others = ['solution_designer', 'implementation_engineer', 'code_reviewer'].filter((name) => name !== node.name)
-  const row = (n: number, direction: 'sent' | 'received', counterpartLabel: string, content: string, referenceFiles: unknown[] = []) => ({
-    messageId: `${runId}-m${n}`, messageType: 'direct_message', direction, counterpartLabel, content,
-    createdAt: new Date(at + n * 90_000).toISOString(), referenceFiles,
-  })
-  return [
-    row(1, 'received', others[0], 'Requirements are approved. Start with the first-turn upload path and keep the change small.', [ref(1, 'docs/requirements.md'), ref(2, 'docs/design-spec.md')]),
-    row(2, 'sent', others[0], 'Found it: the context files are attached after the first send. I am moving the attach step before it.', [ref(3, 'src/context/upload.ts')]),
-    row(3, 'received', others[1], 'Please add a test for the first-turn case before you hand over.'),
-  ]
+export { teamOfMember }
+
+export const conversationOf = (runId: string): any | null => {
+  const node = worldNode(runId)
+  if (!node || node.id !== RICH_RUN_ID) return null
+  return richConversation(node.id, Date.now() - node.minutes * 60_000)
 }
-
-/** Design-only: what an opened reference file shows (the product reads the file through the team's message). Invented. */
-export const sampleReferenceText = (path: string): string => path.endsWith('.ts')
-  ? "export function attachContextFiles(run: Run, files: ContextFile[]): void {\n  // Attach before the first send so the model sees them on turn one.\n  for (const file of files) run.context.add(file)\n}\n"
-  : path.includes('design')
-    ? '# Design: first-turn context files\n\nAttach the context files while the run is created, not after the first message is sent.\n\n## Changes\n- Move the attach step before the first send.\n- Keep the files when the run is promoted to its permanent id.\n'
-    : '# Requirements: first-turn context files\n\n- A context file added before the first message reaches the model on that message.\n- A failed upload is shown on the run, not silently dropped.\n'
-
-
-/** Design-only: what the run's Activity screen lists (the product records it from the run's stream). Invented. */
-export const sampleToolActivities = (runId: string): Array<Record<string, any>> => {
-  const node = NODE_BY_ID.get(runId)
-  if (!node || node.status === 'offline') return []
-  const at = Date.now() - node.minutes * 60_000
-  const tool = (n: number, toolName: string, type: string, contextText: string, status: string, args: Record<string, unknown>) => ({
-    kind: 'tool', activityId: `${runId}-a${n}`, invocationId: `${runId}-a${n}`, timestamp: new Date(at + n * 20_000), toolName, type, status,
-    contextText, arguments: args, logs: [], result: status === 'success' ? 'ok' : null, error: null,
-  })
-  if (node.id === 'mx-ptm-0001') {
-    return [
-      tool(1, 'delegate_task', 'tool_call', '/software_engineering_team', 'success', { recipient_address: '/software_engineering_team' }),
-      tool(2, 'delegate_task', 'tool_call', '/marketing_team on docker', 'success', { recipient_address: '/marketing_team', node: 'docker' }),
-      tool(3, 'delegate_task', 'tool_call', '/support_team on office-mac', 'success', { recipient_address: '/support_team', node: 'office-mac' }),
-    ]
-  }
-  if (node.kind === 'member' || node.kind === 'agent') {
-    return [
-      tool(1, 'read_file', 'tool_call', 'src/context/upload.ts', 'success', { path: 'src/context/upload.ts' }),
-      tool(2, 'edit_file', 'edit_file', 'src/context/upload.ts', 'success', { path: 'src/context/upload.ts' }),
-      tool(3, 'run_terminal_command', 'terminal_command', 'pnpm test upload', node.status === 'running' ? 'executing' : 'success', { command: 'pnpm test upload' }),
-    ]
-  }
-  return []
+export const activitiesOf = (runId: string): Array<Record<string, any>> => {
+  const node = worldNode(runId)
+  return node ? activitiesFor(node, Date.now() - node.minutes * 60_000) : []
+}
+/** The stored messages of one participant (the node's `collaborationParticipantMessages` answer). */
+export const participantMessagesOf = (runId: string): { messages: Array<Record<string, any>>; pastParticipants: Array<Record<string, any>> } => {
+  const node = worldNode(runId)
+  return node ? participantMessagesFor(node, Date.now() - node.minutes * 60_000) : { messages: [], pastParticipants: [] }
 }

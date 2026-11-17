@@ -281,6 +281,67 @@ const messages = {
     "模型",
   "workspace.components.launchConfig.RuntimeModelConfigFields.modelPlaceholder":
     "选择模型",
+  "workspace.components.workspace.tools.BrowserPanel.back": "后退",
+  "workspace.components.workspace.tools.BrowserPanel.forward": "前进",
+  "workspace.components.conversation.segments.SystemTaskNotificationSegment.runtimeChanged": "智能体运行时已更换",
+  "workspace.components.conversation.segments.SystemTaskNotificationSegment.toolsUpdated": "工具已更新",
+  "workspace.components.workspace.history.RunSectionPanel.stream_recovery_wait":
+    "该团队仍在工作。请等待其完成，然后再次选择此团队成员。",
+  "workspace.components.workspace.history.RunSectionPanel.stream_recovery_retry":
+    "重新加载对话时团队活动发生了变化。请再次选择此团队成员以重试。",
+  "workspace.components.conversation.segments.renderer.MarkdownRenderer.file_on_other_node":
+    "此文件在 {{node}} 上，该运行在那里运行。",
+  "workspace.components.mobile.views.MobileFiles.node_file_not_found":
+    "在这台计算机上找不到此文件。",
+  "workspace.components.mobile.views.MobileFiles.node_file_is_folder":
+    "此路径是文件夹，不是文件。",
+  "workspace.components.progress.BackgroundTaskPanel.trackedExplanation": "跟踪在所属轮次结束后继续运行的命令。仅显示最近的运行时观测，并非所有系统进程。",
+  "workspace.components.progress.BackgroundTaskPanel.lastKnown": "以下为已记录／上次已知状态；运行数量尚未确认。",
+  "workspace.components.progress.BackgroundTaskPanel.loading": "正在检查此智能体的后台任务…",
+  "workspace.components.progress.BackgroundTaskPanel.unavailable": "当前无法检查后台任务。",
+  "workspace.components.progress.BackgroundTaskPanel.recordedCounts": "上次运行 {{running}} · 已记录 {{total}}",
+  "workspace.components.progress.BackgroundTaskPanel.unconfirmedCounts": "当前数量不可用",
+  "workspace.components.progress.BackgroundTaskPanel.trackedEmpty": "没有跟踪到的后台命令",
+  "workspace.components.progress.BackgroundTaskPanel.shellCommand": "Shell 命令",
+  "workspace.components.progress.BackgroundTaskPanel.status.unknown": "未知",
+  "workspace.components.progress.BackgroundTaskPanel.observed": "{{id}} · 观测于 {{time}}",
+  "workspace.components.progress.BackgroundTaskPanel.exitCode": "退出码 {{code}}",
+  "workspace.components.progress.SystemInstructionActivityItem.source.deepseekHarness":
+    "由 AutoByteus 提供 · DeepSeek Harness 指令插件",
+  "workspace.components.workspace.team.TeamCommunicationPanel.loading_messages":
+    "正在加载消息…",
+  "workspace.components.workspace.team.TeamCommunicationPanel.messages_unavailable":
+    "无法显示这些消息",
+  "workspace.components.workspace.tools.NodeDesktopTile.title": "节点桌面",
+  "workspace.components.workspace.tools.NodeDesktopTile.connecting": "正在连接…",
+  "workspace.components.workspace.tools.NodeDesktopTile.connected_view_only": "已连接 · 仅查看",
+  "workspace.components.workspace.tools.NodeDesktopTile.connected_control": "已连接 · 控制",
+  "workspace.components.workspace.tools.NodeDesktopTile.disconnected": "已断开",
+  "workspace.components.workspace.tools.NodeDesktopTile.desktop_disconnected": "节点桌面已断开",
+  "workspace.components.workspace.tools.NodeDesktopTile.connection_refused": "连接被拒绝",
+  "workspace.components.workspace.tools.NodeDesktopTile.cannot_reach_node": "无法连接到该节点",
+  "workspace.components.workspace.tools.NodeDesktopTile.not_allowed": "此查看器无权访问该节点",
+  "workspace.components.workspace.tools.NodeDesktopTile.needs_connecting": "此桌面尚未连接该节点。请在“节点”页面连接。",
+  "workspace.components.workspace.tools.NodeDesktopTile.no_shared_desktop": "该节点没有共享桌面",
+  "workspace.components.workspace.tools.NodeDesktopTile.connect": "连接",
+  "workspace.components.workspace.tools.NodeDesktopTile.reconnect": "重新连接",
+  "workspace.components.workspace.tools.NodeDesktopTile.disconnect": "断开",
+  "workspace.components.workspace.tools.NodeDesktopTile.view_only": "仅查看",
+  "workspace.components.workspace.tools.NodeDesktopTile.control": "控制",
+  "workspace.components.workspace.tools.NodeDesktopTile.switch_to_control": "切换到控制：你的键盘和鼠标将操作智能体的桌面",
+  "workspace.components.workspace.tools.NodeDesktopTile.switch_to_view_only": "切换到仅查看",
+  "workspace.components.workspace.tools.NodeDesktopTile.maximize_view": "最大化视图",
+  "workspace.components.workspace.tools.NodeDesktopTile.restore_view": "还原视图（Esc）",
+  "workspace.components.workspace.tools.VncViewer.checking_node_desktop": "正在检查该节点的桌面…",
+  "workspace.components.workspace.tools.VncViewer.no_shared_desktop": "该节点没有共享桌面。",
+  "workspace.components.workspace.tools.VncViewer.cannot_reach_node": "无法连接到该节点。",
+  "workspace.components.workspace.tools.VncViewer.retry": "重试",
+  "workspace.components.workspace.tools.NodeDesktopTile.too_many_viewers": "该节点当前的查看者过多",
+  "workspace.components.workspace.tools.NodeDesktopTile.retry": "重试",
+  "workspace.pathRefusal.notAbsolute": "请输入完整路径，以 / 开头。",
+  "workspace.pathRefusal.notAbsoluteWindows": "请输入完整路径，以盘符开头，例如 C:\\。",
+  "workspace.pathRefusal.missing": "此路径下没有文件夹。",
+  "workspace.pathRefusal.notAFolder": "此路径是文件，不是文件夹。",
 } satisfies TranslationCatalog;
 
 export default messages;

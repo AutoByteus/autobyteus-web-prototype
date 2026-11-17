@@ -1,3 +1,5 @@
+import { createRfbServer } from '~/prototype/source-observation/fake-rfb.mjs'
+import { mobileNodeResponse } from '~/prototype/mobile-runs/mobileNodeRest'
 import { createUploadedContextAttachment, inferContextAttachmentType } from '~/utils/contextFiles/contextAttachmentModel'
 import runtimeFixture from '~/prototype/fixtures/runtime-state.json'
 import type { Pinia, PiniaPluginContext } from 'pinia'
@@ -46,7 +48,7 @@ const overlayAfterActions: Record<string, string[]> = { agentDefinition: ['reloa
 // (utils/apolloClient.ts, prototype/memory-search/memoryDesignFixture.ts), so lists, search and the Work Journal respond for real.
 // WEB-BASELINE-REFRESH-013 (origin/personal@d74f75a): Manage Nodes (its list, peers, offers, switch and change dialog) and the remote runs run
 // the source's own code against the simulated network of nodes (prototype/nodes/network-world.mjs).
-const sourceLoadedStores = new Set(['phoneAccess', 'nodeList', 'nodeServerUpdate', 'remoteCollaborationStore', 'remoteCollaborationOffers', 'remoteCollaborationCapability', 'nodeChangeDialog', 'remoteRuns', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft', 'memoryExplorerStore', 'memoryInspectorStore', 'memorySearchStore', 'memoryJournalStore', 'integrations'])
+const sourceLoadedStores = new Set(['mobileNodeSession', 'mobileRunOpening', 'phoneAccess', 'nodeList', 'nodeServerUpdate', 'remoteCollaborationStore', 'remoteCollaborationOffers', 'remoteCollaborationCapability', 'nodeChangeDialog', 'remoteRuns', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft', 'memoryExplorerStore', 'memoryInspectorStore', 'memorySearchStore', 'memoryJournalStore', 'integrations'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),
@@ -490,10 +492,10 @@ export default defineNuxtPlugin({
     if ((window.location.pathname === '/mobile' || window.location.pathname === '/android') && !localStorage.getItem('autobyteus.prototype.mobileSeeded')) {
       localStorage.setItem('autobyteus.prototype.mobileSeeded', '1')
       if (!localStorage.getItem(CONTEXT_KEY)) localStorage.setItem(CONTEXT_KEY, 'paired')
-      if (!localStorage.getItem('autobyteus.remote_access.mobile_session.v1') && localStorage.getItem(CONTEXT_KEY) === 'paired') {
+      if (!localStorage.getItem('autobyteus.remote_access.mobile_session') && localStorage.getItem(CONTEXT_KEY) === 'paired') {
         const now = '2026-11-06T08:00:00.000Z'
-        localStorage.setItem('autobyteus.remote_access.mobile_session.v1', JSON.stringify({
-          version: 1, nodeId: 'mobile-paired-node', serverBaseUrl: window.location.origin, credential: 'prototype_mobile_session',
+        localStorage.setItem('autobyteus.remote_access.mobile_session', JSON.stringify({
+          entryId: 'mobile-paired-node', serverBaseUrl: window.location.origin, nodeName: 'Embedded Node', credential: 'prototype_mobile_session',
           device: { deviceId: 'prototype-phone', displayName: 'Prototype phone', clientFacingBaseUrl: window.location.origin, createdAt: now, lastSeenAt: now, revokedAt: null },
           pairedAt: now,
         }))
@@ -714,6 +716,10 @@ export default defineNuxtPlugin({
           if (scenario() === 'loading' && (actionName === 'fetchAllWorkspaces' || actionName === 'fetchAllAgentDefinitions')) {
             await new Promise(resolve => window.setTimeout(resolve, 1500))
           }
+          // The phone reads an opened workspace file through the source's own action (answered locally by GetFileContent).
+          if (store.$id === 'fileExplorer' && (actionName === 'fetchFileContent' || actionName === 'searchFiles') && window.location.pathname === '/mobile') {
+            return originalAction.apply(store, args)
+          }
           // The controlled paired-mobile source reports its synthetic recent
           // history refresh as failed while retaining cached recent items. The
           // switcher therefore shows the exact visible `!` segment indicator.
@@ -763,7 +769,9 @@ export default defineNuxtPlugin({
     let firstSnapshotApplied = false
     const applyCurrentSnapshot = (): void => {
       const [key] = findSnapshot()
-      if (isChatRunRoute()) {
+      // The phone's screens are routes of one page (`/mobile?screen=…`): what is open on it is live state (the run it
+      // opened, its views), which a route change within the page must not reset (as for a chat run).
+      if (isChatRunRoute() || (firstSnapshotApplied && window.location.pathname === '/mobile')) {
         document.documentElement.dataset.prototypeSnapshot = key
         firstSnapshotApplied = true
         return
@@ -828,6 +836,13 @@ export default defineNuxtPlugin({
     window.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
       const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url
       const resolved = new URL(url, window.location.href)
+      // The phone's own credential check and status check answer by the scenario (prototype/mobile-runs/mobileNodeRest.ts).
+      if (resolved.origin === window.location.origin) {
+        try {
+          const phone = mobileNodeResponse(resolved, init)
+          if (phone) return Promise.resolve(phone)
+        } catch (error) { return Promise.reject(error) }
+      }
       if (/\/rest\/health$|^\/health$/.test(resolved.pathname)) {
         return Promise.resolve(new Response(JSON.stringify({ status: 'ok', version: 'prototype-1.0.0', fixture: true }), { status: 200, headers: { 'content-type': 'application/json' } }))
       }
@@ -862,12 +877,14 @@ export default defineNuxtPlugin({
     class PrototypeWebSocket extends EventTarget {
       static readonly CONNECTING = 0; static readonly OPEN = 1; static readonly CLOSING = 2; static readonly CLOSED = 3
       readonly CONNECTING = 0; readonly OPEN = 1; readonly CLOSING = 2; readonly CLOSED = 3
-      readonly url: string; readonly protocol = ''; readonly extensions = ''; readonly bufferedAmount = 0; readonly binaryType = 'blob'
+      readonly url: string; readonly protocol = ''; readonly extensions = ''; readonly bufferedAmount = 0; binaryType: string = 'blob'
       readyState = PrototypeWebSocket.OPEN
       onopen: ((event: Event) => any) | null = null; onclose: ((event: CloseEvent) => any) | null = null; onerror: ((event: Event) => any) | null = null; onmessage: ((event: MessageEvent) => any) | null = null
       constructor(url: string | URL) {
         super(); this.url = String(url)
-        queueMicrotask(() => { const event = new Event('open'); this.onopen?.(event); this.dispatchEvent(event) })
+        // A viewer's channel (noVNC) is handed over while it connects, as a real socket is: it opens a moment later.
+        if (new URL(this.url, window.location.href).pathname === '/ws/node-desktop') this.readyState = PrototypeWebSocket.CONNECTING
+        queueMicrotask(() => { this.readyState = PrototypeWebSocket.OPEN; const event = new Event('open'); this.onopen?.(event); this.dispatchEvent(event) })
         // run-settings-ui-unification (SR-003): the Org run started by "Run Agent Org" is live. Its
         // stream answers with CONNECTED and the same view the inspection read returns (nothing runs).
         const runId = decodeURIComponent(this.url.split('?')[0]!.split('/').filter(Boolean).pop() || '')
@@ -880,6 +897,8 @@ export default defineNuxtPlugin({
           // update-checks-and-auto-updates: the node's scripted passes tell the window to read again (the product's change feed).
           window.addEventListener('prototype-update-notifications-changed', () => this.emit({ type: 'update_notifications_changed' }))
         }
+        // The node desktop's viewer stream (the phone's VNC Viewer): an invented desktop picture, or the node's refusal.
+        if (new URL(this.url, window.location.href).pathname === '/ws/node-desktop') this.playNodeDesktop()
         const liveFrames = liveStreamFrames(localFixtureState, this.url)
         if (liveFrames) setTimeout(() => { for (const frame of liveFrames) this.emit(frame) }, 20)
         // remote-runs-in-tree: the delegating node streams the copies on another node like its own.
@@ -891,6 +910,19 @@ export default defineNuxtPlugin({
           this.launchedTeamRunId = runId
           void this.playLaunchedTeamStream(runId)
         }
+      }
+      private rfb: ((data: Uint8Array) => void) | null = null
+      private playNodeDesktop(): void {
+        if (localStorage.getItem('autobyteus.prototype.scenario') === 'mobile_node_desktop_busy') {
+          setTimeout(() => { this.readyState = PrototypeWebSocket.CLOSED; const event = new CloseEvent('close', { code: 4429, reason: 'NODE_DESKTOP_TOO_MANY_VIEWERS' }); this.dispatchEvent(event); this.onclose?.(event) }, 30)
+          return
+        }
+        // A node answers on a later turn, never inside the viewer's own send.
+        this.rfb = createRfbServer((bytes) => setTimeout(() => {
+          if (this.readyState !== PrototypeWebSocket.OPEN) return
+          const event = new MessageEvent('message', { data: bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) })
+          this.onmessage?.(event); this.dispatchEvent(event)
+        }, 0))
       }
       private launchedTeamRunId: string | null = null
       private remoteScenario: string | null = null
@@ -954,6 +986,10 @@ export default defineNuxtPlugin({
         }
       }
       send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void {
+        if (this.rfb && typeof data !== 'string') {
+          this.rfb(data instanceof ArrayBuffer ? new Uint8Array(data) : ArrayBuffer.isView(data) ? new Uint8Array(data.buffer, data.byteOffset, data.byteLength) : new Uint8Array(0))
+          return
+        }
         // run-settings-ui-unification (round 9): a send that brings an `@` collaborator in waits for
         // the run to accept it. The scripted outcome: the run accepts it (no reply is played).
         if (typeof data !== 'string') return

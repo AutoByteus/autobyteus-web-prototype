@@ -19,6 +19,11 @@ const messages = {
   'agentInput.components.agentInput.GroupedSelect.auto_execute_tools': '自动执行工具',
   'agentInput.components.agentInput.GroupedSelect.no_models_found': '没有找到型号。',
   'agentInput.components.agentInput.GroupedSelect.search_models': '搜索型号...',
+  'agentInput.components.agentInput.ContextFilePathInputArea.cancel_upload': '取消上传 {{name}}',
+  'agentInput.components.agentInput.ContextFilePathInputArea.upload_interrupted': '无法附加 {{name}}：上传中断，请检查网络后重试。',
+  'agentInput.components.agentInput.ContextFilePathInputArea.upload_progress': '{{percent}}%',
+  'agentInput.components.agentInput.ContextFilePathInputArea.upload_too_large': '无法附加 {{name}}：文件超过 {{limit}} 大小限制。',
+  'agentInput.components.agentInput.ContextFilePathInputArea.upload_unsupported_type': '无法附加 {{name}}：不支持此文件类型。',
 } satisfies TranslationCatalog;
 
 export default messages;

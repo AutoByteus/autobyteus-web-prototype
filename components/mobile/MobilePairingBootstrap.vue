@@ -82,16 +82,18 @@ async function connect(): Promise<void> {
   await new Promise((resolve) => setTimeout(resolve, 1200))
   const now = '2026-11-07T08:00:00.000Z'
   localStorage.setItem(
-    'autobyteus.remote_access.mobile_session.v1',
+    'autobyteus.remote_access.mobile_session',
     JSON.stringify({
-      version: 1,
-      nodeId: 'mobile-paired-node',
+      entryId: 'mobile-paired-node',
       serverBaseUrl: window.location.origin,
+      nodeName: nodeName.value || undefined,
       credential: 'prototype_mobile_session',
       device: { deviceId: 'prototype-phone', displayName: 'Phone', clientFacingBaseUrl: window.location.origin, createdAt: now, lastSeenAt: now, revokedAt: null },
       pairedAt: now,
     }),
   )
+  // The session the node would have made is read from storage, as the page's start reads it.
+  sessionStore.initialized = false
   sessionStore.initializeFromStorage()
   connecting.value = false
   emit('paired')
