@@ -1,5 +1,12 @@
 <template>
-  <div class="flex h-full min-h-0 flex-col gap-3 overflow-hidden overscroll-none p-4" data-testid="agent-event-monitor">
+  <div
+    class="flex h-full min-h-0 flex-col gap-3 overflow-hidden overscroll-none p-4"
+    :class="{ 'phone-conversation': mobileNavigation }"
+    :style="mobileNavigation ? { '--pc-size': `${phoneTextSize.px.value}px` } : undefined"
+    :data-text-size="mobileNavigation ? phoneTextSize.sizeId.value : undefined"
+    :data-identity="mobileNavigation ? PHONE_IDENTITY : undefined"
+    data-testid="agent-event-monitor"
+  >
     <AgentConversationFeed
       class="min-h-0 flex-1"
       :conversation="conversation"
@@ -49,6 +56,8 @@ import AgentReconnectComposerNotice from '~/components/workspace/reconnect/Agent
 import { computed, onBeforeUnmount, provide, ref, toRef } from 'vue';
 import { useWorkspaceToolReveal } from '~/composables/layout/useWorkspaceToolReveal';
 import { useMobileNavigation } from '~/composables/mobile/useMobileNavigation';
+import { usePhoneTextSize } from '~/composables/mobile/usePhoneTextSize';
+import '~/assets/css/phone-conversation.css';
 import { isMobileRemoteAccessRuntime } from '~/utils/remoteAccess/mobileRuntime';
 import type { Conversation } from '~/types/conversation';
 import AgentUserInputForm from '~/components/agentInput/AgentUserInputForm.vue';
@@ -88,6 +97,8 @@ const filePreviewStatus = ref('');
 const revealTool = useWorkspaceToolReveal();
 // Taken in setup: it reads the route through inject, which the lazily created opener cannot (autobyteus-427).
 const mobileNavigation = isMobileRemoteAccessRuntime() ? useMobileNavigation() : null;
+const phoneTextSize = usePhoneTextSize();
+const PHONE_IDENTITY: 'avatar' | 'name' | 'none' = 'name';
 let isLive = true;
 onBeforeUnmount(() => { isLive = false; });
 const browse = useEventMonitorActiveTraceBrowse({

@@ -29,6 +29,23 @@
           <Icon :icon="view.icon" class="h-5 w-5 text-slate-500" aria-hidden="true" />
           {{ view.label }}
         </button>
+        <div class="mt-1 border-t border-slate-200 px-4 pb-2 pt-3" role="group" aria-label="Text size" data-testid="mobile-text-size">
+          <p class="mb-2 text-xs font-medium text-slate-500">Text size</p>
+          <div class="grid grid-cols-4 gap-1.5">
+            <button
+              v-for="(size, index) in PHONE_TEXT_SIZES"
+              :key="size.id"
+              type="button"
+              class="flex h-11 items-center justify-center rounded-lg border font-medium leading-none focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              :class="textSize.sizeId.value === size.id ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-slate-200 bg-white text-slate-700 active:bg-slate-100'"
+              :style="{ fontSize: `${13 + index * 3}px` }"
+              :aria-label="size.label"
+              :aria-pressed="textSize.sizeId.value === size.id"
+              :data-testid="`mobile-text-size-${size.id}`"
+              @click="textSize.set(size.id)"
+            >A</button>
+          </div>
+        </div>
       </div>
     </template>
   </div>
@@ -38,6 +55,7 @@
 import { computed, nextTick, ref, watch } from 'vue';
 import { Icon } from '@iconify/vue';
 import type { MobileView } from '~/composables/mobile/useMobileNavigation';
+import { PHONE_TEXT_SIZES, usePhoneTextSize } from '~/composables/mobile/usePhoneTextSize';
 
 const props = defineProps<{ showMessages: boolean; showDesktop: boolean }>();
 const emit = defineEmits<{ (event: 'open-view', view: MobileView): void }>();
@@ -51,6 +69,7 @@ const VIEWS: readonly { id: MobileView; label: string; icon: string }[] = [
 ];
 const views = computed(() => VIEWS.filter((view) =>
   (view.id !== 'messages' || props.showMessages) && (view.id !== 'desktop' || props.showDesktop)));
+const textSize = usePhoneTextSize();
 const open = ref(false);
 const buttonRef = ref<HTMLButtonElement | null>(null);
 watch(open, (value) => { if (value) void nextTick(() => document.querySelector<HTMLElement>('[data-testid="mobile-run-menu"] [role="menuitem"]')?.focus()); });
