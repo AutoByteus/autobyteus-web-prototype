@@ -95,3 +95,12 @@ The founder, after reviews 6 to 8: "the phone experience is much better now … 
 ## Result
 
 Design Completed: see `ui-ux-spec.md`. Integration record below.
+
+## Integration record (2026-11-17)
+
+- Default branch `personal`: the ticket result was pushed as a fast-forward (`git push origin design/phone-conversation-readability-506:personal`, `012e825e..ef99f690`) and the canonical checkout `/Users/normy/autobyteus_org/autobyteus-web-design` was fast-forwarded to `ef99f690052c9c71cf073fd8bf02faffdc7b7d1f` (local = `origin/personal`; this record is committed on top by the same sequence).
+- Default-entry-point check from the canonical checkout (`corepack pnpm dev --port 4510`, `/mobile`, 412 px, 3x, no preview state): conversation text column 388 px at 17 px with the speaker line; ⋮ menu: Artifacts, Files, Activity, Settings and the Text size block; Settings of a stopped run shows Runtime AutoByteus and Model mock/gpt-prototype (New run's rows) and no stop icon; changing the model and Save returns to the conversation; a running run shows the red stop icon, tapping it shows Stopped and removes the icon. Result: `Completed`.
+- Environment note: the canonical checkout's `node_modules` predated the 457 baseline refresh (the vendored `@autobyteus/agent-presentation-contracts` had no `agentRuntimeName`), so the first start showed a blank page until `corepack pnpm install --ignore-workspace --frozen-lockfile` was run there; nothing tracked changed.
+- Runtime resources: review servers 4507 (ticket worktree), 4508 and 4509 (alternatives), canonical check 4510: all stopped; Tailscale Serve entries 8444 to 8446 turned off, the status equals the one saved before the task (443 and 8443 unchanged).
+- Alternatives: branches `design/phone-conversation-readability-506-opt-a` and `-opt-c` and their worktrees deleted (the baseline-refresh branch `design/phone-run-screen-baseline-refresh-506` was merged and deleted earlier, `012e825e`).
+- Cleanup: ticket worktree and branch removed after this record is pushed.
