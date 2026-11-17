@@ -96,6 +96,9 @@ const chatMessages = {
   'chat.launch.runtimeUnavailable': '{{runtime}} 不可用。请选择其他运行时。',
   'chat.launch.chooseModel': '请选择一个模型以开始。',
   'chat.launch.workspaceUnavailable': '无法打开所选工作区。',
+  'chat.model.refresh': '刷新模型',
+  'chat.model.refreshing': '正在刷新…',
+  'chat.model.refreshError': '无法刷新模型',
 } satisfies TranslationCatalog;
 
 export default chatMessages;

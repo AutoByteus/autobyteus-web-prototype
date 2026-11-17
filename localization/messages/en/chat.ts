@@ -97,6 +97,9 @@ const chatMessages = {
   'chat.launch.runtimeUnavailable': '{{runtime}} is unavailable. Choose another runtime.',
   'chat.launch.chooseModel': 'Choose a model to start.',
   'chat.launch.workspaceUnavailable': 'The selected workspace could not be opened.',
+  'chat.model.refresh': 'Refresh models',
+  'chat.model.refreshing': 'Refreshing…',
+  'chat.model.refreshError': 'Couldn’t refresh models',
 } satisfies TranslationCatalog;
 
 export default chatMessages;

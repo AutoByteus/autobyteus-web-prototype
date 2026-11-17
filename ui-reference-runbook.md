@@ -1,5 +1,29 @@
 # UI Reference Runbook
 
+## phone-run-screen-baseline-refresh-506 (the phone, `/mobile`: run list, run screen and its views, New run, connection sheet; reflects `origin/personal@e4f4b3e176`, release 1.5.13-beta.7)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4506
+```
+
+Open <http://127.0.0.1:4506/mobile> at a phone width (412 CSS px; browser devtools device mode). The first visit installs an inert paired session (the page opens on the run list); reset it by removing `autobyteus.prototype.mobileSeeded`,
+`autobyteus.remote_access.mobile_session` and `autobyteus.prototype.scenario` from local storage and reloading. Everything is invented (`prototype/source-observation/mobile-world.mjs`); times are offsets from the page load.
+
+- Runs (default): Project Task Manager (2m) with its delegated work (a Team and an agent of this node, a Team and an agent on `docker`, a Team on `office-mac` that does not answer), **Daily Assistant (6m): the run whose conversation shows every message and segment type**, the Product Launch Org,
+  older runs under "Show older (8)", Teams with members (older). Tap a row to open it; the chevron folds.
+- The rich conversation (Daily Assistant, "Summarize the 1.6 release notes for the pilot customers"): user message with three attachments, think, text, tool-call cards (success, error), terminal, edit-file and write-file cards (one still running), a long markdown answer
+  (headings, numbered and bulleted lists, inline code, `bash`/`json`/`ts` code blocks, a table, a quote), an image, an error segment, a second user message, an inter-agent message, a system task notification and a closing text.
+- The ⋯ menu: Artifacts (three files of the rich run), Files (the folder tree `docs/evidence.md`, `requirements.md`; search "evi"), Messages (a member of a Team or the Org: open Show older → Software Engineering Team → unfold → a member), Activity (background tasks above the tool calls; the rich run and Project Task Manager have them), VNC Viewer (only in the scenarios below).
+- Starting states (`localStorage.setItem('autobyteus.prototype.scenario', '<name>')`, then reload; no visible control): `mobile_runs_loading`, `mobile_runs_empty`, `mobile_runs_error` (Retry shows the list), `mobile_runs_node_offline` (the node does not answer: "Not reachable", the banner, Retry in the sheet),
+  `mobile_phone_access_off` ("Phone access off"), `mobile_session_revoked` (the credential is refused: the pairing screen), `mobile_node_desktop` (VNC Viewer offered; View only shows an invented desktop), `mobile_node_desktop_busy` ("Too many viewers on this node right now", Retry).
+  A notice above the list: `/mobile?unsupported=desktopSettings`.
+- New run: the round + button; Agent, Folder, Runtime, Model sheets; Create run opens the draft; the first send gives it its permanent id (the route follows).
+- The Android app (design route, not the real launcher): `/android`; a connected node opens `/mobile` "in the app", where the page's `window.AutoByteusShell` (`plugins/11.android-shell-bridge.client.ts`) answers the page, so the connection sheet offers **Switch node** (N nodes on this phone) and the node's own name shows. A plain browser tab has none.
+- Browser pairing page: `/mobile?pairing=<link>` (unchanged by this refresh; the design's one-step pairing page).
+- Comparison runs set `autobyteus.prototype.designOnlyLayers` to `off` on the baseline side where a surface has no source counterpart (the agent catalog of New run's Agent sheet and the Reconnect notice are design-only layers: the source's Agent sheet lists only the node's own agents).
+- Evidence: `ui-baseline-report.md` (first section), `evidence/phone-run-screen-baseline-refresh-506/` (left: the baseline, right: the pinned source, both at 412 px).
+
 ## package-clone-auto-update-457 (personal settings of package and built-in definitions, the automatic-update switch for Agent packages and Skill sources, the required-tools row; these surfaces reflect `origin/personal@f78b60dddd`)
 
 ```bash

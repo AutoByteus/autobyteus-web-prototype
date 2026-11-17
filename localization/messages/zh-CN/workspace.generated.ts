@@ -131,6 +131,7 @@ const messages = {
   'workspace.components.workspace.tools.VncViewer.loading_vnc_settings': '正在加载 VNC 设置...',
   'workspace.components.workspace.tools.VncViewer.localhost_6080_localhost_6081': '本地主机:6080,本地主机:6081',
   'workspace.components.workspace.tools.VncViewer.no_vnc_hosts_configured': '未配置 VNC 主机。',
+  'workspace.components.workspace.history.RunSectionPanel.loading_task_history': '正在加载任务历史记录...',
 } satisfies TranslationCatalog;
 
 export default messages;

@@ -26,6 +26,7 @@ import type {
 import type { CollaborationMessagesContextView } from '~/types/workspace/collaborationMessagesContextView';
 import type { AgentTeamContext } from '~/types/agent/AgentTeamContext';
 import { parseAgentTeamAddress } from '~/types/agent/AgentTeamAddress';
+import { withMobileMessages } from '~/prototype/mobile-runs/mobileMessagesView';
 import { projectTeamCommunicationPerspective, projectTeamCommunicationMemberIdentity } from '~/utils/teamCommunication/teamCommunicationPerspective';
 import { isTeamMemberProjectionAuthoritative } from '~/services/runHydration/teamMemberProjectionHydrationService';
 
@@ -130,7 +131,7 @@ export const useActiveContextStore = defineStore('activeContext', () => {
       const target = {
         kind: 'standalone_team_member' as const, context, team: teamView,
         workspaceRootPath: team.view.getAgentWorkspaceRootPath(context.state.runId),
-        collaborationMessages: standaloneTeamMessagesView(team),
+        collaborationMessages: withMobileMessages(standaloneTeamMessagesView(team)),
         browse: Object.freeze({
           kind: 'teamMember' as const, teamRunId: team.view.getRootTeamRunId(),
           memberAddress: team.view.getFocusedMemberAddress(), agentRunId: context.state.runId,

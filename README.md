@@ -53,7 +53,7 @@ The promoted default product entries are:
 - Token Statistics: <http://127.0.0.1:3210/settings?section=token-usage>
 - Nodes (one Manage Nodes list, Remote Collaboration merged in; `one-nodes-tab`): <http://127.0.0.1:3210/nodes?nodeTab=manage> (scenarios `nodes_user`, `nodes_states`, `nodes_update_*`, `nodes_empty_offer`; the page's current look is `manage-nodes-professional`, see the runbook)
 
-- The phone (`mobile-experience-redesign`, autobyteus-277): <http://127.0.0.1:3210/mobile> (run list with its delegation tree, run screen, New run; the first visit opens a paired phone). Spec: `tickets/done/mobile-experience-redesign/ui-ux-spec.md`; starting states in the runbook.
+- The phone (`mobile-experience-redesign`, autobyteus-277): <http://127.0.0.1:3210/mobile> (run list with its delegation tree, run screen, New run; the first visit opens a paired phone). Spec: `tickets/done/mobile-experience-redesign/ui-ux-spec.md`; starting states in the runbook. **Refreshed to the source (`phone-run-screen-baseline-refresh-506`, `origin/personal@e4f4b3e176`): the screens are the source's own; see `ui-reference-runbook.md` (first section) and the report's first section.**
 
 - Phone pairing (`one-step-phone-pairing`, autobyteus-395): Nodes › Phone Setup <http://127.0.0.1:3210/nodes?nodeTab=phoneSetup> (four tabs: Same Wi-Fi or LAN, Tailscale, Your VPN, Company address), the Android app's start screen <http://127.0.0.1:3210/android> (design route), the node sheet's Switch node, and the browser page for a phone without the app (`/mobile?pairing=…`). Starting states in the runbook. Spec: `tickets/done/one-step-phone-pairing/ui-ux-spec.md`.
 

@@ -1,5 +1,9 @@
 # Prototype Evidence Index
 
+## phone-run-screen-baseline-refresh-506 (the phone, source `e4f4b3e176`)
+
+Side-by-side captures (left: the baseline, right: the pinned source; 412 px phone viewport) are under `evidence/phone-run-screen-baseline-refresh-506/`; `copied-files-audit.txt` lists, for each touched file, whether it is byte-identical to the source. Method and inventory: `ui-baseline-report.md` (first section).
+
 ## REQPKG-TSUI-001 Token Statistics Refresh Candidate
 
 Focused current-experience evidence for source authority `origin/personal` at

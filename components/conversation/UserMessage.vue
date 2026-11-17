@@ -21,7 +21,7 @@
           :skill-names="skillRequest.skillNames"
           :sent-text="message.text"
         />
-        <div v-if="displayText" class="whitespace-pre-wrap break-words text-gray-900 leading-6"><template
+        <div v-if="displayText" class="whitespace-pre-wrap break-words text-gray-900 leading-6" :class="{ 'long-unbroken-text': hasLongUnbrokenRun(displayText) }"><template
           v-for="(part, index) in displayParts"
           :key="index"
         ><span
@@ -49,12 +49,12 @@
                 :aria-label="`Open ${item.label}`"
                 @click="handleAttachmentClick(item)"
               >
-                <img
+                <MessageAttachmentThumbnail
                   v-if="item.previewUrl"
-                  :src="item.previewUrl"
+                  :url="item.previewUrl"
                   :alt="item.label"
                   class="message-attachment-thumbnail h-full w-full object-cover"
-                  @error="markAttachmentPreviewAsFailed(item.attachment.id)"
+                  @failed="markAttachmentPreviewAsFailed(item.attachment.id)"
                 />
                 <span v-else>{{ item.label }}</span>
               </button>
@@ -74,6 +74,7 @@
 </template>
 
 <script setup lang="ts">
+import { hasLongUnbrokenRun } from '~/utils/text/longUnbrokenRun';
 import { computed, ref, watch } from 'vue';
 import { useFileExplorerStore } from '~/stores/fileExplorer';
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
@@ -83,6 +84,10 @@ import { contextAttachmentPresentation } from '~/utils/contextFiles/contextAttac
 import { skillRequestInstruction } from '~/utils/skills/skillRequestInstruction';
 import { presentSentUserMessage, splitMentionText } from '~/utils/collaborators/collaboratorMentionText';
 import SkillRequestChips from '~/components/conversation/SkillRequestChips.vue';
+import MessageAttachmentThumbnail from '~/components/conversation/MessageAttachmentThumbnail.vue';
+import { useMobileAttachmentOpening } from '~/composables/mobile/useMobileAttachmentOpening';
+import { isMobileRemoteAccessRuntime } from '~/utils/remoteAccess/mobileRuntime';
+import { useRunViewFiles } from '~/composables/remoteRuns/remoteRunFile';
 
 const props = defineProps<{
   message: UserMessage;
@@ -94,7 +99,11 @@ const fileExplorerStore = useFileExplorerStore();
 const windowNodeContextStore = useWindowNodeContextStore();
 const workspaceStore = useWorkspaceStore();
 const avatarLoadError = ref(false);
+// The phone opens attachments in its own viewer (autobyteus-450). Taken in setup: its navigation reads the route through inject.
+const mobileAttachments = isMobileRemoteAccessRuntime() ? useMobileAttachmentOpening() : null;
 const failedAttachmentPreviewKeys = ref(new Set<string>());
+// The run view this message is shown in: a path of a remote run is on that run's node (autobyteus-471 REQ-003).
+const runViewFiles = useRunViewFiles();
 
 // Skill tags travel as an instruction prefix in the content; show them as chips and the user's own text.
 const skillRequest = computed(() => skillRequestInstruction.parse(props.message.text ?? ''));
@@ -149,6 +158,11 @@ const handleAttachmentClick = (item: (typeof displayedAttachments.value)[number]
 };
 
 const openAttachment = (attachment: ContextAttachment): void => {
+  if (mobileAttachments) {
+    void mobileAttachments.open(attachment);
+    return;
+  }
+  if (attachment.kind === 'workspace_path' && runViewFiles?.refuseRemoteRunPath()) return;
   contextAttachmentPresentation.openAttachment(attachment, {
     workspaceId: workspaceId.value,
     isEmbeddedElectronRuntime: isEmbeddedElectronRuntime.value,

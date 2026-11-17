@@ -282,6 +282,67 @@ const messages = {
     "Model",
   "workspace.components.launchConfig.RuntimeModelConfigFields.modelPlaceholder":
     "Select a model",
+  "workspace.components.workspace.tools.BrowserPanel.back": "Back",
+  "workspace.components.workspace.tools.BrowserPanel.forward": "Forward",
+  "workspace.components.conversation.segments.SystemTaskNotificationSegment.runtimeChanged": "Agent runtime changed",
+  "workspace.components.conversation.segments.SystemTaskNotificationSegment.toolsUpdated": "Tools updated",
+  "workspace.components.workspace.history.RunSectionPanel.stream_recovery_wait":
+    "This Team is still working. Wait for it to finish, then select this Team member again.",
+  "workspace.components.workspace.history.RunSectionPanel.stream_recovery_retry":
+    "Team activity changed while the conversation was being reloaded. Select this Team member again to retry.",
+  "workspace.components.conversation.segments.renderer.MarkdownRenderer.file_on_other_node":
+    "This file is on {{node}}, where this run runs.",
+  "workspace.components.mobile.views.MobileFiles.node_file_not_found":
+    "This file was not found on the computer.",
+  "workspace.components.mobile.views.MobileFiles.node_file_is_folder":
+    "This path is a folder, not a file.",
+  "workspace.components.progress.BackgroundTaskPanel.trackedExplanation": "Tracked commands continuing beyond their turn. Recent runtime observations, not all system processes.",
+  "workspace.components.progress.BackgroundTaskPanel.lastKnown": "Recorded / last-known rows; running counts are unconfirmed.",
+  "workspace.components.progress.BackgroundTaskPanel.loading": "Checking this agent’s background tasks…",
+  "workspace.components.progress.BackgroundTaskPanel.unavailable": "Current background-task inspection is unavailable.",
+  "workspace.components.progress.BackgroundTaskPanel.recordedCounts": "{{running}} last-known running · {{total}} recorded",
+  "workspace.components.progress.BackgroundTaskPanel.unconfirmedCounts": "Current count unavailable",
+  "workspace.components.progress.BackgroundTaskPanel.trackedEmpty": "No tracked background commands",
+  "workspace.components.progress.BackgroundTaskPanel.shellCommand": "Shell command",
+  "workspace.components.progress.BackgroundTaskPanel.status.unknown": "Unknown",
+  "workspace.components.progress.BackgroundTaskPanel.observed": "{{id}} · observed {{time}}",
+  "workspace.components.progress.BackgroundTaskPanel.exitCode": "Exit code {{code}}",
+  "workspace.components.progress.SystemInstructionActivityItem.source.deepseekHarness":
+    "AutoByteus-supplied · DeepSeek Harness instructions plugin",
+  "workspace.components.workspace.team.TeamCommunicationPanel.loading_messages":
+    "Loading messages…",
+  "workspace.components.workspace.team.TeamCommunicationPanel.messages_unavailable":
+    "These messages can't be shown",
+  "workspace.components.workspace.tools.NodeDesktopTile.title": "Node desktop",
+  "workspace.components.workspace.tools.NodeDesktopTile.connecting": "Connecting…",
+  "workspace.components.workspace.tools.NodeDesktopTile.connected_view_only": "Connected · View only",
+  "workspace.components.workspace.tools.NodeDesktopTile.connected_control": "Connected · Control",
+  "workspace.components.workspace.tools.NodeDesktopTile.disconnected": "Disconnected",
+  "workspace.components.workspace.tools.NodeDesktopTile.desktop_disconnected": "The node's desktop disconnected",
+  "workspace.components.workspace.tools.NodeDesktopTile.connection_refused": "The connection was refused",
+  "workspace.components.workspace.tools.NodeDesktopTile.cannot_reach_node": "Cannot reach the node",
+  "workspace.components.workspace.tools.NodeDesktopTile.not_allowed": "This viewer is not allowed on this node",
+  "workspace.components.workspace.tools.NodeDesktopTile.needs_connecting": "This desktop is not connected to this node. Connect it on the Nodes page.",
+  "workspace.components.workspace.tools.NodeDesktopTile.no_shared_desktop": "This node has no shared desktop",
+  "workspace.components.workspace.tools.NodeDesktopTile.connect": "Connect",
+  "workspace.components.workspace.tools.NodeDesktopTile.reconnect": "Reconnect",
+  "workspace.components.workspace.tools.NodeDesktopTile.disconnect": "Disconnect",
+  "workspace.components.workspace.tools.NodeDesktopTile.view_only": "View only",
+  "workspace.components.workspace.tools.NodeDesktopTile.control": "Control",
+  "workspace.components.workspace.tools.NodeDesktopTile.switch_to_control": "Switch to Control: your keyboard and mouse reach the agent's desktop",
+  "workspace.components.workspace.tools.NodeDesktopTile.switch_to_view_only": "Switch to View only",
+  "workspace.components.workspace.tools.NodeDesktopTile.maximize_view": "Maximize view",
+  "workspace.components.workspace.tools.NodeDesktopTile.restore_view": "Restore view (Esc)",
+  "workspace.components.workspace.tools.VncViewer.checking_node_desktop": "Checking this node's desktop…",
+  "workspace.components.workspace.tools.VncViewer.no_shared_desktop": "This node has no shared desktop.",
+  "workspace.components.workspace.tools.VncViewer.cannot_reach_node": "Cannot reach the node.",
+  "workspace.components.workspace.tools.VncViewer.retry": "Retry",
+  "workspace.components.workspace.tools.NodeDesktopTile.too_many_viewers": "Too many viewers on this node right now",
+  "workspace.components.workspace.tools.NodeDesktopTile.retry": "Retry",
+  "workspace.pathRefusal.notAbsolute": "Enter a full path, starting with /.",
+  "workspace.pathRefusal.notAbsoluteWindows": "Enter a full path, starting with a drive like C:\\.",
+  "workspace.pathRefusal.missing": "No folder at this path.",
+  "workspace.pathRefusal.notAFolder": "This path is a file, not a folder.",
 } satisfies TranslationCatalog;
 
 export default messages;
