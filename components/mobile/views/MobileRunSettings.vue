@@ -1,7 +1,6 @@
 <template>
   <!-- Settings (autobyteus-458, UIS-011): the open run's runtime and model, changed while the run is stopped. A running
-       run says "Stop run" first; the change applies when the next
-       message is sent. A Team or Org member has its own settings: this screen is always the open member's. -->
+       run says "Stop run" first; a change applies at the next message (not said on the screen). A Team or Org member has its own settings: this screen is always the open member's. -->
   <section class="fixed inset-0 z-20 flex h-[100dvh] flex-col bg-white text-slate-900" data-testid="mobile-run-settings">
     <MobileScreenBar title="Settings" @back="$emit('back')" />
 
@@ -13,9 +12,6 @@
           <span class="block truncate text-xs leading-4 text-slate-500">{{ subtitle }}</span>
         </span>
       </div>
-      <p v-if="parentName" class="-mt-1 pb-2 text-[0.8125rem] leading-5 text-slate-500" data-testid="mobile-run-settings-member-note">
-        These settings are for {{ displayName }} only. Open another member from the run list to change theirs.
-      </p>
 
       <div v-if="working" class="mb-2 rounded-xl border border-amber-200 bg-amber-50 p-3" role="status" data-testid="mobile-run-settings-running">
         <p class="text-[0.9375rem] font-semibold text-amber-900">This run is working</p>
@@ -53,13 +49,6 @@
       </MobileChoiceSheet>
 
       <p v-if="error" class="mt-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700" role="alert" data-testid="mobile-run-settings-error">{{ error }}</p>
-      <div v-if="saved" class="mt-3 rounded-xl border border-green-200 bg-green-50 p-3" role="status" data-testid="mobile-run-settings-saved">
-        <p class="flex items-center gap-2 text-[0.9375rem] font-semibold text-green-900">
-          <Icon icon="heroicons:check-circle-20-solid" class="h-5 w-5 text-green-600" aria-hidden="true" />Saved
-        </p>
-        <p class="mt-0.5 text-sm text-green-900">It applies when you send your next message.</p>
-        <button type="button" class="mt-3 h-12 w-full rounded-xl bg-white text-base font-semibold text-green-900 ring-1 ring-green-300 active:bg-green-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="mobile-run-settings-to-conversation" @click="$emit('back')">Back to the conversation</button>
-      </div>
     </div>
 
     <div class="flex-shrink-0 border-t border-slate-100 bg-white px-4 pb-3 pt-2">
@@ -87,7 +76,7 @@ import { agentStatusDotClass } from '~/utils/workspaceStatusDotPresentation';
 import type { ActiveAgentWorkspaceTarget } from '~/types/workspace/activeAgentWorkspaceTarget';
 
 const props = defineProps<{ target: ActiveAgentWorkspaceTarget; parentName: string | null }>();
-defineEmits<{ (event: 'back'): void }>();
+const emit = defineEmits<{ (event: 'back'): void }>();
 
 const { displayName } = useTargetConversation(() => props.target);
 const { current, save: saveSelection, refreshList, isOffered } = useRunModelSelection(() => props.target.context.state.runId);
@@ -105,8 +94,7 @@ const stopRun = (): void => { markStopped(props.target.context.state.runId); (pr
 const draftRuntime = ref(current.value.runtime);
 const draftModel = ref(current.value.model);
 const error = ref('');
-const saved = ref(false);
-watch(() => props.target.context.state.runId, () => { draftRuntime.value = current.value.runtime; draftModel.value = current.value.model; error.value = ''; saved.value = false; });
+watch(() => props.target.context.state.runId, () => { draftRuntime.value = current.value.runtime; draftModel.value = current.value.model; error.value = ''; });
 
 const runtimeItems = computed(() => RUN_RUNTIMES.map((runtime) => ({ id: runtime.id, label: runtime.name })));
 const modelItems = computed(() => (runtimeOf(draftRuntime.value)?.models ?? [])
@@ -116,9 +104,9 @@ const modelItems = computed(() => (runtimeOf(draftRuntime.value)?.models ?? [])
 const chooseRuntime = (id: string): void => {
   draftRuntime.value = id;
   draftModel.value = ''; // a runtime's own models: the model is chosen again
-  error.value = ''; saved.value = false;
+  error.value = '';
 };
-const chooseModel = (id: string): void => { draftModel.value = id; error.value = ''; saved.value = false; };
+const chooseModel = (id: string): void => { draftModel.value = id; error.value = ''; };
 const refreshModels = (): void => {
   refreshList(draftRuntime.value);
   if (draftModel.value && !modelItems.value.some((item) => item.id === draftModel.value)) draftModel.value = '';
@@ -129,6 +117,6 @@ const changed = computed(() => draftRuntime.value !== current.value.runtime || d
 const canSave = computed(() => !working.value && changed.value && Boolean(draftModel.value));
 const save = (): void => {
   const outcome = saveSelection(draftRuntime.value, draftModel.value);
-  if (outcome.ok) { error.value = ''; saved.value = true; } else { error.value = outcome.message; saved.value = false; }
+  if (outcome.ok) emit('back'); else error.value = outcome.message; // saved: back to the conversation, nothing else said
 };
 </script>
