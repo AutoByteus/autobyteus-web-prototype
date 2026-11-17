@@ -48,9 +48,13 @@ Common: side margin 12 px (was 24 + 32), text 17 px / line height 1.5 (was 16 px
 autobyteus-458: ⋮ menu entry "Runtime & model" (current value under it), a full view: Runtime and Model rows (the New run rows and sheets), "Stop run" first for a running run, usage-limit marks (clock, "Limit reached · back at <time>", not selectable), "applies when you send your next message", Save, saved and refused states.
 Evidence: `evidence/review-1/` (506 options screens 1 to 3; 458 flows 1 and 2; Stop run and text sizes).
 
-## Review 2 (2026-11-17, the founder on his phone, screenshot of the ⋮ menu)
+## Review 2 (2026-11-17, the founder on his phone, screenshot of the ⋮ menu) — superseded by review 3
 
 The founder: simplify it, use "Settings" instead of "Runtime & model", it looks not clean. Change: the ⋮ menu is back to one line per entry (Artifacts, Files, Messages, Activity, **Settings**); the two-line "Runtime & model / Claude Code · Opus" and the Text size block are gone from the menu. Settings is one screen with two sections: THIS RUN (Runtime, Model, usage-limit note, next-message note, Save; Stop run first for a running run) and TEXT SIZE (four steps, a sample line at the chosen size). Evidence: `evidence/review-2/`; the review-1 458 sheets were removed (they showed the old menu).
+
+## Review 3 (2026-11-17, the founder on his phone, two screenshots)
+
+The founder: I only asked to change the words "Runtime & model" to "Settings"; the earlier version was much better, you made Settings too complicated. And on a message from another agent: why this small arrow, I don't need it, show the message as it is, as on the desktop. Changes: (1) back to the review-1 structure with only the words changed: the ⋮ menu entry is **Settings** (the run's current value under it, the Text size block in the menu as in review 1) and the screen is titled **Settings** with Runtime, Model, the usage-limit note, the next-message note and Save (no "This run" heading, no Text size section in the screen). (2) A message from another agent ("From <name>:") shows on the phone without the arrow and without the message-type line ("agent_message"); the product's component keeps both on the desktop (same component today), so the build hides them for the phone only. Evidence: `evidence/review-3/review-3-settings-and-message.png` (conversation end without the arrow, menu, Settings screen, menu after Save); `evidence/review-2/` was removed (superseded).
 
 ## Questions for the user
 

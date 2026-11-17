@@ -96,3 +96,7 @@
 
 /* tool cards span the column and are at least 44 px tall to tap */
 .phone-conversation .conv-feed .my-2 > .rounded-lg > .select-none { min-height: 44px; }
+
+/* a message from another agent is shown as it is: no arrow, no message-type line (the desktop component keeps them) */
+.phone-conversation .conv-feed .inter-agent-message [data-testid="inter-agent-toggle"],
+.phone-conversation .conv-feed .inter-agent-message [data-testid="inter-agent-details"] { display: none; }
