@@ -26,7 +26,7 @@ The design repository's phone screens (`components/mobile/MobileRunScreen.vue`, 
 ## Baseline ticket
 
 - Branch / worktree: `design/phone-run-screen-baseline-refresh-506` / `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/phone-run-screen-baseline-refresh-506`
-- Bootstrapper result: pending
+- Bootstrapper result: pending; scoped Refresh requested 2026-11-17 (run ui_baseline_bootstrapper_6ad2aea9c2274132af4a83d42f8dee25), report ui-baseline-report.md in the baseline worktree
 
 ## Result
 
