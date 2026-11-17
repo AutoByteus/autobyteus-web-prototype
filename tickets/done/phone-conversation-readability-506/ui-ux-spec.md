@@ -78,7 +78,7 @@
 | --- | --- | --- | --- |
 | Conversation phone layout | full-width column, turn header, type scale, markdown, cards | the four text sizes; browse and live paths use the same turn markup | `assets/css/phone-conversation.css`; `components/conversation/AIMessage.vue`, `UserMessage.vue`; `components/workspace/agent/EventMonitorBrowseAssistantRow.vue`, `AgentConversationFeed.vue`, `AgentEventMonitor.vue` |
 | Text size (phone-wide) | the four steps, kept on the phone | Small, Standard, Large, Largest | `composables/mobile/usePhoneTextSize.ts`; `components/mobile/runScreen/MobileRunMenu.vue` |
-| Settings screen | runtime and model of the open run | stopped, running (Stop run button), refused | `components/mobile/views/MobileRunSettings.vue` (uses `components/mobile/newRun/MobileRuntimeModelRows.vue`, the New run rows); `prototype/mobile-runs/runSettingsFixture.ts` (what the node would decide, scripted) |
+| Settings screen | runtime and model of the open run | stopped, running (stop icon), refused | `components/mobile/views/MobileRunSettings.vue` (uses `components/mobile/newRun/MobileRuntimeModelRows.vue`, the New run rows); `prototype/mobile-runs/runSettingsFixture.ts` (what the node would decide, scripted) |
 | Composer bottom corners | continuous 1 px border | none | `components/agentInput/AgentUserInputTextArea.vue` |
 
 ## Journey Inventory
