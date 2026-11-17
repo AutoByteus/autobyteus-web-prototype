@@ -26,11 +26,8 @@
           :data-testid="`mobile-run-menu-${view.id}`"
           @click="choose(view.id)"
         >
-          <Icon :icon="view.icon" class="h-5 w-5 flex-shrink-0 text-slate-500" aria-hidden="true" />
-          <span class="min-w-0 flex-1">
-            <span class="block">{{ view.label }}</span>
-            <span v-if="view.id === 'settings' && settingsSummary" class="block truncate text-xs text-slate-500" data-testid="mobile-run-menu-settings-summary">{{ settingsSummary }}</span>
-          </span>
+          <Icon :icon="view.icon" class="h-5 w-5 text-slate-500" aria-hidden="true" />
+          {{ view.label }}
         </button>
         <div class="mt-1 border-t border-slate-200 px-4 pb-2 pt-3" role="group" aria-label="Text size" data-testid="mobile-text-size">
           <p class="mb-2 text-xs font-medium text-slate-500">Text size</p>
@@ -60,7 +57,7 @@ import { Icon } from '@iconify/vue';
 import type { MobileView } from '~/composables/mobile/useMobileNavigation';
 import { PHONE_TEXT_SIZES, usePhoneTextSize } from '~/composables/mobile/usePhoneTextSize';
 
-const props = defineProps<{ showMessages: boolean; showDesktop: boolean; settingsSummary?: string }>();
+const props = defineProps<{ showMessages: boolean; showDesktop: boolean }>();
 const emit = defineEmits<{ (event: 'open-view', view: MobileView): void }>();
 
 const VIEWS: readonly { id: MobileView; label: string; icon: string }[] = [

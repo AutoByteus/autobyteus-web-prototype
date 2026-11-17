@@ -1,6 +1,6 @@
 <template>
   <!-- Settings (autobyteus-458, UIS-011): the open run's runtime and model, changed while the run is stopped. A running
-       run says "Stop run" first; a model whose usage limit is out is marked in its list; the change applies when the next
+       run says "Stop run" first; the change applies when the next
        message is sent. A Team or Org member has its own settings: this screen is always the open member's. -->
   <section class="fixed inset-0 z-20 flex h-[100dvh] flex-col bg-white text-slate-900" data-testid="mobile-run-settings">
     <MobileScreenBar title="Settings" @back="$emit('back')" />
@@ -52,23 +52,14 @@
         </template>
       </MobileChoiceSheet>
 
-      <p v-if="currentLimit && !working && !changed" class="mt-3 flex items-start gap-2 rounded-xl bg-amber-50 p-3 text-sm text-amber-900" data-testid="mobile-run-settings-limit">
-        <Icon icon="heroicons:clock-20-solid" class="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-600" aria-hidden="true" />
-        <span>{{ currentModelName }} has no usage left{{ currentLimit.until ? ` until ${currentLimit.until}` : '' }}. Choose another model to carry on.</span>
-      </p>
-
       <p v-if="error" class="mt-3 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700" role="alert" data-testid="mobile-run-settings-error">{{ error }}</p>
       <div v-if="saved" class="mt-3 rounded-xl border border-green-200 bg-green-50 p-3" role="status" data-testid="mobile-run-settings-saved">
         <p class="flex items-center gap-2 text-[0.9375rem] font-semibold text-green-900">
           <Icon icon="heroicons:check-circle-20-solid" class="h-5 w-5 text-green-600" aria-hidden="true" />Saved
         </p>
-        <p class="mt-0.5 text-sm text-green-900">{{ displayName }} will use {{ runtimeOf(current.runtime)?.name }} · {{ modelOf(current.runtime, current.model)?.name }} when you send your next message, for example “continue”.</p>
+        <p class="mt-0.5 text-sm text-green-900">It applies when you send your next message.</p>
         <button type="button" class="mt-3 h-12 w-full rounded-xl bg-white text-base font-semibold text-green-900 ring-1 ring-green-300 active:bg-green-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="mobile-run-settings-to-conversation" @click="$emit('back')">Back to the conversation</button>
       </div>
-      <p v-else class="mt-3 flex items-start gap-2 text-[0.8125rem] leading-5 text-slate-500" data-testid="mobile-run-settings-next-message">
-        <Icon icon="heroicons:information-circle-20-solid" class="mt-0.5 h-4 w-4 flex-shrink-0" aria-hidden="true" />
-        A change applies when you send your next message.
-      </p>
     </div>
 
     <div class="flex-shrink-0 border-t border-slate-100 bg-white px-4 pb-3 pt-2">
@@ -89,7 +80,7 @@ import { Icon } from '@iconify/vue';
 import MobileScreenBar from '~/components/mobile/MobileScreenBar.vue';
 import MobileChoiceSheet from '~/components/mobile/newRun/MobileChoiceSheet.vue';
 import ModelListRefreshControl from '~/components/common/ModelListRefreshControl.vue';
-import { RUN_RUNTIMES, markStopped, modelOf, runtimeBlocked, runtimeOf, useRunModelSelection } from '~/prototype/mobile-runs/runModelFixture';
+import { RUN_RUNTIMES, markStopped, runtimeOf, useRunModelSelection } from '~/prototype/mobile-runs/runModelFixture';
 import { useTargetConversation } from '~/composables/workspace/useTargetConversation';
 import { mobileRunStatusLabel } from '~/utils/mobile/mobileRunStatusLabel';
 import { agentStatusDotClass } from '~/utils/workspaceStatusDotPresentation';
@@ -117,19 +108,10 @@ const error = ref('');
 const saved = ref(false);
 watch(() => props.target.context.state.runId, () => { draftRuntime.value = current.value.runtime; draftModel.value = current.value.model; error.value = ''; saved.value = false; });
 
-const runtimeItems = computed(() => RUN_RUNTIMES.map((runtime) => {
-  const blocked = runtimeBlocked(runtime.id);
-  return { id: runtime.id, label: runtime.name, unavailable: blocked ? `Limit reached${blocked.until ? ` · back at ${blocked.until}` : ''}` : undefined };
-}));
+const runtimeItems = computed(() => RUN_RUNTIMES.map((runtime) => ({ id: runtime.id, label: runtime.name })));
 const modelItems = computed(() => (runtimeOf(draftRuntime.value)?.models ?? [])
   .filter((model) => isOffered(draftRuntime.value, model))
-  .map((model) => ({
-    id: model.id, label: model.name, detail: model.detail,
-    unavailable: model.limit ? `Limit reached${model.limit.until ? ` · back at ${model.limit.until}` : ''}` : undefined,
-  })));
-const currentModel = computed(() => modelOf(current.value.runtime, current.value.model));
-const currentModelName = computed(() => currentModel.value?.name ?? '');
-const currentLimit = computed(() => currentModel.value?.limit ?? null);
+  .map((model) => ({ id: model.id, label: model.name, detail: model.detail })));
 
 const chooseRuntime = (id: string): void => {
   draftRuntime.value = id;

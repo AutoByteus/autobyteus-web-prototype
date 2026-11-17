@@ -1,18 +1,18 @@
 /**
- * Design layer of autobyteus-458 (change a run's runtime and model from the phone). Every runtime, model, limit and time here
+ * Design layer of autobyteus-458 (change a run's runtime and model from the phone). Every runtime and model here
  * is invented and illustrative. The node's answers are scripted: a run's current selection is held in memory per run, a model
- * marked `limit` cannot run now, and `refusedUntilRefresh` models answer the node's plain refusal on the first Save.
+ * `refusedUntilRefresh` models answer the node's plain refusal on the first Save.
  */
 import { computed, reactive } from 'vue';
 
-export interface RunModel { id: string; name: string; detail?: string; limit?: { until: string | null }; refusedUntilRefresh?: boolean }
+export interface RunModel { id: string; name: string; detail?: string; refusedUntilRefresh?: boolean }
 export interface RunRuntime { id: string; name: string; models: RunModel[] }
 
 export const RUN_RUNTIMES: RunRuntime[] = [
   {
     id: 'claude_code', name: 'Claude Code',
     models: [
-      { id: 'cc-opus', name: 'Opus', detail: 'Most capable', limit: { until: '3:40 pm' } },
+      { id: 'cc-opus', name: 'Opus', detail: 'Most capable' },
       { id: 'cc-sonnet', name: 'Sonnet', detail: 'Balanced' },
       { id: 'cc-haiku', name: 'Haiku', detail: 'Fast and light' },
       { id: 'cc-sonnet-old', name: 'Sonnet (earlier version)', detail: 'Being retired', refusedUntilRefresh: true },
@@ -22,7 +22,7 @@ export const RUN_RUNTIMES: RunRuntime[] = [
     id: 'codex', name: 'Codex',
     models: [
       { id: 'cx-large', name: 'Codex Large', detail: 'Longest tasks' },
-      { id: 'cx-mini', name: 'Codex Mini', detail: 'Quick edits', limit: { until: null } },
+      { id: 'cx-mini', name: 'Codex Mini', detail: 'Quick edits' },
     ],
   },
   {
@@ -33,17 +33,11 @@ export const RUN_RUNTIMES: RunRuntime[] = [
       { id: 'ab-c', name: 'Lumen 2 Large', detail: 'Provider: Lumen' },
     ],
   },
-  { id: 'gemini_cli', name: 'Gemini CLI', models: [{ id: 'gm-1', name: 'Gemini Pro', detail: 'Limit reached for today', limit: { until: 'tomorrow 9:00 am' } }] },
+  { id: 'gemini_cli', name: 'Gemini CLI', models: [{ id: 'gm-1', name: 'Gemini Pro', detail: 'Google models' }] },
 ];
 
 export const runtimeOf = (id: string): RunRuntime | undefined => RUN_RUNTIMES.find((runtime) => runtime.id === id);
 export const modelOf = (runtimeId: string, modelId: string): RunModel | undefined => runtimeOf(runtimeId)?.models.find((model) => model.id === modelId);
-/** A runtime with no model that can run now. */
-export const runtimeBlocked = (id: string): { until: string | null } | null => {
-  const models = runtimeOf(id)?.models ?? [];
-  const limited = models.filter((model) => model.limit);
-  return models.length && limited.length === models.length ? limited[0]!.limit! : null;
-};
 
 const SESSION_KEY = 'autobyteus.prototype.runModelSelections';
 const stored = (): Record<string, { runtime: string; model: string }> => {
@@ -52,7 +46,7 @@ const stored = (): Record<string, { runtime: string; model: string }> => {
 const selections = reactive<Record<string, { runtime: string; model: string }>>(typeof window === 'undefined' ? {} : stored());
 const refreshed = reactive<Record<string, boolean>>({});
 
-/** The run's current selection; a run with none yet starts on Claude Code · Opus (the model whose limit is out). */
+/** The run's current selection; a run with none yet starts on Claude Code · Opus. */
 export function useRunModelSelection(runId: () => string) {
   const current = computed(() => selections[runId()] ?? { runtime: 'claude_code', model: 'cc-opus' });
   const save = (runtime: string, model: string): { ok: true } | { ok: false; message: string } => {

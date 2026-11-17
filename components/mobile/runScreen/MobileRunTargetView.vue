@@ -14,7 +14,7 @@
           </span>
         </span>
       </div>
-      <MobileRunMenu :show-messages="showMessages" :show-desktop="showDesktop" :settings-summary="settingsSummary" @open-view="$emit('open-view', $event)" />
+      <MobileRunMenu :show-messages="showMessages" :show-desktop="showDesktop" @open-view="$emit('open-view', $event)" />
     </header>
 
     <div v-if="unreachable" class="min-h-0 flex-1 overflow-y-auto" data-testid="mobile-run-unreachable">
@@ -45,7 +45,6 @@
 import { computed } from 'vue';
 import { Icon } from '@iconify/vue';
 import AgentEventMonitor from '~/components/workspace/agent/AgentEventMonitor.vue';
-import { modelOf, runtimeOf, useRunModelSelection } from '~/prototype/mobile-runs/runModelFixture';
 import RemoteNodeChip from '~/components/workspace/remote/RemoteNodeChip.vue';
 import RemoteRunNotice from '~/components/workspace/remote/RemoteRunNotice.vue';
 import MobileRunMenu from '~/components/mobile/runScreen/MobileRunMenu.vue';
@@ -59,9 +58,6 @@ import { agentStatusDotClass } from '~/utils/workspaceStatusDotPresentation';
 const props = defineProps<{ target: ActiveAgentWorkspaceTarget; parentName: string | null }>();
 defineEmits<{ (event: 'back'): void; (event: 'open-view', view: MobileView): void }>();
 
-const runSelection = useRunModelSelection(() => props.target.context.state.runId);
-/** "Claude Code · Sonnet": the run's runtime and model, shown under the menu entry (autobyteus-458). */
-const settingsSummary = computed(() => `${runtimeOf(runSelection.current.value.runtime)?.name} · ${modelOf(runSelection.current.value.runtime, runSelection.current.value.model)?.name}`);
 const { displayName, readOnly, senderNameByAgentRunId, remoteView } = useTargetConversation(() => props.target);
 const remote = remoteView.remote;
 const unreachable = remoteView.unreachable;
