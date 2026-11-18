@@ -237,5 +237,5 @@ useMobileRouteRunSync(navigation);
 .mobile-split [data-testid='mobile-file-viewer'],
 .mobile-split [data-testid='mobile-team-reference-viewer'] { left: 380px; }
 .mobile-split [data-testid='mobile-run-back'] { display: none; }
-.mobile-split [data-testid='mobile-run-title'] { padding-left: 12px; }
+.mobile-split [data-testid='mobile-run-screen'] > header [data-testid='mobile-run-title'] { padding-left: 12px; }
 </style>
