@@ -1,5 +1,21 @@
 # UI Reference Runbook
 
+## ios-demo-mode-279 (autobyteus-279: the iOS app's demo for App Review; design base `fc68a7a4`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 3279
+```
+
+- The iOS app's first screen (design route, not the real app): <http://127.0.0.1:3279/ios>, at 440×956 (iPhone 17 Pro Max) or 820×1180 / 1180×820 (iPad Air 11-inch). It is the approved scan-first start screen with **Try demo** under **Scan**.
+- **Try demo**, or **Scan** (the camera finds the demo QR code `autobyteus://demo` after 2.2 s: "Demo code found"), opens `/mobile` in the demo: the same phone screens on the sample world, everything on the demo (no other nodes), the showcase conversation without failure states, sample model names.
+- Scripted in the demo: a message to an agent gets an answer (a `read_file` tool call, then text) on the agent's own stream (`prototype/ios-demo/iosDemo.ts` `demoReplyFrames`, played by `plugins/00`); Stop makes a working agent Idle (`plugins/95.ios-demo.client.ts`); New run, Settings Save, Text size and the VNC Viewer (view only) work as in the reference. Read only: Files, Artifacts, Messages, Activity.
+- Leave: tap **Demo** (top left) › **Leave demo** → `/ios`. A new tab is a cold launch (first screen).
+- iPad landscape (1024 px and wider): the run list is a 380 px pane on the left and what it opens fills the right (`components/mobile/MobilePairedShell.vue`); sheets are centered 512 px cards from 768 px.
+- Starting states: `localStorage.setItem('autobyteus.prototype.iosStart', 'ios_several')` (two saved nodes; the next scan finds a node, not the demo code); remove the key for the default first launch. Demo state is in `sessionStorage` (`autobyteus.prototype.iosDemo`, `autobyteus.prototype.inIosApp`, `autobyteus.prototype.iosDemoWelcomeClosed`).
+- The demo QR code for the review notes: `tickets/<status>/ios-demo-mode-279/app-review/`.
+- Spec: `tickets/<status>/ios-demo-mode-279/ui-ux-spec.md` (after approval).
+
 ## phone-run-screen-baseline-refresh-506 (the phone, `/mobile`: run list, run screen and its views, New run, connection sheet; reflects `origin/personal@e4f4b3e176`, release 1.5.13-beta.7)
 
 ```bash

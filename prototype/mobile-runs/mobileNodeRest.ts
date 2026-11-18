@@ -8,6 +8,8 @@
  * - `mobile_phone_access_off`: the node answers that Phone Access is off ("Phone access off");
  * - `mobile_session_revoked`: the node no longer accepts the phone's credential (the pairing screen).
  */
+import { DEMO_IMAGE_SVG, isIosDemo } from '~/prototype/ios-demo/iosDemo'
+
 const json = (status: number, body: unknown): Response =>
   new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } })
 
@@ -17,11 +19,16 @@ const scenario = (): string => { try { return localStorage.getItem('autobyteus.p
 export const mobileNodeResponse = (url: URL, init?: RequestInit): Response | null => {
   // A media file the node serves (a conversation's image): the same invented picture the observation node serves.
   if (/^\/rest\/media\//.test(url.pathname) && (init?.method ?? 'GET').toUpperCase() === 'GET') {
+    // ios-demo-mode-279: the demo shows a finished sample picture (an invented chart), not the reference's placeholder.
+    if (isIosDemo()) return new Response(DEMO_IMAGE_SVG, { status: 200, headers: { 'content-type': 'image/svg+xml' } })
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640"><rect width="640" height="640" fill="#dbeafe"/><circle cx="320" cy="250" r="110" fill="#2563eb"/><text x="320" y="430" text-anchor="middle" font-family="system-ui" font-size="42" fill="#0f172a">Prototype media</text></svg>'
     return new Response(svg, { status: 200, headers: { 'content-type': 'image/svg+xml' } })
   }
   // The node's node desktop (the agent's virtual desktop of a Docker node): offered only by the scenarios that show it.
-  if (url.pathname === '/rest/node-desktop') return json(200, { available: ['mobile_node_desktop', 'mobile_node_desktop_busy'].includes(scenario()) })
+  // ios-demo-mode-279: the demo offers the VNC Viewer on its invented desktop (view only).
+  if (url.pathname === '/rest/node-desktop') return json(200, { available: isIosDemo() || ['mobile_node_desktop', 'mobile_node_desktop_busy'].includes(scenario()) })
+  // ios-demo-mode-279: the demo has no node; its own checks always find the sample world.
+  if (isIosDemo() && (url.pathname === '/rest/remote-access/status' || (url.pathname === '/graphql' && String(init?.body ?? '').includes('PhoneCredentialCheck')))) return json(200, { data: { __typename: 'Query' } })
   const isStatus = url.pathname === '/rest/remote-access/status'
   const isCredentialCheck = url.pathname === '/graphql' && String(init?.body ?? '').includes('PhoneCredentialCheck')
   if (!isStatus && !isCredentialCheck) return null

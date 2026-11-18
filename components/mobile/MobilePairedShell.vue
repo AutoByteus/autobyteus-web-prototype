@@ -14,13 +14,14 @@
     <p class="mt-2 text-[0.9375rem] leading-6 text-slate-600">Opening your runs…</p>
   </section>
 
-  <template v-else>
+  <div v-else class="contents" :class="split ? 'mobile-split' : ''" :data-layout="split ? 'split' : 'single'">
     <MobileRunList
-      v-show="navigation.screen.value === 'list'"
+      v-show="split || navigation.screen.value === 'list'"
       :tree="tree"
       :node-name="nodeName"
       :connection="connection"
       :notice="notice"
+      :demo="demo"
       @open-connection="showConnection = true"
       @new-run="navigation.openNewRun()"
       @retry="checkStatus()"
@@ -39,16 +40,27 @@
 
     <MobileConnectionSheet
       v-if="showConnection"
-      :node-name="nodeName"
+      :node-name="demo ? 'Demo' : nodeName"
+      :demo="demo"
       :connected="connected"
       :is-checking="sessionStore.isCheckingStatus"
       :diagnostic="sessionStore.lastDiagnostic"
       @close="showConnection = false"
       @check="checkStatus()"
       @unpair="openUnpairConfirm"
+      @leave-demo="leaveIosDemo()"
     />
     <MobileUnpairConfirm v-if="showUnpairConfirm" @cancel="showUnpairConfirm = false" @confirm="unpairPhone" />
-  </template>
+
+    <!-- ios-demo-mode-279 (iPad, landscape): nothing is open yet, so the right pane says what it is for. -->
+    <section v-if="split && navigation.screen.value === 'list'" class="mobile-split-empty fixed inset-y-0 right-0 flex flex-col items-center justify-center bg-slate-50 px-10 text-center" data-testid="mobile-split-empty">
+      <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-slate-400 shadow-sm ring-1 ring-slate-200">
+        <Icon icon="heroicons:chat-bubble-left-right-20-solid" class="h-7 w-7" aria-hidden="true" />
+      </span>
+      <p class="mt-4 text-base font-semibold text-slate-900">Choose a run</p>
+      <p class="mt-1 max-w-xs text-sm leading-5 text-slate-500">Its conversation opens here.</p>
+    </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -77,6 +89,7 @@ import { useMobileNodeSessionStore } from '~/stores/mobileNodeSessionStore';
 import { nodeNameOrDefault } from '~/utils/remoteAccess/nodeName';
 import { agentRunRowKey } from '~/utils/runListProjection';
 import { getShellBridge } from '~/utils/remoteAccess/shellBridge';
+import { isIosDemo, leaveIosDemo } from '~/prototype/ios-demo/iosDemo';
 import type { MobileRunListConnection } from '~/components/mobile/runList/MobileRunList.vue';
 
 const props = defineProps<{
@@ -88,6 +101,18 @@ const props = defineProps<{
 const emit = defineEmits<{ (event: 'checked'): void }>();
 
 const sessionStore = useMobileNodeSessionStore();
+/**
+ * ios-demo-mode-279: a tablet in landscape (1024 CSS px wide and more, an iPad Air 11-inch is 1180) shows the run list
+ * beside what is open, as iPad apps do; narrower screens (a phone, an iPad in portrait) keep one screen at a time.
+ */
+const SPLIT_QUERY = '(min-width: 1024px)';
+const split = ref(typeof window !== 'undefined' && window.matchMedia(SPLIT_QUERY).matches);
+let splitQuery: MediaQueryList | null = null;
+const onSplitChange = (event: MediaQueryListEvent): void => { split.value = event.matches; };
+onMounted(() => { splitQuery = window.matchMedia(SPLIT_QUERY); splitQuery.addEventListener('change', onSplitChange); });
+onBeforeUnmount(() => splitQuery?.removeEventListener('change', onSplitChange));
+/** ios-demo-mode-279: the iOS app's demo (its own screens on the built-in sample world). */
+const demo = isIosDemo();
 const activeContext = useActiveContextStore();
 const navigation = useMobileNavigation();
 const tree = useMobileRunTree();
@@ -116,6 +141,11 @@ const firstCheck = new Promise<void>((resolve) => { firstCheckEnded = resolve; }
  * so; otherwise reachable or not.
  */
 async function checkStatus(first = false): Promise<void> {
+  // ios-demo-mode-279: the demo has no node to check; it reads its sample world only.
+  if (demo) {
+    await (first ? historyLoad.initialLoad : historyLoad.load()).catch(() => undefined);
+    return;
+  }
   const [outcome] = await Promise.all([
     sessionStore.checkCredential(),
     sessionStore.fetchStatus().catch(() => null),
@@ -149,7 +179,7 @@ onMounted(async () => {
  */
 const nodeName = computed(() => nodeNameOrDefault(appNodeName.value, sessionStore.session?.nodeName));
 /** Reachable until the first check says otherwise. */
-const connected = computed(() => !firstCheckDone.value || sessionStore.authorizedApiReachable);
+const connected = computed(() => demo || !firstCheckDone.value || sessionStore.authorizedApiReachable);
 /** The run list's connection state: Phone Access off is its own state, not "Not reachable". */
 const connection = computed<MobileRunListConnection>(() => {
   if (sessionStore.phoneAccessOff) return 'phone_access_off';
@@ -189,3 +219,23 @@ watch([() => navigation.screen.value, viewTarget, restoring], ([screen, target, 
 const onLaunched = (draftRunId: string): void => { void navigation.openRun({ replace: true, rowKey: agentRunRowKey(draftRunId) }); };
 useMobileRouteRunSync(navigation);
 </script>
+
+<style>
+/* ios-demo-mode-279: the iPad's landscape layout. The run list is a 380 px pane on the left (its + stays in it); every
+   screen the list opens (the run, its views, New run) fills the rest; the run's ← is not needed beside the list. */
+.mobile-split [data-testid='mobile-run-list'] { right: auto; width: 380px; border-right: 1px solid rgb(226 232 240); z-index: 25; }
+.mobile-split [data-testid='mobile-new-run-button'] { right: auto; left: 308px; }
+.mobile-split-empty,
+.mobile-split [data-testid='mobile-run-screen'],
+.mobile-split [data-testid='mobile-new-run'],
+.mobile-split [data-testid='mobile-artifacts'],
+.mobile-split [data-testid='mobile-files'],
+.mobile-split [data-testid='mobile-messages'],
+.mobile-split [data-testid='mobile-activity'],
+.mobile-split [data-testid='mobile-run-settings'],
+.mobile-split [data-testid='mobile-node-desktop'],
+.mobile-split [data-testid='mobile-file-viewer'],
+.mobile-split [data-testid='mobile-team-reference-viewer'] { left: 380px; }
+.mobile-split [data-testid='mobile-run-back'] { display: none; }
+.mobile-split [data-testid='mobile-run-title'] { padding-left: 12px; }
+</style>

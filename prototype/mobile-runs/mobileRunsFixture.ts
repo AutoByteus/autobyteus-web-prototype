@@ -9,6 +9,7 @@
  * (`withMobileRuns`, answered like every other stored run), and the peers the paired node knows.
  */
 import { exposedFixtures } from '~/prototype/source-observation/fixtures.mjs'
+import { demoActivities, demoBackgroundTasks, demoConversation, isIosDemo } from '~/prototype/ios-demo/iosDemo'
 import {
   MOBILE_RUNS, PEERS, UNREACHABLE_NODES, RICH_RUN_ID, flattenRuns, worldNode, isWorldRunId,
   projectionEntriesFor, richConversation, teamResumeConfigFor, teamOfMember, activitiesFor, backgroundTasksFor, participantMessagesFor, referenceText, searchFilePaths, fileChangesFor, WORKSPACE_FILES,
@@ -41,15 +42,26 @@ export const agentDefinitionIdFor = (name: string): string => {
   return 'agent-researcher'
 }
 
+/** ios-demo-mode-279: the demo has no other nodes, so its sample texts do not name any. */
+const demoScrub = (data: any): any => JSON.parse(JSON.stringify(data)
+  .replace(/ on node docker| on docker| on office-mac/g, '')
+  .replace(/mock\/gpt-prototype/g, 'demo/sample-model')
+  .replace(/mock\/reasoning-prototype/g, 'demo/sample-reasoning-model')
+  .replace(/,\\?"node\\?":\\?"(docker|office-mac)\\?"/g, ''))
+
 /** Answers an opened run like a stored run; other operations pass through unchanged. */
 export const withMobileRuns = (name: string, variables: Record<string, any>, data: any): any => {
+  const answer = answerMobileRuns(name, variables, data)
+  return isIosDemo() && answer ? demoScrub(answer) : answer
+}
+const answerMobileRuns = (name: string, variables: Record<string, any>, data: any): any => {
   if (name === 'SearchFiles') return { ...(data ?? {}), searchFiles: searchFilePaths(variables.query) }
   const node = worldNode(variables.runId ?? variables.agentRunId ?? variables.teamRunId)
   if (!node) return data
   data = data ?? {}
   const at = Date.now() - node.minutes * 60_000
   if (name === 'GetRunProjection' && data.getRunProjection) {
-    data.getRunProjection = { ...data.getRunProjection, runId: node.id, summary: node.summary, lastActivityAt: new Date(at).toISOString(), conversation: projectionEntriesFor(node, at), activities: activitiesFor(node, at) }
+    data.getRunProjection = { ...data.getRunProjection, runId: node.id, summary: node.summary, lastActivityAt: new Date(at).toISOString(), conversation: projectionEntriesFor(node, at), activities: isIosDemo() ? demoActivities(activitiesFor(node, at)) : activitiesFor(node, at) }
   }
   if (name === 'GetAgentRunResumeConfig' && data.getAgentRunResumeConfig) {
     data.getAgentRunResumeConfig = {
@@ -68,7 +80,7 @@ export const withMobileRuns = (name: string, variables: Record<string, any>, dat
     data.getTeamMemberRunProjection = { ...(data.getTeamMemberRunProjection ?? {}), agentRunId: node.id, summary: node.name, lastActivityAt: new Date(at).toISOString(), conversation: projectionEntriesFor(node, at), activities: activitiesFor(node, at), hasEarlierActiveTraceEvents: false }
   }
   if (name === 'AgentBackgroundTaskView') {
-    data.agentBackgroundTaskView = { __typename: 'AgentBackgroundTaskEventStream', agentRunId: node.id, currentTasks: backgroundTasksFor(node, at) }
+    data.agentBackgroundTaskView = { __typename: 'AgentBackgroundTaskEventStream', agentRunId: node.id, currentTasks: isIosDemo() ? demoBackgroundTasks(backgroundTasksFor(node, at)) : backgroundTasksFor(node, at) }
   }
   return data
 }
@@ -78,11 +90,13 @@ export { teamOfMember }
 export const conversationOf = (runId: string): any | null => {
   const node = worldNode(runId)
   if (!node || node.id !== RICH_RUN_ID) return null
-  return richConversation(node.id, Date.now() - node.minutes * 60_000)
+  const conversation = richConversation(node.id, Date.now() - node.minutes * 60_000)
+  return isIosDemo() ? demoConversation(conversation) : conversation
 }
 export const activitiesOf = (runId: string): Array<Record<string, any>> => {
   const node = worldNode(runId)
-  return node ? activitiesFor(node, Date.now() - node.minutes * 60_000) : []
+  const activities = node ? activitiesFor(node, Date.now() - node.minutes * 60_000) : []
+  return isIosDemo() ? demoActivities(activities) : activities
 }
 /** The stored messages of one participant (the node's `collaborationParticipantMessages` answer). */
 export const participantMessagesOf = (runId: string): { messages: Array<Record<string, any>>; pastParticipants: Array<Record<string, any>> } => {

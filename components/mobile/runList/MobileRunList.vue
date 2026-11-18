@@ -7,17 +7,21 @@
         type="button"
         class="flex h-12 min-w-0 items-center gap-2.5 rounded-xl pl-2 pr-3 text-left active:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         aria-haspopup="dialog"
-        :aria-label="`${nodeName}, ${connectionLabel}. Connection`"
+        :aria-label="demo ? 'Demo, sample data. About the demo' : `${nodeName}, ${connectionLabel}. Connection`"
         data-testid="mobile-node-button"
         @click="$emit('open-connection')"
       >
-        <span class="relative flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600">
+        <!-- ios-demo-mode-279: in the demo the node button names the demo; it has no connection state. -->
+        <span v-if="demo" class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600" data-testid="mobile-demo-avatar">
+          <Icon icon="heroicons:sparkles-20-solid" class="h-5 w-5" aria-hidden="true" />
+        </span>
+        <span v-else class="relative flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600">
           <Icon icon="heroicons:computer-desktop-20-solid" class="h-5 w-5" aria-hidden="true" />
           <span class="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full ring-2 ring-white" :class="connected ? 'bg-green-500' : 'bg-amber-500'" data-testid="mobile-connection-dot" />
         </span>
         <span class="min-w-0">
-          <span class="block truncate text-base font-semibold leading-5" data-testid="mobile-node-name">{{ nodeName }}</span>
-          <span class="block truncate text-xs leading-4" :class="connected ? 'text-slate-500' : 'font-medium text-amber-700'" data-testid="mobile-node-state">{{ connectionLabel }}</span>
+          <span class="block truncate text-base font-semibold leading-5" data-testid="mobile-node-name">{{ demo ? 'Demo' : nodeName }}</span>
+          <span class="block truncate text-xs leading-4" :class="connected || demo ? 'text-slate-500' : 'font-medium text-amber-700'" data-testid="mobile-node-state">{{ demo ? 'Sample data' : connectionLabel }}</span>
         </span>
         <Icon icon="heroicons:chevron-down-20-solid" class="h-4 w-4 flex-shrink-0 text-slate-400" aria-hidden="true" />
       </button>
@@ -32,6 +36,16 @@
 
     <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-28" data-testid="mobile-run-list-scroll">
       <MobileUnsupportedFeatureNotice v-if="notice" class="m-3" :message="notice" />
+
+      <!-- ios-demo-mode-279: the demo says what it is and what to try, once per visit (× closes it). -->
+      <section v-if="demo && !welcomeClosed" class="relative mx-3 mt-3 rounded-xl border border-blue-100 bg-blue-50 py-3 pl-4 pr-12" aria-labelledby="mobile-demo-welcome-title" data-testid="mobile-demo-welcome">
+        <h2 id="mobile-demo-welcome-title" class="text-[0.9375rem] font-semibold leading-6 text-slate-900">Welcome to the demo</h2>
+        <p class="mt-0.5 text-sm leading-5 text-slate-600">These agents, Teams and runs are samples. Nothing here is real, and nothing leaves this device.</p>
+        <p class="mt-2 text-sm leading-5 text-slate-600">Open a run to read its work, send a message to get a reply, or start a new run with +.</p>
+        <button type="button" class="absolute right-1 top-1 flex h-11 w-11 items-center justify-center rounded-full text-slate-500 active:bg-blue-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" aria-label="Close" data-testid="mobile-demo-welcome-close" @click="closeWelcome">
+          <Icon icon="heroicons:x-mark-20-solid" class="h-5 w-5" aria-hidden="true" />
+        </button>
+      </section>
 
       <div v-if="listState === 'loading'" class="animate-pulse" role="status" aria-label="Loading your runs" data-testid="mobile-run-list-loading">
         <div v-for="n in 6" :key="n" class="flex items-center gap-3 px-4 py-3.5">
@@ -100,12 +114,15 @@ import type { useMobileRunTree } from '~/composables/mobile/useMobileRunTree';
 import { useRunHistoryStore } from '~/stores/runHistoryStore';
 import { useRunListStore } from '~/stores/runListStore';
 import type { MobileRunTreeRow } from '~/utils/mobile/mobileRunListRows';
+import { DEMO_WELCOME_CLOSED_KEY } from '~/prototype/ios-demo/iosDemo';
 
 const props = defineProps<{
   tree: ReturnType<typeof useMobileRunTree>;
   nodeName: string;
   connection: MobileRunListConnection;
   notice?: string | null;
+  /** ios-demo-mode-279: the iOS app's demo (sample data on the phone, nothing connected). */
+  demo?: boolean;
 }>();
 /** `retry`: the read failed; the shell checks the node again (status, history and the 401 rule). */
 defineEmits<{ (event: 'open-connection'): void; (event: 'new-run'): void; (event: 'retry'): void }>();
@@ -138,6 +155,12 @@ onMounted(() => { timer = setInterval(() => { tick.value += 1; }, 60_000); });
 onBeforeUnmount(() => { if (timer !== null) clearInterval(timer); });
 
 const connected = computed(() => props.connection === 'connected');
+
+const welcomeClosed = ref(typeof sessionStorage !== 'undefined' && sessionStorage.getItem(DEMO_WELCOME_CLOSED_KEY) === '1');
+function closeWelcome(): void {
+  welcomeClosed.value = true;
+  sessionStorage.setItem(DEMO_WELCOME_CLOSED_KEY, '1');
+}
 const CONNECTION_LABELS: Readonly<Record<MobileRunListConnection, string>> = {
   connected: 'Connected',
   unreachable: 'Not reachable',

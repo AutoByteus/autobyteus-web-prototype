@@ -18,6 +18,7 @@ import { restFixture } from '~/prototype/source-observation/rest-fixtures.mjs'
 import axios from 'axios'
 import { liveStreamFrames } from '~/prototype/source-observation/live-streams.mjs'
 // remote-runs-in-tree (design-only): the live stream of a run that delegated copies to another node.
+import { demoModelNames, demoReplyFrames, isIosDemo } from '~/prototype/ios-demo/iosDemo'
 import { PTM_HOST_RUN_ID, remoteInterruptReply, remoteSendReply, remoteStopFrames, remoteStreamIsLive, remoteSummaryFrames, remoteTimeline } from '~/prototype/remote-runs/remoteRunsFixture'
 import { collaborationView } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
@@ -257,7 +258,7 @@ const setAgentOrgRuntimePhase = (phase: 'config' | 'active', router?: Router): A
 }
 
 const scenario = (): string => agentOrgRuntimeRoute()?.scenario || agentTeamRuntimeRoute()?.scenario || localStorage.getItem(SCENARIO_KEY) || DEFAULT_SCENARIO
-const context = (): string => localStorage.getItem(CONTEXT_KEY) || (window.location.pathname === '/mobile' || window.location.pathname === '/android' ? 'unpaired' : DEFAULT_CONTEXT)
+const context = (): string => localStorage.getItem(CONTEXT_KEY) || (window.location.pathname === '/mobile' || window.location.pathname === '/android' || window.location.pathname === '/ios' ? 'unpaired' : DEFAULT_CONTEXT)
 
 const findSnapshot = (): [string, RuntimeSnapshot] => {
   const path = normalizePath()
@@ -349,7 +350,7 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
     const runtime = String(args[0] || 'autobyteus')
     if (store.catalogByRuntimeKind?.[runtime]?.state !== 'ready') {
       const reference = readyStoreState('llmProviderConfig', state => state.catalogByRuntimeKind?.[runtime]?.state === 'ready')
-      if (reference) store.$patch({ catalogByRuntimeKind: { ...store.catalogByRuntimeKind, [runtime]: clone(reference.catalogByRuntimeKind[runtime]) } })
+      if (reference) store.$patch({ catalogByRuntimeKind: { ...store.catalogByRuntimeKind, [runtime]: isIosDemo() ? demoModelNames(clone(reference.catalogByRuntimeKind[runtime])) : clone(reference.catalogByRuntimeKind[runtime]) } })
     }
     return store.catalogByRuntimeKind?.[runtime]
   }
@@ -582,7 +583,8 @@ export default defineNuxtPlugin({
           .map(([key, value]) => [key, value instanceof Map ? 'map' : 'set'])))
       }
       const [, selected] = findSnapshot()
-      const state = selected?.state?.[store.$id]
+      // ios-demo-mode-279: the demo's sample names (its models say they are samples; the demo folder).
+      const state = isIosDemo() ? demoModelNames(selected?.state?.[store.$id]) : selected?.state?.[store.$id]
       // Live file-explorer sessions and loaded trees are Map-typed client state
       // that captured JSON snapshots cannot carry. Keep the live values across
       // a route re-patch, as the source keeps them across navigation.
@@ -995,6 +997,12 @@ export default defineNuxtPlugin({
         if (typeof data !== 'string') return
         let message: { type?: string; payload?: { message_id?: string; dedupe_key?: string; mentions?: unknown[]; agent_run_id?: string; content?: string; context_file_paths?: string[] } }
         try { message = JSON.parse(data) } catch { return }
+        // ios-demo-mode-279: in the iOS app's demo, an agent answers a message in its own conversation (scripted).
+        if (isIosDemo() && message.type === 'SEND_MESSAGE' && message.payload && new URL(this.url, window.location.href).pathname.startsWith('/ws/agent/')) {
+          const demoRunId = decodeURIComponent(new URL(this.url, window.location.href).pathname.split('/').filter(Boolean).pop() || '')
+          this.playLater(demoReplyFrames(demoRunId, message.payload))
+          return
+        }
         // remote-runs-in-tree: a message or an interrupt for a run on another node is answered by that node.
         if (this.remoteScenario && message.type === 'REFRESH_REMOTE_TASK_EXECUTIONS') {
           // Retry: the delegating node asks the other nodes again; each answers after a moment (1.5 s while one waits).

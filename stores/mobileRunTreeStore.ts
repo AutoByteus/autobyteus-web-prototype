@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import {
   MOBILE_RUNS, PEERS, UNREACHABLE_NODES, flattenRunIds, type MobilePeer, type MobileRunNode,
 } from '~/prototype/mobile-runs/mobileRunsFixture'
 import type { MobileRunTreeRow } from '~/utils/mobile/mobileRunListRows'
+import { DEMO_RUNS, isIosDemo } from '~/prototype/ios-demo/iosDemo'
 
 /** How many runs show before "Show older (N)". */
 export const MOBILE_VISIBLE_RUNS = 5
@@ -11,7 +12,7 @@ export const MOBILE_VISIBLE_RUNS = 5
 /** What the first history read found: the scenario key seeds the starting state only (no visible control); see the runbook. */
 export type MobileRunListState = 'loading' | 'ready' | 'empty' | 'error' | 'node-offline'
 const startingState = (): MobileRunListState => {
-  if (typeof localStorage === 'undefined') return 'ready'
+  if (typeof localStorage === 'undefined' || isIosDemo()) return 'ready'
   switch (localStorage.getItem('autobyteus.prototype.scenario')) {
     case 'mobile_runs_loading': return 'loading'
     case 'mobile_runs_empty': return 'empty'
@@ -40,9 +41,13 @@ export const useMobileRunTreeStore = defineStore('mobileRunTree', () => {
   const olderShown = ref(false)
   /** Rows the user folded or unfolded, by row key. */
   const toggled = ref<Record<string, boolean>>({})
-  const peers = ref<MobilePeer[]>(PEERS)
+  // ios-demo-mode-279: the iOS app's demo lists its own sample world (everything on the demo, no other nodes).
+  const demo = isIosDemo()
+  // The demo's world is this visit's own copy: what the user does in it (Stop) shows, and leaving the demo forgets it.
+  const world: MobileRunNode[] = demo ? reactive(structuredClone(DEMO_RUNS)) : MOBILE_RUNS
+  const peers = ref<MobilePeer[]>(demo ? [] : PEERS)
 
-  const runs = computed<MobileRunNode[]>(() => (listState.value === 'ready' || listState.value === 'node-offline' ? [...launched.value, ...MOBILE_RUNS] : [...launched.value]))
+  const runs = computed<MobileRunNode[]>(() => (listState.value === 'ready' || listState.value === 'node-offline' ? [...launched.value, ...world] : [...launched.value]))
   const all = computed(() => flattenRunIds(runs.value))
   const byId = (id: string | null | undefined): MobileRunNode | null => (id ? all.value.find((node) => node.id === id) ?? null : null)
   const parentOf = (id: string): MobileRunNode | null => all.value.find((node) => node.children?.some((child) => child.id === id)) ?? null
@@ -103,6 +108,11 @@ export const useMobileRunTreeStore = defineStore('mobileRunTree', () => {
   function renameLaunched(oldId: string, newId: string): void {
     launched.value = launched.value.map((node) => (node.id === oldId ? { ...node, id: newId } : node))
   }
+  /** ios-demo-mode-279: a demo run's status changes (Stop). */
+  function setStatus(id: string, status: MobileRunNode['status']): void {
+    const node = flattenRunIds(world).find((item) => item.id === id)
+    if (node) node.status = status
+  }
   function retry(): void {
     listState.value = 'loading'
     window.setTimeout(() => { listState.value = 'ready' }, 700)
@@ -110,6 +120,6 @@ export const useMobileRunTreeStore = defineStore('mobileRunTree', () => {
 
   return {
     listState, runs, shown, older, olderShown, peers, all, rows, allRows, launched,
-    byId, parentOf, isNodeReachable, isExpanded, toggle, open, targetOf, addLaunched, renameLaunched, retry,
+    byId, parentOf, isNodeReachable, isExpanded, toggle, open, targetOf, addLaunched, renameLaunched, retry, setStatus,
   }
 })

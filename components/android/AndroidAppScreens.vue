@@ -1,5 +1,5 @@
 <template>
-  <main class="fixed inset-0 flex h-[100dvh] flex-col bg-white text-slate-900" data-testid="android-app">
+  <main class="fixed inset-0 flex h-[100dvh] flex-col bg-white text-slate-900" data-testid="android-app" :data-platform="platform">
     <!-- Scanner: the camera view -->
     <section v-if="view === 'scan'" class="absolute inset-0 z-30 flex flex-col bg-slate-900 text-white" data-testid="android-scanner">
       <header class="flex h-14 flex-shrink-0 items-center pl-2 pr-4">
@@ -14,7 +14,7 @@
         </div>
       </div>
       <p class="flex-shrink-0 px-8 pb-[max(2rem,env(safe-area-inset-bottom))] pt-6 text-center text-[0.9375rem] text-slate-200" role="status" data-testid="android-scan-hint">
-        {{ scanFound ? 'Code found' : 'Point the camera at the QR code on your computer.' }}
+        {{ scanFound ? (demoCodeFound ? 'Demo code found' : 'Code found') : 'Point the camera at the QR code on your computer.' }}
       </p>
     </section>
 
@@ -70,6 +70,8 @@
       </header>
 
       <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain" data-testid="android-scroll">
+        <!-- ios-demo-mode-279: on an iPad the start screen is one centered column (448 px), as its buttons are. -->
+        <div :class="isIos ? 'mx-auto w-full max-w-md' : ''">
         <!-- First launch -->
         <section v-if="nodes.length === 0" class="flex flex-col items-center px-8 pt-20 text-center" data-testid="android-first-launch">
           <span class="flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-blue-50 text-blue-600"><Icon icon="heroicons:qr-code-20-solid" class="h-9 w-9" aria-hidden="true" /></span>
@@ -121,20 +123,27 @@
             </li>
           </ul>
         </section>
+        </div>
       </div>
 
-      <footer class="flex-shrink-0 border-t border-slate-100 bg-white px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
-        <button type="button" class="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 text-[1.0625rem] font-semibold text-white active:bg-blue-700" data-testid="android-scan" @click="startScan">
-          <Icon icon="heroicons:qr-code-20-solid" class="h-6 w-6" aria-hidden="true" />
-          Scan
-        </button>
+      <footer class="flex-shrink-0 border-t border-slate-100 bg-white px-4 pt-3" :class="isIos ? 'pb-[max(0.5rem,env(safe-area-inset-bottom))]' : 'pb-[max(1rem,env(safe-area-inset-bottom))]'">
+        <div class="mx-auto w-full" :class="isIos ? 'max-w-md' : ''">
+          <button type="button" class="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 text-[1.0625rem] font-semibold text-white active:bg-blue-700" data-testid="android-scan" @click="startScan">
+            <Icon icon="heroicons:qr-code-20-solid" class="h-6 w-6" aria-hidden="true" />
+            Scan
+          </button>
+          <!-- ios-demo-mode-279: the demo, for anyone without a node at hand (App Review, a first look). -->
+          <button v-if="isIos && !switchMode" type="button" class="mt-1 flex h-12 w-full items-center justify-center rounded-2xl text-[1.0625rem] font-semibold text-blue-700 active:bg-blue-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="ios-try-demo" @click="openDemo">
+            Try demo
+          </button>
+        </div>
       </footer>
     </template>
 
     <!-- Node menu / remove -->
     <div v-if="menuNode" class="fixed inset-0 z-40 flex flex-col justify-end" data-testid="android-node-sheet">
       <button type="button" class="absolute inset-0 bg-slate-900/40" aria-label="Close" @click="menuNode = null" />
-      <section class="relative flex max-h-[85dvh] flex-col rounded-t-2xl bg-white shadow-xl" role="dialog" aria-modal="true" :aria-label="menuNode.name">
+      <section class="relative flex max-h-[85dvh] flex-col rounded-t-2xl bg-white shadow-xl" :class="isIos ? 'md:mx-auto md:mb-6 md:w-full md:max-w-lg md:rounded-2xl' : ''" role="dialog" aria-modal="true" :aria-label="menuNode.name">
         <div class="mx-auto mt-2 h-1 w-10 flex-shrink-0 rounded-full bg-slate-300" aria-hidden="true" />
         <header class="flex h-14 flex-shrink-0 items-center justify-between pl-4 pr-2">
           <h2 class="truncate text-lg font-semibold">{{ menuNode.name }}</h2>
@@ -158,7 +167,7 @@
     <!-- Type an address -->
     <div v-if="addressOpen" class="fixed inset-0 z-40 flex flex-col justify-end" data-testid="android-address-sheet">
       <button type="button" class="absolute inset-0 bg-slate-900/40" aria-label="Close" @click="addressOpen = false" />
-      <section class="relative flex max-h-[85dvh] flex-col rounded-t-2xl bg-white shadow-xl" role="dialog" aria-modal="true" aria-label="Type an address">
+      <section class="relative flex max-h-[85dvh] flex-col rounded-t-2xl bg-white shadow-xl" :class="isIos ? 'md:mx-auto md:mb-6 md:w-full md:max-w-lg md:rounded-2xl' : ''" role="dialog" aria-modal="true" aria-label="Type an address">
         <div class="mx-auto mt-2 h-1 w-10 flex-shrink-0 rounded-full bg-slate-300" aria-hidden="true" />
         <header class="flex h-14 flex-shrink-0 items-center justify-between pl-4 pr-2">
           <h2 class="text-lg font-semibold">Type an address</h2>
@@ -183,6 +192,7 @@
 import { Icon } from '@iconify/vue'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { enterIosDemo, IOS_START_KEY, iosSeedNodes } from '~/prototype/ios-demo/iosDemo'
 import {
   ANDROID_ACTIVE_KEY,
   IN_APP_KEY,
@@ -201,8 +211,14 @@ type View = 'list' | 'scan' | 'connecting' | 'connected' | 'cant-reach'
 type Failure = 'no_network' | 'asleep' | 'expired' | 'used' | 'not_autobyteus'
 interface Target { name: string; nodeId?: string; fromScan: boolean }
 
+/** ios-demo-mode-279: the iOS app draws the same start screen (autobyteus-395 FU-001) and adds "Try demo". */
+const props = withDefaults(defineProps<{ platform?: 'android' | 'ios' }>(), { platform: 'android' })
+const isIos = props.platform === 'ios'
+
 const route = useRoute()
 const scenario = readPhoneState()
+/** iOS starting state: `ios_first_launch` (default; the next scan finds the demo QR code) or `ios_several`. */
+const iosStart = isIos ? (localStorage.getItem(IOS_START_KEY) || 'ios_first_launch') : ''
 const switchMode = computed(() => route.query.from === 'node')
 const corners = ['left-0 top-0 rounded-tl-xl border-b-0 border-r-0', 'right-0 top-0 rounded-tr-xl border-b-0 border-l-0', 'bottom-0 left-0 rounded-bl-xl border-r-0 border-t-0', 'bottom-0 right-0 rounded-br-xl border-l-0 border-t-0']
 
@@ -212,6 +228,8 @@ const checking = ref(true)
 const target = ref<Target | null>(null)
 const failure = ref<Failure>('no_network')
 const scanFound = ref(false)
+/** ios-demo-mode-279: the code in front of the camera is the demo QR code (`autobyteus://demo`). */
+const demoCodeFound = ref(false)
 const otherOpen = ref(false)
 const menuNode = ref<AndroidNode | null>(null)
 const removeStep = ref<'menu' | 'confirm'>('menu')
@@ -284,11 +302,21 @@ function startScan(): void {
   clearTimers()
   scanFound.value = false
   view.value = 'scan'
-  // The camera finds a code on its own after a moment (a scripted timeline stands in for the lens).
+  // The camera finds a code on its own after a moment (a scripted timeline stands in for the lens). On iOS the code in
+  // front of it is the demo QR code from the App Review notes (`autobyteus://demo`), unless the phone already has nodes.
+  demoCodeFound.value = false
   later(2200, () => {
     scanFound.value = true
-    later(500, () => connectTo({ name: nextScanName(), fromScan: true }))
+    demoCodeFound.value = isIos && iosStart === 'ios_first_launch'
+    if (demoCodeFound.value) later(700, openDemo)
+    else later(500, () => connectTo({ name: nextScanName(), fromScan: true }))
   })
+}
+
+/** "Try demo" or the demo QR code: the app's own screens on its built-in sample world. Nothing is connected. */
+function openDemo(): void {
+  clearTimers()
+  enterIosDemo()
 }
 
 function closeScanner(): void {
@@ -328,7 +356,7 @@ function backToPage(): void {
 }
 
 onMounted(() => {
-  nodes.value = loadAndroidNodes()
+  nodes.value = isIos ? iosSeedNodes(iosStart) : loadAndroidNodes()
   currentId.value = localStorage.getItem(ANDROID_ACTIVE_KEY)
   // The app looks at each node as the list opens.
   checkTimer = setTimeout(() => (checking.value = false), 900)

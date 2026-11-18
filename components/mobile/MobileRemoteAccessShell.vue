@@ -1,7 +1,7 @@
 <template>
   <main class="min-h-screen bg-white text-slate-900" data-testid="mobile-remote-access-shell">
     <MobilePairingBootstrap
-      v-if="!sessionStore.isPaired || hasRoutePairingParam"
+      v-if="!demo && (!sessionStore.isPaired || hasRoutePairingParam)"
       @paired="onPaired"
       @pairing-failed="postPair = false"
       @pairing-started="postPair = true"
@@ -25,12 +25,15 @@ import { useMobileNodeSessionStore } from '~/stores/mobileNodeSessionStore';
 import type { MobileFeatureId } from '~/utils/mobileFeatureGates';
 import { getShellBridge } from '~/utils/remoteAccess/shellBridge';
 import { closeAllLiveStreams } from '~/services/liveStreamLifecycle/closeAllLiveStreams';
+import { isIosDemo } from '~/prototype/ios-demo/iosDemo';
 
 // Keep the component name in the compiled chunk stable for existing page tests.
 defineOptions({ name: 'MobileRemoteAccessShell' });
 
 const sessionStore = useMobileNodeSessionStore();
 const route = useRoute();
+/** ios-demo-mode-279: the iOS app's demo has no node and no pairing; its screens open on the sample world. */
+const demo = isIosDemo();
 
 /** Just paired: the paired shell shows "Connected to <node>" until its first check ends. */
 const postPair = ref(false);
