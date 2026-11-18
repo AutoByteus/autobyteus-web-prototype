@@ -19,7 +19,7 @@
 
 ## Decisions asked of the founder
 
-D1 iOS first screen = the Android scan-first screen; D2 built in (offline); D3 iPad landscape side by side; D4 "Try demo" also shown when nodes are saved; D5 no Android "Try demo" now. Details: `design-review-notes.md`.
+D1 iOS first screen = the Android scan-first screen; D2 built in (offline); D3 iPad landscape side by side; D4 "Try demo" also shown when nodes are saved; D5 no Android "Try demo" now; D6 (round 2) remove the share extension from this build. Details: `design-review-notes.md`.
 
 ## The founder's words so far
 
@@ -29,3 +29,8 @@ D1 iOS first screen = the Android scan-first screen; D2 built in (offline); D3 i
 
 - The founder asked for a Tailscale address: `https://normys-macbook-pro.tail0347f8.ts.net:8444/ios` (Serve entry on 8444 owned by this ticket; the existing 443 and 8443 entries untouched; dev server restarted with `__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS` for this run only). Turn off: `tailscale serve --https=8444 off`.
 - The founder: he does not know Apple's demo-mode criteria; the Solution Designer should test and verify the demo himself, and the founder's approval follows that verification. Verification request sent to the Solution Designer (questions a–d). Status stays `Awaiting User Review`.
+
+## Review round 2 (2026-11-18)
+
+- The Solution Designer's verification (at the founder's request): not yet complete; must fix V-01…V-03, should fix V-04…V-08. All resolved in the reference (DC-006…DC-010; V-03 by decision D6, V-07 already present). Details: `design-review-notes.md`, Round 2. Notes draft round 2: `app-review/app-review-notes-draft.md`. Re-verification requested from the Solution Designer.
+- The dev server reached the tool's 2-hour background limit and was restarted detached (`nohup`, PID recorded at cleanup); same port 3279, same Tailscale address.

@@ -8,7 +8,7 @@
  * - `mobile_phone_access_off`: the node answers that Phone Access is off ("Phone access off");
  * - `mobile_session_revoked`: the node no longer accepts the phone's credential (the pairing screen).
  */
-import { DEMO_IMAGE_SVG, isIosDemo } from '~/prototype/ios-demo/iosDemo'
+import { DEMO_IMAGE_SVG, demoImageFor, isDemoImage, isIosDemo } from '~/prototype/ios-demo/iosDemo'
 
 const json = (status: number, body: unknown): Response =>
   new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } })
@@ -23,6 +23,10 @@ export const mobileNodeResponse = (url: URL, init?: RequestInit): Response | nul
     if (isIosDemo()) return new Response(DEMO_IMAGE_SVG, { status: 200, headers: { 'content-type': 'image/svg+xml' } })
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640"><rect width="640" height="640" fill="#dbeafe"/><circle cx="320" cy="250" r="110" fill="#2563eb"/><text x="320" y="430" text-anchor="middle" font-family="system-ui" font-size="42" fill="#0f172a">Prototype media</text></svg>'
     return new Response(svg, { status: 200, headers: { 'content-type': 'image/svg+xml' } })
+  }
+  // ios-demo-mode-279: a picture in the demo's folder (Files, Artifacts): an invented screen.
+  if (isIosDemo() && /^\/rest\//.test(url.pathname) && isDemoImage(decodeURIComponent(url.pathname + url.search))) {
+    return new Response(demoImageFor(decodeURIComponent(url.pathname + url.search)), { status: 200, headers: { 'content-type': 'image/svg+xml' } })
   }
   // The node's node desktop (the agent's virtual desktop of a Docker node): offered only by the scenarios that show it.
   // ios-demo-mode-279: the demo offers the VNC Viewer on its invented desktop (view only).

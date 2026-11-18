@@ -17,7 +17,7 @@
             <Icon icon="heroicons:arrow-left-start-on-rectangle-20-solid" class="h-5 w-5 flex-shrink-0 text-slate-500" aria-hidden="true" />
             <span class="min-w-0 flex-1">
               <span class="block text-base font-medium leading-5 text-slate-900">Leave demo</span>
-              <span class="block text-[0.8125rem] leading-5 text-slate-500">Back to connecting your own node</span>
+              <span class="block text-[0.8125rem] leading-5 text-slate-500">Back to connecting your own computer</span>
             </span>
             <Icon icon="heroicons:chevron-right-20-solid" class="h-5 w-5 flex-shrink-0 text-slate-400" aria-hidden="true" />
           </button>

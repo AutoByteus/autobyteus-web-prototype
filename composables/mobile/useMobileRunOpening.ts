@@ -2,6 +2,8 @@ import { useMobileNavigation } from '~/composables/mobile/useMobileNavigation'
 import { conversationOf, teamOfMember } from '~/prototype/mobile-runs/mobileRunsFixture'
 import { hasBeenStopped } from '~/prototype/mobile-runs/runSettingsFixture'
 import { useAgentContextsStore } from '~/stores/agentContextsStore'
+import { useActiveContextStore } from '~/stores/activeContextStore'
+import { isIosDemo } from '~/prototype/ios-demo/iosDemo'
 import { useMobileRunOpeningStore } from '~/stores/mobileRunOpeningStore'
 import { useMobileRunTreeStore } from '~/stores/mobileRunTreeStore'
 import { useRunHistoryStore } from '~/stores/runHistoryStore'
@@ -38,6 +40,11 @@ export function useMobileRunOpening(_disclosure?: unknown) {
       if (conversation && context) context.state.conversation = conversation
       // autobyteus-458 (design): a run the list shows as running is running on its screen too, so "Stop run first" can be seen.
       if (context && target.status === 'running' && !hasBeenStopped(target.id)) (context.state as { currentStatus: string }).currentStatus = 'running'
+      // ios-demo-mode-279 (DC-006): in the demo a run's screen shows the status its row shows (one status per run).
+      if (isIosDemo()) {
+        const shown = useActiveContextStore().activeWorkspaceTarget?.context
+        if (shown) (shown.state as { currentStatus: string }).currentStatus = world.byId(target.id)?.status ?? target.status
+      }
       opening.commit(key)
     } catch (error) {
       console.warn('[mobile] Failed to open run:', error)

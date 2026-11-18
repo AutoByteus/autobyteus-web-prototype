@@ -18,7 +18,7 @@ import { restFixture } from '~/prototype/source-observation/rest-fixtures.mjs'
 import axios from 'axios'
 import { liveStreamFrames } from '~/prototype/source-observation/live-streams.mjs'
 // remote-runs-in-tree (design-only): the live stream of a run that delegated copies to another node.
-import { demoModelNames, demoReplyFrames, isIosDemo } from '~/prototype/ios-demo/iosDemo'
+import { demoFolderTree, demoModelNames, demoReplyFrames, isIosDemo } from '~/prototype/ios-demo/iosDemo'
 import { PTM_HOST_RUN_ID, remoteInterruptReply, remoteSendReply, remoteStopFrames, remoteStreamIsLive, remoteSummaryFrames, remoteTimeline } from '~/prototype/remote-runs/remoteRunsFixture'
 import { collaborationView } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
@@ -375,6 +375,14 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
     const makeNode = (name: string, path: string, isFile: boolean, children: any[], id: string): any => TreeNode
       ? new TreeNode(name, path, isFile, children, id, true)
       : { id, name, path, is_file: isFile, childrenLoaded: true, children }
+    // ios-demo-mode-279: the demo's folder holds the files its conversations name (every folder already loaded).
+    if (isIosDemo()) {
+      if (folderPath) return undefined
+      const { root: demoRoot, byId } = demoFolderTree('demo-workspace', makeNode)
+      fileState.tree = demoRoot
+      fileState.nodeIdToNode = byId
+      return undefined
+    }
     const evidence = makeNode('evidence.md', 'docs/evidence.md', true, [], 'node-evidence')
     const docs = makeNode('docs', 'docs', false, [evidence], 'node-docs')
     const requirements = makeNode('requirements.md', 'requirements.md', true, [], 'node-requirements')
@@ -930,7 +938,12 @@ export default defineNuxtPlugin({
       private remoteScenario: string | null = null
       private playLater(frames: { delay: number; frame: unknown }[], from = 0): void {
         let at = from
-        for (const { delay, frame } of frames) { at += delay; setTimeout(() => this.emit(frame), at) }
+        for (const { delay, frame } of frames) {
+          at += delay
+          // ios-demo-mode-279: a demo status step is the run's status, not a stream frame.
+          const demoStatus = (frame as { __demoStatus?: { runId: string; status: string } }).__demoStatus
+          setTimeout(() => (demoStatus ? window.dispatchEvent(new CustomEvent('ios-demo-run-status', { detail: demoStatus })) : this.emit(frame)), at)
+        }
       }
       private playRemoteRunsStream(scenario: string): void {
         this.remoteScenario = scenario

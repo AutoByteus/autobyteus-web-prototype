@@ -1,7 +1,9 @@
 import { defineNuxtPlugin } from '#app'
 import type { Pinia } from 'pinia'
 import { demoModelNames, isIosDemo } from '~/prototype/ios-demo/iosDemo'
-import { demoAgentStopped } from '~/prototype/ios-demo/iosDemoActions'
+import { demoAgentStopped, demoMemberReply, demoRunStatus, isDemoMemberTarget } from '~/prototype/ios-demo/iosDemoActions'
+import { useActiveContextStore } from '~/stores/activeContextStore'
+import { useAgentTeamRunStore } from '~/stores/agentTeamRunStore'
 import { useAgentRunStore } from '~/stores/agentRunStore'
 
 /**
@@ -31,6 +33,23 @@ export default defineNuxtPlugin((nuxtApp) => {
     if (name !== 'interruptGeneration') return
     const runId = String(args[0] ?? '')
     after(() => { window.setTimeout(() => demoAgentStopped(runId), 300) })
+  })
+  // A Team or Org member's Stop: the member is Idle.
+  useAgentTeamRunStore().$onAction(({ name, args, after }) => {
+    if (name !== 'interruptFocusedMemberGeneration') return
+    const memberRunId = String((args[0] as { agentRunId?: string } | undefined)?.agentRunId ?? '')
+    after(() => { window.setTimeout(() => demoAgentStopped(memberRunId), 300) })
+  })
+  // A message to a Team or Org member: the demo answers it in the member's conversation.
+  useActiveContextStore().$onAction(({ name, store, after }) => {
+    if (name !== 'send' || !isDemoMemberTarget()) return
+    const text = String((store as unknown as { currentRequirement: string }).currentRequirement ?? '')
+    after(() => demoMemberReply(text))
+  })
+  // A scripted reply starts and ends: the run is Running, then Idle, on its screen and in the list.
+  window.addEventListener('ios-demo-run-status', (event) => {
+    const { runId, status } = (event as CustomEvent<{ runId: string; status: 'running' | 'idle' }>).detail
+    demoRunStatus(runId, status)
   })
   const pinia = nuxtApp.$pinia as Pinia & { _s: Map<string, any> }
   pinia.use(({ store }) => {

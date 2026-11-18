@@ -493,6 +493,16 @@ onBeforeUnmount(() => {
 });
 
 watch(() => [props.conversation.id, props.runId], resetForSubject);
+// ios-demo-mode-279 (DC-007): your own send moves the view to your message and follows the reply, even when you had
+// scrolled up to read; activity you did not cause still waits behind "Jump to latest".
+watch(() => props.conversation.messages?.length ?? 0, (count, previous) => {
+  if (count <= (previous ?? 0)) return;
+  const last = props.conversation.messages?.[count - 1] as { type?: string } | undefined;
+  if (last?.type !== 'user' || props.browseState !== 'latest') return;
+  shouldStickToBottom.value = true;
+  hasUnseenActivity.value = false;
+  void nextTick(scrollToBottom);
+});
 watch(() => props.presentationRevision, revision => {
   if (revision <= revisionBaseline.value) {
     revisionBaseline.value = revision;

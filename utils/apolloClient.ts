@@ -23,7 +23,7 @@ import { withMemoryDesign } from '~/prototype/memory-search/memoryDesignFixture'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { withModelRouting } from '~/prototype/model-routing/modelRoutingFixture'
 import { withMobileRuns } from '~/prototype/mobile-runs/mobileRunsFixture'
-import { demoModelNames, isIosDemo } from '~/prototype/ios-demo/iosDemo'
+import { demoFileText, demoModelNames, isIosDemo } from '~/prototype/ios-demo/iosDemo'
 import { remoteStopResult } from '~/prototype/remote-runs/remoteRunsFixture'
 import { seedTaskKeys } from '~/prototype/task-keys/taskKeysFixture'
 import { seedTaskParts } from '~/prototype/task-part-of/taskPartOfFixture'
@@ -132,8 +132,9 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   if (designOnlyLayersEnabled()) data = withIntegrationSource(name, data)
   // package-clone-auto-update-457: the definitions the design layers added (copies of another entry) are made by hand, not from a package.
   if (data && ['GetAgentDefinitions', 'GetAgentTeamDefinitions', 'GetAgentOrgDefinitions'].includes(name)) data = personalSettingsOperation(name, {}, data, state, () => null)
-  // ios-demo-mode-279: the demo's sample names (sample models, the demo folder).
+  // ios-demo-mode-279: the demo's sample names (sample models, the demo folder) and its folder's files.
   if (isIosDemo() && data) data = demoModelNames(data)
+  if (isIosDemo() && name === 'GetFileContent') data = { fileContent: demoFileText(String(request.variables?.filePath ?? '')) }
   // WEB-BASELINE-REFRESH-011: a scripted read failure (for example the Embedding status) answers as GraphQL errors.
   if (data?.__projectError) return { data: null, errors: [data.__projectError] }
   return { data: data ? structuredClone(data) : {} }

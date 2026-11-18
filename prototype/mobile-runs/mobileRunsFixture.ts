@@ -9,7 +9,7 @@
  * (`withMobileRuns`, answered like every other stored run), and the peers the paired node knows.
  */
 import { exposedFixtures } from '~/prototype/source-observation/fixtures.mjs'
-import { demoActivities, demoBackgroundTasks, demoConversation, isIosDemo } from '~/prototype/ios-demo/iosDemo'
+import { DEMO_FILES, demoActivities, demoBackgroundTasks, demoConversation, demoMemberActivities, demoMemberEntries, demoParticipantMessages, demoSearch, isIosDemo } from '~/prototype/ios-demo/iosDemo'
 import {
   MOBILE_RUNS, PEERS, UNREACHABLE_NODES, RICH_RUN_ID, flattenRuns, worldNode, isWorldRunId,
   projectionEntriesFor, richConversation, teamResumeConfigFor, teamOfMember, activitiesFor, backgroundTasksFor, participantMessagesFor, referenceText, searchFilePaths, fileChangesFor, WORKSPACE_FILES,
@@ -55,7 +55,7 @@ export const withMobileRuns = (name: string, variables: Record<string, any>, dat
   return isIosDemo() && answer ? demoScrub(answer) : answer
 }
 const answerMobileRuns = (name: string, variables: Record<string, any>, data: any): any => {
-  if (name === 'SearchFiles') return { ...(data ?? {}), searchFiles: searchFilePaths(variables.query) }
+  if (name === 'SearchFiles') return { ...(data ?? {}), searchFiles: isIosDemo() ? demoSearch(variables.query) : searchFilePaths(variables.query) }
   const node = worldNode(variables.runId ?? variables.agentRunId ?? variables.teamRunId)
   if (!node) return data
   data = data ?? {}
@@ -69,7 +69,12 @@ const answerMobileRuns = (name: string, variables: Record<string, any>, data: an
       metadataConfig: { ...data.getAgentRunResumeConfig.metadataConfig, agentDefinitionId: agentDefinitionIdFor(node.name) },
     }
   }
-  if (name === 'GetRunFileChanges' && fileChangesFor(node, 0).length) data.getRunFileChanges = fileChangesFor(node, at)
+  if (name === 'GetRunFileChanges' && fileChangesFor(node, 0).length) {
+    // ios-demo-mode-279: the demo's artifacts are finished files with their full content.
+    data.getRunFileChanges = isIosDemo()
+      ? fileChangesFor(node, at).map((change: any) => ({ ...change, status: 'available', content: change.type === 'file' ? DEMO_FILES[change.path] ?? change.content : change.content }))
+      : fileChangesFor(node, at)
+  }
   if (name === 'GetTeamRunResumeConfig' && (node.kind === 'team' || node.kind === 'org')) {
     const config = teamResumeConfigFor(node, at)
     // The baseline's retained contracts still carry a Team's task executions (the pinned source's no longer do).
@@ -77,7 +82,11 @@ const answerMobileRuns = (name: string, variables: Record<string, any>, data: an
     data.getTeamRunResumeConfig = config
   }
   if (name === 'GetTeamMemberRunProjection' && node.kind === 'member') {
-    data.getTeamMemberRunProjection = { ...(data.getTeamMemberRunProjection ?? {}), agentRunId: node.id, summary: node.name, lastActivityAt: new Date(at).toISOString(), conversation: projectionEntriesFor(node, at), activities: activitiesFor(node, at), hasEarlierActiveTraceEvents: false }
+    // ios-demo-mode-279: in the demo a member's conversation and Activity are about its Team's or Org's own work.
+    const team = isIosDemo() ? teamOfMember(node.id) : null
+    const conversation = isIosDemo() ? demoMemberEntries(node, team, at) : projectionEntriesFor(node, at)
+    const activities = isIosDemo() ? (demoMemberActivities(node, at) ?? activitiesFor(node, at)) : activitiesFor(node, at)
+    data.getTeamMemberRunProjection = { ...(data.getTeamMemberRunProjection ?? {}), agentRunId: node.id, summary: node.name, lastActivityAt: new Date(at).toISOString(), conversation, activities, hasEarlierActiveTraceEvents: false }
   }
   if (name === 'AgentBackgroundTaskView') {
     data.agentBackgroundTaskView = { __typename: 'AgentBackgroundTaskEventStream', agentRunId: node.id, currentTasks: isIosDemo() ? demoBackgroundTasks(backgroundTasksFor(node, at)) : backgroundTasksFor(node, at) }
@@ -101,5 +110,8 @@ export const activitiesOf = (runId: string): Array<Record<string, any>> => {
 /** The stored messages of one participant (the node's `collaborationParticipantMessages` answer). */
 export const participantMessagesOf = (runId: string): { messages: Array<Record<string, any>>; pastParticipants: Array<Record<string, any>> } => {
   const node = worldNode(runId)
+  // ios-demo-mode-279: an Org member's Messages are about the Org's launch work.
+  const demo = node && isIosDemo() ? demoParticipantMessages(node, teamOfMember(node.id)?.children ?? [], Date.now() - node.minutes * 60_000) : null
+  if (demo) return demo
   return node ? participantMessagesFor(node, Date.now() - node.minutes * 60_000) : { messages: [], pastParticipants: [] }
 }
