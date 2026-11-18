@@ -43,3 +43,10 @@ D1 iOS first screen = the Android scan-first screen; D2 built in (offline); D3 i
 - Notes round 3: Text size is described where the shipped app has it (run list ⋮ › On this phone, three steps).
 - For engineering (V-07 minor): switching VNC to Control logs "Disconnection timed out." in the reference console; the build must show and log no error there.
 - Baseline refresh `phone-baseline-refresh-279`: Bootstrapper `Completed`; accepted (audit, data boundary, pairs, running baseline checked; see `tickets/done/phone-baseline-refresh-279/product-ticket.md`); integrated into `personal` (`0d2d0b9a`, local = origin); worktree and branch removed; its dev server (4279) stopped. `personal` merged into this branch (conflicts in `useMobileRunOpening.ts` and the runbook resolved, keeping the source's lines and the demo's). Accepted design base is now `0d2d0b9a`. All demo journeys rechecked. Re-verification (round 3) requested.
+
+## Round 3 verification (2026-11-18)
+
+- The Solution Designer: "round 3 verified. From Apple's criteria as I know them, the demo is ready to submit" (verdict.md Round 3, shots-r3/). Status stays `Awaiting User Review`: the founder's D1–D6 and his approval of the screens are being put to him by the Solution Designer.
+- Engineering items carried into the spec: VNC Control must log no error; DC-007 (follow after your own send) changes the real app too.
+- Follow-up candidate (real app, not this ticket): a top-level row learns its background tasks only after the run is opened (the demo shows them from the start, DC-006).
+- Beyond what a reference can prove (engineering tests): the real camera scan of the demo QR, the Camera app opening `autobyteus://demo`, offline behaviour in the built app, the iPad build.
