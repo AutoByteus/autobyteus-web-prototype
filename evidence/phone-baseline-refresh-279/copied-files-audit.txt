@@ -1,0 +1,41 @@
+# Copied unchanged from origin/personal@f7b4d68711 (autobyteus-web): cmp against a git archive export
+identical  assets/css/phone-conversation.css
+identical  assets/css/phone-text-size.css
+identical  components/agentInput/AgentUserInputTextArea.vue
+identical  components/conversation/AIMessage.vue
+identical  components/conversation/UserMessage.vue
+identical  components/conversation/segments/SystemTaskNotificationSegment.vue
+identical  components/mobile/MobilePairedShell.vue
+identical  components/mobile/MobileRemoteAccessShell.vue
+identical  components/mobile/runList/MobileOnThisPhoneMenu.vue
+identical  components/mobile/runList/MobileRunList.vue
+identical  components/mobile/runList/MobileRunRow.vue
+identical  components/mobile/runScreen/MobileRunMenu.vue
+identical  components/mobile/runScreen/MobileRunTargetView.vue
+identical  components/mobile/views/MobileBackgroundTasks.vue
+identical  components/mobile/views/MobileNodeDesktop.vue
+identical  components/workspace/agent/EventMonitorBrowseAssistantRow.vue
+identical  composables/mobile/useMobileNavigation.ts
+identical  composables/useBackgroundTaskPanelView.ts
+identical  display/fontSize/appFontSizeDom.ts
+identical  display/fontSize/phoneTextSizeSteps.ts
+identical  graphql/queries/agentBackgroundTaskQueries.ts
+identical  localization/messages/en/mobileOnThisPhone.ts
+identical  localization/messages/en/mobileSettings.ts
+identical  localization/messages/zh-CN/mobileOnThisPhone.ts
+identical  localization/messages/zh-CN/mobileSettings.ts
+identical  stores/appFontSizeStore.ts
+identical  types/agent/AgentRunState.ts
+identical  types/backgroundTask.ts
+identical  types/backgroundTaskView.ts
+identical  types/segments.ts
+identical  utils/agentActivityPresentation.ts
+identical  utils/backgroundTaskEnd.ts
+identical  utils/mobile/mobileRunStatusLabel.ts
+identical  utils/mobile/mobileRunSubjectLine.ts
+identical  utils/mobile/mobileRunSettingsScope.ts
+identical  utils/restartReminderLocalTime.ts
+identical  utils/workspaceStatusDotPresentation.ts
+identical  utils/workspaceTeamAggregateStatus.ts
+differs    components/workspace/agent/AgentEventMonitor.vue  (3 changed lines: see report)
+differs    components/mobile/views/MobileRunSettings.vue  (8 changed lines: see report)

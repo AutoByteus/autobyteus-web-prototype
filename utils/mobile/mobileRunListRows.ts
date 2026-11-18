@@ -13,6 +13,8 @@ export type MobileRunTreeRow = Readonly<{
   title: string;
   /** The shared status (`AgentStatus`, a Team's own status). */
   status: string;
+  /** Background tasks running (autobyteus-448): an agent's own, a Team's sum; shown with `status` by `agentActivityPresentation`. */
+  backgroundTasksRunning: number;
   /** A run another node runs: its node, and whether the node answers. */
   remote: Readonly<{ nodeName: string; reachable: boolean }> | null;
   hasChildren: boolean;

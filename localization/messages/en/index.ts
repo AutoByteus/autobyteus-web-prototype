@@ -39,6 +39,8 @@ import runSettingsMessages from './runSettings';
 import reconnectMessages from './reconnect';
 import personalSettingsMessages from './personalSettings';
 import mobileNodeDesktopMessages from './mobileNodeDesktop';
+import mobileSettingsMessages from './mobileSettings';
+import mobileOnThisPhoneMessages from './mobileOnThisPhone';
 import agentPackageDefinitionsMessages from './agentPackageDefinitions';
 import type { TranslationCatalog } from '../../runtime/types';
 
@@ -84,6 +86,8 @@ const enMessages: TranslationCatalog = {
   ...reconnectMessages,
   ...personalSettingsMessages,
   ...mobileNodeDesktopMessages,
+  ...mobileSettingsMessages,
+  ...mobileOnThisPhoneMessages,
   ...agentPackageDefinitionsMessages,
 };
 

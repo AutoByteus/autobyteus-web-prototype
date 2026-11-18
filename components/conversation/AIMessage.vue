@@ -12,6 +12,7 @@
         <span v-else class="text-xs font-semibold tracking-wide text-slate-600">{{ avatarInitials }}</span>
       </div>
 
+      <!-- The phone's speaker line (autobyteus-506); hidden on the desktop. -->
       <span class="conv-speaker" aria-hidden="true">{{ displayAgentName }}</span>
       <div class="conv-body min-w-0 flex-1 pt-0.5">
         <span class="sr-only">{{ displayAgentName }}</span>

@@ -1,5 +1,5 @@
 import { useMobileNavigation } from '~/composables/mobile/useMobileNavigation'
-import { conversationOf, teamOfMember } from '~/prototype/mobile-runs/mobileRunsFixture'
+import { backgroundTasksRunningOfRun, conversationOf, teamOfMember } from '~/prototype/mobile-runs/mobileRunsFixture'
 import { hasBeenStopped } from '~/prototype/mobile-runs/runSettingsFixture'
 import { useAgentContextsStore } from '~/stores/agentContextsStore'
 import { useActiveContextStore } from '~/stores/activeContextStore'
@@ -38,8 +38,11 @@ export function useMobileRunOpening(_disclosure?: unknown) {
       const conversation = conversationOf(target.id)
       const context = contexts.getRun(target.id)
       if (conversation && context) context.state.conversation = conversation
-      // autobyteus-458 (design): a run the list shows as running is running on its screen too, so "Stop run first" can be seen.
-      if (context && target.status === 'running' && !hasBeenStopped(target.id)) (context.state as { currentStatus: string }).currentStatus = 'running'
+      // A run the node holds (the list shows it running or idle) is live on its screen too: its stream's status
+      // (simulated). A run stopped from the phone's Settings stays stopped.
+      if (context && target.status !== 'offline' && !hasBeenStopped(target.id)) (context.state as { currentStatus: string }).currentStatus = target.status
+      // autobyteus-448: a live run's status carries its running background tasks (the agent's stream; simulated here).
+      if (context) context.state.backgroundTasksRunning = hasBeenStopped(target.id) ? 0 : backgroundTasksRunningOfRun(target)
       // ios-demo-mode-279 (DC-006): in the demo a run's screen shows the status its row shows (one status per run).
       if (isIosDemo()) {
         const shown = useActiveContextStore().activeWorkspaceTarget?.context

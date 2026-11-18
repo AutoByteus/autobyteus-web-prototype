@@ -1,4 +1,5 @@
 <template>
+  <!-- The lower corners follow the composer box's 12 px radius, so its border stays continuous (autobyteus-506 VIS-019). -->
   <div class="flex flex-col rounded-b-[11px] bg-white">
     <p v-if="targetContext?.state.recoverableBlock && targetContext.state.recoverableBlock.state !== 'recovering'" role="status" class="px-3 pt-2 text-xs text-amber-700">
       {{ $t('agentInput.components.agentInput.AgentUserInputTextArea.compaction_retry') }}

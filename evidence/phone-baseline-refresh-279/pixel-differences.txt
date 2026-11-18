@@ -1,0 +1,45 @@
+# Baseline vs source pixel differences per pair (412x915 and 360x780, device scale 2); threshold 24/255 per channel.
+list diffpx 437 bbox (679, 147, 770, 1688)
+list-menu diffpx 1853 bbox (88, 196, 770, 1688)
+list-menu-large diffpx 352 bbox (663, 1204, 764, 1369)
+list-largest diffpx 572 bbox (646, 181, 783, 1513)
+list-largest-reloaded diffpx 572 bbox (646, 181, 783, 1513)
+run-bg diffpx 173590 bbox (24, 112, 790, 1545)
+run-menu diffpx 104521 bbox (24, 508, 790, 1545)
+activity diffpx 3540 bbox (139, 286, 230, 1023)
+settings-live diffpx 0 bbox None
+list-after-open diffpx 430 bbox (679, 147, 770, 1688)
+list-tall diffpx 515 bbox (679, 146, 770, 1688)
+settings-stopped diffpx 0 bbox None
+large-list diffpx 679 bbox (662, 165, 764, 1369)
+large-run diffpx 198759 bbox (24, 126, 774, 1509)
+set-0-open diffpx 0 bbox None
+set-1-model-changed diffpx 0 bbox None
+set-2-after-save diffpx 0 bbox None
+set-3-reopened diffpx 8164 bbox (33, 357, 792, 611)
+set-mobile-run-model-select-sheet diffpx 0 bbox None
+set-mobile-run-runtime-select-sheet diffpx 17896 bbox (33, 357, 792, 793)
+set-r-0-open diffpx 0 bbox None
+set-r-1-model-changed diffpx 0 bbox None
+set-r-2-after-save diffpx 0 bbox None
+set-r-3-chosen-again diffpx 0 bbox None
+set-runtime-changed diffpx 0 bbox None
+set-stop-0-live diffpx 2323 bbox (32, 146, 349, 189)
+set-stop-1-stopped diffpx 0 bbox None
+rich-largest-00 diffpx 0 bbox None
+rich-largest-01 diffpx 64 bbox (57, 293, 105, 339)
+rich-largest-02 diffpx 0 bbox None
+rich-largest-03 diffpx 0 bbox None
+rich-largest-04 diffpx 0 bbox None
+rich-largest-05 diffpx 0 bbox None
+rich-standard-00 diffpx 95 bbox (50, 1323, 84, 1358)
+rich-standard-01 diffpx 0 bbox None
+rich-standard-02 diffpx 0 bbox None
+rich-standard-03 diffpx 0 bbox None
+rich-standard-04 diffpx 0 bbox None
+vnc-0 diffpx 0 bbox None
+vnc-1 diffpx 0 bbox None
+vnc-control diffpx 0 bbox None
+vnc-clipboard diffpx 0 bbox None
+360-menu diffpx 725 bbox (540, 1332, 679, 1513)
+360-vnc-control diffpx 0 bbox None

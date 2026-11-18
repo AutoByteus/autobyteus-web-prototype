@@ -1,6 +1,85 @@
 # UI Baseline Report
 
-## Scoped refresh `phone-run-screen-baseline-refresh-506` (read this first)
+## Scoped refresh `phone-baseline-refresh-279` (read this first)
+
+**The phone (`/mobile`: the run list and its ⋮, the run screen, its ⋮ menu and views, Settings, the VNC Viewer) now reflects `origin/personal@f7b4d68711a0d0aa11ee3802b1264293d1c4ae8c`** (release 1.5.13; selected frontend `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/autobyteus-web`, read only; the pin is the explicit constraint of the request, verified with `git rev-parse`). Every desktop surface keeps its earlier pin (whole frontend `d74f75a51a` and the scoped exceptions listed in the next section). The browser pairing page and the design's Android start screen keep their accepted state.
+
+### Status
+
+- Status: `Completed`, a candidate: uncommitted changes in the ticket worktree; the Bootstrapper made no commit. Integration into the default branch `personal` follows the Product UI/UX Designer's acceptance.
+- Request type: Refresh (scoped, explicit), from the Product UI/UX Designer for `ios-demo-mode-279` ("Apple reviews the current build"): bring `/mobile` to UI parity with `origin/personal@f7b4d68711`; source wins where a phone surface shipped since `e4f4b3e176`; keep accepted design-only changes without a source equivalent; desktop stays at its pins.
+- Next expected action: the Product UI/UX Designer reviews and accepts, commits, integrates into `personal`, then merges `personal` into `design/ios-demo-mode-279` (ticket `tickets/in-progress/phone-baseline-refresh-279/product-ticket.md`).
+
+### Identity
+
+- Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`). Ticket branch / worktree: `design/phone-baseline-refresh-279` / `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/phone-baseline-refresh-279`, dedicated to this ticket. Accepted design base: `fc68a7a4d249029d672d6b398b6d6ce2835cbbdc` (worktree `HEAD` the same; the canonical checkout was not touched). Bootstrap candidate: the worktree's uncommitted changes (no commit).
+- Previous phone pin: `e4f4b3e1765669cf2c411652770199234ff6c214` (refresh `phone-run-screen-baseline-refresh-506`), then the approved design `phone-conversation-readability-506` on top of it.
+- Run: `corepack pnpm install --ignore-workspace --frozen-lockfile`, `corepack pnpm dev --port 4279`, then `http://localhost:4279/mobile` at 412 CSS px. `package.json`, `pnpm-lock.yaml`, `nuxt.config.ts` unchanged. Entries and starting states: `ui-reference-runbook.md`, section "phone-baseline-refresh-279".
+
+### What the source changed (`e4f4b3e176..f7b4d68711`, phone files) and what was done
+
+The diff touches 173 files of `autobyteus-web`; the phone's import closure (from `pages/mobile.vue` and `components/mobile/**`) holds 65 of them. Shipped for the phone: autobyteus-506 built in autobyteus-458 (the phone conversation layout), autobyteus-525 (one phone-wide Text size, the run list's ⋮), autobyteus-534 (three steps, a "Text size" header, Settings last in the run's ⋮), autobyteus-522 (Settings for every run, a run on another node says so), autobyteus-448 (an idle agent with running background tasks), the VNC Viewer's Control-mode Keyboard and Clipboard in the status row, the background tasks' end reasons and the restart reminder's local time.
+
+Copied unchanged from `f7b4d68711` (UI code; 38 files `cmp` identical, audit `evidence/phone-baseline-refresh-279/copied-files-audit.txt`): `MobilePairedShell`, `MobileRemoteAccessShell`, `runList/MobileOnThisPhoneMenu` (new), `runList/MobileRunList`, `runList/MobileRunRow`, `runScreen/MobileRunMenu`, `runScreen/MobileRunTargetView`, `views/MobileBackgroundTasks`, `views/MobileNodeDesktop`; the conversation files `AIMessage`, `UserMessage`, `EventMonitorBrowseAssistantRow`, `SystemTaskNotificationSegment`, `AgentUserInputTextArea`, `assets/css/phone-conversation.css`, `assets/css/phone-text-size.css` (new); `useMobileNavigation`, `useBackgroundTaskPanelView`, the AgentBackgroundTaskView query; the Text size code (`display/fontSize/phoneTextSizeSteps.ts`, `appFontSizeDom.ts`, `stores/appFontSizeStore.ts`); `utils/agentActivityPresentation.ts`, `backgroundTaskEnd.ts`, `restartReminderLocalTime.ts`, `workspaceStatusDotPresentation.ts`, `workspaceTeamAggregateStatus.ts`, `utils/mobile/mobileRunStatusLabel.ts`, `mobileRunSubjectLine.ts`, `mobileRunSettingsScope.ts`; the types `AgentRunState` (the background count), `backgroundTask`, `backgroundTaskView`, `segments`; the catalogs `mobileOnThisPhone` and `mobileSettings` (en, zh-CN). Added to existing catalogs: the two imports per locale and the `workspace.agentActivity.*` keys (existing keys keep their text).
+
+Two files are the source's with a named change:
+- `components/workspace/agent/AgentEventMonitor.vue`: the source's, with the design-only `AgentReconnectComposerNotice` re-applied (two lines, as before).
+- `components/mobile/views/MobileRunSettings.vue`: the source's template and script unchanged except three imports, which point at `prototype/mobile-runs/mobileRunSettingsStore.ts` (`useExistingRunConfigStore`, `useRunStopAction`, `mobileRunSettingsScope`). The source reads and saves through the desktop's saved-run settings store, which on the desktop of this UI reference keeps its earlier pin.
+
+Shared files that the desktop also renders: the conversation components, `phone-conversation.css` (phone only by its `.phone-conversation` class), `workspaceStatusDotPresentation` (same classes for every status without background tasks), `appFontSizeStore` (the desktop branch unchanged). The desktop's own files from the diff (the workspace tree rows, `StatusDot`, `BackgroundTaskPanel`, `runStatusStore`, the stores and services) were not taken. The source's `plugins/06.appFontSize.client.ts` is represented by its phone branch only (`plugins/06.phone-text-size.client.ts`): the desktop branch is not run, so the desktop keeps its pin.
+
+What changed for the user (source wins): the run list's header has a ⋮ whose menu is **Text size** with three "A" buttons (Standard, Large, Largest); a step applies at once to every phone screen through the root font size, stays chosen on the phone and survives a reload. The run's ⋮ is Artifacts, Files, Messages (members), Activity, VNC Viewer (with a node desktop), **Settings** last, and no Text size block. **Settings** (every run): the subject line with the run's activity; a run the node holds (idle or working) shows the small red stop icon and locked rows; a stopped run's Runtime and Model rows and Save; the node's refusal in its words, with Save off until another choice; a run on another node shows "This run is on <node>. Its runtime and model can be changed only on that node." and no Save. **448**: an idle agent with running background tasks shows "Background task running" / "N background tasks running" with a steady blue dot on its row, its run screen and its Settings; a Team row shows its agents' sum unless busy. **Activity** shows an ended task's end line ("Stopped: it reached its time limit — not a failure of the command" and the two others). **VNC Viewer** in Control: Keyboard and Clipboard sit at the end of the status row. **Another agent's message** shows the desktop's arrow and message line again (the source's version).
+
+### Reconciliation with accepted design-only changes
+
+- `phone-conversation-readability-506` (approved design of autobyteus-506 and autobyteus-458 on `e4f4b3e176`): the source has since shipped both, differently in places; the source version wins everywhere. Replaced: the four-step Text size in the run's ⋮ (Small 15, Standard 17, Large 19, Largest 21 px, conversation only; `composables/mobile/usePhoneTextSize.ts`, deleted) by the source's three steps in the run list's ⋮, scaling every phone screen; the design's Settings screen by the source's (localized words, the remote-run sentence, a held idle run shows the stop icon, the stop through the run's own stop, the refusal in the server's words `'<model>' is not offered by <Runtime> now. Refresh the model list and choose again.` with straight quotes); hiding another agent's message arrow and message line (the source keeps them). Kept because they are the source's too: the 388 px column, the turn header, 17 px Standard at a 1.5 line height, the composer's lower corners. The design's starting state `mobile_settings_refused` is kept as the way to see the refusal.
+- `agent-definition-reconnect-ui` (design-only, no source equivalent): preserved (re-applied in `AgentEventMonitor.vue`).
+- `one-step-phone-pairing`, the `/android` start screen and its simulated bridge, New run's design catalog of agents: untouched.
+
+### Simulation beneath the UI (no backend; every value is invented)
+
+- `prototype/mobile-runs/mobileRunSettingsStore.ts` (new): the selection is the open run's own config; "the node holds the run" is its status (a Team or Org run by the run's status); Save writes the config back after 300 ms; with `mobile_settings_refused` the first Save is refused in the node's words (`autobyteus-server-ts/src/llm-management/services/run-model-selection-refusal.ts`) and Save stays off until another choice, as the source's store does for a `MODEL_UNAVAILABLE` answer; the stop (400 ms) marks the run, and a Team's or Org's members, stopped; the scope answers `remote` for a run the simulated run tree names as another node's (the UI reference holds a peer's run as a local run underneath).
+- `prototype/source-observation/mobile-world.mjs`: background tasks for an idle delegated agent (Agent Package Creator, two running), a Team member (`mx-set-0002-implementation_engineer`, one; its Team row shows the sum), and a fourth task of the rich run stopped at its time limit (`endReason: time_limit`); `backgroundTasksRunningOf(node)` counts the running ones. The rich run (Daily Assistant, idle) has one running task.
+- `stores/mobileRunTreeStore.ts`, `utils/mobile/mobileRunListRows.ts`: rows carry `backgroundTasksRunning` where the product reads it: a listed agent run's from its live context in this window (so a listed run shows it after it was opened, as in the source), a delegated row's from the run status, a Team's as the sum by the source's Team rule; a run stopped from Settings shows Stopped.
+- `composables/mobile/useMobileRunOpening.ts`: an opened run the node holds shows its status (idle or running; before this refresh only running) and its running background task count, as its stream's status would carry them.
+
+### Inventory and comparison (source `f7b4d68711` vs baseline, matched, 412×915 CSS px, device scale 2; 360×780 for the narrow pass)
+
+Conditions: Chrome driven by disposable Playwright scripts under `/tmp/r279` (nothing added to the repository), a fresh context per state, the same paired session ("Embedded Node"), the same world. The pinned source is an exact `git archive` export of `f7b4d68711` (`autobyteus-web` and the four contract packages, their committed `dist`), served by `nuxt dev --port 4508` with `BACKEND_NODE_BASE_URL` at the observation node (`prototype/source-observation/mock-node.mjs`, port 4507, the source's `generated/graphql.ts`) and a disposable hook serving the same world: run-status answers with background counts, held runs answered as active, the node's model options and Save answers (and the refusal while a flag file exists), the fake VNC server. Where the observation node plays no agent stream, the source side's opened run gets in the page the same synthetic status, count and rich conversation the baseline's simulation gives it ("seeded" below).
+Evidence: `evidence/phone-baseline-refresh-279/` (each image: baseline left, source right; `pixel-differences.txt` the differing pixels of each pair; `copied-files-audit.txt`). "Identical" means the difference is only clock-dependent text (ages, times of day) or an animation phase (spinner, pulsing dot).
+
+| ID | Surface / state (checked now) | Result |
+| --- | --- | --- |
+| PR-01 | Run list with the header ⋮; the "On this phone" menu (Text size header, three steps, Standard chosen); Large chosen; Largest chosen and the menu closed; Largest after a reload | pass: identical (01–05) |
+| PR-02 | The run list at Large (rails and indents in rem follow the avatars) | pass: identical (06) |
+| PR-03 | Rows' activity: Agent Package Creator "2 background tasks running" (steady blue dot), the Software Engineering Team row with a member's task (blue dot, Team rule), running rows pulsing; the listed Daily Assistant green until opened, blue after | pass: identical (01, 28; dot `data-status="background"`) |
+| PR-04 | Run screen of an idle run with one running task: "Background task running", blue dot; its ⋮ (Settings last, no Text size) | pass: identical bar and menu (07, 08; the conversation behind sits at another scroll offset, see PR-05) |
+| PR-05 | The rich conversation screen by screen at Standard (5 screens) and Largest (6 screens): the source's `phone-conversation.css`, another agent's message with its arrow and line | pass: pixel-identical (24–27, `pixel-differences.txt`: 0–130 px, the spinner) |
+| PR-06 | Activity: four background tasks (Running, Completed exit code 0, Failed exit code 1, Stopped with the time-limit line) above the tool calls | pass: identical (09; times of day differ) |
+| PR-07 | Settings of a held run (seeded): subject line with the activity, stop icon, rows locked, Save off | pass: pixel-identical (10) |
+| PR-08 | Settings of a stopped run; the Model sheet; a model with settings chosen (Thinking, Advanced, Save on); Save → back to the conversation | pass: pixel-identical (11–15) |
+| PR-09 | Save refused (`mobile_settings_refused` / the node's refusal): the red card in the node's words, Save off; then another runtime and model: card gone | pass: pixel-identical (16, 17) |
+| PR-10 | Another runtime chosen: the model is cleared ("Choose"), Save off | pass: pixel-identical (18) |
+| PR-11 | Stop from Settings: Stopped, the stop icon gone, rows open | pass: pixel-identical (19) |
+| PR-12 | VNC Viewer: View only; Control with Keyboard and Clipboard in the status row; the Clipboard sheet | pass: pixel-identical (20, 21; 412 px) |
+| PR-13 | 360 px at Largest: the On this phone menu; the VNC Viewer in Control | pass: identical (22, 23) |
+| PR-14 | Settings of a run on another node (`docker`): the sentence, no rows, no Save | baseline only (29): the source harness cannot open a peer's run (`/ws/peer-run`), see Known gaps; the screen is the source's component and its scope rule |
+| PR-15 | Run screen of a delegated agent with two tasks: "2 background tasks running · in Project Task Manager" | baseline only (30): the source harness does not open a delegated agent's row; the same subject line was compared on PR-04 |
+| PR-16 | Unchanged phone surfaces (Files, Artifacts, Messages, New run, connection sheet, run list states) | unchanged files; seen on the way (list, run screen, menus), no page error. Accepted evidence: next section, PH-01…PH-16 |
+| PR-17 | Desktop routes `/workspace`, `/chat`, `/agents`, `/agent-teams`, `/settings`, `/nodes`, `/integrations`, `/projects`, `/memory`, `/android` | load-and-look: render, no page error, root font size 16 px and no `data-phone-text-size` |
+
+### Known gaps
+
+- PR-14 and PR-15 are shown by the baseline only (harness limits named in the rows). Both are the source's components; under them only the simulated peer and delegated runs differ.
+- After a Save, reopening Settings on the source harness shows the earlier model because the harness does not keep the Save; the baseline shows the saved model, as a node that keeps it does. The source's own result handling was compared up to the return to the conversation (PR-08).
+- Opening the Model sheet (Settings and New run) logs `llmStore.refreshCatalog is not a function` in the baseline: the shared model rows call an action the desktop-pinned catalog store does not have (since the previous refresh). Nothing visible differs (the sheets are pixel-identical); the open-time catalog re-read does not happen.
+- Team and Org Settings (a member's scope, a Team or Org stop) are simulated and seen on the baseline; the source side was compared on an agent run.
+- Edits under `prototype/` are not always picked up by the running dev server; restart it after changing them.
+- Names, titles, models, times, counts and the invented desktop picture are illustrative. Real runs, statuses, model lists and saves were not validated. `typecheck`, `lint` and tests were not run (design work).
+
+---
+
+## Scoped refresh `phone-run-screen-baseline-refresh-506` (superseded for the phone by `phone-baseline-refresh-279` above)
 
 **The whole-frontend pin is still `d74f75a51ab7dc47d42a13f33e0f943c3a230ad7`, with the earlier scoped exceptions unchanged (Settings menu and GitHub card `e4bebdc858`, Manage Nodes `3b9dc912a1`, personal settings, update switch and required tools `f78b60dddd`).
 The phone (`/mobile`: the run list, the run screen, its ⋯ menu and views, New run, the connection sheet) now reflects `origin/personal@e4f4b3e1765669cf2c411652770199234ff6c214`** (release 1.5.13-beta.7; selected frontend
