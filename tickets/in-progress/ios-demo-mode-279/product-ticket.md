@@ -34,3 +34,11 @@ D1 iOS first screen = the Android scan-first screen; D2 built in (offline); D3 i
 
 - The Solution Designer's verification (at the founder's request): not yet complete; must fix V-01…V-03, should fix V-04…V-08. All resolved in the reference (DC-006…DC-010; V-03 by decision D6, V-07 already present). Details: `design-review-notes.md`, Round 2. Notes draft round 2: `app-review/app-review-notes-draft.md`. Re-verification requested from the Solution Designer.
 - The dev server reached the tool's 2-hour background limit and was restarted detached (`nohup`, PID recorded at cleanup); same port 3279, same Tailscale address.
+
+## Review round 3 (2026-11-18)
+
+- The Solution Designer's round 2 verification: V-01 half fixed (Artifacts showed "Synthetic file — Fixture content only."), new R2-02 (the reference is behind the shipped phone screens: Text size moved to "On this phone" with three steps). Everything else verified fixed; D6 agreed (still the founder's decision).
+- V-01 rest: Artifacts open the demo folder's sample content and pictures (`plugins/00` content handler, demo only).
+- R2-02: verified with git (phone UI files changed since `e4f4b3e176`). Baseline refresh ticket `phone-baseline-refresh-279` opened (worktree `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/phone-baseline-refresh-279`); refresh request sent to the UI Baseline Bootstrapper against `origin/personal@f7b4d68711`, phone surfaces only. After acceptance and integration, `personal` is merged into this ticket and the demo is checked again. Status: waiting on the baseline.
+- Notes round 3: Text size is described where the shipped app has it (run list ⋮ › On this phone, three steps).
+- For engineering (V-07 minor): switching VNC to Control logs "Disconnection timed out." in the reference console; the build must show and log no error there.

@@ -1,4 +1,4 @@
-# App Review Information — notes draft (autobyteus-279, round 2)
+# App Review Information — notes draft (autobyteus-279, round 3)
 
 Status: **draft for the founder's approval**. Nothing goes to App Store Connect, TestFlight or the App Review thread without his explicit word. Round 2 takes in the Solution Designer's verification (`verdict.md`, answer (c)).
 
@@ -18,7 +18,8 @@ Status: **draft for the founder's approval**. Nothing goes to App Store Connect,
 > - See the run list: agents, Teams and an Org, with the work they delegated, in running, idle and stopped states.
 > - Open a run and read its conversation: tool calls, a terminal, file edits, a formatted answer, an image, and messages between agents.
 > - Send a message to any agent or Team or Org member: it works (a tool call) and answers with a sample reply. Stop a working agent with the red stop button.
-> - Use a run's ⋮ menu: Artifacts and Files (open the sample files and pictures), Messages (between the members of a Team or Org), Activity (background tasks and tool calls), Settings (runtime and model, Save), VNC Viewer (a sample desktop: View only, or tap View only to switch to Control with Keyboard and Clipboard), and Text size.
+> - Use a run's ⋮ menu: Artifacts and Files (open the sample files and pictures), Messages (between the members of a Team or Org), Activity (background tasks and tool calls), Settings (runtime and model, Save), VNC Viewer (a sample desktop: View only, or tap View only to switch to Control with Keyboard and Clipboard).
+> - Change the text size for the whole app: the run list's ⋮ › On this phone › Text size (Standard, Large, Largest).
 > - Start a new run with the **+** button and send it a message.
 > - Leave the demo: tap **Demo** at the top left, then **Leave demo**.
 >
