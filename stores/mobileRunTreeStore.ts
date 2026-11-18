@@ -85,7 +85,8 @@ export const useMobileRunTreeStore = defineStore('mobileRunTree', () => {
     if (statusOf(node) === 'offline') return 0
     if (node.kind === 'team') return (node.children ?? []).reduce((sum, child) => sum + backgroundTasksOf(child, depth + 1), 0)
     if (node.kind === 'org') return 0
-    if (depth === 0) return contexts.getRun(node.id)?.state.backgroundTasksRunning ?? 0
+    // ios-demo-mode-279 (DC-006): the demo's data is on the phone, so a listed run's count shows before it is opened too.
+    if (depth === 0) return contexts.getRun(node.id)?.state.backgroundTasksRunning ?? (demo ? backgroundTasksRunningOfRun(node) : 0)
     return backgroundTasksRunningOfRun(node)
   }
   /** A row's shown status and count: an agent's own; a Team's by the Team rule (busy > background > error > idle > offline). */

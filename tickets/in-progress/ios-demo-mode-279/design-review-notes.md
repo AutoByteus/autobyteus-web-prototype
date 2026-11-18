@@ -55,3 +55,13 @@ The founder asked the Solution Designer to verify the demo against Apple's crite
 | V-08 | 4.2: name the app's own parts | Notes round 2 name the native scanner pairing, the Camera opening the app, the offline built-in demo and the iPad layout. They also use "AutoByteus", drop "every feature", say "works offline", and add one line on the desktop app. |
 
 Answer (d): the reply to Apple is now drafted to go with the resubmission, quoting Apple's own line, without waiting for an answer.
+
+## Round 3 — the Solution Designer's round 2 verification (2026-11-18)
+
+| ID | Finding | Resolution |
+| --- | --- | --- |
+| V-01 (rest) | Artifacts opened "Synthetic file — Fixture content only." | Artifacts open the demo folder's sample content and pictures, the same as Files. |
+| R2-02 | The reference was behind the shipped phone screens (Text size in the run's ⋮, four steps) | The phone baseline was refreshed to `origin/personal@f7b4d68711` (ticket `phone-baseline-refresh-279`, accepted and integrated, `personal` at `0d2d0b9a`) and merged into this branch. The demo now sits on the shipped phone: Text size lives in the run list's ⋮ (On this phone: Standard, Large, Largest), Settings is last in the run's ⋮, Settings works for every run, an idle agent shows its running background tasks, and VNC Control shows Keyboard and Clipboard in the status row. Notes round 3 describe Text size where the app has it. |
+| — | (found in the recheck) a listed run's background-task state appeared only after the run had been opened (the shipped product reads it from the live run) | DC-006 extended: the demo's data is on the device, so a row shows "Background task running" from the start (one status per run). |
+
+All demo journeys were checked again on the merged branch, at 440×956 and 1180×820.
