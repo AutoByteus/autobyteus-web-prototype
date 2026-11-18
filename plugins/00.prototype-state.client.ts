@@ -18,7 +18,7 @@ import { restFixture } from '~/prototype/source-observation/rest-fixtures.mjs'
 import axios from 'axios'
 import { liveStreamFrames } from '~/prototype/source-observation/live-streams.mjs'
 // remote-runs-in-tree (design-only): the live stream of a run that delegated copies to another node.
-import { demoFolderTree, demoModelNames, demoReplyFrames, isIosDemo } from '~/prototype/ios-demo/iosDemo'
+import { demoFileText, demoFolderTree, demoImageFor, demoModelNames, demoReplyFrames, isDemoImage, isIosDemo } from '~/prototype/ios-demo/iosDemo'
 import { PTM_HOST_RUN_ID, remoteInterruptReply, remoteSendReply, remoteStopFrames, remoteStreamIsLive, remoteSummaryFrames, remoteTimeline } from '~/prototype/remote-runs/remoteRunsFixture'
 import { collaborationView } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
@@ -857,6 +857,13 @@ export default defineNuxtPlugin({
         return Promise.resolve(new Response(JSON.stringify({ status: 'ok', version: 'prototype-1.0.0', fixture: true }), { status: 200, headers: { 'content-type': 'application/json' } }))
       }
       if (resolved.pathname.includes('/content') || resolved.pathname.includes('/file-change-content')) {
+        // ios-demo-mode-279: in the demo an artifact or file opens the demo folder's sample content (no placeholder).
+        if (isIosDemo()) {
+          const demoPath = resolved.searchParams.get('path') ?? resolved.searchParams.get('filePath') ?? ''
+          return Promise.resolve(isDemoImage(demoPath)
+            ? new Response(demoImageFor(demoPath), { status: 200, headers: { 'content-type': 'image/svg+xml' } })
+            : new Response(demoFileText(demoPath), { status: 200, headers: { 'content-type': 'text/plain; charset=utf-8' } }))
+        }
         return Promise.resolve(new Response('# Synthetic file\n\nFixture content only.', { status: 200, headers: { 'content-type': 'text/plain; charset=utf-8' } }))
       }
       if (/\/applications\/[^/]+\/execution-resource-configurations$/.test(resolved.pathname)) {
