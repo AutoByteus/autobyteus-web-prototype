@@ -275,14 +275,32 @@ export const activitiesFor = (node, at) => {
 
 /** The background tasks of a run (Activity, above the tool calls). */
 export const backgroundTasksFor = (node, at) => {
-  if (!node || (node.id !== RICH_RUN_ID && node.id !== 'mx-ptm-0001')) return []
+  if (!node) return []
   const sec = (offset) => iso(at, offset)
+  // phone-baseline-refresh-279 (autobyteus-448): an idle delegated agent with two background tasks running, and a Team
+  // member with one (its Team row shows the sum).
+  if (node.id === 'mx-apc-0001') {
+    return [
+      { taskId: 'mx-bg-apc-1', kind: 'shell', description: 'Bundle the release-notes agent', command: 'pnpm run package:agent --watch', status: 'running', summary: null, endReason: null, exitCode: null, startedAt: sec(20_000) },
+      { taskId: 'mx-bg-apc-2', kind: 'shell', description: 'Validate the package manifest', command: 'pnpm run package:validate --watch', status: 'running', summary: null, endReason: null, exitCode: null, startedAt: sec(25_000) },
+    ]
+  }
+  if (node.id === 'mx-set-0002-implementation_engineer') {
+    return [{ taskId: 'mx-bg-set-1', kind: 'shell', description: 'Run the package tests', command: 'pnpm test --watch', status: 'running', summary: null, endReason: null, exitCode: null, startedAt: sec(15_000) }]
+  }
+  if (node.id !== RICH_RUN_ID && node.id !== 'mx-ptm-0001') return []
   return [
-    { taskId: 'mx-bg-1', kind: 'shell', description: 'Watch the upgrade check', command: 'pnpm run upgrade:check --watch', status: 'running', summary: null, startedAt: sec(30_000), exitCode: null },
-    { taskId: 'mx-bg-2', kind: 'shell', description: 'Build the release notes site', command: 'pnpm run docs:build', status: 'completed', summary: 'exit code 0', startedAt: sec(10_000), exitCode: 0 },
-    { taskId: 'mx-bg-3', kind: 'shell', description: 'Index the changelog', command: 'pnpm run docs:index', status: 'failed', summary: 'exit code 1', startedAt: sec(5_000), exitCode: 1 },
+    { taskId: 'mx-bg-1', kind: 'shell', description: 'Watch the upgrade check', command: 'pnpm run upgrade:check --watch', status: 'running', summary: null, endReason: null, startedAt: sec(30_000), exitCode: null },
+    { taskId: 'mx-bg-2', kind: 'shell', description: 'Build the release notes site', command: 'pnpm run docs:build', status: 'completed', summary: 'exit code 0', endReason: null, startedAt: sec(10_000), exitCode: 0 },
+    { taskId: 'mx-bg-3', kind: 'shell', description: 'Index the changelog', command: 'pnpm run docs:index', status: 'failed', summary: 'exit code 1', endReason: null, startedAt: sec(5_000), exitCode: 1 },
+    // phone-baseline-refresh-279: a task the runtime stopped at its time limit (its end line, not the summary).
+    { taskId: 'mx-bg-4', kind: 'shell', description: 'Crawl the docs for broken links', command: 'pnpm run docs:links', status: 'stopped', summary: 'Task was stopped after reaching its background time limit', endReason: 'time_limit', startedAt: sec(2_000), exitCode: null },
   ]
 }
+
+/** How many background tasks a run's agent has running (its status's count, autobyteus-448); a stopped run has none. */
+export const backgroundTasksRunningOf = (node) => (!node || node.status === 'offline' ? 0
+  : backgroundTasksFor(node, 0).filter((task) => task.status === 'running').length)
 
 /**
  * The messages one participant sent or received in its Team (`collaborationParticipantMessages`, as the node answers it):

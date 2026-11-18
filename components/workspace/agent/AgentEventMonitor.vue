@@ -1,9 +1,9 @@
 <template>
+  <!-- On the phone (autobyteus-506): the phone conversation layout, at the phone's Text size through the root font size
+       (autobyteus-525); the desktop keeps its own. -->
   <div
     class="flex h-full min-h-0 flex-col gap-3 overflow-hidden overscroll-none p-4"
-    :class="{ 'phone-conversation': mobileNavigation }"
-    :style="mobileNavigation ? { '--pc-size': `${phoneTextSize.px.value}px` } : undefined"
-    :data-text-size="mobileNavigation ? phoneTextSize.sizeId.value : undefined"
+    :class="{ 'phone-conversation': phoneConversation }"
     data-testid="agent-event-monitor"
   >
     <AgentConversationFeed
@@ -55,9 +55,8 @@ import AgentReconnectComposerNotice from '~/components/workspace/reconnect/Agent
 import { computed, onBeforeUnmount, provide, ref, toRef } from 'vue';
 import { useWorkspaceToolReveal } from '~/composables/layout/useWorkspaceToolReveal';
 import { useMobileNavigation } from '~/composables/mobile/useMobileNavigation';
-import { usePhoneTextSize } from '~/composables/mobile/usePhoneTextSize';
-import '~/assets/css/phone-conversation.css';
 import { isMobileRemoteAccessRuntime } from '~/utils/remoteAccess/mobileRuntime';
+import '~/assets/css/phone-conversation.css';
 import type { Conversation } from '~/types/conversation';
 import AgentUserInputForm from '~/components/agentInput/AgentUserInputForm.vue';
 import CollaboratorAddFailureNotice from '~/components/agentInput/CollaboratorAddFailureNotice.vue';
@@ -96,7 +95,8 @@ const filePreviewStatus = ref('');
 const revealTool = useWorkspaceToolReveal();
 // Taken in setup: it reads the route through inject, which the lazily created opener cannot (autobyteus-427).
 const mobileNavigation = isMobileRemoteAccessRuntime() ? useMobileNavigation() : null;
-const phoneTextSize = usePhoneTextSize();
+/** The phone's conversation layout; never on the desktop. */
+const phoneConversation = isMobileRemoteAccessRuntime();
 let isLive = true;
 onBeforeUnmount(() => { isLive = false; });
 const browse = useEventMonitorActiveTraceBrowse({

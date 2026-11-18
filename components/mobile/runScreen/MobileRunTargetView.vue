@@ -52,24 +52,23 @@ import type { MobileView } from '~/composables/mobile/useMobileNavigation';
 import { useNodeDesktopAvailability } from '~/composables/useNodeDesktopAvailability';
 import { useTargetConversation } from '~/composables/workspace/useTargetConversation';
 import type { ActiveAgentWorkspaceTarget } from '~/types/workspace/activeAgentWorkspaceTarget';
-import { mobileRunStatusLabel } from '~/utils/mobile/mobileRunStatusLabel';
-import { agentStatusDotClass } from '~/utils/workspaceStatusDotPresentation';
+import { useLocalization } from '~/composables/useLocalization';
+import { mobileRunSubjectLine } from '~/utils/mobile/mobileRunSubjectLine';
 
 const props = defineProps<{ target: ActiveAgentWorkspaceTarget; parentName: string | null }>();
 defineEmits<{ (event: 'back'): void; (event: 'open-view', view: MobileView): void }>();
 
 const { displayName, readOnly, senderNameByAgentRunId, remoteView } = useTargetConversation(() => props.target);
+const { t } = useLocalization();
 const remote = remoteView.remote;
 const unreachable = remoteView.unreachable;
 
-const status = computed(() => (unreachable.value ? 'error' : props.target.context.state.currentStatus));
-const dotClass = computed(() => agentStatusDotClass(status.value));
-/** "Idle · in Software Engineering Team"; a top-level run has no "in"; a node that does not answer: "Not reachable". */
-const subtitle = computed(() => {
-  if (unreachable.value) return 'Not reachable';
-  const state = mobileRunStatusLabel(props.target.context.state.currentStatus);
-  return props.parentName ? `${state} · in ${props.parentName}` : state;
-});
+const subjectLine = computed(() => mobileRunSubjectLine({
+  status: props.target.context.state.currentStatus, backgroundTasksRunning: props.target.context.state.backgroundTasksRunning,
+  unreachable: unreachable.value, parentName: props.parentName, t,
+}));
+const dotClass = computed(() => subjectLine.value.dotClass);
+const subtitle = computed(() => subjectLine.value.subtitle);
 
 /** Messages are the messages among a Team's or an Org's members (spec: members of a team or Org only). */
 const MEMBER_KINDS: ReadonlySet<ActiveAgentWorkspaceTarget['kind']> = new Set([

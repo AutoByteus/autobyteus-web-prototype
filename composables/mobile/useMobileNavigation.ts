@@ -3,6 +3,7 @@ import { useRoute, useRouter, type LocationQuery, type LocationQueryRaw } from '
 
 /** The phone's screens (UIS-001…UIS-010); the run list is the entry without a `screen` key. */
 export type MobileScreen = 'list' | 'run' | 'artifacts' | 'files' | 'messages' | 'activity' | 'desktop' | 'settings' | 'new';
+/** `settings`: the open run's runtime and model (autobyteus-458). */
 export type MobileView = 'artifacts' | 'files' | 'messages' | 'activity' | 'desktop' | 'settings';
 
 const SCREENS: readonly MobileScreen[] = ['run', 'artifacts', 'files', 'messages', 'activity', 'desktop', 'settings', 'new'];

@@ -11,7 +11,7 @@
 import { exposedFixtures } from '~/prototype/source-observation/fixtures.mjs'
 import {
   MOBILE_RUNS, PEERS, UNREACHABLE_NODES, RICH_RUN_ID, flattenRuns, worldNode, isWorldRunId,
-  projectionEntriesFor, richConversation, teamResumeConfigFor, teamOfMember, activitiesFor, backgroundTasksFor, participantMessagesFor, referenceText, searchFilePaths, fileChangesFor, WORKSPACE_FILES,
+  projectionEntriesFor, richConversation, teamResumeConfigFor, teamOfMember, activitiesFor, backgroundTasksFor, backgroundTasksRunningOf, participantMessagesFor, referenceText, searchFilePaths, fileChangesFor, WORKSPACE_FILES,
 } from '~/prototype/source-observation/mobile-world.mjs'
 
 export type MobileRunStatus = 'running' | 'idle' | 'initializing' | 'error' | 'offline'
@@ -74,6 +74,8 @@ export const withMobileRuns = (name: string, variables: Record<string, any>, dat
 }
 
 export { teamOfMember }
+/** An agent's running background tasks, as its status carries them (autobyteus-448); 0 for a stopped run. */
+export const backgroundTasksRunningOfRun = backgroundTasksRunningOf as (node: MobileRunNode | null) => number
 
 export const conversationOf = (runId: string): any | null => {
   const node = worldNode(runId)

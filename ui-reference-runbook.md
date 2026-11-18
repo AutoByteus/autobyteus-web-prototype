@@ -1,5 +1,20 @@
 # UI Reference Runbook
 
+## phone-baseline-refresh-279 (the phone, `/mobile`; reflects `origin/personal@f7b4d68711`, release 1.5.13)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4279
+```
+
+Open <http://localhost:4279/mobile> at a phone width (412 CSS px). The world, the reset and the starting states are those of the section below; restart the dev server after editing files under `prototype/`. What this refresh added:
+
+- **Text size**: the ⋮ at the right of the run list's header → Text size: Standard, Large, Largest. It applies at once to every phone screen and is kept on the phone (`autobyteus.phone.textSize`; remove it to return to Standard).
+- **Background tasks (autobyteus-448)**: Project Task Manager's delegated **Agent Package Creator** shows "2 background tasks running"; the second **Software Engineering Team** row (folded) shows a member's task; **Daily Assistant** (the rich run) shows "Background task running" on its run screen and Settings, and on its row once it has been opened. Its Activity has a task stopped at its time limit.
+- **Settings** (the run's ⋮, last entry): a held run (idle or running, e.g. Daily Assistant) shows the red stop icon and locked rows; the stop makes it Stopped. A stopped run (Show older → Codex) has Runtime, Model and Save; Save returns to the conversation. Starting state `mobile_settings_refused`: the first Save is refused in the node's words and Save stays off until another choice. A run on another node (Market Researcher on `docker`) shows only the sentence.
+- **VNC Viewer** (starting state `mobile_node_desktop`): Control puts Keyboard and Clipboard at the end of the status row.
+- Evidence: `ui-baseline-report.md` (first section), `evidence/phone-baseline-refresh-279/` (left: the baseline, right: the pinned source).
+
 ## phone-run-screen-baseline-refresh-506 (the phone, `/mobile`: run list, run screen and its views, New run, connection sheet; reflects `origin/personal@e4f4b3e176`, release 1.5.13-beta.7)
 
 ```bash

@@ -14,6 +14,7 @@
         </svg>
       </div>
 
+      <!-- The phone's speaker line (autobyteus-506); hidden on the desktop. -->
       <span class="conv-speaker" aria-hidden="true">{{ displayUserName }}</span>
       <div class="conv-body min-w-0 flex-1 pt-0.5">
         <span class="sr-only">{{ displayUserName }}</span>

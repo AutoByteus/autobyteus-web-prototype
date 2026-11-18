@@ -1,8 +1,12 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import {
-  MOBILE_RUNS, PEERS, UNREACHABLE_NODES, flattenRunIds, type MobilePeer, type MobileRunNode,
+  MOBILE_RUNS, PEERS, UNREACHABLE_NODES, backgroundTasksRunningOfRun, flattenRunIds, type MobilePeer, type MobileRunNode,
 } from '~/prototype/mobile-runs/mobileRunsFixture'
+import { hasBeenStopped } from '~/prototype/mobile-runs/runSettingsFixture'
+import { useAgentContextsStore } from '~/stores/agentContextsStore'
+import { AgentStatus } from '~/types/agent/AgentStatus'
+import { teamActivityOf, type TeamStatus } from '~/utils/workspaceTeamAggregateStatus'
 import type { MobileRunTreeRow } from '~/utils/mobile/mobileRunListRows'
 
 /** How many runs show before "Show older (N)". */
@@ -64,6 +68,28 @@ export const useMobileRunTreeStore = defineStore('mobileRunTree', () => {
         : (node.node ? 'peer_agent' : 'agent')
     return `${topKey(top)}/${kind}:${node.id}`
   }
+  const contexts = useAgentContextsStore()
+  /** A run stopped from the phone's Settings shows Stopped from then on (the node stopped it). */
+  const statusOf = (node: MobileRunNode): string => (hasBeenStopped(node.id) ? 'offline' : node.status)
+  /**
+   * A row's running background tasks (autobyteus-448), where the product reads them: a listed agent run's from its live
+   * context in this window (none until it is opened), a delegated row's from the run-status answer, a Team's as the sum
+   * of its own agents'. An Org row has none.
+   */
+  const backgroundTasksOf = (node: MobileRunNode, depth: number): number => {
+    if (statusOf(node) === 'offline') return 0
+    if (node.kind === 'team') return (node.children ?? []).reduce((sum, child) => sum + backgroundTasksOf(child, depth + 1), 0)
+    if (node.kind === 'org') return 0
+    if (depth === 0) return contexts.getRun(node.id)?.state.backgroundTasksRunning ?? 0
+    return backgroundTasksRunningOfRun(node)
+  }
+  /** A row's shown status and count: an agent's own; a Team's by the Team rule (busy > background > error > idle > offline). */
+  const activityOf = (node: MobileRunNode, depth: number): { status: string; backgroundTasksRunning: number } => {
+    const status = statusOf(node), count = backgroundTasksOf(node, depth)
+    if (node.kind === 'org') return { status, backgroundTasksRunning: 0 }
+    const shown = node.kind === 'team' ? teamActivityOf(status as TeamStatus, count) : { status, backgroundTasksRunning: count }
+    return { status: String(shown.status ?? AgentStatus.Offline), backgroundTasksRunning: shown.backgroundTasksRunning ?? 0 }
+  }
   const rowOf = (node: MobileRunNode, depth: number, key: string): MobileRunTreeRow => {
     const children = node.children ?? []
     const expanded = children.length > 0 && isExpanded(key, node, depth)
@@ -72,7 +98,7 @@ export const useMobileRunTreeStore = defineStore('mobileRunTree', () => {
       key, depth, avatar: node.kind === 'team' ? 'team' : node.kind === 'org' ? 'org' : 'agent', name: node.name,
       // A delegated row of this node shows no second line (a Task's summary would); a peer's run shows its title.
       title: depth === 0 || (node.node && node.kind !== 'member') ? node.summary : '',
-      status: node.status, remote, hasChildren: children.length > 0, expanded,
+      ...activityOf(node, depth), remote, hasChildren: children.length > 0, expanded,
       fold: children.length > 0 ? ({ kind: 'world', id: node.id, key, depth } as never) : null,
       open: { kind: 'world', id: node.id } as never,
       lastActivityAt: depth === 0 ? ago(node.minutes) : null,
