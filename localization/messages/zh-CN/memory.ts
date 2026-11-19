@@ -125,6 +125,8 @@ const memoryMessages = {
   'memory.semantic.truncated': '仅显示前 {{count}} 项。请在这台计算机上打开文件夹查看其余内容。',
   'memory.semantic.loading_folder': '正在加载文件夹…',
   'memory.semantic.modified': '修改于 {{time}}',
+  'memory.semantic.no_file_selected': '未选择文件',
+  'memory.semantic.select_a_file': '在左侧选择一个文件即可阅读。',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;

@@ -21,7 +21,7 @@ import { designOnlyLayersEnabled, reconnectLayerEnabled } from '~/prototype/shar
 // memory-baseline-refresh-554 (origin/personal@8430d9ef12): the Memory page's synthetic world, its lists and the memory node
 // beneath the source's memory search, index and Work Journal stores.
 import { isMemoryOperation, memoryOperation, withMemoryWorld } from '~/prototype/memory-search/memoryDesignFixture'
-import { isSemanticMemoryOperation, semanticMemoryOperation } from '~/prototype/memory-semantic/semanticMemoryFixture'
+import { agentIdOfSemanticWorkspace, isSemanticMemoryOperation, semanticFileText, semanticMemoryOperation, semanticSearch } from '~/prototype/memory-semantic/semanticMemoryFixture'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { withModelRouting } from '~/prototype/model-routing/modelRoutingFixture'
 import { withMobileRuns } from '~/prototype/mobile-runs/mobileRunsFixture'
@@ -150,6 +150,15 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   // ios-demo-mode-279: the demo's sample names (sample models, the demo folder) and its folder's files.
   if (isIosDemo() && data) data = demoModelNames(data)
   if (isIosDemo() && name === 'GetFileContent') data = { fileContent: demoFileText(String(request.variables?.filePath ?? '')) }
+  // semantic-memory-view-554 (design): a semantic memory folder (a read-only workspace): its files and a name search inside it.
+  const semanticAgent = agentIdOfSemanticWorkspace(String(request.variables?.workspaceId ?? ''))
+  if (semanticAgent && name === 'GetFileContent') {
+    const text = semanticFileText(semanticAgent, String(request.variables?.filePath ?? ''), scenario)
+    // The Files panel words a node's refusal from this code (FileExplorerTabs, nodeFilePreviewErrorMessageKey).
+    if (text === null) return { data: null, errors: [{ message: 'node-file-preview:not-found' }] }
+    data = { fileContent: text }
+  }
+  if (semanticAgent && name === 'SearchFiles') data = { searchFiles: semanticSearch(semanticAgent, String(request.variables?.query ?? ''), scenario) }
   // WEB-BASELINE-REFRESH-011: a scripted read failure (for example the Embedding status) answers as GraphQL errors.
   if (data?.__projectError) return { data: null, errors: [data.__projectError] }
   return { data: data ? structuredClone(data) : {} }

@@ -400,6 +400,32 @@ export const useWorkspaceStore = defineStore('workspace', {
       return workspaceId;
     },
 
+    /**
+     * semantic-memory-view-554 (design): a transient, read-only workspace rooted at an agent's semantic memory folder,
+     * registered like a skill's (`skill_ws_*`): it never shows in the Workspaces sidebar or a workspace picker.
+     */
+    registerSemanticMemoryWorkspace(agentDefinitionId: string, displayName: string, folderPath: string): string {
+      const workspaceId = `semantic_ws_${encodeURIComponent(agentDefinitionId)}`;
+      if (this.workspaces[workspaceId]) return workspaceId;
+      this.workspaces[workspaceId] = {
+        workspaceId,
+        name: displayName,
+        displayName,
+        workspaceConfig: { isTransient: true, readOnly: true },
+        absolutePath: folderPath,
+        workspaceRootPath: null,
+        kind: 'skill',
+        isTemp: false,
+      } as WorkspaceInfo;
+      this.workspaceMetadataById[workspaceId] = createWorkspaceMetadata({
+        workspaceId,
+        workspaceRootPath: folderPath,
+        displayName,
+        kind: 'skill',
+      });
+      return workspaceId;
+    },
+
     unregisterSkillWorkspace(workspaceId: string) {
       if (!this.workspaces[workspaceId]) return;
       this.clearFileExplorerLiveSessionForWorkspace(workspaceId);

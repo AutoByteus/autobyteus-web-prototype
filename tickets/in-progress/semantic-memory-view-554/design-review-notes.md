@@ -1,4 +1,37 @@
-# Design Review Notes: semantic-memory-view-554 (round 1)
+# Design Review Notes: semantic-memory-view-554
+
+## Round 2 (2026-11-19): the folder as the Skills page shows a skill's folder, read only
+
+The founder's feedback on round 1: "Since the semantic memory is simply just a folder … in the skill area … we
+implement it to view the content of a folder why don't you use that approach directly it's much simpler … I can just
+click and look at any file I want". After I named what the Skills view would change (it edits, and it follows links),
+he confirmed: "Yes go ahead with the reader only style view". Routed to the Solution Designer as a Requirement Impact
+(REQ-005: no newest-first list or per-file size and time; REQ-007: the explorer's read-only, link-aware mode). The
+Solution Designer's five points are designed in:
+
+1. A symbolic link is a row of its own: link icon, its name, "Link · not opened" (zh-CN "链接 · 不打开"); it never
+   expands, never opens a tab, does not light up on hover, and its tooltip explains.
+2. No edit affordance: no right-click menu, no rename, no drag and drop or upload, no edit/preview switch or Save in the
+   tabs (preview only). The Skills page keeps its editing (the read-only mode is a prop of the shared components).
+3. A missing folder shows "No semantic memory yet · The folder is created when <agent> next runs." and the view creates
+   nothing. An empty folder shows "… has not written anything to its folder yet." (the same message style; no empty
+   explorer).
+4. The folder is a transient read-only workspace (`semantic_ws_*`, like `skill_ws_*`): it never appears in the
+   Workspaces sidebar or a workspace picker, and it is released when the view closes.
+5. The explorer's search box searches file names inside this folder only.
+
+Layout: the Memory page header ("← Back to …", the agent's name, "Semantic memory · <folder path>"), then one bordered
+panel filling the page: the file explorer (280 px, grey, its search box and tree) and the Files panel's tabs (the
+open files, the full-view button, the existing viewers). No file is open at first: "No file selected · Select a file
+on the left to read it." Below 768 px the file list sits above the open file. Entries (Browse → Semantic Memory, the
+runs page button), the Agents page and every other state are unchanged from round 1. Round 1's file list, newest
+first, and its own content pane are gone (the content of the "Round 1" section below is superseded where it differs).
+
+Not built: the sample image (the reference cannot serve a workspace image; images open in the Files panel's image
+viewer as on the Skills page).
+
+## Round 1
+
 
 Package `semantic-memory-for-every-agent` (autobyteus-554), requirements SR-003: REQ-004 … REQ-008, AC-004 … AC-008.
 The design sits on the accepted baseline refresh `memory-baseline-refresh-554` (the Memory page and the Agents page's

@@ -1,4 +1,5 @@
 import { createRfbServer } from '~/prototype/source-observation/fake-rfb.mjs'
+import { agentIdOfSemanticWorkspace, semanticTreeOf, type SemanticTreeEntry } from '~/prototype/memory-semantic/semanticMemoryFixture'
 import { mobileNodeResponse } from '~/prototype/mobile-runs/mobileNodeRest'
 import { createUploadedContextAttachment, inferContextAttachmentType } from '~/utils/contextFiles/contextAttachmentModel'
 import runtimeFixture from '~/prototype/fixtures/runtime-state.json'
@@ -179,7 +180,7 @@ const localActions: Record<string, Set<string>> = {
   ]),
   // Projects (0a32261): a new-workspace row creates its workspace through the
   // source's own action; utils/apolloClient.ts answers CreateWorkspace locally.
-  workspace: new Set(['createWorkspace', 'registerSkillWorkspace', 'acquireFileExplorerLiveSession', 'releaseFileExplorerLiveSession', 'clearFileExplorerLiveSessionForWorkspace', 'connectFileExplorerLiveStream', 'disconnectFileExplorerLiveStream', 'disconnectAllFileExplorerLiveStreams', 'refreshFileExplorerSnapshot', 'fetchFolderChildren']),
+  workspace: new Set(['createWorkspace', 'registerSkillWorkspace', 'registerSemanticMemoryWorkspace', 'acquireFileExplorerLiveSession', 'releaseFileExplorerLiveSession', 'clearFileExplorerLiveSessionForWorkspace', 'connectFileExplorerLiveStream', 'disconnectFileExplorerLiveStream', 'disconnectAllFileExplorerLiveStreams', 'refreshFileExplorerSnapshot', 'fetchFolderChildren']),
 }
 
 type RuntimeSnapshot = { item: { path: string, scenario: string, mobile?: string }, actualPath: string, state: Record<string, any>, primaryNavHeight?: string | null, bootstrapPending?: boolean }
@@ -388,6 +389,24 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
     const makeNode = (name: string, path: string, isFile: boolean, children: any[], id: string): any => TreeNode
       ? new TreeNode(name, path, isFile, children, id, true)
       : { id, name, path, is_file: isFile, childrenLoaded: true, children }
+    // semantic-memory-view-554 (design): an agent's semantic memory folder as a read-only workspace (every folder loaded).
+    const semanticAgentId = agentIdOfSemanticWorkspace(workspaceId)
+    if (semanticAgentId) {
+      if (folderPath) return undefined
+      const byId: Record<string, any> = {}
+      const build = (entry: SemanticTreeEntry): any => {
+        const node = makeNode(entry.name, entry.path, entry.isFile, entry.children.map(build), `sem:${entry.path}`)
+        // A symbolic link is listed, never entered or opened (the explorer's read-only mode reads this flag).
+        if (entry.isLink) node.isLink = true
+        byId[node.id] = node
+        return node
+      }
+      const root = makeNode(semanticAgentId, '', false, semanticTreeOf(semanticAgentId, scenario()).map(build), 'root')
+      byId.root = root
+      fileState.tree = root
+      fileState.nodeIdToNode = byId
+      return undefined
+    }
     // ios-demo-mode-279: the demo's folder holds the files its conversations name (every folder already loaded).
     if (isIosDemo()) {
       if (folderPath) return undefined
@@ -759,6 +778,11 @@ export default defineNuxtPlugin({
             await new Promise(resolve => window.setTimeout(resolve, 1500))
           }
           // The phone reads an opened workspace file through the source's own action (answered locally by GetFileContent).
+          // semantic-memory-view-554 (design): a semantic memory folder's files and its name search are read through the
+          // source's own actions too (answered locally by GetFileContent and SearchFiles in utils/apolloClient.ts).
+          if (store.$id === 'fileExplorer' && (actionName === 'fetchFileContent' || actionName === 'searchFiles') && String(args[1] ?? '').startsWith('semantic_ws_')) {
+            return originalAction.apply(store, args)
+          }
           if (store.$id === 'fileExplorer' && (actionName === 'fetchFileContent' || actionName === 'searchFiles') && window.location.pathname === '/mobile') {
             return originalAction.apply(store, args)
           }

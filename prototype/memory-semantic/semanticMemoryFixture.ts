@@ -203,7 +203,6 @@ const FOLDERS: FolderSpec[] = [
   {
     id: 'agent-researcher', name: 'Research Assistant', files: [
       { path: 'sources/reading-list.md', at: '2026-10-24T16:22:00.000Z', text: RESEARCH_READING },
-      { path: 'sources/update-limits.svg', at: '2026-10-24T16:10:00.000Z', image: true },
       { path: 'shared-notes', at: '2026-10-23T12:00:00.000Z', link: 'folder' },
       { path: 'sources/latest.md', at: '2026-10-23T11:58:00.000Z', link: 'file' },
       { path: 'lessons.md', at: '2026-10-20T10:05:00.000Z', text: RESEARCH_LESSONS },
@@ -313,4 +312,64 @@ export const loadSemanticFile = async (absolutePath: string, scenario: string): 
     return { kind: 'text', content: spec.text ?? '' }
   }
   return { kind: 'refused', refusal: 'failed' }
+}
+
+/* -------------------------------------------------------------------- round 2: the folder as a read-only workspace */
+
+/** The agent ID a `semantic_ws_*` workspace is rooted at. */
+export const agentIdOfSemanticWorkspace = (workspaceId: string): string | null =>
+  workspaceId.startsWith('semantic_ws_') ? decodeURIComponent(workspaceId.slice('semantic_ws_'.length)) : null
+
+export type SemanticTreeEntry = { name: string; path: string; isFile: boolean; isLink: boolean; children: SemanticTreeEntry[] }
+
+/**
+ * The folder as the read-only explorer shows it: folders first, then files, each by name (the explorer's order). A
+ * symbolic link is an entry of its own (`isLink`), never a folder: it is listed and never entered.
+ */
+export const semanticTreeOf = (agentDefinitionId: string, scenario: string): SemanticTreeEntry[] => {
+  const folder = (scenario === 'empty' ? [] : FOLDERS).find(candidate => candidate.id === agentDefinitionId)
+  if (!folder) return []
+  const root: SemanticTreeEntry = { name: '', path: '', isFile: false, isLink: false, children: [] }
+  for (const spec of filesOf(folder, scenario)) {
+    const parts = spec.path.split('/')
+    let node = root
+    parts.forEach((part, index) => {
+      const path = parts.slice(0, index + 1).join('/')
+      const last = index === parts.length - 1
+      let child = node.children.find(entry => entry.name === part)
+      if (!child) {
+        child = { name: part, path, isFile: last, isLink: last && !!spec.link, children: [] }
+        node.children.push(child)
+      }
+      node = child
+    })
+  }
+  const sort = (entries: SemanticTreeEntry[]): SemanticTreeEntry[] => entries
+    .map(entry => ({ ...entry, children: sort(entry.children) }))
+    .sort((a, b) => (a.isFile === b.isFile ? a.name.localeCompare(b.name) : a.isFile ? 1 : -1))
+  return sort(root.children)
+}
+
+/** Whether the agent's folder exists and holds anything (the view shows its explorer only then). */
+export const semanticFolderState = (agentDefinitionId: string, scenario: string): 'missing' | 'empty' | 'files' => {
+  const folder = (scenario === 'empty' ? [] : FOLDERS).find(candidate => candidate.id === agentDefinitionId)
+  if (!folder) return 'missing'
+  return filesOf(folder, scenario).length ? 'files' : 'empty'
+}
+
+/** A regular file's text, read through the workspace (GetFileContent); null for a link or an unknown path. */
+export const semanticFileText = (agentDefinitionId: string, path: string, scenario: string): string | null => {
+  const folder = FOLDERS.find(candidate => candidate.id === agentDefinitionId)
+  const spec = folder ? filesOf(folder, scenario).find(candidate => candidate.path === path) : null
+  if (!spec || spec.link) return null
+  if (scenario === 'semantic_file_fails' && spec.path.startsWith('records/') && spec.path !== 'records/2026-10-26.md') return null
+  return spec.text ?? ''
+}
+
+/** File-name search inside this folder only (SearchFiles): the matching paths; links are found by name too. */
+export const semanticSearch = (agentDefinitionId: string, query: string, scenario: string): string[] => {
+  const folder = FOLDERS.find(candidate => candidate.id === agentDefinitionId)
+  const cue = query.trim().toLowerCase()
+  if (!folder || !cue) return []
+  return filesOf(folder, scenario).map(spec => spec.path).filter(path => path.toLowerCase().includes(cue))
 }

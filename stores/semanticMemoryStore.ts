@@ -88,8 +88,8 @@ export const useSemanticMemoryStore = defineStore('semanticMemory', {
       this.folders.search = search;
     },
 
-    /** Opens an agent's folder and, unless a file is named, its newest regular file. */
-    async openFolder(agentDefinitionId: string, relativePath?: string | null) {
+    /** Reads whether the agent's folder exists and what it holds (the view shows its explorer only for a folder with files). */
+    async openFolder(agentDefinitionId: string) {
       const requestId = ++this.requestId;
       if (this.agentDefinitionId !== agentDefinitionId) {
         this.folder = null;
@@ -113,10 +113,6 @@ export const useSemanticMemoryStore = defineStore('semanticMemory', {
       } finally {
         if (requestId === this.requestId) this.folderLoading = false;
       }
-      const files = this.folder?.files ?? [];
-      const named = relativePath ? files.find(file => file.relativePath === relativePath && file.kind === 'file') : null;
-      const first = named ?? files.find(file => file.kind === 'file') ?? null;
-      if (first && first.relativePath !== this.open.relativePath) await this.openEntry(first);
     },
 
     /** Opens a regular file. A link is never opened: the caller does not offer it, and this refuses it too. */

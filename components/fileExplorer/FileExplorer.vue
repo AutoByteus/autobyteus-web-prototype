@@ -67,8 +67,11 @@ let fileExplorerConsumerCounter = 0;
 const props = withDefaults(defineProps<{
   workspaceId?: string
   active?: boolean
+  /** semantic-memory-view-554 (design): view only. No context menu, rename, drag and drop or upload; links are listed, never opened. */
+  readOnly?: boolean
 }>(), {
   active: true,
+  readOnly: false,
 });
 
 const workspaceStore = useWorkspaceStore();
@@ -109,6 +112,7 @@ provide('requestFileExplorerContextMenu', openContextMenu);
 provide('fileExplorerRenameRequest', renameRequest);
 provide('fileExplorerOutsideDragSignal', outsideDragSignal);
 provide('fileExplorerGlobalDragResetSignal', globalDragResetSignal);
+provide('fileExplorerReadOnly', computed(() => props.readOnly));
 
 const searchQuery = ref('');
 const searchInputRef = ref<HTMLInputElement | null>(null);
@@ -290,7 +294,7 @@ onMounted(() => {
 });
 
 const handleRootContextMenu = (event: MouseEvent) => {
-  if (!panelActive.value || !currentWorkspace.value) return;
+  if (props.readOnly || !panelActive.value || !currentWorkspace.value) return;
   if (event.target instanceof Element && event.target.closest('.file-item')) {
     return;
   }

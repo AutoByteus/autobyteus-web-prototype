@@ -29,7 +29,6 @@
       :back-label="semanticBackLabel"
       :imported="explorerStore.isImportedSource"
       @back="backFromSemantic"
-      @select-file="selectSemanticFile"
     />
     <CollaborationMemoryDetail
       v-else-if="collaborationDetail"
@@ -281,7 +280,7 @@ async function syncRouteState() {
     inspectorStore.clear();
     // An imported source has no semantic memory: the view says so and asks the node for nothing (REQ-008).
     if (explorerStore.isImportedSource) semanticStore.clearFolder();
-    else await semanticStore.openFolder(semanticAgentId.value, queryValue('file'));
+    else await semanticStore.openFolder(semanticAgentId.value);
     return;
   }
 
@@ -444,9 +443,6 @@ const openSemanticFromAgent = () => {
   if (!agent?.agentDefinitionId) return;
   return pushMemory({ view: 'semantic-detail', from: 'runs', agentDefinitionId: agent.agentDefinitionId, agentName: agent.displayName, agentAttribution: agent.attribution });
 };
-
-/** The open file is in the address, so Back from elsewhere and a reload return to it. */
-const selectSemanticFile = (relativePath: string) => router.replace({ path: '/memory', query: cleanQuery({ ...(route.query as Record<string, string | undefined>), file: relativePath }) });
 
 const backFromSemantic = () => {
   if (semanticFromRuns.value) return pushMemory(agentDetailQuery({ attribution: queryValue('agentAttribution') ?? 'DEFINITION', agentDefinitionId: semanticAgentId.value, displayName: queryValue('agentName') }));

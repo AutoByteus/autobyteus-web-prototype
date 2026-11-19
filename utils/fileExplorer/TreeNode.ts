@@ -10,6 +10,8 @@ export class TreeNode {
    * Files always have childrenLoaded=true since they have no children.
    */
   childrenLoaded: boolean
+  /** semantic-memory-view-554 (design): a symbolic link in a read-only folder (listed, never entered or opened). */
+  isLink?: boolean
 
   constructor(
     name: string,

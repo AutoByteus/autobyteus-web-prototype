@@ -125,6 +125,8 @@ const memoryMessages = {
   'memory.semantic.truncated': 'Showing the first {{count}} entries. Open the folder on this computer to see the rest.',
   'memory.semantic.loading_folder': 'Loading the folder…',
   'memory.semantic.modified': 'Modified {{time}}',
+  'memory.semantic.no_file_selected': 'No file selected',
+  'memory.semantic.select_a_file': 'Select a file on the left to read it.',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;
