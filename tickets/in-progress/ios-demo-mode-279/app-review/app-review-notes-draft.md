@@ -25,6 +25,8 @@ Status: **draft for the founder's approval**. Nothing goes to App Store Connect,
 > - Start a new run with the **+** button and send it a message.
 > - Leave the demo: tap **Demo** at the top left, then **Leave demo**.
 >
+> Share to AutoByteus: in another app, share a link or text to **AutoByteus**. The share sheet keeps it; when you open AutoByteus, a pairing link connects to that computer (with no computer at hand, the app says it can't reach it), the demo link `autobyteus://demo` opens the demo, and any other text opens **Type an address** with it filled in.
+>
 > On iPad in landscape, the run list and the open run show side by side.
 
 **Condition on "It works offline … nothing is sent anywhere" (A-04):** keep this sentence only if the build under review passes engineering's offline check: every icon and asset bundled, and no network request while the demo is open, with the device in airplane mode. Otherwise send the notes without it.
@@ -43,4 +45,4 @@ Apple's guideline 2.1(a) allows a built-in demo mode "with prior approval". Sent
 
 - No node address, user name, password or credential: the demo has none.
 - No demo video (Apple: "not sufficient").
-- No share extension: it is removed from this build (design decision D6), so there is no share-sheet entry to review.
+- The share extension stays (D6, decided 2026-11-19: it works as on Android).

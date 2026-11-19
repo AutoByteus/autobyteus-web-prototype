@@ -1,6 +1,6 @@
 # Product Ticket: ios-demo-mode-279 (autobyteus-279)
 
-- Status: `Awaiting User Review` (review package sent 2026-11-18; the founder approves the screens before engineering builds)
+- Status: `Awaiting User Review` (the specification and final screenshots are sent for the founder's approval of the screens, 2026-11-19)
 - Mode: Product Experience Design. It evolves the accepted `/mobile` phone shell and the approved scan-first native start screen (`/android`, one-step-phone-pairing). The iOS app's native first screen is a design-only route (`/ios`), like `/android`.
 - Requested by: Solution Designer run `solution_designer_529aaf7328ab4ca5a0ba571f7910cbb3` (software engineering team), on the founder's word ("dedicated task to the product team"), 2026-11-18
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/ios-demo-mode-279/tickets/in-progress/ios-demo-mode-279/product-design-request.md`; Apple's message: `…/evidence/apple-review/app-store-connect-review-message.jpg`
@@ -65,3 +65,10 @@ D1 iOS first screen = the Android scan-first screen; D2 built in (offline); D3 i
 - Notes round 6: one sentence on the web view's plain-HTTP allowance (NSAllowsArbitraryLoadsInWebContent: the user's own computer on a private network or Tailscale, often without HTTPS).
 - Engineering conditions for the spec (verdict Round 6): every icon and asset bundled (offline); no console errors; the real camera scan and the Camera-app link `autobyteus://demo`; no crash on a fresh install; the notes working as written.
 - Waiting for the founder's approval of D1–D6 and the screens (the Solution Designer is asking him); then the final specification and screenshots.
+
+## Decisions and specification (2026-11-19)
+
+- The founder, via the Solution Designer: "You were decides yeah but in general I don't see we should have any difference … a demo is a should be very much similar to how your real application works right or 100% like how your real application works …". The Solution Designer decided D1–D5 as proposed; **D6 changed: keep the iOS share extension, working as on Android** (a shared pairing link connects, the demo link opens the demo, other text opens Type an address pre-filled; iOS keeps the text and acts on it when the app opens).
+- Built: the share extension screen (`/ios-share`) and the first screen's handling of kept text; the notes mention Share to AutoByteus and the web view's plain-HTTP reason.
+- `ui-ux-spec.md` written (status `Ready for User Review`), final references `visual-references/VIS-001…VIS-037` (iPhone 440×956, iPad 820×1180 and 1180×820). The round 1 interim screenshots were removed (superseded).
+- Next: the founder's approval of the screens; the Solution Designer's last sweep; then `Completed`, integration into `personal`, and the handoff.

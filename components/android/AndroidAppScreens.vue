@@ -192,7 +192,7 @@
 import { Icon } from '@iconify/vue'
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { enterIosDemo, IOS_START_KEY, iosSeedNodes } from '~/prototype/ios-demo/iosDemo'
+import { enterIosDemo, IOS_START_KEY, iosSeedNodes, sharedKindOf, takeSharedText } from '~/prototype/ios-demo/iosDemo'
 import {
   ANDROID_ACTIVE_KEY,
   IN_APP_KEY,
@@ -357,6 +357,15 @@ function backToPage(): void {
 
 onMounted(() => {
   nodes.value = isIos ? iosSeedNodes(iosStart) : loadAndroidNodes()
+  // ios-demo-mode-279 (D6): what the share extension kept is handled as Android handles a share (NodeConnectionFlow):
+  // a pairing link connects at once, the demo link opens the demo, other text opens "Type an address" with it.
+  const shared = isIos ? takeSharedText() : null
+  if (shared) {
+    const kind = sharedKindOf(shared)
+    if (kind === 'demo') { openDemo(); return }
+    if (kind === 'pairing') connectTo({ name: nextScanName(), fromScan: true })
+    else if (kind === 'text') { address.value = shared.trim(); addressOpen.value = true }
+  }
   currentId.value = localStorage.getItem(ANDROID_ACTIVE_KEY)
   // The app looks at each node as the list opens.
   checkTimer = setTimeout(() => (checking.value = false), 900)

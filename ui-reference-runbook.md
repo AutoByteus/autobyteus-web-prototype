@@ -11,10 +11,11 @@ corepack pnpm dev --port 3279
 - **Try demo**, or **Scan** (the camera finds the demo QR code `autobyteus://demo` after 2.2 s: "Demo code found"), opens `/mobile` in the demo: the same phone screens on the sample world, everything on the demo (no other nodes), the showcase conversation without failure states, sample model names.
 - Scripted in the demo: a message to an agent gets an answer (a `read_file` tool call, then text) on the agent's own stream (`prototype/ios-demo/iosDemo.ts` `demoReplyFrames`, played by `plugins/00`); Stop makes a working agent Idle (`plugins/95.ios-demo.client.ts`); New run, Settings Save, Text size and the VNC Viewer (view only) work as in the reference. Read only: Files, Artifacts, Messages, Activity.
 - Leave: tap **Demo** (top left) › **Leave demo** → `/ios`. A new tab is a cold launch (first screen).
+- Share to AutoByteus (D6): `/ios-share?text=<shared text>` is the iOS share extension's screen (`?text=` stands in for the other app). Done goes to `/ios`, which acts on the kept text as Android does: a pairing link (`…?pairing=…`) connects, `autobyteus://demo` opens the demo, other text opens Type an address pre-filled. The kept text is in `localStorage` `autobyteus.prototype.iosPendingShare`, used once.
 - iPad landscape (1024 px and wider): the run list is a 380 px pane on the left and what it opens fills the right (`components/mobile/MobilePairedShell.vue`); sheets are centered 512 px cards from 768 px.
 - Starting states: `localStorage.setItem('autobyteus.prototype.iosStart', 'ios_several')` (two saved nodes; the next scan finds a node, not the demo code); remove the key for the default first launch. Demo state is in `sessionStorage` (`autobyteus.prototype.iosDemo`, `autobyteus.prototype.inIosApp`, `autobyteus.prototype.iosDemoWelcomeClosed`).
 - The demo QR code for the review notes: `tickets/<status>/ios-demo-mode-279/app-review/`.
-- Spec: `tickets/<status>/ios-demo-mode-279/ui-ux-spec.md` (after approval).
+- Spec: `tickets/<status>/ios-demo-mode-279/ui-ux-spec.md`; final references `visual-references/VIS-001…037`.
 
 ## phone-baseline-refresh-279 (the phone, `/mobile`; reflects `origin/personal@f7b4d68711`, release 1.5.13)
 

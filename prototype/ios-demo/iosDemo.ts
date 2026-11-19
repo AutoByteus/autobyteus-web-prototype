@@ -483,3 +483,26 @@ export const demoNode = (id: unknown): MobileRunNode | null => DEMO_BY_ID.get(St
 /** The names of files attached in the demo, by their local address (an attached file's address is a browser blob). */
 const ATTACHMENT_NAMES = new Map<string, string>()
 export const rememberDemoAttachment = (locator: string, name: string): void => { ATTACHMENT_NAMES.set(locator, name) }
+
+// --- Share to AutoByteus (the iOS share extension), as on Android ----------------------------------------------------
+// iOS does not let a share extension open its app, so the extension keeps the shared text and the app handles it the
+// next time it opens, the way Android handles a share at once: a pairing link connects; the demo link opens the demo;
+// any other text opens "Type an address" with the text in it.
+
+/** The shared text the extension kept for the app (the app's shared store; a browser-local stand-in here). */
+export const IOS_PENDING_SHARE_KEY = 'autobyteus.prototype.iosPendingShare'
+
+export type SharedKind = 'pairing' | 'demo' | 'text' | 'empty'
+export const sharedKindOf = (text: string): SharedKind => {
+  const value = text.trim()
+  if (!value) return 'empty'
+  if (value === DEMO_QR_CONTENT) return 'demo'
+  if (/[?&]pairing=/.test(value) || /^autobyteus:\/\/pair/i.test(value)) return 'pairing'
+  return 'text'
+}
+export const keepSharedText = (text: string): void => { localStorage.setItem(IOS_PENDING_SHARE_KEY, text) }
+export const takeSharedText = (): string | null => {
+  const text = localStorage.getItem(IOS_PENDING_SHARE_KEY)
+  localStorage.removeItem(IOS_PENDING_SHARE_KEY)
+  return text
+}
