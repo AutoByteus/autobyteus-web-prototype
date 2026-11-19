@@ -127,6 +127,28 @@ const memoryMessages = {
   'memory.semantic.modified': 'Modified {{time}}',
   'memory.semantic.no_file_selected': 'No file selected',
   'memory.semantic.select_a_file': 'Select a file on the left to read it.',
+  // semantic-memory-view-554 (design, round 3): Browse as a tree of memory owners.
+  'memory.browse.tree_label': 'Memory owners',
+  'memory.browse.filter_tree': 'Filter agents, teams and orgs…',
+  'memory.browse.no_match': 'Nothing matches this filter.',
+  'memory.browse.not_found': 'This agent, team or org is not in this memory.',
+  'memory.browse.expand': 'Expand',
+  'memory.browse.collapse': 'Collapse',
+  'memory.browse.shared': 'shared',
+  'memory.browse.shared_help': 'A shared agent: one memory, the same page wherever it appears.',
+  'memory.agent.episodic': 'Episodic memory',
+  'memory.agent.semantic': 'Semantic memory',
+  'memory.agent.belongs_to': 'Belongs to {{name}}',
+  'memory.agent.also_in': 'Also works in {{names}}',
+  'memory.agent.unattributed_note': 'Runs that no agent definition names.',
+  'memory.agent.in_place': 'In {{name}}',
+  'memory.agent.no_runs': '{{name}} has no runs yet.',
+  'memory.group.team': 'Agent Team',
+  'memory.group.org': 'Agent Org',
+  'memory.group.members': 'Members',
+  'memory.group.runs': 'Runs',
+  'memory.group.shared_agent': 'Shared agent',
+  'memory.group.member_count': '{{count}} members',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;

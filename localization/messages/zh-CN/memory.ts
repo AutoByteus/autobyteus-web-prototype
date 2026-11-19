@@ -127,6 +127,28 @@ const memoryMessages = {
   'memory.semantic.modified': '修改于 {{time}}',
   'memory.semantic.no_file_selected': '未选择文件',
   'memory.semantic.select_a_file': '在左侧选择一个文件即可阅读。',
+  // semantic-memory-view-554 (design, round 3): Browse as a tree of memory owners.
+  'memory.browse.tree_label': '记忆归属',
+  'memory.browse.filter_tree': '筛选智能体、团队和组织…',
+  'memory.browse.no_match': '没有匹配此筛选条件的项。',
+  'memory.browse.not_found': '此记忆中没有这个智能体、团队或组织。',
+  'memory.browse.expand': '展开',
+  'memory.browse.collapse': '收起',
+  'memory.browse.shared': '共享',
+  'memory.browse.shared_help': '共享智能体：只有一份记忆，无论出现在哪里都打开同一页面。',
+  'memory.agent.episodic': '情景记忆',
+  'memory.agent.semantic': '语义记忆',
+  'memory.agent.belongs_to': '属于 {{name}}',
+  'memory.agent.also_in': '也在 {{names}} 中工作',
+  'memory.agent.unattributed_note': '没有智能体定义的运行。',
+  'memory.agent.in_place': '在 {{name}} 中',
+  'memory.agent.no_runs': '{{name}} 还没有运行。',
+  'memory.group.team': '智能体团队',
+  'memory.group.org': '智能体组织',
+  'memory.group.members': '成员',
+  'memory.group.runs': '运行',
+  'memory.group.shared_agent': '共享智能体',
+  'memory.group.member_count': '{{count}} 个成员',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;

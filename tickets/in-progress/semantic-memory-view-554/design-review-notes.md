@@ -1,5 +1,38 @@
 # Design Review Notes: semantic-memory-view-554
 
+## Round 3 (2026-11-19): Browse as a tree of memory owners
+
+The founder after round 2 (through the Solution Designer): "the work journal is the episodic memory and then each agent
+also have like a semantic memory … it looks strange … you have an agent and then suddenly you have one semantic memory
+… the navigation has some problem … you have global memory, then you have agent level memory … agent team consists of
+agents … organization maybe consists of agent and agent team". The Solution Designer's agreed structure (owners form a
+tree; an agent is the leaf with one semantic memory and many episodes; membership is not ownership) is designed as:
+
+- **Browse** (Browse / Search / Index stay): a tree of owners on the left (280 px white panel, its filter box, the
+  source selector when memory is imported) and the selected owner's memory on the right. Groups: **Agents**
+  (standalone agents, then "Unattributed runs"), **Agent Teams** (each team, open, with its member agents), **Agent
+  Orgs** (each org with its teams and their agents, and its own agents). Global stays hidden until autobyteus-555.
+  A shared agent shows a small "shared" tag where it appears as a member; every place opens the same agent page.
+  Teams and orgs show their run count; agents show none in the tree (their runs come from every place, counted on
+  their page). The "Semantic Memory" tab of round 1/2 is gone. Selection and tab are in the address (`node`, `pane`).
+- **Group heading** (the default is Agents): today's overview cards for that group.
+- **Agent page**: name; "Belongs to <team>" (team-local) or "Also works in <teams · orgs>" (shared); its ID; tabs
+  **Episodic memory · N** and **Semantic memory**. Episodic: its runs from every place, newest first, as cards (the
+  place line shows only when the agent works in more than one place), with a run filter; a card opens today's Work
+  Journal / Raw Traces inspector and "Back to <agent>" returns. Semantic: the round-2 read-only folder view (path,
+  then the explorer and tabs) with all five engineering points and its missing, empty, link and imported states.
+  "Unattributed runs" has Episodic memory only.
+- **Team / org page**: name, "Agent Team" / "Agent Org", ID; tabs **Members · N** (cards; each opens the agent or team
+  page; a shared agent is labelled "Shared agent") and **Runs · N** (today's team or org runs with their members; a
+  member opens its inspector; Back returns to the Runs tab). Room for a later "shared facts" tab; not shown.
+- Below 1280 px the tree sits above the page; below 768 px the folder's file list sits above the open file.
+
+Simulation: `prototype/memory-semantic/memoryOwnersFixture.ts` (who belongs where; invented), `stores/memoryBrowseStore.ts`
+(the tree; an agent's episodes gathered from its standalone runs and its teams' and orgs' runs; the product needs the
+designed per-agent episodic query, which the Solution Designer marks UNPROVEN and adds to the engineering design).
+Computer Use Operator was added to the synthetic Software Engineering Team as the shared-agent example.
+
+
 ## Round 2 (2026-11-19): the folder as the Skills page shows a skill's folder, read only
 
 The founder's feedback on round 1: "Since the semantic memory is simply just a folder … in the skill area … we

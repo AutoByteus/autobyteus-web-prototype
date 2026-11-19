@@ -209,6 +209,14 @@ const FOLDERS: FolderSpec[] = [
       { path: 'records/2026-10-20.md', at: '2026-10-20T10:04:00.000Z', text: record('2026-10-20', ['Compared four DNS providers for the home domain.']) },
     ],
   },
+  // A shared agent (a member of the Software Engineering Team): one memory wherever it appears (round 3).
+  {
+    id: 'computer-use-operator', name: 'Computer Use Operator', files: [
+      { path: 'lessons.md', at: '2026-10-25T21:10:00.000Z', text: doc(['# Lessons', '', '- Take a screenshot before and after each click; compare them before the next step.', '- Dialogs open at the centre of the screen; wait for them before typing.', '- The settings page needs a scroll to show its last section.']) },
+      { path: 'apps/browser.md', at: '2026-10-25T21:05:00.000Z', text: doc(['# Browser', '', '- The address bar takes focus with Cmd+L.', '- Downloads appear at the bottom right; wait for the check mark.']) },
+      { path: 'records/2026-10-25.md', at: '2026-10-25T21:02:00.000Z', text: record('2026-10-25', ['Filled the router settings form for the Software Engineering Team.', 'A dialog covered the Save button; waited and retried.']) },
+    ],
+  },
   // A folder the agent created but has not written to yet.
   { id: 'release-notes-writer', name: 'Release Notes Writer', files: [] },
   // autobyteus-308: an internal agent; the node lists it only while "Show internal agents" is on.

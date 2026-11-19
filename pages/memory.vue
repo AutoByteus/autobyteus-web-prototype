@@ -13,6 +13,8 @@
       @select-team="selectTeam"
       @select-org="selectOrg"
       @select-semantic="selectSemantic"
+      @open-episode="openEpisode"
+      @inspect-member="inspectGroupMember"
     />
     <AgentMemoryDetail
       v-else-if="currentView === 'agent-detail' && currentAgentSelector"
@@ -78,6 +80,7 @@ import SemanticMemoryDetail from '~/components/memory/SemanticMemoryDetail.vue';
 import { useSemanticMemoryStore } from '~/stores/semanticMemoryStore';
 import { useLocalization } from '~/composables/useLocalization';
 import type { SemanticMemoryFolder } from '~/types/semanticMemory';
+import { useMemoryBrowseStore, type AgentEpisode, type OwnerNode } from '~/stores/memoryBrowseStore';
 import { useMemoryExplorerStore, type MemoryHomeTab } from '~/stores/memoryExplorerStore';
 import { useMemoryInspectorStore } from '~/stores/memoryInspectorStore';
 import { useMemoryJournalStore, type JournalFocus } from '~/stores/memoryJournalStore';
@@ -101,6 +104,7 @@ const inspectorStore = useMemoryInspectorStore();
 const journalStore = useMemoryJournalStore();
 const searchStore = useMemorySearchStore();
 const semanticStore = useSemanticMemoryStore();
+const browseStore = useMemoryBrowseStore();
 const { t } = useLocalization();
 
 const MEMORY_VIEWS = ['home', 'agent-detail', 'team-detail', 'org-detail', 'agent-inspector', 'team-inspector', 'org-inspector', 'folder-inspector', 'semantic-detail'] as const;
@@ -179,9 +183,24 @@ const semanticBackLabel = computed(() => (semanticFromRuns.value
   ? t('memory.semantic.back_to', { name: queryValue('agentName') || semanticAgentId.value || '' })
   : t('memory.components.memory.AgentMemoryDetail.back_to_memory')));
 
+/** semantic-memory-view-554 (design, round 3): the Browse owner a run was opened from (its tree key). */
+const browseNodeLabel = (key: string): string | null => {
+  const find = (nodes: OwnerNode[]): OwnerNode | null => {
+    for (const node of nodes) {
+      if (node.key === key) return node;
+      const found = find(node.children ?? []);
+      if (found) return found;
+    }
+    return null;
+  };
+  return find(browseStore.tree)?.label ?? null;
+};
+
 const inspectorBackLabel = computed(() => {
   const target = inspectorStore.target;
   if (queryValue('q')) return 'Back to search results';
+  const back = queryValue('back');
+  if (back) return t('memory.semantic.back_to', { name: browseNodeLabel(back) ?? '' });
   if (!target) return 'Back to Memory';
   if (target.kind === 'agent_run') return `Back to ${target.agentDisplayName || target.agentDefinitionId || 'Agent'}`;
   if (target.kind === 'org_member_run') return `Back to ${target.orgDefinitionName || target.orgDefinitionId || 'Agent Org'}`;
@@ -254,7 +273,7 @@ async function syncRouteState() {
     if (cue) { if (!(searchStore.query === cue && searchStore.status === 'ready')) void searchStore.runSearch(cue); }
     else searchStore.clearSearch();
     void refreshSourcesForHome();
-    if (routeSection() === 'browse') await explorerStore.fetchHomeTab(routeHomeTab());
+    // semantic-memory-view-554 (design, round 3): Browse (MemoryBrowse) loads its tree and the selected owner itself.
     return;
   }
 
@@ -419,7 +438,7 @@ const openSearchResult = (result: SearchResult, match: SearchMatch) => {
 
 const changeSource = async (sourceKey: string) => {
   explorerStore.setSelectedSourceByKey(sourceKey);
-  await pushMemory({ view: 'home', section: 'browse', tab: explorerStore.homeTab });
+  await pushMemory({ view: 'home', section: 'browse', node: queryValue('node'), pane: queryValue('pane') });
 };
 
 const agentDetailQuery = (agent: { attribution?: string | null; agentDefinitionId?: string | null; displayName?: string | null }) => ({
@@ -447,6 +466,30 @@ const openSemanticFromAgent = () => {
 const backFromSemantic = () => {
   if (semanticFromRuns.value) return pushMemory(agentDetailQuery({ attribution: queryValue('agentAttribution') ?? 'DEFINITION', agentDefinitionId: semanticAgentId.value, displayName: queryValue('agentName') }));
   return goHome('semantic');
+};
+
+/** An agent's episode (from its page's Episodic memory) opens that run's inspector; Back returns to the agent. */
+const openEpisode = (episode: AgentEpisode, nodeKey: string) => {
+  const back = { back: nodeKey, backPane: undefined, updatedAt: episode.lastUpdatedAt };
+  const agentName = browseNodeLabel(nodeKey);
+  if (episode.place === 'team') {
+    return pushMemory({ view: 'team-inspector', teamDefinitionId: episode.placeId, teamName: episode.placeName, teamRunId: episode.groupRunId, agentRunId: episode.agentRunId, memberName: agentName ?? episode.memberName, ...back });
+  }
+  if (episode.place === 'org') {
+    return pushMemory({ view: 'org-inspector', orgDefinitionId: episode.placeId, orgName: episode.placeName, orgRunId: episode.groupRunId, agentRunId: episode.agentRunId, memberName: agentName ?? episode.memberName, ...back });
+  }
+  const agentId = nodeKey.includes('agent:') ? nodeKey.slice(nodeKey.lastIndexOf('agent:') + 'agent:'.length) : null;
+  return pushMemory({
+    view: 'agent-inspector', agentAttribution: agentId ? 'DEFINITION' : 'UNATTRIBUTED', agentDefinitionId: agentId, agentName,
+    runId: episode.agentRunId, runLabel: episode.summary, workspace: episode.workspaceRootPath, ...back,
+  });
+};
+
+/** A member of a team's or org's run (its Runs tab) opens that member's inspector; Back returns to the Runs tab. */
+const inspectGroupMember = (kind: 'team' | 'org', node: OwnerNode, runId: string, member: CollaborationMemberMemoryTargetSummary, nodeKey: string) => {
+  const common = { agentRunId: member.agentRunId, memberAddress: member.memberAddress, memberName: member.displayName, updatedAt: member.lastUpdatedAt, back: nodeKey, backPane: 'runs' };
+  if (kind === 'org') return pushMemory({ view: 'org-inspector', orgDefinitionId: node.id, orgName: node.label, orgRunId: runId, ...common });
+  return pushMemory({ view: 'team-inspector', teamDefinitionId: node.id, teamName: node.label, teamRunId: runId, ...common });
 };
 
 const selectOrg = (org: AgentOrgWithMemorySummary) =>
@@ -520,6 +563,8 @@ function backFromInspector() {
   const target = inspectorStore.target;
   const cue = queryValue('q');
   if (cue) return pushMemory({ view: 'home', section: 'search', q: cue });
+  const back = queryValue('back');
+  if (back) return pushMemory({ view: 'home', section: 'browse', node: back, pane: queryValue('backPane') });
   if (!target) return goHome('agents');
   if (target.kind === 'agent_run') {
     return pushMemory(agentDetailQuery({

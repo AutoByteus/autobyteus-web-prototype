@@ -388,7 +388,8 @@ const TEAMS: TeamSpec[] = [
   { id: 'software-engineering-team', name: 'Software Engineering Team', runs: 48, members: 144, latest: '2026-10-26T08:12:00.000Z', task: true, startedBy: 'Project Task Manager' },
   { id: 'team-product', name: 'Product Review Team', runs: 3, members: 6, latest: '2026-10-19T14:02:00.000Z', task: false },
 ]
-const SET_MEMBERS = ['solution_designer', 'implementation_engineer', 'code_reviewer']
+// semantic-memory-view-554 (design, round 3): Computer Use Operator, a shared agent, is a member of this team too.
+const SET_MEMBERS = ['solution_designer', 'implementation_engineer', 'code_reviewer', 'computer_use_operator']
 const teamRuns = (team: TeamSpec) => Array.from({ length: Math.min(team.runs, 8) }, (_, i) => {
   const runId = i === 0 && team.id === 'software-engineering-team' ? SET_RUN : `${team.id.slice(0, 3)}_${hex(`${team.id}${i}`)}`
   const day = new Date(Date.parse(team.latest) - i * 2.6 * DAY).toISOString()
