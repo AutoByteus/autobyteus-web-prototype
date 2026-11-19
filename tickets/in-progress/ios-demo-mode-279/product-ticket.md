@@ -54,3 +54,7 @@ D1 iOS first screen = the Android scan-first screen; D2 built in (offline); D3 i
 ## Review round 4 (2026-11-18/19)
 
 - The Solution Designer's strict App Reviewer sweep at the founder's request: not ready (A-01…A-09). All resolved (design-review-notes.md, Round 4). His `crawl.mjs` re-run here: iPhone and iPad 0 findings, 0 errors. Re-sweep requested from him. Engineering criteria added: every icon and asset bundled (no network request in airplane mode), no console errors on these paths.
+
+## Review round 5 (2026-11-19)
+
+- The Solution Designer's round 5: his sweep clean (A-01…A-09 resolved); `final.mjs` found R5-01 (fixture model names on the other runtimes) and R5-02 (an error when choosing a model). Both resolved (design-review-notes.md, Round 5); his `final.mjs`, a full Runtime/Model sheet sweep and `crawl.mjs` on both sizes are clean. Round 6 sweep requested.

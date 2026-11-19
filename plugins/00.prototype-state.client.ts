@@ -685,6 +685,14 @@ export default defineNuxtPlugin({
     pinia.use(({ store, options }: PiniaPluginContext) => {
       patchStore(store)
       scheduleAgentOrgRuntimeScenario()
+      // ios-demo-mode-279 (R5-02): the phone's runtime/model rows (copied from f7b4d68711) call the catalog store's
+      // refreshCatalog / refreshModelList, which the pinned desktop store lacks. Stand-ins re-read the local catalog,
+      // as the source's do ("Refresh models" and opening a Model sheet), so choosing a model raises no error.
+      if (store.$id === 'llmProviderConfig') {
+        const local = store as any
+        if (typeof local.refreshCatalog !== 'function') local.refreshCatalog = async (runtime: string) => (await local.fetchProvidersWithModels(runtime)) ?? local.catalogByRuntimeKind?.[runtime]
+        if (typeof local.refreshModelList !== 'function') local.refreshModelList = (runtime: string) => local.refreshCatalog(runtime)
+      }
       const safe = localActions[store.$id] || new Set<string>()
       if (store.$id === 'agentContexts') {
         store.$onAction(({ name, after }) => {

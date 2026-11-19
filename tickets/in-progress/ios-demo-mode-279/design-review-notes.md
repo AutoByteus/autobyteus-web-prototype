@@ -82,3 +82,12 @@ All demo journeys were checked again on the merged branch, at 440×956 and 1180�
 | — | Sample wording | The showcase and its files say "imports name the row to fix" instead of "import errors / a failed import" (same meaning, no alarm words). |
 
 Re-sweep with the Solution Designer's `crawl.mjs` (all 40 rows, every ⋮ entry, every file, attach): iPhone 440×956 and iPad 1180×820, **0 findings, 0 browser errors, no external request**. Attach-and-send, VNC Control, Stop, member reply, scan and Leave demo rechecked; `/mobile` and `/android` outside the demo unchanged.
+
+## Round 5 — the Solution Designer's final reviewer path (2026-11-19)
+
+| ID | Finding | Resolution |
+| --- | --- | --- |
+| R5-01 | Settings › Model on Codex App Server and Claude Agent SDK listed fixture names ("GPT-5.6 Sol — Synthetic run-settings model") | Every runtime's models in the demo are sample models that say so: Sample Codex model / mini / fast, Sample Claude model, each "A sample model. Its answers are scripted." |
+| R5-02 | Choosing a model logged "Unhandled error … MobileChoiceSheet" | The cause was the known `llmStore.refreshCatalog is not a function`: the phone's rows (f7b4d68711) call catalog actions that the pinned desktop store lacks. The reference now has stand-ins that re-read the local catalog (`refreshCatalog`, `refreshModelList`), so opening a Model sheet, choosing a model and "Refresh models" log nothing, in and outside the demo. |
+
+Checked: his `final.mjs` (live-run Stop, runtime and model change, Save, reopen, Leave demo, Try demo, a Team member): every step passes, errors `[]`. A sheet sweep of every Runtime and every Model option in New run and in a stopped run's Settings, plus Refresh models: 0 findings, 0 errors. `crawl.mjs` on iPhone and iPad: 40 rows, 0 findings, 0 errors.

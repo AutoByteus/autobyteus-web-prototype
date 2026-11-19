@@ -203,7 +203,13 @@ export function demoModelNames<T>(state: T): T {
     .replace(/Prototype Model/g, 'Sample model')
     .replace(/Deterministic model fixture with thinking settings; no inference request is made\./g, 'A sample model with thinking settings. Its answers are scripted.')
     .replace(/Deterministic model fixture; no inference request is made\./g, 'A sample model. Its answers are scripted.')
-    .replace(/prototype-workspace/g, 'demo-workspace')) as T
+    .replace(/prototype-workspace/g, 'demo-workspace')
+    // R5-01: every runtime's models in the demo are sample models that say so.
+    .replace(/gpt-5\.6-sol/g, 'demo/sample-codex-model').replace(/GPT-5\.6 Sol/g, 'Sample Codex model')
+    .replace(/gpt-5\.6-mini/g, 'demo/sample-codex-mini').replace(/GPT-5\.6 Mini/g, 'Sample Codex mini')
+    .replace(/gpt-5\.6-instant/g, 'demo/sample-codex-fast').replace(/GPT-5\.6 Instant/g, 'Sample Codex fast')
+    .replace(/claude-sonnet-4\.5/g, 'demo/sample-claude-model').replace(/Claude Sonnet 4\.5/g, 'Sample Claude model')
+    .replace(/Synthetic run-settings model; no inference request is made\./g, 'A sample model. Its answers are scripted.')) as T
 }
 
 // --- The demo's folder (Files, Artifacts, opened files) --------------------------------------------------------------
