@@ -1,4 +1,4 @@
-# App Review Information — notes draft (autobyteus-279, round 4)
+# App Review Information — notes draft (autobyteus-279, round 6)
 
 Status: **draft for the founder's approval**. Nothing goes to App Store Connect, TestFlight or the App Review thread without his explicit word. Round 2 takes in the Solution Designer's verification (`verdict.md`, answer (c)).
 
@@ -7,6 +7,8 @@ Status: **draft for the founder's approval**. Nothing goes to App Store Connect,
 > AutoByteus is the iPhone and iPad companion of the AutoByteus desktop app. People run AutoByteus on their own computer to work with AI agents, Teams of agents and Orgs; this app lets them follow and direct that work from their phone or tablet.
 >
 > Normally the app connects to the user's own computer: the desktop app shows a QR code, and the app's camera scanner reads it and connects. Connecting a computer needs the AutoByteus desktop app and is not part of the demo.
+>
+> The app allows plain-HTTP content in its web view (NSAllowsArbitraryLoadsInWebContent) because it connects only to the user's own computer, on their private network or Tailscale, where an HTTPS certificate is often not available. The app itself makes no other plain-HTTP connections, and the demo makes none.
 >
 > For review, the app has a built-in demo with sample data. It works offline: no account, computer, network or server is needed, and nothing is sent anywhere.
 >

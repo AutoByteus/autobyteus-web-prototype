@@ -58,3 +58,10 @@ D1 iOS first screen = the Android scan-first screen; D2 built in (offline); D3 i
 ## Review round 5 (2026-11-19)
 
 - The Solution Designer's round 5: his sweep clean (A-01…A-09 resolved); `final.mjs` found R5-01 (fixture model names on the other runtimes) and R5-02 (an error when choosing a model). Both resolved (design-review-notes.md, Round 5); his `final.mjs`, a full Runtime/Model sheet sweep and `crawl.mjs` on both sizes are clean. Round 6 sweep requested.
+
+## Review round 6 (2026-11-19)
+
+- The Solution Designer: round 6 clean (crawl.mjs on iPhone and iPad, sheets.mjs, final.mjs, upload.mjs: 0 findings, 0 errors, 0 external requests). Verdict: "the design can pass App Review as designed" (verdict.md, Round 6).
+- Notes round 6: one sentence on the web view's plain-HTTP allowance (NSAllowsArbitraryLoadsInWebContent: the user's own computer on a private network or Tailscale, often without HTTPS).
+- Engineering conditions for the spec (verdict Round 6): every icon and asset bundled (offline); no console errors; the real camera scan and the Camera-app link `autobyteus://demo`; no crash on a fresh install; the notes working as written.
+- Waiting for the founder's approval of D1–D6 and the screens (the Solution Designer is asking him); then the final specification and screenshots.
