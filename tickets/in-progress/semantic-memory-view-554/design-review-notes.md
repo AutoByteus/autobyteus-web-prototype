@@ -28,8 +28,10 @@ tree; an agent is the leaf with one semantic memory and many episodes; membershi
 - Below 1280 px the tree sits above the page; below 768 px the folder's file list sits above the open file.
 
 Simulation: `prototype/memory-semantic/memoryOwnersFixture.ts` (who belongs where; invented), `stores/memoryBrowseStore.ts`
-(the tree; an agent's episodes gathered from its standalone runs and its teams' and orgs' runs; the product needs the
-designed per-agent episodic query, which the Solution Designer marks UNPROVEN and adds to the engineering design).
+(the tree; an agent's episodes gathered from its standalone runs and its teams' and orgs' runs). In the product one
+memory-explorer query serves the Episodic tab for the local and an imported source: the server's run-folder discovery
+gives each run folder its agent definition and its subject (AGENT / TEAM_MEMBER / ORG_MEMBER); confirmed feasible by
+the Solution Designer (2026-11-19).
 Computer Use Operator was added to the synthetic Software Engineering Team as the shared-agent example.
 
 

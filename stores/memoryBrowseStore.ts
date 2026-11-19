@@ -166,7 +166,7 @@ export const useMemoryBrowseStore = defineStore('memoryBrowse', {
 
     /**
      * An agent's episodes from every place it works: its standalone runs, then each team or org run it was a member
-     * of, newest first. (Designed; the product's query for this list is still to be added, see the UI/UX spec.)
+     * of, newest first. (In the product one memory-explorer query serves this list, from the run-folder discovery; confirmed feasible.)
      */
     async loadEpisodes(agentDefinitionId: string | null, source: MemoryExplorerSourceInput | null) {
       const requestId = ++this.requestId;
