@@ -50,3 +50,7 @@ D1 iOS first screen = the Android scan-first screen; D2 built in (offline); D3 i
 - Engineering items carried into the spec: VNC Control must log no error; DC-007 (follow after your own send) changes the real app too.
 - Follow-up candidate (real app, not this ticket): a top-level row learns its background tasks only after the run is opened (the demo shows them from the start, DC-006).
 - Beyond what a reference can prove (engineering tests): the real camera scan of the demo QR, the Camera app opening `autobyteus://demo`, offline behaviour in the built app, the iPad build.
+
+## Review round 4 (2026-11-18/19)
+
+- The Solution Designer's strict App Reviewer sweep at the founder's request: not ready (A-01…A-09). All resolved (design-review-notes.md, Round 4). His `crawl.mjs` re-run here: iPhone and iPad 0 findings, 0 errors. Re-sweep requested from him. Engineering criteria added: every icon and asset bundled (no network request in airplane mode), no console errors on these paths.

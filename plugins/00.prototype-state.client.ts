@@ -7,6 +7,7 @@ import type { Router } from 'vue-router'
 import { addCollection } from '@iconify/vue'
 import monacoLoader from '@monaco-editor/loader'
 import iconCollections from '~/prototype/fixtures/icon-collections.json'
+import heroiconsCollection from '@iconify-json/heroicons/icons.json'
 import { defineNuxtPlugin } from '#app'
 import { installHostScenario } from '~/prototype/shared/install-host-scenario.js'
 import { applyExperienceScenario } from '~/prototype/shared/apply-experience-scenario.js'
@@ -18,7 +19,7 @@ import { restFixture } from '~/prototype/source-observation/rest-fixtures.mjs'
 import axios from 'axios'
 import { liveStreamFrames } from '~/prototype/source-observation/live-streams.mjs'
 // remote-runs-in-tree (design-only): the live stream of a run that delegated copies to another node.
-import { demoFileText, demoFolderTree, demoImageFor, demoModelNames, demoReplyFrames, isDemoImage, isIosDemo } from '~/prototype/ios-demo/iosDemo'
+import { demoFileText, demoFolderTree, demoImageFor, demoModelNames, demoReplyFrames, isDemoImage, isIosDemo, rememberDemoAttachment } from '~/prototype/ios-demo/iosDemo'
 import { PTM_HOST_RUN_ID, remoteInterruptReply, remoteSendReply, remoteStopFrames, remoteStreamIsLive, remoteSummaryFrames, remoteTimeline } from '~/prototype/remote-runs/remoteRunsFixture'
 import { collaborationView } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { designOnlyLayersEnabled } from '~/prototype/shared/design-only-layers'
@@ -318,13 +319,20 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
   if (store.$id === 'contextFileUpload' && action === 'finalizeDraftAttachments') {
     return (args[0]?.attachments || []).map((attachment: any) => (attachment?.kind === 'uploaded' ? { ...attachment, phase: 'final' } : attachment))
   }
+  // ios-demo-mode-279 (A-03): the node's published context-file limits (synthetic): attaching a file checks them first.
+  if (store.$id === 'contextFileUpload' && action === 'readSizeLimits') {
+    return { otherFileMaxBytes: 25 * 1024 * 1024, audioVideoMaxBytes: 200 * 1024 * 1024, audioVideoMimeTypes: ['audio/mpeg', 'audio/mp4', 'audio/wav', 'video/mp4', 'video/quicktime'] }
+  }
   if (store.$id === 'contextFileUpload' && action === 'uploadAttachment') {
     const file = args[0]?.file as File | undefined
     const name = file?.name || 'attachment'
     const storedFilename = `prototype-${Date.now()}-${name}`
+    const locator = file ? URL.createObjectURL(file) : `blob:${storedFilename}`
+    // ios-demo-mode-279: the demo's reply names an attached file by its own name, not its local address.
+    rememberDemoAttachment(locator, name)
     return createUploadedContextAttachment({
       storedFilename,
-      locator: file ? URL.createObjectURL(file) : `blob:${storedFilename}`,
+      locator,
       displayName: name,
       phase: 'draft',
       type: file ? inferContextAttachmentType(file) : 'Text',
@@ -514,6 +522,9 @@ export default defineNuxtPlugin({
     // The retained source editor defaults to jsDelivr. Ordinary prototype
     // review must remain network-independent, so use the checked-in mirror.
     monacoLoader.config({ paths: { vs: '/prototype-assets/monaco/vs' } })
+    // ios-demo-mode-279 (A-04): every Heroicon is local (the checked-in package set), so no icon is fetched from
+    // api.iconify.design at run time; the captured collections then add the rest.
+    addCollection(heroiconsCollection as any)
     for (const collection of Object.values(iconCollections)) {
       addCollection(collection as any)
     }
@@ -585,6 +596,9 @@ export default defineNuxtPlugin({
     // stopping a launched Org from its settings changes the route and must not close them.
     const liveRunStores = new Set(['agentContexts', 'agentSelection', 'runHistory', 'chatDraft', 'workspace', 'agentRun', 'workspaceCenterView'])
     const patchStore = (store: any): void => {
+      // ios-demo-mode-279 (A-08): the font-size store exposes its state read only and keeps it itself (the phone's Text
+      // size, localStorage); a captured snapshot written over it only raised Vue's readonly warnings.
+      if (store.$id === 'appFontSize') return
       if (!collectionKinds.has(store.$id)) {
         collectionKinds.set(store.$id, new Map(Object.entries(store.$state)
           .filter(([, value]) => value instanceof Map || value instanceof Set)
@@ -1065,9 +1079,14 @@ export default defineNuxtPlugin({
         }, 150)
       }
       close(): void {
-        this.readyState = PrototypeWebSocket.CLOSED
-        const event = new CloseEvent('close', { code: 1000, reason: 'prototype' })
-        this.onclose?.(event); this.dispatchEvent(event)
+        // A socket reports its close on a later turn, as a browser's does (ios-demo-mode-279 A-08: noVNC starts its
+        // disconnect timer after close() returns, so a close reported inside close() left "Disconnection timed out.").
+        this.readyState = PrototypeWebSocket.CLOSING
+        setTimeout(() => {
+          this.readyState = PrototypeWebSocket.CLOSED
+          const event = new CloseEvent('close', { code: 1000, reason: 'prototype' })
+          this.onclose?.(event); this.dispatchEvent(event)
+        }, 0)
       }
     }
     window.WebSocket = PrototypeWebSocket as unknown as typeof WebSocket

@@ -2,6 +2,8 @@ import { useMobileNavigation } from '~/composables/mobile/useMobileNavigation'
 import { backgroundTasksRunningOfRun, conversationOf, teamOfMember } from '~/prototype/mobile-runs/mobileRunsFixture'
 import { hasBeenStopped } from '~/prototype/mobile-runs/runSettingsFixture'
 import { useAgentContextsStore } from '~/stores/agentContextsStore'
+import { useAgentTeamContextsStore } from '~/stores/agentTeamContextsStore'
+import { useAgentTeamRunStore } from '~/stores/agentTeamRunStore'
 import { useActiveContextStore } from '~/stores/activeContextStore'
 import { isIosDemo } from '~/prototype/ios-demo/iosDemo'
 import { useMobileRunOpeningStore } from '~/stores/mobileRunOpeningStore'
@@ -30,8 +32,13 @@ export function useMobileRunOpening(_disclosure?: unknown) {
       await new Promise((resolve) => window.setTimeout(resolve, 250))
       // A member of a Team opens in its Team's context; any other agent run as itself.
       const team = teamOfMember(target.id)
+      // A Team that is already open focuses the member, as the product's shared open does (selectTreeRunFromHistory);
+      // only a Team that is not open yet is opened (ios-demo-mode-279 A-01: mounting it twice failed).
+      const mounted = team ? useAgentTeamContextsStore().getTeamContextById(team.id) : null
       const result = team
-        ? await runHistory.openTeamMemberRun(team.id, target.id, { selectionMode: 'mobile' })
+        ? (mounted && !useAgentTeamRunStore().isTeamStreamReopenRequired(team.id)
+            ? await runHistory.inspectTeamMember(team.id, target.id, { selectionMode: 'mobile' })
+            : await runHistory.openTeamMemberRun(team.id, target.id, { selectionMode: 'mobile' }))
         : await runHistory.openRun(target.id, { selectionMode: 'mobile' })
       if (result.disposition !== 'committed') { opening.fail(key); return }
       // The run's own answer: the rich run's conversation holds every message and segment type (invented).
@@ -47,6 +54,8 @@ export function useMobileRunOpening(_disclosure?: unknown) {
       if (isIosDemo()) {
         const shown = useActiveContextStore().activeWorkspaceTarget?.context
         if (shown) (shown.state as { currentStatus: string }).currentStatus = world.byId(target.id)?.status ?? target.status
+        // A-05: the run's title is its row's agent (the sample world names each agent; the fixture has few definitions).
+        if (shown && target.kind === 'agent') (shown.config as { agentDefinitionName?: string }).agentDefinitionName = target.name
       }
       opening.commit(key)
     } catch (error) {

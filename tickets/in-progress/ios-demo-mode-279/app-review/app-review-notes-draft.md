@@ -1,4 +1,4 @@
-# App Review Information — notes draft (autobyteus-279, round 3)
+# App Review Information — notes draft (autobyteus-279, round 4)
 
 Status: **draft for the founder's approval**. Nothing goes to App Store Connect, TestFlight or the App Review thread without his explicit word. Round 2 takes in the Solution Designer's verification (`verdict.md`, answer (c)).
 
@@ -24,6 +24,8 @@ Status: **draft for the founder's approval**. Nothing goes to App Store Connect,
 > - Leave the demo: tap **Demo** at the top left, then **Leave demo**.
 >
 > On iPad in landscape, the run list and the open run show side by side.
+
+**Condition on "It works offline … nothing is sent anywhere" (A-04):** keep this sentence only if the build under review passes engineering's offline check: every icon and asset bundled, and no network request while the demo is open, with the device in airplane mode. Otherwise send the notes without it.
 
 Attachment: `autobyteus-demo-qr-card.png` (the demo QR code with a caption). The plain code is `autobyteus-demo-qr.png`; it holds `autobyteus://demo`.
 

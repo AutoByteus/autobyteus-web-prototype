@@ -9,7 +9,7 @@
  * (`withMobileRuns`, answered like every other stored run), and the peers the paired node knows.
  */
 import { exposedFixtures } from '~/prototype/source-observation/fixtures.mjs'
-import { DEMO_FILES, demoActivities, demoBackgroundTasks, demoConversation, demoMemberActivities, demoMemberEntries, demoParticipantMessages, demoSearch, isIosDemo } from '~/prototype/ios-demo/iosDemo'
+import { DEMO_FILES, demoNode, demoAgentActivities, demoAgentEntries, demoActivities, demoBackgroundTasks, demoConversation, demoMemberActivities, demoMemberEntries, demoParticipantMessages, demoSearch, isIosDemo } from '~/prototype/ios-demo/iosDemo'
 import {
   MOBILE_RUNS, PEERS, UNREACHABLE_NODES, RICH_RUN_ID, flattenRuns, worldNode, isWorldRunId,
   projectionEntriesFor, richConversation, teamResumeConfigFor, teamOfMember, activitiesFor, backgroundTasksFor, backgroundTasksRunningOf, participantMessagesFor, referenceText, searchFilePaths, fileChangesFor, WORKSPACE_FILES,
@@ -51,17 +51,26 @@ const demoScrub = (data: any): any => JSON.parse(JSON.stringify(data)
 
 /** Answers an opened run like a stored run; other operations pass through unchanged. */
 export const withMobileRuns = (name: string, variables: Record<string, any>, data: any): any => {
+  // ios-demo-mode-279 (A-02): in the demo only the showcase run has artifacts (finished files); every other run, a new
+  // one too, has none yet (the product's empty state), never the reference's placeholder file.
+  if (isIosDemo() && name === 'GetRunFileChanges' && String(variables.runId ?? '') !== RICH_RUN_ID) return { ...(data ?? {}), getRunFileChanges: [] }
   const answer = answerMobileRuns(name, variables, data)
   return isIosDemo() && answer ? demoScrub(answer) : answer
 }
 const answerMobileRuns = (name: string, variables: Record<string, any>, data: any): any => {
   if (name === 'SearchFiles') return { ...(data ?? {}), searchFiles: isIosDemo() ? demoSearch(variables.query) : searchFilePaths(variables.query) }
-  const node = worldNode(variables.runId ?? variables.agentRunId ?? variables.teamRunId)
+  const id = variables.runId ?? variables.agentRunId ?? variables.teamRunId
+  // ios-demo-mode-279: the demo answers with its own names and titles.
+  const node = (isIosDemo() ? demoNode(id) : null) ?? worldNode(id)
   if (!node) return data
   data = data ?? {}
   const at = Date.now() - node.minutes * 60_000
   if (name === 'GetRunProjection' && data.getRunProjection) {
-    data.getRunProjection = { ...data.getRunProjection, runId: node.id, summary: node.summary, lastActivityAt: new Date(at).toISOString(), conversation: projectionEntriesFor(node, at), activities: isIosDemo() ? demoActivities(activitiesFor(node, at)) : activitiesFor(node, at) }
+    // ios-demo-mode-279 (A-06): each of the demo's agents shows one piece of its own work, and its Activity.
+    const ownWork = isIosDemo() ? demoAgentEntries(node, at) : null
+    data.getRunProjection = { ...data.getRunProjection, runId: node.id, summary: node.summary, lastActivityAt: new Date(at).toISOString(),
+      conversation: ownWork ?? projectionEntriesFor(node, at),
+      activities: isIosDemo() ? (demoAgentActivities(node, at) ?? demoActivities(activitiesFor(node, at))) : activitiesFor(node, at) }
   }
   if (name === 'GetAgentRunResumeConfig' && data.getAgentRunResumeConfig) {
     data.getAgentRunResumeConfig = {
@@ -81,11 +90,11 @@ const answerMobileRuns = (name: string, variables: Record<string, any>, data: an
     config.executionTree.root_team.task_executions = []
     data.getTeamRunResumeConfig = config
   }
-  if (name === 'GetTeamMemberRunProjection' && node.kind === 'member') {
+  if (name === 'GetTeamMemberRunProjection' && (node.kind === 'member' || (isIosDemo() && node.kind === 'agent'))) {
     // ios-demo-mode-279: in the demo a member's conversation and Activity are about its Team's or Org's own work.
     const team = isIosDemo() ? teamOfMember(node.id) : null
     const conversation = isIosDemo() ? demoMemberEntries(node, team, at) : projectionEntriesFor(node, at)
-    const activities = isIosDemo() ? (demoMemberActivities(node, at) ?? activitiesFor(node, at)) : activitiesFor(node, at)
+    const activities = isIosDemo() ? (demoMemberActivities(node, at, team) ?? activitiesFor(node, at)) : activitiesFor(node, at)
     data.getTeamMemberRunProjection = { ...(data.getTeamMemberRunProjection ?? {}), agentRunId: node.id, summary: node.name, lastActivityAt: new Date(at).toISOString(), conversation, activities, hasEarlierActiveTraceEvents: false }
   }
   if (name === 'AgentBackgroundTaskView') {
@@ -113,7 +122,8 @@ export const activitiesOf = (runId: string): Array<Record<string, any>> => {
 export const participantMessagesOf = (runId: string): { messages: Array<Record<string, any>>; pastParticipants: Array<Record<string, any>> } => {
   const node = worldNode(runId)
   // ios-demo-mode-279: an Org member's Messages are about the Org's launch work.
-  const demo = node && isIosDemo() ? demoParticipantMessages(node, teamOfMember(node.id)?.children ?? [], Date.now() - node.minutes * 60_000) : null
+  const team = node && isIosDemo() ? teamOfMember(node.id) : null
+  const demo = node && isIosDemo() ? demoParticipantMessages(node, (team?.children ?? []).filter((child: any) => child.kind === 'member'), Date.now() - node.minutes * 60_000, team) : null
   if (demo) return demo
   return node ? participantMessagesFor(node, Date.now() - node.minutes * 60_000) : { messages: [], pastParticipants: [] }
 }

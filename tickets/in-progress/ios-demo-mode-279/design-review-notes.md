@@ -65,3 +65,20 @@ Answer (d): the reply to Apple is now drafted to go with the resubmission, quoti
 | — | (found in the recheck) a listed run's background-task state appeared only after the run had been opened (the shipped product reads it from the live run) | DC-006 extended: the demo's data is on the device, so a row shows "Background task running" from the start (one status per run). |
 
 All demo journeys were checked again on the merged branch, at 440×956 and 1180×820.
+
+## Round 4 — the Solution Designer's strict App Reviewer sweep (2026-11-18)
+
+| ID | Finding | Resolution |
+| --- | --- | --- |
+| A-01 | A member of an already-opened Team or Org did not open ("Team context … is already mounted") | The phone's open sequence (reference stand-in) focuses the member of a Team that is already open, as the product's shared open does (`selectTreeRunFromHistory` → `inspectTeamMember`); only a Team not open yet is opened. |
+| A-02 | Artifacts › README.md "Content not available yet … the server captures …" | In the demo only the showcase run has artifacts (finished files); every other run, new ones too, shows the product's empty state. |
+| A-03 | Attaching a file: "Couldn't attach sample.txt." | The node's context-file limits are answered (synthetic); the file attaches locally, and the agent's sample reply names it ("I read sample.txt."). |
+| A-04 | Icons fetched from api.iconify.design | The reference registers the whole local Heroicons set: the sweep sees no external request. For the build: an engineering acceptance criterion (every icon and asset bundled, no request in airplane mode). The notes keep "works offline" only on that condition (noted in the draft). |
+| A-05 | Three rows open a run titled "Research Assistant" | A demo run's title is its row's agent. |
+| A-06 | Team (and agent) Activity "No activity yet" | Every Team role (Software Engineering, Marketing, Support, Code Searcher) and every top-level agent has one piece of its own work with a tool call; its Activity lists those calls. Messages exist for every member, not only the Org's. |
+| A-07 | "Show older" repeats names | The older runs are distinct agents: Personal Assistant, Writing Coach, Travel Planner, Contract Reader, Refactoring Assistant, Weekly Planner, Billing Team, Documentation Team. The two Software Engineering Team copies under Project Task Manager stay (they show delegated copies). |
+| A-08 | Console: "Disconnection timed out.", Vue readonly warnings | Both were reference artifacts and are fixed there: the local socket reports its close on a later turn, as a browser's does; the font-size store is no longer overwritten by captured snapshots. The build's no-console-error check stays an engineering criterion. |
+| A-09 | Artifacts viewer's edit pencil | DC-011 (phone): Artifacts are read only on the phone, so the viewer offers no Edit Mode / Preview switch there (the desktop keeps it). |
+| — | Sample wording | The showcase and its files say "imports name the row to fix" instead of "import errors / a failed import" (same meaning, no alarm words). |
+
+Re-sweep with the Solution Designer's `crawl.mjs` (all 40 rows, every ⋮ entry, every file, attach): iPhone 440×956 and iPad 1180×820, **0 findings, 0 browser errors, no external request**. Attach-and-send, VNC Control, Stop, member reply, scan and Leave demo rechecked; `/mobile` and `/android` outside the demo unchanged.
