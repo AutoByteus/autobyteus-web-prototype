@@ -1,6 +1,6 @@
 # Product Ticket: ios-demo-mode-279 (autobyteus-279)
 
-- Status: `Awaiting User Review` (the specification and final screenshots are sent for the founder's approval of the screens, 2026-11-19)
+- Status: `Completed` (the founder approved the screens, 2026-11-19; integration: see the Integration record below)
 - Mode: Product Experience Design. It evolves the accepted `/mobile` phone shell and the approved scan-first native start screen (`/android`, one-step-phone-pairing). The iOS app's native first screen is a design-only route (`/ios`), like `/android`.
 - Requested by: Solution Designer run `solution_designer_529aaf7328ab4ca5a0ba571f7910cbb3` (software engineering team), on the founder's word ("dedicated task to the product team"), 2026-11-18
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/ios-demo-mode-279/tickets/in-progress/ios-demo-mode-279/product-design-request.md`; Apple's message: `…/evidence/apple-review/app-store-connect-review-message.jpg`
@@ -72,3 +72,8 @@ D1 iOS first screen = the Android scan-first screen; D2 built in (offline); D3 i
 - Built: the share extension screen (`/ios-share`) and the first screen's handling of kept text; the notes mention Share to AutoByteus and the web view's plain-HTTP reason.
 - `ui-ux-spec.md` written (status `Ready for User Review`), final references `visual-references/VIS-001…VIS-037` (iPhone 440×956, iPad 820×1180 and 1180×820). The round 1 interim screenshots were removed (superseded).
 - Next: the founder's approval of the screens; the Solution Designer's last sweep; then `Completed`, integration into `personal`, and the handoff.
+
+## Approval (2026-11-19)
+
+- The founder, relayed verbatim by the Solution Designer: "I trust you I trusted you okay you you know our product you know apple you are you have good standards so if you think it's good then I think the design is finished the right if you think it passed your verification then we're ready then I think you're ready to continue with your work".
+- The Solution Designer's round 7 sweep on `78b51f73` passed, including the share paths (verdict.md, Round 7). `ui-ux-spec.md` marked `Approved`.

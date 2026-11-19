@@ -14,8 +14,8 @@ corepack pnpm dev --port 3279
 - Share to AutoByteus (D6): `/ios-share?text=<shared text>` is the iOS share extension's screen (`?text=` stands in for the other app). Done goes to `/ios`, which acts on the kept text as Android does: a pairing link (`…?pairing=…`) connects, `autobyteus://demo` opens the demo, other text opens Type an address pre-filled. The kept text is in `localStorage` `autobyteus.prototype.iosPendingShare`, used once.
 - iPad landscape (1024 px and wider): the run list is a 380 px pane on the left and what it opens fills the right (`components/mobile/MobilePairedShell.vue`); sheets are centered 512 px cards from 768 px.
 - Starting states: `localStorage.setItem('autobyteus.prototype.iosStart', 'ios_several')` (two saved nodes; the next scan finds a node, not the demo code); remove the key for the default first launch. Demo state is in `sessionStorage` (`autobyteus.prototype.iosDemo`, `autobyteus.prototype.inIosApp`, `autobyteus.prototype.iosDemoWelcomeClosed`).
-- The demo QR code for the review notes: `tickets/<status>/ios-demo-mode-279/app-review/`.
-- Spec: `tickets/<status>/ios-demo-mode-279/ui-ux-spec.md`; final references `visual-references/VIS-001…037`.
+- The demo QR code for the review notes: `tickets/done/ios-demo-mode-279/app-review/`.
+- Spec: `tickets/done/ios-demo-mode-279/ui-ux-spec.md`; final references `visual-references/VIS-001…037`.
 
 ## phone-baseline-refresh-279 (the phone, `/mobile`; reflects `origin/personal@f7b4d68711`, release 1.5.13)
 

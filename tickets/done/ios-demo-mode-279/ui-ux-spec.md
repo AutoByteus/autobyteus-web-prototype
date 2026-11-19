@@ -2,7 +2,7 @@
 
 ## Status And User Confirmation
 
-- Status: `Ready for User Review`. The decisions are confirmed; the founder's approval of these screens is pending. On his word the status becomes `Approved` and the ticket is integrated.
+- Status: `Approved` (the founder, 2026-11-19; integrated into the design repository's `personal`).
 - Request / ticket: Project Task `autobyteus-279`; Product ticket `ios-demo-mode-279`. Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/ios-demo-mode-279/tickets/in-progress/ios-demo-mode-279/product-design-request.md`. Apple's message: `…/evidence/apple-review/app-store-connect-review-message.jpg`.
 - Related requirements revision ID: none yet. The Solution Designer writes the requirements after this design (founder's routing: Product designs, the founder approves, engineering builds).
 - Related decision IDs: D1–D6 (below). Verification findings V-01…V-08, R2-02, A-01…A-09, R5-01, R5-02: all resolved (`design-review-notes.md`).
@@ -11,7 +11,7 @@
 - Explicit user-confirmation reference:
   - **Decisions:** the founder, 2026-11-19, relayed verbatim by the Solution Designer: "You were decides yeah but in general I don't see we should have any difference … a demo is a should be very much similar to how your real application works right or 100% like how your real application works … of course you don't want to how to Android works it's more less harder iOS works in that right?" Under that rule, the Solution Designer decided D1–D5 as proposed and changed D6 (the share extension stays and works as on Android).
   - **Apple criteria:** the Solution Designer verified the demo at the founder's request ("perform the verification like you are the person who is doing [it] from Apple"). Round 6 verdict: "the design can pass App Review as designed" (`…/evidence/demo-verification/verdict.md`).
-  - **Screens:** *pending the founder's approval of this specification.*
+  - **Screens:** approved by the founder, 2026-11-19, relayed verbatim by the Solution Designer: "I trust you I trusted you okay you you know our product you know apple you are you have good standards so if you think it's good then I think the design is finished the right if you think it passed your verification then we're ready then I think you're ready to continue with your work". The Solution Designer's round 7 sweep on `78b51f73` passed, share paths included (verdict.md, Round 7).
 - Final check date: 2026-11-19.
 
 ## Repository And Baseline Provenance
@@ -22,8 +22,8 @@
   - the native start screen, the iOS first screen and the iOS share extension. These are design-only routes (`/ios`, `/ios-share`), drawn from the approved Android start screen (`/android`, one-step-phone-pairing). The iOS app has no web source.
 - Pinned source revision: phone baseline `phone-baseline-refresh-279` (`f7b4d68711`), accepted and integrated 2026-11-18. Desktop surfaces keep their earlier pins.
 - Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design`. Ticket branch `design/ios-demo-mode-279`, worktree `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/ios-demo-mode-279`. Accepted base `0d2d0b9a` (merged in), first base `fc68a7a4`.
-- UI reference revision: recorded in `product-ticket.md` (the commit that adds this specification).
-- Ticket folder: `tickets/in-progress/ios-demo-mode-279/` (after integration: `tickets/done/ios-demo-mode-279/`).
+- UI reference revision: `78b51f73` (approved and verified); integrated into `personal` with the ticket's closing commits (`product-ticket.md`, Integration record).
+- Ticket folder: `tickets/done/ios-demo-mode-279/` (while open: `tickets/in-progress/ios-demo-mode-279/`).
 - Baseline report: `ui-baseline-report.md`, first section `phone-baseline-refresh-279`.
 
 ## Problem And Design Rationale
@@ -420,13 +420,13 @@ App Review attachments: `app-review/autobyteus-demo-qr-card.png`, `app-review/au
 
 ## Open Decisions And Risks
 
-- The founder's approval of these screens (pending).
+- None for the design: the screens are approved.
 - Apple's guideline 2.1(a) says a demo mode needs "prior approval". The drafted reply goes with the resubmission (Solution Designer's advice, the founder's word needed).
 - "It works offline … nothing is sent anywhere" stays in the notes only if engineering condition 1 passes.
 
 ## Final Consistency Check
 
-- User confirmation is recorded: `No` — decisions recorded (the founder via the Solution Designer); the founder's approval of the screens pending.
+- User confirmation is recorded: `Yes` (decisions and screens, the founder via the Solution Designer, 2026-11-19)
 - Design repository/root, source pin, and UI reference revision are recorded: `Yes`
 - Ticket record, ticket folder, and linked artifacts agree: `Yes`
 - Every in-scope journey is specified: `Yes`
