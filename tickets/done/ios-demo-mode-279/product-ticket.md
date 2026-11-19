@@ -77,3 +77,9 @@ D1 iOS first screen = the Android scan-first screen; D2 built in (offline); D3 i
 
 - The founder, relayed verbatim by the Solution Designer: "I trust you I trusted you okay you you know our product you know apple you are you have good standards so if you think it's good then I think the design is finished the right if you think it passed your verification then we're ready then I think you're ready to continue with your work".
 - The Solution Designer's round 7 sweep on `78b51f73` passed, including the share paths (verdict.md, Round 7). `ui-ux-spec.md` marked `Approved`.
+
+## Integration record
+
+- Integration: `Completed`. `design/ios-demo-mode-279` pushed to `origin/personal` as a fast-forward from `0d2d0b9a` to `32ab50d2` (approval and ticket closing); the canonical checkout fast-forwarded to the same revision. The approved and verified UI reference is `78b51f73` (no change to the UI after it).
+- Default-entry check: the canonical checkout on `personal`, run on port 3280: `/ios` → Try demo → the demo run list ("Demo", the welcome card) → Daily Assistant → a sent message gets the sample reply. Passed.
+- Cleanup: the ticket's dev server (3279) and the check server (3280) stopped; the Tailscale Serve entry on 8444 turned off (the entries on 443 and 8443 are as before and answer as before); the worktree is removed and the branch deleted after this record.
