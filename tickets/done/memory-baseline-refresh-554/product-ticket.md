@@ -31,7 +31,9 @@
 
 ## Integration record
 
-- Integration: see the commit after this record.
+- Integration: `Completed`. `design/memory-baseline-refresh-554` (`398cb2e4`) pushed to `origin/personal` as a fast-forward from `5d46595a`; the canonical checkout fast-forwarded to the same revision. `/memory` opens from the default branch's normal entry.
+- Next: `personal` merged into `design/semantic-memory-view-554`.
+- Cleanup: the Bootstrapper's dev server (port 4555) stopped; worktree removed and branch deleted after this record.
 
 ## Outcome And Handoff (initial request)
 
