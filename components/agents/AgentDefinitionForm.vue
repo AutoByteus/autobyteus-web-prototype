@@ -114,8 +114,6 @@
         />
       </div>
 
-      <AgentSemanticMemoryField v-model="semanticMemoryEnabled" :personal-base="personalBase" :personal="isPersonal('SEMANTIC_MEMORY')"
-        :busy="resetting !== null" @reset-personal="resetPersonal('SEMANTIC_MEMORY')" />
     </fieldset>
 
 
@@ -252,7 +250,6 @@ import { usePersonalSettingReset } from '~/composables/usePersonalSettingReset';
 import { useAgentDefinitionStore } from '~/stores/agentDefinitionStore';
 import type { PersonalSetting } from '~/types/personalSettings';
 import GroupableTagInput from '~/components/agents/GroupableTagInput.vue';
-import AgentSemanticMemoryField from '~/components/agents/AgentSemanticMemoryField.vue';
 import type { GroupedSource, FlatSource } from '~/components/agents/GroupableTagInput.vue';
 import {
   normalizeDefaultLaunchConfig,

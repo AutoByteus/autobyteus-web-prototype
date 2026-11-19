@@ -40,17 +40,13 @@ const WORLD = Object.freeze({
     },
     // An agent from a package with nothing personal: only the note under the title.
     'agent-writer': { base: 'PACKAGE', personal: [], values: {} },
-    // A built-in agent with three personal settings (memory-baseline-refresh-554: semantic memory turned on here, off as built in).
+    // A built-in agent with two personal settings (semantic-memory-view-554: semantic memory is no longer a setting).
     'autobyteus-daily-assistant': {
       base: 'BUILT_IN',
-      personal: ['TOOLS', 'AVATAR', 'SEMANTIC_MEMORY'],
+      personal: ['TOOLS', 'AVATAR'],
       values: {
         TOOLS: { personal: { toolNames: ['run_bash', 'read_url'] }, base: { toolNames: ['run_bash', 'read_url', 'search_web'] } },
         AVATAR: { personal: { avatarUrl: personalAvatar('D') }, base: { avatarUrl: null } },
-        SEMANTIC_MEMORY: {
-          personal: { semanticMemoryEnabled: true, semanticMemoryPath: semanticMemoryPathOf('autobyteus-daily-assistant') },
-          base: { semanticMemoryEnabled: false, semanticMemoryPath: null },
-        },
       },
     },
   },
@@ -114,8 +110,10 @@ const personalNow = (entry, state, kind, id) => entry.personal.filter(setting =>
  */
 export const withPersonalSettings = (kind, definition, state) => {
   const entry = WORLD[kind]?.[definition.id]
-  if (!entry) return { ...definition, personalSettings: [], personalSettingsBase: null }
-  const merged = { ...definition }
+  // semantic-memory-view-554 (design, REQ-004): every agent has its semantic memory folder; the node reports its path.
+  const semantic = kind === 'agent' ? { semanticMemoryPath: semanticMemoryPathOf(definition.id) } : {}
+  if (!entry) return { ...definition, ...semantic, personalSettings: [], personalSettingsBase: null }
+  const merged = { ...definition, ...semantic }
   for (const [setting, values] of Object.entries(entry.values)) {
     Object.assign(merged, personalNow(entry, state, kind, definition.id).includes(setting) ? values.personal : values.base)
   }

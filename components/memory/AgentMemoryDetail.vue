@@ -7,9 +7,22 @@
         <h1 class="text-xl font-semibold text-gray-900">{{ agentName }}</h1>
         <span v-if="store.selectedSource.readOnly" class="rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">{{ $t('memory.components.memory.common.importedReadOnly') }}</span>
       </div>
-      <div class="relative w-full sm:w-80">
-        <Icon icon="heroicons:magnifying-glass-20-solid" class="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" aria-hidden="true" />
-        <input v-model="searchInput" type="text" :placeholder="$t('memory.components.memory.AgentMemoryDetail.search_runs')" :aria-label="$t('memory.browse.filter_label')" class="w-full rounded-lg border border-gray-200 bg-white py-2.5 pl-10 pr-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100" @keyup.enter="applySearch" />
+      <div class="flex w-full flex-wrap items-center gap-3 sm:w-auto">
+        <!-- semantic-memory-view-554 (design): the agent's semantic memory folder, read only. -->
+        <button
+          v-if="selector.attribution === 'DEFINITION' && selector.agentDefinitionId"
+          type="button"
+          class="inline-flex items-center gap-2 whitespace-nowrap rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-medium text-gray-700 transition hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          data-test="agent-semantic-memory-open"
+          @click="$emit('openSemantic')"
+        >
+          <Icon icon="heroicons:light-bulb" class="h-4 w-4 text-gray-500" aria-hidden="true" />
+          {{ $t('memory.semantic.open') }}
+        </button>
+        <div class="relative w-full sm:w-80">
+          <Icon icon="heroicons:magnifying-glass-20-solid" class="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" aria-hidden="true" />
+          <input v-model="searchInput" type="text" :placeholder="$t('memory.components.memory.AgentMemoryDetail.search_runs')" :aria-label="$t('memory.browse.filter_label')" class="w-full rounded-lg border border-gray-200 bg-white py-2.5 pl-10 pr-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100" @keyup.enter="applySearch" />
+        </div>
       </div>
     </div>
 
@@ -48,7 +61,7 @@ import MemoryBadges from './MemoryBadges.vue';
 const { resolvedLocale } = useLocalization();
 
 const props = defineProps<{ selector: AgentWithMemorySelector }>();
-defineEmits<{ back: []; inspectRun: [run: AgentRunMemorySummary] }>();
+defineEmits<{ back: []; inspectRun: [run: AgentRunMemorySummary]; openSemantic: [] }>();
 
 const store = useMemoryExplorerStore();
 const searchInput = ref(store.agentRuns.search);

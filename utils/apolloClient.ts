@@ -21,6 +21,7 @@ import { designOnlyLayersEnabled, reconnectLayerEnabled } from '~/prototype/shar
 // memory-baseline-refresh-554 (origin/personal@8430d9ef12): the Memory page's synthetic world, its lists and the memory node
 // beneath the source's memory search, index and Work Journal stores.
 import { isMemoryOperation, memoryOperation, withMemoryWorld } from '~/prototype/memory-search/memoryDesignFixture'
+import { isSemanticMemoryOperation, semanticMemoryOperation } from '~/prototype/memory-semantic/semanticMemoryFixture'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { withModelRouting } from '~/prototype/model-routing/modelRoutingFixture'
 import { withMobileRuns } from '~/prototype/mobile-runs/mobileRunsFixture'
@@ -98,6 +99,12 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   // memory-baseline-refresh-554: the memory node answers the memory search, index and Work Journal reads in the server's shapes.
   // It answers after a node-like delay (several rendering frames), so the source's "Loading the Work Journal…" view is laid
   // out before the lines arrive, and the page returns to its top when a result low in a long list opens, as in the source.
+  // semantic-memory-view-554 (design): the node's semantic memory folders and their files (the designed reads).
+  if (isSemanticMemoryOperation(name)) {
+    await new Promise<void>(done => setTimeout(done, 150))
+    const showInternal = (fixtureState().serverSettings ?? []).some((setting: any) => setting.key === 'AUTOBYTEUS_SHOW_INTERNAL_AGENTS' && String(setting.value).trim().toLowerCase() === 'true')
+    return semanticMemoryOperation(name, request.variables || {}, scenario, showInternal)
+  }
   if (isMemoryOperation(name)) {
     await new Promise<void>(done => setTimeout(done, 120))
     return memoryOperation(name, request.variables || {}, scenario)

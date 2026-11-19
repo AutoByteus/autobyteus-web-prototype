@@ -53,7 +53,7 @@
             </select>
             <span v-if="store.selectedSource.readOnly" class="rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">{{ $t('memory.components.memory.common.importedReadOnly') }}</span>
           </div>
-          <div class="relative w-full sm:w-80">
+          <div v-if="!(store.homeTab === 'semantic' && (store.isImportedSource || semanticEmptyNode))" class="relative w-full sm:w-80">
             <Icon icon="heroicons:magnifying-glass-20-solid" class="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" aria-hidden="true" />
             <input v-model="searchInput" type="text" :placeholder="$t(tabText[store.homeTab].search)" :aria-label="$t('memory.browse.filter_label')" class="w-full rounded-lg border border-gray-200 bg-white py-2.5 pl-10 pr-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100" data-test="memory-browse-filter" @keyup.enter="applySearch" />
           </div>
@@ -61,7 +61,16 @@
       </div>
       <p v-if="store.sourceError" class="text-xs text-red-600">{{ store.sourceError }}</p>
 
-      <div v-if="activeState.loading && activeState.entries.length === 0" class="py-16 text-center text-sm text-gray-500">{{ $t('memory.components.memory.MemoryHome.loading_memory_catalog') }}</div>
+      <!-- semantic-memory-view-554 (design): an imported source has no semantic memory (REQ-008). -->
+      <div v-if="store.homeTab === 'semantic' && store.isImportedSource" class="py-12 text-center" data-test="semantic-memory-not-synced">
+        <h2 class="text-sm font-medium text-gray-700">{{ $t('memory.semantic.not_synced_title') }}</h2>
+        <p class="mx-auto mt-1 max-w-lg text-sm text-gray-500">{{ $t('memory.semantic.not_synced_body') }}</p>
+      </div>
+      <div v-else-if="store.homeTab === 'semantic' && semanticEmptyNode" class="py-12 text-center" data-test="semantic-memory-none">
+        <h2 class="text-sm font-medium text-gray-700">{{ $t('memory.semantic.none_yet') }}</h2>
+        <p class="mx-auto mt-1 max-w-lg text-sm text-gray-500">{{ $t('memory.semantic.none_yet_detail') }}</p>
+      </div>
+      <div v-else-if="activeState.loading && activeState.entries.length === 0" class="py-16 text-center text-sm text-gray-500">{{ store.homeTab === 'semantic' ? $t('memory.semantic.loading') : $t('memory.components.memory.MemoryHome.loading_memory_catalog') }}</div>
       <div v-else-if="activeState.error" class="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
         {{ activeState.error }}
         <button class="ml-2 font-semibold underline" @click="retry">Retry</button>
@@ -94,6 +103,19 @@
             </div>
             <p class="mt-3 text-xs text-gray-500">{{ team.memberMemoryCount }} {{ $t('memory.components.memory.MemoryHome.members') }}<span v-if="team.latestMemoryAt"> · {{ formatTimestamp(team.latestMemoryAt) }}</span></p>
             <MemoryBadges class="mt-3" :memory="team.memory" />
+          </button>
+        </template>
+
+        <template v-else-if="store.homeTab === 'semantic'">
+          <button v-for="folder in semantic.visibleFolders" :key="folder.agentDefinitionId" :class="cardClass" data-test="semantic-memory-card" @click="$emit('selectSemantic', folder)">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <h2 class="break-words text-base font-semibold text-gray-900">{{ folder.agentName }}</h2>
+                <p class="mt-1 break-all font-mono text-xs text-gray-500">{{ folder.agentDefinitionId }}</p>
+              </div>
+              <span :class="countClass">{{ fileCountLabel(folder.fileCount) }}</span>
+            </div>
+            <p v-if="folder.latestChangeAt" class="mt-3 text-xs text-gray-500">{{ formatTimestamp(folder.latestChangeAt) }}</p>
           </button>
         </template>
 
@@ -136,6 +158,8 @@ import MemorySearchResults from './MemorySearchResults.vue';
 import MemoryIndexPanel from './MemoryIndexPanel.vue';
 import { useMemoryIndexView } from '~/composables/useMemoryIndexView';
 import { useLocalization } from '~/composables/useLocalization';
+import { useSemanticMemoryStore } from '~/stores/semanticMemoryStore';
+import type { SemanticMemoryFolder } from '~/types/semanticMemory';
 
 defineProps<{ section: MemorySection }>();
 const emit = defineEmits<{
@@ -148,6 +172,7 @@ const emit = defineEmits<{
   selectAgent: [agent: AgentWithMemorySummary];
   selectTeam: [team: AgentTeamWithMemorySummary];
   selectOrg: [org: AgentOrgWithMemorySummary];
+  selectSemantic: [folder: SemanticMemoryFolder];
 }>();
 
 const { t, resolvedLocale } = useLocalization();
@@ -167,14 +192,30 @@ const tabText: Record<MemoryHomeTab, { search: string; empty: string }> = {
   agents: { search: 'memory.components.memory.MemoryHome.search_agents', empty: 'memory.components.memory.MemoryHome.no_agent_memories_yet' },
   teams: { search: 'memory.components.memory.MemoryHome.search_agent_teams', empty: 'memory.components.memory.MemoryHome.no_team_memories_yet' },
   orgs: { search: 'memory.components.memory.MemoryHome.search_agent_orgs', empty: 'memory.components.memory.MemoryHome.no_org_memories_yet' },
+  semantic: { search: 'memory.semantic.filter_placeholder', empty: 'memory.semantic.no_match' },
 };
 
+/** semantic-memory-view-554 (design): Browse → Semantic Memory, filtered on the page as you type. */
+const semantic = useSemanticMemoryStore();
+const semanticState = computed(() => ({
+  loading: semantic.folders.loading,
+  error: semantic.folders.error,
+  entries: semantic.visibleFolders,
+  search: semantic.folders.search,
+  page: 1,
+  totalPages: 1,
+}));
+/** The node has no semantic folder at all (not a filter that matches nothing). */
+const semanticEmptyNode = computed(() => semantic.folders.loaded && !semantic.folders.loading && !semantic.folders.error && semantic.folders.entries.length === 0);
+const fileCountLabel = (count: number) => (count === 0 ? t('memory.semantic.no_files') : count === 1 ? t('memory.semantic.file_count_one') : t('memory.semantic.file_count', { count }));
+
 const activeState = computed(() => {
+  if (store.homeTab === 'semantic') return semanticState.value;
   if (store.homeTab === 'agents') return store.agents;
   return store.homeTab === 'teams' ? store.teams : store.orgs;
 });
 
-watch(() => [store.homeTab, store.agents.search, store.teams.search, store.orgs.search], () => {
+watch(() => [store.homeTab, store.agents.search, store.teams.search, store.orgs.search, semantic.folders.search], () => {
   searchInput.value = activeState.value.search;
 }, { immediate: true });
 
@@ -182,6 +223,7 @@ const browseTabs: Array<{ id: MemoryHomeTab; label: string }> = [
   { id: 'agents', label: t('memory.components.memory.MemoryHome.agents') },
   { id: 'teams', label: t('memory.components.memory.MemoryHome.agent_teams') },
   { id: 'orgs', label: t('memory.components.memory.MemoryHome.agent_orgs') },
+  { id: 'semantic', label: t('memory.semantic.tab') },
 ];
 const cardClass = 'flex flex-col justify-start rounded-lg border border-gray-200 bg-white p-5 text-left transition hover:border-gray-300 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500';
 const countClass = 'flex-shrink-0 whitespace-nowrap rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600';
@@ -199,6 +241,7 @@ const selectTab = async (tab: MemoryHomeTab) => {
 
 const applySearch = async () => {
   const search = searchInput.value.trim();
+  if (store.homeTab === 'semantic') return semantic.setSearch(search);
   if (store.homeTab === 'agents') await store.setAgentsSearch(search);
   else if (store.homeTab === 'teams') await store.setTeamsSearch(search);
   else await store.setOrgsSearch(search);

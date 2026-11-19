@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { getApolloClient } from '~/utils/apolloClient';
+import { useSemanticMemoryStore } from '~/stores/semanticMemoryStore';
 import {
   LIST_AGENTS_WITH_MEMORY,
   LIST_AGENT_RUNS_WITH_MEMORY,
@@ -22,7 +23,8 @@ import type {
   MemoryExplorerSourceOption,
 } from '~/types/memory';
 
-export type MemoryHomeTab = 'agents' | 'teams' | 'orgs';
+/** semantic-memory-view-554 (design): `semantic` is Browse → Semantic Memory (the agents' semantic memory folders). */
+export type MemoryHomeTab = 'agents' | 'teams' | 'orgs' | 'semantic';
 
 type ListState<T> = MemoryExplorerPage<T> & {
   search: string;
@@ -351,7 +353,7 @@ export const useMemoryExplorerStore = defineStore('memoryExplorerStore', {
       } else if (tab === 'teams') {
         this.teams.page = Math.max(1, page);
         await this.fetchTeams();
-      } else {
+      } else if (tab === 'orgs') {
         this.orgs.page = Math.max(1, page);
         await this.fetchOrgs();
       }
@@ -360,6 +362,10 @@ export const useMemoryExplorerStore = defineStore('memoryExplorerStore', {
     async fetchHomeTab(tab: MemoryHomeTab) {
       if (tab === 'agents') await this.fetchAgents();
       else if (tab === 'teams') await this.fetchTeams();
+      else if (tab === 'semantic') {
+        // Semantic memory is this node's only: an imported source has none, so nothing is asked for (REQ-008).
+        if (!this.isImportedSource) await useSemanticMemoryStore().fetchFolders();
+      }
       else await this.fetchOrgs();
     },
 
