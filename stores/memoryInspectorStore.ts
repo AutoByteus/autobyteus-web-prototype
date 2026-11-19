@@ -82,6 +82,8 @@ export const useMemoryInspectorStore = defineStore('memoryInspectorStore', {
         this.selectedRawTraceFileName = null;
       }
       this.target = target;
+      // The Work Journal tab (the default) reads its own lines; the view is read when Raw Traces are shown.
+      if (!this.includeRawTraces) return this.memoryView;
       return await this.fetchMemoryView();
     },
 

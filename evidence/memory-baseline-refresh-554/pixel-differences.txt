@@ -1,0 +1,153 @@
+# Pixel differences per pair (left: baseline :4555, right: pinned source 8430d9ef12 :4556), page area right of the left panel, threshold 24/255, final run 2026-11-19
+a01-agent-runs diffpx 0 bbox None
+a02-agent-runs-unattributed diffpx 0 bbox None
+b01-agents diffpx 0 bbox None
+b02-teams diffpx 0 bbox None
+b03-orgs diffpx 0 bbox None
+b04-empty-agents diffpx 0 bbox None
+b04-empty-orgs diffpx 0 bbox None
+b04-empty-teams diffpx 0 bbox None
+b05-filter-none diffpx 1 bbox (768, 96, 769, 97)
+b05-filter diffpx 0 bbox None
+g01-detail-on diffpx 0 bbox None
+g02-detail-off diffpx 0 bbox None
+g03-edit-personal diffpx 0 bbox None
+g04-edit-off diffpx 0 bbox None
+g05-turn-on-save diffpx 0 bbox None
+g06-reset diffpx 0 bbox None
+g07-create diffpx 0 bbox None
+g08-zh-detail-on diffpx 0 bbox None
+g09-zh-detail-off diffpx 0 bbox None
+g10-zh-edit diffpx 0 bbox None
+i01-journal diffpx 0 bbox None
+i02-journal-file diffpx 0 bbox None
+i03-journal-goto diffpx 0 bbox None
+i04-journal-day diffpx 0 bbox None
+i05-journal-earlier diffpx 0 bbox None
+i06-raw-traces diffpx 0 bbox None
+i07-team-member diffpx 0 bbox None
+i08-org-member diffpx 0 bbox None
+j01-journal-not-built diffpx 0 bbox None
+j02-journal-not-built-link diffpx 0 bbox None
+j03-imported-run diffpx 0 bbox None
+j04-browse-not-indexed-badges diffpx 0 bbox None
+n01-journal-1024 diffpx 0 bbox None
+n02-search-1024 diffpx 0 bbox None
+o01-org-detail diffpx 0 bbox None
+s01-search-centered diffpx 0 bbox None
+s02-search-ddns-1 diffpx 0 bbox None
+s02-search-ddns-2 diffpx 0 bbox None
+s02-search-ddns diffpx 0 bbox None
+s03-search-bunny diffpx 0 bbox None
+s04-search-zh diffpx 0 bbox None
+s05-search-none-found diffpx 0 bbox None
+s06-search-some-not-found diffpx 0 bbox None
+s07-open-match diffpx 0 bbox None
+s08-sibling-match diffpx 0 bbox None
+s09-folder-run diffpx 0 bbox None
+s09b-release-notes-match diffpx 0 bbox None
+s10-team-member-match diffpx 0 bbox None
+s11-search-fails diffpx 0 bbox None
+s12-no-matches diffpx 0 bbox None
+s13-search-not-indexed diffpx 0 bbox None
+s14-search-model-changed diffpx 0 bbox None
+s15-search-meaning-running diffpx 59 bbox (48, 48, 294, 238)
+t01-team-detail diffpx 0 bbox None
+x01-index-ready diffpx 0 bbox None
+x02-index-not-indexed diffpx 0 bbox None
+x03-index-building diffpx 91 bbox (35, 46, 271, 112)
+x04-index-built diffpx 273 bbox (271, 130, 325, 142)
+x05-index-meaning-running diffpx 37 bbox (35, 51, 1063, 205)
+x06-index-failed-retry diffpx 197 bbox (33, 47, 528, 191)
+x06-index-failed diffpx 0 bbox None
+x07-index-model-changed diffpx 0 bbox None
+x07-index-rebuild-confirm diffpx 0 bbox None
+x07-index-rebuild-started diffpx 100 bbox (35, 46, 271, 113)
+x08-index-unavailable-retry diffpx 0 bbox None
+x08-index-unavailable diffpx 0 bbox None
+x09-index-start-fails diffpx 0 bbox None
+x10-index-reduced-motion diffpx 0 bbox None
+x11-search-tab-badge-building diffpx 27 bbox (257, 46, 271, 59)
+z01-browse diffpx 0 bbox None
+z02-search diffpx 0 bbox None
+z03-journal-match diffpx 0 bbox None
+z04-index diffpx 0 bbox None
+z05-journal-not-built diffpx 0 bbox None
+z06-team-detail diffpx 0 bbox None
+z07-search-none diffpx 0 bbox None
+
+# UI text (digits masked), element signature and route per state
+b01-agents: text SAME, sig SAME, url SAME
+b02-teams: text SAME, sig SAME, url SAME
+b03-orgs: text SAME, sig SAME, url SAME
+b04-empty-agents: text SAME, sig SAME, url SAME
+b04-empty-teams: text SAME, sig SAME, url SAME
+b04-empty-orgs: text SAME, sig SAME, url SAME
+b05-filter: text SAME, sig SAME, url SAME
+b05-filter-none: text SAME, sig SAME, url SAME
+a01-agent-runs: text SAME, sig SAME, url SAME
+a02-agent-runs-unattributed: text SAME, sig SAME, url SAME
+t01-team-detail: text SAME, sig SAME, url SAME
+o01-org-detail: text SAME, sig SAME, url SAME
+i01-journal: text SAME, sig SAME, url SAME
+i02-journal-file: text SAME, sig SAME, url SAME
+i03-journal-goto: text SAME, sig SAME, url SAME
+i04-journal-day: text SAME, sig SAME, url SAME
+i05-journal-earlier: text SAME, sig SAME, url SAME
+i06-raw-traces: text SAME, sig SAME, url SAME
+i07-team-member: text SAME, sig SAME, url SAME
+i08-org-member: text SAME, sig SAME, url SAME
+s01-search-centered: text SAME, sig SAME, url SAME
+s02-search-ddns: text SAME, sig SAME, url SAME
+s03-search-bunny: text SAME, sig SAME, url SAME
+s04-search-zh: text SAME, sig SAME, url SAME
+s05-search-none-found: text SAME, sig SAME, url SAME
+s06-search-some-not-found: text SAME, sig SAME, url SAME
+s07-open-match: text SAME, sig SAME, url SAME
+s08-sibling-match: text SAME, sig SAME, url SAME
+s09-folder-run: text SAME, sig SAME, url SAME
+s09b-release-notes-match: text SAME, sig SAME, url SAME
+s10-team-member-match: text SAME, sig SAME, url SAME
+s11-search-fails: text SAME, sig SAME, url SAME
+s12-no-matches: text SAME, sig SAME, url SAME
+s13-search-not-indexed: text SAME, sig SAME, url SAME
+s14-search-model-changed: text SAME, sig SAME, url SAME
+s15-search-meaning-running: text SAME, sig SAME, url SAME
+x01-index-ready: text SAME, sig SAME, url SAME
+x02-index-not-indexed: text SAME, sig SAME, url SAME
+x03-index-building: text SAME, sig SAME, url SAME
+x04-index-built: text SAME, sig SAME, url SAME
+x05-index-meaning-running: text SAME, sig SAME, url SAME
+x06-index-failed: text SAME, sig SAME, url SAME
+x06-index-failed-retry: text SAME, sig SAME, url SAME
+x07-index-model-changed: text SAME, sig SAME, url SAME
+x07-index-rebuild-confirm: text SAME, sig SAME, url SAME
+x07-index-rebuild-started: text SAME, sig SAME, url SAME
+x08-index-unavailable: text SAME, sig SAME, url SAME
+x08-index-unavailable-retry: text SAME, sig SAME, url SAME
+x09-index-start-fails: text SAME, sig SAME, url SAME
+x10-index-reduced-motion: text SAME, sig SAME, url SAME
+x11-search-tab-badge-building: text SAME, sig SAME, url SAME
+j01-journal-not-built: text SAME, sig SAME, url SAME
+j02-journal-not-built-link: text SAME, sig SAME, url SAME
+j03-imported-run: text SAME, sig SAME, url SAME
+j04-browse-not-indexed-badges: text SAME, sig SAME, url SAME
+z01-browse: text SAME, sig SAME, url SAME
+z02-search: text SAME, sig SAME, url SAME
+z03-journal-match: text SAME, sig SAME, url SAME
+z04-index: text SAME, sig SAME, url SAME
+z05-journal-not-built: text SAME, sig SAME, url SAME
+z06-team-detail: text SAME, sig SAME, url SAME
+z07-search-none: text SAME, sig SAME, url SAME
+n01-journal-1024: text SAME, sig SAME, url SAME
+n02-search-1024: text SAME, sig SAME, url SAME
+g01-detail-on: text SAME, sig SAME, url SAME
+g02-detail-off: text SAME, sig SAME, url SAME
+g03-edit-personal: text SAME, sig DIFF, url SAME
+g04-edit-off: text SAME, sig DIFF, url SAME
+g05-turn-on-save: text SAME, sig SAME, url SAME
+g06-reset: text SAME, sig DIFF, url SAME
+g07-create: text SAME, sig DIFF, url SAME
+g08-zh-detail-on: text SAME, sig SAME, url SAME
+g09-zh-detail-off: text SAME, sig SAME, url SAME
+g10-zh-edit: text SAME, sig DIFF, url SAME

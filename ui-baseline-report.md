@@ -1,6 +1,95 @@
 # UI Baseline Report
 
-## Scoped refresh `phone-baseline-refresh-279` (read this first)
+## Scoped refresh `memory-baseline-refresh-554` (read this first)
+
+**The Memory page (`/memory`: Browse, an agent's runs, Team and Org detail, the run inspector, Search, Index) and the Agents page's semantic memory card and field now reflect `origin/personal@8430d9ef12385bb77e9ee2f808bc123c891b97b7`** (selected frontend `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/autobyteus-web`, read only; the pin is the explicit constraint of the request, verified with `git rev-parse`: `origin/personal` = `HEAD` = `8430d9ef12`, the frontend directory clean). Every other surface keeps its earlier pin (desktop `d74f75a51a` with the scoped exceptions below, the phone `f7b4d68711`).
+
+### Status
+
+- Status: `Completed`, a candidate: uncommitted changes in the ticket worktree; the Bootstrapper made no commit. Integration into the default branch `personal` follows the Product UI/UX Designer's acceptance.
+- Request type: Refresh (scoped, explicit), from the Product UI/UX Designer for `semantic-memory-view-554` (package `semantic-memory-for-every-agent`, autobyteus-554): bring `/memory` in full and the agent detail's and edit form's semantic memory to UI parity with `8430d9ef12`; source wins where it shipped; keep accepted design-only changes elsewhere.
+- Next expected action: the Product UI/UX Designer reviews and accepts, commits, integrates into `personal`, then merges `personal` into `design/semantic-memory-view-554` (ticket `tickets/in-progress/memory-baseline-refresh-554/product-ticket.md`).
+
+### Identity
+
+- Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`; not touched). Ticket branch / worktree: `design/memory-baseline-refresh-554` / `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/memory-baseline-refresh-554`, dedicated to this ticket. Accepted design base: `5d46595ab4bbe995050cee124e458a6f041f48f4` (worktree `HEAD` the same). Bootstrap candidate: the worktree's uncommitted changes (no commit).
+- Previous pin of these surfaces: `d74f75a51a` (the Memory page also carried the approved design `work-journal-search`; the agent pages the scoped refresh `package-clone-auto-update-457` at `f78b60dddd`).
+- Run: `corepack pnpm install --ignore-workspace --frozen-lockfile`, `corepack pnpm dev --port 4555`, then `http://localhost:4555/memory` (1440×900). `package.json`, `pnpm-lock.yaml`, `nuxt.config.ts` unchanged. Entries and starting states: `ui-reference-runbook.md`, section "memory-baseline-refresh-554".
+
+### What the source changed (`d74f75a51a..8430d9ef12`, the scoped files) and what was done
+
+Copied unchanged from `8430d9ef12` (UI code; 39 files byte-identical, audit `evidence/memory-baseline-refresh-554/copied-files-audit.txt`): `pages/memory.vue`; `components/memory/*` (`AgentMemoryDetail`, `CollaborationMemoryDetail`, `MemoryBadges`, `MemoryHome`, `MemoryIndexPanel`, `MemoryInspector`, `MemorySearchPanel`, `MemorySearchResults`, `MemorySpinner` (new), `RawTracesTab`, `WorkJournalTab`, `collaborationMemberTree.ts`); `composables/useMemoryIndexView.ts`; the stores `memoryInspectorStore`, `memoryJournalStore`, `memorySearchStore` (the source's own, no longer the design's scripted stores); `types/memory.ts`, `types/memorySearch.ts` (new); the GraphQL documents `memorySearchQueries.ts`, `memorySearchMutations.ts` (new), `memoryExplorerQueries.ts`; voice input in Search: `components/voiceInput/VoiceTargetStatus.vue` (new), `types/voiceInput.ts`, the catalogs `voiceInput.ts` (new, en and zh-CN, + one import and one spread line per locale's `index.ts`); the catalogs `memory.ts` and `memory.generated.ts` (en, zh-CN); `components/agents/AgentDefinitionDetailSections.vue`, `AgentDefinitionForm.vue`, `AgentSemanticMemoryField.vue` (new), `stores/agentDefinitionStore.ts`, `agentDefinitionQueries.ts`, `agentDefinitionMutations.ts`, `types/personalSettings.ts` (`SEMANTIC_MEMORY`), the catalogs `personalSettings.ts` (en, zh-CN: the editor's note now names semantic memory). Added to existing catalogs: the five semantic memory keys in `agents.ts` (en, zh-CN), at the source's position; the other keys keep their text.
+
+What changed for the user (source wins over the design `work-journal-search` where it shipped):
+- Browse: Team cards carry no "Task team" tag (461), Team members are plain members (no "Task · <time>" line); dates and numbers follow the app's interface language (426).
+- Search: a microphone in the search box when voice input is available (320): Starting, Recording with Cancel recording, Transcribing; the transcript joins the typed text and waits for Search. "No matches" (amber) when nothing matched; a text match's "Words: …" label; a match's day only when known.
+- A result for a run the index knows only by its folder opens a Work Journal-only inspector (`view=folder-inspector`, title = the folder's name, no Raw Traces tab).
+- Work Journal: a run without one says "No Work Journal yet. Index your memory to create it." with a link to Index; a run of an imported memory source says "No Work Journal". The raw-trace link at the end of an entry's last line is shown de-emphasised; `[--:--:--]` entries are read as entries.
+- Index: an error with Retry when the status cannot be read; a refused Index now / Rebuild shows the node's reason under the steps; the spinner is a still ring under reduced motion (`MemorySpinner`); the Rebuild confirmation's accessible name is localized; the bar's width does not animate under reduced motion.
+- Agents: the detail page has a **Semantic memory** card: "On. The agent keeps its reusable knowledge in this folder:" with the folder (selectable), or "Off". The editor has a **Semantic memory** checkbox under Avatar with its help text; for package and built-in agents it carries the Personal mark and Reset like the other personal settings.
+
+### Reconciliation with accepted design changes
+
+- `work-journal-search` (approved design of the Memory page on `d74f75a`): shipped by the source, differently in places; the source version wins everywhere on the page. Its scripted stores (`memorySearchStore`, `memoryJournalStore`: search and the build timer in the store) are replaced by the source's stores; the design's world (`prototype/memory-search/memoryDesignFixture.ts`) is kept and now answers those stores in the server's shapes. No design-only element of the page without a source equivalent remains (every `components/memory` file is the source's); the catalog keys the source dropped (`memory.browse.task_team*`, `memory.browse.filter_button`, `MemoryHome.localRunnableMemory`, …) are used by no other file.
+- The Memory world is no longer a design-only layer: `autobyteus.prototype.designOnlyLayers=off` keeps it (the page is the source's now).
+- `package-clone-auto-update-457` (scoped refresh of the personal settings): its fixture gains `SEMANTIC_MEMORY` as a third personal setting of the built-in Daily Assistant; its other states are unchanged.
+- `agent-definition-reconnect-ui`, `skill-sources-dialog-redesign`, `integrations-page-r2`, the phone and the other accepted layers: untouched (none of their files is in the copied set).
+
+### Simulation beneath the UI (no backend; every value is invented)
+
+- `prototype/memory-search/memoryDesignFixture.ts` is the memory node (`memoryOperation`, answered from `utils/apolloClient.ts`): `memoryIndexStatus` (states `NOT_INDEXED`, `BUILDING`, `READY`, `FAILED`, `MODEL_CHANGED`, the four steps with their units), `startMemoryIndexing` / `rebuildMemoryIndex` (a 400 ms timer advances the steps; the page polls every 2 s as the source does), `memorySearch` (the scripted topics, now with the server's subjects `AGENT`, `TEAM_MEMBER`, `ORG_MEMBER`, `RUN_FOLDER`, its snippet rule: links removed, trimmed, from the first line with a search word, at most three lines; answers by words only while the meaning index was built with another model), and the four Work Journal reads (files with days, a window of lines; null while the runs have no journals or for an imported source). The generated journals follow the pinned server renderer's layout (three header lines, 11-space details, the link at the end of an entry's last line, a day line at each change of day). Answers arrive after 120 ms (several frames), so the source's "Loading the Work Journal…" view lays out between reads as with a real node.
+- Lists: no task-team fields, members `CONFIGURED`; a run's "No Work Journal" badge before the index has made the journals; in `memory_imported_source` an imported source "Office Mac (imported)".
+- New run: **writer** (`agent_teams/home_lab_team_0c4a7e19/writer_5d2e8b31`), a Team member whose Team record cannot be read, known only by its folder (the server's `nameFromFolder`).
+- Scenarios (new): `memory_index_unavailable` (the first status read of a page load fails, Retry reads it), `memory_index_start_fails` (not indexed; Index now is refused with an invented reason), `memory_imported_source`; existing: `memory_not_indexed`, `memory_meaning_running`, `memory_index_failed`, `memory_model_changed`, `memory_search_fails`, `empty`.
+- Voice input in Search: `prototype/memory-search/memorySearchVoice.ts` plays the voice store's visible sequence on its own state for the `memory-search` target only (the product records from the microphone and transcribes in the desktop app's extension). Other voice targets keep the baseline's earlier inert stand-in.
+- Agents: `prototype/source-observation/personal-settings-fixtures.mjs` gives the built-in Daily Assistant semantic memory as a personal setting (on; built-in value off) and answers the folder as the node does (`<memory>/semantic/<encodeURIComponent(id)>`, the memory folder invented); `plugins/00.prototype-state.client.ts` answers the folder after a Save or create with the box checked. A Save does not make a setting personal (unchanged known gap of `package-clone-auto-update-457`).
+
+### Inventory and comparison (source `8430d9ef12` vs baseline, matched, 1440×900; 1024×768 for the narrow pass)
+
+Conditions: Chrome driven by disposable Playwright scripts under `/tmp/r554` (nothing added to the repository), a fresh context per state, the same scenario on both sides, timezone UTC, the browser's language for en / zh-CN (the app's system locale mode). The pinned source is an exact `git archive` export of `8430d9ef12` (`autobyteus-web` and the four contract packages; `autobyteus-application-sdk-contracts/dist` copied from the source checkout, which builds it), dependencies installed from the source's lockfile, served by `nuxt dev --port 4556` with `BACKEND_NODE_BASE_URL` at the observation node (`prototype/source-observation/mock-node.mjs`, port 4557, the source's `generated/graphql.ts`) and a disposable hook that serves the same memory world (it imports `memoryDesignFixture.ts` itself and answers `memoryOperation` and the lists; the scenario comes from a file). Per state: the page area right of the left panel compared as screenshots (pixel difference), UI text with digits masked, the element signature (tag and classes of every visible element) and the final route.
+Evidence: `evidence/memory-baseline-refresh-554/` (each image: baseline left, source right; `pixel-differences.txt` with every pair's differing pixels and the text/signature/route result of each state; `copied-files-audit.txt`; `baseline-only-voice-*.png`). "Identical" below: 0 differing pixels and the same text, signature and route.
+
+| ID | Surface / state (checked now) | Result |
+| --- | --- | --- |
+| MR-01 | Browse: Agents, Agent Teams (no "Task team" tag), Agent Orgs, populated (`b01`–`b03`) | pass: identical |
+| MR-02 | Browse empty (`empty`): the three tabs' empty states (`b04`) | pass: identical |
+| MR-03 | Browse filter: a match and no match (`b05`) | pass: identical (1 px: the text caret) |
+| MR-04 | An agent's runs, and the Unattributed runs page (`a01`, `a02`) | pass: identical |
+| MR-05 | Team detail (runs with member groups, plain members) and Org detail (`t01`, `o01`) | pass: identical |
+| MR-06 | Run inspector, Work Journal: the file rail, a closed file, Go to line in a 48,213-line file, Jump to day, "↑ earlier lines" (`i01`–`i05`); trailing raw-trace links de-emphasised | pass: identical |
+| MR-07 | Raw Traces tab (`i06`) | pass: identical |
+| MR-08 | A Team member's and an Org member's inspector (`i07`, `i08`) | pass: identical |
+| MR-09 | Search centered (`s01`); results for a strong cue, screen by screen (`s02`, three screens), `bunny and tortoise`, `域名 自动更新` (`s03`, `s04`) | pass: identical |
+| MR-10 | Words notes: none of the words found (amber), some not found (gray) (`s05`, `s06`) | pass: identical |
+| MR-11 | A match opens the Work Journal at its lines with the found banner; Match 2 (`s07`, `s08`); a Team member's match (`s10`); a match low in the list opens at the top of the page (`s09b`) | pass: identical |
+| MR-12 | A run known only by its folder: the Work Journal-only inspector (`s09`) | pass: identical |
+| MR-13 | Search fails (Retry) (`s11`); "No matches" (`memory_model_changed`, words only) (`s12`); not indexed (`s13`); model changed notice (`s14`); meaning index running notice (`s15`) | pass: identical (`s15`: the spinner's phase) |
+| MR-14 | Index: up to date; not indexed (Index now); building after Index now; built to "Up to date" after 95 s (`x01`–`x04`) | pass: same text, signature and route; pixels differ only in the spinner's phase, the progress the timer reached and the finish time |
+| MR-15 | Index: meaning index running; failed with Try again and after it; model changed, the Rebuild confirmation, rebuilding (`x05`–`x07`) | pass: as MR-14 |
+| MR-16 | Index status cannot be read: the error with Retry, then the index (`x08`); Index now refused: the reason under the steps (`x09`) | pass: identical |
+| MR-17 | Reduced motion: the still ring (`x10`); the Index tab's badge while building, seen from Browse (`x11`) | pass: identical (`x11`: the percentage the timer reached) |
+| MR-18 | No Work Journal yet with the link to Index, and the link (`j01`, `j02`); an imported source's run: "No Work Journal" (`j03`); Browse badges before the build (`j04`) | pass: identical |
+| MR-19 | zh-CN: Browse, search with a words note, a match's Work Journal, Index (model changed), No Work Journal yet, Team detail, No matches (`z01`–`z07`) | pass: identical |
+| MR-20 | 1024×768: a match's Work Journal (file select instead of the rail), results (`n01`, `n02`) | pass: identical |
+| MR-21 | Voice input in Search (desktop window): the microphone, Starting, Recording with Cancel recording, Transcribing, the transcript in the box, cancel, Search (en, zh-CN) | baseline only (`baseline-only-voice-*`): the source harness has no desktop window or microphone; the button and status line are the source's components, the capture is scripted (see Simulation) |
+| AS-01 | Agent detail: Semantic memory On with the folder (Daily Assistant), Off (Research Assistant); zh-CN both (`g01`, `g02`, `g08`, `g09`) | pass: identical |
+| AS-02 | Agent editor: the Semantic memory field with Personal and "Reset to the built-in setting"; the field off on a package agent; the create form; zh-CN (`g03`, `g04`, `g07`, `g10`); the note under the title names semantic memory | pass: identical pixels and text; the signature differs only in the Runtime select's `disabled:` classes (see Known gaps) |
+| AS-03 | Check the box and Save: the detail page shows On with the folder (`g05`); Reset: the box off, the mark gone (`g06`) | pass: identical (`g06`: as AS-02) |
+| AS-04 | The rest of the baseline (desktop routes, the phone, the Android start screen), design layers on and off | load-and-look: 16 routes render, no page error |
+
+### Known gaps
+
+- **Not refreshed though the range changed it** (outside this refresh's scope; a decision for the Product UI/UX Designer): `components/launch-config/RuntimeModelConfigFields.vue` (autobyteus-9: the model list's refresh control and the runtime select's locked state; the agent editor shows it, and its Runtime select's `disabled:` classes differ, with no visible difference while it is enabled), `stores/memorySyncStore.ts` and the `memorySyncSettings` catalog (Settings → Memory Sync's per-file failures), the left panel's workspace tree, and the other changes of the range.
+- The source side's left panel shows the observation node's run-history answer rejected by the newer source's schema (an error text); it lies outside the compared page area and outside this refresh.
+- MR-21 (voice input) is shown by the baseline only. Elsewhere voice targets (composer, Projects) keep the baseline's earlier inert stand-in: their microphone does nothing.
+- The index build is accelerated (about 85 s); progress numbers, the spinner's phase and the finish time differ between the sides by timing only.
+- A Save of the editor does not make a setting personal (the node decides that in the source); Reset is the scripted outcome.
+- Edits under `prototype/` (and `plugins/`) are not always picked up by the running dev server; restart it after changing them.
+- Names, IDs, runs, journals, search results, the memory folder, the imported source, the transcript and the reasons in the error states are illustrative. Real memory, real search, the real index and real transcription were not validated. `typecheck`, `lint` and tests were not run (design work).
+
+---
+
+## Scoped refresh `phone-baseline-refresh-279` (the phone; still current for `/mobile`)
 
 **The phone (`/mobile`: the run list and its ⋮, the run screen, its ⋮ menu and views, Settings, the VNC Viewer) now reflects `origin/personal@f7b4d68711a0d0aa11ee3802b1264293d1c4ae8c`** (release 1.5.13; selected frontend `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/autobyteus-web`, read only; the pin is the explicit constraint of the request, verified with `git rev-parse`). Every desktop surface keeps its earlier pin (whole frontend `d74f75a51a` and the scoped exceptions listed in the next section). The browser pairing page and the design's Android start screen keep their accepted state.
 

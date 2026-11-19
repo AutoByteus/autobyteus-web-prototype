@@ -20,6 +20,11 @@
 
     <div v-if="store.loading" class="py-12 text-center text-sm text-gray-500">{{ $t('memory.journal.loading') }}</div>
     <div v-else-if="store.error" class="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">{{ store.error }}</div>
+    <div v-else-if="store.missing && importedRun" class="py-12 text-center text-sm text-gray-500" data-test="work-journal-missing">{{ $t('memory.badges.no_work_journal') }}</div>
+    <div v-else-if="store.missing" class="py-12 text-center text-sm text-gray-500" data-test="work-journal-missing">
+      {{ $t('memory.journal.not_built') }}
+      <button type="button" class="font-semibold text-blue-600 hover:underline" data-test="work-journal-open-index" @click="$emit('openIndex')">{{ $t('memory.journal.not_built_link') }}</button>
+    </div>
     <div v-else-if="store.files.length === 0" class="py-12 text-center text-sm text-gray-500">{{ $t('memory.journal.empty') }}</div>
 
     <div v-else class="grid gap-4 xl:grid-cols-[15rem_minmax(0,1fr)]">
@@ -40,7 +45,7 @@
                 <span v-if="item.open" class="flex-shrink-0 rounded-full bg-emerald-50 px-1.5 text-[10px] font-semibold text-emerald-700">{{ $t('memory.journal.active') }}</span>
               </span>
               <span class="mt-0.5 block text-[11px] text-gray-500">{{ dayRange(item) }}</span>
-              <span class="block text-[11px] text-gray-500">{{ $t('memory.journal.file_size', { lines: item.lines.toLocaleString(), size: formatSize(item.sizeKb) }) }}</span>
+              <span class="block text-[11px] text-gray-500">{{ $t('memory.journal.file_size', { lines: item.lines.toLocaleString(resolvedLocale), size: formatSize(item.sizeKb) }) }}</span>
               <span v-if="matchCount(item.name)" class="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700" data-test="work-journal-file-marker">
                 <span class="h-1.5 w-1.5 rounded-full bg-amber-500" aria-hidden="true" />{{ $t('memory.journal.matched_in_file', { count: matchCount(item.name) }) }}
               </span>
@@ -61,7 +66,7 @@
           <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-gray-100 px-3 py-2">
             <div class="min-w-0 flex-1 basis-56">
               <p class="truncate font-mono text-xs font-semibold text-gray-800">{{ store.current.name }}</p>
-              <p class="text-[11px] text-gray-500">{{ $t('memory.journal.file_size', { lines: store.current.lines.toLocaleString(), size: formatSize(store.current.sizeKb) }) }} · {{ dayRange(store.current) }}</p>
+              <p class="text-[11px] text-gray-500">{{ $t('memory.journal.file_size', { lines: store.current.lines.toLocaleString(resolvedLocale), size: formatSize(store.current.sizeKb) }) }} · {{ dayRange(store.current) }}</p>
             </div>
             <div class="flex flex-wrap items-center gap-2">
               <label class="sr-only" for="work-journal-day">{{ $t('memory.journal.jump_to_day') }}</label>
@@ -79,23 +84,23 @@
 
           <div ref="scroller" class="relative max-h-[62vh] min-h-[320px] overflow-auto bg-white font-mono text-xs leading-5" tabindex="0" role="region" :aria-label="store.current.name" data-test="work-journal-lines">
             <button v-if="store.from > 1" type="button" class="sticky left-0 block w-full border-b border-gray-100 bg-gray-50 px-3 py-2 text-left font-sans text-xs font-semibold text-blue-600 hover:bg-blue-50" data-test="work-journal-earlier" @click="loadEarlier">
-              ↑ {{ $t('memory.journal.earlier', { count: Math.min(JOURNAL_WINDOW, store.from - 1) }) }} <span class="font-normal text-gray-500">({{ $t('memory.journal.not_shown', { count: (store.from - 1).toLocaleString() }) }})</span>
+              ↑ {{ $t('memory.journal.earlier', { count: Math.min(JOURNAL_WINDOW, store.from - 1) }) }} <span class="font-normal text-gray-500">({{ $t('memory.journal.not_shown', { count: (store.from - 1).toLocaleString(resolvedLocale) }) }})</span>
             </button>
             <div v-for="line in store.lines" :key="line.n" :data-line="line.n" class="flex" :class="isMatched(line.n) ? 'bg-amber-50' : ''">
               <span class="sticky left-0 w-14 flex-shrink-0 select-none border-r px-2 text-right" :class="isMatched(line.n) ? 'border-amber-300 bg-amber-100 text-amber-800' : 'border-gray-100 bg-gray-50 text-gray-400'">{{ line.n }}</span>
               <span v-if="kind(line.text) === 'day'" class="flex-1 bg-gray-100 px-3 font-semibold text-gray-700">{{ line.text }}</span>
-              <span v-else-if="kind(line.text) === 'entry'" class="min-w-0 flex-1 whitespace-pre-wrap break-words px-3 text-gray-800"><span class="text-gray-400">{{ parts(line.text).time }}</span> <span class="font-semibold">{{ parts(line.text).action }}</span>{{ parts(line.text).rest }}</span>
+              <span v-else-if="kind(line.text) === 'entry'" class="min-w-0 flex-1 whitespace-pre-wrap break-words px-3 text-gray-800"><span class="text-gray-400">{{ parts(line.text).time }}</span> <span class="font-semibold">{{ parts(line.text).action }}</span>{{ withoutLink(parts(line.text).rest) }}<span v-if="trailingLink(line.text)" class="break-all text-gray-300" data-test="work-journal-raw-link">{{ trailingLink(line.text) }}</span></span>
               <span v-else-if="kind(line.text) === 'link'" class="min-w-0 flex-1 whitespace-pre-wrap break-all px-3 text-gray-300">{{ line.text }}</span>
               <span v-else-if="kind(line.text) === 'header'" class="min-w-0 flex-1 whitespace-pre-wrap break-words px-3 font-semibold text-gray-900">{{ line.text }}</span>
-              <span v-else class="min-w-0 flex-1 whitespace-pre-wrap break-words px-3 text-gray-500">{{ line.text || ' ' }}</span>
+              <span v-else class="min-w-0 flex-1 whitespace-pre-wrap break-words px-3 text-gray-500">{{ withoutLink(line.text) || ' ' }}<span v-if="trailingLink(line.text)" class="break-all text-gray-300" data-test="work-journal-raw-link">{{ trailingLink(line.text) }}</span></span>
             </div>
             <button v-if="store.to < store.current.lines" type="button" class="sticky left-0 block w-full border-t border-gray-100 bg-gray-50 px-3 py-2 text-left font-sans text-xs font-semibold text-blue-600 hover:bg-blue-50" data-test="work-journal-later" @click="store.loadLater()">
-              ↓ {{ $t('memory.journal.later', { count: Math.min(JOURNAL_WINDOW, store.current.lines - store.to) }) }} <span class="font-normal text-gray-500">({{ $t('memory.journal.not_shown', { count: (store.current.lines - store.to).toLocaleString() }) }})</span>
+              ↓ {{ $t('memory.journal.later', { count: Math.min(JOURNAL_WINDOW, store.current.lines - store.to) }) }} <span class="font-normal text-gray-500">({{ $t('memory.journal.not_shown', { count: (store.current.lines - store.to).toLocaleString(resolvedLocale) }) }})</span>
             </button>
           </div>
 
           <div class="flex flex-col gap-1 border-t border-gray-100 px-3 py-2 text-[11px] text-gray-500 md:flex-row md:items-center md:justify-between">
-            <span data-test="work-journal-range">{{ $t('memory.journal.showing', { from: store.from.toLocaleString(), to: store.to.toLocaleString(), total: store.current.lines.toLocaleString() }) }}</span>
+            <span data-test="work-journal-range">{{ $t('memory.journal.showing', { from: store.from.toLocaleString(resolvedLocale), to: store.to.toLocaleString(resolvedLocale), total: store.current.lines.toLocaleString(resolvedLocale) }) }}</span>
             <span v-if="store.current.lines > 5000">{{ $t('memory.journal.large_file') }}</span>
           </div>
         </div>
@@ -109,9 +114,11 @@ import { computed, nextTick, ref, watch } from 'vue';
 import { useLocalization } from '~/composables/useLocalization';
 import { JOURNAL_WINDOW, useMemoryJournalStore } from '~/stores/memoryJournalStore';
 import { useMemorySearchStore } from '~/stores/memorySearchStore';
-import type { JournalFileInfo } from '~/prototype/memory-search/memoryDesignFixture';
+import type { JournalFileInfo, MatchKind } from '~/types/memorySearch';
 
-const { t } = useLocalization();
+defineEmits<{ openIndex: [] }>();
+
+const { t, resolvedLocale } = useLocalization();
 const store = useMemoryJournalStore();
 const searchStore = useMemorySearchStore();
 
@@ -119,6 +126,11 @@ const scroller = ref<HTMLElement | null>(null);
 const lineInput = ref<number | null>(null);
 
 const focus = computed(() => store.focus);
+/** An imported run's journal comes from another node: this node cannot make it. */
+const importedRun = computed(() => {
+  const subject = store.subject;
+  return !!subject && subject.kind !== 'folder' && subject.source.type === 'IMPORTED';
+});
 
 /** The matches of this run from the search that led here, when it is still in memory; else just the opened one. */
 const siblingMatches = computed(() => {
@@ -141,38 +153,43 @@ const matchedLabel = computed(() => {
 
 const matchCount = (name: string) => siblingMatches.value.filter(m => focus.value && m.file === name).length;
 
-const goToMatch = (match: { file: string; fromLine: number; toLine: number; kind: any; words: string[] }) => {
+const goToMatch = (match: { file: string; fromLine: number; toLine: number; kind: MatchKind | null; words: string[] }) => {
   if (!store.focus) return;
   store.focus = { ...store.focus, file: match.file, fromLine: match.fromLine, toLine: match.toLine, kind: match.kind, words: match.words };
-  if (store.selectedFile !== match.file) store.selectFile(match.file, match.fromLine);
-  else store.gotoLine(match.fromLine);
+  if (store.selectedFile !== match.file) void store.selectFile(match.file, match.fromLine);
+  else void store.gotoLine(match.fromLine);
 };
 
 const isMatched = (n: number) => !!focus.value && store.selectedFile === focus.value.file && n >= focus.value.fromLine && n <= focus.value.toLine;
 
 const kind = (text: string): 'day' | 'entry' | 'link' | 'header' | 'detail' => {
   if (/^\[\d{4}-\d{2}-\d{2}\]$/.test(text)) return 'day';
-  if (/^\[\d{2}:\d{2}:\d{2}\] /.test(text)) return 'entry';
+  if (/^\[(\d{2}:\d{2}:\d{2}|--:--:--)\] /.test(text)) return 'entry';
   if (/^\s+\[↗\]/.test(text)) return 'link';
   if (text.startsWith('# ')) return 'header';
   return 'detail';
 };
+/** The raw-trace link an entry's last line ends with: machine detail, shown de-emphasised like a link line. */
+const TRAILING_LINK = / \[↗\]\([^)]*\)$/;
+const trailingLink = (text: string) => TRAILING_LINK.exec(text)?.[0] ?? '';
+const withoutLink = (text: string) => text.replace(TRAILING_LINK, '');
 const parts = (text: string) => {
-  const match = /^(\[\d{2}:\d{2}:\d{2}\]) ([^:]+:)(.*)$/.exec(text);
+  const match = /^(\[(?:\d{2}:\d{2}:\d{2}|--:--:--)\]) ([^:]+:)(.*)$/.exec(text);
   return match ? { time: match[1], action: match[2], rest: match[3] } : { time: '', action: '', rest: text };
 };
 
-const formatDay = (day: string) => {
+const formatDay = (day: string | null) => {
+  if (!day) return '';
   const date = new Date(`${day}T12:00:00Z`);
-  return Number.isNaN(date.getTime()) ? day : date.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  return Number.isNaN(date.getTime()) ? day : date.toLocaleDateString(resolvedLocale.value, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 };
 const dayRange = (item: JournalFileInfo) => (item.firstDay === item.lastDay ? formatDay(item.firstDay) : `${formatDay(item.firstDay)} – ${formatDay(item.lastDay)}`);
 const formatSize = (kb: number) => (kb >= 1024 ? `${(kb / 1024).toFixed(1)} MB` : `${kb} KB`);
 
-const goToLine = () => { if (lineInput.value) store.gotoLine(Number(lineInput.value)); };
+const goToLine = () => { if (lineInput.value) void store.gotoLine(Number(lineInput.value)); };
 const jumpToDay = (event: Event) => {
   const select = event.target as HTMLSelectElement;
-  store.gotoLine(Number(select.value));
+  void store.gotoLine(Number(select.value));
   select.value = '';
 };
 
@@ -180,7 +197,7 @@ const jumpToDay = (event: Event) => {
 const loadEarlier = async () => {
   const el = scroller.value;
   const before = el ? el.scrollHeight : 0;
-  store.loadEarlier();
+  await store.loadEarlier();
   await nextTick();
   if (el) el.scrollTop += el.scrollHeight - before;
 };

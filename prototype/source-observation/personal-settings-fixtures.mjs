@@ -10,6 +10,12 @@
 const personalAvatar = (letter) => `data:image/svg+xml;utf8,${encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><rect width="96" height="96" fill="#4f46e5"/><text x="48" y="62" font-family="sans-serif" font-size="44" font-weight="700" text-anchor="middle" fill="#fff">${letter}</text></svg>`)}`
 
+/**
+ * memory-baseline-refresh-554 (origin/personal@8430d9ef12): an agent's semantic memory folder as the node reports it
+ * (`<memory>/semantic/<encodeURIComponent(agentDefinitionId)>`, absolute); the memory folder is invented.
+ */
+export const semanticMemoryPathOf = (agentDefinitionId) => `/Users/dev/.autobyteus/server-data/memory/semantic/${encodeURIComponent(agentDefinitionId)}`
+
 const LAUNCH_PERSONAL = Object.freeze({ __typename: 'DefaultLaunchConfig', llmModelIdentifier: 'mock/reasoning-prototype', runtimeKind: 'autobyteus', llmConfig: null })
 
 /**
@@ -34,13 +40,17 @@ const WORLD = Object.freeze({
     },
     // An agent from a package with nothing personal: only the note under the title.
     'agent-writer': { base: 'PACKAGE', personal: [], values: {} },
-    // A built-in agent with two personal settings.
+    // A built-in agent with three personal settings (memory-baseline-refresh-554: semantic memory turned on here, off as built in).
     'autobyteus-daily-assistant': {
       base: 'BUILT_IN',
-      personal: ['TOOLS', 'AVATAR'],
+      personal: ['TOOLS', 'AVATAR', 'SEMANTIC_MEMORY'],
       values: {
         TOOLS: { personal: { toolNames: ['run_bash', 'read_url'] }, base: { toolNames: ['run_bash', 'read_url', 'search_web'] } },
         AVATAR: { personal: { avatarUrl: personalAvatar('D') }, base: { avatarUrl: null } },
+        SEMANTIC_MEMORY: {
+          personal: { semanticMemoryEnabled: true, semanticMemoryPath: semanticMemoryPathOf('autobyteus-daily-assistant') },
+          base: { semanticMemoryEnabled: false, semanticMemoryPath: null },
+        },
       },
     },
   },

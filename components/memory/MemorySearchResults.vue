@@ -11,7 +11,7 @@
     </header>
 
     <div v-if="status === 'loading'" class="flex items-center justify-center gap-2 py-16 text-sm text-gray-500">
-      <Icon icon="svg-spinners:ring-resize" class="h-4 w-4" aria-hidden="true" />{{ $t('memory.results.searching') }}
+      <MemorySpinner class="h-4 w-4" />{{ $t('memory.results.searching') }}
     </div>
 
     <div v-else-if="status === 'error'" class="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700" data-test="memory-search-error">
@@ -20,13 +20,21 @@
     </div>
 
     <template v-else-if="outcome">
-      <div v-if="wordsNote" class="flex gap-3 rounded-lg border p-3 text-sm" :class="wordsNote.all ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-gray-200 bg-white text-gray-700'" data-test="memory-search-words-note">
+      <div v-if="outcome.results.length === 0" class="flex gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900" data-test="memory-search-none">
+        <Icon icon="heroicons:exclamation-triangle-20-solid" class="mt-0.5 h-5 w-5 flex-shrink-0 text-amber-500" aria-hidden="true" />
+        <div>
+          <p class="font-semibold">{{ $t('memory.results.none_title') }}</p>
+          <p class="mt-0.5 text-amber-800">{{ $t('memory.results.none_body') }}</p>
+        </div>
+      </div>
+
+      <div v-else-if="wordsNote" class="flex gap-3 rounded-lg border p-3 text-sm" :class="wordsNote.all ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-gray-200 bg-white text-gray-700'" :data-test="wordsNote.all ? 'memory-search-none-found' : 'memory-search-some-not-found'">
         <Icon icon="heroicons:exclamation-triangle-20-solid" class="mt-0.5 h-5 w-5 flex-shrink-0" :class="wordsNote.all ? 'text-amber-500' : 'text-gray-400'" aria-hidden="true" />
         <p>{{ wordsNote.text }}</p>
       </div>
 
       <div v-if="coverageNotice" class="flex gap-3 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm text-blue-900" data-test="memory-search-coverage">
-        <Icon icon="svg-spinners:ring-resize" class="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-600" aria-hidden="true" />
+        <MemorySpinner class="mt-0.5 h-4 w-4 text-blue-600" />
         <p>{{ coverageNotice }}</p>
       </div>
 
@@ -38,7 +46,7 @@
                 <h3 class="break-words text-base font-semibold text-gray-900">{{ result.agentName }}<span v-if="result.team" class="font-normal text-gray-500"> · {{ result.team.name }}<template v-if="result.member"> / {{ result.member }}</template></span></h3>
                 <p class="mt-1 break-all text-xs text-gray-500"><span class="font-mono">{{ result.runId }}</span><template v-if="result.workspace"> · {{ result.workspace }}</template></p>
               </div>
-              <p class="flex-shrink-0 text-xs text-gray-500" data-test="memory-result-days">{{ days(result) }}</p>
+              <p v-if="result.latestDay" class="flex-shrink-0 text-xs text-gray-500" data-test="memory-result-days">{{ days(result) }}</p>
             </div>
           </button>
           <ul class="space-y-1 px-2 pb-2">
@@ -47,10 +55,8 @@
                 <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500">
                   <span class="font-mono text-gray-700">{{ match.file }}</span>
                   <span>· {{ $t('memory.results.lines', { from: match.fromLine, to: match.toLine }) }}</span>
-                  <span v-if="showMatchDay(result, match)">· {{ formatDay(match.day) }}</span>
-                  <span class="ml-auto flex min-w-0 max-w-full items-center gap-2">
-                    <span v-if="match.kind === 'text'" class="min-w-0 rounded-full border border-gray-200 px-2 py-0.5 text-[11px] font-medium text-gray-600" data-test="memory-match-words">{{ $t('memory.results.words_label', { words: match.matchedWords.join($t('memory.results.word_separator')) }) }}</span>
-                  </span>
+                  <span v-if="showMatchDay(result, match)" data-test="memory-match-day">· {{ formatDay(match.day) }}</span>
+                  <span v-if="match.kind === 'text' && match.matchedWords.length" class="ml-auto min-w-0 max-w-full rounded-full border border-gray-200 px-2 py-0.5 text-[11px] font-medium text-gray-600" data-test="memory-match-words">{{ wordsLabel(match) }}</span>
                 </div>
                 <div class="mt-2 rounded-md bg-gray-50 px-3 py-2 font-mono text-xs leading-5 text-gray-700 group-hover:bg-white group-hover:ring-1 group-hover:ring-gray-200" data-test="memory-snippet"><div v-for="(line, i) in match.snippet" :key="i" class="truncate whitespace-pre">{{ line }}</div></div>
               </button>
@@ -66,8 +72,9 @@
 import { computed } from 'vue';
 import { Icon } from '@iconify/vue';
 import { useLocalization } from '~/composables/useLocalization';
-import type { SearchMatch, SearchOutcome, SearchResult } from '~/prototype/memory-search/memoryDesignFixture';
+import type { SearchMatch, SearchOutcome, SearchResult } from '~/types/memorySearch';
 import type { SearchStatus } from '~/stores/memorySearchStore';
+import MemorySpinner from './MemorySpinner.vue';
 
 const props = defineProps<{
   query: string;
@@ -78,25 +85,32 @@ const props = defineProps<{
 }>();
 defineEmits<{ clear: []; retry: []; open: [result: SearchResult, match: SearchMatch] }>();
 
-const { t } = useLocalization();
+const { t, resolvedLocale } = useLocalization();
 
-const formatDay = (day: string) => {
+const formatDay = (day: string | null) => {
+  if (!day) return '';
   const date = new Date(`${day}T12:00:00Z`);
-  return Number.isNaN(date.getTime()) ? day : date.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  return Number.isNaN(date.getTime()) ? day : date.toLocaleDateString(resolvedLocale.value, { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 };
-/** A match's own day is shown only when the card's date does not already say it. */
-const showMatchDay = (result: SearchResult, match: SearchMatch) => result.firstDay !== result.latestDay || match.day !== result.latestDay;
-const days = (result: SearchResult) => (result.firstDay === result.latestDay
+const days = (result: SearchResult) => (!result.firstDay || result.firstDay === result.latestDay
   ? t('memory.results.mentioned_one', { day: formatDay(result.latestDay) })
   : t('memory.results.mentioned_range', { first: formatDay(result.firstDay), latest: formatDay(result.latestDay) }));
+/** A text match names the search words its lines hold; a meaning match has no label. */
+const wordsLabel = (match: SearchMatch) => t('memory.results.words_label', { words: match.matchedWords.join(t('memory.results.word_separator')) });
+/** A match's own day is shown only when the card's date does not already say it. */
+const showMatchDay = (result: SearchResult, match: SearchMatch) =>
+  Boolean(match.day) && ((result.firstDay ?? result.latestDay) !== result.latestDay || match.day !== result.latestDay);
 
-/** The query's words that occur in no journal, as a fact. Absent while the Text index is incomplete (the server sends none then). */
+/**
+ * The query's words that occur in no indexed journal, as a fact: amber when no match holds any search word (all are
+ * meaning matches), gray when some words were found. The server sends none while the Text index is incomplete.
+ */
 const wordsNote = computed(() => {
   const outcome = props.outcome;
   if (!outcome || !outcome.wordsNotFound.length || !outcome.results.length) return null;
   const words = outcome.wordsNotFound.join(t('memory.results.word_separator'));
   const all = outcome.results.every(result => result.matches.every(match => match.kind === 'meaning'));
-  return all ? { all, text: t('memory.results.none_found', { words }) } : { all, text: t('memory.results.some_not_found', { words }) };
+  return { all, text: t(all ? 'memory.results.none_found' : 'memory.results.some_not_found', { words }) };
 });
 
 /** The search only reads the indexes: while a step is incomplete, it says how much of memory it covered. */

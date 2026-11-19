@@ -16,6 +16,8 @@ import { currentFixtureState, getApolloClient, localFixtureState } from '~/utils
 import { networkWorldOf } from '~/prototype/source-observation/fixtures.mjs'
 import { createNodeNetworkFetch } from '~/prototype/shared/node-network-fetch.js'
 import { restFixture } from '~/prototype/source-observation/rest-fixtures.mjs'
+import { semanticMemoryPathOf } from '~/prototype/source-observation/personal-settings-fixtures.mjs'
+import { isMemorySearchVoice, memorySearchVoice } from '~/prototype/memory-search/memorySearchVoice'
 import axios from 'axios'
 import { liveStreamFrames } from '~/prototype/source-observation/live-streams.mjs'
 // remote-runs-in-tree (design-only): the live stream of a run that delegated copies to another node.
@@ -314,6 +316,8 @@ const findSnapshot = (): [string, RuntimeSnapshot] => {
 }
 
 const actionResult = (store: any, action: string, args: any[] = []): any => {
+  // memory-baseline-refresh-554 (autobyteus-320): voice input in Memory → Search plays a scripted capture.
+  if (isMemorySearchVoice(store, action, args)) return memorySearchVoice(store, action, args)
   // chat-new-draft-kept-on-navigation: a New chat attachment "uploads" locally (scripted). The draft
   // keeps a browser-local preview of the chosen file; nothing leaves the browser.
   if (store.$id === 'contextFileUpload' && action === 'finalizeDraftAttachments') {
@@ -443,6 +447,9 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
       toolInvocationPreprocessorNames: input.toolInvocationPreprocessorNames || [],
       lifecycleProcessorNames: input.lifecycleProcessorNames || [],
       defaultLaunchConfig: input.defaultLaunchConfig || null,
+      // memory-baseline-refresh-554: the node answers the semantic memory folder of an agent that has one.
+      semanticMemoryEnabled: input.semanticMemoryEnabled === true,
+      semanticMemoryPath: input.semanticMemoryEnabled ? semanticMemoryPathOf(String(input.id || 'agent-created-fixture')) : null,
     }
     store.agentDefinitions = [created, ...(store.agentDefinitions || [])]
     return created
@@ -452,6 +459,8 @@ const actionResult = (store: any, action: string, args: any[] = []): any => {
     const existing = (store.agentDefinitions || []).find((item: { id?: string }) => item.id === input.id)
     if (!existing) return null
     const updated = { ...existing, ...input }
+    // memory-baseline-refresh-554: the node answers the semantic memory folder of an agent that has one.
+    if ('semanticMemoryEnabled' in input) updated.semanticMemoryPath = input.semanticMemoryEnabled ? semanticMemoryPathOf(String(input.id)) : null
     store.agentDefinitions = (store.agentDefinitions || []).map((item: { id?: string }) => item.id === input.id ? updated : item)
     return updated
   }

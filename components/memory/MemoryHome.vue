@@ -15,7 +15,7 @@
         >
           {{ item.label }}
           <template v-if="item.id === 'index' && indexBadge">
-            <Icon v-if="indexBadge.spinner" icon="svg-spinners:ring-resize" class="h-3.5 w-3.5" :class="section === 'index' ? 'text-white' : 'text-blue-600'" aria-hidden="true" />
+            <MemorySpinner v-if="indexBadge.spinner" class="h-3.5 w-3.5" :class="section === 'index' ? 'text-white' : 'text-blue-600'" />
             <span v-else class="h-2 w-2 rounded-full" :class="indexBadge.dot" aria-hidden="true" />
             <span v-if="indexBadge.text" class="text-xs font-semibold" :class="section === 'index' ? 'text-blue-100' : 'text-blue-600'" data-test="memory-index-tab-badge">{{ indexBadge.text }}</span>
           </template>
@@ -89,9 +89,6 @@
               <div class="min-w-0">
                 <h2 class="break-words text-base font-semibold text-gray-900">{{ team.teamDefinitionName }}</h2>
                 <p class="mt-1 break-all font-mono text-xs text-gray-500">{{ team.teamDefinitionId }}</p>
-                <p v-if="team.isTaskTeam" class="mt-2 inline-flex items-center gap-1 rounded-[0.2rem] border border-dashed border-indigo-300 px-1.5 py-0.5 text-[11px] font-semibold text-indigo-700" :title="team.startedByAgentName ? $t('memory.browse.task_team_started_by', { name: team.startedByAgentName }) : undefined" data-test="memory-task-team-tag">
-                  <Icon icon="heroicons:user-group-20-solid" class="h-3 w-3" aria-hidden="true" />{{ $t('memory.browse.task_team') }}
-                </p>
               </div>
               <span :class="countClass">{{ team.teamRunCount }} runs</span>
             </div>
@@ -131,15 +128,16 @@ import { useMemoryExplorerStore, type MemoryHomeTab } from '~/stores/memoryExplo
 import type { MemorySection } from '~/stores/memorySearchStore';
 import type { AgentOrgWithMemorySummary, AgentTeamWithMemorySummary, AgentWithMemorySummary } from '~/types/memory';
 import { useMemorySearchStore } from '~/stores/memorySearchStore';
-import type { SearchMatch, SearchResult } from '~/prototype/memory-search/memoryDesignFixture';
+import type { SearchMatch, SearchResult } from '~/types/memorySearch';
 import MemoryBadges from './MemoryBadges.vue';
+import MemorySpinner from './MemorySpinner.vue';
 import MemorySearchPanel from './MemorySearchPanel.vue';
 import MemorySearchResults from './MemorySearchResults.vue';
 import MemoryIndexPanel from './MemoryIndexPanel.vue';
 import { useMemoryIndexView } from '~/composables/useMemoryIndexView';
 import { useLocalization } from '~/composables/useLocalization';
 
-const props = defineProps<{ section: MemorySection }>();
+defineProps<{ section: MemorySection }>();
 const emit = defineEmits<{
   changeSection: [section: MemorySection];
   search: [query: string];
@@ -152,7 +150,7 @@ const emit = defineEmits<{
   selectOrg: [org: AgentOrgWithMemorySummary];
 }>();
 
-const { t } = useLocalization();
+const { t, resolvedLocale } = useLocalization();
 const { badge: indexBadge } = useMemoryIndexView();
 const sections: Array<{ id: MemorySection; label: string }> = [
   { id: 'browse', label: t('memory.tabs.browse') },
@@ -221,6 +219,6 @@ const changePage = async (page: number) => store.changeHomePage(store.homeTab, p
 const formatTimestamp = (value?: string | null) => {
   if (!value) return '—';
   const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString(resolvedLocale.value);
 };
 </script>

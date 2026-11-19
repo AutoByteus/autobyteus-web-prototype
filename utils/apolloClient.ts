@@ -18,8 +18,9 @@ import { recordTeamLaunch, withLaunchedTeam } from '~/prototype/run-settings/lau
 import { recordOrgLaunch, recordOrgTermination, withLaunchedOrg } from '~/prototype/run-settings/launchedOrgFixture'
 import { withAgentReconnect } from '~/prototype/agent-reconnect/agentReconnectFixture'
 import { designOnlyLayersEnabled, reconnectLayerEnabled } from '~/prototype/shared/design-only-layers'
-// work-journal-search (design-only): the Memory page's lists.
-import { withMemoryDesign } from '~/prototype/memory-search/memoryDesignFixture'
+// memory-baseline-refresh-554 (origin/personal@8430d9ef12): the Memory page's synthetic world, its lists and the memory node
+// beneath the source's memory search, index and Work Journal stores.
+import { isMemoryOperation, memoryOperation, withMemoryWorld } from '~/prototype/memory-search/memoryDesignFixture'
 import { seedDelegatedCopyTasks, withDelegatedCopyTasks } from '~/prototype/delegated-copy-tasks/delegatedCopyTasksFixture'
 import { withModelRouting } from '~/prototype/model-routing/modelRoutingFixture'
 import { withMobileRuns } from '~/prototype/mobile-runs/mobileRunsFixture'
@@ -94,6 +95,13 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   // Mirror the observation node's deterministic failure/latency scenarios.
   const scenario = localScenario()
   if (scenario === 'loading') await new Promise(done => setTimeout(done, 1500))
+  // memory-baseline-refresh-554: the memory node answers the memory search, index and Work Journal reads in the server's shapes.
+  // It answers after a node-like delay (several rendering frames), so the source's "Loading the Work Journal…" view is laid
+  // out before the lines arrive, and the page returns to its top when a result low in a long list opens, as in the source.
+  if (isMemoryOperation(name)) {
+    await new Promise<void>(done => setTimeout(done, 120))
+    return memoryOperation(name, request.variables || {}, scenario)
+  }
   if (scenario === 'error') return { data: null, errors: [{ message: 'Synthetic recoverable GraphQL failure.' }] }
   if (scenario === 'permission_denied') return { data: null, errors: [{ message: 'Synthetic permission denied.' }] }
   const state = fixtureState()
@@ -124,8 +132,8 @@ const resolveLocally = async (request: OperationRequest = {}) => {
   data = withMobileRuns(name, request.variables || {}, data ? structuredClone(data) : data)
   // delegated-runtime-model-routing (design-only): the Model Router's conversation (an internal agent's run opened by its ID).
   if (designOnlyLayersEnabled()) data = data ? withModelRouting(name, request.variables || {}, structuredClone(data), state) : data
-  // work-journal-search (design-only): agents, runs, teams (task teams too) and orgs of the Memory page.
-  if (designOnlyLayersEnabled()) data = withMemoryDesign(name, request.variables || {}, data, scenario)
+  // memory-baseline-refresh-554: agents, runs, teams and orgs of the Memory page (the source ships the page; no longer a design-only layer).
+  data = withMemoryWorld(name, request.variables || {}, data, scenario)
   // skill-sources-dialog-redesign (design-only): the registry-error scenario.
   if (designOnlyLayersEnabled() && name === 'GetSkillSources' && data) data = { ...data, skillSourceRegistryError: designRegistryError(scenario) ?? data.skillSourceRegistryError }
   // integrations-page (design-only): the official integrations repository, once installed, is a managed source.
@@ -151,6 +159,11 @@ const LOCAL_MUTATIONS = new Set([...GITHUB_MUTATIONS, 'UpdateServerSetting', 'De
 const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const definition = request.mutation?.definitions?.find((entry: any) => entry.kind === 'OperationDefinition')
   const name = definition?.name?.value
+  // memory-baseline-refresh-554: Index now / Try again and Rebuild go to the memory node.
+  if (name && isMemoryOperation(name)) {
+    await new Promise<void>(done => setTimeout(done, 40))
+    return memoryOperation(name, request.variables || {}, localScenario())
+  }
   if (!name || !LOCAL_MUTATIONS.has(name)) return { data: {} }
   // WEB-BASELINE-REFRESH-010: a mutation answers after a network-like delay (longer than a rendering frame),
   // like the replaced store actions, so a control disabled while it waits loses focus as in the source.

@@ -1,5 +1,25 @@
 # UI Reference Runbook
 
+## memory-baseline-refresh-554 (the Memory page `/memory` and the Agents page's semantic memory card and field; these reflect `origin/personal@8430d9ef12`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4555
+```
+
+- **Memory**: <http://localhost:4555/memory> opens Browse (Agents, Agent Teams, Agent Orgs); Search and Index are the other two tabs (`?view=home&section=search|index`). A card opens an agent's runs, a Team's or Org's runs with their members; a run or member opens the run inspector (Work Journal, Raw Traces).
+- Search: `ddns updater for the home domain` (nine runs; the last, **writer**, is a run the index knows only by its folder and opens a Work Journal-only inspector), `bunny and tortoise`, `域名 自动更新`, `purple elephant` (none of the words found), `ddns updater cloudflare` (some words not found). A match opens the run's Work Journal at the matched lines; Match 1 / Match 2 switch between them.
+- Voice input in Search shows in the desktop app's window only (voice input is an installed extension there): `localStorage.setItem('autobyteus.prototype.context', 'electron_internal')`, reload. The microphone button plays a scripted capture (Starting, Recording with Cancel recording, Transcribing); the invented transcript joins the typed text and the search waits for **Search**.
+- Starting states (browser console, then reload; remove the key to reset): `localStorage.setItem('autobyteus.prototype.scenario', '<name>')` with
+  `memory_not_indexed` (Index now; the runs have no Work Journal until the build has made them: "No Work Journal yet. Index your memory to create it."),
+  `memory_meaning_running`, `memory_index_failed` (Try again), `memory_model_changed` (Rebuild and its confirmation; search answers by words only, so `purple elephant` shows "No matches"),
+  `memory_search_fails`, `memory_index_unavailable` (the first index status read fails: the error with Retry), `memory_index_start_fails` (not indexed; Index now is refused, the reason shows under the steps),
+  `memory_imported_source` (the source selector lists "Office Mac (imported)"; its runs have no Work Journal: "No Work Journal"), `empty`. The default is an index that is up to date.
+- The build is accelerated: a 400 ms tick per step, about 85 s from Index now to "Up to date"; the page reads the status every 2 s as the source does.
+- **Agents**: the detail page has a **Semantic memory** card: Daily Assistant (built in) is On with its folder (a personal setting), every other agent Off. Edit → the **Semantic memory** checkbox under Avatar; Daily Assistant's carries **Personal** and **Reset to the built-in setting** (Reset turns it Off). Checking it on another agent and saving shows On with the folder on its detail page.
+- The world is invented: `prototype/memory-search/memoryDesignFixture.ts` (lists, the scripted search, generated journals, the index timer: `memoryOperation`), answered through `utils/apolloClient.ts`; the agents' semantic memory in `prototype/source-observation/personal-settings-fixtures.mjs`. State is in memory: a reload resets it. Restart the dev server after editing files under `prototype/` if a change does not show.
+- Evidence: `ui-baseline-report.md` (first section), `evidence/memory-baseline-refresh-554/` (left: the baseline, right: the pinned source).
+
 ## ios-demo-mode-279 (autobyteus-279: the iOS app's demo for App Review; design base `fc68a7a4`)
 
 ```bash
@@ -178,6 +198,8 @@ corepack pnpm dev --port 4830
   Data is invented in `prototype/source-observation/github-integration-fixtures.mjs`; state is in memory and a reload resets it.
 
 ## work-journal-search (Memory page: memory search, Work Journal, memory index; source pin `d74f75a`, design base `205aff6`)
+
+> Superseded for the Memory page by `memory-baseline-refresh-554` above: the page is now the source's (`8430d9ef12`); the stores below are the source's own, answered by `memoryOperation`.
 
 ```bash
 corepack pnpm install --ignore-workspace --frozen-lockfile

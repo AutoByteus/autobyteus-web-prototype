@@ -1,20 +1,20 @@
 import { computed } from 'vue';
 import { useLocalization } from '~/composables/useLocalization';
 import { useMemorySearchStore } from '~/stores/memorySearchStore';
-import type { IndexStep } from '~/prototype/memory-search/memoryDesignFixture';
+import type { IndexStep } from '~/types/memorySearch';
 
 /**
- * How the memory index reads on the Memory page (work-journal-search, design-only): one status for the Index tab,
+ * How the memory index reads on the Memory page (work-journal-search): one status for the Index tab,
  * the badge on its label and the notice on the Search tab, and the text of each step.
  */
 export function useMemoryIndexView() {
-  const { t } = useLocalization();
+  const { t, resolvedLocale } = useLocalization();
   const store = useMemorySearchStore();
-  store.loadIndexStatus();
+  void store.loadIndexStatus();
 
   const index = computed(() => store.index);
 
-  const fmt = (value: number) => value.toLocaleString();
+  const fmt = (value: number) => value.toLocaleString(resolvedLocale.value);
   const percent = (step: IndexStep) => (step.total ? Math.floor((step.done / step.total) * 100) : 0);
   const unit = (step: IndexStep) => t(step.id === 'text' || step.id === 'meaning' ? 'memory.index.unit.files' : 'memory.index.unit.runs');
   const stepName = (id: string) => t(`memory.index.step.${id}.name`);
@@ -28,7 +28,7 @@ export function useMemoryIndexView() {
   const formatTimestamp = (value?: string | null) => {
     if (!value) return '';
     const date = new Date(value);
-    return Number.isNaN(date.getTime()) ? value : date.toLocaleString();
+    return Number.isNaN(date.getTime()) ? value : date.toLocaleString(resolvedLocale.value);
   };
 
   /** Tone: dot colour; `spinner` while a step runs. `attention` = the user may need to act. */
@@ -49,7 +49,7 @@ export function useMemoryIndexView() {
       return { ...none, spinner: true, text: 'text-gray-700', label: t('memory.index.status.building', { number: value.steps.findIndex(s => s.id === current?.id) + 1, step: current ? stepName(current.id) : '', percent: current ? percent(current) : 0 }) };
     }
     if (store.modelChanged) return { ...none, attention: true, dot: 'bg-amber-400', text: 'text-amber-800', label: t('memory.index.status.model_changed') };
-    return { ...none, dot: 'bg-emerald-500', text: 'text-gray-700', label: t('memory.index.status.ready'), detail: t('memory.index.status.ready_detail', { runs: fmt(value.steps[0].total), timestamp: formatTimestamp(value.updatedAt) }) };
+    return { ...none, dot: 'bg-emerald-500', text: 'text-gray-700', label: t('memory.index.status.ready'), detail: t('memory.index.status.ready_detail', { runs: fmt(value.runCount), timestamp: formatTimestamp(value.updatedAt) }) };
   });
 
   /** What the label of the Index tab shows next to its name. */

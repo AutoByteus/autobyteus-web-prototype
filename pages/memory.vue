@@ -39,6 +39,14 @@
       v-else-if="currentView === 'agent-inspector' || currentView === 'team-inspector' || currentView === 'org-inspector'"
       :back-label="inspectorBackLabel"
       @back="backFromInspector"
+      @open-index="changeSection('index')"
+    />
+    <MemoryInspector
+      v-else-if="currentView === 'folder-inspector' && folderRun"
+      :folder-run="folderRun"
+      :back-label="inspectorBackLabel"
+      @back="backFromInspector"
+      @open-index="changeSection('index')"
     />
     <div v-else class="mx-auto mt-6 max-w-3xl rounded-xl border border-gray-200 bg-white p-8">
       <h2 class="text-xl font-bold text-gray-900">{{ $t('memory.pages.memory.invalid_memory_view') }}</h2>
@@ -49,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed, onBeforeUnmount, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import MemoryHome from '~/components/memory/MemoryHome.vue';
 import AgentMemoryDetail from '~/components/memory/AgentMemoryDetail.vue';
@@ -59,7 +67,7 @@ import { useMemoryExplorerStore, type MemoryHomeTab } from '~/stores/memoryExplo
 import { useMemoryInspectorStore } from '~/stores/memoryInspectorStore';
 import { useMemoryJournalStore, type JournalFocus } from '~/stores/memoryJournalStore';
 import { useMemorySearchStore, type MemorySection } from '~/stores/memorySearchStore';
-import type { SearchMatch, SearchResult } from '~/prototype/memory-search/memoryDesignFixture';
+import type { JournalSubject, SearchMatch, SearchResult } from '~/types/memorySearch';
 import type {
   AgentOrgWithMemorySummary,
   AgentRunMemorySummary,
@@ -78,7 +86,7 @@ const inspectorStore = useMemoryInspectorStore();
 const journalStore = useMemoryJournalStore();
 const searchStore = useMemorySearchStore();
 
-const MEMORY_VIEWS = ['home', 'agent-detail', 'team-detail', 'org-detail', 'agent-inspector', 'team-inspector', 'org-inspector'] as const;
+const MEMORY_VIEWS = ['home', 'agent-detail', 'team-detail', 'org-detail', 'agent-inspector', 'team-inspector', 'org-inspector', 'folder-inspector'] as const;
 type MemoryView = typeof MEMORY_VIEWS[number];
 
 const queryValue = (key: string): string | undefined => {
@@ -140,6 +148,13 @@ const collaborationDetail = computed(() => {
   return null;
 });
 
+/** A run the memory index knows only by its folder (no record names it): it has a Work Journal and no memory view. */
+const folderRun = computed(() => {
+  const runKey = queryValue('runKey');
+  if (currentView.value !== 'folder-inspector' || !runKey) return null;
+  return { runKey, runId: queryValue('runId') ?? runKey.split('/').pop() ?? runKey, agentName: queryValue('agentName') ?? null, groupName: queryValue('teamName') ?? null };
+});
+
 const inspectorBackLabel = computed(() => {
   const target = inspectorStore.target;
   if (queryValue('q')) return 'Back to search results';
@@ -150,6 +165,7 @@ const inspectorBackLabel = computed(() => {
 });
 
 watch(() => route.fullPath, () => { void syncRouteState(); }, { immediate: true });
+onBeforeUnmount(() => searchStore.stopPolling());
 
 function routeSourceKey(): string {
   const source = queryValue('source');
@@ -236,23 +252,39 @@ async function syncRouteState() {
     return;
   }
 
+  if (folderRun.value) {
+    inspectorStore.clear();
+    void journalStore.open({ kind: 'folder', runKey: folderRun.value.runKey }, folderRun.value.runId, routeFocus());
+    return;
+  }
+
   const target = buildTargetFromRoute();
   if (target) {
-    const file = queryValue('file');
-    const from = Number(queryValue('from'));
-    const focus: JournalFocus | null = file && Number.isFinite(from) && from > 0
-      ? {
-        file,
-        fromLine: from,
-        toLine: Number(queryValue('to')) || from,
-        cue: queryValue('q') ?? null,
-        kind: queryValue('kind') === 'meaning' ? 'meaning' : queryValue('kind') === 'text' ? 'text' : null,
-        words: (queryValue('words') ?? '').split(',').filter(Boolean),
-      }
-      : null;
-    void journalStore.open(target.kind === 'agent_run' ? target.runId : target.agentRunId, focus);
+    void journalStore.open(journalSubjectOf(target), target.kind === 'agent_run' ? target.runId : target.agentRunId, routeFocus());
     await inspectorStore.inspect(target);
   }
+}
+
+/** The matched lines a search result opened the run at, from the address. */
+function routeFocus(): JournalFocus | null {
+  const file = queryValue('file');
+  const from = Number(queryValue('from'));
+  if (!file || !Number.isFinite(from) || from <= 0) return null;
+  return {
+    file,
+    fromLine: from,
+    toLine: Number(queryValue('to')) || from,
+    cue: queryValue('q') ?? null,
+    kind: queryValue('kind') === 'meaning' ? 'meaning' : queryValue('kind') === 'text' ? 'text' : null,
+    words: (queryValue('words') ?? '').split(',').filter(Boolean),
+  };
+}
+
+function journalSubjectOf(target: MemoryInspectTarget): JournalSubject {
+  const source = target.source ?? { type: 'LOCAL' as const };
+  if (target.kind === 'agent_run') return { kind: 'agent', runId: target.runId, source };
+  if (target.kind === 'org_member_run') return { kind: 'org', orgRunId: target.orgRunId, agentRunId: target.agentRunId, source };
+  return { kind: 'team', teamRunId: target.teamRunId, agentRunId: target.agentRunId, source };
 }
 
 function buildTargetFromRoute(): MemoryInspectTarget | null {
@@ -324,19 +356,29 @@ const changeSection = (section: MemorySection) => pushMemory({
   q: searchStore.query || undefined,
 });
 
-/** A result opens the run's Work Journal at the matched lines (the run detail, Work Journal tab). */
+/**
+ * A result opens the run's Work Journal at the matched lines (the run detail, Work Journal tab), addressed by the
+ * result's subject. Memory search is local only, so the source is always local.
+ */
 const openSearchResult = (result: SearchResult, match: SearchMatch) => {
-  const lines = { q: searchStore.query, file: match.file, from: String(match.fromLine), to: String(match.toLine), kind: match.kind, words: match.matchedWords.join(',') || undefined };
-  if (result.team) {
-    const family = result.team.kind === 'org' ? { view: 'org-inspector', orgName: result.team.name, orgRunId: result.team.runId } : { view: 'team-inspector', teamName: result.team.name, teamRunId: result.team.runId };
-    return pushMemory({ ...family, agentRunId: result.runId, memberName: result.member, ...lines });
+  const lines = { source: undefined, q: searchStore.query, file: match.file, from: String(match.fromLine), to: String(match.toLine), kind: match.kind, words: match.matchedWords.join(',') || undefined };
+  const subject = result.subject;
+  const memberName = result.member ?? result.agentName;
+  if (subject.kind === 'TEAM_MEMBER') {
+    return pushMemory({ view: 'team-inspector', teamName: result.team?.name, teamRunId: subject.teamRunId, agentRunId: subject.agentRunId, memberName, ...lines });
+  }
+  if (subject.kind === 'ORG_MEMBER') {
+    return pushMemory({ view: 'org-inspector', orgName: result.team?.name, orgRunId: subject.orgRunId, agentRunId: subject.agentRunId, memberName, ...lines });
+  }
+  if (subject.kind === 'RUN_FOLDER') {
+    return pushMemory({ view: 'folder-inspector', runKey: subject.runKey, runId: result.runId, agentName: result.agentName, teamName: result.team?.name, ...lines });
   }
   return pushMemory({
     view: 'agent-inspector',
-    agentAttribution: result.agentDefinitionId ? 'DEFINITION' : 'UNATTRIBUTED',
-    agentDefinitionId: result.agentDefinitionId,
+    agentAttribution: subject.agentDefinitionId ? 'DEFINITION' : 'UNATTRIBUTED',
+    agentDefinitionId: subject.agentDefinitionId,
     agentName: result.agentName,
-    runId: result.runId,
+    runId: subject.runId,
     runLabel: result.runId,
     workspace: result.workspace,
     ...lines,
