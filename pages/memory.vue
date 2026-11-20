@@ -12,7 +12,6 @@
       @select-agent="selectAgent"
       @select-team="selectTeam"
       @select-org="selectOrg"
-      @select-semantic="selectSemantic"
       @open-episode="openEpisode"
       @inspect-member="inspectGroupMember"
     />
@@ -21,16 +20,6 @@
       :selector="currentAgentSelector"
       @back="goHome('agents')"
       @inspect-run="inspectAgentRun"
-      @open-semantic="openSemanticFromAgent"
-    />
-    <!-- semantic-memory-view-554 (design): one agent's semantic memory folder, read only. -->
-    <SemanticMemoryDetail
-      v-else-if="currentView === 'semantic-detail' && semanticAgentId"
-      :agent-definition-id="semanticAgentId"
-      :agent-name="queryValue('agentName') ?? null"
-      :back-label="semanticBackLabel"
-      :imported="explorerStore.isImportedSource"
-      @back="backFromSemantic"
     />
     <CollaborationMemoryDetail
       v-else-if="collaborationDetail"
@@ -76,10 +65,7 @@ import MemoryHome from '~/components/memory/MemoryHome.vue';
 import AgentMemoryDetail from '~/components/memory/AgentMemoryDetail.vue';
 import CollaborationMemoryDetail from '~/components/memory/CollaborationMemoryDetail.vue';
 import MemoryInspector from '~/components/memory/MemoryInspector.vue';
-import SemanticMemoryDetail from '~/components/memory/SemanticMemoryDetail.vue';
-import { useSemanticMemoryStore } from '~/stores/semanticMemoryStore';
 import { useLocalization } from '~/composables/useLocalization';
-import type { SemanticMemoryFolder } from '~/types/semanticMemory';
 import { useMemoryBrowseStore, type AgentEpisode, type OwnerNode } from '~/stores/memoryBrowseStore';
 import { useMemoryExplorerStore, type MemoryHomeTab } from '~/stores/memoryExplorerStore';
 import { useMemoryInspectorStore } from '~/stores/memoryInspectorStore';
@@ -103,11 +89,10 @@ const explorerStore = useMemoryExplorerStore();
 const inspectorStore = useMemoryInspectorStore();
 const journalStore = useMemoryJournalStore();
 const searchStore = useMemorySearchStore();
-const semanticStore = useSemanticMemoryStore();
 const browseStore = useMemoryBrowseStore();
 const { t } = useLocalization();
 
-const MEMORY_VIEWS = ['home', 'agent-detail', 'team-detail', 'org-detail', 'agent-inspector', 'team-inspector', 'org-inspector', 'folder-inspector', 'semantic-detail'] as const;
+const MEMORY_VIEWS = ['home', 'agent-detail', 'team-detail', 'org-detail', 'agent-inspector', 'team-inspector', 'org-inspector', 'folder-inspector'] as const;
 type MemoryView = typeof MEMORY_VIEWS[number];
 
 const queryValue = (key: string): string | undefined => {
@@ -143,7 +128,7 @@ const routeSection = (): MemorySection => {
 
 const routeHomeTab = (): MemoryHomeTab => {
   const tab = queryValue('tab');
-  return tab === 'teams' || tab === 'orgs' || tab === 'semantic' ? tab : 'agents';
+  return tab === 'teams' || tab === 'orgs' ? tab : 'agents';
 };
 
 /** Team and org runs rendered by the shared detail view; the family decides which store list and actions apply. */
@@ -175,13 +160,6 @@ const folderRun = computed(() => {
   if (currentView.value !== 'folder-inspector' || !runKey) return null;
   return { runKey, runId: queryValue('runId') ?? runKey.split('/').pop() ?? runKey, agentName: queryValue('agentName') ?? null, groupName: queryValue('teamName') ?? null };
 });
-
-/** semantic-memory-view-554 (design): the folder shown by `view=semantic-detail`, and where Back goes. */
-const semanticAgentId = computed(() => (currentView.value === 'semantic-detail' ? queryValue('agentDefinitionId') ?? null : null));
-const semanticFromRuns = computed(() => queryValue('from') === 'runs');
-const semanticBackLabel = computed(() => (semanticFromRuns.value
-  ? t('memory.semantic.back_to', { name: queryValue('agentName') || semanticAgentId.value || '' })
-  : t('memory.components.memory.AgentMemoryDetail.back_to_memory')));
 
 /** semantic-memory-view-554 (design, round 3): the Browse owner a run was opened from (its tree key). */
 const browseNodeLabel = (key: string): string | null => {
@@ -292,14 +270,6 @@ async function syncRouteState() {
   if (currentView.value === 'org-detail' && currentOrgDefinitionId.value) {
     inspectorStore.clear();
     await explorerStore.fetchOrgRuns(currentOrgDefinitionId.value);
-    return;
-  }
-
-  if (currentView.value === 'semantic-detail' && semanticAgentId.value) {
-    inspectorStore.clear();
-    // An imported source has no semantic memory: the view says so and asks the node for nothing (REQ-008).
-    if (explorerStore.isImportedSource) semanticStore.clearFolder();
-    else await semanticStore.openFolder(semanticAgentId.value);
     return;
   }
 
@@ -452,21 +422,6 @@ const selectAgent = (agent: AgentWithMemorySummary) => pushMemory(agentDetailQue
 
 const selectTeam = (team: AgentTeamWithMemorySummary) =>
   pushMemory({ view: 'team-detail', teamDefinitionId: team.teamDefinitionId, teamName: team.teamDefinitionName });
-
-const selectSemantic = (folder: SemanticMemoryFolder) =>
-  pushMemory({ view: 'semantic-detail', agentDefinitionId: folder.agentDefinitionId, agentName: folder.agentName });
-
-/** From an agent's runs page: Back returns there. */
-const openSemanticFromAgent = () => {
-  const agent = explorerStore.selectedAgent;
-  if (!agent?.agentDefinitionId) return;
-  return pushMemory({ view: 'semantic-detail', from: 'runs', agentDefinitionId: agent.agentDefinitionId, agentName: agent.displayName, agentAttribution: agent.attribution });
-};
-
-const backFromSemantic = () => {
-  if (semanticFromRuns.value) return pushMemory(agentDetailQuery({ attribution: queryValue('agentAttribution') ?? 'DEFINITION', agentDefinitionId: semanticAgentId.value, displayName: queryValue('agentName') }));
-  return goHome('semantic');
-};
 
 /** An agent's episode (from its page's Episodic memory) opens that run's inspector; Back returns to the agent. */
 const openEpisode = (episode: AgentEpisode, nodeKey: string) => {

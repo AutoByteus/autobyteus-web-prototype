@@ -1,5 +1,9 @@
 # Design Review Notes: semantic-memory-view-554
 
+## Approval (2026-11-20)
+
+The founder, after round 6 and the Global line change: "Approved". Final specification: `ui-ux-spec.md`; final screenshots: `visual-references/`.
+
 ## Round 6 (2026-11-20): global semantic memory is in scope (autobyteus-555 merged into 554)
 
 Continued from the closed Product Team run (Task bookkeeping: autobyteus-555 was merged into 554). The Solution
