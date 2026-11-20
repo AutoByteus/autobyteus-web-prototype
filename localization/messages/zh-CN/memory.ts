@@ -126,7 +126,7 @@ const memoryMessages = {
   'memory.semantic.loading_folder': '正在加载文件夹…',
   'memory.semantic.modified': '修改于 {{time}}',
   'memory.semantic.no_file_selected': '未选择文件',
-  'memory.semantic.select_a_file': '在左侧选择一个文件即可阅读。',
+  'memory.semantic.select_a_file': '选择一个文件即可阅读。',
   // semantic-memory-view-554 (design, round 3): Browse as a tree of memory owners.
   'memory.browse.tree_label': '记忆归属',
   'memory.browse.filter_tree': '筛选智能体、团队和组织…',
@@ -151,6 +151,13 @@ const memoryMessages = {
   'memory.group.member_count': '{{count}} 个成员',
   'memory.agent.episodic_short': '情景',
   'memory.agent.semantic_short': '语义',
+  // round 5: Global memory (the node's own semantic memory; autobyteus-555).
+  'memory.global.tab': '全局',
+  'memory.global.title': '全局记忆',
+  'memory.global.subtitle': '本节点上所有智能体共享的知识。',
+  'memory.global.missing_title': '还没有全局记忆',
+  'memory.global.missing_body': '首次写入全局记忆时会创建此文件夹。',
+  'memory.global.empty_body': '还没有向全局记忆写入任何内容。',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;

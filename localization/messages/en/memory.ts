@@ -126,7 +126,7 @@ const memoryMessages = {
   'memory.semantic.loading_folder': 'Loading the folder…',
   'memory.semantic.modified': 'Modified {{time}}',
   'memory.semantic.no_file_selected': 'No file selected',
-  'memory.semantic.select_a_file': 'Select a file on the left to read it.',
+  'memory.semantic.select_a_file': 'Select a file to read it.',
   // semantic-memory-view-554 (design, round 3): Browse as a tree of memory owners.
   'memory.browse.tree_label': 'Memory owners',
   'memory.browse.filter_tree': 'Filter agents, teams and orgs…',
@@ -151,6 +151,13 @@ const memoryMessages = {
   'memory.group.member_count': '{{count}} members',
   'memory.agent.episodic_short': 'Episodic',
   'memory.agent.semantic_short': 'Semantic',
+  // round 5: Global memory (the node's own semantic memory; autobyteus-555).
+  'memory.global.tab': 'Global',
+  'memory.global.title': 'Global memory',
+  'memory.global.subtitle': 'Knowledge shared by every agent on this node.',
+  'memory.global.missing_title': 'No global memory yet',
+  'memory.global.missing_body': 'The folder is created when global memory is first written.',
+  'memory.global.empty_body': 'Nothing has been written to global memory yet.',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;

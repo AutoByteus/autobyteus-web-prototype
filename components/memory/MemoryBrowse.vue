@@ -2,7 +2,7 @@
   <div class="space-y-5" data-test="memory-browse">
     <!-- round 4 (the founder): Browse is the cards he liked. Tabs Agents / Agent Teams / Agent Orgs (Global joins them
          with autobyteus-555), no filter box: a node holds few agents, teams and orgs. A card opens its owner's page. -->
-    <template v-if="!node || node.kind === 'group'">
+    <template v-if="nodeKey === 'global' || !node || node.kind === 'group'">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-1" role="tablist">
           <button
@@ -26,7 +26,15 @@
         </div>
       </div>
 
-      <div v-if="browse.loading && !browse.loaded" class="py-16 text-center text-sm text-gray-500">{{ $t('memory.components.memory.MemoryHome.loading_memory_catalog') }}</div>
+      <!-- round 5 (the founder): Global memory, the node's own semantic memory, shared by every agent (autobyteus-555). -->
+      <div v-if="nodeKey === 'global'" class="space-y-5" data-test="global-memory-page">
+        <header>
+          <h1 class="text-xl font-semibold text-gray-900">{{ $t('memory.global.title') }}</h1>
+          <p class="mt-1 text-sm text-gray-500">{{ $t('memory.global.subtitle') }}</p>
+        </header>
+        <SemanticMemoryFolder :agent-definition-id="GLOBAL_SEMANTIC_ID" :agent-name="$t('memory.global.title')" :imported="imported" global />
+      </div>
+      <div v-else-if="browse.loading && !browse.loaded" class="py-16 text-center text-sm text-gray-500">{{ $t('memory.components.memory.MemoryHome.loading_memory_catalog') }}</div>
       <div v-else-if="browse.error" class="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
         {{ browse.error }}
         <button class="ml-2 font-semibold underline" @click="load">{{ $t('memory.results.retry') }}</button>
@@ -86,6 +94,8 @@ import { computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import AgentMemoryPage from './AgentMemoryPage.vue';
 import GroupMemoryPage from './GroupMemoryPage.vue';
+import SemanticMemoryFolder from './SemanticMemoryFolder.vue';
+import { GLOBAL_SEMANTIC_ID } from '~/prototype/memory-semantic/semanticMemoryFixture';
 import { useLocalization } from '~/composables/useLocalization';
 import { useMemoryBrowseStore, type AgentEpisode, type OwnerNode } from '~/stores/memoryBrowseStore';
 import { useMemoryExplorerStore } from '~/stores/memoryExplorerStore';
@@ -116,6 +126,7 @@ const nodeKey = computed(() => String(queryValue('node') ?? 'agents'));
 const pane = computed(() => String(queryValue('pane') ?? ''));
 
 const groupTabs = [
+  { key: 'global', label: 'memory.global.tab' },
   { key: 'agents', label: 'memory.components.memory.MemoryHome.agents' },
   { key: 'teams', label: 'memory.components.memory.MemoryHome.agent_teams' },
   { key: 'orgs', label: 'memory.components.memory.MemoryHome.agent_orgs' },

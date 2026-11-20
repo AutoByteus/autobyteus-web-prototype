@@ -16,10 +16,17 @@
 import type { SemanticMemoryFile, SemanticMemoryFileList, SemanticMemoryFolder } from '~/types/semanticMemory'
 
 const MEMORY_DIR = '/Users/dev/.autobyteus/server-data/memory'
-export const semanticFolderPathOf = (agentDefinitionId: string) => `${MEMORY_DIR}/semantic/${encodeURIComponent(agentDefinitionId)}`
+/**
+ * round 5 (the founder): Global memory, the node's own semantic memory, shared by every agent. Its folder belongs to
+ * autobyteus-555 (still open); `<memory>/semantic-global` is an illustrative placeholder, not a decided path.
+ */
+export const GLOBAL_SEMANTIC_ID = '__global__'
+export const semanticFolderPathOf = (agentDefinitionId: string) => (agentDefinitionId === GLOBAL_SEMANTIC_ID
+  ? `${MEMORY_DIR}/semantic-global`
+  : `${MEMORY_DIR}/semantic/${encodeURIComponent(agentDefinitionId)}`)
 
 type FileSpec = { path: string; at: string; text?: string; image?: boolean; link?: string }
-type FolderSpec = { id: string; name: string; internal?: boolean; files: FileSpec[] }
+type FolderSpec = { id: string; name: string; internal?: boolean; global?: boolean; files: FileSpec[] }
 
 const doc = (lines: string[]) => lines.join('\n')
 
@@ -164,6 +171,15 @@ const CHART_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="3
 /* -------------------------------------------------------------------- folders (invented) */
 
 const FOLDERS: FolderSpec[] = [
+  // Global memory (round 5): what every agent on this node may read. Invented content.
+  {
+    id: GLOBAL_SEMANTIC_ID, name: 'Global memory', global: true, files: [
+      { path: 'conventions.md', at: '2026-10-26T07:30:00.000Z', text: doc(['# Conventions on this node', '', '- Projects live under `~/projects`; notes under `~/notes`.', '- Commit messages: a short summary line, then the details.', '- Dates are written as YYYY-MM-DD; times in Europe/Berlin.']) },
+      { path: 'people.md', at: '2026-10-24T09:00:00.000Z', text: doc(['# People', '', '- The user reviews Tasks in the morning and prefers short updates.', '- Questions go to the user as one message with numbered points.']) },
+      { path: 'tools/router.md', at: '2026-10-22T18:00:00.000Z', text: doc(['# Home router', '', '- The admin page is at `http://192.0.2.1` (illustrative).', '- Restarting it takes about two minutes; runs that need the network wait.']) },
+      { path: 'reflections/index.md', at: '2026-10-20T08:00:00.000Z', text: doc(['# Reflections', '', '- **2026-10-20** — Several agents asked the user the same question about the project folders; it is written in `conventions.md` now.']) },
+    ],
+  },
   {
     id: 'project-task-manager', name: 'Project Task Manager', files: [
       { path: 'reflections/index.md', at: '2026-10-26T08:44:00.000Z', text: PTM_INDEX },
@@ -278,7 +294,7 @@ export const semanticMemoryOperation = (
       return { errors: [{ message: 'The node could not list the semantic memory folders. (synthetic failure)' }] }
     }
     const list: SemanticMemoryFolder[] = folders
-      .filter(folder => showInternalAgents || !folder.internal)
+      .filter(folder => !folder.global && (showInternalAgents || !folder.internal))
       .map(folder => {
         const entries = filesOf(folder, scenario).map(spec => entryOf(folder, spec))
         return {

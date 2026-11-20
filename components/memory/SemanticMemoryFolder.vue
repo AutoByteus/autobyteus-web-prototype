@@ -14,8 +14,8 @@
 
     <!-- A missing folder is not created by the view; it appears when the agent next runs. An empty one says so too (REQ-005). -->
     <div v-else-if="folder && (!folder.exists || folder.files.length === 0)" class="py-12 text-center" data-test="semantic-memory-empty">
-      <h2 class="text-sm font-medium text-gray-700">{{ $t('memory.semantic.missing_title') }}</h2>
-      <p class="mx-auto mt-1 max-w-lg text-sm text-gray-500">{{ folder.exists ? $t('memory.semantic.empty_body', { name: agentName }) : $t('memory.semantic.missing_body', { name: agentName }) }}</p>
+      <h2 class="text-sm font-medium text-gray-700">{{ global ? $t('memory.global.missing_title') : $t('memory.semantic.missing_title') }}</h2>
+      <p class="mx-auto mt-1 max-w-lg text-sm text-gray-500">{{ global ? (folder.exists ? $t('memory.global.empty_body') : $t('memory.global.missing_body')) : folder.exists ? $t('memory.semantic.empty_body', { name: agentName }) : $t('memory.semantic.missing_body', { name: agentName }) }}</p>
     </div>
 
     <template v-else-if="folder && workspaceId">
@@ -48,7 +48,8 @@ import { useWorkspaceStore } from '~/stores/workspace';
  * context menu, rename, drag and drop or upload, preview only, a symbolic link listed as "Link · not opened", and the
  * search box searches file names inside this folder. A missing folder is never created by the view.
  */
-const props = defineProps<{ agentDefinitionId: string; agentName: string; imported: boolean }>();
+/** `global`: the node's Global memory (round 5), not an agent's. */
+const props = defineProps<{ agentDefinitionId: string; agentName: string; imported: boolean; global?: boolean }>();
 
 const store = useSemanticMemoryStore();
 const workspaceStore = useWorkspaceStore();

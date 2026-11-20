@@ -4,7 +4,7 @@
 
 - Ticket / request ID: `semantic-memory-view-554` (package `semantic-memory-for-every-agent`, Project Task autobyteus-554)
 - Title: Semantic memory ON for every agent + a read-only view of each agent's semantic memory in the Memory area
-- Status: `Awaiting User Review` (round 4 sent 2026-11-20: Browse back to the cards, organised by owner, no list search; agent page with Episodic and Semantic memory)
+- Status: `Awaiting User Review` (round 5 sent 2026-11-20: the Global tab, at the founder's request; global memory itself is autobyteus-555)
 - Requested by: Solution Designer (`solution_designer_703182187282472484b90793eac8be40`), for the founder, 2026-11-19
 - Related requirements revision: `requirements-doc.md` SR-003 (`/Users/normy/autobyteus_org/autobyteus-worktrees/semantic-memory-for-every-agent/tickets/in-progress/semantic-memory-for-every-agent/requirements-doc.md`)
 - Related IDs: REQ-004, REQ-005, REQ-006, REQ-007, REQ-008; AC-004 … AC-008; DEC-003, DEC-004, DEC-005, DEC-008, DEC-009

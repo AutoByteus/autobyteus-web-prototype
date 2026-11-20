@@ -1,5 +1,18 @@
 # Design Review Notes: semantic-memory-view-554
 
+## Round 5 (2026-11-20): the Global tab
+
+The founder, on his phone: "Here we don't have the global tab, let's add this global tab". Browse tabs are now
+**Global · Agents · Agent Teams · Agent Orgs** (Agents stays the tab Browse opens on). Global is the node's own memory,
+semantic only: "Global memory", "Knowledge shared by every agent on this node.", the folder path, and the same
+read-only folder view as an agent's Semantic memory (explorer, preview-only tabs, links listed never opened, name
+search in the folder). Its own empty states: "No global memory yet · The folder is created when global memory is first
+written." and "Nothing has been written to global memory yet."; an imported source shows the not-synced note.
+The global folder, its path (`<memory>/semantic-global` here) and its content are illustrative: global semantic memory
+is autobyteus-555 (open). The empty-file message is now "Select a file to read it." (the file list is not always on
+the left).
+
+
 ## Round 4 (2026-11-20): Browse back to cards, organised by owner; no list search
 
 The founder on round 3: "I still like the … agent, agent team, agent organization and I will have global memory …
