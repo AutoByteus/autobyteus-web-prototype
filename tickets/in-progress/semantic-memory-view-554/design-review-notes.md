@@ -23,6 +23,15 @@ words "the global memory is just like other semantic memory, it's just a folder"
 
 Round 5's "illustrative until autobyteus-555" no longer applies. Nothing else changed.
 
+Founder on round 6 (direct, 2026-11-20): "basically feels like the navigation follows the hierarchy seems to be good
+… when I click a global memory it's just a file Explorer which is good when I click agent it shows all those agent I
+can click into it then I can select semantic memory and … episodic memory … the same for agent teams for agent
+organizations the navigation follows hierarchy". On the Global line: "I think a global memory is shared by every agent
+and also every agent team and every agent organization". The line is now "Knowledge shared by every agent, agent team
+and agent org on this node. Every agent reads it and writes to it." (zh-CN "本节点上所有智能体、智能体团队和智能体组织共享的
+知识。每个智能体都会读取和写入它。"). Copy only: team and org members are agents, so REQ-010's "shared by every agent"
+already covers it (DEC-013 says "in every Project and team").
+
 How to look: Memory → Browse → **Global**; open `product.md`. Missing state:
 `localStorage.setItem('autobyteus.prototype.scenario', 'empty')`, reload, Global.
 

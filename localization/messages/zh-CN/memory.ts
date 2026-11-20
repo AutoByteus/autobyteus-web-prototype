@@ -154,7 +154,7 @@ const memoryMessages = {
   // round 6: Global memory, the node's global semantic folder (REQ-010…012).
   'memory.global.tab': '全局',
   'memory.global.title': '全局记忆',
-  'memory.global.subtitle': '本节点上所有智能体共享的知识。每个智能体都会读取和写入它。',
+  'memory.global.subtitle': '本节点上所有智能体、智能体团队和智能体组织共享的知识。每个智能体都会读取和写入它。',
   'memory.global.missing_title': '还没有全局记忆',
   'memory.global.missing_body': '智能体下次运行时会创建此文件夹。',
   'memory.global.empty_body': '还没有向全局记忆写入任何内容。',

@@ -154,7 +154,7 @@ const memoryMessages = {
   // round 6: Global memory, the node's global semantic folder (REQ-010…012).
   'memory.global.tab': 'Global',
   'memory.global.title': 'Global memory',
-  'memory.global.subtitle': 'Knowledge shared by every agent on this node. Every agent reads it and writes to it.',
+  'memory.global.subtitle': 'Knowledge shared by every agent, agent team and agent org on this node. Every agent reads it and writes to it.',
   'memory.global.missing_title': 'No global memory yet',
   'memory.global.missing_body': 'The folder is created when an agent next runs.',
   'memory.global.empty_body': 'Nothing has been written to global memory yet.',
