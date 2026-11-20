@@ -41,3 +41,9 @@
 
 - Outcome: `Design Completed`, returned to the Solution Designer (`solution_designer_703182187282472484b90793eac8be40`).
 - Integration: see the Integration section (added by the integration record commit).
+
+## Integration
+
+- Result: `Completed` (2026-11-20). Final ticket commit `08e1dbe86924197a72acd35db9020a74e219854c` pushed to `origin/personal` as a fast-forward from the accepted base `0e729ec8`; the canonical checkout `/Users/normy/autobyteus_org/autobyteus-web-design` fast-forwarded to the same revision. This integration record is a later commit on `personal` (pushed the same way).
+- Default-entry check: the approved journeys are on `personal` and reached from `/` → Memory → Browse (Global · Agents · Agent Teams · Agent Orgs) with no preview URL or preview-only state; final click-through and screenshots were made on that exact revision.
+- Cleanup: dev server on port 4554 stopped; Tailscale Serve entry `https://normys-macbook-pro.tail0347f8.ts.net:8445` (added by this ticket) turned off, other entries unchanged; worktree `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/semantic-memory-view-554` removed; local branch `design/semantic-memory-view-554` deleted (never pushed).
