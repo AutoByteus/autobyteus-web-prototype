@@ -12,9 +12,9 @@ const personalAvatar = (letter) => `data:image/svg+xml;utf8,${encodeURIComponent
 
 /**
  * memory-baseline-refresh-554 (origin/personal@8430d9ef12): an agent's semantic memory folder as the node reports it
- * (`<memory>/semantic/<encodeURIComponent(agentDefinitionId)>`, absolute); the memory folder is invented.
+ * (`<memory>/semantic/<encodeURIComponent(agentDefinitionId)>`, absolute); the memory folder is the founder's node's (round 6 of semantic-memory-view-554).
  */
-export const semanticMemoryPathOf = (agentDefinitionId) => `/Users/dev/.autobyteus/server-data/memory/semantic/${encodeURIComponent(agentDefinitionId)}`
+export const semanticMemoryPathOf = (agentDefinitionId) => `/Users/normy/.autobyteus/server-data/memory/semantic/${encodeURIComponent(agentDefinitionId)}`
 
 const LAUNCH_PERSONAL = Object.freeze({ __typename: 'DefaultLaunchConfig', llmModelIdentifier: 'mock/reasoning-prototype', runtimeKind: 'autobyteus', llmConfig: null })
 

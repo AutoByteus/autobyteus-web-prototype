@@ -15,7 +15,7 @@ import type { AgentOrgWithMemorySummary, AgentTeamWithMemorySummary, AgentWithMe
 /**
  * semantic-memory-view-554 (design, round 3): Browse as a tree of memory owners.
  * Agents (standalone, then "Unattributed runs"), Agent Teams (each with its member agents), Agent Orgs (each with its
- * teams and agents). Global (the node) is not shown until autobyteus-555 ships. An agent's page has its episodic memory
+ * teams and agents). Global (the node's semantic folder) is a Browse tab of its own (round 5). An agent's page has its episodic memory
  * (its runs from every place it works, newest first) and its semantic memory (its folder). In the product the tree's
  * membership comes from the definitions; here from prototype/memory-semantic/memoryOwnersFixture.ts.
  */

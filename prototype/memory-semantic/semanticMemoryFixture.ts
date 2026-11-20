@@ -15,10 +15,12 @@
  */
 import type { SemanticMemoryFile, SemanticMemoryFileList, SemanticMemoryFolder } from '~/types/semanticMemory'
 
-const MEMORY_DIR = '/Users/dev/.autobyteus/server-data/memory'
+const MEMORY_DIR = '/Users/normy/.autobyteus/server-data/memory'
 /**
- * round 5 (the founder): Global memory, the node's own semantic memory, shared by every agent. Its folder belongs to
- * autobyteus-555 (still open); `<memory>/semantic-global` is an illustrative placeholder, not a decided path.
+ * round 6 (requirements REQ-010…012, DEC-012…014): Global memory, the node's one global semantic folder,
+ * `<memory>/semantic-global`, a sibling of `semantic/`. Every agent reads and writes it; the view only reads it.
+ * The memory folder is the founder's node's (`/Users/normy/.autobyteus/server-data/memory`), so the paths read as on
+ * his node; every folder's content stays invented.
  */
 export const GLOBAL_SEMANTIC_ID = '__global__'
 export const semanticFolderPathOf = (agentDefinitionId: string) => (agentDefinitionId === GLOBAL_SEMANTIC_ID
@@ -171,13 +173,13 @@ const CHART_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="3
 /* -------------------------------------------------------------------- folders (invented) */
 
 const FOLDERS: FolderSpec[] = [
-  // Global memory (round 5): what every agent on this node may read. Invented content.
+  // Global memory (round 6): facts true for every agent, written by the agents themselves (DEC-013). Invented content.
   {
     id: GLOBAL_SEMANTIC_ID, name: 'Global memory', global: true, files: [
-      { path: 'conventions.md', at: '2026-10-26T07:30:00.000Z', text: doc(['# Conventions on this node', '', '- Projects live under `~/projects`; notes under `~/notes`.', '- Commit messages: a short summary line, then the details.', '- Dates are written as YYYY-MM-DD; times in Europe/Berlin.']) },
-      { path: 'people.md', at: '2026-10-24T09:00:00.000Z', text: doc(['# People', '', '- The user reviews Tasks in the morning and prefers short updates.', '- Questions go to the user as one message with numbered points.']) },
-      { path: 'tools/router.md', at: '2026-10-22T18:00:00.000Z', text: doc(['# Home router', '', '- The admin page is at `http://192.0.2.1` (illustrative).', '- Restarting it takes about two minutes; runs that need the network wait.']) },
-      { path: 'reflections/index.md', at: '2026-10-20T08:00:00.000Z', text: doc(['# Reflections', '', '- **2026-10-20** — Several agents asked the user the same question about the project folders; it is written in `conventions.md` now.']) },
+      { path: 'product.md', at: '2026-10-26T07:30:00.000Z', text: doc(['# The product', '', 'netpanel is a web page for a home router: its settings, the devices on the network and their limits.', '', '- Users are people at home, not network engineers; plain words first.', '- The current version is 0.4; the settings page is being redesigned (autobyteus-41).']) },
+      { path: 'glossary.md', at: '2026-10-25T16:10:00.000Z', text: doc(['# Words we use', '', '- **Device**: anything on the home network. Not "client" or "host".', '- **Limit**: a device\'s time or data allowance. Not "quota".', '- **Settings page**: the router\'s page in netpanel. Not "admin panel".']) },
+      { path: 'user-rules.md', at: '2026-10-24T09:00:00.000Z', text: doc(['# The user\'s standing rules', '', '- Dates as YYYY-MM-DD; times in Europe/Berlin.', '- Short updates; questions in one message with numbered points.', '- Never push to `main` without the user\'s word.']) },
+      { path: 'reflections/index.md', at: '2026-10-20T08:00:00.000Z', text: doc(['# Reflections', '', '- **2026-10-20** — Three agents asked the user what "the panel" means; the answer is in `product.md` now.']) },
     ],
   },
   {

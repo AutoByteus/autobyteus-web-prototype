@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-5" data-test="memory-browse">
-    <!-- round 4 (the founder): Browse is the cards he liked. Tabs Agents / Agent Teams / Agent Orgs (Global joins them
-         with autobyteus-555), no filter box: a node holds few agents, teams and orgs. A card opens its owner's page. -->
+    <!-- round 4 (the founder): Browse is the cards he liked. Tabs Global (round 5) / Agents / Agent Teams / Agent
+         Orgs, no filter box: a node holds few agents, teams and orgs. A card opens its owner's page. -->
     <template v-if="nodeKey === 'global' || !node || node.kind === 'group'">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex flex-wrap items-center gap-1" role="tablist">
@@ -26,7 +26,7 @@
         </div>
       </div>
 
-      <!-- round 5 (the founder): Global memory, the node's own semantic memory, shared by every agent (autobyteus-555). -->
+      <!-- round 5 (the founder): Global memory, the node's own semantic memory, shared by every agent; `<memory>/semantic-global` (round 6). -->
       <div v-if="nodeKey === 'global'" class="space-y-5" data-test="global-memory-page">
         <header>
           <h1 class="text-xl font-semibold text-gray-900">{{ $t('memory.global.title') }}</h1>
@@ -103,7 +103,7 @@ import type { CollaborationMemberMemoryTargetSummary } from '~/types/memory';
 
 /**
  * semantic-memory-view-554 (design, round 4): Memory → Browse, organised by memory owner. Tabs Agents / Agent Teams /
- * Agent Orgs with their cards (Global joins them with autobyteus-555 and has semantic memory only). An agent card
+ * Agent Orgs with their cards (Global, first since round 5, has semantic memory only). An agent card
  * opens the agent's page (Episodic and Semantic memory); a team or org card opens its page (Members and Runs), whose
  * members open their own pages. The open owner and its tab are in the address (`node`, `pane`), so Back from a run's
  * Work Journal returns to the same place.

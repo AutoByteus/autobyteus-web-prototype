@@ -1,5 +1,31 @@
 # Design Review Notes: semantic-memory-view-554
 
+## Round 6 (2026-11-20): global semantic memory is in scope (autobyteus-555 merged into 554)
+
+Continued from the closed Product Team run (Task bookkeeping: autobyteus-555 was merged into 554). The Solution
+Designer's decisions (requirements SR-006: REQ-010…012, DEC-012…014; design-spec SR-006 Revision), on the founder's
+words "the global memory is just like other semantic memory, it's just a folder":
+
+- **Path:** the global folder is `<memory>/semantic-global`, a sibling of `semantic/`. The reference now uses the
+  founder's node's memory folder, so Global shows `/Users/normy/.autobyteus/server-data/memory/semantic-global` and
+  every agent's folder `/Users/normy/.autobyteus/server-data/memory/semantic/<id>` (Memory page and Agents page). The
+  folders' content stays invented.
+- **Missing state** (rare: the folder is created at every agent run start): "No global memory yet · The folder is
+  created when an agent next runs." (zh-CN "还没有全局记忆 · 智能体下次运行时会创建此文件夹。"). The empty state is
+  unchanged: "Nothing has been written to global memory yet."
+- **Who writes:** every agent reads and writes the folder. The line under the title now says so: "Knowledge shared by
+  every agent on this node. Every agent reads it and writes to it." (zh-CN "本节点上所有智能体共享的知识。每个智能体都会
+  读取和写入它。"). The view stays read-only, with the five engineering points of round 2 (link rows, no edit
+  affordance, never creates the folder, not in the workspace lists, search in the folder only).
+- **Content (illustrative):** what DEC-013 tells agents to keep there: `product.md` (what the product is),
+  `glossary.md` (the words it uses), `user-rules.md` (the user's standing rules), `reflections/index.md`.
+- **Imported source:** the not-synced note, unchanged.
+
+Round 5's "illustrative until autobyteus-555" no longer applies. Nothing else changed.
+
+How to look: Memory → Browse → **Global**; open `product.md`. Missing state:
+`localStorage.setItem('autobyteus.prototype.scenario', 'empty')`, reload, Global.
+
 ## Round 5 (2026-11-20): the Global tab
 
 The founder, on his phone: "Here we don't have the global tab, let's add this global tab". Browse tabs are now

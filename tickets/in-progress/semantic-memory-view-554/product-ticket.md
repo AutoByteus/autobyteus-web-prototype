@@ -4,14 +4,15 @@
 
 - Ticket / request ID: `semantic-memory-view-554` (package `semantic-memory-for-every-agent`, Project Task autobyteus-554)
 - Title: Semantic memory ON for every agent + a read-only view of each agent's semantic memory in the Memory area
-- Status: `Awaiting User Review` (round 5 sent 2026-11-20: the Global tab, at the founder's request; global memory itself is autobyteus-555)
+- Status: `Awaiting User Review` (round 6, 2026-11-20: global semantic memory in scope, autobyteus-555 merged into 554; continued from the closed run `product_ui_ux_designer_739b35efd1914f8e961b2cb34b3b5f19`)
 - Requested by: Solution Designer (`solution_designer_703182187282472484b90793eac8be40`), for the founder, 2026-11-19
-- Related requirements revision: `requirements-doc.md` SR-003 (`/Users/normy/autobyteus_org/autobyteus-worktrees/semantic-memory-for-every-agent/tickets/in-progress/semantic-memory-for-every-agent/requirements-doc.md`)
-- Related IDs: REQ-004, REQ-005, REQ-006, REQ-007, REQ-008; AC-004 … AC-008; DEC-003, DEC-004, DEC-005, DEC-008, DEC-009
+- Related requirements revision: `requirements-doc.md` SR-006 (earlier rounds against SR-003) (`/Users/normy/autobyteus_org/autobyteus-worktrees/semantic-memory-for-every-agent/tickets/in-progress/semantic-memory-for-every-agent/requirements-doc.md`)
+- Related IDs: REQ-004 … REQ-008, REQ-010 … REQ-012; AC-004 … AC-010; DEC-003, DEC-004, DEC-005, DEC-008 … DEC-014
 - Critical journey: Memory → Browse → (the agents with semantic memory) → an agent's semantic folder → its files → a file's content; and Memory → Browse → Agents → an agent's runs page → its semantic memory. Agents page → an agent's detail shows its folder path.
 - Decision questions: entry point; how the list of agents with semantic memory looks; how a folder's files are browsed; how a file's content is shown; empty, loading, error and edge states (empty / missing folder, symbolic link, truncated listing, imported memory source, internal agents).
 - In scope: `/memory` Browse section and the agent's runs page; the new semantic memory view; the Agents page's agent detail (folder path for every agent; the switch is removed); en and zh-CN.
-- Non-goals: the phone; editing or deleting semantic files; global semantic memory (autobyteus-555, room only); server or runtime behavior.
+- In scope since round 6: Browse → Global, the node's global semantic folder `<memory>/semantic-global` (REQ-012).
+- Non-goals: the phone; editing or deleting semantic files; server or runtime behavior.
 
 ## Design & Repository Context
 
@@ -21,7 +22,7 @@
 - Pinned source revision for the scoped surfaces: `origin/personal@8430d9ef12` (after the refresh)
 - Accepted base revision: `0e729ec82e44136c5930f59b4005e829dd6b688b` (`personal` after the baseline refresh `memory-baseline-refresh-554` was accepted and integrated)
 - Baseline report: `/Users/normy/autobyteus_org/autobyteus-web-design/ui-baseline-report.md`
-- Runtime isolation: dev server port 4554 owned by this ticket; in-memory state, reset by reload
+- Runtime isolation: dev server port 4554 owned by this ticket (`__VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=normys-macbook-pro.tail0347f8.ts.net corepack pnpm dev --host 127.0.0.1 --port 4554`, the host name allowed for the Tailscale URL); in-memory state, reset by reload
 - Ticket folder: `tickets/in-progress/semantic-memory-view-554/`
 
 ## Delivery (in progress)
@@ -33,4 +34,5 @@
 
 ## Outcome And Handoff
 
-- Next expected action: the founder reviews round 1 (through the Solution Designer); feedback → `In Progress`; approval → final screenshots and `ui-ux-spec.md`.
+- Round 6 checked in the browser (1440×900, en and zh-CN): Global with files, a file open, the missing state (`empty`).
+- Next expected action: the founder reviews round 6 (through the Solution Designer `solution_designer_703182187282472484b90793eac8be40`); feedback → `In Progress`; approval → final screenshots and `ui-ux-spec.md`.
