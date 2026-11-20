@@ -149,6 +149,8 @@ const memoryMessages = {
   'memory.group.runs': '运行',
   'memory.group.shared_agent': '共享智能体',
   'memory.group.member_count': '{{count}} 个成员',
+  'memory.agent.episodic_short': '情景',
+  'memory.agent.semantic_short': '语义',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;

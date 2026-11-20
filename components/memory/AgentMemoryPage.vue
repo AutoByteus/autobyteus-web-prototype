@@ -10,19 +10,20 @@
     </header>
 
     <div class="flex flex-wrap items-center justify-between gap-3">
-      <div class="inline-flex rounded-lg border border-gray-200 bg-white p-1" role="tablist">
+      <div class="flex w-full rounded-lg border border-gray-200 bg-white p-1 sm:inline-flex sm:w-auto" role="tablist">
         <button
           v-for="tab in tabs"
           :key="tab.id"
           type="button"
           role="tab"
           :aria-selected="pane === tab.id"
-          class="flex items-center gap-2 rounded-md px-4 py-1.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          class="flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition focus:outline-none sm:flex-none sm:px-4 focus-visible:ring-2 focus-visible:ring-blue-500"
           :class="pane === tab.id ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
           :data-test="`agent-memory-tab-${tab.id}`"
           @click="$emit('changePane', tab.id)"
         >
-          {{ tab.label }}
+          <!-- Below 640 px the short label ("Episodic", "Semantic") keeps both tabs on one line. -->
+          <span class="sm:hidden">{{ tab.short }}</span><span class="hidden sm:inline">{{ tab.label }}</span>
           <span v-if="tab.id === 'episodic' && !browse.episodes.loading && browse.episodes.agentKey === episodesKey" class="text-xs font-semibold" :class="pane === tab.id ? 'text-blue-100' : 'text-gray-400'">{{ browse.episodes.items.length }}</span>
         </button>
       </div>
@@ -84,8 +85,8 @@ watch(() => props.agentDefinitionId, () => { filter.value = ''; });
 
 const episodesKey = computed(() => props.agentDefinitionId ?? 'unattributed');
 const tabs = computed(() => [
-  { id: 'episodic' as const, label: t('memory.agent.episodic') },
-  ...(props.agentDefinitionId ? [{ id: 'semantic' as const, label: t('memory.agent.semantic') }] : []),
+  { id: 'episodic' as const, label: t('memory.agent.episodic'), short: t('memory.agent.episodic_short') },
+  ...(props.agentDefinitionId ? [{ id: 'semantic' as const, label: t('memory.agent.semantic'), short: t('memory.agent.semantic_short') }] : []),
 ]);
 
 /** Team-local: "Belongs to <team>". Shared: "Also in <teams and orgs>". Unattributed: what the group is. */

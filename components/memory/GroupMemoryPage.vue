@@ -10,14 +10,14 @@
     </header>
 
     <!-- Members and Runs. Room for a later team-, org- or global-level "shared facts" tab (not shown). -->
-    <div class="inline-flex rounded-lg border border-gray-200 bg-white p-1" role="tablist">
+    <div class="inline-flex max-w-full overflow-x-auto rounded-lg border border-gray-200 bg-white p-1" role="tablist">
       <button
         v-for="tab in tabs"
         :key="tab.id"
         type="button"
         role="tab"
         :aria-selected="pane === tab.id"
-        class="flex items-center gap-2 rounded-md px-4 py-1.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        class="flex flex-shrink-0 items-center gap-2 whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         :class="pane === tab.id ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'"
         :data-test="`group-memory-tab-${tab.id}`"
         @click="$emit('changePane', tab.id)"

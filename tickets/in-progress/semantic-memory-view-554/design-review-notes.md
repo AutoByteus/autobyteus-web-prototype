@@ -1,5 +1,26 @@
 # Design Review Notes: semantic-memory-view-554
 
+## Round 4 (2026-11-20): Browse back to cards, organised by owner; no list search
+
+The founder on round 3: "I still like the … agent, agent team, agent organization and I will have global memory …
+on the memory page … you have global memory, you have agent level memory, agent team level, organization level memory
+and the browse will possibly have this … like earlier. I don't like the search for the agent or agent team or agents
+… because it's very inconvenient … the user don't have so many agents, agent teams or agent organizations, why do we
+need this search … the original UI I like: when I click the agents you show the … agents cards and then I click into
+it … when we click into it we want to show episodic and the semantic. For Global memory of course it's possibly only
+semantic."
+
+- **Browse**: the original tabs **Agents / Agent Teams / Agent Orgs** with their cards (no filter box on these lists;
+  the memory-source selector stays at the right when memory is imported). Global joins as the first tab with
+  autobyteus-555, semantic memory only; not shown now. The round-3 tree is removed.
+- **Agents** cards: name, ID, latest change (no run count: an agent's runs come from every place, counted on its page);
+  "Unattributed runs" last. **Agent Teams** / **Agent Orgs** cards: name, ID, "N runs", "N members · latest change".
+- A card opens its owner's page under "← Back to Memory" (to the same tab). **Agent page** (as round 3): name, "Belongs
+  to <team>" or "Also works in …", ID, tabs **Episodic memory · N** / **Semantic memory** (below 640 px "Episodic" /
+  "Semantic"), the run filter on Episodic (the original runs page's), the round-2 read-only folder on Semantic.
+  **Team / org page** (as round 3): **Members** (each opens its page, "← Back to <team>") and **Runs**.
+
+
 ## Round 3 (2026-11-19): Browse as a tree of memory owners
 
 The founder after round 2 (through the Solution Designer): "the work journal is the episodic memory and then each agent

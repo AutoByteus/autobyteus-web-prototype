@@ -149,6 +149,8 @@ const memoryMessages = {
   'memory.group.runs': 'Runs',
   'memory.group.shared_agent': 'Shared agent',
   'memory.group.member_count': '{{count}} members',
+  'memory.agent.episodic_short': 'Episodic',
+  'memory.agent.semantic_short': 'Semantic',
 } satisfies TranslationCatalog;
 
 export default memoryMessages;

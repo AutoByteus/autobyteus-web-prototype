@@ -1,36 +1,40 @@
 <template>
-  <div class="flex flex-col gap-5 xl:flex-row xl:items-start" data-test="memory-browse">
-    <!-- The tree of memory owners. Below 1280 px it sits above the page. -->
-    <aside class="w-full flex-shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-white xl:sticky xl:top-8 xl:w-72">
-      <div class="space-y-2 border-b border-gray-100 p-3">
+  <div class="space-y-5" data-test="memory-browse">
+    <!-- round 4 (the founder): Browse is the cards he liked. Tabs Agents / Agent Teams / Agent Orgs (Global joins them
+         with autobyteus-555), no filter box: a node holds few agents, teams and orgs. A card opens its owner's page. -->
+    <template v-if="!node || node.kind === 'group'">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-1" role="tablist">
+          <button
+            v-for="tab in groupTabs"
+            :key="tab.key"
+            type="button"
+            role="tab"
+            :aria-selected="nodeKey === tab.key"
+            class="whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition"
+            :class="nodeKey === tab.key ? 'bg-gray-200 text-gray-900' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'"
+            :data-test="`memory-browse-tab-${tab.key}`"
+            @click="select(tab.key)"
+          >{{ $t(tab.label) }}</button>
+        </div>
         <div v-if="explorer.sources.length > 1" class="flex items-center gap-2">
           <label class="sr-only" for="memory-source-select">{{ $t('memory.components.memory.MemoryHome.memorySource') }}</label>
-          <select id="memory-source-select" :value="explorer.selectedSource.key" class="min-w-0 flex-1 rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm" @change="$emit('changeSource', ($event.target as HTMLSelectElement).value)">
+          <select id="memory-source-select" :value="explorer.selectedSource.key" class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm" @change="$emit('changeSource', ($event.target as HTMLSelectElement).value)">
             <option v-for="source in explorer.sources" :key="source.key" :value="source.key">{{ source.label }}</option>
           </select>
-          <span v-if="imported" class="flex-shrink-0 rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">{{ $t('memory.components.memory.common.importedReadOnly') }}</span>
-        </div>
-        <div class="relative">
-          <Icon icon="heroicons:magnifying-glass-20-solid" class="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" aria-hidden="true" />
-          <input v-model="filter" type="text" :placeholder="$t('memory.browse.filter_tree')" :aria-label="$t('memory.browse.filter_label')" class="w-full rounded-lg border border-gray-200 bg-white py-2 pl-9 pr-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100" data-test="memory-tree-filter" />
+          <span v-if="imported" class="rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">{{ $t('memory.components.memory.common.importedReadOnly') }}</span>
         </div>
       </div>
-      <div class="max-h-[40vh] overflow-y-auto p-2 xl:max-h-[calc(100vh-12rem)]">
-        <div v-if="browse.loading && !browse.loaded" class="px-2 py-6 text-center text-sm text-gray-500">{{ $t('memory.components.memory.MemoryHome.loading_memory_catalog') }}</div>
-        <div v-else-if="browse.error" class="m-1 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-          {{ browse.error }}
-          <button class="ml-1 font-semibold underline" @click="load">{{ $t('memory.results.retry') }}</button>
-        </div>
-        <MemoryOwnerTree v-else :groups="browse.visibleTree" :selected-key="nodeKey" :filtering="!!filter.trim()" @select="select" />
-      </div>
-    </aside>
 
-    <section class="min-w-0 flex-1">
-      <!-- A group heading: its overview cards (today's Browse cards). -->
-      <template v-if="node?.kind === 'group'">
-        <div v-if="!(node.children ?? []).length" class="py-16 text-center text-sm text-gray-500">{{ filter.trim() ? $t('memory.browse.no_match') : $t(emptyText[node.key]) }}</div>
-        <div v-else class="grid gap-4 md:grid-cols-2 2xl:grid-cols-3" :data-test="`memory-group-cards-${node.key}`">
-          <button v-for="child in node.children" :key="child.key" :class="cardClass" @click="select(child.key)">
+      <div v-if="browse.loading && !browse.loaded" class="py-16 text-center text-sm text-gray-500">{{ $t('memory.components.memory.MemoryHome.loading_memory_catalog') }}</div>
+      <div v-else-if="browse.error" class="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        {{ browse.error }}
+        <button class="ml-2 font-semibold underline" @click="load">{{ $t('memory.results.retry') }}</button>
+      </div>
+      <template v-else-if="node">
+        <div v-if="!(node.children ?? []).length" class="py-16 text-center text-sm text-gray-500">{{ $t(emptyText[node.key]) }}</div>
+        <div v-else class="grid gap-4 md:grid-cols-2 xl:grid-cols-3" :data-test="`memory-group-cards-${node.key}`">
+          <button v-for="child in node.children" :key="child.key" :class="cardClass" data-test="memory-owner-card" @click="select(child.key)">
             <div class="flex items-start justify-between gap-3">
               <div class="min-w-0">
                 <h2 class="break-words text-base font-semibold text-gray-900">{{ child.label }}</h2>
@@ -43,9 +47,13 @@
           </button>
         </div>
       </template>
+    </template>
 
+    <!-- An owner's page: Back returns to the card it was opened from (the group's tab, or its team or org). -->
+    <template v-else>
+      <button class="text-sm font-medium text-blue-600 hover:underline" data-test="memory-owner-back" @click="select(parentKey)">← {{ backLabel }}</button>
       <AgentMemoryPage
-        v-else-if="node && (node.kind === 'agent' || node.kind === 'unattributed')"
+        v-if="node && (node.kind === 'agent' || node.kind === 'unattributed')"
         :agent-definition-id="node.kind === 'agent' ? node.id : null"
         :name="node.label"
         :pane="pane === 'semantic' && node.kind === 'agent' ? 'semantic' : 'episodic'"
@@ -69,15 +77,13 @@
       />
 
       <div v-else-if="browse.loaded" class="py-16 text-center text-sm text-gray-500">{{ $t('memory.browse.not_found') }}</div>
-    </section>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { Icon } from '@iconify/vue';
-import MemoryOwnerTree from './MemoryOwnerTree.vue';
 import AgentMemoryPage from './AgentMemoryPage.vue';
 import GroupMemoryPage from './GroupMemoryPage.vue';
 import { useLocalization } from '~/composables/useLocalization';
@@ -86,9 +92,11 @@ import { useMemoryExplorerStore } from '~/stores/memoryExplorerStore';
 import type { CollaborationMemberMemoryTargetSummary } from '~/types/memory';
 
 /**
- * semantic-memory-view-554 (design, round 3): Memory → Browse. A tree of memory owners on the left (Agents, Agent
- * Teams, Agent Orgs) and the selected owner's memory on the right. The selection and its tab are in the address
- * (`node`, `pane`), so Back from a run's Work Journal returns to the same place.
+ * semantic-memory-view-554 (design, round 4): Memory → Browse, organised by memory owner. Tabs Agents / Agent Teams /
+ * Agent Orgs with their cards (Global joins them with autobyteus-555 and has semantic memory only). An agent card
+ * opens the agent's page (Episodic and Semantic memory); a team or org card opens its page (Members and Runs), whose
+ * members open their own pages. The open owner and its tab are in the address (`node`, `pane`), so Back from a run's
+ * Work Journal returns to the same place.
  */
 defineEmits<{
   changeSource: [sourceKey: string];
@@ -98,7 +106,7 @@ defineEmits<{
 
 const route = useRoute();
 const router = useRouter();
-const { resolvedLocale } = useLocalization();
+const { t, resolvedLocale } = useLocalization();
 const browse = useMemoryBrowseStore();
 const explorer = useMemoryExplorerStore();
 
@@ -107,8 +115,11 @@ const queryValue = (key: string) => { const value = route.query[key]; return (Ar
 const nodeKey = computed(() => String(queryValue('node') ?? 'agents'));
 const pane = computed(() => String(queryValue('pane') ?? ''));
 
-const filter = ref(browse.filter);
-watch(filter, value => browse.setFilter(value));
+const groupTabs = [
+  { key: 'agents', label: 'memory.components.memory.MemoryHome.agents' },
+  { key: 'teams', label: 'memory.components.memory.MemoryHome.agent_teams' },
+  { key: 'orgs', label: 'memory.components.memory.MemoryHome.agent_orgs' },
+];
 
 const findNode = (nodes: OwnerNode[], key: string): OwnerNode | null => {
   for (const node of nodes) {
@@ -118,11 +129,13 @@ const findNode = (nodes: OwnerNode[], key: string): OwnerNode | null => {
   }
   return null;
 };
-/** The selected owner (from the whole tree, so a filter never hides the open page); a group from the filtered tree. */
-const node = computed(() => {
-  const key = nodeKey.value;
-  if (key === 'agents' || key === 'teams' || key === 'orgs') return findNode(browse.visibleTree, key);
-  return findNode(browse.tree, key);
+const node = computed(() => findNode(browse.tree, nodeKey.value));
+/** The card an owner page was opened from: its group's tab, or the team or org it was reached through. */
+const parentKey = computed(() => (nodeKey.value.includes('/') ? nodeKey.value.slice(0, nodeKey.value.lastIndexOf('/')) : 'agents'));
+const backLabel = computed(() => {
+  const parent = parentKey.value;
+  if (parent === 'agents' || parent === 'teams' || parent === 'orgs') return t('memory.components.memory.AgentMemoryDetail.back_to_memory');
+  return t('memory.semantic.back_to', { name: findNode(browse.tree, parent)?.label ?? '' });
 });
 
 const select = (key: string, nextPane?: string) => router.push({
