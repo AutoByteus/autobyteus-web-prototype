@@ -16,6 +16,9 @@ export const NODE_IDS = {
   E: id('k3mQ9VfEmbedLw2dNb4'), D1: id('ibJioK7nDockerP5Rt8'), D3: id('Q3xKa8ZtDocker3Hy6'), D4: id('d4Hh1WcPDocker4Ms2'), D5: id('x5Rn7BeYDocker5Tq9'),
   LAP: id('lapT0p4VuLaptopZc3'), STU: id('stUd10Ka9StudioJw5'), NAS: id('n4sBo7XeNasBoxFd8'), SPARE: id('sp4r3Km1SpareBxL2'),
   SPARE_OTHER: id('unRegd5JqOtherNdG7'), OLD: id('oldB0x2MzOldBoxVn4'), EDGE: id('edG3t7HsEdgeNodeP6'), OLD_EMBEDDED: id('oldEmb3ddOlderNodeK9'),
+  // extensions-nodes-baseline-refresh-516: a node registered before nodes paired (autobyteus-437), and a node on another computer
+  // that a desktop window can be opened on (Phone Setup's "remote" wording).
+  LAB: id('l4bN0d3PreP4ir3dQ1'), OFFICE: id('0ff1c3MacRem0teW7'),
 }
 const N = NODE_IDS
 const LAN_THIS = 'http://192.168.2.10:29695'
@@ -68,12 +71,13 @@ const node = (n) => ({ docker: false, switchOn: false, peers: [], offers: [], de
 const LISTENERS = {
   'localhost:29695': N.E, '127.0.0.1:29695': N.E, '192.168.2.10:29695': N.E,
   'localhost:8001': N.D1, 'localhost:8003': N.D3, 'localhost:8004': N.D4, 'localhost:8005': N.D5,
-  '192.168.2.40:29695': N.LAP, '192.168.2.31:29695': N.STU, '192.168.2.55:29695': N.NAS,
+  '192.168.2.40:29695': N.LAP, '192.168.2.31:29695': N.STU, '192.168.2.55:29695': N.NAS, '192.168.2.45:29695': N.LAB,
   '192.168.2.77:29695': { cause: 'refused' }, '192.168.2.90:29695': { other: N.SPARE_OTHER }, '192.168.2.99:29695': { cause: 'timeout' },
 }
 
 const addedAt = '2026-10-20T09:00:00.000Z'
-const peer = (nodeId, name, baseUrl) => ({ nodeId, name, baseUrl, addedAt })
+// `paired`: both nodes hold their shared peer secret (autobyteus-437); a registration made before nodes paired is not.
+const peer = (nodeId, name, baseUrl, paired = true) => ({ nodeId, name, baseUrl, addedAt, paired })
 
 // What each node's server says about its own version and in-place update (`GET /rest/node-update`), and what happens when this
 // window asks it to update (`POST`). Every value is scripted and invented. `APP_VERSION` is the version of this app in the
@@ -93,6 +97,8 @@ const UPDATE_SCENARIOS = {
   nodes_update_running: { running: true },
   nodes_update_error: { mode: 'error', message: 'The update service of this node did not answer.' },
   nodes_update_unknown: { version: null, relation: 'same', mode: 'unavailable' },
+  // autobyteus-356: the desktop already updated Docker 8001 automatically (it now runs this app's version)
+  nodes_auto_updated: { version: APP_VERSION, relation: 'same' },
 }
 const serverOf = (scenario, nodeId) => {
   const states = scenario === 'nodes_states'
@@ -125,6 +131,8 @@ const buildNodeList = (scenario, states) => {
           peer(N.STU, 'studio', 'http://192.168.2.31:29695'), peer(N.LAP, 'laptop', 'http://192.168.2.40:29695'),
           peer(N.SPARE, 'spare', 'http://192.168.2.90:29695'), peer(N.OLD, 'old-box', 'http://192.168.2.77:29695'),
           peer(N.EDGE, 'edge', 'http://192.168.2.99:29695'),
+          // registered before nodes paired: "Not paired yet" with Pair again (autobyteus-437)
+          peer(N.LAB, 'lab', 'http://192.168.2.45:29695', false),
         ] : []),
       ],
     }),
@@ -141,6 +149,12 @@ const buildNodeList = (scenario, states) => {
       // laptop already has a node named "Embedded Node" (an older one), so this node is registered there as "Embedded Node 2".
       peers: [peer(N.OLD_EMBEDDED, 'Embedded Node', 'http://192.168.2.20:29695')],
     }),
+    [N.LAB]: node({
+      id: N.LAB, selfName: 'lab', lan: true, switchOn: true, delayMs: 800, candidates: ['http://192.168.2.45:29695'], offers: EIGHT_THREE_OFFER.slice(0, 2),
+      peers: [peer(N.E, 'Embedded Node', LAN_THIS, false)],
+    }),
+    // Phone Setup on a node on another computer (the `remote_*` phone states): "Office Mac".
+    [N.OFFICE]: node({ id: N.OFFICE, selfName: 'Office Mac', lan: true, switchOn: false, delayMs: 500, candidates: [] }),
     [N.NAS]: node({
       id: N.NAS, selfName: 'nas', lan: true, switchOn: true, delayMs: 800, candidates: ['http://192.168.2.55:29695'],
       peers: [peer(N.E, 'Embedded Node', LAN_THIS)],
@@ -149,8 +163,9 @@ const buildNodeList = (scenario, states) => {
 }
 
 const hostPortOf = (url) => {
+  const https = /^https:\/\//i.test(String(url).trim())
   const text = String(url).trim().replace(/^[a-z]+:\/\//i, '').replace(/\/.*$/, '')
-  const [host, port = '80'] = text.split(':')
+  const [host, port = https ? '443' : '80'] = text.split(':')
   return { host: host.toLowerCase(), port }
 }
 const isLoopback = (host) => host === 'localhost' || host === '127.0.0.1' || host === '::1'
@@ -195,6 +210,64 @@ const NAME_RULE = /^[A-Za-z0-9][A-Za-z0-9 _.-]{0,63}$/
 const fail = (message, code, extensions = {}) => ({ errors: [{ message, extensions: { code, ...extensions } }] })
 const isHttpUrl = (value) => /^https?:\/\/[^\s/?#]+$/i.test(String(value).trim().replace(/\/+$/, ''))
 
+// ---- Phone Setup (extensions-nodes-baseline-refresh-516, the source's Phones panel of autobyteus-395/426): what each node reports about
+// the network of the computer it runs on (`GET /rest/remote-access/network`), and which of those addresses answer this window. The
+// phone state is the design's existing starting-state key (`autobyteus.prototype.phonePairing`); every name and address is invented
+// (RFC 1918 / CGNAT ranges, `.example` and `.ts.net` names). This computer is "Home Mac"; Docker 8001 runs on it; "Office Mac" is a
+// node on another computer.
+export const PHONE_STATES = ['tailscale', 'tailscale_no_https', 'company_address', 'vpn', 'wifi_ask', 'wifi_allowed', 'wifi_new_network', 'nothing',
+  'docker_unpublished', 'remote_unreachable', 'remote_lan', 'remote_tailscale', 'remote_vpn', 'remote_nothing', 'expired', 'no_phones', 'access_off']
+const HOME_TS = { address: '100.88.10.10', dnsName: 'home-mac.tail0c0ffee.ts.net' }
+/** The address the desktop uses for "Office Mac" in each remote state (an SSH tunnel on this computer where the node has no usable way). */
+export const OFFICE_ADDRESS = {
+  remote_lan: 'http://192.168.2.60:29695', remote_tailscale: 'http://100.88.20.20:29695', remote_vpn: 'http://10.8.0.20:29695',
+  remote_unreachable: 'http://localhost:29700', remote_nothing: 'http://localhost:29700',
+}
+export const phoneStateOf = (value) => (PHONE_STATES.includes(value) ? value : 'tailscale')
+const phoneFacts = (phone, nodeId) => {
+  const facts = { computerName: '', runsInContainer: false, configuredBaseUrl: null, tailscale: null, vpnAddresses: [], localNetwork: null }
+  const lan = (networkId, address, allowed = false) => ({ networkId, addresses: [address], allowed })
+  if (nodeId === N.OFFICE) {
+    facts.computerName = 'Office Mac'
+    if (phone === 'remote_lan') facts.localNetwork = lan('net-office-lan', '192.168.2.60')
+    if (phone === 'remote_tailscale') { facts.tailscale = { address: '100.88.20.20', dnsName: null }; facts.localNetwork = lan('net-office-lan', '192.168.7.20') }
+    if (phone === 'remote_vpn') facts.vpnAddresses = ['10.8.0.20']
+    if (phone === 'remote_unreachable') { facts.tailscale = { address: '100.88.20.30', dnsName: null }; facts.localNetwork = lan('net-office-lan', '192.168.7.20') }
+    return facts
+  }
+  if (nodes_in_container.has(nodeId)) return { ...facts, computerName: 'c0ntainer8001', runsInContainer: true }
+  if (nodeId !== N.E) return { ...facts, computerName: 'node' }
+  facts.computerName = 'Home Mac'
+  if (phone === 'nothing') return facts
+  const home = phone === 'wifi_new_network' ? 'net-cafe-guest' : 'net-home-5g'
+  facts.localNetwork = lan(home, '192.168.2.10', phone === 'wifi_allowed')
+  if (['tailscale', 'tailscale_no_https', 'expired', 'no_phones', 'access_off', 'docker_unpublished'].includes(phone) || phone.startsWith('remote_')) facts.tailscale = { ...HOME_TS }
+  if (phone === 'company_address') facts.configuredBaseUrl = 'https://autobyteus.example.com'
+  if (phone === 'vpn') facts.vpnAddresses = ['10.8.0.6']
+  return facts
+}
+const nodes_in_container = new Set([N.D1, N.D3, N.D4, N.D5])
+/** The addresses of the phone state that answer this window (and the node that answers there). */
+const phoneListeners = (phone) => {
+  const facts = phoneFacts(phone, N.E)
+  const listeners = {}
+  if (facts.tailscale) {
+    listeners['100.88.10.10:29695'] = N.E
+    // the secure web address answers once `tailscale serve` was run on this computer
+    if (phone !== 'tailscale_no_https' && phone !== 'docker_unpublished') listeners['home-mac.tail0c0ffee.ts.net:443'] = N.E
+  }
+  if (facts.configuredBaseUrl) listeners['autobyteus.example.com:443'] = N.E
+  for (const address of facts.vpnAddresses) listeners[`${address}:29695`] = N.E
+  // Docker 8001's port is published on this computer's network, except in `docker_unpublished`.
+  if (phone !== 'docker_unpublished') { listeners['192.168.2.10:8001'] = N.D1; listeners['100.88.10.10:8001'] = N.D1 }
+  const office = OFFICE_ADDRESS[phone]
+  if (office) listeners[office.replace(/^https?:\/\//, '')] = N.OFFICE
+  if (phone === 'remote_lan') listeners['192.168.2.60:29695'] = N.OFFICE
+  if (phone === 'remote_tailscale') listeners['100.88.20.20:29695'] = N.OFFICE
+  if (phone === 'remote_vpn') listeners['10.8.0.20:29695'] = N.OFFICE
+  return listeners
+}
+
 /**
  * @param scenario the scenario name
  * @param options `boundNodeId`: the node this window is bound to; `extraListeners`: more addresses that answer as a node
@@ -203,7 +276,18 @@ const isHttpUrl = (value) => /^https?:\/\/[^\s/?#]+$/i.test(String(value).trim()
 export const createNetworkWorld = (scenario, options = {}) => {
   const nodes = buildNodes(scenario)
   const boundNodeId = options.boundNodeId || N.E
-  const extraListeners = options.extraListeners || {}
+  const phone = phoneStateOf(options.phone)
+  const extraListeners = { ...phoneListeners(phone), ...(options.extraListeners || {}) }
+  // The local networks a node keeps an answer for ("allow phones on this network"), by node and network.
+  const allowedNetworks = new Map()
+  const networkOf = (nodeId) => {
+    const facts = phoneFacts(phone, nodeId)
+    const answer = facts.localNetwork && allowedNetworks.get(`${nodeId}|${facts.localNetwork.networkId}`)
+    if (answer !== undefined && facts.localNetwork) facts.localNetwork.allowed = answer
+    return facts
+  }
+  const setNetworkAllowed = (nodeId, networkId, allowed) => { allowedNetworks.set(`${nodeId}|${networkId}`, Boolean(allowed)) }
+  const invites = new Map()
   const reachFrom = (url, from) => reach(nodes, url, from, extraListeners)
   const cleanUrl = (url) => String(url).trim().replace(/\/+$/, '')
   const sameHostPort = (a, b) => { const x = hostPortOf(a), y = hostPortOf(b); return x.host === y.host && x.port === y.port }
@@ -220,7 +304,7 @@ export const createNetworkWorld = (scenario, options = {}) => {
     const self = nodes[nodeId]
     if (!self) return { answer: fail(`Unknown node ${nodeId}.`, 'REMOTE_COLLABORATION_SETTINGS_FAILED'), delayMs: 100 }
     const capability = () => ({ __typename: 'RemoteCollaborationCapabilityGql', enabled: self.switchOn, settingKey: 'ENABLE_REMOTE_COLLABORATION', source: self.switchSet ? 'SERVER_SETTING' : 'DEFAULT_DISABLED' })
-    const peerView = (p) => ({ __typename: 'PeerNodeGql', nodeId: p.nodeId, name: p.name, baseUrl: p.baseUrl, addedAt: p.addedAt })
+    const peerView = (p) => ({ __typename: 'PeerNodeGql', nodeId: p.nodeId, name: p.name, baseUrl: p.baseUrl, addedAt: p.addedAt, paired: p.paired !== false })
     const needSwitch = () => self.switchOn ? null : fail('Remote collaboration is off on this node.', 'REMOTE_COLLABORATION_OFF')
     const done = (answer, delayMs = 150) => ({ answer, delayMs })
     switch (operationName) {
@@ -265,6 +349,53 @@ export const createNetworkWorld = (scenario, options = {}) => {
         self.peers = [...self.peers.filter((p) => p.nodeId !== added.nodeId), { ...added, addedAt: new Date().toISOString() }]
         return done({ data: { addPeerNode: peerView(self.peers.find((p) => p.nodeId === added.nodeId)) } }, r.delayMs)
       }
+      // autobyteus-437: pairing. This node makes an invite for one other node (10 minutes, single use); the other node accepts it,
+      // finds this node's address itself, and both register each other with their shared secret (here: `paired: true`).
+      case 'CreatePeerInvite': {
+        const off = needSwitch(); if (off) return done(off)
+        self.inviteSeq = (self.inviteSeq ?? 0) + 1
+        const inviteText = `abinv1.${nodeId}.${self.inviteSeq}`
+        invites.set(inviteText, { inviter: nodeId, used: false })
+        return done({ data: { createPeerInvite: { __typename: 'PeerInviteGql', inviteText, expiresAt: new Date(Date.now() + 10 * 60_000).toISOString() } } })
+      }
+      case 'AcceptPeerInvite': {
+        const off = needSwitch(); if (off) return done(off)
+        const invite = invites.get(String(variables.inviteText || ''))
+        if (!invite || invite.used) return done(fail('The invite was used or expired.', 'PEER_INVITE_INVALID'))
+        const inviter = nodes[invite.inviter]
+        const name = String(variables.name || '').trim()
+        const nameThere = String(variables.nameOnInviter || self.selfName).trim()
+        if (!NAME_RULE.test(name) || !NAME_RULE.test(nameThere)) return done(fail('The name is not valid.', 'PEER_NAME_INVALID'))
+        if (invite.inviter === nodeId) return done(fail('That is this node.', 'PEER_IS_THIS_NODE'))
+        if (self.peers.some((p) => p.name.toLowerCase() === name.toLowerCase() && p.nodeId !== invite.inviter)) return done(fail(`This node already has a node named ${name}.`, 'PEER_NAME_TAKEN'))
+        if (inviter.peers.some((p) => p.nodeId === nodeId && p.paired !== false)) return done(fail('Already paired.', 'PEER_ALREADY_REGISTERED'))
+        // each node finds the other's address itself: the first of the other's own addresses (or the window's) that answers
+        const findAddress = (from, target) => {
+          let delay = 0
+          for (const url of target.candidates) {
+            const r = reachFrom(url, from)
+            delay += Math.min(r.delayMs, 700)
+            if (r.ok && r.nodeId === target.id) return { address: url, delay }
+          }
+          return { address: null, delay, first: reachFrom(target.candidates[0] ?? '', from) }
+        }
+        const there = findAddress(nodeId, inviter)
+        const back = there.address ? findAddress(invite.inviter, self) : null
+        const delay = there.delay + (back?.delay ?? 0)
+        if (!there.address || !back?.address || inviter.noAddressForOthers || self.noAddressForOthers) {
+          const missing = !there.address ? there : back
+          const first = missing?.first ?? { ok: true }
+          return done(fail('No address of the node answered.', 'PEER_UNREACHABLE', {
+            reason: first.ok ? 'unreachable' : REASON_OF_CAUSE[first.cause], address: (missing === there ? inviter : self).candidates[0],
+            attempts: [], ...(inviter.noAddressForOthers || self.noAddressForOthers || first.loopbackInContainer ? { loopbackInContainer: true } : {}),
+          }), delay)
+        }
+        invite.used = true
+        const now = new Date().toISOString()
+        self.peers = [...self.peers.filter((p) => p.nodeId !== invite.inviter), { ...peer(invite.inviter, name, there.address), addedAt: now }]
+        inviter.peers = [...inviter.peers.filter((p) => p.nodeId !== nodeId), { ...peer(nodeId, nameThere, back.address), addedAt: now }]
+        return done({ data: { acceptPeerInvite: peerView(self.peers.find((p) => p.nodeId === invite.inviter)) } }, delay)
+      }
       case 'RenamePeerNode': {
         const found = self.peers.find((p) => p.nodeId === variables.nodeId)
         if (!found) return done(fail('That node is not registered here.', 'PEER_NOT_REGISTERED'))
@@ -299,7 +430,9 @@ export const createNetworkWorld = (scenario, options = {}) => {
         if (!r.ok) return answer({ refusalCode: 'PEER_UNREACHABLE', unreachableReason: REASON_OF_CAUSE[r.cause] }, r.delayMs)
         if (r.nodeId !== variables.nodeId) return answer({ refusalCode: 'PEER_IDENTITY_MISMATCH' }, r.delayMs)
         if (!target?.switchOn) return answer({ refusalCode: 'REMOTE_COLLABORATION_OFF' }, r.delayMs)
-        if (!target.peers.some((p) => p.nodeId === nodeId)) return answer({ refusalCode: 'PEER_NOT_REGISTERED' }, r.delayMs)
+        const there = target.peers.find((p) => p.nodeId === nodeId)
+        if (!there) return answer({ refusalCode: 'PEER_NOT_REGISTERED' }, r.delayMs)
+        if (registered.paired === false || there.paired === false) return answer({ refusalCode: 'PEER_NOT_PAIRED' }, r.delayMs)
         return answer({ available: true }, r.delayMs)
       }
       case 'GetPeerNodeOffer': {
@@ -312,7 +445,9 @@ export const createNetworkWorld = (scenario, options = {}) => {
         const target = nodes[r.nodeId]
         if (r.nodeId !== variables.nodeId) return answer({ refusalCode: 'PEER_IDENTITY_MISMATCH' }, r.delayMs)
         if (!target.switchOn) return answer({ refusalCode: 'REMOTE_COLLABORATION_OFF' }, r.delayMs)
-        if (!target.peers.some((p) => p.nodeId === nodeId)) return answer({ refusalCode: 'PEER_NOT_REGISTERED' }, r.delayMs)
+        const there = target.peers.find((p) => p.nodeId === nodeId)
+        if (!there) return answer({ refusalCode: 'PEER_NOT_REGISTERED' }, r.delayMs)
+        if (registered.paired === false || there.paired === false) return answer({ refusalCode: 'PEER_NOT_PAIRED' }, r.delayMs)
         return answer({ entries: target.offers.map((entry) => ({ __typename: 'PeerOfferEntryGql', name: entry.name, kind: entry.kind, description: entry.description ?? null })) }, r.delayMs + target.delayMs)
       }
       default: return null
@@ -321,7 +456,7 @@ export const createNetworkWorld = (scenario, options = {}) => {
 
   /** The operations of `graphql` (a bound node answers these through its own GraphQL endpoint). */
   const OPERATIONS = new Set(['GetRemoteCollaborationCapability', 'SetRemoteCollaborationEnabled', 'GetRemoteCollaborationSettings', 'GetPeerAddressCandidates',
-    'ResolvePeerAddress', 'AddPeerNode', 'RenamePeerNode', 'RemovePeerNode', 'ChangePeerAddress', 'GetPeerNodeAvailability', 'GetPeerNodeOffer'])
+    'ResolvePeerAddress', 'AddPeerNode', 'CreatePeerInvite', 'AcceptPeerInvite', 'RenamePeerNode', 'RemovePeerNode', 'ChangePeerAddress', 'GetPeerNodeAvailability', 'GetPeerNodeOffer'])
 
   // A requested update plays on a timeline from the request (seconds): checking, downloading, preparing, restarting, then the
   // node does not answer while it restarts, then it answers with the new version. 'failed' stops after downloading; 'lost' never answers again.
@@ -342,11 +477,13 @@ export const createNetworkWorld = (scenario, options = {}) => {
       }
       if (server.run === 'undelivered') return { status: 500, text: '', delayMs: delayMs + 100 }
       server.startedAt = Date.now()
+      server.lastUpdate = null
       server.targetVersion = body?.version ?? wanted ?? APP_VERSION
       return { status: 202, json: { accepted: true }, delayMs: delayMs + 100 }
     }
     if (server.running) { server.running = false; server.startedAt = Date.now() - 1000; server.targetVersion = APP_VERSION }
-    const answer = { inPlaceUpdate: server.mode, version: server.version, ...(server.message ? { message: server.message } : {}), update: idle }
+    // the node keeps its last in-place update (C1 `update`) until the next request
+    const answer = { inPlaceUpdate: server.mode, version: server.version, ...(server.message ? { message: server.message } : {}), update: server.lastUpdate ?? idle }
     if (server.blocker) answer.updateBlocker = server.blocker
     const seconds = server.startedAt ? (Date.now() - server.startedAt) / 1000 : -1
     if (seconds >= 0) {
@@ -366,6 +503,7 @@ export const createNetworkWorld = (scenario, options = {}) => {
         server.relation = 'same'
         server.startedAt = null
         answer.update = { state: 'succeeded', targetVersion: server.targetVersion, step: null, code: null, message: null }
+        server.lastUpdate = answer.update
       }
     }
     if (wanted) {
@@ -392,6 +530,16 @@ export const createNetworkWorld = (scenario, options = {}) => {
       if (r.nodeId === N.SPARE_OTHER) return { status: 200, json: { phoneAccessEnabled: true, pairingAvailable: true, nodeId: N.SPARE_OTHER, serverName: 'spare' }, delayMs: r.delayMs }
       return { status: 200, json: { phoneAccessEnabled: true, pairingAvailable: true, nodeId: r.nodeId, serverName: target?.selfName ?? 'node' }, delayMs: r.delayMs }
     }
+    // Phone Setup: a node's report of its computer's network, and its answer for a local network (asked of the desktop's own
+    // node from another node's window).
+    if (parsed.pathname === '/rest/remote-access/network') return { status: 200, json: { network: networkOf(r.nodeId) }, delayMs: Math.min(r.delayMs, 200) }
+    const allow = parsed.pathname.match(/^\/rest\/remote-access\/network\/local-networks\/([^/]+)$/)
+    if (allow && String(request.method || 'GET').toUpperCase() === 'PUT') {
+      let body = request.body
+      if (typeof body === 'string') { try { body = JSON.parse(body) } catch { body = {} } }
+      setNetworkAllowed(r.nodeId, decodeURIComponent(allow[1]), body?.allowed)
+      return { status: 200, json: { networkId: decodeURIComponent(allow[1]), allowed: Boolean(body?.allowed) }, delayMs: 150 }
+    }
     if (parsed.pathname === '/rest/node-update') return nodeUpdate(r.nodeId === N.SPARE_OTHER ? { server: { ...SAME } } : target, parsed, request, r.delayMs)
     if (r.nodeId === boundNodeId && parsed.pathname !== '/graphql') return { proxy: true, delayMs: 0 }
     if (parsed.pathname === '/graphql') {
@@ -414,7 +562,7 @@ export const createNetworkWorld = (scenario, options = {}) => {
     return { status: 404, text: 'Not found', delayMs: r.delayMs }
   }
 
-  return { nodes, boundNodeId, graphql, OPERATIONS, windowRequest, reach: reachFrom }
+  return { nodes, boundNodeId, graphql, OPERATIONS, windowRequest, reach: reachFrom, phone, networkOf, setNetworkAllowed }
 }
 
 /** The desktop's own list of nodes (the entries) at the start of a scenario, as the host bridge returns it. */

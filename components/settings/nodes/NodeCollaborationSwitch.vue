@@ -1,5 +1,4 @@
 <template>
-  <!-- The remote-collaboration control: the one icon and its switch as one capsule (green when on, grey when off). -->
   <span
     class="inline-flex flex-shrink-0 items-center gap-2.5 rounded-full border pl-3 pr-2 transition-colors"
     :class="[tall ? 'h-10' : 'h-9', modelValue ? 'border-emerald-200 bg-emerald-50' : 'border-slate-200 bg-white', dimmed ? 'opacity-60' : '']"
@@ -29,6 +28,8 @@
 
 <script setup lang="ts">
 import RemoteCollaborationIcon from '~/components/settings/nodes/RemoteCollaborationIcon.vue'
+
+/** The remote-collaboration control: the one icon and its switch as one capsule (green when on, grey when off). */
 
 defineProps<{
   modelValue: boolean

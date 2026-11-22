@@ -11,7 +11,7 @@ export function installHostScenario(options = {}) {
   const scenario = String(options.scenario || localStorage.getItem('autobyteus.prototype.scenario') || 'populated')
   const baseUrl = String(options.mockBaseUrl || 'http://127.0.0.1:4391').replace(/\/$/, '')
   const embedded = context === 'electron_internal'
-  const listeners = { server: new Set(), node: new Set(), update: new Set(), browser: new Set(), quitting: new Set() }
+  const listeners = { server: new Set(), node: new Set(), update: new Set(), browser: new Set(), quitting: new Set(), access: new Set(), autoUpdate: new Set() }
   const cleanup = (set, callback) => { set.add(callback); return () => set.delete(callback) }
   const urls = {
     graphql: `${baseUrl}/graphql`, rest: `${baseUrl}/rest`, graphqlWs: `${baseUrl.replace(/^http/, 'ws')}/graphql`,
@@ -30,10 +30,20 @@ export function installHostScenario(options = {}) {
   // one-nodes-tab: the Nodes scenarios seed this desktop's list with the nodes of the simulated network
   // (prototype/nodes/nodeWorld.ts). The window's node is the embedded node, or Docker 8001 in an external window.
   const nodesScenario = scenario.startsWith('nodes_')
-  const entry = (id, name, baseUrl, nodeId) => ({ id, name, baseUrl, nodeType: 'remote', nodeId, createdAt: '2026-10-20T09:00:00.000Z', updatedAt: '2026-10-20T09:00:00.000Z' })
+  const entry = (id, name, baseUrl, nodeId, extra = {}) => ({ id, name, baseUrl, nodeType: 'remote', nodeId, createdAt: '2026-10-20T09:00:00.000Z', updatedAt: '2026-10-20T09:00:00.000Z', ...extra })
+  // extensions-nodes-baseline-refresh-516: Phone Setup's `remote_*` states add "Office Mac" (a node on another computer) at the address
+  // the desktop uses for it, and an external window opens on it (prototype/nodes/network-world.mjs OFFICE_ADDRESS).
+  const phoneState = String(options.phonePairing ?? localStorage.getItem('autobyteus.prototype.phonePairing') ?? '')
+  const officeAddress = {
+    remote_lan: 'http://192.168.2.60:29695', remote_tailscale: 'http://100.88.20.20:29695', remote_vpn: 'http://10.8.0.20:29695',
+    remote_unreachable: 'http://localhost:29700', remote_nothing: 'http://localhost:29700',
+  }[phoneState] || null
+  // autobyteus-356: "Update automatically" is a registry field of a remote entry (Docker 8001's is on in the automatic-update scenarios).
+  const dockerAutoUpdate = ['nodes_auto_updated', 'nodes_auto_failed'].includes(scenario)
   const nodesRegistry = [
     { id: 'embedded-local', name: 'Embedded Node', baseUrl: 'http://127.0.0.1:29695', nodeType: 'embedded', nodeId: 'srv_m9VFq2Lw', createdAt: '2026-10-20T09:00:00.000Z', updatedAt: '2026-10-20T09:00:00.000Z' },
-    entry('remote-docker', 'docker', 'http://localhost:8001', 'srv_ibJioK7n'),
+    entry('remote-docker', 'docker', 'http://localhost:8001', 'srv_ibJioK7n', dockerAutoUpdate ? { autoUpdate: true } : {}),
+    ...(officeAddress ? [entry('remote-office', 'Office Mac', officeAddress, 'srv_0ff1c3Mac')] : []),
     ...(scenario === 'nodes_states' ? [
       entry('remote-studio', 'studio', 'http://192.168.2.31:29695', 'srv_stUd10Ka9'),
       entry('remote-spare', 'spare', 'http://192.168.2.90:29695', 'srv_sp4r3Km1'),
@@ -90,20 +100,127 @@ export function installHostScenario(options = {}) {
     return structuredClone(extensions)
   }
 
+  // ---- extensions-nodes-baseline-refresh-516: this desktop's node access (autobyteus-437). The embedded node is connected by its launch
+  // credential; a remote node is connected once a setup code was exchanged. Every remote entry of the scenario starts connected, except
+  // Docker 8001 in the `nodes_access*` scenarios; a node added on the page needs connecting. A code is accepted after 0.7 s, or refused
+  // by the scenario (scripted; nothing is exchanged). Disconnect forgets the credential.
+  const accessRefusal = {
+    nodes_access_code_invalid: { code: 'NODE_SETUP_CODE_INVALID', message: 'The setup code is not valid.' },
+    nodes_access_network_refused: { code: 'NODE_NETWORK_REFUSED', message: 'This node does not accept connections from this network.' },
+    nodes_access_unreachable: { code: 'NODE_UNREACHABLE', message: 'Failed to fetch' },
+  }[scenario] || null
+  const connectedEntries = new Set(registry.nodes.filter(node => node.nodeType !== 'embedded'
+    && !(scenario.startsWith('nodes_access') && node.id === 'remote-docker')).map(node => node.id))
+  const accessStates = () => Object.fromEntries(registry.nodes.map(node => [node.id, node.nodeType === 'embedded' || connectedEntries.has(node.id) ? 'connected' : 'needs_connecting']))
+  const later = (ms) => new Promise(done => setTimeout(done, ms))
+  // ---- autobyteus-356: automatic node updates. The desktop checks a node at once when its switch turns on: if the node is older than
+  // this app and can update in place, it asks the node to update (the simulated node plays its scripted update) and follows it every
+  // 10 s until it ends. One entry per node; the windows get it by broadcast.
+  const appVersion = '0.1.0-prototype'
+  const autoUpdates = scenario === 'nodes_auto_updated'
+    ? { 'remote-docker': { version: appVersion, requestedAt: new Date(Date.now() - 50 * 60_000).toISOString(), outcome: 'AUTO_UPDATED', reason: null, read: false } }
+    : scenario === 'nodes_auto_failed'
+      ? { 'remote-docker': { version: appVersion, requestedAt: new Date(Date.now() - 50 * 60_000).toISOString(), outcome: 'AUTO_FAILED', reason: 'The download stopped before it finished.', read: false } }
+      : {}
+  const setAutoUpdate = (entryId, value) => {
+    if (value) autoUpdates[entryId] = value
+    else delete autoUpdates[entryId]
+    emit('autoUpdate', autoUpdates)
+  }
+  const nodeUpdateUrl = (entryId) => {
+    const node = registry.nodes.find(item => item.id === entryId)
+    return node ? `${String(node.baseUrl).replace(/\/+$/, '')}/rest/node-update` : null
+  }
+  const readNode = async (entryId) => {
+    const url = nodeUpdateUrl(entryId)
+    if (!url) return null
+    try { const response = await window.fetch(`${url}?target=${encodeURIComponent(appVersion)}`); return response.ok ? await response.json() : null } catch { return null }
+  }
+  async function checkNodeForAutoUpdate(entryId) {
+    const status = await readNode(entryId)
+    if (!status || status.inPlaceUpdate !== 'available' || status.updateBlocker || status.target?.relation !== 'newer') return
+    const requestedAt = new Date().toISOString()
+    let response = null
+    try { response = await window.fetch(nodeUpdateUrl(entryId), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ version: appVersion }) }) } catch { /* not reached */ }
+    if (!response || response.status !== 202) {
+      const answer = response ? await response.json().catch(() => null) : null
+      setAutoUpdate(entryId, { version: appVersion, requestedAt, outcome: 'AUTO_FAILED', reason: answer?.message || (response ? `HTTP ${response.status}` : 'The node could not be reached.'), read: false })
+      return
+    }
+    setAutoUpdate(entryId, { version: appVersion, requestedAt, outcome: 'PENDING', reason: null, read: false })
+    for (let tick = 0; tick < 90; tick += 1) {
+      await later(10_000)
+      const now = await readNode(entryId)
+      const state = now?.update?.state
+      if (state === 'succeeded') return setAutoUpdate(entryId, { version: appVersion, requestedAt, outcome: 'AUTO_UPDATED', reason: null, read: false })
+      if (state === 'failed' || state === 'refused') return setAutoUpdate(entryId, { version: appVersion, requestedAt, outcome: 'AUTO_FAILED', reason: now.update.message || null, read: false })
+    }
+  }
+
+  // The simulated install's steps: manifest, runtime download (with bytes), extract, runtime and model bootstrap.
+  const INSTALL_STEPS = [
+    ['fetching-manifest', null, 'Fetching the runtime manifest…'], ['downloading-runtime', 0, 'Downloading the voice runtime…'],
+    ['downloading-runtime', 35, 'Downloading the voice runtime…'], ['downloading-runtime', 70, 'Downloading the voice runtime…'],
+    ['downloading-runtime', 100, 'Downloading the voice runtime…'], ['extracting-runtime', null, 'Extracting the voice runtime…'],
+    ['bootstrapping-runtime', null, 'Preparing the voice runtime…'], ['bootstrapping-model', null, 'Preparing the speech model…'],
+  ]
+  const playInstall = async () => {
+    const total = 48_000_000
+    for (const [phase, percent, message] of INSTALL_STEPS) {
+      extensionResult({ status: 'installing', enabled: false, message, lastError: null, installProgress: { phase, percent, bytesReceived: percent === null ? null : Math.round(total * percent / 100), bytesTotal: percent === null ? null : total } })
+      await later(750)
+    }
+  }
   window.electronAPI = {
+    getNodeAccessStates: async () => accessStates(),
+    onNodeAccessChanged: callback => cleanup(listeners.access, callback),
+    connectNode: async (entryId) => {
+      await later(700)
+      if (!registry.nodes.some(node => node.id === entryId && node.nodeType === 'remote')) return { ok: false, code: 'NODE_ENTRY_NOT_FOUND', message: 'This node is not in the node list.' }
+      if (accessRefusal) return { ok: false, ...accessRefusal }
+      connectedEntries.add(entryId)
+      emit('access', accessStates())
+      return { ok: true, states: accessStates() }
+    },
+    disconnectNode: async (entryId) => {
+      await later(400)
+      connectedEntries.delete(entryId)
+      emit('access', accessStates())
+      return { ok: true, states: accessStates() }
+    },
+    getNodeAutoUpdateState: async () => structuredClone(autoUpdates),
+    onNodeAutoUpdateChanged: callback => cleanup(listeners.autoUpdate, callback),
+    markNodeAutoUpdateRead: async (entryId) => {
+      if (autoUpdates[entryId]) autoUpdates[entryId] = { ...autoUpdates[entryId], read: true }
+      return structuredClone(autoUpdates)
+    },
+    recheckNodeAutoUpdate: async (entryId) => {
+      const failed = autoUpdates[entryId]
+      if (failed?.outcome !== 'AUTO_FAILED') return
+      const status = await readNode(entryId)
+      if (status?.version === failed.version) setAutoUpdate(entryId, null)
+    },
     sendPing: () => {}, onPong: () => {},
     getServerStatus: async () => structuredClone(server),
     restartServer: async () => { setServer({ status: 'restarting', message: '' }); setTimeout(() => setServer({ status: 'running', message: '' }), 350); return structuredClone(server) },
     onServerStatus: callback => cleanup(listeners.server, callback),
     checkServerHealth: async () => server.status === 'running' ? { status: 'ok', data: { status: 'healthy' } } : server.status === 'error' ? { status: 'error', message: server.message } : { status: 'starting', message: 'Synthetic server is starting.' },
     openNodeWindow: async () => ({ windowId: 22, created: true }), focusNodeWindow: async () => ({ focused: true }), listNodeWindows: async () => [],
-    getWindowContext: async () => ({ windowId: embedded ? 1 : 2, entryId: embedded ? 'embedded-local' : nodesScenario ? 'remote-docker' : 'remote-prototype' }),
+    getWindowContext: async () => ({ windowId: embedded ? 1 : 2, entryId: embedded ? 'embedded-local' : officeAddress ? 'remote-office' : nodesScenario ? 'remote-docker' : 'remote-prototype' }),
     upsertNodeRegistry: async change => {
       if (change.type === 'add') registry = { version: registry.version + 1, nodes: [...registry.nodes, change.node] }
       if (change.type === 'remove') registry = { version: registry.version + 1, nodes: registry.nodes.filter(node => node.id !== change.entryId) }
       if (change.type === 'rename') registry = { version: registry.version + 1, nodes: registry.nodes.map(node => node.id === change.entryId ? { ...node, name: change.name, updatedAt: '2026-08-22T04:10:00.000Z' } : node) }
       if (change.type === 'identify') registry = { version: registry.version + 1, nodes: registry.nodes.map(node => node.id === change.entryId ? { ...node, nodeId: change.nodeId } : node) }
-      emit('node', registry); return structuredClone(registry)
+      if (change.type === 'set-auto-update') {
+        if (scenario === 'nodes_auto_save_fails') throw new Error('The node list could not be saved.')
+        registry = { version: registry.version + 1, nodes: registry.nodes.map(node => node.id === change.entryId ? { ...node, autoUpdate: Boolean(change.enabled) } : node) }
+      }
+      if (change.type === 'remove') { connectedEntries.delete(change.entryId); delete autoUpdates[change.entryId] }
+      emit('node', registry)
+      emit('access', accessStates())
+      if (change.type === 'set-auto-update' && change.enabled) void checkNodeForAutoUpdate(change.entryId)
+      return structuredClone(registry)
     },
     getNodeRegistrySnapshot: async () => structuredClone(registry), onNodeRegistryUpdated: callback => cleanup(listeners.node, callback),
     getBrowserShellSnapshot: async () => structuredClone(browser),
@@ -147,11 +264,13 @@ export function installHostScenario(options = {}) {
     onAppQuitting: callback => cleanup(listeners.quitting, callback), startShutdown: () => {}, resetServerData: async () => ({ success: true }),
     showFolderDialog: async () => ({ canceled: false, path: '/synthetic/selected-folder' }), getPathForFile: async file => `/synthetic/${file.name}`,
     getExtensionsState: async () => structuredClone(extensions),
-    installExtension: async () => extensionResult({ status: 'installed', enabled: true, message: 'Voice input is ready.', lastError: null, runtimeVersion: '1.0.0-prototype', modelVersion: 'tiny-prototype', backendKind: 'faster-whisper', installedAt: checkedAt }),
+    // extensions-nodes-baseline-refresh-516: an install plays the desktop's visible steps (about 6 s; the store polls the state) and then
+    // resolves installed. Nothing is downloaded.
+    installExtension: async () => { await playInstall(); return extensionResult({ status: 'installed', enabled: true, message: 'Voice input is ready.', lastError: null, installProgress: null, runtimeVersion: '1.0.0-prototype', modelVersion: 'tiny-prototype', backendKind: 'faster-whisper', installedAt: checkedAt }) },
     enableExtension: async () => extensionResult({ enabled: true }), disableExtension: async () => extensionResult({ enabled: false }),
     updateVoiceInputSettings: async (_id, payload) => extensionResult({ settings: { ...extensions[0].settings, ...payload } }),
     removeExtension: async () => extensionResult({ status: 'not-installed', enabled: false, runtimeVersion: null, modelVersion: null, backendKind: null, installedAt: null }),
-    reinstallExtension: async () => extensionResult({ status: 'installed', enabled: true, message: 'Voice input is ready.', lastError: null }),
+    reinstallExtension: async () => { await playInstall(); return extensionResult({ status: 'installed', enabled: true, message: 'Voice input is ready.', lastError: null, installProgress: null }) },
     openExtensionFolder: async () => ({ success: true }), transcribeVoiceInput: async () => ({ ok: true, text: 'Synthetic transcription.', detectedLanguage: 'en', noSpeech: false, error: null }),
   }
   window.__AUTOBYTEUS_HOST_MOCK__ = {

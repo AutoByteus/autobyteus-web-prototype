@@ -75,6 +75,8 @@ const fixtureState = (): Record<string, any> => {
   }
   localFixtureState.scenario = scenario
   localFixtureState.hostContext = (() => { try { return localStorage.getItem('autobyteus.prototype.context') || 'desktop' } catch { return 'desktop' } })()
+  // extensions-nodes-baseline-refresh-516: the Phone Setup starting state (the simulated network's phone facts; a reload applies a change).
+  localFixtureState.phonePairing = (() => { try { return localStorage.getItem('autobyteus.prototype.phonePairing') || '' } catch { return '' } })()
   // delegated-copy-task-locator (design-only): the Project Task Manager run's Tasks.
   if (designOnlyLayersEnabled()) seedDelegatedCopyTasks(localFixtureState, scenario)
   // task-keys-and-dependencies (design-only): Task keys and "depends on" for the example Projects.
@@ -170,7 +172,7 @@ const resolveLocally = async (request: OperationRequest = {}) => {
 // Project/Task mutations back the Projects pages (0a32261); the skill-source
 // mutations back the Skill Sources dialog (4dee901); ReloadAgentPackageDefinitions backs the
 // Agents, Teams and Orgs Reload buttons (f7fcf90).
-const LOCAL_MUTATIONS = new Set([...GITHUB_MUTATIONS, 'UpdateServerSetting', 'DeleteServerSetting', 'SetRemoteCollaborationEnabled', 'AddPeerNode', 'RenamePeerNode', 'RemovePeerNode', 'ChangePeerAddress', 'AddProjectTaskComment', ...EMBEDDING_MUTATIONS, ...NODE_SETTINGS_MUTATIONS, ...DELEGATED_MUTATIONS, 'ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', 'ImportMcpServerConfigs', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS, ...PERSONAL_RESET_MUTATIONS])
+const LOCAL_MUTATIONS = new Set([...GITHUB_MUTATIONS, 'UpdateServerSetting', 'DeleteServerSetting', 'SetRemoteCollaborationEnabled', 'CreatePeerInvite', 'AcceptPeerInvite', 'RenamePeerNode', 'RemovePeerNode', 'ChangePeerAddress', 'AddProjectTaskComment', ...EMBEDDING_MUTATIONS, ...NODE_SETTINGS_MUTATIONS, ...DELEGATED_MUTATIONS, 'ReloadAgentPackageDefinitions', 'ArchiveStoredAgentRunGroup', 'CreateAgentTeamRun', 'CreateAgentOrgRun', 'TerminateAgentOrgRun', 'PrepareAgentRun', 'CreateWorkspace', 'ImportMcpServerConfigs', ...PROJECT_MUTATIONS, ...SKILL_SOURCE_MUTATIONS, ...PERSONAL_RESET_MUTATIONS])
 
 const resolveMutationLocally = async (request: OperationRequest = {}) => {
   const definition = request.mutation?.definitions?.find((entry: any) => entry.kind === 'OperationDefinition')

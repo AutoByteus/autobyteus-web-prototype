@@ -159,6 +159,9 @@ Selected with `autobyteus.prototype.scenario` (and `autobyteus.prototype.context
 | `nodes_user`, `nodes_states` | unchanged names; now answered by `prototype/nodes/network-world.mjs` (see below); each node also reports its server version (`nodes_states` has a row in each state) |
 | `nodes_empty_offer` | Manage Nodes (`manage-nodes-professional`): Docker 8001 shares no Agents or Agent Teams (the empty offer) |
 | `nodes_update_refused`, `nodes_update_failed`, `nodes_update_lost`, `nodes_update_undelivered`, `nodes_update_running`, `nodes_update_error`, `nodes_update_unknown` | Manage Nodes (source `3b9dc912a1`): how Docker 8001's in-place update goes or what it reports (see the runbook, `WEB-BASELINE-REFRESH-015`) |
+| `nodes_access`, `nodes_access_code_invalid`, `nodes_access_network_refused`, `nodes_access_unreachable` | Manage Nodes (source `b768c50`, autobyteus-437): Docker 8001 needs connecting; a setup code connects it, or is refused this way (runbook `extensions-nodes-baseline-refresh-516`) |
+| `nodes_auto_updated`, `nodes_auto_failed`, `nodes_auto_save_fails` | Manage Nodes (source `b768c50`, autobyteus-356): Docker 8001 was updated automatically, its automatic update failed, or the switch cannot be saved |
+| `autobyteus.prototype.phonePairing` (separate key) | Phone Setup (source `b768c50`): the network facts of the simulated nodes (`tailscale` … `access_off`; runbook `extensions-nodes-baseline-refresh-516`) |
 | `updates_*`, `update_*` | unchanged names; the node's answers follow the shipped GraphQL (`SetUpdateCheckInterval`, `SetAutomaticUpdates`) |
 
 - `prototype/nodes/network-world.mjs` is the state of a small network of nodes (the desktop's own node, Docker 8001–8005, a studio, a laptop,

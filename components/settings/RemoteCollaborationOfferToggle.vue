@@ -3,7 +3,7 @@
     type="button"
     class="-ml-1.5 inline-flex max-w-full min-w-0 items-start gap-1.5 rounded-md px-1.5 py-1 text-left text-sm font-medium text-slate-700 transition-colors hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
     :aria-expanded="open"
-    :title="preview"
+    :title="preview || undefined"
     :data-testid="`${testId}-toggle`"
     @click="emit('update:open', !open)"
   >

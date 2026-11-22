@@ -1,5 +1,4 @@
 <template>
-  <!-- One 16 px mark per notice tone (info, warn, error, ok); decorative: the words carry the meaning. -->
   <svg class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     <template v-if="tone === 'warn'"><path d="M10 3.4 17.6 16.6H2.4L10 3.4Z" /><path d="M10 8.4v3.6M10 14.4h.01" /></template>
     <template v-else>
@@ -12,5 +11,6 @@
 </template>
 
 <script setup lang="ts">
+/** One 16 px mark per notice tone (info, warn, error, ok); decorative: the words carry the meaning. */
 defineProps<{ tone: 'info' | 'warn' | 'error' | 'ok' }>()
 </script>

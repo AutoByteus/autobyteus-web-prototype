@@ -88,6 +88,19 @@
         </button>
         <span v-else-if="store.hasOpen" class="inline-block h-8 w-8" aria-hidden="true" />
         <button
+          v-if="connected"
+          type="button"
+          class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-50"
+          :title="t(k('access.disconnect'), { name: row.name })"
+          :aria-label="t(k('access.disconnect'), { name: row.name })"
+          :disabled="disconnecting"
+          :data-testid="`node-disconnect-${row.key}`"
+          @click="disconnect"
+        >
+          <svg class="h-[18px] w-[18px]" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8.5 11.5 6 14a2.5 2.5 0 0 1-3.5-3.5L5 8m6.5.5L14 6a2.5 2.5 0 0 1 3.5 3.5L15 12M3 3l14 14" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
+        <span v-else-if="access.supported() && !row.isEmbedded && row.entryIds.length" class="inline-block h-8 w-8" aria-hidden="true" />
+        <button
           v-if="!row.isEmbedded"
           type="button"
           class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-red-50 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
@@ -103,7 +116,8 @@
     </div>
 
     <!-- notices: one shape for the checking line, the fixing line and the server notice -->
-    <div v-if="view.checking || view.line || serverAsked" class="space-y-2 px-5 pb-3.5 -mt-0.5 empty:hidden sm:pl-[2.75rem]" aria-live="polite">
+    <div v-if="view.checking || view.line || serverAsked || needsConnecting" class="space-y-2 px-5 pb-3.5 -mt-0.5 empty:hidden sm:pl-[2.75rem]" aria-live="polite">
+      <NodeAccessNotice v-if="needsConnecting" :row="row" />
       <p v-if="view.checking" class="text-sm leading-5 text-slate-500" :data-testid="`node-line-${row.key}`">
         {{ t(k('row.checkingLine'), { name: row.name }) }}
       </p>
@@ -133,31 +147,35 @@
 </template>
 
 <style scoped>
-/* One grid per row. Wide: who | server | offer | collaboration | actions. Medium: who | collaboration | actions, then server and offer under the name.
-   Narrow: who | actions, server, then offer | collaboration. The widths are those of the Nodes card, not the window. */
-.nr-grid { display: grid; align-items: start; column-gap: 1rem; row-gap: 0.5rem;
+/* One grid per row. Wide: who | server | offer | collaboration | actions. Medium: who | collaboration | actions, then server, then offer,
+   under the name. Narrow: who | actions, then server, offer and collaboration. The widths are those of the Nodes card, not the window.
+   Every cell below the first line spans all columns, including the 1fr one, so it never widens the auto columns: the capsules and
+   the icons stay in line from row to row. The space between lines is each cell's own top margin, not a row gap, so an empty server or
+   offer cell (a node never reached) leaves no gap behind. */
+.nr-grid { display: grid; align-items: start; column-gap: 1rem;
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas: 'name actions' 'server server' 'offer offer' 'collab collab'; }
 .nr-name { grid-area: name; padding-top: 0.125rem; }
-.nr-server { grid-area: server; padding-left: 1.5rem; padding-top: 0.125rem; }
-.nr-offer { grid-area: offer; padding-left: 1.5rem; padding-top: 0.375rem; }
-.nr-collab { grid-area: collab; justify-self: start; margin-left: 1.5rem; }
+.nr-server { grid-area: server; padding-left: 1.5rem; padding-top: 0.125rem; margin-top: 0.5rem; }
+.nr-offer { grid-area: offer; padding-left: 1.5rem; padding-top: 0.375rem; margin-top: 0.5rem; }
+.nr-collab { grid-area: collab; justify-self: start; margin-left: 1.5rem; margin-top: 0.5rem; }
 .nr-actions { grid-area: actions; min-width: 2rem; height: 2.25rem; }
 .nr-server:empty, .nr-offer:empty { display: none; }
 @container (min-width: 38rem) {
-  .nr-collab { justify-self: end; margin-left: 0; }
-  .nr-grid { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: 'name collab actions' 'server offer offer'; }
-  .nr-offer { padding-left: 0; }
+  .nr-collab { justify-self: end; margin-left: 0; margin-top: 0; }
+  .nr-grid { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: 'name collab actions' 'server server server' 'offer offer offer'; }
 }
 @container (min-width: 64rem) {
   .nr-grid { grid-template-columns: minmax(0, 1.3fr) 16rem minmax(0, 1fr) auto auto; grid-template-areas: 'name server offer collab actions'; }
-  .nr-server { padding-left: 0; padding-top: 0.125rem; }
+  .nr-server { padding-left: 0; padding-top: 0.125rem; margin-top: 0; }
+  .nr-offer { padding-left: 0; margin-top: 0; }
   .nr-server:empty, .nr-offer:empty { display: block; }
 }
 </style>
 
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, onMounted, ref } from 'vue'
+import NodeAccessNotice from '~/components/settings/nodes/NodeAccessNotice.vue'
 import NodeCollaborationSwitch from '~/components/settings/nodes/NodeCollaborationSwitch.vue'
 import NodeNoticeIcon from '~/components/settings/nodes/NodeNoticeIcon.vue'
 import NodeConnectionDetails from '~/components/settings/nodes/NodeConnectionDetails.vue'
@@ -165,6 +183,7 @@ import NodeServerUpdate from '~/components/settings/nodes/NodeServerUpdate.vue'
 import RemoteCollaborationOfferList from '~/components/settings/RemoteCollaborationOfferList.vue'
 import RemoteCollaborationOfferToggle from '~/components/settings/RemoteCollaborationOfferToggle.vue'
 import { useLocalization } from '~/composables/useLocalization'
+import { useNodeAccessStore } from '~/stores/nodeAccessStore'
 import { useNodeChangeDialogStore } from '~/stores/nodeChangeDialogStore'
 import { useNodeListStore } from '~/stores/nodeListStore'
 import type { NodeRow } from '~/stores/nodeRowStatus'
@@ -173,7 +192,8 @@ import { causeText, failureText, NODES_PAGE_KEY } from '~/utils/nodeConnectionEr
 /** One node (UIS-002): dot, name (click to rename), address, collaboration switch, Open, Remove; its server version and
  * in-place update (remote nodes); one line; details. */
 const props = defineProps<{ row: NodeRow }>()
-const serverAsked = computed(() => !props.row.isEmbedded)
+// The node's server version is an owner read: a node this desktop has no key for cannot answer it (autobyteus-437).
+const serverAsked = computed(() => !props.row.isEmbedded && !needsConnecting.value)
 const emit = defineEmits<{ guide: [] }>()
 
 const { t } = useLocalization()
@@ -181,6 +201,24 @@ const k = (key: string): string => `${NODES_PAGE_KEY}${key}`
 const store = useNodeListStore()
 const dialog = useNodeChangeDialogStore()
 const details = ref<InstanceType<typeof NodeConnectionDetails> | null>(null)
+
+// ---- this desktop's credential for a remote node (autobyteus-437): Needs connecting, or Disconnect.
+const access = useNodeAccessStore()
+onMounted(() => { void access.initialize() })
+const accessEntryId = computed(() => (props.row.isEmbedded ? null : props.row.entryIds[0] ?? null))
+const needsConnecting = computed(() => Boolean(accessEntryId.value) && access.stateOf(accessEntryId.value!) === 'needs_connecting')
+const connected = computed(() => Boolean(accessEntryId.value) && access.stateOf(accessEntryId.value!) === 'connected')
+const disconnecting = ref(false)
+const disconnect = async (): Promise<void> => {
+  if (!accessEntryId.value || disconnecting.value) return
+  disconnecting.value = true
+  try {
+    await access.disconnect(accessEntryId.value)
+    store.askAgain(props.row.key)
+  } finally {
+    disconnecting.value = false
+  }
+}
 
 const view = computed(() => store.views[props.row.key]!)
 const collaborating = computed(() => Boolean(props.row.peer))
@@ -224,13 +262,14 @@ const lineText = computed(() => {
     case 'partial': return line.error ? failureText(t, line.error, { node: name, name: line.stepName }) : ''
     case 'offThere': return t(k('line.offThere'), { name })
     case 'notRegisteredThere': return t(k('line.notRegisteredThere'), { name })
+    case 'notPaired': return t(k('line.notPaired'), { name })
     case 'different': return t(k('line.different'))
     case 'notRegisteredHereInfo': return t(k('line.notRegisteredHere'), { name })
     case 'agentsOff': return t(k('line.agentsOff'), { name })
     default: return ''
   }
 })
-const FIX_LABEL = { turnOnThere: 'line.fixOffThere', registerThere: 'line.fixRegisterThere', changeAddress: 'line.fixChangeAddress',
+const FIX_LABEL = { turnOnThere: 'line.fixOffThere', pairAgain: 'line.fixPairAgain', changeAddress: 'line.fixChangeAddress',
   checkAgain: 'line.fixCheckAgain', tryAgain: 'line.fixTryAgain', turnOn: 'line.fixTurnOn' } as const
 const lineFixLabel = computed(() => view.value.line ? t(k(FIX_LABEL[view.value.line.fix])) : '')
 
@@ -238,7 +277,7 @@ const lineFixLabel = computed(() => view.value.line ? t(k(FIX_LABEL[view.value.l
 const runFix = async (): Promise<void> => {
   switch (view.value.line?.fix) {
     case 'turnOn': return dialog.request('connect', props.row.key)
-    case 'turnOnThere': case 'registerThere': case 'tryAgain': return dialog.request('finish', props.row.key)
+    case 'turnOnThere': case 'pairAgain': case 'tryAgain': return dialog.request('finish', props.row.key)
     case 'checkAgain': return store.askAgain(props.row.key)
     case 'changeAddress':
       expanded.value = true

@@ -53,8 +53,10 @@ const overlayAfterActions: Record<string, string[]> = { agentDefinition: ['reloa
 // (utils/apolloClient.ts, prototype/memory-search/memoryDesignFixture.ts), so lists, search and the Work Journal respond for real.
 // WEB-BASELINE-REFRESH-013 (origin/personal@d74f75a): Manage Nodes (its list, peers, offers, switch and change dialog) and the remote runs run
 // the source's own code against the simulated network of nodes (prototype/nodes/network-world.mjs).
+// extensions-nodes-baseline-refresh-516 (origin/personal@b768c50): this desktop's node access and automatic node updates read the
+// simulated desktop shell (prototype/shared/install-host-scenario.js), as the source's stores do.
 // semantic-memory-view-554 (design): `semanticMemory` reads the semantic memory view through utils/apolloClient.ts.
-const sourceLoadedStores = new Set(['mobileNodeSession', 'mobileRunOpening', 'phoneAccess', 'nodeList', 'nodeServerUpdate', 'remoteCollaborationStore', 'remoteCollaborationOffers', 'remoteCollaborationCapability', 'nodeChangeDialog', 'remoteRuns', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft', 'memoryExplorerStore', 'memoryInspectorStore', 'memorySearchStore', 'memoryJournalStore', 'integrations', 'semanticMemory', 'memoryBrowse'])
+const sourceLoadedStores = new Set(['mobileNodeSession', 'mobileRunOpening', 'phoneAccess', 'nodeList', 'nodeServerUpdate', 'nodeAccess', 'nodeAutoUpdate', 'remoteCollaborationStore', 'remoteCollaborationOffers', 'remoteCollaborationCapability', 'nodeChangeDialog', 'remoteRuns', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft', 'memoryExplorerStore', 'memoryInspectorStore', 'memorySearchStore', 'memoryJournalStore', 'integrations', 'semanticMemory', 'memoryBrowse'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),
@@ -139,7 +141,7 @@ const localActions: Record<string, Set<string>> = {
   agentTeamDefinition: new Set(['resetAgentTeamPersonalSetting']),
   agentOrgDefinition: new Set(['resetPersonalSetting']),
   serverSettings: new Set(['fetchServerSettings', 'reloadServerSettings', 'updateServerSetting', 'deleteServerSetting', 'fetchSearchConfig']),
-  nodeStore: new Set(['replaceSnapshot', 'persistSnapshotToLocalStorage', 'persistCurrentSnapshotToLocalStorage', 'applyRegistrySnapshot', 'ensureBrowserEmbeddedNodePresent', 'initializeRegistry', 'getEntryById', 'getEntryBaseUrl', 'identifyNode', 'upsertRegistry', 'addRemoteNode', 'removeRemoteNode', 'renameNode', 'teardownRegistryListener']),
+  nodeStore: new Set(['replaceSnapshot', 'persistSnapshotToLocalStorage', 'persistCurrentSnapshotToLocalStorage', 'applyRegistrySnapshot', 'ensureBrowserEmbeddedNodePresent', 'initializeRegistry', 'getEntryById', 'getEntryBaseUrl', 'identifyNode', 'upsertRegistry', 'addRemoteNode', 'removeRemoteNode', 'renameNode', 'teardownRegistryListener', 'setNodeAutoUpdate']),
   windowNodeContext: new Set(['initializeFromWindowContext', 'bindNodeContext', 'getBoundEndpoints', 'waitForBoundBackendReady']),
   server: new Set(['initialize', 'waitForServerReady', 'handleElectronServerInitialization', 'handleBrowserServerConnection', 'attemptServerConnection', 'updateServerStatus', 'restartServer', 'resetServerDataAndRestart', 'checkServerHealth']),
   // WEB-BASELINE-REFRESH-012: the Notification Center marks the app update read and clears it through the host bridge.
@@ -880,7 +882,7 @@ export default defineNuxtPlugin({
       const pathname = resolved.pathname.startsWith(base.pathname.replace(/\/+$/, '')) ? resolved.pathname.slice(base.pathname.replace(/\/+$/, '').length) : resolved.pathname
       let body: any = config.data
       if (typeof body === 'string') { try { body = JSON.parse(body) } catch { body = {} } }
-      const answer = restFixture(String(config.method ?? 'get').toUpperCase(), pathname, body, currentFixtureState())
+      const answer = restFixture(String(config.method ?? 'get').toUpperCase(), pathname, body, currentFixtureState(), networkWorldOf(currentFixtureState()))
       if (!answer) return originalAdapter(config)
       await new Promise<void>(done => setTimeout(done, 40))
       return { data: structuredClone(answer.json), status: answer.status, statusText: 'OK', headers: {}, config, request: {} }

@@ -1,5 +1,5 @@
 import { createTokenUsageSummary } from '../shared/token-usage-fixture.js'
-import { createNetworkWorld, NODE_IDS } from '../nodes/network-world.mjs'
+import { createNetworkWorld, NODE_IDS, phoneStateOf } from '../nodes/network-world.mjs'
 import { NODE_SETTINGS_MUTATIONS, agentPackageUpdate, markNotificationHandled, nodeSettingsOperation } from './node-settings-fixtures.mjs'
 import { githubOperation } from './github-integration-fixtures.mjs'
 // package-clone-auto-update-457: the personal settings of package and built-in definitions (personal-settings-fixtures.mjs).
@@ -85,6 +85,14 @@ export const scenarioCatalog = Object.freeze({
   nodes_update_undelivered: 'Nodes scenario where the update request to Docker 8001 is answered with an error that carries no message (HTTP 500).',
   nodes_update_running: 'Nodes scenario where an update of Docker 8001 was started from another window and is running when the page opens.',
   nodes_update_error: 'Nodes scenario where the update service of Docker 8001 answers that it has an error (its own message under the version).',
+  // extensions-nodes-baseline-refresh-516 (autobyteus-437 node access, autobyteus-356 automatic node updates; a desktop window).
+  nodes_access: 'Nodes scenario where this desktop holds no key for Docker 8001: "Needs connecting." with the setup code field; any code connects it after 0.7 s.',
+  nodes_access_code_invalid: 'Nodes scenario where Docker 8001 needs connecting and refuses every setup code (used, expired or mistyped).',
+  nodes_access_network_refused: 'Nodes scenario where Docker 8001 needs connecting and does not accept connections from this network.',
+  nodes_access_unreachable: 'Nodes scenario where Docker 8001 needs connecting and cannot be reached when the code is sent.',
+  nodes_auto_updated: 'Nodes scenario where the desktop updated Docker 8001 automatically ("Updated automatically to …", New).',
+  nodes_auto_failed: 'Nodes scenario where the automatic update of Docker 8001 failed (the node\'s reason under "Automatic update failed").',
+  nodes_auto_save_fails: 'Nodes scenario where the "Update automatically" switch cannot be saved.',
   nodes_update_unknown: 'Nodes scenario where Docker 8001 cannot update in place and does not know its server version.',
   // remote-runs-in-tree: runs the Project Task Manager delegated to another node (prototype/remote-runs/remoteRunsFixture.ts).
   remote_runs: 'Populated data where the Project Task Manager run is live and delegated a Marketing Team (working) and a market researcher (idle) to the node "docker", next to its five local copies.',
@@ -94,14 +102,16 @@ export const scenarioCatalog = Object.freeze({
 })
 
 /** The node this window is bound to: the embedded node, or Docker 8001 in the external window of the Nodes scenarios. */
-export const boundNodeIdOf = (state) => state.hostContext === 'electron_external' && String(state.scenario).startsWith('nodes_') ? NODE_IDS.D1 : NODE_IDS.E
+// extensions-nodes-baseline-refresh-516: a window opened on "Office Mac" (another computer) in the `remote_*` phone states.
+export const boundNodeIdOf = (state) => state.hostContext === 'electron_external' && phoneStateOf(state.phonePairing).startsWith('remote_') ? NODE_IDS.OFFICE
+  : state.hostContext === 'electron_external' && String(state.scenario).startsWith('nodes_') ? NODE_IDS.D1 : NODE_IDS.E
 /** The simulated network of nodes (prototype/nodes/network-world.mjs), one per caller and scenario, reset with the scenario. */
 export const networkWorldOf = (state) => {
   if (!state.world) {
     const bound = boundNodeIdOf(state)
     // The addresses at which this window reaches its own node (the observation node, the dev servers, the desktop's address).
     const own = Object.fromEntries(['localhost:8000', '127.0.0.1:8000', 'localhost:4823', '127.0.0.1:4823', 'localhost:4820', '127.0.0.1:4820', 'localhost:4822', '127.0.0.1:4822', 'localhost:4391', '127.0.0.1:4391'].map(key => [key, bound]))
-    state.world = createNetworkWorld(state.scenario, { boundNodeId: bound, extraListeners: own })
+    state.world = createNetworkWorld(state.scenario, { boundNodeId: bound, extraListeners: own, phone: state.phonePairing })
   }
   return state.world
 }

@@ -1,0 +1,52 @@
+# Copied files: worktree vs origin/personal@b768c503f9761242089cdee35e47dc2bf65ab8ea (cmp)
+identical  components/settings/VoiceInputExtensionCard.vue
+identical  components/settings/NodeManager.vue
+identical  components/settings/RemoteCollaborationOfferToggle.vue
+identical  components/settings/nodes/AddNodePanel.vue
+identical  components/settings/nodes/NodeAccessNotice.vue
+identical  components/settings/nodes/NodeAutoUpdate.vue
+identical  components/settings/nodes/NodeChangeDialog.vue
+identical  components/settings/nodes/NodeCollaborationSwitch.vue
+identical  components/settings/nodes/NodeConnectionDetails.vue
+identical  components/settings/nodes/NodeNoticeIcon.vue
+identical  components/settings/nodes/NodeRow.vue
+identical  components/settings/nodes/NodeServerUpdate.vue
+identical  components/settings/phone/ConnectedPhones.vue
+identical  components/settings/phone/PhoneCodeBlock.vue
+identical  components/settings/phone/PhoneWayTab.vue
+identical  components/settings/phone/PhonesPanel.vue
+identical  graphql/mutations/remoteCollaborationMutations.ts
+identical  graphql/queries/remoteCollaborationQueries.ts
+identical  services/nodeCollaboration/nodeChangePlan.ts
+identical  services/nodeCollaboration/nodeCollaborationApi.ts
+identical  services/nodeCollaboration/nodeCollaborationConnector.ts
+identical  services/nodeCollaboration/windowNodeCollaborationConnector.ts
+identical  shared/nodeAccessTypes.ts
+identical  shared/nodeAutoUpdateTypes.ts
+identical  shared/nodeUpdateContract.ts
+identical  stores/nodeAccessStore.ts
+identical  stores/nodeAutoUpdateStore.ts
+identical  stores/nodeChangeDialogStore.ts
+identical  stores/nodeRowStatus.ts
+identical  stores/nodeServerUpdateStore.ts
+identical  stores/nodeStore.ts
+identical  stores/phoneAccessStore.ts
+identical  stores/remoteCollaborationOffersStore.ts
+identical  stores/remoteCollaborationStore.ts
+identical  utils/nodeConnectionErrorText.ts
+identical  utils/nodeIdentityProbe.ts
+identical  utils/nodeSettingsError.ts
+identical  utils/phoneAccess/phoneConnectionWays.ts
+identical  utils/phoneAccess/phoneSetupTextKey.ts
+identical  utils/phoneAccess/tailscaleServeCommand.ts
+identical  utils/phoneAccessRemoteNode.ts
+identical  localization/messages/en/nodesPage.ts
+identical  localization/messages/zh-CN/nodesPage.ts
+identical  localization/messages/en/phoneSetupRemoteNode.ts
+identical  localization/messages/zh-CN/phoneSetupRemoteNode.ts
+
+# Merged (not byte-identical by design)
+localization/messages/en/settings.ts: every settings.components.settings.phone.* key equals the source; PhoneAccessCard.* / PhoneSetupGuideCard.* removed; other keys keep their earlier pin
+localization/messages/en/index.ts: + phoneSetupRemoteNode import and spread at the source's position
+localization/messages/zh-CN/settings.ts: every settings.components.settings.phone.* key equals the source; PhoneAccessCard.* / PhoneSetupGuideCard.* removed; other keys keep their earlier pin
+localization/messages/zh-CN/index.ts: + phoneSetupRemoteNode import and spread at the source's position

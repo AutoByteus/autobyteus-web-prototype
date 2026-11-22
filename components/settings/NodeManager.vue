@@ -43,10 +43,7 @@
         aria-labelledby="node-manager-tab-phoneSetup"
         data-testid="node-manager-panel-phoneSetup"
       >
-        <PhoneConnectPanel
-          :node-name="currentNode?.name || $t('settings.components.settings.NodeManager.currentNodeUnknown')"
-          :local-port="currentNodePort"
-        />
+        <PhonesPanel />
       </div>
       <div
         v-else-if="activeTab === 'dockerGuide'"
@@ -77,7 +74,7 @@ import NodeManagerTabs from '~/components/settings/NodeManagerTabs.vue';
 import MemorySyncCard from '~/components/settings/MemorySyncCard.vue';
 import NodeList from '~/components/settings/nodes/NodeList.vue';
 import ThisNodeCard from '~/components/settings/nodes/ThisNodeCard.vue';
-import PhoneConnectPanel from '~/components/settings/phone/PhoneConnectPanel.vue';
+import PhonesPanel from '~/components/settings/phone/PhonesPanel.vue';
 import { useLocalization } from '~/composables/useLocalization';
 import { useNodeStore } from '~/stores/nodeStore';
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
@@ -102,13 +99,6 @@ const currentNode = computed(() => nodeStore.getEntryById(windowNodeContextStore
 const nodeTypeLabel = (nodeType: string | undefined) =>
   t(`settings.components.settings.NodeManager.nodeType.${nodeType ?? 'unknown'}` as const);
 const currentNodeTypeLabel = computed(() => nodeTypeLabel(currentNode.value?.nodeType));
-const currentNodePort = computed(() => {
-  try {
-    return Number(new URL(currentNode.value?.baseUrl || '').port) || undefined;
-  } catch {
-    return undefined;
-  }
-});
 
 function syncActiveTabFromRouteQuery(): void {
   const queryTab = typeof route.query.nodeTab === 'string' ? route.query.nodeTab : '';

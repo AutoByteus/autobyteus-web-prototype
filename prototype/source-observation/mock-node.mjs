@@ -80,6 +80,7 @@ const server = http.createServer(async (req, res) => {
       if (Number.isFinite(input.requestDelayMs)) state.requestDelayMs = Math.max(0, Number(input.requestDelayMs))
       if (typeof input.designLayers === 'string') state.designLayers = input.designLayers
       if (typeof input.hostContext === 'string') { state.hostContext = input.hostContext; state.world = null }
+      if (typeof input.phonePairing === 'string') { state.phonePairing = input.phonePairing; state.world = null; state.restState = null }
       if (typeof input.applicationsEnabled === 'boolean') state.applicationsEnabled = input.applicationsEnabled
       if (typeof input.managedGatewayEnabled === 'boolean') state.managedGatewayEnabled = input.managedGatewayEnabled
       if (input.operationFailures && typeof input.operationFailures === 'object') state.operationFailures = { ...input.operationFailures }
@@ -135,7 +136,7 @@ const server = http.createServer(async (req, res) => {
 
   if (url.pathname.startsWith('/rest/') && url.pathname !== '/rest/remote-access/status' && url.pathname !== '/rest/remote-access/pairing-exchanges') {
     const body = req.method === 'GET' ? {} : await readBody(req)
-    const answer = restFixture(req.method, url.pathname.slice('/rest'.length), body, state)
+    const answer = restFixture(req.method, url.pathname.slice('/rest'.length), body, state, networkWorldOf(state))
     if (answer) return send(res, answer.status, answer.json)
   }
   if (url.pathname === '/rest/remote-access/status') {

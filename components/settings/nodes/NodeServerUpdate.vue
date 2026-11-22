@@ -1,6 +1,5 @@
 <template>
-  <!-- part="cell": the server column (version, progress, update). part="notice": the result or blocker line under the row. -->
-  <div v-if="part === 'cell' && entry && entry.connection !== 'unknown'" class="min-w-0 text-[13px] leading-5 text-slate-600" :data-testid="`node-server-${row.key}`">
+  <div v-if="part === 'cell' && entry && entry.connection !== 'unknown'" class="min-w-0 text-[0.8125rem] leading-5 text-slate-600" aria-live="polite" :data-testid="`node-server-${row.key}`">
     <span v-if="entry.connection === 'restarting'" class="inline-flex items-center gap-2" :data-testid="`node-server-progress-${row.key}`">
       <span class="inline-block h-3 w-3 animate-spin rounded-full border-2 border-slate-200 border-t-slate-500" aria-hidden="true" />
       {{ t(k('update.restarting')) }}
@@ -28,13 +27,14 @@
         {{ t(k('update.newerThanApp')) }}
       </p>
     </template>
+    <!-- autobyteus-356: the desktop keeps this node on this app's version, through the row's first desktop entry. -->
+    <NodeAutoUpdate v-if="autoUpdateEntryId" :entry-id="autoUpdateEntryId" :can-update="status?.inPlaceUpdate === 'available'" />
   </div>
 
   <div
     v-else-if="part === 'notice' && notice && entry && entry.connection === 'ok'"
     class="flex flex-wrap items-start justify-between gap-x-3 gap-y-2 rounded-lg border px-3 py-2 text-sm"
     :class="notice.tone === 'ok' ? 'border-emerald-200 bg-emerald-50 text-emerald-900' : 'border-amber-200 bg-amber-50 text-amber-900'"
-    aria-live="polite"
     :data-testid="`node-server-notice-${row.key}`"
   >
     <div class="flex min-w-0 flex-1 basis-56 items-start gap-2.5">
@@ -60,9 +60,15 @@ import { useNodeListStore } from '~/stores/nodeListStore'
 import type { NodeRow } from '~/stores/nodeRowStatus'
 import { useNodeServerUpdateStore } from '~/stores/nodeServerUpdateStore'
 import { NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
+import NodeAutoUpdate from '~/components/settings/nodes/NodeAutoUpdate.vue'
+import { useNodeAutoUpdateStore } from '~/stores/nodeAutoUpdateStore'
 
-/** A remote node's server version and in-place update, under its row (design DS-001, DS-005, "Row states"). */
-const props = withDefaults(defineProps<{ row: NodeRow; part?: 'cell' | 'notice' }>(), { part: 'cell' })
+/**
+ * A remote node's server version and in-place update (305), in two parts of its row (363): the cell in the server column
+ * (version, progress, "Update to …"; a live region, so progress is announced) and the notice under the row (a result or
+ * blocker, inside the row's notice live region). Only the cell asks the node, so it is asked once per row.
+ */
+const props = defineProps<{ row: NodeRow; part: 'cell' | 'notice' }>()
 const { t } = useLocalization()
 const k = (key: string): string => `${NODES_PAGE_KEY}${key}`
 const list = useNodeListStore()
@@ -76,7 +82,29 @@ watch(() => updates.target, () => { if (props.part === 'cell' && address.value) 
 onBeforeUnmount(() => { if (props.part === 'cell') updates.unwatch(props.row.key) })
 
 const entry = computed(() => updates.entries[props.row.key])
+/** The desktop entry automatic updates go through: the one this desktop opens the node by (none for a peer-only row). */
+const autoUpdateEntryId = computed(() => props.row.entryIds[0] ?? null)
+
+// The desktop's automatic update of this node (autobyteus-356) runs in the main process, not in this window: when its
+// entry changes (requested, then ended), the cell asks the node again, so it follows the update and shows the version.
+const autoUpdates = useNodeAutoUpdateStore()
+const autoEntry = computed(() => autoUpdateEntryId.value ? autoUpdates.outcomeOf(autoUpdateEntryId.value) : null)
+watch(() => autoEntry.value ? `${autoEntry.value.requestedAt}|${autoEntry.value.outcome}` : null, (now, before) => {
+  // A known entry that changed, or a new request; not an ended outcome first read when the page opens.
+  if (props.part === 'cell' && now && address.value && (before !== null || now.endsWith('|PENDING'))) void updates.refresh(props.row.key)
+})
+/** The automatic line already reports the end of an automatic update; the notice does not repeat it. */
+const autoReported = (targetVersion: string | null): boolean =>
+  !!autoEntry.value && autoEntry.value.outcome !== 'PENDING' && autoEntry.value.version === targetVersion
 const status = computed(() => entry.value?.status ?? null)
+// autobyteus-412: an automatic failure for a version the node has since reached is stale. Whenever the cell has an answer
+// from the node and the entry is a failure, the main process reads the node about that version and drops the failure;
+// this window decides nothing. Either side may change first (the entries load after the first answer), so both are watched.
+watch(() => `${status.value?.version}|${status.value?.update?.state}|${autoEntry.value?.version}|${autoEntry.value?.outcome}`, () => {
+  const entryId = autoUpdateEntryId.value
+  if (props.part !== 'cell' || !status.value || !entryId || autoEntry.value?.outcome !== 'AUTO_FAILED') return
+  autoUpdates.recheck(entryId).catch((cause) => console.warn('Failed to ask the desktop to check the node again:', cause))
+}, { immediate: true })
 const versionText = computed(() => status.value?.version ? t(k('update.version'), { version: status.value.version }) : t(k('update.versionUnknown')))
 
 const STEP_KEYS: Record<string, string> = {
@@ -116,7 +144,7 @@ const notice = computed<{ text: string; tone: 'ok' | 'warn'; command?: string } 
   if (answer.updateBlocker) return { text: answer.updateBlocker.message, tone: 'warn' }
   const update = answer.update
   const relevant = update && (current.followed || (update.targetVersion !== null && update.targetVersion === updates.target))
-  if (!relevant) return null
+  if (!relevant || autoReported(update.targetVersion)) return null
   if (update.state === 'succeeded' && current.followed) return { text: t(k('update.succeeded'), { version: update.targetVersion ?? '' }), tone: 'ok' }
   if (update.state === 'failed' || update.state === 'refused') {
     return { text: `${t(k('update.notDone'), { version: update.targetVersion ?? '' })} ${update.message ?? ''}`.trim(), tone: 'warn',

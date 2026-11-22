@@ -1,5 +1,24 @@
 # UI Reference Runbook
 
+## extensions-nodes-baseline-refresh-516 (Settings → Extensions, the Nodes page's Manage Nodes and Phone Setup; these reflect `origin/personal@b768c503f9`)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4517
+```
+
+Starting states: in the browser console set the keys, then reload; remove them to reset. A desktop window: `localStorage.setItem('autobyteus.prototype.context', 'electron_internal')` (the desktop's own node) or `'electron_external'` (a window on Docker 8001, or on "Office Mac" in the `remote_*` phone states); no context key = a browser window. Chinese: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`. State is in memory: a reload resets it.
+
+- **Extensions**: <http://127.0.0.1:4517/settings?section=extensions> (desktop window). `autobyteus.prototype.scenario` = `populated` (installed, enabled; Disable / Enable, the language and audio source, Reinstall), `extension_error`, `extension_missing` (Install plays the install steps for about 6 s). A browser window shows "only in the desktop app".
+- **Manage Nodes**: <http://127.0.0.1:4517/nodes?nodeTab=manage>, scenario (desktop window):
+  - `nodes_user` (embedded node and Docker 8001; Add node `http://localhost:8003` with a name opens the pairing dialog; 8004 fails with the Docker loopback hint; 8005 restarts once), `nodes_states` (a row in every state; **lab** is registered before pairing: "Not paired yet", Pair again);
+  - node access: `nodes_access` (Docker 8001 "Needs connecting.": any setup code connects after 0.7 s), `nodes_access_code_invalid`, `nodes_access_network_refused`, `nodes_access_unreachable`; a connected remote row's Disconnect icon makes it need connecting; a node added on the page needs connecting;
+  - automatic node updates: turn "Update automatically" on for Docker 8001 in `nodes_user` (the update runs at once, about 20 s, then "Updated to …"); `nodes_auto_updated`, `nodes_auto_failed`, `nodes_auto_save_fails`; the earlier `nodes_update_*` scenarios (Update to …) are unchanged.
+- **Phone Setup**: <http://127.0.0.1:4517/nodes?nodeTab=phoneSetup> with scenario `nodes_user` and a desktop context. The source's Phones panel; `autobyteus.prototype.phonePairing` chooses the network facts: `tailscale` (default; the secure web address set up), `tailscale_no_https` (Advanced shows the command), `company_address`, `vpn`, `wifi_ask`, `wifi_new_network`, `wifi_allowed`, `nothing` (blocked), `docker_unpublished` (with `electron_external`), `remote_lan`, `remote_tailscale`, `remote_vpn`, `remote_unreachable`, `remote_nothing` (with `electron_external`: a window on "Office Mac"), `expired` (a shown code expires after 4 s), `no_phones` (empty list), `access_off`. On the Company address tab, `http://192.168.2.10:29695` reaches this node; another address does not.
+- The world is invented: `prototype/nodes/network-world.mjs` (nodes, addresses, pairing, phone facts), `prototype/source-observation/rest-fixtures.mjs` (phone access, phones, codes), `prototype/shared/install-host-scenario.js` (the desktop shell: node access, automatic updates, the Voice Input install). Restart the dev server after editing files under `prototype/` or `plugins/`.
+- Evidence: `ui-baseline-report.md` (first section), `evidence/extensions-nodes-baseline-refresh-516/` (left: the baseline, right: the pinned source).
+- The desktop panel of `one-step-phone-pairing` and `phone-setup-remote-node-wording` below (`PhoneConnectPanel`) is replaced by the source's panel; their `/android`, node sheet and browser pairing page entries still apply.
+
 ## memory-baseline-refresh-554 (the Memory page `/memory` and the Agents page's semantic memory card and field; these reflect `origin/personal@8430d9ef12`)
 
 ```bash

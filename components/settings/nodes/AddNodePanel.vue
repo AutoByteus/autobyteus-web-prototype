@@ -5,7 +5,7 @@
         <input
           v-model="draft.address"
           type="text"
-          class="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 font-mono text-[13px] text-slate-900 shadow-sm transition placeholder:font-sans placeholder:text-sm placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+          class="h-10 w-full rounded-lg border border-slate-300 bg-white px-3 font-mono text-[0.8125rem] text-slate-900 shadow-sm transition placeholder:font-sans placeholder:text-sm placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
           :class="errors.address ? 'border-red-300' : ''"
           :placeholder="t(k('add.addressPlaceholder'))"
           :aria-label="t(k('add.address'))"
