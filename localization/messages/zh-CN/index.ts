@@ -42,6 +42,7 @@ import personalSettingsMessages from './personalSettings';
 import mobileNodeDesktopMessages from './mobileNodeDesktop';
 import mobileSettingsMessages from './mobileSettings';
 import voiceInputMessages from './voiceInput';
+import extensionsDesignMessages from './extensionsDesign';
 import mobileOnThisPhoneMessages from './mobileOnThisPhone';
 import agentPackageDefinitionsMessages from './agentPackageDefinitions';
 import type { TranslationCatalog } from '../../runtime/types';
@@ -91,6 +92,7 @@ const zhCnMessages: TranslationCatalog = {
   ...mobileNodeDesktopMessages,
   ...mobileSettingsMessages,
   ...voiceInputMessages,
+  ...extensionsDesignMessages,
   ...mobileOnThisPhoneMessages,
   ...agentPackageDefinitionsMessages,
 };

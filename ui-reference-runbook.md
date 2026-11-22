@@ -1,5 +1,20 @@
 # UI Reference Runbook
 
+## extensions-ui-516 (design, round 1: Settings → Extensions on the extension foundation, Manage Nodes → private network, the first-run page; autobyteus-516)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4516
+```
+
+The desktop app's own window: `localStorage.setItem('autobyteus.prototype.context', 'electron_internal')` and, for the Nodes list, `localStorage.setItem('autobyteus.prototype.scenario', 'nodes_user')`, then reload. A Docker node's window: context `electron_external` (Voice Input is not listed there). Chinese: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`. State is in memory: a reload resets it.
+
+- **Settings → Extensions**: <http://127.0.0.1:4516/settings?section=extensions>. Starting state `autobyteus.prototype.extensions` = (none) Voice Input on, Private Network not installed · `fresh` · `voice_failed` · `voice_update` · `voice_not_available` (this computer is linux-arm64) · `network_joined` · `network_trust`.
+- **Manage Nodes**: <http://127.0.0.1:4516/nodes?nodeTab=manage> with `nodes_user` and `network_joined`: Found on your private network (linux-box Pair, bob-laptop Connect: bob allows after about 7 s, raspberrypi flagged, carol-server Allow/Reject), the two switches.
+- **First-run page of a new node** (design route): <http://127.0.0.1:4516/first-run>; paste a code from Add a machine. `autobyteus.prototype.firstRun` = `owned` or `remote` for the closed states.
+- The world is invented: `stores/extensionsStore.ts` (each node's extension manager and the two server parts), `stores/privateNetworkStore.ts` (the private network, discovery, pairing), `prototype/extensions/extensionPages.ts` (the two extensions' own pages, real sandboxed frames and bridge). A paired node joins the simulated network of nodes (`prototype/nodes/network-world.mjs` `addPrivateNode`). Times are shortened (pairing about 4.5 s, the first transcription about 5 s).
+- Review notes: `tickets/in-progress/extensions-ui-516/review-round-1.md`; changes: `design-change-log.md`.
+
 ## extensions-nodes-baseline-refresh-516 (Settings → Extensions, the Nodes page's Manage Nodes and Phone Setup; these reflect `origin/personal@b768c503f9`)
 
 ```bash

@@ -1,0 +1,47 @@
+# Product Ticket: extensions-ui-516 (AutoByteus Extensions UI, autobyteus-516)
+
+## Identity And Scope
+
+- Ticket / request ID: `extensions-ui-516`; package `autobyteus-516-extensions`; Task autobyteus-516, Project `project_a1377344-25db-482a-97cc-ecfdb0fb495a`
+- Requested by: Solution Designer, Software Engineering Team (run `solution_designer_b2b085ced16d45479c46350d19ae49a2`), for the founder, 2026-11-22
+- Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/autobyteus-516-extensions/tickets/in-progress/autobyteus-516-extensions/product-design-request.md`
+- Mode: Product Experience Design (changes existing surfaces: Settings → Extensions, the Voice Input card, the voice surfaces, Nodes)
+- Status: `Awaiting User Review` (round 1, 2026-11-22)
+
+### Decision questions
+
+Part A (Stage 1, approved requirements REQ-001..011, AC-001..012):
+1. The common extension card frame (name, description incl. needs, version, states notAvailableHere / notInstalled / installing / installed on-off-ready-update / failed; Install, Turn on/off, Update, Remove, View log).
+2. How a card opens its extension's own page (sandboxed HTML page; Voice Input: language and what is installed).
+3. Where the microphone choice and Test recording live once they leave the Voice Input page.
+4. How install progress and the long first transcription (~30 s) are communicated.
+
+Part B (Private Network, exploratory; requirements not approved):
+5. Private Network card: network choice, join, this machine, my machines, "Let my private network find this node" (off), "Trust machines I added to my private network" (off, opt-in, trade-off clear).
+6. Nodes: "Found on your private network" (Pair own / Connect others / Allow-Reject incoming / unknown machine flagged / Unpair) next to today's nodes and peers.
+7. "Add a machine" connection code (one-time, expiring, text + QR, a secret).
+8. First-run page of a brand-new node (paste the code).
+
+### Constraints and non-goals
+
+- Signed first-party extensions only; no store or payments. Extension pages have no network access and talk only through the bridge. Owner-only management. Nothing public; found ≠ trusted. Keep Settings/Nodes visual language and en/zh-CN.
+- Not proved (show provisional, never as certain): direct vs relayed, different networks, mobile data, Android, real Tailscale invites. Restart/revocation ~11–13 s ("connecting…").
+- Out of scope: Shared Folder UI, local inference, hosted paid network, phone UI changes.
+
+## Design & Repository Context
+
+- Design repository/root: `/Users/normy/autobyteus_org/autobyteus-web-design` (default branch `personal`, remote `origin`)
+- Ticket worktree / branch: `/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/extensions-ui-516` / `design/extensions-ui-516`
+- Accepted design base: `9bec8f39f3efb2c4f1addd23e8bc84c6c3d7f885` (`personal` after the baseline refresh `extensions-nodes-baseline-refresh-516` was accepted and integrated, 2026-11-22; fast-forwarded into this branch)
+- Source pin: `/Users/normy/autobyteus_org/autobyteus-workspace-superrepo/autobyteus-web` at `origin/personal@b768c503f9` (read only)
+- Runtime: port 4516 (this ticket's own dev server)
+
+## Status history
+
+- 2026-11-22 opened; `Baseline Needed`: scoped refresh `extensions-nodes-baseline-refresh-516` requested (Voice Input card and Nodes page changed in the source since their pins).
+- 2026-11-22 baseline refresh accepted and integrated (`personal@9bec8f39`); merged into this branch.
+- 2026-11-22 round 1 built and clicked through (desktop 1440, narrow 700 and 390, en and zh-CN); `Awaiting User Review`. Review notes `review-round-1.md`, changes `design-change-log.md` (DC-001…DC-017), runbook first section. Review URL <http://127.0.0.1:4516/settings?section=extensions> (desktop context, see the runbook).
+
+## Mock data origin
+
+Invented by hand for this ticket: the catalog entries (descriptions from `extension-contract.md`'s examples), versions, sizes, log lines, accounts (`alex@example.com`, `bob@example.com`, `carol@example.com`), machine names, `100.88.x.x` addresses (CGNAT range), keys and connection codes (random), microphone names. No real node, account, device, credential or log. The browser's own microphone list is not used.

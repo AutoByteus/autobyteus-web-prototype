@@ -38,6 +38,11 @@
             </button>
             <p v-else class="truncate text-sm font-semibold leading-6 text-slate-900" :data-testid="`node-name-${row.key}`">{{ row.name }}</p>
             <p class="break-all font-mono text-xs leading-4 text-slate-500" :data-testid="`node-url-${row.key}`">{{ shownUrl }}</p>
+            <!-- extensions-ui-516 (design): a node paired over the private network, and whose it is -->
+            <p v-if="privateMark" class="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs leading-4 text-slate-500" :data-testid="`node-private-${row.key}`">
+              <span class="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 font-medium text-slate-600">{{ t('nodes.privateNetwork.rowTag') }}</span>
+              <span v-if="privateMark.role === 'teammate'">{{ t('nodes.privateNetwork.rowTeammate', { account: privateNetwork.accountLabel(privateMark.account) }) }}</span>
+            </p>
           </template>
         </div>
       </div>
@@ -76,7 +81,7 @@
       <!-- actions: Open and Remove, in fixed slots so the rows line up -->
       <div class="nr-actions flex items-center justify-end gap-1">
         <button
-          v-if="store.canOpen(row.key)"
+          v-if="store.canOpen(row.key) && privateMark?.role !== 'teammate'"
           type="button"
           class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
           :title="t(k('row.openNode'), { name: row.name })"
@@ -184,6 +189,7 @@ import RemoteCollaborationOfferList from '~/components/settings/RemoteCollaborat
 import RemoteCollaborationOfferToggle from '~/components/settings/RemoteCollaborationOfferToggle.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useNodeAccessStore } from '~/stores/nodeAccessStore'
+import { usePrivateNetworkStore } from '~/stores/privateNetworkStore'
 import { useNodeChangeDialogStore } from '~/stores/nodeChangeDialogStore'
 import { useNodeListStore } from '~/stores/nodeListStore'
 import type { NodeRow } from '~/stores/nodeRowStatus'
@@ -192,6 +198,8 @@ import { causeText, failureText, NODES_PAGE_KEY } from '~/utils/nodeConnectionEr
 /** One node (UIS-002): dot, name (click to rename), address, collaboration switch, Open, Remove; its server version and
  * in-place update (remote nodes); one line; details. */
 const props = defineProps<{ row: NodeRow }>()
+const privateNetwork = usePrivateNetworkStore()
+const privateMark = computed(() => privateNetwork.peerMark(props.row.nodeId))
 // The node's server version is an owner read: a node this desktop has no key for cannot answer it (autobyteus-437).
 const serverAsked = computed(() => !props.row.isEmbedded && !needsConnecting.value)
 const emit = defineEmits<{ guide: [] }>()

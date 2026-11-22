@@ -56,7 +56,9 @@ const overlayAfterActions: Record<string, string[]> = { agentDefinition: ['reloa
 // extensions-nodes-baseline-refresh-516 (origin/personal@b768c50): this desktop's node access and automatic node updates read the
 // simulated desktop shell (prototype/shared/install-host-scenario.js), as the source's stores do.
 // semantic-memory-view-554 (design): `semanticMemory` reads the semantic memory view through utils/apolloClient.ts.
-const sourceLoadedStores = new Set(['mobileNodeSession', 'mobileRunOpening', 'phoneAccess', 'nodeList', 'nodeServerUpdate', 'nodeAccess', 'nodeAutoUpdate', 'remoteCollaborationStore', 'remoteCollaborationOffers', 'remoteCollaborationCapability', 'nodeChangeDialog', 'remoteRuns', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft', 'memoryExplorerStore', 'memoryInspectorStore', 'memorySearchStore', 'memoryJournalStore', 'integrations', 'semanticMemory', 'memoryBrowse'])
+// extensions-ui-516 (design): `extensions` and `privateNetwork` are the design's own scripted stores (stores/extensionsStore.ts,
+// stores/privateNetworkStore.ts); they run their own code.
+const sourceLoadedStores = new Set(['mobileNodeSession', 'mobileRunOpening', 'phoneAccess', 'nodeList', 'nodeServerUpdate', 'nodeAccess', 'nodeAutoUpdate', 'remoteCollaborationStore', 'remoteCollaborationOffers', 'remoteCollaborationCapability', 'nodeChangeDialog', 'remoteRuns', 'updateNotifications', 'notificationCenter', 'updateChecksCapability', 'updateAutomation', 'projects', 'projectTasks', 'skillSources', 'tokenUsageMeter', 'taskWorkerTasks', 'taskLocator', 'definitionProblems', 'delegatedLaunchDraft', 'memoryExplorerStore', 'memoryInspectorStore', 'memorySearchStore', 'memoryJournalStore', 'integrations', 'semanticMemory', 'memoryBrowse', 'extensions', 'privateNetwork'])
 
 const localActions: Record<string, Set<string>> = {
   appFontSize: new Set(['initialize', 'setPreset', 'resetToDefault']),
@@ -888,6 +890,8 @@ export default defineNuxtPlugin({
       return { data: structuredClone(answer.json), status: answer.status, statusText: 'OK', headers: {}, config, request: {} }
     }) as any
     const nativeFetch = window.fetch.bind(window)
+    // extensions-ui-516 (design): the simulated private network adds the nodes it pairs to the simulated network of nodes.
+    ;(window as any).__designNetworkWorld = () => networkWorldOf(currentFixtureState())
     // one-nodes-tab (shipped): another node's address answers from the simulated network of nodes (prototype/nodes/network-world.mjs);
     // this window's own node answers its identity from the same network.
     const networkFetch = createNodeNetworkFetch(nativeFetch, (url, request) => {
