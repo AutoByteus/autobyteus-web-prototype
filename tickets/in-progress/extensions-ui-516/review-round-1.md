@@ -1,6 +1,19 @@
-# Review: AutoByteus Extensions UI (autobyteus-516), rounds 1–3
+# Review: AutoByteus Extensions UI (autobyteus-516), rounds 1–4
 
 For the founder. Status: **awaiting your review**; nothing here is approved yet. After your confirmation the Product Team captures the final screenshots and writes `ui-ux-spec.md`.
+
+## Round 4 (2026-11-24): your node code, confirmed by the Solution Designer
+
+Your decision: the target node makes the code in its own UI, and you paste it on the desktop that should control it (pairing-contract §6a; DC-043…DC-047).
+
+- **New node, first-run page** (on that computer): 1 Join your private network (Tailscale sign-in, an invite code, or no private network), 2 Connect this node to your desktop: Make a node code (QR, Copy, 30 minutes, works once, password warning). When your desktop has used it: "build-server is connected".
+- **Desktop:** Nodes → Add node → "Have a node code? Paste it instead" → Add node: the node appears with owner access, not paired (pair it there as before). Expired or used codes are refused.
+- **A node that has an owner:** Manage Nodes → This node → "Let another desktop control this node" (only in windows with owner access).
+- Removed: the desktop's "Add a machine" connection code. The host's "Invite someone" stays.
+
+Try it: open https://normys-macbook-pro.tail0347f8.ts.net:8445/first-run in one tab and /nodes?nodeTab=manage in a second tab of the same browser (the first-run page notices the paste through the shared browser storage; in the product, the node knows).
+
+Provisional: the desktop reaching a private address through its own node (G1); "only this computer can use this page" on a Docker node (G4).
 
 ## Round 3 (2026-11-24): every Private Network type, confirmed by the Solution Designer
 

@@ -70,7 +70,7 @@
     </div>
 
     <!-- extensions-ui-516 (design, pairing-contract §6a): this node's owner lets another desktop control it with a node code. -->
-    <div class="border-t border-slate-100 px-5 py-3" data-testid="this-node-control">
+    <div v-if="isOwnerWindow" class="border-t border-slate-100 px-5 py-3" data-testid="this-node-control">
       <button
         type="button"
         class="-ml-1.5 flex items-center gap-1.5 rounded-md px-1.5 py-1 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
@@ -99,6 +99,8 @@ import RemoteCollaborationIcon from '~/components/settings/nodes/RemoteCollabora
 import { useLocalization } from '~/composables/useLocalization'
 import { useNodeListStore } from '~/stores/nodeListStore'
 import { usePrivateNetworkStore } from '~/stores/privateNetworkStore'
+import { useNodeAccessStore } from '~/stores/nodeAccessStore'
+import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 import { NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
 
 /** "This node": its name, type and address, and its remote collaboration switch with the rules (REQ-701, REQ-709). */
@@ -113,4 +115,9 @@ const network = usePrivateNetworkStore()
 /** The node code says where the other desktop reaches this node: its private address when joined, else its local address. */
 const nodeId = computed(() => store.thisNodeId ?? store.currentNode?.nodeId ?? 'srv_m9VFq2Lw')
 const codeAddress = computed(() => (network.joined ? network.thisMachine.address : '192.168.2.10'))
+/** Making a node code on a node that has an owner is an owner action (NA-5): only windows holding the owner credential, never a phone. */
+const windowNode = useWindowNodeContextStore()
+const access = useNodeAccessStore()
+const isOwnerWindow = computed(() => typeof window !== 'undefined' && Boolean(window.electronAPI)
+  && (windowNode.isEmbeddedWindow || access.stateOf(windowNode.entryId) === 'connected'))
 </script>
