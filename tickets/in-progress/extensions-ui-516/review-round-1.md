@@ -1,8 +1,27 @@
-# Review Round 1: AutoByteus Extensions UI (autobyteus-516)
+# Review: AutoByteus Extensions UI (autobyteus-516), rounds 1 and 2
 
 For the founder. Status: **awaiting your review**; nothing here is approved yet. After your confirmation the Product Team captures the final screenshots and writes `ui-ux-spec.md`.
 
-## How to open it
+## Round 2 (2026-11-24): checked with the Solution Designer
+
+The Solution Designer checked every flow against the validated contracts and probes and confirmed round 2 ("now follow the validated workflow", 2026-11-24). Changes since round 1 (DC-018…DC-028 in `design-change-log.md`):
+
+- **Pair** is for your own node that is already in your Nodes list (linux-box): it is paired in place and gets the "Private network" mark.
+- **Trust machines I added** acts only on requests: your own machines that ask to pair with this node are paired without asking you; nodes you find still need Pair.
+- **The connection code** goes only on a new node's first-run page (the paste option on an existing node is gone).
+- **Add a machine on Tailscale** first asks for a one-time join key from the Tailscale admin console; a Headscale server makes its own.
+- **A declined Connect** shows "Its owner declined" with Connect again (raspberrypi in the example).
+- **A window without owner access** shows only "Connect this node in Nodes to manage its extensions".
+- **Voice Input** shows its real fields (runtime, speech model, folder), the slow-start note appears only when a transcription waits longer than about 2 s, sizes are about 1.2 GB.
+- Pairing takes about 2 s, as measured; the first-run node is "build-server".
+
+Provisional (drawn, not validated yet): Sign in with Tailscale, a Tailscale join key, Add a machine on a Tailscale network.
+
+Your open decisions (also asked by the Solution Designer): install ends **Off** (built) or On; an installed card without **Reinstall** and **Open Folder** (built); extensions' text **English** in the Chinese app for now (built) or translated.
+
+Opens directly at https://normys-macbook-pro.tail0347f8.ts.net:8445/settings?section=extensions as the desktop app (no console step on the share).
+
+## How to open it (round 1)
 
 Run the UI reference (`/Users/normy/autobyteus_org/autobyteus-web-design-worktrees/extensions-ui-516`, port 4516) and open it as the desktop app's own window: in the browser console of <http://127.0.0.1:4516> run
 
