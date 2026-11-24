@@ -580,13 +580,19 @@ export const createNetworkWorld = (scenario, options = {}) => {
     if (bound && !bound.peers.some((p) => p.nodeId === nodeId)) bound.peers.push(peer(nodeId, name, address))
     if (bound && !nodes[nodeId].peers.some((p) => p.nodeId === boundNodeId)) nodes[nodeId].peers.push(peer(boundNodeId, bound.selfName, 'http://100.88.10.10:29695'))
   }
+  // extensions-ui-516 (design): a node added with a node code: it answers at the address in the code; nothing is paired.
+  const addOwnedNode = ({ nodeId, name, address, offers = EIGHT_THREE_OFFER.slice(0, 2) }) => {
+    if (!nodes[nodeId]) nodes[nodeId] = node({ id: nodeId, selfName: name, lan: true, switchOn: true, delayMs: 700, candidates: [address], offers, peers: [], server: { ...SAME } })
+    const { host, port } = hostPortOf(address)
+    extraListeners[`${host}:${port}`] = nodeId
+  }
   const removePrivatePeer = (nodeId) => {
     const bound = nodes[boundNodeId]
     if (bound) bound.peers = bound.peers.filter((p) => p.nodeId !== nodeId)
     if (nodes[nodeId]) nodes[nodeId].peers = nodes[nodeId].peers.filter((p) => p.nodeId !== boundNodeId)
   }
 
-  return { nodes, boundNodeId, graphql, OPERATIONS, windowRequest, reach: reachFrom, phone, networkOf, setNetworkAllowed, addPrivateNode, removePrivatePeer }
+  return { nodes, boundNodeId, graphql, OPERATIONS, windowRequest, reach: reachFrom, phone, networkOf, setNetworkAllowed, addPrivateNode, addOwnedNode, removePrivatePeer }
 }
 
 /** The desktop's own list of nodes (the entries) at the start of a scenario, as the host bridge returns it. */

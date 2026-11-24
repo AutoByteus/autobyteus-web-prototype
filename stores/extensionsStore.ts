@@ -283,7 +283,7 @@ export const useExtensionsStore = defineStore('extensions', {
         const view = () => ({
           joined: network.joined, signingIn: network.signingIn, network: network.network, serverUrl: network.serverUrl,
           awaitingApproval: network.awaitingApproval, signedOut: network.signedOut, serverDown: network.serverDown,
-          hosting: network.hosting ? { ...network.hosting } : null, apiKeyStored: network.apiKeyStored, vpnRanges: network.vpnRanges.map((r) => ({ range: r, large: network.isLargeRange(r) })),
+          hosting: network.hosting ? { ...network.hosting } : null, vpnRanges: network.vpnRanges.map((r) => ({ range: r, large: network.isLargeRange(r) })),
           account: network.ownerAccount,
           thisMachine: { ...network.thisMachine },
           machines: network.machines.map((m) => ({ ...m, accountLabel: network.accountLabel(m.account) })),
@@ -304,14 +304,8 @@ export const useExtensionsStore = defineStore('extensions', {
           case 'hostStep': fail(await network.hostStep(input?.step, String(input?.domain ?? ''), Number(input?.port) || 443)); return view();
           case 'checkReachable': await network.checkReachable(); return view();
           case 'leave': await network.leave(); logged('leave: this machine left the private network'); return view();
-          case 'storeApiKey': fail(await network.storeApiKey(String(input?.key ?? ''))); logged('settings: a Headscale API key was stored in this node’s vault (never shown again)'); return view();
           case 'addRange': fail(network.addRange(String(input?.range ?? ''))); logged(`settings: accepting your own VPN ${String(input?.range ?? '').trim()}`); return view();
           case 'removeRange': network.removeRange(String(input?.range ?? '')); return view();
-          case 'addMachine': {
-            const code = await network.makeConnectionCode(String(input?.joinKey ?? ''));
-            logged('invite: a connection code was made (one use, 10 minutes; the code itself is never logged)');
-            return { text: code.text, qr: code.qr, expiresAt: code.expiresAt };
-          }
           case 'makeInvite': { const invite = await network.makeInvite(input?.forWhom === 'teammate' ? 'teammate' : 'me', String(input?.teammate ?? '')); logged(`invite: an invite code was made for the user ${invite.user} (one use, 24 hours; the code itself is never logged)`); return invite; }
         }
       }

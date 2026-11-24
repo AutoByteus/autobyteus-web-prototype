@@ -160,7 +160,7 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:13px;line-height:20px;color:
 `, `<div id="root" class="stack"><p class="muted"><span class="spin"></span> Loading…</p></div>`, `
 const root = document.getElementById('root');
 let state = null; let choice = 'tailscale'; let tsMode = 'signin'; let hsMode = 'key'; let busy = ''; let error = '';
-let code = null; let invite = null; let timer = null; let addOpen = false; let addError = ''; let apiOpen = false; let apiError = '';
+let invite = null; let timer = null;
 let leaving = false; let rangeError = ''; let hostRun = null; let poll = null; let inviteOpen = false; let forWhom = 'me'; let inviteError = '';
 const NAMES = { tailscale: 'Tailscale', headscale: 'Headscale', host: 'Hosted on this machine' };
 
@@ -249,12 +249,9 @@ function joinedBlock() {
     + '<table><thead><tr><th>Name</th><th class="col-addr">Private address</th><th class="col-account">Added by</th><th>State</th></tr></thead><tbody>' + state.machines.map(machineRow).join('') + '</tbody></table>'
     + '<p class="hint" style="margin-top:8px">Every machine on your private network, AutoByteus or not. Your AutoByteus nodes among them are in Nodes, under Found on your private network.'
     + (state.network === 'tailscale' ? ' A machine added with a tagged key belongs to its tag and never counts as yours; a shared machine is someone else’s.' : '') + '</p></div>'
-    + '<hr class="divider">' + (code ? codeBlock(code, 'code') : addMachineBlock());
+;
   if (state.network === 'host') html += '<hr class="divider">' + (invite ? codeBlock(invite, 'invite') : inviteBlock());
   return html;
-}
-function ownUserNote() {
-  return state.network === 'tailscale' ? '' : '<p class="hint" style="margin-top:2px">Made with your own user, ' + esc(state.account) + ': the key’s user decides whose machine it is, and this code makes you its owner.</p>';
 }
 function inviteBlock() {
   const lead = '<h3>Invite someone</h3><p class="hint">For a machine that already runs AutoByteus: an invite code joins it to this network, and it pairs afterwards from Nodes. Who the invite is for decides whose machine it is.</p>';
@@ -266,28 +263,6 @@ function inviteBlock() {
     + (forWhom === 'teammate' ? '<label class="label" for="teammate" style="margin-top:6px">Teammate’s name</label><input id="teammate" class="mono" style="width:220px" autocomplete="off" spellcheck="false" placeholder="bob"><p class="hint">Becomes their own user on this network; it is created if it is new.</p>' : '')
     + '<div class="row" style="margin-top:6px">' + btn('mkinvite', 'Make the invite', 'Making an invite…') + '<button class="link" id="invitecancel">Cancel</button></div>'
     + (inviteError ? '<p class="error" role="alert">' + esc(inviteError) + '</p>' : '') + '</div>';
-}
-function addMachineBlock() {
-  const lead = '<h3>Add a machine</h3><p class="hint">Make a one-time code for a new machine. Pasted on its first-run page, it joins your private network, pairs that node with this one and makes you its owner, without addresses or a command line.</p>';
-  if (state.network === 'host' || (state.network === 'headscale' && state.apiKeyStored)) {
-    return '<div class="field">' + lead + (state.network === 'headscale' ? '<p class="ok" style="margin-top:2px">This node makes join keys itself with the API key in its vault.</p>' : '') + ownUserNote() + '<div style="margin-top:6px">' + btn('add', 'Add a machine', 'Making a code…') + '</div>' + (addError ? '<p class="error" role="alert">' + esc(addError) + '</p>' : '') + '</div>';
-  }
-  if (apiOpen) {
-    return '<div class="field">' + lead + '<label class="label" for="apikey" style="margin-top:6px">Headscale API key</label>'
-      + '<p class="hint">On your server, run “headscale apikeys create” and paste the key. It is kept in this node’s vault and never shown again; this node then makes one-time join keys itself.</p>'
-      + '<div class="row"><input id="apikey" type="password" class="wide mono" autocomplete="off" spellcheck="false">' + btn('storeapi', 'Store the key', 'Storing…') + '<button class="link" id="apicancel">Cancel</button></div>'
-      + (apiError ? '<p class="error" role="alert">' + esc(apiError) + '</p>' : '') + '</div>';
-  }
-  if (!addOpen) return '<div class="field">' + lead + '<div style="margin-top:6px">' + btn('add', 'Add a machine', 'Making a code…') + '</div></div>';
-  const how = state.network === 'tailscale'
-    ? 'Create a one-time auth key without tags in your Tailscale admin console (Settings → Keys → Generate auth key) and paste it here. AutoByteus puts it into the connection code.'
-    : 'On your server, run “headscale preauthkeys create --user ' + esc(state.account) + ' --expiration 10m” and paste the key it prints. Use your own user: the key’s user decides who the machine belongs to, and the code makes you its owner.';
-  return '<div class="field">' + lead + '<p class="hint" style="font-size:13px;line-height:18px;color:#4b5563;margin-top:6px">' + how + '</p>'
-    + '<label class="label" for="addkey" style="margin-top:6px">' + (state.network === 'tailscale' ? 'Auth key' : 'Join key') + '</label>'
-    + '<div class="row"><input id="addkey" class="wide mono" autocomplete="off" spellcheck="false" placeholder="' + (state.network === 'tailscale' ? 'tskey-auth-…' : 'hskey-auth-…') + '">'
-    + btn('makecode', 'Make the code', 'Making a code…') + '<button class="link" id="addcancel">Cancel</button></div>'
-    + (addError ? '<p class="error" role="alert">' + esc(addError) + '</p>' : '')
-    + (state.network === 'headscale' ? '<div style="margin-top:4px"><button class="link" id="apiopen">Let this node make keys itself instead</button></div>' : '') + '</div>';
 }
 function codeBlock(c, kind) {
   const left = Math.max(0, c.expiresAt - Date.now()); const expired = left === 0;
@@ -353,32 +328,21 @@ function wire() {
   on('hostcheck', () => continueHosting(2));
   on('hostback', () => { hostRun = null; error = ''; render(); });
   on('reach', () => run('reach', async () => { state = await call('checkReachable'); }, () => {}));
-  on('add', () => { if (state.network === 'host' || state.apiKeyStored) return makeCode(''); addOpen = true; addError = ''; render(); document.getElementById('addkey')?.focus(); });
-  on('makecode', () => makeCode(val('addkey')));
-  on('addcancel', () => { addOpen = false; addError = ''; render(); });
-  on('apiopen', () => { apiOpen = true; apiError = ''; render(); document.getElementById('apikey')?.focus(); });
-  on('apicancel', () => { apiOpen = false; render(); });
-  on('storeapi', () => run('storeapi', async () => { apiError = ''; state = await call('storeApiKey', { key: val('apikey') }); apiOpen = false; addOpen = false; }, (m) => { apiError = m; }));
   on('inviteopen', () => { inviteOpen = true; inviteError = ''; render(); });
   on('invitecancel', () => { inviteOpen = false; render(); });
   root.querySelectorAll('input[name=forwhom]').forEach((r) => r.addEventListener('change', () => { forWhom = r.value; inviteError = ''; render(); document.getElementById('teammate')?.focus(); }));
   on('mkinvite', () => run('mkinvite', async () => { inviteError = ''; invite = await call('makeInvite', { forWhom, teammate: val('teammate') }); inviteOpen = false; startTimer(); }, (m) => { inviteError = m; }));
-  for (const kind of ['code', 'invite']) {
-    on('copy-' + kind, async () => { const c = kind === 'code' ? code : invite; const b = document.getElementById('copy-' + kind); try { await navigator.clipboard.writeText(c.text); b.textContent = 'Copied'; } catch { document.getElementById('text-' + kind).select(); b.textContent = 'Press ⌘C to copy'; } setTimeout(() => { const el = document.getElementById('copy-' + kind); if (el) el.textContent = 'Copy'; }, 2000); });
-    on('done-' + kind, () => { if (kind === 'code') code = null; else invite = null; render(); });
-    on('again-' + kind, () => { if (kind === 'invite') { invite = null; inviteOpen = true; render(); } else { code = null; addOpen = state.network !== 'host' && !state.apiKeyStored; if (!addOpen) makeCode(''); else render(); } });
+  for (const kind of ['invite']) {
+    on('copy-' + kind, async () => { const c = invite; const b = document.getElementById('copy-' + kind); try { await navigator.clipboard.writeText(c.text); b.textContent = 'Copied'; } catch { document.getElementById('text-' + kind).select(); b.textContent = 'Press ⌘C to copy'; } setTimeout(() => { const el = document.getElementById('copy-' + kind); if (el) el.textContent = 'Copy'; }, 2000); });
+    on('done-' + kind, () => { invite = null; render(); });
+    on('again-' + kind, () => { invite = null; inviteOpen = true; render(); });
   }
   on('addrange', async () => { await run('addrange', async () => { rangeError = ''; state = await call('addRange', { range: val('range') }); }, (m) => { rangeError = m; }); if (!rangeError) keep({ range: '' }); });
   root.querySelectorAll('[data-range]').forEach((b) => b.addEventListener('click', async () => { state = await call('removeRange', { range: b.dataset.range }); render(); }));
   on('leave', () => { leaving = true; render(); });
   on('leaveno', () => { leaving = false; render(); });
-  on('leaveyes', () => run('leave', async () => { state = await call('leave'); leaving = false; code = null; invite = null; addOpen = false; }, () => {}));
+  on('leaveyes', () => run('leave', async () => { state = await call('leave'); leaving = false; invite = null; }, () => {}));
 }
-async function makeCode(joinKey) {
-  await run('makecode', async () => { addError = ''; code = await call('addMachine', { joinKey }); addOpen = false; startTimer(); }, (m) => { addError = m; addOpen = true; });
-  if (addError) keep({ addkey: joinKey });
-}
-
 // ---------- hosting steps (each a call to the extension, so the page shows them one by one)
 async function startHosting(domain, port) {
   hostRun = [
@@ -401,7 +365,7 @@ async function continueHosting(from) {
 }
 
 function startTimer() { stopTimer(); timer = setInterval(() => {
-  for (const [kind, c] of [['code', code], ['invite', invite]]) {
+  for (const [kind, c] of [['invite', invite]]) {
     const el = document.getElementById('expiry-' + kind); if (!el || !c) continue;
     const left = c.expiresAt - Date.now(); if (left <= 0) { render(); continue; } el.textContent = expiryText(left);
   }

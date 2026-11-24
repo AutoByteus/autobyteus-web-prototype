@@ -47,7 +47,6 @@ export interface IncomingRequest {
   phase: 'idle' | 'allowing'
 }
 export interface PairedPeer { nodeId: string; name: string; account: string; role: 'own' | 'teammate' }
-export interface ConnectionCode { text: string; qr: string; expiresAt: number }
 export interface Hosting { domain: string; port: number; certificateUntil: string; reachable: boolean | null }
 
 /** Accounts: Tailscale shows e-mail logins; a Headscale server (yours or hosted) shows its user names. */
@@ -88,7 +87,6 @@ const PAIR_MS = 2000
 const TEAMMATE_ALLOWS_MS = 7000
 const OWNER_DECLINES_MS = 6000
 const APPROVAL_MS = 10_000
-const CODE_LIFETIME_MS = 10 * 60_000
 
 const later = (ms: number) => new Promise<void>((done) => setTimeout(done, ms))
 const b64url = (text: string) => btoa(text).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
@@ -122,8 +120,6 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   /** Headscale: the coordination server cannot be reached. */
   const serverDown = ref(seed === 'network_headscale_down')
   const hosting = ref<Hosting | null>(seed === 'network_host' ? { domain: 'net.example.com', port: 443, certificateUntil: '2027-02-20', reachable: true } : null)
-  /** Headscale: an API key stored in this node's vault lets it make one-time join keys itself (provisional). */
-  const apiKeyStored = ref(false)
   const vpnRanges = ref<string[]>(seed === 'network_vpn' ? ['10.8.0.0/24'] : [])
   const machines = ref<NetworkMachine[]>(machinesFor(seededKind))
   const discoverable = ref(seededJoined)
@@ -133,7 +129,6 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   const paired = ref<PairedPeer[]>([])
   /** Set when this node has just joined: the card frame offers "Let my private network find this node" once. */
   const offerDiscovery = ref(false)
-  const code = ref<ConnectionCode | null>(null)
   let approvalStarted = false
 
   const thisMachine = computed(() => machines.value.find((m) => m.isThisMachine)!)
@@ -170,8 +165,8 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
 
   function reset(): void {
     joined.value = false; signingIn.value = false; discoverable.value = false; trustOwnMachines.value = false
-    awaitingApproval.value = false; signedOut.value = false; serverDown.value = false; hosting.value = null; apiKeyStored.value = false
-    vpnRanges.value = []; found.value = []; requests.value = []; paired.value = []; offerDiscovery.value = false; code.value = null
+    awaitingApproval.value = false; signedOut.value = false; serverDown.value = false; hosting.value = null
+    vpnRanges.value = []; found.value = []; requests.value = []; paired.value = []; offerDiscovery.value = false
   }
 
   function completeJoin(kind: NetworkKind): void {
@@ -256,15 +251,8 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   /** Leave the network (switching type means leaving, joining the new one and pairing again). Hosting: the network ends for everyone. */
   async function leave(): Promise<void> {
     await later(1200)
-    joined.value = false; hosting.value = null; signedOut.value = false; serverDown.value = false; apiKeyStored.value = false
-    discoverable.value = false; trustOwnMachines.value = false; found.value = []; requests.value = []; code.value = null; offerDiscovery.value = false
-  }
-
-  async function storeApiKey(key: string): Promise<{ ok: boolean; error?: string }> {
-    await later(800)
-    if (!/^[A-Za-z0-9._-]{20,}$/.test(key.trim())) return { ok: false, error: 'The server did not accept that API key. Make one with headscale apikeys create and paste all of it.' }
-    apiKeyStored.value = true
-    return { ok: true }
+    joined.value = false; hosting.value = null; signedOut.value = false; serverDown.value = false
+    discoverable.value = false; trustOwnMachines.value = false; found.value = []; requests.value = []; offerDiscovery.value = false
   }
 
   function addRange(range: string): { ok: boolean; error?: string } {
@@ -286,28 +274,6 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   function removeRange(range: string): void { vpnRanges.value = vpnRanges.value.filter((r) => r !== range) }
 
   /**
-   * Add a machine: the code carries a one-time join key. Tailscale: the owner makes it in the admin console and pastes it
-   * (provisional). Headscale: pasted from `headscale preauthkeys create`, or made by the node with a stored API key
-   * (provisional). Hosting: the node makes it itself (provisional).
-   */
-  async function makeConnectionCode(pastedJoinKey = ''): Promise<ConnectionCode> {
-    const key = pastedJoinKey.trim()
-    if (network.value === 'tailscale' && !/^tskey-auth-[A-Za-z0-9-]{12,}$/.test(key)) throw new Error('That is not a Tailscale auth key. In the admin console, make a one-time key without tags and paste all of it, starting with tskey-auth-.')
-    if (network.value === 'headscale' && !apiKeyStored.value && !/^(hskey-auth-)?[A-Za-z0-9-]{12,}$/.test(key)) throw new Error('That is not a Headscale join key. On your server, run headscale preauthkeys create and paste the key it prints.')
-    await later(600)
-    const expiresAt = Date.now() + CODE_LIFETIME_MS
-    const payload = JSON.stringify({
-      joinKey: key || `hskey-auth-${randomText(12)}-${randomText(30)}`,
-      owner: `${thisMachine.value.address}:29695`,
-      grant: randomText(43),
-      expiresAt: new Date(expiresAt).toISOString(),
-    })
-    const text = `abpn_${b64url(payload)}`
-    code.value = { text, qr: await toQrCodeDataUrl(text), expiresAt }
-    return code.value
-  }
-  /** Hosting: an invite for a machine that already runs AutoByteus (the host's address and a one-time join key). */
-  /**
    * Hosting: an invite for a machine that already runs AutoByteus (the host's address and a one-time join key). A Headscale
    * join key belongs to one Headscale user, and that user is who "added by" shows: an invite for a teammate is made with the
    * teammate's own user (created on the host if new), never with yours, or their machine would count as yours.
@@ -321,7 +287,6 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     const text = `abhi_${b64url(JSON.stringify({ server: `https://${hosting.value?.domain ?? 'net.example.com'}`, key: `hskey-auth-${randomText(12)}-${randomText(24)}`, for: user, expiresAt: new Date(expiresAt).toISOString() }))}`
     return { text, qr: await toQrCodeDataUrl(text), expiresAt, user, teammate: forWhom === 'teammate' }
   }
-  function closeConnectionCode(): void { code.value = null }
 
   function setDiscoverable(value: boolean): void { discoverable.value = value; offerDiscovery.value = false }
   function dismissDiscoveryOffer(): void { offerDiscovery.value = false }
@@ -382,11 +347,11 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   const peerMark = (nodeId: string | null) => (nodeId ? paired.value.find((p) => p.nodeId === nodeId) ?? null : null)
 
   return {
-    joined, network, serverUrl, signingIn, awaitingApproval, signedOut, serverDown, hosting, apiKeyStored, vpnRanges,
-    machines, discoverable, trustOwnMachines, found, requests, paired, offerDiscovery, code,
+    joined, network, serverUrl, signingIn, awaitingApproval, signedOut, serverDown, hosting, vpnRanges,
+    machines, discoverable, trustOwnMachines, found, requests, paired, offerDiscovery,
     thisMachine, ownerAccount, accountLabel, machineOf, peerMark, networkLabel, status,
-    reset, touch, signIn, cancelSignIn, joinWithKey, joinWithInvite, hostStep, checkReachable, leave, storeApiKey, addRange, removeRange, isLargeRange,
-    makeConnectionCode, makeInvite, closeConnectionCode,
+    reset, touch, signIn, cancelSignIn, joinWithKey, joinWithInvite, hostStep, checkReachable, leave, addRange, removeRange, isLargeRange,
+    makeInvite,
     setDiscoverable, dismissDiscoveryOffer, setTrust, pair, connect, cancelConnect, allow, reject,
   }
 })

@@ -68,15 +68,37 @@
         </ul>
       </div>
     </div>
+
+    <!-- extensions-ui-516 (design, pairing-contract §6a): this node's owner lets another desktop control it with a node code. -->
+    <div class="border-t border-slate-100 px-5 py-3" data-testid="this-node-control">
+      <button
+        type="button"
+        class="-ml-1.5 flex items-center gap-1.5 rounded-md px-1.5 py-1 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        :aria-expanded="controlOpen"
+        data-testid="this-node-control-toggle"
+        @click="controlOpen = !controlOpen"
+      >
+        <svg class="h-4 w-4 text-slate-400 transition-transform" :class="controlOpen ? 'rotate-90' : ''" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m7.5 4.5 5.5 5.5-5.5 5.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        {{ t('nodes.nodeCode.controlTitle') }}
+      </button>
+      <div v-if="controlOpen" class="mt-2 max-w-3xl pb-1">
+        <p class="text-sm leading-6 text-slate-500">{{ t('nodes.nodeCode.controlLead') }}</p>
+        <div class="mt-3">
+          <NodeCodePanel :node-id="nodeId" :address="codeAddress" :node-name="nodeName" />
+        </div>
+      </div>
+    </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import NodeCodePanel from '~/components/settings/nodes/NodeCodePanel.vue'
 import NodeNoticeIcon from '~/components/settings/nodes/NodeNoticeIcon.vue'
 import RemoteCollaborationIcon from '~/components/settings/nodes/RemoteCollaborationIcon.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useNodeListStore } from '~/stores/nodeListStore'
+import { usePrivateNetworkStore } from '~/stores/privateNetworkStore'
 import { NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
 
 /** "This node": its name, type and address, and its remote collaboration switch with the rules (REQ-701, REQ-709). */
@@ -86,4 +108,9 @@ const { t } = useLocalization()
 const k = (key: string): string => `${NODES_PAGE_KEY}${key}`
 const store = useNodeListStore()
 const rulesOpen = ref(false)
+const controlOpen = ref(false)
+const network = usePrivateNetworkStore()
+/** The node code says where the other desktop reaches this node: its private address when joined, else its local address. */
+const nodeId = computed(() => store.thisNodeId ?? store.currentNode?.nodeId ?? 'srv_m9VFq2Lw')
+const codeAddress = computed(() => (network.joined ? network.thisMachine.address : '192.168.2.10'))
 </script>

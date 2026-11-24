@@ -12,56 +12,70 @@
         <p class="mt-2 text-sm leading-6 text-slate-600">{{ start === 'owned' ? t(k('owned.text')) : t(k('remote.text'), { node: nodeName }) }}</p>
       </section>
 
-      <section v-else-if="phase !== 'done'" class="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <section v-else-if="!connected" class="mt-6 rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div class="px-6 pb-5 pt-6">
           <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t(k('eyebrow')) }}</p>
           <h1 class="mt-1 text-xl font-semibold text-slate-900">{{ t(k('title'), { node: nodeName }) }}</h1>
           <p class="mt-2 text-sm leading-6 text-slate-600">{{ t(k('lead')) }}</p>
         </div>
 
-        <form class="border-t border-slate-100 px-6 py-5" @submit.prevent="connect">
-          <label for="first-run-code" class="text-sm font-medium text-slate-900">{{ t(k('codeLabel')) }}</label>
-          <p class="mt-0.5 text-sm text-slate-500">{{ t(k('codeHelp')) }}</p>
-          <textarea
-            id="first-run-code"
-            v-model="code"
-            rows="4"
-            spellcheck="false"
-            autocomplete="off"
-            class="mt-2 w-full resize-none rounded-md border border-slate-300 bg-white px-3 py-2 font-mono text-xs leading-5 text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100 disabled:bg-slate-50 disabled:text-slate-500"
-            :placeholder="'abpn_…'"
-            :disabled="phase === 'running'"
-            :aria-invalid="Boolean(error)"
-            :aria-describedby="error ? 'first-run-error' : undefined"
-            data-testid="first-run-code"
-          />
-          <p v-if="error" id="first-run-error" class="mt-2 flex items-start gap-2 text-sm text-red-700" role="alert" data-testid="first-run-error">
-            <svg class="mt-0.5 h-4 w-4 flex-shrink-0 text-red-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10" cy="10" r="7.5" /><path d="M10 6.5v4M10 13.5v.01" stroke-linecap="round" /></svg>
-            {{ error }}
-          </p>
+        <!-- 1. Join the private network, here on the node's own computer -->
+        <div class="border-t border-slate-100 px-6 py-5" data-testid="first-run-join">
+          <h2 class="flex items-center gap-2 text-sm font-semibold text-slate-900">
+            <span class="inline-flex h-5 w-5 items-center justify-center rounded-full text-xs" :class="joined ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-900 text-white'">{{ joined ? '✓' : '1' }}</span>
+            {{ t(k('join.title')) }}
+          </h2>
+          <template v-if="joined">
+            <p class="mt-2 text-sm text-slate-700" data-testid="first-run-joined">{{ joinedText }}</p>
+            <button type="button" class="mt-1 rounded text-sm font-medium text-blue-700 hover:text-blue-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="resetJoin">{{ t(k('join.change')) }}</button>
+          </template>
+          <template v-else>
+            <div class="mt-3 space-y-2" role="radiogroup" :aria-label="t(k('join.title'))">
+              <label v-for="option in OPTIONS" :key="option" class="flex cursor-pointer items-start gap-3 rounded-lg border px-3.5 py-3 transition-colors" :class="way === option ? 'border-blue-500 bg-blue-50/60 ring-1 ring-inset ring-blue-500' : 'border-slate-200 hover:border-slate-300'">
+                <input v-model="way" type="radio" name="way" :value="option" class="mt-1 accent-blue-600" :data-testid="`first-run-way-${option}`">
+                <span>
+                  <span class="block text-sm font-semibold text-slate-900">{{ t(k(`join.${option}.title`)) }}</span>
+                  <span class="block text-[13px] leading-[18px] text-slate-500">{{ t(k(`join.${option}.text`)) }}</span>
+                </span>
+              </label>
+            </div>
+            <div class="mt-4">
+              <template v-if="way === 'tailscale'">
+                <button type="button" class="inline-flex h-9 items-center gap-2 rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:opacity-60" :disabled="busy" data-testid="first-run-signin" @click="signIn">
+                  <span v-if="busy" class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white motion-reduce:animate-none" aria-hidden="true" />
+                  {{ busy ? t(k('join.tailscale.waiting')) : t(k('join.tailscale.action')) }}
+                </button>
+                <p class="mt-1.5 text-xs text-slate-500">{{ t(k('join.tailscale.hint')) }}</p>
+              </template>
+              <form v-else-if="way === 'headscale'" @submit.prevent="useInvite">
+                <label for="first-run-invite" class="text-sm font-medium text-slate-900">{{ t(k('join.headscale.label')) }}</label>
+                <textarea id="first-run-invite" v-model="invite" rows="2" spellcheck="false" autocomplete="off" class="mt-1.5 w-full resize-none rounded-md border border-slate-300 bg-white px-3 py-2 font-mono text-xs leading-5 text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100" placeholder="abhi_…" data-testid="first-run-invite" />
+                <p class="mt-1 text-xs text-slate-500">{{ t(k('join.headscale.hint')) }}</p>
+                <button type="submit" class="mt-3 inline-flex h-9 items-center gap-2 rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:opacity-60" :disabled="busy || !invite.trim()" data-testid="first-run-join-invite">
+                  <span v-if="busy" class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white motion-reduce:animate-none" aria-hidden="true" />
+                  {{ busy ? t(k('join.joining')) : t(k('join.headscale.action')) }}
+                </button>
+              </form>
+              <button v-else type="button" class="inline-flex h-9 items-center rounded-md border border-slate-300 bg-white px-4 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="first-run-local" @click="useLocal">{{ t(k('join.local.action')) }}</button>
+              <p v-if="error" class="mt-2 flex items-start gap-2 text-sm text-red-700" role="alert" data-testid="first-run-error">
+                <svg class="mt-0.5 h-4 w-4 flex-shrink-0 text-red-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10" cy="10" r="7.5" /><path d="M10 6.5v4M10 13.5v.01" stroke-linecap="round" /></svg>
+                {{ error }}
+              </p>
+            </div>
+          </template>
+        </div>
 
-          <ol v-if="phase === 'running'" class="mt-4 space-y-2" data-testid="first-run-steps" aria-live="polite">
-            <li v-for="step in steps" :key="step.id" class="flex items-start gap-2.5 text-sm">
-              <span class="mt-0.5 inline-flex h-4 w-4 flex-shrink-0 items-center justify-center text-xs" :class="step.status === 'done' ? 'text-emerald-600' : step.status === 'failed' ? 'text-red-600' : 'text-slate-400'">
-                <span v-if="step.status === 'running'" class="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600 motion-reduce:animate-none" aria-hidden="true" />
-                <template v-else>{{ step.status === 'done' ? '✓' : step.status === 'failed' ? '✕' : '○' }}</template>
-              </span>
-              <span :class="step.status === 'pending' ? 'text-slate-500' : 'text-slate-800'">{{ step.text }}</span>
-            </li>
-          </ol>
-
-          <div class="mt-5 flex items-center justify-end">
-            <button
-              type="submit"
-              class="inline-flex h-9 items-center gap-2 rounded-md bg-blue-600 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
-              :disabled="phase === 'running' || !code.trim()"
-              data-testid="first-run-connect"
-            >
-              <span v-if="phase === 'running'" class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white motion-reduce:animate-none" aria-hidden="true" />
-              {{ phase === 'running' ? t(k('connecting')) : t(k('connect')) }}
-            </button>
+        <!-- 2. Make the node code; it is pasted on the desktop that should control this node -->
+        <div class="border-t border-slate-100 px-6 py-5" :class="joined ? '' : 'opacity-50'" data-testid="first-run-code-step">
+          <h2 class="flex items-center gap-2 text-sm font-semibold text-slate-900">
+            <span class="inline-flex h-5 w-5 items-center justify-center rounded-full text-xs" :class="joined ? 'bg-slate-900 text-white' : 'bg-slate-200 text-slate-600'">2</span>
+            {{ t(k('code.title')) }}
+          </h2>
+          <p class="mt-1.5 text-sm leading-6 text-slate-600">{{ t(k('code.lead')) }}</p>
+          <div v-if="joined" class="mt-3">
+            <NodeCodePanel :node-id="NODE_ID" :address="address" :node-name="nodeName" :closable="false" @used="connected = true" />
           </div>
-        </form>
+        </div>
 
         <p class="border-t border-slate-100 px-6 py-4 text-xs leading-5 text-slate-500">{{ t(k('note')) }}</p>
       </section>
@@ -73,13 +87,13 @@
           </span>
           <div>
             <h1 class="text-xl font-semibold text-slate-900">{{ t(k('done.title'), { node: nodeName }) }}</h1>
-            <p class="mt-2 text-sm leading-6 text-slate-600">{{ t(k('done.text'), { node: nodeName, owner: ownerName }) }}</p>
+            <p class="mt-2 text-sm leading-6 text-slate-600">{{ t(k('done.text'), { node: nodeName }) }}</p>
           </div>
         </div>
         <dl class="mt-5 grid grid-cols-[max-content_1fr] gap-x-6 gap-y-1.5 rounded-lg bg-slate-50 px-4 py-3 text-sm">
-          <dt class="text-slate-500">{{ t(k('done.network')) }}</dt><dd class="text-slate-900">Tailscale · alex@example.com</dd>
-          <dt class="text-slate-500">{{ t(k('done.address')) }}</dt><dd class="font-mono text-slate-900">100.88.80.80</dd>
-          <dt class="text-slate-500">{{ t(k('done.owner')) }}</dt><dd class="text-slate-900">{{ ownerName }}</dd>
+          <dt class="text-slate-500">{{ t(k('done.network')) }}</dt><dd class="text-slate-900">{{ networkText }}</dd>
+          <dt class="text-slate-500">{{ t(k('done.address')) }}</dt><dd class="font-mono text-slate-900">{{ address }}</dd>
+          <dt class="text-slate-500">{{ t(k('done.owner')) }}</dt><dd class="text-slate-900">{{ t(k('done.yourDesktop')) }}</dd>
         </dl>
         <p class="mt-4 text-sm text-slate-500">{{ t(k('done.close')) }}</p>
       </section>
@@ -89,14 +103,15 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import NodeCodePanel from '~/components/settings/nodes/NodeCodePanel.vue';
 import { useLocalization } from '~/composables/useLocalization';
 
 /**
- * extensions-ui-516 (design route, Part B): the first-run page of a brand-new node, opened in a browser on that machine
- * itself while the node has no owner (pairing-contract.md §6). In the product the node serves it at its own address and
- * accepts a code only from loopback. Here every step is scripted: nothing joins and nothing pairs.
- * Starting state: `localStorage['autobyteus.prototype.firstRun']` = `owned` (the node has an owner) or `remote` (opened from
- * another computer); none = a node without an owner, on its own computer.
+ * extensions-ui-516 (design route, Part B; pairing-contract §6a): the first-run page of a brand-new node, opened in a
+ * browser on that machine itself while the node has no owner. The node joins the private network here, then makes a node
+ * code; the owner pastes it on the desktop that should control the node (Nodes → Add node → Paste a node code). The page
+ * shows "connected" when that desktop used the code (simulated: another tab of this browser). Every value is invented.
+ * Starting state: `localStorage['autobyteus.prototype.firstRun']` = `owned` or `remote`; none = a node without an owner.
  */
 definePageMeta({ layout: false });
 useHead({ title: 'Set up this AutoByteus node' });
@@ -104,57 +119,44 @@ useHead({ title: 'Set up this AutoByteus node' });
 const { t } = useLocalization();
 const k = (key: string) => `firstRun.${key}`;
 const nodeName = 'build-server';
-const start = (typeof window === 'undefined' ? 'ready' : localStorage.getItem('autobyteus.prototype.firstRun')) === 'owned' ? 'owned'
-  : (typeof window === 'undefined' ? '' : localStorage.getItem('autobyteus.prototype.firstRun')) === 'remote' ? 'remote' : 'ready';
+const NODE_ID = 'srv_bu1ldS3rv3rN0deC0deQx7Rf2Lm9PdZt4Wn';
+const OPTIONS = ['tailscale', 'headscale', 'local'] as const;
+const seed = typeof window === 'undefined' ? '' : localStorage.getItem('autobyteus.prototype.firstRun');
+const start = seed === 'owned' ? 'owned' : seed === 'remote' ? 'remote' : 'ready';
 
-type Status = 'pending' | 'running' | 'done' | 'failed';
-const code = ref('');
+const way = ref<(typeof OPTIONS)[number]>('tailscale');
+const joinedWay = ref<(typeof OPTIONS)[number] | null>(null);
+const joined = computed(() => joinedWay.value !== null);
+const busy = ref(false);
 const error = ref('');
-const phase = ref<'idle' | 'running' | 'done'>('idle');
-const ownerName = ref('home-mac');
-const ownerAddress = ref('');
-const statuses = ref<Status[]>(['pending', 'pending', 'pending', 'pending']);
-const steps = computed(() => [
-  { id: 'check', text: t(k('step.check')) },
-  { id: 'join', text: t(k('step.join')) },
-  { id: 'pair', text: t(k('step.pair'), { address: ownerAddress.value || '…' }) },
-  { id: 'own', text: t(k('step.own')) },
-].map((step, index) => ({ ...step, status: statuses.value[index]! })));
+const invite = ref('');
+const connected = ref(false);
+const address = computed(() => (joinedWay.value === 'local' ? '192.168.2.80' : '100.88.80.80'));
+const networkText = computed(() => (joinedWay.value === 'tailscale' ? 'Tailscale · alex@example.com' : joinedWay.value === 'headscale' ? 'Headscale · net.example.com' : t(k('done.noNetwork'))));
+const joinedText = computed(() => (joinedWay.value === 'local'
+  ? t(k('join.local.done'), { address: address.value })
+  : t(k('join.done'), { network: joinedWay.value === 'tailscale' ? 'Tailscale' : 'Headscale', node: nodeName, address: address.value })));
 
 const later = (ms: number) => new Promise<void>((done) => setTimeout(done, ms));
-function decode(text: string): { owner?: string; expiresAt?: string } | null {
-  try {
-    const body = text.trim().replace(/^abpn_/, '').replace(/-/g, '+').replace(/_/g, '/');
-    return JSON.parse(atob(body + '==='.slice((body.length + 3) % 4)));
-  } catch { return null; }
+async function signIn(): Promise<void> {
+  busy.value = true; error.value = '';
+  await later(2500);
+  busy.value = false; joinedWay.value = 'tailscale';
 }
-
-async function connect(): Promise<void> {
-  error.value = '';
-  statuses.value = ['running', 'pending', 'pending', 'pending'];
-  phase.value = 'running';
-  await later(500);
-  const text = code.value.trim();
-  const payload = text.startsWith('abpn_') ? decode(text) : null;
-  if (!payload?.owner) { fail(0, t(k('error.notCode'))); return; }
-  ownerAddress.value = payload.owner.replace(/:\d+$/, '');
-  // The expiry is checked before joining (pairing-contract.md §6, probe finding).
-  if (payload.expiresAt && Date.parse(payload.expiresAt) < Date.now()) { fail(0, t(k('error.expired'))); return; }
-  statuses.value = ['done', 'running', 'pending', 'pending'];
+async function useInvite(): Promise<void> {
+  busy.value = true; error.value = '';
   await later(1200);
-  statuses.value = ['done', 'done', 'running', 'pending'];
-  await later(900);
-  statuses.value = ['done', 'done', 'done', 'running'];
-  await later(400);
-  statuses.value = ['done', 'done', 'done', 'done'];
-  await later(300);
-  phase.value = 'done';
+  busy.value = false;
+  let ok = false;
+  try {
+    const body = invite.value.trim().replace(/^abhi_/, '').replace(/-/g, '+').replace(/_/g, '/');
+    const parsed = invite.value.trim().startsWith('abhi_') ? JSON.parse(atob(body + '==='.slice((body.length + 3) % 4))) : null;
+    if (parsed?.expiresAt && Date.parse(parsed.expiresAt) < Date.now()) { error.value = t(k('error.inviteExpired')); return; }
+    ok = Boolean(parsed?.server && parsed?.key);
+  } catch { ok = false; }
+  if (!ok) { error.value = t(k('error.notInvite')); return; }
+  joinedWay.value = 'headscale';
 }
-function fail(index: number, message: string): void {
-  const next = [...statuses.value];
-  next[index] = 'failed';
-  statuses.value = next;
-  error.value = message;
-  phase.value = 'idle';
-}
+function useLocal(): void { error.value = ''; joinedWay.value = 'local'; }
+function resetJoin(): void { joinedWay.value = null; }
 </script>

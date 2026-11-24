@@ -6,7 +6,7 @@
 - Requested by: Solution Designer, Software Engineering Team (run `solution_designer_b2b085ced16d45479c46350d19ae49a2`), for the founder, 2026-11-22
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/autobyteus-516-extensions/tickets/in-progress/autobyteus-516-extensions/product-design-request.md`
 - Mode: Product Experience Design (changes existing surfaces: Settings → Extensions, the Voice Input card, the voice surfaces, Nodes)
-- Status: `Awaiting User Review` (round 3, confirmed by the Solution Designer, 2026-11-24)
+- Status: `In Progress` (round 4: the node code, founder decision 2026-11-24)
 
 ### Decision questions
 
@@ -52,3 +52,4 @@ Invented by hand for this ticket: the catalog entries (descriptions from `extens
 - 2026-11-24 round 3 built from private-network-types.md (DC-029…DC-036; captures review-captures/round-3/, interim); sent to the Solution Designer for its workflow check before the founder.
 - 2026-11-24 the Solution Designer checked round 3 and asked for three changes and a Leave note (invite pasted only; invite per user, security; private ranges only; leave note): applied as DC-037…DC-040 (captures R3-14…R3-19).
 - 2026-11-24 the Solution Designer confirmed round 3 (@ b7dd7685) and asked for the invite as a code: applied (DC-041). Round 3 sent to the founder; `Awaiting User Review`. Heads-up from the Solution Designer: the founder wants the Shared Folder extension (NFS) designed in this ticket too, not built; its data contract and workflow come first, from the Solution Designer.
+- 2026-11-24 founder's decision (via the Solution Designer): node code made on the target node, pasted on the desktop (pairing-contract §6a). Round 4 built (DC-043…DC-046, captures review-captures/round-4/); sent to the Solution Designer for its check.
