@@ -100,6 +100,11 @@ const randomText = (length: number) => {
 }
 const startState = () => (typeof window === 'undefined' ? '' : String(localStorage.getItem('autobyteus.prototype.extensions') || ''))
 const CIDR = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\/(\d{1,2})$/
+/** Private ranges only (Solution Designer, round 3): the public internet is never admitted; size alone decides nothing. */
+const PRIVATE_V4: Array<[number, number]> = [[0x0a000000, 8], [0xac100000, 12], [0xc0a80000, 16], [0x64400000, 10]]
+const ipv4 = (a: string[]) => a.reduce((n, x) => (n * 256) + Number(x), 0)
+const inPrivateV4 = (base: number, prefix: number) => PRIVATE_V4.some(([net, bits]) => prefix >= bits && Math.floor(base / 2 ** (32 - bits)) === Math.floor(net / 2 ** (32 - bits)))
+const HEADSCALE_USER = /^[a-z][a-z0-9-]{1,30}$/
 
 export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   const seed = startState()
@@ -258,12 +263,21 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   }
 
   function addRange(range: string): { ok: boolean; error?: string } {
-    const m = range.trim().match(CIDR)
-    if (!m || m.slice(1, 5).some((n) => Number(n) > 255) || Number(m[5]) > 32) return { ok: false, error: 'Enter an address range like 10.8.0.0/24.' }
-    if (Number(m[5]) < 16) return { ok: false, error: 'That range is very large. Use your VPN’s own range, no larger than /16.' }
-    if (!vpnRanges.value.includes(range.trim())) vpnRanges.value = [...vpnRanges.value, range.trim()]
+    const text = range.trim().toLowerCase()
+    const v6 = text.match(/^(fd[0-9a-f]{2}(?::[0-9a-f]{0,4}){0,7}(?:::)?)\/(\d{1,3})$/)
+    const m = text.match(CIDR)
+    const publicError = 'That range includes public internet addresses. AutoByteus is never opened to the internet: use your VPN’s private range (10.x, 172.16–31.x, 192.168.x, 100.64–127.x or fd00::/8).'
+    if (v6) {
+      if (Number(v6[2]) < 8 || Number(v6[2]) > 128) return { ok: false, error: publicError }
+    } else {
+      if (!m || m.slice(1, 5).some((n) => Number(n) > 255) || Number(m[5]) > 32) return { ok: false, error: 'Enter an address range like 10.8.0.0/24 or fd7a:115c::/48.' }
+      if (!inPrivateV4(ipv4(m.slice(1, 5)), Number(m[5]))) return { ok: false, error: publicError }
+    }
+    if (!vpnRanges.value.includes(text)) vpnRanges.value = [...vpnRanges.value, text]
     return { ok: true }
   }
+  /** Ranges larger than /16 (IPv4) or /48 (IPv6) are accepted with a warning. */
+  const isLargeRange = (range: string) => { const bits = Number(range.split('/')[1]); return range.includes(':') ? bits < 48 : bits < 16 }
   function removeRange(range: string): void { vpnRanges.value = vpnRanges.value.filter((r) => r !== range) }
 
   /**
@@ -288,10 +302,18 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     return code.value
   }
   /** Hosting: an invite for a machine that already runs AutoByteus (the host's address and a one-time join key). */
-  async function makeInvite(): Promise<{ text: string; qr: string; expiresAt: number }> {
+  /**
+   * Hosting: an invite for a machine that already runs AutoByteus (the host's address and a one-time join key). A Headscale
+   * join key belongs to one Headscale user, and that user is who "added by" shows: an invite for a teammate is made with the
+   * teammate's own user (created on the host if new), never with yours, or their machine would count as yours.
+   */
+  async function makeInvite(forWhom: 'me' | 'teammate', teammate = ''): Promise<{ text: string; qr: string; expiresAt: number; user: string; teammate: boolean }> {
+    const user = forWhom === 'teammate' ? teammate.trim().toLowerCase() : ownerAccount.value
+    if (forWhom === 'teammate' && !HEADSCALE_USER.test(user)) throw new Error('Enter your teammate’s name in lowercase letters, numbers and dashes, for example bob. It becomes their own user on this network.')
+    if (forWhom === 'teammate' && user === ownerAccount.value) throw new Error('That is your own user. Choose “For one of my machines” instead.')
     await later(600)
     const text = `https://${hosting.value?.domain ?? 'net.example.com'}/join#hskey-auth-${randomText(12)}-${randomText(24)}`
-    return { text, qr: await toQrCodeDataUrl(text), expiresAt: Date.now() + 24 * 60 * 60_000 }
+    return { text, qr: await toQrCodeDataUrl(text), expiresAt: Date.now() + 24 * 60 * 60_000, user, teammate: forWhom === 'teammate' }
   }
   function closeConnectionCode(): void { code.value = null }
 
@@ -357,7 +379,7 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     joined, network, serverUrl, signingIn, awaitingApproval, signedOut, serverDown, hosting, apiKeyStored, vpnRanges,
     machines, discoverable, trustOwnMachines, found, requests, paired, offerDiscovery, code,
     thisMachine, ownerAccount, accountLabel, machineOf, peerMark, networkLabel, status,
-    reset, touch, signIn, cancelSignIn, joinWithKey, joinWithInvite, hostStep, checkReachable, leave, storeApiKey, addRange, removeRange,
+    reset, touch, signIn, cancelSignIn, joinWithKey, joinWithInvite, hostStep, checkReachable, leave, storeApiKey, addRange, removeRange, isLargeRange,
     makeConnectionCode, makeInvite, closeConnectionCode,
     setDiscoverable, dismissDiscoveryOffer, setTrust, pair, connect, cancelConnect, allow, reject,
   }

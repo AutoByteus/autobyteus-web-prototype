@@ -65,3 +65,12 @@ Waiting for the founder (asked by the Solution Designer): A2 install ends Off or
 Provisional (drawn, not validated): Tailscale sign-in, auth keys, device approval, key expiry, sharing, Add a machine on Tailscale; Headscale invite links and API-made keys; everything specific to hosting (running Headscale in our program, certificate, public reachability, port forwarding, invites). Validated: joining a Headscale server with URL + key, machine list, who-is, pairing, the connection code. Not designed: NetBird, the AutoByteus-hosted network.
 
 New starting states (`autobyteus.prototype.extensions`): `network_headscale`, `network_headscale_down`, `network_host`, `network_approval`, `network_signed_out`, `network_vpn`. Scripted: a host domain starting with `home.` fails the first reachability check.
+
+### Round 3, Solution Designer's changes (2026-11-24)
+
+| ID | Change | Source |
+| --- | --- | --- |
+| DC-037 | The invite is **pasted** in the other machine's Private Network card (Headscale → I have an invite link); "Open it on the other machine" is gone: the host's public port serves only the coordination server, never a join page. The link stays a copyable string. | Solution Designer 1 |
+| DC-038 | **Who the invite is for** comes first: "For one of my machines" (joins as yours) or "For a teammate" with the teammate's name, which becomes their own Headscale user (created if new); your own name is refused for a teammate. The invite's title says whom it is for ("Invite for bob") and its text says whose machines join with it. Add a machine (Headscale, host) says it is made with your own user and that the key's user decides whose machine it is; the pasted-key hints say "use your own user". | Solution Designer 2 (security: a key's user is what "added by" and "yours" come from) |
+| DC-039 | Your own VPN accepts **private ranges only** (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 100.64.0.0/10, fd00::/8), any size inside them; anything else is refused ("includes public internet addresses; AutoByteus is never opened to the internet"). Ranges larger than /16 are accepted with an amber chip and a warning. Replaces the /16 limit. | Solution Designer 3 |
+| DC-040 | Leave is allowed in every joined state; signed out or with the server unreachable, the confirmation adds that this machine stays listed on the network until it is removed in the Tailscale admin console or on the Headscale server. | Solution Designer, Leave |

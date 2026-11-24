@@ -281,7 +281,7 @@ export const useExtensionsStore = defineStore('extensions', {
         const view = () => ({
           joined: network.joined, signingIn: network.signingIn, network: network.network, serverUrl: network.serverUrl,
           awaitingApproval: network.awaitingApproval, signedOut: network.signedOut, serverDown: network.serverDown,
-          hosting: network.hosting ? { ...network.hosting } : null, apiKeyStored: network.apiKeyStored, vpnRanges: [...network.vpnRanges],
+          hosting: network.hosting ? { ...network.hosting } : null, apiKeyStored: network.apiKeyStored, vpnRanges: network.vpnRanges.map((r) => ({ range: r, large: network.isLargeRange(r) })),
           account: network.ownerAccount,
           thisMachine: { ...network.thisMachine },
           machines: network.machines.map((m) => ({ ...m, accountLabel: network.accountLabel(m.account) })),
@@ -310,7 +310,7 @@ export const useExtensionsStore = defineStore('extensions', {
             logged('invite: a connection code was made (one use, 10 minutes; the code itself is never logged)');
             return { text: code.text, qr: code.qr, expiresAt: code.expiresAt };
           }
-          case 'makeInvite': { const invite = await network.makeInvite(); logged('invite: an invite link was made (one use, 24 hours)'); return invite; }
+          case 'makeInvite': { const invite = await network.makeInvite(input?.forWhom === 'teammate' ? 'teammate' : 'me', String(input?.teammate ?? '')); logged(`invite: an invite link was made for the user ${invite.user} (one use, 24 hours)`); return invite; }
         }
       }
       throw new Error(`${call} is not an action of ${id}.`);

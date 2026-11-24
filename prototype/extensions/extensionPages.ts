@@ -150,6 +150,7 @@ tr:last-child td{border-bottom:0}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:4px 6px 4px 10px;border-radius:6px;background:#f3f4f6;font-size:13px}
 .chip button{padding:2px 6px;font-size:12px;border:0;background:transparent;color:#6b7280}
 .chip button:hover{color:#b91c1c}
+.chip-large{background:#fef3c7;color:#78350f}
 .danger{color:#b91c1c}
 .danger-btn{background:#dc2626;color:#fff}
 .danger-btn:hover:not(:disabled){background:#b91c1c}
@@ -160,7 +161,7 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:13px;line-height:20px;color:
 const root = document.getElementById('root');
 let state = null; let choice = 'tailscale'; let tsMode = 'signin'; let hsMode = 'key'; let busy = ''; let error = '';
 let code = null; let invite = null; let timer = null; let addOpen = false; let addError = ''; let apiOpen = false; let apiError = '';
-let leaving = false; let rangeError = ''; let hostRun = null; let poll = null;
+let leaving = false; let rangeError = ''; let hostRun = null; let poll = null; let inviteOpen = false; let forWhom = 'me'; let inviteError = '';
 const NAMES = { tailscale: 'Tailscale', headscale: 'Headscale', host: 'Hosted on this machine' };
 
 function render() {
@@ -202,7 +203,7 @@ function joinBlock() {
         + '<p class="hint">Made on the machine that hosts the network, under Invite someone. It works once.</p><div><button class="link" id="hskey">Enter the server and a join key instead</button></div></div>'
       : '<div class="field"><label class="label" for="url">Server address</label><input id="url" class="wide" autocomplete="off" spellcheck="false" placeholder="https://headscale.example.com"></div>'
         + '<div class="field"><label class="label" for="key">Join key</label><div class="row"><input id="key" class="wide mono" autocomplete="off" spellcheck="false" placeholder="hskey-auth-…">' + btn('join', 'Join', 'Joining…') + '</div>'
-        + '<p class="hint">On your server, run “headscale preauthkeys create --user &lt;you&gt;” and paste the key it prints.</p><div><button class="link" id="hsinvite">I have an invite link</button></div></div>';
+        + '<p class="hint">On your server, run “headscale preauthkeys create --user &lt;you&gt;” and paste the key it prints. The key’s user decides who this machine belongs to: use your own.</p><div><button class="link" id="hsinvite">I have an invite link</button></div></div>';
   } else {
     body = hostForm();
   }
@@ -249,13 +250,27 @@ function joinedBlock() {
     + '<p class="hint" style="margin-top:8px">Every machine on your private network, AutoByteus or not. Your AutoByteus nodes among them are in Nodes, under Found on your private network.'
     + (state.network === 'tailscale' ? ' A machine added with a tagged key belongs to its tag and never counts as yours; a shared machine is someone else’s.' : '') + '</p></div>'
     + '<hr class="divider">' + (code ? codeBlock(code, 'code') : addMachineBlock());
-  if (state.network === 'host') html += '<hr class="divider">' + (invite ? codeBlock(invite, 'invite') : '<div class="field"><h3>Invite someone</h3><p class="hint">For a machine that already runs AutoByteus, yours or a teammate’s: an invite link joins it to this network. It pairs afterwards, from Nodes.</p><div style="margin-top:6px">' + btn('mkinvite', 'Make an invite', 'Making an invite…', 'secondary') + '</div></div>');
+  if (state.network === 'host') html += '<hr class="divider">' + (invite ? codeBlock(invite, 'invite') : inviteBlock());
   return html;
+}
+function ownUserNote() {
+  return state.network === 'tailscale' ? '' : '<p class="hint" style="margin-top:2px">Made with your own user, ' + esc(state.account) + ': the key’s user decides whose machine it is, and this code makes you its owner.</p>';
+}
+function inviteBlock() {
+  const lead = '<h3>Invite someone</h3><p class="hint">For a machine that already runs AutoByteus: an invite link joins it to this network, and it pairs afterwards from Nodes. Who the invite is for decides whose machine it is.</p>';
+  if (!inviteOpen) return '<div class="field">' + lead + '<div style="margin-top:6px"><button class="secondary" id="inviteopen">Make an invite</button></div></div>';
+  return '<div class="field">' + lead
+    + '<div class="types" role="radiogroup" aria-label="Who the invite is for" style="margin-top:6px">'
+    + '<label class="type"><input type="radio" name="forwhom" value="me"' + (forWhom === 'me' ? ' checked' : '') + '><div><b>For one of my machines</b><span>It joins as yours (' + esc(state.account) + ').</span></div></label>'
+    + '<label class="type"><input type="radio" name="forwhom" value="teammate"' + (forWhom === 'teammate' ? ' checked' : '') + '><div><b>For a teammate</b><span>It joins under the teammate’s own name, so it is theirs: they pair with Connect and Allow and never get owner access.</span></div></label></div>'
+    + (forWhom === 'teammate' ? '<label class="label" for="teammate" style="margin-top:6px">Teammate’s name</label><input id="teammate" class="mono" style="width:220px" autocomplete="off" spellcheck="false" placeholder="bob"><p class="hint">Becomes their own user on this network; it is created if it is new.</p>' : '')
+    + '<div class="row" style="margin-top:6px">' + btn('mkinvite', 'Make the invite', 'Making an invite…') + '<button class="link" id="invitecancel">Cancel</button></div>'
+    + (inviteError ? '<p class="error" role="alert">' + esc(inviteError) + '</p>' : '') + '</div>';
 }
 function addMachineBlock() {
   const lead = '<h3>Add a machine</h3><p class="hint">Make a one-time code for a new machine. Pasted on its first-run page, it joins your private network, pairs that node with this one and makes you its owner, without addresses or a command line.</p>';
   if (state.network === 'host' || (state.network === 'headscale' && state.apiKeyStored)) {
-    return '<div class="field">' + lead + (state.network === 'headscale' ? '<p class="ok" style="margin-top:2px">This node makes join keys itself with the API key in its vault.</p>' : '') + '<div style="margin-top:6px">' + btn('add', 'Add a machine', 'Making a code…') + '</div>' + (addError ? '<p class="error" role="alert">' + esc(addError) + '</p>' : '') + '</div>';
+    return '<div class="field">' + lead + (state.network === 'headscale' ? '<p class="ok" style="margin-top:2px">This node makes join keys itself with the API key in its vault.</p>' : '') + ownUserNote() + '<div style="margin-top:6px">' + btn('add', 'Add a machine', 'Making a code…') + '</div>' + (addError ? '<p class="error" role="alert">' + esc(addError) + '</p>' : '') + '</div>';
   }
   if (apiOpen) {
     return '<div class="field">' + lead + '<label class="label" for="apikey" style="margin-top:6px">Headscale API key</label>'
@@ -266,7 +281,7 @@ function addMachineBlock() {
   if (!addOpen) return '<div class="field">' + lead + '<div style="margin-top:6px">' + btn('add', 'Add a machine', 'Making a code…') + '</div></div>';
   const how = state.network === 'tailscale'
     ? 'Create a one-time auth key without tags in your Tailscale admin console (Settings → Keys → Generate auth key) and paste it here. AutoByteus puts it into the connection code.'
-    : 'On your server, run “headscale preauthkeys create --user ' + esc(state.account) + ' --expiration 10m” and paste the key it prints. AutoByteus puts it into the connection code.';
+    : 'On your server, run “headscale preauthkeys create --user ' + esc(state.account) + ' --expiration 10m” and paste the key it prints. Use your own user: the key’s user decides who the machine belongs to, and the code makes you its owner.';
   return '<div class="field">' + lead + '<p class="hint" style="font-size:13px;line-height:18px;color:#4b5563;margin-top:6px">' + how + '</p>'
     + '<label class="label" for="addkey" style="margin-top:6px">' + (state.network === 'tailscale' ? 'Auth key' : 'Join key') + '</label>'
     + '<div class="row"><input id="addkey" class="wide mono" autocomplete="off" spellcheck="false" placeholder="' + (state.network === 'tailscale' ? 'tskey-auth-…' : 'hskey-auth-…') + '">'
@@ -278,8 +293,8 @@ function codeBlock(c, kind) {
   const left = Math.max(0, c.expiresAt - Date.now()); const expired = left === 0;
   const isInvite = kind === 'invite';
   return '<div class="box' + (expired ? ' expired' : '') + '"><div class="code-top"><img class="qr" alt="QR code of the ' + (isInvite ? 'invite' : 'connection code') + '" src="' + c.qr + '">'
-    + '<div><h3>' + (isInvite ? 'Invite' : 'Connection code') + '</h3><p class="hint" style="margin-top:4px;font-size:13px;line-height:18px;color:#4b5563">'
-    + (isInvite ? 'Open it on the other machine, or paste it in its Private Network card under My own Headscale server → I have an invite link. It joins that machine to this network; pair it afterwards from Nodes.' : 'Paste it on the new machine’s first-run page (opened in a browser on that machine). It joins your private network, pairs that node with this one and makes you its owner.') + '</p>'
+    + '<div><h3>' + (isInvite ? (c.teammate ? 'Invite for ' + esc(c.user) : 'Invite for one of your machines') : 'Connection code') + '</h3><p class="hint" style="margin-top:4px;font-size:13px;line-height:18px;color:#4b5563">'
+    + (isInvite ? 'Paste it in the other machine’s Private Network card, under My own Headscale server → I have an invite link. Machines that join with it are ' + (c.teammate ? esc(c.user) + '’s (a teammate): they pair with Connect and Allow.' : 'yours (' + esc(c.user) + '): pair them afterwards from Nodes.') : 'Paste it on the new machine’s first-run page (opened in a browser on that machine). It joins your private network, pairs that node with this one and makes you its owner.') + '</p>'
     + '<p class="warn"><span aria-hidden="true">⚠</span><span>Treat it like a password. Anyone who has it can add a machine to your private network' + (isInvite ? '' : ' and pair it with this node') + '. It works once.</span></p>'
     + '<p class="expiry" id="expiry-' + kind + '">' + (expired ? 'This ' + (isInvite ? 'invite' : 'code') + ' expired.' : expiryText(left)) + '</p></div></div>'
     + '<textarea id="text-' + kind + '" class="mono" readonly aria-label="' + (isInvite ? 'Invite' : 'Connection code') + '"' + (expired ? ' disabled' : '') + (isInvite ? ' style="height:48px"' : '') + '>' + esc(c.text) + '</textarea>'
@@ -293,12 +308,14 @@ function expiryText(left) {
 
 // ---------- own VPN, leaving
 function vpnBlock() {
-  const chips = state.vpnRanges.length ? '<div class="chips">' + state.vpnRanges.map((r) => '<span class="chip mono">' + esc(r) + '<button data-range="' + esc(r) + '" aria-label="Stop accepting ' + esc(r) + '">Remove</button></span>').join('') + '</div>' : '';
+  const chips = state.vpnRanges.length ? '<div class="chips">' + state.vpnRanges.map((r) => '<span class="chip mono' + (r.large ? ' chip-large' : '') + '">' + esc(r.range) + '<button data-range="' + esc(r.range) + '" aria-label="Stop accepting ' + esc(r.range) + '">Remove</button></span>').join('') + '</div>' : '';
+  const large = state.vpnRanges.filter((r) => r.large).map((r) => r.range);
   return '<div class="field"><h3>Your own VPN</h3>'
-    + '<p class="hint">If you run your own VPN (plain WireGuard or any other), this node can accept connections from its address range, with or without a private network above. Your own VPN cannot find nodes or tell who is calling: add those nodes by address in Nodes and pair them with codes.</p>'
+    + '<p class="hint">If you run your own VPN (plain WireGuard or any other), this node can accept connections from its private address range, with or without a private network above. Your own VPN cannot find nodes or tell who is calling: add those nodes by address in Nodes and pair them with codes.</p>'
     + chips
-    + '<div class="row"><input id="range" class="mono" style="width:200px" autocomplete="off" spellcheck="false" placeholder="10.8.0.0/24" aria-label="Address range">' + btn('addrange', 'Accept range', 'Saving…', 'secondary') + '</div>'
+    + '<div class="row"><input id="range" class="mono" style="width:200px" autocomplete="off" spellcheck="false" placeholder="10.8.0.0/24" aria-label="Private address range">' + btn('addrange', 'Accept range', 'Saving…', 'secondary') + '</div>'
     + (rangeError ? '<p class="error" role="alert">' + esc(rangeError) + '</p>' : '')
+    + (large.length ? '<p class="warn"><span aria-hidden="true">⚠</span><span>' + esc(large.join(', ')) + (large.length > 1 ? ' are large ranges' : ' is a large range') + ': every machine in it can reach this node’s sign-in. Use your VPN’s own, smaller range if you can.</span></p>' : '')
     + '<p class="warn"><span aria-hidden="true">⚠</span><span>Every machine in the range can reach this node’s sign-in. Its data still needs a credential.</span></p></div>';
 }
 function leaveBlock() {
@@ -307,6 +324,7 @@ function leaveBlock() {
   return '<div class="alert" role="alertdialog" aria-label="Leave"><b>' + (host ? 'End this private network for everyone?' : 'Leave this private network?') + '</b><span>'
     + (host ? 'Every machine on it loses the network, and nobody can join again. Pairings stay but cannot reach each other until the machines are on one network again and paired again.'
       : 'This machine is removed from the network. To use another one, join it and pair your nodes again: pairings belong to this network, and the old ones stay but cannot reach.') + '</span>'
+    + (state.signedOut ? '<span>This machine is signed out, so it stays listed on the network until you remove it in your Tailscale admin console.</span>' : state.serverDown ? '<span>The server cannot be reached, so this machine stays listed on the network until you remove it on the Headscale server.</span>' : '')
     + '<div class="row"><button class="danger-btn" id="leaveyes"' + (busy === 'leave' ? ' disabled' : '') + '>' + (busy === 'leave' ? '<span class="spin"></span> ' : '') + (host ? 'End the network' : 'Leave') + '</button><button class="secondary" id="leaveno">Cancel</button></div></div>';
 }
 
@@ -341,13 +359,16 @@ function wire() {
   on('apiopen', () => { apiOpen = true; apiError = ''; render(); document.getElementById('apikey')?.focus(); });
   on('apicancel', () => { apiOpen = false; render(); });
   on('storeapi', () => run('storeapi', async () => { apiError = ''; state = await call('storeApiKey', { key: val('apikey') }); apiOpen = false; addOpen = false; }, (m) => { apiError = m; }));
-  on('mkinvite', () => run('mkinvite', async () => { invite = await call('makeInvite'); startTimer(); }, () => {}));
+  on('inviteopen', () => { inviteOpen = true; inviteError = ''; render(); });
+  on('invitecancel', () => { inviteOpen = false; render(); });
+  root.querySelectorAll('input[name=forwhom]').forEach((r) => r.addEventListener('change', () => { forWhom = r.value; inviteError = ''; render(); document.getElementById('teammate')?.focus(); }));
+  on('mkinvite', () => run('mkinvite', async () => { inviteError = ''; invite = await call('makeInvite', { forWhom, teammate: val('teammate') }); inviteOpen = false; startTimer(); }, (m) => { inviteError = m; }));
   for (const kind of ['code', 'invite']) {
     on('copy-' + kind, async () => { const c = kind === 'code' ? code : invite; const b = document.getElementById('copy-' + kind); try { await navigator.clipboard.writeText(c.text); b.textContent = 'Copied'; } catch { document.getElementById('text-' + kind).select(); b.textContent = 'Press ⌘C to copy'; } setTimeout(() => { const el = document.getElementById('copy-' + kind); if (el) el.textContent = 'Copy'; }, 2000); });
     on('done-' + kind, () => { if (kind === 'code') code = null; else invite = null; render(); });
-    on('again-' + kind, () => { if (kind === 'invite') { invite = null; run('mkinvite', async () => { invite = await call('makeInvite'); startTimer(); }, () => {}); } else { code = null; addOpen = state.network !== 'host' && !state.apiKeyStored; if (!addOpen) makeCode(''); else render(); } });
+    on('again-' + kind, () => { if (kind === 'invite') { invite = null; inviteOpen = true; render(); } else { code = null; addOpen = state.network !== 'host' && !state.apiKeyStored; if (!addOpen) makeCode(''); else render(); } });
   }
-  on('addrange', () => run('addrange', async () => { rangeError = ''; state = await call('addRange', { range: val('range') }); }, (m) => { rangeError = m; }));
+  on('addrange', async () => { await run('addrange', async () => { rangeError = ''; state = await call('addRange', { range: val('range') }); }, (m) => { rangeError = m; }); if (!rangeError) keep({ range: '' }); });
   root.querySelectorAll('[data-range]').forEach((b) => b.addEventListener('click', async () => { state = await call('removeRange', { range: b.dataset.range }); render(); }));
   on('leave', () => { leaving = true; render(); });
   on('leaveno', () => { leaving = false; render(); });
