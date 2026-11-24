@@ -39,7 +39,7 @@ export interface NodeExtension { entry: CatalogEntry; state: ExtensionState }
 const CATALOG: CatalogEntry[] = [
   {
     id: 'voice-input', name: 'Voice Input', version: '1.0.0', contractVersion: 1, offeredOn: 'desktop-node',
-    description: 'Dictate instead of typing. Speech becomes text on this computer. Uses the microphone; downloads about 1.2 GB on install.',
+    description: 'Dictate instead of typing. Speech becomes text on this computer. Uses the microphone; downloads about 2 GB on install.',
     platforms: ['darwin-arm64', 'darwin-x64', 'linux-x64', 'win32-x64'],
   },
   {
@@ -199,9 +199,11 @@ export const useExtensionsStore = defineStore('extensions', {
       const steps: Array<[string, number | null, number]> = id === 'voice-input'
         ? [
           [`Downloading ${entry.name} ${version}`, null, 800],
-          ...(isUpdate ? [] : [0, 12, 27, 41, 55, 68, 80, 91, 100].map((p) => [`Downloading the voice runtime and speech model · ${(1.2 * p / 100).toFixed(1)} of 1.2 GB`, p, 480] as [string, number, number])),
-          [isUpdate ? 'Keeping your voice runtime, speech model and language' : 'Unpacking the voice runtime', null, 1200],
-          ['Checking that the voice runtime starts', null, 1200],
+          ...(isUpdate ? [] : [0, 18, 39, 61, 82, 100].map((p) => [`Downloading the voice runtime and speech model · ${(1.7 * p / 100).toFixed(1)} of 1.7 GB`, p, 450] as [string, number, number])),
+          [isUpdate ? 'Keeping your voice runtime, speech model and language' : 'Unpacking the voice runtime', null, 1000],
+          // Measured (contract-probe use-case run): a fresh install takes ~75 s, mostly this step, which reports no percent.
+          ...(isUpdate ? [] : [['Preparing the speech model', null, 5000] as [string, number | null, number]]),
+          ['Checking that the voice runtime starts', null, 1000],
         ]
         : [
           [`Downloading ${entry.name} ${version}`, null, 800],

@@ -84,7 +84,7 @@ const extensionsDesignMessages: TranslationCatalog = {
   'extensions.dialog.cancel': '取消',
   'extensions.remove.title': '移除 {{name}}？',
   'extensions.remove.confirm': '移除',
-  'extensions.remove.text.voice-input': '这会从 {{node}} 删除语音输入：它的语音运行时、语音模型以及语言选择。在重新安装前，麦克风按钮将消失；重新安装会再次下载运行时和模型（约 1.2 GB）。你的麦克风选择会保留。',
+  'extensions.remove.text.voice-input': '这会从 {{node}} 删除语音输入：它的语音运行时、语音模型以及语言选择。在重新安装前，麦克风按钮将消失；重新安装会再次下载运行时和模型（约 2 GB）。你的麦克风选择会保留。',
   'extensions.remove.text.private-network': '这会让 {{node}} 离开你的私有网络并删除私有网络扩展。通过它配对的节点仍保持配对，但无法访问此节点。只有这台机器保留其网络身份时，重新加入才能恢复；如果它作为新机器加入，需要重新配对。',
 
   'nodes.privateNetwork.title': '私有网络',

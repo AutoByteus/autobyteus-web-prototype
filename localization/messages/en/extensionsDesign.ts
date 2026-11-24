@@ -84,7 +84,7 @@ const extensionsDesignMessages: TranslationCatalog = {
   'extensions.dialog.cancel': 'Cancel',
   'extensions.remove.title': 'Remove {{name}}?',
   'extensions.remove.confirm': 'Remove',
-  'extensions.remove.text.voice-input': 'This deletes Voice Input from {{node}}: its voice runtime and speech model and its language choice. The microphone buttons disappear until you install it again, which downloads the runtime and model again (about 1.2 GB). Your microphone choice stays.',
+  'extensions.remove.text.voice-input': 'This deletes Voice Input from {{node}}: its voice runtime and speech model and its language choice. The microphone buttons disappear until you install it again, which downloads the runtime and model again (about 2 GB). Your microphone choice stays.',
   'extensions.remove.text.private-network': 'This takes {{node}} off your private network and deletes Private Network from it. Nodes paired through it stay paired but cannot reach this node. Joining again restores that only if this machine keeps its network identity; if it joins as a new machine, pair them again.',
 
   'nodes.privateNetwork.title': 'Private network',
