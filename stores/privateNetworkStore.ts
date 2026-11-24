@@ -4,17 +4,22 @@ import { toQrCodeDataUrl } from '~/services/qr/qrCodeDataUrlService'
 import { useNodeListStore } from '~/stores/nodeListStore'
 
 /**
- * extensions-ui-516 (design only): the simulated private network and pairing over it (autobyteus-516, Part B).
+ * extensions-ui-516 (design only): the simulated private network and pairing over it (autobyteus-516, Part B), for every
+ * network type in scope (private-network-types.md): a Tailscale account, your own Headscale server, a private network
+ * hosted on this machine (designed now, built later), and your own VPN (an accepted address range only).
  *
  * In the product, the Private Network extension's server part runs the network program (joining, this machine, my
- * machines, connection codes), and the node itself owns discovery and pairing (pairing-contract.md). Here one small
- * scripted world stands for both; every account, machine, address, key and code below is invented. Nothing is contacted.
+ * machines, join keys, hosting), and the node itself owns discovery and pairing (pairing-contract.md). Here one small
+ * scripted world stands for both; every account, machine, address, domain, key and code below is invented.
  *
- * Starting state: `localStorage['autobyteus.prototype.extensions']` = `network_joined` (joined, found nodes, one incoming
- * request) or `network_trust` (the same with "Trust machines I added" on). Any other value starts not joined.
+ * Starting state: `localStorage['autobyteus.prototype.extensions']` =
+ *   `network_joined` / `network_trust` (Tailscale, joined; trust on) · `network_headscale` · `network_headscale_down`
+ *   (server unreachable) · `network_host` (hosting on this machine) · `network_approval` (waiting for device approval in
+ *   the Tailscale admin console; approved after about 10 s) · `network_signed_out` (Tailscale key expired) ·
+ *   `network_vpn` (your own VPN only). Any other value starts not joined.
  */
 
-export type NetworkKind = 'tailscale' | 'headscale'
+export type NetworkKind = 'tailscale' | 'headscale' | 'host'
 export interface NetworkMachine {
   id: string
   name: string
@@ -22,6 +27,8 @@ export interface NetworkMachine {
   account: string
   online: boolean
   isThisMachine?: boolean
+  /** Tailscale: shared into this network from another tailnet. */
+  shared?: boolean
 }
 /** A node found through the network's machine list that answered `/autobyteus/info` (pairing-contract.md §7). */
 export interface FoundNode {
@@ -40,19 +47,32 @@ export interface IncomingRequest {
   phase: 'idle' | 'allowing'
 }
 export interface PairedPeer { nodeId: string; name: string; account: string; role: 'own' | 'teammate' }
-export interface ConnectionCode { text: string; qr: string; expiresAt: number; machineCount: number }
+export interface ConnectionCode { text: string; qr: string; expiresAt: number }
+export interface Hosting { domain: string; port: number; certificateUntil: string; reachable: boolean | null }
 
-const OWNER = 'alex@example.com'
-const ACCOUNT_SHORT: Record<string, string> = { [OWNER]: 'you', 'bob@example.com': 'bob', 'carol@example.com': 'carol' }
-const MACHINES: NetworkMachine[] = [
-  { id: 'm-home', name: 'home-mac', address: '100.88.10.10', account: OWNER, online: true, isThisMachine: true },
-  { id: 'm-linux', name: 'linux-box', address: '100.88.30.30', account: OWNER, online: true },
-  { id: 'm-office', name: 'office-mac', address: '100.88.20.20', account: OWNER, online: false },
-  { id: 'm-pi', name: 'raspberrypi', address: '100.88.60.60', account: OWNER, online: true },
-  { id: 'm-printer', name: 'hall-printer', address: '100.88.50.50', account: OWNER, online: true },
-  { id: 'm-bob', name: 'bob-laptop', address: '100.88.40.40', account: 'bob@example.com', online: true },
-  { id: 'm-carol', name: 'carol-server', address: '100.88.70.70', account: 'carol@example.com', online: true },
-]
+/** Accounts: Tailscale shows e-mail logins; a Headscale server (yours or hosted) shows its user names. */
+const ACCOUNTS: Record<NetworkKind, { owner: string; bob: string; carol: string }> = {
+  tailscale: { owner: 'alex@example.com', bob: 'bob@example.com', carol: 'carol@example.com' },
+  headscale: { owner: 'alex', bob: 'bob', carol: 'carol' },
+  host: { owner: 'alex', bob: 'bob', carol: 'carol' },
+}
+const machinesFor = (kind: NetworkKind): NetworkMachine[] => {
+  const a = ACCOUNTS[kind]
+  return [
+    { id: 'm-home', name: 'home-mac', address: '100.88.10.10', account: a.owner, online: true, isThisMachine: true },
+    { id: 'm-linux', name: 'linux-box', address: '100.88.30.30', account: a.owner, online: true },
+    { id: 'm-office', name: 'office-mac', address: '100.88.20.20', account: a.owner, online: false },
+    { id: 'm-pi', name: 'raspberrypi', address: '100.88.60.60', account: a.owner, online: true },
+    { id: 'm-printer', name: 'hall-printer', address: '100.88.50.50', account: a.owner, online: true },
+    { id: 'm-bob', name: 'bob-laptop', address: '100.88.40.40', account: a.bob, online: true },
+    { id: 'm-carol', name: 'carol-server', address: '100.88.70.70', account: a.carol, online: true },
+    // Tailscale only: a machine added with a tagged key belongs to the tag, never to a person; a machine shared from another tailnet.
+    ...(kind === 'tailscale' ? [
+      { id: 'm-ci', name: 'ci-runner', address: '100.88.80.80', account: 'tag:ci', online: true },
+      { id: 'm-dana', name: 'dana-desktop', address: '100.88.90.90', account: 'dana@other.example', online: false, shared: true },
+    ] : []),
+  ]
+}
 const nodeIdOf = (tail: string) => `srv_${(tail + 'Pn7Wq8Mv5Tn2Bc7Hy4Lp9Gs6Jd1Fa0XeKu').slice(0, 36)}`
 const FOUND: FoundNode[] = [
   // Owned by this desktop and already in its Nodes list (pairing-contract §7: Pair adds the peer relation, not a list entry).
@@ -60,13 +80,14 @@ const FOUND: FoundNode[] = [
   { nodeId: nodeIdOf('b0bL4pt0pPriv'), name: 'bob-laptop', machineId: 'm-bob', kind: 'teammate', phase: 'idle' },
   { nodeId: nodeIdOf('r4spb3rryPriv'), name: 'raspberrypi', machineId: 'm-pi', kind: 'unknown', phase: 'idle' },
 ]
-const REQUESTS: IncomingRequest[] = [
-  { nodeId: nodeIdOf('c4r0lS3rvPriv'), name: 'carol-server', machineId: 'm-carol', account: 'carol@example.com', phase: 'idle' },
+const REQUESTS = (kind: NetworkKind): IncomingRequest[] => [
+  { nodeId: nodeIdOf('c4r0lS3rvPriv'), name: 'carol-server', machineId: 'm-carol', account: ACCOUNTS[kind].carol, phase: 'idle' },
 ]
 /** Pairing took well under a second on one Mac and join + pair 3.0 s (pairing-probe); a few scripted seconds here. */
 const PAIR_MS = 2000
 const TEAMMATE_ALLOWS_MS = 7000
 const OWNER_DECLINES_MS = 6000
+const APPROVAL_MS = 10_000
 const CODE_LIFETIME_MS = 10 * 60_000
 
 const later = (ms: number) => new Promise<void>((done) => setTimeout(done, ms))
@@ -78,77 +99,199 @@ const randomText = (length: number) => {
   return out
 }
 const startState = () => (typeof window === 'undefined' ? '' : String(localStorage.getItem('autobyteus.prototype.extensions') || ''))
+const CIDR = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})\/(\d{1,2})$/
 
 export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   const seed = startState()
-  const seededJoined = seed === 'network_joined' || seed === 'network_trust'
+  const seededKind: NetworkKind = seed.startsWith('network_headscale') ? 'headscale' : seed === 'network_host' ? 'host' : 'tailscale'
+  const seededJoined = ['network_joined', 'network_trust', 'network_headscale', 'network_headscale_down', 'network_host', 'network_signed_out'].includes(seed)
 
   const joined = ref(seededJoined)
-  const network = ref<NetworkKind>('tailscale')
-  const serverUrl = ref('')
+  const network = ref<NetworkKind>(seededKind)
+  const serverUrl = ref(seededKind === 'headscale' ? 'https://headscale.example.com' : '')
   const signingIn = ref(false)
-  const machines = ref<NetworkMachine[]>(structuredClone(MACHINES))
+  /** Tailscale device approval: the machine waits until an admin approves it in the admin console. */
+  const awaitingApproval = ref(seed === 'network_approval')
+  /** Tailscale node key expiry: the machine was signed out of the tailnet. */
+  const signedOut = ref(seed === 'network_signed_out')
+  /** Headscale: the coordination server cannot be reached. */
+  const serverDown = ref(seed === 'network_headscale_down')
+  const hosting = ref<Hosting | null>(seed === 'network_host' ? { domain: 'net.example.com', port: 443, certificateUntil: '2027-02-20', reachable: true } : null)
+  /** Headscale: an API key stored in this node's vault lets it make one-time join keys itself (provisional). */
+  const apiKeyStored = ref(false)
+  const vpnRanges = ref<string[]>(seed === 'network_vpn' ? ['10.8.0.0/24'] : [])
+  const machines = ref<NetworkMachine[]>(machinesFor(seededKind))
   const discoverable = ref(seededJoined)
   const trustOwnMachines = ref(seed === 'network_trust')
   const found = ref<FoundNode[]>(seededJoined ? structuredClone(FOUND) : [])
-  const requests = ref<IncomingRequest[]>(seededJoined ? structuredClone(REQUESTS) : [])
+  const requests = ref<IncomingRequest[]>(seededJoined ? REQUESTS(seededKind) : [])
   const paired = ref<PairedPeer[]>([])
   /** Set when this node has just joined: the card frame offers "Let my private network find this node" once. */
   const offerDiscovery = ref(false)
   const code = ref<ConnectionCode | null>(null)
+  let approvalStarted = false
 
   const thisMachine = computed(() => machines.value.find((m) => m.isThisMachine)!)
-  const accountLabel = (account: string) => ACCOUNT_SHORT[account] ?? account
+  const ownerAccount = computed(() => ACCOUNTS[network.value].owner)
+  const accountLabel = (account: string) => {
+    const a = ACCOUNTS[network.value]
+    return account === a.owner ? 'you' : account === a.bob ? 'bob' : account === a.carol ? 'carol' : account
+  }
   const machineOf = (id: string) => machines.value.find((m) => m.id === id)
-  const ownerAccount = OWNER
+  /** Where the network is, for the Nodes card's lead: "Tailscale · alex@example.com", "Headscale · headscale.example.com", … */
+  const networkLabel = computed(() => network.value === 'tailscale' ? `Tailscale · ${ownerAccount.value}`
+    : network.value === 'headscale' ? `Headscale · ${serverUrl.value.replace(/^https?:\/\//, '')}`
+      : `hosted on this machine · ${hosting.value?.domain ?? ''}`)
+
+  /** The extension's status() for this node: what its card says (extension-contract §4). */
+  const status = computed<{ ready: boolean; message: string }>(() => {
+    const vpn = vpnRanges.value.length ? ` Also accepting your own VPN: ${vpnRanges.value.join(', ')}.` : ''
+    if (awaitingApproval.value) return { ready: false, message: 'Waiting for approval in your Tailscale admin console.' }
+    if (signingIn.value) return { ready: false, message: 'Waiting for the sign-in to finish in your browser.' }
+    if (!joined.value) {
+      return vpnRanges.value.length
+        ? { ready: true, message: `Accepting your own VPN: ${vpnRanges.value.join(', ')}. Not on a private network.` }
+        : { ready: false, message: 'Not connected to a private network yet. Choose one below.' }
+    }
+    if (signedOut.value) return { ready: false, message: 'Signed out of Tailscale: this machine’s key expired. Sign in again.' }
+    if (serverDown.value) return { ready: false, message: 'Your Headscale server cannot be reached. Nobody can join or change anything; existing connections keep working for a while.' }
+    if (network.value === 'host') {
+      return hosting.value?.reachable === false
+        ? { ready: true, message: `Hosting your private network at ${hosting.value.domain}, but it is not reachable from the internet yet.${vpn}` }
+        : { ready: true, message: `Hosting your private network at ${hosting.value?.domain}; connected as ${thisMachine.value.name}.${vpn}` }
+    }
+    return { ready: true, message: `Connected to your private network as ${thisMachine.value.name}.${vpn}` }
+  })
 
   function reset(): void {
     joined.value = false; signingIn.value = false; discoverable.value = false; trustOwnMachines.value = false
-    found.value = []; requests.value = []; paired.value = []; offerDiscovery.value = false; code.value = null
+    awaitingApproval.value = false; signedOut.value = false; serverDown.value = false; hosting.value = null; apiKeyStored.value = false
+    vpnRanges.value = []; found.value = []; requests.value = []; paired.value = []; offerDiscovery.value = false; code.value = null
   }
 
   function completeJoin(kind: NetworkKind): void {
     network.value = kind
+    machines.value = machinesFor(kind)
     joined.value = true
     signingIn.value = false
+    signedOut.value = false
+    awaitingApproval.value = false
     offerDiscovery.value = true
     // Discovery runs when the node joins; the others answer only while their owners let them be found.
     found.value = structuredClone(FOUND)
     requests.value = []
   }
 
-  /** "Sign in with Tailscale": the login link opens in the browser; the sign-in finishes there (scripted). */
+  /** The page asks for the state; a node waiting for device approval is approved after a while (scripted admin). */
+  function touch(): void {
+    if (awaitingApproval.value && !approvalStarted) {
+      approvalStarted = true
+      void later(APPROVAL_MS).then(() => { if (awaitingApproval.value) completeJoin('tailscale') })
+    }
+  }
+
+  /** "Sign in with Tailscale": the login link opens in the browser; the sign-in finishes there (scripted). Also "Sign in again". */
   async function signIn(): Promise<void> {
     signingIn.value = true
     await later(3200)
-    if (signingIn.value) completeJoin('tailscale')
+    if (!signingIn.value) return
+    if (signedOut.value && joined.value) { signedOut.value = false; signingIn.value = false; return }
+    completeJoin('tailscale')
   }
   function cancelSignIn(): void { signingIn.value = false }
   async function joinWithKey(kind: NetworkKind, key: string, url = ''): Promise<{ ok: boolean; error?: string }> {
     await later(1600)
-    if (!/^(tskey-auth-|hskey-auth-)?[A-Za-z0-9-]{12,}$/.test(key.trim())) return { ok: false, error: 'That join key was not accepted. Check that it was copied whole and has not expired.' }
-    if (kind === 'headscale') serverUrl.value = url.trim()
+    if (kind === 'headscale') {
+      if (!/^https:\/\/[a-z0-9.-]+\.[a-z]{2,}(:\d+)?\/?$/i.test(url.trim())) return { ok: false, error: 'Enter the server’s HTTPS address, for example https://headscale.example.com.' }
+      if (/unreachable|offline/i.test(url)) return { ok: false, error: `${url.trim()} cannot be reached. Check the address, and that the server is running and reachable from this machine.` }
+      if (!/^(hskey-auth-)?[A-Za-z0-9-]{12,}$/.test(key.trim())) return { ok: false, error: 'The server did not accept that join key: it may be mistyped, used or expired. Make a new one with headscale preauthkeys create.' }
+      serverUrl.value = url.trim().replace(/\/$/, '')
+    } else if (!/^tskey-auth-[A-Za-z0-9-]{12,}$/.test(key.trim())) {
+      return { ok: false, error: 'Tailscale did not accept that auth key: it may be mistyped, used or expired. Make a new one in the admin console under Settings → Keys.' }
+    }
     completeJoin(kind)
     return { ok: true }
   }
+  /** An invite made on a host: its address and a one-time join key in one link. */
+  async function joinWithInvite(link: string): Promise<{ ok: boolean; error?: string }> {
+    const match = String(link).trim().match(/^https:\/\/([a-z0-9.-]+\.[a-z]{2,})(?::\d+)?\/join#(hskey-auth-[A-Za-z0-9-]{12,})$/i)
+    if (!match) { await later(500); return { ok: false, error: 'That is not an invite link. Ask for a new invite from the machine that hosts the network.' } }
+    return joinWithKey('headscale', match[2]!, `https://${match[1]}`)
+  }
+
+  /** Host a private network on this machine (designed now, built later): every step is provisional. */
+  async function hostStep(step: 'server' | 'certificate' | 'reachable' | 'join', domain = '', port = 443): Promise<{ ok: boolean; error?: string }> {
+    await later(step === 'certificate' ? 1500 : 1000)
+    if (step === 'server') {
+      if (!/^[a-z0-9-]+(\.[a-z0-9-]+)+$/i.test(domain.trim())) return { ok: false, error: 'Enter a domain name that points to this machine, for example net.example.com.' }
+      hosting.value = { domain: domain.trim().toLowerCase(), port, certificateUntil: '2027-02-20', reachable: null }
+      return { ok: true }
+    }
+    if (step === 'certificate') return { ok: true }
+    if (step === 'reachable') {
+      // Scripted: a domain starting with "home." is not reachable the first time (the router's port forward is missing).
+      const first = hosting.value && hosting.value.reachable === null && hosting.value.domain.startsWith('home.')
+      if (hosting.value) hosting.value.reachable = !first
+      return first ? { ok: false, error: `${hosting.value?.domain} is not reachable from the internet on port ${port}. At home, forward port ${port} on your router to this machine, then check again.` } : { ok: true }
+    }
+    completeJoin('host')
+    return { ok: true }
+  }
+  async function checkReachable(): Promise<boolean> {
+    await later(1200)
+    if (hosting.value) hosting.value.reachable = true
+    return true
+  }
+
+  /** Leave the network (switching type means leaving, joining the new one and pairing again). Hosting: the network ends for everyone. */
+  async function leave(): Promise<void> {
+    await later(1200)
+    joined.value = false; hosting.value = null; signedOut.value = false; serverDown.value = false; apiKeyStored.value = false
+    discoverable.value = false; trustOwnMachines.value = false; found.value = []; requests.value = []; code.value = null; offerDiscovery.value = false
+  }
+
+  async function storeApiKey(key: string): Promise<{ ok: boolean; error?: string }> {
+    await later(800)
+    if (!/^[A-Za-z0-9._-]{20,}$/.test(key.trim())) return { ok: false, error: 'The server did not accept that API key. Make one with headscale apikeys create and paste all of it.' }
+    apiKeyStored.value = true
+    return { ok: true }
+  }
+
+  function addRange(range: string): { ok: boolean; error?: string } {
+    const m = range.trim().match(CIDR)
+    if (!m || m.slice(1, 5).some((n) => Number(n) > 255) || Number(m[5]) > 32) return { ok: false, error: 'Enter an address range like 10.8.0.0/24.' }
+    if (Number(m[5]) < 16) return { ok: false, error: 'That range is very large. Use your VPN’s own range, no larger than /16.' }
+    if (!vpnRanges.value.includes(range.trim())) vpnRanges.value = [...vpnRanges.value, range.trim()]
+    return { ok: true }
+  }
+  function removeRange(range: string): void { vpnRanges.value = vpnRanges.value.filter((r) => r !== range) }
 
   /**
-   * Add a machine. The code carries a one-time join key: on a Headscale server the node makes it itself (validated); with a
-   * Tailscale account the owner makes it in the Tailscale admin console and pastes it (provisional: not validated).
+   * Add a machine: the code carries a one-time join key. Tailscale: the owner makes it in the admin console and pastes it
+   * (provisional). Headscale: pasted from `headscale preauthkeys create`, or made by the node with a stored API key
+   * (provisional). Hosting: the node makes it itself (provisional).
    */
   async function makeConnectionCode(pastedJoinKey = ''): Promise<ConnectionCode> {
-    if (network.value === 'tailscale' && !/^tskey-auth-[A-Za-z0-9-]{12,}$/.test(pastedJoinKey.trim())) throw new Error('That is not a Tailscale join key. In the admin console, make a one-time auth key and paste the whole key, starting with tskey-auth-.')
+    const key = pastedJoinKey.trim()
+    if (network.value === 'tailscale' && !/^tskey-auth-[A-Za-z0-9-]{12,}$/.test(key)) throw new Error('That is not a Tailscale auth key. In the admin console, make a one-time key without tags and paste all of it, starting with tskey-auth-.')
+    if (network.value === 'headscale' && !apiKeyStored.value && !/^(hskey-auth-)?[A-Za-z0-9-]{12,}$/.test(key)) throw new Error('That is not a Headscale join key. On your server, run headscale preauthkeys create and paste the key it prints.')
     await later(600)
     const expiresAt = Date.now() + CODE_LIFETIME_MS
     const payload = JSON.stringify({
-      joinKey: network.value === 'tailscale' ? pastedJoinKey.trim() : `hskey-auth-${randomText(12)}-${randomText(30)}`,
+      joinKey: key || `hskey-auth-${randomText(12)}-${randomText(30)}`,
       owner: `${thisMachine.value.address}:29695`,
       grant: randomText(43),
       expiresAt: new Date(expiresAt).toISOString(),
     })
     const text = `abpn_${b64url(payload)}`
-    code.value = { text, qr: await toQrCodeDataUrl(text), expiresAt, machineCount: machines.value.length }
+    code.value = { text, qr: await toQrCodeDataUrl(text), expiresAt }
     return code.value
+  }
+  /** Hosting: an invite for a machine that already runs AutoByteus (the host's address and a one-time join key). */
+  async function makeInvite(): Promise<{ text: string; qr: string; expiresAt: number }> {
+    await later(600)
+    const text = `https://${hosting.value?.domain ?? 'net.example.com'}/join#hskey-auth-${randomText(12)}-${randomText(24)}`
+    return { text, qr: await toQrCodeDataUrl(text), expiresAt: Date.now() + 24 * 60 * 60_000 }
   }
   function closeConnectionCode(): void { code.value = null }
 
@@ -156,7 +299,7 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   function dismissDiscoveryOffer(): void { offerDiscovery.value = false }
   function setTrust(value: boolean): void { trustOwnMachines.value = value }
 
-  /** A paired node joins the Nodes list: in the simulated network it answers at its private address, both sides hold the pairing. */
+  /** A paired node: in the simulated network it answers at its private address and both sides hold the pairing. */
   async function landInNodes(node: { nodeId: string; name: string; machineId: string }, role: 'own' | 'teammate', account: string): Promise<void> {
     const address = `http://${machineOf(node.machineId)?.address ?? '100.88.99.99'}:29695`
     const world = (window as any).__designNetworkWorld?.()
@@ -175,7 +318,7 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     node.phase = 'pairing'
     await later(PAIR_MS)
     found.value = found.value.filter((n) => n.nodeId !== nodeId)
-    await landInNodes(node, 'own', OWNER)
+    await landInNodes(node, 'own', ownerAccount.value)
   }
   async function connect(nodeId: string): Promise<void> {
     const node = found.value.find((n) => n.nodeId === nodeId)
@@ -211,9 +354,11 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   const peerMark = (nodeId: string | null) => (nodeId ? paired.value.find((p) => p.nodeId === nodeId) ?? null : null)
 
   return {
-    joined, network, serverUrl, signingIn, machines, discoverable, trustOwnMachines, found, requests, paired, offerDiscovery, code,
-    thisMachine, ownerAccount, accountLabel, machineOf, peerMark,
-    reset, signIn, cancelSignIn, joinWithKey, makeConnectionCode, closeConnectionCode,
+    joined, network, serverUrl, signingIn, awaitingApproval, signedOut, serverDown, hosting, apiKeyStored, vpnRanges,
+    machines, discoverable, trustOwnMachines, found, requests, paired, offerDiscovery, code,
+    thisMachine, ownerAccount, accountLabel, machineOf, peerMark, networkLabel, status,
+    reset, touch, signIn, cancelSignIn, joinWithKey, joinWithInvite, hostStep, checkReachable, leave, storeApiKey, addRange, removeRange,
+    makeConnectionCode, makeInvite, closeConnectionCode,
     setDiscoverable, dismissDiscoveryOffer, setTrust, pair, connect, cancelConnect, allow, reject,
   }
 })

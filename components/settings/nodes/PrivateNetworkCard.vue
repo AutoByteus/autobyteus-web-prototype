@@ -1,22 +1,22 @@
 <template>
-  <!-- Not set up on this window's node: one line that says what it is and where to set it up. -->
+  <!-- Not found-ready on this window's node: one line that says why, and where to act. -->
   <section
-    v-if="!ready"
+    v-if="mode !== 'found'"
     class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between"
-    data-testid="private-network-card-setup"
+    :data-testid="`private-network-card-${mode}`"
   >
     <div class="flex min-w-0 items-start gap-3">
-      <span class="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500"><PrivateNetworkIcon /></span>
+      <span class="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg" :class="mode === 'notReady' ? 'bg-amber-50 text-amber-600' : 'bg-slate-100 text-slate-500'"><PrivateNetworkIcon /></span>
       <div class="min-w-0">
         <h3 class="text-sm font-semibold leading-6 text-slate-900">{{ t(k('title')) }}</h3>
-        <p class="text-sm leading-6 text-slate-500">{{ installed ? t(k('setup.notJoined')) : t(k('setup.lead')) }}</p>
+        <p class="max-w-3xl text-sm leading-6" :class="mode === 'notReady' ? 'text-amber-900' : 'text-slate-500'" :lang="mode === 'notReady' ? 'en' : undefined">{{ setupText }}</p>
       </div>
     </div>
     <NuxtLink
       to="/settings?section=extensions"
       class="inline-flex h-9 flex-shrink-0 items-center justify-center self-start rounded-md border border-slate-300 bg-white px-3.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:self-auto"
       data-testid="private-network-setup-link"
-    >{{ installed ? t(k('setup.join')) : t(k('setup.action')) }}</NuxtLink>
+    >{{ setupAction }}</NuxtLink>
   </section>
 
   <section v-else class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" data-testid="private-network-card">
@@ -25,7 +25,8 @@
         <h3 class="flex items-center gap-2 text-base font-semibold text-slate-900">
           {{ t(k('found.title')) }}
         </h3>
-        <p class="mt-1 max-w-3xl text-sm text-slate-500">{{ t(k('found.lead'), { network: networkName, account: network.ownerAccount }) }}</p>
+        <p class="mt-1 max-w-3xl text-sm text-slate-500">{{ t(k('found.lead'), { network: network.networkLabel }) }}</p>
+        <p v-if="network.vpnRanges.length" class="mt-1 max-w-3xl text-sm text-slate-500" data-testid="private-network-vpn-also">{{ t(k('vpn.also'), { ranges: network.vpnRanges.join(', ') }) }}</p>
       </div>
       <button
         type="button"
@@ -176,8 +177,24 @@ const checking = ref(false)
 
 const state = computed(() => extensions.list.find((item) => item.entry.id === 'private-network')?.state ?? null)
 const installed = computed(() => state.value?.kind === 'installed')
-const ready = computed(() => state.value?.kind === 'installed' && state.value.enabled && network.joined)
-const networkName = computed(() => (network.network === 'headscale' ? 'Headscale' : 'Tailscale'))
+/**
+ * What this node's private network allows (private-network-types.md): `found` on a joined Tailscale / Headscale / hosted
+ * network; `vpn` with only your own VPN (no machine list, no caller identity: add by address and pair with codes);
+ * `notReady` while it waits (approval, sign-in again, server unreachable, not joined); `setup` when not installed or off.
+ */
+const mode = computed<'setup' | 'vpn' | 'notReady' | 'found'>(() => {
+  const s = state.value
+  if (!s || s.kind !== 'installed' || !s.enabled) return 'setup'
+  if (network.joined && s.ready) return 'found'
+  if (!network.joined && network.vpnRanges.length && !network.awaitingApproval && !network.signingIn) return 'vpn'
+  return 'notReady'
+})
+const setupText = computed(() => {
+  if (mode.value === 'vpn') return t(k('vpn.only'), { ranges: network.vpnRanges.join(', ') })
+  if (mode.value === 'notReady') return state.value?.kind === 'installed' ? state.value.message : ''
+  return installed.value ? t(k('setup.off')) : t(k('setup.lead'))
+})
+const setupAction = computed(() => (mode.value === 'setup' && !installed.value ? t(k('setup.action')) : t(k('setup.open'))))
 const machine = (node: FoundNode) => network.machineOf(node.machineId)
 const addedBy = (account: string) => (account === network.ownerAccount ? t(k('found.addedByYou')) : t(k('found.addedBy'), { account: network.accountLabel(account) }))
 const who = (account: string) => (network.accountLabel(account) === 'you' ? t(k('found.you')) : network.accountLabel(account))

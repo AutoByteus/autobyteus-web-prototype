@@ -6,7 +6,7 @@
 - Requested by: Solution Designer, Software Engineering Team (run `solution_designer_b2b085ced16d45479c46350d19ae49a2`), for the founder, 2026-11-22
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/autobyteus-516-extensions/tickets/in-progress/autobyteus-516-extensions/product-design-request.md`
 - Mode: Product Experience Design (changes existing surfaces: Settings → Extensions, the Voice Input card, the voice surfaces, Nodes)
-- Status: `Awaiting User Review` (round 1, 2026-11-22)
+- Status: `In Progress` (round 3: a Private Network design for each supported network type, 2026-11-24)
 
 ### Decision questions
 
@@ -48,3 +48,5 @@ Invented by hand for this ticket: the catalog entries (descriptions from `extens
 - 2026-11-24 the founder asked the Product Team to work the design through with the Solution Designer until it reflects the real workflow. Workflow-fidelity review requested (questions A1–A9, B1–B12, sent to run `solution_designer_b2b085ced16d45479c46350d19ae49a2`); status stays `Awaiting User Review` until the Solution Designer's answers are applied and the round goes back to the founder. Review share: `https://normys-macbook-pro.tail0347f8.ts.net:8445/` (Tailscale Serve, port 8445 only; local edits to `nuxt.config.ts` for the share are temporary and not committed).
 - 2026-11-24 the Solution Designer's workflow-fidelity answers applied (round 2, DC-018…DC-028); interim review captures in `review-captures/round-2/` (not normative). Changed screens sent to the Solution Designer for confirmation; the round goes to the founder after it.
 - 2026-11-24 the Solution Designer confirmed round 2 follows the validated workflow (A1, A2, A5, A6, A8, B1, B4, B5, B6, B8, B9, B10, B12; B2, B3, B7 OK). Note for `ui-ux-spec.md`: keep today's Remote collaboration text ("Two nodes pair once: they share a secret…") and mark it as text the Private Network stage's design will update (pairing-contract §1 node keys). Round 2 sent to the founder; `Awaiting User Review`.
+- 2026-11-24 the founder asked for the Private Network design to cover every network type the extension supports; asked the Solution Designer for a workflow per type (Tailscale, Headscale, hosting a private network, NetBird, bring-your-own VPN / WireGuard, hosted network out of scope), with setup, join, what the network tells AutoByteus, Add a machine, type-specific UI, validation state, switching. Status: `In Progress` (waiting for the per-type workflows); round 2 stays live for review.
+- 2026-11-24 round 3 built from private-network-types.md (DC-029…DC-036; captures review-captures/round-3/, interim); sent to the Solution Designer for its workflow check before the founder.

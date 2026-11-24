@@ -12,7 +12,8 @@ import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
  *
  * Starting state (no visible control): `localStorage['autobyteus.prototype.extensions']` =
  *   (none) Voice Input installed and on · `fresh` nothing installed · `voice_failed` · `voice_update` (1.1.0 offered) ·
- *   `voice_not_available` (this computer is linux-arm64) · `network_joined` / `network_trust` (Private Network on and joined).
+ *   `voice_not_available` (this computer is linux-arm64) · `network_*` (Private Network installed and on; the network's state
+ *   is chosen in stores/privateNetworkStore.ts: joined on Tailscale, Headscale, hosting, approval, signed out, own VPN …).
  * The older `autobyteus.prototype.scenario` values `extension_error` and `extension_missing` still choose a failed / not installed Voice Input.
  */
 
@@ -43,7 +44,7 @@ const CATALOG: CatalogEntry[] = [
   },
   {
     id: 'private-network', name: 'Private Network', version: '0.1.0', contractVersion: 1, offeredOn: 'every-node',
-    description: 'Connect your AutoByteus nodes through your own private network: a Tailscale account or your own Headscale server. Nothing is opened to the internet. Needs no administrator approval; downloads about 30 MB on install.',
+    description: 'Connect your AutoByteus nodes through a private network: your Tailscale account, your own Headscale server, a network this machine hosts, or your own VPN. AutoByteus is never opened to the internet. Needs no administrator approval; downloads about 30 MB on install.',
     platforms: ['darwin-arm64', 'darwin-x64', 'linux-x64', 'linux-arm64', 'win32-x64'],
   },
 ];
@@ -67,8 +68,8 @@ function seedEmbedded(): NodeRecord {
   if (seed === 'voice_failed' || legacy === 'extension_error') voice = { kind: 'failed', message: 'The speech model download stopped before it finished: its checksum did not match. Nothing was changed; install again to retry.' };
   if (seed === 'voice_update') voice = { kind: 'installed', version: '1.0.0', enabled: true, ready: true, updateAvailable: true, message: 'Ready.' };
   const platform = seed === 'voice_not_available' ? 'linux-arm64' : 'darwin-arm64';
-  const network: ExtensionState = seed === 'network_joined' || seed === 'network_trust'
-    ? { kind: 'installed', version: '0.1.0', enabled: true, ready: true, updateAvailable: false, message: 'Connected to your private network as home-mac.' }
+  const network: ExtensionState = seed.startsWith('network_')
+    ? { kind: 'installed', version: '0.1.0', enabled: true, ready: true, updateAvailable: false, message: 'Ready.' }
     : { kind: 'notInstalled' };
   return {
     platform,
@@ -144,7 +145,14 @@ export const useExtensionsStore = defineStore('extensions', {
       const record = this.windowRecord;
       return CATALOG
         .filter((entry) => entry.offeredOn === 'every-node' || this.windowKey === 'embedded')
-        .map((entry) => ({ entry, state: entry.platforms.includes(record.platform) ? record.states[entry.id] : { kind: 'notAvailableHere' } as ExtensionState }));
+        .map((entry) => {
+          const stored = entry.platforms.includes(record.platform) ? record.states[entry.id] : { kind: 'notAvailableHere' } as ExtensionState;
+          // Private Network's card says what its status() says now (joined, waiting for approval, signed out, server down, own VPN…).
+          if (entry.id === 'private-network' && stored.kind === 'installed' && stored.enabled && !/^Starting/.test(stored.message)) {
+            return { entry, state: { ...stored, ...usePrivateNetworkStore().status } };
+          }
+          return { entry, state: stored };
+        });
     },
     platform(): string { return this.windowRecord.platform; },
     /**
@@ -225,10 +233,8 @@ export const useExtensionsStore = defineStore('extensions', {
       if (id === 'voice-input') {
         this.set(id, { ...now, ready: true, message: 'Ready.' }, key);
       } else {
-        this.set(id, network.joined
-          ? { ...now, ready: true, message: `Connected to your private network as ${network.thisMachine.name}.` }
-          : { ...now, ready: false, message: 'Not connected to a private network yet. Choose one below.' }, key);
-        if (!network.joined) this.openPages[`${key}:${id}`] = true;
+        this.set(id, { ...now, ...network.status }, key);
+        if (!network.status.ready) this.openPages[`${key}:${id}`] = true;
       }
     },
     async turnOff(id: ExtensionId): Promise<void> {
@@ -249,18 +255,6 @@ export const useExtensionsStore = defineStore('extensions', {
       if (id === 'voice-input') this.recordOf(key).voiceLanguage = 'auto';
       if (id === 'private-network') usePrivateNetworkStore().reset();
     },
-    /** The node joined: the Private Network extension's status turns ready. */
-    networkJoined(): void {
-      const name = usePrivateNetworkStore().thisMachine.name;
-      for (const key of Object.keys(this.nodes)) {
-        const state = this.nodes[key]!.states['private-network'];
-        if (state.kind === 'installed' && state.enabled) {
-          this.nodes[key]!.states['private-network'] = { ...state, ready: true, message: `Connected to your private network as ${name}.` };
-          this.nodes[key]!.logs['private-network'].push(`${clock()}  join: joined the private network as ${name}`);
-        }
-      }
-    },
-
     /**
      * The page bridge (extension-contract.md §5): a call from an extension's own page, answered by its own server part's
      * action. The page's height message `{ resize: { height } }` (contract §5) is handled by the frame itself.
@@ -286,23 +280,37 @@ export const useExtensionsStore = defineStore('extensions', {
         const network = usePrivateNetworkStore();
         const view = () => ({
           joined: network.joined, signingIn: network.signingIn, network: network.network, serverUrl: network.serverUrl,
+          awaitingApproval: network.awaitingApproval, signedOut: network.signedOut, serverDown: network.serverDown,
+          hosting: network.hosting ? { ...network.hosting } : null, apiKeyStored: network.apiKeyStored, vpnRanges: [...network.vpnRanges],
           account: network.ownerAccount,
           thisMachine: { ...network.thisMachine },
           machines: network.machines.map((m) => ({ ...m, accountLabel: network.accountLabel(m.account) })),
         });
-        if (call === 'getState') return view();
-        if (call === 'signIn') { await network.signIn(); if (network.joined) this.networkJoined(); return view(); }
-        if (call === 'cancelSignIn') { network.cancelSignIn(); return view(); }
-        if (call === 'joinWithKey') {
-          const result = await network.joinWithKey(input?.network === 'headscale' ? 'headscale' : 'tailscale', String(input?.key ?? ''), String(input?.serverUrl ?? ''));
-          if (!result.ok) throw new Error(result.error);
-          this.networkJoined();
-          return view();
-        }
-        if (call === 'addMachine') {
-          const code = await network.makeConnectionCode(String(input?.joinKey ?? ''));
-          this.log(id, 'invite: a connection code was made (one use, 10 minutes; the code itself is never logged)', key);
-          return { text: code.text, qr: code.qr, expiresAt: code.expiresAt };
+        const logged = (line: string) => this.log(id, line, key);
+        const fail = (result: { ok: boolean; error?: string }) => { if (!result.ok) throw new Error(result.error); };
+        switch (call) {
+          case 'getState': network.touch(); return view();
+          case 'signIn': await network.signIn(); if (network.joined) logged(`join: signed in as ${network.thisMachine.name}`); return view();
+          case 'cancelSignIn': network.cancelSignIn(); return view();
+          case 'joinWithKey': {
+            const kind = input?.network === 'headscale' ? 'headscale' : 'tailscale';
+            fail(await network.joinWithKey(kind, String(input?.key ?? ''), String(input?.serverUrl ?? '')));
+            logged(`join: joined the private network as ${network.thisMachine.name} (${kind})`);
+            return view();
+          }
+          case 'joinWithInvite': fail(await network.joinWithInvite(String(input?.link ?? ''))); logged('join: joined with an invite'); return view();
+          case 'hostStep': fail(await network.hostStep(input?.step, String(input?.domain ?? ''), Number(input?.port) || 443)); return view();
+          case 'checkReachable': await network.checkReachable(); return view();
+          case 'leave': await network.leave(); logged('leave: this machine left the private network'); return view();
+          case 'storeApiKey': fail(await network.storeApiKey(String(input?.key ?? ''))); logged('settings: a Headscale API key was stored in this node’s vault (never shown again)'); return view();
+          case 'addRange': fail(network.addRange(String(input?.range ?? ''))); logged(`settings: accepting your own VPN ${String(input?.range ?? '').trim()}`); return view();
+          case 'removeRange': network.removeRange(String(input?.range ?? '')); return view();
+          case 'addMachine': {
+            const code = await network.makeConnectionCode(String(input?.joinKey ?? ''));
+            logged('invite: a connection code was made (one use, 10 minutes; the code itself is never logged)');
+            return { text: code.text, qr: code.qr, expiresAt: code.expiresAt };
+          }
+          case 'makeInvite': { const invite = await network.makeInvite(); logged('invite: an invite link was made (one use, 24 hours)'); return invite; }
         }
       }
       throw new Error(`${call} is not an action of ${id}.`);

@@ -95,7 +95,7 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.privateNetwork.on': '开',
   'nodes.privateNetwork.off': '关',
   'nodes.privateNetwork.found.title': '在你的私有网络中找到',
-  'nodes.privateNetwork.found.lead': '你的私有网络（{{network}} · {{account}}）中可见的 AutoByteus 节点。找到不代表信任：每次配对都由你决定。',
+  'nodes.privateNetwork.found.lead': '你的私有网络（{{network}}）中可见的 AutoByteus 节点。找到不代表信任：每次配对都由你决定。',
   'nodes.privateNetwork.found.checkAgain': '重新查找',
   'nodes.privateNetwork.findable.label': '让我的私有网络找到此节点',
   'nodes.privateNetwork.findable.help': '私有网络中的其他 AutoByteus 节点会看到此节点的名称，并可以请求配对。私有网络之外的任何人都看不到它。',
@@ -159,6 +159,10 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.privateNetwork.found.declined': '{{account}} 已拒绝',
   'nodes.privateNetwork.found.ownerDeclined': '其所有者已拒绝',
   'nodes.privateNetwork.found.connectAgain': '重新连接',
+  'nodes.privateNetwork.vpn.also': '也接受你自己的 VPN（{{ranges}}）。其中的节点无法被找到：请在下方按地址添加，并用配对码配对。',
+  'nodes.privateNetwork.vpn.only': '你自己的 VPN（{{ranges}}）无法找到节点，也无法识别调用者。请在下方按地址添加节点，并用配对码配对。',
+  'nodes.privateNetwork.setup.off': '已安装私有网络，但在此节点上已关闭。',
+  'nodes.privateNetwork.setup.open': '打开私有网络',
 };
 
 export default extensionsDesignMessages;

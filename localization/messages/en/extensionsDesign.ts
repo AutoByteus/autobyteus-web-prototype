@@ -95,7 +95,7 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.privateNetwork.on': 'On',
   'nodes.privateNetwork.off': 'Off',
   'nodes.privateNetwork.found.title': 'Found on your private network',
-  'nodes.privateNetwork.found.lead': 'AutoByteus nodes your private network can see ({{network}} · {{account}}). Finding a node trusts nothing: you decide every pairing.',
+  'nodes.privateNetwork.found.lead': 'AutoByteus nodes your private network can see ({{network}}). Finding a node trusts nothing: you decide every pairing.',
   'nodes.privateNetwork.found.checkAgain': 'Look again',
   'nodes.privateNetwork.findable.label': 'Let my private network find this node',
   'nodes.privateNetwork.findable.help': 'Other AutoByteus nodes on your private network see this node’s name and can ask to pair with it. Nothing outside your private network sees it.',
@@ -159,6 +159,10 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.privateNetwork.found.declined': '{{account}} declined',
   'nodes.privateNetwork.found.ownerDeclined': 'Its owner declined',
   'nodes.privateNetwork.found.connectAgain': 'Connect again',
+  'nodes.privateNetwork.vpn.also': 'Your own VPN ({{ranges}}) is also accepted. Nodes on it cannot be found: add them by address below and pair them with codes.',
+  'nodes.privateNetwork.vpn.only': 'Your own VPN ({{ranges}}) cannot find nodes or tell who is calling. Add nodes by address below and pair them with codes.',
+  'nodes.privateNetwork.setup.off': 'Private Network is installed but turned off on this node.',
+  'nodes.privateNetwork.setup.open': 'Open Private Network',
 };
 
 export default extensionsDesignMessages;
