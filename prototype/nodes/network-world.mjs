@@ -19,6 +19,8 @@ export const NODE_IDS = {
   // extensions-nodes-baseline-refresh-516: a node registered before nodes paired (autobyteus-437), and a node on another computer
   // that a desktop window can be opened on (Phone Setup's "remote" wording).
   LAB: id('l4bN0d3PreP4ir3dQ1'), OFFICE: id('0ff1c3MacRem0teW7'),
+  // extensions-ui-516 (design): a node this desktop owns, on the LAN and on the private network, not yet paired with this node.
+  LINUX: 'srv_l1nuxB0xPrivPn7Wq8Mv5Tn2Bc7Hy4Lp9Gs6',
 }
 const N = NODE_IDS
 const LAN_THIS = 'http://192.168.2.10:29695'
@@ -72,6 +74,7 @@ const LISTENERS = {
   'localhost:29695': N.E, '127.0.0.1:29695': N.E, '192.168.2.10:29695': N.E,
   'localhost:8001': N.D1, 'localhost:8003': N.D3, 'localhost:8004': N.D4, 'localhost:8005': N.D5,
   '192.168.2.40:29695': N.LAP, '192.168.2.31:29695': N.STU, '192.168.2.55:29695': N.NAS, '192.168.2.45:29695': N.LAB,
+  '192.168.2.50:29695': N.LINUX, '100.88.30.30:29695': N.LINUX,
   '192.168.2.77:29695': { cause: 'refused' }, '192.168.2.90:29695': { other: N.SPARE_OTHER }, '192.168.2.99:29695': { cause: 'timeout' },
 }
 
@@ -118,6 +121,11 @@ export const buildNodes = (scenario) => {
   for (const [nodeId, entry] of Object.entries(nodes)) entry.server = serverOf(scenario, nodeId)
   // nodes_empty_offer: the docker node shares no Agents or Agent Teams (the empty offer).
   if (scenario === 'nodes_empty_offer') nodes[N.D1].offers = []
+  // extensions-ui-516 (design): linux-box, owned by this desktop, in the user's list, not paired with the embedded node yet.
+  if (scenario === 'nodes_user' && !nodes[N.LINUX]) {
+    nodes[N.LINUX] = node({ id: N.LINUX, selfName: 'linux-box', lan: true, switchOn: true, delayMs: 700, candidates: ['http://192.168.2.50:29695'], offers: EIGHT_THREE_OFFER.slice(0, 2), peers: [] })
+    nodes[N.LINUX].server = serverOf(scenario, N.LINUX)
+  }
   return nodes
 }
 const buildNodeList = (scenario, states) => {

@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { toQrCodeDataUrl } from '~/services/qr/qrCodeDataUrlService'
-import { useNodeStore } from '~/stores/nodeStore'
-import { useNodeAccessStore } from '~/stores/nodeAccessStore'
 import { useNodeListStore } from '~/stores/nodeListStore'
 
 /**
@@ -57,16 +55,18 @@ const MACHINES: NetworkMachine[] = [
 ]
 const nodeIdOf = (tail: string) => `srv_${(tail + 'Pn7Wq8Mv5Tn2Bc7Hy4Lp9Gs6Jd1Fa0XeKu').slice(0, 36)}`
 const FOUND: FoundNode[] = [
-  { nodeId: nodeIdOf('l1nuxB0xPriv'), name: 'linux-box', machineId: 'm-linux', kind: 'own', phase: 'idle' },
+  // Owned by this desktop and already in its Nodes list (pairing-contract §7: Pair adds the peer relation, not a list entry).
+  { nodeId: 'srv_l1nuxB0xPrivPn7Wq8Mv5Tn2Bc7Hy4Lp9Gs6', name: 'linux-box', machineId: 'm-linux', kind: 'own', phase: 'idle' },
   { nodeId: nodeIdOf('b0bL4pt0pPriv'), name: 'bob-laptop', machineId: 'm-bob', kind: 'teammate', phase: 'idle' },
   { nodeId: nodeIdOf('r4spb3rryPriv'), name: 'raspberrypi', machineId: 'm-pi', kind: 'unknown', phase: 'idle' },
 ]
 const REQUESTS: IncomingRequest[] = [
   { nodeId: nodeIdOf('c4r0lS3rvPriv'), name: 'carol-server', machineId: 'm-carol', account: 'carol@example.com', phase: 'idle' },
 ]
-/** Restart and revocation took 11–13 s in the probe; pairing here takes a visible but shorter, scripted time. */
-const PAIR_MS = 4500
+/** Pairing took well under a second on one Mac and join + pair 3.0 s (pairing-probe); a few scripted seconds here. */
+const PAIR_MS = 2000
 const TEAMMATE_ALLOWS_MS = 7000
+const OWNER_DECLINES_MS = 6000
 const CODE_LIFETIME_MS = 10 * 60_000
 
 const later = (ms: number) => new Promise<void>((done) => setTimeout(done, ms))
@@ -131,18 +131,17 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     completeJoin(kind)
     return { ok: true }
   }
-  async function useConnectionCode(text: string): Promise<{ ok: boolean; error?: string }> {
-    await later(1800)
-    if (!text.trim().startsWith('abpn_') || text.trim().length < 120) return { ok: false, error: 'This is not a connection code. Copy the whole code from “Add a machine” on the other node.' }
-    if (text.includes('EXPIRED')) return { ok: false, error: 'This code expired. Make a new one on the other node.' }
-    completeJoin('tailscale')
-    return { ok: true }
-  }
 
-  async function makeConnectionCode(): Promise<ConnectionCode> {
+  /**
+   * Add a machine. The code carries a one-time join key: on a Headscale server the node makes it itself (validated); with a
+   * Tailscale account the owner makes it in the Tailscale admin console and pastes it (provisional: not validated).
+   */
+  async function makeConnectionCode(pastedJoinKey = ''): Promise<ConnectionCode> {
+    if (network.value === 'tailscale' && !/^tskey-auth-[A-Za-z0-9-]{12,}$/.test(pastedJoinKey.trim())) throw new Error('That is not a Tailscale join key. In the admin console, make a one-time auth key and paste the whole key, starting with tskey-auth-.')
+    await later(600)
     const expiresAt = Date.now() + CODE_LIFETIME_MS
     const payload = JSON.stringify({
-      joinKey: `tskey-auth-${randomText(12)}-${randomText(30)}`,
+      joinKey: network.value === 'tailscale' ? pastedJoinKey.trim() : `hskey-auth-${randomText(12)}-${randomText(30)}`,
       owner: `${thisMachine.value.address}:29695`,
       grant: randomText(43),
       expiresAt: new Date(expiresAt).toISOString(),
@@ -163,14 +162,7 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     const world = (window as any).__designNetworkWorld?.()
     world?.addPrivateNode({ nodeId: node.nodeId, name: node.name, address })
     paired.value = [...paired.value, { nodeId: node.nodeId, name: node.name, account, role }]
-    const nodeStore = useNodeStore()
-    if (role === 'own') {
-      // Your own node: this desktop keeps its owner access, so its window opens from the list.
-      try {
-        const entry = await nodeStore.addRemoteNode({ name: node.name, baseUrl: address, nodeId: node.nodeId })
-        await useNodeAccessStore().connect(entry.id, 'private-network-grant')
-      } catch { /* already listed */ }
-    }
+    // Your own node is already in the list (its owner credential lives there): pairing adds the peer relation only.
     const list = useNodeListStore()
     await list.open()
     list.flashKey = node.nodeId
@@ -189,7 +181,13 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     const node = found.value.find((n) => n.nodeId === nodeId)
     if (!node) return
     node.phase = 'waiting'
-    if (node.kind !== 'teammate') return // an unknown machine's owner never answers in this script
+    if (node.kind !== 'teammate') {
+      // Scripted: the unknown machine's owner declines (pair-rejected, pairing-contract §4).
+      await later(OWNER_DECLINES_MS)
+      const waiting = found.value.find((n) => n.nodeId === nodeId)
+      if (waiting && waiting.phase === 'waiting') waiting.phase = 'refused'
+      return
+    }
     await later(TEAMMATE_ALLOWS_MS)
     const still = found.value.find((n) => n.nodeId === nodeId)
     if (!still || still.phase !== 'waiting') return
@@ -215,7 +213,7 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   return {
     joined, network, serverUrl, signingIn, machines, discoverable, trustOwnMachines, found, requests, paired, offerDiscovery, code,
     thisMachine, ownerAccount, accountLabel, machineOf, peerMark,
-    reset, signIn, cancelSignIn, joinWithKey, useConnectionCode, makeConnectionCode, closeConnectionCode,
+    reset, signIn, cancelSignIn, joinWithKey, makeConnectionCode, closeConnectionCode,
     setDiscoverable, dismissDiscoveryOffer, setTrust, pair, connect, cancelConnect, allow, reject,
   }
 })

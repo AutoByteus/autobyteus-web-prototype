@@ -38,7 +38,7 @@ export interface NodeExtension { entry: CatalogEntry; state: ExtensionState }
 const CATALOG: CatalogEntry[] = [
   {
     id: 'voice-input', name: 'Voice Input', version: '1.0.0', contractVersion: 1, offeredOn: 'desktop-node',
-    description: 'Dictate instead of typing. Speech becomes text on this computer. Uses the microphone; downloads about 500 MB on install.',
+    description: 'Dictate instead of typing. Speech becomes text on this computer. Uses the microphone; downloads about 1.2 GB on install.',
     platforms: ['darwin-arm64', 'darwin-x64', 'linux-x64', 'win32-x64'],
   },
   {
@@ -191,7 +191,7 @@ export const useExtensionsStore = defineStore('extensions', {
       const steps: Array<[string, number | null, number]> = id === 'voice-input'
         ? [
           [`Downloading ${entry.name} ${version}`, null, 800],
-          ...(isUpdate ? [] : [0, 12, 27, 41, 55, 68, 80, 91, 100].map((p) => [`Downloading the voice runtime and speech model · ${Math.round(520 * p / 100)} of 520 MB`, p, 480] as [string, number, number])),
+          ...(isUpdate ? [] : [0, 12, 27, 41, 55, 68, 80, 91, 100].map((p) => [`Downloading the voice runtime and speech model · ${(1.2 * p / 100).toFixed(1)} of 1.2 GB`, p, 480] as [string, number, number])),
           [isUpdate ? 'Keeping your voice runtime, speech model and language' : 'Unpacking the voice runtime', null, 1200],
           ['Checking that the voice runtime starts', null, 1200],
         ]
@@ -263,7 +263,7 @@ export const useExtensionsStore = defineStore('extensions', {
 
     /**
      * The page bridge (extension-contract.md §5): a call from an extension's own page, answered by its own server part's
-     * action. `resize` is handled by the frame itself (a design addition; see the UI/UX spec's findings).
+     * action. The page's height message `{ resize: { height } }` (contract §5) is handled by the frame itself.
      */
     async callAction(id: ExtensionId, call: string, input: any): Promise<unknown> {
       const key = this.windowKey;
@@ -271,12 +271,8 @@ export const useExtensionsStore = defineStore('extensions', {
       const state = record.states[id];
       if (id === 'voice-input') {
         if (call === 'getSettings') {
-          return {
-            language: record.voiceLanguage,
-            installed: state.kind === 'installed'
-              ? { extension: state.version, runtime: '0.3.0', model: 'whisper-small, English and Chinese', engine: 'faster-whisper', size: '520 MB', folder: '~/.autobyteus/extensions/voice-input/data' }
-              : null,
-          };
+          // Voice Input's real action (Solution Designer, 2026-11-24): { language, runtimeVersion, model, folder }.
+          return { language: record.voiceLanguage, runtimeVersion: '0.3.0', model: 'whisper-small (English and Chinese)', folder: '~/.autobyteus/extensions/voice-input/data' };
         }
         if (call === 'setLanguage') {
           await later(300);
@@ -303,14 +299,8 @@ export const useExtensionsStore = defineStore('extensions', {
           this.networkJoined();
           return view();
         }
-        if (call === 'useConnectionCode') {
-          const result = await network.useConnectionCode(String(input?.code ?? ''));
-          if (!result.ok) throw new Error(result.error);
-          this.networkJoined();
-          return view();
-        }
         if (call === 'addMachine') {
-          const code = await network.makeConnectionCode();
+          const code = await network.makeConnectionCode(String(input?.joinKey ?? ''));
           this.log(id, 'invite: a connection code was made (one use, 10 minutes; the code itself is never logged)', key);
           return { text: code.text, qr: code.qr, expiresAt: code.expiresAt };
         }

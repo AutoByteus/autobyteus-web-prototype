@@ -103,6 +103,10 @@
             <template v-if="node.phase === 'pairing'">
               <span class="inline-flex items-center gap-2 text-sm text-slate-600" role="status"><span class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600 motion-reduce:animate-none" aria-hidden="true" />{{ t(k('found.pairing')) }}</span>
             </template>
+            <template v-else-if="node.phase === 'refused'">
+              <span class="text-sm text-slate-600" role="status" :data-testid="`private-network-declined-${node.name}`">{{ machine(node)?.account === network.ownerAccount ? t(k('found.ownerDeclined')) : t(k('found.declined'), { account: who(machine(node)?.account ?? '') }) }}</span>
+              <button type="button" class="h-8 rounded-md border border-slate-300 bg-white px-3.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="network.connect(node.nodeId)">{{ t(k('found.connectAgain')) }}</button>
+            </template>
             <template v-else-if="node.phase === 'waiting'">
               <span class="text-sm text-slate-600" role="status">{{ t(k('found.waiting'), { account: machine(node)?.account === network.ownerAccount ? t(k('found.itsOwner')) : who(machine(node)?.account ?? '') }) }}</span>
               <button type="button" class="rounded px-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-testid="`private-network-cancel-${node.name}`" @click="network.cancelConnect(node.nodeId)">{{ t(k('found.cancel')) }}</button>
@@ -193,17 +197,16 @@ async function toggleTrust(): Promise<void> {
   await nextTick()
   trustCancel.value?.focus()
 }
+/**
+ * "Trust machines I added" acts on this node as the receiving side (pairing-contract §4 row 2): machines of the owner's
+ * account that ask to pair are paired without asking. Nodes found here still need Pair from this side.
+ */
 function trustOn(): void {
   confirmTrust.value = false
   network.setTrust(true)
-  // Your own nodes pair without a click now (pairing-contract.md §4: no grant, switch on, the owner's account).
-  for (const node of network.found.filter((n) => n.kind === 'own' && n.phase === 'idle')) void network.pair(node.nodeId)
 }
 
-onMounted(() => {
-  void extensions.initialize()
-  if (network.trustOwnMachines) for (const node of network.found.filter((n) => n.kind === 'own' && n.phase === 'idle')) void network.pair(node.nodeId)
-})
+onMounted(() => { void extensions.initialize() })
 
 const PrivateNetworkIcon = defineComponent({
   render: () => h('svg', { class: 'h-5 w-5', viewBox: '0 0 20 20', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.6', 'aria-hidden': 'true' }, [

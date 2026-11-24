@@ -57,8 +57,8 @@ addEventListener('message', (event) => {
   const m = event.data || {}; const p = pending[m.id]; if (!p) return; delete pending[m.id];
   m.ok ? p.resolve(m.output) : p.reject(new Error(m.error || 'The extension did not answer.'));
 });
-// Design addition (not in contract v1): the page tells its frame how tall it is.
-const tellHeight = () => parent.postMessage({ id: 'size', call: 'resize', input: { height: Math.ceil(document.documentElement.getBoundingClientRect().height) } }, '*');
+// The page tells its frame how tall it is (contract §5): no id, no reply.
+const tellHeight = () => parent.postMessage({ resize: { height: Math.ceil(document.documentElement.getBoundingClientRect().height) } }, '*');
 new ResizeObserver(tellHeight).observe(document.documentElement);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 `
@@ -97,9 +97,8 @@ export const VOICE_INPUT_PAGE = page(`
 const lang = document.getElementById('lang'); const saved = document.getElementById('saved'); const facts = document.getElementById('facts');
 call('getSettings').then((s) => {
   lang.value = s.language; lang.disabled = false;
-  const i = s.installed;
-  facts.innerHTML = i ? [['Voice runtime', i.runtime], ['Speech model', i.model], ['Engine', i.engine], ['Space used', i.size + ' · ' + i.folder]]
-    .map(([k, v]) => '<dt>' + esc(k) + '</dt><dd>' + esc(v) + '</dd>').join('') : '<dt>Not installed</dt><dd></dd>';
+  facts.innerHTML = [['Voice runtime', s.runtimeVersion], ['Speech model', s.model], ['Folder', s.folder]]
+    .map(([k, v]) => '<dt>' + esc(k) + '</dt><dd>' + esc(v) + '</dd>').join('');
 });
 lang.addEventListener('change', async () => {
   lang.disabled = true; saved.className = 'hint'; saved.textContent = 'Saving…';
@@ -138,7 +137,7 @@ tr:last-child td{border-bottom:0}
 @media (max-width:560px){.code-top{flex-direction:column}.col-addr,.col-account{display:none}}
 `, `<div id="root" class="stack"><p class="muted"><span class="spin"></span> Loading…</p></div>`, `
 const root = document.getElementById('root');
-let state = null; let kind = 'tailscale'; let keyOpen = false; let error = ''; let codeError = ''; let code = null; let timer = null; let busy = '';
+let state = null; let kind = 'tailscale'; let keyOpen = false; let error = ''; let code = null; let timer = null; let busy = ''; let addOpen = false; let addError = '';
 const NAMES = { tailscale: 'Tailscale', headscale: 'Headscale' };
 
 function render() {
@@ -169,12 +168,7 @@ function renderJoin() {
       : '<div class="field"><label class="label" for="url">Server address</label><input id="url" class="wide" autocomplete="off" spellcheck="false" placeholder="https://headscale.example.com"></div>'
         + '<div class="field"><label class="label" for="key">Join key</label><div class="row"><input id="key" class="wide mono" autocomplete="off" spellcheck="false" placeholder="hskey-auth-…"><button class="primary" id="join"' + dis('join') + '>' + (busy === 'join' ? '<span class="spin"></span> Joining…' : 'Join') + '</button></div>'
         + '<p class="hint">On your server, run “headscale preauthkeys create --user &lt;you&gt;” and paste the key here.</p></div>')
-    + (error ? '<p class="error" role="alert">' + esc(error) + '</p>' : '')
-    + '<hr class="divider">'
-    + '<div class="field"><h3>Or use a connection code</h3><p class="hint">Made on a node you already use, in its Private Network card under Add a machine. It joins this node to that private network and pairs the two nodes.</p>'
-    + '<textarea id="code" class="mono" rows="3" spellcheck="false" placeholder="abpn_…" aria-label="Connection code"></textarea>'
-    + '<div class="row"><button class="secondary" id="usecode"' + dis('code') + '>' + (busy === 'code' ? '<span class="spin"></span> Joining and pairing…' : 'Join and pair') + '</button></div>'
-    + (codeError ? '<p class="error" role="alert">' + esc(codeError) + '</p>' : '') + '</div>';
+    + (error ? '<p class="error" role="alert">' + esc(error) + '</p>' : '');
   root.querySelectorAll('input[name=kind]').forEach((r) => r.addEventListener('change', () => { kind = r.value; error = ''; render(); }));
   on('signin', () => act('signIn'));
   on('usekey', () => { keyOpen = true; error = ''; render(); document.getElementById('key').focus(); });
@@ -184,12 +178,6 @@ function renderJoin() {
     busy = 'join'; error = ''; render(); keep('key', key); keep('url', url);
     try { state = await call('joinWithKey', { network: kind, key, serverUrl: url }); } catch (e) { error = e.message; }
     busy = ''; render(); if (error) { keep('key', key); keep('url', url); }
-  });
-  on('usecode', async () => {
-    const text = document.getElementById('code').value;
-    busy = 'code'; codeError = ''; render(); keep('code', text);
-    try { state = await call('useConnectionCode', { code: text }); } catch (e) { codeError = e.message; }
-    busy = ''; render(); if (codeError) keep('code', text);
   });
 }
 
@@ -205,19 +193,38 @@ function renderJoined() {
     + '<table><thead><tr><th>Name</th><th class="col-addr">Private address</th><th class="col-account">Added by</th><th>State</th></tr></thead><tbody>' + rows + '</tbody></table>'
     + '<p class="hint" style="margin-top:8px">Every machine on your private network, AutoByteus or not. Your AutoByteus nodes among them are in Nodes, under Found on your private network.</p></div>'
     + '<hr class="divider">'
-    + (code ? codeBlock() : '<div class="field"><h3>Add a machine</h3><p class="hint">Make a one-time code for a new machine. Pasted there, it joins your private network and pairs that node with this one, without addresses or a command line.</p>'
+    + (code ? codeBlock() : addOpen ? keyStep() : '<div class="field"><h3>Add a machine</h3><p class="hint">Make a one-time code for a new machine. Pasted on its first-run page, it joins your private network and pairs that node with this one, without addresses or a command line.</p>'
       + '<div style="margin-top:6px"><button class="primary" id="add"' + dis('add') + '>' + (busy === 'add' ? '<span class="spin"></span> Making a code…' : 'Add a machine') + '</button></div></div>');
-  on('add', async () => { busy = 'add'; render(); try { code = await call('addMachine'); startTimer(); } finally { busy = ''; render(); } });
+  // With a Tailscale account the code needs a one-time join key the owner makes in the admin console; a Headscale server makes its own.
+  on('add', async () => { if (state.network === 'tailscale') { addOpen = true; addError = ''; render(); document.getElementById('addkey').focus(); return; } await makeCode(''); });
+  on('makecode', async () => { const key = document.getElementById('addkey').value; await makeCode(key); if (addError) keep('addkey', key); });
+  on('addcancel', () => { addOpen = false; addError = ''; render(); });
   on('copy', async () => { const b = document.getElementById('copy'); try { await navigator.clipboard.writeText(code.text); b.textContent = 'Copied'; } catch { document.getElementById('codetext').select(); b.textContent = 'Press ⌘C to copy'; } setTimeout(() => { if (document.getElementById('copy')) document.getElementById('copy').textContent = 'Copy code'; }, 2000); });
   on('done', () => { code = null; stopTimer(); render(); });
-  on('again', async () => { busy = 'add'; render(); try { code = await call('addMachine'); startTimer(); } finally { busy = ''; render(); } });
+  on('again', async () => { if (state.network === 'tailscale') { code = null; stopTimer(); addOpen = true; render(); return; } await makeCode(''); });
+}
+
+async function makeCode(joinKey) {
+  busy = 'add'; addError = ''; render();
+  try { code = await call('addMachine', { joinKey }); addOpen = false; startTimer(); } catch (e) { addError = e.message; }
+  busy = ''; render();
+}
+
+function keyStep() {
+  return '<div class="field"><h3>Add a machine</h3>'
+    + '<p class="hint" style="font-size:13px;line-height:18px;color:#4b5563">Create a one-time join key in your Tailscale admin console (Settings → Keys → Generate auth key, not reusable) and paste it here. AutoByteus puts it into the connection code.</p>'
+    + '<label class="label" for="addkey" style="margin-top:6px">Join key</label>'
+    + '<div class="row"><input id="addkey" class="wide mono" autocomplete="off" spellcheck="false" placeholder="tskey-auth-…">'
+    + '<button class="primary" id="makecode"' + dis('add') + '>' + (busy === 'add' ? '<span class="spin"></span> Making a code…' : 'Make the code') + '</button>'
+    + '<button class="link" id="addcancel">Cancel</button></div>'
+    + (addError ? '<p class="error" role="alert">' + esc(addError) + '</p>' : '') + '</div>';
 }
 
 function codeBlock() {
   const left = Math.max(0, code.expiresAt - Date.now()); const expired = left === 0;
   const mm = Math.floor(left / 60000); const ss = String(Math.floor(left / 1000) % 60).padStart(2, '0');
   return '<div class="code' + (expired ? ' expired' : '') + '" aria-labelledby="codeh"><div class="code-top"><img class="qr" alt="QR code of the connection code" src="' + code.qr + '">'
-    + '<div><h3 id="codeh">Connection code</h3><p class="hint" style="margin-top:4px;font-size:13px;line-height:18px;color:#4b5563">Paste it on the new machine: on its first-run page, or in its Private Network card. It joins your private network and pairs that node with this one.</p>'
+    + '<div><h3 id="codeh">Connection code</h3><p class="hint" style="margin-top:4px;font-size:13px;line-height:18px;color:#4b5563">Paste it on the new machine’s first-run page (opened in a browser on that machine). It joins your private network, pairs that node with this one and makes you its owner.</p>'
     + '<p class="warn"><span aria-hidden="true">⚠</span><span>Treat it like a password. Anyone who has it can add a machine to your private network and pair it with this node. It works once.</span></p>'
     + '<p class="expiry" id="expiry" aria-live="off">' + (expired ? 'This code expired.' : 'Expires in ' + mm + ':' + ss) + '</p></div></div>'
     + '<textarea id="codetext" class="mono" readonly aria-label="Connection code"' + (expired ? ' disabled' : '') + '>' + esc(code.text) + '</textarea>'

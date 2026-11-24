@@ -27,7 +27,7 @@ import { useExtensionsStore, type ExtensionId } from '~/stores/extensionsStore';
  * An extension's own page (extension-contract.md §5), in a sandboxed frame without network access: an opaque origin
  * (`sandbox="allow-scripts"`, no `allow-same-origin`), so it can reach neither the node nor the AutoByteus page. AutoByteus
  * accepts messages only from this frame (`event.source`) and answers each `{ id, call, input }` with `{ id, ok, output | error }`
- * from the extension's own actions. `resize` (the page's height) is a design addition to the contract.
+ * from the extension's own actions. The page's height arrives as `{ resize: { height } }` (contract §5).
  */
 const props = defineProps<{ extensionId: ExtensionId; title: string }>();
 const { t } = useLocalization();
@@ -40,13 +40,15 @@ const html = computed(() => EXTENSION_PAGES[props.extensionId] ?? '');
 async function onMessage(event: MessageEvent): Promise<void> {
   const own = frame.value?.contentWindow;
   if (!own || event.source !== own) return;
-  const message = event.data as { id?: string; call?: string; input?: unknown } | null;
-  if (!message || typeof message.id !== 'string' || typeof message.call !== 'string') return;
-  if (message.call === 'resize') {
-    const next = Number((message.input as { height?: number } | null)?.height);
+  const message = event.data as { id?: string; call?: string; input?: unknown; resize?: { height?: number } } | null;
+  if (!message) return;
+  // The page's height (contract §5): `{ resize: { height } }`, no id and no reply; AutoByteus clamps it.
+  if (message.resize && typeof message.id !== 'string') {
+    const next = Number(message.resize.height);
     if (Number.isFinite(next) && next > 0) { height.value = Math.min(Math.max(next, 48), 2000); loaded.value = true; }
     return;
   }
+  if (typeof message.id !== 'string' || typeof message.call !== 'string') return;
   try {
     const output = await store.callAction(props.extensionId, message.call, message.input);
     own.postMessage({ id: message.id, ok: true, output: JSON.parse(JSON.stringify(output ?? null)) }, '*');

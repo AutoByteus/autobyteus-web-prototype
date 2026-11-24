@@ -103,7 +103,7 @@ useHead({ title: 'Set up this AutoByteus node' });
 
 const { t } = useLocalization();
 const k = (key: string) => `firstRun.${key}`;
-const nodeName = 'linux-box';
+const nodeName = 'build-server';
 const start = (typeof window === 'undefined' ? 'ready' : localStorage.getItem('autobyteus.prototype.firstRun')) === 'owned' ? 'owned'
   : (typeof window === 'undefined' ? '' : localStorage.getItem('autobyteus.prototype.firstRun')) === 'remote' ? 'remote' : 'ready';
 
@@ -133,7 +133,7 @@ async function connect(): Promise<void> {
   error.value = '';
   statuses.value = ['running', 'pending', 'pending', 'pending'];
   phase.value = 'running';
-  await later(700);
+  await later(500);
   const text = code.value.trim();
   const payload = text.startsWith('abpn_') ? decode(text) : null;
   if (!payload?.owner) { fail(0, t(k('error.notCode'))); return; }
@@ -141,13 +141,13 @@ async function connect(): Promise<void> {
   // The expiry is checked before joining (pairing-contract.md §6, probe finding).
   if (payload.expiresAt && Date.parse(payload.expiresAt) < Date.now()) { fail(0, t(k('error.expired'))); return; }
   statuses.value = ['done', 'running', 'pending', 'pending'];
-  await later(1800);
+  await later(1200);
   statuses.value = ['done', 'done', 'running', 'pending'];
-  await later(2200);
-  statuses.value = ['done', 'done', 'done', 'running'];
   await later(900);
-  statuses.value = ['done', 'done', 'done', 'done'];
+  statuses.value = ['done', 'done', 'done', 'running'];
   await later(400);
+  statuses.value = ['done', 'done', 'done', 'done'];
+  await later(300);
   phase.value = 'done';
 }
 function fail(index: number, message: string): void {

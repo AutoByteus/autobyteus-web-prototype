@@ -44,6 +44,8 @@ export function installHostScenario(options = {}) {
     { id: 'embedded-local', name: 'Embedded Node', baseUrl: 'http://127.0.0.1:29695', nodeType: 'embedded', nodeId: 'srv_m9VFq2Lw', createdAt: '2026-10-20T09:00:00.000Z', updatedAt: '2026-10-20T09:00:00.000Z' },
     entry('remote-docker', 'docker', 'http://localhost:8001', 'srv_ibJioK7n', dockerAutoUpdate ? { autoUpdate: true } : {}),
     ...(officeAddress ? [entry('remote-office', 'Office Mac', officeAddress, 'srv_0ff1c3Mac')] : []),
+    // extensions-ui-516 (design): linux-box, a node this desktop owns (set up earlier with a setup code), not yet paired with this node.
+    ...(scenario === 'nodes_user' ? [entry('remote-linux-box', 'linux-box', 'http://192.168.2.50:29695', 'srv_l1nuxB0xPrivPn7Wq8Mv5Tn2Bc7Hy4Lp9Gs6')] : []),
     ...(scenario === 'nodes_states' ? [
       entry('remote-studio', 'studio', 'http://192.168.2.31:29695', 'srv_stUd10Ka9'),
       entry('remote-spare', 'spare', 'http://192.168.2.90:29695', 'srv_sp4r3Km1'),

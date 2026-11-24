@@ -64,7 +64,7 @@
             <span class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-blue-200 border-t-blue-700 motion-reduce:animate-none" aria-hidden="true" />
             {{ t('extensions.voice.transcribing') }}
           </span>
-          <span v-if="firstAfterStart" class="mt-1 block text-xs text-blue-700" data-testid="voice-test-first-note">{{ t('extensions.voice.firstNote') }}</span>
+          <span v-if="slow" class="mt-1 block text-xs text-blue-700" data-testid="voice-test-slow-note">{{ t('extensions.voice.firstNote') }}</span>
         </template>
       </div>
 
@@ -107,8 +107,14 @@ type Phase = 'idle' | 'starting' | 'recording' | 'transcribing';
 const phase = ref<Phase>('idle');
 const level = ref(0);
 const result = ref<{ text: string; duration: string; language: string } | null>(null);
-/** The first transcription after Voice Input starts loads the speech model (about 30 s, measured in the probe; shortened here). */
+/**
+ * When the voice program is not running yet (first use after the app starts, after turning on, install or update), the
+ * transcription waits while it starts; its length varies (up to ~30 s measured). The note appears once a transcription has
+ * waited longer than about 2 s, not by prediction. Scripted here: the first test after Voice Input starts waits 5 s.
+ */
 const firstAfterStart = ref(true);
+const slow = ref(false);
+let slowTimer: ReturnType<typeof setTimeout> | null = null;
 let levelTimer: ReturnType<typeof setInterval> | null = null;
 let startedAt = 0;
 
@@ -132,11 +138,15 @@ async function stopTest(): Promise<void> {
   level.value = 0;
   const seconds = Math.max(1, (Date.now() - startedAt) / 1000);
   phase.value = 'transcribing';
+  slow.value = false;
+  slowTimer = setTimeout(() => { slow.value = true; }, 2000);
   await new Promise((done) => setTimeout(done, firstAfterStart.value ? 5000 : 1200));
+  if (slowTimer) clearTimeout(slowTimer);
+  slow.value = false;
   firstAfterStart.value = false;
   phase.value = 'idle';
   result.value = { text: 'Testing the microphone before I dictate my next task.', duration: t('extensions.voice.seconds', { value: seconds.toFixed(1) }), language: t('extensions.voice.english') };
 }
 
-onBeforeUnmount(() => { if (levelTimer) clearInterval(levelTimer); });
+onBeforeUnmount(() => { if (levelTimer) clearInterval(levelTimer); if (slowTimer) clearTimeout(slowTimer); });
 </script>
