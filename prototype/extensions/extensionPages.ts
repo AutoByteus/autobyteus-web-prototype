@@ -199,11 +199,11 @@ function joinBlock() {
         + '<p class="hint">Opens Tailscale’s sign-in page in your browser. Sign in with the account your other machines use.</p></div>';
   } else if (choice === 'headscale') {
     body = hsMode === 'invite'
-      ? '<div class="field"><label class="label" for="invite">Invite link</label><div class="row"><input id="invite" class="wide mono" autocomplete="off" spellcheck="false" placeholder="https://net.example.com/join#…">' + btn('joininvite', 'Join', 'Joining…') + '</div>'
-        + '<p class="hint">Made on the machine that hosts the network, under Invite someone. It works once.</p><div><button class="link" id="hskey">Enter the server and a join key instead</button></div></div>'
+      ? '<div class="field"><label class="label" for="invite">Invite code</label><div class="row"><input id="invite" class="wide mono" autocomplete="off" spellcheck="false" placeholder="abhi_…">' + btn('joininvite', 'Join', 'Joining…') + '</div>'
+        + '<p class="hint">Made on the machine that hosts the network, under Invite someone. It works once, within 24 hours.</p><div><button class="link" id="hskey">Enter the server and a join key instead</button></div></div>'
       : '<div class="field"><label class="label" for="url">Server address</label><input id="url" class="wide" autocomplete="off" spellcheck="false" placeholder="https://headscale.example.com"></div>'
         + '<div class="field"><label class="label" for="key">Join key</label><div class="row"><input id="key" class="wide mono" autocomplete="off" spellcheck="false" placeholder="hskey-auth-…">' + btn('join', 'Join', 'Joining…') + '</div>'
-        + '<p class="hint">On your server, run “headscale preauthkeys create --user &lt;you&gt;” and paste the key it prints. The key’s user decides who this machine belongs to: use your own.</p><div><button class="link" id="hsinvite">I have an invite link</button></div></div>';
+        + '<p class="hint">On your server, run “headscale preauthkeys create --user &lt;you&gt;” and paste the key it prints. The key’s user decides who this machine belongs to: use your own.</p><div><button class="link" id="hsinvite">I have an invite code</button></div></div>';
   } else {
     body = hostForm();
   }
@@ -257,7 +257,7 @@ function ownUserNote() {
   return state.network === 'tailscale' ? '' : '<p class="hint" style="margin-top:2px">Made with your own user, ' + esc(state.account) + ': the key’s user decides whose machine it is, and this code makes you its owner.</p>';
 }
 function inviteBlock() {
-  const lead = '<h3>Invite someone</h3><p class="hint">For a machine that already runs AutoByteus: an invite link joins it to this network, and it pairs afterwards from Nodes. Who the invite is for decides whose machine it is.</p>';
+  const lead = '<h3>Invite someone</h3><p class="hint">For a machine that already runs AutoByteus: an invite code joins it to this network, and it pairs afterwards from Nodes. Who the invite is for decides whose machine it is.</p>';
   if (!inviteOpen) return '<div class="field">' + lead + '<div style="margin-top:6px"><button class="secondary" id="inviteopen">Make an invite</button></div></div>';
   return '<div class="field">' + lead
     + '<div class="types" role="radiogroup" aria-label="Who the invite is for" style="margin-top:6px">'
@@ -293,11 +293,11 @@ function codeBlock(c, kind) {
   const left = Math.max(0, c.expiresAt - Date.now()); const expired = left === 0;
   const isInvite = kind === 'invite';
   return '<div class="box' + (expired ? ' expired' : '') + '"><div class="code-top"><img class="qr" alt="QR code of the ' + (isInvite ? 'invite' : 'connection code') + '" src="' + c.qr + '">'
-    + '<div><h3>' + (isInvite ? (c.teammate ? 'Invite for ' + esc(c.user) : 'Invite for one of your machines') : 'Connection code') + '</h3><p class="hint" style="margin-top:4px;font-size:13px;line-height:18px;color:#4b5563">'
-    + (isInvite ? 'Paste it in the other machine’s Private Network card, under My own Headscale server → I have an invite link. Machines that join with it are ' + (c.teammate ? esc(c.user) + '’s (a teammate): they pair with Connect and Allow.' : 'yours (' + esc(c.user) + '): pair them afterwards from Nodes.') : 'Paste it on the new machine’s first-run page (opened in a browser on that machine). It joins your private network, pairs that node with this one and makes you its owner.') + '</p>'
+    + '<div><h3>' + (isInvite ? (c.teammate ? 'Invite code for ' + esc(c.user) : 'Invite code for one of your machines') : 'Connection code') + '</h3><p class="hint" style="margin-top:4px;font-size:13px;line-height:18px;color:#4b5563">'
+    + (isInvite ? 'Paste it in the other machine’s Private Network card, under My own Headscale server → I have an invite code. Machines that join with it are ' + (c.teammate ? esc(c.user) + '’s (a teammate): they pair with Connect and Allow.' : 'yours (' + esc(c.user) + '): pair them afterwards from Nodes.') : 'Paste it on the new machine’s first-run page (opened in a browser on that machine). It joins your private network, pairs that node with this one and makes you its owner.') + '</p>'
     + '<p class="warn"><span aria-hidden="true">⚠</span><span>Treat it like a password. Anyone who has it can add a machine to your private network' + (isInvite ? '' : ' and pair it with this node') + '. It works once.</span></p>'
     + '<p class="expiry" id="expiry-' + kind + '">' + (expired ? 'This ' + (isInvite ? 'invite' : 'code') + ' expired.' : expiryText(left)) + '</p></div></div>'
-    + '<textarea id="text-' + kind + '" class="mono" readonly aria-label="' + (isInvite ? 'Invite' : 'Connection code') + '"' + (expired ? ' disabled' : '') + (isInvite ? ' style="height:48px"' : '') + '>' + esc(c.text) + '</textarea>'
+    + '<textarea id="text-' + kind + '" class="mono" readonly aria-label="' + (isInvite ? 'Invite code' : 'Connection code') + '"' + (expired ? ' disabled' : '') + (isInvite ? ' style="height:72px"' : '') + '>' + esc(c.text) + '</textarea>'
     + '<div class="row" style="margin-top:12px">' + (expired ? '<button class="primary" id="again-' + kind + '">Make a new one</button>' : '<button class="primary" id="copy-' + kind + '">Copy</button>')
     + '<button class="secondary" id="done-' + kind + '">Done</button></div></div>';
 }
@@ -348,7 +348,7 @@ function wire() {
   on('hsinvite', () => { hsMode = 'invite'; error = ''; render(); });
   on('hskey', () => { hsMode = 'key'; error = ''; render(); });
   on('join', () => run('join', async () => { error = ''; state = await call('joinWithKey', { network: choice, key: val('key'), serverUrl: val('url') }); }, (m) => { error = m; }));
-  on('joininvite', () => run('joininvite', async () => { error = ''; state = await call('joinWithInvite', { link: val('invite') }); }, (m) => { error = m; }));
+  on('joininvite', () => run('joininvite', async () => { error = ''; state = await call('joinWithInvite', { code: val('invite') }); }, (m) => { error = m; }));
   on('host', () => startHosting(val('domain'), Number(val('port')) || 443));
   on('hostcheck', () => continueHosting(2));
   on('hostback', () => { hostRun = null; error = ''; render(); });

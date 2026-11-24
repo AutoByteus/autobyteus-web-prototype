@@ -217,11 +217,16 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     completeJoin(kind)
     return { ok: true }
   }
-  /** An invite made on a host: its address and a one-time join key in one link. */
-  async function joinWithInvite(link: string): Promise<{ ok: boolean; error?: string }> {
-    const match = String(link).trim().match(/^https:\/\/([a-z0-9.-]+\.[a-z]{2,})(?::\d+)?\/join#(hskey-auth-[A-Za-z0-9-]{12,})$/i)
-    if (!match) { await later(500); return { ok: false, error: 'That is not an invite link. Ask for a new invite from the machine that hosts the network.' } }
-    return joinWithKey('headscale', match[2]!, `https://${match[1]}`)
+  /** An invite made on a host: `abhi_` + base64url of { server, key, for, expiresAt } (a code, not a link: the host serves no page). */
+  async function joinWithInvite(text: string): Promise<{ ok: boolean; error?: string }> {
+    let invite: { server?: string; key?: string; for?: string; expiresAt?: string } | null = null
+    try {
+      const body = String(text).trim().replace(/^abhi_/, '').replace(/-/g, '+').replace(/_/g, '/')
+      if (String(text).trim().startsWith('abhi_')) invite = JSON.parse(atob(body + '==='.slice((body.length + 3) % 4)))
+    } catch { invite = null }
+    if (!invite?.server || !invite.key) { await later(500); return { ok: false, error: 'That is not an invite code. Ask the machine that hosts the network for a new invite and paste all of it.' } }
+    if (invite.expiresAt && Date.parse(invite.expiresAt) < Date.now()) { await later(500); return { ok: false, error: 'This invite expired before it was used. Ask for a new one.' } }
+    return joinWithKey('headscale', invite.key, invite.server)
   }
 
   /** Host a private network on this machine (designed now, built later): every step is provisional. */
@@ -312,8 +317,9 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     if (forWhom === 'teammate' && !HEADSCALE_USER.test(user)) throw new Error('Enter your teammate’s name in lowercase letters, numbers and dashes, for example bob. It becomes their own user on this network.')
     if (forWhom === 'teammate' && user === ownerAccount.value) throw new Error('That is your own user. Choose “For one of my machines” instead.')
     await later(600)
-    const text = `https://${hosting.value?.domain ?? 'net.example.com'}/join#hskey-auth-${randomText(12)}-${randomText(24)}`
-    return { text, qr: await toQrCodeDataUrl(text), expiresAt: Date.now() + 24 * 60 * 60_000, user, teammate: forWhom === 'teammate' }
+    const expiresAt = Date.now() + 24 * 60 * 60_000
+    const text = `abhi_${b64url(JSON.stringify({ server: `https://${hosting.value?.domain ?? 'net.example.com'}`, key: `hskey-auth-${randomText(12)}-${randomText(24)}`, for: user, expiresAt: new Date(expiresAt).toISOString() }))}`
+    return { text, qr: await toQrCodeDataUrl(text), expiresAt, user, teammate: forWhom === 'teammate' }
   }
   function closeConnectionCode(): void { code.value = null }
 

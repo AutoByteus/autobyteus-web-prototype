@@ -298,7 +298,7 @@ export const useExtensionsStore = defineStore('extensions', {
             logged(`join: joined the private network as ${network.thisMachine.name} (${kind})`);
             return view();
           }
-          case 'joinWithInvite': fail(await network.joinWithInvite(String(input?.link ?? ''))); logged('join: joined with an invite'); return view();
+          case 'joinWithInvite': fail(await network.joinWithInvite(String(input?.code ?? ''))); logged('join: joined with an invite'); return view();
           case 'hostStep': fail(await network.hostStep(input?.step, String(input?.domain ?? ''), Number(input?.port) || 443)); return view();
           case 'checkReachable': await network.checkReachable(); return view();
           case 'leave': await network.leave(); logged('leave: this machine left the private network'); return view();
@@ -310,7 +310,7 @@ export const useExtensionsStore = defineStore('extensions', {
             logged('invite: a connection code was made (one use, 10 minutes; the code itself is never logged)');
             return { text: code.text, qr: code.qr, expiresAt: code.expiresAt };
           }
-          case 'makeInvite': { const invite = await network.makeInvite(input?.forWhom === 'teammate' ? 'teammate' : 'me', String(input?.teammate ?? '')); logged(`invite: an invite link was made for the user ${invite.user} (one use, 24 hours)`); return invite; }
+          case 'makeInvite': { const invite = await network.makeInvite(input?.forWhom === 'teammate' ? 'teammate' : 'me', String(input?.teammate ?? '')); logged(`invite: an invite code was made for the user ${invite.user} (one use, 24 hours; the code itself is never logged)`); return invite; }
         }
       }
       throw new Error(`${call} is not an action of ${id}.`);

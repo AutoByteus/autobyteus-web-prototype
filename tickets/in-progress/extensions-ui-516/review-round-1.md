@@ -1,6 +1,21 @@
-# Review: AutoByteus Extensions UI (autobyteus-516), rounds 1 and 2
+# Review: AutoByteus Extensions UI (autobyteus-516), rounds 1–3
 
 For the founder. Status: **awaiting your review**; nothing here is approved yet. After your confirmation the Product Team captures the final screenshots and writes `ui-ux-spec.md`.
+
+## Round 3 (2026-11-24): every Private Network type, confirmed by the Solution Designer
+
+You asked for a design per network type. The Solution Designer wrote how each one works (`private-network-types.md` in the Software Engineering ticket) and confirmed this round against it (DC-029…DC-041).
+
+- **Join** offers Tailscale account, My own Headscale server, Host a private network on this machine; **Your own VPN** (private address ranges) is under them in every state.
+- **Tailscale:** sign in or a one-time auth key without tags; "Waiting for approval in your Tailscale admin console"; "Signed out of Tailscale… Sign in again"; tagged and shared machines never count as yours.
+- **Headscale:** server address + join key, or an invite code from a host; Add a machine with a pasted key, or a stored API key so the node makes keys itself; "server cannot be reached".
+- **Hosting (designed now, built later):** warning (always-on machine, not a laptop), domain + port, the steps with a reachability check, then Hosting facts, Add a machine in one click and **Invite someone**: first "for one of my machines" or "for a teammate" (the teammate's own name, so their machine is theirs), then an invite code with QR.
+- **Your own VPN:** private ranges only (public addresses refused), large ranges warned; alone, Nodes says it cannot find nodes: add them by address and pair with codes.
+- **Nodes** names the network, or shows what needs attention; **Leave** says switching means pairing again.
+
+Try it on the share: Settings → Extensions → Private Network (Install, turn on, choose a type). Starting states for the browser console: `localStorage.setItem('autobyteus.prototype.extensions', 'network_host')` (or `network_headscale`, `network_approval`, `network_signed_out`, `network_headscale_down`, `network_vpn`), then reload. A host domain starting with `home.` fails the first reachability check.
+
+Provisional (drawn, not proved): everything with a real Tailscale account, Headscale invite codes and API-made keys, everything specific to hosting. Proved: joining a Headscale server, the machine list, pairing, the connection code.
 
 ## Round 2 (2026-11-24): checked with the Solution Designer
 

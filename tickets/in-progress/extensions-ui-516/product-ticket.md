@@ -6,7 +6,7 @@
 - Requested by: Solution Designer, Software Engineering Team (run `solution_designer_b2b085ced16d45479c46350d19ae49a2`), for the founder, 2026-11-22
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/autobyteus-516-extensions/tickets/in-progress/autobyteus-516-extensions/product-design-request.md`
 - Mode: Product Experience Design (changes existing surfaces: Settings → Extensions, the Voice Input card, the voice surfaces, Nodes)
-- Status: `In Progress` (round 3: a Private Network design for each supported network type, 2026-11-24)
+- Status: `Awaiting User Review` (round 3, confirmed by the Solution Designer, 2026-11-24)
 
 ### Decision questions
 
@@ -51,3 +51,4 @@ Invented by hand for this ticket: the catalog entries (descriptions from `extens
 - 2026-11-24 the founder asked for the Private Network design to cover every network type the extension supports; asked the Solution Designer for a workflow per type (Tailscale, Headscale, hosting a private network, NetBird, bring-your-own VPN / WireGuard, hosted network out of scope), with setup, join, what the network tells AutoByteus, Add a machine, type-specific UI, validation state, switching. Status: `In Progress` (waiting for the per-type workflows); round 2 stays live for review.
 - 2026-11-24 round 3 built from private-network-types.md (DC-029…DC-036; captures review-captures/round-3/, interim); sent to the Solution Designer for its workflow check before the founder.
 - 2026-11-24 the Solution Designer checked round 3 and asked for three changes and a Leave note (invite pasted only; invite per user, security; private ranges only; leave note): applied as DC-037…DC-040 (captures R3-14…R3-19).
+- 2026-11-24 the Solution Designer confirmed round 3 (@ b7dd7685) and asked for the invite as a code: applied (DC-041). Round 3 sent to the founder; `Awaiting User Review`. Heads-up from the Solution Designer: the founder wants the Shared Folder extension (NFS) designed in this ticket too, not built; its data contract and workflow come first, from the Solution Designer.
