@@ -12,7 +12,7 @@ import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
  *
  * Starting state (no visible control): `localStorage['autobyteus.prototype.extensions']` =
  *   (none) Voice Input installed and on · `fresh` nothing installed · `voice_failed` · `voice_update` (1.1.0 offered) ·
- *   `voice_not_available` (this computer is linux-arm64) · `network_*` (Private Network installed and on; the network's state
+ *   `voice_not_available` (this computer is linux-arm64) · `extension_broken` · `state_unreadable` · `network_*` (Private Network installed and on; the network's state
  *   is chosen in stores/privateNetworkStore.ts: joined on Tailscale, Headscale, hosting, approval, signed out, own VPN …).
  * The older `autobyteus.prototype.scenario` values `extension_error` and `extension_missing` still choose a failed / not installed Voice Input.
  */
@@ -68,9 +68,13 @@ function seedEmbedded(): NodeRecord {
   if (seed === 'voice_failed' || legacy === 'extension_error') voice = { kind: 'failed', message: 'The speech model download stopped before it finished: its checksum did not match. Nothing was changed; install again to retry.' };
   if (seed === 'voice_update') voice = { kind: 'installed', version: '1.0.0', enabled: true, ready: true, updateAvailable: true, message: 'Ready.' };
   const platform = seed === 'voice_not_available' ? 'linux-arm64' : 'darwin-arm64';
-  const network: ExtensionState = seed.startsWith('network_')
+  let network: ExtensionState = seed.startsWith('network_')
     ? { kind: 'installed', version: '0.1.0', enabled: true, ready: true, updateAvailable: false, message: 'Ready.' }
     : { kind: 'notInstalled' };
+  // V12: one extension cannot be read; the other and the node keep working, nothing is deleted.
+  if (seed === 'extension_broken') network = { kind: 'failed', message: 'Private Network could not be read: its package/extension.json is missing. Nothing was deleted; install it again to repair it.' };
+  // V12: an unreadable state.json: everything is shown Off (logged, never rewritten until a change).
+  if (seed === 'state_unreadable') voice = { kind: 'installed', version: '1.0.0', enabled: false, ready: false, updateAvailable: false, message: 'Turned off.' };
   return {
     platform,
     states: { 'voice-input': voice, 'private-network': network },
@@ -170,6 +174,11 @@ export const useExtensionsStore = defineStore('extensions', {
       };
     },
     updateVersion(): string { return UPDATE_VERSION; },
+    /**
+     * The signed catalog could not be verified (contract §3; V13): nothing can be installed or updated until it can; installed
+     * extensions keep working. Starting state `localStorage['autobyteus.prototype.catalog'] = 'unverified'`.
+     */
+    catalogUnverified(): boolean { return typeof window !== 'undefined' && localStorage.getItem('autobyteus.prototype.catalog') === 'unverified'; },
   },
 
   actions: {

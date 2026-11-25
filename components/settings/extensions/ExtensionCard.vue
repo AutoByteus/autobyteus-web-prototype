@@ -69,7 +69,7 @@
           v-if="state.kind === 'notInstalled'"
           type="button"
           class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
-          :disabled="!canManage"
+          :disabled="!canManage || !canInstall"
           :data-testid="`extension-install-${entry.id}`"
           @click="store.install(entry.id)"
         >{{ t('extensions.card.install') }}</button>
@@ -77,7 +77,7 @@
           v-else-if="state.kind === 'failed'"
           type="button"
           class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:opacity-60"
-          :disabled="!canManage"
+          :disabled="!canManage || !canInstall"
           :data-testid="`extension-reinstall-${entry.id}`"
           @click="store.install(entry.id)"
         >{{ t('extensions.card.installAgain') }}</button>
@@ -86,7 +86,7 @@
             v-if="state.updateAvailable"
             type="button"
             class="rounded-md border border-blue-200 bg-white px-3.5 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60"
-            :disabled="!canManage"
+            :disabled="!canManage || !canInstall"
             :data-testid="`extension-update-${entry.id}`"
             @click="store.install(entry.id, true)"
           >{{ t('extensions.card.update', { version: store.updateVersion }) }}</button>
@@ -155,7 +155,7 @@ import { useLocalization } from '~/composables/useLocalization';
 import { useExtensionsStore, type CatalogEntry, type ExtensionState } from '~/stores/extensionsStore';
 
 /** The common card frame AutoByteus draws for every extension (DEC-014): name, version, state, the action of the state, log, Remove, the page. */
-const props = defineProps<{ entry: CatalogEntry; state: ExtensionState; canManage: boolean }>();
+const props = withDefaults(defineProps<{ entry: CatalogEntry; state: ExtensionState; canManage: boolean; canInstall?: boolean }>(), { canInstall: true });
 const { t } = useLocalization();
 const store = useExtensionsStore();
 

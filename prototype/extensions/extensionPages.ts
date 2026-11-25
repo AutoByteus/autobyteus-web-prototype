@@ -200,7 +200,7 @@ function joinBlock() {
   } else if (choice === 'headscale') {
     body = hsMode === 'invite'
       ? '<div class="field"><label class="label" for="invite">Invite code</label><div class="row"><input id="invite" class="wide mono" autocomplete="off" spellcheck="false" placeholder="abhi_…">' + btn('joininvite', 'Join', 'Joining…') + '</div>'
-        + '<p class="hint">Made on the machine that hosts the network, under Invite someone. It works once, within 24 hours.</p><div><button class="link" id="hskey">Enter the server and a join key instead</button></div></div>'
+        + '<p id="invitefor" class="hint" aria-live="polite"></p><p class="hint">Made on the machine that hosts the network, under Invite someone. It works once, within 24 hours.</p><div><button class="link" id="hskey">Enter the server and a join key instead</button></div></div>'
       : '<div class="field"><label class="label" for="url">Server address</label><input id="url" class="wide" autocomplete="off" spellcheck="false" placeholder="https://headscale.example.com"></div>'
         + '<div class="field"><label class="label" for="key">Join key</label><div class="row"><input id="key" class="wide mono" autocomplete="off" spellcheck="false" placeholder="hskey-auth-…">' + btn('join', 'Join', 'Joining…') + '</div>'
         + '<p class="hint">On your server, run “headscale preauthkeys create --user &lt;you&gt;” and paste the key it prints. The key’s user decides who this machine belongs to: use your own.</p><div><button class="link" id="hsinvite">I have an invite code</button></div></div>';
@@ -304,6 +304,10 @@ function leaveBlock() {
 }
 
 // ---------- events
+/** The invite code's "for" (pairing-contract §7), shown before joining. */
+function inviteFor(text) {
+  try { const v = String(text).trim(); if (!v.startsWith('abhi_')) return ''; const b = v.slice(5).replace(/-/g, '+').replace(/_/g, '/'); return JSON.parse(atob(b + '==='.slice((b.length + 3) % 4))).for || ''; } catch { return ''; }
+}
 function btn(id, label, busyLabel, cls) { return '<button class="' + (cls || 'primary') + '" id="' + id + '"' + (busy === id ? ' disabled' : '') + '>' + (busy === id ? '<span class="spin"></span> ' + busyLabel : label) + '</button>'; }
 function on(id, fn) { const el = document.getElementById(id); if (el) el.addEventListener('click', fn); }
 function val(id) { return document.getElementById(id)?.value || ''; }
@@ -323,6 +327,8 @@ function wire() {
   on('hsinvite', () => { hsMode = 'invite'; error = ''; render(); });
   on('hskey', () => { hsMode = 'key'; error = ''; render(); });
   on('join', () => run('join', async () => { error = ''; state = await call('joinWithKey', { network: choice, key: val('key'), serverUrl: val('url') }); }, (m) => { error = m; }));
+  const inv = document.getElementById('invite');
+  if (inv) inv.addEventListener('input', () => { const who = inviteFor(inv.value); const el = document.getElementById('invitefor'); if (el) { el.textContent = who ? (who === state.account ? 'Joins as your machine (' + who + ').' : 'Joins as ' + who + '’s machine: it will be ' + who + '’s, not yours.') : ''; el.className = who ? 'ok' : 'hint'; } });
   on('joininvite', () => run('joininvite', async () => { error = ''; state = await call('joinWithInvite', { code: val('invite') }); }, (m) => { error = m; }));
   on('host', () => startHosting(val('domain'), Number(val('port')) || 443));
   on('hostcheck', () => continueHosting(2));

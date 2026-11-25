@@ -93,3 +93,18 @@ Confirmed by the Solution Designer (2026-11-24, @ 26ebb692): DC-043…DC-046 fol
 Provisional, add to the spec: "Only this computer can use this page" on a **Docker node** (a browser request arrives through the launcher's published port and may not look local inside the container; how the first-run page proves locality there is gap G4, use-case-spines.md). Text unchanged.
 | DC-048 | Wording (founder, 2026-11-25: "no need to mention it's a desktop"): first-run step 2 "Make a node code" with "Paste it in AutoByteus under Nodes → Add node → Paste a node code. Whoever has it can control this node as its owner; it works once, within 30 minutes."; connected: "build-server is added: it is listed under Nodes, where you can pair it."; This node: "Make a node code" with "Paste it in another AutoByteus under Nodes → Add node → Paste a node code to control this node from there too."; no "desktop" in the code panel or the first-run page. Behavior unchanged. | founder via the Solution Designer |
 | DC-049 | Naming (founder, 2026-11-25: "let's call it access code"): "node code" is **access code** everywhere (Chinese 访问码): first-run step 2 "Make an access code", Nodes → Add node "Have an access code? Paste it instead", the refusals ("This access code was already used. Make a new one on the node."), This node "Make an access code", the panel "Access code for build-server". Format unchanged (`abps_` + { nodeId, address, setupCode, expiresAt }). | founder via the Solution Designer |
+
+## Round 5 — the whole design on the contracts as rewritten 2026-11-25 (Solution Designer)
+
+| ID | Change | Source |
+| --- | --- | --- |
+| DC-050 | Pairing vocabulary: **Pair** for every found node (someone else's sends a request: "Waiting for bob to accept", Cancel; declined: "bob declined" / "Its owner declined", **Pair again**); incoming "carol-server, added by carol, wants to pair" with **Accept** / **Reject**; "Asking to pair"; trust texts say Accept. Connect and Allow are gone. | pairing-contract §0, §3 |
+| DC-051 | The invite code shows whom the machine joins as before joining ("Joins as bob's machine: it will be bob's, not yours."), on the Private Network page and the first-run page. | §7 |
+| DC-052 | The access code's address carries its port (`100.88.80.80:29695`). | §6 |
+| DC-053 | The first-run page installs Private Network on the node first ("Installing Private Network on this node first (about 30 MB)…"), then signs in / joins. | G2 |
+| DC-054 | The slow note ("Starting the speech model. The first use can take up to 30 seconds.") after ~2 s of transcribing also on the voice surfaces (composer status row, Task / Project / Memory search status), not only in Test. | V5, UP |
+| DC-055 | Proposed: a catalog that fails verification shows a red note on the Extensions page; Install / Install again / Update are disabled; installed extensions keep working. | V13 (for the Solution Designer's check) |
+| DC-056 | New starting states for the spines: `extension_broken` (V12), `state_unreadable` (V12), `network_restarting` (T2: "Rejoining your private network after a restart…"), `autobyteus.prototype.catalog = unverified` (V13). | V12, V13, T2 |
+| DC-057 | "This AutoByteus does not control {node} yet." replaces "This desktop is not the owner…" (no "desktop"). | vocabulary |
+
+Coverage of every spine step: `round-5-coverage.md`; captures `review-captures/round-5/`.

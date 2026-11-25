@@ -68,9 +68,9 @@
         <li v-for="request in network.requests" :key="request.nodeId" class="rounded-lg border border-blue-200 bg-blue-50/60 px-4 py-3" :data-testid="`private-network-request-${request.name}`">
           <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div class="min-w-0">
-              <p class="text-sm font-semibold text-slate-900">{{ t(k('requests.wants'), { name: request.name }) }}</p>
+              <p class="text-sm font-semibold text-slate-900">{{ t(k('requests.wants'), { name: request.name, account: who(request.account) }) }}</p>
               <p class="mt-0.5 text-xs text-slate-500">
-                <span class="font-mono">{{ network.machineOf(request.machineId)?.address }}</span> · {{ addedBy(request.account) }}
+                <span class="font-mono">{{ network.machineOf(request.machineId)?.address }}</span>
               </p>
               <p class="mt-1.5 max-w-2xl text-sm leading-5 text-slate-600">{{ t(k('requests.teammate'), { account: who(request.account) }) }}</p>
             </div>
@@ -80,7 +80,7 @@
               </template>
               <template v-else>
                 <button type="button" class="h-8 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-testid="`private-network-reject-${request.name}`" @click="network.reject(request.nodeId)">{{ t(k('requests.reject')) }}</button>
-                <button type="button" class="h-8 rounded-md bg-blue-600 px-3 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" :data-testid="`private-network-allow-${request.name}`" @click="network.allow(request.nodeId)">{{ t(k('requests.allow')) }}</button>
+                <button type="button" class="h-8 rounded-md bg-blue-600 px-3 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" :data-testid="`private-network-accept-${request.name}`" @click="network.allow(request.nodeId)">{{ t(k('requests.accept')) }}</button>
               </template>
             </div>
           </div>
@@ -106,7 +106,7 @@
             </template>
             <template v-else-if="node.phase === 'refused'">
               <span class="text-sm text-slate-600" role="status" :data-testid="`private-network-declined-${node.name}`">{{ machine(node)?.account === network.ownerAccount ? t(k('found.ownerDeclined')) : t(k('found.declined'), { account: who(machine(node)?.account ?? '') }) }}</span>
-              <button type="button" class="h-8 rounded-md border border-slate-300 bg-white px-3.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="network.connect(node.nodeId)">{{ t(k('found.connectAgain')) }}</button>
+              <button type="button" class="h-8 rounded-md border border-slate-300 bg-white px-3.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="network.connect(node.nodeId)">{{ t(k('found.pairAgain')) }}</button>
             </template>
             <template v-else-if="node.phase === 'waiting'">
               <span class="text-sm text-slate-600" role="status">{{ t(k('found.waiting'), { account: machine(node)?.account === network.ownerAccount ? t(k('found.itsOwner')) : who(machine(node)?.account ?? '') }) }}</span>
@@ -125,9 +125,9 @@
               type="button"
               class="h-8 rounded-md border border-slate-300 bg-white px-3.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60"
               :disabled="!machine(node)?.online"
-              :data-testid="`private-network-connect-${node.name}`"
+              :data-testid="`private-network-pair-${node.name}`"
               @click="network.connect(node.nodeId)"
-            >{{ t(k('found.connect')) }}</button>
+            >{{ t(k('found.pair')) }}</button>
           </div>
         </div>
         <p v-if="node.kind === 'unknown'" class="ml-5 mt-2 flex max-w-3xl items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-900" :data-testid="`private-network-unknown-${node.name}`">
@@ -164,7 +164,7 @@ import { usePrivateNetworkStore, type FoundNode } from '~/stores/privateNetworkS
 
 /**
  * extensions-ui-516 (design, Part B): Manage Nodes → "Found on your private network" (pairing-contract.md §3–§7).
- * Finding grants nothing: your own node pairs with one click, someone else's node with Connect and its owner's Allow,
+ * Finding grants nothing: your own node pairs with one click, someone else's node with Pair and its owner's Accept,
  * an unknown machine on your own account is flagged and never paired by one click.
  */
 const { t } = useLocalization()
@@ -223,7 +223,7 @@ function trustOn(): void {
   network.setTrust(true)
 }
 
-onMounted(() => { void extensions.initialize() })
+onMounted(() => { void extensions.initialize(); network.touch() })
 
 const PrivateNetworkIcon = defineComponent({
   render: () => h('svg', { class: 'h-5 w-5', viewBox: '0 0 20 20', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.6', 'aria-hidden': 'true' }, [

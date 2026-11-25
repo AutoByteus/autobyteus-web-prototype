@@ -24,7 +24,12 @@
         </p>
       </div>
 
-      <ExtensionCard v-for="item in (canManage ? store.list : [])" :key="item.entry.id" :entry="item.entry" :state="item.state" :can-manage="canManage">
+      <div v-if="canManage && store.catalogUnverified" class="flex items-start gap-2.5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm leading-6 text-red-800" role="alert" data-testid="extensions-catalog-unverified">
+        <svg class="mt-1 h-4 w-4 flex-shrink-0 text-red-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10" cy="10" r="7.5" /><path d="M10 6.5v4M10 13.5v.01" stroke-linecap="round" /></svg>
+        <p>{{ t('extensions.page.catalogUnverified') }}</p>
+      </div>
+
+      <ExtensionCard v-for="item in (canManage ? store.list : [])" :key="item.entry.id" :entry="item.entry" :state="item.state" :can-manage="canManage" :can-install="!store.catalogUnverified">
         <template #after-page>
           <VoiceMicrophonePanel v-if="item.entry.id === 'voice-input'" :usable="item.state.kind === 'installed' && item.state.enabled && item.state.ready" />
           <PrivateNetworkFindingPanel v-else-if="item.entry.id === 'private-network'" />
@@ -49,6 +54,7 @@ import PrivateNetworkFindingPanel from '~/components/settings/extensions/Private
 import VoiceMicrophonePanel from '~/components/settings/extensions/VoiceMicrophonePanel.vue';
 import { useLocalization } from '~/composables/useLocalization';
 import { useExtensionsStore } from '~/stores/extensionsStore';
+import { usePrivateNetworkStore } from '~/stores/privateNetworkStore';
 import { useNodeAccessStore } from '~/stores/nodeAccessStore';
 import { useNodeStore } from '~/stores/nodeStore';
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
@@ -68,6 +74,7 @@ const canManage = computed(() => store.isEmbeddedWindow || access.stateOf(window
 
 onMounted(async () => {
   await store.initialize();
+  usePrivateNetworkStore().touch();
   void access.initialize?.();
 });
 </script>

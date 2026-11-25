@@ -45,12 +45,13 @@
                   <span v-if="busy" class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white motion-reduce:animate-none" aria-hidden="true" />
                   {{ busy ? t(k('join.tailscale.waiting')) : t(k('join.tailscale.action')) }}
                 </button>
-                <p class="mt-1.5 text-xs text-slate-500">{{ t(k('join.tailscale.hint')) }}</p>
+                <p class="mt-1.5 text-xs text-slate-500">{{ busy && installing ? t(k('join.installing')) : t(k('join.tailscale.hint')) }}</p>
               </template>
               <form v-else-if="way === 'headscale'" @submit.prevent="useInvite">
                 <label for="first-run-invite" class="text-sm font-medium text-slate-900">{{ t(k('join.headscale.label')) }}</label>
                 <textarea id="first-run-invite" v-model="invite" rows="2" spellcheck="false" autocomplete="off" class="mt-1.5 w-full resize-none rounded-md border border-slate-300 bg-white px-3 py-2 font-mono text-xs leading-5 text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100" placeholder="abhi_…" data-testid="first-run-invite" />
-                <p class="mt-1 text-xs text-slate-500">{{ t(k('join.headscale.hint')) }}</p>
+                <p v-if="inviteFor" class="mt-1 text-xs font-medium text-emerald-700" data-testid="first-run-invite-for">{{ t(k('join.headscale.for'), { user: inviteFor }) }}</p>
+                <p class="mt-1 text-xs text-slate-500">{{ busy && installing ? t(k('join.installing')) : t(k('join.headscale.hint')) }}</p>
                 <button type="submit" class="mt-3 inline-flex h-9 items-center gap-2 rounded-md bg-blue-600 px-4 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:opacity-60" :disabled="busy || !invite.trim()" data-testid="first-run-join-invite">
                   <span v-if="busy" class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white motion-reduce:animate-none" aria-hidden="true" />
                   {{ busy ? t(k('join.joining')) : t(k('join.headscale.action')) }}
@@ -138,13 +139,25 @@ const joinedText = computed(() => (joinedWay.value === 'local'
   : t(k('join.done'), { network: joinedWay.value === 'tailscale' ? 'Tailscale' : 'Headscale', node: nodeName, address: address.value })));
 
 const later = (ms: number) => new Promise<void>((done) => setTimeout(done, ms));
+/** A brand-new node has no Private Network extension yet: the page installs it from the catalog first (G2; needs the internet). */
+const installing = ref(false);
+async function installFirst(): Promise<void> { installing.value = true; await later(1500); installing.value = false; }
+const inviteFor = computed(() => {
+  try {
+    const v = invite.value.trim(); if (!v.startsWith('abhi_')) return '';
+    const b = v.slice(5).replace(/-/g, '+').replace(/_/g, '/');
+    return String(JSON.parse(atob(b + '==='.slice((b.length + 3) % 4))).for || '');
+  } catch { return ''; }
+});
 async function signIn(): Promise<void> {
   busy.value = true; error.value = '';
+  await installFirst();
   await later(2500);
   busy.value = false; joinedWay.value = 'tailscale';
 }
 async function useInvite(): Promise<void> {
   busy.value = true; error.value = '';
+  await installFirst();
   await later(1200);
   busy.value = false;
   let ok = false;

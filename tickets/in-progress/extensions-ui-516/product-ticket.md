@@ -6,7 +6,7 @@
 - Requested by: Solution Designer, Software Engineering Team (run `solution_designer_b2b085ced16d45479c46350d19ae49a2`), for the founder, 2026-11-22
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/autobyteus-516-extensions/tickets/in-progress/autobyteus-516-extensions/product-design-request.md`
 - Mode: Product Experience Design (changes existing surfaces: Settings → Extensions, the Voice Input card, the voice surfaces, Nodes)
-- Status: `Awaiting User Review` (round 4, confirmed by the Solution Designer, 2026-11-24)
+- Status: `In Progress` (round 5: spine-by-spine validation with the Solution Designer, 2026-11-25)
 
 ### Decision questions
 
@@ -56,3 +56,4 @@ Invented by hand for this ticket: the catalog entries (descriptions from `extens
 - 2026-11-24 the Solution Designer confirmed round 4 (a: This node is right; b: owner-only → DC-047; c: name read after reaching). Spec note: G4 (Docker first-run locality) provisional. Round 4 sent to the founder; `Awaiting User Review`.
 - 2026-11-25 founder's wording for the node code applied (DC-048); no re-check needed (Solution Designer).
 - 2026-11-25 founder's naming: "access code" (访问码) for the node code (DC-049); no re-check needed (Solution Designer).
+- 2026-11-25 round 5 (Solution Designer): the whole design brought onto the rewritten contracts (DC-050…DC-057); every spine V1–V13, T1–T10 walked through the UI reference; coverage table round-5-coverage.md, captures review-captures/round-5/ (73). Sent to the Solution Designer for spine-by-spine validation; the round goes to the founder only after it confirms every spine.

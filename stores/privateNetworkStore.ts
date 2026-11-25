@@ -16,7 +16,7 @@ import { useNodeListStore } from '~/stores/nodeListStore'
  *   `network_joined` / `network_trust` (Tailscale, joined; trust on) · `network_headscale` · `network_headscale_down`
  *   (server unreachable) · `network_host` (hosting on this machine) · `network_approval` (waiting for device approval in
  *   the Tailscale admin console; approved after about 10 s) · `network_signed_out` (Tailscale key expired) ·
- *   `network_vpn` (your own VPN only). Any other value starts not joined.
+ *   `network_vpn` (your own VPN only) · `network_restarting` (rejoining after a restart, 8 s). Any other value starts not joined.
  */
 
 export type NetworkKind = 'tailscale' | 'headscale' | 'host'
@@ -107,7 +107,7 @@ const HEADSCALE_USER = /^[a-z][a-z0-9-]{1,30}$/
 export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   const seed = startState()
   const seededKind: NetworkKind = seed.startsWith('network_headscale') ? 'headscale' : seed === 'network_host' ? 'host' : 'tailscale'
-  const seededJoined = ['network_joined', 'network_trust', 'network_headscale', 'network_headscale_down', 'network_host', 'network_signed_out'].includes(seed)
+  const seededJoined = ['network_joined', 'network_trust', 'network_headscale', 'network_headscale_down', 'network_host', 'network_signed_out', 'network_restarting'].includes(seed)
 
   const joined = ref(seededJoined)
   const network = ref<NetworkKind>(seededKind)
@@ -119,6 +119,8 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   const signedOut = ref(seed === 'network_signed_out')
   /** Headscale: the coordination server cannot be reached. */
   const serverDown = ref(seed === 'network_headscale_down')
+  /** T2: after the node restarts, the network program rejoins with its saved state (~12.6 s measured; 8 s here). */
+  const rejoining = ref(seed === 'network_restarting')
   const hosting = ref<Hosting | null>(seed === 'network_host' ? { domain: 'net.example.com', port: 443, certificateUntil: '2027-02-20', reachable: true } : null)
   const vpnRanges = ref<string[]>(seed === 'network_vpn' ? ['10.8.0.0/24'] : [])
   const machines = ref<NetworkMachine[]>(machinesFor(seededKind))
@@ -153,6 +155,7 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
         ? { ready: true, message: `Accepting your own VPN: ${vpnRanges.value.join(', ')}. Not on a private network.` }
         : { ready: false, message: 'Not connected to a private network yet. Choose one below.' }
     }
+    if (rejoining.value) return { ready: false, message: 'Rejoining your private network after a restart…' }
     if (signedOut.value) return { ready: false, message: 'Signed out of Tailscale: this machine’s key expired. Sign in again.' }
     if (serverDown.value) return { ready: false, message: 'Your Headscale server cannot be reached. Nobody can join or change anything; existing connections keep working for a while.' }
     if (network.value === 'host') {
@@ -183,7 +186,9 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   }
 
   /** The page asks for the state; a node waiting for device approval is approved after a while (scripted admin). */
+  let rejoinStarted = false
   function touch(): void {
+    if (rejoining.value && !rejoinStarted) { rejoinStarted = true; void later(8000).then(() => { rejoining.value = false }) }
     if (awaitingApproval.value && !approvalStarted) {
       approvalStarted = true
       void later(APPROVAL_MS).then(() => { if (awaitingApproval.value) completeJoin('tailscale') })
@@ -347,7 +352,7 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   const peerMark = (nodeId: string | null) => (nodeId ? paired.value.find((p) => p.nodeId === nodeId) ?? null : null)
 
   return {
-    joined, network, serverUrl, signingIn, awaitingApproval, signedOut, serverDown, hosting, vpnRanges,
+    joined, network, serverUrl, signingIn, awaitingApproval, signedOut, serverDown, rejoining, hosting, vpnRanges,
     machines, discoverable, trustOwnMachines, found, requests, paired, offerDiscovery,
     thisMachine, ownerAccount, accountLabel, machineOf, peerMark, networkLabel, status,
     reset, touch, signIn, cancelSignIn, joinWithKey, joinWithInvite, hostStep, checkReachable, leave, addRange, removeRange, isLargeRange,

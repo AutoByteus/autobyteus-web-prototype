@@ -15,6 +15,8 @@
         :class="voiceInputStore.isRecording ? 'animate-pulse bg-red-500' : 'bg-blue-500'"
       ></span>
       <span>{{ voiceStatusText }}</span>
+      <!-- extensions-ui-516 (design): said after ~2 s of transcribing, while the voice program may still be starting. -->
+      <span v-if="slow" class="font-normal text-blue-700/90" data-testid="voice-status-slow">· {{ slowText }}</span>
     </div>
     <span v-if="voiceInputStore.isRecording" class="tabular-nums text-[0.6875rem] text-current/80">
       {{ recordingDurationLabel }}
@@ -27,6 +29,15 @@ import { computed, onUnmounted, ref, watch } from 'vue';
 import { useVoiceInputStore } from '~/stores/voiceInputStore';
 
 const voiceInputStore = useVoiceInputStore();
+const slow = ref(false);
+const slowText = 'Starting the speech model. The first use can take up to 30 seconds.';
+let slowTimer: ReturnType<typeof setTimeout> | null = null;
+watch(() => voiceInputStore.isTranscribing, (transcribing) => {
+  if (slowTimer) clearTimeout(slowTimer);
+  slow.value = false;
+  if (transcribing) slowTimer = setTimeout(() => { slow.value = true; }, 2000);
+});
+onUnmounted(() => { if (slowTimer) clearTimeout(slowTimer); });
 
 const recordingElapsedSeconds = ref(0);
 let recordingStartedAt = 0;

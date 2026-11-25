@@ -138,9 +138,9 @@ const addByCode = async (): Promise<void> => {
   if (listed) { duplicate.value = listed.name; return }
   busy.value = true
   const name = NODE_NAMES[code.nodeId] ?? 'new-node'
-  const baseUrl = `http://${code.address}:29695`
+  const baseUrl = `http://${code.address.includes(':') ? code.address : `${code.address}:29695`}`
   try {
-    codeStep.value = t('nodes.nodeCode.stepReach', { address: code.address })
+    codeStep.value = t('nodes.nodeCode.stepReach', { address: code.address.replace(/:\d+$/, '') })
     await later(900)
     ;(window as any).__designNetworkWorld?.()?.addOwnedNode({ nodeId: code.nodeId, name, address: baseUrl })
     codeStep.value = t('nodes.nodeCode.stepOwner', { name })

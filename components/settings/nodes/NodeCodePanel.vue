@@ -78,7 +78,7 @@ async function make(): Promise<void> {
   busy.value = true
   used.value = false
   await new Promise((done) => setTimeout(done, 500))
-  const { text, code } = makeNodeCode(props.nodeId, props.address)
+  const { text, code } = makeNodeCode(props.nodeId, props.address.includes(':') ? props.address : `${props.address}:29695`)
   made.value = { text, qr: await toQrCodeDataUrl(text), setupCode: code.setupCode, expiresAt: Date.parse(code.expiresAt) }
   busy.value = false
   if (ticker) clearInterval(ticker)

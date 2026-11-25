@@ -13,6 +13,9 @@ const result = (store: any, outcome: string, transcript = '') =>
   store.setLatestResult({ source: 'memory-search', outcome, transcript, detectedLanguage: transcript ? 'en' : null, error: null, diagnostics: null })
 
 let timer: ReturnType<typeof setTimeout> | null = null
+// extensions-ui-516 (design): the first transcription after the voice program starts is slow (~30 s measured; 5 s here), so the
+// slow note shows; later ones take 0.9 s.
+let warm = false
 const clear = () => { if (timer) { clearTimeout(timer); timer = null } }
 
 export const isMemorySearchVoice = (store: any, action: string, args: any[]): boolean =>
@@ -45,5 +48,6 @@ export const memorySearchVoice = (store: any, action: string, args: any[]): void
     result(store, 'transcript-ready', TRANSCRIPT)
     if (target?.isCurrent()) target.appendTranscript(TRANSCRIPT)
     store.isTranscribing = false; store.recordingSource = null; store.transcriptTarget = null
-  }, 900)
+  }, warm ? 900 : 5000)
+  warm = true
 }
