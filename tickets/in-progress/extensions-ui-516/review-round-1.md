@@ -2,6 +2,13 @@
 
 For the founder. Status: **awaiting your review**; nothing here is approved yet. After your confirmation the Product Team captures the final screenshots and writes `ui-ux-spec.md`.
 
+## Round 7 (2026-11-25): pairing is the only collaboration control (your decision)
+
+Confirmed by the Solution Designer against pairing-contract §2–§4, §9 (DC-065…DC-069; captures `review-captures/round-7/`).
+- **No Remote collaboration switch** on This node or on node rows. A node not paired shows **Pair**; a paired node shows **Paired**, one line "Agents on both nodes can work together." and **Unpair**.
+- **One control per action:** one Unpair confirmation below the row for every paired node; the crossed-link icon is gone; "Found on your private network" lists only nodes not in your Nodes list (your own node pairs from its row, one click when the network found it).
+- **Remove** says "This AutoByteus gives up control of it… To control it again, paste a new access code." (and "It is unpaired first." for a paired node).
+
 ## Round 5 (2026-11-25): every use case checked against the contracts
 
 The Solution Designer validated the design use case by use case (Voice Input V1–V13, Private Network T1–T10) against the contracts of 2026-11-25 and the probes: **all 23 match**. Coverage table with a capture per visible step: `round-5-coverage.md`; captures `review-captures/round-5/`.
