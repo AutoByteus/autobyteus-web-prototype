@@ -60,3 +60,4 @@ Invented by hand for this ticket: the catalog entries (descriptions from `extens
 - 2026-11-25 Solution Designer's validation of round 5: 19 spines match; corrections V2, V4, V13, T9 applied (DC-058…DC-061), changed captures sent for re-check.
 - 2026-11-25 the Solution Designer confirmed all 23 spines (@ bfe0d0df) and added V13-05 (DC-062). Round 5 sent to the founder; `Awaiting User Review`.
 - 2026-11-25 founder (phone screenshot): narrow-width fixes inside the changed area (DC-063). Asked whether the Settings page's narrow layout (menu list over the content, all sections) should be designed too: outside this ticket.
+- 2026-11-25 founder asked for a mobile breadcrumb pattern on Settings: designed for every Settings section (DC-064, captures review-captures/round-6/); this widens the ticket to the Settings page shell (told the Solution Designer).

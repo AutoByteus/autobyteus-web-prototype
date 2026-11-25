@@ -4,10 +4,72 @@
     data-testid="settings-page-layout"
     :style="navigationWidthStyle"
   >
+    <!-- extensions-ui-516 (design, founder 2026-11-25): on narrow widths a compact header with a breadcrumb replaces the
+         stacked section list; the list opens as a sheet from "Settings" or the menu button. -->
+    <div class="sticky top-0 z-30 flex shrink-0 items-center gap-1 border-b border-gray-200 bg-white px-2 py-1.5 md:hidden" data-testid="settings-narrow-header">
+      <button
+        type="button"
+        class="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        :aria-label="$t('settings.page.backAriaLabel')"
+        data-testid="settings-narrow-back"
+        @click="goBackToWorkspace"
+      ><Icon icon="heroicons:arrow-left-20-solid" class="h-5 w-5" /></button>
+      <nav class="min-w-0 flex-1" :aria-label="$t('settings.page.breadcrumb')">
+        <ol class="flex min-w-0 items-center gap-1 text-sm">
+          <li class="flex-shrink-0">
+            <button type="button" class="rounded px-1 py-1 text-gray-500 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="settings-breadcrumb-root" @click="openSectionSheet">{{ $t('settings.page.title') }}</button>
+          </li>
+          <li class="flex-shrink-0 text-gray-300" aria-hidden="true">›</li>
+          <li class="min-w-0 truncate font-semibold text-gray-900" aria-current="page" data-testid="settings-breadcrumb-current">{{ $t(sectionLabelKey(activeSection)) }}</li>
+        </ol>
+      </nav>
+      <button
+        ref="sectionMenuButtonRef"
+        type="button"
+        class="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-md text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        :aria-label="$t('settings.page.allSections')"
+        :aria-expanded="sectionSheetOpen"
+        aria-controls="settings-section-sheet"
+        data-testid="settings-narrow-menu"
+        @click="sectionSheetOpen ? closeSectionSheet() : openSectionSheet()"
+      ><Icon :icon="sectionSheetOpen ? 'heroicons:x-mark-20-solid' : 'heroicons:bars-3-20-solid'" class="h-5 w-5" /></button>
+    </div>
+    <Teleport to="body">
+      <div v-if="sectionSheetOpen" class="fixed inset-0 z-50 md:hidden" data-testid="settings-section-sheet-overlay" @keydown.esc="closeSectionSheet">
+        <div class="absolute inset-0 bg-black/30" aria-hidden="true" @click="closeSectionSheet"></div>
+        <div id="settings-section-sheet" class="absolute inset-x-0 top-0 max-h-[85dvh] overflow-y-auto rounded-b-2xl bg-white pb-2 shadow-xl" role="dialog" aria-modal="true" :aria-label="$t('settings.page.allSections')" data-testid="settings-section-sheet">
+          <div class="sticky top-0 flex items-center justify-between border-b border-gray-100 bg-white px-4 py-3">
+            <span class="text-base font-semibold text-gray-900">{{ $t('settings.page.title') }}</span>
+            <button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-md text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-label="$t('settings.page.closeSections')" @click="closeSectionSheet"><Icon icon="heroicons:x-mark-20-solid" class="h-5 w-5" /></button>
+          </div>
+          <ul class="px-2 pt-2">
+            <li v-for="section in NARROW_SECTIONS" :key="section.id">
+              <button
+                type="button"
+                class="flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-[15px] text-gray-800 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                :class="activeSection === section.id ? 'bg-gray-100 font-semibold text-gray-900' : ''"
+                :aria-current="activeSection === section.id ? 'page' : undefined"
+                :data-testid="`settings-sheet-${section.id}`"
+                @click="chooseSection(section.id)"
+              >
+                {{ $t(section.labelKey) }}
+                <Icon v-if="activeSection === section.id" icon="heroicons:check-20-solid" class="h-5 w-5 text-blue-600" />
+              </button>
+            </li>
+          </ul>
+          <div class="mx-2 mt-1 border-t border-gray-100 pt-1">
+            <button type="button" class="flex w-full items-center gap-2 rounded-lg px-3 py-3 text-[15px] text-gray-600 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="goBackToWorkspace">
+              <Icon icon="heroicons:arrow-left-20-solid" class="h-5 w-5" />{{ $t('settings.page.backLabel') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
     <!-- Sidebar -->
     <div
       ref="navigationRef"
-      class="settings-page-navigation-resizable max-h-[38dvh] w-full shrink-0 overflow-y-auto border-b border-gray-200 bg-white md:max-h-none md:border-b-0"
+      class="settings-page-navigation-resizable hidden max-h-[38dvh] w-full shrink-0 overflow-y-auto border-b border-gray-200 bg-white md:block md:max-h-none md:border-b-0"
       data-testid="settings-page-navigation"
       :inert="isNavigationInteractionHidden || undefined"
       :aria-hidden="isNavigationInteractionHidden ? 'true' : undefined"
@@ -269,7 +331,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
+import { computed, nextTick, ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { Icon } from '@iconify/vue';
 import { useServerStore } from '~/stores/serverStore';
@@ -319,6 +381,35 @@ const windowNodeContextStore = useWindowNodeContextStore();
 const activeSection = ref<SettingsSection>('api-keys');
 const serverSettingsMode = ref<ServerSettingsMode>('quick');
 const isEmbeddedWindow = computed(() => windowNodeContextStore.isEmbeddedWindow);
+// ---- extensions-ui-516 (design): the narrow header's breadcrumb and section sheet.
+const NARROW_SECTIONS: Array<{ id: SettingsSection; labelKey: string }> = [
+  { id: 'api-keys', labelKey: 'settings.page.sections.apiKeys' },
+  { id: 'agent-runtimes', labelKey: 'settings.page.sections.agentRuntimes' },
+  { id: 'model-routing', labelKey: 'settings.page.sections.modelRouting' },
+  { id: 'token-usage', labelKey: 'settings.page.sections.tokenUsage' },
+  { id: 'display', labelKey: 'settings.page.sections.display' },
+  { id: 'language', labelKey: 'settings.page.sections.language' },
+  { id: 'local-tools', labelKey: 'settings.page.sections.localTools' },
+  { id: 'mcp-servers', labelKey: 'settings.page.sections.mcpServers' },
+  { id: 'application-packages', labelKey: 'settings.page.sections.applicationPackages' },
+  { id: 'agent-packages', labelKey: 'settings.page.sections.agentPackages' },
+  { id: 'server-settings', labelKey: 'settings.page.sections.serverSettings' },
+  { id: 'extensions', labelKey: 'settings.page.sections.extensions' },
+  { id: 'updates', labelKey: 'settings.page.sections.updates' },
+];
+const sectionLabelKey = (id: SettingsSection): string => NARROW_SECTIONS.find((section) => section.id === id)?.labelKey ?? 'settings.page.title';
+const sectionSheetOpen = ref(false);
+const sectionMenuButtonRef = ref<HTMLButtonElement | null>(null);
+const openSectionSheet = async (): Promise<void> => {
+  sectionSheetOpen.value = true;
+  await nextTick();
+  (document.querySelector('[data-testid="settings-section-sheet"] [aria-current="page"]') as HTMLButtonElement | null)?.focus();
+};
+const closeSectionSheet = (): void => { sectionSheetOpen.value = false; void nextTick(() => sectionMenuButtonRef.value?.focus()); };
+const chooseSection = (id: SettingsSection): void => {
+  if (id === 'server-settings') selectServerSettings('quick'); else activeSection.value = id;
+  closeSectionSheet();
+};
 const {
   navigationWidth,
   isResizing,
