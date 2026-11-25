@@ -1,11 +1,11 @@
 /**
- * extensions-ui-516 (design only): the node code (pairing-contract.md §6a, founder's decision 2026-11-24).
+ * extensions-ui-516 (design only): the access code (pairing-contract.md §6, founder 2026-11-25).
  *
- * The target node makes it in its own UI (its first-run page while it has no owner, or "Let another desktop control this
- * node" by its existing owner); the owner pastes it on the desktop that should control the node (Nodes → Add node). It is
- * today's setup code made in the UI, plus how to reach the node: `abps_` + base64url of { nodeId, address, setupCode,
- * expiresAt }. One-time, 30 minutes, never logged. Every value here is invented; codes used in this browser are remembered
- * in localStorage so a first-run page in another tab sees its code being used (the desktop's paste, simulated).
+ * Made on the node's own computer by `autobyteus-docker access-code <node>` (today's setup-code, renamed; the start command
+ * prints one too), or in an AutoByteus that controls the node (This node → Make an access code); pasted in AutoByteus under
+ * Nodes → Add node, or on a "Needs connecting" row. Today's setup code plus how to reach the node: `abps_` + base64url of
+ * { nodeId, address, setupCode, expiresAt }. One-time, 30 minutes, never logged. Every value here is invented; codes used
+ * in this browser are remembered in localStorage.
  */
 
 export interface NodeCode { nodeId: string; address: string; setupCode: string; expiresAt: string }
@@ -17,7 +17,9 @@ const pick = (n: number) => Array.from({ length: n }, () => alphabet[Math.floor(
 const b64url = (text: string) => btoa(text).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
 
 /** Nodes this design knows by ID, as a desktop learns their names when it reaches them. */
+export const DOCKER_TWO_ID = 'srv_d0ck3rTw0N0deAcc3ssC0deKp4Vm8Rt2Xw'
 export const NODE_NAMES: Record<string, string> = {
+  [DOCKER_TWO_ID]: 'autobyteus-node-2',
   srv_bu1ldS3rv3rN0deC0deQx7Rf2Lm9PdZt4Wn: 'build-server',
   srv_m9VFq2Lw: 'Embedded Node',
 }

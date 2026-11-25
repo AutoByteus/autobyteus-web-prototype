@@ -47,9 +47,21 @@
       </div>
     </div>
 
-    <p class="mt-5 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm font-medium text-blue-900">
-      {{ t('settings.components.settings.DockerNodeStartGuideCard.nextStep') }}
-    </p>
+    <!-- extensions-ui-516 (design, pairing-contract §6): the node's access code connects it; joining the private network comes after, in the node's own window -->
+    <div class="mt-5 rounded-xl border border-blue-100 bg-blue-50 px-4 py-3 text-sm text-blue-900" data-testid="docker-guide-connect">
+      <p class="font-semibold">{{ t('nodes.dockerGuide.connectTitle') }}</p>
+      <ol class="mt-1.5 list-decimal space-y-1 pl-5 leading-6">
+        <li>{{ t('nodes.dockerGuide.connectStep1') }}</li>
+        <li>{{ t('nodes.dockerGuide.connectStep2') }}</li>
+        <li>{{ t('nodes.dockerGuide.connectStep3') }}</li>
+      </ol>
+      <p class="mt-2 leading-6 text-blue-800">{{ t('nodes.dockerGuide.phone') }}</p>
+    </div>
+    <!-- Design reference only: what the command prints, with a code this reference accepts (the product shows nothing here). -->
+    <div class="mt-3 rounded-xl border border-dashed border-slate-300 px-4 py-3" data-testid="docker-guide-simulate">
+      <button type="button" class="text-xs font-medium text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="simulate">{{ t('nodes.dockerGuide.simulate') }}</button>
+      <pre v-if="printed" class="mt-2 whitespace-pre-wrap break-all rounded-lg bg-slate-900 px-3 py-2 text-xs leading-5 text-slate-100" data-testid="docker-guide-printed"><code>{{ printed }}</code></pre>
+    </div>
     <p v-if="copyError" class="mt-2 text-xs text-red-700" data-testid="docker-launcher-copy-error">
       {{ copyError }}
     </p>
@@ -59,12 +71,19 @@
 <script setup lang="ts">
 import { computed, defineComponent, h, ref } from 'vue';
 import { useLocalization } from '~/composables/useLocalization';
+import { DOCKER_TWO_ID, makeNodeCode } from '~/prototype/nodes/nodeCode';
 import {
   buildDockerNodeLauncherCommands,
   type DockerLauncherCommand,
 } from '~/utils/dockerNodeLauncherCommands';
 
 const { t } = useLocalization();
+/** Design only: the terminal output of `autobyteus-docker access-code autobyteus-node-2`, with a code the reference's Add node accepts. */
+const printed = ref('');
+const simulate = (): void => {
+  const { text } = makeNodeCode(DOCKER_TWO_ID, 'localhost:8002');
+  printed.value = `$ autobyteus-docker access-code autobyteus-node-2\n${t('nodes.dockerGuide.printedHead', { name: 'autobyteus-node-2' })}\n\n${text}\n\n${t('nodes.dockerGuide.printedTail')}`;
+};
 const commands = buildDockerNodeLauncherCommands();
 const copiedCommandId = ref<string | null>(null);
 const copyError = ref<string | null>(null);

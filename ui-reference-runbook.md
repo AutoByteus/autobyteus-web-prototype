@@ -1,6 +1,6 @@
 # UI Reference Runbook
 
-## extensions-ui-516 (design, round 1: Settings → Extensions on the extension foundation, Manage Nodes → private network, the first-run page; autobyteus-516)
+## extensions-ui-516 (design, round 1: Settings → Extensions on the extension foundation, Manage Nodes → private network and pairing, the access code; autobyteus-516)
 
 ```bash
 corepack pnpm install --ignore-workspace --frozen-lockfile
@@ -10,8 +10,8 @@ corepack pnpm dev --port 4516
 The desktop app's own window: `localStorage.setItem('autobyteus.prototype.context', 'electron_internal')` and, for the Nodes list, `localStorage.setItem('autobyteus.prototype.scenario', 'nodes_user')`, then reload. A Docker node's window: context `electron_external` (Voice Input is not listed there). Chinese: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`. State is in memory: a reload resets it.
 
 - **Settings → Extensions**: <http://127.0.0.1:4516/settings?section=extensions>. Starting state `autobyteus.prototype.extensions` = (none) Voice Input on, Private Network not installed · `fresh` · `voice_failed` · `voice_update` · `voice_not_available` (this computer is linux-arm64) · `network_joined` · `network_trust` · `network_headscale` · `network_headscale_down` · `network_host` · `network_approval` · `network_signed_out` · `network_vpn`. A host domain starting with `home.` fails the first reachability check.
-- **Manage Nodes**: <http://127.0.0.1:4516/nodes?nodeTab=manage> with `nodes_user` and `network_joined`: Found on your private network (linux-box Pair, bob-laptop Connect: bob allows after about 7 s, raspberrypi flagged, carol-server Allow/Reject), the two switches.
-- **First-run page of a new node** (design route): <http://127.0.0.1:4516/first-run>; paste a code from Add a machine. `autobyteus.prototype.firstRun` = `owned` or `remote` for the closed states.
+- **Manage Nodes**: <http://127.0.0.1:4516/nodes?nodeTab=manage> with `nodes_user` and `network_joined`: Found on your private network (bob-laptop Pair: bob accepts after about 7 s; raspberrypi flagged, declines; carol-server Accept/Reject), the two switches; Nodes list with Pair, Paired + Unpair (linux-box pairs from its row in one click).
+- **Access code** (pairing-contract §6, no first-run page): Nodes → Docker Guide → "Design reference only: show what access-code prints" gives a working code for `autobyteus-node-2`; paste it under Manage Nodes → Add node → "Have an access code? Paste it instead", or on a "Needs connecting" row.
 - The world is invented: `stores/extensionsStore.ts` (each node's extension manager and the two server parts), `stores/privateNetworkStore.ts` (the private network, discovery, pairing), `prototype/extensions/extensionPages.ts` (the two extensions' own pages, real sandboxed frames and bridge). A paired node joins the simulated network of nodes (`prototype/nodes/network-world.mjs` `addPrivateNode`). Times are shortened (pairing about 4.5 s, the first transcription about 5 s).
 - Review notes: `tickets/in-progress/extensions-ui-516/review-round-1.md`; changes: `design-change-log.md`.
 

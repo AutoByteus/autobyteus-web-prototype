@@ -6,6 +6,7 @@ export type DockerLauncherCommandId =
   | 'macos-linux-install'
   | 'windows-powershell-install'
   | 'direct-new-container'
+  | 'direct-access-code'
   | 'direct-upgrade-all'
   | 'direct-destroy-all'
   | 'direct-destroy-node'
@@ -89,6 +90,17 @@ export function buildDockerNodeLauncherCommands(): DockerLauncherCommand[] {
       titleKey: 'settings.components.settings.DockerNodeStartGuideCard.commands.newContainer.title',
       descriptionKey: 'settings.components.settings.DockerNodeStartGuideCard.commands.newContainer.description',
       command: buildDirectLauncherCommand(['new-container']),
+      isPrimary: true,
+    },
+    // extensions-ui-516 (design, pairing-contract §6, founder 2026-11-25): today's setup-code, renamed; it prints an access code.
+    {
+      id: 'direct-access-code',
+      phase: 'direct',
+      platform: 'installed-cli',
+      platformLabelKey: INSTALLED_CLI_PLATFORM_LABEL_KEY,
+      titleKey: 'settings.components.settings.DockerNodeStartGuideCard.commands.accessCode.title',
+      descriptionKey: 'settings.components.settings.DockerNodeStartGuideCard.commands.accessCode.description',
+      command: buildDirectLauncherCommand(['access-code', '<node-name>']),
       isPrimary: true,
     },
     {

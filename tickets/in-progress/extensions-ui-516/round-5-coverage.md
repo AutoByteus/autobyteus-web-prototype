@@ -76,7 +76,7 @@ Live: https://normys-macbook-pro.tail0347f8.ts.net:8445/settings?section=extensi
 | T6 | Accept → pairs as teammate | "Pairing…" → carol-server teammate row | T6-05-accepting, T6-06-carol-teammate-row |
 | T6 | Cancel → withdrawn on B | Not visible here (B shows the request gone) | — |
 | T7 collaborate | Signed requests between peers | Not visible: server only; the paired row's agents list (e.g. "2 Agents") as today | T5-03 |
-| T8 access code | First-run page (that computer, no owner; G4 on Docker) | Step 1 Join | T8-01-first-run-join |
+| T8 access code | ~~First-run page~~ (dropped 2026-11-25, DC-071: `autobyteus-docker access-code <node>` prints it; R8-01, R8-02) | ~~Step 1 Join~~ | ~~T8-01~~ |
 | T8 | Installs Private Network first (G2) → Sign in | "Installing Private Network on this node first (about 30 MB)…" | T8-02-first-run-installing-private-network |
 | T8 | Make an access code {nodeId, address, setupCode, expiresAt} | Access code with QR, Copy, "Expires in 30:00 · works once", warning | T8-03-first-run-access-code |
 | T8 | Pasted under Nodes → Add node → expiry checked → reached through the app's node relay (G1) | "Reaching the node at 100.88.80.80…" then "Connecting to build-server as its owner…" | T8-04-add-node-reaching-the-node |
@@ -99,8 +99,8 @@ Also designed (private-network-types.md): Headscale server unreachable, hosting 
 
 ## Open (kept as designed, listed in the spec)
 
-- Founder: install ends Off or On; translated name / description and the page's language; Reinstall and Open folder; one click for your own nodes (or Pair + Accept); the first-run page offering "Let my private network find this node".
-- Provisional: Tailscale sign-in, auth keys, device approval, key expiry, sharing; G1 (the app reaching a private address through its own node's relay; visible only as "Reaching the node…"); G2 (first-run installs the extension; needs the internet); G4 ("only this computer" on a Docker node's first-run page); hosting.
+- Founder: install ends Off or On; translated name / description and the page's language; Reinstall and Open folder; one click for your own nodes (or Pair + Accept); ~~the first-run page offering "Let my private network find this node"~~ (first-run page dropped, DC-071).
+- Provisional: Tailscale sign-in, auth keys, device approval, key expiry, sharing; G1 (the app reaching a private address through its own node's relay; visible only as "Reaching the node…"); ~~G2 (first-run installs the extension)~~ and ~~G4~~ closed with the first-run page (DC-071); hosting.
 - Corrections applied 2026-11-25 (your validation): V2, V4, V13 (offline, newer contract), T9 (Unpair); DC-058…DC-061.
 
 ## Result
