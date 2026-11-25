@@ -67,3 +67,4 @@ Invented by hand for this ticket: the catalog entries (descriptions from `extens
 - 2026-11-25 Solution Designer confirmed round 7 (@ 45263084) with one wording addition for Remove (DC-069, no re-check needed). Round 7 goes to the founder; `Awaiting User Review`.
 - 2026-11-25 founder decision via the Solution Designer (pairing-contract §6): no first-run page; `autobyteus-docker access-code` prints the access code; joining the network moves to the node's own window (DC-071, captures review-captures/round-8/); G2, G4 closed. Sent to the Solution Designer for T1, T8.
 - 2026-11-25 Solution Designer confirmed round 8 (@ a3b4c649) against T1, T8 and §6; server-install command added to the row text (DC-072, no re-check needed). `Awaiting User Review`.
+- 2026-11-25 founder: the access code is a field of the Add node form, not a second mode (DC-073, captures R8-10, R8-11); sent to the Solution Designer.
