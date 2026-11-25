@@ -2,6 +2,13 @@
 
 For the founder. Status: **awaiting your review**; nothing here is approved yet. After your confirmation the Product Team captures the final screenshots and writes `ui-ux-spec.md`.
 
+## Round 8 (2026-11-25): the access code comes from the node's command (your decision)
+
+Confirmed by the Solution Designer against T1, T8 and pairing-contract §6 (DC-070…DC-072; captures `review-captures/round-8/`).
+- **No first-run page.** `autobyteus-docker access-code <node>` (or `node dist/node-access-cli.js access-code --data-dir <dir>` on a server install) prints the access code; new-container prints one at the end. Paste it under Nodes → Add node, or on a "Needs connecting" row.
+- **Docker Guide** shows the command and the three connect steps (a dashed "Design reference only" box shows what it prints, with a code the reference accepts).
+- **Joining the private network** happens afterwards in the node's own window: Settings → Extensions → Private Network.
+
 ## Round 7 (2026-11-25): pairing is the only collaboration control (your decision)
 
 Confirmed by the Solution Designer against pairing-contract §2–§4, §9 (DC-065…DC-069; captures `review-captures/round-7/`).
