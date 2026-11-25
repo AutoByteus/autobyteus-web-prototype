@@ -42,6 +42,8 @@
             <p v-if="privateMark" class="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs leading-4 text-slate-500" :data-testid="`node-private-${row.key}`">
               <span class="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 font-medium text-slate-600">{{ t('nodes.privateNetwork.rowTag') }}</span>
               <span v-if="privateMark.role === 'teammate'">{{ t('nodes.privateNetwork.rowTeammate', { account: privateNetwork.accountLabel(privateMark.account) }) }}</span>
+              <button v-if="!unpairAsk && !unpairing" type="button" class="rounded px-1 font-medium text-slate-600 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500" :data-testid="`node-unpair-${row.key}`" @click="unpairAsk = true">{{ t('nodes.privateNetwork.unpair') }}</button>
+              <span v-if="unpairing" class="inline-flex items-center gap-1.5" role="status"><span class="h-3 w-3 animate-spin rounded-full border-2 border-slate-200 border-t-slate-500 motion-reduce:animate-none" aria-hidden="true" />{{ t('nodes.privateNetwork.unpairing') }}</span>
             </p>
           </template>
         </div>
@@ -106,7 +108,7 @@
         </button>
         <span v-else-if="access.supported() && !row.isEmbedded && row.entryIds.length" class="inline-block h-8 w-8" aria-hidden="true" />
         <button
-          v-if="!row.isEmbedded"
+          v-if="!row.isEmbedded && privateMark?.role !== 'teammate'"
           type="button"
           class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-red-50 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
           :title="t(k('row.removeNode'), { name: row.name })"
@@ -120,6 +122,12 @@
       </div>
     </div>
 
+    <!-- extensions-ui-516 (design): Unpair confirmation, below the row like its notices -->
+    <div v-if="unpairAsk && privateMark" class="mx-5 mb-3.5 -mt-0.5 flex max-w-2xl sm:ml-[2.75rem] flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-700" role="alertdialog" :aria-label="t('nodes.privateNetwork.unpair')" :data-testid="`node-unpair-confirm-${row.key}`">
+      <span class="min-w-0 flex-1">{{ privateMark.role === 'own' ? t('nodes.privateNetwork.unpairOwn', { name: row.name }) : t('nodes.privateNetwork.unpairTeammate', { name: row.name, account: privateNetwork.accountLabel(privateMark.account) }) }}</span>
+      <button type="button" class="h-7 rounded-md bg-red-600 px-2.5 font-medium text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500" :data-testid="`node-unpair-yes-${row.key}`" @click="unpair">{{ t('nodes.privateNetwork.unpair') }}</button>
+      <button type="button" class="h-7 rounded-md border border-slate-300 bg-white px-2.5 font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="unpairAsk = false">{{ t('nodes.privateNetwork.cancel') }}</button>
+    </div>
     <!-- notices: one shape for the checking line, the fixing line and the server notice -->
     <div v-if="view.checking || view.line || serverAsked || needsConnecting" class="space-y-2 px-5 pb-3.5 -mt-0.5 empty:hidden sm:pl-[2.75rem]" aria-live="polite">
       <NodeAccessNotice v-if="needsConnecting" :row="row" />
@@ -200,6 +208,9 @@ import { causeText, failureText, NODES_PAGE_KEY } from '~/utils/nodeConnectionEr
 const props = defineProps<{ row: NodeRow }>()
 const privateNetwork = usePrivateNetworkStore()
 const privateMark = computed(() => privateNetwork.peerMark(props.row.nodeId))
+const unpairAsk = ref(false)
+const unpairing = ref(false)
+const unpair = async (): Promise<void> => { unpairAsk.value = false; unpairing.value = true; try { await privateNetwork.unpair(props.row.nodeId!) } finally { unpairing.value = false } }
 // The node's server version is an owner read: a node this desktop has no key for cannot answer it (autobyteus-437).
 const serverAsked = computed(() => !props.row.isEmbedded && !needsConnecting.value)
 const emit = defineEmits<{ guide: [] }>()

@@ -23,12 +23,12 @@ export interface CatalogEntry {
   name: string;
   description: string;
   version: string;
-  contractVersion: 1;
+  contractVersion: number;
   offeredOn: 'desktop-node' | 'every-node';
   platforms: string[];
 }
 export type ExtensionState =
-  | { kind: 'notAvailableHere' }
+  | { kind: 'notAvailableHere'; reason?: 'platform' | 'contract' }
   | { kind: 'notInstalled' }
   | { kind: 'installing'; message: string; percent: number | null; isUpdate: boolean; removing?: boolean }
   | { kind: 'installed'; version: string; enabled: boolean; ready: boolean; message: string; updateAvailable: boolean }
@@ -49,6 +49,10 @@ const CATALOG: CatalogEntry[] = [
   },
 ];
 const UPDATE_VERSION = '1.1.0';
+const SUPPORTED_CONTRACT = 1;
+/** V13: a catalog entry that needs a newer contract (starting state `voice_newer_contract`). */
+const NEWER_CONTRACT = typeof window !== 'undefined' && localStorage.getItem('autobyteus.prototype.extensions') === 'voice_newer_contract';
+if (NEWER_CONTRACT) Object.assign(CATALOG[0]!, { version: '2.0.0', contractVersion: 2 });
 
 type NodeKey = string; // 'embedded' or a remote entry ID
 interface NodeRecord { platform: string; states: Record<ExtensionId, ExtensionState>; logs: Record<ExtensionId, string[]>; voiceLanguage: 'auto' | 'en' | 'zh' }
@@ -64,7 +68,7 @@ function seedEmbedded(): NodeRecord {
   const seed = startState();
   const legacy = legacyScenario();
   let voice: ExtensionState = voiceReady();
-  if (seed === 'fresh' || legacy === 'extension_missing') voice = { kind: 'notInstalled' };
+  if (seed === 'fresh' || seed === 'voice_newer_contract' || legacy === 'extension_missing') voice = { kind: 'notInstalled' };
   if (seed === 'voice_failed' || legacy === 'extension_error') voice = { kind: 'failed', message: 'The speech model download stopped before it finished: its checksum did not match. Nothing was changed; install again to retry.' };
   if (seed === 'voice_update') voice = { kind: 'installed', version: '1.0.0', enabled: true, ready: true, updateAvailable: true, message: 'Ready.' };
   const platform = seed === 'voice_not_available' ? 'linux-arm64' : 'darwin-arm64';
@@ -150,7 +154,9 @@ export const useExtensionsStore = defineStore('extensions', {
       return CATALOG
         .filter((entry) => entry.offeredOn === 'every-node' || this.windowKey === 'embedded')
         .map((entry) => {
-          const stored = entry.platforms.includes(record.platform) ? record.states[entry.id] : { kind: 'notAvailableHere' } as ExtensionState;
+          // An extension this AutoByteus cannot run (its contract version is newer) or with no build for this platform (contract §6).
+          const stored: ExtensionState = entry.contractVersion > SUPPORTED_CONTRACT ? { kind: 'notAvailableHere', reason: 'contract' }
+            : entry.platforms.includes(record.platform) ? record.states[entry.id] : { kind: 'notAvailableHere', reason: 'platform' };
           // Private Network's card says what its status() says now (joined, waiting for approval, signed out, server down, own VPN…).
           if (entry.id === 'private-network' && stored.kind === 'installed' && stored.enabled && !/^Starting/.test(stored.message)) {
             return { entry, state: { ...stored, ...usePrivateNetworkStore().status } };
@@ -179,6 +185,8 @@ export const useExtensionsStore = defineStore('extensions', {
      * extensions keep working. Starting state `localStorage['autobyteus.prototype.catalog'] = 'unverified'`.
      */
     catalogUnverified(): boolean { return typeof window !== 'undefined' && localStorage.getItem('autobyteus.prototype.catalog') === 'unverified'; },
+    /** The catalog could not be reached (offline): installed extensions keep working; Install / Update wait. `catalog = 'offline'`. */
+    catalogOffline(): boolean { return typeof window !== 'undefined' && localStorage.getItem('autobyteus.prototype.catalog') === 'offline'; },
   },
 
   actions: {
@@ -207,12 +215,12 @@ export const useExtensionsStore = defineStore('extensions', {
       const version = isUpdate ? UPDATE_VERSION : entry.version;
       const steps: Array<[string, number | null, number]> = id === 'voice-input'
         ? [
-          [`Downloading ${entry.name} ${version}`, null, 800],
-          ...(isUpdate ? [] : [0, 18, 39, 61, 82, 100].map((p) => [`Downloading the voice runtime and speech model · ${(1.7 * p / 100).toFixed(1)} of 1.7 GB`, p, 450] as [string, number, number])),
-          [isUpdate ? 'Keeping your voice runtime, speech model and language' : 'Unpacking the voice runtime', null, 1000],
-          // Measured (contract-probe use-case run): a fresh install takes ~75 s, mostly this step, which reports no percent.
-          ...(isUpdate ? [] : [['Preparing the speech model', null, 5000] as [string, number | null, number]]),
-          ['Checking that the voice runtime starts', null, 1000],
+          // The package is small (a few KB); the ~2 GB arrives in the runtime's own prepare step, which reports no byte total
+          // (measured: runtime archive 3,365 bytes; use-case probe: only "Preparing the speech model" for ~75 s).
+          [`Downloading ${entry.name} ${version}`, null, 900],
+          isUpdate
+            ? ['Keeping your voice runtime, speech model and language', null, 1500] as [string, number | null, number]
+            : ['Preparing the speech model (downloads about 2 GB once; this can take a few minutes)', null, 7000] as [string, number | null, number],
         ]
         : [
           [`Downloading ${entry.name} ${version}`, null, 800],
@@ -236,8 +244,11 @@ export const useExtensionsStore = defineStore('extensions', {
       const state = this.recordOf(key).states[id];
       if (state.kind !== 'installed') return;
       const network = usePrivateNetworkStore();
-      this.set(id, { ...state, enabled: true, ready: false, message: id === 'voice-input' ? 'Starting the voice runtime…' : 'Starting the network program…' }, key);
       this.log(id, 'start: turned on', key);
+      // Voice Input's status() is ready as soon as its runtime and model are present; its program starts on the first
+      // transcription (the slow note covers that). Private Network's start step runs its network program first.
+      if (id === 'voice-input') { this.set(id, { ...state, enabled: true, ready: true, message: 'Ready.' }, key); return; }
+      this.set(id, { ...state, enabled: true, ready: false, message: 'Starting the network program…' }, key);
       await later(1500);
       const now = this.recordOf(key).states[id];
       if (now.kind !== 'installed' || !now.enabled) return;

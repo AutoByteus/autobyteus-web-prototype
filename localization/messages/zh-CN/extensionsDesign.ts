@@ -205,6 +205,14 @@ const extensionsDesignMessages: TranslationCatalog = {
   'firstRun.join.headscale.for': '将作为 {{user}} 的机器加入。',
   'voiceInput.status.slow': '正在启动语音模型。第一次使用最多可能需要 30 秒。',
   'extensions.page.catalogUnverified': 'AutoByteus 无法验证扩展列表：其签名不匹配。在验证通过前，无法安装或更新任何扩展；已安装的扩展可继续使用。',
+  'extensions.state.needsNewerApp': '不可用',
+  'extensions.card.needsNewerApp': '需要更新版本的 AutoByteus。请先更新 AutoByteus，再安装 {{name}} {{version}}。',
+  'extensions.page.catalogOffline': '无法获取扩展列表。已安装的扩展可继续使用；请稍后再试。',
+  'nodes.privateNetwork.unpair': '取消配对',
+  'nodes.privateNetwork.unpairing': '正在取消配对…',
+  'nodes.privateNetwork.cancel': '取消',
+  'nodes.privateNetwork.unpairOwn': '取消与 {{name}} 的配对？此处的智能体将不再与它协作。它仍保留在你的节点列表中，你可以再次配对。',
+  'nodes.privateNetwork.unpairTeammate': '取消与 {{name}} 的配对？它将从你的列表中移除；{{account}} 的节点需要重新请求配对。',
 };
 
 export default extensionsDesignMessages;

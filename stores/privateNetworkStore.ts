@@ -46,7 +46,7 @@ export interface IncomingRequest {
   account: string
   phase: 'idle' | 'allowing'
 }
-export interface PairedPeer { nodeId: string; name: string; account: string; role: 'own' | 'teammate' }
+export interface PairedPeer { nodeId: string; name: string; account: string; role: 'own' | 'teammate'; machineId: string }
 export interface Hosting { domain: string; port: number; certificateUntil: string; reachable: boolean | null }
 
 /** Accounts: Tailscale shows e-mail logins; a Headscale server (yours or hosted) shows its user names. */
@@ -302,7 +302,7 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     const address = `http://${machineOf(node.machineId)?.address ?? '100.88.99.99'}:29695`
     const world = (window as any).__designNetworkWorld?.()
     world?.addPrivateNode({ nodeId: node.nodeId, name: node.name, address })
-    paired.value = [...paired.value, { nodeId: node.nodeId, name: node.name, account, role }]
+    paired.value = [...paired.value, { nodeId: node.nodeId, name: node.name, account, role, machineId: node.machineId }]
     // Your own node is already in the list (its owner credential lives there): pairing adds the peer relation only.
     const list = useNodeListStore()
     await list.open()
@@ -349,6 +349,20 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   }
   function reject(nodeId: string): void { requests.value = requests.value.filter((r) => r.nodeId !== nodeId) }
 
+  /**
+   * Unpair (pairing-contract §1: the peer record is removed by Unpair). Your own node stays in the Nodes list with this
+   * AutoByteus's control (only the peer relation ends); a teammate's node leaves the list. Both can be found again.
+   */
+  async function unpair(nodeId: string): Promise<void> {
+    const peer = paired.value.find((p) => p.nodeId === nodeId)
+    if (!peer) return
+    await later(900)
+    ;(window as any).__designNetworkWorld?.()?.removePrivatePeer(nodeId)
+    paired.value = paired.value.filter((p) => p.nodeId !== nodeId)
+    if (!found.value.some((n) => n.nodeId === nodeId)) found.value = [...found.value, { nodeId, name: peer.name, machineId: peer.machineId, kind: peer.role === 'own' ? 'own' : 'teammate', phase: 'idle' }]
+    await useNodeListStore().open()
+  }
+
   const peerMark = (nodeId: string | null) => (nodeId ? paired.value.find((p) => p.nodeId === nodeId) ?? null : null)
 
   return {
@@ -357,6 +371,6 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     thisMachine, ownerAccount, accountLabel, machineOf, peerMark, networkLabel, status,
     reset, touch, signIn, cancelSignIn, joinWithKey, joinWithInvite, hostStep, checkReachable, leave, addRange, removeRange, isLargeRange,
     makeInvite,
-    setDiscoverable, dismissDiscoveryOffer, setTrust, pair, connect, cancelConnect, allow, reject,
+    setDiscoverable, dismissDiscoveryOffer, setTrust, pair, connect, cancelConnect, allow, reject, unpair,
   }
 })

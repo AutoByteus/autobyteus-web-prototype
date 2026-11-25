@@ -2,7 +2,7 @@
 
 For the Solution Designer's spine-by-spine validation. Authorities: `extension-contract.md`, `pairing-contract.md` and `use-case-spines.md` as rewritten on 2026-11-25. Captures are in `review-captures/round-5/` (1440×900, English, interim review aids, not normative); each was taken by walking the spine through the UI reference from its normal entry. "Not visible: server only" means the step has no screen of its own; its result shows in the next visible step.
 
-Live: https://normys-macbook-pro.tail0347f8.ts.net:8445/settings?section=extensions (opens as the desktop app's own window). Starting states: `localStorage['autobyteus.prototype.extensions']` = `fresh`, `voice_update`, `voice_failed`, `voice_not_available`, `extension_broken`, `state_unreadable`, `network_joined`, `network_trust`, `network_headscale`, `network_headscale_down`, `network_host`, `network_approval`, `network_signed_out`, `network_restarting`, `network_vpn`; `localStorage['autobyteus.prototype.catalog'] = 'unverified'`; context `electron_external` = a Docker node's window, scenario `nodes_access` = a window without owner access.
+Live: https://normys-macbook-pro.tail0347f8.ts.net:8445/settings?section=extensions (opens as the desktop app's own window). Starting states: `localStorage['autobyteus.prototype.extensions']` = `fresh`, `voice_update`, `voice_failed`, `voice_not_available`, `extension_broken`, `state_unreadable`, `network_joined`, `network_trust`, `network_headscale`, `network_headscale_down`, `network_host`, `network_approval`, `network_signed_out`, `network_restarting`, `network_vpn`, `voice_newer_contract`; `localStorage['autobyteus.prototype.catalog'] = 'unverified'` or `'offline'`; context `electron_external` = a Docker node's window, scenario `nodes_access` = a window without owner access.
 
 ## Part V — Voice Input (Stage 1)
 
@@ -15,13 +15,12 @@ Live: https://normys-macbook-pro.tail0347f8.ts.net:8445/settings?section=extensi
 | V1 | Platform filter → notAvailableHere | "Not available on this computer" + platforms offered | V1-05-not-available-on-this-computer |
 | V1 | Credential attached, GraphQL owner check, catalog verify, state.json, status() | Not visible: server only | — |
 | V2 install | Card Install | Not installed + Install | V2-01-not-installed |
-| V2 | Package download, sha256, unpack, compare with catalog | Not visible: server only (shows as the first progress message, "Downloading Voice Input 1.0.0") | — |
-| V2 | Server part install with progress (percent) | "Downloading the voice runtime and speech model · x of 1.7 GB" with percent | V2-02-installing-download-percent |
-| V2 | Progress without percent (the long step) | "Preparing the speech model", moving bar | V2-03-installing-preparing-speech-model-no-percent |
+| V2 | Package download (a few KB), sha256, unpack, compare with catalog | "Downloading Voice Input 1.0.0", moving bar (no percent) | V2-02-installing-downloading-the-package |
+| V2 | Server part install: the runtime's prepare step downloads ~2 GB, no byte total | "Preparing the speech model (downloads about 2 GB once; this can take a few minutes)", moving bar, no percent. (The percent bar stays for extensions that report `progress.percent`: Private Network, T1-01.) | V2-03-installing-preparing-speech-model-no-percent |
 | V2 | state.json {enabled:false} → installed | Off, "Installed. Turn it on to use it." (open: Off or On) | V2-04-installed-off |
 | V3 adopt | One-time move, first start fetches the small package, adopts | Not visible: server / desktop start only | — |
 | V3 | Result: still On, English, folder | Card On; page: Language English, Voice runtime 0.3.0, model, folder | V3-01-adopted-on-english-folder |
-| V4 on/off | Switch on → Not ready "Starting the voice runtime…" → On | Card states | V4-01-off, V4-02-turning-on-not-ready-starting, V4-03-on |
+| V4 on/off | Switch on → On at once (status() is ready when runtime and model are present; the program starts on the first transcription, where the slow note shows, V5-03 / V8-03) | Card states | V4-01-off, V4-02-on-at-once, V4-03-off-again |
 | V4 | Off stops the worker; actions refused while off | Not visible: server only (microphone button hidden while not ready: V5-05) | — |
 | V5 dictate | Microphone button on a voice surface | Memory search (composer, Task, Project use the same button) | V5-01-microphone-button-memory-search |
 | V5 | Recorder (this window, chosen microphone) | Recording, Cancel recording | V5-02-recording |
@@ -42,8 +41,10 @@ Live: https://normys-macbook-pro.tail0347f8.ts.net:8445/settings?section=extensi
 | V12 | A broken extension → its card Failed; the others work | Private Network Failed with its message, Voice Input On | V12-01-broken-extension-failed-other-works |
 | V12 | Unreadable state.json → everything Off | Voice Input Off | V12-02-unreadable-state-everything-off |
 | V13 | No owner / phone credential | as V1-03 / V1-04 | V1-03, V1-04 |
-| V13 | Tampered catalog / other signing key | **Proposed:** red note "AutoByteus could not verify the list of extensions…"; Install / Update disabled; installed ones keep working | V13-01-catalog-unverified |
-| V13 | Wrong checksum / mismatched package / unsupported contract | The card's Failed state with the message, Install again | V13-02-install-refused-checksum-failed |
+| V13 | Tampered catalog / other signing key | Red note "AutoByteus could not verify the list of extensions…"; Install / Update disabled; installed ones keep working | V13-01-catalog-unverified |
+| V13 | Catalog cannot be reached (offline) | Calm note "Could not reach the list of extensions. Installed extensions keep working; try again later."; Install / Update disabled | V13-03-catalog-not-reachable |
+| V13 | Wrong checksum / package differs from the catalog | The card's Failed state with the message, Install again | V13-02-install-refused-checksum-failed |
+| V13 | Unsupported contract version | "Not available" + "Needs a newer AutoByteus. Update AutoByteus to install Voice Input 2.0.0." (contract §6 notAvailableHere) | V13-04-needs-a-newer-autobyteus |
 | V13 | Inherited property as an action name | Not visible: server only | — |
 
 ## Part T — Private Network (Tailscale / Headscale)
@@ -83,8 +84,12 @@ Live: https://normys-macbook-pro.tail0347f8.ts.net:8445/settings?section=extensi
 | T8 | Used / expired / malformed refused | "This access code was already used. Make a new one on the node." | T8-07-used-access-code-refused |
 | T8 | A node with an owner: This node → Make an access code (owner windows only) | Access code panel in This node | T8-08-this-node-make-an-access-code |
 | T8 | Then Pair as T5 | as T5 | T5-02, T5-03 |
-| T9 | Unpair (peer records deleted) | Today's Remove on the paired row (confirmation) | T9-01-unpair-remove-dialog |
-| T9 | Leave → program logs out, state forgotten | Inline confirmation; then "Join a private network" again | T9-02-leave-confirmation, T9-03-left-join-again |
+| T9 | Unpair your own node (peer records deleted) | **Unpair** on the row's "Private network" mark → inline confirmation "Unpair linux-box? Agents here stop working with it. It stays in your Nodes list, and you can pair it again." | T9-01-unpair-own-node-confirmation |
+| T9 | Your node stays listed with control, mark gone, "Agents here can't work with linux-box yet"; found again | Nodes list; Found on your private network | T9-02-own-node-unpaired-stays-in-list, T9-03-found-again |
+| T9 | Unpair a teammate's node | "Unpair carol-server? It leaves your list; carol's node has to ask to pair again." (a teammate row has no Remove) | T9-04-unpair-teammate-confirmation |
+| T9 | The teammate row leaves the list (found again) | Nodes list | T9-05-teammate-unpaired-row-gone |
+| T9 | Leave → program logs out, state forgotten | Inline confirmation; then "Join a private network" again | T9-06-leave-confirmation, T9-07-left-join-again |
+| T9 | Remove (today's): takes a node out of the list | Unchanged (trash icon) on nodes you control | — |
 | T9 | Machine removed in the admin console (~11 s) | Not visible as a control: the machine disappears from My machines / Found | — |
 | T10 trust | Switch on (confirmation with the risk) | Confirmation; On with the risk line | T10-01-trust-confirmation, T10-02-trust-on-risk |
 | T10 | /pair without grant from your account → paired | Not visible: server only (the node appears paired in the list) | — |
@@ -95,4 +100,4 @@ Also designed (private-network-types.md): Headscale server unreachable, hosting 
 
 - Founder: install ends Off or On; translated name / description and the page's language; Reinstall and Open folder; one click for your own nodes (or Pair + Accept); the first-run page offering "Let my private network find this node".
 - Provisional: Tailscale sign-in, auth keys, device approval, key expiry, sharing; G1 (the app reaching a private address through its own node's relay; visible only as "Reaching the node…"); G2 (first-run installs the extension; needs the internet); G4 ("only this computer" on a Docker node's first-run page); hosting.
-- Proposed here, for your check: the V13 unverified-catalog note (V13-01).
+- Corrections applied 2026-11-25 (your validation): V2, V4, V13 (offline, newer contract), T9 (Unpair); DC-058…DC-061.

@@ -23,7 +23,9 @@
 
         <!-- what the extension says now -->
         <p v-if="state.kind === 'notAvailableHere'" class="mt-3 text-sm text-gray-500" :data-testid="`extension-not-available-${entry.id}`">
-          {{ t('extensions.card.notAvailable', { platform: platformLabel(store.platform), platforms: entry.platforms.map(platformLabel).join(', ') }) }}
+          {{ state.reason === 'contract'
+            ? t('extensions.card.needsNewerApp', { name: entry.name, version: entry.version })
+            : t('extensions.card.notAvailable', { platform: platformLabel(store.platform), platforms: entry.platforms.map(platformLabel).join(', ') }) }}
         </p>
         <div v-else-if="state.kind === 'installing'" class="mt-3 max-w-xl" :data-testid="`extension-progress-${entry.id}`" role="status" aria-live="polite">
           <div class="flex items-center justify-between gap-3 text-sm">
@@ -171,7 +173,7 @@ const platformLabel = (platform: string) => (PLATFORM_KEYS[platform] ? t(`extens
 const pill = computed<{ label: string; class: string; dot?: string }>(() => {
   const s = props.state;
   switch (s.kind) {
-    case 'notAvailableHere': return { label: t('extensions.state.notAvailable'), class: 'bg-gray-100 text-gray-600' };
+    case 'notAvailableHere': return { label: s.reason === 'contract' ? t('extensions.state.needsNewerApp') : t('extensions.state.notAvailable'), class: 'bg-gray-100 text-gray-600' };
     case 'notInstalled': return { label: t('extensions.state.notInstalled'), class: 'bg-gray-100 text-gray-700' };
     case 'installing': return { label: s.removing ? t('extensions.state.removing') : s.isUpdate ? t('extensions.state.updating') : t('extensions.state.installing'), class: 'bg-blue-50 text-blue-700' };
     case 'failed': return { label: t('extensions.state.failed'), class: 'bg-red-50 text-red-700', dot: 'bg-red-500' };

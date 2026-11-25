@@ -205,6 +205,14 @@ const extensionsDesignMessages: TranslationCatalog = {
   'firstRun.join.headscale.for': 'Joins as {{user}}’s machine.',
   'voiceInput.status.slow': 'Starting the speech model. The first use can take up to 30 seconds.',
   'extensions.page.catalogUnverified': 'AutoByteus could not verify the list of extensions: its signature does not match. Nothing can be installed or updated until it can; installed extensions keep working.',
+  'extensions.state.needsNewerApp': 'Not available',
+  'extensions.card.needsNewerApp': 'Needs a newer AutoByteus. Update AutoByteus to install {{name}} {{version}}.',
+  'extensions.page.catalogOffline': 'Could not reach the list of extensions. Installed extensions keep working; try again later.',
+  'nodes.privateNetwork.unpair': 'Unpair',
+  'nodes.privateNetwork.unpairing': 'Unpairing…',
+  'nodes.privateNetwork.cancel': 'Cancel',
+  'nodes.privateNetwork.unpairOwn': 'Unpair {{name}}? Agents here stop working with it. It stays in your Nodes list, and you can pair it again.',
+  'nodes.privateNetwork.unpairTeammate': 'Unpair {{name}}? It leaves your list; {{account}}’s node has to ask to pair again.',
 };
 
 export default extensionsDesignMessages;

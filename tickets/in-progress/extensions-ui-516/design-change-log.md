@@ -108,3 +108,7 @@ Provisional, add to the spec: "Only this computer can use this page" on a **Dock
 | DC-057 | "This AutoByteus does not control {node} yet." replaces "This desktop is not the owner…" (no "desktop"). | vocabulary |
 
 Coverage of every spine step: `round-5-coverage.md`; captures `review-captures/round-5/`.
+| DC-058 | V2: Voice Input's install shows "Downloading Voice Input 1.0.0" (the small package) then "Preparing the speech model (downloads about 2 GB once; this can take a few minutes)", both with the moving bar and no percent (the runtime's prepare step reports no byte total). | Solution Designer, measured |
+| DC-059 | V4: turning Voice Input on goes Off → On at once (no "Starting…"); Private Network keeps its start step. | Solution Designer, CP |
+| DC-060 | V13: an unsupported contract version is "Not available" with "Needs a newer AutoByteus…"; a catalog that cannot be reached shows a calm note (Install / Update disabled); the unverified catalog note is confirmed. | Solution Designer, contract §6 |
+| DC-061 | T9: **Unpair** on a private-network row (inline confirmation): your own node stays listed with control and is found again; a teammate's row leaves the list (it has no Remove). Remove stays today's action for taking a node out of the list. | Solution Designer, pairing-contract §0–§1 |

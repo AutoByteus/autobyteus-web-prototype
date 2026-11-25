@@ -29,7 +29,12 @@
         <p>{{ t('extensions.page.catalogUnverified') }}</p>
       </div>
 
-      <ExtensionCard v-for="item in (canManage ? store.list : [])" :key="item.entry.id" :entry="item.entry" :state="item.state" :can-manage="canManage" :can-install="!store.catalogUnverified">
+      <div v-if="canManage && store.catalogOffline && !store.catalogUnverified" class="flex items-start gap-2.5 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm leading-6 text-gray-700" role="status" data-testid="extensions-catalog-offline">
+        <svg class="mt-1 h-4 w-4 flex-shrink-0 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 7.5a10 10 0 0 1 14 0M5.5 10.5a6.5 6.5 0 0 1 9 0M8 13.5a3 3 0 0 1 4 0M3 3l14 14" stroke-linecap="round" /></svg>
+        <p>{{ t('extensions.page.catalogOffline') }}</p>
+      </div>
+
+      <ExtensionCard v-for="item in (canManage ? store.list : [])" :key="item.entry.id" :entry="item.entry" :state="item.state" :can-manage="canManage" :can-install="!store.catalogUnverified && !store.catalogOffline">
         <template #after-page>
           <VoiceMicrophonePanel v-if="item.entry.id === 'voice-input'" :usable="item.state.kind === 'installed' && item.state.enabled && item.state.ready" />
           <PrivateNetworkFindingPanel v-else-if="item.entry.id === 'private-network'" />

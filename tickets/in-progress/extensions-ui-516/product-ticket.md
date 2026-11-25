@@ -57,3 +57,4 @@ Invented by hand for this ticket: the catalog entries (descriptions from `extens
 - 2026-11-25 founder's wording for the node code applied (DC-048); no re-check needed (Solution Designer).
 - 2026-11-25 founder's naming: "access code" (访问码) for the node code (DC-049); no re-check needed (Solution Designer).
 - 2026-11-25 round 5 (Solution Designer): the whole design brought onto the rewritten contracts (DC-050…DC-057); every spine V1–V13, T1–T10 walked through the UI reference; coverage table round-5-coverage.md, captures review-captures/round-5/ (73). Sent to the Solution Designer for spine-by-spine validation; the round goes to the founder only after it confirms every spine.
+- 2026-11-25 Solution Designer's validation of round 5: 19 spines match; corrections V2, V4, V13, T9 applied (DC-058…DC-061), changed captures sent for re-check.
