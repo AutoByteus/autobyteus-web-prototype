@@ -55,3 +55,4 @@ Invented by hand for this ticket: the catalog entries (descriptions from `extens
 - 2026-11-24 founder's decision (via the Solution Designer): node code made on the target node, pasted on the desktop (pairing-contract §6a). Round 4 built (DC-043…DC-046, captures review-captures/round-4/); sent to the Solution Designer for its check.
 - 2026-11-24 the Solution Designer confirmed round 4 (a: This node is right; b: owner-only → DC-047; c: name read after reaching). Spec note: G4 (Docker first-run locality) provisional. Round 4 sent to the founder; `Awaiting User Review`.
 - 2026-11-25 founder's wording for the node code applied (DC-048); no re-check needed (Solution Designer).
+- 2026-11-25 founder's naming: "access code" (访问码) for the node code (DC-049); no re-check needed (Solution Designer).
