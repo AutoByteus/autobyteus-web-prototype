@@ -1,6 +1,18 @@
-# Review: AutoByteus Extensions UI (autobyteus-516), rounds 1–4
+# Review: AutoByteus Extensions UI (autobyteus-516), rounds 1–5
 
 For the founder. Status: **awaiting your review**; nothing here is approved yet. After your confirmation the Product Team captures the final screenshots and writes `ui-ux-spec.md`.
+
+## Round 5 (2026-11-25): every use case checked against the contracts
+
+The Solution Designer validated the design use case by use case (Voice Input V1–V13, Private Network T1–T10) against the contracts of 2026-11-25 and the probes: **all 23 match**. Coverage table with a capture per visible step: `round-5-coverage.md`; captures `review-captures/round-5/`.
+
+What changed since round 4:
+- **Pair / Accept:** Pair for every found node; someone else's node waits for their Accept ("Waiting for bob to accept", Cancel; "bob declined", Pair again); incoming "carol-server, added by carol, wants to pair" with Accept / Reject. **Unpair** on a paired row (your node stays listed; a teammate's leaves).
+- **Invite code** shows whose machine joins before joining; the **first-run page** installs Private Network first.
+- **Voice Input:** install shows "Downloading Voice Input" then "Preparing the speech model (downloads about 2 GB once…)" without a percent (measured); turning on is On at once; the "starting the speech model" note also where you dictate.
+- **Refusals:** an extension needing a newer AutoByteus is "Not available"; an installed one keeps working with "1.1.0 needs a newer AutoByteus"; an unreachable extension list shows a calm note; a tampered one a red note.
+
+Your open decisions (kept as designed): install ends Off or On; translations; Reinstall and Open Folder; one click for your own nodes; the first-run "find this node" offer.
 
 ## Round 4 (2026-11-24): your node code, confirmed by the Solution Designer
 

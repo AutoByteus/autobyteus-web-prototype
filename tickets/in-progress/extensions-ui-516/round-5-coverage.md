@@ -2,7 +2,7 @@
 
 For the Solution Designer's spine-by-spine validation. Authorities: `extension-contract.md`, `pairing-contract.md` and `use-case-spines.md` as rewritten on 2026-11-25. Captures are in `review-captures/round-5/` (1440×900, English, interim review aids, not normative); each was taken by walking the spine through the UI reference from its normal entry. "Not visible: server only" means the step has no screen of its own; its result shows in the next visible step.
 
-Live: https://normys-macbook-pro.tail0347f8.ts.net:8445/settings?section=extensions (opens as the desktop app's own window). Starting states: `localStorage['autobyteus.prototype.extensions']` = `fresh`, `voice_update`, `voice_failed`, `voice_not_available`, `extension_broken`, `state_unreadable`, `network_joined`, `network_trust`, `network_headscale`, `network_headscale_down`, `network_host`, `network_approval`, `network_signed_out`, `network_restarting`, `network_vpn`, `voice_newer_contract`; `localStorage['autobyteus.prototype.catalog'] = 'unverified'` or `'offline'`; context `electron_external` = a Docker node's window, scenario `nodes_access` = a window without owner access.
+Live: https://normys-macbook-pro.tail0347f8.ts.net:8445/settings?section=extensions (opens as the desktop app's own window). Starting states: `localStorage['autobyteus.prototype.extensions']` = `fresh`, `voice_update`, `voice_failed`, `voice_not_available`, `extension_broken`, `state_unreadable`, `network_joined`, `network_trust`, `network_headscale`, `network_headscale_down`, `network_host`, `network_approval`, `network_signed_out`, `network_restarting`, `network_vpn`, `voice_newer_contract`, `voice_update_newer_contract`; `localStorage['autobyteus.prototype.catalog'] = 'unverified'` or `'offline'`; context `electron_external` = a Docker node's window, scenario `nodes_access` = a window without owner access.
 
 ## Part V — Voice Input (Stage 1)
 
@@ -45,6 +45,7 @@ Live: https://normys-macbook-pro.tail0347f8.ts.net:8445/settings?section=extensi
 | V13 | Catalog cannot be reached (offline) | Calm note "Could not reach the list of extensions. Installed extensions keep working; try again later."; Install / Update disabled | V13-03-catalog-not-reachable |
 | V13 | Wrong checksum / package differs from the catalog | The card's Failed state with the message, Install again | V13-02-install-refused-checksum-failed |
 | V13 | Unsupported contract version | "Not available" + "Needs a newer AutoByteus. Update AutoByteus to install Voice Input 2.0.0." (contract §6 notAvailableHere) | V13-04-needs-a-newer-autobyteus |
+| V13 | Installed, the catalog's newer version needs a newer AutoByteus | The installed version keeps working; "1.1.0 needs a newer AutoByteus" in place of Update | V13-05-installed-newer-version-needs-newer-autobyteus |
 | V13 | Inherited property as an action name | Not visible: server only | — |
 
 ## Part T — Private Network (Tailscale / Headscale)
@@ -101,3 +102,7 @@ Also designed (private-network-types.md): Headscale server unreachable, hosting 
 - Founder: install ends Off or On; translated name / description and the page's language; Reinstall and Open folder; one click for your own nodes (or Pair + Accept); the first-run page offering "Let my private network find this node".
 - Provisional: Tailscale sign-in, auth keys, device approval, key expiry, sharing; G1 (the app reaching a private address through its own node's relay; visible only as "Reaching the node…"); G2 (first-run installs the extension; needs the internet); G4 ("only this computer" on a Docker node's first-run page); hosting.
 - Corrections applied 2026-11-25 (your validation): V2, V4, V13 (offline, newer contract), T9 (Unpair); DC-058…DC-061.
+
+## Result
+
+The Solution Designer confirmed all 23 spines (V1–V13, T1–T10) against extension-contract.md, pairing-contract.md, use-case-spines.md and the probes on 2026-11-25 (@ bfe0d0df), plus V13-05 (no re-check needed).

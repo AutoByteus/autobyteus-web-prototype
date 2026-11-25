@@ -18,6 +18,11 @@
             class="inline-flex items-center rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium leading-5 text-blue-700"
             :data-testid="`extension-update-badge-${entry.id}`"
           >{{ t('extensions.card.updateAvailable', { version: store.updateVersion }) }}</span>
+          <span
+            v-if="state.kind === 'installed' && state.updateNeedsNewerApp"
+            class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium leading-5 text-gray-600"
+            :data-testid="`extension-update-needs-newer-app-${entry.id}`"
+          >{{ t('extensions.card.updateNeedsNewerApp', { version: store.updateVersion }) }}</span>
         </div>
         <p class="mt-1.5 max-w-2xl text-sm leading-6 text-gray-600" lang="en">{{ entry.description }}</p>
 

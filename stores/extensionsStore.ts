@@ -12,7 +12,7 @@ import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
  *
  * Starting state (no visible control): `localStorage['autobyteus.prototype.extensions']` =
  *   (none) Voice Input installed and on · `fresh` nothing installed · `voice_failed` · `voice_update` (1.1.0 offered) ·
- *   `voice_not_available` (this computer is linux-arm64) · `extension_broken` · `state_unreadable` · `network_*` (Private Network installed and on; the network's state
+ *   `voice_not_available` (this computer is linux-arm64) · `voice_newer_contract` · `voice_update_newer_contract` · `extension_broken` · `state_unreadable` · `network_*` (Private Network installed and on; the network's state
  *   is chosen in stores/privateNetworkStore.ts: joined on Tailscale, Headscale, hosting, approval, signed out, own VPN …).
  * The older `autobyteus.prototype.scenario` values `extension_error` and `extension_missing` still choose a failed / not installed Voice Input.
  */
@@ -31,7 +31,7 @@ export type ExtensionState =
   | { kind: 'notAvailableHere'; reason?: 'platform' | 'contract' }
   | { kind: 'notInstalled' }
   | { kind: 'installing'; message: string; percent: number | null; isUpdate: boolean; removing?: boolean }
-  | { kind: 'installed'; version: string; enabled: boolean; ready: boolean; message: string; updateAvailable: boolean }
+  | { kind: 'installed'; version: string; enabled: boolean; ready: boolean; message: string; updateAvailable: boolean; updateNeedsNewerApp?: boolean }
   | { kind: 'failed'; message: string };
 export interface NodeExtension { entry: CatalogEntry; state: ExtensionState }
 
@@ -71,6 +71,8 @@ function seedEmbedded(): NodeRecord {
   if (seed === 'fresh' || seed === 'voice_newer_contract' || legacy === 'extension_missing') voice = { kind: 'notInstalled' };
   if (seed === 'voice_failed' || legacy === 'extension_error') voice = { kind: 'failed', message: 'The speech model download stopped before it finished: its checksum did not match. Nothing was changed; install again to retry.' };
   if (seed === 'voice_update') voice = { kind: 'installed', version: '1.0.0', enabled: true, ready: true, updateAvailable: true, message: 'Ready.' };
+  // The catalog's newer version needs a newer AutoByteus: the installed version keeps working; no Update (contract §1, §6).
+  if (seed === 'voice_update_newer_contract') voice = { kind: 'installed', version: '1.0.0', enabled: true, ready: true, updateAvailable: false, updateNeedsNewerApp: true, message: 'Ready.' };
   const platform = seed === 'voice_not_available' ? 'linux-arm64' : 'darwin-arm64';
   let network: ExtensionState = seed.startsWith('network_')
     ? { kind: 'installed', version: '0.1.0', enabled: true, ready: true, updateAvailable: false, message: 'Ready.' }

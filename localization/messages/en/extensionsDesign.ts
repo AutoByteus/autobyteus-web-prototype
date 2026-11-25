@@ -213,6 +213,7 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.privateNetwork.cancel': 'Cancel',
   'nodes.privateNetwork.unpairOwn': 'Unpair {{name}}? Agents here stop working with it. It stays in your Nodes list, and you can pair it again.',
   'nodes.privateNetwork.unpairTeammate': 'Unpair {{name}}? It leaves your list; {{account}}’s node has to ask to pair again.',
+  'extensions.card.updateNeedsNewerApp': '{{version}} needs a newer AutoByteus',
 };
 
 export default extensionsDesignMessages;

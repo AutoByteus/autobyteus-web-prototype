@@ -112,3 +112,6 @@ Coverage of every spine step: `round-5-coverage.md`; captures `review-captures/r
 | DC-059 | V4: turning Voice Input on goes Off → On at once (no "Starting…"); Private Network keeps its start step. | Solution Designer, CP |
 | DC-060 | V13: an unsupported contract version is "Not available" with "Needs a newer AutoByteus…"; a catalog that cannot be reached shows a calm note (Install / Update disabled); the unverified catalog note is confirmed. | Solution Designer, contract §6 |
 | DC-061 | T9: **Unpair** on a private-network row (inline confirmation): your own node stays listed with control and is found again; a teammate's row leaves the list (it has no Remove). Remove stays today's action for taking a node out of the list. | Solution Designer, pairing-contract §0–§1 |
+| DC-062 | V13: an installed extension whose catalog's newer version needs a newer AutoByteus keeps working; the card shows "1.1.0 needs a newer AutoByteus" in place of Update. | Solution Designer, contract §1, §6 |
+
+All 23 spines confirmed by the Solution Designer (2026-11-25).

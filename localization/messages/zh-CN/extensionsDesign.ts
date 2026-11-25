@@ -213,6 +213,7 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.privateNetwork.cancel': '取消',
   'nodes.privateNetwork.unpairOwn': '取消与 {{name}} 的配对？此处的智能体将不再与它协作。它仍保留在你的节点列表中，你可以再次配对。',
   'nodes.privateNetwork.unpairTeammate': '取消与 {{name}} 的配对？它将从你的列表中移除；{{account}} 的节点需要重新请求配对。',
+  'extensions.card.updateNeedsNewerApp': '{{version}} 需要更新版本的 AutoByteus',
 };
 
 export default extensionsDesignMessages;
