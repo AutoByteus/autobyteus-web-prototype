@@ -13,9 +13,10 @@
           <RemoteCollaborationIcon v-if="plan.kind !== 'remove'" size-class="h-6 w-6 flex-shrink-0 text-emerald-600" />
           {{ t(k(TEXT[kind].title), { name: plan.target.name }) }}
         </h3>
-        <p class="mt-2 text-sm text-gray-600">{{ t(k(TEXT[kind].lead), { name: plan.target.name }) }}</p>
+        <p class="mt-2 text-sm text-gray-600">{{ t(k(TEXT[kind].lead), { name: plan.target.name }) }}<template v-if="plan.kind === 'remove' && removePaired">{{ ' ' }}{{ t(k('dialog.removePaired')) }}</template></p>
 
-        <div class="mt-4 space-y-4">
+        <!-- extensions-ui-516 (design, Solution Designer 2026-11-25): Remove says what it does in words; its steps show only when one fails -->
+        <div v-if="plan.kind !== 'remove' || plan.phase === 'failed'" class="mt-4 space-y-4">
           <section v-for="group in groups" :key="group.id" :data-testid="`node-change-group-${group.id}`">
             <h4 v-if="group.title" class="text-xs font-semibold text-slate-500">{{ group.title }}</h4>
             <ul :class="group.title ? 'mt-1.5 space-y-2' : 'space-y-2'">
@@ -152,6 +153,8 @@ const errorOf = (line: Line): string => {
   return failureText(t, line.error!, { node: p.target.name, name: line.step.name })
 }
 
+/** A paired node is unpaired first when it is removed (its peer records on both sides go). */
+const removePaired = computed(() => Boolean(plan.value?.steps.some((step) => step.id === 'removeHere' || step.id === 'removeThere')))
 const removeLeftThere = computed(() => plan.value?.kind === 'remove'
   && plan.value.steps.some((step) => step.id === 'removeThere' && step.status === 'failed'))
 
