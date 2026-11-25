@@ -8,19 +8,19 @@
       <NodeNoticeIcon class="mt-0.5" tone="warn" />
       <p class="min-w-0 flex-1 leading-5">
         <span class="font-medium">{{ t(k('access.needsConnecting')) }}</span>
-        {{ ' ' }}{{ t(k('access.needsConnectingText'), { name: row.name }) }}
+        {{ ' ' }}{{ t('nodes.nodeCode.needsText', { name: row.name }) }}
       </p>
     </div>
     <form class="mt-2 flex flex-wrap items-center gap-2 pl-6" @submit.prevent="connect">
-      <label class="sr-only" :for="`setup-code-${row.key}`">{{ t(k('access.codeLabel'), { name: row.name }) }}</label>
+      <label class="sr-only" :for="`setup-code-${row.key}`">{{ t('nodes.nodeCode.codeLabel', { name: row.name }) }}</label>
       <input
         :id="`setup-code-${row.key}`"
         v-model="code"
         type="text"
         autocomplete="off"
         spellcheck="false"
-        class="h-8 w-56 rounded-md border border-amber-300 bg-white px-2 font-mono text-sm text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
-        :placeholder="t(k('access.codePlaceholder'))"
+        class="h-8 w-72 max-w-full rounded-md border border-amber-300 bg-white px-2 font-mono text-sm text-slate-900 focus:border-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-100"
+        :placeholder="t('nodes.nodeCode.pastePlaceholder')"
         :data-testid="`node-access-code-${row.key}`"
       >
       <button
@@ -38,14 +38,15 @@
 import { computed, ref } from 'vue'
 import NodeNoticeIcon from '~/components/settings/nodes/NodeNoticeIcon.vue'
 import { useLocalization } from '~/composables/useLocalization'
+import { isNodeCodeUsed, markNodeCodeUsed, readNodeCode } from '~/prototype/nodes/nodeCode'
 import { useNodeAccessStore } from '~/stores/nodeAccessStore'
 import { useNodeListStore } from '~/stores/nodeListStore'
 import type { NodeRow } from '~/stores/nodeRowStatus'
 import { causeText, NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
 
 /**
- * A remote or Docker node this desktop holds no credential for (autobyteus-437 NAS-02, NAS-30): "Needs connecting",
- * where to get a setup code on the node's computer, and the code field. Connected, the row is asked again.
+ * A remote or Docker node this AutoByteus holds no credential for (autobyteus-437 NAS-02, NAS-30): "Needs connecting",
+ * where to make an access code on the node (pairing-contract §6; no terminal), and the field to paste it. Connected, the row is asked again.
  */
 const props = defineProps<{ row: NodeRow }>()
 const { t } = useLocalization()
@@ -64,8 +65,15 @@ const connect = async (): Promise<void> => {
   busy.value = true
   error.value = ''
   try {
-    const result = await access.connect(entryId.value, code.value)
+    // extensions-ui-516 (design, pairing-contract §6): an access code made on the node replaces the terminal's setup code.
+    const read = readNodeCode(code.value)
+    if (!read) { error.value = t('nodes.nodeCode.errorNotCode'); return }
+    if (Date.parse(read.expiresAt) < Date.now()) { error.value = t('nodes.nodeCode.errorExpired'); return }
+    if (isNodeCodeUsed(read.setupCode)) { error.value = t('nodes.nodeCode.errorUsed'); return }
+    if (props.row.nodeId && read.nodeId !== props.row.nodeId) { error.value = t('nodes.nodeCode.errorOtherNode', { name: props.row.name }); return }
+    const result = await access.connect(entryId.value, read.setupCode)
     if (result.ok) {
+      markNodeCodeUsed(read.setupCode)
       code.value = ''
       list.askAgain(props.row.key)
       return
