@@ -42,22 +42,23 @@
 
     <!-- This node's two switches -->
     <div class="divide-y divide-slate-100 border-t border-slate-100">
-      <div class="flex items-start justify-between gap-6 px-5 py-4" data-testid="private-network-findable">
-        <div class="min-w-0">
-          <p id="pn-findable-label" class="text-sm font-medium text-slate-900">{{ t(k('findable.label')) }}</p>
-          <p class="mt-0.5 max-w-2xl text-sm leading-6 text-slate-500">{{ t(k('findable.help')) }}</p>
+      <!-- Label and switch share a line; the explanation runs the card's width below (narrow windows too). -->
+      <div class="px-5 py-4" data-testid="private-network-findable">
+        <div class="flex items-center justify-between gap-4">
+          <p id="pn-findable-label" class="min-w-0 text-sm font-medium text-slate-900">{{ t(k('findable.label')) }}</p>
+          <SwitchControl :on="network.discoverable" labelled-by="pn-findable-label" test-id="private-network-findable-switch" @toggle="network.setDiscoverable(!network.discoverable)" />
         </div>
-        <SwitchControl :on="network.discoverable" labelled-by="pn-findable-label" test-id="private-network-findable-switch" @toggle="network.setDiscoverable(!network.discoverable)" />
+        <p class="mt-0.5 max-w-2xl text-sm leading-6 text-slate-500">{{ t(k('findable.help')) }}</p>
       </div>
-      <div class="flex items-start justify-between gap-6 px-5 py-4" data-testid="private-network-trust">
-        <div class="min-w-0">
-          <p id="pn-trust-label" class="text-sm font-medium text-slate-900">{{ t(k('trust.label')) }}</p>
-          <p class="mt-0.5 max-w-2xl text-sm leading-6 text-slate-500">{{ network.trustOwnMachines ? t(k('trust.helpOn'), { account: network.ownerAccount }) : t(k('trust.helpOff')) }}</p>
-          <p v-if="network.trustOwnMachines" class="mt-2 flex max-w-2xl items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-900" data-testid="private-network-trust-warning">
-            <NodeNoticeIcon class="mt-0.5" tone="warn" />{{ t(k('trust.risk')) }}
-          </p>
+      <div class="px-5 py-4" data-testid="private-network-trust">
+        <div class="flex items-center justify-between gap-4">
+          <p id="pn-trust-label" class="min-w-0 text-sm font-medium text-slate-900">{{ t(k('trust.label')) }}</p>
+          <SwitchControl :on="network.trustOwnMachines" labelled-by="pn-trust-label" test-id="private-network-trust-switch" @toggle="toggleTrust" />
         </div>
-        <SwitchControl :on="network.trustOwnMachines" labelled-by="pn-trust-label" test-id="private-network-trust-switch" @toggle="toggleTrust" />
+        <p class="mt-0.5 max-w-2xl text-sm leading-6 text-slate-500">{{ network.trustOwnMachines ? t(k('trust.helpOn'), { account: network.ownerAccount }) : t(k('trust.helpOff')) }}</p>
+        <p v-if="network.trustOwnMachines" class="mt-2 flex max-w-2xl items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-900" data-testid="private-network-trust-warning">
+          <NodeNoticeIcon class="mt-0.5" tone="warn" />{{ t(k('trust.risk')) }}
+        </p>
       </div>
     </div>
 

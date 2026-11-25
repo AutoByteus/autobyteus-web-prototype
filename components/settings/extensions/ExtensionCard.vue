@@ -4,9 +4,9 @@
     :aria-labelledby="`extension-title-${entry.id}`"
     :data-testid="`extension-card-${entry.id}`"
   >
-    <div class="flex flex-col gap-4 p-5 sm:flex-row sm:items-start sm:justify-between">
-      <div class="min-w-0 flex-1">
-        <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+    <!-- The name row and the action share the first row at every width; the details span the card on narrow widths. -->
+    <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 p-5">
+        <div class="col-start-1 row-start-1 flex min-h-9 min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
           <h3 :id="`extension-title-${entry.id}`" class="text-lg font-semibold leading-7 text-gray-900">{{ entry.name }}</h3>
           <span class="text-sm tabular-nums text-gray-500" :data-testid="`extension-version-${entry.id}`">{{ shownVersion }}</span>
           <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium leading-5" :class="pill.class" :data-testid="`extension-state-${entry.id}`">
@@ -24,9 +24,18 @@
             :data-testid="`extension-update-needs-newer-app-${entry.id}`"
           >{{ t('extensions.card.updateNeedsNewerApp', { version: store.updateVersion }) }}</span>
         </div>
+      <div class="col-span-2 row-start-2 min-w-0 sm:col-span-1">
         <p class="mt-1.5 max-w-2xl text-sm leading-6 text-gray-600" lang="en">{{ entry.description }}</p>
 
         <!-- what the extension says now -->
+        <button
+          v-if="state.kind === 'installed' && state.updateAvailable"
+          type="button"
+          class="mt-3 rounded-md border border-blue-200 bg-white px-3.5 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60 sm:hidden"
+          :disabled="!canManage || !canInstall"
+          :data-testid="`extension-update-narrow-${entry.id}`"
+          @click="store.install(entry.id, true)"
+        >{{ t('extensions.card.update', { version: store.updateVersion }) }}</button>
         <p v-if="state.kind === 'notAvailableHere'" class="mt-3 text-sm text-gray-500" :data-testid="`extension-not-available-${entry.id}`">
           {{ state.reason === 'contract'
             ? t('extensions.card.needsNewerApp', { name: entry.name, version: entry.version })
@@ -71,7 +80,7 @@
       </div>
 
       <!-- the one action of this state -->
-      <div class="flex flex-shrink-0 flex-wrap items-center gap-3 sm:justify-end">
+      <div class="col-start-2 row-start-1 flex flex-shrink-0 flex-wrap items-center justify-end gap-3">
         <button
           v-if="state.kind === 'notInstalled'"
           type="button"
@@ -92,7 +101,7 @@
           <button
             v-if="state.updateAvailable"
             type="button"
-            class="rounded-md border border-blue-200 bg-white px-3.5 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60"
+            class="hidden rounded-md border border-blue-200 bg-white px-3.5 py-2 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60 sm:inline-flex"
             :disabled="!canManage || !canInstall"
             :data-testid="`extension-update-${entry.id}`"
             @click="store.install(entry.id, true)"

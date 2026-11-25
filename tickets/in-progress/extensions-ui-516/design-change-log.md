@@ -115,3 +115,4 @@ Coverage of every spine step: `round-5-coverage.md`; captures `review-captures/r
 | DC-062 | V13: an installed extension whose catalog's newer version needs a newer AutoByteus keeps working; the card shows "1.1.0 needs a newer AutoByteus" in place of Update. | Solution Designer, contract §1, §6 |
 
 All 23 spines confirmed by the Solution Designer (2026-11-25).
+| DC-063 | Narrow widths (founder's phone, 2026-11-25): the extension card keeps its action (Install, the switch) on the name row at every width, the details span the card below; on narrow widths **Update to x.y.z** moves under the description. Nodes → private network switches: label and switch on one line, the explanation full width below. The Settings page's own narrow layout (its menu list above the content) is today's product, outside this change. | founder |
