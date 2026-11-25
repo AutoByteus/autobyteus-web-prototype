@@ -93,7 +93,7 @@ const inOf = (row: RowRow, switchOn: boolean, facts: RowFacts, thisNodeId: strin
       ? { state: 'unreachable', cause: facts.probe.cause, host: hostOfAddress(row.windowAddress) }
       : { state: 'unreachable', cause: 'unreachable' }
   }
-  if (!facts.remote.switchOn) return { state: 'offThere' }
+  // extensions-ui-516 (design, pairing-contract §9): no node-level switch; a node works with exactly the nodes it is paired with.
   if (!facts.remote.peers.some((peer) => peer.nodeId === thisNodeId)) return { state: 'notRegisteredThere' }
   if (!switchOn) return { state: 'offHere' }
   if (!row.peer) return { state: 'notRegisteredHere' }
@@ -163,8 +163,9 @@ const lineOf = (
   if (!row.peer) {
     if (!row.nodeId) return null
     // The other node has registered this node, but this node has not registered it.
-    if (facts.remote?.switchOn && facts.remote.peers.some((peer) => peer.nodeId === thisNodeId)) return { kind: 'notRegisteredHereInfo', tone: 'info', fix: 'turnOn' }
-    return { kind: 'agentsOff', tone: 'info', fix: 'turnOn' }
+    if (facts.remote?.peers.some((peer) => peer.nodeId === thisNodeId)) return { kind: 'notRegisteredHereInfo', tone: 'info', fix: 'turnOn' }
+    // Not paired: the row's own Pair button says it; no line (pairing-contract §9).
+    return null
   }
   if (!switchOn) return null
   if (out.state === 'unreachable') return { kind: 'unreachable', tone: 'info', fix: 'checkAgain', cause: out.cause, host: out.host }

@@ -67,7 +67,8 @@ const EMBEDDED_OFFER = [
 ]
 
 const eight = (port) => [`http://localhost:${port}`, `http://host.docker.internal:${port}`, `http://172.17.0.4:${port}`]
-const node = (n) => ({ docker: false, switchOn: false, peers: [], offers: [], delayMs: 900, candidates: [], ...n })
+// extensions-ui-516 (design, pairing-contract §9): no node-level remote collaboration switch; every node answers its paired nodes.
+const node = (n) => ({ docker: false, peers: [], offers: [], delayMs: 900, candidates: [], ...n, switchOn: true })
 
 /** Where each address answers, as the window (this desktop) and every non-Docker node see it. */
 const LISTENERS = {

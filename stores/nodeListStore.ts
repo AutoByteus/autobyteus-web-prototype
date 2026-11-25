@@ -66,7 +66,8 @@ export const useNodeListStore = defineStore('nodeList', () => {
 
   const currentNode = computed<NodeEntry | null>(() => nodeStore.getEntryById(windowNode.entryId))
   const thisName = computed(() => currentNode.value?.name ?? '')
-  const switchOn = computed(() => capability.isEnabled)
+  // extensions-ui-516 (design, pairing-contract §9, founder 2026-11-25): the node-level switch is gone; pairing alone decides.
+  const switchOn = computed(() => true)
   const switchBusy = computed(() => capability.status === 'loading')
   const hasOpen = computed(() => typeof window !== 'undefined' && Boolean(window.electronAPI?.openNodeWindow))
 

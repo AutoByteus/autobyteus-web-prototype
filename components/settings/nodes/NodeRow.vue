@@ -38,15 +38,19 @@
             </button>
             <p v-else class="truncate text-sm font-semibold leading-6 text-slate-900" :data-testid="`node-name-${row.key}`">{{ row.name }}</p>
             <p class="break-all font-mono text-xs leading-4 text-slate-500" :data-testid="`node-url-${row.key}`">{{ shownUrl }}</p>
-            <!-- extensions-ui-516 (design): a node paired over the private network, and whose it is -->
-            <p v-if="privateMark" class="mt-1.5 flex flex-wrap items-center gap-1.5 text-xs leading-4 text-slate-500" :data-testid="`node-private-${row.key}`">
-              <span class="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 font-medium text-slate-600">{{ t('nodes.privateNetwork.rowTag') }}</span>
-              <span v-if="privateMark.role === 'teammate'">{{ t('nodes.privateNetwork.rowTeammate', { account: privateNetwork.accountLabel(privateMark.account) }) }}</span>
-              <button v-if="!unpairAsk && !unpairing" type="button" class="rounded px-1 font-medium text-slate-600 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500" :data-testid="`node-unpair-${row.key}`" @click="unpairAsk = true">{{ t('nodes.privateNetwork.unpair') }}</button>
-              <span v-if="unpairing" class="inline-flex items-center gap-1.5" role="status"><span class="h-3 w-3 animate-spin rounded-full border-2 border-slate-200 border-t-slate-500 motion-reduce:animate-none" aria-hidden="true" />{{ t('nodes.privateNetwork.unpairing') }}</span>
-            </p>
           </template>
         </div>
+      </div>
+
+      <!-- extensions-ui-516 (design, pairing-contract §9): Paired is the only collaboration state; how it was paired, whose it is, Unpair -->
+      <div v-if="paired" class="nr-paired text-xs leading-4 text-slate-500" :data-testid="`node-paired-${row.key}`">
+        <p class="flex flex-wrap items-center gap-1.5">
+          <span class="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-1.5 py-0.5 font-medium text-emerald-700" :data-testid="`node-paired-mark-${row.key}`"><RemoteCollaborationIcon size-class="h-3.5 w-3.5" />{{ t('nodes.privateNetwork.paired') }}</span>
+          <span v-if="privateMark" class="inline-flex items-center rounded-md bg-slate-100 px-1.5 py-0.5 font-medium text-slate-600" :data-testid="`node-private-${row.key}`">{{ t('nodes.privateNetwork.rowTag') }}</span>
+          <button v-if="!unpairAsk && !unpairing" type="button" class="rounded px-1 font-medium text-slate-600 underline-offset-2 hover:text-red-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500" :data-testid="`node-unpair-${row.key}`" @click="askUnpair">{{ t('nodes.privateNetwork.unpair') }}</button>
+          <span v-if="unpairing" class="inline-flex items-center gap-1.5" role="status"><span class="h-3 w-3 animate-spin rounded-full border-2 border-slate-200 border-t-slate-500 motion-reduce:animate-none" aria-hidden="true" />{{ t('nodes.privateNetwork.unpairing') }}</span>
+        </p>
+        <p class="mt-1">{{ privateMark?.role === 'teammate' ? t('nodes.privateNetwork.rowTeammate', { account: privateNetwork.accountLabel(privateMark.account) }) : t('nodes.privateNetwork.pairedLine') }}</p>
       </div>
 
       <!-- server: version and in-place update (remote nodes) -->
@@ -65,20 +69,17 @@
         />
       </div>
 
-      <!-- remote collaboration: the icon and its switch -->
-      <div class="nr-collab">
-        <NodeCollaborationSwitch
-          :model-value="collaborating"
-          :label="t(k('row.agentsLabel'), { name: row.name })"
-          :hint="t(k('row.agentsHint'))"
-          :title="switchDisabled && !collaborating && !view.checking ? t(k('row.unreachableSwitch'), { name: row.name }) : t(k('row.agentsHint'))"
-          :disabled="switchDisabled"
-          :dimmed="collaborating && !store.switchOn"
-          :test-id="`node-agents-switch-${row.key}`"
-          :icon-test-id="`node-collab-icon-${row.key}`"
-          @toggle="dialog.request(collaborating ? 'disconnect' : 'connect', row.key)"
-        />
-      </div>
+      <!-- pairing (pairing-contract §9): Pair on a node that is not paired; a paired node shows its mark under the name -->
+      <div class="nr-collab"><button
+        v-if="!paired && row.nodeId"
+        type="button"
+        class="inline-flex h-8 items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+        :title="switchDisabled && !view.checking ? t(k('row.unreachableSwitch'), { name: row.name }) : t('nodes.privateNetwork.pairedLine')"
+        :aria-label="t('nodes.privateNetwork.pairRowLabel', { name: row.name })"
+        :disabled="switchDisabled"
+        :data-testid="`node-pair-${row.key}`"
+        @click="dialog.request('connect', row.key)"
+      ><RemoteCollaborationIcon size-class="h-4 w-4 text-slate-500" />{{ t('nodes.privateNetwork.pairRow') }}</button></div>
 
       <!-- actions: Open and Remove, in fixed slots so the rows line up -->
       <div class="nr-actions flex items-center justify-end gap-1">
@@ -106,7 +107,7 @@
         >
           <svg class="h-[18px] w-[18px]" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8.5 11.5 6 14a2.5 2.5 0 0 1-3.5-3.5L5 8m6.5.5L14 6a2.5 2.5 0 0 1 3.5 3.5L15 12M3 3l14 14" stroke-linecap="round" stroke-linejoin="round" /></svg>
         </button>
-        <span v-else-if="access.supported() && !row.isEmbedded && row.entryIds.length" class="inline-block h-8 w-8" aria-hidden="true" />
+        <span v-else-if="access.supported() && !row.isEmbedded" class="inline-block h-8 w-8" aria-hidden="true" />
         <button
           v-if="!row.isEmbedded && privateMark?.role !== 'teammate'"
           type="button"
@@ -167,29 +168,32 @@
    offer cell (a node never reached) leaves no gap behind. */
 .nr-grid { display: grid; align-items: start; column-gap: 1rem;
   grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas: 'name actions' 'server server' 'offer offer' 'collab collab'; }
+  grid-template-areas: 'name actions' 'paired paired' 'server server' 'offer offer' 'collab collab'; }
+.nr-paired { grid-area: paired; padding-left: 1.5rem; margin-top: 0.375rem; }
 .nr-name { grid-area: name; padding-top: 0.125rem; }
 .nr-server { grid-area: server; padding-left: 1.5rem; padding-top: 0.125rem; margin-top: 0.5rem; }
 .nr-offer { grid-area: offer; padding-left: 1.5rem; padding-top: 0.375rem; margin-top: 0.5rem; }
 .nr-collab { grid-area: collab; justify-self: start; margin-left: 1.5rem; margin-top: 0.5rem; }
 .nr-actions { grid-area: actions; min-width: 2rem; height: 2.25rem; }
-.nr-server:empty, .nr-offer:empty { display: none; }
+.nr-server:empty, .nr-offer:empty, .nr-collab:empty { display: none; }
 @container (min-width: 38rem) {
   .nr-collab { justify-self: end; margin-left: 0; margin-top: 0; }
-  .nr-grid { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: 'name collab actions' 'server server server' 'offer offer offer'; }
+  .nr-grid { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: 'name collab actions' 'paired paired paired' 'server server server' 'offer offer offer'; }
 }
 @container (min-width: 64rem) {
-  .nr-grid { grid-template-columns: minmax(0, 1.3fr) 16rem minmax(0, 1fr) auto auto; grid-template-areas: 'name server offer collab actions'; }
+  .nr-grid { grid-template-columns: minmax(0, 1.3fr) 16rem minmax(0, 1fr) auto auto; grid-template-areas: 'name server offer collab actions' 'paired server offer collab actions';
+    grid-template-rows: auto 1fr; }
+  .nr-paired { align-self: start; }
   .nr-server { padding-left: 0; padding-top: 0.125rem; margin-top: 0; }
   .nr-offer { padding-left: 0; margin-top: 0; }
-  .nr-server:empty, .nr-offer:empty { display: block; }
+  .nr-server:empty, .nr-offer:empty, .nr-collab:empty { display: block; }
 }
 </style>
 
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref } from 'vue'
 import NodeAccessNotice from '~/components/settings/nodes/NodeAccessNotice.vue'
-import NodeCollaborationSwitch from '~/components/settings/nodes/NodeCollaborationSwitch.vue'
+import RemoteCollaborationIcon from '~/components/settings/nodes/RemoteCollaborationIcon.vue'
 import NodeNoticeIcon from '~/components/settings/nodes/NodeNoticeIcon.vue'
 import NodeConnectionDetails from '~/components/settings/nodes/NodeConnectionDetails.vue'
 import NodeServerUpdate from '~/components/settings/nodes/NodeServerUpdate.vue'
@@ -203,13 +207,15 @@ import { useNodeListStore } from '~/stores/nodeListStore'
 import type { NodeRow } from '~/stores/nodeRowStatus'
 import { causeText, failureText, NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
 
-/** One node (UIS-002): dot, name (click to rename), address, collaboration switch, Open, Remove; its server version and
+/** One node (UIS-002): dot, name (click to rename), address, Pair or the Paired mark with Unpair (pairing-contract §9), Open, Remove; its server version and
  * in-place update (remote nodes); one line; details. */
 const props = defineProps<{ row: NodeRow }>()
 const privateNetwork = usePrivateNetworkStore()
 const privateMark = computed(() => privateNetwork.peerMark(props.row.nodeId))
 const unpairAsk = ref(false)
 const unpairing = ref(false)
+/** Unpair: a private-network pairing asks below the row; a pairing made here by address opens the change dialog (changes on both nodes). */
+const askUnpair = (): void => { if (privateMark.value) unpairAsk.value = true; else dialog.request('disconnect', props.row.key) }
 const unpair = async (): Promise<void> => { unpairAsk.value = false; unpairing.value = true; try { await privateNetwork.unpair(props.row.nodeId!) } finally { unpairing.value = false } }
 // The node's server version is an owner read: a node this desktop has no key for cannot answer it (autobyteus-437).
 const serverAsked = computed(() => !props.row.isEmbedded && !needsConnecting.value)
@@ -241,6 +247,7 @@ const disconnect = async (): Promise<void> => {
 
 const view = computed(() => store.views[props.row.key]!)
 const collaborating = computed(() => Boolean(props.row.peer))
+const paired = computed(() => collaborating.value || Boolean(privateMark.value))
 const showDetails = computed(() => collaborating.value && !view.value.checking)
 const expanded = computed({ get: () => Boolean(store.expanded[props.row.key]), set: (value: boolean) => { store.expanded[props.row.key] = value } })
 const shownUrl = computed(() => (props.row.windowAddress ?? props.row.peer?.baseUrl ?? '').replace(/^https?:\/\//, ''))

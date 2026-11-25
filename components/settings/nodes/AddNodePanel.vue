@@ -65,15 +65,11 @@
         >
         <p v-if="errors.name" class="mt-1.5 text-sm text-red-600" role="alert" data-testid="add-node-name-error">{{ errors.name }}</p>
       </div>
-      <NodeCollaborationSwitch
-        tall
-        :model-value="draft.collaborate"
-        :label="t(k('add.collaborate'))"
-        :hint="t(k('add.collaborate'))"
-        :title="`${t(k('add.collaborate'))}. ${t(k('add.collaborateHint'))}`"
-        test-id="add-node-collaborate"
-        @toggle="draft.collaborate = !draft.collaborate"
-      />
+      <!-- extensions-ui-516 (design, pairing-contract §9): pairing on add is a choice, not a switch -->
+      <label class="inline-flex h-10 flex-shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700" :title="t(k('add.collaborateHint'))">
+        <input v-model="draft.collaborate" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500" data-testid="add-node-collaborate">
+        {{ t(k('add.collaborate')) }}
+      </label>
       <button
         type="submit"
         class="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 disabled:opacity-50"
@@ -93,7 +89,6 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import NodeCollaborationSwitch from '~/components/settings/nodes/NodeCollaborationSwitch.vue'
 import NodeNoticeIcon from '~/components/settings/nodes/NodeNoticeIcon.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useNodeChangeDialogStore } from '~/stores/nodeChangeDialogStore'
@@ -103,7 +98,7 @@ import { isNodeCodeUsed, markNodeCodeUsed, NODE_NAMES, readNodeCode } from '~/pr
 import { useNodeAccessStore } from '~/stores/nodeAccessStore'
 import { useNodeStore } from '~/stores/nodeStore'
 
-/** The always-open add form (UIS-003): Address, Name, the collaboration switch (on by default), Add node; or a node code (design). */
+/** The always-open add form (UIS-003): Address, Name, Pair with it (ticked by default), Add node; or a node code (design). */
 const { t } = useLocalization()
 const k = (key: string): string => `${NODES_PAGE_KEY}${key}`
 const store = useNodeListStore()
