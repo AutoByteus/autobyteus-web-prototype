@@ -209,7 +209,7 @@ const unpair = async (): Promise<void> => {
   try { if (privateMark.value) await privateNetwork.unpair(props.row.nodeId!); else await dialog.unpairDirect(props.row.key) } finally { unpairing.value = false }
 }
 /** Pair: a node of yours that the private network found pairs in one click (pairing-contract §3 case 1); another node by address, with the change dialog. */
-const pairingHere = computed(() => privateNetwork.ownOnNetwork(props.row.nodeId)?.phase === 'pairing')
+const pairingHere = computed(() => privateNetwork.ownOnNetwork(props.row.nodeId)?.phase === 'pairing' || dialog.pairing.includes(props.row.key))
 const pairRow = (): void => { if (privateNetwork.ownOnNetwork(props.row.nodeId)) void privateNetwork.pair(props.row.nodeId!); else dialog.request('connect', props.row.key) }
 // The node's server version is an owner read: a node this desktop has no key for cannot answer it (autobyteus-437).
 const serverAsked = computed(() => !props.row.isEmbedded && !needsConnecting.value)

@@ -146,7 +146,8 @@ const addWithCode = async (): Promise<void> => {
     store.flashKey = code.nodeId
     const pair = draft.collaborate
     reset()
-    if (pair) void dialog.request('connect', code.nodeId)
+    // Pair with it: the decision for both sides of a node this AutoByteus now controls (no confirmation; pairing-contract §3).
+    if (pair) void dialog.pairDirect(code.nodeId)
   } catch (cause) {
     codeError.value = cause instanceof Error ? cause.message : String(cause)
   } finally {
@@ -164,12 +165,18 @@ const submit = async (): Promise<void> => {
   if (draft.code.trim()) { await addWithCode(); return }
   busy.value = true
   try {
-    const result = await store.addNode({ address: draft.address, name: draft.name, collaborate: draft.collaborate })
+    const collaborate = draft.collaborate
+    const result = await store.addNode({ address: draft.address, name: draft.name, collaborate })
     if (result.ok) {
       // Success is silent: the row appears and is highlighted; the form is ready for the next node.
       reset()
-      // Reachable with Pair with it ticked: the one confirmation opens; nothing changes on any node before it (REQ-704).
-      if (result.confirm) void dialog.request('connect', result.key)
+      // Pair with it: a node added by address is not under this AutoByteus's control yet; it pairs once its row's access
+      // code connects it (Solution Designer 2026-11-25), or at once when it already is.
+      if (collaborate) {
+        const entryId = store.rowByKey(result.key)?.entryIds[0]
+        if (entryId && access.stateOf(entryId) === 'connected') void dialog.pairDirect(result.key)
+        else if (entryId) dialog.pairAfterControl = [...dialog.pairAfterControl, entryId]
+      }
     } else if (result.error === 'invalid') {
       if (result.address) errors.address = t(k('add.errorAddress'))
       if (result.name) errors.name = t(k('add.errorName'))

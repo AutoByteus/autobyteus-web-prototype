@@ -41,6 +41,7 @@ import { useLocalization } from '~/composables/useLocalization'
 import { isNodeCodeUsed, markNodeCodeUsed, readNodeCode } from '~/prototype/nodes/nodeCode'
 import { useNodeAccessStore } from '~/stores/nodeAccessStore'
 import { useNodeListStore } from '~/stores/nodeListStore'
+import { useNodeChangeDialogStore } from '~/stores/nodeChangeDialogStore'
 import type { NodeRow } from '~/stores/nodeRowStatus'
 import { causeText, NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
 
@@ -53,6 +54,7 @@ const { t } = useLocalization()
 const k = (key: string): string => `${NODES_PAGE_KEY}${key}`
 const access = useNodeAccessStore()
 const list = useNodeListStore()
+const dialog = useNodeChangeDialogStore()
 
 const entryId = computed(() => (props.row.isEmbedded ? null : props.row.entryIds[0] ?? null))
 const state = computed(() => (entryId.value ? access.stateOf(entryId.value) : null))
@@ -76,6 +78,11 @@ const connect = async (): Promise<void> => {
       markNodeCodeUsed(read.setupCode)
       code.value = ''
       list.askAgain(props.row.key)
+      // Added with "Pair with it" ticked: now under control, it pairs (no confirmation; pairing-contract §3).
+      if (dialog.pairAfterControl.includes(entryId.value)) {
+        dialog.pairAfterControl = dialog.pairAfterControl.filter((id) => id !== entryId.value)
+        void dialog.pairDirect(props.row.key)
+      }
       return
     }
     error.value = result.code === 'NODE_SETUP_CODE_INVALID' ? t(k('access.errorCode'))
