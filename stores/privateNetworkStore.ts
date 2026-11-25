@@ -363,12 +363,14 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     await useNodeListStore().open()
   }
 
+  /** A node in this app's Nodes list that the private network also found: its row's Pair pairs it in one click (pairing-contract §3 case 1, §4). */
+  const ownOnNetwork = (nodeId: string | null) => (nodeId && joined.value ? found.value.find((n) => n.nodeId === nodeId && n.kind === 'own') ?? null : null)
   const peerMark = (nodeId: string | null) => (nodeId ? paired.value.find((p) => p.nodeId === nodeId) ?? null : null)
 
   return {
     joined, network, serverUrl, signingIn, awaitingApproval, signedOut, serverDown, rejoining, hosting, vpnRanges,
     machines, discoverable, trustOwnMachines, found, requests, paired, offerDiscovery,
-    thisMachine, ownerAccount, accountLabel, machineOf, peerMark, networkLabel, status,
+    thisMachine, ownerAccount, accountLabel, machineOf, peerMark, ownOnNetwork, networkLabel, status,
     reset, touch, signIn, cancelSignIn, joinWithKey, joinWithInvite, hostStep, checkReachable, leave, addRange, removeRange, isLargeRange,
     makeInvite,
     setDiscoverable, dismissDiscoveryOffer, setTrust, pair, connect, cancelConnect, allow, reject, unpair,

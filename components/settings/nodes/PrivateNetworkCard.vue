@@ -89,16 +89,16 @@
       </ul>
     </div>
 
-    <!-- Found: AutoByteus nodes on the private network, not paired with this node yet -->
-    <ul v-if="network.found.length" class="divide-y divide-slate-100 border-t border-slate-100" data-testid="private-network-found">
-      <li v-for="node in network.found" :key="node.nodeId" class="px-5 py-3.5" :data-testid="`private-network-found-${node.name}`">
+    <!-- Found: AutoByteus nodes on the private network that are not in this app's Nodes list (pairing-contract §4: one Pair per node; a node you control pairs from its own row) -->
+    <ul v-if="shown.length" class="divide-y divide-slate-100 border-t border-slate-100" data-testid="private-network-found">
+      <li v-for="node in shown" :key="node.nodeId" class="px-5 py-3.5" :data-testid="`private-network-found-${node.name}`">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div class="flex min-w-0 items-start gap-3">
             <span class="mt-[7px] inline-block h-2.5 w-2.5 flex-shrink-0 rounded-full" :class="machine(node)?.online ? 'bg-emerald-500' : 'bg-slate-300'" role="img" :aria-label="machine(node)?.online ? t(k('found.online')) : t(k('found.offline'))" />
             <div class="min-w-0">
               <p class="text-sm font-semibold leading-6 text-slate-900">{{ node.name }}</p>
               <p class="text-xs leading-4 text-slate-500"><span class="font-mono">{{ machine(node)?.address }}</span> · {{ addedBy(machine(node)?.account ?? '') }}</p>
-              <p class="mt-1 text-xs font-medium" :class="KIND_CLASS[node.kind]">{{ kindLine(node) }}</p>
+              <p class="mt-1 text-xs font-medium" :class="KIND_CLASS[kindOf(node)]">{{ kindLine(node) }}</p>
             </div>
           </div>
           <div class="flex flex-shrink-0 items-center gap-2 pl-5 sm:pl-0">
@@ -114,14 +114,6 @@
               <button type="button" class="rounded px-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-testid="`private-network-cancel-${node.name}`" @click="network.cancelConnect(node.nodeId)">{{ t(k('found.cancel')) }}</button>
             </template>
             <button
-              v-else-if="node.kind === 'own'"
-              type="button"
-              class="h-8 rounded-md bg-blue-600 px-3.5 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 disabled:opacity-60"
-              :disabled="!machine(node)?.online"
-              :data-testid="`private-network-pair-${node.name}`"
-              @click="network.pair(node.nodeId)"
-            >{{ t(k('found.pair')) }}</button>
-            <button
               v-else
               type="button"
               class="h-8 rounded-md border border-slate-300 bg-white px-3.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60"
@@ -131,7 +123,7 @@
             >{{ t(k('found.pair')) }}</button>
           </div>
         </div>
-        <p v-if="node.kind === 'unknown'" class="ml-5 mt-2 flex max-w-3xl items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-900" :data-testid="`private-network-unknown-${node.name}`">
+        <p v-if="kindOf(node) === 'unknown'" class="ml-5 mt-2 flex max-w-3xl items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-900" :data-testid="`private-network-unknown-${node.name}`">
           <NodeNoticeIcon class="mt-0.5" tone="warn" />{{ t(k('found.unknownWarning')) }}
         </p>
         <p v-if="node.phase === 'pairing'" class="ml-5 mt-1.5 text-xs text-slate-500">{{ t(k('found.pairingNote'), { name: node.name }) }}</p>
@@ -161,6 +153,7 @@ import { computed, defineComponent, h, nextTick, onMounted, ref } from 'vue'
 import NodeNoticeIcon from '~/components/settings/nodes/NodeNoticeIcon.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useExtensionsStore } from '~/stores/extensionsStore'
+import { useNodeStore } from '~/stores/nodeStore'
 import { usePrivateNetworkStore, type FoundNode } from '~/stores/privateNetworkStore'
 
 /**
@@ -199,10 +192,13 @@ const setupAction = computed(() => (mode.value === 'setup' && !installed.value ?
 const machine = (node: FoundNode) => network.machineOf(node.machineId)
 const addedBy = (account: string) => (account === network.ownerAccount ? t(k('found.addedByYou')) : t(k('found.addedBy'), { account: network.accountLabel(account) }))
 const who = (account: string) => (network.accountLabel(account) === 'you' ? t(k('found.you')) : network.accountLabel(account))
-const KIND_CLASS: Record<FoundNode['kind'], string> = { own: 'text-emerald-700', teammate: 'text-slate-600', unknown: 'text-amber-700' }
-const kindLine = (node: FoundNode) => node.kind === 'own' ? t(k('found.kindOwn'))
-  : node.kind === 'teammate' ? t(k('found.kindTeammate'), { account: who(machine(node)?.account ?? '') })
-    : t(k('found.kindUnknown'))
+const KIND_CLASS: Record<'teammate' | 'unknown', string> = { teammate: 'text-slate-600', unknown: 'text-amber-700' }
+/** Found lists only nodes outside this app's Nodes list (pairing-contract §4); a node on your account that this app does not control is an unknown machine. */
+const nodeStore = useNodeStore()
+const shown = computed(() => network.found.filter((node) => !nodeStore.nodes.some((entry) => entry.nodeId === node.nodeId)))
+const kindOf = (node: FoundNode): 'teammate' | 'unknown' => (node.kind === 'teammate' ? 'teammate' : 'unknown')
+const kindLine = (node: FoundNode) => kindOf(node) === 'teammate' ? t(k('found.kindTeammate'), { account: who(machine(node)?.account ?? '') })
+  : t(k('found.kindUnknown'))
 
 async function checkAgain(): Promise<void> {
   checking.value = true

@@ -61,10 +61,26 @@ export const useNodeChangeDialogStore = defineStore('nodeChangeDialog', () => {
     }
   }
 
+  /**
+   * extensions-ui-516 (design, founder 2026-11-25): Unpair of a node paired by address is confirmed below its row, like
+   * every Unpair; the app removes the pairing on both sides without showing the steps.
+   */
+  const unpairDirect = async (key: string): Promise<void> => {
+    const list = useNodeListStore()
+    const subject = list.changeSubjectOf(key)
+    if (!subject) return
+    try {
+      const next = await connector.plan('disconnect', subject.target, subject.here)
+      if (next.steps.length) { await connector.run(next); finishRun(next) } else list.askAgain(key)
+    } catch {
+      list.askAgain(key)
+    }
+  }
+
   /** Cancel, Close, Esc, or the tab left: a plan that is running is never dropped. */
   const cancel = (): void => {
     if (plan.value?.phase !== 'running') plan.value = null
   }
 
-  return { plan, preparing, request, confirm, cancel }
+  return { plan, preparing, request, confirm, cancel, unpairDirect }
 })

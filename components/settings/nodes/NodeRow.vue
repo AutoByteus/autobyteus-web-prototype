@@ -70,15 +70,15 @@
       </div>
 
       <!-- pairing (pairing-contract §9): Pair on a node that is not paired; a paired node shows its mark under the name -->
-      <div class="nr-collab"><button
-        v-if="!paired && row.nodeId"
+      <div class="nr-collab"><span v-if="!paired && pairingHere" class="inline-flex h-8 items-center gap-2 text-sm text-slate-600" role="status" :data-testid="`node-pairing-${row.key}`"><span class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600 motion-reduce:animate-none" aria-hidden="true" />{{ t('nodes.privateNetwork.found.pairing') }}</span><button
+        v-else-if="!paired && row.nodeId"
         type="button"
         class="inline-flex h-8 items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
         :title="switchDisabled && !view.checking ? t(k('row.unreachableSwitch'), { name: row.name }) : t('nodes.privateNetwork.pairedLine')"
         :aria-label="t('nodes.privateNetwork.pairRowLabel', { name: row.name })"
         :disabled="switchDisabled"
         :data-testid="`node-pair-${row.key}`"
-        @click="dialog.request('connect', row.key)"
+        @click="pairRow"
       ><RemoteCollaborationIcon size-class="h-4 w-4 text-slate-500" />{{ t('nodes.privateNetwork.pairRow') }}</button></div>
 
       <!-- actions: Open and Remove, in fixed slots so the rows line up -->
@@ -96,19 +96,6 @@
         </button>
         <span v-else-if="store.hasOpen" class="inline-block h-8 w-8" aria-hidden="true" />
         <button
-          v-if="connected"
-          type="button"
-          class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-50"
-          :title="t(k('access.disconnect'), { name: row.name })"
-          :aria-label="t(k('access.disconnect'), { name: row.name })"
-          :disabled="disconnecting"
-          :data-testid="`node-disconnect-${row.key}`"
-          @click="disconnect"
-        >
-          <svg class="h-[18px] w-[18px]" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M8.5 11.5 6 14a2.5 2.5 0 0 1-3.5-3.5L5 8m6.5.5L14 6a2.5 2.5 0 0 1 3.5 3.5L15 12M3 3l14 14" stroke-linecap="round" stroke-linejoin="round" /></svg>
-        </button>
-        <span v-else-if="access.supported() && !row.isEmbedded" class="inline-block h-8 w-8" aria-hidden="true" />
-        <button
           v-if="!row.isEmbedded && privateMark?.role !== 'teammate'"
           type="button"
           class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-red-50 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
@@ -124,8 +111,8 @@
     </div>
 
     <!-- extensions-ui-516 (design): Unpair confirmation, below the row like its notices -->
-    <div v-if="unpairAsk && privateMark" class="mx-5 mb-3.5 -mt-0.5 flex max-w-2xl sm:ml-[2.75rem] flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-700" role="alertdialog" :aria-label="t('nodes.privateNetwork.unpair')" :data-testid="`node-unpair-confirm-${row.key}`">
-      <span class="min-w-0 flex-1">{{ privateMark.role === 'own' ? t('nodes.privateNetwork.unpairOwn', { name: row.name }) : t('nodes.privateNetwork.unpairTeammate', { name: row.name, account: privateNetwork.accountLabel(privateMark.account) }) }}</span>
+    <div v-if="unpairAsk && paired" class="mx-5 mb-3.5 -mt-0.5 flex max-w-2xl sm:ml-[2.75rem] flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-700" role="alertdialog" :aria-label="t('nodes.privateNetwork.unpair')" :data-testid="`node-unpair-confirm-${row.key}`">
+      <span class="min-w-0 flex-1 basis-56">{{ privateMark?.role === 'teammate' ? t('nodes.privateNetwork.unpairTeammate', { name: row.name, account: privateNetwork.accountLabel(privateMark.account) }) : t('nodes.privateNetwork.unpairOwn', { name: row.name }) }}</span>
       <button type="button" class="h-7 rounded-md bg-red-600 px-2.5 font-medium text-white hover:bg-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500" :data-testid="`node-unpair-yes-${row.key}`" @click="unpair">{{ t('nodes.privateNetwork.unpair') }}</button>
       <button type="button" class="h-7 rounded-md border border-slate-300 bg-white px-2.5 font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="unpairAsk = false">{{ t('nodes.privateNetwork.cancel') }}</button>
     </div>
@@ -181,7 +168,7 @@
   .nr-grid { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: 'name collab actions' 'paired paired paired' 'server server server' 'offer offer offer'; }
 }
 @container (min-width: 64rem) {
-  .nr-grid { grid-template-columns: minmax(0, 1.3fr) 16rem minmax(0, 1fr) auto auto; grid-template-areas: 'name server offer collab actions' 'paired server offer collab actions';
+  .nr-grid { grid-template-columns: minmax(0, 1.3fr) 16rem minmax(0, 1fr) 6rem auto; grid-template-areas: 'name server offer collab actions' 'paired server offer collab actions';
     grid-template-rows: auto 1fr; }
   .nr-paired { align-self: start; }
   .nr-server { padding-left: 0; padding-top: 0.125rem; margin-top: 0; }
@@ -214,9 +201,16 @@ const privateNetwork = usePrivateNetworkStore()
 const privateMark = computed(() => privateNetwork.peerMark(props.row.nodeId))
 const unpairAsk = ref(false)
 const unpairing = ref(false)
-/** Unpair: a private-network pairing asks below the row; a pairing made here by address opens the change dialog (changes on both nodes). */
-const askUnpair = (): void => { if (privateMark.value) unpairAsk.value = true; else dialog.request('disconnect', props.row.key) }
-const unpair = async (): Promise<void> => { unpairAsk.value = false; unpairing.value = true; try { await privateNetwork.unpair(props.row.nodeId!) } finally { unpairing.value = false } }
+/** Unpair: one confirmation below the row for every paired node; each side removes the other (over the private network with
+ * a signed /unpaired, pairing-contract §2; for a pairing made by address the app does both sides). The steps are not shown. */
+const askUnpair = (): void => { unpairAsk.value = true }
+const unpair = async (): Promise<void> => {
+  unpairAsk.value = false; unpairing.value = true
+  try { if (privateMark.value) await privateNetwork.unpair(props.row.nodeId!); else await dialog.unpairDirect(props.row.key) } finally { unpairing.value = false }
+}
+/** Pair: a node of yours that the private network found pairs in one click (pairing-contract §3 case 1); another node by address, with the change dialog. */
+const pairingHere = computed(() => privateNetwork.ownOnNetwork(props.row.nodeId)?.phase === 'pairing')
+const pairRow = (): void => { if (privateNetwork.ownOnNetwork(props.row.nodeId)) void privateNetwork.pair(props.row.nodeId!); else dialog.request('connect', props.row.key) }
 // The node's server version is an owner read: a node this desktop has no key for cannot answer it (autobyteus-437).
 const serverAsked = computed(() => !props.row.isEmbedded && !needsConnecting.value)
 const emit = defineEmits<{ guide: [] }>()
@@ -232,18 +226,7 @@ const access = useNodeAccessStore()
 onMounted(() => { void access.initialize() })
 const accessEntryId = computed(() => (props.row.isEmbedded ? null : props.row.entryIds[0] ?? null))
 const needsConnecting = computed(() => Boolean(accessEntryId.value) && access.stateOf(accessEntryId.value!) === 'needs_connecting')
-const connected = computed(() => Boolean(accessEntryId.value) && access.stateOf(accessEntryId.value!) === 'connected')
-const disconnecting = ref(false)
-const disconnect = async (): Promise<void> => {
-  if (!accessEntryId.value || disconnecting.value) return
-  disconnecting.value = true
-  try {
-    await access.disconnect(accessEntryId.value)
-    store.askAgain(props.row.key)
-  } finally {
-    disconnecting.value = false
-  }
-}
+// extensions-ui-516 (design, founder 2026-11-25): no separate "disconnect" icon on the row; Unpair is the one control for ending a pairing.
 
 const view = computed(() => store.views[props.row.key]!)
 const collaborating = computed(() => Boolean(props.row.peer))
