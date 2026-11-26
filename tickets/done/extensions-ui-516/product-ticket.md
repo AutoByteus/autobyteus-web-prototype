@@ -84,3 +84,9 @@ Invented by hand for this ticket: the catalog entries (descriptions from `extens
 - Change history: `design-change-log.md` (DC-001…DC-090); review notes: `review-round-1.md`; spine coverage: `round-5-coverage.md`; interim captures: `review-captures/` (not normative)
 - Approval: the founder 2026-11-26 (this conversation, and relayed by the Solution Designer); DEC-015 decided by the Solution Designer at the founder's request and confirmed against every spine
 - Provisional (marked in the spec): Tailscale sign-in and keys, device approval, key expiry, sharing; hosting; G1 (desktop relay). Not product UI: the "Design reference only" controls. Dependency: Voice Input's "Getting ready…" readiness needs voice runtime 0.3.1 (PRE-001).
+
+## Integration And Cleanup
+
+- Integrated 2026-11-26: `design/extensions-ui-516` fast-forwarded into `personal` (`e918b746..a4ad3433`, after merging `personal` @ e918b746 into the ticket); canonical checkout `/Users/normy/autobyteus_org/autobyteus-web-design` fast-forwarded to the same revision. Result: `Completed`.
+- Default-entry-point check: `personal` started on a temporary port (4519): Settings → Extensions shows both extension cards; Manage Nodes shows This node · Asking to pair · Controlled nodes · Paired nodes · Found on your private network; no page errors.
+- Cleanup: the ticket's dev server (4516) stopped, its Tailscale Serve entry (8445) turned off, the temporary `nuxt.config.ts` share edits discarded, the worktree removed and the branch `design/extensions-ui-516` deleted after this record.
