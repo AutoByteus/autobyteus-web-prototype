@@ -1,7 +1,8 @@
 <template>
   <!-- extensions-ui-516 (design, founder 2026-11-25): one form; the access code is a field of it, not a second mode. Pasting a
        code fills in the address (and the name when it is empty); without a code the node is listed and asks for one. -->
-  <form class="border-y border-slate-200 bg-slate-50 px-5 py-3.5" data-testid="add-node-panel" @submit.prevent="submit">
+  <form class="border-t border-slate-200 bg-slate-50 px-5 pb-4 pt-3.5" data-testid="add-node-panel" @submit.prevent="submit">
+    <h4 class="mb-2.5 text-sm font-semibold text-slate-900">{{ network.joined ? t('nodes.sections.addTitle') : t('nodes.sections.addTitlePlain') }}</h4>
     <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1.4fr)_auto_auto] xl:items-start">
       <div>
         <input
@@ -79,11 +80,12 @@ import { computed, reactive, ref } from 'vue'
 import NodeNoticeIcon from '~/components/settings/nodes/NodeNoticeIcon.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useNodeChangeDialogStore } from '~/stores/nodeChangeDialogStore'
-import { useNodeListStore, isValidNodeName } from '~/stores/nodeListStore'
+import { isValidNodeName, useNodeListStore } from '~/stores/nodeListStore'
 import { NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
-import { isNodeCodeUsed, markNodeCodeUsed, NODE_NAMES, readNodeCode } from '~/prototype/nodes/nodeCode'
+import { readNodeCode } from '~/prototype/nodes/nodeCode'
+import { accessCodeAddress, useAddWithAccessCode } from '~/prototype/nodes/addWithAccessCode'
 import { useNodeAccessStore } from '~/stores/nodeAccessStore'
-import { useNodeStore } from '~/stores/nodeStore'
+import { usePrivateNetworkStore } from '~/stores/privateNetworkStore'
 
 /**
  * The always-open add form (UIS-003; extensions-ui-516 design, founder 2026-11-25): Address, Name, Access code, Pair with it,
@@ -95,9 +97,9 @@ const { t } = useLocalization()
 const k = (key: string): string => `${NODES_PAGE_KEY}${key}`
 const store = useNodeListStore()
 const dialog = useNodeChangeDialogStore()
-const nodeStore = useNodeStore()
+/** "Add a node that isn't found" while a private network finds nodes; plain "Add a node" without one. */
+const network = usePrivateNetworkStore()
 const access = useNodeAccessStore()
-const later = (ms: number) => new Promise<void>((done) => setTimeout(done, ms))
 
 const draft = reactive({ address: '', name: '', code: '', collaborate: true })
 const errors = reactive({ address: '', name: '' })
@@ -106,7 +108,6 @@ const busy = ref(false)
 const codeError = ref('')
 const codeStep = ref('')
 const codeRead = computed(() => (draft.code.trim() ? readNodeCode(draft.code) : null))
-const addressOf = (address: string): string => (address.includes(':') ? address : `${address}:29695`)
 
 /** Pasting a code fills in the address it names; a text that is not a code says so at once. */
 const onCode = (): void => {
@@ -114,40 +115,26 @@ const onCode = (): void => {
   if (!draft.code.trim()) return
   const code = codeRead.value
   if (!code) { codeError.value = t('nodes.nodeCode.errorNotCode'); return }
-  draft.address = addressOf(code.address)
+  draft.address = accessCodeAddress(code.address)
 }
 
 const reset = (): void => { draft.address = ''; draft.name = ''; draft.code = ''; draft.collaborate = true }
 
+const adder = useAddWithAccessCode()
 const addWithCode = async (): Promise<void> => {
-  const code = codeRead.value
-  if (!code) { codeError.value = t('nodes.nodeCode.errorNotCode'); return }
-  if (Date.parse(code.expiresAt) < Date.now()) { codeError.value = t('nodes.nodeCode.errorExpired'); return }
-  if (isNodeCodeUsed(code.setupCode)) { codeError.value = t('nodes.nodeCode.errorUsed'); return }
-  const typed = draft.address.trim().replace(/^https?:\/\//, '').replace(/\/+$/, '')
-  if (typed && typed !== addressOf(code.address)) { errors.address = t('nodes.nodeCode.errorAddress', { address: addressOf(code.address) }); return }
-  if (draft.name.trim() && !isValidNodeName(draft.name)) { errors.name = t(k('add.errorName')); return }
-  const listed = nodeStore.nodes.find((entry) => entry.nodeId === code.nodeId)
-  if (listed) { duplicate.value = listed.name; return }
-  // The node says its own name when it is reached; a typed name is kept instead.
-  const name = draft.name.trim() || NODE_NAMES[code.nodeId] || 'new-node'
-  const baseUrl = `http://${addressOf(code.address)}`
   busy.value = true
   try {
-    codeStep.value = t('nodes.nodeCode.stepReach', { address: code.address.replace(/:\d+$/, '') })
-    await later(900)
-    ;(window as any).__designNetworkWorld?.()?.addOwnedNode({ nodeId: code.nodeId, name, address: baseUrl })
-    codeStep.value = t('nodes.nodeCode.stepOwner', { name })
-    await later(700)
-    const entry = await nodeStore.addRemoteNode({ name, baseUrl, nodeId: code.nodeId })
-    await access.connect(entry.id, code.setupCode)
-    markNodeCodeUsed(code.setupCode)
-    await store.open()
-    store.flashKey = code.nodeId
+    const result = await adder.add(draft.code, { name: draft.name, typedAddress: draft.address, onStep: (step) => { codeStep.value = step } })
+    if (!result.ok) {
+      if (result.field === 'duplicate') duplicate.value = result.existing
+      else if (result.field === 'address') errors.address = result.message
+      else codeError.value = result.message
+      return
+    }
     const pair = draft.collaborate
     reset()
     // Pair with it: the decision for both sides of a node this AutoByteus now controls (no confirmation; pairing-contract §3).
-    if (pair) void dialog.pairDirect(code.nodeId)
+    if (pair) void dialog.pairDirect(result.nodeId)
   } catch (cause) {
     codeError.value = cause instanceof Error ? cause.message : String(cause)
   } finally {
@@ -162,7 +149,10 @@ const submit = async (): Promise<void> => {
   errors.name = ''
   codeError.value = ''
   duplicate.value = ''
-  if (draft.code.trim()) { await addWithCode(); return }
+  if (draft.code.trim()) {
+    if (draft.name.trim() && !isValidNodeName(draft.name)) { errors.name = t(k('add.errorName')); return }
+    await addWithCode(); return
+  }
   busy.value = true
   try {
     const collaborate = draft.collaborate

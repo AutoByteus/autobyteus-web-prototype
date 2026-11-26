@@ -71,7 +71,7 @@
 
       <!-- pairing (pairing-contract §9): Pair on a node that is not paired; a paired node shows its mark under the name -->
       <div class="nr-collab"><span v-if="!paired && pairingHere" class="inline-flex h-8 items-center gap-2 text-sm text-slate-600" role="status" :data-testid="`node-pairing-${row.key}`"><span class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600 motion-reduce:animate-none" aria-hidden="true" />{{ t('nodes.privateNetwork.found.pairing') }}</span><button
-        v-else-if="!paired && row.nodeId"
+        v-else-if="!paired && row.nodeId && !needsConnecting"
         type="button"
         class="inline-flex h-8 items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
         :title="switchDisabled && !view.checking ? t(k('row.unreachableSwitch'), { name: row.name }) : t('nodes.privateNetwork.pairedLine')"
@@ -208,9 +208,9 @@ const unpair = async (): Promise<void> => {
   unpairAsk.value = false; unpairing.value = true
   try { if (privateMark.value) await privateNetwork.unpair(props.row.nodeId!); else await dialog.unpairDirect(props.row.key) } finally { unpairing.value = false }
 }
-/** Pair: a node of yours that the private network found pairs in one click (pairing-contract §3 case 1); another node by address, with the change dialog. */
+/** Pair (a node this AutoByteus controls): one click, no Accept, no confirmation (pairing-contract §3 case 1); over the private network when it found the node, else by address. */
 const pairingHere = computed(() => privateNetwork.ownOnNetwork(props.row.nodeId)?.phase === 'pairing' || dialog.pairing.includes(props.row.key))
-const pairRow = (): void => { if (privateNetwork.ownOnNetwork(props.row.nodeId)) void privateNetwork.pair(props.row.nodeId!); else dialog.request('connect', props.row.key) }
+const pairRow = (): void => { if (privateNetwork.ownOnNetwork(props.row.nodeId)) void privateNetwork.pair(props.row.nodeId!); else void dialog.pairDirect(props.row.key) }
 // The node's server version is an owner read: a node this desktop has no key for cannot answer it (autobyteus-437).
 const serverAsked = computed(() => !props.row.isEmbedded && !needsConnecting.value)
 const emit = defineEmits<{ guide: [] }>()

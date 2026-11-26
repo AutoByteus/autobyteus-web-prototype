@@ -312,7 +312,8 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
 
   async function pair(nodeId: string): Promise<void> {
     const node = found.value.find((n) => n.nodeId === nodeId)
-    if (!node || node.kind !== 'own') return
+    // Only for a node this AutoByteus controls (its row in "Nodes you control"): it decides for both sides.
+    if (!node || node.kind === 'teammate') return
     node.phase = 'pairing'
     await later(PAIR_MS)
     found.value = found.value.filter((n) => n.nodeId !== nodeId)
@@ -363,8 +364,8 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     await useNodeListStore().open()
   }
 
-  /** A node in this app's Nodes list that the private network also found: its row's Pair pairs it in one click (pairing-contract §3 case 1, §4). */
-  const ownOnNetwork = (nodeId: string | null) => (nodeId && joined.value ? found.value.find((n) => n.nodeId === nodeId && n.kind === 'own') ?? null : null)
+  /** A node this AutoByteus controls that the private network also found: its row's Pair pairs it in one click (pairing-contract §3 case 1, §4). */
+  const ownOnNetwork = (nodeId: string | null) => (nodeId && joined.value ? found.value.find((n) => n.nodeId === nodeId && n.kind !== 'teammate') ?? null : null)
   const peerMark = (nodeId: string | null) => (nodeId ? paired.value.find((p) => p.nodeId === nodeId) ?? null : null)
 
   return {

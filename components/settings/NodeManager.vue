@@ -18,8 +18,10 @@
           :node-type-label="currentNodeTypeLabel"
           :base-url="currentNode?.baseUrl"
         />
-        <PrivateNetworkCard />
+        <!-- extensions-ui-516 (design, founder 2026-11-26): This node · Asking to pair · Nodes you control · Paired nodes · Found -->
+        <PrivateNetworkCard part="requests" />
         <NodeList @guide="activeTab = 'dockerGuide'" />
+        <PrivateNetworkCard part="found" />
       </div>
 
       <div

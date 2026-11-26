@@ -1,47 +1,28 @@
 <template>
-  <!-- Not found-ready on this window's node: one line that says why, and where to act. -->
-  <section
-    v-if="mode !== 'found'"
-    class="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between"
-    :data-testid="`private-network-card-${mode}`"
-  >
-    <div class="flex min-w-0 items-start gap-3">
-      <span class="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg" :class="mode === 'notReady' ? 'bg-amber-50 text-amber-600' : 'bg-slate-100 text-slate-500'"><PrivateNetworkIcon /></span>
-      <div class="min-w-0">
-        <h3 class="text-sm font-semibold leading-6 text-slate-900">{{ t(k('title')) }}</h3>
-        <p class="max-w-3xl text-sm leading-6" :class="mode === 'notReady' ? 'text-amber-900' : 'text-slate-500'" :lang="mode === 'notReady' ? 'en' : undefined">{{ setupText }}</p>
+  <!-- extensions-ui-516 (design, founder 2026-11-26): the private network's parts of Manage Nodes, each in its own section.
+       part="thisNode": this node's two switches (inside This node), or why the network is not ready;
+       part="requests": Asking to pair; part="found": Found on your private network (Control or Pair). -->
+  <template v-if="part === 'thisNode'">
+    <div v-if="mode !== 'found'" class="flex flex-col gap-3 border-t border-slate-100 px-5 py-4 sm:flex-row sm:items-center sm:justify-between" :data-testid="`private-network-card-${mode}`">
+      <div class="flex min-w-0 items-start gap-3">
+        <span class="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg" :class="mode === 'notReady' ? 'bg-amber-50 text-amber-600' : 'bg-slate-100 text-slate-500'"><PrivateNetworkIcon /></span>
+        <div class="min-w-0">
+          <h4 class="text-sm font-semibold leading-6 text-slate-900">{{ t(k('title')) }}</h4>
+          <p class="max-w-3xl text-sm leading-6" :class="mode === 'notReady' ? 'text-amber-900' : 'text-slate-500'" :lang="mode === 'notReady' ? 'en' : undefined">{{ setupText }}</p>
+        </div>
       </div>
+      <NuxtLink
+        to="/settings?section=extensions"
+        class="inline-flex h-9 flex-shrink-0 items-center justify-center self-start rounded-md border border-slate-300 bg-white px-3.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:self-auto"
+        data-testid="private-network-setup-link"
+      >{{ setupAction }}</NuxtLink>
     </div>
-    <NuxtLink
-      to="/settings?section=extensions"
-      class="inline-flex h-9 flex-shrink-0 items-center justify-center self-start rounded-md border border-slate-300 bg-white px-3.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 sm:self-auto"
-      data-testid="private-network-setup-link"
-    >{{ setupAction }}</NuxtLink>
-  </section>
-
-  <section v-else class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" data-testid="private-network-card">
-    <div class="flex items-start justify-between gap-4 px-5 pb-4 pt-5">
-      <div class="min-w-0">
-        <h3 class="flex items-center gap-2 text-base font-semibold text-slate-900">
-          {{ t(k('found.title')) }}
-        </h3>
-        <p class="mt-1 max-w-3xl text-sm text-slate-500">{{ t(k('found.lead'), { network: network.networkLabel }) }}</p>
-        <p v-if="network.vpnRanges.length" class="mt-1 max-w-3xl text-sm text-slate-500" data-testid="private-network-vpn-also">{{ t(k('vpn.also'), { ranges: network.vpnRanges.join(', ') }) }}</p>
+    <div v-else class="divide-y divide-slate-100 border-t border-slate-100" data-testid="private-network-card">
+      <div class="px-5 pb-1 pt-4">
+        <h4 class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t(k('title')) }}</h4>
+        <p class="mt-0.5 text-sm text-slate-500">{{ t('nodes.sections.networkLine', { network: network.networkLabel }) }}</p>
+        <p v-if="network.vpnRanges.length" class="mt-0.5 max-w-3xl text-sm text-slate-500" data-testid="private-network-vpn-also">{{ t(k('vpn.also'), { ranges: network.vpnRanges.join(', ') }) }}</p>
       </div>
-      <button
-        type="button"
-        class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-        :title="t(k('found.checkAgain'))"
-        :aria-label="t(k('found.checkAgain'))"
-        data-testid="private-network-check-again"
-        @click="checkAgain"
-      >
-        <svg class="h-[18px] w-[18px]" :class="checking ? 'animate-spin motion-reduce:animate-none' : ''" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M16 10a6 6 0 1 1-1.76-4.24M16 4v3.5h-3.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
-      </button>
-    </div>
-
-    <!-- This node's two switches -->
-    <div class="divide-y divide-slate-100 border-t border-slate-100">
       <!-- Label and switch share a line; the explanation runs the card's width below (narrow windows too). -->
       <div class="px-5 py-4" data-testid="private-network-findable">
         <div class="flex items-center justify-between gap-4">
@@ -61,35 +42,52 @@
         </p>
       </div>
     </div>
+  </template>
 
-    <!-- Incoming: someone asks to pair -->
-    <div v-if="network.requests.length" class="border-t border-slate-100 px-5 py-4" data-testid="private-network-requests">
-      <h4 class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t(k('requests.title')) }}</h4>
-      <ul class="mt-2 space-y-2">
-        <li v-for="request in network.requests" :key="request.nodeId" class="rounded-lg border border-blue-200 bg-blue-50/60 px-4 py-3" :data-testid="`private-network-request-${request.name}`">
-          <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <div class="min-w-0">
-              <p class="text-sm font-semibold text-slate-900">{{ t(k('requests.wants'), { name: request.name, account: who(request.account) }) }}</p>
-              <p class="mt-0.5 text-xs text-slate-500">
-                <span class="font-mono">{{ network.machineOf(request.machineId)?.address }}</span>
-              </p>
-              <p class="mt-1.5 max-w-2xl text-sm leading-5 text-slate-600">{{ t(k('requests.teammate'), { account: who(request.account) }) }}</p>
-            </div>
-            <div class="flex flex-shrink-0 items-center gap-2">
-              <template v-if="request.phase === 'allowing'">
-                <span class="inline-flex items-center gap-2 text-sm text-slate-600" role="status"><span class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600 motion-reduce:animate-none" aria-hidden="true" />{{ t(k('found.pairing')) }}</span>
-              </template>
-              <template v-else>
-                <button type="button" class="h-8 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-testid="`private-network-reject-${request.name}`" @click="network.reject(request.nodeId)">{{ t(k('requests.reject')) }}</button>
-                <button type="button" class="h-8 rounded-md bg-blue-600 px-3 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" :data-testid="`private-network-accept-${request.name}`" @click="network.allow(request.nodeId)">{{ t(k('requests.accept')) }}</button>
-              </template>
-            </div>
-          </div>
-        </li>
-      </ul>
+  <!-- Asking to pair: only while someone asks -->
+  <section v-else-if="part === 'requests' && mode === 'found' && network.requests.length" class="overflow-hidden rounded-2xl border border-blue-200 bg-white shadow-sm" data-testid="private-network-requests">
+    <div class="px-5 pb-3 pt-5">
+      <h3 class="text-base font-semibold text-slate-900">{{ t(k('requests.title')) }}</h3>
+      <p class="mt-1 max-w-3xl text-sm text-slate-500">{{ t('nodes.sections.requestsLead') }}</p>
     </div>
+    <ul class="divide-y divide-slate-100 border-t border-slate-100">
+      <li v-for="request in network.requests" :key="request.nodeId" class="bg-blue-50/40 px-5 py-3.5" :data-testid="`private-network-request-${request.name}`">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div class="min-w-0">
+            <p class="text-sm font-semibold text-slate-900">{{ t(k('requests.wants'), { name: request.name, account: who(request.account) }) }}</p>
+            <p class="mt-0.5 text-xs text-slate-500"><span class="font-mono">{{ network.machineOf(request.machineId)?.address }}</span></p>
+            <p class="mt-1.5 max-w-2xl text-sm leading-5 text-slate-600">{{ t(k('requests.teammate'), { account: who(request.account) }) }}</p>
+          </div>
+          <div class="flex flex-shrink-0 items-center gap-2">
+            <span v-if="request.phase === 'allowing'" class="inline-flex items-center gap-2 text-sm text-slate-600" role="status"><span class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600 motion-reduce:animate-none" aria-hidden="true" />{{ t(k('found.pairing')) }}</span>
+            <template v-else>
+              <button type="button" class="h-8 rounded-md border border-slate-300 bg-white px-3 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-testid="`private-network-reject-${request.name}`" @click="network.reject(request.nodeId)">{{ t(k('requests.reject')) }}</button>
+              <button type="button" class="h-8 rounded-md bg-blue-600 px-3 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1" :data-testid="`private-network-accept-${request.name}`" @click="network.allow(request.nodeId)">{{ t(k('requests.accept')) }}</button>
+            </template>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
 
-    <!-- Found: AutoByteus nodes on the private network that are not in this app's Nodes list (pairing-contract §4: one Pair per node; a node you control pairs from its own row) -->
+  <!-- Found on your private network: nodes in neither "Nodes you control" nor "Paired nodes" -->
+  <section v-else-if="part === 'found' && mode === 'found'" class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" data-testid="private-network-found-card">
+    <div class="flex items-start justify-between gap-4 px-5 pb-4 pt-5">
+      <div class="min-w-0">
+        <h3 class="text-base font-semibold text-slate-900">{{ t(k('found.title')) }}</h3>
+        <p class="mt-1 max-w-3xl text-sm text-slate-500">{{ t('nodes.sections.foundLead', { network: network.networkLabel }) }}</p>
+      </div>
+      <button
+        type="button"
+        class="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        :title="t(k('found.checkAgain'))"
+        :aria-label="t(k('found.checkAgain'))"
+        data-testid="private-network-check-again"
+        @click="checkAgain"
+      >
+        <svg class="h-[18px] w-[18px]" :class="checking ? 'animate-spin motion-reduce:animate-none' : ''" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M16 10a6 6 0 1 1-1.76-4.24M16 4v3.5h-3.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </button>
+    </div>
     <ul v-if="shown.length" class="divide-y divide-slate-100 border-t border-slate-100" data-testid="private-network-found">
       <li v-for="node in shown" :key="node.nodeId" class="px-5 py-3.5" :data-testid="`private-network-found-${node.name}`">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -102,38 +100,68 @@
             </div>
           </div>
           <div class="flex flex-shrink-0 items-center gap-2 pl-5 sm:pl-0">
-            <template v-if="node.phase === 'pairing'">
-              <span class="inline-flex items-center gap-2 text-sm text-slate-600" role="status"><span class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600 motion-reduce:animate-none" aria-hidden="true" />{{ t(k('found.pairing')) }}</span>
-            </template>
-            <template v-else-if="node.phase === 'refused'">
-              <span class="text-sm text-slate-600" role="status" :data-testid="`private-network-declined-${node.name}`">{{ machine(node)?.account === network.ownerAccount ? t(k('found.ownerDeclined')) : t(k('found.declined'), { account: who(machine(node)?.account ?? '') }) }}</span>
+            <template v-if="node.phase === 'refused'">
+              <span class="text-sm text-slate-600" role="status" :data-testid="`private-network-declined-${node.name}`">{{ t(k('found.declined'), { account: who(machine(node)?.account ?? '') }) }}</span>
               <button type="button" class="h-8 rounded-md border border-slate-300 bg-white px-3.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="network.connect(node.nodeId)">{{ t(k('found.pairAgain')) }}</button>
             </template>
             <template v-else-if="node.phase === 'waiting'">
-              <span class="text-sm text-slate-600" role="status">{{ t(k('found.waiting'), { account: machine(node)?.account === network.ownerAccount ? t(k('found.itsOwner')) : who(machine(node)?.account ?? '') }) }}</span>
+              <span class="text-sm text-slate-600" role="status">{{ t(k('found.waiting'), { account: who(machine(node)?.account ?? '') }) }}</span>
               <button type="button" class="rounded px-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-testid="`private-network-cancel-${node.name}`" @click="network.cancelConnect(node.nodeId)">{{ t(k('found.cancel')) }}</button>
             </template>
+            <!-- someone else's node: Pair sends a request; its owner accepts -->
             <button
-              v-else
+              v-else-if="kindOf(node) === 'teammate'"
               type="button"
               class="h-8 rounded-md border border-slate-300 bg-white px-3.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60"
               :disabled="!machine(node)?.online"
               :data-testid="`private-network-pair-${node.name}`"
               @click="network.connect(node.nodeId)"
             >{{ t(k('found.pair')) }}</button>
+            <!-- a machine your account added: Control with its access code; it pairs from "Nodes you control" afterwards -->
+            <button
+              v-else-if="controlOpen !== node.nodeId"
+              type="button"
+              class="h-8 rounded-md border border-slate-300 bg-white px-3.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60"
+              :disabled="!machine(node)?.online"
+              :data-testid="`private-network-control-${node.name}`"
+              @click="openControl(node)"
+            >{{ t('nodes.sections.control') }}</button>
           </div>
         </div>
         <p v-if="kindOf(node) === 'unknown'" class="ml-5 mt-2 flex max-w-3xl items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-900" :data-testid="`private-network-unknown-${node.name}`">
-          <NodeNoticeIcon class="mt-0.5" tone="warn" />{{ t(k('found.unknownWarning')) }}
+          <NodeNoticeIcon class="mt-0.5" tone="warn" />{{ t('nodes.sections.unknownWarning') }}
         </p>
-        <p v-if="node.phase === 'pairing'" class="ml-5 mt-1.5 text-xs text-slate-500">{{ t(k('found.pairingNote'), { name: node.name }) }}</p>
+        <!-- Control: the node's access code, inline -->
+        <form v-if="controlOpen === node.nodeId" class="ml-5 mt-2 max-w-3xl" :data-testid="`private-network-control-form-${node.name}`" @submit.prevent="control(node)">
+          <div class="flex flex-wrap items-center gap-2">
+            <input
+              v-model="controlCode"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              class="h-9 min-w-0 flex-1 basis-64 rounded-lg border border-slate-300 bg-white px-3 font-mono text-xs text-slate-900 shadow-sm placeholder:font-sans placeholder:text-sm placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              :class="controlError ? 'border-red-300' : ''"
+              :placeholder="t('nodes.nodeCode.fieldPlaceholder')"
+              :aria-label="t('nodes.nodeCode.codeLabel', { name: node.name })"
+              :disabled="controlBusy"
+              :data-testid="`private-network-control-code-${node.name}`"
+            >
+            <button type="submit" class="h-9 rounded-md bg-blue-600 px-3.5 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 disabled:opacity-50" :disabled="controlBusy || !controlCode.trim()" :data-testid="`private-network-control-add-${node.name}`">{{ t('nodes.sections.controlAdd') }}</button>
+            <button type="button" class="rounded px-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :disabled="controlBusy" @click="closeControl">{{ t(k('found.cancel')) }}</button>
+          </div>
+          <p v-if="controlError" class="mt-1.5 text-sm text-red-600" role="alert" :data-testid="`private-network-control-error-${node.name}`">{{ controlError }}</p>
+          <p v-else-if="controlStep" class="mt-1.5 flex items-center gap-2 text-sm text-slate-600" role="status"><span class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600 motion-reduce:animate-none" aria-hidden="true" />{{ controlStep }}</p>
+          <p v-else class="mt-1.5 text-xs leading-5 text-slate-500">{{ t('nodes.sections.controlHint', { name: node.name }) }}</p>
+          <!-- Design reference only: what access-code prints on that machine, so the flow can be tried here. -->
+          <button type="button" class="mt-1.5 rounded border border-dashed border-slate-300 px-2 py-0.5 text-xs text-slate-500 hover:text-slate-800" :data-testid="`private-network-control-sample-${node.name}`" @click="sampleCode(node)">{{ t('nodes.sections.controlSample', { name: node.name }) }}</button>
+        </form>
       </li>
     </ul>
-    <p v-else-if="!network.requests.length" class="border-t border-slate-100 px-5 py-6 text-center text-sm text-slate-500" data-testid="private-network-found-empty">{{ t(k('found.empty')) }}</p>
+    <p v-else class="border-t border-slate-100 px-5 py-6 text-center text-sm text-slate-500" data-testid="private-network-found-empty">{{ t(k('found.empty')) }}</p>
   </section>
 
   <!-- Turning automatic trust on is a security decision: say what it allows. -->
-  <Teleport to="body">
+  <Teleport v-if="part === 'thisNode'" to="body">
     <div v-if="confirmTrust" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" @click.self="confirmTrust = false" @keydown.esc="confirmTrust = false">
       <div class="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl" role="alertdialog" aria-modal="true" aria-labelledby="pn-trust-title" aria-describedby="pn-trust-text" data-testid="private-network-trust-dialog">
         <h3 id="pn-trust-title" class="text-lg font-semibold text-gray-900">{{ t(k('trust.confirmTitle')) }}</h3>
@@ -155,12 +183,16 @@ import { useLocalization } from '~/composables/useLocalization'
 import { useExtensionsStore } from '~/stores/extensionsStore'
 import { useNodeStore } from '~/stores/nodeStore'
 import { usePrivateNetworkStore, type FoundNode } from '~/stores/privateNetworkStore'
+import { useNodeListStore } from '~/stores/nodeListStore'
+import { makeNodeCode } from '~/prototype/nodes/nodeCode'
+import { useAddWithAccessCode } from '~/prototype/nodes/addWithAccessCode'
 
 /**
  * extensions-ui-516 (design, Part B): Manage Nodes → "Found on your private network" (pairing-contract.md §3–§7).
  * Finding grants nothing: your own node pairs with one click, someone else's node with Pair and its owner's Accept,
  * an unknown machine on your own account is flagged and never paired by one click.
  */
+const props = defineProps<{ part: 'thisNode' | 'requests' | 'found' }>()
 const { t } = useLocalization()
 const k = (key: string) => `nodes.privateNetwork.${key}`
 const network = usePrivateNetworkStore()
@@ -195,7 +227,10 @@ const who = (account: string) => (network.accountLabel(account) === 'you' ? t(k(
 const KIND_CLASS: Record<'teammate' | 'unknown', string> = { teammate: 'text-slate-600', unknown: 'text-amber-700' }
 /** Found lists only nodes outside this app's Nodes list (pairing-contract §4); a node on your account that this app does not control is an unknown machine. */
 const nodeStore = useNodeStore()
-const shown = computed(() => network.found.filter((node) => !nodeStore.nodes.some((entry) => entry.nodeId === node.nodeId)))
+/** Found lists nodes in neither "Nodes you control" (a desktop entry) nor "Paired nodes" (a peer of this node). */
+const list = useNodeListStore()
+const shown = computed(() => network.found.filter((node) => !nodeStore.nodes.some((entry) => entry.nodeId === node.nodeId)
+  && !list.rows.some((row) => row.nodeId === node.nodeId)))
 const kindOf = (node: FoundNode): 'teammate' | 'unknown' => (node.kind === 'teammate' ? 'teammate' : 'unknown')
 const kindLine = (node: FoundNode) => kindOf(node) === 'teammate' ? t(k('found.kindTeammate'), { account: who(machine(node)?.account ?? '') })
   : t(k('found.kindUnknown'))
@@ -220,7 +255,32 @@ function trustOn(): void {
   network.setTrust(true)
 }
 
-onMounted(() => { void extensions.initialize(); network.touch() })
+onMounted(() => { void extensions.initialize(); if (props.part === 'thisNode') network.touch() })
+
+// ---- Control: a machine your own account added, made a node this AutoByteus controls with its access code (pairing-contract §6)
+const controlOpen = ref<string | null>(null)
+const controlCode = ref('')
+const controlError = ref('')
+const controlStep = ref('')
+const controlBusy = ref(false)
+const adder = useAddWithAccessCode()
+const openControl = (node: FoundNode): void => { controlOpen.value = node.nodeId; controlCode.value = ''; controlError.value = '' }
+const closeControl = (): void => { controlOpen.value = null; controlCode.value = ''; controlError.value = '' }
+/** Design only: the code `autobyteus-docker access-code` would print on that machine. */
+const sampleCode = (node: FoundNode): void => { controlCode.value = makeNodeCode(node.nodeId, `${machine(node)?.address ?? '100.88.99.99'}:29695`).text; controlError.value = '' }
+async function control(node: FoundNode): Promise<void> {
+  if (controlBusy.value) return
+  controlBusy.value = true
+  controlError.value = ''
+  try {
+    const result = await adder.add(controlCode.value, { expectNodeId: node.nodeId, expectName: node.name, onStep: (step) => { controlStep.value = step } })
+    if (!result.ok) { controlError.value = result.field === 'duplicate' ? t('settings.components.settings.NodesPage.add.duplicate', { name: result.existing }) : result.message; return }
+    closeControl()
+  } finally {
+    controlStep.value = ''
+    controlBusy.value = false
+  }
+}
 
 const PrivateNetworkIcon = defineComponent({
   render: () => h('svg', { class: 'h-5 w-5', viewBox: '0 0 20 20', fill: 'none', stroke: 'currentColor', 'stroke-width': '1.6', 'aria-hidden': 'true' }, [

@@ -69,3 +69,4 @@ Invented by hand for this ticket: the catalog entries (descriptions from `extens
 - 2026-11-25 Solution Designer confirmed round 8 (@ a3b4c649) against T1, T8 and §6; server-install command added to the row text (DC-072, no re-check needed). `Awaiting User Review`.
 - 2026-11-25 founder: the access code is a field of the Add node form, not a second mode (DC-073, captures R8-10, R8-11); sent to the Solution Designer.
 - 2026-11-25 Solution Designer confirmed DC-073 and answered: Pair with it pairs without a confirmation once the node is under control (DC-074, no re-check needed). `Awaiting User Review`.
+- 2026-11-26 founder decision via the Solution Designer: Manage Nodes in named sections (This node · Asking to pair · Nodes you control · Paired nodes · Found), Control on found machines of your account (DC-075, captures review-captures/round-9/). Sent to the Solution Designer for T4–T6, T8, T9.

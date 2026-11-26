@@ -10,6 +10,9 @@
     </div>
 
     <!-- extensions-ui-516 (design, pairing-contract §9, founder 2026-11-25): no node-level "Remote collaboration" switch; a node works with exactly the nodes it is paired with. -->
+    <!-- extensions-ui-516 (design, founder 2026-11-26): this node's private-network switches are this node's settings -->
+    <PrivateNetworkCard part="thisNode" />
+
     <!-- extensions-ui-516 (design, pairing-contract §6a): this node's owner lets another desktop control it with a node code. -->
     <div v-if="isOwnerWindow" class="border-t border-slate-100 px-5 py-3" data-testid="this-node-control">
       <button
@@ -35,6 +38,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import NodeCodePanel from '~/components/settings/nodes/NodeCodePanel.vue'
+import PrivateNetworkCard from '~/components/settings/nodes/PrivateNetworkCard.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useNodeListStore } from '~/stores/nodeListStore'
 import { usePrivateNetworkStore } from '~/stores/privateNetworkStore'
