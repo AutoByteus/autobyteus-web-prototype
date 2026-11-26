@@ -156,7 +156,7 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.sections.requestsLead': '其他人的节点请求与本节点配对。接受后智能体可以协作；永远不会获得本节点的控制权。',
   'nodes.sections.controlledTitle': '受控节点',
   'nodes.sections.controlledLead': '此 AutoByteus 可以访问这些节点：打开窗口、更改设置，并配对让智能体协作。',
-  'nodes.sections.controlledEmpty': '还没有节点。在下方用访问码添加一个。',
+  'nodes.sections.controlledEmpty': '还没有节点。在上方用访问码添加一个。',
   'nodes.sections.addTitle': '添加未被发现的节点',
   'nodes.sections.addTitlePlain': '添加节点',
   'nodes.sections.pairedTitle': '已配对的节点',

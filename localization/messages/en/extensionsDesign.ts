@@ -156,7 +156,7 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.sections.requestsLead': 'Nodes of other people that ask to pair with this node. Accepting lets agents work together; it never gives control of this node.',
   'nodes.sections.controlledTitle': 'Controlled nodes',
   'nodes.sections.controlledLead': 'This AutoByteus has access to these nodes: open their window, change their settings, and pair them so agents work together.',
-  'nodes.sections.controlledEmpty': 'No nodes yet. Add one below with its access code.',
+  'nodes.sections.controlledEmpty': 'No nodes yet. Add one above with its access code.',
   'nodes.sections.addTitle': 'Add a node that isn’t found',
   'nodes.sections.addTitlePlain': 'Add a node',
   'nodes.sections.pairedTitle': 'Paired nodes',

@@ -7,11 +7,12 @@
       <h3 class="text-base font-semibold text-slate-900">{{ t('nodes.sections.controlledTitle') }}</h3>
       <p class="mt-1 max-w-3xl text-sm text-slate-500">{{ t('nodes.sections.controlledLead') }}</p>
     </div>
-    <ul v-if="controlled.length" class="divide-y divide-slate-100 border-t border-slate-100" data-testid="node-list">
+    <!-- Add a node: above the list, as before (founder 2026-11-26) -->
+    <AddNodePanel />
+    <ul v-if="controlled.length" class="divide-y divide-slate-100" data-testid="node-list">
       <NodeRow v-for="row in controlled" :key="row.key" :row="row" @guide="emit('guide')" />
     </ul>
     <p v-else class="border-t border-slate-100 px-5 py-6 text-center text-sm text-slate-500" data-testid="node-list-empty">{{ t('nodes.sections.controlledEmpty') }}</p>
-    <AddNodePanel />
   </section>
 
   <section class="nodes-card overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" data-testid="paired-list-card">
@@ -42,7 +43,7 @@ import { useLocalization } from '~/composables/useLocalization'
 import { useNodeChangeDialogStore } from '~/stores/nodeChangeDialogStore'
 import { useNodeListStore } from '~/stores/nodeListStore'
 
-/** "Controlled nodes" (with Add node at its end) and "Paired nodes" (UIS-001, split by the founder 2026-11-26): every node once; each row is asked when the tab opens. */
+/** "Controlled nodes" (with Add node above its list) and "Paired nodes" (UIS-001, split by the founder 2026-11-26): every node once; each row is asked when the tab opens. */
 const emit = defineEmits<{ guide: [] }>()
 const { t } = useLocalization()
 const store = useNodeListStore()

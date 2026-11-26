@@ -1,7 +1,7 @@
 <template>
   <!-- extensions-ui-516 (design, founder 2026-11-25): one form; the access code is a field of it, not a second mode. Pasting a
        code fills in the address (and the name when it is empty); without a code the node is listed and asks for one. -->
-  <form class="border-t border-slate-200 bg-slate-50 px-5 pb-4 pt-3.5" data-testid="add-node-panel" @submit.prevent="submit">
+  <form class="border-y border-slate-200 bg-slate-50 px-5 pb-4 pt-3.5" data-testid="add-node-panel" @submit.prevent="submit">
     <h4 class="mb-2.5 text-sm font-semibold text-slate-900">{{ network.joined ? t('nodes.sections.addTitle') : t('nodes.sections.addTitlePlain') }}</h4>
     <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1.4fr)_auto_auto] xl:items-start">
       <div>
