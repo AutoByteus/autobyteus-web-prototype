@@ -1,38 +1,40 @@
 <template>
-  <div class="space-y-5" data-test="memory-browse">
-    <!-- round 4 (the founder): Browse is the cards he liked. Tabs Global (round 5) / Agents / Agent Teams / Agent
-         Orgs, no filter box: a node holds few agents, teams and orgs. A card opens its owner's page. -->
+  <div class="flex min-h-0 flex-1 flex-col space-y-4" data-test="memory-browse">
+    <!-- Top-level Browse views (Global, Agents, Agent Teams, Agent Orgs) share one balanced top bar with Browse | Search | Index. -->
     <template v-if="nodeKey === 'global' || !node || node.kind === 'group'">
       <div class="flex flex-wrap items-center justify-between gap-3">
-        <div class="flex flex-wrap items-center gap-1" role="tablist">
-          <button
-            v-for="tab in groupTabs"
-            :key="tab.key"
-            type="button"
-            role="tab"
-            :aria-selected="nodeKey === tab.key"
-            class="whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition"
-            :class="nodeKey === tab.key ? 'bg-gray-200 text-gray-900' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'"
-            :data-test="`memory-browse-tab-${tab.key}`"
-            @click="select(tab.key)"
-          >{{ $t(tab.label) }}</button>
+        <div class="flex flex-wrap items-center gap-3">
+          <slot name="sections" />
+          <span class="hidden h-5 w-px bg-gray-200 sm:inline-block" aria-hidden="true" />
+          <div class="flex flex-wrap items-center gap-1" role="tablist">
+            <button
+              v-for="tab in groupTabs"
+              :key="tab.key"
+              type="button"
+              role="tab"
+              :aria-selected="nodeKey === tab.key"
+              class="whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              :class="nodeKey === tab.key ? 'bg-gray-200/80 text-gray-900' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'"
+              :data-test="`memory-browse-tab-${tab.key}`"
+              :title="tab.key === 'global' ? $t('memory.global.subtitle') : undefined"
+              @click="select(tab.key)"
+            >{{ $t(tab.label) }}</button>
+          </div>
         </div>
         <div v-if="explorer.sources.length > 1" class="flex items-center gap-2">
           <label class="sr-only" for="memory-source-select">{{ $t('memory.components.memory.MemoryHome.memorySource') }}</label>
-          <select id="memory-source-select" :value="explorer.selectedSource.key" class="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm" @change="$emit('changeSource', ($event.target as HTMLSelectElement).value)">
+          <select id="memory-source-select" :value="explorer.selectedSource.key" class="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm" @change="$emit('changeSource', ($event.target as HTMLSelectElement).value)">
             <option v-for="source in explorer.sources" :key="source.key" :value="source.key">{{ source.label }}</option>
           </select>
-          <span v-if="imported" class="rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">{{ $t('memory.components.memory.common.importedReadOnly') }}</span>
+          <span v-if="imported" class="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-700">{{ $t('memory.components.memory.common.importedReadOnly') }}</span>
         </div>
       </div>
 
-      <!-- round 5 (the founder): Global memory, the node's own semantic memory, shared by every agent; `<memory>/semantic-global` (round 6). -->
-      <div v-if="nodeKey === 'global'" class="space-y-5" data-test="global-memory-page">
-        <header>
-          <h1 class="text-xl font-semibold text-gray-900">{{ $t('memory.global.title') }}</h1>
-          <p class="mt-1 text-sm text-gray-500">{{ $t('memory.global.subtitle') }}</p>
-        </header>
-        <SemanticMemoryFolder :agent-definition-id="GLOBAL_SEMANTIC_ID" :agent-name="$t('memory.global.title')" :imported="imported" global />
+      <!-- Global memory. round 4 (the founder: only what is needed): no title row; the selected Global tab says where
+           you are, and its tooltip says what Global memory is. The heading stays for screen readers. -->
+      <div v-if="nodeKey === 'global'" class="flex min-h-0 flex-1 flex-col" data-test="global-memory-page">
+        <h1 class="sr-only">{{ $t('memory.global.title') }}</h1>
+        <SemanticMemoryFolder class="min-h-0 flex-1" :agent-definition-id="GLOBAL_SEMANTIC_ID" :agent-name="$t('memory.global.title')" :imported="imported" global />
       </div>
       <div v-else-if="browse.loading && !browse.loaded" class="py-16 text-center text-sm text-gray-500">{{ $t('memory.components.memory.MemoryHome.loading_memory_catalog') }}</div>
       <div v-else-if="browse.error" class="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
@@ -41,31 +43,34 @@
       </div>
       <template v-else-if="node">
         <div v-if="!(node.children ?? []).length" class="py-16 text-center text-sm text-gray-500">{{ $t(emptyText[node.key]) }}</div>
-        <div v-else class="grid gap-4 md:grid-cols-2 xl:grid-cols-3" :data-test="`memory-group-cards-${node.key}`">
+        <div v-else class="grid gap-3.5 md:grid-cols-2 xl:grid-cols-3" :data-test="`memory-group-cards-${node.key}`">
           <button v-for="child in node.children" :key="child.key" :class="cardClass" data-test="memory-owner-card" @click="select(child.key)">
             <div class="flex items-start justify-between gap-3">
-              <div class="min-w-0">
-                <h2 class="break-words text-base font-semibold text-gray-900">{{ child.label }}</h2>
-                <p class="mt-1 break-all font-mono text-xs text-gray-500">{{ child.kind === 'unattributed' ? 'unattributed' : child.id }}</p>
+              <div class="min-w-0 flex-1">
+                <h2 class="truncate text-sm font-semibold text-gray-900" :title="child.kind === 'unattributed' ? child.label : child.id">{{ child.label }}</h2>
               </div>
               <span v-if="child.count && (child.kind === 'team' || child.kind === 'org')" :class="countClass">{{ child.count }} runs</span>
             </div>
-            <p v-if="child.kind === 'team' || child.kind === 'org'" class="mt-3 text-xs text-gray-500">{{ (child.children ?? []).length }} {{ $t('memory.components.memory.MemoryHome.members') }}<span v-if="latestOf(child)"> · {{ formatTimestamp(latestOf(child)) }}</span></p>
-            <p v-else-if="latestOf(child)" class="mt-3 text-xs text-gray-500">{{ formatTimestamp(latestOf(child)) }}</p>
+            <p v-if="child.kind === 'team' || child.kind === 'org'" class="mt-2.5 text-xs text-gray-500">{{ (child.children ?? []).length }} {{ $t('memory.components.memory.MemoryHome.members') }}<span v-if="latestOf(child)"> · {{ formatTimestamp(latestOf(child)) }}</span></p>
+            <p v-else-if="latestOf(child)" class="mt-2.5 text-xs text-gray-500">{{ formatTimestamp(latestOf(child)) }}</p>
           </button>
         </div>
       </template>
     </template>
 
-    <!-- An owner's page: Back returns to the card it was opened from (the group's tab, or its team or org). -->
+    <!-- An owner's page is its own page (rounds 2–3, the founder): no Browse | Search | Index; Back, the owner's name and
+         its switch share the page's one header row. -->
     <template v-else>
-      <button class="text-sm font-medium text-blue-600 hover:underline" data-test="memory-owner-back" @click="select(parentKey)">← {{ backLabel }}</button>
       <AgentMemoryPage
         v-if="node && (node.kind === 'agent' || node.kind === 'unattributed')"
+        class="min-h-0 flex-1"
         :agent-definition-id="node.kind === 'agent' ? node.id : null"
         :name="node.label"
         :pane="pane === 'semantic' && node.kind === 'agent' ? 'semantic' : 'episodic'"
         :imported="imported"
+        :back-text="backText"
+        :back-label="backLabel"
+        @back="select(parentKey)"
         @change-pane="(next) => select(nodeKey, next)"
         @open-episode="(episode) => $emit('openEpisode', episode, nodeKey)"
         @retry-episodes="loadEpisodes"
@@ -73,9 +78,13 @@
 
       <GroupMemoryPage
         v-else-if="node && (node.kind === 'team' || node.kind === 'org')"
+        class="min-h-0 flex-1"
         :node="node"
         :pane="pane === 'runs' ? 'runs' : 'members'"
         :imported="imported"
+        :back-text="backText"
+        :back-label="backLabel"
+        @back="select(parentKey)"
         @change-pane="(next) => select(nodeKey, next)"
         @select="select"
         @search-runs="searchRuns"
@@ -143,6 +152,12 @@ const findNode = (nodes: OwnerNode[], key: string): OwnerNode | null => {
 const node = computed(() => findNode(browse.tree, nodeKey.value));
 /** The card an owner page was opened from: its group's tab, or the team or org it was reached through. */
 const parentKey = computed(() => (nodeKey.value.includes('/') ? nodeKey.value.slice(0, nodeKey.value.lastIndexOf('/')) : 'agents'));
+/** Where Back goes, as the header shows it: "Memory" from a top-level tab, else the team's or org's name. */
+const backText = computed(() => {
+  const parent = parentKey.value;
+  if (parent === 'agents' || parent === 'teams' || parent === 'orgs') return t('memory.page.title');
+  return findNode(browse.tree, parent)?.label ?? '';
+});
 const backLabel = computed(() => {
   const parent = parentKey.value;
   if (parent === 'agents' || parent === 'teams' || parent === 'orgs') return t('memory.components.memory.AgentMemoryDetail.back_to_memory');
@@ -194,8 +209,8 @@ const emptyText: Record<string, string> = {
   teams: 'memory.components.memory.MemoryHome.no_team_memories_yet',
   orgs: 'memory.components.memory.MemoryHome.no_org_memories_yet',
 };
-const cardClass = 'flex flex-col justify-start rounded-lg border border-gray-200 bg-white p-5 text-left transition hover:border-gray-300 hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500';
-const countClass = 'flex-shrink-0 whitespace-nowrap rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600';
+const cardClass = 'flex flex-col justify-start rounded-lg border border-gray-200 bg-white p-4 text-left transition hover:border-gray-300 hover:shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500';
+const countClass = 'flex-shrink-0 whitespace-nowrap rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600';
 
 const latestOf = (child: OwnerNode): string | null => {
   if (child.kind === 'team') return browse.teams.find(team => team.teamDefinitionId === child.id)?.latestMemoryAt ?? null;

@@ -129,6 +129,19 @@ const RESEARCH_LESSONS = doc([
   '- When the user asks "which is best", give one answer first, then the comparison.',
 ])
 
+const SD_VERIFIED_FACTS = doc([
+  '# Network settings, device limits, and shared routing: verified facts (2026-10-26)',
+  '',
+  '- The only router policy manager lives in the local gateway service: `netpanel/gateway/policies/` (`PolicyStore`, `DeviceLimitService`), IPC in `gateway/policyHandlers.ts`. Registry `~/.netpanel/policies/registry.json`; bridge-only nodes have no local policy concept.',
+  '- Firmware runtime: gateway pins `netpanel/router-runtime` v0.4.2 (assets arm64, x86_64; no legacy mips). Runtime v0.5.0 is still in staging and must not be referenced in user-facing help.',
+  '- Surfaces that show device limits: Dashboard overview, Device detail drawer, Schedule editor, and Settings diagnostics.',
+  '',
+  '## Open design notes',
+  '',
+  '- Keep plain labels ("Device", "Limit", "Settings page") consistent across every panel; see Global memory `glossary.md`.',
+  '- When a device has no active schedule, show "No limit set" rather than an empty table.',
+])
+
 const SD_LESSONS = doc([
   '# Lessons',
   '',
@@ -197,6 +210,7 @@ const FOLDERS: FolderSpec[] = [
   },
   {
     id: 'team-local-agent:software-engineering-team:solution_designer', name: 'Solution Designer', files: [
+      { path: 'network-settings-and-routing-facts.md', at: '2026-10-26T08:25:00.000Z', text: SD_VERIFIED_FACTS },
       { path: 'reflections/index.md', at: '2026-10-26T08:20:00.000Z', text: SD_INDEX },
       { path: 'lessons.md', at: '2026-10-26T08:18:00.000Z', text: SD_LESSONS },
       { path: 'records/2026-10-26.md', at: '2026-10-26T08:17:00.000Z', text: record('2026-10-26', ['Requirements for "Router settings page" approved within the direction.', 'Asked the Product Team for the settings page design.']) },

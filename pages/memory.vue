@@ -40,6 +40,8 @@
     <MemoryInspector
       v-else-if="currentView === 'agent-inspector' || currentView === 'team-inspector' || currentView === 'org-inspector'"
       :back-label="inspectorBackLabel"
+      :back-text="inspectorBackText"
+      :run-title="queryValue('runLabel') ?? ''"
       @back="backFromInspector"
       @open-index="changeSection('index')"
     />
@@ -47,6 +49,8 @@
       v-else-if="currentView === 'folder-inspector' && folderRun"
       :folder-run="folderRun"
       :back-label="inspectorBackLabel"
+      :back-text="inspectorBackText"
+      :run-title="queryValue('runLabel') ?? ''"
       @back="backFromInspector"
       @open-index="changeSection('index')"
     />
@@ -174,6 +178,17 @@ const browseNodeLabel = (key: string): string | null => {
   return find(browseStore.tree)?.label ?? null;
 };
 
+/** memory-layout-balance-608 round 4: what Back shows (where it goes), as on an owner's page; the label stays its accessible name. */
+const inspectorBackText = computed(() => {
+  const target = inspectorStore.target;
+  if (queryValue('q')) return 'Search results';
+  const back = queryValue('back');
+  if (back) return browseNodeLabel(back) ?? '';
+  if (!target) return t('memory.page.title');
+  if (target.kind === 'agent_run') return target.agentDisplayName || target.agentDefinitionId || 'Agent';
+  if (target.kind === 'org_member_run') return target.orgDefinitionName || target.orgDefinitionId || 'Agent Org';
+  return target.teamDefinitionName || target.teamDefinitionId || 'Agent Team';
+});
 const inspectorBackLabel = computed(() => {
   const target = inspectorStore.target;
   if (queryValue('q')) return 'Back to search results';
