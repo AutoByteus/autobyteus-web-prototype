@@ -117,13 +117,13 @@
         </button>
         <span v-else-if="store.hasOpen" class="inline-block h-8 w-8" aria-hidden="true" />
         <button
-          v-if="!row.isEmbedded && privateMark?.role !== 'teammate'"
+          v-if="!row.isEmbedded && !teammate"
           type="button"
           class="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-500 transition-colors hover:bg-red-50 hover:text-red-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
-          :title="legacy?.role === 'teammate' ? t('nodes.pairAgain.forget', { name: row.name }) : t(k('row.removeNode'), { name: row.name })"
-          :aria-label="legacy?.role === 'teammate' ? t('nodes.pairAgain.forget', { name: row.name }) : t(k('row.removeNode'), { name: row.name })"
+          :title="t(k('row.removeNode'), { name: row.name })"
+          :aria-label="t(k('row.removeNode'), { name: row.name })"
           :data-testid="`node-remove-${row.key}`"
-          @click="legacy?.role === 'teammate' ? privateNetwork.forgetLegacy(row.nodeId!) : dialog.request('remove', row.key)"
+          @click="dialog.request('remove', row.key)"
         >
           <svg class="h-[18px] w-[18px]" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 6h12M8 6V4.5A1.5 1.5 0 0 1 9.5 3h1A1.5 1.5 0 0 1 12 4.5V6m1.5 0-.6 9a1.5 1.5 0 0 1-1.5 1.4H8.6A1.5 1.5 0 0 1 7.1 15L6.5 6" stroke-linecap="round" stroke-linejoin="round" /></svg>
         </button>

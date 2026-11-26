@@ -211,7 +211,6 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.pairAgain.label': '与 {{name}} 重新配对',
   'nodes.pairAgain.waiting': '正在等待其所有者接受',
   'nodes.pairAgain.older': '{{name}} 运行的是较旧版本的 AutoByteus。请先更新它，再重新配对。',
-  'nodes.pairAgain.forget': '从此列表中移除 {{name}}',
   'nodes.pairByAddress.title': '与别人的节点配对',
   'nodes.pairByAddress.label': '要配对的节点地址',
   'nodes.pairByAddress.placeholder': '地址，例如 192.168.1.20:29695',

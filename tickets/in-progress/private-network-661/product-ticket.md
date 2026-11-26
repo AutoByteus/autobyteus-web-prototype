@@ -40,6 +40,7 @@ Invented by hand for this ticket: accounts (`alex@example.com`, `bob@example.com
 - 2026-11-26 opened; worktree from `origin/personal@825434bc`; baseline check (above): no refresh needed.
 - 2026-11-26 round 1 built and clicked through (desktop 1440, phone 390, en and zh-CN): DC-091…DC-099 (`design-change-log.md`); review notes `review-round-1.md`; interim captures `review-captures/round-1/` (not normative). Sent to the Solution Designer for its workflow check and the founder's review; `Awaiting User Review`.
 - 2026-11-26 Solution Designer's workflow check: answers fit; F-1, F-2 confirmed; F-3, F-4 applied (DC-100, DC-101). Round 1 is with the founder (via the Solution Designer); `Awaiting User Review`.
+- 2026-11-26 Solution Designer's capture check: four fixes applied (DC-102; captures R1-03, R1-04, R1-08…R1-10, R1-15, R1-18…R1-20, R1-22, R1-24 retaken); sent back for its re-check.
 
 ## Final Package
 

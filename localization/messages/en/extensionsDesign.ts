@@ -211,7 +211,6 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.pairAgain.label': 'Pair again with {{name}}',
   'nodes.pairAgain.waiting': 'Waiting for its owner to accept',
   'nodes.pairAgain.older': '{{name}} runs an older AutoByteus. Update it, then pair again.',
-  'nodes.pairAgain.forget': 'Remove {{name}} from this list',
   'nodes.pairByAddress.title': 'Pair with someone else’s node',
   'nodes.pairByAddress.label': 'Address of the node to pair with',
   'nodes.pairByAddress.placeholder': 'Address, for example 192.168.1.20:29695',

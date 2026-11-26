@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useNodeListStore } from '~/stores/nodeListStore'
-import { NODE_IDS } from '~/prototype/nodes/network-world.mjs'
+import { APP_VERSION, NODE_IDS } from '~/prototype/nodes/network-world.mjs'
 
 /**
  * extensions-ui-516 / private-network-661 (design only): the simulated private network and pairing (autobyteus-661, Stage 2,
@@ -18,7 +18,7 @@ import { NODE_IDS } from '~/prototype/nodes/network-world.mjs'
  *   `network_not_joined` (installed and on, not signed in yet). Without a `network_*` value Private Network is not installed.
  * Starting state of pairing: `localStorage['autobyteus.prototype.pairing']` =
  *   `after_update` (D-3: the three pairings made before the update show "Pair again": docker runs an older AutoByteus,
- *   linux-box is controlled, bob-laptop is someone else's) · `address_request` (a node asks to pair by its plain address).
+ *   linux-box is controlled, bob-laptop is someone else's; an old pairing stays until it is paired again) · `address_request` (a node asks to pair by its plain address).
  * Pair by address, scripted by the address typed: 192.168.1.30 accepts (dana-mac), 192.168.1.40 declines, 192.168.1.50 runs an
  *   does not accept the request (as an older AutoByteus would); any other address has no AutoByteus node.
  */
@@ -143,6 +143,12 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   let approvalStarted = false
   let backOnlineStarted = false
 
+  // Under the node-key model a paired node runs this version: outside `after_update`, the paired docker node is current
+  // (an older node cannot hold a node-key pairing; it shows Pair again with the update note, below).
+  if (pairingState() !== 'after_update') {
+    const w = world()
+    if (w && w.nodes[NODE_IDS.D1]) w.nodes[NODE_IDS.D1].server = { version: APP_VERSION, relation: 'same', mode: 'available' }
+  }
   // D-3: the pairings made before the update stay listed, unpaired (no secret), until paired again.
   if (pairingState() === 'after_update') {
     const w = world()
@@ -330,13 +336,6 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     await flash(nodeId)
   }
   function cancelPairAgain(nodeId: string): void { const entry = legacyOf(nodeId); if (entry) entry.phase = 'idle' }
-  /** Someone else's node paired before the update that you no longer want: its old record leaves this list. */
-  async function forgetLegacy(nodeId: string): Promise<void> {
-    world()?.removePrivatePeer(nodeId)
-    legacy.value = legacy.value.filter((l) => l.nodeId !== nodeId)
-    await useNodeListStore().open()
-  }
-
   // ---- Pair by address with someone else's node (D-5, REQ-008): Pair → its owner Accepts / Rejects; Cancel
   const ADDRESS_NODES: Record<string, { nodeId: string; name: string; answer: 'accept' | 'decline' | 'refused' }> = {
     '192.168.1.30': { nodeId: nodeIdOf('d4n4M4cAddr'), name: 'dana-mac', answer: 'accept' },
@@ -385,6 +384,6 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     thisMachine, ownerAccount, accountLabel, machineOf, peerMark, ownOnNetwork, legacyOf, networkLabel, status, addressFormOf,
     reset, touch, signIn, cancelSignIn, joinWithKey, leave,
     setDiscoverable, dismissDiscoveryOffer, pair, connect, cancelConnect, allow, reject, unpair,
-    pairAgain, cancelPairAgain, forgetLegacy, pairByAddress, cancelOutgoing,
+    pairAgain, cancelPairAgain, pairByAddress, cancelOutgoing,
   }
 })

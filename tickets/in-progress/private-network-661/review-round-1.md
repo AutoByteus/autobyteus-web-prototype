@@ -39,3 +39,10 @@ Real Tailscale sign-in, approval and expiry texts, shared machines' account, acc
 - F-3 carried into REQ-010: join-first notice in Add a node, Needs connecting, Found → Control. Applied as DC-100 (R1-18, R1-23, R1-24).
 - F-4: version note only on a controlled row; pair by address uses one plain "did not accept" text. Applied as DC-101 (R1-14).
 - "…when they accept": fine.
+
+## Solution Designer's capture check (2026-11-26)
+
+1. R1-03 / R1-04 were taken before My machines was hidden; retaken (the list is hidden in both).
+2. docker example made consistent (DC-102): current and Paired outside `after_update` (R1-15, R1-18); older with Update and Pair again disabled after the update (R1-08). The "Same version as this app" line beside "Update to 0.1.0-prototype" is today's product hint for the Update button (the update brings the node to this app's version, autobyteus-356, unchanged); it is not a statement about the node's current version.
+3. R1-24 retaken with raspberrypi's own code (100.88.60.60): only the join-first line shows.
+4. The trash on bob-laptop's old pairing is dropped (DC-102); the row keeps Pair again only.
