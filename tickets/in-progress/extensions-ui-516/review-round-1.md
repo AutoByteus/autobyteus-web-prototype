@@ -1,6 +1,17 @@
 # Review: AutoByteus Extensions UI (autobyteus-516), rounds 1–5
 
-For the founder. Status: **awaiting your review**; nothing here is approved yet. After your confirmation the Product Team captures the final screenshots and writes `ui-ux-spec.md`.
+For the founder. Status: **approved 2026-11-26**; the final package is `ui-ux-spec.md` with `visual-references/`. The rounds below are the review history.
+
+## Round 10 (2026-11-26): the open items decided (DEC-015) — approved, final
+
+Applied as DC-083…DC-090 and confirmed by the Solution Designer against every spine; the final package is `ui-ux-spec.md` with `visual-references/`.
+- Install ends **On** (Voice Input "Installed and on. Getting ready…"; Private Network continues into Choose a network).
+- **Translations**: card names and descriptions in the app's language; the extension pages get the language on load and show their texts in it.
+- Voice Input's page: the folder with **Copy**. No Reinstall / Open folder.
+- No **"Pair with it"**: the row's Pair is the only pairing control.
+- **Create access code** only when another computer can reach the node's address.
+- **Controlled by** on This node: who controls it, since when, last used; **Revoke** on the others.
+- Voice Input **warms its model** in the background ("Getting ready…"); dictation is never blocked.
 
 ## Round 9 (2026-11-26): Manage Nodes in named sections (your decision)
 

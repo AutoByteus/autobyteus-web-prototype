@@ -6,7 +6,7 @@
 - Requested by: Solution Designer, Software Engineering Team (run `solution_designer_b2b085ced16d45479c46350d19ae49a2`), for the founder, 2026-11-22
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/autobyteus-516-extensions/tickets/in-progress/autobyteus-516-extensions/product-design-request.md`
 - Mode: Product Experience Design (changes existing surfaces: Settings → Extensions, the Voice Input card, the voice surfaces, Nodes)
-- Status: `In Progress` (DEC-015 changes after approval, 2026-11-26; sent to the Solution Designer for its check)
+- Status: `Completed` (approved 2026-11-26; DEC-015 applied and confirmed; final package: `ui-ux-spec.md`, `visual-references/` VIS-*)
 
 ### Decision questions
 
@@ -74,3 +74,13 @@ Invented by hand for this ticket: the catalog entries (descriptions from `extens
 - 2026-11-26 founder decisions: Controlled nodes title (DC-076), Add a node above the list (DC-077), "Visible on my private network" (DC-078), no trust switch (DC-079). `Awaiting User Review`.
 - 2026-11-26 Solution Designer final validation of the whole package (@ 374aa79c): V1–V13 and T1–T9 match; T8 stale refusal text fixed (DC-081); no further check needed. Open for the founder (listed as open in the spec): install ends On/Off, translations, Reinstall / Open folder, one click for own nodes, "Pair with it". Not included unless the founder approves: "Create access code" only where the code can work; "Controlled by … Revoke" on This node. Brought to the founder for approval; `Awaiting User Review`.
 - 2026-11-26 final screenshots captured and the spec drafted; before integration the founder delegated the open items to the Solution Designer (DEC-015): install ends On, translations, folder Copy, no Pair with it, Create access code only where it works, Controlled by … Revoke, voice warm-up. Status back to `In Progress`; applied as DC-083…DC-089 (captures review-captures/round-10/); final screenshots and ui-ux-spec.md to be redone after the check.
+- 2026-11-26 Solution Designer checked round 10: items 1, 3, 4, 5, 8 match; corrections A (locale on the frame's load) and B (one reachability rule for Create access code) and "last used" on Controlled by applied (DC-090) and confirmed (@ da118b6b): every spine V1–V13, T1–T9 matches the contracts and DEC-015.
+- 2026-11-26 final check clicked through on the ticket branch (merged with personal @ e918b746); final screenshots VIS-* (113) in `visual-references/`; `ui-ux-spec.md` written; ticket moved to `tickets/done/`; status `Completed`. Integration record below.
+
+## Final Package
+
+- UI/UX specification: `ui-ux-spec.md`
+- Final references: `visual-references/VIS-*.png` (V: Voice Input and the extension foundation; T: Private Network and Manage Nodes; L: Chinese; N: phone)
+- Change history: `design-change-log.md` (DC-001…DC-090); review notes: `review-round-1.md`; spine coverage: `round-5-coverage.md`; interim captures: `review-captures/` (not normative)
+- Approval: the founder 2026-11-26 (this conversation, and relayed by the Solution Designer); DEC-015 decided by the Solution Designer at the founder's request and confirmed against every spine
+- Provisional (marked in the spec): Tailscale sign-in and keys, device approval, key expiry, sharing; hosting; G1 (desktop relay). Not product UI: the "Design reference only" controls. Dependency: Voice Input's "Getting ready…" readiness needs voice runtime 0.3.1 (PRE-001).
