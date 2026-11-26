@@ -208,7 +208,8 @@ export function installHostScenario(options = {}) {
     onServerStatus: callback => cleanup(listeners.server, callback),
     checkServerHealth: async () => server.status === 'running' ? { status: 'ok', data: { status: 'healthy' } } : server.status === 'error' ? { status: 'error', message: server.message } : { status: 'starting', message: 'Synthetic server is starting.' },
     openNodeWindow: async () => ({ windowId: 22, created: true }), focusNodeWindow: async () => ({ focused: true }), listNodeWindows: async () => [],
-    getWindowContext: async () => ({ windowId: embedded ? 1 : 2, entryId: embedded ? 'embedded-local' : officeAddress ? 'remote-office' : nodesScenario ? 'remote-docker' : 'remote-prototype' }),
+    // extensions-ui-516 (design): `localStorage['autobyteus.prototype.windowEntry']` binds a node window to another entry (e.g. remote-linux-box).
+    getWindowContext: async () => ({ windowId: embedded ? 1 : 2, entryId: embedded ? 'embedded-local' : (typeof localStorage !== 'undefined' && localStorage.getItem('autobyteus.prototype.windowEntry')) || (officeAddress ? 'remote-office' : nodesScenario ? 'remote-docker' : 'remote-prototype') }),
     upsertNodeRegistry: async change => {
       if (change.type === 'add') registry = { version: registry.version + 1, nodes: [...registry.nodes, change.node] }
       if (change.type === 'remove') registry = { version: registry.version + 1, nodes: registry.nodes.filter(node => node.id !== change.entryId) }

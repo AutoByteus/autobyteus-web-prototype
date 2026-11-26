@@ -154,6 +154,8 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.controlledBy.title': 'Controlled by',
   'nodes.controlledBy.thisApp': 'This AutoByteus',
   'nodes.controlledBy.since': 'since {{date}}',
+  'nodes.controlledBy.lastUsed': 'last used {{date}}',
+  'nodes.controlledBy.neverUsed': 'never used',
   'nodes.controlledBy.revoke': 'Revoke',
   'nodes.controlledBy.revoking': 'Revoking…',
   'nodes.controlledBy.confirm': '{{name}} loses control of this node; it can control it again only with a new access code.',

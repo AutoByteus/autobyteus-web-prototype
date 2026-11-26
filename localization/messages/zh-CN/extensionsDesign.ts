@@ -154,6 +154,8 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.controlledBy.title': '控制者',
   'nodes.controlledBy.thisApp': '此 AutoByteus',
   'nodes.controlledBy.since': '自 {{date}} 起',
+  'nodes.controlledBy.lastUsed': '最近使用 {{date}}',
+  'nodes.controlledBy.neverUsed': '从未使用',
   'nodes.controlledBy.revoke': '撤销',
   'nodes.controlledBy.revoking': '正在撤销…',
   'nodes.controlledBy.confirm': '{{name}} 将失去对此节点的控制；只有使用新的访问码才能再次控制它。',

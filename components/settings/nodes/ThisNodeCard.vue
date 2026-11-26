@@ -14,7 +14,7 @@
     <PrivateNetworkCard part="thisNode" />
 
     <!-- extensions-ui-516 (design, DEC-015 item 7): who controls this node, with Revoke (owner windows) -->
-    <ThisNodeControllers v-if="isOwnerWindow" />
+    <ThisNodeControllers v-if="isOwnerWindow" :reachable-from-others="codeCanWork" />
 
     <!-- extensions-ui-516 (design, pairing-contract §6, DEC-015 item 6): Create access code only where the code can work: not on the
          desktop's own node while it is not on a private network (its address is reachable only from this computer). -->
@@ -61,12 +61,18 @@ const controlOpen = ref(false)
 const network = usePrivateNetworkStore()
 /** The access code says where another AutoByteus reaches this node: its private address when joined, else this window's address of it. */
 const nodeId = computed(() => store.thisNodeId ?? store.currentNode?.nodeId ?? 'srv_m9VFq2Lw')
-const codeAddress = computed(() => (network.joined ? network.thisMachine.address : (store.currentNode?.baseUrl ?? '').replace(/^https?:\/\//, '')))
+const codeAddress = computed(() => (network.joined ? network.thisMachine.address : windowHost.value))
 /** Making a node code on a node that has an owner is an owner action (NA-5): only windows holding the owner credential, never a phone. */
 const windowNode = useWindowNodeContextStore()
 const access = useNodeAccessStore()
 const isOwnerWindow = computed(() => typeof window !== 'undefined' && Boolean(window.electronAPI)
   && (windowNode.isEmbeddedWindow || access.stateOf(windowNode.entryId) === 'connected'))
-/** The embedded node answers at 127.0.0.1, which only this computer reaches: its code works once it is on a private network. */
-const codeCanWork = computed(() => !windowNode.isEmbeddedWindow || network.joined)
+/**
+ * One rule for every node (DEC-015 item 6): the code works only when another computer can reach the address it carries, i.e.
+ * the node's private-network address, or a local-network address it is published on. A node on 127.0.0.1 / localhost only
+ * (the Embedded node; a Docker node published on 127.0.0.1, NA-4) gets no Create access code until it is on a private network.
+ */
+const LOCAL_ONLY = /^(localhost|127\.|\[?::1\]?$|host\.docker\.internal)/i
+const windowHost = computed(() => (store.currentNode?.baseUrl ?? '').replace(/^https?:\/\//, '').replace(/\/.*$/, ''))
+const codeCanWork = computed(() => network.joined || (Boolean(windowHost.value) && !LOCAL_ONLY.test(windowHost.value)))
 </script>

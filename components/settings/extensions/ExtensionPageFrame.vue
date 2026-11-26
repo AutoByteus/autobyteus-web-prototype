@@ -9,6 +9,7 @@
       referrerpolicy="no-referrer"
       class="block w-full border-0 bg-transparent"
       :style="{ height: `${height}px` }"
+      @load="sendLocale"
     />
     <p v-if="!loaded" class="absolute inset-x-0 top-0 flex items-center gap-2 text-sm text-gray-500">
       <span class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-200 border-t-gray-500 motion-reduce:animate-none" aria-hidden="true" />
@@ -32,7 +33,8 @@ import { useExtensionsStore, type ExtensionId } from '~/stores/extensionsStore';
  */
 const props = defineProps<{ extensionId: ExtensionId; title: string }>();
 const { t, resolvedLocale } = useLocalization();
-let localeSent = false;
+/** The page has loaded (the frame's load event): AutoByteus sends the app's language once (contract §5, DEC-015). */
+function sendLocale(): void { frame.value?.contentWindow?.postMessage({ locale: String(resolvedLocale.value ?? 'en') }, '*'); }
 const store = useExtensionsStore();
 const frame = ref<HTMLIFrameElement | null>(null);
 const height = ref(120);
@@ -48,8 +50,6 @@ async function onMessage(event: MessageEvent): Promise<void> {
   if (message.resize && typeof message.id !== 'string') {
     const next = Number(message.resize.height);
     if (Number.isFinite(next) && next > 0) { height.value = Math.min(Math.max(next, 48), 2000); loaded.value = true; }
-    // The page has loaded: AutoByteus sends the app's language once (contract §5, DEC-015).
-    if (!localeSent) { localeSent = true; own.postMessage({ locale: String(resolvedLocale.value ?? 'en') }, '*'); }
     return;
   }
   if (typeof message.id !== 'string' || typeof message.call !== 'string') return;

@@ -8,7 +8,7 @@
         <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
           <span class="text-sm font-medium text-slate-900">{{ item.name }}</span>
           <span v-if="item.isThis" class="inline-flex items-center rounded-md bg-blue-50 px-1.5 py-0.5 text-xs font-medium text-blue-700">{{ t('nodes.controlledBy.thisApp') }}</span>
-          <span class="text-xs text-slate-500">{{ t('nodes.controlledBy.since', { date: item.since }) }}</span>
+          <span class="text-xs text-slate-500">{{ t('nodes.controlledBy.since', { date: item.since }) }} · {{ item.lastUsed ? t('nodes.controlledBy.lastUsed', { date: item.lastUsed }) : t('nodes.controlledBy.neverUsed') }}</span>
           <span class="flex-1" />
           <span v-if="revoking === item.id" class="inline-flex items-center gap-1.5 text-xs text-slate-600" role="status"><span class="h-3 w-3 animate-spin rounded-full border-2 border-slate-200 border-t-slate-500 motion-reduce:animate-none" aria-hidden="true" />{{ t('nodes.controlledBy.revoking') }}</span>
           <button
@@ -30,20 +30,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useLocalization } from '~/composables/useLocalization'
 
 /**
- * Who controls this node: the node's owner credentials (`GET /rest/node-access/owner-credentials`, NA-11), each named by the
- * AutoByteus app that holds it, with the date it was issued. Revoke deletes one (`DELETE …/owner-credentials/:id`): that app
- * loses control and needs a new access code. Every value here is invented.
+ * Who controls this node: the node's owner credentials (`GET /rest/node-access/owner-credentials`, NA-11:
+ * `credentialId`, `desktopName`, `createdAt`, `lastSeenAt`). The name is `desktopName`, "since" is `createdAt`, "last used" is
+ * `lastSeenAt` (or never used). "This AutoByteus" is the credential this app holds for the node. Revoke deletes one
+ * (`DELETE …/owner-credentials/:id`): that app loses control and needs a new access code. Every value here is invented.
+ * A node no other computer can reach (127.0.0.1 only, not on a private network) realistically has only this AutoByteus.
  */
+const props = defineProps<{ reachableFromOthers: boolean }>()
 const { t } = useLocalization()
-interface Controller { id: string; name: string; since: string; isThis?: boolean }
-const controllers = ref<Controller[]>([
-  { id: 'home-mac', name: 'home-mac', since: '20 Oct 2026', isThis: true },
-  { id: 'work-laptop', name: 'work-laptop', since: '18 Nov 2026' },
-])
+interface Controller { id: string; name: string; since: string; lastUsed: string | null; isThis?: boolean }
+const fixture = (others: boolean): Controller[] => [
+  { id: 'home-mac', name: 'home-mac', since: '20 Oct 2026', lastUsed: '26 Nov 2026', isThis: true },
+  ...(others ? [
+    { id: 'work-laptop', name: 'work-laptop', since: '18 Nov 2026', lastUsed: '25 Nov 2026' },
+    { id: 'studio-mac', name: 'studio-mac', since: '2 Nov 2026', lastUsed: null },
+  ] : []),
+]
+const controllers = ref<Controller[]>(fixture(props.reachableFromOthers))
+watch(() => props.reachableFromOthers, (others) => { controllers.value = fixture(others) })
 const asking = ref<string | null>(null)
 const revoking = ref<string | null>(null)
 const revoke = async (id: string): Promise<void> => {
