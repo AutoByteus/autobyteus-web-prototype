@@ -162,12 +162,10 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.error.alreadyPaired': '{{node}} 已与本节点配对。请先在该节点上移除它。',
   'settings.components.settings.NodesPage.access.needsConnecting': '需要连接。',
   'settings.components.settings.NodesPage.access.needsConnectingText': '此桌面还没有 {{name}} 的密钥。请在那台计算机上运行“autobyteus-docker setup-code <节点>”（Docker）或“node dist/node-access-cli.js setup-code --data-dir <数据目录>”（服务器安装），然后在此输入设置码。',
-  'settings.components.settings.NodesPage.access.codeLabel': '{{name}} 的设置码',
-  'settings.components.settings.NodesPage.access.codePlaceholder': '设置码',
   'settings.components.settings.NodesPage.access.connect': '连接',
   'settings.components.settings.NodesPage.access.connecting': '正在连接…',
   'settings.components.settings.NodesPage.access.disconnect': '断开此桌面与 {{name}} 的连接',
-  'settings.components.settings.NodesPage.access.errorCode': '设置码无效：它已被使用、已过期或输入有误。请在节点所在的计算机上创建新的设置码。',
+  'settings.components.settings.NodesPage.access.errorCode': '此访问码无效：它已被使用、已过期或输入有误。请在节点上重新创建。',
   'settings.components.settings.NodesPage.access.errorOther': '无法连接 {{name}}：{{message}}',
 } satisfies TranslationCatalog;
 

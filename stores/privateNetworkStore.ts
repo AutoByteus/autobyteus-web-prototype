@@ -128,7 +128,7 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   const found = ref<FoundNode[]>(seededJoined ? structuredClone(FOUND) : [])
   const requests = ref<IncomingRequest[]>(seededJoined ? REQUESTS(seededKind) : [])
   const paired = ref<PairedPeer[]>([])
-  /** Set when this node has just joined: the card frame offers "Let my private network find this node" once. */
+  /** Set when this node has just joined: the card frame offers "Make this node visible on your private network?" once. */
   const offerDiscovery = ref(false)
   let approvalStarted = false
 

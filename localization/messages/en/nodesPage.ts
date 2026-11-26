@@ -162,12 +162,10 @@ const nodesPageMessages = {
   'settings.components.settings.NodesPage.error.alreadyPaired': '{{node}} is already paired with this node. Remove it on that node first.',
   'settings.components.settings.NodesPage.access.needsConnecting': 'Needs connecting.',
   'settings.components.settings.NodesPage.access.needsConnectingText': 'This desktop has no key for {{name}} yet. On that computer, run “autobyteus-docker setup-code <node>” (Docker) or “node dist/node-access-cli.js setup-code --data-dir <data folder>” (server install), then enter the code here.',
-  'settings.components.settings.NodesPage.access.codeLabel': 'Setup code for {{name}}',
-  'settings.components.settings.NodesPage.access.codePlaceholder': 'Setup code',
   'settings.components.settings.NodesPage.access.connect': 'Connect',
   'settings.components.settings.NodesPage.access.connecting': 'Connecting…',
   'settings.components.settings.NodesPage.access.disconnect': 'Disconnect this desktop from {{name}}',
-  'settings.components.settings.NodesPage.access.errorCode': 'The setup code is not valid: it was used, expired or mistyped. Create a new one on the node’s computer.',
+  'settings.components.settings.NodesPage.access.errorCode': 'This access code is not valid: it was used, expired or mistyped. Create a new one on the node.',
   'settings.components.settings.NodesPage.access.errorOther': '{{name}} could not be connected: {{message}}',
 } satisfies TranslationCatalog;
 

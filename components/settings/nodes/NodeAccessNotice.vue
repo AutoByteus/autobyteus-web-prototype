@@ -47,7 +47,7 @@ import { causeText, NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
 
 /**
  * A remote or Docker node this AutoByteus holds no credential for (autobyteus-437 NAS-02, NAS-30): "Needs connecting",
- * where to make an access code on the node (pairing-contract §6; no terminal), and the field to paste it. Connected, the row is asked again.
+ * where to get an access code for the node (the access-code command, or This node → Create access code) (pairing-contract §6; no terminal), and the field to paste it. Connected, the row is asked again.
  */
 const props = defineProps<{ row: NodeRow }>()
 const { t } = useLocalization()

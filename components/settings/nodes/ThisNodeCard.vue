@@ -46,7 +46,7 @@ import { useNodeAccessStore } from '~/stores/nodeAccessStore'
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore'
 import { NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
 
-/** "This node": its name, type and address; in owner windows, "make an access code". Pairing is per node, in the Nodes list (pairing-contract §9). */
+/** "This node": its name, type and address; "Visible on my private network"; in owner windows, "Create access code". Pairing is per node, in the Nodes list (pairing-contract §9). */
 defineProps<{ nodeName: string; nodeTypeLabel: string; baseUrl?: string }>()
 
 const { t } = useLocalization()
