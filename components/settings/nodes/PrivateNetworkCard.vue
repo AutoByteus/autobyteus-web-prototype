@@ -17,29 +17,19 @@
         data-testid="private-network-setup-link"
       >{{ setupAction }}</NuxtLink>
     </div>
-    <div v-else class="divide-y divide-slate-100 border-t border-slate-100" data-testid="private-network-card">
+    <div v-else class="border-t border-slate-100" data-testid="private-network-card">
       <div class="px-5 pb-1 pt-4">
         <h4 class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t(k('title')) }}</h4>
         <p class="mt-0.5 text-sm text-slate-500">{{ t('nodes.sections.networkLine', { network: network.networkLabel }) }}</p>
         <p v-if="network.vpnRanges.length" class="mt-0.5 max-w-3xl text-sm text-slate-500" data-testid="private-network-vpn-also">{{ t(k('vpn.also'), { ranges: network.vpnRanges.join(', ') }) }}</p>
       </div>
       <!-- Label and switch share a line; the explanation runs the card's width below (narrow windows too). -->
-      <div class="px-5 py-4" data-testid="private-network-findable">
+      <div class="px-5 pb-4 pt-3" data-testid="private-network-findable">
         <div class="flex items-center justify-between gap-4">
           <p id="pn-findable-label" class="min-w-0 text-sm font-medium text-slate-900">{{ t(k('findable.label')) }}</p>
           <SwitchControl :on="network.discoverable" labelled-by="pn-findable-label" test-id="private-network-findable-switch" @toggle="network.setDiscoverable(!network.discoverable)" />
         </div>
         <p class="mt-0.5 max-w-2xl text-sm leading-6 text-slate-500">{{ t(k('findable.help')) }}</p>
-      </div>
-      <div class="px-5 py-4" data-testid="private-network-trust">
-        <div class="flex items-center justify-between gap-4">
-          <p id="pn-trust-label" class="min-w-0 text-sm font-medium text-slate-900">{{ t(k('trust.label')) }}</p>
-          <SwitchControl :on="network.trustOwnMachines" labelled-by="pn-trust-label" test-id="private-network-trust-switch" @toggle="toggleTrust" />
-        </div>
-        <p class="mt-0.5 max-w-2xl text-sm leading-6 text-slate-500">{{ network.trustOwnMachines ? t(k('trust.helpOn'), { account: network.ownerAccount }) : t(k('trust.helpOff')) }}</p>
-        <p v-if="network.trustOwnMachines" class="mt-2 flex max-w-2xl items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-900" data-testid="private-network-trust-warning">
-          <NodeNoticeIcon class="mt-0.5" tone="warn" />{{ t(k('trust.risk')) }}
-        </p>
       </div>
     </div>
   </template>
@@ -160,20 +150,6 @@
     <p v-else class="border-t border-slate-100 px-5 py-6 text-center text-sm text-slate-500" data-testid="private-network-found-empty">{{ t(k('found.empty')) }}</p>
   </section>
 
-  <!-- Turning automatic trust on is a security decision: say what it allows. -->
-  <Teleport v-if="part === 'thisNode'" to="body">
-    <div v-if="confirmTrust" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" @click.self="confirmTrust = false" @keydown.esc="confirmTrust = false">
-      <div class="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl" role="alertdialog" aria-modal="true" aria-labelledby="pn-trust-title" aria-describedby="pn-trust-text" data-testid="private-network-trust-dialog">
-        <h3 id="pn-trust-title" class="text-lg font-semibold text-gray-900">{{ t(k('trust.confirmTitle')) }}</h3>
-        <p id="pn-trust-text" class="mt-2 text-sm leading-6 text-gray-600">{{ t(k('trust.confirmText'), { account: network.ownerAccount }) }}</p>
-        <p class="mt-3 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-900"><NodeNoticeIcon class="mt-0.5" tone="warn" />{{ t(k('trust.risk')) }}</p>
-        <div class="mt-6 flex justify-end gap-2">
-          <button ref="trustCancel" type="button" class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="confirmTrust = false">{{ t(k('trust.cancel')) }}</button>
-          <button type="button" class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" data-testid="private-network-trust-confirm" @click="trustOn">{{ t(k('trust.confirm')) }}</button>
-        </div>
-      </div>
-    </div>
-  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -197,8 +173,6 @@ const { t } = useLocalization()
 const k = (key: string) => `nodes.privateNetwork.${key}`
 const network = usePrivateNetworkStore()
 const extensions = useExtensionsStore()
-const confirmTrust = ref(false)
-const trustCancel = ref<HTMLButtonElement | null>(null)
 const checking = ref(false)
 
 const state = computed(() => extensions.list.find((item) => item.entry.id === 'private-network')?.state ?? null)
@@ -239,20 +213,6 @@ async function checkAgain(): Promise<void> {
   checking.value = true
   await new Promise((done) => setTimeout(done, 900))
   checking.value = false
-}
-async function toggleTrust(): Promise<void> {
-  if (network.trustOwnMachines) { network.setTrust(false); return }
-  confirmTrust.value = true
-  await nextTick()
-  trustCancel.value?.focus()
-}
-/**
- * "Trust machines I added" acts on this node as the receiving side (pairing-contract §4 row 2): machines of the owner's
- * account that ask to pair are paired without asking. Nodes found here still need Pair from this side.
- */
-function trustOn(): void {
-  confirmTrust.value = false
-  network.setTrust(true)
 }
 
 onMounted(() => { void extensions.initialize(); if (props.part === 'thisNode') network.touch() })

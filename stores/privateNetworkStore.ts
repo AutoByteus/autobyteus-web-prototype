@@ -13,7 +13,7 @@ import { useNodeListStore } from '~/stores/nodeListStore'
  * scripted world stands for both; every account, machine, address, domain, key and code below is invented.
  *
  * Starting state: `localStorage['autobyteus.prototype.extensions']` =
- *   `network_joined` / `network_trust` (Tailscale, joined; trust on) · `network_headscale` · `network_headscale_down`
+ *   `network_joined` (Tailscale, joined) · `network_headscale` · `network_headscale_down`
  *   (server unreachable) · `network_host` (hosting on this machine) · `network_approval` (waiting for device approval in
  *   the Tailscale admin console; approved after about 10 s) · `network_signed_out` (Tailscale key expired) ·
  *   `network_vpn` (your own VPN only) · `network_restarting` (rejoining after a restart, 8 s). Any other value starts not joined.
@@ -107,7 +107,7 @@ const HEADSCALE_USER = /^[a-z][a-z0-9-]{1,30}$/
 export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   const seed = startState()
   const seededKind: NetworkKind = seed.startsWith('network_headscale') ? 'headscale' : seed === 'network_host' ? 'host' : 'tailscale'
-  const seededJoined = ['network_joined', 'network_trust', 'network_headscale', 'network_headscale_down', 'network_host', 'network_signed_out', 'network_restarting'].includes(seed)
+  const seededJoined = ['network_joined', 'network_headscale', 'network_headscale_down', 'network_host', 'network_signed_out', 'network_restarting'].includes(seed)
 
   const joined = ref(seededJoined)
   const network = ref<NetworkKind>(seededKind)
@@ -125,7 +125,6 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   const vpnRanges = ref<string[]>(seed === 'network_vpn' ? ['10.8.0.0/24'] : [])
   const machines = ref<NetworkMachine[]>(machinesFor(seededKind))
   const discoverable = ref(seededJoined)
-  const trustOwnMachines = ref(seed === 'network_trust')
   const found = ref<FoundNode[]>(seededJoined ? structuredClone(FOUND) : [])
   const requests = ref<IncomingRequest[]>(seededJoined ? REQUESTS(seededKind) : [])
   const paired = ref<PairedPeer[]>([])
@@ -167,7 +166,7 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   })
 
   function reset(): void {
-    joined.value = false; signingIn.value = false; discoverable.value = false; trustOwnMachines.value = false
+    joined.value = false; signingIn.value = false; discoverable.value = false
     awaitingApproval.value = false; signedOut.value = false; serverDown.value = false; hosting.value = null
     vpnRanges.value = []; found.value = []; requests.value = []; paired.value = []; offerDiscovery.value = false
   }
@@ -257,7 +256,7 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   async function leave(): Promise<void> {
     await later(1200)
     joined.value = false; hosting.value = null; signedOut.value = false; serverDown.value = false
-    discoverable.value = false; trustOwnMachines.value = false; found.value = []; requests.value = []; offerDiscovery.value = false
+    discoverable.value = false; found.value = []; requests.value = []; offerDiscovery.value = false
   }
 
   function addRange(range: string): { ok: boolean; error?: string } {
@@ -295,7 +294,6 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
 
   function setDiscoverable(value: boolean): void { discoverable.value = value; offerDiscovery.value = false }
   function dismissDiscoveryOffer(): void { offerDiscovery.value = false }
-  function setTrust(value: boolean): void { trustOwnMachines.value = value }
 
   /** A paired node: in the simulated network it answers at its private address and both sides hold the pairing. */
   async function landInNodes(node: { nodeId: string; name: string; machineId: string }, role: 'own' | 'teammate', account: string): Promise<void> {
@@ -370,10 +368,10 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
 
   return {
     joined, network, serverUrl, signingIn, awaitingApproval, signedOut, serverDown, rejoining, hosting, vpnRanges,
-    machines, discoverable, trustOwnMachines, found, requests, paired, offerDiscovery,
+    machines, discoverable, found, requests, paired, offerDiscovery,
     thisMachine, ownerAccount, accountLabel, machineOf, peerMark, ownOnNetwork, networkLabel, status,
     reset, touch, signIn, cancelSignIn, joinWithKey, joinWithInvite, hostStep, checkReachable, leave, addRange, removeRange, isLargeRange,
     makeInvite,
-    setDiscoverable, dismissDiscoveryOffer, setTrust, pair, connect, cancelConnect, allow, reject, unpair,
+    setDiscoverable, dismissDiscoveryOffer, pair, connect, cancelConnect, allow, reject, unpair,
   }
 })
