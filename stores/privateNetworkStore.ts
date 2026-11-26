@@ -312,7 +312,7 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
 
   async function pair(nodeId: string): Promise<void> {
     const node = found.value.find((n) => n.nodeId === nodeId)
-    // Only for a node this AutoByteus controls (its row in "Nodes you control"): it decides for both sides.
+    // Only for a node this AutoByteus controls (its row in "Controlled nodes"): it decides for both sides.
     if (!node || node.kind === 'teammate') return
     node.phase = 'pairing'
     await later(PAIR_MS)

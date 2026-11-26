@@ -70,7 +70,7 @@
     </ul>
   </section>
 
-  <!-- Found on your private network: nodes in neither "Nodes you control" nor "Paired nodes" -->
+  <!-- Found on your private network: nodes in neither "Controlled nodes" nor "Paired nodes" -->
   <section v-else-if="part === 'found' && mode === 'found'" class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" data-testid="private-network-found-card">
     <div class="flex items-start justify-between gap-4 px-5 pb-4 pt-5">
       <div class="min-w-0">
@@ -117,7 +117,7 @@
               :data-testid="`private-network-pair-${node.name}`"
               @click="network.connect(node.nodeId)"
             >{{ t(k('found.pair')) }}</button>
-            <!-- a machine your account added: Control with its access code; it pairs from "Nodes you control" afterwards -->
+            <!-- a machine your account added: Control with its access code; it pairs from "Controlled nodes" afterwards -->
             <button
               v-else-if="controlOpen !== node.nodeId"
               type="button"
@@ -227,7 +227,7 @@ const who = (account: string) => (network.accountLabel(account) === 'you' ? t(k(
 const KIND_CLASS: Record<'teammate' | 'unknown', string> = { teammate: 'text-slate-600', unknown: 'text-amber-700' }
 /** Found lists only nodes outside this app's Nodes list (pairing-contract §4); a node on your account that this app does not control is an unknown machine. */
 const nodeStore = useNodeStore()
-/** Found lists nodes in neither "Nodes you control" (a desktop entry) nor "Paired nodes" (a peer of this node). */
+/** Found lists nodes in neither "Controlled nodes" (a desktop entry) nor "Paired nodes" (a peer of this node). */
 const list = useNodeListStore()
 const shown = computed(() => network.found.filter((node) => !nodeStore.nodes.some((entry) => entry.nodeId === node.nodeId)
   && !list.rows.some((row) => row.nodeId === node.nodeId)))

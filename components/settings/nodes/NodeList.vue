@@ -1,6 +1,6 @@
 <template>
   <!-- extensions-ui-516 (design, founder 2026-11-26): the list is two named sections; each node is in exactly one.
-       "Nodes you control": this AutoByteus has its access code (and a node added by address that still needs one).
+       "Controlled nodes": this AutoByteus has its access code (and a node added by address that still needs one).
        "Paired nodes": paired with this node, not controlled by this AutoByteus (other people's nodes). -->
   <section class="nodes-card overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm" data-testid="node-list-card">
     <div class="px-5 pb-4 pt-5">
@@ -42,7 +42,7 @@ import { useLocalization } from '~/composables/useLocalization'
 import { useNodeChangeDialogStore } from '~/stores/nodeChangeDialogStore'
 import { useNodeListStore } from '~/stores/nodeListStore'
 
-/** "Nodes you control" (with Add node at its end) and "Paired nodes" (UIS-001, split by the founder 2026-11-26): every node once; each row is asked when the tab opens. */
+/** "Controlled nodes" (with Add node at its end) and "Paired nodes" (UIS-001, split by the founder 2026-11-26): every node once; each row is asked when the tab opens. */
 const emit = defineEmits<{ guide: [] }>()
 const { t } = useLocalization()
 const store = useNodeListStore()
