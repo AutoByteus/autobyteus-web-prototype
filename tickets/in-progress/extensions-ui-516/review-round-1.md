@@ -2,6 +2,12 @@
 
 For the founder. Status: **awaiting your review**; nothing here is approved yet. After your confirmation the Product Team captures the final screenshots and writes `ui-ux-spec.md`.
 
+## Round 9 (2026-11-26): Manage Nodes in named sections (your decision)
+
+Confirmed by the Solution Designer against T4–T6, T8, T9 (DC-073…DC-075; captures `review-captures/round-9/`, overview R9-01).
+- **This node** (with the private-network switches) · **Asking to pair** · **Nodes you control** (Open, Remove, Pair in one click or Paired + Unpair; "Add a node that isn't found" with the Access code field) · **Paired nodes** (teammates, no Open) · **Found on your private network** (Control with an access code for your machines; Pair for someone else's). Each node is in exactly one section.
+- Open for you: keep **"Pair with it"** on the add form, or remove it so the row's Pair is the only pairing control (the Solution Designer recommends removing it).
+
 ## Round 8 (2026-11-25): the access code comes from the node's command (your decision)
 
 Confirmed by the Solution Designer against T1, T8 and pairing-contract §6 (DC-070…DC-072; captures `review-captures/round-8/`).
