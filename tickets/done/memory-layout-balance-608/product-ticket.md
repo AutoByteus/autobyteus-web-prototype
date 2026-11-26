@@ -33,11 +33,11 @@
 - Accepted baseline revision: `9bec8f39` (`origin/personal`)
 - Baseline report: `/Users/normy/autobyteus_org/autobyteus-web-design/ui-baseline-report.md`
 - Product acceptance result and date: Existing accepted Memory baseline (`memory-baseline-refresh-554` + approved `semantic-memory-view-554`) confirmed in UI parity with current `autobyteus-web` (2026-11-25)
-- Design revision for this ticket: Pending
-- Opens from the default branch after integration: Pending
-- Integration target and result: `personal` (`Pending`)
+- Design revision for this ticket: `a4e314f5339e015f3d1588c909e1b0edfdfb7bde` (ticket branch `design/memory-layout-balance-608`, base `9bec8f39`; the default branch had not moved)
+- Opens from the default branch after integration: `Yes` (2026-11-26: from `/memory` → Agent Teams → Software Engineering Team → Solution Designer → Semantic memory at `a4e314f5`; one header row, panel at 85 px, 0 page errors)
+- Integration target and result: `personal` (`Completed`): fast-forward push `9bec8f39..a4e314f5`; canonical checkout fast-forwarded; local `personal` = `origin/personal` (this record follows in the next commit)
 - Runtime isolation record (port / process / temporary state): Dev server port `4568` (`http://127.0.0.1:4568/memory`), disposable Playwright capture scripts under `/tmp/memory-608`
-- Cleanup result or blocker: `Pending`
+- Cleanup result or blocker: `Completed` after this record: review server on 4568 stopped; Tailscale Serve entry 8447 (added for this ticket) turned off, other entries unchanged; worktree and branch `design/memory-layout-balance-608` removed
 - Ticket folder: `/Users/normy/autobyteus_org/autobyteus-web-design/tickets/done/memory-layout-balance-608` (on `personal`; in-progress path during the work: `tickets/in-progress/memory-layout-balance-608`)
 
 ## Delivery
