@@ -75,7 +75,7 @@ async function submit(): Promise<void> {
   try {
     const result = await network.pairByAddress(typed)
     if (result.ok) { address.value = ''; return }
-    error.value = result.error === 'older' ? t('nodes.pairByAddress.errorOlder', { address: result.address ?? typed })
+    error.value = result.error === 'refused' ? t('nodes.pairByAddress.errorRefused', { address: result.address ?? typed })
       : result.error === 'noNode' ? t('nodes.pairByAddress.errorNoNode', { address: result.address ?? typed }) : t('nodes.pairByAddress.errorFormat')
   } finally {
     busy.value = false

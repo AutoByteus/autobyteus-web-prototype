@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { usePrivateNetworkStore } from '~/stores/privateNetworkStore';
+import { THIS_COMPUTER_OFF, usePrivateNetworkStore } from '~/stores/privateNetworkStore';
 import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
 
 /**
@@ -123,9 +123,11 @@ function seedEmbedded(): NodeRecord {
   };
 }
 function seedRemote(): NodeRecord {
+  // private-network-661 (design seed `autobyteus.prototype.thisComputerNetwork` = `off`): the window's node is on the private network.
+  const onNetwork = THIS_COMPUTER_OFF && startState().startsWith('network_');
   return {
     platform: 'linux-x64',
-    states: { 'voice-input': { kind: 'notInstalled' }, 'private-network': { kind: 'notInstalled' } },
+    states: { 'voice-input': { kind: 'notInstalled' }, 'private-network': onNetwork ? { kind: 'installed', version: '0.1.0', enabled: true, ready: true, updateAvailable: false, message: 'Ready.' } : { kind: 'notInstalled' } },
     voiceLanguage: 'auto',
     logs: { 'voice-input': [], 'private-network': [] },
   };

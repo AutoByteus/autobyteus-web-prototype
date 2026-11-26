@@ -228,7 +228,7 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.pairByAddress.errorPaired': '{{name}} is already paired with this node.',
   'nodes.pairByAddress.errorLegacy': '{{name}} is already in your list: pair it with Pair again on its row.',
   'nodes.pairByAddress.errorNoNode': 'No AutoByteus node answers at {{address}}. Check the address, and that the node is running.',
-  'nodes.pairByAddress.errorOlder': 'The node at {{address}} runs an older AutoByteus. It can pair once its owner updates it.',
+  'nodes.pairByAddress.errorRefused': '{{address}} did not accept the pair request. Check that it runs the latest AutoByteus.',
   'nodes.nodeCode.needsJoin': 'This access code is for a node on your private network ({{address}}). This computer’s node must join your private network first.',
   'extensions.card.updateNeedsNewerApp': '{{version}} needs a newer AutoByteus',
 };

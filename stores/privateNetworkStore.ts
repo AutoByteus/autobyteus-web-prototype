@@ -20,7 +20,7 @@ import { NODE_IDS } from '~/prototype/nodes/network-world.mjs'
  *   `after_update` (D-3: the three pairings made before the update show "Pair again": docker runs an older AutoByteus,
  *   linux-box is controlled, bob-laptop is someone else's) · `address_request` (a node asks to pair by its plain address).
  * Pair by address, scripted by the address typed: 192.168.1.30 accepts (dana-mac), 192.168.1.40 declines, 192.168.1.50 runs an
- *   older AutoByteus; any other address has no AutoByteus node.
+ *   does not accept the request (as an older AutoByteus would); any other address has no AutoByteus node.
  */
 
 export interface NetworkMachine {
@@ -99,6 +99,11 @@ const BACK_ONLINE_MS = 12_000
 const later = (ms: number) => new Promise<void>((done) => setTimeout(done, ms))
 const startState = () => (typeof window === 'undefined' ? '' : String(localStorage.getItem('autobyteus.prototype.extensions') || ''))
 const pairingState = () => (typeof window === 'undefined' ? '' : String(localStorage.getItem('autobyteus.prototype.pairing') || ''))
+/**
+ * Design seed `autobyteus.prototype.thisComputerNetwork` = `off`: the window is bound to another node (e.g. a Docker node on the
+ * private network) while this computer's own node is not on the private network (REQ-010).
+ */
+export const THIS_COMPUTER_OFF = typeof window !== 'undefined' && localStorage.getItem('autobyteus.prototype.thisComputerNetwork') === 'off'
 const world = () => (typeof window === 'undefined' ? null : (window as any).__designNetworkWorld?.())
 /** Tailscale's addresses (100.64.0.0/10, fd7a:115c:a1e0::/48): an address only a machine on the tailnet reaches. */
 export const isPrivateNetworkAddress = (address: string): boolean => {
@@ -163,6 +168,10 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   const networkLabel = computed(() => `Tailscale · ${OWNER}`)
   /** Ready for discovery and pairing: joined and not held by a Tailscale condition. */
   const ready = computed(() => joined.value && !rejoining.value && !expired.value && !signedOut.value && !unreachable.value)
+  /** This computer's own node is on the private network: the desktop reaches private addresses through it (REQ-010, G1). */
+  const thisComputerOnNetwork = computed(() => ready.value && !THIS_COMPUTER_OFF)
+  /** An access code whose address only a machine on the private network reaches, while this computer's node is not on it. */
+  const needsJoinFor = (address: string | null | undefined) => Boolean(address && isPrivateNetworkAddress(address) && !thisComputerOnNetwork.value)
 
   /** The extension's status() for this node: what its card says (extension-contract §4; REQ-015, REQ-017). */
   const status = computed<{ ready: boolean; message: string }>(() => {
@@ -329,10 +338,11 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   }
 
   // ---- Pair by address with someone else's node (D-5, REQ-008): Pair → its owner Accepts / Rejects; Cancel
-  const ADDRESS_NODES: Record<string, { nodeId: string; name: string; answer: 'accept' | 'decline' | 'older' }> = {
+  const ADDRESS_NODES: Record<string, { nodeId: string; name: string; answer: 'accept' | 'decline' | 'refused' }> = {
     '192.168.1.30': { nodeId: nodeIdOf('d4n4M4cAddr'), name: 'dana-mac', answer: 'accept' },
     '192.168.1.40': { nodeId: nodeIdOf('3v3B0xAddr'), name: 'eve-box', answer: 'decline' },
-    '192.168.1.50': { nodeId: nodeIdOf('fr4nkPcAddr'), name: 'frank-pc', answer: 'older' },
+    // F-4 (DESIGN.md rule 9): no version check for someone else's node: an older one simply does not accept the request.
+    '192.168.1.50': { nodeId: nodeIdOf('fr4nkPcAddr'), name: 'frank-pc', answer: 'refused' },
   }
   const normalized = (text: string): string | null => {
     const v = text.trim().replace(/^https?:\/\//i, '').replace(/\/+$/, '')
@@ -341,15 +351,15 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   }
   /**
    * Asks the node at an address to pair. The UI gives the checks of the form (this node, a node you control, already paired)
-   * before calling; here: no answer, an older AutoByteus, or the request waits for its owner.
+   * before calling; here: no answer, the request not accepted (e.g. an older AutoByteus), or the request waits for its owner.
    */
-  async function pairByAddress(text: string): Promise<{ ok: true } | { ok: false; error: 'format' | 'noNode' | 'older'; address?: string }> {
+  async function pairByAddress(text: string): Promise<{ ok: true } | { ok: false; error: 'format' | 'noNode' | 'refused'; address?: string }> {
     const address = normalized(text)
     if (!address) return { ok: false, error: 'format' }
     await later(1200)
     const target = ADDRESS_NODES[address.replace(/:\d+$/, '')]
     if (!target) return { ok: false, error: 'noNode', address }
-    if (target.answer === 'older') return { ok: false, error: 'older', address }
+    if (target.answer === 'refused') return { ok: false, error: 'refused', address }
     const id = `${address}#${Date.now()}`
     outgoing.value = [...outgoing.value.filter((o) => o.address !== address), { id, address, phase: 'waiting' }]
     void later(target.answer === 'accept' ? TEAMMATE_ALLOWS_MS : OWNER_DECLINES_MS).then(async () => {
@@ -370,7 +380,7 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   const peerMark = (nodeId: string | null) => (nodeId ? paired.value.find((p) => p.nodeId === nodeId) ?? null : null)
 
   return {
-    joined, signingIn, awaitingApproval, expired, signedOut, unreachable, rejoining, ready,
+    joined, signingIn, awaitingApproval, expired, signedOut, unreachable, rejoining, ready, thisComputerOnNetwork, needsJoinFor,
     machines, discoverable, found, requests, paired, outgoing, legacy, offerDiscovery, blockedMachines,
     thisMachine, ownerAccount, accountLabel, machineOf, peerMark, ownOnNetwork, legacyOf, networkLabel, status, addressFormOf,
     reset, touch, signIn, cancelSignIn, joinWithKey, leave,

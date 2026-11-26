@@ -139,12 +139,13 @@
               :disabled="controlBusy"
               :data-testid="`private-network-control-code-${node.name}`"
             >
-            <button type="submit" class="h-9 rounded-md bg-blue-600 px-3.5 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 disabled:opacity-50" :disabled="controlBusy || !controlCode.trim()" :data-testid="`private-network-control-add-${node.name}`">{{ t('nodes.sections.controlAdd') }}</button>
+            <button type="submit" class="h-9 rounded-md bg-blue-600 px-3.5 text-sm font-medium text-white hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 disabled:opacity-50" :disabled="controlBusy || !controlCode.trim() || controlNeedsJoin" :data-testid="`private-network-control-add-${node.name}`">{{ t('nodes.sections.controlAdd') }}</button>
             <button type="button" class="rounded px-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :disabled="controlBusy" @click="closeControl">{{ t(k('found.cancel')) }}</button>
           </div>
+          <NodeJoinFirstNotice v-if="controlNeedsJoin && !controlError && controlRead" inline class="mt-1.5" :address="controlRead.address" />
           <p v-if="controlError" class="mt-1.5 text-sm text-red-600" role="alert" :data-testid="`private-network-control-error-${node.name}`">{{ controlError }}</p>
           <p v-else-if="controlStep" class="mt-1.5 flex items-center gap-2 text-sm text-slate-600" role="status"><span class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600 motion-reduce:animate-none" aria-hidden="true" />{{ controlStep }}</p>
-          <p v-else class="mt-1.5 text-xs leading-5 text-slate-500">{{ t('nodes.sections.controlHint', { name: node.name }) }}</p>
+          <p v-else-if="!controlNeedsJoin" class="mt-1.5 text-xs leading-5 text-slate-500">{{ t('nodes.sections.controlHint', { name: node.name }) }}</p>
           <!-- Design reference only: what access-code prints on that machine, so the flow can be tried here. -->
           <button type="button" class="mt-1.5 rounded border border-dashed border-slate-300 px-2 py-0.5 text-xs text-slate-500 hover:text-slate-800" :data-testid="`private-network-control-sample-${node.name}`" @click="sampleCode(node)">{{ t('nodes.sections.controlSample', { name: node.name }) }}</button>
         </form>
@@ -163,7 +164,8 @@ import { useExtensionsStore } from '~/stores/extensionsStore'
 import { useNodeStore } from '~/stores/nodeStore'
 import { usePrivateNetworkStore, type FoundNode } from '~/stores/privateNetworkStore'
 import { useNodeListStore } from '~/stores/nodeListStore'
-import { makeNodeCode } from '~/prototype/nodes/nodeCode'
+import { makeNodeCode, readNodeCode } from '~/prototype/nodes/nodeCode'
+import NodeJoinFirstNotice from '~/components/settings/nodes/NodeJoinFirstNotice.vue'
 import { useAddWithAccessCode } from '~/prototype/nodes/addWithAccessCode'
 
 /**
@@ -234,6 +236,9 @@ const controlError = ref('')
 const controlStep = ref('')
 const controlBusy = ref(false)
 const adder = useAddWithAccessCode()
+const controlRead = computed(() => (controlCode.value.trim() ? readNodeCode(controlCode.value) : null))
+/** private-network-661 (REQ-010): a found node's code carries its private address; this computer's node must be on the network. */
+const controlNeedsJoin = computed(() => network.needsJoinFor(controlRead.value?.address))
 const openControl = (node: FoundNode): void => { controlOpen.value = node.nodeId; controlCode.value = ''; controlError.value = '' }
 const closeControl = (): void => { controlOpen.value = null; controlCode.value = ''; controlError.value = '' }
 /** Design only: the code `autobyteus-docker access-code` would print on that machine. */

@@ -30,3 +30,12 @@ Everything approved in extensions-ui-516 is unchanged unless listed in `design-c
 ## Provisional (drawn, not proved)
 
 Real Tailscale sign-in, approval and expiry texts, shared machines' account, access-rule detection, the desktop relay (G1), the phone over mobile data.
+
+## Solution Designer's workflow check (2026-11-26)
+
+- The six answers fit UC-001…UC-011 and the pairing contract.
+- F-1 confirmed: Leave makes a new machine; the pair record does not follow the node key. Leave text kept.
+- F-2 accepted: "Blocked by access rules" only for nodes this node controls or is paired with; provisional.
+- F-3 carried into REQ-010: join-first notice in Add a node, Needs connecting, Found → Control. Applied as DC-100 (R1-18, R1-23, R1-24).
+- F-4: version note only on a controlled row; pair by address uses one plain "did not accept" text. Applied as DC-101 (R1-14).
+- "…when they accept": fine.

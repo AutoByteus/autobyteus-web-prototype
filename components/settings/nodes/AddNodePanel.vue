@@ -63,13 +63,7 @@
     </div>
 
     <!-- private-network-661 (REQ-010): this computer reaches a private address only through its own node's Private Network -->
-    <div v-if="needsJoin && !codeError" class="mt-3 flex flex-wrap items-start justify-between gap-x-3 gap-y-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900" role="status" data-testid="add-node-needs-join">
-      <div class="flex min-w-0 flex-1 basis-56 items-start gap-2.5">
-        <NodeNoticeIcon class="mt-0.5" tone="warn" />
-        <p class="min-w-0 flex-1 leading-5">{{ t('nodes.nodeCode.needsJoin', { address: codeRead?.address.replace(/:\d+$/, '') ?? '' }) }}</p>
-      </div>
-      <NuxtLink to="/settings?section=extensions" class="inline-flex h-7 flex-shrink-0 items-center rounded-md border border-amber-300 bg-white px-2.5 text-xs font-medium text-amber-900 hover:bg-amber-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="add-node-needs-join-link">{{ joinAction }}</NuxtLink>
-    </div>
+    <NodeJoinFirstNotice v-if="needsJoin && !codeError && codeRead" class="mt-3" :address="codeRead.address" />
     <p v-else-if="codeStep" class="mt-2 flex items-center gap-2 text-sm text-slate-600" role="status" data-testid="add-node-code-step">
       <span class="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600 motion-reduce:animate-none" aria-hidden="true" />{{ codeStep }}
     </p>
@@ -86,8 +80,8 @@ import { isValidNodeName, useNodeListStore } from '~/stores/nodeListStore'
 import { NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
 import { readNodeCode } from '~/prototype/nodes/nodeCode'
 import { accessCodeAddress, useAddWithAccessCode } from '~/prototype/nodes/addWithAccessCode'
-import { isPrivateNetworkAddress, usePrivateNetworkStore } from '~/stores/privateNetworkStore'
-import { useExtensionsStore } from '~/stores/extensionsStore'
+import { usePrivateNetworkStore } from '~/stores/privateNetworkStore'
+import NodeJoinFirstNotice from '~/components/settings/nodes/NodeJoinFirstNotice.vue'
 
 /**
  * The always-open add form (UIS-003; extensions-ui-516 design, founder 2026-11-25): Address, Name, Access code, Pair with it,
@@ -109,12 +103,7 @@ const codeError = ref('')
 const codeStep = ref('')
 const codeRead = computed(() => (draft.code.trim() ? readNodeCode(draft.code) : null))
 /** The code carries a private-network address, and this computer's node is not on the private network (REQ-010, G1). */
-const needsJoin = computed(() => Boolean(codeRead.value && isPrivateNetworkAddress(codeRead.value.address) && !network.ready))
-const extensions = useExtensionsStore()
-const joinAction = computed(() => {
-  const s = extensions.list.find((item) => item.entry.id === 'private-network')?.state
-  return s?.kind === 'installed' ? t('nodes.privateNetwork.setup.open') : t('nodes.privateNetwork.setup.action')
-})
+const needsJoin = computed(() => network.needsJoinFor(codeRead.value?.address))
 
 /** Pasting a code fills in the address it names; a text that is not a code says so at once. */
 const onCode = (): void => {

@@ -228,7 +228,7 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.pairByAddress.errorPaired': '{{name}} 已与此节点配对。',
   'nodes.pairByAddress.errorLegacy': '{{name}} 已在你的列表中：请用它所在行的“重新配对”。',
   'nodes.pairByAddress.errorNoNode': '{{address}} 上没有 AutoByteus 节点响应。请检查地址，并确认节点正在运行。',
-  'nodes.pairByAddress.errorOlder': '{{address}} 上的节点运行的是较旧版本的 AutoByteus。其所有者更新后即可配对。',
+  'nodes.pairByAddress.errorRefused': '{{address}} 没有接受配对请求。请确认它运行的是最新版本的 AutoByteus。',
   'nodes.nodeCode.needsJoin': '此访问码属于你私有网络上的一个节点（{{address}}）。这台电脑的节点必须先加入你的私有网络。',
   'extensions.card.updateNeedsNewerApp': '{{version}} 需要更新版本的 AutoByteus',
 };

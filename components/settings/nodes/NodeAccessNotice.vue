@@ -26,10 +26,11 @@
       <button
         type="submit"
         class="h-8 rounded-md border border-amber-300 bg-white px-3 text-xs font-medium text-amber-900 hover:bg-amber-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60"
-        :disabled="busy || !code.trim()"
+        :disabled="busy || !code.trim() || needsJoin"
         :data-testid="`node-access-connect-${row.key}`"
       >{{ busy ? t(k('access.connecting')) : t(k('access.connect')) }}</button>
     </form>
+    <NodeJoinFirstNotice v-if="needsJoin && !error && read" inline class="mt-1.5 pl-6" :address="read.address" />
     <p v-if="error" class="mt-1.5 pl-6 text-sm text-red-700" role="alert" :data-testid="`node-access-error-${row.key}`">{{ error }}</p>
   </div>
 </template>
@@ -37,6 +38,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import NodeNoticeIcon from '~/components/settings/nodes/NodeNoticeIcon.vue'
+import NodeJoinFirstNotice from '~/components/settings/nodes/NodeJoinFirstNotice.vue'
+import { usePrivateNetworkStore } from '~/stores/privateNetworkStore'
 import { useLocalization } from '~/composables/useLocalization'
 import { isNodeCodeUsed, markNodeCodeUsed, readNodeCode } from '~/prototype/nodes/nodeCode'
 import { useNodeAccessStore } from '~/stores/nodeAccessStore'
@@ -57,6 +60,10 @@ const list = useNodeListStore()
 const entryId = computed(() => (props.row.isEmbedded ? null : props.row.entryIds[0] ?? null))
 const state = computed(() => (entryId.value ? access.stateOf(entryId.value) : null))
 const code = ref('')
+const network = usePrivateNetworkStore()
+const read = computed(() => (code.value.trim() ? readNodeCode(code.value) : null))
+/** private-network-661 (REQ-010): a code with a private-network address needs this computer's node on the private network first. */
+const needsJoin = computed(() => network.needsJoinFor(read.value?.address))
 const busy = ref(false)
 const error = ref('')
 
@@ -70,6 +77,7 @@ const connect = async (): Promise<void> => {
     if (!read) { error.value = t('nodes.nodeCode.errorNotCode'); return }
     if (Date.parse(read.expiresAt) < Date.now()) { error.value = t('nodes.nodeCode.errorExpired'); return }
     if (isNodeCodeUsed(read.setupCode)) { error.value = t('nodes.nodeCode.errorUsed'); return }
+    if (network.needsJoinFor(read.address)) return
     if (props.row.nodeId && read.nodeId !== props.row.nodeId) { error.value = t('nodes.nodeCode.errorOtherNode', { name: props.row.name }); return }
     const result = await access.connect(entryId.value, read.setupCode)
     if (result.ok) {
