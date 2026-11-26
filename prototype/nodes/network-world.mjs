@@ -592,8 +592,24 @@ export const createNetworkWorld = (scenario, options = {}) => {
     if (bound) bound.peers = bound.peers.filter((p) => p.nodeId !== nodeId)
     if (nodes[nodeId]) nodes[nodeId].peers = nodes[nodeId].peers.filter((p) => p.nodeId !== boundNodeId)
   }
+  // private-network-661 (design, D-3): a pairing made before the update keeps its row but not its secret (`paired: false` on
+  // both sides) until it is paired again; `addPeerAt` adds a node that answers at a plain address, with the pairing record
+  // both sides keep (paired, or not yet paired again after the update). Names, addresses and offers are invented.
+  const setPaired = (nodeId, paired) => {
+    const bound = nodes[boundNodeId]
+    for (const p of bound?.peers ?? []) if (p.nodeId === nodeId) p.paired = paired
+    for (const p of nodes[nodeId]?.peers ?? []) if (p.nodeId === boundNodeId) p.paired = paired
+  }
+  const addPeerAt = ({ nodeId, name, address, paired = true, older = false, offers = EIGHT_THREE_OFFER.slice(0, 2) }) => {
+    if (!nodes[nodeId]) nodes[nodeId] = node({ id: nodeId, selfName: name, lan: true, switchOn: true, delayMs: 700, candidates: [address], offers, peers: [], server: older ? { ...OLDER } : { ...SAME } })
+    const { host, port } = hostPortOf(address)
+    extraListeners[`${host}:${port}`] = nodeId
+    const bound = nodes[boundNodeId]
+    if (bound && !bound.peers.some((p) => p.nodeId === nodeId)) bound.peers.push(peer(nodeId, name, address, paired))
+    if (bound && !nodes[nodeId].peers.some((p) => p.nodeId === boundNodeId)) nodes[nodeId].peers.push(peer(boundNodeId, bound.selfName, LAN_THIS, paired))
+  }
 
-  return { nodes, boundNodeId, graphql, OPERATIONS, windowRequest, reach: reachFrom, phone, networkOf, setNetworkAllowed, addPrivateNode, addOwnedNode, removePrivatePeer }
+  return { nodes, boundNodeId, graphql, OPERATIONS, windowRequest, reach: reachFrom, phone, networkOf, setNetworkAllowed, addPrivateNode, addOwnedNode, removePrivatePeer, setPaired, addPeerAt }
 }
 
 /** The desktop's own list of nodes (the entries) at the start of a scenario, as the host bridge returns it. */

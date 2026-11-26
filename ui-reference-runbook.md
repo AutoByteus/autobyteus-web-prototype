@@ -1,5 +1,23 @@
 # UI Reference Runbook
 
+## private-network-661 (Private Network, Tailscale first; Pair again; pair by address; autobyteus-661)
+
+```bash
+corepack pnpm install --ignore-workspace --frozen-lockfile
+corepack pnpm dev --port 4661
+```
+
+Desktop window and Nodes list: `localStorage.setItem('autobyteus.prototype.context','electron_internal'); localStorage.setItem('autobyteus.prototype.scenario','nodes_user')`, then reload. Chinese: `localStorage['autobyteus.localization.preference-mode']='zh-CN'`. State is in memory: a reload resets it.
+
+- **Private Network** (`/settings?section=extensions`, Show settings on its card): `autobyteus.prototype.extensions` = `network_not_joined` · `network_approval` (approved after about 10 s) · `network_joined` · `network_expired` · `network_signed_out` · `network_unreachable` (back after about 12 s) · `network_blocked` · `network_shared_unknown` · `network_restarting`. Without a `network_*` value Private Network is not installed (Install plays the install).
+- **Pair again** (`/nodes?nodeTab=manage`): `autobyteus.prototype.pairing` = `after_update`: docker (older AutoByteus: Update, then Pair again), linux-box (one click), bob-laptop (someone else's: accepts after about 7 s).
+- **Pair by address** (Paired nodes → Pair with someone else's node): `192.168.1.30` accepts after about 7 s (dana-mac), `192.168.1.40` declines after about 6 s, `192.168.1.50` runs an older AutoByteus; any other address has no node. `localhost:8001`, `192.168.2.50:29695` are controlled nodes; `127.0.0.1:29695` is this node.
+- **The other node's side**: `autobyteus.prototype.pairing` = `address_request` ("dana-mac at 192.168.1.30:29695 wants to pair").
+- **Join first** (Add a node, without `network_*`): paste this fixture code (design only, never valid anywhere) in Access code:
+  `abps_eyJub2RlSWQiOiJzcnZfYnUxbGRTM3J2M3JOMGRlQzBkZVF4N1JmMkxtOVBkWnQ0V24iLCJhZGRyZXNzIjoiMTAwLjg4Ljc1Ljc1OjI5Njk1Iiwic2V0dXBDb2RlIjoiRFNHTi1PTkxZLTY2MTAiLCJleHBpcmVzQXQiOiIyMDk5LTAxLTAxVDAwOjAwOjAwWiJ9`
+- **Shared machine**: `network_joined` (dana-desktop "shared by dana@other.example"), `network_shared_unknown` ("shared with you").
+- The world: `stores/privateNetworkStore.ts`, `prototype/extensions/extensionPages.ts` (the extension's page), `prototype/nodes/network-world.mjs` (`setPaired`, `addPeerAt`). Review notes: `tickets/in-progress/private-network-661/review-round-1.md`.
+
 ## extensions-ui-516 (design, round 1: Settings → Extensions on the extension foundation, Manage Nodes → private network and pairing, the access code; autobyteus-516)
 
 ```bash
@@ -9,7 +27,7 @@ corepack pnpm dev --port 4516
 
 The desktop app's own window: `localStorage.setItem('autobyteus.prototype.context', 'electron_internal')` and, for the Nodes list, `localStorage.setItem('autobyteus.prototype.scenario', 'nodes_user')`, then reload. A Docker node's window: context `electron_external` (Voice Input is not listed there). Chinese: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'`. State is in memory: a reload resets it.
 
-- **Settings → Extensions**: <http://127.0.0.1:4516/settings?section=extensions>. Starting state `autobyteus.prototype.extensions` = (none) Voice Input on, Private Network not installed · `fresh` · `voice_failed` · `voice_update` · `voice_not_available` (this computer is linux-arm64) · `network_joined` · `network_headscale` · `network_headscale_down` · `network_host` · `network_approval` · `network_signed_out` · `network_vpn`. A host domain starting with `home.` fails the first reachability check.
+- **Settings → Extensions**: <http://127.0.0.1:4516/settings?section=extensions>. Starting state `autobyteus.prototype.extensions` = (none) Voice Input on, Private Network not installed · `fresh` · `voice_failed` · `voice_update` · `voice_not_available` (this computer is linux-arm64) · `network_*` (superseded by private-network-661 above: Headscale, hosting and own-VPN states were removed).
 - **Manage Nodes**: <http://127.0.0.1:4516/nodes?nodeTab=manage> with `nodes_user` and `network_joined`: Found on your private network (bob-laptop Pair: bob accepts after about 7 s; raspberrypi flagged, declines; carol-server Accept/Reject), the two switches; Nodes list with Pair, Paired + Unpair (linux-box pairs from its row in one click).
 - **A node window on another entry**: `localStorage.setItem('autobyteus.prototype.windowEntry', 'remote-linux-box')` with context `electron_external` (a node published on 192.168.2.50: Create access code shown, Controlled by with Revoke).
 - **Chinese**: `localStorage['autobyteus.localization.preference-mode'] = 'zh-CN'` (translated extension names, descriptions and pages).

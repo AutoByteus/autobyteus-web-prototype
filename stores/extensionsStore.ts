@@ -13,7 +13,7 @@ import { useWindowNodeContextStore } from '~/stores/windowNodeContextStore';
  * Starting state (no visible control): `localStorage['autobyteus.prototype.extensions']` =
  *   (none) Voice Input installed and on · `fresh` nothing installed · `voice_failed` · `voice_update` (1.1.0 offered) ·
  *   `voice_not_available` (this computer is linux-arm64) · `voice_newer_contract` · `voice_update_newer_contract` · `extension_broken` · `state_unreadable` · `network_*` (Private Network installed and on; the network's state
- *   is chosen in stores/privateNetworkStore.ts: joined on Tailscale, Headscale, hosting, approval, signed out, own VPN …).
+ *   is chosen in stores/privateNetworkStore.ts: joined, approval, sign-in expired, signed out, unreachable, access rules …).
  * The older `autobyteus.prototype.scenario` values `extension_error` and `extension_missing` still choose a failed / not installed Voice Input.
  */
 
@@ -47,9 +47,9 @@ const CATALOG: CatalogEntry[] = [
   },
   {
     id: 'private-network', name: 'Private Network', version: '0.1.0', contractVersion: 1, offeredOn: 'every-node',
-    description: 'Connect your AutoByteus nodes through a private network: your Tailscale account, your own Headscale server, a network this machine hosts, or your own VPN. AutoByteus is never opened to the internet. Needs no administrator approval; downloads about 30 MB on install.',
+    description: 'Connect your AutoByteus nodes through your Tailscale account. AutoByteus is never opened to the internet. Needs no administrator password; downloads about 30 MB on install.',
     platforms: ['darwin-arm64', 'darwin-x64', 'linux-x64', 'linux-arm64', 'win32-x64'],
-    translations: { 'zh-CN': { name: '私有网络', description: '通过私有网络连接你的 AutoByteus 节点：你的 Tailscale 账号、你自己的 Headscale 服务器、由这台机器托管的网络，或你自己的 VPN。AutoByteus 永远不会暴露到互联网。无需管理员批准；安装时下载约 30 MB。' } },
+    translations: { 'zh-CN': { name: '私有网络', description: '通过你的 Tailscale 账号连接你的 AutoByteus 节点。AutoByteus 永远不会暴露到互联网。无需管理员密码；安装时下载约 30 MB。' } },
   },
 ];
 const UPDATE_VERSION = '1.1.0';
@@ -337,33 +337,28 @@ export const useExtensionsStore = defineStore('extensions', {
       }
       if (id === 'private-network') {
         const network = usePrivateNetworkStore();
+        // private-network-661 (design, D-1): Tailscale only; its own conditions (REQ-015) and access rules (REQ-017).
         const view = () => ({
-          joined: network.joined, signingIn: network.signingIn, network: network.network, serverUrl: network.serverUrl,
-          awaitingApproval: network.awaitingApproval, signedOut: network.signedOut, serverDown: network.serverDown,
-          hosting: network.hosting ? { ...network.hosting } : null, vpnRanges: network.vpnRanges.map((r) => ({ range: r, large: network.isLargeRange(r) })),
+          joined: network.joined, signingIn: network.signingIn,
+          awaitingApproval: network.awaitingApproval, expired: network.expired, signedOut: network.signedOut, unreachable: network.unreachable,
           account: network.ownerAccount,
           thisMachine: { ...network.thisMachine },
           machines: network.machines.map((m) => ({ ...m, accountLabel: network.accountLabel(m.account) })),
         });
         const logged = (line: string) => this.log(id, line, key);
         const fail = (result: { ok: boolean; error?: string }) => { if (!result.ok) throw new Error(result.error); };
+        const sync = () => { const now = this.recordOf(key).states[id]; if (now.kind === 'installed' && now.enabled) this.set(id, { ...now, ...network.status }, key); };
         switch (call) {
-          case 'getState': network.touch(); return view();
-          case 'signIn': await network.signIn(); if (network.joined) logged(`join: signed in as ${network.thisMachine.name}`); return view();
-          case 'cancelSignIn': network.cancelSignIn(); return view();
+          case 'getState': network.touch(); sync(); return view();
+          case 'signIn': await network.signIn(); if (network.joined) logged(`join: signed in to Tailscale as ${network.thisMachine.name}`); sync(); return view();
+          case 'cancelSignIn': network.cancelSignIn(); sync(); return view();
           case 'joinWithKey': {
-            const kind = input?.network === 'headscale' ? 'headscale' : 'tailscale';
-            fail(await network.joinWithKey(kind, String(input?.key ?? ''), String(input?.serverUrl ?? '')));
-            logged(`join: joined the private network as ${network.thisMachine.name} (${kind})`);
+            fail(await network.joinWithKey(String(input?.key ?? '')));
+            logged(`join: joined the private network as ${network.thisMachine.name} (auth key; the key itself is never logged)`);
+            sync();
             return view();
           }
-          case 'joinWithInvite': fail(await network.joinWithInvite(String(input?.code ?? ''))); logged('join: joined with an invite'); return view();
-          case 'hostStep': fail(await network.hostStep(input?.step, String(input?.domain ?? ''), Number(input?.port) || 443)); return view();
-          case 'checkReachable': await network.checkReachable(); return view();
-          case 'leave': await network.leave(); logged('leave: this machine left the private network'); return view();
-          case 'addRange': fail(network.addRange(String(input?.range ?? ''))); logged(`settings: accepting your own VPN ${String(input?.range ?? '').trim()}`); return view();
-          case 'removeRange': network.removeRange(String(input?.range ?? '')); return view();
-          case 'makeInvite': { const invite = await network.makeInvite(input?.forWhom === 'teammate' ? 'teammate' : 'me', String(input?.teammate ?? '')); logged(`invite: an invite code was made for the user ${invite.user} (one use, 24 hours; the code itself is never logged)`); return invite; }
+          case 'leave': await network.leave(); logged('leave: this machine left the private network'); sync(); return view();
         }
       }
       throw new Error(`${call} is not an action of ${id}.`);

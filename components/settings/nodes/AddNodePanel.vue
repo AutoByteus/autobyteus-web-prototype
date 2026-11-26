@@ -48,12 +48,12 @@
           @input="onCode"
         >
         <p v-if="codeError" class="mt-1.5 text-sm text-red-600" role="alert" data-testid="add-node-code-error">{{ codeError }}</p>
-        <p v-else-if="codeRead && !codeStep" class="mt-1.5 text-xs text-emerald-700" data-testid="add-node-code-read">{{ t('nodes.nodeCode.readOk', { address: codeRead.address }) }}</p>
+        <p v-else-if="codeRead && !codeStep && !needsJoin" class="mt-1.5 text-xs text-emerald-700" data-testid="add-node-code-read">{{ t('nodes.nodeCode.readOk', { address: codeRead.address }) }}</p>
       </div>
       <button
         type="submit"
         class="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 disabled:opacity-50"
-        :disabled="busy"
+        :disabled="busy || needsJoin"
         data-testid="add-node-submit"
       >
         <svg v-if="!busy" class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 4.5v11M4.5 10h11" stroke-linecap="round" /></svg>
@@ -62,7 +62,15 @@
       </button>
     </div>
 
-    <p v-if="codeStep" class="mt-2 flex items-center gap-2 text-sm text-slate-600" role="status" data-testid="add-node-code-step">
+    <!-- private-network-661 (REQ-010): this computer reaches a private address only through its own node's Private Network -->
+    <div v-if="needsJoin && !codeError" class="mt-3 flex flex-wrap items-start justify-between gap-x-3 gap-y-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900" role="status" data-testid="add-node-needs-join">
+      <div class="flex min-w-0 flex-1 basis-56 items-start gap-2.5">
+        <NodeNoticeIcon class="mt-0.5" tone="warn" />
+        <p class="min-w-0 flex-1 leading-5">{{ t('nodes.nodeCode.needsJoin', { address: codeRead?.address.replace(/:\d+$/, '') ?? '' }) }}</p>
+      </div>
+      <NuxtLink to="/settings?section=extensions" class="inline-flex h-7 flex-shrink-0 items-center rounded-md border border-amber-300 bg-white px-2.5 text-xs font-medium text-amber-900 hover:bg-amber-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" data-testid="add-node-needs-join-link">{{ joinAction }}</NuxtLink>
+    </div>
+    <p v-else-if="codeStep" class="mt-2 flex items-center gap-2 text-sm text-slate-600" role="status" data-testid="add-node-code-step">
       <span class="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600 motion-reduce:animate-none" aria-hidden="true" />{{ codeStep }}
     </p>
     <p v-else-if="duplicate" class="mt-3 flex items-center gap-2 text-sm text-blue-700" role="status" data-testid="add-node-duplicate"><NodeNoticeIcon tone="info" />{{ t(k('add.duplicate'), { name: duplicate }) }}</p>
@@ -78,7 +86,8 @@ import { isValidNodeName, useNodeListStore } from '~/stores/nodeListStore'
 import { NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
 import { readNodeCode } from '~/prototype/nodes/nodeCode'
 import { accessCodeAddress, useAddWithAccessCode } from '~/prototype/nodes/addWithAccessCode'
-import { usePrivateNetworkStore } from '~/stores/privateNetworkStore'
+import { isPrivateNetworkAddress, usePrivateNetworkStore } from '~/stores/privateNetworkStore'
+import { useExtensionsStore } from '~/stores/extensionsStore'
 
 /**
  * The always-open add form (UIS-003; extensions-ui-516 design, founder 2026-11-25): Address, Name, Access code, Pair with it,
@@ -99,6 +108,13 @@ const busy = ref(false)
 const codeError = ref('')
 const codeStep = ref('')
 const codeRead = computed(() => (draft.code.trim() ? readNodeCode(draft.code) : null))
+/** The code carries a private-network address, and this computer's node is not on the private network (REQ-010, G1). */
+const needsJoin = computed(() => Boolean(codeRead.value && isPrivateNetworkAddress(codeRead.value.address) && !network.ready))
+const extensions = useExtensionsStore()
+const joinAction = computed(() => {
+  const s = extensions.list.find((item) => item.entry.id === 'private-network')?.state
+  return s?.kind === 'installed' ? t('nodes.privateNetwork.setup.open') : t('nodes.privateNetwork.setup.action')
+})
 
 /** Pasting a code fills in the address it names; a text that is not a code says so at once. */
 const onCode = (): void => {

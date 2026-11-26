@@ -21,7 +21,6 @@
       <div class="px-5 pb-1 pt-4">
         <h4 class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t(k('title')) }}</h4>
         <p class="mt-0.5 text-sm text-slate-500">{{ t('nodes.sections.networkLine', { network: network.networkLabel }) }}</p>
-        <p v-if="network.vpnRanges.length" class="mt-0.5 max-w-3xl text-sm text-slate-500" data-testid="private-network-vpn-also">{{ t(k('vpn.also'), { ranges: network.vpnRanges.join(', ') }) }}</p>
       </div>
       <!-- Label and switch share a line; the explanation runs the card's width below (narrow windows too). -->
       <div class="px-5 pb-4 pt-3" data-testid="private-network-findable">
@@ -35,18 +34,22 @@
   </template>
 
   <!-- Asking to pair: only while someone asks -->
-  <section v-else-if="part === 'requests' && mode === 'found' && network.requests.length" class="overflow-hidden rounded-2xl border border-blue-200 bg-white shadow-sm" data-testid="private-network-requests">
+  <section v-else-if="part === 'requests' && shownRequests.length" class="overflow-hidden rounded-2xl border border-blue-200 bg-white shadow-sm" data-testid="private-network-requests">
     <div class="px-5 pb-3 pt-5">
       <h3 class="text-base font-semibold text-slate-900">{{ t(k('requests.title')) }}</h3>
       <p class="mt-1 max-w-3xl text-sm text-slate-500">{{ t('nodes.sections.requestsLead') }}</p>
     </div>
     <ul class="divide-y divide-slate-100 border-t border-slate-100">
-      <li v-for="request in network.requests" :key="request.nodeId" class="bg-blue-50/40 px-5 py-3.5" :data-testid="`private-network-request-${request.name}`">
+      <li v-for="request in shownRequests" :key="request.nodeId" class="bg-blue-50/40 px-5 py-3.5" :data-testid="`private-network-request-${request.name}`">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div class="min-w-0">
-            <p class="text-sm font-semibold text-slate-900">{{ t(k('requests.wants'), { name: request.name, account: who(request.account) }) }}</p>
-            <p class="mt-0.5 text-xs text-slate-500"><span class="font-mono">{{ network.machineOf(request.machineId)?.address }}</span></p>
-            <p class="mt-1.5 max-w-2xl text-sm leading-5 text-slate-600">{{ t(k('requests.teammate'), { account: who(request.account) }) }}</p>
+            <!-- private-network-661 (D-5, REQ-008): by plain address the request names the address it gave; no account is known -->
+            <p v-if="request.address" class="text-sm font-semibold text-slate-900">{{ t(k('requests.wantsAddress'), { name: request.name, address: request.address }) }}</p>
+            <template v-else>
+              <p class="text-sm font-semibold text-slate-900">{{ t(k('requests.wants'), { name: request.name, account: who(request.account ?? '') }) }}</p>
+              <p class="mt-0.5 text-xs text-slate-500"><span class="font-mono">{{ network.machineOf(request.machineId)?.address }}</span></p>
+            </template>
+            <p class="mt-1.5 max-w-2xl text-sm leading-5 text-slate-600">{{ request.account ? t(k('requests.teammate'), { account: who(request.account) }) : t(k('requests.teammateAddress')) }}</p>
           </div>
           <div class="flex flex-shrink-0 items-center gap-2">
             <span v-if="request.phase === 'allowing'" class="inline-flex items-center gap-2 text-sm text-slate-600" role="status"><span class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600 motion-reduce:animate-none" aria-hidden="true" />{{ t(k('found.pairing')) }}</span>
@@ -85,17 +88,17 @@
             <span class="mt-[7px] inline-block h-2.5 w-2.5 flex-shrink-0 rounded-full" :class="machine(node)?.online ? 'bg-emerald-500' : 'bg-slate-300'" role="img" :aria-label="machine(node)?.online ? t(k('found.online')) : t(k('found.offline'))" />
             <div class="min-w-0">
               <p class="text-sm font-semibold leading-6 text-slate-900">{{ node.name }}</p>
-              <p class="text-xs leading-4 text-slate-500"><span class="font-mono">{{ machine(node)?.address }}</span> · {{ addedBy(machine(node)?.account ?? '') }}</p>
+              <p class="text-xs leading-4 text-slate-500"><span class="font-mono">{{ machine(node)?.address }}</span> · {{ addedBy(node) }}</p>
               <p class="mt-1 text-xs font-medium" :class="KIND_CLASS[kindOf(node)]">{{ kindLine(node) }}</p>
             </div>
           </div>
           <div class="flex flex-shrink-0 items-center gap-2 pl-5 sm:pl-0">
             <template v-if="node.phase === 'refused'">
-              <span class="text-sm text-slate-600" role="status" :data-testid="`private-network-declined-${node.name}`">{{ t(k('found.declined'), { account: who(machine(node)?.account ?? '') }) }}</span>
+              <span class="text-sm text-slate-600" role="status" :data-testid="`private-network-declined-${node.name}`">{{ owner(node) ? t(k('found.declined'), { account: owner(node) }) : t(k('found.declinedUnknown')) }}</span>
               <button type="button" class="h-8 rounded-md border border-slate-300 bg-white px-3.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="network.connect(node.nodeId)">{{ t(k('found.pairAgain')) }}</button>
             </template>
             <template v-else-if="node.phase === 'waiting'">
-              <span class="text-sm text-slate-600" role="status">{{ t(k('found.waiting'), { account: who(machine(node)?.account ?? '') }) }}</span>
+              <span class="text-sm text-slate-600" role="status">{{ owner(node) ? t(k('found.waiting'), { account: owner(node) }) : t(k('found.waitingUnknown')) }}</span>
               <button type="button" class="rounded px-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :data-testid="`private-network-cancel-${node.name}`" @click="network.cancelConnect(node.nodeId)">{{ t(k('found.cancel')) }}</button>
             </template>
             <!-- someone else's node: Pair sends a request; its owner accepts -->
@@ -178,25 +181,32 @@ const checking = ref(false)
 const state = computed(() => extensions.list.find((item) => item.entry.id === 'private-network')?.state ?? null)
 const installed = computed(() => state.value?.kind === 'installed')
 /**
- * What this node's private network allows (private-network-types.md): `found` on a joined Tailscale / Headscale / hosted
- * network; `vpn` with only your own VPN (no machine list, no caller identity: add by address and pair with codes);
- * `notReady` while it waits (approval, sign-in again, server unreachable, not joined); `setup` when not installed or off.
+ * What this node's private network allows (private-network-661: Tailscale only): `found` on the joined tailnet; `notReady`
+ * while Tailscale holds it (approval, sign-in expired, signed out, unreachable, rejoining, not joined); `setup` when not
+ * installed or off.
  */
-const mode = computed<'setup' | 'vpn' | 'notReady' | 'found'>(() => {
+const mode = computed<'setup' | 'notReady' | 'found'>(() => {
   const s = state.value
   if (!s || s.kind !== 'installed' || !s.enabled) return 'setup'
-  if (network.joined && s.ready) return 'found'
-  if (!network.joined && network.vpnRanges.length && !network.awaitingApproval && !network.signingIn) return 'vpn'
+  if (network.ready && s.ready) return 'found'
   return 'notReady'
 })
+/** Requests over the private network need it ready; a request by plain address (D-5) arrives without it. */
+const shownRequests = computed(() => network.requests.filter((r) => r.address || mode.value === 'found'))
 const setupText = computed(() => {
-  if (mode.value === 'vpn') return t(k('vpn.only'), { ranges: network.vpnRanges.join(', ') })
-  if (mode.value === 'notReady') return state.value?.kind === 'installed' ? state.value.message : ''
+  if (mode.value === 'notReady') return state.value?.kind === 'installed' ? network.status.message : ''
   return installed.value ? t(k('setup.off')) : t(k('setup.lead'))
 })
 const setupAction = computed(() => (mode.value === 'setup' && !installed.value ? t(k('setup.action')) : t(k('setup.open'))))
 const machine = (node: FoundNode) => network.machineOf(node.machineId)
-const addedBy = (account: string) => (account === network.ownerAccount ? t(k('found.addedByYou')) : t(k('found.addedBy'), { account: network.accountLabel(account) }))
+/** "added by …"; a machine shared from another tailnet: "shared by …", or "shared with you" when Tailscale does not say by whom (REQ-016). */
+const addedBy = (node: FoundNode) => {
+  const m = machine(node)
+  if (m?.shared) return m.account ? t(k('found.sharedBy'), { account: m.account }) : t(k('found.sharedUnknown'))
+  return m?.account === network.ownerAccount ? t(k('found.addedByYou')) : t(k('found.addedBy'), { account: network.accountLabel(m?.account ?? '') })
+}
+/** Whose node it is, as far as the network says: "bob", "dana@other.example", or nobody known. */
+const owner = (node: FoundNode) => who(machine(node)?.account ?? '')
 const who = (account: string) => (network.accountLabel(account) === 'you' ? t(k('found.you')) : network.accountLabel(account))
 const KIND_CLASS: Record<'teammate' | 'unknown', string> = { teammate: 'text-slate-600', unknown: 'text-amber-700' }
 /** Found lists only nodes outside this app's Nodes list (pairing-contract §4); a node on your account that this app does not control is an unknown machine. */
@@ -206,7 +216,7 @@ const list = useNodeListStore()
 const shown = computed(() => network.found.filter((node) => !nodeStore.nodes.some((entry) => entry.nodeId === node.nodeId)
   && !list.rows.some((row) => row.nodeId === node.nodeId)))
 const kindOf = (node: FoundNode): 'teammate' | 'unknown' => (node.kind === 'teammate' ? 'teammate' : 'unknown')
-const kindLine = (node: FoundNode) => kindOf(node) === 'teammate' ? t(k('found.kindTeammate'), { account: who(machine(node)?.account ?? '') })
+const kindLine = (node: FoundNode) => kindOf(node) === 'teammate' ? (owner(node) ? t(k('found.kindTeammate'), { account: owner(node) }) : t(k('found.kindTeammateUnknown')))
   : t(k('found.kindUnknown'))
 
 async function checkAgain(): Promise<void> {
