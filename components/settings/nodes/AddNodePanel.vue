@@ -3,7 +3,7 @@
        code fills in the address (and the name when it is empty); without a code the node is listed and asks for one. -->
   <form class="border-y border-slate-200 bg-slate-50 px-5 pb-4 pt-3.5" data-testid="add-node-panel" @submit.prevent="submit">
     <h4 class="mb-2.5 text-sm font-semibold text-slate-900">{{ network.joined ? t('nodes.sections.addTitle') : t('nodes.sections.addTitlePlain') }}</h4>
-    <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1.4fr)_auto_auto] xl:items-start">
+    <div class="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1.4fr)_auto] xl:items-start">
       <div>
         <input
           v-model="draft.address"
@@ -50,11 +50,6 @@
         <p v-if="codeError" class="mt-1.5 text-sm text-red-600" role="alert" data-testid="add-node-code-error">{{ codeError }}</p>
         <p v-else-if="codeRead && !codeStep" class="mt-1.5 text-xs text-emerald-700" data-testid="add-node-code-read">{{ t('nodes.nodeCode.readOk', { address: codeRead.address }) }}</p>
       </div>
-      <!-- extensions-ui-516 (design, pairing-contract §9): pairing on add is a choice, not a switch -->
-      <label class="inline-flex h-10 flex-shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700" :title="t(k('add.collaborateHint'))">
-        <input v-model="draft.collaborate" type="checkbox" class="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500" :disabled="busy" data-testid="add-node-collaborate">
-        {{ t(k('add.collaborate')) }}
-      </label>
       <button
         type="submit"
         class="inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 disabled:opacity-50"
@@ -79,29 +74,25 @@
 import { computed, reactive, ref } from 'vue'
 import NodeNoticeIcon from '~/components/settings/nodes/NodeNoticeIcon.vue'
 import { useLocalization } from '~/composables/useLocalization'
-import { useNodeChangeDialogStore } from '~/stores/nodeChangeDialogStore'
 import { isValidNodeName, useNodeListStore } from '~/stores/nodeListStore'
 import { NODES_PAGE_KEY } from '~/utils/nodeConnectionErrorText'
 import { readNodeCode } from '~/prototype/nodes/nodeCode'
 import { accessCodeAddress, useAddWithAccessCode } from '~/prototype/nodes/addWithAccessCode'
-import { useNodeAccessStore } from '~/stores/nodeAccessStore'
 import { usePrivateNetworkStore } from '~/stores/privateNetworkStore'
 
 /**
  * The always-open add form (UIS-003; extensions-ui-516 design, founder 2026-11-25): Address, Name, Access code, Pair with it,
- * Add node, in one form. An access code (pairing-contract §6) fills in the address; its setup code is exchanged for this app's
+ * Add node, in one form (no "Pair with it": the row's Pair is the only pairing control, DEC-015). An access code (pairing-contract §6) fills in the address; its setup code is exchanged for this app's
  * owner credential, so the node is added under this AutoByteus's control. Without a code the node is listed and its row asks
  * for one ("Needs connecting").
  */
 const { t } = useLocalization()
 const k = (key: string): string => `${NODES_PAGE_KEY}${key}`
 const store = useNodeListStore()
-const dialog = useNodeChangeDialogStore()
 /** "Add a node that isn't found" while a private network finds nodes; plain "Add a node" without one. */
 const network = usePrivateNetworkStore()
-const access = useNodeAccessStore()
 
-const draft = reactive({ address: '', name: '', code: '', collaborate: true })
+const draft = reactive({ address: '', name: '', code: '' })
 const errors = reactive({ address: '', name: '' })
 const duplicate = ref('')
 const busy = ref(false)
@@ -118,7 +109,7 @@ const onCode = (): void => {
   draft.address = accessCodeAddress(code.address)
 }
 
-const reset = (): void => { draft.address = ''; draft.name = ''; draft.code = ''; draft.collaborate = true }
+const reset = (): void => { draft.address = ''; draft.name = ''; draft.code = '' }
 
 const adder = useAddWithAccessCode()
 const addWithCode = async (): Promise<void> => {
@@ -131,10 +122,8 @@ const addWithCode = async (): Promise<void> => {
       else codeError.value = result.message
       return
     }
-    const pair = draft.collaborate
+    // The node is listed under control, not paired: its row's Pair is the only pairing control (DEC-015).
     reset()
-    // Pair with it: the decision for both sides of a node this AutoByteus now controls (no confirmation; pairing-contract §3).
-    if (pair) void dialog.pairDirect(result.nodeId)
   } catch (cause) {
     codeError.value = cause instanceof Error ? cause.message : String(cause)
   } finally {
@@ -155,18 +144,10 @@ const submit = async (): Promise<void> => {
   }
   busy.value = true
   try {
-    const collaborate = draft.collaborate
-    const result = await store.addNode({ address: draft.address, name: draft.name, collaborate })
+    const result = await store.addNode({ address: draft.address, name: draft.name, collaborate: false })
     if (result.ok) {
       // Success is silent: the row appears and is highlighted; the form is ready for the next node.
       reset()
-      // Pair with it: a node added by address is not under this AutoByteus's control yet; it pairs once its row's access
-      // code connects it (Solution Designer 2026-11-25), or at once when it already is.
-      if (collaborate) {
-        const entryId = store.rowByKey(result.key)?.entryIds[0]
-        if (entryId && access.stateOf(entryId) === 'connected') void dialog.pairDirect(result.key)
-        else if (entryId) dialog.pairAfterControl = [...dialog.pairAfterControl, entryId]
-      }
     } else if (result.error === 'invalid') {
       if (result.address) errors.address = t(k('add.errorAddress'))
       if (result.name) errors.name = t(k('add.errorName'))

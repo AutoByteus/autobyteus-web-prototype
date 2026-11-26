@@ -6,7 +6,7 @@
 - Requested by: Solution Designer, Software Engineering Team (run `solution_designer_b2b085ced16d45479c46350d19ae49a2`), for the founder, 2026-11-22
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/autobyteus-516-extensions/tickets/in-progress/autobyteus-516-extensions/product-design-request.md`
 - Mode: Product Experience Design (changes existing surfaces: Settings → Extensions, the Voice Input card, the voice surfaces, Nodes)
-- Status: `Awaiting User Review` (round 5, all 23 spines confirmed by the Solution Designer, 2026-11-25)
+- Status: `In Progress` (DEC-015 changes after approval, 2026-11-26; sent to the Solution Designer for its check)
 
 ### Decision questions
 
@@ -73,3 +73,4 @@ Invented by hand for this ticket: the catalog entries (descriptions from `extens
 - 2026-11-26 Solution Designer confirmed DC-075 (@ 2308c238) against T4–T6, T8, T9 and §0, §3, §4, §6. Open for the founder: keep "Pair with it" on Add node (Solution Designer recommends removing it: one Pair on the row). `Awaiting User Review`.
 - 2026-11-26 founder decisions: Controlled nodes title (DC-076), Add a node above the list (DC-077), "Visible on my private network" (DC-078), no trust switch (DC-079). `Awaiting User Review`.
 - 2026-11-26 Solution Designer final validation of the whole package (@ 374aa79c): V1–V13 and T1–T9 match; T8 stale refusal text fixed (DC-081); no further check needed. Open for the founder (listed as open in the spec): install ends On/Off, translations, Reinstall / Open folder, one click for own nodes, "Pair with it". Not included unless the founder approves: "Create access code" only where the code can work; "Controlled by … Revoke" on This node. Brought to the founder for approval; `Awaiting User Review`.
+- 2026-11-26 final screenshots captured and the spec drafted; before integration the founder delegated the open items to the Solution Designer (DEC-015): install ends On, translations, folder Copy, no Pair with it, Create access code only where it works, Controlled by … Revoke, voice warm-up. Status back to `In Progress`; applied as DC-083…DC-089 (captures review-captures/round-10/); final screenshots and ui-ux-spec.md to be redone after the check.

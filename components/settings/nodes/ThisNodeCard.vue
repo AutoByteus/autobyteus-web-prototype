@@ -13,8 +13,12 @@
     <!-- extensions-ui-516 (design, founder 2026-11-26): this node's private-network switches are this node's settings -->
     <PrivateNetworkCard part="thisNode" />
 
-    <!-- extensions-ui-516 (design, pairing-contract §6a): this node's owner lets another desktop control it with a node code. -->
-    <div v-if="isOwnerWindow" class="border-t border-slate-100 px-5 py-3" data-testid="this-node-control">
+    <!-- extensions-ui-516 (design, DEC-015 item 7): who controls this node, with Revoke (owner windows) -->
+    <ThisNodeControllers v-if="isOwnerWindow" />
+
+    <!-- extensions-ui-516 (design, pairing-contract §6, DEC-015 item 6): Create access code only where the code can work: not on the
+         desktop's own node while it is not on a private network (its address is reachable only from this computer). -->
+    <div v-if="isOwnerWindow && codeCanWork" class="border-t border-slate-100 px-5 py-3" data-testid="this-node-control">
       <button
         type="button"
         class="-ml-1.5 flex items-center gap-1.5 rounded-md px-1.5 py-1 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
@@ -39,6 +43,7 @@
 import { computed, ref } from 'vue'
 import NodeCodePanel from '~/components/settings/nodes/NodeCodePanel.vue'
 import PrivateNetworkCard from '~/components/settings/nodes/PrivateNetworkCard.vue'
+import ThisNodeControllers from '~/components/settings/nodes/ThisNodeControllers.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useNodeListStore } from '~/stores/nodeListStore'
 import { usePrivateNetworkStore } from '~/stores/privateNetworkStore'
@@ -54,12 +59,14 @@ const k = (key: string): string => `${NODES_PAGE_KEY}${key}`
 const store = useNodeListStore()
 const controlOpen = ref(false)
 const network = usePrivateNetworkStore()
-/** The node code says where the other desktop reaches this node: its private address when joined, else its local address. */
+/** The access code says where another AutoByteus reaches this node: its private address when joined, else this window's address of it. */
 const nodeId = computed(() => store.thisNodeId ?? store.currentNode?.nodeId ?? 'srv_m9VFq2Lw')
-const codeAddress = computed(() => (network.joined ? network.thisMachine.address : '192.168.2.10'))
+const codeAddress = computed(() => (network.joined ? network.thisMachine.address : (store.currentNode?.baseUrl ?? '').replace(/^https?:\/\//, '')))
 /** Making a node code on a node that has an owner is an owner action (NA-5): only windows holding the owner credential, never a phone. */
 const windowNode = useWindowNodeContextStore()
 const access = useNodeAccessStore()
 const isOwnerWindow = computed(() => typeof window !== 'undefined' && Boolean(window.electronAPI)
   && (windowNode.isEmbeddedWindow || access.stateOf(windowNode.entryId) === 'connected'))
+/** The embedded node answers at 127.0.0.1, which only this computer reaches: its code works once it is on a private network. */
+const codeCanWork = computed(() => !windowNode.isEmbeddedWindow || network.joined)
 </script>

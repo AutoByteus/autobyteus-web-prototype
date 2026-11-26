@@ -7,7 +7,7 @@
     <!-- The name row and the action share the first row at every width; the details span the card on narrow widths. -->
     <div class="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 p-5">
         <div class="col-start-1 row-start-1 flex min-h-9 min-w-0 flex-wrap items-center gap-x-3 gap-y-1.5">
-          <h3 :id="`extension-title-${entry.id}`" class="text-lg font-semibold leading-7 text-gray-900">{{ entry.name }}</h3>
+          <h3 :id="`extension-title-${entry.id}`" class="text-lg font-semibold leading-7 text-gray-900" :lang="shown.lang">{{ shown.name }}</h3>
           <span class="text-sm tabular-nums text-gray-500" :data-testid="`extension-version-${entry.id}`">{{ shownVersion }}</span>
           <span class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium leading-5" :class="pill.class" :data-testid="`extension-state-${entry.id}`">
             <span v-if="pill.dot" class="h-1.5 w-1.5 rounded-full" :class="pill.dot" aria-hidden="true" />
@@ -25,7 +25,7 @@
           >{{ t('extensions.card.updateNeedsNewerApp', { version: store.updateVersion }) }}</span>
         </div>
       <div class="col-span-2 row-start-2 min-w-0 sm:col-span-1">
-        <p class="mt-1.5 max-w-2xl text-sm leading-6 text-gray-600" lang="en">{{ entry.description }}</p>
+        <p class="mt-1.5 max-w-2xl text-sm leading-6 text-gray-600" :lang="shown.lang">{{ shown.description }}</p>
 
         <!-- what the extension says now -->
         <button
@@ -38,7 +38,7 @@
         >{{ t('extensions.card.update', { version: store.updateVersion }) }}</button>
         <p v-if="state.kind === 'notAvailableHere'" class="mt-3 text-sm text-gray-500" :data-testid="`extension-not-available-${entry.id}`">
           {{ state.reason === 'contract'
-            ? t('extensions.card.needsNewerApp', { name: entry.name, version: entry.version })
+            ? t('extensions.card.needsNewerApp', { name: shown.name, version: entry.version })
             : t('extensions.card.notAvailable', { platform: platformLabel(store.platform), platforms: entry.platforms.map(platformLabel).join(', ') }) }}
         </p>
         <div v-else-if="state.kind === 'installing'" class="mt-3 max-w-xl" :data-testid="`extension-progress-${entry.id}`" role="status" aria-live="polite">
@@ -75,6 +75,8 @@
           aria-live="polite"
         >
           <span v-if="state.enabled && !state.ready && starting" class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-amber-200 border-t-amber-600 motion-reduce:animate-none" aria-hidden="true" />
+          <!-- Voice Input warming its model in the background (REQ-012): dictation already works -->
+          <span v-else-if="state.warming" class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-200 border-t-gray-500 motion-reduce:animate-none" aria-hidden="true" :data-testid="`extension-warming-${entry.id}`" />
           <span lang="en">{{ state.message }}</span>
         </p>
       </div>
@@ -113,7 +115,7 @@
               class="relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-60"
               :class="state.enabled ? 'bg-blue-600' : 'bg-slate-300'"
               :aria-checked="state.enabled"
-              :aria-label="t('extensions.card.switchLabel', { name: entry.name })"
+              :aria-label="t('extensions.card.switchLabel', { name: shown.name })"
               :disabled="!canManage"
               :data-testid="`extension-switch-${entry.id}`"
               @click="toggle"
@@ -158,7 +160,7 @@
     </div>
 
     <div v-if="open && state.kind === 'installed'" :id="`extension-body-${entry.id}`" class="border-t border-gray-100 px-5 py-5">
-      <ExtensionPageFrame :extension-id="entry.id" :title="t('extensions.page.title', { name: entry.name })" />
+      <ExtensionPageFrame :extension-id="entry.id" :title="t('extensions.page.title', { name: shown.name })" />
       <slot name="after-page" />
     </div>
   </section>
@@ -168,12 +170,14 @@
 import { computed } from 'vue';
 import ExtensionPageFrame from '~/components/settings/extensions/ExtensionPageFrame.vue';
 import { useLocalization } from '~/composables/useLocalization';
-import { useExtensionsStore, type CatalogEntry, type ExtensionState } from '~/stores/extensionsStore';
+import { displayOf, useExtensionsStore, type CatalogEntry, type ExtensionState } from '~/stores/extensionsStore';
 
 /** The common card frame AutoByteus draws for every extension (DEC-014): name, version, state, the action of the state, log, Remove, the page. */
 const props = withDefaults(defineProps<{ entry: CatalogEntry; state: ExtensionState; canManage: boolean; canInstall?: boolean }>(), { canInstall: true });
-const { t } = useLocalization();
+const { t, resolvedLocale } = useLocalization();
 const store = useExtensionsStore();
+/** The extension's name and description in the app's language when its catalog entry has them (contract §1, DEC-015). */
+const shown = computed(() => displayOf(props.entry, String(resolvedLocale.value ?? 'en')));
 
 const open = computed(() => store.isPageOpen(props.entry.id));
 const starting = computed(() => props.state.kind === 'installed' && /^Starting/.test(props.state.message));

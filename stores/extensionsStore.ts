@@ -26,29 +26,45 @@ export interface CatalogEntry {
   contractVersion: number;
   offeredOn: 'desktop-node' | 'every-node';
   platforms: string[];
+  /** Optional (contract §1, DEC-015): the card shows these when the app's language has an entry; otherwise the English text. */
+  translations?: Record<string, { name: string; description: string }>;
 }
 export type ExtensionState =
   | { kind: 'notAvailableHere'; reason?: 'platform' | 'contract' }
   | { kind: 'notInstalled' }
   | { kind: 'installing'; message: string; percent: number | null; isUpdate: boolean; removing?: boolean }
-  | { kind: 'installed'; version: string; enabled: boolean; ready: boolean; message: string; updateAvailable: boolean; updateNeedsNewerApp?: boolean }
+  | { kind: 'installed'; version: string; enabled: boolean; ready: boolean; message: string; updateAvailable: boolean; updateNeedsNewerApp?: boolean; warming?: boolean }
   | { kind: 'failed'; message: string };
 export interface NodeExtension { entry: CatalogEntry; state: ExtensionState }
 
-/** The catalog AutoByteus read and verified (signed). Text is the extension's own (English only: the contract has no translations). */
+/** The catalog AutoByteus read and verified (signed). Text is the extension's own, with optional translations (contract §1, DEC-015). */
 const CATALOG: CatalogEntry[] = [
   {
     id: 'voice-input', name: 'Voice Input', version: '1.0.0', contractVersion: 1, offeredOn: 'desktop-node',
     description: 'Dictate instead of typing. Speech becomes text on this computer. Uses the microphone; downloads about 2 GB on install.',
     platforms: ['darwin-arm64', 'darwin-x64', 'linux-x64', 'win32-x64'],
+    translations: { 'zh-CN': { name: '语音输入', description: '用说话代替打字。语音在这台电脑上转成文字。使用麦克风；安装时下载约 2 GB。' } },
   },
   {
     id: 'private-network', name: 'Private Network', version: '0.1.0', contractVersion: 1, offeredOn: 'every-node',
     description: 'Connect your AutoByteus nodes through a private network: your Tailscale account, your own Headscale server, a network this machine hosts, or your own VPN. AutoByteus is never opened to the internet. Needs no administrator approval; downloads about 30 MB on install.',
     platforms: ['darwin-arm64', 'darwin-x64', 'linux-x64', 'linux-arm64', 'win32-x64'],
+    translations: { 'zh-CN': { name: '私有网络', description: '通过私有网络连接你的 AutoByteus 节点：你的 Tailscale 账号、你自己的 Headscale 服务器、由这台机器托管的网络，或你自己的 VPN。AutoByteus 永远不会暴露到互联网。无需管理员批准；安装时下载约 30 MB。' } },
   },
 ];
 const UPDATE_VERSION = '1.1.0';
+/**
+ * Voice Input warms its speech model in the background when it is on (REQ-012, contract part 6 `start`): after AutoByteus
+ * starts and after turning it on. About 30 s in the product; shortened here. Dictation works meanwhile (the slow note covers
+ * a dictation that waits for it).
+ */
+const WARM_MS = 6000;
+const WARMING_MESSAGE = 'Getting ready: the speech model is loading (about 30 seconds).';
+/** The name and description the card shows in the app's language (contract §1). */
+export const displayOf = (entry: CatalogEntry, locale: string): { name: string; description: string; lang: string } => {
+  const translated = entry.translations?.[locale];
+  return translated ? { ...translated, lang: locale } : { name: entry.name, description: entry.description, lang: 'en' };
+};
 const SUPPORTED_CONTRACT = 1;
 /** V13: a catalog entry that needs a newer contract (starting state `voice_newer_contract`). */
 const NEWER_CONTRACT = typeof window !== 'undefined' && localStorage.getItem('autobyteus.prototype.extensions') === 'voice_newer_contract';
@@ -202,6 +218,21 @@ export const useExtensionsStore = defineStore('extensions', {
       this.isElectron = typeof window !== 'undefined' && Boolean(window.electronAPI);
       this.recordOf('embedded');
       this.recordOf(this.windowKey);
+      // AutoByteus started: Voice Input, when on, warms its speech model in the background (REQ-012).
+      const voice = this.recordOf('embedded').states['voice-input'];
+      if (voice.kind === 'installed' && voice.enabled && voice.ready) void this.warmVoice();
+    },
+    /** Voice Input's background warm-up: "Getting ready…" on its card, then Ready. Dictation is not blocked meanwhile. */
+    async warmVoice(prefix = ''): Promise<void> {
+      const state = this.recordOf('embedded').states['voice-input'];
+      if (state.kind !== 'installed' || !state.enabled) return;
+      this.log('voice-input', 'start: warming the speech model', 'embedded');
+      this.set('voice-input', { ...state, ready: true, warming: true, message: `${prefix}${WARMING_MESSAGE}` }, 'embedded');
+      await later(WARM_MS);
+      const now = this.recordOf('embedded').states['voice-input'];
+      if (now.kind !== 'installed' || !now.enabled || !now.warming) return;
+      this.log('voice-input', 'start: speech model ready', 'embedded');
+      this.set('voice-input', { ...now, warming: false, message: 'Ready.' }, 'embedded');
     },
     set(id: ExtensionId, state: ExtensionState, key: NodeKey = this.windowKey): void { this.recordOf(key).states[id] = state; },
     log(id: ExtensionId, line: string, key: NodeKey = this.windowKey): void { this.recordOf(key).logs[id].push(`${clock()}  ${line}`); },
@@ -236,12 +267,16 @@ export const useExtensionsStore = defineStore('extensions', {
       }
       const enabledBefore = before.kind === 'installed' && before.enabled;
       this.log(id, `${isUpdate ? 'update' : 'install'}: done (${version})`, key);
-      this.set(id, {
-        kind: 'installed', version, enabled: isUpdate ? enabledBefore : false, ready: isUpdate ? enabledBefore : false, updateAvailable: false,
-        message: isUpdate ? (enabledBefore ? 'Ready.' : 'Turned off.') : 'Installed. Turn it on to use it.',
-      }, key);
+      if (isUpdate) {
+        this.set(id, { kind: 'installed', version, enabled: enabledBefore, ready: enabledBefore, updateAvailable: false, message: enabledBefore ? 'Ready.' : 'Turned off.' }, key);
+        return;
+      }
+      // An install ends On (DEC-015, AC-002): Voice Input is on at once and warms its model; Private Network starts its
+      // network program and continues straight into choosing a network.
+      this.set(id, { kind: 'installed', version, enabled: false, ready: false, updateAvailable: false, message: 'Installed and on.' }, key);
+      await this.turnOn(id, 'Installed and on. ');
     },
-    async turnOn(id: ExtensionId): Promise<void> {
+    async turnOn(id: ExtensionId, prefix = ''): Promise<void> {
       const key = this.windowKey;
       const state = this.recordOf(key).states[id];
       if (state.kind !== 'installed') return;
@@ -249,7 +284,7 @@ export const useExtensionsStore = defineStore('extensions', {
       this.log(id, 'start: turned on', key);
       // Voice Input's status() is ready as soon as its runtime and model are present; its program starts on the first
       // transcription (the slow note covers that). Private Network's start step runs its network program first.
-      if (id === 'voice-input') { this.set(id, { ...state, enabled: true, ready: true, message: 'Ready.' }, key); return; }
+      if (id === 'voice-input') { this.set(id, { ...state, enabled: true, ready: true, message: 'Ready.' }, key); void this.warmVoice(prefix); return; }
       this.set(id, { ...state, enabled: true, ready: false, message: 'Starting the network program…' }, key);
       await later(1500);
       const now = this.recordOf(key).states[id];
@@ -266,7 +301,7 @@ export const useExtensionsStore = defineStore('extensions', {
       const state = this.recordOf(key).states[id];
       if (state.kind !== 'installed') return;
       this.log(id, 'stop: turned off', key);
-      this.set(id, { ...state, enabled: false, ready: false, message: 'Turned off.' }, key);
+      this.set(id, { ...state, enabled: false, ready: false, warming: false, message: 'Turned off.' }, key);
     },
     async remove(id: ExtensionId): Promise<void> {
       const key = this.windowKey;

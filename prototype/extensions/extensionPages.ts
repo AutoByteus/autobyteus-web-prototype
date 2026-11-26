@@ -2,9 +2,9 @@
  * extensions-ui-516 (design only): the two extensions' own pages (`ui/index.html` of each package, extension-contract.md §2, §5).
  *
  * Written as an extension author would: one HTML page, its own styles, no network access (the CSP below and the frame's
- * sandbox), and calls only through the message bridge to its own extension's actions. The pages are English only: the
- * contract passes no language or theme to a page (see the UI/UX spec's findings). The styles follow AutoByteus's
- * Settings look by hand, as a first-party extension would.
+ * sandbox), and calls only through the message bridge to its own extension's actions. AutoByteus sends the app's language
+ * once when the page loads (`{ locale }`, contract §5, DEC-015); a page shows its texts in that language when it has them
+ * (here: a zh-CN table per page). The styles follow AutoByteus's Settings look by hand, as a first-party extension would.
  */
 
 const CSP = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:">`
@@ -61,6 +61,25 @@ addEventListener('message', (event) => {
 const tellHeight = () => parent.postMessage({ resize: { height: Math.ceil(document.documentElement.getBoundingClientRect().height) } }, '*');
 new ResizeObserver(tellHeight).observe(document.documentElement);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+// The app's language, sent once by AutoByteus when the page loads (contract §5): the page shows its own texts in it.
+let LOCALE = 'en'; let ZH = {}; let ZH_PATTERNS = [];
+const tr = (text) => {
+  const key = text.trim(); if (!key) return null;
+  if (ZH[key]) return text.replace(key, ZH[key]);
+  for (const [re, to] of ZH_PATTERNS) if (re.test(key)) return text.replace(key, key.replace(re, to));
+  return null;
+};
+function localize(el) {
+  if (LOCALE !== 'zh-CN') return;
+  const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); const nodes = []; while (walk.nextNode()) nodes.push(walk.currentNode);
+  for (const n of nodes) { const v = tr(n.nodeValue); if (v !== null) n.nodeValue = v; }
+  el.querySelectorAll('[placeholder],[aria-label],[alt],[title]').forEach((e) => { for (const a of ['aria-label', 'alt', 'title']) { const v = e.getAttribute(a) && tr(e.getAttribute(a)); if (v) e.setAttribute(a, v); } });
+}
+new MutationObserver(() => localize(document.body)).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+addEventListener('message', (event) => {
+  if (event.source !== parent || !event.data || typeof event.data.locale !== 'string') return;
+  LOCALE = event.data.locale; document.documentElement.lang = LOCALE; localize(document.body);
+});
 `
 
 const page = (css: string, body: string, script: string) =>
@@ -94,11 +113,23 @@ export const VOICE_INPUT_PAGE = page(`
   </div>
 </div>
 `, `
+ZH = { 'Language': '语言', 'Auto (English or Chinese)': '自动（英文或中文）', 'English': '英文', 'Chinese': '中文',
+  'Auto recognizes English and Chinese in each recording. Choose one language if Auto often guesses wrong.': '自动会在每段录音中识别英文和中文。如果自动经常识别错误，请选择一种语言。',
+  'Installed': '已安装', 'Voice runtime': '语音运行时', 'Speech model': '语音模型', 'Folder': '文件夹',
+  'Saving…': '正在保存…', 'Saved': '已保存', 'Copy': '复制', 'Copied': '已复制', 'Press ⌘C to copy': '按 ⌘C 复制', 'Copy the folder path': '复制文件夹路径' };
 const lang = document.getElementById('lang'); const saved = document.getElementById('saved'); const facts = document.getElementById('facts');
 call('getSettings').then((s) => {
   lang.value = s.language; lang.disabled = false;
-  facts.innerHTML = [['Voice runtime', s.runtimeVersion], ['Speech model', s.model], ['Folder', s.folder]]
-    .map(([k, v]) => '<dt>' + esc(k) + '</dt><dd>' + esc(v) + '</dd>').join('');
+  // The folder with Copy (no Open folder: the contract has no folder action; DEC-015).
+  facts.innerHTML = [['Voice runtime', esc(s.runtimeVersion)], ['Speech model', esc(s.model)],
+    ['Folder', '<span class="mono" id="folder">' + esc(s.folder) + '</span> <button class="link" id="copyfolder" aria-label="Copy the folder path">Copy</button>']]
+    .map(([k, v]) => '<dt>' + esc(k) + '</dt><dd>' + v + '</dd>').join('');
+  document.getElementById('copyfolder').addEventListener('click', async (e) => {
+    const b = e.currentTarget;
+    try { await navigator.clipboard.writeText(s.folder); b.textContent = 'Copied'; }
+    catch { getSelection().selectAllChildren(document.getElementById('folder')); b.textContent = 'Press ⌘C to copy'; }
+    setTimeout(() => { b.textContent = 'Copy'; }, 2000);
+  });
 });
 lang.addEventListener('change', async () => {
   lang.disabled = true; saved.className = 'hint'; saved.textContent = 'Saving…';
@@ -158,6 +189,62 @@ ul.plain{margin:4px 0 0;padding-left:18px;font-size:13px;line-height:20px;color:
 .ok-line{color:#047857}.bad-line{color:#b45309}
 @media (max-width:560px){.code-top{flex-direction:column}.col-addr,.col-account{display:none}}
 `, `<div id="root" class="stack"><p class="muted"><span class="spin"></span> Loading…</p></div>`, `
+ZH = {
+  'Loading…': '正在加载…', 'Waiting for approval in your Tailscale admin console.': '正在等待你在 Tailscale 管理控制台中批准。',
+  'Finish signing in to Tailscale in your browser. This page continues by itself.': '请在浏览器中完成 Tailscale 登录。此页面会自动继续。',
+  'Open the sign-in page again': '再次打开登录页面', 'Cancel': '取消', 'Auth key': '认证密钥', 'Join': '加入', 'Joining…': '正在加入…',
+  'Make a one-time key without tags in the Tailscale admin console under Settings → Keys. A machine joined with a tagged key belongs to the tag, not to you.': '在 Tailscale 管理控制台的“Settings → Keys”中生成一个不带标签的一次性密钥。用带标签的密钥加入的机器属于该标签，而不属于你。',
+  'Sign in instead': '改为登录', 'Sign in with Tailscale': '使用 Tailscale 登录', 'Use an auth key instead': '改用认证密钥',
+  'Opens Tailscale’s sign-in page in your browser. Sign in with the account your other machines use.': '在浏览器中打开 Tailscale 的登录页面。请使用你其他机器所用的账号登录。',
+  'Invite code': '邀请码', 'Made on the machine that hosts the network, under Invite someone. It works once, within 24 hours.': '在托管网络的机器上通过“邀请他人”生成。只能使用一次，24 小时内有效。',
+  'Enter the server and a join key instead': '改为输入服务器和加入密钥', 'Server address': '服务器地址', 'Join key': '加入密钥',
+  'On your server, run “headscale preauthkeys create --user <you>” and paste the key it prints. The key’s user decides who this machine belongs to: use your own.': '在你的服务器上运行“headscale preauthkeys create --user <you>”，然后粘贴它打印的密钥。密钥所属的用户决定这台机器归谁：请使用你自己的用户。',
+  'I have an invite code': '我有邀请码', 'Join a private network': '加入私有网络',
+  'This node joins as a machine of its own. Only AutoByteus uses the connection: nothing else on this computer changes, and AutoByteus is never opened to the internet.': '此节点作为一台独立的机器加入。只有 AutoByteus 使用该连接：这台电脑上的其他内容不会改变，AutoByteus 也永远不会暴露到互联网。',
+  'Network': '网络', 'Tailscale account': 'Tailscale 账号', 'Use the Tailscale account your other machines are on.': '使用你其他机器所在的 Tailscale 账号。',
+  'My own Headscale server': '我自己的 Headscale 服务器', 'A Headscale server you or your team run, or a network hosted on another of your machines.': '你或你的团队运行的 Headscale 服务器，或由你的另一台机器托管的网络。',
+  'Host a private network on this machine': '在这台机器上托管私有网络', 'This machine runs the network and your other machines join it. Needs an always-on machine with a public address.': '这台机器运行网络，你的其他机器加入它。需要一台始终开机并有公网地址的机器。',
+  'Use an always-on machine with a public address. A laptop sleeps and changes networks, so it makes a poor host. If this machine is off, nobody can join and changes wait; existing connections keep working for a while.': '请使用一台始终开机并有公网地址的机器。笔记本电脑会休眠、会切换网络，不适合做托管机。如果这台机器关机，任何人都无法加入，更改也会等待；现有连接还能继续工作一段时间。',
+  'Domain name': '域名', 'HTTPS port': 'HTTPS 端口', 'Before you start': '开始之前', 'Point the domain to this machine’s public address.': '把域名指向这台机器的公网地址。',
+  'At home, forward the HTTPS port on your router to this machine.': '在家里，请在路由器上把 HTTPS 端口转发到这台机器。', 'Only that port is public. AutoByteus and its agents are not.': '只有该端口是公开的。AutoByteus 及其智能体不会公开。',
+  'Check again': '再次检查', 'Change the domain': '更改域名', 'Start hosting': '开始托管', 'Checking…': '正在检查…',
+  'shared with you': '与你共享', 'This machine': '这台机器', 'Online': '在线', 'Offline': '离线', 'Signed out of Tailscale.': '已从 Tailscale 退出登录。',
+  'This machine’s key expired, so it cannot reach your other machines and they cannot reach it. To avoid this, turn off key expiry for this machine in the Tailscale admin console.': '这台机器的密钥已过期，因此它无法访问你的其他机器，其他机器也无法访问它。为避免这种情况，请在 Tailscale 管理控制台中为这台机器关闭密钥过期。',
+  'Sign in again': '重新登录', 'Your Headscale server cannot be reached.': '无法连接你的 Headscale 服务器。', 'Hosting': '托管', 'Address': '地址', 'Certificate': '证书', 'From the internet': '来自互联网',
+  'Only this port is public. If this machine is off, nobody can join and changes wait; existing connections keep working for a while.': '只有这个端口是公开的。如果这台机器关机，任何人都无法加入，更改也会等待；现有连接还能继续工作一段时间。',
+  'My machines': '我的机器', 'Name': '名称', 'Private address': '私有地址', 'Added by': '添加者', 'State': '状态', 'you': '你',
+  'Every machine on your private network, AutoByteus or not. Your AutoByteus nodes among them are in Manage Nodes.': '你私有网络上的每一台机器，无论是否运行 AutoByteus。其中你的 AutoByteus 节点在“管理节点”中。',
+  'Every machine on your private network, AutoByteus or not. Your AutoByteus nodes among them are in Manage Nodes. A machine added with a tagged key belongs to its tag and never counts as yours; a shared machine is someone else’s.': '你私有网络上的每一台机器，无论是否运行 AutoByteus。其中你的 AutoByteus 节点在“管理节点”中。用带标签的密钥添加的机器属于该标签，永远不算作你的；共享的机器属于别人。',
+  'Invite someone': '邀请他人', 'For a machine that already runs AutoByteus: an invite code joins it to this network, and it pairs afterwards from Nodes. Who the invite is for decides whose machine it is.': '适用于已运行 AutoByteus 的机器：邀请码会让它加入这个网络，之后在“节点”中配对。邀请对象决定这台机器归谁。',
+  'Make an invite': '生成邀请', 'Who the invite is for': '邀请对象', 'For one of my machines': '给我的某台机器', 'For a teammate': '给队友',
+  'It joins under the teammate’s own name, so it is theirs: it pairs only when you accept it, and never gets control.': '它以队友自己的名字加入，因此归队友所有：只有在你接受后才会配对，并且永远不会获得控制权。',
+  'Teammate’s name': '队友的名字', 'Becomes their own user on this network; it is created if it is new.': '成为他们在这个网络上的用户；如果是新用户会自动创建。',
+  'Make the invite': '生成邀请', 'Making an invite…': '正在生成邀请…', 'Invite code for one of your machines': '你的某台机器的邀请码', 'QR code of the invite': '邀请码二维码',
+  'Treat it like a password. Anyone who has it can add a machine to your private network. It works once.': '请像密码一样保管。任何拥有它的人都可以把一台机器加入你的私有网络。只能使用一次。',
+  'This invite expired.': '此邀请已过期。', 'Make a new one': '重新生成', 'Copy': '复制', 'Copied': '已复制', 'Done': '完成', 'Press ⌘C to copy': '按 ⌘C 复制',
+  'Your own VPN': '你自己的 VPN', 'If you run your own VPN (plain WireGuard or any other), this node can accept connections from its private address range, with or without a private network above. Your own VPN cannot find nodes or tell who is calling: add those nodes in Manage Nodes with their access code.': '如果你运行自己的 VPN（普通 WireGuard 或其他），此节点可以接受来自其私有地址段的连接，无论上方是否有私有网络。你自己的 VPN 无法发现节点，也无法识别来访者：请在“管理节点”中用访问码添加这些节点。',
+  'Remove': '移除', 'Accept range': '接受地址段', 'Saving…': '正在保存…', 'Private address range': '私有地址段',
+  'Every machine in the range can reach this node’s sign-in. Its data still needs a credential.': '地址段中的每台机器都能访问此节点的登录。它的数据仍然需要凭据。',
+  'Stop hosting and end this private network': '停止托管并结束这个私有网络', 'Leave this private network': '离开这个私有网络', 'End this private network for everyone?': '为所有人结束这个私有网络？', 'Leave this private network?': '离开这个私有网络？', 'Leave': '离开', 'End the network': '结束网络',
+  'Every machine on it loses the network, and nobody can join again. Pairings stay but cannot reach each other until the machines are on one network again and paired again.': '网络上的每台机器都会失去这个网络，任何人都无法再加入。配对会保留，但在这些机器重新处于同一网络并重新配对之前彼此无法访问。',
+  'This machine is removed from the network. To use another one, join it and pair your nodes again: pairings belong to this network, and the old ones stay but cannot reach.': '这台机器会从网络中移除。要使用另一个网络，请加入它并重新配对你的节点：配对属于这个网络，旧的配对会保留但无法访问。',
+  'This machine is signed out, so it stays listed on the network until you remove it in your Tailscale admin console.': '这台机器已退出登录，因此它会一直列在网络上，直到你在 Tailscale 管理控制台中移除它。',
+  'The server cannot be reached, so this machine stays listed on the network until you remove it on the Headscale server.': '无法连接服务器，因此这台机器会一直列在网络上，直到你在 Headscale 服务器上移除它。',
+  'Start the network server': '启动网络服务器', 'Join this machine to its own network': '让这台机器加入自己的网络',
+};
+ZH_PATTERNS = [
+  [/^Your tailnet approves new machines by hand: an admin approves (.+) under Machines\\. This page continues by itself\\.$/, '你的 tailnet 需要手动批准新机器：管理员需在“Machines”中批准 $1。此页面会自动继续。'],
+  [/^(.+) does not answer\\. Nobody can join or change anything; existing connections keep working for a while\\.$/, '$1 没有响应。任何人都无法加入或更改；现有连接还能继续工作一段时间。'],
+  [/^Valid until (.+), renewed by itself$/, '有效期至 $1，会自动续期'], [/^Not reachable on port (\\d+)$/, '端口 $1 无法访问'], [/^Reachable on port (\\d+)$/, '可通过端口 $1 访问'],
+  [/^Hosted on this machine · (.+)$/, '托管在这台机器上 · $1'], [/^It joins as yours \\((.+)\\)\\.$/, '它以你的身份加入（$1）。'], [/^Invite code for (.+)$/, '$1 的邀请码'],
+  [/^Paste it in the other machine’s Private Network card, under My own Headscale server → I have an invite code\\. Machines that join with it are (.+)’s \\(a teammate\\): they pair only when you accept\\.$/, '在另一台机器的私有网络卡片中，于“我自己的 Headscale 服务器 → 我有邀请码”下粘贴。用它加入的机器属于 $1（队友）：只有在你接受后才会配对。'],
+  [/^Paste it in the other machine’s Private Network card, under My own Headscale server → I have an invite code\\. Machines that join with it are yours \\((.+)\\): control them with their access code, then pair them from Controlled nodes\\.$/, '在另一台机器的私有网络卡片中，于“我自己的 Headscale 服务器 → 我有邀请码”下粘贴。用它加入的机器属于你（$1）：先用访问码控制它们，然后在“受控节点”中配对。'],
+  [/^Expires in (\\d+) hours$/, '$1 小时后过期'], [/^Expires in (\\d+:\\d\\d)$/, '$1 后过期'], [/^Stop accepting (.+)$/, '停止接受 $1'],
+  [/^(.+) is a large range: every machine in it can reach this node’s sign-in\\. Use your VPN’s own, smaller range if you can\\.$/, '$1 是一个很大的地址段：其中每台机器都能访问此节点的登录。如果可以，请使用你 VPN 自己的较小地址段。'],
+  [/^(.+) are large ranges: every machine in it can reach this node’s sign-in\\. Use your VPN’s own, smaller range if you can\\.$/, '$1 是很大的地址段：其中每台机器都能访问此节点的登录。如果可以，请使用你 VPN 自己的较小地址段。'],
+  [/^Joins as your machine \\((.+)\\)\\.$/, '以你的机器加入（$1）。'], [/^Joins as (.+)’s machine: it will be (.+)’s, not yours\\.$/, '以 $1 的机器加入：它将属于 $2，而不是你。'],
+  [/^Get a certificate for (.+)$/, '为 $1 获取证书'], [/^Check that it is reachable from the internet on port (\\d+)$/, '检查能否从互联网通过端口 $1 访问'],
+];
 const root = document.getElementById('root');
 let state = null; let choice = 'tailscale'; let tsMode = 'signin'; let hsMode = 'key'; let busy = ''; let error = '';
 let invite = null; let timer = null;
@@ -286,7 +373,7 @@ function vpnBlock() {
   const chips = state.vpnRanges.length ? '<div class="chips">' + state.vpnRanges.map((r) => '<span class="chip mono' + (r.large ? ' chip-large' : '') + '">' + esc(r.range) + '<button data-range="' + esc(r.range) + '" aria-label="Stop accepting ' + esc(r.range) + '">Remove</button></span>').join('') + '</div>' : '';
   const large = state.vpnRanges.filter((r) => r.large).map((r) => r.range);
   return '<div class="field"><h3>Your own VPN</h3>'
-    + '<p class="hint">If you run your own VPN (plain WireGuard or any other), this node can accept connections from its private address range, with or without a private network above. Your own VPN cannot find nodes or tell who is calling: add those nodes by address in Nodes and pair them with codes.</p>'
+    + '<p class="hint">If you run your own VPN (plain WireGuard or any other), this node can accept connections from its private address range, with or without a private network above. Your own VPN cannot find nodes or tell who is calling: add those nodes in Manage Nodes with their access code.</p>'
     + chips
     + '<div class="row"><input id="range" class="mono" style="width:200px" autocomplete="off" spellcheck="false" placeholder="10.8.0.0/24" aria-label="Private address range">' + btn('addrange', 'Accept range', 'Saving…', 'secondary') + '</div>'
     + (rangeError ? '<p class="error" role="alert">' + esc(rangeError) + '</p>' : '')

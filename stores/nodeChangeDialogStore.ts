@@ -66,13 +66,11 @@ export const useNodeChangeDialogStore = defineStore('nodeChangeDialog', () => {
    * every Unpair; the app removes the pairing on both sides without showing the steps.
    */
   /**
-   * extensions-ui-516 (design, Solution Designer 2026-11-25; pairing-contract §3 case 1): "Pair with it" ticked on Add node
-   * is the decision for both sides of a node this AutoByteus controls: no confirmation; the row shows "Pairing…", then
+   * extensions-ui-516 (design, Solution Designer 2026-11-25; pairing-contract §3 case 1): Pair on a Controlled nodes row is the
+   * decision for both sides of a node this AutoByteus controls: no confirmation; the row shows "Pairing…", then
    * Paired, or the unfinished step with Try again.
    */
   const pairing = ref<string[]>([])
-  /** Desktop entries added with "Pair with it" ticked but not under control yet: they pair once a code connects them. */
-  const pairAfterControl = ref<string[]>([])
   const pairDirect = async (key: string): Promise<void> => {
     const list = useNodeListStore()
     const subject = list.changeSubjectOf(key)
@@ -105,5 +103,5 @@ export const useNodeChangeDialogStore = defineStore('nodeChangeDialog', () => {
     if (plan.value?.phase !== 'running') plan.value = null
   }
 
-  return { plan, preparing, request, confirm, cancel, unpairDirect, pairDirect, pairing, pairAfterControl }
+  return { plan, preparing, request, confirm, cancel, unpairDirect, pairDirect, pairing }
 })

@@ -5,7 +5,7 @@
       <div class="flex max-h-[85vh] w-full max-w-3xl flex-col rounded-lg bg-white shadow-xl" role="dialog" aria-modal="true" aria-labelledby="extension-log-title" data-testid="extension-log-dialog">
         <div class="flex items-start justify-between gap-4 px-6 pb-3 pt-5">
           <div>
-            <h3 id="extension-log-title" class="text-lg font-semibold text-gray-900">{{ t('extensions.log.title', { name: logEntry.name }) }}</h3>
+            <h3 id="extension-log-title" class="text-lg font-semibold text-gray-900">{{ t('extensions.log.title', { name: nameOf(logEntry) }) }}</h3>
             <p class="mt-0.5 text-sm text-gray-500">{{ t('extensions.log.lead', { count: lines.length, node: nodeName }) }}</p>
           </div>
           <button ref="logClose" type="button" class="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" :aria-label="t('extensions.dialog.close')" @click="store.logFor = null">
@@ -26,7 +26,7 @@
     <!-- Remove -->
     <div v-if="removeEntry" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" data-testid="extension-remove-overlay" @click.self="store.removeFor = null" @keydown.esc="store.removeFor = null">
       <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-xl" role="alertdialog" aria-modal="true" aria-labelledby="extension-remove-title" aria-describedby="extension-remove-text" data-testid="extension-remove-dialog">
-        <h3 id="extension-remove-title" class="text-lg font-semibold text-gray-900">{{ t('extensions.remove.title', { name: removeEntry.name }) }}</h3>
+        <h3 id="extension-remove-title" class="text-lg font-semibold text-gray-900">{{ t('extensions.remove.title', { name: nameOf(removeEntry) }) }}</h3>
         <p id="extension-remove-text" class="mt-2 text-sm leading-6 text-gray-600">{{ t(`extensions.remove.text.${removeEntry.id}`, { node: nodeName }) }}</p>
         <div class="mt-6 flex justify-end gap-2">
           <button ref="removeCancel" type="button" class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500" @click="store.removeFor = null">{{ t('extensions.dialog.cancel') }}</button>
@@ -38,12 +38,15 @@
 </template>
 
 <script setup lang="ts">
+import { displayOf as displayOfEntry, type CatalogEntry as CatalogEntryForName } from '~/stores/extensionsStore';
 import { computed, nextTick, ref, watch } from 'vue';
 import { useLocalization } from '~/composables/useLocalization';
 import { useExtensionsStore } from '~/stores/extensionsStore';
 
 const props = defineProps<{ nodeName: string }>();
 const { t } = useLocalization();
+const { resolvedLocale: dialogLocale } = useLocalization();
+const nameOf = (entry: CatalogEntryForName): string => displayOfEntry(entry, String(dialogLocale.value ?? 'en')).name;
 const store = useExtensionsStore();
 const copied = ref(false);
 const logClose = ref<HTMLButtonElement | null>(null);

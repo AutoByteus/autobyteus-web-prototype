@@ -27,10 +27,12 @@ import { useExtensionsStore, type ExtensionId } from '~/stores/extensionsStore';
  * An extension's own page (extension-contract.md §5), in a sandboxed frame without network access: an opaque origin
  * (`sandbox="allow-scripts"`, no `allow-same-origin`), so it can reach neither the node nor the AutoByteus page. AutoByteus
  * accepts messages only from this frame (`event.source`) and answers each `{ id, call, input }` with `{ id, ok, output | error }`
- * from the extension's own actions. The page's height arrives as `{ resize: { height } }` (contract §5).
+ * from the extension's own actions. The page's height arrives as `{ resize: { height } }`; the app's language goes to the
+ * page once, as `{ locale }`, when it has loaded (contract §5).
  */
 const props = defineProps<{ extensionId: ExtensionId; title: string }>();
-const { t } = useLocalization();
+const { t, resolvedLocale } = useLocalization();
+let localeSent = false;
 const store = useExtensionsStore();
 const frame = ref<HTMLIFrameElement | null>(null);
 const height = ref(120);
@@ -46,6 +48,8 @@ async function onMessage(event: MessageEvent): Promise<void> {
   if (message.resize && typeof message.id !== 'string') {
     const next = Number(message.resize.height);
     if (Number.isFinite(next) && next > 0) { height.value = Math.min(Math.max(next, 48), 2000); loaded.value = true; }
+    // The page has loaded: AutoByteus sends the app's language once (contract §5, DEC-015).
+    if (!localeSent) { localeSent = true; own.postMessage({ locale: String(resolvedLocale.value ?? 'en') }, '*'); }
     return;
   }
   if (typeof message.id !== 'string' || typeof message.call !== 'string') return;
