@@ -407,7 +407,7 @@ const settingsMessages = {
   'settings.components.settings.DockerNodeStartGuideCard.platform.installedCli': 'Installed CLI',
   'settings.components.settings.DockerNodeStartGuideCard.commands.install.title': 'Install autobyteus-docker',
   'settings.components.settings.DockerNodeStartGuideCard.commands.install.description': 'Installs or replaces the local launcher and prints direct-path, current-shell PATH, and persistent profile/update or copy-paste setup guidance.',
-  'settings.components.settings.DockerNodeStartGuideCard.commands.accessCode.title': 'Make an access code',
+  'settings.components.settings.DockerNodeStartGuideCard.commands.accessCode.title': 'Create access code',
   'settings.components.settings.DockerNodeStartGuideCard.commands.accessCode.description': 'Prints a new access code for one Docker node (works once, for 30 minutes). Use it to connect the node to AutoByteus, or to connect it again.',
   'settings.components.settings.DockerNodeStartGuideCard.commands.newContainer.title': 'Create Docker node',
   'settings.components.settings.DockerNodeStartGuideCard.commands.newContainer.description': 'Pulls the latest image and creates the next indexed Docker container, preferring friendly sequential host ports when available. At the end it prints the node\'s access code.',

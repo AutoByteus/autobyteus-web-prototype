@@ -2,7 +2,7 @@
  * extensions-ui-516 (design only): the access code (pairing-contract.md §6, founder 2026-11-25).
  *
  * Made on the node's own computer by `autobyteus-docker access-code <node>` (today's setup-code, renamed; the start command
- * prints one too), or in an AutoByteus that controls the node (This node → Make an access code); pasted in AutoByteus under
+ * prints one too), or in an AutoByteus that controls the node (This node → Create access code); pasted in AutoByteus under
  * Nodes → Add node, or on a "Needs connecting" row. Today's setup code plus how to reach the node: `abps_` + base64url of
  * { nodeId, address, setupCode, expiresAt }. One-time, 30 minutes, never logged. Every value here is invented; codes used
  * in this browser are remembered in localStorage.

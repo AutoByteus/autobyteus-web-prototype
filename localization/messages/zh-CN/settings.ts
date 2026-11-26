@@ -407,7 +407,7 @@ const settingsMessages = {
   'settings.components.settings.DockerNodeStartGuideCard.platform.installedCli': '已安装 CLI',
   'settings.components.settings.DockerNodeStartGuideCard.commands.install.title': '安装 autobyteus-docker',
   'settings.components.settings.DockerNodeStartGuideCard.commands.install.description': '安装或更新本地启动器，并输出直接路径、当前 shell PATH、持久化更新或复制粘贴配置指引。',
-  'settings.components.settings.DockerNodeStartGuideCard.commands.accessCode.title': '生成访问码',
+  'settings.components.settings.DockerNodeStartGuideCard.commands.accessCode.title': '创建访问码',
   'settings.components.settings.DockerNodeStartGuideCard.commands.accessCode.description': '为一个 Docker 节点打印新的访问码（只能使用一次，30 分钟内有效）。用它把节点连接到 AutoByteus，或重新连接。',
   'settings.components.settings.DockerNodeStartGuideCard.commands.newContainer.title': '创建 Docker 节点',
   'settings.components.settings.DockerNodeStartGuideCard.commands.newContainer.description': '拉取最新镜像并创建下一个编号的 Docker 容器，尽量使用连续的主机端口。最后会打印该节点的访问码。',
