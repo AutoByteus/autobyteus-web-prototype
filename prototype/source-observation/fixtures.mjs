@@ -1131,6 +1131,45 @@ export function operationFixture(operationName, variables = {}, state) {
   return personalSettingsOperation(operationName, variables, baseOperationFixture(operationName, variables, state), state, name => baseOperationFixture(name, {}, state))
 }
 
+
+/**
+ * memory-layout-balance-608 (design, round 6): one run, Project Task Manager's "Rename the helper and update callers"
+ * (project-task-manager_83dc9125), has three raw trace files (two closed segments and the active file) so the Raw
+ * Traces file picker can be reviewed; every other run keeps the one active file. Invented and illustrative.
+ */
+const MULTI_TRACE_RUN = 'project-task-manager_83dc9125'
+const traceEntry = (seq, traceType, content, extra = {}) => ({ scope: 'agent', id: `trace-${seq}`, traceType, sourceEvent: 'fixture', content, toolName: null, toolCallId: null, toolArgs: null, toolResult: null, toolError: null, media: null, turnId: `turn-${Math.ceil(seq / 3)}`, seq, ts: fixedNow, ...extra })
+function memoryTraceFilesOf(runId, requested) {
+  if (runId !== MULTI_TRACE_RUN) {
+    return { rawTraceFiles: [{ fileName: 'segment-0001.jsonl', kind: 'active', recordCount: 1, segmentIndex: 1, firstTimestamp: fixedNow, lastTimestamp: fixedNow }], selectedRawTraceFileName: 'segment-0001.jsonl', rawTraces: [traceEntry(1, 'message', 'Deterministic trace entry')] }
+  }
+  const files = [
+    { fileName: 'raw_traces_active.jsonl', kind: 'active', recordCount: 57, segmentIndex: 3, firstTimestamp: fixedNow, lastTimestamp: fixedNow },
+    { fileName: 'raw_traces_000002.jsonl', kind: 'segment', recordCount: 388, segmentIndex: 2, firstTimestamp: fixedNow, lastTimestamp: fixedNow },
+    { fileName: 'raw_traces_000001.jsonl', kind: 'segment', recordCount: 412, segmentIndex: 1, firstTimestamp: fixedNow, lastTimestamp: fixedNow },
+  ]
+  const selected = files.some(file => file.fileName === requested) ? requested : files[0].fileName
+  const traces = {
+    'raw_traces_active.jsonl': [
+      traceEntry(801, 'message', 'User: Rename the helper to uploadWithRetry and update every caller.'),
+      traceEntry(802, 'tool_call', 'Searching for callers of uploadHelper.', { toolName: 'run_bash', toolArgs: { command: 'grep -rn "uploadHelper(" src' } }),
+      traceEntry(803, 'tool_result', 'Found 4 callers.', { toolName: 'run_bash', toolResult: { stdout: 'src/a.ts:12\nsrc/b.ts:40\nsrc/c.ts:7\nsrc/d.ts:88' } }),
+      traceEntry(804, 'message', 'Agent: Renamed in four files; the tests pass.'),
+    ],
+    'raw_traces_000002.jsonl': [
+      traceEntry(413, 'message', 'User: Keep the logs short.'),
+      traceEntry(414, 'tool_call', 'Running the tests.', { toolName: 'run_bash', toolArgs: { command: 'pnpm test upload' } }),
+      traceEntry(415, 'tool_result', 'Tests: 18 passed, 18 total', { toolName: 'run_bash', toolResult: { exitCode: 0 } }),
+    ],
+    'raw_traces_000001.jsonl': [
+      traceEntry(1, 'message', 'User: Add a retry to the upload helper and keep the logs short.'),
+      traceEntry(2, 'tool_call', 'Reading the upload helper.', { toolName: 'read_file', toolArgs: { path: 'src/upload.ts' } }),
+      traceEntry(3, 'message', 'Agent: Added three retries with backoff.'),
+    ],
+  }
+  return { rawTraceFiles: files, selectedRawTraceFileName: selected, rawTraces: traces[selected] }
+}
+
 function baseOperationFixture(operationName, variables = {}, state) {
   // one-nodes-tab (shipped): this node's remote-collaboration settings; the other nodes answer through the same world.
   const world = networkWorldOf(state)
@@ -1178,7 +1217,7 @@ function baseOperationFixture(operationName, variables = {}, state) {
   const fieldNotesPackage = { ...agentPackage, packageId: 'package-field-notes', displayName: 'Field Notes Agents', path: fieldNotesRoot, sourceKind: 'LOCAL_PATH', source: fieldNotesRoot, sharedAgentCount: 1, agentTeamCount: 0, applicationCount: 0, isDefault: false, isRemovable: true,
     updateInfo: { ...agentPackage.updateInfo, canCheck: false, message: null, installedRevision: null, latestRevision: null },
     autoRefresh: { __typename: 'AgentPackageAutoRefresh', state: 'FOLDER_MISSING', message: null } }
-  const runMemoryView = { runId: variables.runId || variables.agentRunId || run.runId, workingContext: [{ role: 'user', content: 'Review the synthetic baseline.', reasoning: null, toolPayload: null, ts: fixedNow }, { role: 'assistant', content: 'The deterministic fixture is ready.', reasoning: 'Fixture reasoning', toolPayload: null, ts: fixedNow }], episodic: '# Episode\nValidated current-state navigation.', semantic: '# Facts\nAll data in this view is synthetic.', rawTraceFiles: [{ fileName: 'segment-0001.jsonl', kind: 'active', recordCount: 1, segmentIndex: 1, firstTimestamp: fixedNow, lastTimestamp: fixedNow }], selectedRawTraceFileName: 'segment-0001.jsonl', rawTraces: [{ scope: 'agent', id: 'trace-1', traceType: 'message', sourceEvent: 'fixture', content: 'Deterministic trace entry', toolName: null, toolCallId: null, toolArgs: null, toolResult: null, toolError: null, media: null, turnId: 'turn-1', seq: 1, ts: fixedNow }] }
+  const runMemoryView = { runId: variables.runId || variables.agentRunId || run.runId, workingContext: [{ role: 'user', content: 'Review the synthetic baseline.', reasoning: null, toolPayload: null, ts: fixedNow }, { role: 'assistant', content: 'The deterministic fixture is ready.', reasoning: 'Fixture reasoning', toolPayload: null, ts: fixedNow }], episodic: '# Episode\nValidated current-state navigation.', semantic: '# Facts\nAll data in this view is synthetic.', ...memoryTraceFilesOf(variables.runId || variables.agentRunId || run.runId, variables.rawTraceFileName) }
   const agentTokenSummary = createTokenUsageSummary({ runId: variables.runId || run.runId })
   const teamTokenSummary = createTokenUsageSummary({
     runId: variables.teamRunId || teamRun.teamRunId,

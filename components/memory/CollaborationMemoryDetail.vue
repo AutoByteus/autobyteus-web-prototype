@@ -1,9 +1,10 @@
 <template>
   <!-- semantic-memory-view-554 (design, round 3): `embedded` is the team or org page's Runs tab (no back link or title). -->
-  <div :class="embedded ? 'space-y-5' : 'mx-auto max-w-7xl space-y-5 p-8'">
+  <!-- memory-layout-balance-608 round 4: embedded, the filter lives in the team or org page's header row. -->
+  <div :class="embedded ? 'space-y-3' : 'mx-auto max-w-7xl space-y-5 p-8'">
     <button v-if="!embedded" class="text-sm font-medium text-blue-600 hover:underline" @click="$emit('back')">← {{ $t('memory.components.memory.CollaborationMemoryDetail.back_to_memory') }}</button>
 
-    <div class="flex flex-wrap items-center gap-3" :class="embedded ? 'justify-end' : 'justify-between'">
+    <div v-if="!embedded" class="flex flex-wrap items-center justify-between gap-3">
       <div v-if="!embedded" class="flex items-center gap-3">
         <h1 class="text-xl font-semibold text-gray-900">{{ title }}</h1>
         <span v-if="readOnly" class="rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-700">{{ $t('memory.components.memory.common.importedReadOnly') }}</span>
@@ -21,17 +22,16 @@
     </div>
     <div v-else-if="rows.length === 0" class="py-16 text-center text-sm text-gray-500">{{ $t('memory.components.memory.CollaborationMemoryDetail.no_runs_match_this_filter') }}</div>
     <div v-else class="space-y-4">
-      <article v-for="row in rows" :key="row.runId" class="rounded-lg border border-gray-200 bg-white p-5">
-        <div class="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
-          <div class="min-w-0">
-            <h3 class="break-words font-semibold text-gray-900">{{ row.summary || row.runId }}</h3>
-            <p class="mt-1 break-all font-mono text-xs text-gray-500">{{ row.runId }}</p>
-            <p v-if="row.workspaceRootPath" class="mt-1 break-all text-xs text-gray-500">{{ row.workspaceRootPath }}</p>
-          </div>
-          <span v-if="row.lastUpdatedAt" class="shrink-0 text-xs text-gray-500">{{ formatTimestamp(row.lastUpdatedAt) }}</span>
+      <!-- round 4: no run ID line (in the title's tooltip; the filter still matches it); the workspace and the time share
+           a line; member chips show the member, its run ID is in the chip's tooltip. -->
+      <article v-for="row in rows" :key="row.runId" :class="embedded ? 'rounded-lg border border-gray-200 bg-white p-4' : 'rounded-lg border border-gray-200 bg-white p-5'">
+        <div class="flex min-w-0 items-baseline justify-between gap-3">
+          <h3 class="min-w-0 break-words text-sm font-semibold text-gray-900" :title="row.runId">{{ row.summary || row.runId }}</h3>
+          <span v-if="row.lastUpdatedAt" class="shrink-0 text-xs text-gray-400">{{ formatTimestamp(row.lastUpdatedAt) }}</span>
         </div>
-        <MemoryBadges class="mt-3" :memory="row.memory" />
-        <div class="mt-4">
+        <p v-if="row.workspaceRootPath" class="mt-0.5 truncate text-xs text-gray-500" :title="row.workspaceRootPath">{{ row.workspaceRootPath }}</p>
+        <MemoryBadges class="mt-2" :memory="row.memory" />
+        <div class="mt-3">
           <div class="space-y-2">
             <div
               v-for="block in memberBlocks(row)"
@@ -60,12 +60,12 @@
                 <button
                   v-for="{ member, label } in block.members"
                   :key="`${row.runId}:${member.agentRunId}`"
-                  class="max-w-full rounded-lg border border-gray-200 px-3 py-2 text-left text-xs hover:border-blue-300 hover:bg-blue-50"
+                  class="max-w-full rounded-md border border-gray-200 px-2.5 py-1 text-left text-xs hover:border-blue-300 hover:bg-blue-50"
                   :data-execution-kind="member.executionKind"
+                  :title="member.agentRunId"
                   @click="$emit('inspectMember', row.runId, member)"
                 >
-                  <span class="block break-all font-semibold text-gray-800">{{ label }}</span>
-                  <span class="block break-all font-mono text-gray-500">{{ member.agentRunId }}</span>
+                  <span class="block break-all font-medium text-gray-800">{{ label }}</span>
                 </button>
               </div>
             </div>

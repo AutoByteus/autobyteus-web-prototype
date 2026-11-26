@@ -1,35 +1,38 @@
 <template>
   <div>
-    <div class="flex flex-wrap items-center gap-3 mb-4">
-      <div v-if="rawTraceFiles?.length" class="flex items-center gap-2">
-        <label class="text-xs font-semibold text-gray-600" for="raw-trace-file-selector">
-          {{ $t('memory.components.memory.RawTracesTab.raw_trace_file') }}
-        </label>
+    <!-- memory-layout-balance-608 round 6 (the founder): one row, no "Raw trace file" or "Raw Trace Limit" labels (the tab
+         says Raw Traces). The file picker is the same box as the Work Journal's (one down arrow), only for 2+ files;
+         one file is named as text. "Show [500]" applies on Enter or when the field is left: no Apply button. -->
+    <div class="mb-3 flex flex-wrap items-center gap-2">
+      <div v-if="(rawTraceFiles?.length ?? 0) > 1" class="relative min-w-0 basis-full sm:basis-auto sm:flex-1 sm:max-w-sm">
+        <label class="sr-only" for="raw-trace-file-selector">{{ $t('memory.components.memory.RawTracesTab.raw_trace_file') }}</label>
         <select
           id="raw-trace-file-selector"
-          class="min-w-64 rounded-md border border-gray-200 px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full appearance-none truncate rounded-md border border-gray-200 bg-white py-1.5 pl-2.5 pr-8 text-sm text-gray-800 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
           :value="selectedRawTraceFileName ?? ''"
           :disabled="loading"
           @change="onFileChange"
         >
-          <option v-for="file in rawTraceFiles" :key="file.fileName" :value="file.fileName">
-            {{ file.fileName }}{{ file.kind === 'active' ? ` (${$t('memory.components.memory.RawTracesTab.active_file')})` : '' }} — {{ formatCount(file.recordCount) }} {{ $t('memory.components.memory.RawTracesTab.records') }}
-          </option>
+          <option v-for="file in rawTraceFiles" :key="file.fileName" :value="file.fileName">{{ fileLabel(file) }}</option>
         </select>
+        <Icon icon="heroicons:chevron-down-20-solid" class="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" aria-hidden="true" />
       </div>
-      <div class="text-xs font-semibold text-gray-600">{{ $t('memory.components.memory.RawTracesTab.raw_trace_limit') }}</div>
-      <input
-        v-model.number="limitInput"
-        type="number"
-        min="1"
-        class="w-24 rounded-md border border-gray-200 px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <button
-        class="px-2 py-1 text-xs font-semibold rounded-md bg-gray-100 text-gray-700 hover:bg-gray-200"
-        @click="applyLimit"
-      >
-        Apply
-      </button>
+      <p v-else-if="rawTraceFiles?.length" class="min-w-0 flex-1 break-words text-sm text-gray-700" data-test="raw-trace-file-name">{{ fileLabel(rawTraceFiles[0]) }}</p>
+      <div v-else class="flex-1" />
+
+      <label class="ml-auto flex flex-shrink-0 items-center gap-1.5 text-sm text-gray-500">
+        <span>Show</span>
+        <input
+          v-model.number="limitInput"
+          type="number"
+          min="1"
+          inputmode="numeric"
+          :aria-label="$t('memory.components.memory.RawTracesTab.raw_trace_limit')"
+          class="no-spinner w-16 rounded-md border border-gray-200 bg-white px-2 py-1.5 text-sm text-gray-800 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-100"
+          @keyup.enter="applyLimit"
+          @change="applyLimit"
+        />
+      </label>
       <span v-if="loading" class="text-xs text-gray-400">Loading...</span>
     </div>
 
@@ -75,9 +78,17 @@
 <script setup lang="ts">
 import { useLocalization } from '~/composables/useLocalization';
 import { ref, watch } from 'vue';
+import { Icon } from '@iconify/vue';
 import type { MemoryTraceEvent, RawTraceFileSummary } from '~/types/memory';
 
-const { resolvedLocale } = useLocalization();
+const { t, resolvedLocale } = useLocalization();
+
+/** "segment-0001.jsonl (active) · 1 record" (singular for one). */
+const fileLabel = (file: RawTraceFileSummary) => {
+  const active = file.kind === 'active' ? ` (${t('memory.components.memory.RawTracesTab.active_file')})` : '';
+  const count = file.recordCount === 1 ? '1 record' : `${formatCount(file.recordCount)} ${t('memory.components.memory.RawTracesTab.records')}`;
+  return `${file.fileName}${active} · ${count}`;
+};
 
 const props = withDefaults(defineProps<{
   traces: MemoryTraceEvent[] | null;
@@ -107,7 +118,7 @@ watch(
 );
 
 const applyLimit = () => {
-  if (!limitInput.value || limitInput.value < 1) {
+  if (!limitInput.value || limitInput.value < 1 || limitInput.value === props.limit) {
     return;
   }
   emit('updateLimit', limitInput.value);
@@ -131,3 +142,10 @@ const formatJson = (payload: unknown) => {
   }
 };
 </script>
+
+<style scoped>
+/* round 6: no up/down spinner on the number; it is typed. */
+.no-spinner { appearance: textfield; -moz-appearance: textfield; }
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+</style>

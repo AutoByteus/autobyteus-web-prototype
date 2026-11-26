@@ -88,7 +88,7 @@
                 ? 'border-blue-600 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
             >
-            <span class="truncate max-w-[150px]">{{ getFileName(file) }}</span>
+            <span class="truncate" :class="props.readOnly ? 'max-w-[320px]' : 'max-w-[150px]'" :title="getFileName(file)">{{ getFileName(file) }}</span>
             <span
                 v-if="file === activeFile"
                 @click.stop="closeFile(file)"
