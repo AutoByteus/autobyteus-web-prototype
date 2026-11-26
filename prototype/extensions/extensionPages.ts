@@ -247,7 +247,7 @@ function joinedBlock() {
     + '<span class="muted">' + NAMES[state.network] + (state.network === 'headscale' ? ' (' + esc(state.serverUrl) + ')' : '') + ' · ' + esc(state.account) + '</span></div></div>'
     + '<div><h3>My machines <span class="muted" style="font-weight:400">' + state.machines.length + '</span></h3>'
     + '<table><thead><tr><th>Name</th><th class="col-addr">Private address</th><th class="col-account">Added by</th><th>State</th></tr></thead><tbody>' + state.machines.map(machineRow).join('') + '</tbody></table>'
-    + '<p class="hint" style="margin-top:8px">Every machine on your private network, AutoByteus or not. Your AutoByteus nodes among them are in Nodes, under Found on your private network.'
+    + '<p class="hint" style="margin-top:8px">Every machine on your private network, AutoByteus or not. Your AutoByteus nodes among them are in Manage Nodes.'
     + (state.network === 'tailscale' ? ' A machine added with a tagged key belongs to its tag and never counts as yours; a shared machine is someone else’s.' : '') + '</p></div>'
 ;
   if (state.network === 'host') html += '<hr class="divider">' + (invite ? codeBlock(invite, 'invite') : inviteBlock());
@@ -259,7 +259,7 @@ function inviteBlock() {
   return '<div class="field">' + lead
     + '<div class="types" role="radiogroup" aria-label="Who the invite is for" style="margin-top:6px">'
     + '<label class="type"><input type="radio" name="forwhom" value="me"' + (forWhom === 'me' ? ' checked' : '') + '><div><b>For one of my machines</b><span>It joins as yours (' + esc(state.account) + ').</span></div></label>'
-    + '<label class="type"><input type="radio" name="forwhom" value="teammate"' + (forWhom === 'teammate' ? ' checked' : '') + '><div><b>For a teammate</b><span>It joins under the teammate’s own name, so it is theirs: they pair with Connect and Allow and never get owner access.</span></div></label></div>'
+    + '<label class="type"><input type="radio" name="forwhom" value="teammate"' + (forWhom === 'teammate' ? ' checked' : '') + '><div><b>For a teammate</b><span>It joins under the teammate’s own name, so it is theirs: it pairs only when you accept it, and never gets control.</span></div></label></div>'
     + (forWhom === 'teammate' ? '<label class="label" for="teammate" style="margin-top:6px">Teammate’s name</label><input id="teammate" class="mono" style="width:220px" autocomplete="off" spellcheck="false" placeholder="bob"><p class="hint">Becomes their own user on this network; it is created if it is new.</p>' : '')
     + '<div class="row" style="margin-top:6px">' + btn('mkinvite', 'Make the invite', 'Making an invite…') + '<button class="link" id="invitecancel">Cancel</button></div>'
     + (inviteError ? '<p class="error" role="alert">' + esc(inviteError) + '</p>' : '') + '</div>';
@@ -269,7 +269,7 @@ function codeBlock(c, kind) {
   const isInvite = kind === 'invite';
   return '<div class="box' + (expired ? ' expired' : '') + '"><div class="code-top"><img class="qr" alt="QR code of the ' + (isInvite ? 'invite' : 'connection code') + '" src="' + c.qr + '">'
     + '<div><h3>' + (isInvite ? (c.teammate ? 'Invite code for ' + esc(c.user) : 'Invite code for one of your machines') : 'Connection code') + '</h3><p class="hint" style="margin-top:4px;font-size:13px;line-height:18px;color:#4b5563">'
-    + (isInvite ? 'Paste it in the other machine’s Private Network card, under My own Headscale server → I have an invite code. Machines that join with it are ' + (c.teammate ? esc(c.user) + '’s (a teammate): they pair with Connect and Allow.' : 'yours (' + esc(c.user) + '): pair them afterwards from Nodes.') : 'Paste it in AutoByteus under Nodes → Add node.') + '</p>'
+    + (isInvite ? 'Paste it in the other machine’s Private Network card, under My own Headscale server → I have an invite code. Machines that join with it are ' + (c.teammate ? esc(c.user) + '’s (a teammate): they pair only when you accept.' : 'yours (' + esc(c.user) + '): control them with their access code, then pair them from Controlled nodes.') : 'Paste it in AutoByteus under Nodes → Add node.') + '</p>'
     + '<p class="warn"><span aria-hidden="true">⚠</span><span>Treat it like a password. Anyone who has it can add a machine to your private network' + (isInvite ? '' : ' and pair it with this node') + '. It works once.</span></p>'
     + '<p class="expiry" id="expiry-' + kind + '">' + (expired ? 'This ' + (isInvite ? 'invite' : 'code') + ' expired.' : expiryText(left)) + '</p></div></div>'
     + '<textarea id="text-' + kind + '" class="mono" readonly aria-label="' + (isInvite ? 'Invite code' : 'Connection code') + '"' + (expired ? ' disabled' : '') + (isInvite ? ' style="height:72px"' : '') + '>' + esc(c.text) + '</textarea>'
