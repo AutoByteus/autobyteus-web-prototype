@@ -56,4 +56,6 @@ Invented by hand for this ticket: accounts (`alex@example.com`, `bob@example.com
 
 ## Integration And Cleanup
 
-Pending.
+- Integrated 2026-11-27: `design/private-network-661` fast-forwarded into `personal` (`825434bc..5bfe17eb`; `origin/personal` had not moved); canonical checkout `/Users/normy/autobyteus_org/autobyteus-web-design` fast-forwarded to the same revision. Result: `Completed`.
+- Default-entry-point check: `personal` started from the canonical checkout on a temporary port (4662): Manage Nodes shows This node with Private network and Local network, Asking to pair, Controlled nodes, Paired nodes with Pair with someone else's node, Found on your private network, Found on your local network; no page errors. Stopped afterwards.
+- Cleanup: the ticket's dev server (4661) stopped; its Tailscale Serve entry (8449) turned off, the Serve configuration is the same as before the ticket (443, 8443, 8444, 8446, 8448 untouched); the worktree removed and the branch `design/private-network-661` deleted after this record.
