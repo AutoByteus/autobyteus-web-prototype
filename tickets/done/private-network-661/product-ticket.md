@@ -7,7 +7,7 @@
 - Request: `/Users/normy/autobyteus_org/autobyteus-worktrees/autobyteus-661-private-network/tickets/in-progress/autobyteus-661-private-network/product-design-request.md`
 - Requirements: same folder, `requirements-doc.md` (Approved, SR-001; REQ-001…REQ-017), `pairing-contract.md` (2026-11-26)
 - Mode: Product Experience Design (changes the approved Private Network card and Manage Nodes of extensions-ui-516)
-- Status: `Awaiting User Review` (round 1)
+- Status: `Completed` (approved 2026-11-27)
 
 ### Decision questions (product-design-request.md)
 
@@ -43,10 +43,16 @@ Invented by hand for this ticket: accounts (`alex@example.com`, `bob@example.com
 - 2026-11-26 Solution Designer's capture check: four fixes applied (DC-102; captures R1-03, R1-04, R1-08…R1-10, R1-15, R1-18…R1-20, R1-22, R1-24 retaken); sent back for its re-check.
 - 2026-11-26 Solution Designer re-checked DC-102: all four correct.
 - 2026-11-27 founder's D-6 (local network discovery; UC-012, REQ-018, REQ-019, AC-013): added as DC-103…DC-105 (captures R1-25…R1-34); finding F-5 raised; sent to the Solution Designer for its walk-through before the founder's approval.
+- 2026-11-27 Solution Designer: D-6 holds; F-5 answered (ask before pairing over the local network: DC-106). Approved under the founder's rule of 2026-11-27 ("Always start with the contract and validate each use case based on your data flow spine. If it works, then it's one approved"): UC-001…UC-012 walked through the contract, screens match; round 1 with DC-091…DC-106 approved.
+- 2026-11-27 final check: every journey UXJ-101…UXJ-107 clicked through on the ticket branch; final screenshots VIS-* (52) in `visual-references/`; `ui-ux-spec.md` written; ticket moved to `tickets/done/`; status `Completed`. Integration record below.
 
 ## Final Package
 
-Pending approval.
+- UI/UX specification: `ui-ux-spec.md`
+- Final references: `visual-references/VIS-*.png` (P1 Private Network page; P2 Pair again; P3 pair by address; P4 join first; P5 shared machines; P6 local network; N phone; L Chinese)
+- Change history: `design-change-log.md` (DC-091…DC-106); review notes and findings: `review-round-1.md`; interim captures: `review-captures/round-1/` (not normative)
+- Approval: the founder's rule of 2026-11-27, applied and relayed by the Solution Designer (UC-001…UC-012 walked through the contract)
+- Provisional (marked in the spec): real Tailscale sign-in, approval and expiry; a shared machine's account; access-rule detection; the desktop relay (G1); the phone over mobile data; local discovery across two computers. Not product UI: the "Design reference only" controls.
 
 ## Integration And Cleanup
 

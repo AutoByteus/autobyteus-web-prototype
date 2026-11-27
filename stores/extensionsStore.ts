@@ -177,7 +177,7 @@ export const useExtensionsStore = defineStore('extensions', {
           // An extension this AutoByteus cannot run (its contract version is newer) or with no build for this platform (contract §6).
           const stored: ExtensionState = entry.contractVersion > SUPPORTED_CONTRACT ? { kind: 'notAvailableHere', reason: 'contract' }
             : entry.platforms.includes(record.platform) ? record.states[entry.id] : { kind: 'notAvailableHere', reason: 'platform' };
-          // Private Network's card says what its status() says now (joined, waiting for approval, signed out, server down, own VPN…).
+          // Private Network's card says what its status() says now (joined, waiting for approval, expired, signed out, unreachable, access rules).
           if (entry.id === 'private-network' && stored.kind === 'installed' && stored.enabled && !/^Starting/.test(stored.message)) {
             return { entry, state: { ...stored, ...usePrivateNetworkStore().status } };
           }
