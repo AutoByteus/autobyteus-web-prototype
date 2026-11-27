@@ -90,7 +90,7 @@
         :aria-label="t('nodes.pairAgain.label', { name: row.name })"
         :disabled="legacyOlder || view.checking || view.reachable !== true"
         :data-testid="`node-pair-again-${row.key}`"
-        @click="privateNetwork.pairAgain(row.nodeId!)"
+        @click="pairAgainRow"
       ><RemoteCollaborationIcon size-class="h-4 w-4 text-slate-500" />{{ t('nodes.pairAgain.button') }}</button><span v-else-if="legacy" /><span v-else-if="!paired && pairingHere" class="inline-flex h-8 items-center gap-2 text-sm text-slate-600" role="status" :data-testid="`node-pairing-${row.key}`"><span class="h-3.5 w-3.5 animate-spin rounded-full border-2 border-slate-200 border-t-blue-600 motion-reduce:animate-none" aria-hidden="true" />{{ t('nodes.privateNetwork.found.pairing') }}</span><button
         v-else-if="!paired && row.nodeId && !needsConnecting"
         type="button"
@@ -131,6 +131,8 @@
       </div>
     </div>
 
+    <!-- private-network-661 (F-5): Pair again with someone else's node over the local network asks first -->
+    <LocalAllowPrompt v-if="askLocal" class="mx-5 mb-3.5 sm:ml-[2.75rem]" @allowed="askLocal = false; privateNetwork.pairAgain(row.nodeId!)" @cancel="askLocal = false" />
     <!-- extensions-ui-516 (design): Unpair confirmation, below the row like its notices -->
     <div v-if="unpairAsk && paired" class="mx-5 mb-3.5 -mt-0.5 flex max-w-2xl sm:ml-[2.75rem] flex-wrap items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs leading-5 text-slate-700" role="alertdialog" :aria-label="t('nodes.privateNetwork.unpair')" :data-testid="`node-unpair-confirm-${row.key}`">
       <span class="min-w-0 flex-1 basis-56">{{ privateMark?.role === 'teammate' ? (privateMark.account ? t('nodes.privateNetwork.unpairTeammate', { name: row.name, account: privateNetwork.accountLabel(privateMark.account) }) : t('nodes.privateNetwork.unpairTeammateAddress', { name: row.name })) : t('nodes.privateNetwork.unpairOwn', { name: row.name }) }}</span>
@@ -202,6 +204,7 @@
 import { computed, nextTick, onMounted, ref } from 'vue'
 import NodeAccessNotice from '~/components/settings/nodes/NodeAccessNotice.vue'
 import RemoteCollaborationIcon from '~/components/settings/nodes/RemoteCollaborationIcon.vue'
+import LocalAllowPrompt from '~/components/settings/nodes/LocalAllowPrompt.vue'
 import NodeNoticeIcon from '~/components/settings/nodes/NodeNoticeIcon.vue'
 import NodeConnectionDetails from '~/components/settings/nodes/NodeConnectionDetails.vue'
 import NodeServerUpdate from '~/components/settings/nodes/NodeServerUpdate.vue'
@@ -224,6 +227,11 @@ const privateMark = computed(() => privateNetwork.peerMark(props.row.nodeId))
 /** private-network-661 (D-3): a pairing made before the update, not paired again yet. */
 const legacy = computed(() => privateNetwork.legacyOf(props.row.nodeId))
 /** Someone else's node (paired, or paired before the update): no Open, no server version (owner reads only). */
+const askLocal = ref(false)
+const pairAgainRow = (): void => {
+  if (legacy.value?.role === 'teammate' && privateNetwork.needsLocalAllow(shownUrl.value)) { askLocal.value = true; return }
+  void privateNetwork.pairAgain(props.row.nodeId!)
+}
 const teammate = computed(() => privateMark.value?.role === 'teammate' || legacy.value?.role === 'teammate')
 /** It runs an older AutoByteus than this app: pairing again works once it is updated (REQ-012). */
 const serverUpdates = useNodeServerUpdateStore()

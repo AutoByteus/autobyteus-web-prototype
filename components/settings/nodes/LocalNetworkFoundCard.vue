@@ -34,10 +34,11 @@
             <template v-else-if="controlOpen !== node.nodeId">
               <span v-if="node.phase === 'declined'" class="text-sm text-slate-600" role="status">{{ t('nodes.privateNetwork.found.declinedUnknown') }}</span>
               <button type="button" :class="BUTTON" :data-testid="`local-network-control-${node.name}`" @click="openControl(node)">{{ t('nodes.sections.control') }}</button>
-              <button type="button" :class="BUTTON" :data-testid="`local-network-pair-${node.name}`" @click="network.pairLocal(node.nodeId)">{{ node.phase === 'declined' ? t('nodes.privateNetwork.found.pairAgain') : t('nodes.privateNetwork.found.pair') }}</button>
+              <button type="button" :class="BUTTON" :data-testid="`local-network-pair-${node.name}`" @click="pair(node)">{{ node.phase === 'declined' ? t('nodes.privateNetwork.found.pairAgain') : t('nodes.privateNetwork.found.pair') }}</button>
             </template>
           </div>
         </div>
+        <LocalAllowPrompt v-if="askingFor === node.nodeId" class="ml-5 mt-2" @allowed="askingFor = null; network.pairLocal(node.nodeId)" @cancel="askingFor = null" />
         <!-- Control: the node's access code, inline (as under Found on your private network) -->
         <form v-if="controlOpen === node.nodeId" class="ml-5 mt-2 max-w-3xl" :data-testid="`local-network-control-form-${node.name}`" @submit.prevent="control(node)">
           <p class="mb-2 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-5 text-amber-900"><NodeNoticeIcon class="mt-0.5" tone="warn" />{{ t('nodes.sections.unknownWarning') }}</p>
@@ -72,6 +73,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import NodeNoticeIcon from '~/components/settings/nodes/NodeNoticeIcon.vue'
+import LocalAllowPrompt from '~/components/settings/nodes/LocalAllowPrompt.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { makeNodeCode } from '~/prototype/nodes/nodeCode'
 import { useAddWithAccessCode } from '~/prototype/nodes/addWithAccessCode'
@@ -90,6 +92,9 @@ const shown = computed(() => network.localFound.filter((node) => !network.localS
   && !nodeStore.nodes.some((entry) => entry.nodeId === node.nodeId)
   && !list.rows.some((row) => row.nodeId === node.nodeId || [row.windowAddress, row.peer?.baseUrl].some((u) => u && hostPort(u) === node.address))))
 
+/** F-5: Pair while this node does not accept local-network connections asks first. */
+const askingFor = ref<string | null>(null)
+const pair = (node: LocalNode): void => { if (network.needsLocalAllow(node.address)) askingFor.value = node.nodeId; else void network.pairLocal(node.nodeId) }
 const looking = ref(false)
 const lookAgain = async (): Promise<void> => { looking.value = true; await new Promise((done) => setTimeout(done, 900)); looking.value = false }
 

@@ -241,6 +241,8 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.localNetwork.foundLead': 'AutoByteus nodes visible on this local network that are in neither list above. Nobody’s account is known here: pair with a colleague’s node when its owner accepts, or control one of yours with its access code.',
   'nodes.localNetwork.at': 'at',
   'nodes.localNetwork.empty': 'No AutoByteus nodes visible on this network. A colleague’s node appears here when they turn on Visible on my local network. Some office Wi-Fi blocks this: then type its address under Pair with someone else’s node.',
+  'nodes.localNetwork.allowPairBody': 'To pair, this node must accept connections from this local network: the other owner’s answer comes back here. Fine for home and office networks, not for public Wi-Fi.',
+  'nodes.localNetwork.allowPair': 'Allow and pair',
   'extensions.card.updateNeedsNewerApp': '{{version}} needs a newer AutoByteus',
 };
 

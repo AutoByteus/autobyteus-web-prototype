@@ -31,13 +31,15 @@
         {{ busy ? t('nodes.pairByAddress.reaching') : t('nodes.pairByAddress.submit') }}
       </button>
     </div>
-    <p v-if="!error" class="mt-2 text-xs leading-5 text-slate-500" data-testid="pair-by-address-hint">{{ t('nodes.pairByAddress.hint') }}</p>
+    <LocalAllowPrompt v-if="asking" class="mt-3" @allowed="sendAsked" @cancel="asking = null" />
+    <p v-if="!error && !asking" class="mt-2 text-xs leading-5 text-slate-500" data-testid="pair-by-address-hint">{{ t('nodes.pairByAddress.hint') }}</p>
   </form>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import RemoteCollaborationIcon from '~/components/settings/nodes/RemoteCollaborationIcon.vue'
+import LocalAllowPrompt from '~/components/settings/nodes/LocalAllowPrompt.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useNodeListStore } from '~/stores/nodeListStore'
 import { usePrivateNetworkStore } from '~/stores/privateNetworkStore'
@@ -71,6 +73,13 @@ async function submit(): Promise<void> {
       : legacy ? t('nodes.pairByAddress.errorLegacy', { name: row.name }) : t('nodes.pairByAddress.errorPaired', { name: row.name })
     return
   }
+  // F-5: the other owner's Accept comes back to this node over the local network: ask first when it does not accept that yet.
+  if (network.needsLocalAllow(typed)) { asking.value = typed; return }
+  await send(typed)
+}
+const asking = ref<string | null>(null)
+const sendAsked = async (): Promise<void> => { const typed = asking.value; asking.value = null; if (typed) await send(typed) }
+async function send(typed: string): Promise<void> {
   busy.value = true
   try {
     const result = await network.pairByAddress(typed)

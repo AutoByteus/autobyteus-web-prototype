@@ -398,6 +398,10 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   function setVisibleOnLocal(value: boolean): void { if (!value || localAllowed.value) visibleOnLocal.value = value }
   /** "Allow and make visible": the node accepts this local network (the existing setting), then announces itself. */
   async function allowLocalAndShow(): Promise<void> { await later(700); localAllowed.value = true; visibleOnLocal.value = true }
+  /** F-5: before pairing over the local network: the answer comes back to this node as a new local connection. */
+  async function allowLocal(): Promise<void> { await later(700); localAllowed.value = true }
+  /** A plain address another node reaches over the local network (not a private-network address, not this computer only). */
+  const needsLocalAllow = (address: string): boolean => !localAllowed.value && !isPrivateNetworkAddress(address) && !/^(localhost|127\.|\[?::1)/i.test(address.replace(/^https?:\/\//, ''))
   async function pairLocal(nodeId: string): Promise<void> {
     const node = localFound.value.find((n) => n.nodeId === nodeId)
     if (!node) return
@@ -424,6 +428,6 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     reset, touch, signIn, cancelSignIn, joinWithKey, leave,
     setDiscoverable, dismissDiscoveryOffer, pair, connect, cancelConnect, allow, reject, unpair,
     pairAgain, cancelPairAgain, pairByAddress, cancelOutgoing,
-    localAllowed, visibleOnLocal, localAddress, localFound, localShownIds, setVisibleOnLocal, allowLocalAndShow, pairLocal, cancelLocal,
+    localAllowed, visibleOnLocal, localAddress, localFound, localShownIds, setVisibleOnLocal, allowLocalAndShow, allowLocal, needsLocalAllow, pairLocal, cancelLocal,
   }
 })

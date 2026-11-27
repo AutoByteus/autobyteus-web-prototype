@@ -241,6 +241,8 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.localNetwork.foundLead': '此局域网上可见、且不在上方任何列表中的 AutoByteus 节点。这里无法得知账号：同事的节点在其所有者接受后配对，你自己的节点用访问码控制。',
   'nodes.localNetwork.at': '位于',
   'nodes.localNetwork.empty': '此网络上没有可见的 AutoByteus 节点。同事打开“在我的局域网中可见”后，其节点会出现在这里。有些办公室 Wi-Fi 会阻止此功能：这时请在“与别人的节点配对”中输入其地址。',
+  'nodes.localNetwork.allowPairBody': '要配对，此节点必须接受来自此局域网的连接：对方所有者的答复会发回这里。适用于家庭和办公网络，不适用于公共 Wi-Fi。',
+  'nodes.localNetwork.allowPair': '允许并配对',
   'extensions.card.updateNeedsNewerApp': '{{version}} 需要更新版本的 AutoByteus',
 };
 
