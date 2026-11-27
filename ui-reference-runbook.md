@@ -16,6 +16,7 @@ Desktop window and Nodes list: `localStorage.setItem('autobyteus.prototype.conte
 - **Join first** (Add a node, without `network_*`): paste this fixture code (design only, never valid anywhere) in Access code:
   `abps_eyJub2RlSWQiOiJzcnZfYnUxbGRTM3J2M3JOMGRlQzBkZVF4N1JmMkxtOVBkWnQ0V24iLCJhZGRyZXNzIjoiMTAwLjg4Ljc1Ljc1OjI5Njk1Iiwic2V0dXBDb2RlIjoiRFNHTi1PTkxZLTY2MTAiLCJleHBpcmVzQXQiOiIyMDk5LTAxLTAxVDAwOjAwOjAwWiJ9`
 - **Join first in a Needs connecting row**: scenario `nodes_access` (docker needs connecting), paste the fixture code there. **In Found → Control**: context `electron_external`, `network_joined` and `autobyteus.prototype.thisComputerNetwork` = `off` (the window's node is on the private network, this computer's node is not), Control on raspberrypi, paste the fixture code.
+- **Local network (D-6)**: `autobyteus.prototype.localDiscovery` = comma list of `office` (dana-mac 192.168.1.30 accepts, bob-laptop 192.168.1.20 also on the tailnet, eve-box .40 declines, studio-mac .60 for Control), `allowed` (this node accepts local-network connections), `visible` (Visible on my local network on). Without `office`, Found on your local network is empty.
 - **Shared machine**: `network_joined` (dana-desktop "shared by dana@other.example"), `network_shared_unknown` ("shared with you").
 - The world: `stores/privateNetworkStore.ts`, `prototype/extensions/extensionPages.ts` (the extension's page), `prototype/nodes/network-world.mjs` (`setPaired`, `addPeerAt`). Review notes: `tickets/in-progress/private-network-661/review-round-1.md`.
 

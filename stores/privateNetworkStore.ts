@@ -57,6 +57,8 @@ export interface IncomingRequest {
 export interface PairedPeer { nodeId: string; name: string; account: string | null; role: 'own' | 'teammate'; machineId: string | null; via: 'network' | 'address' }
 /** Pair by plain address with someone else's node (D-5): this node's outstanding request (pairing-contract §1). */
 export interface OutgoingRequest { id: string; address: string; phase: 'waiting' | 'declined' }
+/** A node announcing itself on this local network (pairing-contract §4b): name, address, node ID; no account. */
+export interface LocalNode { nodeId: string; name: string; address: string; answer: 'accept' | 'decline'; phase: 'idle' | 'waiting' | 'declined' }
 /** A pairing made before the update (D-3): its row stays and shows "Pair again". */
 export interface LegacyPeer { nodeId: string; role: 'own' | 'teammate'; phase: 'idle' | 'pairing' | 'waiting' | 'declined' }
 
@@ -374,6 +376,43 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
   function cancelOutgoing(id: string): void { outgoing.value = outgoing.value.filter((o) => o.id !== id) }
   const addressFormOf = normalized
 
+  // ---- Local network (D-6, REQ-018, REQ-019; pairing-contract §4b): DNS-SD on one network segment, no accounts.
+  // Design seed `autobyteus.prototype.localDiscovery` = a comma list of `office` (colleagues' nodes announce on this network),
+  // `allowed` (this node accepts local-network connections), `visible` (this node announces itself). Default: nothing announces,
+  // not allowed, not visible.
+  const localSeed = typeof window === 'undefined' ? [] : String(localStorage.getItem('autobyteus.prototype.localDiscovery') || '').split(',')
+  /** The existing per-network setting "Wi-Fi/LAN allowed on this network" (Phone Setup), kept on this computer's node. */
+  const localAllowed = ref(localSeed.includes('allowed') || localSeed.includes('visible'))
+  const visibleOnLocal = ref(localSeed.includes('visible'))
+  /** The address this node announces (its local-network address): what colleagues see and could type. */
+  const localAddress = '192.168.2.10:29695'
+  const LOCAL_ANNOUNCED: LocalNode[] = [
+    { nodeId: nodeIdOf('d4n4M4cAddr'), name: 'dana-mac', address: '192.168.1.30:29695', answer: 'accept', phase: 'idle' },
+    // Also on the tailnet (the same nodeId as Found on your private network): shown once, under the private network (§4b).
+    { nodeId: nodeIdOf('b0bL4pt0pPriv'), name: 'bob-laptop', address: '192.168.1.20:29695', answer: 'accept', phase: 'idle' },
+    { nodeId: nodeIdOf('3v3B0xAddr'), name: 'eve-box', address: '192.168.1.40:29695', answer: 'decline', phase: 'idle' },
+    // The owner's own machine, not controlled here: Control with its access code (the code carries a local address).
+    { nodeId: nodeIdOf('stud10M4cL4n'), name: 'studio-mac', address: '192.168.1.60:29695', answer: 'decline', phase: 'idle' },
+  ]
+  const localFound = ref<LocalNode[]>(localSeed.includes('office') ? structuredClone(LOCAL_ANNOUNCED) : [])
+  function setVisibleOnLocal(value: boolean): void { if (!value || localAllowed.value) visibleOnLocal.value = value }
+  /** "Allow and make visible": the node accepts this local network (the existing setting), then announces itself. */
+  async function allowLocalAndShow(): Promise<void> { await later(700); localAllowed.value = true; visibleOnLocal.value = true }
+  async function pairLocal(nodeId: string): Promise<void> {
+    const node = localFound.value.find((n) => n.nodeId === nodeId)
+    if (!node) return
+    node.phase = 'waiting'
+    await later(node.answer === 'accept' ? TEAMMATE_ALLOWS_MS : OWNER_DECLINES_MS)
+    const still = localFound.value.find((n) => n.nodeId === nodeId)
+    if (!still || still.phase !== 'waiting') return
+    if (still.answer === 'decline') { still.phase = 'declined'; return }
+    localFound.value = localFound.value.filter((n) => n.nodeId !== nodeId)
+    await landInNodes({ nodeId, name: still.name, machineId: null, address: `http://${still.address}` }, 'teammate', null, 'address')
+  }
+  function cancelLocal(nodeId: string): void { const node = localFound.value.find((n) => n.nodeId === nodeId); if (node) node.phase = 'idle' }
+  /** A node seen on both networks appears once, under the private network, which knows who added it (§4b). */
+  const localShownIds = computed(() => new Set(ready.value ? found.value.map((n) => n.nodeId) : []))
+
   /** A node this AutoByteus controls that the private network also found: its row's Pair pairs it in one click (pairing-contract §3 case 1, §4). */
   const ownOnNetwork = (nodeId: string | null) => (nodeId && ready.value ? found.value.find((n) => n.nodeId === nodeId && n.kind !== 'teammate') ?? null : null)
   const peerMark = (nodeId: string | null) => (nodeId ? paired.value.find((p) => p.nodeId === nodeId) ?? null : null)
@@ -385,5 +424,6 @@ export const usePrivateNetworkStore = defineStore('privateNetwork', () => {
     reset, touch, signIn, cancelSignIn, joinWithKey, leave,
     setDiscoverable, dismissDiscoveryOffer, pair, connect, cancelConnect, allow, reject, unpair,
     pairAgain, cancelPairAgain, pairByAddress, cancelOutgoing,
+    localAllowed, visibleOnLocal, localAddress, localFound, localShownIds, setVisibleOnLocal, allowLocalAndShow, pairLocal, cancelLocal,
   }
 })

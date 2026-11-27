@@ -46,3 +46,11 @@ Real Tailscale sign-in, approval and expiry texts, shared machines' account, acc
 2. docker example made consistent (DC-102): current and Paired outside `after_update` (R1-15, R1-18); older with Update and Pair again disabled after the update (R1-08). The "Same version as this app" line beside "Update to 0.1.0-prototype" is today's product hint for the Update button (the update brings the node to this app's version, autobyteus-356, unchanged); it is not a statement about the node's current version.
 3. R1-24 retaken with raspberrypi's own code (100.88.60.60): only the join-first line shows.
 4. The trash on bob-laptop's old pairing is dropped (DC-102); the row keeps Pair again only.
+
+## D-6: the local network (2026-11-27)
+
+- DC-103 "Visible on my local network" under This node (R1-25…R1-27, R1-33); DC-104 "Found on your local network" (R1-28…R1-32, R1-34); DC-105 two sections, a node on both shown once under the private network (R1-32).
+- Why not one list with a network tag: the two lists differ in what a row can say ("added by" vs. nothing) and in when they exist; a tag per row adds a word to every row, while a second section appears only when it has something to say.
+- Every row offers Control and Pair: without accounts AutoByteus cannot tell a colleague's node from one of the owner's own machines, so the owner chooses (Control needs the node's access code, Pair needs its owner's Accept).
+- Provisional: cross-computer discovery (announce, find, withdraw) is proved only on one Mac; two computers come in the founder's proof (PoC 2a). The Docker-node case (a bridged container cannot announce) is specified, not drawn: its address is typed (REQ-019).
+- **F-5 (for the Solution Designer):** pairing with a node found on the local network needs this node to accept local-network connections too, because `/pair-accepted` comes back to the address this node gave. Today the reference lets Pair start while this node does not accept them. Should Pair then show the same "Accept connections from this network?" prompt first (recommended), or is the answer carried on the request's own connection?

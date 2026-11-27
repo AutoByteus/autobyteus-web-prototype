@@ -13,6 +13,9 @@
     <!-- extensions-ui-516 (design, founder 2026-11-26): this node's private-network switches are this node's settings -->
     <PrivateNetworkCard part="thisNode" />
 
+    <!-- private-network-661 (design, D-6, REQ-018): visible on the local network, with or without Private Network -->
+    <LocalNetworkVisibility :node-name="nodeName" />
+
     <!-- extensions-ui-516 (design, DEC-015 item 7): who controls this node, with Revoke (owner windows) -->
     <ThisNodeControllers v-if="isOwnerWindow" :reachable-from-others="codeCanWork" />
 
@@ -43,6 +46,7 @@
 import { computed, ref } from 'vue'
 import NodeCodePanel from '~/components/settings/nodes/NodeCodePanel.vue'
 import PrivateNetworkCard from '~/components/settings/nodes/PrivateNetworkCard.vue'
+import LocalNetworkVisibility from '~/components/settings/nodes/LocalNetworkVisibility.vue'
 import ThisNodeControllers from '~/components/settings/nodes/ThisNodeControllers.vue'
 import { useLocalization } from '~/composables/useLocalization'
 import { useNodeListStore } from '~/stores/nodeListStore'

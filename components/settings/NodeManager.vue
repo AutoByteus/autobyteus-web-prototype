@@ -22,6 +22,8 @@
         <PrivateNetworkCard part="requests" />
         <NodeList @guide="activeTab = 'dockerGuide'" />
         <PrivateNetworkCard part="found" />
+        <!-- private-network-661 (design, D-6): its own section; a node found on both appears once, under the private network -->
+        <LocalNetworkFoundCard />
       </div>
 
       <div
@@ -77,6 +79,7 @@ import NodeManagerTabs from '~/components/settings/NodeManagerTabs.vue';
 import MemorySyncCard from '~/components/settings/MemorySyncCard.vue';
 import NodeList from '~/components/settings/nodes/NodeList.vue';
 import PrivateNetworkCard from '~/components/settings/nodes/PrivateNetworkCard.vue';
+import LocalNetworkFoundCard from '~/components/settings/nodes/LocalNetworkFoundCard.vue';
 import ThisNodeCard from '~/components/settings/nodes/ThisNodeCard.vue';
 import PhonesPanel from '~/components/settings/phone/PhonesPanel.vue';
 import { useLocalization } from '~/composables/useLocalization';

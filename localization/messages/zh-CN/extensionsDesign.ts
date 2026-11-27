@@ -229,6 +229,18 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.pairByAddress.errorNoNode': '{{address}} 上没有 AutoByteus 节点响应。请检查地址，并确认节点正在运行。',
   'nodes.pairByAddress.errorRefused': '{{address}} 没有接受配对请求。请确认它运行的是最新版本的 AutoByteus。',
   'nodes.nodeCode.needsJoin': '此访问码属于你私有网络上的一个节点（{{address}}）。这台电脑的节点必须先加入你的私有网络。',
+  // private-network-661 (design, D-6)
+  'nodes.localNetwork.title': '局域网',
+  'nodes.localNetwork.label': '在我的局域网中可见',
+  'nodes.localNetwork.help': '此局域网上的其他 AutoByteus 节点可以看到此节点的名称和地址，并可请求与它配对。此网络之外的任何人都看不到它。',
+  'nodes.localNetwork.visibleAs': '可见名称：{{name}}，地址',
+  'nodes.localNetwork.allowTitle': '接受来自此网络的连接？',
+  'nodes.localNetwork.allowBody': '要变为可见，此节点必须接受来自此局域网的连接。适用于家庭和办公网络，不适用于公共 Wi-Fi。',
+  'nodes.localNetwork.allowYes': '允许并设为可见',
+  'nodes.localNetwork.foundTitle': '在你的局域网中发现',
+  'nodes.localNetwork.foundLead': '此局域网上可见、且不在上方任何列表中的 AutoByteus 节点。这里无法得知账号：同事的节点在其所有者接受后配对，你自己的节点用访问码控制。',
+  'nodes.localNetwork.at': '位于',
+  'nodes.localNetwork.empty': '此网络上没有可见的 AutoByteus 节点。同事打开“在我的局域网中可见”后，其节点会出现在这里。有些办公室 Wi-Fi 会阻止此功能：这时请在“与别人的节点配对”中输入其地址。',
   'extensions.card.updateNeedsNewerApp': '{{version}} 需要更新版本的 AutoByteus',
 };
 

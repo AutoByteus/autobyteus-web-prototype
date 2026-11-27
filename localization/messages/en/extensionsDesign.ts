@@ -229,6 +229,18 @@ const extensionsDesignMessages: TranslationCatalog = {
   'nodes.pairByAddress.errorNoNode': 'No AutoByteus node answers at {{address}}. Check the address, and that the node is running.',
   'nodes.pairByAddress.errorRefused': '{{address}} did not accept the pair request. Check that it runs the latest AutoByteus.',
   'nodes.nodeCode.needsJoin': 'This access code is for a node on your private network ({{address}}). This computer’s node must join your private network first.',
+  // private-network-661 (design, D-6): the local network
+  'nodes.localNetwork.title': 'Local network',
+  'nodes.localNetwork.label': 'Visible on my local network',
+  'nodes.localNetwork.help': 'Other AutoByteus nodes on this local network see this node’s name and address and can ask to pair with it. Nothing outside this network sees it.',
+  'nodes.localNetwork.visibleAs': 'Visible as {{name}} at',
+  'nodes.localNetwork.allowTitle': 'Accept connections from this network?',
+  'nodes.localNetwork.allowBody': 'To be visible, this node must accept connections from this local network. Fine for home and office networks, not for public Wi-Fi.',
+  'nodes.localNetwork.allowYes': 'Allow and make visible',
+  'nodes.localNetwork.foundTitle': 'Found on your local network',
+  'nodes.localNetwork.foundLead': 'AutoByteus nodes visible on this local network that are in neither list above. Nobody’s account is known here: pair with a colleague’s node when its owner accepts, or control one of yours with its access code.',
+  'nodes.localNetwork.at': 'at',
+  'nodes.localNetwork.empty': 'No AutoByteus nodes visible on this network. A colleague’s node appears here when they turn on Visible on my local network. Some office Wi-Fi blocks this: then type its address under Pair with someone else’s node.',
   'extensions.card.updateNeedsNewerApp': '{{version}} needs a newer AutoByteus',
 };
 
